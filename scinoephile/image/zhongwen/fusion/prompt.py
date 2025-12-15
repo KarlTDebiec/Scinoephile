@@ -7,20 +7,16 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.core.zhongwen import (
-    OpenCCConfig,
-    ZhongwenPrompt,
-    get_zhongwen_text_converted,
-)
+from scinoephile.core.zho import OpenCCConfig, ZhoPrompt, get_zho_text_converted
 from scinoephile.image.fusion import FusionPrompt
 
 __all__ = [
-    "ZhongwenSimpFusionPrompt",
-    "ZhongwenTradFusionPrompt",
+    "ZhoSimpFusionPrompt",
+    "ZhoTradFusionPrompt",
 ]
 
 
-class ZhongwenSimpFusionPrompt(FusionPrompt, ZhongwenPrompt):
+class ZhoSimpFusionPrompt(FusionPrompt, ZhoPrompt):
     """LLM correspondence text for 简体中文 fusion."""
 
     # Prompt
@@ -78,12 +74,12 @@ class ZhongwenSimpFusionPrompt(FusionPrompt, ZhongwenPrompt):
     """Error message when note field is missing."""
 
 
-class ZhongwenTradFusionPrompt(FusionPrompt, ZhongwenPrompt):
+class ZhoTradFusionPrompt(FusionPrompt, ZhoPrompt):
     """LLM correspondence text for 繁体中文 fusion."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.base_system_prompt, OpenCCConfig.s2t
+    base_system_prompt: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.base_system_prompt, OpenCCConfig.s2t
     )
     """Base system prompt."""
 
@@ -91,32 +87,32 @@ class ZhongwenTradFusionPrompt(FusionPrompt, ZhongwenPrompt):
     source_one_field: ClassVar[str] = "lens"
     """Field name for OCR source one."""
 
-    source_one_description: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.source_one_description, OpenCCConfig.s2t
+    source_one_description: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.source_one_description, OpenCCConfig.s2t
     )
     """Description of source one field."""
 
     source_two_field: ClassVar[str] = "paddle"
     """Field name for OCR source two."""
 
-    source_two_description: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.source_two_description, OpenCCConfig.s2t
+    source_two_description: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.source_two_description, OpenCCConfig.s2t
     )
     """Description of source two field."""
 
     # Query validation errors
-    source_one_missing_error: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.source_one_missing_error, OpenCCConfig.s2t
+    source_one_missing_error: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.source_one_missing_error, OpenCCConfig.s2t
     )
     """Error message when source one field is missing."""
 
-    source_two_missing_error: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.source_two_missing_error, OpenCCConfig.s2t
+    source_two_missing_error: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.source_two_missing_error, OpenCCConfig.s2t
     )
     """Error message when source two field is missing."""
 
-    sources_equal_error: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.sources_equal_error, OpenCCConfig.s2t
+    sources_equal_error: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.sources_equal_error, OpenCCConfig.s2t
     )
     """Error message when source one and two fields are equal."""
 
@@ -124,26 +120,26 @@ class ZhongwenTradFusionPrompt(FusionPrompt, ZhongwenPrompt):
     fused_field: ClassVar[str] = "ronghe"
     """Field name for fused subtitle text."""
 
-    fused_description: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.fused_description, OpenCCConfig.s2t
+    fused_description: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.fused_description, OpenCCConfig.s2t
     )
     """Description of fused field."""
 
     note_field: ClassVar[str] = "beizhu"
     """Field name for explanation of changes."""
 
-    note_description: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.note_description, OpenCCConfig.s2t
+    note_description: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.note_description, OpenCCConfig.s2t
     )
     """Description of note field."""
 
     # Answer validation errors
-    fused_missing_error: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.fused_missing_error, OpenCCConfig.s2t
+    fused_missing_error: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.fused_missing_error, OpenCCConfig.s2t
     )
     """Error message when fused field is missing."""
 
-    note_missing_error: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpFusionPrompt.note_missing_error, OpenCCConfig.s2t
+    note_missing_error: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpFusionPrompt.note_missing_error, OpenCCConfig.s2t
     )
     """Error message when note field is missing."""

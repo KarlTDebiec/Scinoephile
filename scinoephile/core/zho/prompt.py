@@ -9,10 +9,10 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["ZhongwenPrompt"]
+__all__ = ["ZhoPrompt"]
 
 
-class ZhongwenPrompt(Prompt, ABC):
+class ZhoPrompt(Prompt, ABC):
     """LLM correspondence text for 中文."""
 
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："

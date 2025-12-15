@@ -1,15 +1,15 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.test_get_english_flattened."""
+"""Tests of scinoephile.core.eng.test_get_eng_flattened."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english import (
+from scinoephile.core.eng import (
     _get_english_text_flattened,  # noqa
-    get_english_flattened,
+    get_eng_flattened,
 )
 
 
@@ -20,7 +20,7 @@ def _test_get_english_flattened(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_english_flattened(series)
+    output = get_eng_flattened(series)
 
     assert len(series) == len(output)
 

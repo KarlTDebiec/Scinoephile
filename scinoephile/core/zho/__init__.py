@@ -14,16 +14,16 @@ from scinoephile.core.series import Series
 from scinoephile.core.text import half_to_full_punc
 
 from .opencc_config import OpenCCConfig
-from .prompt import ZhongwenPrompt
+from .prompt import ZhoPrompt
 
 __all__ = [
     "OpenCCConfig",
-    "ZhongwenPrompt",
-    "get_zhongwen_cleaned",
-    "get_zhongwen_converted",
-    "get_zhongwen_converter",
-    "get_zhongwen_flattened",
-    "get_zhongwen_text_converted",
+    "ZhoPrompt",
+    "get_zho_cleaned",
+    "get_zho_converted",
+    "get_zho_converter",
+    "get_zho_flattened",
+    "get_zho_text_converted",
 ]
 
 conversion_exclusions = {
@@ -33,7 +33,7 @@ conversion_exclusions = {
 }
 
 
-def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
+def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get 中文 series cleaned.
 
     Arguments:
@@ -54,7 +54,7 @@ def get_zhongwen_cleaned(series: Series, remove_empty: bool = True) -> Series:
 
 
 @cache
-def get_zhongwen_converter(config: OpenCCConfig) -> OpenCC:
+def get_zho_converter(config: OpenCCConfig) -> OpenCC:
     """Get OpenCC converter for 中文 character set conversion.
 
     Arguments:
@@ -65,7 +65,7 @@ def get_zhongwen_converter(config: OpenCCConfig) -> OpenCC:
     return OpenCC(config)
 
 
-def get_zhongwen_converted(
+def get_zho_converted(
     series: Series,
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
@@ -81,13 +81,13 @@ def get_zhongwen_converted(
     """
     series = deepcopy(series)
     for event in series:
-        event.text = get_zhongwen_text_converted(
+        event.text = get_zho_text_converted(
             event.text, config, apply_exclusions=apply_exclusions
         )
     return series
 
 
-def get_zhongwen_flattened(series: Series) -> Series:
+def get_zho_flattened(series: Series) -> Series:
     """Get multi-line 中文 series flattened to single lines.
 
     Arguments:
@@ -101,7 +101,7 @@ def get_zhongwen_flattened(series: Series) -> Series:
     return series
 
 
-def get_zhongwen_text_converted(
+def get_zho_text_converted(
     text: str, config: OpenCCConfig, apply_exclusions: bool = True
 ) -> str:
     """Get 中文 text converted between character sets.
@@ -113,7 +113,7 @@ def get_zhongwen_text_converted(
     Returns:
         Converted text
     """
-    converter = get_zhongwen_converter(config)
+    converter = get_zho_converter(config)
     converted_text = converter.convert(text)
 
     if apply_exclusions:

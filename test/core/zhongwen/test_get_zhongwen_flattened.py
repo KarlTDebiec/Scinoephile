@@ -1,15 +1,15 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.zhongwen."""
+"""Tests of scinoephile.core.zho."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zhongwen import (
+from scinoephile.core.zho import (
     _get_zhongwen_text_flattened,  # noqa
-    get_zhongwen_flattened,
+    get_zho_flattened,
 )
 
 
@@ -20,7 +20,7 @@ def _test_get_zhongwen_flattened(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_zhongwen_flattened(series)
+    output = get_zho_flattened(series)
     assert len(series) == len(output)
 
     errors = []

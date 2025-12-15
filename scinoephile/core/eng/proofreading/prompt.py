@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
-from scinoephile.core.english import EnglishPrompt
+from scinoephile.core.eng import EngPrompt
 from scinoephile.core.proofreading import ProofreadingPrompt
 
-__all__ = ["EnglishProofreadingPrompt"]
+__all__ = ["EngProofreadingPrompt"]
 
 
-class EnglishProofreadingPrompt(ProofreadingPrompt, EnglishPrompt):
+class EngProofreadingPrompt(ProofreadingPrompt, EngPrompt):
     """LLM correspondence text for English proofreading."""

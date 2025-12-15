@@ -9,10 +9,10 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["EnglishPrompt"]
+__all__ = ["EngPrompt"]
 
 
-class EnglishPrompt(Prompt, ABC):
+class EngPrompt(Prompt, ABC):
     """LLM correspondence text for English."""
 
     # Prompt

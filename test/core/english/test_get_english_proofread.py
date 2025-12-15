@@ -1,13 +1,13 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.get_english_proofread."""
+"""Tests of scinoephile.core.eng.get_eng_proofread."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import get_eng_proofread
+from scinoephile.core.eng.proofreading import get_eng_proofread
 
 
 def _test_get_english_proofread(series: Series, expected: Series):

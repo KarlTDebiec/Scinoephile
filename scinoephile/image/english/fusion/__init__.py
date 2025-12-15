@@ -10,10 +10,10 @@ from typing import Any
 from scinoephile.core import Series
 from scinoephile.image.fusion import Fuser, FusionPrompt, FusionTestCase
 
-from .prompt import EnglishFusionPrompt
+from .prompt import EngFusionPrompt
 
 __all__ = [
-    "EnglishFusionPrompt",
+    "EngFusionPrompt",
     "get_default_eng_fusion_test_cases",
     "get_eng_fuser",
     "get_eng_fused",
@@ -22,7 +22,7 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EnglishFusionPrompt,
+    prompt_cls: type[FusionPrompt] = EngFusionPrompt,
 ) -> list[FusionTestCase]:
     """Get default English fusion test cases included with package.
 
@@ -70,7 +70,7 @@ def get_eng_fused(
 
 
 def get_eng_fuser(
-    prompt_cls: type[EnglishFusionPrompt] = EnglishFusionPrompt,
+    prompt_cls: type[EngFusionPrompt] = EngFusionPrompt,
     default_test_cases: list[FusionTestCase] | None = None,
     **kwargs: Any,
 ) -> Fuser:

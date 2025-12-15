@@ -8,19 +8,15 @@ from typing import ClassVar
 
 from scinoephile.core.proofreading import ProofreadingPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.core.zhongwen import (
-    OpenCCConfig,
-    ZhongwenPrompt,
-    get_zhongwen_text_converted,
-)
+from scinoephile.core.zho import OpenCCConfig, ZhoPrompt, get_zho_text_converted
 
 __all__ = [
-    "ZhongwenSimpProofreadingPrompt",
-    "ZhongwenTradProofreadingPrompt",
+    "ZhoSimpProofreadingPrompt",
+    "ZhoTradProofreadingPrompt",
 ]
 
 
-class ZhongwenSimpProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
+class ZhoSimpProofreadingPrompt(ProofreadingPrompt, ZhoPrompt):
     """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt
@@ -69,12 +65,12 @@ class ZhongwenSimpProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     """Error template when revision is missing for a note."""
 
 
-class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
+class ZhoTradProofreadingPrompt(ProofreadingPrompt, ZhoPrompt):
     """LLM correspondence text for 繁体中文 proofreading."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.base_system_prompt, OpenCCConfig.s2t
+    base_system_prompt: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.base_system_prompt, OpenCCConfig.s2t
     )
     """Base system prompt."""
 
@@ -82,8 +78,8 @@ class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     subtitle_prefix: ClassVar[str] = "zimu_"
     """Prefix of subtitle field in query."""
 
-    subtitle_description_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.subtitle_description_template, OpenCCConfig.s2t
+    subtitle_description_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.subtitle_description_template, OpenCCConfig.s2t
     )
     """Description template for subtitle field in query."""
 
@@ -91,32 +87,32 @@ class ZhongwenTradProofreadingPrompt(ProofreadingPrompt, ZhongwenPrompt):
     revised_prefix: ClassVar[str] = "xiugai_"
     """Prefix of revised field in answer."""
 
-    revised_description_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.revised_description_template, OpenCCConfig.s2t
+    revised_description_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.revised_description_template, OpenCCConfig.s2t
     )
     """Description template for revised field in answer."""
 
     note_prefix: ClassVar[str] = "beizhu_"
     """Prefix of note field in answer."""
 
-    note_description_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.note_description_template, OpenCCConfig.s2t
+    note_description_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.note_description_template, OpenCCConfig.s2t
     )
     """Description template for note field in answer."""
 
     # Test case errors
-    subtitle_revised_equal_error_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.subtitle_revised_equal_error_template,
+    subtitle_revised_equal_error_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.subtitle_revised_equal_error_template,
         OpenCCConfig.s2t,
     )
     """Error template when subtitle and revised fields are equal."""
 
-    note_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.note_missing_error_template, OpenCCConfig.s2t
+    note_missing_error_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.note_missing_error_template, OpenCCConfig.s2t
     )
     """Error template when note is missing for a revision."""
 
-    revised_missing_error_template: ClassVar[str] = get_zhongwen_text_converted(
-        ZhongwenSimpProofreadingPrompt.revised_missing_error_template, OpenCCConfig.s2t
+    revised_missing_error_template: ClassVar[str] = get_zho_text_converted(
+        ZhoSimpProofreadingPrompt.revised_missing_error_template, OpenCCConfig.s2t
     )
     """Error template when revision is missing for a note."""

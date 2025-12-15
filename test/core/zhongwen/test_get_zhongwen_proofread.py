@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.zhongwen.get_zhongwen_proofread."""
+"""Tests of scinoephile.core.zho.get_zho_proofread."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.proofreading import Proofreader
-from scinoephile.core.zhongwen.proofreading import (
-    ZhongwenTradProofreadingPrompt,
+from scinoephile.core.zho.proofreading import (
+    ZhoTradProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
 )
@@ -52,7 +52,7 @@ def test_get_zhongwen_proofread_kob(
     _test_get_zhongwen_proofread(
         kob_zho_hant_fuse,
         kob_zho_hant_fuse_proofread,
-        get_zho_proofreader(prompt_cls=ZhongwenTradProofreadingPrompt),
+        get_zho_proofreader(prompt_cls=ZhoTradProofreadingPrompt),
     )
 
 

@@ -10,16 +10,16 @@ from logging import info
 
 from scinoephile.core.series import Series
 
-from .prompt import EnglishPrompt
+from .prompt import EngPrompt
 
 __all__ = [
-    "EnglishPrompt",
-    "get_english_cleaned",
-    "get_english_flattened",
+    "EngPrompt",
+    "get_eng_cleaned",
+    "get_eng_flattened",
 ]
 
 
-def get_english_cleaned(series: Series, remove_empty: bool = True) -> Series:
+def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
     """Get English series cleaned.
 
     Arguments:
@@ -39,7 +39,7 @@ def get_english_cleaned(series: Series, remove_empty: bool = True) -> Series:
     return series
 
 
-def get_english_flattened(series: Series, exclusions: list[int] = None) -> Series:
+def get_eng_flattened(series: Series, exclusions: list[int] = None) -> Series:
     """Get multi-line English series flattened to single lines.
 
     Arguments:

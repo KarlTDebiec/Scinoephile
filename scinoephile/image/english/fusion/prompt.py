@@ -6,14 +6,14 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english import EnglishPrompt
+from scinoephile.core.eng import EngPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.image.fusion import FusionPrompt
 
-__all__ = ["EnglishFusionPrompt"]
+__all__ = ["EngFusionPrompt"]
 
 
-class EnglishFusionPrompt(FusionPrompt, EnglishPrompt):
+class EngFusionPrompt(FusionPrompt, EngPrompt):
     """LLM correspondence text for English fusion."""
 
     # Prompt

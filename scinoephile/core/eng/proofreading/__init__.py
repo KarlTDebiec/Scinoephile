@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 proofreading."""
+"""Code related to English proofreading."""
 
 from __future__ import annotations
 
@@ -14,22 +14,21 @@ from scinoephile.core.proofreading import (
     ProofreadingTestCase,
 )
 
-from .prompt import ZhongwenSimpProofreadingPrompt, ZhongwenTradProofreadingPrompt
+from .prompt import EngProofreadingPrompt
 
 __all__ = [
-    "ZhongwenSimpProofreadingPrompt",
-    "ZhongwenTradProofreadingPrompt",
-    "get_default_zho_proofreading_test_cases",
-    "get_zho_proofread",
-    "get_zho_proofreader",
+    "EngProofreadingPrompt",
+    "get_default_eng_proofreading_test_cases",
+    "get_eng_proofread",
+    "get_eng_proofreader",
 ]
 
 
 # noinspection PyUnusedImports
-def get_default_zho_proofreading_test_cases(
+def get_default_eng_proofreading_test_cases(
     prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt,
 ) -> list[ProofreadingTestCase]:
-    """Get default test cases included with package.
+    """Get default English proofreading test cases included with package.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -37,28 +36,28 @@ def get_default_zho_proofreading_test_cases(
         default test cases
     """
     try:
-        from test.data.kob import get_kob_zho_proofreading_test_cases
-        from test.data.mlamd import get_mlamd_zho_proofreading_test_cases
-        from test.data.mnt import get_mnt_zho_proofreading_test_cases
-        from test.data.t import get_t_zho_proofreading_test_cases
+        from test.data.kob import get_kob_eng_proofreading_test_cases
+        from test.data.mlamd import get_mlamd_eng_proofreading_test_cases
+        from test.data.mnt import get_mnt_eng_proofreading_test_cases
+        from test.data.t import get_t_eng_proofreading_test_cases
 
         return (
-            get_kob_zho_proofreading_test_cases(prompt_cls)
-            + get_mlamd_zho_proofreading_test_cases(prompt_cls)
-            + get_mnt_zho_proofreading_test_cases(prompt_cls)
-            + get_t_zho_proofreading_test_cases(prompt_cls)
+            get_kob_eng_proofreading_test_cases(prompt_cls)
+            + get_mlamd_eng_proofreading_test_cases(prompt_cls)
+            + get_mnt_eng_proofreading_test_cases(prompt_cls)
+            + get_t_eng_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for 中文 proofreading:\n{exc}")
+        warning(f"Default test cases not available for English proofreading:\n{exc}")
     return []
 
 
-def get_zho_proofread(
+def get_eng_proofread(
     series: Series,
     proofreader: Proofreader | None = None,
     **kwargs: Any,
 ) -> Series:
-    """Get 中文 series proofread.
+    """Get English series proofread.
 
     Arguments:
         series: Series to proofread
@@ -68,12 +67,12 @@ def get_zho_proofread(
         proofread Series
     """
     if proofreader is None:
-        proofreader = get_zho_proofreader()
+        proofreader = get_eng_proofreader()
     return proofreader.proofread(series, **kwargs)
 
 
-def get_zho_proofreader(
-    prompt_cls: type[ZhongwenSimpProofreadingPrompt] = ZhongwenSimpProofreadingPrompt,
+def get_eng_proofreader(
+    prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
     default_test_cases: list[ProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> Proofreader:
@@ -87,7 +86,7 @@ def get_zho_proofreader(
         Proofreader with provided configuration
     """
     if default_test_cases is None:
-        default_test_cases = get_default_zho_proofreading_test_cases(prompt_cls)
+        default_test_cases = get_default_eng_proofreading_test_cases(prompt_cls)
     return Proofreader(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,

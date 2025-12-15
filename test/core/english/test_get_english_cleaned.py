@@ -1,15 +1,15 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.english.get_english_cleaned."""
+"""Tests of scinoephile.core.eng.get_eng_cleaned."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english import (
+from scinoephile.core.eng import (
     _get_english_text_cleaned,  # noqa
-    get_english_cleaned,
+    get_eng_cleaned,
 )
 
 
@@ -20,7 +20,7 @@ def _test_get_english_cleaned(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_english_cleaned(series)
+    output = get_eng_cleaned(series)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):

@@ -1,17 +1,13 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.zhongwen."""
+"""Tests of scinoephile.core.zho."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zhongwen import (
-    OpenCCConfig,
-    get_zhongwen_converted,
-    get_zhongwen_converter,
-)
+from scinoephile.core.zho import OpenCCConfig, get_zho_converted, get_zho_converter
 
 
 def _test_get_zhongwen_converted(series: Series, config: OpenCCConfig, expected):
@@ -22,7 +18,7 @@ def _test_get_zhongwen_converted(series: Series, config: OpenCCConfig, expected)
         config: OpenCCConfig for conversion
         expected: Expected output series
     """
-    output = get_zhongwen_converted(series, config)
+    output = get_zho_converted(series, config)
     assert len(series) == len(output)
 
     errors = []
@@ -90,4 +86,4 @@ def test_get_zhongwen_converter(text: str, config: OpenCCConfig, expected: str):
         config: Conversion configuration
         expected: Expected converted text
     """
-    assert get_zhongwen_converter(config).convert(text) == expected
+    assert get_zho_converter(config).convert(text) == expected

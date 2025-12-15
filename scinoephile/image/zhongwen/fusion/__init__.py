@@ -10,11 +10,11 @@ from typing import Any
 from scinoephile.core import Series
 from scinoephile.image.fusion import Fuser, FusionPrompt, FusionTestCase
 
-from .prompt import ZhongwenSimpFusionPrompt, ZhongwenTradFusionPrompt
+from .prompt import ZhoSimpFusionPrompt, ZhoTradFusionPrompt
 
 __all__ = [
-    "ZhongwenSimpFusionPrompt",
-    "ZhongwenTradFusionPrompt",
+    "ZhoSimpFusionPrompt",
+    "ZhoTradFusionPrompt",
     "get_default_zho_fusion_test_cases",
     "get_zho_fuser",
     "get_zhongwen_ocr_fused",
@@ -23,7 +23,7 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhongwenSimpFusionPrompt,
+    prompt_cls: type[FusionPrompt] = ZhoSimpFusionPrompt,
 ) -> list[FusionTestCase]:
     """Get default 中文 fusion test cases included with package.
 
@@ -71,7 +71,7 @@ def get_zhongwen_ocr_fused(
 
 
 def get_zho_fuser(
-    prompt_cls: type[ZhongwenSimpFusionPrompt] = ZhongwenSimpFusionPrompt,
+    prompt_cls: type[ZhoSimpFusionPrompt] = ZhoSimpFusionPrompt,
     default_test_cases: list[FusionTestCase] | None = None,
     **kwargs: Any,
 ) -> Fuser:
