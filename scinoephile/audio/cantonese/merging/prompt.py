@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.english import EnglishPrompt
+from scinoephile.core.eng import EngPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["MergingPrompt"]
 
 
-class MergingPrompt(EnglishPrompt):
+class MergingPrompt(EngPrompt):
     """Text for LLM correspondence for 粤文 transcription merging."""
 
     # Prompt

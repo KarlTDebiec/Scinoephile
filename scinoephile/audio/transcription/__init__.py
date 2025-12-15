@@ -10,10 +10,20 @@ from logging import error
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
-from scinoephile.core.zhongwen import OpenCCConfig, get_zhongwen_text_converted
+from scinoephile.core.zho import OpenCCConfig, get_zho_text_converted
+
+__all__ = [
+    "TranscribedSegment",
+    "TranscribedWord",
+    "WhisperTranscriber",
+    "get_segment_merged",
+    "get_segment_split_at_idx",
+    "get_segment_split_on_whitespace",
+    "get_segment_zho_converted",
+]
 
 
-def get_segment_zhongwen_converted(
+def get_segment_zho_converted(
     segment: TranscribedSegment,
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
@@ -28,7 +38,7 @@ def get_segment_zhongwen_converted(
         Transcribed segment with converted 中文 text
     """
     converted_segment = deepcopy(segment)
-    converted_segment.text = get_zhongwen_text_converted(
+    converted_segment.text = get_zho_text_converted(
         converted_segment.text, config, apply_exclusions
     )
 
@@ -146,14 +156,3 @@ def get_segment_split_on_whitespace(
         split_segments.append(nascent_segment)
 
     return split_segments
-
-
-__all__ = [
-    "TranscribedSegment",
-    "TranscribedWord",
-    "WhisperTranscriber",
-    "get_segment_zhongwen_converted",
-    "get_segment_merged",
-    "get_segment_split_at_idx",
-    "get_segment_split_on_whitespace",
-]

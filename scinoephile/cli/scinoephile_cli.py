@@ -15,13 +15,13 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError, Series
-from scinoephile.core.english import get_english_cleaned, get_english_flattened
+from scinoephile.core.eng import get_eng_cleaned, get_eng_flattened
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zhongwen import (
+from scinoephile.core.zho import (
     OpenCCConfig,
-    get_zhongwen_cleaned,
-    get_zhongwen_converted,
-    get_zhongwen_flattened,
+    get_zho_cleaned,
+    get_zho_converted,
+    get_zho_flattened,
 )
 
 
@@ -143,15 +143,15 @@ class ScinoephileCli(CommandLineInterface):
 
         # Operation operations
         if "clean_chinese" in operations:
-            chinese = get_zhongwen_cleaned(chinese)
+            chinese = get_zho_cleaned(chinese)
         if "clean_english" in operations:
-            english = get_english_cleaned(english)
+            english = get_eng_cleaned(english)
         if "flatten_english" in operations:
-            english = get_english_flattened(english)
+            english = get_eng_flattened(english)
         if "flatten_chinese" in operations:
-            chinese = get_zhongwen_flattened(chinese)
+            chinese = get_zho_flattened(chinese)
         if "convert_chinese" in operations:
-            chinese = get_zhongwen_converted(chinese, operations["convert_chinese"])
+            chinese = get_zho_converted(chinese, operations["convert_chinese"])
         if "sync_bilingual" in operations:
             bilingual = get_synced_series(chinese, english)
 
