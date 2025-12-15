@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.english.proofreading import EnglishProofreadingPrompt
+from scinoephile.core.eng.proofreading import EngProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zhongwen.proofreading import ZhongwenSimpProofreadingPrompt
-from scinoephile.image.english.fusion import EnglishFusionPrompt
+from scinoephile.core.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.image.eng.fusion import EngFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zhongwen.fusion import ZhongwenSimpFusionPrompt
+from scinoephile.image.zho.fusion import ZhoHansFusionPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -157,7 +157,7 @@ def mnt_zho_hans_eng() -> Series:
 
 @cache
 def get_mnt_eng_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = EnglishProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
     """Get MNT English proofreading test cases.
@@ -166,9 +166,9 @@ def get_mnt_eng_proofreading_test_cases(
         prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        English proofreading test cases
+        test cases
     """
-    path = title_root / "core" / "english" / "proofreading.json"
+    path = title_root / "core" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -176,18 +176,18 @@ def get_mnt_eng_proofreading_test_cases(
 
 @cache
 def get_mnt_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhongwenSimpProofreadingPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
-    """Get MNT Zhongwen proofreading test cases.
+    """Get MNT 中文 proofreading test cases.
 
     Arguments:
         prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        Zhongwen proofreading test cases
+        test cases
     """
-    path = title_root / "core" / "zhongwen" / "proofreading.json"
+    path = title_root / "core" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -195,7 +195,7 @@ def get_mnt_zho_proofreading_test_cases(
 
 @cache
 def get_mnt_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EnglishFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get MNT English fusion test cases.
 
@@ -205,7 +205,7 @@ def get_mnt_eng_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "image" / "english" / "fusion.json"
+    path = title_root / "image" / "eng" / "fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -213,9 +213,9 @@ def get_mnt_eng_fusion_test_cases(
 
 @cache
 def get_mnt_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhongwenSimpFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhoHansFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MNT Zhongwen fusion test cases.
+    """Get MNT 中文 fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -223,7 +223,7 @@ def get_mnt_zho_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "image" / "zhongwen" / "fusion.json"
+    path = title_root / "image" / "zho" / "fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
