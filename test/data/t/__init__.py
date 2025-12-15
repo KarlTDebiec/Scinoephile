@@ -194,13 +194,13 @@ def get_t_zho_proofreading_test_cases(
     prompt_cls: type[ProofreadingPrompt] = ZhoSimpProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
-    """Get T Zhongwen proofreading test cases.
+    """Get T 中文 proofreading test cases.
 
     Arguments:
         prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        Zhongwen proofreading test cases
+        test cases
     """
     path = title_root / "core" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
@@ -230,7 +230,7 @@ def get_t_eng_fusion_test_cases(
 def get_t_zho_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoSimpFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get T Zhongwen fusion test cases.
+    """Get T 中文 fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases

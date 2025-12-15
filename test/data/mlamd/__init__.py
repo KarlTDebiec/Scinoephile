@@ -258,7 +258,7 @@ def get_mlamd_eng_proofreading_test_cases(
         prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        English proofreading test cases
+        test cases
     """
     path = title_root / "core" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
@@ -271,13 +271,13 @@ def get_mlamd_zho_proofreading_test_cases(
     prompt_cls: type[ProofreadingPrompt] = ZhoSimpProofreadingPrompt,
     **kwargs: Any,
 ) -> list[ProofreadingTestCase]:
-    """Get MLAMD Zhongwen proofreading test cases.
+    """Get MLAMD 中文 proofreading test cases.
 
     Arguments:
         prompt_cls: prompt class to use
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
-        Zhongwen proofreading test cases
+        test cases
     """
     path = title_root / "core" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
@@ -307,7 +307,7 @@ def get_mlamd_eng_fusion_test_cases(
 def get_mlamd_zho_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoSimpFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MLAMD Zhongwen fusion test cases.
+    """Get MLAMD 中文 fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
