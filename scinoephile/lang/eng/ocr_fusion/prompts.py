@@ -10,7 +10,9 @@ from scinoephile.core.fusion import FusionPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
 
-__all__ = ["EngOcrFusionPrompt"]
+__all__ = [
+    "EngOcrFusionPrompt",
+]
 
 
 class EngOcrFusionPrompt(FusionPrompt, EngPrompt):

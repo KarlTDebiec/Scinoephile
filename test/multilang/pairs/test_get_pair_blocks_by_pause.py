@@ -30,7 +30,11 @@ def test_get_pair_blocks_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
         kob_yue_hans: KOB 简体粤文 series fixture
         kob_eng: KOB English series fixture
     """
-    _test_get_pair_blocks_by_pause(kob_yue_hans, kob_eng, 193)
+    _test_get_pair_blocks_by_pause(
+        kob_yue_hans,
+        kob_eng,
+        193,
+    )
 
 
 def test_get_pair_blocks_by_pause_mnt(
@@ -57,4 +61,8 @@ def test_get_pair_blocks_by_pause_t(t_zho_hans: Series, t_eng: Series):
         t_zho_hans: T 简体中文 series fixture
         t_eng: T English series fixture
     """
-    _test_get_pair_blocks_by_pause(t_zho_hans, t_eng, 192)
+    _test_get_pair_blocks_by_pause(
+        t_zho_hans,
+        t_eng,
+        192,
+    )

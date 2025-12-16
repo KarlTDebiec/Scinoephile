@@ -17,7 +17,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     # Query fields
     subtitle_prefix: ClassVar[str] = "subtitle_"
-    """Prefix of subtitle field in query."""
+    """Prefix for subtitle fields in query."""
 
     @classmethod
     def subtitle_field(cls, idx: int) -> str:
@@ -25,7 +25,7 @@ class ProofreadingPrompt(Prompt, ABC):
         return f"{cls.subtitle_prefix}{idx}"
 
     subtitle_description_template: ClassVar[str] = "Subtitle {idx}"
-    """Description template for subtitle field in query."""
+    """Description template for subtitle fields in query."""
 
     @classmethod
     def subtitle_description(cls, idx: int) -> str:
@@ -34,7 +34,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     # Answer fields
     revised_prefix: ClassVar[str] = "revised_"
-    """Prefix of revised field in answer."""
+    """Prefix for revised fields in answer."""
 
     @classmethod
     def revised_field(cls, idx: int) -> str:
@@ -44,7 +44,7 @@ class ProofreadingPrompt(Prompt, ABC):
     revised_description_template: ClassVar[str] = (
         "Subtitle {idx} revised, or an empty string if no revision is necessary."
     )
-    """Description template for revised  field in answer."""
+    """Description template for revised fields in answer."""
 
     @classmethod
     def revised_description(cls, idx: int) -> str:
@@ -52,7 +52,7 @@ class ProofreadingPrompt(Prompt, ABC):
         return cls.revised_description_template.format(idx=idx)
 
     note_prefix: ClassVar[str] = "note_"
-    """Prefix of note field in answer."""
+    """Prefix of note fields in answer."""
 
     @classmethod
     def note_field(cls, idx: int) -> str:
@@ -63,7 +63,7 @@ class ProofreadingPrompt(Prompt, ABC):
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
-    """Description template for note field in answer."""
+    """Description template for note fields in answer."""
 
     @classmethod
     def note_description(cls, idx: int) -> str:
@@ -79,7 +79,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def subtitle_revised_equal_error(cls, idx: int) -> str:
-        """Error message when subtitle and revised fields are equal.
+        """Error when subtitle and revised fields are equal.
 
         Arguments:
             idx: index of subtitle
@@ -96,7 +96,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def note_missing_error(cls, idx: int) -> str:
-        """Error message when note is missing for a revision.
+        """Error when note is missing for a revision.
 
         Arguments:
             idx: index of subtitle
@@ -113,7 +113,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def revised_missing_error(cls, idx: int) -> str:
-        """Error message when revision is missing for a note.
+        """Error when revision is missing for a note.
 
         Arguments:
             idx: index of subtitle

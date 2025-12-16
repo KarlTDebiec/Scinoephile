@@ -10,9 +10,7 @@ from scinoephile.core.proofreading import ProofreadingPrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
 
-__all__ = [
-    "EngProofreadingPrompt",
-]
+__all__ = ["EngProofreadingPrompt"]
 
 
 class EngProofreadingPrompt(ProofreadingPrompt, EngPrompt):

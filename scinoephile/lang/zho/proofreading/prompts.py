@@ -31,23 +31,23 @@ class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
 
     # Query fields
     subtitle_prefix: ClassVar[str] = "zimu_"
-    """Prefix of subtitle field in query."""
+    """Prefix for subtitle fields in query."""
 
     subtitle_description_template: ClassVar[str] = "第 {idx} 条字幕"
-    """Description template for subtitle field in query."""
+    """Description template for subtitle fields in query."""
 
     # Answer fields
     revised_prefix: ClassVar[str] = "xiugai_"
     """Prefix of revised field in answer."""
 
     revised_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
-    """Description template for revised field in answer."""
+    """Description template for revised fields in answer."""
 
     note_prefix: ClassVar[str] = "beizhu_"
     """Prefix of note field in answer."""
 
     note_description_template: ClassVar[str] = "关于第 {idx} 条字幕修改的备注说明"
-    """Description template for note field in answer."""
+    """Description template for note fields in answer."""
 
     # Test case errors
     subtitle_revised_equal_error_template: ClassVar[str] = (
