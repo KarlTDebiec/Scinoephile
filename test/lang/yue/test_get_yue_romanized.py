@@ -24,7 +24,7 @@ def _test_get_yue_romanized(series: Series):
 
 
 # get_cantonese_romanization
-def test_get_yue_romanizedn_kob(kob_yue_hant: Series):
+def test_get_yue_romanized_kob(kob_yue_hant: Series):
     """Test get_cantonese_romanization with KOB 繁体粵文 subtitles.
 
     Arguments:

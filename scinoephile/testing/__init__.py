@@ -12,10 +12,7 @@ from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
 
-from .sync_test_case import SyncTestCase
-
 __all__ = [
-    "SyncTestCase",
     "flaky",
     "parametrized_fixture",
     "skip_if_ci",
