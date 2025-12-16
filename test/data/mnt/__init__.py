@@ -205,7 +205,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "image" / "eng" / "fusion.json"
+    path = title_root / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -223,7 +223,7 @@ def get_mnt_zho_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "image" / "zho" / "fusion.json"
+    path = title_root / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )

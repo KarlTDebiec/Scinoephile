@@ -6,25 +6,26 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.lang.eng.fusion import get_eng_fuser, get_eng_ocr_fused
-from scinoephile.lang.zho.fusion import get_zho_fuser, get_zho_ocr_fused
-
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
+    get_eng_ocr_fused,
     get_eng_proofread,
-    get_eng_proofreader,
 )
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
+from scinoephile.lang.eng.proofreading import get_eng_proofreader
 from scinoephile.lang.zho import (
     get_zho_cleaned,
     get_zho_converted,
     get_zho_flattened,
+    get_zho_ocr_fused,
     get_zho_proofread,
-    get_zho_proofreader,
 )
+from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
+from scinoephile.lang.zho.proofreading import get_zho_proofreader
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
@@ -64,11 +65,11 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zho_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zho_converted(zho_hans_paddle)
-    zho_fuser = get_zho_fuser(
+    zho_fuser = get_zho_ocr_fuser(
         test_cases=get_kob_zho_ocr_fusion_test_cases()
         + get_mlamd_zho_ocr_fusion_test_cases()
         + get_t_zho_ocr_fusion_test_cases(),
-        test_case_path=title_root / "image" / "zho" / "fusion.json",
+        test_case_path=title_root / "zho" / "ocr_fusion.json",
         auto_verify=True,
     )
     zho_hans_fuse = get_zho_ocr_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
@@ -98,11 +99,11 @@ if "English (OCR)" in actions:
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuser = get_eng_fuser(
+    eng_fuser = get_eng_ocr_fuser(
         test_cases=get_kob_eng_ocr_fusion_test_cases()
         + get_mlamd_eng_ocr_fusion_test_cases()
         + get_t_eng_ocr_fusion_test_cases(),
-        test_case_path=title_root / "image" / "eng" / "fusion.json",
+        test_case_path=title_root / "eng" / "ocr_fusion.json",
         auto_verify=True,
     )
     eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)

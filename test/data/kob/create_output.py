@@ -6,29 +6,28 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.lang.eng.fusion import get_eng_fuser, get_eng_ocr_fused
-from scinoephile.lang.zho.fusion import (
-    ZhoHantOcrFusionPrompt,
-    get_zho_fuser,
-    get_zho_ocr_fused,
-)
-
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
 from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
+    get_eng_ocr_fused,
     get_eng_proofread,
-    get_eng_proofreader,
 )
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
+from scinoephile.lang.eng.proofreading import get_eng_proofreader
 from scinoephile.lang.zho import (
-    OpenCCConfig,
-    ZhoHantProofreadingPrompt,
     get_zho_cleaned,
     get_zho_converted,
     get_zho_flattened,
+    get_zho_ocr_fused,
     get_zho_proofread,
+)
+from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.lang.zho.proofreading import (
+    ZhoHantProofreadingPrompt,
     get_zho_proofreader,
 )
 from scinoephile.testing import test_data_root
@@ -72,12 +71,12 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
     zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
-    zho_fuser = get_zho_fuser(
+    zho_fuser = get_zho_ocr_fuser(
         prompt_cls=ZhoHantOcrFusionPrompt,
         test_cases=get_mlamd_zho_ocr_fusion_test_cases()
         + get_mnt_zho_ocr_fusion_test_cases()
         + get_t_zho_ocr_fusion_test_cases(),
-        test_case_path=title_root / "image" / "zho" / "fusion.json",
+        test_case_path=title_root / "zho" / "ocr_fusion.json",
         auto_verify=True,
     )
     zho_hant_fuse = get_zho_ocr_fused(zho_hant_lens, zho_hant_paddle, zho_fuser)
@@ -100,11 +99,11 @@ if "English (OCR)" in actions:
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuser = get_eng_fuser(
+    eng_fuser = get_eng_ocr_fuser(
         test_cases=get_mlamd_eng_ocr_fusion_test_cases()
         + get_mnt_eng_ocr_fusion_test_cases()
         + get_t_eng_ocr_fusion_test_cases(),
-        test_case_path=title_root / "image" / "eng" / "fusion.json",
+        test_case_path=title_root / "eng" / "ocr_fusion.json",
         auto_verify=True,
     )
     eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)
