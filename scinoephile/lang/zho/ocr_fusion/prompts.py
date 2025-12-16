@@ -79,4 +79,4 @@ class ZhoHantOcrFusionPrompt(ZhoHansOcrFusionPrompt):
     """LLM correspondence text for 繁体中文 OCR fusion."""
 
     opencc_config = OpenCCConfig.s2t
-    """Config with which to covert characters from 简体中文 present in parent class."""
+    """Config with which to convert characters from 简体中文 present in parent class."""

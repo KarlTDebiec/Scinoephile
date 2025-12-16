@@ -21,7 +21,7 @@ class ZhoHansPrompt(Prompt, ABC):
     """LLM correspondence text for 简体中文."""
 
     opencc_config: ClassVar[OpenCCConfig | None] = None
-    """Config with which to covert characters from 简体中文 present in parent class."""
+    """Config with which to convert characters from 简体中文 present in parent class."""
 
     # Prompt
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："
