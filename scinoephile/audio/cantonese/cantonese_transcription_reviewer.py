@@ -17,7 +17,7 @@ from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import Block, Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import Queryer
-from scinoephile.core.zho import OpenCCConfig
+from scinoephile.core.zho.conversion import OpenCCConfig
 from scinoephile.testing import test_data_root
 
 from .alignment import Aligner

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 
-from scinoephile.core.abcs import LLMQueryer
+from scinoephile.core.llms import Queryer
 
 from .answer import TranslateAnswer
 from .query import TranslateQuery
@@ -15,7 +15,7 @@ from .test_case import TranslateTestCase
 __all__ = ["Translator"]
 
 
-class Translator(LLMQueryer[TranslateQuery, TranslateAnswer, TranslateTestCase], ABC):
+class Translator(Queryer[TranslateQuery, TranslateAnswer, TranslateTestCase], ABC):
     """Translates README from English to Chinese."""
 
     @property

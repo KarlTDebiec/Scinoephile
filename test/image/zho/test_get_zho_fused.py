@@ -7,7 +7,8 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zho import OpenCCConfig, get_zho_cleaned, get_zho_converted
+from scinoephile.core.zho import get_zho_cleaned
+from scinoephile.core.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.image.zho.fusion import get_zho_fused
 
 

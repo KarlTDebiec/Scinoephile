@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from scinoephile.core.yue.prompt import ReviewPrompt
+
 from .answer import ReviewAnswer
-from .prompt import ReviewPrompt
 from .query import ReviewQuery
 from .test_case import ReviewTestCase
 

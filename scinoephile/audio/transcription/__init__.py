@@ -10,7 +10,7 @@ from logging import error
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
-from scinoephile.core.zho import OpenCCConfig, get_zho_text_converted
+from scinoephile.core.zho.conversion import OpenCCConfig, get_zho_text_converted
 
 __all__ = [
     "TranscribedSegment",

@@ -12,7 +12,6 @@ import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewPrompt, ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import (
     TranslationPrompt,
@@ -22,6 +21,7 @@ from scinoephile.core import Series
 from scinoephile.core.eng.proofreading import EngProofreadingPrompt
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
+from scinoephile.core.review import ReviewPrompt, ReviewTestCase
 from scinoephile.core.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.image.eng.fusion import EngFusionPrompt
 from scinoephile.image.fusion import FusionPrompt, FusionTestCase

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription review queries."""
+"""Abstract base class for 粤文 transcription review answers."""
 
 from __future__ import annotations
 
@@ -10,16 +10,15 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model
 
-from scinoephile.audio.cantonese.review.prompt import ReviewPrompt
-from scinoephile.core.llms import Query
-
-__all__ = ["ReviewQuery"]
-
+from scinoephile.core.llms import Answer
 from scinoephile.core.models import get_model_name
+from scinoephile.core.yue.prompt import ReviewPrompt
+
+__all__ = ["ReviewAnswer"]
 
 
-class ReviewQuery(Query, ABC):
-    """Abstract base class for 粤文 transcription review queries."""
+class ReviewAnswer(Answer, ABC):
+    """Abstract base class for 粤文 transcription review answers."""
 
     prompt_cls: ClassVar[type[ReviewPrompt]]
     """Text strings to be used for corresponding with LLM."""
@@ -29,28 +28,28 @@ class ReviewQuery(Query, ABC):
 
     @classmethod
     @cache
-    def get_query_cls(
+    def get_answer_cls(
         cls,
         size: int,
         prompt_cls: type[ReviewPrompt] = ReviewPrompt,
     ) -> type[Self]:
-        """Get concrete query class with provided configuration.
+        """Get concrete answer class with provided configuration.
 
         Arguments:
             size: number of subtitles
             prompt_cls: Prompt providing descriptions and messages
         Returns:
-            Query type with appropriate configuration
+            Answer type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.zhongwen_field(idx + 1)
-            description = prompt_cls.zhongwen_description(idx + 1)
-            fields[key] = (str, Field(..., description=description))
-            key = prompt_cls.yuewen_field(idx + 1)
-            description = prompt_cls.yuewen_description(idx + 1)
-            fields[key] = (str, Field(..., description=description))
+            key = prompt_cls.yuewen_revised_field(idx + 1)
+            description = prompt_cls.yuewen_revised_description(idx + 1)
+            fields[key] = (str, Field("", description=description))
+            key = prompt_cls.note_field(idx + 1)
+            description = prompt_cls.note_description(idx + 1)
+            fields[key] = (str, Field("", description=description, max_length=1000))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls

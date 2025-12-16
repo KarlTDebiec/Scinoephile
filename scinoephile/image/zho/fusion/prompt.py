@@ -7,7 +7,8 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.core.zho import OpenCCConfig, ZhoPrompt, get_zho_text_converted
+from scinoephile.core.zho import ZhoHansPrompt
+from scinoephile.core.zho.conversion import OpenCCConfig
 from scinoephile.image.fusion import FusionPrompt
 
 __all__ = [
@@ -16,7 +17,7 @@ __all__ = [
 ]
 
 
-class ZhoHansFusionPrompt(FusionPrompt, ZhoPrompt):
+class ZhoHansFusionPrompt(FusionPrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 fusion."""
 
     # Prompt
@@ -74,72 +75,8 @@ class ZhoHansFusionPrompt(FusionPrompt, ZhoPrompt):
     """Error message when note field is missing."""
 
 
-class ZhoHantFusionPrompt(FusionPrompt, ZhoPrompt):
+class ZhoHantFusionPrompt(FusionPrompt, ZhoHansPrompt):
     """LLM correspondence text for 繁体中文 fusion."""
 
-    # Prompt
-    base_system_prompt: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.base_system_prompt, OpenCCConfig.s2t
-    )
-    """Base system prompt."""
-
-    # Query fields
-    source_one_field: ClassVar[str] = "lens"
-    """Field name for OCR source one."""
-
-    source_one_description: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.source_one_description, OpenCCConfig.s2t
-    )
-    """Description of source one field."""
-
-    source_two_field: ClassVar[str] = "paddle"
-    """Field name for OCR source two."""
-
-    source_two_description: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.source_two_description, OpenCCConfig.s2t
-    )
-    """Description of source two field."""
-
-    # Query validation errors
-    source_one_missing_error: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.source_one_missing_error, OpenCCConfig.s2t
-    )
-    """Error message when source one field is missing."""
-
-    source_two_missing_error: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.source_two_missing_error, OpenCCConfig.s2t
-    )
-    """Error message when source two field is missing."""
-
-    sources_equal_error: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.sources_equal_error, OpenCCConfig.s2t
-    )
-    """Error message when source one and two fields are equal."""
-
-    # Answer fields
-    fused_field: ClassVar[str] = "ronghe"
-    """Field name for fused subtitle text."""
-
-    fused_description: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.fused_description, OpenCCConfig.s2t
-    )
-    """Description of fused field."""
-
-    note_field: ClassVar[str] = "beizhu"
-    """Field name for explanation of changes."""
-
-    note_description: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.note_description, OpenCCConfig.s2t
-    )
-    """Description of note field."""
-
-    # Answer validation errors
-    fused_missing_error: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.fused_missing_error, OpenCCConfig.s2t
-    )
-    """Error message when fused field is missing."""
-
-    note_missing_error: ClassVar[str] = get_zho_text_converted(
-        ZhoHansFusionPrompt.note_missing_error, OpenCCConfig.s2t
-    )
-    """Error message when note field is missing."""
+    opencc_config = OpenCCConfig.s2t
+    """Config with which to covert characters from 简体中文 present in parent class."""

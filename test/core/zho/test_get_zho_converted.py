@@ -7,7 +7,11 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.zho import OpenCCConfig, get_zho_converted, get_zho_converter
+from scinoephile.core.zho.conversion import (
+    OpenCCConfig,
+    get_zho_converted,
+    get_zho_converter,
+)
 
 
 def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):

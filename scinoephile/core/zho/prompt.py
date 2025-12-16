@@ -5,16 +5,22 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import ClassVar
+from inspect import isroutine
+from typing import Any, ClassVar
 
 from scinoephile.core.llms import Prompt
+from scinoephile.core.zho.conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = ["ZhoPrompt"]
+__all__ = ["ZhoHansPrompt"]
 
 
-class ZhoPrompt(Prompt, ABC):
+class ZhoHansPrompt(Prompt, ABC):
     """LLM correspondence text for 中文."""
 
+    opencc_config: ClassVar[OpenCCConfig | None] = None
+    """Config with which to covert characters from 简体中文 present in parent class."""
+
+    # Prompt
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："
     """Text preceding schema description."""
 
@@ -27,6 +33,7 @@ class ZhoPrompt(Prompt, ABC):
     few_shot_answer_intro: ClassVar[str] = "预期答案："
     """Text preceding each few-shot expected answer."""
 
+    # Answer validation errors
     answer_invalid_pre: ClassVar[str] = (
         "你之前的回复不是有效的 JSON，或未符合预期的模式要求。错误详情："
     )
@@ -37,6 +44,7 @@ class ZhoPrompt(Prompt, ABC):
     )
     """Text following answer validation errors."""
 
+    # Test case validation errors
     test_case_invalid_pre: ClassVar[str] = (
         "你之前的回复是符合答案模式的有效 JSON，但不适用于当前的特定查询。错误详情："
     )
@@ -44,3 +52,48 @@ class ZhoPrompt(Prompt, ABC):
 
     test_case_invalid_post: ClassVar[str] = "请根据错误信息对你的回复进行相应修改。"
     """Text following test case validation errors."""
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+
+        if cls.opencc_config is None:
+            return
+
+        for base in cls.__mro__[1:]:
+            for name, value in vars(base).items():
+                # Skip private attributes
+                if name.startswith("_"):
+                    continue
+                # Skip already overridden attributes
+                if name in cls.__dict__:
+                    continue
+                # Skip methods and descriptors
+                if isroutine(value):
+                    continue
+                # Skip classmethods, staticmethods, and properties
+                if isinstance(value, (classmethod, staticmethod, property)):
+                    continue
+
+                new_value = cls._convert_value(value, cls.opencc_config)
+                if new_value is not value:
+                    setattr(cls, name, new_value)
+
+    @classmethod
+    def _convert_value(cls, value: Any, config: OpenCCConfig) -> Any:
+        """Convert value to target Chinese script using OpenCC configuration.
+
+        Arguments:
+            value: value to convert
+            config: OpenCC configuration for conversion
+        Returns:
+            converted value
+        """
+        if isinstance(value, str):
+            return get_zho_text_converted(value, config)
+        if isinstance(value, tuple):
+            return tuple(cls._convert_value(x, config) for x in value)
+        if isinstance(value, list):
+            return [cls._convert_value(x, config) for x in value]
+        if isinstance(value, dict):
+            return {k: cls._convert_value(val, config) for k, val in value.items()}
+        return value
