@@ -289,7 +289,7 @@ def get_mlamd_zho_proofreading_test_cases(
 def get_mlamd_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MLAMD English fusion test cases.
+    """Get MLAMD English OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -307,7 +307,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 def get_mlamd_zho_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MLAMD 中文 fusion test cases.
+    """Get MLAMD 中文 OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases

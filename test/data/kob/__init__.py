@@ -199,7 +199,7 @@ def get_kob_zho_proofreading_test_cases(
 def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get KOB English fusion test cases.
+    """Get KOB English OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use
@@ -217,7 +217,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 def get_kob_zho_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoHantOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get KOB 中文 fusion test cases.
+    """Get KOB 中文 OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use

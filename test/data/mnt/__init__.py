@@ -197,7 +197,7 @@ def get_mnt_zho_proofreading_test_cases(
 def get_mnt_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MNT English fusion test cases.
+    """Get MNT English OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -215,7 +215,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 def get_mnt_zho_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MNT 中文 fusion test cases.
+    """Get MNT 中文 OCR fusion test cases.
 
     Arguments:
         prompt_cls: prompt class to use for test cases

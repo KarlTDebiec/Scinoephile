@@ -5,7 +5,7 @@
       "tesseract": "{\\i1}♪{\\i0}Hey, let's go ♪"
     },
     "answer": {
-      "fused": "♪ Hey, let's go ♪",
+      "output": "♪ Hey, let's go ♪",
       "note": "Corrected italics and musical notes placement from Tesseract."
     },
     "difficulty": 1,
@@ -18,7 +18,7 @@
       "tesseract": "{\\i1}♪ I'm happy as can be ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ I'm happy as can be ♪",
+      "output": "♪ I'm happy as can be ♪",
       "note": "Used musical notes from Tesseract and corrected italics placement."
     },
     "difficulty": 3,
@@ -31,7 +31,7 @@
       "tesseract": "♪ Let's go walking\nYou and me ♪"
     },
     "answer": {
-      "fused": "♪ Let's go walking\nYou and me ♪",
+      "output": "♪ Let's go walking\nYou and me ♪",
       "note": "Added musical notes from Tesseract and preserved line break."
     },
     "difficulty": 1,
@@ -43,7 +43,7 @@
       "tesseract": "♪ Ready, set\nCome on, let's go ♪"
     },
     "answer": {
-      "fused": "♪ Ready, set\nCome on, let's go ♪",
+      "output": "♪ Ready, set\nCome on, let's go ♪",
       "note": "Added musical notes from Tesseract and preserved line break."
     },
     "difficulty": 1,
@@ -55,7 +55,7 @@
       "tesseract": "♪ Over the hill\nAcross the field{\\i1}♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Over the hill\nAcross the field ♪",
+      "output": "♪ Over the hill\nAcross the field ♪",
       "note": "Added space after first musical note and placed closing note at the end as in Tesseract; removed extra note from Lens."
     },
     "difficulty": 1,
@@ -67,7 +67,7 @@
       "tesseract": "♪ Through the tunnel we'll 90 ♪"
     },
     "answer": {
-      "fused": "♪ Through the tunnel we'll go ♪",
+      "output": "♪ Through the tunnel we'll go ♪",
       "note": "Corrected '90' to 'go' from Lens; added musical notes from Tesseract."
     },
     "difficulty": 1,
@@ -80,7 +80,7 @@
       "tesseract": "{\\i1}♪ We'“ run across the bridge ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ We'll run across the bridge ♪",
+      "output": "♪ We'll run across the bridge ♪",
       "note": "Used musical notes and italics placement from Tesseract, corrected 'We'“' to 'We'll' from Lens."
     },
     "difficulty": 1,
@@ -92,7 +92,7 @@
       "tesseract": "♪ And down the bumpy gravel road ♪"
     },
     "answer": {
-      "fused": "♪ And down the bumpy gravel road ♪",
+      "output": "♪ And down the bumpy gravel road ♪",
       "note": "Used musical notes and line structure from Tesseract, which better preserves the subtitle formatting for lyrics."
     },
     "difficulty": 1,
@@ -104,7 +104,7 @@
       "tesseract": "{\\i1}♪ Right beneath the spider's web ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Right beneath the spider's web ♪",
+      "output": "♪ Right beneath the spider's web ♪",
       "note": "Used Tesseract's italics and musical notes formatting."
     },
     "difficulty": 1,
@@ -116,7 +116,7 @@
       "tesseract": "{\\i1}♪{\\i0}Ready, set, let's go ♪"
     },
     "answer": {
-      "fused": "♪ Ready, set, let's go ♪",
+      "output": "♪ Ready, set, let's go ♪",
       "note": "Used musical notes and italics placement from Tesseract, removed line break from Lens."
     },
     "difficulty": 1,
@@ -128,7 +128,7 @@
       "tesseract": "♪ The foxes and the badgers, too ♪"
     },
     "answer": {
-      "fused": "♪ The foxes and the badgers, too ♪",
+      "output": "♪ The foxes and the badgers, too ♪",
       "note": "Added musical notes from Tesseract at the beginning and end."
     },
     "difficulty": 1,
@@ -140,7 +140,7 @@
       "tesseract": "{\\i1}♪ A“ come out to May ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ All come out to play ♪",
+      "output": "♪ All come out to play ♪",
       "note": "Used musical notes from Lens, corrected 'A“' to 'All' and 'May' to 'play' from Lens."
     },
     "difficulty": 1,
@@ -153,7 +153,7 @@
       "tesseract": "♪ They all want to explore ♪"
     },
     "answer": {
-      "fused": "♪ They all want to explore ♪",
+      "output": "♪ They all want to explore ♪",
       "note": "Added musical notes at both ends as in Tesseract."
     },
     "difficulty": 1,
@@ -165,7 +165,7 @@
       "tesseract": "♪ The deep and wonderful woods all day ♪"
     },
     "answer": {
-      "fused": "♪ The deep and wonderful woods all day ♪",
+      "output": "♪ The deep and wonderful woods all day ♪",
       "note": "Added musical notes and removed line break as in Tesseract."
     },
     "difficulty": 1,
@@ -177,7 +177,7 @@
       "tesseract": "{\\i1}♪ Look at a“ my many friends ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Look at all my many friends ♪",
+      "output": "♪ Look at all my many friends ♪",
       "note": "Used musical notes and italics from Tesseract, corrected 'a“' to 'all' from Lens."
     },
     "difficulty": 1,
@@ -189,7 +189,7 @@
       "tesseract": "- Hey Dad, want some caramel?\n-Thanks. How you doing back there?"
     },
     "answer": {
-      "fused": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
+      "output": "- Hey Dad, want some caramel?\n- Thanks. How you doing back there?",
       "note": "Added space after '-' on second line as in Lens for consistency."
     },
     "difficulty": 2,
@@ -201,7 +201,7 @@
       "tesseract": "Great. Thanks."
     },
     "answer": {
-      "fused": "Great. Thanks.",
+      "output": "Great. Thanks.",
       "note": "Used space instead of line break."
     },
     "difficulty": 1,
@@ -213,7 +213,7 @@
       "tesseract": "-Wait up!\n- Here you go."
     },
     "answer": {
-      "fused": "- Wait up!\n- Here you go.",
+      "output": "- Wait up!\n- Here you go.",
       "note": "Added space after '-' in first line as in Lens."
     },
     "difficulty": 2,
@@ -225,7 +225,7 @@
       "tesseract": "Oh, wow! Look!"
     },
     "answer": {
-      "fused": "Oh, wow! Look!",
+      "output": "Oh, wow! Look!",
       "note": "Used space instead of line break as in Tesseract."
     },
     "difficulty": 1,
@@ -237,7 +237,7 @@
       "tesseract": "Let me{\\i1}see.{\\i0}"
     },
     "answer": {
-      "fused": "Let me see.",
+      "output": "Let me see.",
       "note": "Removed incorrect italics from Tesseract."
     },
     "difficulty": 1,
@@ -250,7 +250,7 @@
       "tesseract": "-The bath.\n-Yep."
     },
     "answer": {
-      "fused": "- The bath.\n- Yep.",
+      "output": "- The bath.\n- Yep.",
       "note": "Added space after '-' as in Lens for both lines."
     },
     "difficulty": 2,
@@ -262,7 +262,7 @@
       "tesseract": "but ghosts don't usually like\nto come out on nice days like this."
     },
     "answer": {
-      "fused": "but ghosts don't usually like\nto come out on nice days like this.",
+      "output": "but ghosts don't usually like\nto come out on nice days like this.",
       "note": "Used lower-case 'but' from Tesseract."
     },
     "difficulty": 1,
@@ -274,7 +274,7 @@
       "tesseract": "when you go from a bright place to\na dark one, you can catch a glimpse of them."
     },
     "answer": {
-      "fused": "when you go from a bright place to\na dark one, you can catch a glimpse of them.",
+      "output": "when you go from a bright place to\na dark one, you can catch a glimpse of them.",
       "note": "Used lower-case 'when' from Tesseract."
     },
     "difficulty": 1,
@@ -286,7 +286,7 @@
       "tesseract": "the stairs to the top floor of the house."
     },
     "answer": {
-      "fused": "the stairs to the top floor of the house.",
+      "output": "the stairs to the top floor of the house.",
       "note": "Used lower-case 'the' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -298,7 +298,7 @@
       "tesseract": "{\\i1}- Ah'.\n- 001'.!{\\i0}"
     },
     "answer": {
-      "fused": "- Ah!\n- Oof!",
+      "output": "- Ah!\n- Oof!",
       "note": "Used Lens text for accurate dialogue and punctuation; ignored Tesseract's incorrect recognition and italics."
     },
     "difficulty": 2,
@@ -310,7 +310,7 @@
       "tesseract": "to clean up more before you got here."
     },
     "answer": {
-      "fused": "to clean up more before you got here.",
+      "output": "to clean up more before you got here.",
       "note": "Used lower-case 'to' from Tesseract for correct capitalization of the first word."
     },
     "difficulty": 1,
@@ -322,7 +322,7 @@
       "tesseract": "but I did manage to keep the place\nwell-dusted, as you can see."
     },
     "answer": {
-      "fused": "but I did manage to keep the place\nwell-dusted, as you can see.",
+      "output": "but I did manage to keep the place\nwell-dusted, as you can see.",
       "note": "Used lower-case 'but' from Tesseract and preserved line break."
     },
     "difficulty": 2,
@@ -334,7 +334,7 @@
       "tesseract": "Ah…"
     },
     "answer": {
-      "fused": "Ah…",
+      "output": "Ah…",
       "note": "Combined 'Ah' and ellipsis without line break as in Tesseract."
     },
     "difficulty": 1,
@@ -346,7 +346,7 @@
       "tesseract": "and run all over the place,\ncovering everything with dirt."
     },
     "answer": {
-      "fused": "and run all over the place,\ncovering everything with dirt.",
+      "output": "and run all over the place,\ncovering everything with dirt.",
       "note": "Used lower-case 'and' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -358,7 +358,7 @@
       "tesseract": "and after a while, they'll just go away."
     },
     "answer": {
-      "fused": "and after a while, they'll just go away.",
+      "output": "and after a while, they'll just go away.",
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
@@ -370,7 +370,7 @@
       "tesseract": "having a talk about whether\nor not they should move out."
     },
     "answer": {
-      "fused": "having a talk about whether\nor not they should move out.",
+      "output": "having a talk about whether\nor not they should move out.",
       "note": "Used lower-case 'having' from Tesseract and preserved line break."
     },
     "difficulty": 1,
@@ -382,7 +382,7 @@
       "tesseract": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave."
     },
     "answer": {
-      "fused": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave.",
+      "output": "- Hear that, Mei? They're gonna move out.\n- I don't want them to leave.",
       "note": "Added '-' at the start of the second line as in Tesseract for dialogue formatting."
     },
     "difficulty": 2,
@@ -394,7 +394,7 @@
       "tesseract": "Right.Then you can go to the bathroom"
     },
     "answer": {
-      "fused": "Right. Then you can go to the bathroom",
+      "output": "Right. Then you can go to the bathroom",
       "note": "Added space after period as in Lens."
     },
     "difficulty": 1,
@@ -406,7 +406,7 @@
       "tesseract": "by yourself in the middle of the night."
     },
     "answer": {
-      "fused": "by yourself in the middle of the night.",
+      "output": "by yourself in the middle of the night.",
       "note": "Used lower-case 'by' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -418,7 +418,7 @@
       "tesseract": "Is that Kanta?"
     },
     "answer": {
-      "fused": "Is that Kanta?",
+      "output": "Is that Kanta?",
       "note": "Used space instead of line break as in Tesseract."
     },
     "difficulty": 1,
@@ -430,7 +430,7 @@
       "tesseract": "-Your house is haunted!\n- Kanta!"
     },
     "answer": {
-      "fused": "- Your house is haunted!\n- Kanta!",
+      "output": "- Your house is haunted!\n- Kanta!",
       "note": "Added space after '-' as in Lens for both lines."
     },
     "difficulty": 2,
@@ -442,7 +442,7 @@
       "tesseract": "Okay.That's all the chores."
     },
     "answer": {
-      "fused": "Okay. That's all the chores.",
+      "output": "Okay. That's all the chores.",
       "note": "Added space after period as in Lens."
     },
     "difficulty": 1,
@@ -454,7 +454,7 @@
       "tesseract": "-You're done.\n- BOTH:Yay!"
     },
     "answer": {
-      "fused": "- You're done.\n- BOTH: Yay!",
+      "output": "- You're done.\n- BOTH: Yay!",
       "note": "Added space after '-' and after 'BOTH:' as in Lens."
     },
     "difficulty": 2,
@@ -466,7 +466,7 @@
       "tesseract": "SATSUKI: We will!"
     },
     "answer": {
-      "fused": "SATSUKI: We will!",
+      "output": "SATSUKI: We will!",
       "note": "Used single line format from Tesseract, removing unnecessary line break from Lens."
     },
     "difficulty": 1,
@@ -478,7 +478,7 @@
       "tesseract": "-Yeah.\n- Hmm?"
     },
     "answer": {
-      "fused": "- Yeah.\n- Hmm?",
+      "output": "- Yeah.\n- Hmm?",
       "note": "Added space after '-' in first line as in Tesseract for consistency."
     },
     "difficulty": 2,
@@ -490,7 +490,7 @@
       "tesseract": "- Do you two like it?\n-Yeah!"
     },
     "answer": {
-      "fused": "- Do you two like it?\n- Yeah!",
+      "output": "- Do you two like it?\n- Yeah!",
       "note": "Added space after '-' in second line as in Lens."
     },
     "difficulty": 2,
@@ -502,7 +502,7 @@
       "tesseract": "- What a lucky girl you are.\n-Yeah, but she yells at me a lot."
     },
     "answer": {
-      "fused": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
+      "output": "- What a lucky girl you are.\n- Yeah, but she yells at me a lot.",
       "note": "Added space after '-' on the second line as in Lens for consistent dialogue formatting."
     },
     "difficulty": 2,
@@ -514,7 +514,7 @@
       "tesseract": "-That's because you never sit still.\n- Let's see your hair, Satsuki."
     },
     "answer": {
-      "fused": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
+      "output": "- That's because you never sit still.\n- Let's see your hair, Satsuki.",
       "note": "Added space after '-' at the start of the first line as in Lens."
     },
     "difficulty": 2,
@@ -526,7 +526,7 @@
       "tesseract": "- Brush my hair! Brush mine!\n-Wait your turn, Mei."
     },
     "answer": {
-      "fused": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
+      "output": "- Brush my hair! Brush mine!\n- Wait your turn, Mei.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -538,7 +538,7 @@
       "tesseract": "her doctor said she should be able\nto come home real soon."
     },
     "answer": {
-      "fused": "her doctor said she should be able\nto come home real soon.",
+      "output": "her doctor said she should be able\nto come home real soon.",
       "note": "Used lower-case 'her' from Tesseract for correct capitalization of the first word."
     },
     "difficulty": 1,
@@ -550,7 +550,7 @@
       "tesseract": "- So she'll be home tomorrow?\n-There she goes again with tomorrow."
     },
     "answer": {
-      "fused": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
+      "output": "- So she'll be home tomorrow?\n- There she goes again with tomorrow.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -562,7 +562,7 @@
       "tesseract": "- Sorry. I overslept again.\n- I have to take lunch to school today."
     },
     "answer": {
-      "fused": "- Sorry. I overslept again.\n- I have to take lunch to school today.",
+      "output": "- Sorry. I overslept again.\n- I have to take lunch to school today.",
       "note": "Used Tesseract's line breaks and placement of '-' for dialogue clarity."
     },
     "difficulty": 2,
@@ -574,7 +574,7 @@
       "tesseract": "- Satsuki!\n-That's Michiko."
     },
     "answer": {
-      "fused": "- Satsuki!\n- That's Michiko.",
+      "output": "- Satsuki!\n- That's Michiko.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -586,7 +586,7 @@
       "tesseract": "- Hi. Ready for school?\n-Yep."
     },
     "answer": {
-      "fused": "- Hi. Ready for school?\n- Yep.",
+      "output": "- Hi. Ready for school?\n- Yep.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -598,7 +598,7 @@
       "tesseract": "{\\i1}Totem?{\\i0}"
     },
     "answer": {
-      "fused": "Totoro?",
+      "output": "Totoro?",
       "note": "Used 'Totoro?' from Lens for correct text; Tesseract misrecognized as 'Totem?' and added unnecessary italics."
     },
     "difficulty": 1,
@@ -610,7 +610,7 @@
       "tesseract": "Mmm. Totoro."
     },
     "answer": {
-      "fused": "Mmm. Totoro.",
+      "output": "Mmm. Totoro.",
       "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
@@ -622,7 +622,7 @@
       "tesseract": "Hmm? Hmm."
     },
     "answer": {
-      "fused": "Hmm? Hmm.",
+      "output": "Hmm? Hmm.",
       "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
@@ -635,7 +635,7 @@
       "tesseract": "- No, I saw Totoro.\n-Totoro?"
     },
     "answer": {
-      "fused": "- No, I saw Totoro.\n- Totoro?",
+      "output": "- No, I saw Totoro.\n- Totoro?",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -647,7 +647,7 @@
       "tesseract": "and a huge one that kept falling asleep."
     },
     "answer": {
-      "fused": "and a huge one that kept falling asleep.",
+      "output": "and a huge one that kept falling asleep.",
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
@@ -659,7 +659,7 @@
       "tesseract": "Wow.This would make\na great secret hiding place."
     },
     "answer": {
-      "fused": "Wow. This would make\na great secret hiding place.",
+      "output": "Wow. This would make\na great secret hiding place.",
       "note": "Added space after 'Wow.' as in Lens."
     },
     "difficulty": 1,
@@ -671,7 +671,7 @@
       "tesseract": "-A Totoro?\n- Mmm-hmm."
     },
     "answer": {
-      "fused": "- A Totoro?\n- Mmm-hmm.",
+      "output": "- A Totoro?\n- Mmm-hmm.",
       "note": "Added space after '-' as in Lens for both lines."
     },
     "difficulty": 2,
@@ -683,7 +683,7 @@
       "tesseract": "back in the time when trees\nand people used to befriends."
     },
     "answer": {
-      "fused": "back in the time when trees\nand people used to be friends.",
+      "output": "back in the time when trees\nand people used to be friends.",
       "note": "Used lower-case 'back' and line break from Tesseract; corrected 'befriends.' to 'be friends.' from Lens."
     },
     "difficulty": 1,
@@ -695,7 +695,7 @@
       "tesseract": "so her sister Mei is going\nto stay with us today, okay, class?"
     },
     "answer": {
-      "fused": "so her sister Mei is going\nto stay with us today, okay, class?",
+      "output": "so her sister Mei is going\nto stay with us today, okay, class?",
       "note": "Used lower-case 'so' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -707,7 +707,7 @@
       "tesseract": "- Mmm.\n- Huh?"
     },
     "answer": {
-      "fused": "- Mmm.\n- Huh?",
+      "output": "- Mmm.\n- Huh?",
       "note": "Added '-' and line break as in Tesseract for dialogue formatting."
     },
     "difficulty": 2,
@@ -719,7 +719,7 @@
       "tesseract": "-That was lucky, wasn't it?\n- Mmm-hmm."
     },
     "answer": {
-      "fused": "- That was lucky, wasn't it?\n- Mmm-hmm.",
+      "output": "- That was lucky, wasn't it?\n- Mmm-hmm.",
       "note": "Added space after '-' at the start of the first line as in Lens."
     },
     "difficulty": 2,
@@ -731,7 +731,7 @@
       "tesseract": "- MEI:This umbrella has holes.\n- Hmm."
     },
     "answer": {
-      "fused": "- MEI: This umbrella has holes.\n- Hmm.",
+      "output": "- MEI: This umbrella has holes.\n- Hmm.",
       "note": "Added space after ':' from Lens and preserved line break from Tesseract."
     },
     "difficulty": 2,
@@ -743,7 +743,7 @@
       "tesseract": "and you broke it."
     },
     "answer": {
-      "fused": "and you broke it.",
+      "output": "and you broke it.",
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
@@ -755,7 +755,7 @@
       "tesseract": "So, it was really nice of him\nto help us out.Tell him thank you."
     },
     "answer": {
-      "fused": "So, it was really nice of him\nto help us out. Tell him thank you.",
+      "output": "So, it was really nice of him\nto help us out. Tell him thank you.",
       "note": "Added space after period between sentences as in Lens."
     },
     "difficulty": 1,
@@ -767,7 +767,7 @@
       "tesseract": "- He must have been drenched.\n-That's okay."
     },
     "answer": {
-      "fused": "- He must have been drenched.\n- That's okay.",
+      "output": "- He must have been drenched.\n- That's okay.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -779,7 +779,7 @@
       "tesseract": "- SATSUKI:Yes, he forgot his umbrella.\n- Such good kids."
     },
     "answer": {
-      "fused": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
+      "output": "- SATSUKI: Yes, he forgot his umbrella.\n- Such good kids.",
       "note": "Added space after ':' in 'SATSUKI:' as in Lens; preserved line break and dashes from Tesseract."
     },
     "difficulty": 2,
@@ -791,7 +791,7 @@
       "tesseract": "-What?\n- It was huge!"
     },
     "answer": {
-      "fused": "- What?\n- It was huge!",
+      "output": "- What?\n- It was huge!",
       "note": "Added space after '-' in the first line as in Lens."
     },
     "difficulty": 2,
@@ -803,7 +803,7 @@
       "tesseract": "and tied with a ribbon made of grass."
     },
     "answer": {
-      "fused": "and tied with a ribbon made of grass.",
+      "output": "and tied with a ribbon made of grass.",
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
@@ -815,7 +815,7 @@
       "tesseract": "“We wanted to grow a beautiful\nforest with the acorns,"
     },
     "answer": {
-      "fused": "“We wanted to grow a beautiful\nforest with the acorns,",
+      "output": "“We wanted to grow a beautiful\nforest with the acorns,",
       "note": "Used opening quotation mark from Tesseract and preserved line break as in both sources."
     },
     "difficulty": 2,
@@ -827,7 +827,7 @@
       "tesseract": "“ so we planted them\nin your garden out back, but…”"
     },
     "answer": {
-      "fused": "“so we planted them\nin your garden out back, but…”",
+      "output": "“so we planted them\nin your garden out back, but…”",
       "note": "Removed extra space after opening quotation mark; preserved line break from both sources."
     },
     "difficulty": 2,
@@ -839,7 +839,7 @@
       "tesseract": "SATSUKI: they just won't grow.\nMei watches them"
     },
     "answer": {
-      "fused": "SATSUKI: …they just won't grow.\nMei watches them",
+      "output": "SATSUKI: …they just won't grow.\nMei watches them",
       "note": "Added ellipsis before 'they' as in Lens; preserved line break from Tesseract."
     },
     "difficulty": 1,
@@ -851,7 +851,7 @@
       "tesseract": "all day, every day,"
     },
     "answer": {
-      "fused": "all day, every day,",
+      "output": "all day, every day,",
       "note": "Used lower-case 'all' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -863,7 +863,7 @@
       "tesseract": "waiting for them to sprout,"
     },
     "answer": {
-      "fused": "waiting for them to sprout,",
+      "output": "waiting for them to sprout,",
       "note": "Used lower-case 'waiting' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -875,7 +875,7 @@
       "tesseract": "it's starting to make her crabby."
     },
     "answer": {
-      "fused": "it's starting to make her crabby.",
+      "output": "it's starting to make her crabby.",
       "note": "Used lower-case 'it's' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -887,7 +887,7 @@
       "tesseract": "and I can't wait to play\noutside with you."
     },
     "answer": {
-      "fused": "and I can't wait to play\noutside with you.",
+      "output": "and I can't wait to play\noutside with you.",
       "note": "Used lower-case 'and' from Tesseract and preserved line break."
     },
     "difficulty": 1,
@@ -899,7 +899,7 @@
       "tesseract": "GIRLS:Yay! We did it! We did it!"
     },
     "answer": {
-      "fused": "GIRLS: Yay! We did it! We did it!",
+      "output": "GIRLS: Yay! We did it! We did it!",
       "note": "Added space after 'GIRLS:' as in Lens."
     },
     "difficulty": 1,
@@ -911,7 +911,7 @@
       "tesseract": "GIRLS:Yay!"
     },
     "answer": {
-      "fused": "GIRLS: Yay!",
+      "output": "GIRLS: Yay!",
       "note": "Added space after colon as in Lens."
     },
     "difficulty": 1,
@@ -923,7 +923,7 @@
       "tesseract": "Where'd the tree 90?"
     },
     "answer": {
-      "fused": "Where'd the tree go?",
+      "output": "Where'd the tree go?",
       "note": "Used 'go' from Lens instead of '90' from Tesseract."
     },
     "difficulty": 1,
@@ -935,7 +935,7 @@
       "tesseract": "-Ahh!\n-Ahh!"
     },
     "answer": {
-      "fused": "- Ahh!\n- Ahh!",
+      "output": "- Ahh!\n- Ahh!",
       "note": "Added space after '-' as in Lens and preserved line breaks from Tesseract."
     },
     "difficulty": 2,
@@ -947,7 +947,7 @@
       "tesseract": "Mr. KUSAKABE?"
     },
     "answer": {
-      "fused": "Mr. KUSAKABE?",
+      "output": "Mr. KUSAKABE?",
       "note": "Used space instead of newline as in Tesseract."
     },
     "difficulty": 1,
@@ -959,7 +959,7 @@
       "tesseract": "{\\i1}We've{\\i0}picked enough,\nhaven't we? Let's take a rest."
     },
     "answer": {
-      "fused": "We've picked enough,\nhaven't we? Let's take a rest.",
+      "output": "We've picked enough,\nhaven't we? Let's take a rest.",
       "note": "Removed incorrect italics from Tesseract; kept line break from both sources."
     },
     "difficulty": 1,
@@ -971,7 +971,7 @@
       "tesseract": "- I bet that will do her wonders.\n-Yep."
     },
     "answer": {
-      "fused": "- I bet that will do her wonders.\n- Yep.",
+      "output": "- I bet that will do her wonders.\n- Yep.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -983,7 +983,7 @@
       "tesseract": "Here.The postman\nleft us your telegram."
     },
     "answer": {
-      "fused": "Here. The postman\nleft us your telegram.",
+      "output": "Here. The postman\nleft us your telegram.",
       "note": "Added space after 'Here.' as in Lens; kept line break from Tesseract."
     },
     "difficulty": 1,
@@ -995,7 +995,7 @@
       "tesseract": "- Satsuki, what's{\\i1}wrong?{\\i0}\n- We got a telegram."
     },
     "answer": {
-      "fused": "- Satsuki, what's wrong?\n- We got a telegram.",
+      "output": "- Satsuki, what's wrong?\n- We got a telegram.",
       "note": "Used Lens text for both lines, as Tesseract's italics were not needed and Lens is more reliable for general text."
     },
     "difficulty": 2,
@@ -1007,7 +1007,7 @@
       "tesseract": "-Yeah.\n-{\\i1}Just wait{\\i0}by the phone."
     },
     "answer": {
-      "fused": "- Yeah.\n- Just wait by the phone.",
+      "output": "- Yeah.\n- Just wait by the phone.",
       "note": "Added space after '-' and line break as in Tesseract, but removed incorrect italics and merged with Lens for clarity."
     },
     "difficulty": 2,
@@ -1019,7 +1019,7 @@
       "tesseract": "- No!\n-You want her to die, Mei?"
     },
     "answer": {
-      "fused": "- No!\n- You want her to die, Mei?",
+      "output": "- No!\n- You want her to die, Mei?",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -1031,7 +1031,7 @@
       "tesseract": "-Yeah?\n- I'm looking for my sister."
     },
     "answer": {
-      "fused": "- Yeah?\n- I'm looking for my sister.",
+      "output": "- Yeah?\n- I'm looking for my sister.",
       "note": "Added space after '-' in first line as in Lens."
     },
     "difficulty": 2,
@@ -1043,7 +1043,7 @@
       "tesseract": "No. We just{\\i1}came{\\i0}from the hospital,"
     },
     "answer": {
-      "fused": "No. We just came from the hospital,",
+      "output": "No. We just came from the hospital,",
       "note": "Removed incorrect italics from Tesseract; used Lens text."
     },
     "difficulty": 1,
@@ -1055,7 +1055,7 @@
       "tesseract": "and there was no sign of\na little girl on the road."
     },
     "answer": {
-      "fused": "and there was no sign of\na little girl on the road.",
+      "output": "and there was no sign of\na little girl on the road.",
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
@@ -1067,7 +1067,7 @@
       "tesseract": "A four-year—old couldn't walk this far."
     },
     "answer": {
-      "fused": "A four-year-old couldn't walk this far.",
+      "output": "A four-year-old couldn't walk this far.",
       "note": "Used hyphen '-' from Lens instead of em dash '—' from Tesseract."
     },
     "difficulty": 2,
@@ -1079,7 +1079,7 @@
       "tesseract": "-You should go back home.\n- Check all around."
     },
     "answer": {
-      "fused": "- You should go back home.\n- Check all around.",
+      "output": "- You should go back home.\n- Check all around.",
       "note": "Added space after '-' in the first line as in Lens; preserved line breaks from Tesseract."
     },
     "difficulty": 2,
@@ -1091,7 +1091,7 @@
       "tesseract": "but we still need your help."
     },
     "answer": {
-      "fused": "but we still need your help.",
+      "output": "but we still need your help.",
       "note": "Used lower-case 'but' from Tesseract for correct capitalization."
     },
     "difficulty": 1,
@@ -1103,7 +1103,7 @@
       "tesseract": "Toto ro!"
     },
     "answer": {
-      "fused": "Totoro!",
+      "output": "Totoro!",
       "note": "Used 'Totoro!' from Lens as it is the correct spelling and more reliable than Tesseract's 'Toto ro!'."
     },
     "difficulty": 1,
@@ -1115,7 +1115,7 @@
       "tesseract": "MEI"
     },
     "answer": {
-      "fused": "MEI",
+      "output": "MEI",
       "note": "Used 'MEI' from Tesseract, correcting the Greek letter 'Μ' in Lens to 'M'."
     },
     "difficulty": 1,
@@ -1127,7 +1127,7 @@
       "tesseract": "- She tries to act so adult.\n-That's true."
     },
     "answer": {
-      "fused": "- She tries to act so adult.\n- That's true.",
+      "output": "- She tries to act so adult.\n- That's true.",
       "note": "Added space after '-' on second line as in Lens for consistency."
     },
     "difficulty": 2,
@@ -1139,7 +1139,7 @@
       "tesseract": "- Everything must be okay.\n-Yeah."
     },
     "answer": {
-      "fused": "- Everything must be okay.\n- Yeah.",
+      "output": "- Everything must be okay.\n- Yeah.",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -1151,7 +1151,7 @@
       "tesseract": "{\\i1}♪{\\i0}Totoro, Totoro ♪"
     },
     "answer": {
-      "fused": "♪ Totoro, Totoro ♪",
+      "output": "♪ Totoro, Totoro ♪",
       "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags, and combined lines as in Tesseract."
     },
     "difficulty": 1,
@@ -1163,7 +1163,7 @@
       "tesseract": "♪ Who leaves the seeds ♪"
     },
     "answer": {
-      "fused": "♪ Who leaves the seeds ♪",
+      "output": "♪ Who leaves the seeds ♪",
       "note": "Added musical notes from Tesseract."
     },
     "difficulty": 1,
@@ -1175,7 +1175,7 @@
       "tesseract": "{\\i1}♪ For you to find ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ For you to find ♪",
+      "output": "♪ For you to find ♪",
       "note": "Used musical notes and spacing from Tesseract, omitting italics tags."
     },
     "difficulty": 1,
@@ -1187,7 +1187,7 @@
       "tesseract": "♪ Follow them and you will see ♪"
     },
     "answer": {
-      "fused": "♪ Follow them and you will see ♪",
+      "output": "♪ Follow them and you will see ♪",
       "note": "Used musical notes from Tesseract at both ends for proper formatting."
     },
     "difficulty": 1,
@@ -1199,7 +1199,7 @@
       "tesseract": "{\\i1}♪ A treasure there I'{\\i0}"
     },
     "answer": {
-      "fused": "♪ A treasure there ♪",
+      "output": "♪ A treasure there ♪",
       "note": "Used musical notes from both sources, corrected text to 'A treasure there' from Lens, and removed incorrect italics and extra characters from Tesseract."
     },
     "difficulty": 1,
@@ -1211,7 +1211,7 @@
       "tesseract": "♪ Then plant the seeds ♪"
     },
     "answer": {
-      "fused": "♪ Then plant the seeds ♪",
+      "output": "♪ Then plant the seeds ♪",
       "note": "Added leading and trailing musical notes from Tesseract."
     },
     "difficulty": 1,
@@ -1223,7 +1223,7 @@
       "tesseract": "♪ And help them grow ♪"
     },
     "answer": {
-      "fused": "♪ And help them grow ♪",
+      "output": "♪ And help them grow ♪",
       "note": "Added musical notes from Tesseract."
     },
     "difficulty": 1,
@@ -1235,7 +1235,7 @@
       "tesseract": "♪ It may{\\i1}seem{\\i0}like a dream{\\i1}♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ It may seem like a dream ♪",
+      "output": "♪ It may seem like a dream ♪",
       "note": "Used musical notes from Tesseract and removed incorrect italics; kept text from Lens for accuracy."
     },
     "difficulty": 1,
@@ -1247,7 +1247,7 @@
       "tesseract": "{\\i1}♪ Things are not what they seem ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Things are not what they seem ♪",
+      "output": "♪ Things are not what they seem ♪",
       "note": "Added musical notes from Tesseract and removed italics tags for clarity."
     },
     "difficulty": 1,
@@ -1259,7 +1259,7 @@
       "tesseract": "{\\i1}♪{\\i0}Now begins a new adventure ♪"
     },
     "answer": {
-      "fused": "♪ Now begins a new adventure ♪",
+      "output": "♪ Now begins a new adventure ♪",
       "note": "Used musical notes and spacing from Tesseract, omitted unnecessary italics tags."
     },
     "difficulty": 1,
@@ -1271,7 +1271,7 @@
       "tesseract": "{\\i1}♪{\\i0}For you ♪"
     },
     "answer": {
-      "fused": "♪ For you ♪",
+      "output": "♪ For you ♪",
       "note": "Added space after musical note and at the end as in Tesseract; used musical notes from both sources."
     },
     "difficulty": 1,
@@ -1283,7 +1283,7 @@
       "tesseract": "♪ And you'll be with Totoro ♪"
     },
     "answer": {
-      "fused": "♪ And you'll be with Totoro ♪",
+      "output": "♪ And you'll be with Totoro ♪",
       "note": "Used musical notes from Tesseract at both ends of the line."
     },
     "difficulty": 1,
@@ -1295,7 +1295,7 @@
       "tesseract": "♪ Totoro ♪"
     },
     "answer": {
-      "fused": "♪ Totoro ♪",
+      "output": "♪ Totoro ♪",
       "note": "Added spaces around 'Totoro' as in Tesseract for proper musical note formatting."
     },
     "difficulty": 1,
@@ -1307,7 +1307,7 @@
       "tesseract": "♪ Living in the forest trees ♪"
     },
     "answer": {
-      "fused": "♪ Living in the forest trees ♪",
+      "output": "♪ Living in the forest trees ♪",
       "note": "Added musical notes from Tesseract."
     },
     "difficulty": 1,
@@ -1319,7 +1319,7 @@
       "tesseract": "♪ For such a very, very long time ♪"
     },
     "answer": {
-      "fused": "♪ For such a very, very long time ♪",
+      "output": "♪ For such a very, very long time ♪",
       "note": "Used musical notes and spacing from Tesseract; removed extra trailing note from Lens."
     },
     "difficulty": 1,
@@ -1331,7 +1331,7 @@
       "tesseract": "♪) There you'll be with Totoro, Totoro ♪’"
     },
     "answer": {
-      "fused": "♪ There you'll be with Totoro, Totoro ♪",
+      "output": "♪ There you'll be with Totoro, Totoro ♪",
       "note": "Used musical notes from Tesseract, removed extraneous characters, and kept line as a single line for clarity."
     },
     "difficulty": 1,
@@ -1343,7 +1343,7 @@
       "tesseract": "♪ You only see him\nWhen you're very young{\\i1}♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ You only see him\nWhen you're very young ♪",
+      "output": "♪ You only see him\nWhen you're very young ♪",
       "note": "Added musical notes from Tesseract and kept line break as in both sources."
     },
     "difficulty": 1,
@@ -1355,7 +1355,7 @@
       "tesseract": "PA magical adventure for you ♪"
     },
     "answer": {
-      "fused": "♪ A magical adventure for you ♪",
+      "output": "♪ A magical adventure for you ♪",
       "note": "Corrected leading character to musical note."
     },
     "difficulty": 1,
@@ -1367,7 +1367,7 @@
       "tesseract": "{\\i1}♪{\\i0}It's magic for you ♪"
     },
     "answer": {
-      "fused": "♪ It's magic for you ♪",
+      "output": "♪ It's magic for you ♪",
       "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags, and eliminated line break from Lens."
     },
     "difficulty": 1,
@@ -1379,7 +1379,7 @@
       "tesseract": "{\\i1}♪{\\i0}Rain tumbles down ♪"
     },
     "answer": {
-      "fused": "♪ Rain tumbles down ♪",
+      "output": "♪ Rain tumbles down ♪",
       "note": "Used musical notes from Tesseract for both start and end, and removed extra line break from Lens."
     },
     "difficulty": 1,
@@ -1391,7 +1391,7 @@
       "tesseract": "♪ The bus is late ♪"
     },
     "answer": {
-      "fused": "♪ The bus is late ♪",
+      "output": "♪ The bus is late ♪",
       "note": "Used musical notes and formatting from Tesseract; removed line break from Lens."
     },
     "difficulty": 1,
@@ -1403,7 +1403,7 @@
       "tesseract": "{\\i1}♪ Suddenly, a flurry white giant ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Suddenly, a furry white giant ♪",
+      "output": "♪ Suddenly, a furry white giant ♪",
       "note": "Used musical notes and italics placement from Tesseract, corrected 'flurry' to 'furry' from Lens."
     },
     "difficulty": 1,
@@ -1415,7 +1415,7 @@
       "tesseract": "♪ Is by your side ♪"
     },
     "answer": {
-      "fused": "♪ Is by your side ♪",
+      "output": "♪ Is by your side ♪",
       "note": "Used musical notes and single line from Tesseract."
     },
     "difficulty": 1,
@@ -1427,7 +1427,7 @@
       "tesseract": "{\\i1}♪ Don't be afraid ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Don't be afraid ♪",
+      "output": "♪ Don't be afraid ♪",
       "note": "Used musical notes and italics placement from Tesseract, removed line break from Lens."
     },
     "difficulty": 1,
@@ -1439,7 +1439,7 @@
       "tesseract": "{\\i1}♪ Just open wide ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Just open wide ♪",
+      "output": "♪ Just open wide ♪",
       "note": "Used musical notes and single-line format from Tesseract; removed italics tags."
     },
     "difficulty": 1,
@@ -1451,7 +1451,7 @@
       "tesseract": "♪ Your umbrella for him{\\i1}♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ Your umbrella for him ♪",
+      "output": "♪ Your umbrella for him ♪",
       "note": "Used musical notes from Tesseract at the start and end, and removed unnecessary italics. Used Tesseract's single-line format."
     },
     "difficulty": 1,
@@ -1463,7 +1463,7 @@
       "tesseract": "♪ Watch him play in the rain ♪"
     },
     "answer": {
-      "fused": "♪ Watch him play in the rain ♪",
+      "output": "♪ Watch him play in the rain ♪",
       "note": "Added musical notes from Tesseract at the beginning and end."
     },
     "difficulty": 1,
@@ -1475,7 +1475,7 @@
       "tesseract": "{\\i1}♪ And on a moon fit night ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ And on a moonlit night ♪",
+      "output": "♪ And on a moonlit night ♪",
       "note": "Used musical notes and italics placement from Tesseract, corrected 'moon fit' to 'moonlit' from Lens."
     },
     "difficulty": 1,
@@ -1487,7 +1487,7 @@
       "tesseract": "{\\i1}♪ He Nays a magic flute “in the sky ♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ He plays a magic flute in the sky ♪",
+      "output": "♪ He plays a magic flute in the sky ♪",
       "note": "Used musical notes and correct text from Lens, added leading space and italics placement from Tesseract."
     },
     "difficulty": 1,
@@ -1499,7 +1499,7 @@
       "tesseract": "♪ There you'll be with Totoro{\\i1}♪{\\i0}"
     },
     "answer": {
-      "fused": "♪ There you'll be with Totoro ♪",
+      "output": "♪ There you'll be with Totoro ♪",
       "note": "Used musical notes and spacing from Tesseract, removed unnecessary italics tags."
     },
     "difficulty": 1,

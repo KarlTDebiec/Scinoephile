@@ -5,7 +5,7 @@
       "tesseract": "Chan Yee Ha Cha 80"
     },
     "answer": {
-      "fused": "Chan Yee Ha Cha So",
+      "output": "Chan Yee Ha Cha So",
       "note": "Used 'So' instead of '80'."
     },
     "difficulty": 1,
@@ -18,7 +18,7 @@
       "tesseract": "our family"
     },
     "answer": {
-      "fused": "our family",
+      "output": "our family",
       "note": "Used lower-case 'our'."
     },
     "difficulty": 1,
@@ -31,7 +31,7 @@
       "tesseract": "has been illiterate"
     },
     "answer": {
-      "fused": "has been illiterate",
+      "output": "has been illiterate",
       "note": "Used lower-case 'has' from Tesseract."
     },
     "difficulty": 1,
@@ -43,7 +43,7 @@
       "tesseract": "he knows how to write his name!"
     },
     "answer": {
-      "fused": "he knows how to write his name!",
+      "output": "he knows how to write his name!",
       "note": "Used lower-case 'he' from Tesseract."
     },
     "difficulty": 1,
@@ -55,7 +55,7 @@
       "tesseract": "he will be scholar one day"
     },
     "answer": {
-      "fused": "he will be scholar one day",
+      "output": "he will be scholar one day",
       "note": "Used lower-case 'he' from Tesseract."
     },
     "difficulty": 1,
@@ -67,7 +67,7 @@
       "tesseract": "he will have a son later"
     },
     "answer": {
-      "fused": "he will have a son later",
+      "output": "he will have a son later",
       "note": "Used lower-case 'he' from Tesseract."
     },
     "difficulty": 1,
@@ -79,7 +79,7 @@
       "tesseract": "why don't you carry it with traditional\ndecoration in the street?"
     },
     "answer": {
-      "fused": "why don't you carry it with traditional\ndecoration in the street?",
+      "output": "why don't you carry it with traditional\ndecoration in the street?",
       "note": "Used lower-case 'why'."
     },
     "difficulty": 1,
@@ -92,7 +92,7 @@
       "tesseract": "you should depend on yourself"
     },
     "answer": {
-      "fused": "you should depend on yourself",
+      "output": "you should depend on yourself",
       "note": "Used lower-case 'you' from Tesseract."
     },
     "difficulty": 1,
@@ -104,7 +104,7 @@
       "tesseract": "25 years old. Come earlier"
     },
     "answer": {
-      "fused": "25 years old. Come earlier",
+      "output": "25 years old. Come earlier",
       "note": "Used ' ' instead of '\n'."
     },
     "difficulty": 1,
@@ -117,7 +117,7 @@
       "tesseract": "Happy birthday to you, Mr 80"
     },
     "answer": {
-      "fused": "Happy birthday to you, Mr So",
+      "output": "Happy birthday to you, Mr So",
       "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -129,7 +129,7 @@
       "tesseract": "- Give him tips\n- Yes, young master"
     },
     "answer": {
-      "fused": "- Give him tips\n- Yes, young master",
+      "output": "- Give him tips\n- Yes, young master",
       "note": "Placed '-' on second line."
     },
     "difficulty": 2,
@@ -142,7 +142,7 @@
       "tesseract": "including the expenditure for hooking,\nI will pay for you!"
     },
     "answer": {
-      "fused": "including the expenditure for hooking,\nI will pay for you!",
+      "output": "including the expenditure for hooking,\nI will pay for you!",
       "note": "Used lower-case 'including' from Tesseract."
     },
     "difficulty": 1,
@@ -154,7 +154,7 @@
       "tesseract": "Mr 80!"
     },
     "answer": {
-      "fused": "Mr So!",
+      "output": "Mr So!",
       "note": "Used 'So' from Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -166,7 +166,7 @@
       "tesseract": "the emperor will give you award for this"
     },
     "answer": {
-      "fused": "the emperor will give you award for this",
+      "output": "the emperor will give you award for this",
       "note": "Used lower-case 'the' from Tesseract."
     },
     "difficulty": 1,
@@ -178,7 +178,7 @@
       "tesseract": "speak something nice in front of the emperor"
     },
     "answer": {
-      "fused": "speak something nice in front of the emperor",
+      "output": "speak something nice in front of the emperor",
       "note": "Used lower-case 'speak'."
     },
     "difficulty": 1,
@@ -190,7 +190,7 @@
       "tesseract": "Mr 80 has come"
     },
     "answer": {
-      "fused": "Mr So has come",
+      "output": "Mr So has come",
       "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -202,7 +202,7 @@
       "tesseract": "Mr 80, today is your big day,\nyou must be very happy!"
     },
     "answer": {
-      "fused": "Mr So, today is your big day,\nyou must be very happy!",
+      "output": "Mr So, today is your big day,\nyou must be very happy!",
       "note": "Used 'So' from Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -214,7 +214,7 @@
       "tesseract": "You, cooked fishes, why don't you\ncome and serve Mr 80?"
     },
     "answer": {
-      "fused": "You, cooked fishes, why don't you\ncome and serve Mr So?",
+      "output": "You, cooked fishes, why don't you\ncome and serve Mr So?",
       "note": "Used 'So' instead of '80'."
     },
     "difficulty": 1,
@@ -226,7 +226,7 @@
       "tesseract": "- May I be excused\n- Mr Chiu"
     },
     "answer": {
-      "fused": "- May I be excused\n- Mr Chiu",
+      "output": "- May I be excused\n- Mr Chiu",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -239,7 +239,7 @@
       "tesseract": "How are you? Mr Chiu"
     },
     "answer": {
-      "fused": "How are you? Mr Chiu",
+      "output": "How are you? Mr Chiu",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -252,7 +252,7 @@
       "tesseract": "if Miss Yushang sleeps with our\nyoung master tonight…"
     },
     "answer": {
-      "fused": "if Miss Yushang sleeps with our\nyoung master tonight…",
+      "output": "if Miss Yushang sleeps with our\nyoung master tonight…",
       "note": "Used lower-case 'if' from Tesseract."
     },
     "difficulty": 1,
@@ -264,7 +264,7 @@
       "tesseract": "If any of you can offer more than 100,000 taels"
     },
     "answer": {
-      "fused": "If any of you can offer more than 100,000 taels",
+      "output": "If any of you can offer more than 100,000 taels",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -276,7 +276,7 @@
       "tesseract": "Mr 80…"
     },
     "answer": {
-      "fused": "Mr So…",
+      "output": "Mr So…",
       "note": "Used 'So' from Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -288,7 +288,7 @@
       "tesseract": "it's beggar's fists!"
     },
     "answer": {
-      "fused": "it's beggar's fists!",
+      "output": "it's beggar's fists!",
       "note": "Used lower-case 'it's' from Tesseract."
     },
     "difficulty": 1,
@@ -300,7 +300,7 @@
       "tesseract": "- Come on, give tips to the girl here\n- Master"
     },
     "answer": {
-      "fused": "- Come on, give tips to the girl here\n- Master",
+      "output": "- Come on, give tips to the girl here\n- Master",
       "note": "Moved '- Master' to a new line as in Tesseract."
     },
     "difficulty": 2,
@@ -312,7 +312,7 @@
       "tesseract": "- Him!\n-Arrest him"
     },
     "answer": {
-      "fused": "- Him!\n- Arrest him",
+      "output": "- Him!\n- Arrest him",
       "note": "Added space after '-' on second line as in Lens."
     },
     "difficulty": 2,
@@ -324,7 +324,7 @@
       "tesseract": "so I should arrest those bad people"
     },
     "answer": {
-      "fused": "so I should arrest those bad people",
+      "output": "so I should arrest those bad people",
       "note": "Used lower-case 'so' as in Tesseract."
     },
     "difficulty": 1,
@@ -336,7 +336,7 @@
       "tesseract": "anyone without a tail should be killed"
     },
     "answer": {
-      "fused": "anyone without a tail should be killed",
+      "output": "anyone without a tail should be killed",
       "note": "Used lower-case 'anyone'."
     },
     "difficulty": 1,
@@ -348,7 +348,7 @@
       "tesseract": "a rascal has ruined the atmosphere here,"
     },
     "answer": {
-      "fused": "a rascal has ruined the atmosphere here,",
+      "output": "a rascal has ruined the atmosphere here,",
       "note": "Used lower-case 'a' as in Tesseract."
     },
     "difficulty": 1,
@@ -360,7 +360,7 @@
       "tesseract": "and some generals of The Taiping Reign"
     },
     "answer": {
-      "fused": "and some generals of The Taiping Reign",
+      "output": "and some generals of The Taiping Reign",
       "note": "Used lower-case 'and' as in Tesseract."
     },
     "difficulty": 1,
@@ -372,7 +372,7 @@
       "tesseract": "being despised by the world"
     },
     "answer": {
-      "fused": "being despised by the world",
+      "output": "being despised by the world",
       "note": "Used lower-case 'being' as in Tesseract."
     },
     "difficulty": 1,
@@ -384,7 +384,7 @@
       "tesseract": "by Mr 80 and become pearl powder"
     },
     "answer": {
-      "fused": "by Mr So and become pearl powder",
+      "output": "by Mr So and become pearl powder",
       "note": "Used lower-case 'by' and 'So' instead of '80'."
     },
     "difficulty": 1,
@@ -396,7 +396,7 @@
       "tesseract": "Don't judge Mr 80 from his hair,"
     },
     "answer": {
-      "fused": "Don't judge Mr So from his hair,",
+      "output": "Don't judge Mr So from his hair,",
       "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -408,7 +408,7 @@
       "tesseract": "he is really romantic and funny"
     },
     "answer": {
-      "fused": "he is really romantic and funny",
+      "output": "he is really romantic and funny",
       "note": "Used lower-case 'he' as in Tesseract."
     },
     "difficulty": 1,
@@ -420,7 +420,7 @@
       "tesseract": "About the personality of Mr 80…"
     },
     "answer": {
-      "fused": "About the personality of Mr So…",
+      "output": "About the personality of Mr So…",
       "note": "Used 'So' from Google Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -432,7 +432,7 @@
       "tesseract": "for you your company tonight"
     },
     "answer": {
-      "fused": "for you your company tonight",
+      "output": "for you your company tonight",
       "note": "Used lower-case 'for' as in Tesseract."
     },
     "difficulty": 1,
@@ -444,7 +444,7 @@
       "tesseract": "until Chiu is killed"
     },
     "answer": {
-      "fused": "until Chiu is killed",
+      "output": "until Chiu is killed",
       "note": "Used lower-case 'until' from Tesseract."
     },
     "difficulty": 1,
@@ -456,7 +456,7 @@
       "tesseract": "Mr 80, it's me!"
     },
     "answer": {
-      "fused": "Mr So, it's me!",
+      "output": "Mr So, it's me!",
       "note": "Used 'So' from Lens instead of '80' from Tesseract."
     },
     "difficulty": 2,
@@ -468,7 +468,7 @@
       "tesseract": "2, 3, 4, 5,6"
     },
     "answer": {
-      "fused": "2, 3, 4, 5, 6",
+      "output": "2, 3, 4, 5, 6",
       "note": "Added space after '5,' as in Google Lens."
     },
     "difficulty": 1,
@@ -480,7 +480,7 @@
       "tesseract": "we won't take the hens with us"
     },
     "answer": {
-      "fused": "we won't take the hens with us",
+      "output": "we won't take the hens with us",
       "note": "Used lower-case 'we' from Tesseract."
     },
     "difficulty": 2,
@@ -492,7 +492,7 @@
       "tesseract": "or how can I eat Lychee in Peking?"
     },
     "answer": {
-      "fused": "or how can I eat Lychee in Peking?",
+      "output": "or how can I eat Lychee in Peking?",
       "note": "Used lower-case 'or' from Tesseract."
     },
     "difficulty": 1,
@@ -504,7 +504,7 @@
       "tesseract": "the Hairy Gang in Kwangsi"
     },
     "answer": {
-      "fused": "the Hairy Gang in Kwangsi",
+      "output": "the Hairy Gang in Kwangsi",
       "note": "Used lower-case 'the' from Tesseract."
     },
     "difficulty": 1,
@@ -516,7 +516,7 @@
       "tesseract": "80 big! You must be Small!"
     },
     "answer": {
-      "fused": "So big! You must be Small!",
+      "output": "So big! You must be Small!",
       "note": "Used 'So' from Lens instead of '80' from Tesseract."
     },
     "difficulty": 1,
@@ -528,7 +528,7 @@
       "tesseract": "stop playing"
     },
     "answer": {
-      "fused": "stop playing",
+      "output": "stop playing",
       "note": "Used lower-case 'stop' from Tesseract."
     },
     "difficulty": 1,
@@ -540,7 +540,7 @@
       "tesseract": "for your examination?"
     },
     "answer": {
-      "fused": "for your examination?",
+      "output": "for your examination?",
       "note": "Used lower-case 'for' as in Tesseract."
     },
     "difficulty": 1,
@@ -552,7 +552,7 @@
       "tesseract": "to finish the papers which you gave me"
     },
     "answer": {
-      "fused": "to finish the papers which you gave me",
+      "output": "to finish the papers which you gave me",
       "note": "Used lower-case 'to' from Tesseract."
     },
     "difficulty": 1,
@@ -564,7 +564,7 @@
       "tesseract": "riding, boxing and weapons…"
     },
     "answer": {
-      "fused": "riding, boxing and weapons…",
+      "output": "riding, boxing and weapons…",
       "note": "Used lower-case 'riding' from Tesseract."
     },
     "difficulty": 1,
@@ -576,7 +576,7 @@
       "tesseract": "That is, Chan defaulted in weightlifting"
     },
     "answer": {
-      "fused": "That is, Chan defaulted in weight lifting",
+      "output": "That is, Chan defaulted in weight lifting",
       "note": "Used 'weight lifting' from Google Lens instead of 'weightlifting'."
     },
     "difficulty": 1,
@@ -588,7 +588,7 @@
       "tesseract": "with full marks, it differs"
     },
     "answer": {
-      "fused": "with full marks, it differs",
+      "output": "with full marks, it differs",
       "note": "Used lower-case 'with' from Tesseract."
     },
     "difficulty": 1,
@@ -600,7 +600,7 @@
       "tesseract": "- You shouldn't put it that way\n- What?"
     },
     "answer": {
-      "fused": "- You shouldn't put it that way\n- What?",
+      "output": "- You shouldn't put it that way\n- What?",
       "note": "Moved '- What?' to a new line as in Tesseract."
     },
     "difficulty": 2,
@@ -612,7 +612,7 @@
       "tesseract": "800,000 taels"
     },
     "answer": {
-      "fused": "800,000 taels",
+      "output": "800,000 taels",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -624,7 +624,7 @@
       "tesseract": "I feel Chan"
     },
     "answer": {
-      "fused": "I feel Chan",
+      "output": "I feel Chan",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -636,7 +636,7 @@
       "tesseract": "will be the champion"
     },
     "answer": {
-      "fused": "will be the champion",
+      "output": "will be the champion",
       "note": "Used lower-case 'will'."
     },
     "difficulty": 1,
@@ -648,7 +648,7 @@
       "tesseract": "Bravo! He won"
     },
     "answer": {
-      "fused": "Bravo! He won",
+      "output": "Bravo! He won",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -660,7 +660,7 @@
       "tesseract": "if I see you again"
     },
     "answer": {
-      "fused": "if I see you again",
+      "output": "if I see you again",
       "note": "Used lower-case 'if' as in Tesseract."
     },
     "difficulty": 1,
@@ -672,7 +672,7 @@
       "tesseract": "You… You…"
     },
     "answer": {
-      "fused": "You… You…",
+      "output": "You… You…",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -684,7 +684,7 @@
       "tesseract": "I have found that. So is illiterate"
     },
     "answer": {
-      "fused": "I have found that. So is illiterate",
+      "output": "I have found that. So is illiterate",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -696,7 +696,7 @@
       "tesseract": "- Kill me\n- No, kill me"
     },
     "answer": {
-      "fused": "- Kill me\n- No, kill me",
+      "output": "- Kill me\n- No, kill me",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -708,7 +708,7 @@
       "tesseract": "is forfeiture of property only"
     },
     "answer": {
-      "fused": "is forfeiture of property only",
+      "output": "is forfeiture of property only",
       "note": "Used lower-case 'is' as in Tesseract."
     },
     "difficulty": 1,
@@ -720,7 +720,7 @@
       "tesseract": "they cheated during the examination?"
     },
     "answer": {
-      "fused": "they cheated during the examination?",
+      "output": "they cheated during the examination?",
       "note": "Used lower-case 'they' as in Tesseract."
     },
     "difficulty": 1,
@@ -732,7 +732,7 @@
       "tesseract": "from now on,"
     },
     "answer": {
-      "fused": "from now on,",
+      "output": "from now on,",
       "note": "Used lower-case 'from' as in Tesseract."
     },
     "difficulty": 1,
@@ -744,7 +744,7 @@
       "tesseract": "you'd be hard working to learn how to write"
     },
     "answer": {
-      "fused": "you'd be hard working to learn how to write",
+      "output": "you'd be hard working to learn how to write",
       "note": "Used lower-case 'you'd' from Tesseract."
     },
     "difficulty": 1,
@@ -756,7 +756,7 @@
       "tesseract": "Why are you standing here? Go now"
     },
     "answer": {
-      "fused": "Why are you standing here? Go now",
+      "output": "Why are you standing here? Go now",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -768,7 +768,7 @@
       "tesseract": "who is living in Peking"
     },
     "answer": {
-      "fused": "who is living in Peking",
+      "output": "who is living in Peking",
       "note": "Used lower-case 'who' as in Tesseract."
     },
     "difficulty": 1,
@@ -780,7 +780,7 @@
       "tesseract": "to go back to Canton"
     },
     "answer": {
-      "fused": "to go back to Canton",
+      "output": "to go back to Canton",
       "note": "Used lower-case 'to' from Tesseract."
     },
     "difficulty": 1,
@@ -792,7 +792,7 @@
       "tesseract": "the So's family'd be beggars for life"
     },
     "answer": {
-      "fused": "the So's family'd be beggars for life",
+      "output": "the So's family'd be beggars for life",
       "note": "Used lower-case 'the' from Tesseract."
     },
     "difficulty": 1,
@@ -804,7 +804,7 @@
       "tesseract": "- No, we can't move it\n- Let me do it"
     },
     "answer": {
-      "fused": "- No, we can't move it\n- Let me do it",
+      "output": "- No, we can't move it\n- Let me do it",
       "note": "Combined first line and added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -816,7 +816,7 @@
       "tesseract": "with my son,"
     },
     "answer": {
-      "fused": "with my son,",
+      "output": "with my son,",
       "note": "Used lower-case 'with' from Tesseract."
     },
     "difficulty": 1,
@@ -828,7 +828,7 @@
       "tesseract": "don't you know who was the examiner?"
     },
     "answer": {
-      "fused": "don't you know who was the examiner?",
+      "output": "don't you know who was the examiner?",
       "note": "Used lower-case 'don't' as in Tesseract."
     },
     "difficulty": 1,
@@ -840,7 +840,7 @@
       "tesseract": "the Yee Hung Brothel"
     },
     "answer": {
-      "fused": "the Yee Hung Brothel",
+      "output": "the Yee Hung Brothel",
       "note": "Used lower-case 'the' from Tesseract."
     },
     "difficulty": 1,
@@ -852,7 +852,7 @@
       "tesseract": "during the examination"
     },
     "answer": {
-      "fused": "during the examination",
+      "output": "during the examination",
       "note": "Used lower-case 'during' as in Tesseract."
     },
     "difficulty": 1,
@@ -864,7 +864,7 @@
       "tesseract": "To be the greatest Kung-fu fighter, invincible"
     },
     "answer": {
-      "fused": "To be the greatest Kung-fu fighter, invincible",
+      "output": "To be the greatest Kung-fu fighter, invincible",
       "note": "Used space instead of newline."
     },
     "difficulty": 2,
@@ -876,7 +876,7 @@
       "tesseract": "your legs and hands have not been\ntotally recovered"
     },
     "answer": {
-      "fused": "your legs and hands have not been\ntotally recovered",
+      "output": "your legs and hands have not been\ntotally recovered",
       "note": "Used lower-case 'your' as in Tesseract."
     },
     "difficulty": 1,
@@ -888,7 +888,7 @@
       "tesseract": "there is some lessons!"
     },
     "answer": {
-      "fused": "there is some lessons!",
+      "output": "there is some lessons!",
       "note": "Used lower-case 'there' from Tesseract."
     },
     "difficulty": 1,
@@ -900,7 +900,7 @@
       "tesseract": "May|…"
     },
     "answer": {
-      "fused": "- May I… - No",
+      "output": "- May I… - No",
       "note": "Manually corrected."
     },
     "difficulty": 3,
@@ -912,7 +912,7 @@
       "tesseract": "he wouldn't be that poor if not were you"
     },
     "answer": {
-      "fused": "he wouldn't be that poor if not were you",
+      "output": "he wouldn't be that poor if not were you",
       "note": "Used lower-case 'he' as in Tesseract."
     },
     "difficulty": 1,
@@ -924,7 +924,7 @@
       "tesseract": "Sol bit the dumpling of the kid"
     },
     "answer": {
-      "fused": "So I bit the dumpling of the kid",
+      "output": "So I bit the dumpling of the kid",
       "note": "Used 'So I' from Lens instead of 'Sol' from Tesseract."
     },
     "difficulty": 1,
@@ -936,7 +936,7 @@
       "tesseract": "if I chopped yours"
     },
     "answer": {
-      "fused": "if I chopped yours",
+      "output": "if I chopped yours",
       "note": "Used lower-case 'if' as in Tesseract."
     },
     "difficulty": 1,
@@ -948,7 +948,7 @@
       "tesseract": "- Give them to me, come on\n- What for?"
     },
     "answer": {
-      "fused": "- Give them to me, come on\n- What for?",
+      "output": "- Give them to me, come on\n- What for?",
       "note": "Placed '-' and line break before 'What for?' as in Tesseract."
     },
     "difficulty": 2,
@@ -960,7 +960,7 @@
       "tesseract": "- Wish you ever beauty\n- Thank you"
     },
     "answer": {
-      "fused": "- Wish you ever beauty\n- Thank you",
+      "output": "- Wish you ever beauty\n- Thank you",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -972,7 +972,7 @@
       "tesseract": "Yushang”."
     },
     "answer": {
-      "fused": "Yushang…",
+      "output": "Yushang…",
       "note": "Used ellipsis '…' from Google Lens instead of closing quote from Tesseract."
     },
     "difficulty": 1,
@@ -984,7 +984,7 @@
       "tesseract": "how can I defeat them and become the new master?"
     },
     "answer": {
-      "fused": "how can I defeat them and become the new master?",
+      "output": "how can I defeat them and become the new master?",
       "note": "Used lower-case 'how' from Tesseract."
     },
     "difficulty": 1,
@@ -996,7 +996,7 @@
       "tesseract": "you can ask my son to fight for you"
     },
     "answer": {
-      "fused": "you can ask my son to fight for you",
+      "output": "you can ask my son to fight for you",
       "note": "Used lower-case 'you' as in Tesseract."
     },
     "difficulty": 1,
@@ -1008,7 +1008,7 @@
       "tesseract": "before…"
     },
     "answer": {
-      "fused": "before…",
+      "output": "before…",
       "note": "Used lower-case 'before' from Tesseract."
     },
     "difficulty": 1,
@@ -1020,7 +1020,7 @@
       "tesseract": "he knows sleeping only"
     },
     "answer": {
-      "fused": "he knows sleeping only",
+      "output": "he knows sleeping only",
       "note": "Used lower-case 'he' as in Tesseract."
     },
     "difficulty": 1,
@@ -1032,7 +1032,7 @@
       "tesseract": "only you try hard,"
     },
     "answer": {
-      "fused": "only you try hard,",
+      "output": "only you try hard,",
       "note": "Used lower-case 'only' as in Tesseract."
     },
     "difficulty": 1,
@@ -1044,7 +1044,7 @@
       "tesseract": "you can achieve something"
     },
     "answer": {
-      "fused": "you can achieve something",
+      "output": "you can achieve something",
       "note": "Used lower-case 'you' from Tesseract."
     },
     "difficulty": 1,
@@ -1056,7 +1056,7 @@
       "tesseract": "you should give me a waddy first"
     },
     "answer": {
-      "fused": "you should give me a waddy first",
+      "output": "you should give me a waddy first",
       "note": "Used lower-case 'you' as in Tesseract."
     },
     "difficulty": 1,
@@ -1068,7 +1068,7 @@
       "tesseract": "no one respected me before"
     },
     "answer": {
-      "fused": "no one respected me before",
+      "output": "no one respected me before",
       "note": "Used lower-case 'no' as in Tesseract."
     },
     "difficulty": 1,
@@ -1080,7 +1080,7 @@
       "tesseract": "even you have money again"
     },
     "answer": {
-      "fused": "even you have money again",
+      "output": "even you have money again",
       "note": "Used lower-case 'even' from Tesseract."
     },
     "difficulty": 1,
@@ -1092,7 +1092,7 @@
       "tesseract": "you will be the king of beggars"
     },
     "answer": {
-      "fused": "you will be the king of beggars",
+      "output": "you will be the king of beggars",
       "note": "Used lower-case 'you' from Tesseract."
     },
     "difficulty": 1,
@@ -1104,7 +1104,7 @@
       "tesseract": "with you"
     },
     "answer": {
-      "fused": "with you",
+      "output": "with you",
       "note": "Used lower-case 'with' as in Tesseract."
     },
     "difficulty": 1,
@@ -1116,7 +1116,7 @@
       "tesseract": "then they went away"
     },
     "answer": {
-      "fused": "then they went away",
+      "output": "then they went away",
       "note": "Used lower-case 'then' as in Tesseract."
     },
     "difficulty": 1,
@@ -1128,7 +1128,7 @@
       "tesseract": "you are not qualified, come down"
     },
     "answer": {
-      "fused": "you are not qualified, come down",
+      "output": "you are not qualified, come down",
       "note": "Used lower-case 'you' from Tesseract."
     },
     "difficulty": 1,
@@ -1140,7 +1140,7 @@
       "tesseract": "Bullshit, throw him to death"
     },
     "answer": {
-      "fused": "Bullshit, throw him to death",
+      "output": "Bullshit, throw him to death",
       "note": "Used 'Bullshit' as one word from Tesseract."
     },
     "difficulty": 1,
@@ -1152,7 +1152,7 @@
       "tesseract": "could be the leader"
     },
     "answer": {
-      "fused": "could be the leader",
+      "output": "could be the leader",
       "note": "Used lower-case 'could' from Tesseract."
     },
     "difficulty": 1,
@@ -1164,7 +1164,7 @@
       "tesseract": "because of being united"
     },
     "answer": {
-      "fused": "because of being united",
+      "output": "because of being united",
       "note": "Used lower-case 'because' from Tesseract."
     },
     "difficulty": 1,
@@ -1176,7 +1176,7 @@
       "tesseract": "is just for memory"
     },
     "answer": {
-      "fused": "is just for memory",
+      "output": "is just for memory",
       "note": "Used lower-case 'is' from Tesseract."
     },
     "difficulty": 1,
@@ -1188,7 +1188,7 @@
       "tesseract": "so you won't fight for this anymore"
     },
     "answer": {
-      "fused": "so you won't fight for this anymore",
+      "output": "so you won't fight for this anymore",
       "note": "Used lower-case 'so' from Tesseract."
     },
     "difficulty": 1,
@@ -1200,7 +1200,7 @@
       "tesseract": "but he is a genius, a smart ass"
     },
     "answer": {
-      "fused": "but he is a genius, a smart ass",
+      "output": "but he is a genius, a smart ass",
       "note": "Used lower-case 'but' from Tesseract."
     },
     "difficulty": 1,
@@ -1212,7 +1212,7 @@
       "tesseract": "your new leader, and you'd love him,"
     },
     "answer": {
-      "fused": "your new leader, and you'd love him,",
+      "output": "your new leader, and you'd love him,",
       "note": "Used lower-case 'your' as in Tesseract."
     },
     "difficulty": 1,
@@ -1224,7 +1224,7 @@
       "tesseract": "whole-heartedly, to care much for him,\nmaybe, treat him dinner"
     },
     "answer": {
-      "fused": "whole-heartedly, to care much for him,\nmaybe, treat him dinner",
+      "output": "whole-heartedly, to care much for him,\nmaybe, treat him dinner",
       "note": "Used lower-case 'whole-heartedly' as in Tesseract."
     },
     "difficulty": 2,
@@ -1236,7 +1236,7 @@
       "tesseract": "we are blessed"
     },
     "answer": {
-      "fused": "we are blessed",
+      "output": "we are blessed",
       "note": "Used lower-case 'we' from Tesseract."
     },
     "difficulty": 1,
@@ -1248,7 +1248,7 @@
       "tesseract": "do you understand everything written in this book?"
     },
     "answer": {
-      "fused": "do you understand everything written in this book?",
+      "output": "do you understand everything written in this book?",
       "note": "Used lower-case 'do' as in Tesseract."
     },
     "difficulty": 1,
@@ -1260,7 +1260,7 @@
       "tesseract": "there is no picture or description of it"
     },
     "answer": {
-      "fused": "there is no picture or description of it",
+      "output": "there is no picture or description of it",
       "note": "Used lower-case 'there' from Tesseract."
     },
     "difficulty": 1,
@@ -1272,7 +1272,7 @@
       "tesseract": "why do you bring this woman here?"
     },
     "answer": {
-      "fused": "why do you bring this woman here?",
+      "output": "why do you bring this woman here?",
       "note": "Used lower-case 'why' as in Tesseract."
     },
     "difficulty": 1,
@@ -1284,7 +1284,7 @@
       "tesseract": "to your own position"
     },
     "answer": {
-      "fused": "to your own position",
+      "output": "to your own position",
       "note": "Used lower-case 'to' as in Tesseract."
     },
     "difficulty": 1,
@@ -1296,7 +1296,7 @@
       "tesseract": "if I let him see His Majesty oftenly,\nmy post will be taken away"
     },
     "answer": {
-      "fused": "if I let him see His Majesty oftenly,\nmy post will be taken away",
+      "output": "if I let him see His Majesty oftenly,\nmy post will be taken away",
       "note": "Used lower-case 'if' from Tesseract."
     },
     "difficulty": 1,
@@ -1308,7 +1308,7 @@
       "tesseract": "- Check what had happened\n- Yes"
     },
     "answer": {
-      "fused": "- Check what had happened\n- Yes",
+      "output": "- Check what had happened\n- Yes",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1320,7 +1320,7 @@
       "tesseract": "he is going to assassinate the king"
     },
     "answer": {
-      "fused": "he is going to assassinate the king",
+      "output": "he is going to assassinate the king",
       "note": "Used lower-case 'he' as in Tesseract."
     },
     "difficulty": 1,
@@ -1332,7 +1332,7 @@
       "tesseract": "- Senior\n- Yes"
     },
     "answer": {
-      "fused": "- Senior\n- Yes",
+      "output": "- Senior\n- Yes",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1344,7 +1344,7 @@
       "tesseract": "you stay here to wait for the others"
     },
     "answer": {
-      "fused": "you stay here to wait for the others",
+      "output": "you stay here to wait for the others",
       "note": "Used lower-case 'you' from Tesseract."
     },
     "difficulty": 1,
@@ -1356,7 +1356,7 @@
       "tesseract": "I Will follow"
     },
     "answer": {
-      "fused": "I will follow",
+      "output": "I will follow",
       "note": "Used lower-case 'will' from Lens."
     },
     "difficulty": 1,
@@ -1368,7 +1368,7 @@
       "tesseract": "- Go on after I left\n- Sure"
     },
     "answer": {
-      "fused": "- Go on after I left\n- Sure",
+      "output": "- Go on after I left\n- Sure",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1380,7 +1380,7 @@
       "tesseract": "- Get ready the Unicorn Smoke\n- Yes"
     },
     "answer": {
-      "fused": "- Get ready the Unicorn Smoke\n- Yes",
+      "output": "- Get ready the Unicorn Smoke\n- Yes",
       "note": "Combined 'Unicorn Smoke' on one line and added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1392,7 +1392,7 @@
       "tesseract": "Rebel! Help!"
     },
     "answer": {
-      "fused": "Rebel! Help!",
+      "output": "Rebel! Help!",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -1404,7 +1404,7 @@
       "tesseract": "is blowing to the Royal camp"
     },
     "answer": {
-      "fused": "is blowing to the Royal camp",
+      "output": "is blowing to the Royal camp",
       "note": "Used lower-case 'is' from Tesseract."
     },
     "difficulty": 1,
@@ -1416,7 +1416,7 @@
       "tesseract": "Don't… don't!"
     },
     "answer": {
-      "fused": "Don't… don't!",
+      "output": "Don't… don't!",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -1428,7 +1428,7 @@
       "tesseract": "It's along story"
     },
     "answer": {
-      "fused": "It's a long story",
+      "output": "It's a long story",
       "note": "Used 'a long' from Google Lens instead of 'along' from Tesseract."
     },
     "difficulty": 1,
@@ -1440,7 +1440,7 @@
       "tesseract": "this morning"
     },
     "answer": {
-      "fused": "this morning",
+      "output": "this morning",
       "note": "Used lower-case 'this' as in Tesseract."
     },
     "difficulty": 1,
@@ -1452,7 +1452,7 @@
       "tesseract": "- Really?\n- Yes"
     },
     "answer": {
-      "fused": "- Really?\n- Yes",
+      "output": "- Really?\n- Yes",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1464,7 +1464,7 @@
       "tesseract": "dragon dances…"
     },
     "answer": {
-      "fused": "dragon dances…",
+      "output": "dragon dances…",
       "note": "Used lower-case 'dragon' from Tesseract."
     },
     "difficulty": 1,
@@ -1476,7 +1476,7 @@
       "tesseract": "dragon's wish…"
     },
     "answer": {
-      "fused": "dragon's wish…",
+      "output": "dragon's wish…",
       "note": "Used lower-case 'dragon's' from Tesseract."
     },
     "difficulty": 1,
@@ -1488,7 +1488,7 @@
       "tesseract": "you can defeat me"
     },
     "answer": {
-      "fused": "you can defeat me",
+      "output": "you can defeat me",
       "note": "Used lower-case 'you' as in Tesseract."
     },
     "difficulty": 1,
@@ -1500,7 +1500,7 @@
       "tesseract": "after learning the 18th stance"
     },
     "answer": {
-      "fused": "after learning the 18th stance",
+      "output": "after learning the 18th stance",
       "note": "Used lower-case 'after' as in Tesseract."
     },
     "difficulty": 1,
@@ -1512,7 +1512,7 @@
       "tesseract": "it's the 18th stance then"
     },
     "answer": {
-      "fused": "it's the 18th stance then",
+      "output": "it's the 18th stance then",
       "note": "Used lower-case 'it's' as in Tesseract."
     },
     "difficulty": 1,
@@ -1524,7 +1524,7 @@
       "tesseract": "Mister So!"
     },
     "answer": {
-      "fused": "Mister\nSo!",
+      "output": "Mister\nSo!",
       "note": "Kept line break from Google Lens, as Tesseract did not provide one and Lens is generally more reliable for text recognition."
     },
     "difficulty": 1,
@@ -1536,7 +1536,7 @@
       "tesseract": "if you don't respect me, I will kill you"
     },
     "answer": {
-      "fused": "if you don't respect me, I will kill you",
+      "output": "if you don't respect me, I will kill you",
       "note": "Used lower-case 'if' from Tesseract."
     },
     "difficulty": 1,
@@ -1548,7 +1548,7 @@
       "tesseract": "we have nothing to chat"
     },
     "answer": {
-      "fused": "we have nothing to chat",
+      "output": "we have nothing to chat",
       "note": "Used lower-case 'we' from Tesseract."
     },
     "difficulty": 1,
@@ -1560,7 +1560,7 @@
       "tesseract": "but you"
     },
     "answer": {
-      "fused": "but you",
+      "output": "but you",
       "note": "Used lower-case 'but' from Tesseract."
     },
     "difficulty": 1,
@@ -1572,7 +1572,7 @@
       "tesseract": "no one wishes to be beggar, right?"
     },
     "answer": {
-      "fused": "no one wishes to be beggar, right?",
+      "output": "no one wishes to be beggar, right?",
       "note": "Used lower-case 'no' as in Tesseract."
     },
     "difficulty": 1,
@@ -1584,7 +1584,7 @@
       "tesseract": "- It's reasonable\n- Be smart"
     },
     "answer": {
-      "fused": "- It's reasonable\n- Be smart",
+      "output": "- It's reasonable\n- Be smart",
       "note": "Added '-' and line break as in Tesseract."
     },
     "difficulty": 2,
@@ -1596,7 +1596,7 @@
       "tesseract": "give me some face"
     },
     "answer": {
-      "fused": "give me some face",
+      "output": "give me some face",
       "note": "Used lower-case 'give' as in Tesseract."
     },
     "difficulty": 1,
@@ -1608,7 +1608,7 @@
       "tesseract": "- to Your Majesty\n- Get up"
     },
     "answer": {
-      "fused": "- …to Your Majesty\n- Get up",
+      "output": "- …to Your Majesty\n- Get up",
       "note": "Manually corrected."
     },
     "difficulty": 2,
@@ -1620,7 +1620,7 @@
       "tesseract": "Of course! You beggar"
     },
     "answer": {
-      "fused": "Of course! You beggar",
+      "output": "Of course! You beggar",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
@@ -1632,7 +1632,7 @@
       "tesseract": "See my family? Give more"
     },
     "answer": {
-      "fused": "See my family? Give more",
+      "output": "See my family? Give more",
       "note": "Used space instead of newline."
     },
     "difficulty": 1,
