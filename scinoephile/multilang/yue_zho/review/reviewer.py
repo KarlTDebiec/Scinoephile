@@ -93,8 +93,8 @@ class YueVsZhoReviewer:
         """
         if not are_series_one_to_one(yuewen, zhongwen):
             raise ScinoephileError(
-                "Series from OCR sources one and two must have the same number of "
-                "subtitles."
+                "粤文 and 中文 sources must have the same number of subtitles."
+                f" Got {len(yuewen)} 粤文 subtitles and {len(zhongwen)} 中文 subtitles."
             )
 
         # Review subtitles
@@ -110,7 +110,7 @@ class YueVsZhoReviewer:
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for sub_idx in len(yw_blk):
+            for sub_idx in range(len(yw_blk)):
                 yw_key = self.prompt_cls.source_one(sub_idx + 1)
                 yw_val = re.sub(r"\\N", "\n", yw_blk[sub_idx].text).strip()
                 query_kwargs[yw_key] = yw_val
