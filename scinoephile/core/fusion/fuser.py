@@ -14,7 +14,7 @@ from scinoephile.core.llms import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.core.synchronization import are_series_one_to_one
+from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
 from .prompt import FusionPrompt

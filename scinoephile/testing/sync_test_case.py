@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.core.synchronization import SyncGroup
+from scinoephile.multilang.synchronization import SyncGroup
 
 __all__ = ["SyncTestCase"]
 

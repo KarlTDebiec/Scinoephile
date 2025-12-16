@@ -12,7 +12,6 @@ from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
-from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -30,6 +29,7 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
+from scinoephile.multilang import get_synced_series
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,

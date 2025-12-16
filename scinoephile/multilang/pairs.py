@@ -6,8 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from .exceptions import ScinoephileError
-from .series import Series
+from scinoephile.core import ScinoephileError, Series
 
 __all__ = [
     "get_pair_blocks_by_pause",
@@ -79,27 +78,6 @@ def get_pair_blocks_by_pause(
         block_one.events = nascent_block_one
         block_two.events = nascent_block_two
         blocks.append((block_one, block_two))
-
-    # end = 0
-    # for i, (block_one, block_two) in enumerate(blocks):
-    #     start = 10000000
-    #     if block_one.events:
-    #         start = min(start, block_one[0].start)
-    #     if block_two.events:
-    #         start = min(start, block_two[0].start)
-    #     diff = start - end
-    #     if block_one.events:
-    #         end = max(end, block_one[-1].end)
-    #     if block_two.events:
-    #         end = max(end, block_two[-1].end)
-    #     print(
-    #         f"{i:3d} "
-    #         f"{len(block_one.events):3} "
-    #         f"{len(block_two.events):3} "
-    #         f"{start:8d} "
-    #         f"{end:8d} "
-    #         f"{diff:8d}"
-    #     )
 
     return blocks
 
