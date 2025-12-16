@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for 中文 fusion."""
+"""LLM correspondence text for 中文 OCR fusion."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 class ZhoHansOcrFusionPrompt(FusionPrompt, ZhoHansPrompt):
-    """LLM correspondence text for 简体中文 fusion."""
+    """LLM correspondence text for 简体中文 OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -31,52 +31,52 @@ class ZhoHansOcrFusionPrompt(FusionPrompt, ZhoHansPrompt):
 
     # Query fields
     source_one_field: ClassVar[str] = "lens"
-    """Field name for OCR source one."""
+    """Name of source one field in query."""
 
     source_one_description: ClassVar[str] = "Google Lens 提取的字幕文本"
-    """Description of source one field."""
+    """Description of source one field in query."""
 
     source_two_field: ClassVar[str] = "paddle"
-    """Field name for OCR source two."""
+    """Name for source two field in query."""
 
     source_two_description: ClassVar[str] = "PaddleOCR 提取的字幕文本"
-    """Description of source two field."""
+    """Description of source two field in query."""
 
     # Query validation errors
     source_one_missing_error: ClassVar[str] = "缺少 Google Lens 的中文字幕文本。"
-    """Error message when source one field is missing."""
+    """Error when source one field is missing from query."""
 
     source_two_missing_error: ClassVar[str] = "缺少 PaddleOCR 的中文字幕文本。"
-    """Error message when source two field is missing."""
+    """Error when source two field is missing from query."""
 
     sources_equal_error: ClassVar[str] = (
         "Google Lens 与 PaddleOCR 的字幕文本不能完全相同。"
     )
-    """Error message when source one and two fields are equal."""
+    """Error when source one and two fields are equal in query."""
 
     # Answer fields
-    fused_field: ClassVar[str] = "ronghe"
-    """Field name for fused subtitle text."""
+    output_field: ClassVar[str] = "ronghe"
+    """Name of output field in answer."""
 
-    fused_description: ClassVar[str] = "融合后的字幕文本"
-    """Description of fused field."""
+    output_description: ClassVar[str] = "融合后的字幕文本"
+    """Description of output field in answer."""
 
     note_field: ClassVar[str] = "beizhu"
-    """Field name for explanation of changes."""
+    """Name of note field in answer."""
 
     note_description: ClassVar[str] = "对所做更正的说明"
-    """Description of note field."""
+    """Description of note field in answer."""
 
     # Answer validation errors
-    fused_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"
-    """Error message when fused field is missing."""
+    output_missing_error: ClassVar[str] = "融合后的字幕文本不能为空。"
+    """Error when output field is missing from answer."""
 
     note_missing_error: ClassVar[str] = "更正说明不能为空。"
-    """Error message when note field is missing."""
+    """Error when note field is missing from answer."""
 
 
 class ZhoHantOcrFusionPrompt(ZhoHansOcrFusionPrompt):
-    """LLM correspondence text for 繁体中文 fusion."""
+    """LLM correspondence text for 繁体中文 OCR fusion."""
 
     opencc_config = OpenCCConfig.s2t
     """Config with which to covert characters from 简体中文 present in parent class."""

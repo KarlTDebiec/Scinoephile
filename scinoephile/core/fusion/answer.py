@@ -27,8 +27,8 @@ class FusionAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        if not getattr(self, self.prompt_cls.fused_field, None):
-            raise ValueError(self.prompt_cls.fused_missing_error)
+        if not getattr(self, self.prompt_cls.output_field, None):
+            raise ValueError(self.prompt_cls.output_missing_error)
         if not getattr(self, self.prompt_cls.note_field, None):
             raise ValueError(self.prompt_cls.note_missing_error)
         return self
@@ -48,9 +48,9 @@ class FusionAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.fused_field: (
+            prompt_cls.output_field: (
                 str,
-                Field(..., description=prompt_cls.fused_description),
+                Field(..., description=prompt_cls.output_description),
             ),
             prompt_cls.note_field: (
                 str,

@@ -8,35 +8,12 @@ from abc import ABC
 from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["ProofreadingPrompt"]
 
 
 class ProofreadingPrompt(Prompt, ABC):
     """ABC for LLM correspondence text for proofreading."""
-
-    # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for proofreading English subtitles generated using OCR.
-        For each subtitle, you are to provide revised subtitle only if revisions are
-        necessary.
-        If revisions are needed, return the full revised subtitle, and a note describing
-        the changes made.
-        If no revisions are needed, return an empty string for the revised subtitle and
-        its note.
-        Make changes only when necessary to correct errors clearly resulting from OCR.
-
-        Do not add stylistic changes or improve phrasing.
-
-        Do not change colloquialisms or dialect such as 'gonna' or 'wanna'.
-
-        Do not change spelling from British to American English or vice versa.
-
-        Do not remove subtitle markup such as italics ('{\\i1}' and '{\\i0}').
-
-        Do not remove newlines ('\\n').""")
-    """Base system prompt."""
 
     # Query fields
     subtitle_prefix: ClassVar[str] = "subtitle_"

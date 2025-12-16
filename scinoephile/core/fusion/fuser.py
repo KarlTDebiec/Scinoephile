@@ -140,7 +140,7 @@ class Fuser:
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            fused_text = getattr(test_case.answer, self.prompt_cls.fused_field)
+            fused_text = getattr(test_case.answer, self.prompt_cls.output_field)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=fused_text)
             info(
                 f"Subtitle {sub_idx + 1} fused:         {sub.text.replace('\n', '\\n')}"

@@ -17,49 +17,47 @@ class FusionPrompt(Prompt, ABC):
 
     # Query fields
     source_one_field: ClassVar[str] = "one"
-    """Field name for OCR source one."""
+    """Name of source one field in query."""
 
-    source_one_description: ClassVar[str] = "Subtitle text from OCR source one"
-    """Description of source one field."""
+    source_one_description: ClassVar[str] = "Subtitle text from source one"
+    """Description of source one field in query."""
 
     source_two_field: ClassVar[str] = "two"
-    """Field name for OCR source two."""
+    """Name for source two field in query."""
 
-    source_two_description: ClassVar[str] = "Subtitle text from OCR source two"
-    """Description of source two field."""
+    source_two_description: ClassVar[str] = "Subtitle text from source two"
+    """Description of source two field in query."""
 
     # Query validation errors
     source_one_missing_error: ClassVar[str] = (
-        "Subtitle text from OCR source one is required."
+        "Subtitle text from source one is required."
     )
-    """Error message when source one field is missing."""
+    """Error when source one field is missing from query."""
 
     source_two_missing_error: ClassVar[str] = (
-        "Subtitle text from OCR source two is required."
+        "Subtitle text from source two is required."
     )
-    """Error message when source two field is missing."""
+    """Error when source two field is missing from query."""
 
-    sources_equal_error: ClassVar[str] = (
-        "Subtitle text from both OCR sources must differ."
-    )
-    """Error message when source one and two fields are equal."""
+    sources_equal_error: ClassVar[str] = "Subtitle text from two sources must differ."
+    """Error when source one and two fields are equal in query."""
 
     # Answer fields
-    fused_field: ClassVar[str] = "fused"
-    """Field name for fused subtitle text."""
+    output_field: ClassVar[str] = "output"
+    """Name of output field in answer."""
 
-    fused_description: ClassVar[str] = "Merged subtitle text"
-    """Description of fused field."""
+    output_description: ClassVar[str] = "Output subtitle text"
+    """Description of output field in answer."""
 
     note_field: ClassVar[str] = "note"
-    """Field name for explanation of changes."""
+    """Name of note field in answer."""
 
-    note_description: ClassVar[str] = "Explanation of changes made"
-    """Description of note field."""
+    note_description: ClassVar[str] = "Explanation of output"
+    """Description of note field in answer."""
 
     # Answer validation errors
-    fused_missing_error: ClassVar[str] = "Merged subtitle text is required."
-    """Error message when fused field is missing."""
+    output_missing_error: ClassVar[str] = "Output subtitle text is required."
+    """Error when output field is missing from answer."""
 
-    note_missing_error: ClassVar[str] = "Explanation of changes made is required."
-    """Error message when note field is missing."""
+    note_missing_error: ClassVar[str] = "Explanation of output is required."
+    """Error when note field is missing from answer."""

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for English fusion."""
+"""LLM correspondence text for English OCR fusion."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ __all__ = ["EngOcrFusionPrompt"]
 
 
 class EngOcrFusionPrompt(FusionPrompt, EngPrompt):
-    """LLM correspondence text for English fusion."""
+    """LLM correspondence text for English OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -29,27 +29,27 @@ class EngOcrFusionPrompt(FusionPrompt, EngPrompt):
 
     # Query fields
     source_one_field: ClassVar[str] = "lens"
-    """Field name for OCR source one."""
+    """Name of source one field in query."""
 
     source_one_description: ClassVar[str] = "Subtitle text OCRed using Google Lens"
-    """Description of source one field."""
+    """Description of source one field in query."""
 
     source_two_field: ClassVar[str] = "tesseract"
-    """Field name for OCR source two."""
+    """Name for source two field in query."""
 
     source_two_description: ClassVar[str] = "Subtitle text OCRed using Tesseract"
-    """Description of source two field."""
+    """Description of source two field in query."""
 
     # Query validation errors
     source_one_missing_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens is required."
     )
-    """Error message when source one field is missing."""
+    """Error when source one field is missing from query."""
 
     source_two_missing_error: ClassVar[str] = (
         "Subtitle text OCRed using Tesseract is required."
     )
-    """Error message when source two field is missing."""
+    """Error when source two field is missing from query."""
 
     sources_equal_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens and Tesseract must differ."

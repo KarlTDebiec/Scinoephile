@@ -40,7 +40,7 @@ class FusionTestCase(TestCase, ABC):
 
         source_one = getattr(self.query, self.prompt_cls.source_one_field, None)
         source_two = getattr(self.query, self.prompt_cls.source_two_field, None)
-        fused = getattr(self.answer, self.prompt_cls.fused_field, None)
+        fused = getattr(self.answer, self.prompt_cls.output_field, None)
         if source_one is not None and source_two is not None and fused is not None:
             if source_one == fused and "\n" not in source_one:
                 return True
@@ -64,7 +64,7 @@ class FusionTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        if fused := getattr(self.answer, self.prompt_cls.fused_field, None):
+        if fused := getattr(self.answer, self.prompt_cls.output_field, None):
             if "-" in fused or '"' in fused or "“" in fused or "”" in fused:
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty

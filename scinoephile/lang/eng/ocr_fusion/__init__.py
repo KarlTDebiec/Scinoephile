@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to English fusion."""
+"""Code related to English OCR fusion."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ __all__ = [
 def get_default_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt,
 ) -> list[FusionTestCase]:
-    """Get default English fusion test cases included with package.
+    """Get default English OCR fusion test cases included with package.
 
     Arguments:
         prompt_cls: prompt class to use for test cases
@@ -44,7 +44,7 @@ def get_default_eng_ocr_fusion_test_cases(
             + get_t_eng_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for English fusion:\n{exc}")
+        warning(f"Default test cases not available for English OCR fusion:\n{exc}")
     return []
 
 

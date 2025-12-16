@@ -4,159 +4,44 @@
 
 from __future__ import annotations
 
+from abc import ABC
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.core.llms import Prompt
 
 __all__ = [
     "ReviewPrompt",
 ]
 
 
-class ReviewPrompt(EngPrompt):
+class ReviewPrompt(Prompt, ABC):
     """Text for LLM correspondence for 粤文 transcription review."""
 
-    # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for performing final review of 粤文 subtitles of Cantonese
-        speech.
-        Each 粤文 subtitle has already been proofed individually against its paired
-        中文 subtitle, and any discrepancies apparent within that pairing have been
-        resolved.
-        Your focus is on resolving issues in the 粤文 subtitle that may not have been
-        apparent within its individual pairing, but which may be apparent when the
-        entire series of subtitles is considered together.
-        You are not reviewing for quality of writing, grammar, or style, only for
-        correctness of the 粤文 transcription.
-        Keeping in mind that the 粤文 subtitle is a transcription of spoken Cantonese,
-        and the 中文 subtitle is not expected to match word-for-word.
-        For each 粤文 subtitle, you are to provide revised 粤文 subtitle only if
-        revisions are necessary.
-        If no revisions are are necessary to a particular 粤文 subtitle, return an
-        empty string for that subtitle.
-        If revisions are needed, return the full revised 粤文 subtitle, and include a
-        note describing in English the changes made.
-        If no revisions are needed return an empty string for the note.""")
-    """Base system prompt."""
-
     # Query fields
-    zhongwen_prefix: ClassVar[str] = "zhongwen_"
-    """Prefix of 中文 field in query."""
+    source_one_field: ClassVar[str] = "one"
+    """Field name for OCR source one."""
 
-    @classmethod
-    def zhongwen_field(cls, idx: int) -> str:
-        """Name of 中文 field in query.
+    source_one_description: ClassVar[str] = "Subtitle text from OCR source one"
+    """Description of source one field."""
 
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            name of 中文 field in query
-        """
-        return f"{cls.zhongwen_prefix}{idx}"
+    source_two_field: ClassVar[str] = "two"
+    """Field name for OCR source two."""
 
-    zhongwen_description_template: ClassVar[str] = "Known 中文 of subtitle {idx}"
-    """Description template for 中文 field in query."""
-
-    @classmethod
-    def zhongwen_description(cls, idx: int) -> str:
-        """Description of 中文 field in query.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            description of 中文 field in query
-        """
-        return cls.zhongwen_description_template.format(idx=idx)
-
-    yuewen_prefix: ClassVar[str] = "yuewen_"
-    """Prefix of 粤文 field in query."""
-
-    @classmethod
-    def yuewen_field(cls, idx: int) -> str:
-        """Name of 粤文 field in query.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            name of 粤文 field in query
-        """
-        return f"{cls.yuewen_prefix}{idx}"
-
-    yuewen_description_template: ClassVar[str] = "Transcribed 粤文 of subtitle {idx}"
-    """Description template for 粤文 field in query."""
-
-    @classmethod
-    def yuewen_description(cls, idx: int) -> str:
-        """Description of 粤文 field in query.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            description of 粤文 field in query
-        """
-        return cls.yuewen_description_template.format(idx=idx)
+    source_two_description: ClassVar[str] = "Subtitle text from OCR source two"
+    """Description of source two field."""
 
     # Answer fields
-    yuewen_revised_prefix: ClassVar[str] = "yuewen_revised_"
-    """Prefix of revised 粤文 field in answer."""
+    fused_field: ClassVar[str] = "output"
+    """Field name for fused subtitle text."""
 
-    @classmethod
-    def yuewen_revised_field(cls, idx: int) -> str:
-        """Name of revised 粤文 field in answer.
+    fused_description: ClassVar[str] = "Merged subtitle text"
+    """Description of fused field."""
 
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            name of revised 粤文 field in answer
-        """
-        return f"{cls.yuewen_revised_prefix}{idx}"
+    note_field: ClassVar[str] = "note"
+    """Field name for explanation of changes."""
 
-    yuewen_revised_description_template: ClassVar[str] = (
-        "Revised 粤文 of subtitle {idx}"
-    )
-    """Description template for revised 粤文 field in answer."""
-
-    @classmethod
-    def yuewen_revised_description(cls, idx: int) -> str:
-        """Description of revised 粤文 field in answer.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            description of revised 粤文 field in answer
-        """
-        return cls.yuewen_revised_description_template.format(idx=idx)
-
-    note_prefix: ClassVar[str] = "note_"
-    """Prefix of note field in answer."""
-
-    @classmethod
-    def note_field(cls, idx: int) -> str:
-        """Name of note field in answer.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            name of note field in answer
-        """
-        return f"{cls.note_prefix}{idx}"
-
-    note_description_template: ClassVar[str] = (
-        "Note concerning revision of subtitle {idx}"
-    )
-    """Description template for note field in answer."""
-
-    @classmethod
-    def note_description(cls, idx: int) -> str:
-        """Description of note field in answer.
-
-        Arguments:
-            idx: index of subtitle
-        Returns:
-            description of note field in answer
-        """
-        return cls.note_description_template.format(idx=idx)
+    note_description: ClassVar[str] = "Explanation of changes made"
+    """Description of note field."""
 
     # Test case validation errors
     yuewen_unmodified_error_template: ClassVar[str] = (
