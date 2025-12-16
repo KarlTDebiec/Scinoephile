@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription shifting answers."""
+"""ABC for 粤文 transcription shifting answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["ShiftingAnswer"]
 
 
 class ShiftingAnswer(Answer, ABC):
-    """Abstract base class for 粤文 transcription shifting answers."""
+    """ABC for 粤文 transcription shifting answers."""
 
     prompt_cls: ClassVar[type[ShiftingPrompt]]
     """Text for LLM correspondence."""

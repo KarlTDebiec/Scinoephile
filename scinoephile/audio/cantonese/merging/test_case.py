@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 merging test cases."""
+"""ABC for 粤文 merging test cases."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ __all__ = ["MergingTestCase"]
 
 
 class MergingTestCase(TestCase, ABC):
-    """Abstract base class for 粤文 merging test cases."""
+    """ABC for 粤文 merging test cases."""
 
     answer_cls: ClassVar[type[MergingAnswer]]
     """Answer class for this test case."""

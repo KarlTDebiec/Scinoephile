@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM queryers."""
+"""ABC for LLM queryers."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ class Queryer[
     TTestCase: TestCase,
     TPrompt: Prompt,
 ](ABC):
-    """Abstract base class for LLM queryers."""
+    """ABC for LLM queryers."""
 
     prompt_cls: ClassVar[type[Prompt]]
     """Text for LLM correspondence."""

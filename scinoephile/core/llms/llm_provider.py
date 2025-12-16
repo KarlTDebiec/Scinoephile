@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM providers."""
+"""ABC for LLM providers."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["LLMProvider"]
 
 
 class LLMProvider(ABC):
-    """Abstract base class for LLM providers."""
+    """ABC for LLM providers."""
 
     @abstractmethod
     def chat_completion(

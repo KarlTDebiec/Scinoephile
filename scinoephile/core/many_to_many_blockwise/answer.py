@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription review answers."""
+"""ABC for many-to-many blockwise answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["ManyToManyBlockwiseAnswer"]
 
 
 class ManyToManyBlockwiseAnswer(Answer, ABC):
-    """Abstract base class for 粤文 transcription review answers."""
+    """ABC for many-to-many blockwise answers."""
 
     prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
     """Text for LLM correspondence."""
@@ -45,8 +45,8 @@ class ManyToManyBlockwiseAnswer(Answer, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.yuewen_revised_field(idx + 1)
-            description = prompt_cls.yuewen_revised_description(idx + 1)
+            key = prompt_cls.output(idx + 1)
+            description = prompt_cls.output_desc(idx + 1)
             fields[key] = (str, Field("", description=description))
             key = prompt_cls.note(idx + 1)
             description = prompt_cls.note_desc(idx + 1)

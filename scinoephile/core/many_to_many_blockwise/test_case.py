@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription review test cases."""
+"""ABC for many-to-many blockwise test cases."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = ["ManyToManyBlockwiseTestCase"]
 
 
 class ManyToManyBlockwiseTestCase(TestCase, ABC):
-    """Abstract base class for 粤文 transcription review test cases."""
+    """ABC for many-to-many blockwise test cases."""
 
     answer_cls: ClassVar[type[ManyToManyBlockwiseAnswer]]
     """Answer class for this test case."""
@@ -40,23 +40,21 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
             return self
 
         for idx in range(self.size):
-            yuewen = getattr(self.query, self.prompt_cls.yuewen_field(idx + 1))
-            yuewen_revised = getattr(
-                self.answer, self.prompt_cls.yuewen_revised_field(idx + 1)
-            )
+            source_one = getattr(self.query, self.prompt_cls.source_one(idx + 1))
+            output = getattr(self.answer, self.prompt_cls.output(idx + 1))
             note = getattr(self.answer, self.prompt_cls.note(idx + 1))
-            if yuewen_revised != "":
-                if yuewen_revised == yuewen:
-                    raise ValueError(self.prompt_cls.yuewen_unmodified_error(idx + 1))
+            if output != "":
+                if output == source_one:
+                    raise ValueError(
+                        self.prompt_cls.output_present_but_unmodified_err(idx + 1)
+                    )
                 if note == "":
                     raise ValueError(
-                        self.prompt_cls.yuewen_revised_provided_note_missing_err(
-                            idx + 1
-                        )
+                        self.prompt_cls.output_present_note_missing_err(idx + 1)
                     )
             elif note != "":
                 raise ValueError(
-                    self.prompt_cls.yuewen_revised_missing_note_provided_error(idx + 1)
+                    self.prompt_cls.output_missing_note_present_err(idx + 1)
                 )
         return self
 
@@ -99,6 +97,6 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
         """
         prompt_cls = kwargs.get("prompt_cls", ManyToManyBlockwisePrompt)
         size = sum(
-            1 for key in data["query"] if key.startswith(prompt_cls.zhongwen_prefix)
+            1 for key in data["query"] if key.startswith(prompt_cls.source_one_pfx)
         )
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)

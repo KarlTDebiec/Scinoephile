@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM test cases."""
+"""ABC for LLM test cases."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = ["TestCase"]
 
 
 class TestCase(BaseModel, ABC):
-    """Abstract base class for LLM test cases."""
+    """ABC for LLM test cases."""
 
     __test__ = False
     """Inform pytest not to collect this class as a test case."""

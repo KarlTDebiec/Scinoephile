@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription translation test cases."""
+"""ABC for 粤文 transcription translation test cases."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ __all__ = ["TranslationTestCase"]
 
 
 class TranslationTestCase(TestCase, ABC):
-    """Abstract base class for 粤文 transcription translation test cases."""
+    """ABC for 粤文 transcription translation test cases."""
 
     answer_cls: ClassVar[type[TranslationAnswer]]
     """Answer class for this test case."""

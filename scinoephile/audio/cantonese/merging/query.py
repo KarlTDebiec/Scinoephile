@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription merging queries."""
+"""ABC for 粤文 transcription merging queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["MergingQuery"]
 
 
 class MergingQuery(Query, ABC):
-    """Abstract base class for 粤文 transcription merging queries."""
+    """ABC for 粤文 transcription merging queries."""
 
     prompt_cls: ClassVar[type[MergingPrompt]]
     """Text for LLM correspondence."""
