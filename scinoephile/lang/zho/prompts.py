@@ -57,13 +57,13 @@ class ZhoHansPrompt(Prompt, ABC):
     """Text following test case validation errors."""
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
-        """Automatically convert string class attributes using OpenCC configuration.
+        """Automatically convert class attributes using OpenCC configuration.
 
-        This metaclass hook automatically converts string class attributes from
-        simplified to traditional Chinese (or vice versa) when a subclass sets
-        `opencc_config`. It walks through the method resolution order (MRO) and
-        converts any string attributes inherited from parent classes that have not
-        been explicitly overridden in the subclass.
+        This metaclass hook automatically converts class attributes from simplified
+        to traditional Chinese (or vice versa) when a subclass sets `opencc_config`.
+        It walks through the method resolution order (MRO) and converts string values
+        as well as strings within tuples, lists, and dictionaries inherited from
+        parent classes that have not been explicitly overridden in the subclass.
 
         Arguments:
             **kwargs: Additional keyword arguments passed to parent __init_subclass__
