@@ -28,7 +28,7 @@ class FusionTestCase(TestCase, ABC):
     query_cls: ClassVar[type[FusionQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[FusionPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def get_auto_verified(self) -> bool:
         """Whether this test case should automatically be verified."""
@@ -78,7 +78,7 @@ class FusionTestCase(TestCase, ABC):
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

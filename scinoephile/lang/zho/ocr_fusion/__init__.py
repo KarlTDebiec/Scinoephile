@@ -28,7 +28,7 @@ def get_default_zho_ocr_fusion_test_cases(
     """Get default 中文 OCR fusion test cases included with package.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
     Returns:
         default test cases
     """

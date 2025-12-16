@@ -24,7 +24,7 @@ class ManyToManyBlockwiseQuery(Query, ABC):
     """Abstract base class for 粤文 transcription review queries."""
 
     prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -40,18 +40,18 @@ class ManyToManyBlockwiseQuery(Query, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Query type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.zhongwen_field(idx + 1)
-            description = prompt_cls.zhongwen_description(idx + 1)
+            key = prompt_cls.source_one(idx + 1)
+            description = prompt_cls.source_one_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
-            key = prompt_cls.yuewen_field(idx + 1)
-            description = prompt_cls.yuewen_description(idx + 1)
+            key = prompt_cls.source_two(idx + 1)
+            description = prompt_cls.source_two_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

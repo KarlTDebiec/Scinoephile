@@ -27,7 +27,7 @@ def get_default_eng_ocr_fusion_test_cases(
     """Get default English OCR fusion test cases included with package.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
     Returns:
         default test cases
     """

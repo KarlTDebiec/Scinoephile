@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for many-to-many blockwise issues."""
+"""Text for LLM correspondence for many-to-many blockwise matters."""
 
 from __future__ import annotations
 
@@ -9,13 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = [
-    "ManyToManyBlockwisePrompt",
-]
+__all__ = ["ManyToManyBlockwisePrompt"]
 
 
 class ManyToManyBlockwisePrompt(Prompt, ABC):
-    """Text for LLM correspondence for many-to-many blockwise issues."""
+    """Text for LLM correspondence for many-to-many blockwise matters."""
 
     # Query fields
     source_one_pfx: ClassVar[str] = "one_"

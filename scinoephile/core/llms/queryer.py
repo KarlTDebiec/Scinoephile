@@ -37,7 +37,7 @@ class Queryer[
     """Abstract base class for LLM queryers."""
 
     prompt_cls: ClassVar[type[Prompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def __init__(
         self,
@@ -335,7 +335,7 @@ class Queryer[
         """Get concrete queryer class with provided text.
 
         Arguments:
-            prompt_cls: Prompt class providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             LLMQueryer type with appropriate text
         """

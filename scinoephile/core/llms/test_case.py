@@ -28,7 +28,7 @@ class TestCase(BaseModel, ABC):
     query_cls: ClassVar[type[Query]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[Prompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def __str__(self) -> str:
         """String representation."""
@@ -82,7 +82,7 @@ class TestCase(BaseModel, ABC):
         Arguments:
             query_cls: Query class for this test case
             answer_cls: Answer class for this test case
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             fields dictionary for dynamic TestCase class creation
         """

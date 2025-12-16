@@ -22,7 +22,7 @@ class FusionAnswer(Answer, ABC):
     """ABC for fusion answers."""
 
     prompt_cls: ClassVar[type[FusionPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
@@ -42,7 +42,7 @@ class FusionAnswer(Answer, ABC):
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

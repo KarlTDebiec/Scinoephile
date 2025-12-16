@@ -12,9 +12,7 @@ from scinoephile.core.llms import Prompt
 
 from .conversion import OpenCCConfig, get_zho_text_converted
 
-__all__ = [
-    "ZhoHansPrompt",
-]
+__all__ = ["ZhoHansPrompt"]
 
 
 class ZhoHansPrompt(Prompt, ABC):

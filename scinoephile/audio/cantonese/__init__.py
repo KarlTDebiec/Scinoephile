@@ -8,6 +8,4 @@ from scinoephile.audio.cantonese.cantonese_transcription_reviewer import (
     CantoneseTranscriptionReviewer,
 )
 
-__all__ = [
-    "CantoneseTranscriptionReviewer",
-]
+__all__ = ["CantoneseTranscriptionReviewer"]

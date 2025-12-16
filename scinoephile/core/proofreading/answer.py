@@ -22,7 +22,7 @@ class ProofreadingAnswer(Answer, ABC):
     """ABC for proofreading answers."""
 
     prompt_cls: ClassVar[type[ProofreadingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -38,7 +38,7 @@ class ProofreadingAnswer(Answer, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

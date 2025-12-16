@@ -19,7 +19,7 @@ class Answer(BaseModel, ABC):
     """Abstract base class for LLM answers."""
 
     prompt_cls: ClassVar[type[Prompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def __str__(self) -> str:
         """String representation."""

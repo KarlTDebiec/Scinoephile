@@ -22,7 +22,7 @@ class ManyToManyBlockwiseAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription review answers."""
 
     prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -38,7 +38,7 @@ class ManyToManyBlockwiseAnswer(Answer, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

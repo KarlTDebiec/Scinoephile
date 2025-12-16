@@ -22,7 +22,7 @@ class ShiftingAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription shifting answers."""
 
     prompt_cls: ClassVar[type[ShiftingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @classmethod
     @cache
@@ -33,7 +33,7 @@ class ShiftingAnswer(Answer, ABC):
         """Get concrete answer class with provided configuartion.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

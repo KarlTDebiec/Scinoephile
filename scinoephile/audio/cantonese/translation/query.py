@@ -23,7 +23,7 @@ class TranslationQuery(Query, ABC):
     """Abstract base class for 粤文 transcription translation queries."""
 
     prompt_cls: ClassVar[type[TranslationPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -43,7 +43,7 @@ class TranslationQuery(Query, ABC):
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Query type with appropriate configuration
         """

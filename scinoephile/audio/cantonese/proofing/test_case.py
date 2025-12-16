@@ -28,7 +28,7 @@ class ProofingTestCase(TestCase, ABC):
     query_cls: ClassVar[type[ProofingQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[ProofingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -79,7 +79,7 @@ class ProofingTestCase(TestCase, ABC):
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

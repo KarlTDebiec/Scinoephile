@@ -22,7 +22,7 @@ class FusionQuery(Query, ABC):
     """ABC for fusion queries."""
 
     prompt_cls: ClassVar[type[FusionPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_query(self) -> Self:
@@ -46,7 +46,7 @@ class FusionQuery(Query, ABC):
         """Get concrete query class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Query type with appropriate configuration
         """

@@ -220,7 +220,7 @@ def get_mlamd_yue_translation_test_cases(
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -239,7 +239,7 @@ def get_mlamd_yue_review_test_cases(
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -258,7 +258,7 @@ def get_mlamd_eng_proofreading_test_cases(
     """Get MLAMD English proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -277,7 +277,7 @@ def get_mlamd_zho_proofreading_test_cases(
     """Get MLAMD 中文 proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -295,7 +295,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     """Get MLAMD English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -313,7 +313,7 @@ def get_mlamd_zho_ocr_fusion_test_cases(
     """Get MLAMD 中文 OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases

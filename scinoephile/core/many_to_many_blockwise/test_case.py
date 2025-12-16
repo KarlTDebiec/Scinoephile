@@ -28,7 +28,7 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
     query_cls: ClassVar[type[ManyToManyBlockwiseQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -71,7 +71,7 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

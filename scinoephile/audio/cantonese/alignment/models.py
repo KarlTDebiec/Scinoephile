@@ -13,9 +13,7 @@ from scinoephile.core import ScinoephileError
 
 from .alignment import Alignment
 
-__all__ = [
-    "get_translate_models",
-]
+__all__ = ["get_translate_models"]
 
 
 def get_translate_models(

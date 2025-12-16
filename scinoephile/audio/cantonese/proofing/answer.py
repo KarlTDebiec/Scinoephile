@@ -22,7 +22,7 @@ class ProofingAnswer(Answer, ABC):
     """Abstract base class for 粤文 transcription proofing answers."""
 
     prompt_cls: ClassVar[type[ProofingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
@@ -42,7 +42,7 @@ class ProofingAnswer(Answer, ABC):
         """Get concrete answer class with provided configuartion.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """
