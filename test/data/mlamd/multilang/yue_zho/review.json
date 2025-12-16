@@ -758,8 +758,8 @@
       "yuewen_7": "吓，咪我饮晒㖞！"
     },
     "answer": {
-      "yuewen_revised_7": "吓，我饮晒㖞！",
-      "note_7": "Manually overridden; '咪' is an error in transcription."
+      "xiugai_yuewen_7": "吓，我饮晒㖞！",
+      "beizhu_7": "Manually overridden; '咪' is an error in transcription."
     },
     "verified": true
   },
@@ -1043,8 +1043,8 @@
       "yuewen_10": "醒梦你！"
     },
     "answer": {
-      "yuewen_revised_6": "拜你个头！",
-      "note_6": "Removed 嘅 at the end to better match natural spoken Cantonese and the tone of the exclamation, as 嘅 is unnecessary and not idiomatic in this context."
+      "xiugai_yuewen_6": "拜你个头！",
+      "beizhu_6": "Removed 嘅 at the end to better match natural spoken Cantonese and the tone of the exclamation, as 嘅 is unnecessary and not idiomatic in this context."
     },
     "verified": true
   },
@@ -1448,8 +1448,8 @@
       "yuewen_21": "先至可以练成呢一只举世无双嘅脚瓜？"
     },
     "answer": {
-      "yuewen_revised_18": "要行过几多座山",
-      "note_18": "Removed the question mark to match the 中文."
+      "xiugai_yuewen_18": "要行过几多座山",
+      "beizhu_18": "Removed the question mark to match the 中文."
     },
     "verified": true
   },

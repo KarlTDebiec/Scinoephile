@@ -183,7 +183,7 @@ def get_t_eng_proofreading_test_cases(
     Returns:
         English proofreading test cases
     """
-    path = title_root / "eng" / "proofreading.json"
+    path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -202,7 +202,7 @@ def get_t_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -220,7 +220,7 @@ def get_t_eng_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "eng" / "ocr_fusion.json"
+    path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -238,7 +238,7 @@ def get_t_zho_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "zho" / "ocr_fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )

@@ -18,13 +18,12 @@ from scinoephile.core.llms import (
     save_test_cases_to_json,
 )
 from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
+from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
 from .prompts import YueHansReviewPrompt
 
 __all__ = ["YueVsZhoReviewer"]
-
-from ...synchronization import are_series_one_to_one
 
 
 class YueVsZhoReviewer:

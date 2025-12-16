@@ -80,7 +80,7 @@ if "简体中文 (OCR)" in actions:
         test_cases=get_kob_zho_ocr_fusion_test_cases()
         + get_mnt_zho_ocr_fusion_test_cases()
         + get_t_zho_ocr_fusion_test_cases(),
-        test_case_path=title_root / "zho" / "ocr_fusion.json",
+        test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
         auto_verify=True,
     )
     zho_hans_fuse = get_zho_ocr_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
@@ -91,7 +91,7 @@ if "简体中文 (OCR)" in actions:
         test_cases=get_kob_zho_proofreading_test_cases()
         + get_mnt_zho_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),
-        test_case_path=title_root / "zho" / "proofreading.json",
+        test_case_path=title_root / "lang" / "zho" / "proofreading.json",
         auto_verify=True,
     )
     zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
@@ -114,7 +114,7 @@ if "English (OCR)" in actions:
         test_cases=get_kob_eng_ocr_fusion_test_cases()
         + get_mnt_eng_ocr_fusion_test_cases()
         + get_t_eng_ocr_fusion_test_cases(),
-        test_case_path=title_root / "eng" / "ocr_fusion.json",
+        test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
         auto_verify=True,
     )
     eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)
@@ -123,7 +123,7 @@ if "English (OCR)" in actions:
         test_cases=get_kob_eng_proofreading_test_cases()
         + get_mnt_eng_proofreading_test_cases()
         + get_t_eng_proofreading_test_cases(),
-        test_case_path=title_root / "eng" / "proofreading.json",
+        test_case_path=title_root / "lang" / "eng" / "proofreading.json",
         auto_verify=True,
     )
     eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)

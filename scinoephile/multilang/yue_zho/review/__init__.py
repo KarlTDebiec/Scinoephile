@@ -4,9 +4,11 @@
 
 from __future__ import annotations
 
+from logging import warning
 from typing import Any
 
 from scinoephile.core import Series
+from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 
 from .prompts import (
     YueHansReviewPrompt,
@@ -17,9 +19,31 @@ from .reviewer import YueVsZhoReviewer
 __all__ = [
     "YueHansReviewPrompt",
     "YueHantReviewPrompt",
+    "get_default_yue_vs_zho_test_cases",
     "get_yue_vs_zho_reviewed",
     "get_yue_vs_zho_reviewer",
 ]
+
+# noinspection PyUnusedImports
+
+
+def get_default_yue_vs_zho_test_cases(
+    prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
+) -> list[ManyToManyBlockwiseTestCase]:
+    """Get default test cases included with package.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+    Returns:
+        default test cases
+    """
+    try:
+        from test.data.mlamd import get_mlamd_yue_vs_zho_review_test_cases
+
+        return get_mlamd_yue_vs_zho_review_test_cases(prompt_cls)
+    except ImportError as exc:
+        warning(f"Default test cases not available for 粤文 vs.中文 review:\n{exc}")
+    return []
 
 
 def get_yue_vs_zho_reviewed(
@@ -57,6 +81,8 @@ def get_yue_vs_zho_reviewer(
     Returns:
         YueZhoReviewer with provided configuration
     """
+    if default_test_cases is None:
+        default_test_cases = get_default_yue_vs_zho_test_cases(prompt_cls)
     return YueVsZhoReviewer(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
