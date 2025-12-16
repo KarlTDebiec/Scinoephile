@@ -20,8 +20,11 @@ from scinoephile.audio.cantonese.translation import (
 from scinoephile.core import Series
 from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.many_to_many_blockwise import (
+    ManyToManyBlockwisePrompt,
+    ManyToManyBlockwiseTestCase,
+)
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.review import ReviewPrompt, ReviewTestCase
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
@@ -230,9 +233,9 @@ def get_mlamd_yue_translation_test_cases(
 
 @cache
 def get_mlamd_yue_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ReviewPrompt,
+    prompt_cls: type[ProofreadingPrompt] = ManyToManyBlockwisePrompt,
     **kwargs: Any,
-) -> list[ReviewTestCase]:
+) -> list[ManyToManyBlockwiseTestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
@@ -243,7 +246,7 @@ def get_mlamd_yue_review_test_cases(
     """
     path = title_root / "audio" / "cantonese" / "review.json"
     return load_test_cases_from_json(
-        path, ReviewTestCase, prompt_cls=prompt_cls, **kwargs
+        path, ManyToManyBlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 

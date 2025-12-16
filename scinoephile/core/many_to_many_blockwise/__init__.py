@@ -8,14 +8,14 @@ a revised version of the first series.
 
 from __future__ import annotations
 
-from .answer import ReviewAnswer
-from .prompt import ReviewPrompt
-from .query import ReviewQuery
-from .test_case import ReviewTestCase
+from .answer import ManyToManyBlockwiseAnswer
+from .prompt import ManyToManyBlockwisePrompt
+from .query import ManyToManyBlockwiseQuery
+from .test_case import ManyToManyBlockwiseTestCase
 
 __all__ = [
-    "ReviewAnswer",
-    "ReviewPrompt",
-    "ReviewQuery",
-    "ReviewTestCase",
+    "ManyToManyBlockwiseAnswer",
+    "ManyToManyBlockwisePrompt",
+    "ManyToManyBlockwiseQuery",
+    "ManyToManyBlockwiseTestCase",
 ]

@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
-from scinoephile.core.review import ReviewPrompt
+from typing import ClassVar
+
+from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwisePrompt
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 
@@ -14,11 +16,11 @@ __all__ = [
 ]
 
 
-class YueHansReviewPrompt(ReviewPrompt, YueHansPrompt):
+class YueHansReviewPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     """LLM correspondence text for 简体粤文 review against 中文."""
 
     # Prompt
-    base_system_prompt: str = ""
+    base_system_prompt: ClassVar[str] = ""
     """Base system prompt."""
 
 

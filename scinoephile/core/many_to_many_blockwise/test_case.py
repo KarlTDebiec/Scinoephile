@@ -13,21 +13,21 @@ from pydantic import create_model, model_validator
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
-from .answer import ReviewAnswer
-from .prompt import ReviewPrompt
-from .query import ReviewQuery
+from .answer import ManyToManyBlockwiseAnswer
+from .prompt import ManyToManyBlockwisePrompt
+from .query import ManyToManyBlockwiseQuery
 
-__all__ = ["ReviewTestCase"]
+__all__ = ["ManyToManyBlockwiseTestCase"]
 
 
-class ReviewTestCase(TestCase, ABC):
+class ManyToManyBlockwiseTestCase(TestCase, ABC):
     """Abstract base class for 粤文 transcription review test cases."""
 
-    answer_cls: ClassVar[type[ReviewAnswer]]
+    answer_cls: ClassVar[type[ManyToManyBlockwiseAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ReviewQuery]]
+    query_cls: ClassVar[type[ManyToManyBlockwiseQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[ReviewPrompt]]
+    prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
     """Text strings to be used for corresponding with LLM."""
 
     size: ClassVar[int]
@@ -44,13 +44,13 @@ class ReviewTestCase(TestCase, ABC):
             yuewen_revised = getattr(
                 self.answer, self.prompt_cls.yuewen_revised_field(idx + 1)
             )
-            note = getattr(self.answer, self.prompt_cls.note_field(idx + 1))
+            note = getattr(self.answer, self.prompt_cls.note(idx + 1))
             if yuewen_revised != "":
                 if yuewen_revised == yuewen:
                     raise ValueError(self.prompt_cls.yuewen_unmodified_error(idx + 1))
                 if note == "":
                     raise ValueError(
-                        self.prompt_cls.yuewen_revised_provided_note_missing_error(
+                        self.prompt_cls.yuewen_revised_provided_note_missing_err(
                             idx + 1
                         )
                     )
@@ -65,7 +65,7 @@ class ReviewTestCase(TestCase, ABC):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[ReviewPrompt] = ReviewPrompt,
+        prompt_cls: type[ManyToManyBlockwisePrompt] = ManyToManyBlockwisePrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -76,8 +76,8 @@ class ReviewTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = ReviewQuery.get_query_cls(size, prompt_cls)
-        answer_cls = ReviewAnswer.get_answer_cls(size, prompt_cls)
+        query_cls = ManyToManyBlockwiseQuery.get_query_cls(size, prompt_cls)
+        answer_cls = ManyToManyBlockwiseAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
@@ -97,7 +97,7 @@ class ReviewTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", ReviewPrompt)
+        prompt_cls = kwargs.get("prompt_cls", ManyToManyBlockwisePrompt)
         size = sum(
             1 for key in data["query"] if key.startswith(prompt_cls.zhongwen_prefix)
         )
