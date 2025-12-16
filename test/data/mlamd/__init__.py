@@ -53,8 +53,8 @@ __all__ = [
     "get_mlamd_yue_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
-    "get_mlamd_eng_fusion_test_cases",
-    "get_mlamd_zho_fusion_test_cases",
+    "get_mlamd_eng_ocr_fusion_test_cases",
+    "get_mlamd_zho_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -286,7 +286,7 @@ def get_mlamd_zho_proofreading_test_cases(
 
 
 @cache
-def get_mlamd_eng_fusion_test_cases(
+def get_mlamd_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get MLAMD English fusion test cases.
@@ -304,7 +304,7 @@ def get_mlamd_eng_fusion_test_cases(
 
 
 @cache
-def get_mlamd_zho_fusion_test_cases(
+def get_mlamd_zho_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get MLAMD 中文 fusion test cases.

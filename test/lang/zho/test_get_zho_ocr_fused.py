@@ -1,25 +1,25 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.image.zho.get_zho_fused."""
+"""Tests of scinoephile.lang.zho.get_zho_ocr_fused."""
 
 from __future__ import annotations
 
 import pytest
-from scinoephile.lang.zho.fusion import get_zho_fused
 
 from scinoephile.core import Series
-from scinoephile.lang.zho import OpenCCConfig, get_zho_cleaned, get_zho_converted
+from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
+from scinoephile.lang.zho.conversion import OpenCCConfig
 
 
-def _test_get_zho_fused(lens: Series, paddle: Series, expected: Series):
-    """Test get_zho_fused.
+def _test_get_zho_ocr_fused(lens: Series, paddle: Series, expected: Series):
+    """Test get_zho_ocr_fused.
 
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
         expected: expected output series
     """
-    output = get_zho_fused(lens, paddle)
+    output = get_zho_ocr_fused(lens, paddle)
 
     assert len(lens) == len(output)
 
@@ -34,12 +34,12 @@ def _test_get_zho_fused(lens: Series, paddle: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
 
 
-def test_get_zho_fused_kob(
+def test_get_zho_ocr_fused_kob(
     kob_zho_hant_lens: Series,
     kob_zho_hant_paddle: Series,
     kob_zho_hant_fuse: Series,
 ):
-    """Test get_zho_fused with KOB 中文 subtitles.
+    """Test get_zho_ocr_fused with KOB 中文 subtitles.
 
     Arguments:
         kob_zho_hant_lens: KOB 中文 subtitles OCRed using Google Lens fixture
@@ -50,15 +50,15 @@ def test_get_zho_fused_kob(
     lens = get_zho_converted(lens, config=OpenCCConfig.s2t)
     paddle = get_zho_cleaned(kob_zho_hant_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle, config=OpenCCConfig.s2t)
-    _test_get_zho_fused(lens, paddle, kob_zho_hant_fuse)
+    _test_get_zho_ocr_fused(lens, paddle, kob_zho_hant_fuse)
 
 
-def test_get_zho_fused_mlamd(
+def test_get_zho_ocr_fused_mlamd(
     mlamd_zho_hans_lens: Series,
     mlamd_zho_hans_paddle: Series,
     mlamd_zho_hans_fuse: Series,
 ):
-    """Test get_zho_fused with MLAMD 中文 subtitles.
+    """Test get_zho_ocr_fused with MLAMD 中文 subtitles.
 
     Arguments:
         mlamd_zho_hans_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
@@ -69,15 +69,15 @@ def test_get_zho_fused_mlamd(
     lens = get_zho_converted(lens)
     paddle = get_zho_cleaned(mlamd_zho_hans_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle)
-    _test_get_zho_fused(lens, paddle, mlamd_zho_hans_fuse)
+    _test_get_zho_ocr_fused(lens, paddle, mlamd_zho_hans_fuse)
 
 
-def test_get_zho_fused_mnt(
+def test_get_zho_ocr_fused_mnt(
     mnt_zho_hans_lens: Series,
     mnt_zho_hans_paddle: Series,
     mnt_zho_hans_fuse: Series,
 ):
-    """Test get_zho_fused with MNT 中文 subtitles.
+    """Test get_zho_ocr_fused with MNT 中文 subtitles.
 
     Arguments:
         mnt_zho_hans_lens: MNT 中文 subtitles OCRed using Google Lens fixture
@@ -88,15 +88,15 @@ def test_get_zho_fused_mnt(
     lens = get_zho_converted(lens)
     paddle = get_zho_cleaned(mnt_zho_hans_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle)
-    _test_get_zho_fused(lens, paddle, mnt_zho_hans_fuse)
+    _test_get_zho_ocr_fused(lens, paddle, mnt_zho_hans_fuse)
 
 
-def test_get_zho_fused_t(
+def test_get_zho_ocr_fused_t(
     t_zho_hans_lens: Series,
     t_zho_hans_paddle: Series,
     t_zho_hans_fuse: Series,
 ):
-    """Test get_zho_fused with T 中文 subtitles.
+    """Test get_zho_ocr_fused with T 中文 subtitles.
 
     Arguments:
         t_zho_hans_lens: T 中文 subtitles OCRed using Google Lens fixture
@@ -107,4 +107,4 @@ def test_get_zho_fused_t(
     lens = get_zho_converted(lens)
     paddle = get_zho_cleaned(t_zho_hans_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle)
-    _test_get_zho_fused(lens, paddle, t_zho_hans_fuse)
+    _test_get_zho_ocr_fused(lens, paddle, t_zho_hans_fuse)

@@ -33,16 +33,16 @@ def get_default_zho_ocr_fusion_test_cases(
         default test cases
     """
     try:
-        from test.data.kob import get_kob_zho_fusion_test_cases
-        from test.data.mlamd import get_mlamd_zho_fusion_test_cases
-        from test.data.mnt import get_mnt_zho_fusion_test_cases
-        from test.data.t import get_t_zho_fusion_test_cases
+        from test.data.kob import get_kob_zho_ocr_fusion_test_cases
+        from test.data.mlamd import get_mlamd_zho_ocr_fusion_test_cases
+        from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases
+        from test.data.t import get_t_zho_ocr_fusion_test_cases
 
         return (
-            get_kob_zho_fusion_test_cases(prompt_cls)
-            + get_mlamd_zho_fusion_test_cases(prompt_cls)
-            + get_mnt_zho_fusion_test_cases(prompt_cls)
-            + get_t_zho_fusion_test_cases(prompt_cls)
+            get_kob_zho_ocr_fusion_test_cases(prompt_cls)
+            + get_mlamd_zho_ocr_fusion_test_cases(prompt_cls)
+            + get_mnt_zho_ocr_fusion_test_cases(prompt_cls)
+            + get_t_zho_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
         warning(f"Default test cases not available for 中文 fusion:\n{exc}")

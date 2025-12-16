@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for OCR fusion queries."""
+"""ABC for fusion queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["FusionQuery"]
 
 
 class FusionQuery(Query, ABC):
-    """ABC for OCR fusion queries."""
+    """ABC for fusion queries."""
 
     prompt_cls: ClassVar[type[FusionPrompt]]
     """Text strings to be used for corresponding with LLM."""

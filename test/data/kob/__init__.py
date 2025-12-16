@@ -40,8 +40,8 @@ __all__ = [
     "kob_yue_hans_eng",
     "get_kob_eng_proofreading_test_cases",
     "get_kob_zho_proofreading_test_cases",
-    "get_kob_eng_fusion_test_cases",
-    "get_kob_zho_fusion_test_cases",
+    "get_kob_eng_ocr_fusion_test_cases",
+    "get_kob_zho_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -196,7 +196,7 @@ def get_kob_zho_proofreading_test_cases(
 
 
 @cache
-def get_kob_eng_fusion_test_cases(
+def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB English fusion test cases.
@@ -214,7 +214,7 @@ def get_kob_eng_fusion_test_cases(
 
 
 @cache
-def get_kob_zho_fusion_test_cases(
+def get_kob_zho_ocr_fusion_test_cases(
     prompt_cls: type[FusionPrompt] = ZhoHantOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get KOB 中文 fusion test cases.

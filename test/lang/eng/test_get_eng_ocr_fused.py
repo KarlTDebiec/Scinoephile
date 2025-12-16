@@ -1,25 +1,24 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.image.eng.get_eng_fused."""
+"""Tests of scinoephile.lang.eng.get_eng_ocr_fused."""
 
 from __future__ import annotations
 
 import pytest
-from scinoephile.lang.eng.fusion import get_eng_fused
 
 from scinoephile.core import Series
-from scinoephile.lang.eng import get_eng_cleaned
+from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
 
 
-def _test_get_eng_fused(lens: Series, tesseract: Series, expected: Series):
-    """Test get_eng_fused.
+def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):
+    """Test get_eng_ocr_fused.
 
     Arguments:
         lens: subtitles OCRed using Google Lens
         tesseract: subtitles OCRed using Tesseract
         expected: expected output series
     """
-    output = get_eng_fused(lens, tesseract)
+    output = get_eng_ocr_fused(lens, tesseract)
 
     assert len(lens) == len(output)
 
@@ -34,7 +33,7 @@ def _test_get_eng_fused(lens: Series, tesseract: Series, expected: Series):
         pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
 
 
-def test_get_eng_fused_kob(
+def test_get_eng_ocr_fused_kob(
     kob_eng_lens: Series,
     kob_eng_tesseract: Series,
     kob_eng_fuse: Series,
@@ -48,15 +47,15 @@ def test_get_eng_fused_kob(
     """
     lens = get_eng_cleaned(kob_eng_lens, remove_empty=False)
     tesseract = get_eng_cleaned(kob_eng_tesseract, remove_empty=False)
-    _test_get_eng_fused(lens, tesseract, kob_eng_fuse)
+    _test_get_eng_ocr_fused(lens, tesseract, kob_eng_fuse)
 
 
-def test_get_eng_fused_mlamd(
+def test_get_eng_ocr_fused_mlamd(
     mlamd_eng_lens: Series,
     mlamd_eng_tesseract: Series,
     mlamd_eng_fuse: Series,
 ):
-    """Test get_eng_fused with MLAMD English subtitles.
+    """Test get_eng_ocr_fused with MLAMD English subtitles.
 
     Arguments:
         mlamd_eng_lens: MLAMD English subtitles OCRed using Google Lens fixture
@@ -65,15 +64,15 @@ def test_get_eng_fused_mlamd(
     """
     lens = get_eng_cleaned(mlamd_eng_lens, remove_empty=False)
     tesseract = get_eng_cleaned(mlamd_eng_tesseract, remove_empty=False)
-    _test_get_eng_fused(lens, tesseract, mlamd_eng_fuse)
+    _test_get_eng_ocr_fused(lens, tesseract, mlamd_eng_fuse)
 
 
-def test_get_eng_fused_mnt(
+def test_get_eng_ocr_fused_mnt(
     mnt_eng_lens: Series,
     mnt_eng_tesseract: Series,
     mnt_eng_fuse: Series,
 ):
-    """Test get_eng_fused with MNT English subtitles.
+    """Test get_eng_ocr_fused with MNT English subtitles.
 
     Arguments:
         mnt_eng_lens: MNT English subtitles OCRed using Google Lens fixture
@@ -82,15 +81,15 @@ def test_get_eng_fused_mnt(
     """
     lens = get_eng_cleaned(mnt_eng_lens, remove_empty=False)
     tesseract = get_eng_cleaned(mnt_eng_tesseract, remove_empty=False)
-    _test_get_eng_fused(lens, tesseract, mnt_eng_fuse)
+    _test_get_eng_ocr_fused(lens, tesseract, mnt_eng_fuse)
 
 
-def test_get_eng_fused_t(
+def test_get_eng_ocr_fused_t(
     t_eng_lens: Series,
     t_eng_tesseract: Series,
     t_eng_fuse: Series,
 ):
-    """Test get_eng_fused with T English subtitles.
+    """Test get_eng_ocr_fused with T English subtitles.
 
     Arguments:
         t_eng_lens: T English subtitles OCRed using Google Lens fixture
@@ -99,4 +98,4 @@ def test_get_eng_fused_t(
     """
     lens = get_eng_cleaned(t_eng_lens, remove_empty=False)
     tesseract = get_eng_cleaned(t_eng_tesseract, remove_empty=False)
-    _test_get_eng_fused(lens, tesseract, t_eng_fuse)
+    _test_get_eng_ocr_fused(lens, tesseract, t_eng_fuse)

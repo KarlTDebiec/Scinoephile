@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.lang.eng.fusion import get_eng_fused, get_eng_fuser
-from scinoephile.lang.zho.fusion import get_zho_fused, get_zho_fuser
+from scinoephile.lang.eng.fusion import get_eng_fuser, get_eng_ocr_fused
+from scinoephile.lang.zho.fusion import get_zho_fuser, get_zho_ocr_fused
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
@@ -27,21 +27,21 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.testing import test_data_root
 from test.data.kob import (
-    get_kob_eng_fusion_test_cases,
+    get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
-    get_kob_zho_fusion_test_cases,
+    get_kob_zho_ocr_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
-    get_mlamd_eng_fusion_test_cases,
+    get_mlamd_eng_ocr_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
-    get_mlamd_zho_fusion_test_cases,
+    get_mlamd_zho_ocr_fusion_test_cases,
     get_mlamd_zho_proofreading_test_cases,
 )
 from test.data.mnt import (
-    get_mnt_eng_fusion_test_cases,
+    get_mnt_eng_ocr_fusion_test_cases,
     get_mnt_eng_proofreading_test_cases,
-    get_mnt_zho_fusion_test_cases,
+    get_mnt_zho_ocr_fusion_test_cases,
     get_mnt_zho_proofreading_test_cases,
 )
 
@@ -67,13 +67,13 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = get_zho_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zho_converted(zho_hans_paddle)
     zho_fuser = get_zho_fuser(
-        test_cases=get_kob_zho_fusion_test_cases()
-        + get_mlamd_zho_fusion_test_cases()
-        + get_mnt_zho_fusion_test_cases(),
+        test_cases=get_kob_zho_ocr_fusion_test_cases()
+        + get_mlamd_zho_ocr_fusion_test_cases()
+        + get_mnt_zho_ocr_fusion_test_cases(),
         test_case_path=title_root / "image" / "zho" / "fusion.json",
         auto_verify=True,
     )
-    zho_hans_fuse = get_zho_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
+    zho_hans_fuse = get_zho_ocr_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
     zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
     zho_hans_fuse = get_zho_cleaned(zho_hans_fuse, remove_empty=False)
     zho_proofreader = get_zho_proofreader(
@@ -92,13 +92,13 @@ if "English (OCR)" in actions:
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
     eng_fuser = get_eng_fuser(
-        test_cases=get_kob_eng_fusion_test_cases()
-        + get_mlamd_eng_fusion_test_cases()
-        + get_mnt_eng_fusion_test_cases(),
+        test_cases=get_kob_eng_ocr_fusion_test_cases()
+        + get_mlamd_eng_ocr_fusion_test_cases()
+        + get_mnt_eng_ocr_fusion_test_cases(),
         test_case_path=title_root / "image" / "eng" / "fusion.json",
         auto_verify=True,
     )
-    eng_fuse = get_eng_fused(eng_lens, eng_tesseract, eng_fuser)
+    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)
     eng_fuse.save(output_dir / "eng_fuse.srt")
     eng_proofreader = get_eng_proofreader(
         test_cases=get_kob_eng_proofreading_test_cases()

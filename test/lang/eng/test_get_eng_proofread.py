@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.eng.get_eng_proofread."""
+"""Tests of scinoephile.lang.eng.get_eng_proofread."""
 
 from __future__ import annotations
 
