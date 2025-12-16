@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 import pytest
+from scinoephile.lang.eng.fusion import get_eng_fused
 
 from scinoephile.core import Series
-from scinoephile.core.eng import get_eng_cleaned
-from scinoephile.image.eng.fusion import get_eng_fused
+from scinoephile.lang.eng import get_eng_cleaned
 
 
 def _test_get_eng_fused(lens: Series, tesseract: Series, expected: Series):

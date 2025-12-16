@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import Answer
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .prompt import ProofingPrompt
 

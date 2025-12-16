@@ -11,8 +11,9 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Answer
-from scinoephile.core.models import get_model_name
-from scinoephile.core.yue.prompt import ReviewPrompt
+from scinoephile.core.llms.models import get_model_name
+
+from .prompt import ReviewPrompt
 
 __all__ = ["ReviewAnswer"]
 

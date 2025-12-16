@@ -11,10 +11,10 @@ from typing import Any, ClassVar, Self
 from pydantic import create_model, model_validator
 
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
-from scinoephile.core.yue.prompt import ReviewPrompt
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import ReviewAnswer
+from .prompt import ReviewPrompt
 from .query import ReviewQuery
 
 __all__ = ["ReviewTestCase"]

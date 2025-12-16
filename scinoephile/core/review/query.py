@@ -11,11 +11,13 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Query
-from scinoephile.core.yue.prompt import ReviewPrompt
+from scinoephile.core.llms.models import get_model_name
 
-__all__ = ["ReviewQuery"]
+from .prompt import ReviewPrompt
 
-from scinoephile.core.models import get_model_name
+__all__ = [
+    "ReviewQuery",
+]
 
 
 class ReviewQuery(Query, ABC):

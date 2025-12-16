@@ -12,7 +12,7 @@ from typing import Any, ClassVar, Self
 from pydantic import create_model, model_validator
 
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import ProofreadingAnswer
 from .prompt import ProofreadingPrompt

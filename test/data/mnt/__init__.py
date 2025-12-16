@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.eng.proofreading import EngProofreadingPrompt
+from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zho.proofreading import ZhoHansProofreadingPrompt
-from scinoephile.image.eng.fusion import EngFusionPrompt
-from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zho.fusion import ZhoHansFusionPrompt
+from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
+from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
+from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -195,7 +195,7 @@ def get_mnt_zho_proofreading_test_cases(
 
 @cache
 def get_mnt_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get MNT English fusion test cases.
 
@@ -213,7 +213,7 @@ def get_mnt_eng_fusion_test_cases(
 
 @cache
 def get_mnt_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoHansFusionPrompt, **kwargs: Any
+    prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
     """Get MNT 中文 fusion test cases.
 

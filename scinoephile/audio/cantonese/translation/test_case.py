@@ -13,7 +13,7 @@ from pydantic import create_model
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import TranslationAnswer
 from .prompt import TranslationPrompt

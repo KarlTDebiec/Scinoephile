@@ -15,10 +15,14 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError, Series
-from scinoephile.core.eng import get_eng_cleaned, get_eng_flattened
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zho import get_zho_cleaned, get_zho_flattened
-from scinoephile.core.zho.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
+from scinoephile.lang.zho import (
+    OpenCCConfig,
+    get_zho_cleaned,
+    get_zho_converted,
+    get_zho_flattened,
+)
 
 
 class ScinoephileCli(CommandLineInterface):

@@ -8,17 +8,27 @@ import asyncio
 from logging import info
 from pathlib import Path
 
+from scinoephile.lang.eng.fusion import get_eng_fused, get_eng_fuser
+from scinoephile.lang.zho.fusion import get_zho_fused, get_zho_fuser
+
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
-from scinoephile.core.eng import get_eng_cleaned, get_eng_flattened
-from scinoephile.core.eng.proofreading import get_eng_proofread, get_eng_proofreader
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
-from scinoephile.core.zho.proofreading import get_zho_proofread, get_zho_proofreader
-from scinoephile.image.eng.fusion import get_eng_fused, get_eng_fuser
-from scinoephile.image.zho.fusion import get_zho_fused, get_zho_fuser
+from scinoephile.lang.eng import (
+    get_eng_cleaned,
+    get_eng_flattened,
+    get_eng_proofread,
+    get_eng_proofreader,
+)
+from scinoephile.lang.zho import (
+    get_zho_cleaned,
+    get_zho_converted,
+    get_zho_flattened,
+    get_zho_proofread,
+    get_zho_proofreader,
+)
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_fusion_test_cases,

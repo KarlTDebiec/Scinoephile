@@ -2,10 +2,10 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code.
 
-Code within this module may import only from scinoephile.common.
-
-Many functions herein follow the naming convention:
-    get_(english|zhongwen|cantonese|mandarin)_(character|text|[series])_(description)
+Package hierarchy (modules may import from any above):
+* exceptions / text
+* llms
+* fusion / proofreading / review
 """
 
 from __future__ import annotations

@@ -6,27 +6,30 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.lang.eng.fusion import get_eng_fused, get_eng_fuser
+from scinoephile.lang.zho.fusion import (
+    ZhoHantOcrFusionPrompt,
+    get_zho_fused,
+    get_zho_fuser,
+)
+
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series
-from scinoephile.core.eng import get_eng_cleaned, get_eng_flattened
-from scinoephile.core.eng.proofreading import get_eng_proofread, get_eng_proofreader
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zho import (
+from scinoephile.lang.eng import (
+    get_eng_cleaned,
+    get_eng_flattened,
+    get_eng_proofread,
+    get_eng_proofreader,
+)
+from scinoephile.lang.zho import (
     OpenCCConfig,
+    ZhoHantProofreadingPrompt,
     get_zho_cleaned,
     get_zho_converted,
     get_zho_flattened,
-)
-from scinoephile.core.zho.proofreading import (
-    ZhoHantProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
-)
-from scinoephile.image.eng.fusion import get_eng_fused, get_eng_fuser
-from scinoephile.image.zho.fusion import (
-    ZhoHantFusionPrompt,
-    get_zho_fused,
-    get_zho_fuser,
 )
 from scinoephile.testing import test_data_root
 from test.data.mlamd import (
@@ -70,7 +73,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
     zho_fuser = get_zho_fuser(
-        prompt_cls=ZhoHantFusionPrompt,
+        prompt_cls=ZhoHantOcrFusionPrompt,
         test_cases=get_mlamd_zho_fusion_test_cases()
         + get_mnt_zho_fusion_test_cases()
         + get_t_zho_fusion_test_cases(),
