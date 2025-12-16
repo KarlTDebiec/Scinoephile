@@ -88,7 +88,7 @@ if "繁體中文 (OCR)" in actions:
         test_cases=get_mlamd_zho_proofreading_test_cases()
         + get_mnt_zho_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),
-        test_case_path=title_root / "core" / "zho" / "proofreading.json",
+        test_case_path=title_root / "zho" / "proofreading.json",
         auto_verify=True,
     )
     zho_hant_fuse_proofread = get_zho_proofread(zho_hant_fuse, zho_proofreader)
@@ -112,7 +112,7 @@ if "English (OCR)" in actions:
         test_cases=get_mlamd_eng_proofreading_test_cases()
         + get_mnt_eng_proofreading_test_cases()
         + get_t_eng_proofreading_test_cases(),
-        test_case_path=title_root / "core" / "eng" / "proofreading.json",
+        test_case_path=title_root / "eng" / "proofreading.json",
         auto_verify=True,
     )
     eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)

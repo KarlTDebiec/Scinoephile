@@ -260,7 +260,7 @@ def get_mlamd_eng_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "core" / "eng" / "proofreading.json"
+    path = title_root / "eng" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -279,7 +279,7 @@ def get_mlamd_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "core" / "zho" / "proofreading.json"
+    path = title_root / "zho" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
