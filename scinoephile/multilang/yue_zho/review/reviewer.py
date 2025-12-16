@@ -10,34 +10,36 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core import Series
+from scinoephile.core import ScinoephileError, Series
 from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import (
     Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 from scinoephile.testing import test_data_root
 
-from .prompt import ProofreadingPrompt
-from .test_case import ProofreadingTestCase
+from .prompts import YueHansReviewPrompt
 
-__all__ = ["Proofreader"]
+__all__ = ["YueVsZhoReviewer"]
+
+from ...synchronization import are_series_one_to_one
 
 
-class Proofreader:
-    """Proofreads subtitles."""
+class YueVsZhoReviewer:
+    """Reviews 粤文 subtitles vs. 中文."""
 
-    prompt_cls: type[ProofreadingPrompt]
+    prompt_cls: type[YueHansReviewPrompt]
     """text for LLM correspondence"""
 
     def __init__(
         self,
-        prompt_cls: type[ProofreadingPrompt],
-        test_cases: list[ProofreadingTestCase] | None = None,
+        prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
+        test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: Sequence[ProofreadingTestCase] | None = None,
+        default_test_cases: Sequence[ManyToManyBlockwiseTestCase] | None = None,
     ):
         """Initialize.
 
@@ -61,7 +63,7 @@ class Proofreader:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    ProofreadingTestCase,
+                    ManyToManyBlockwiseTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -77,47 +79,60 @@ class Proofreader:
         )
         """LLM queryer."""
 
-    def proofread(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Proofread subtitles.
+    def review(
+        self, yuewen: Series, zhongwen: Series, stop_at_idx: int | None = None
+    ) -> Series:
+        """Review 粤文 subtitles vs. 中文.
 
         Arguments:
-            series: subtitles
-            stop_at_idx: stop processing at this index
+            yuewen: 粤文 subtitles
+            zhongwen: 中文 subtitles
+            stop_at_idx: stop processing at this block index
         Returns:
-            proofread subtitles
+            reviewed 粤文 subtitles
         """
-        # Proofread subtitles
-        output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
-        stop_at_idx = stop_at_idx or len(series.blocks)
-        for block_idx, block in enumerate(series.blocks):
-            if block_idx >= stop_at_idx:
+        if not are_series_one_to_one(yuewen, zhongwen):
+            raise ScinoephileError(
+                "Series from OCR sources one and two must have the same number of "
+                "subtitles."
+            )
+
+        # Review subtitles
+        output_series_to_concatenate: list[Series | None] = [None] * len(yuewen.blocks)
+        stop_at_idx = stop_at_idx or len(yuewen.blocks)
+        for blk_idx, (yw_blk, zw_blk) in enumerate(zip(yuewen.blocks, zhongwen.blocks)):
+            if blk_idx >= stop_at_idx:
                 break
 
             # Query LLM
-            test_case_cls = ProofreadingTestCase.get_test_case_cls(
-                len(block), self.prompt_cls
+            test_case_cls = ManyToManyBlockwiseTestCase.get_test_case_cls(
+                len(yw_blk), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for idx, subtitle in enumerate(block):
-                key = self.prompt_cls.subtitle_field(idx + 1)
-                query_kwargs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
+            for sub_idx in len(yw_blk):
+                yw_key = self.prompt_cls.source_one(sub_idx + 1)
+                yw_val = re.sub(r"\\N", "\n", yw_blk[sub_idx].text).strip()
+                query_kwargs[yw_key] = yw_val
+                zw_key = self.prompt_cls.source_two(sub_idx + 1)
+                zw_val = re.sub(r"\\N", "\n", zw_blk[sub_idx].text).strip()
+                query_kwargs[zw_key] = zw_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
             output_series = Series()
-            for sub_idx, subtitle in enumerate(block):
-                key = self.prompt_cls.revised_field(sub_idx + 1)
-                if revised := getattr(test_case.answer, key):
-                    subtitle.text = revised
-                output_series.append(subtitle)
+            for sub_idx, yw_sub in enumerate(yw_blk):
+                output_key = self.prompt_cls.output(sub_idx + 1)
+                if output := getattr(test_case.answer, output_key):
+                    yw_sub.text = output
+                output_series.append(yw_sub)
 
             info(
-                f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
-                f"{block.to_series().to_simple_string()}"
+                f"Block {blk_idx} ({yw_blk.start_idx} - {yw_blk.end_idx}):\n"
+                f"{yw_blk.to_series().to_simple_string()}"
             )
-            output_series_to_concatenate[block_idx] = output_series
+            output_series_to_concatenate[blk_idx] = output_series
 
         # Log test cases
         if self.test_case_path is not None:

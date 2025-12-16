@@ -77,10 +77,10 @@ def get_zho_proofreader(
     default_test_cases: list[ProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> Proofreader:
-    """Get a Proofreader with provided configuration.
+    """Get Proofreader with provided configuration.
 
     Arguments:
-        prompt_cls: prompt
+        prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
         kwargs: additional keyword arguments for Proofreader
     Returns:

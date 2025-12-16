@@ -79,7 +79,7 @@ def get_eng_proofreader(
     """Get a Proofreader with provided configuration.
 
     Arguments:
-        prompt_cls: prompt
+        prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
         kwargs: additional keyword arguments for Proofreader
     Returns:

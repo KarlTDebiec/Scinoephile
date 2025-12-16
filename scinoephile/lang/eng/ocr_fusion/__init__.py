@@ -77,7 +77,7 @@ def get_eng_ocr_fuser(
     """Get a Fuser with provided configuration.
 
     Arguments:
-        prompt_cls: prompt
+        prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
         kwargs: additional keyword arguments for Fuser
     Returns:

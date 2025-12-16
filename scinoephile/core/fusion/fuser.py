@@ -37,7 +37,7 @@ class Fuser:
         """Initialize.
 
         Arguments:
-            prompt_cls: prompt class
+            prompt_cls: text for LLM correspondence
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
@@ -132,11 +132,11 @@ class Fuser:
             # Query LLM
             test_case_cls = FusionTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
-            query_attrs = {
+            query_kwargs = {
                 self.prompt_cls.source_one_field: sub_one.text,
                 self.prompt_cls.source_two_field: sub_two.text,
             }
-            query = query_cls(**query_attrs)
+            query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 

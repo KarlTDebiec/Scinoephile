@@ -27,7 +27,7 @@ def _test_get_zho_proofread(
     """
     output = get_zho_proofread(series, proofreader=proofreader)
 
-    assert len(series) == len(output)
+    assert len(output) == len(expected)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):

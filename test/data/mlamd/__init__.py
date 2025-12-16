@@ -29,6 +29,7 @@ from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -47,13 +48,14 @@ __all__ = [
     "mlamd_eng_fuse_proofread_clean",
     "mlamd_eng_fuse_proofread_clean_flatten",
     "mlamd_yue_hans",
+    "mlamd_yue_hans_review",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
     "get_mlamd_yue_translation_test_cases",
-    "get_mlamd_yue_review_test_cases",
+    "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
@@ -155,8 +157,14 @@ def mlamd_eng_fuse_proofread_clean_flatten() -> Series:
 # 简体粤文 (Transcription)
 @pytest.fixture
 def mlamd_yue_hans() -> Series:
-    """MLAMD 简体粤文 subtitles transcribed."""
+    """MLAMD 简体粤文 transcribed subtitles."""
     return Series.load(output_dir / "yue-Hans.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_review() -> Series:
+    """MLAMD 简体粤文 transcribed and reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_review.srt")
 
 
 # Bilingual 简体粤文 and English
@@ -232,8 +240,8 @@ def get_mlamd_yue_translation_test_cases(
 
 
 @cache
-def get_mlamd_yue_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ManyToManyBlockwisePrompt,
+def get_mlamd_yue_vs_zho_review_test_cases(
+    prompt_cls: type[ProofreadingPrompt] = YueHansReviewPrompt,
     **kwargs: Any,
 ) -> list[ManyToManyBlockwiseTestCase]:
     """Get MLAMD 粵文 review test cases.
@@ -244,7 +252,7 @@ def get_mlamd_yue_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "audio" / "cantonese" / "review.json"
+    path = title_root / "yue_zho" / "review.json"
     return load_test_cases_from_json(
         path, ManyToManyBlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )

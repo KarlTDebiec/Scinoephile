@@ -21,7 +21,7 @@ def _test_get_zho_ocr_fused(lens: Series, paddle: Series, expected: Series):
     """
     output = get_zho_ocr_fused(lens, paddle)
 
-    assert len(lens) == len(output)
+    assert len(output) == len(expected)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):
