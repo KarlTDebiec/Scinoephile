@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import info
+from os import PathLike
 from typing import Any, Self, override
 
 from pysubs2 import SSAFile
@@ -26,6 +27,8 @@ class Series(SSAFile):
     """Class of individual subtitle events."""
     events: list[Subtitle]
     """Individual subtitle events."""
+    __hash__ = None
+    """Series instances are not hashable."""
 
     @override
     def __init__(self):
@@ -93,11 +96,13 @@ class Series(SSAFile):
         self._blocks = blocks
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any):
+    def save(
+        self, path: str | PathLike[str], format_: str | None = None, **kwargs: Any
+    ):
         """Save series to an output file.
 
         Arguments:
-            path: Output file path
+            path: Output file path or path-like object
             format_: Output file format
             **kwargs: Additional keyword arguments
         """
@@ -176,7 +181,7 @@ class Series(SSAFile):
     @override
     def load(
         cls,
-        path: str,
+        path: str | PathLike[str],
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,
@@ -184,7 +189,7 @@ class Series(SSAFile):
         """Load series from an input file.
 
         Arguments:
-            path : Input file path
+            path : Input file path or path-like object
             encoding: Input file encoding
             format_: Input file format
             **kwargs: Additional keyword arguments
