@@ -30,7 +30,10 @@ from scinoephile.lang.zho import (
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
 from scinoephile.multilang import get_synced_series
-from scinoephile.multilang.yue_zho import get_yue_vs_zho_reviewed
+from scinoephile.multilang.yue_zho import (
+    get_yue_vs_zho_reviewed,
+    get_yue_vs_zho_translated,
+)
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
@@ -42,7 +45,6 @@ from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_proofing_test_cases,
     get_mlamd_yue_shifting_test_cases,
-    get_mlamd_yue_translation_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
@@ -153,20 +155,19 @@ if "简体粤文 (Transcription)" in actions:
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
         proofing_test_cases=get_mlamd_yue_proofing_test_cases(),
-        translation_test_cases=get_mlamd_yue_translation_test_cases(),
     )
     yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
     outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
     yue_hans.save(outfile_path)
-    info(f"Saved 粤文 subtitles to {outfile_path}")
     outfile_path = output_dir / "yue-Hans.srt"
     yue_hans.save(outfile_path)
-    info(f"Saved 粤文 subtitles to {outfile_path}")
     yue_hans = Series.load(outfile_path)
-    yue_hans_review = get_yue_vs_zho_reviewed(yue_hans, zho_hans)
-    outfile_path = output_dir / "yue-Hans_review.srt"
-    yue_hans_review.save(outfile_path)
-    info(f"Saved reviewed 粤文 subtitles to {outfile_path}")
+    yue_hans_translate = get_yue_vs_zho_translated(yue_hans, zho_hans)
+    outfile_path = output_dir / "yue-Hans_translate.srt"
+    yue_hans_translate.save(outfile_path)
+    yue_hans_translate_review = get_yue_vs_zho_reviewed(yue_hans_translate, zho_hans)
+    outfile_path = output_dir / "yue-Hans_translate_review.srt"
+    yue_hans_translate_review.save(outfile_path)
 
 
 if "Bilingual 简体中文 and English" in actions:

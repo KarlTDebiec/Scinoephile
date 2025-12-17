@@ -24,7 +24,6 @@ from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
 from .proofing import ProofingPrompt, ProofingTestCase
 from .shifting import ShiftingPrompt, ShiftingTestCase
-from .translation import TranslationPrompt, TranslationTestCase
 
 
 class CantoneseTranscriptionReviewer:
@@ -36,7 +35,6 @@ class CantoneseTranscriptionReviewer:
         shifting_test_cases: list[ShiftingTestCase],
         merging_test_cases: list[MergingTestCase],
         proofing_test_cases: list[ProofingTestCase],
-        translation_test_cases: list[TranslationTestCase],
     ):
         """Initialize.
 
@@ -45,7 +43,6 @@ class CantoneseTranscriptionReviewer:
             shifting_test_cases: shifting test cases
             merging_test_cases: merging test cases
             proofing_test_cases: proofing test cases
-            translation_test_cases: translation test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
@@ -70,17 +67,10 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in proofing_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        translation_queryer_cls = Queryer.get_queryer_cls(TranslationPrompt)
-        self.translation_queryer = translation_queryer_cls(
-            prompt_test_cases=[tc for tc in translation_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in translation_test_cases if tc.verified],
-            cache_dir_path=test_data_root / "cache",
-        )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,
             merging_queryer=self.merging_queryer,
             proofing_queryer=self.proofing_queryer,
-            translation_queryer=self.translation_queryer,
         )
 
     async def process_all_blocks(

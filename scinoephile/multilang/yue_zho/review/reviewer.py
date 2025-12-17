@@ -1,11 +1,10 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreader for subtitles."""
+"""Reviews 粤文 subtitles against 中文."""
 
 from __future__ import annotations
 
 import re
-from collections.abc import Sequence
 from logging import info
 from pathlib import Path
 
@@ -27,7 +26,7 @@ __all__ = ["YueVsZhoReviewer"]
 
 
 class YueVsZhoReviewer:
-    """Reviews 粤文 subtitles vs. 中文."""
+    """Reviews 粤文 subtitles against 中文."""
 
     prompt_cls: type[YueHansReviewPrompt]
     """text for LLM correspondence"""
@@ -38,7 +37,7 @@ class YueVsZhoReviewer:
         test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: Sequence[ManyToManyBlockwiseTestCase] | None = None,
+        default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
     ):
         """Initialize.
 
@@ -52,10 +51,7 @@ class YueVsZhoReviewer:
         self.prompt_cls = prompt_cls
 
         if test_cases is None:
-            if default_test_cases is not None:
-                test_cases = default_test_cases
-            else:
-                test_cases = []
+            test_cases = default_test_cases or []
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -79,9 +75,12 @@ class YueVsZhoReviewer:
         """LLM queryer."""
 
     def review(
-        self, yuewen: Series, zhongwen: Series, stop_at_idx: int | None = None
+        self,
+        yuewen: Series,
+        zhongwen: Series,
+        stop_at_idx: int | None = None,
     ) -> Series:
-        """Review 粤文 subtitles vs. 中文.
+        """Review 粤文 subtitles against 中文.
 
         Arguments:
             yuewen: 粤文 subtitles
