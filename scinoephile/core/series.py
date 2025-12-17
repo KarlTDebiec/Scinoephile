@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import info
+from pathlib import Path
 from typing import Any, Self, override
 
 from pysubs2 import SSAFile
@@ -93,7 +94,7 @@ class Series(SSAFile):
         self._blocks = blocks
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any):
+    def save(self, path: Path | str, format_: str | None = None, **kwargs: Any):
         """Save series to an output file.
 
         Arguments:
@@ -176,7 +177,7 @@ class Series(SSAFile):
     @override
     def load(
         cls,
-        path: str,
+        path: Path | str,
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,

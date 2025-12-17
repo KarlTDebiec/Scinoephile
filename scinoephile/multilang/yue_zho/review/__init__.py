@@ -38,7 +38,9 @@ def get_default_yue_vs_zho_test_cases(
         default test cases
     """
     try:
-        from test.data.mlamd import get_mlamd_yue_vs_zho_review_test_cases
+        from test.data.mlamd import (  # noqa: PLC0415
+            get_mlamd_yue_vs_zho_review_test_cases,
+        )
 
         return get_mlamd_yue_vs_zho_review_test_cases(prompt_cls)
     except ImportError as exc:
