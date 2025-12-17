@@ -34,23 +34,23 @@ def _test_get_yue_vs_zho_reviewed(yuewen: Series, zhongwen: Series, expected: Se
 
 
 def test_get_yue_vs_zho_reviewed_mlamd(
-    mlamd_yue_hans: Series,
+    mlamd_yue_hans_translate: Series,
     mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
-    mlamd_yue_hans_review: Series,
+    mlamd_yue_hans_translate_review: Series,
 ):
     """Test get_yue_vs_zho_reviewed with MLAMD subtitles.
 
     Arguments:
-        mlamd_yue_hans: MLAMD 粤文 subtitles fixture
+        mlamd_yue_hans_translate: MLAMD 粤文 subtitles fixture
         mlamd_zho_hans_fuse_proofread_clean_flatten: MLAMD 中文 subtitles fixture
-        mlamd_yue_hans_review: Expected reviewed MLAMD 粤文 subtitles fixture
+        mlamd_yue_hans_translate_review: Expected reviewed MLAMD 粤文 subtitles fixture
     """
     zhongwen = get_series_with_subs_merged(
         mlamd_zho_hans_fuse_proofread_clean_flatten, 539
     )
 
     _test_get_yue_vs_zho_reviewed(
-        mlamd_yue_hans,
+        mlamd_yue_hans_translate,
         zhongwen,
-        mlamd_yue_hans_review,
+        mlamd_yue_hans_translate_review,
     )
