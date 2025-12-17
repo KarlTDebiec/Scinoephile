@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.core import Series
-from scinoephile.multilang.pairs import get_pair_blocks_by_pause
+from scinoephile.multilang.pairs import get_block_pairs_by_pause
 
 
 def _test_get_pair_blocks_by_pause(
@@ -18,7 +18,7 @@ def _test_get_pair_blocks_by_pause(
         series_two: series two with which to test
         expected: Expected number of pair blocks
     """
-    pair_blocks = get_pair_blocks_by_pause(series_one, series_two)
+    pair_blocks = get_block_pairs_by_pause(series_one, series_two)
     assert len(pair_blocks) == expected
 
 

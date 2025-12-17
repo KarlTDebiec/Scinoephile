@@ -9,13 +9,13 @@ from copy import deepcopy
 from scinoephile.core import ScinoephileError, Series
 
 __all__ = [
-    "get_pair_blocks_by_pause",
+    "get_block_pairs_by_pause",
     "get_pair_with_zero_start",
     "get_pair_strings",
 ]
 
 
-def get_pair_blocks_by_pause(
+def get_block_pairs_by_pause(
     one: Series,
     two: Series,
     pause_length: int = 3000,

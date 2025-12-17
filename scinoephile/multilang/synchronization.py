@@ -12,7 +12,7 @@ import numpy as np
 from scinoephile.core import ScinoephileError, Series, Subtitle
 from scinoephile.core.blocks import get_concatenated_series
 
-from .pairs import get_pair_blocks_by_pause, get_pair_strings
+from .pairs import get_block_pairs_by_pause, get_pair_strings
 
 __all__ = [
     "SyncGroup",
@@ -178,7 +178,7 @@ def get_synced_series(one: Series, two: Series) -> Series:
     """
     synced_blocks = []
 
-    pair_blocks = get_pair_blocks_by_pause(one, two)
+    pair_blocks = get_block_pairs_by_pause(one, two)
     for one_block, two_block in pair_blocks:
         one_str, two_str = get_pair_strings(one_block, two_block)
         debug(f"ONE:\n{one_str}")
