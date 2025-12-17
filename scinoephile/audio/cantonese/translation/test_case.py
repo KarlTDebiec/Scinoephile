@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription translation test cases."""
+"""ABC for 粤文 transcription translation test cases."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from pydantic import create_model
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import TranslationAnswer
 from .prompt import TranslationPrompt
@@ -23,14 +23,14 @@ __all__ = ["TranslationTestCase"]
 
 
 class TranslationTestCase(TestCase, ABC):
-    """Abstract base class for 粤文 transcription translation test cases."""
+    """ABC for 粤文 transcription translation test cases."""
 
     answer_cls: ClassVar[type[TranslationAnswer]]
     """Answer class for this test case."""
     query_cls: ClassVar[type[TranslationQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[TranslationPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -50,7 +50,7 @@ class TranslationTestCase(TestCase, ABC):
         Arguments:
             size: number of subtitles
             missing: indexes of missing subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

@@ -1,0 +1,654 @@
+[
+  {
+    "query": {
+      "lens": "There, on the right\nhand side of Mrs. McBing.",
+      "tesseract": "There, on the right hand side of\nMrs. McBing."
+    },
+    "answer": {
+      "output": "There, on the right hand side of\nMrs. McBing.",
+      "note": "Used Tesseract's line break placement."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "A smart boy?\nA lucky boy?",
+      "tesseract": "A smart boy? A lucky boy?"
+    },
+    "answer": {
+      "output": "A smart boy? A lucky boy?",
+      "note": "Used space instead of newline."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "To commemorate this, Mrs. McBing …",
+      "tesseract": "To commemorate this, Mrs. McBing"
+    },
+    "answer": {
+      "output": "To commemorate this, Mrs. McBing…",
+      "note": "Kept ellipsis from Google Lens; removed space before ellipsis."
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Your calves have grown strong.",
+      "tesseract": "your calves have grown strong."
+    },
+    "answer": {
+      "output": "your calves have grown strong.",
+      "note": "Used lower-case 'your' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "At the Emporium?",
+      "tesseract": "at the Emporium?"
+    },
+    "answer": {
+      "output": "at the Emporium?",
+      "note": "Used lower-case 'at' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Yeah! The one at the junction…\n…",
+      "tesseract": "Yeah! The one at the junction …"
+    },
+    "answer": {
+      "output": "Yeah! The one at the junction…",
+      "note": "Kept ellipsis from Lens and removed extra line break and space before ellipsis."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "\"We learn as we grow…'",
+      "tesseract": "“We learn as we grow…”"
+    },
+    "answer": {
+      "output": "“We learn as we grow…”",
+      "note": "Used Tesseract’s opening and closing quotation marks and matching ellipsis, which are more typographically consistent than the mixed quote marks in the Lens result."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "That's me,\nMcDull.",
+      "tesseract": "That's me, McDull."
+    },
+    "answer": {
+      "output": "That's me, McDull.",
+      "note": "Used space instead of newline."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Tart!\n- Tart!",
+      "tesseract": "Tart! - Tart!"
+    },
+    "answer": {
+      "output": "- Tart!    - Tart!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Duck dumpling!\n- Duck dumpling!",
+      "tesseract": "Duck dumpling! - Duck dumpling!"
+    },
+    "answer": {
+      "output": "- Duck dumpling!    - Duck dumpling!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- The 97 Rule…\n- The 97 Rule…",
+      "tesseract": "The 97 Rule… - The 97 Rule…"
+    },
+    "answer": {
+      "output": "- The 97 Rule…    - The 97 Rule…",
+      "note": "Included '-' for both lines in dialogue and added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "This morning:",
+      "tesseract": "this morning:"
+    },
+    "answer": {
+      "output": "this morning:",
+      "note": "Used lower-case 'this' as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "…\n.Also, there is Miss Chan.",
+      "tesseract": "…Also, there is Miss Chan."
+    },
+    "answer": {
+      "output": "…Also, there is Miss Chan.",
+      "note": "Removed extra '.' and newline as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- McMug!\n- Present!",
+      "tesseract": "McMug! - Present!"
+    },
+    "answer": {
+      "output": "- McMug!    - Present!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Fai!\n- Present!",
+      "tesseract": "Fai! - Present!"
+    },
+    "answer": {
+      "output": "- Fai!    - Present!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Goosie!\n- Present!",
+      "tesseract": "Goosie! - Present!"
+    },
+    "answer": {
+      "output": "- Goosie!    - Present!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Darby!\n- Present!",
+      "tesseract": "Darby! - Present!"
+    },
+    "answer": {
+      "output": "- Darby!    - Present!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- June!\n- Present!",
+      "tesseract": "June! - Present!"
+    },
+    "answer": {
+      "output": "- June!    - Present!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "And then\n…",
+      "tesseract": "And then"
+    },
+    "answer": {
+      "output": "And then…",
+      "note": "Added ellipsis from Lens without line break."
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "You can probably tell how smart I am.",
+      "tesseract": "you can probably tell how smart I am."
+    },
+    "answer": {
+      "output": "you can probably tell how smart I am.",
+      "note": "Used lower-case 'you' as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "My mother…",
+      "tesseract": "my mother…"
+    },
+    "answer": {
+      "output": "my mother…",
+      "note": "Used lower-case 'my' as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Carrying the world!",
+      "tesseract": "carrying the world!"
+    },
+    "answer": {
+      "output": "carrying the world!",
+      "note": "Used lower-case 'carrying' as in Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Today's dish…",
+      "tesseract": "today's dish…"
+    },
+    "answer": {
+      "output": "today's dish…",
+      "note": "Used lower-case 'today's' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "The chicken bun…",
+      "tesseract": "the chicken bun…"
+    },
+    "answer": {
+      "output": "the chicken bun…",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Bun and bun…",
+      "tesseract": "bun and bun…"
+    },
+    "answer": {
+      "output": "bun and bun…",
+      "note": "Used lower-case 'bun' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“No pain no gain”.",
+      "tesseract": "“no pain no gain”."
+    },
+    "answer": {
+      "output": "“no pain no gain”.",
+      "note": "Used lower-case 'no' at the beginning from Tesseract, which is more reliable for initial capitalization."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Maldives, a world outside our world.",
+      "tesseract": "Maldives, 3 world outside our world."
+    },
+    "answer": {
+      "output": "Maldives, a world outside our world.",
+      "note": "Used 'a' from Lens instead of '3' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Yes…\n- Is that right?",
+      "tesseract": "Is that right?"
+    },
+    "answer": {
+      "output": "- Yes…    - Is that right?",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "- Goodnight, mother!\n- Goodnight!",
+      "tesseract": "Goodnight, mother! - Goodnight!"
+    },
+    "answer": {
+      "output": "- Goodnight, mother!    - Goodnight!",
+      "note": "Included '-' for both lines in dialogue; added four spaces between lines for clarity."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Windsurfing athlete San San Li…",
+      "tesseract": "windsurfing athlete San San Li…"
+    },
+    "answer": {
+      "output": "windsurfing athlete San San Li…",
+      "note": "Used lower-case 'windsurfing' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Cheung\nChau!",
+      "tesseract": "Cheung Chau!"
+    },
+    "answer": {
+      "output": "Cheung Chau!",
+      "note": "Removed line break from Lens to match Tesseract's single line."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "What a marvelous skill that is!",
+      "tesseract": "what a marvelous skill that is!"
+    },
+    "answer": {
+      "output": "what a marvelous skill that is!",
+      "note": "Used lower-case 'what' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Hundreds of youth would rush up…",
+      "tesseract": "hundreds of youth would rush up…"
+    },
+    "answer": {
+      "output": "hundreds of youth would rush up…",
+      "note": "Used lower-case 'hundreds' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Hurts like never before.",
+      "tesseract": "hurts like never before."
+    },
+    "answer": {
+      "output": "hurts like never before.",
+      "note": "Used lower-case 'hurts' from Tesseract for correct capitalization."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "With a baby face.",
+      "tesseract": "with a baby face."
+    },
+    "answer": {
+      "output": "with a baby face.",
+      "note": "Used lower-case 'with' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "He says he'll teach all he knows to Dull.",
+      "tesseract": "He says he'll teach all he knows to DU…"
+    },
+    "answer": {
+      "output": "He says he'll teach all he knows to Dull.",
+      "note": "Used 'Dull' from Lens instead of incomplete 'DU…' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Ritual and gymnastic.",
+      "tesseract": "ritual and gymnastic."
+    },
+    "answer": {
+      "output": "ritual and gymnastic.",
+      "note": "Used lower-case 'ritual' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Such a calf.",
+      "tesseract": "such a calf."
+    },
+    "answer": {
+      "output": "such a calf.",
+      "note": "Used lower-case 'such' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“How are you?\nI am fine.”",
+      "tesseract": "“How are you? I am fine.”"
+    },
+    "answer": {
+      "output": "“How are you? I am fine.”",
+      "note": "Used Tesseract's single-line version, replacing the newline after the question mark from Google Lens with a space."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "It is important to snatch buns.'",
+      "tesseract": "it is important to snatch buns.\""
+    },
+    "answer": {
+      "output": "it is important to snatch buns.\"",
+      "note": "Used lower-case 'it' and closing double quote from Tesseract."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“That is the biggest comfort\na mother can get.”",
+      "tesseract": "“That is the biggest comfort\n3 mother can get.”"
+    },
+    "answer": {
+      "output": "“That is the biggest comfort\na mother can get.”",
+      "note": "Used 'a mother' from Lens instead of '3 mother' from Tesseract; kept Tesseract's line break after 'comfort'."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "In its prime…",
+      "tesseract": "in its prime…"
+    },
+    "answer": {
+      "output": "in its prime…",
+      "note": "Used lower-case 'in' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "With buns in hands.",
+      "tesseract": "with buns in hands."
+    },
+    "answer": {
+      "output": "with buns in hands.",
+      "note": "Used lower-case 'with' from Tesseract for correct capitalization."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "In the soup.",
+      "tesseract": "in the soup."
+    },
+    "answer": {
+      "output": "in the soup.",
+      "note": "Used lower-case 'in' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Turkey sandwich for breakfast.",
+      "tesseract": "turkey sandwich for breakfast."
+    },
+    "answer": {
+      "output": "turkey sandwich for breakfast.",
+      "note": "Used lower-case 'turkey' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "The turkey's smell.",
+      "tesseract": "the turkey's smell."
+    },
+    "answer": {
+      "output": "the turkey's smell.",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Afterwards,\nit is just \"be over and done with it…",
+      "tesseract": "Afterwards,\nit is just“be over and done with it”."
+    },
+    "answer": {
+      "output": "Afterwards,\nit is just “be over and done with it”.",
+      "note": "Used Tesseract’s correct closing quote and period, and its curly quote style; removed incomplete ellipsis and straight quotes from Lens while keeping Tesseract’s line break."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Officially announced today:",
+      "tesseract": "officially announced today:"
+    },
+    "answer": {
+      "output": "officially announced today:",
+      "note": "Used lower-case 'officially' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Response from all sides\nhas been enthusiastic.",
+      "tesseract": "Response from\nall sides has been enthusiastic."
+    },
+    "answer": {
+      "output": "Response from\nall sides has been enthusiastic.",
+      "note": "Used Tesseract's line break after 'from'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "Have vowed…",
+      "tesseract": "have vowed…"
+    },
+    "answer": {
+      "output": "have vowed…",
+      "note": "Used lower-case 'have' from Tesseract."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "More interesting, CIC\nInsurance is joining force with…",
+      "tesseract": "More interesting,\nCIC Insurance is joining force with…"
+    },
+    "answer": {
+      "output": "More interesting,\nCIC Insurance is joining force with…",
+      "note": "Used Tesseract's line break after 'More interesting,'."
+    },
+    "difficulty": 1,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Eating 1½lb white bread last night…\n”",
+      "tesseract": "“Eating 1½lb white bread last night… ”"
+    },
+    "answer": {
+      "output": "“Eating 1½lb white bread last night…”",
+      "note": "Used single-line formatting from Tesseract and removed the extra space before the closing quote from Tesseract while omitting the line break and trailing quote line from Lens."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "“Excelled 6 sets of steps\nwhen I was young…' ”",
+      "tesseract": "“Excelled 6 sets of steps\nwhen I was young…”"
+    },
+    "answer": {
+      "output": "“Excelled 6 sets of steps\nwhen I was young…”",
+      "note": "Used Tesseract’s ending ellipsis and closing quote, removing the stray apostrophe and extra quote from Lens while keeping Tesseract’s line break."
+    },
+    "difficulty": 2,
+    "verified": true
+  },
+  {
+    "query": {
+      "lens": "A Quickie is a Lunch.",
+      "tesseract": "A Quickie is 3 Lunch."
+    },
+    "answer": {
+      "output": "A Quickie is a Lunch.",
+      "note": "Used 'a Lunch' from Lens instead of '3 Lunch' from Tesseract, as Lens is more reliable for text accuracy."
+    },
+    "difficulty": 1,
+    "verified": true
+  }
+]

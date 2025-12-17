@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Query
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .prompt import ProofreadingPrompt
 
@@ -22,7 +22,7 @@ class ProofreadingQuery(Query, ABC):
     """ABC for proofreading queries."""
 
     prompt_cls: ClassVar[type[ProofreadingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -38,7 +38,7 @@ class ProofreadingQuery(Query, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Query type with appropriate configuration
         """

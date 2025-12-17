@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.core import ScinoephileError
@@ -17,7 +16,6 @@ __all__ = [
     "get_shifting_test_case",
     "get_merging_test_case",
     "get_proofing_test_case",
-    "get_review_test_case",
     "get_translation_test_case",
 ]
 
@@ -184,46 +182,6 @@ def get_proofing_test_case(
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
-    return test_case
-
-
-def get_review_test_case(
-    alignment: Alignment, test_case_cls: type[ReviewTestCase]
-) -> ReviewTestCase:
-    """Get review query for a nascent Cantonese alignment.
-
-    Arguments:
-        alignment: Nascent Cantonese alignment
-        test_case_cls: ReviewQuery class to instantiate
-    Returns:
-        Query instance
-    Raises:
-        ScinoephileError: If sync groups are malformed
-    """
-    kwargs = {}
-    for sg in alignment.sync_groups:
-        # Get 中文
-        zw_idxs = sg[0]
-        if len(zw_idxs) != 1:
-            raise ScinoephileError(
-                f"Sync group {sg} has {len(zw_idxs)} 中文 subs, expected 1."
-            )
-        zw_idx = zw_idxs[0]
-        zw_key = test_case_cls.prompt_cls.zhongwen_field(zw_idx + 1)
-        kwargs[zw_key] = alignment.zhongwen[zw_idx].text
-
-        # Get 粤文
-        yw_idxs = sg[1]
-        if len(yw_idxs) != 1:
-            raise ScinoephileError(
-                f"Sync group {sg} has {len(yw_idxs)} 粤文 subs, expected 1."
-            )
-        yw_idx = yw_idxs[0]
-        yw_key = test_case_cls.prompt_cls.yuewen_field(zw_idx + 1)
-        kwargs[yw_key] = alignment.yuewen[yw_idx].text
-
-    # noinspection PyArgumentList
-    test_case = test_case_cls(query=test_case_cls.query_cls(**kwargs))
     return test_case
 
 

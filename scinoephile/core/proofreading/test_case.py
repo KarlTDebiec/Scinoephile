@@ -12,7 +12,7 @@ from typing import Any, ClassVar, Self
 from pydantic import create_model, model_validator
 
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import ProofreadingAnswer
 from .prompt import ProofreadingPrompt
@@ -29,7 +29,7 @@ class ProofreadingTestCase(TestCase, ABC):
     query_cls: ClassVar[type[ProofreadingQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[ProofreadingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
@@ -88,7 +88,7 @@ class ProofreadingTestCase(TestCase, ABC):
 
         Arguments:
             size: number of subtitles
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

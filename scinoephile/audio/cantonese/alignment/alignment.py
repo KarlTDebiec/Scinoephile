@@ -8,11 +8,9 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.audio import (
-    AudioSeries,
-)
-from scinoephile.core.pairs import get_pair_strings
-from scinoephile.core.synchronization import (
+from scinoephile.audio import AudioSeries
+from scinoephile.multilang.pairs import get_pair_strings
+from scinoephile.multilang.synchronization import (
     SyncGroup,
     get_overlap_string,
     get_sync_groups_string,

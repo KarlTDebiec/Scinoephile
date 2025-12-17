@@ -8,7 +8,6 @@ from abc import ABC
 from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 
 __all__ = ["ProofreadingPrompt"]
 
@@ -16,31 +15,9 @@ __all__ = ["ProofreadingPrompt"]
 class ProofreadingPrompt(Prompt, ABC):
     """ABC for LLM correspondence text for proofreading."""
 
-    # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for proofreading English subtitles generated using OCR.
-        For each subtitle, you are to provide revised subtitle only if revisions are
-        necessary.
-        If revisions are needed, return the full revised subtitle, and a note describing
-        the changes made.
-        If no revisions are needed, return an empty string for the revised subtitle and
-        its note.
-        Make changes only when necessary to correct errors clearly resulting from OCR.
-
-        Do not add stylistic changes or improve phrasing.
-
-        Do not change colloquialisms or dialect such as 'gonna' or 'wanna'.
-
-        Do not change spelling from British to American English or vice versa.
-
-        Do not remove subtitle markup such as italics ('{\\i1}' and '{\\i0}').
-
-        Do not remove newlines ('\\n').""")
-    """Base system prompt."""
-
     # Query fields
     subtitle_prefix: ClassVar[str] = "subtitle_"
-    """Prefix of subtitle field in query."""
+    """Prefix for subtitle fields in query."""
 
     @classmethod
     def subtitle_field(cls, idx: int) -> str:
@@ -48,7 +25,7 @@ class ProofreadingPrompt(Prompt, ABC):
         return f"{cls.subtitle_prefix}{idx}"
 
     subtitle_description_template: ClassVar[str] = "Subtitle {idx}"
-    """Description template for subtitle field in query."""
+    """Description template for subtitle fields in query."""
 
     @classmethod
     def subtitle_description(cls, idx: int) -> str:
@@ -57,7 +34,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     # Answer fields
     revised_prefix: ClassVar[str] = "revised_"
-    """Prefix of revised field in answer."""
+    """Prefix for revised fields in answer."""
 
     @classmethod
     def revised_field(cls, idx: int) -> str:
@@ -67,7 +44,7 @@ class ProofreadingPrompt(Prompt, ABC):
     revised_description_template: ClassVar[str] = (
         "Subtitle {idx} revised, or an empty string if no revision is necessary."
     )
-    """Description template for revised  field in answer."""
+    """Description template for revised fields in answer."""
 
     @classmethod
     def revised_description(cls, idx: int) -> str:
@@ -75,7 +52,7 @@ class ProofreadingPrompt(Prompt, ABC):
         return cls.revised_description_template.format(idx=idx)
 
     note_prefix: ClassVar[str] = "note_"
-    """Prefix of note field in answer."""
+    """Prefix of note fields in answer."""
 
     @classmethod
     def note_field(cls, idx: int) -> str:
@@ -86,7 +63,7 @@ class ProofreadingPrompt(Prompt, ABC):
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
-    """Description template for note field in answer."""
+    """Description template for note fields in answer."""
 
     @classmethod
     def note_description(cls, idx: int) -> str:
@@ -102,7 +79,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def subtitle_revised_equal_error(cls, idx: int) -> str:
-        """Error message when subtitle and revised fields are equal.
+        """Error when subtitle and revised fields are equal.
 
         Arguments:
             idx: index of subtitle
@@ -119,7 +96,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def note_missing_error(cls, idx: int) -> str:
-        """Error message when note is missing for a revision.
+        """Error when note is missing for a revision.
 
         Arguments:
             idx: index of subtitle
@@ -136,7 +113,7 @@ class ProofreadingPrompt(Prompt, ABC):
 
     @classmethod
     def revised_missing_error(cls, idx: int) -> str:
-        """Error message when revision is missing for a note.
+        """Error when revision is missing for a note.
 
         Arguments:
             idx: index of subtitle

@@ -36,13 +36,6 @@ class Prompt(ABC):
     answer_invalid_post: ClassVar[str]
     """Text following answer validation errors."""
 
-    # Test case validation errors
-    test_case_invalid_pre: ClassVar[str]
-    """Text preceding test case validation errors."""
-
-    test_case_invalid_post: ClassVar[str]
-    """Text following test case validation errors."""
-
     # Test case field descriptions
     difficulty_description: ClassVar[str] = (
         "Difficulty level of the test case, used for filtering."
@@ -58,3 +51,10 @@ class Prompt(ABC):
         "Whether to include test case in the verified answers cache."
     )
     """Description of 'verified' field."""
+
+    # Test case validation errors
+    test_case_invalid_pre: ClassVar[str]
+    """Text preceding test case validation errors."""
+
+    test_case_invalid_post: ClassVar[str]
+    """Text following test case validation errors."""

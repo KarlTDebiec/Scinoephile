@@ -12,20 +12,24 @@ import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
-from scinoephile.audio.cantonese.review import ReviewPrompt, ReviewTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.audio.cantonese.translation import (
     TranslationPrompt,
     TranslationTestCase,
 )
 from scinoephile.core import Series
-from scinoephile.core.eng.proofreading import EngProofreadingPrompt
+from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.many_to_many_blockwise import (
+    ManyToManyBlockwisePrompt,
+    ManyToManyBlockwiseTestCase,
+)
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zho.proofreading import ZhoHansProofreadingPrompt
-from scinoephile.image.eng.fusion import EngFusionPrompt
-from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zho.fusion import ZhoHansFusionPrompt
+from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
+from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
+from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -44,17 +48,18 @@ __all__ = [
     "mlamd_eng_fuse_proofread_clean",
     "mlamd_eng_fuse_proofread_clean_flatten",
     "mlamd_yue_hans",
+    "mlamd_yue_hans_review",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
     "get_mlamd_yue_translation_test_cases",
-    "get_mlamd_yue_review_test_cases",
+    "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
-    "get_mlamd_eng_fusion_test_cases",
-    "get_mlamd_zho_fusion_test_cases",
+    "get_mlamd_eng_ocr_fusion_test_cases",
+    "get_mlamd_zho_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -152,8 +157,14 @@ def mlamd_eng_fuse_proofread_clean_flatten() -> Series:
 # 简体粤文 (Transcription)
 @pytest.fixture
 def mlamd_yue_hans() -> Series:
-    """MLAMD 简体粤文 subtitles transcribed."""
+    """MLAMD 简体粤文 transcribed subtitles."""
     return Series.load(output_dir / "yue-Hans.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_review() -> Series:
+    """MLAMD 简体粤文 transcribed and reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_review.srt")
 
 
 # Bilingual 简体粤文 and English
@@ -217,7 +228,7 @@ def get_mlamd_yue_translation_test_cases(
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
@@ -229,21 +240,21 @@ def get_mlamd_yue_translation_test_cases(
 
 
 @cache
-def get_mlamd_yue_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ReviewPrompt,
+def get_mlamd_yue_vs_zho_review_test_cases(
+    prompt_cls: type[ProofreadingPrompt] = YueHansReviewPrompt,
     **kwargs: Any,
-) -> list[ReviewTestCase]:
+) -> list[ManyToManyBlockwiseTestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "audio" / "cantonese" / "review.json"
+    path = title_root / "multilang" / "yue_zho" / "review.json"
     return load_test_cases_from_json(
-        path, ReviewTestCase, prompt_cls=prompt_cls, **kwargs
+        path, ManyToManyBlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -255,12 +266,12 @@ def get_mlamd_eng_proofreading_test_cases(
     """Get MLAMD English proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "core" / "eng" / "proofreading.json"
+    path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -274,48 +285,48 @@ def get_mlamd_zho_proofreading_test_cases(
     """Get MLAMD 中文 proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "core" / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
+def get_mlamd_eng_ocr_fusion_test_cases(
+    prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MLAMD English fusion test cases.
+    """Get MLAMD English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "image" / "eng" / "fusion.json"
+    path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoHansFusionPrompt, **kwargs: Any
+def get_mlamd_zho_ocr_fusion_test_cases(
+    prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get MLAMD 中文 fusion test cases.
+    """Get MLAMD 中文 OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use for test cases
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "image" / "zho" / "fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )

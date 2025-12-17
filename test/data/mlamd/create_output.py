@@ -12,37 +12,48 @@ from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core import Series, get_series_with_subs_merged
-from scinoephile.core.eng import get_eng_cleaned, get_eng_flattened
-from scinoephile.core.eng.proofreading import get_eng_proofread, get_eng_proofreader
-from scinoephile.core.synchronization import get_synced_series
-from scinoephile.core.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
-from scinoephile.core.zho.proofreading import get_zho_proofread, get_zho_proofreader
-from scinoephile.image.eng.fusion import get_eng_fused, get_eng_fuser
-from scinoephile.image.zho.fusion import get_zho_fused, get_zho_fuser
+from scinoephile.lang.eng import (
+    get_eng_cleaned,
+    get_eng_flattened,
+    get_eng_ocr_fused,
+    get_eng_proofread,
+)
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
+from scinoephile.lang.eng.proofreading import get_eng_proofreader
+from scinoephile.lang.zho import (
+    get_zho_cleaned,
+    get_zho_converted,
+    get_zho_flattened,
+    get_zho_ocr_fused,
+    get_zho_proofread,
+)
+from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
+from scinoephile.lang.zho.proofreading import get_zho_proofreader
+from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.yue_zho import get_yue_vs_zho_reviewed
 from scinoephile.testing import test_data_root
 from test.data.kob import (
-    get_kob_eng_fusion_test_cases,
+    get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
-    get_kob_zho_fusion_test_cases,
+    get_kob_zho_ocr_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_proofing_test_cases,
-    get_mlamd_yue_review_test_cases,
     get_mlamd_yue_shifting_test_cases,
     get_mlamd_yue_translation_test_cases,
 )
 from test.data.mnt import (
-    get_mnt_eng_fusion_test_cases,
+    get_mnt_eng_ocr_fusion_test_cases,
     get_mnt_eng_proofreading_test_cases,
-    get_mnt_zho_fusion_test_cases,
+    get_mnt_zho_ocr_fusion_test_cases,
     get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
-    get_t_eng_fusion_test_cases,
+    get_t_eng_ocr_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
-    get_t_zho_fusion_test_cases,
+    get_t_zho_ocr_fusion_test_cases,
     get_t_zho_proofreading_test_cases,
 )
 
@@ -52,11 +63,11 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
     "简体粤文 (Transcription)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -66,14 +77,14 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
     zho_hans_paddle = get_zho_cleaned(zho_hans_paddle, remove_empty=False)
     zho_hans_paddle = get_zho_converted(zho_hans_paddle)
-    zho_fuser = get_zho_fuser(
-        test_cases=get_kob_zho_fusion_test_cases()
-        + get_mnt_zho_fusion_test_cases()
-        + get_t_zho_fusion_test_cases(),
-        test_case_path=title_root / "image" / "zho" / "fusion.json",
+    zho_fuser = get_zho_ocr_fuser(
+        test_cases=get_kob_zho_ocr_fusion_test_cases()
+        + get_mnt_zho_ocr_fusion_test_cases()
+        + get_t_zho_ocr_fusion_test_cases(),
+        test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
         auto_verify=True,
     )
-    zho_hans_fuse = get_zho_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
+    zho_hans_fuse = get_zho_ocr_fused(zho_hans_lens, zho_hans_paddle, zho_fuser)
     zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
     zho_hans_fuse = get_zho_cleaned(zho_hans_fuse)
     zho_hans_fuse = get_zho_converted(zho_hans_fuse)
@@ -81,7 +92,7 @@ if "简体中文 (OCR)" in actions:
         test_cases=get_kob_zho_proofreading_test_cases()
         + get_mnt_zho_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),
-        test_case_path=title_root / "core" / "zho" / "proofreading.json",
+        test_case_path=title_root / "lang" / "zho" / "proofreading.json",
         auto_verify=True,
     )
     zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
@@ -100,20 +111,20 @@ if "English (OCR)" in actions:
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuser = get_eng_fuser(
-        test_cases=get_kob_eng_fusion_test_cases()
-        + get_mnt_eng_fusion_test_cases()
-        + get_t_eng_fusion_test_cases(),
-        test_case_path=title_root / "image" / "eng" / "fusion.json",
+    eng_fuser = get_eng_ocr_fuser(
+        test_cases=get_kob_eng_ocr_fusion_test_cases()
+        + get_mnt_eng_ocr_fusion_test_cases()
+        + get_t_eng_ocr_fusion_test_cases(),
+        test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
         auto_verify=True,
     )
-    eng_fuse = get_eng_fused(eng_lens, eng_tesseract, eng_fuser)
+    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)
     eng_fuse.save(output_dir / "eng_fuse.srt")
     eng_proofreader = get_eng_proofreader(
         test_cases=get_kob_eng_proofreading_test_cases()
         + get_mnt_eng_proofreading_test_cases()
         + get_t_eng_proofreading_test_cases(),
-        test_case_path=title_root / "core" / "eng" / "proofreading.json",
+        test_case_path=title_root / "lang" / "eng" / "proofreading.json",
         auto_verify=True,
     )
     eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
@@ -126,40 +137,37 @@ if "English (OCR)" in actions:
     )
 
 if "简体粤文 (Transcription)" in actions:
-    zhongwen = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+    zho_hans = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
     if (
-        zhongwen.events[539].text == "不知道为什么"
-        and zhongwen.events[540].text == "「珊你个头」却特别刺耳"
+        zho_hans.events[539].text == "不知道为什么"
+        and zho_hans.events[540].text == "「珊你个头」却特别刺耳"
     ):
         info(
             "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
             "structure is reversed in the 粤文."
         )
-        zhongwen = get_series_with_subs_merged(zhongwen, 539)
-
-    # 粤文
-    yuewen = AudioSeries.load(output_dir / "yue-Hans_audio")
-
-    # Utilities
+        zho_hans = get_series_with_subs_merged(zho_hans, 539)
+    yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     reviewer = CantoneseTranscriptionReviewer(
         test_case_directory_path=test_data_root / "mlamd",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
         proofing_test_cases=get_mlamd_yue_proofing_test_cases(),
         translation_test_cases=get_mlamd_yue_translation_test_cases(),
-        review_test_cases=get_mlamd_yue_review_test_cases(),
     )
+    yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
+    outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
+    yue_hans.save(outfile_path)
+    info(f"Saved 粤文 subtitles to {outfile_path}")
+    outfile_path = output_dir / "yue-Hans.srt"
+    yue_hans.save(outfile_path)
+    info(f"Saved 粤文 subtitles to {outfile_path}")
+    yue_hans = Series.load(outfile_path)
+    yue_hans_review = get_yue_vs_zho_reviewed(yue_hans, zho_hans)
+    outfile_path = output_dir / "yue-Hans_review.srt"
+    yue_hans_review.save(outfile_path)
+    info(f"Saved reviewed 粤文 subtitles to {outfile_path}")
 
-    # Process all blocks
-    yuewen_series = asyncio.run(reviewer.process_all_blocks(yuewen, zhongwen))
-
-    # Update output file
-    if len(zhongwen.blocks) == len(yuewen.blocks):
-        outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
-        if outfile_path.exists():
-            outfile_path.unlink()
-        yuewen_series.save(outfile_path)
-        info(f"Saved 粤文 subtitles to {outfile_path}")
 
 if "Bilingual 简体中文 and English" in actions:
     zho_hans_fuse_proofread_clean_flatten = Series.load(

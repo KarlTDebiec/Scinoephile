@@ -47,10 +47,11 @@ def load_test_cases_from_json[TTestCase: TestCase](
 
     test_cases: list[TTestCase] = []
     for test_case_data in raw_test_cases:
-        test_case_cls = test_case_base_cls.get_test_case_cls_from_data(
+        test_case_cls: type[TTestCase] = test_case_base_cls.get_test_case_cls_from_data(
             test_case_data, **kwargs
         )
-        test_cases.append(test_case_cls.model_validate(test_case_data))
+        test_case: TTestCase = test_case_cls.model_validate(test_case_data)
+        test_cases.append(test_case)
 
     return test_cases
 

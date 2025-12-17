@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 transcription shifting answers."""
+"""ABC for 粤文 transcription shifting answers."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core.llms import Answer
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .prompt import ShiftingPrompt
 
@@ -19,10 +19,10 @@ __all__ = ["ShiftingAnswer"]
 
 
 class ShiftingAnswer(Answer, ABC):
-    """Abstract base class for 粤文 transcription shifting answers."""
+    """ABC for 粤文 transcription shifting answers."""
 
     prompt_cls: ClassVar[type[ShiftingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @classmethod
     @cache
@@ -33,7 +33,7 @@ class ShiftingAnswer(Answer, ABC):
         """Get concrete answer class with provided configuartion.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.abcs import TestCase
+from scinoephile.core.llms import TestCase
 
 from .answer import TranslateAnswer
 from .query import TranslateQuery

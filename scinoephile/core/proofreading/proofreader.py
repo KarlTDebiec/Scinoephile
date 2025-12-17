@@ -29,7 +29,7 @@ class Proofreader:
     """Proofreads subtitles."""
 
     prompt_cls: type[ProofreadingPrompt]
-    """Prompt class used for communication with the LLM."""
+    """text for LLM correspondence"""
 
     def __init__(
         self,
@@ -42,7 +42,7 @@ class Proofreader:
         """Initialize.
 
         Arguments:
-            prompt_cls: prompt class
+            prompt_cls: text for LLM correspondence
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
@@ -98,11 +98,11 @@ class Proofreader:
                 len(block), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
-            query_attrs: dict[str, str] = {}
+            query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block):
                 key = self.prompt_cls.subtitle_field(idx + 1)
-                query_attrs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
-            query = query_cls(**query_attrs)
+                query_kwargs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
+            query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 

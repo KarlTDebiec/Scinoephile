@@ -9,8 +9,8 @@ from logging import info
 
 from scinoephile.common import package_root
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core.zho import OpenCCConfig, get_zho_converter
 from scinoephile.documentation.translation import TranslateQuery, Translator
+from scinoephile.lang.zho import OpenCCConfig, get_zho_converter
 from scinoephile.testing import test_data_root
 
 

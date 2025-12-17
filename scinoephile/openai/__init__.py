@@ -6,6 +6,4 @@ from __future__ import annotations
 
 from .openai_provider import OpenAIProvider
 
-__all__ = [
-    "OpenAIProvider",
-]
+__all__ = ["OpenAIProvider"]

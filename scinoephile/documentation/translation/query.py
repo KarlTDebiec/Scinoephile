@@ -8,7 +8,7 @@ from typing import Literal
 
 from pydantic import Field
 
-from scinoephile.core.abcs import Query
+from scinoephile.core.llms import Query
 
 __all__ = ["TranslateQuery"]
 

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for 粤文 proofing test cases."""
+"""ABC for 粤文 proofing test cases."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from typing import ClassVar, Self
 from pydantic import create_model, model_validator
 
 from scinoephile.core.llms import TestCase
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .answer import ProofingAnswer
 from .prompt import ProofingPrompt
@@ -21,14 +21,14 @@ __all__ = ["ProofingTestCase"]
 
 
 class ProofingTestCase(TestCase, ABC):
-    """Abstract base class for 粤文 proofing test cases."""
+    """ABC for 粤文 proofing test cases."""
 
     answer_cls: ClassVar[type[ProofingAnswer]]
     """Answer class for this test case."""
     query_cls: ClassVar[type[ProofingQuery]]
     """Query class for this test case."""
     prompt_cls: ClassVar[type[ProofingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -79,7 +79,7 @@ class ProofingTestCase(TestCase, ABC):
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration
         """

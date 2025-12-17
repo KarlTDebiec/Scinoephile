@@ -112,7 +112,7 @@ class AudioSeries(Series):
             return
 
         # Otherwise, continue as superclass SSAFile
-        path = val_output_path(path)
+        path = val_output_path(path, exist_ok=True)
         SSAFile.save(self, path, format_=format_, **kwargs)
         info(f"Saved series to {path}")
 

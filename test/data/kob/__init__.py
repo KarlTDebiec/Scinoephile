@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.eng.proofreading import EngProofreadingPrompt
+from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
-from scinoephile.core.zho.proofreading import ZhoHantProofreadingPrompt
-from scinoephile.image.eng.fusion import EngFusionPrompt
-from scinoephile.image.fusion import FusionPrompt, FusionTestCase
-from scinoephile.image.zho.fusion import ZhoHantFusionPrompt
+from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
+from scinoephile.lang.zho.proofreading import ZhoHantProofreadingPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -40,8 +40,8 @@ __all__ = [
     "kob_yue_hans_eng",
     "get_kob_eng_proofreading_test_cases",
     "get_kob_zho_proofreading_test_cases",
-    "get_kob_eng_fusion_test_cases",
-    "get_kob_zho_fusion_test_cases",
+    "get_kob_eng_ocr_fusion_test_cases",
+    "get_kob_zho_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -165,12 +165,12 @@ def get_kob_eng_proofreading_test_cases(
     """Get KOB English proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "core" / "eng" / "proofreading.json"
+    path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
@@ -184,48 +184,48 @@ def get_kob_zho_proofreading_test_cases(
     """Get KOB 中文 proofreading test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "core" / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
         path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_kob_eng_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EngFusionPrompt, **kwargs: Any
+def get_kob_eng_ocr_fusion_test_cases(
+    prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get KOB English fusion test cases.
+    """Get KOB English OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "image" / "eng" / "fusion.json"
+    path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_kob_zho_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoHantFusionPrompt, **kwargs: Any
+def get_kob_zho_ocr_fusion_test_cases(
+    prompt_cls: type[FusionPrompt] = ZhoHantOcrFusionPrompt, **kwargs: Any
 ) -> list[FusionTestCase]:
-    """Get KOB 中文 fusion test cases.
+    """Get KOB 中文 OCR fusion test cases.
 
     Arguments:
-        prompt_cls: prompt class to use
+        prompt_cls: text for LLM correspondence
         kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
-    path = title_root / "image" / "zho" / "fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
     )

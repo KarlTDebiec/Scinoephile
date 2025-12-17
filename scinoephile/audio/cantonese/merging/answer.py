@@ -11,7 +11,7 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import Answer
-from scinoephile.core.models import get_model_name
+from scinoephile.core.llms.models import get_model_name
 
 from .prompt import MergingPrompt
 
@@ -22,7 +22,7 @@ class MergingAnswer(Answer, ABC):
     """Answer for 粤文 merging."""
 
     prompt_cls: ClassVar[type[MergingPrompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
@@ -40,7 +40,7 @@ class MergingAnswer(Answer, ABC):
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            prompt_cls: Prompt providing descriptions and messages
+            prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration
         """

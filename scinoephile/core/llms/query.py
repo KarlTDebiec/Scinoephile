@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Abstract base class for LLM queries."""
+"""ABC for LLM queries."""
 
 from __future__ import annotations
 
@@ -10,18 +10,17 @@ from typing import ClassVar
 
 from pydantic import BaseModel
 
-from scinoephile.core.models import make_hashable
-
+from .models import make_hashable
 from .prompt import Prompt
 
 __all__ = ["Query"]
 
 
 class Query(BaseModel, ABC):
-    """Abstract base class for LLM queries."""
+    """ABC for LLM queries."""
 
     prompt_cls: ClassVar[type[Prompt]]
-    """Text strings to be used for corresponding with LLM."""
+    """Text for LLM correspondence."""
 
     def __str__(self) -> str:
         """String representation."""
