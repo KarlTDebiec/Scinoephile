@@ -63,7 +63,7 @@ def get_yue_vs_zho_reviewed(
         粤文 Series reviewed against 中文 Series
     """
     if reviewer is None:
-        reviewer = YueVsZhoReviewer()
+        reviewer = get_yue_vs_zho_reviewer()
     return reviewer.review(yuewen, zhongwen, **kwargs)
 
 
