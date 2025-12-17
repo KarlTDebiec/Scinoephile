@@ -95,7 +95,9 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls", ManyToManyBlockwisePrompt)
+        prompt_cls: type[ManyToManyBlockwisePrompt] = kwargs.get(
+            "prompt_cls", ManyToManyBlockwisePrompt
+        )
         size = sum(
             1 for key in data["query"] if key.startswith(prompt_cls.source_one_pfx)
         )
