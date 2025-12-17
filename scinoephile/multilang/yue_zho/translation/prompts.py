@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for 粤文 translation against 中文."""
+"""LLM correspondence text for translation of 粤文 from 中文."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 class YueHansTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
-    """LLM correspondence text for 简体粤文 translation against 中文."""
+    """LLM correspondence text for translation of 简体粤文 from 中文."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(
@@ -82,7 +82,7 @@ class YueHansTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
 
 
 class YueHantTranslationPrompt(YueHansTranslationPrompt):
-    """LLM correspondence text for 繁体粤文 translation against 中文."""
+    """LLM correspondence text for translation of 繁体粤文 from 中文."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config with which to convert characters from 简体中文 present in parent class."""
