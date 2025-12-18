@@ -6,8 +6,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import Series
 from scinoephile.core.blockwise import BlockwiseReviewer
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_proofread
 from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
