@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.blockwise import BlockwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.llms.blockwise import BlockwisePrompt
 
 __all__ = ["EngProofreadingPrompt"]
 

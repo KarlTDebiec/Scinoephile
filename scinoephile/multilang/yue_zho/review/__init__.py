@@ -7,8 +7,8 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
-from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 from .reviewer import YueVsZhoReviewer

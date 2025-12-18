@@ -10,12 +10,12 @@ from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase
-from scinoephile.core.llms.models import get_model_name
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.models import get_model_name
 
 from .answer import MergingAnswer
 from .prompt import MergingPrompt

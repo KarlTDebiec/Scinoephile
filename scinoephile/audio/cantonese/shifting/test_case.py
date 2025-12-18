@@ -10,8 +10,8 @@ from typing import ClassVar, Self
 
 from pydantic import create_model, model_validator
 
-from scinoephile.core.llms import TestCase
-from scinoephile.core.llms.models import get_model_name
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.models import get_model_name
 
 from .answer import ShiftingAnswer
 from .prompt import ShiftingPrompt

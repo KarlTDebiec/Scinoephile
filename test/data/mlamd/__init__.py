@@ -13,18 +13,18 @@ import pytest
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
-from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
-from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.many_to_many_blockwise import (
-    ManyToManyBlockwisePrompt,
-    ManyToManyBlockwiseTestCase,
-)
-from scinoephile.core.pairwise import PairwisePrompt, PairwiseTestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.llms.base import load_test_cases_from_json
+from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
+from scinoephile.llms.many_to_many_blockwise import (
+    ManyToManyBlockwisePrompt,
+    ManyToManyBlockwiseTestCase,
+)
+from scinoephile.llms.pairwise import PairwisePrompt, PairwiseTestCase
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import (
     YueFromZhoTranslationTestCase,

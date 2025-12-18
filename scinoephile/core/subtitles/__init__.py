@@ -61,7 +61,7 @@ def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle
 
 
 def get_concatenated_series(blocks: list[Series]) -> Series:
-    """Contatenate a list of sequential series blocks into a single series.
+    """Concatenate a list of sequential series blocks into a single series.
 
     Arguments:
         blocks: Series to concatenate

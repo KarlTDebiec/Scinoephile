@@ -7,12 +7,12 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
-from scinoephile.core.blockwise import (
+from scinoephile.core.subtitles import Series
+from scinoephile.llms.blockwise import (
     BlockwisePrompt,
     BlockwiseReviewer,
     BlockwiseTestCase,
 )
-from scinoephile.core.subtitles import Series
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 

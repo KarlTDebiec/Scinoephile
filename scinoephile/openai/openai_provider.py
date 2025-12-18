@@ -11,7 +11,7 @@ from typing import Any, override
 from openai import AsyncOpenAI, OpenAI, OpenAIError
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer, LLMProvider
+from scinoephile.llms.base import Answer, LLMProvider
 
 __all__ = ["OpenAIProvider"]
 
