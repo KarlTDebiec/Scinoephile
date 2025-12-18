@@ -10,8 +10,8 @@ from typing import Any, ClassVar, Self
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.core.llms import Query
-from scinoephile.core.llms.models import get_model_name
+from scinoephile.llms.base import Query
+from scinoephile.llms.base.models import get_model_name
 
 from .prompt import PairwisePrompt
 

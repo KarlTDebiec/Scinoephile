@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from scinoephile.core.llms import Answer
+from scinoephile.llms.base import Answer
 
 
 class TranslateAnswer(Answer):

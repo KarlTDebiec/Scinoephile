@@ -23,8 +23,8 @@ from scinoephile.audio.cantonese.shifting import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Queryer, save_test_cases_to_json
 from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.llms.base import Queryer, save_test_cases_to_json
 from scinoephile.multilang.synchronization import get_sync_groups_string
 
 from .alignment import Alignment

@@ -6,10 +6,10 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwisePrompt
 
 __all__ = [
     "YueHansFromZhoTranslationPrompt",

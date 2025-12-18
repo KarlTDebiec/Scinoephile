@@ -10,14 +10,14 @@ from typing import Any
 
 import pytest
 
-from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
-from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.pairwise import PairwisePrompt, PairwiseTestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.llms.base import load_test_cases_from_json
+from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
+from scinoephile.llms.pairwise import PairwisePrompt, PairwiseTestCase
 from scinoephile.testing import test_data_root
 
 __all__ = [

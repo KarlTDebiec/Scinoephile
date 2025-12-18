@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 
-from scinoephile.core.llms import Queryer
+from scinoephile.llms.base import Queryer
 
 from .answer import TranslateAnswer
 from .query import TranslateQuery

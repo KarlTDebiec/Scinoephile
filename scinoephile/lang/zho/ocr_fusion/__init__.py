@@ -7,8 +7,8 @@ from __future__ import annotations
 from logging import warning
 from typing import Any
 
-from scinoephile.core.pairwise import PairwisePrompt, PairwiseReviewer, PairwiseTestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.pairwise import PairwisePrompt, PairwiseReviewer, PairwiseTestCase
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 

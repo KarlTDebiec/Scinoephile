@@ -10,13 +10,13 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import (
+from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.llms.base import (
     Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
-from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 

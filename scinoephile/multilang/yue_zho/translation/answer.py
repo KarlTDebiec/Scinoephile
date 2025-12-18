@@ -11,8 +11,8 @@ from typing import Any, ClassVar, Self
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Answer
-from scinoephile.core.llms.models import get_model_name
+from scinoephile.llms.base import Answer
+from scinoephile.llms.base.models import get_model_name
 
 from .prompts import YueHansFromZhoTranslationPrompt
 

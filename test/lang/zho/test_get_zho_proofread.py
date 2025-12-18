@@ -6,13 +6,13 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.blockwise import BlockwiseReviewer
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_proofread
 from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
     get_zho_proofreader,
 )
+from scinoephile.llms.blockwise import BlockwiseReviewer
 
 
 def _test_get_zho_proofread(

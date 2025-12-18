@@ -7,7 +7,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.core.llms import Prompt
+from scinoephile.llms.base import Prompt
 
 __all__ = [
     "EngPrompt",
