@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for many-to-many blockwise queries."""
+"""ABC for dual track / block queries."""
 
 from __future__ import annotations
 
@@ -13,17 +13,17 @@ from pydantic import Field, create_model
 from scinoephile.llms.base import Query
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import ManyToManyBlockwisePrompt
+from .prompt import DualBlockPrompt
 
 __all__ = [
-    "ManyToManyBlockwiseQuery",
+    "DualBlockQuery",
 ]
 
 
-class ManyToManyBlockwiseQuery(Query, ABC):
-    """ABC for many-to-many blockwise queries."""
+class DualBlockQuery(Query, ABC):
+    """ABC for dual track / block queries."""
 
-    prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
+    prompt_cls: ClassVar[type[DualBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -34,7 +34,7 @@ class ManyToManyBlockwiseQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[ManyToManyBlockwisePrompt] = ManyToManyBlockwisePrompt,
+        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 

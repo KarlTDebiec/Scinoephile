@@ -19,11 +19,8 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
+from scinoephile.llms.dual_block import DualBlockPrompt, DualBlockTestCase
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
-from scinoephile.llms.many_to_many_blockwise import (
-    ManyToManyBlockwisePrompt,
-    ManyToManyBlockwiseTestCase,
-)
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import (
@@ -229,7 +226,7 @@ def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase]:
 
 @cache
 def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[DualBlockPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
 ) -> list[YueFromZhoTranslationTestCase]:
     """Get MLAMD 粵文 translation test cases.
@@ -248,9 +245,9 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_review_test_cases(
-    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansReviewPrompt,
+    prompt_cls: type[DualBlockPrompt] = YueHansReviewPrompt,
     **kwargs: Any,
-) -> list[ManyToManyBlockwiseTestCase]:
+) -> list[DualBlockTestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
@@ -261,7 +258,7 @@ def get_mlamd_yue_vs_zho_review_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "review.json"
     return load_test_cases_from_json(
-        path, ManyToManyBlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
+        path, DualBlockTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 

@@ -8,7 +8,7 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwiseTestCase
+from scinoephile.llms.dual_block import DualBlockTestCase
 
 from .answer import YueFromZhoTranslationAnswer
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
@@ -32,7 +32,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_from_zho_translation_test_cases(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-) -> list[ManyToManyBlockwiseTestCase]:
+) -> list[DualBlockTestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -76,7 +76,7 @@ def get_yue_from_zho_translated(
 
 def get_yue_from_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-    default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+    default_test_cases: list[DualBlockTestCase] | None = None,
     **kwargs: Any,
 ) -> YueFromZhoTranslator:
     """Get YueVsZhoTranslator with provided configuration.

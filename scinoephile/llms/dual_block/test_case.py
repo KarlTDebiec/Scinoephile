@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for many-to-many blockwise test cases."""
+"""ABC for dual track / block test cases."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
-from .answer import ManyToManyBlockwiseAnswer
-from .prompt import ManyToManyBlockwisePrompt
-from .query import ManyToManyBlockwiseQuery
+from .answer import DualBlockAnswer
+from .prompt import DualBlockPrompt
+from .query import DualBlockQuery
 
-__all__ = ["ManyToManyBlockwiseTestCase"]
+__all__ = ["DualBlockTestCase"]
 
 
-class ManyToManyBlockwiseTestCase(TestCase, ABC):
-    """ABC for many-to-many blockwise test cases."""
+class DualBlockTestCase(TestCase, ABC):
+    """ABC for dual track / block test cases."""
 
-    answer_cls: ClassVar[type[ManyToManyBlockwiseAnswer]]
+    answer_cls: ClassVar[type[DualBlockAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ManyToManyBlockwiseQuery]]
+    query_cls: ClassVar[type[DualBlockQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
+    prompt_cls: ClassVar[type[DualBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -64,7 +64,7 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[ManyToManyBlockwisePrompt] = ManyToManyBlockwisePrompt,
+        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -75,8 +75,8 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = ManyToManyBlockwiseQuery.get_query_cls(size, prompt_cls)
-        answer_cls = ManyToManyBlockwiseAnswer.get_answer_cls(size, prompt_cls)
+        query_cls = DualBlockQuery.get_query_cls(size, prompt_cls)
+        answer_cls = DualBlockAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

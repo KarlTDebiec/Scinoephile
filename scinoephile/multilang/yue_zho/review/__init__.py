@@ -8,7 +8,7 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwiseTestCase
+from scinoephile.llms.dual_block import DualBlockTestCase
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 from .reviewer import YueVsZhoReviewer
@@ -26,7 +26,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_vs_zho_test_cases(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-) -> list[ManyToManyBlockwiseTestCase]:
+) -> list[DualBlockTestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -68,7 +68,7 @@ def get_yue_vs_zho_reviewed(
 
 def get_yue_vs_zho_reviewer(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-    default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+    default_test_cases: list[DualBlockTestCase] | None = None,
     **kwargs: Any,
 ) -> YueVsZhoReviewer:
     """Get YueZhoReviewer with provided configuration.
