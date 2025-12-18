@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwisePrompt
+from scinoephile.llms.dual_block import DualBlockPrompt
 
 __all__ = [
     "YueHansReviewPrompt",
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class YueHansReviewPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
+class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """LLM correspondence text for 简体粤文 review against 中文."""
 
     # Prompt

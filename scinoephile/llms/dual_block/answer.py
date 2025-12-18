@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for many-to-many blockwise answers."""
+"""ABC for dual track / block answers."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import ManyToManyBlockwisePrompt
+from .prompt import DualBlockPrompt
 
-__all__ = ["ManyToManyBlockwiseAnswer"]
+__all__ = ["DualBlockAnswer"]
 
 
-class ManyToManyBlockwiseAnswer(Answer, ABC):
-    """ABC for many-to-many blockwise answers."""
+class DualBlockAnswer(Answer, ABC):
+    """ABC for dual track / block answers."""
 
-    prompt_cls: ClassVar[type[ManyToManyBlockwisePrompt]]
+    prompt_cls: ClassVar[type[DualBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -32,7 +32,7 @@ class ManyToManyBlockwiseAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[ManyToManyBlockwisePrompt] = ManyToManyBlockwisePrompt,
+        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 

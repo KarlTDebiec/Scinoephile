@@ -16,7 +16,7 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.many_to_many_blockwise import ManyToManyBlockwiseTestCase
+from scinoephile.llms.dual_block import DualBlockTestCase
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
@@ -34,10 +34,10 @@ class YueVsZhoReviewer:
     def __init__(
         self,
         prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-        test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+        test_cases: list[DualBlockTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+        default_test_cases: list[DualBlockTestCase] | None = None,
     ):
         """Initialize.
 
@@ -58,7 +58,7 @@ class YueVsZhoReviewer:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    ManyToManyBlockwiseTestCase,
+                    DualBlockTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -107,9 +107,7 @@ class YueVsZhoReviewer:
             size = len(zw_blk)
 
             # Query LLM
-            test_case_cls = ManyToManyBlockwiseTestCase.get_test_case_cls(
-                size, self.prompt_cls
-            )
+            test_case_cls = DualBlockTestCase.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
