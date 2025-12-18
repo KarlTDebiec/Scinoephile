@@ -4,15 +4,11 @@
 
 from __future__ import annotations
 
-import importlib
-from typing import TYPE_CHECKING
-
 from scinoephile.core.exceptions import ScinoephileError
 
-if TYPE_CHECKING:
-    from .block import Block
-    from .series import Series
-    from .subtitle import Subtitle
+from .block import Block
+from .series import Series
+from .subtitle import Subtitle
 
 __all__ = [
     "Block",
@@ -62,28 +58,6 @@ def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle
 
     subtitle_cls = type(subs[0])
     return subtitle_cls(start=subs[0].start, end=subs[-1].end, text=text)
-
-
-def __getattr__(name: str):
-    """Lazily import subtitles classes.
-
-    Arguments:
-        name: Attribute name
-    Returns:
-        Requested attribute
-    """
-    if name == "Block":
-        return importlib.import_module(".block", __name__).Block
-    if name == "Series":
-        return importlib.import_module(".series", __name__).Series
-    if name == "Subtitle":
-        return importlib.import_module(".subtitle", __name__).Subtitle
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-def __dir__() -> list[str]:
-    """List attributes for the module."""
-    return sorted(__all__)
 
 
 def get_concatenated_series(blocks: list[Series]) -> Series:
