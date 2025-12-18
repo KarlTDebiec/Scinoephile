@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series
-from scinoephile.core.proofreading import Proofreader
+from scinoephile.core.blockwise import BlockwiseReviewer
 from scinoephile.lang.zho import get_zho_proofread
 from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
@@ -16,16 +16,16 @@ from scinoephile.lang.zho.proofreading import (
 
 
 def _test_get_zho_proofread(
-    series: Series, expected: Series, proofreader: Proofreader | None = None
+    series: Series, expected: Series, reviewer: BlockwiseReviewer | None = None
 ):
     """Test get_zho_proofread.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
-        proofreader: Proofreader to use for the test
+        reviewer: BlockwiseReviewer to use for the test
     """
-    output = get_zho_proofread(series, proofreader=proofreader)
+    output = get_zho_proofread(series, reviewer=reviewer)
 
     assert len(output) == len(expected)
 

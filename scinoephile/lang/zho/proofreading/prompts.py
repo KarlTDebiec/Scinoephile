@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.proofreading import ProofreadingPrompt
+from scinoephile.core.blockwise import BlockwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
+class ZhoHansProofreadingPrompt(BlockwisePrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt
@@ -30,17 +30,17 @@ class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    subtitle_prefix: ClassVar[str] = "zimu_"
+    input_prefix: ClassVar[str] = "zimu_"
     """Prefix for subtitle fields in query."""
 
-    subtitle_description_template: ClassVar[str] = "第 {idx} 条字幕"
+    input_description_template: ClassVar[str] = "第 {idx} 条字幕"
     """Description template for subtitle fields in query."""
 
     # Answer fields
-    revised_prefix: ClassVar[str] = "xiugai_"
+    output_prefix: ClassVar[str] = "xiugai_"
     """Prefix of revised field in answer."""
 
-    revised_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
+    output_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
     """Description template for revised fields in answer."""
 
     note_prefix: ClassVar[str] = "beizhu_"
@@ -50,7 +50,7 @@ class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
     """Description template for note fields in answer."""
 
     # Test case errors
-    subtitle_revised_equal_error_template: ClassVar[str] = (
+    output_unmodified_error_template: ClassVar[str] = (
         "第 {idx} 条答案的修改文本与查询文本相同。如果不需要修改，应提供空字符串。"
     )
     """Error template when subtitle and revised fields are equal."""
@@ -60,7 +60,7 @@ class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
     )
     """Error template when note is missing for a revision."""
 
-    revised_missing_error_template: ClassVar[str] = (
+    output_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
     """Error template when revision is missing for a note."""

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Proofreader for subtitles."""
+"""Blockwise reviewer for subtitles."""
 
 from __future__ import annotations
 
@@ -19,25 +19,25 @@ from scinoephile.core.llms import (
 )
 from scinoephile.testing import test_data_root
 
-from .prompt import ProofreadingPrompt
-from .test_case import ProofreadingTestCase
+from .prompt import BlockwisePrompt
+from .test_case import BlockwiseTestCase
 
-__all__ = ["Proofreader"]
+__all__ = ["BlockwiseReviewer"]
 
 
-class Proofreader:
-    """Proofreads subtitles."""
+class BlockwiseReviewer:
+    """Reviews subtitles blockwise."""
 
-    prompt_cls: type[ProofreadingPrompt]
-    """text for LLM correspondence"""
+    prompt_cls: type[BlockwisePrompt]
+    """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[ProofreadingPrompt],
-        test_cases: list[ProofreadingTestCase] | None = None,
+        prompt_cls: type[BlockwisePrompt],
+        test_cases: list[BlockwiseTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: Sequence[ProofreadingTestCase] | None = None,
+        default_test_cases: Sequence[BlockwiseTestCase] | None = None,
     ):
         """Initialize.
 
@@ -58,7 +58,7 @@ class Proofreader:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    ProofreadingTestCase,
+                    BlockwiseTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -74,16 +74,16 @@ class Proofreader:
         )
         """LLM queryer."""
 
-    def proofread(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Proofread subtitles.
+    def review(self, series: Series, stop_at_idx: int | None = None) -> Series:
+        """Review subtitles blockwise.
 
         Arguments:
             series: subtitles
             stop_at_idx: stop processing at this index
         Returns:
-            proofread subtitles
+            reviewed subtitles
         """
-        # Proofread subtitles
+        # Review subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
         for block_idx, block in enumerate(series.blocks):
@@ -91,13 +91,13 @@ class Proofreader:
                 break
 
             # Query LLM
-            test_case_cls = ProofreadingTestCase.get_test_case_cls(
+            test_case_cls = BlockwiseTestCase.get_test_case_cls(
                 len(block), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block):
-                key = self.prompt_cls.subtitle_field(idx + 1)
+                key = self.prompt_cls.input_field(idx + 1)
                 query_kwargs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
@@ -105,9 +105,9 @@ class Proofreader:
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                key = self.prompt_cls.revised_field(sub_idx + 1)
-                if revised := getattr(test_case.answer, key):
-                    subtitle.text = revised
+                key = self.prompt_cls.output_field(sub_idx + 1)
+                if output_text := getattr(test_case.answer, key):
+                    subtitle.text = output_text
                 output_series.append(subtitle)
 
             info(
