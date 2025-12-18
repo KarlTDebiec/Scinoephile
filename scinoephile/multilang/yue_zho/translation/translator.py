@@ -11,13 +11,12 @@ from pathlib import Path
 import numpy as np
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core import Series, Subtitle
-from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import (
     Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root

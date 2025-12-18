@@ -9,7 +9,7 @@ from functools import cache
 
 from opencc import OpenCC
 
-from scinoephile.core.series import Series
+from scinoephile.core.subtitles import Series
 
 from .opencc_config import OpenCCConfig
 
