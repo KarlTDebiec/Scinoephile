@@ -18,7 +18,6 @@ from scinoephile.core.llms import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
@@ -40,10 +39,10 @@ class YueFromZhoTranslator:
         prompt_cls: type[
             YueHansFromZhoTranslationPrompt
         ] = YueHansFromZhoTranslationPrompt,
-        test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+        test_cases: list[YueFromZhoTranslationTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
+        default_test_cases: list[YueFromZhoTranslationTestCase] | None = None,
     ):
         """Initialize.
 
@@ -64,7 +63,7 @@ class YueFromZhoTranslator:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    ManyToManyBlockwiseTestCase,
+                    YueFromZhoTranslationTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
