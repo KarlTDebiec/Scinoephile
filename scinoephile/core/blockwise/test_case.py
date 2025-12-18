@@ -32,7 +32,7 @@ class BlockwiseTestCase(TestCase, ABC):
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
-    """Number of items."""
+    """Number of subtitles."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -85,7 +85,7 @@ class BlockwiseTestCase(TestCase, ABC):
         """Get concrete test case class with provided configuration.
 
         Arguments:
-            size: number of items
+            size: number of subtitles
             prompt_cls: text for LLM correspondence
         Returns:
             TestCase type with appropriate configuration

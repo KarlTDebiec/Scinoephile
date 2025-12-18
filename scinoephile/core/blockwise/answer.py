@@ -25,7 +25,7 @@ class BlockwiseAnswer(Answer, ABC):
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
-    """Number of items."""
+    """Number of subtitles."""
 
     @classmethod
     @cache
@@ -37,7 +37,7 @@ class BlockwiseAnswer(Answer, ABC):
         """Get concrete answer class with provided configuration.
 
         Arguments:
-            size: number of items
+            size: number of subtitles
             prompt_cls: text for LLM correspondence
         Returns:
             Answer type with appropriate configuration

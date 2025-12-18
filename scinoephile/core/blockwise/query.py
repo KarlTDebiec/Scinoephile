@@ -25,7 +25,7 @@ class BlockwiseQuery(Query, ABC):
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
-    """Number of items."""
+    """Number of subtitles."""
 
     @classmethod
     @cache
@@ -37,7 +37,7 @@ class BlockwiseQuery(Query, ABC):
         """Get concrete query class with provided configuration.
 
         Arguments:
-            size: number of items
+            size: number of subtitles
             prompt_cls: text for LLM correspondence
         Returns:
             Query type with appropriate configuration
