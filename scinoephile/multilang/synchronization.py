@@ -9,8 +9,8 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.core import ScinoephileError, Series, Subtitle
-from scinoephile.core.blocks import get_concatenated_series
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 
 from .pairs import get_block_pairs_by_pause, get_pair_strings
 
@@ -216,26 +216,14 @@ def get_synced_series_from_groups(
         one_subs = [one[i] for i in group[0]]
         two_subs = [two[i] for i in group[1]]
 
-        # One to zero mapping
-        if len(one_subs) == 1 and len(two_subs) == 0:
-            synced.events.append(
-                Subtitle(
-                    start=one_subs[0].start,
-                    end=one_subs[0].end,
-                    text=one_subs[0].text,
-                )
-            )
-            continue
-
         # Zero to one mapping
         if len(one_subs) == 0 and len(two_subs) == 1:
-            synced.events.append(
-                Subtitle(
-                    start=two_subs[0].start,
-                    end=two_subs[0].end,
-                    text=two_subs[0].text,
-                )
-            )
+            synced.events.append(two_subs[0])
+            continue
+
+        # One to zero mapping
+        if len(one_subs) == 1 and len(two_subs) == 0:
+            synced.events.append(one_subs[0])
             continue
 
         # One to one mapping
