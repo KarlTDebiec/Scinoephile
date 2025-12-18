@@ -42,10 +42,10 @@ def get_default_yue_from_zho_translation_test_cases(
     """
     try:
         from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_yue_translation_test_cases,
+            get_mlamd_yue_from_zho_translation_test_cases,
         )
 
-        return get_mlamd_yue_translation_test_cases(prompt_cls)
+        return get_mlamd_yue_from_zho_translation_test_cases(prompt_cls)
     except ImportError as exc:
         warning(
             f"Default test cases not available for 粤文 vs.中文 translation:\n{exc}"

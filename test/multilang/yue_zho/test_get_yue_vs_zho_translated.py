@@ -43,7 +43,7 @@ def test_get_yue_vs_zho_translated_mlamd(
     Arguments:
         mlamd_yue_hans: MLAMD 粤文 subtitles fixture
         mlamd_zho_hans_fuse_proofread_clean_flatten: MLAMD 中文 subtitles fixture
-        mlamd_yue_hans_translate: Expected translated MLAMD 粤文 subtitles fixture
+        mlamd_yue_hans_translate: expected translated MLAMD 粤文 subtitles fixture
     """
     zhongwen = get_series_with_subs_merged(
         mlamd_zho_hans_fuse_proofread_clean_flatten, 539

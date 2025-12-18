@@ -178,8 +178,8 @@ def get_synced_series(one: Series, two: Series) -> Series:
     """
     synced_blocks = []
 
-    pair_blocks = get_block_pairs_by_pause(one, two)
-    for one_block, two_block in pair_blocks:
+    block_pairs = get_block_pairs_by_pause(one, two)
+    for one_block, two_block in block_pairs:
         one_str, two_str = get_pair_strings(one_block, two_block)
         debug(f"ONE:\n{one_str}")
         debug(f"TWO:\n{two_str}")

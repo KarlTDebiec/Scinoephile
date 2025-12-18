@@ -110,7 +110,14 @@ class YueFromZhoTranslator:
             for yw_idx in range(len(yw_blk)):
                 sg_idx = np.argmax(overlap[yw_idx, :])
                 sync_groups[sg_idx][0].append(yw_idx)
-            missing = (idx for idx, group in enumerate(sync_groups) if not group[0])
+            missing = tuple(
+                idx for idx, group in enumerate(sync_groups) if not group[0]
+            )
+
+            # If no subtitles require translation, skip
+            if not missing:
+                output_series_to_concatenate[blk_idx] = yw_blk
+                continue
 
             # Query LLM
             test_case_cls = YueFromZhoTranslationTestCase.get_test_case_cls(
@@ -118,29 +125,31 @@ class YueFromZhoTranslator:
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for sub_idx in range(size):
-                if sub_idx not in missing:
-                    yw_key = self.prompt_cls.source_one(sub_idx + 1)
-                    yw_val = re.sub(r"\\N", "\n", yw_blk[sub_idx].text).strip()
+            yw_idx = 0
+            for zw_idx in range(size):
+                if zw_idx not in missing:
+                    yw_key = self.prompt_cls.source_one(zw_idx + 1)
+                    yw_val = re.sub(r"\\N", "\n", yw_blk[yw_idx].text).strip()
                     query_kwargs[yw_key] = yw_val
-                zw_key = self.prompt_cls.source_two(sub_idx + 1)
-                zw_val = re.sub(r"\\N", "\n", zw_blk[sub_idx].text).strip()
+                    yw_idx += 1
+                zw_key = self.prompt_cls.source_two(zw_idx + 1)
+                zw_val = re.sub(r"\\N", "\n", zw_blk[zw_idx].text).strip()
                 query_kwargs[zw_key] = zw_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            # Compile series
+            # Compile 粤文 series from source and translation
             output_series = Series()
-            for sub_idx in range(size):
-                zw_sub = zw_blk[sub_idx]
+            for zw_idx in range(size):
+                zw_sub = zw_blk[zw_idx]
                 start = zw_sub.start
                 end = zw_sub.end
-                if sub_idx not in missing:
-                    yw_key = self.prompt_cls.source_one(sub_idx + 1)
+                if zw_idx not in missing:
+                    yw_key = self.prompt_cls.source_one(zw_idx + 1)
                     yw_val = getattr(test_case.query, yw_key)
                 else:
-                    yw_key = self.prompt_cls.output(sub_idx + 1)
+                    yw_key = self.prompt_cls.output(zw_idx + 1)
                     yw_val = getattr(test_case.answer, yw_key)
                 yw_sub = Subtitle(start=start, end=end, text=yw_val)
                 output_series.append(yw_sub)
