@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM correspondence text for blockwise review."""
+"""ABC for LLM correspondence text for mono track / block processing."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.llms.base import Prompt
 
-__all__ = ["BlockwisePrompt"]
+__all__ = ["MonoBlockPrompt"]
 
 
-class BlockwisePrompt(Prompt, ABC):
-    """ABC for LLM correspondence text for blockwise review."""
+class MonoBlockPrompt(Prompt, ABC):
+    """ABC for LLM correspondence text for mono track / block processing."""
 
     # Query fields
     input_prefix: ClassVar[str] = "input_"

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for blockwise review test cases."""
+"""ABC for mono track / block test cases."""
 
 from __future__ import annotations
 
@@ -15,21 +15,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
-from .answer import BlockwiseAnswer
-from .prompt import BlockwisePrompt
-from .query import BlockwiseQuery
+from .answer import MonoBlockAnswer
+from .prompt import MonoBlockPrompt
+from .query import MonoBlockQuery
 
-__all__ = ["BlockwiseTestCase"]
+__all__ = ["MonoBlockTestCase"]
 
 
-class BlockwiseTestCase(TestCase, ABC):
-    """ABC for blockwise review test cases."""
+class MonoBlockTestCase(TestCase, ABC):
+    """ABC for mono track / block test cases."""
 
-    answer_cls: ClassVar[type[BlockwiseAnswer]]
+    answer_cls: ClassVar[type[MonoBlockAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[BlockwiseQuery]]
+    query_cls: ClassVar[type[MonoBlockQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[BlockwisePrompt]]
+    prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -81,7 +81,7 @@ class BlockwiseTestCase(TestCase, ABC):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[BlockwisePrompt],
+        prompt_cls: type[MonoBlockPrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -92,8 +92,8 @@ class BlockwiseTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = BlockwiseQuery.get_query_cls(size, prompt_cls)
-        answer_cls = BlockwiseAnswer.get_answer_cls(size, prompt_cls)
+        query_cls = MonoBlockQuery.get_query_cls(size, prompt_cls)
+        answer_cls = MonoBlockAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

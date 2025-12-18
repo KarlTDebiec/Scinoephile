@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
-from scinoephile.llms.blockwise import BlockwisePrompt
+from scinoephile.llms.mono_block import MonoBlockPrompt
 
 __all__ = [
     "ZhoHansProofreadingPrompt",
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class ZhoHansProofreadingPrompt(BlockwisePrompt, ZhoHansPrompt):
+class ZhoHansProofreadingPrompt(MonoBlockPrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt

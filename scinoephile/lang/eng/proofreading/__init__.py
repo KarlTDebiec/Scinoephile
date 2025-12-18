@@ -8,10 +8,10 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.blockwise import (
-    BlockwisePrompt,
-    BlockwiseReviewer,
-    BlockwiseTestCase,
+from scinoephile.llms.mono_block import (
+    MonoBlockProcessor,
+    MonoBlockPrompt,
+    MonoBlockTestCase,
 )
 
 from .prompts import EngProofreadingPrompt
@@ -26,9 +26,9 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_eng_proofreading_test_cases(
-    prompt_cls: type[BlockwisePrompt] = BlockwisePrompt,
-) -> list[BlockwiseTestCase]:
-    """Get default English proofreading test cases included with package.
+    prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
+) -> list[MonoBlockTestCase]:
+    """Get default test cases included with package.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -50,46 +50,46 @@ def get_default_eng_proofreading_test_cases(
             + get_t_eng_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for English proofreading:\n{exc}")
+        warning(f"Default test cases not available for proofreading:\n{exc}")
     return []
 
 
 def get_eng_proofread(
     series: Series,
-    reviewer: BlockwiseReviewer | None = None,
+    processor: MonoBlockProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get English series proofread.
 
     Arguments:
         series: Series to proofread
-        reviewer: reviewer to use
-        kwargs: additional keyword arguments for BlockwiseReviewer.review
+        processor: MonoBlockProcessor to use
+        kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
         proofread Series
     """
-    if reviewer is None:
-        reviewer = get_eng_proofreader()
-    return reviewer.review(series, **kwargs)
+    if processor is None:
+        processor = get_eng_proofreader()
+    return processor.process(series, **kwargs)
 
 
 def get_eng_proofreader(
     prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
-    default_test_cases: list[BlockwiseTestCase] | None = None,
+    default_test_cases: list[MonoBlockTestCase] | None = None,
     **kwargs: Any,
-) -> BlockwiseReviewer:
-    """Get a BlockwiseReviewer with provided configuration.
+) -> MonoBlockProcessor:
+    """Get MonoBlockProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for BlockwiseReviewer
+        kwargs: additional keyword arguments for MonoBlockProcessor
     Returns:
-        BlockwiseReviewer with provided configuration
+        MonoBlockProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_eng_proofreading_test_cases(prompt_cls)
-    return BlockwiseReviewer(
+    return MonoBlockProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,
