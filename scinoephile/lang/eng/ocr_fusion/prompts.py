@@ -56,4 +56,4 @@ class EngOcrFusionPrompt(PairwisePrompt, EngPrompt):
     sources_equal_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens and Tesseract must differ."
     )
-    """Error message when source one and two fields are equal."""
+    """Error when source one and two fields are equal."""

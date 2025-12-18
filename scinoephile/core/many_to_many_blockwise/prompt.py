@@ -105,7 +105,7 @@ class ManyToManyBlockwisePrompt(Prompt, ABC):
     # Test case validation errors
     @classmethod
     def output_present_but_unmodified_err(cls, idx: int) -> str:
-        """Error message when output is present but unmodified relative to source one.
+        """Error when output is present but unmodified relative to source one.
 
         Arguments:
             idx: index of subtitle
@@ -116,7 +116,7 @@ class ManyToManyBlockwisePrompt(Prompt, ABC):
 
     @classmethod
     def output_missing_note_present_err(cls, idx: int) -> str:
-        """Error message when output is missing but note is present.
+        """Error when output is missing but note is present.
 
         Arguments:
             idx: index of subtitle
@@ -127,7 +127,7 @@ class ManyToManyBlockwisePrompt(Prompt, ABC):
 
     @classmethod
     def output_present_note_missing_err(cls, idx: int) -> str:
-        """Error message when output is present but note is missing.
+        """Error when output is present but note is missing.
 
         Arguments:
             idx: index of subtitle
