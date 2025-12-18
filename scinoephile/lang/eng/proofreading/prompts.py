@@ -38,12 +38,14 @@ class EngProofreadingPrompt(BlockwisePrompt, EngPrompt):
         Do not remove newlines ('\\n').""")
     """Base system prompt."""
 
+    # Query fields
     input_prefix: ClassVar[str] = "subtitle_"
     """Prefix for input fields in query."""
 
     input_description_template: ClassVar[str] = "Subtitle {idx}"
     """Description template for input fields in query."""
 
+    # Answer fields
     output_prefix: ClassVar[str] = "revised_"
     """Prefix for output fields in answer."""
 
@@ -58,6 +60,7 @@ class EngProofreadingPrompt(BlockwisePrompt, EngPrompt):
     )
     """Description template for note fields in answer."""
 
+    # Test case errors
     output_unmodified_error_template: ClassVar[str] = (
         "Answer's revised text {idx} is not modified relative to query's text {idx}, "
         "if no revision is needed an empty string must be provided."
