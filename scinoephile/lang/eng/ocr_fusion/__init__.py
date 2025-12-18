@@ -55,7 +55,7 @@ def get_default_eng_ocr_fusion_test_cases(
 def get_eng_ocr_fused(
     lens: Series,
     tesseract: Series,
-    reviewer: DualSingleProcessor | None = None,
+    processor: DualSingleProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get English series fused from Google Lens and Tesseract OCR outputs.
@@ -63,14 +63,14 @@ def get_eng_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         tesseract: subtitles OCRed using Tesseract
-        reviewer: DualSingleProcessor to use
-        kwargs: additional keyword arguments for DualSingleProcessor.review
+        processor: DualSingleProcessor to use
+        kwargs: additional keyword arguments for DualSingleProcessor.process
     Returns:
         fused series
     """
-    if reviewer is None:
-        reviewer = get_eng_ocr_fuser()
-    return reviewer.process(lens, tesseract, **kwargs)
+    if processor is None:
+        processor = get_eng_ocr_fuser()
+    return processor.process(lens, tesseract, **kwargs)
 
 
 def get_eng_ocr_fuser(

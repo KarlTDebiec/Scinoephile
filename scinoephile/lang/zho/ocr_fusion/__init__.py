@@ -56,7 +56,7 @@ def get_default_zho_ocr_fusion_test_cases(
 def get_zho_ocr_fused(
     lens: Series,
     paddle: Series,
-    reviewer: DualSingleProcessor | None = None,
+    processor: DualSingleProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 中文 series fused from Google Lens and PaddleOCR outputs.
@@ -64,14 +64,14 @@ def get_zho_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
-        reviewer: DualSingleProcessor to use
-        kwargs: additional keyword arguments for DualSingleProcessor.review
+        processor: DualSingleProcessor to use
+        kwargs: additional keyword arguments for DualSingleProcessor.process
     Returns:
         Fused series
     """
-    if reviewer is None:
-        reviewer = get_zho_ocr_fuser()
-    return reviewer.process(lens, paddle, **kwargs)
+    if processor is None:
+        processor = get_zho_ocr_fuser()
+    return processor.process(lens, paddle, **kwargs)
 
 
 def get_zho_ocr_fuser(
