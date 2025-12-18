@@ -23,15 +23,12 @@ class YueHansFromZhoTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(
         """
-        You are reviewing pairs of 粤文 and 中文 subtitles.  Some 粤文 subtitles are
-        missing because they could not be transcribed from the audio.  Whenever a
-        粤文 subtitle is empty, translate the corresponding 中文 subtitle into written
-        Cantonese that matches the colloquial style of the surrounding 粤文 subtitles.
-        If a 粤文 subtitle already contains text, leave it unchanged by returning an
-        empty string for that subtitle.
-        For every translation you provide, also include a short English note
-        summarizing your changes.  When no translation is needed, both the translated
-        text and the note must be empty strings.
+        你而家要核对一对对嘅粤文同中文字幕。有啲粤文字幕因为音频识别唔到而缺失。
+        每当某行粤文字幕系空嘅，就用对应嗰行中文，翻译成书面粤语，语气同用词要贴近周边现有嘅粤文字幕嘅口
+        语风格。
+        如果嗰行粤文字幕已经有内容，唔好改，嗰行请输出空字串。
+        只要你有提供翻译，就再加一段简短英文备注，简述你改动嘅重点。
+        如果唔需要翻译，译文同备注都必须系空字串。
         """
     )
     """Base system prompt."""
@@ -41,7 +38,7 @@ class YueHansFromZhoTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     """Prefix for source one fields in query."""
 
     source_one_desc_tpl: ClassVar[str] = (
-        "已知嘅字幕 {idx} 粤文文本；如果为空代表需要翻译"
+        "字幕 {idx} 现有嘅粤文内容；如果系空就代表要翻译"
     )
     """Description template for subtitle fields in query."""
 
@@ -55,28 +52,28 @@ class YueHansFromZhoTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     output_pfx: ClassVar[str] = "yuewen_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = '字幕 {idx} 翻译后嘅粤文；如果毋需翻译请回传 ""'
+    output_desc_tpl: ClassVar[str] = '字幕 {idx} 译好后嘅粤文；如果唔需要翻译请输出 ""'
     """Description template for output fields in answer."""
 
     note_pfx: ClassVar[str] = "beizhu_"
     """Prefix of note fields in answer."""
 
-    note_desc_tpl: ClassVar[str] = '字幕 {idx} 嘅英文备注；如果冇提供翻译请回传 ""'
+    note_desc_tpl: ClassVar[str] = '字幕 {idx} 嘅英文备注；如果冇提供翻译请输出 ""'
     """Description template for note fields in answer."""
 
     # Test case validation errors
     output_unmodified_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 已经包含粤文文本，输出必须系空字串。"
+        "字幕 {idx} 已经有粤文内容，嗰行输出必须系空字串。"
     )
     """Error template when output is present but unmodified relative to source one."""
 
     output_missing_note_present_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 冇翻译，但你提供咗备注；请同样回传空字串。"
+        "字幕 {idx} 冇译文，但你提供咗备注；请同样输出空字串。"
     )
     """Error template when output is missing but note is present."""
 
     output_present_note_missing_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 有翻译，但冇备注；提供译文时必须提供备注。"
+        "字幕 {idx} 有译文，但冇备注；提供译文时必须一齐提供备注。"
     )
     """Error template when output is present but note is missing."""
 
