@@ -10,7 +10,7 @@ from typing import Any, override
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-from .text import full_punc_chars, half_punc_chars, whitespace_chars
+from ..text import full_punc_chars, half_punc_chars, whitespace_chars
 
 __all__ = ["Subtitle"]
 
@@ -20,6 +20,8 @@ class Subtitle(SSAEvent):
 
     Extension of pysubs2's SSAEvent with additional features.
     """
+
+    __hash__ = None
 
     @override
     def __init__(self, **kwargs: Any):

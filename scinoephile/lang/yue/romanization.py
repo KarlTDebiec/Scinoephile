@@ -14,7 +14,7 @@ import pycantonese
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.series import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.core.text import full_to_half_punc, get_char_type, re_western
 from scinoephile.lang.zho.conversion import get_zho_converter
 

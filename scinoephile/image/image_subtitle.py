@@ -10,7 +10,7 @@ from typing import Any, override
 import numpy as np
 from PIL import Image
 
-from scinoephile.core import Subtitle
+from scinoephile.core.subtitles import Subtitle
 from scinoephile.core.text import whitespace_chars
 
 from .base64 import get_base64_image

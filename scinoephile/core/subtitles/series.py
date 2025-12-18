@@ -14,7 +14,6 @@ from pysubs2.time import ms_to_str
 from scinoephile.common.validation import val_input_path, val_output_path
 
 from .block import Block
-from .blocks import get_block_indexes_by_pause
 from .subtitle import Subtitle
 
 __all__ = ["Series"]
@@ -208,5 +207,34 @@ class Series(SSAFile):
         """Initialize blocks."""
         self._blocks = [
             Block(self, start_idx, end_idx)
-            for start_idx, end_idx in get_block_indexes_by_pause(self)
+            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
         ]
+
+    @staticmethod
+    def get_block_indexes_by_pause(
+        series: Series, pause_length: int = 3000
+    ) -> list[tuple[int, int]]:
+        """Get indexes of blocks in a Series split by pauses without text.
+
+        Blocks are 1-indexed and the start and end indexes are inclusive.
+
+        Arguments:
+            series: Series to split into blocks
+            pause_length: Split whenever a pause of this length is encountered
+        Returns:
+            Start and end indexes of each block
+        """
+        if not series.events:
+            return []
+        block_indexes = []
+        start = 0
+        prev_end = None
+
+        for i, event in enumerate(series):
+            if prev_end is not None and event.start - prev_end >= pause_length:
+                block_indexes.append((start, i))
+                start = i
+            prev_end = event.end
+        block_indexes.append((start, len(series)))
+
+        return block_indexes

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 
 

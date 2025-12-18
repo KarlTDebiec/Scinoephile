@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_flattened
 
 # noinspection PyProtectedMember

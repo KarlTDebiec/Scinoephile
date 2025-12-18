@@ -10,10 +10,10 @@ from typing import Any
 
 import pytest
 
-from scinoephile.core import Series
 from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.pairwise import PairwisePrompt, PairwiseTestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt

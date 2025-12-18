@@ -314,22 +314,22 @@ Spring Flower offer white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
-〝我只耳仔畀人烙到好痛⋯〞
+〝鹅满是快烙滴好耳痛⋯〞
 “We are all happy children…”
 
 65
 00:05:36,042 --> 00:05:40,917
-〝我日日都要望住个窗！〞
+〝鹅闷天天一戏个窗！〞
 “We sing everyday!”
 
 66
 00:05:41,042 --> 00:05:45,625
-〝我哋喺度学习，我哋一齐成长⋯〞
+〝鹅们在壳习，鹅闷载升胀⋯〞
 “We learn as we grow…”
 
 67
 00:05:45,750 --> 00:05:50,792
-〝我哋就系春天嘅花！〞
+〝鹅闷是春天滴化！〞
 “We are the flowers of spring!”
 
 68
@@ -374,17 +374,17 @@ I had difficulty hearing him.
 
 76
 00:06:14,625 --> 00:06:17,833
-蛋挞！　蛋挞！
+蛋挞！　　蛋挞！
 - Tart!    - Tart!
 
 77
 00:06:18,000 --> 00:06:23,583
-荔芋火鸭礼！　荔芋火鸭礼！
+荔芋火鸭扎！　　荔芋火鸭扎！
 - Duck dumpling!    - Duck dumpling!
 
 78
 00:06:23,750 --> 00:06:29,792
-唔好忘记校训九十七⋯　唔好忘记校训九十七⋯
+唔好忘记校训九十七⋯　　唔好忘记校训九十七⋯
 - The 97 Rule…    - The 97 Rule…
 
 79
@@ -624,7 +624,7 @@ I was contemplating something academic:
 
 126
 00:08:33,833 --> 00:08:36,917
-点解橙叫「疴﹣烂﹣煮」呢？
+点解橙叫「疴－烂－煮」呢？
 How does this universe work?
 
 127
@@ -634,17 +634,17 @@ I mean, I ate 6 oranges that morning…
 
 128
 00:08:40,042 --> 00:08:44,542
-「疴」呢个我明白，但系「烂﹣煮」呢？
+「疴」呢个我明白，但系「烂－煮」呢？
 And my stomach wouldn't stop.
 
 129
 00:08:44,708 --> 00:08:47,125
-仲有呢个「芭﹣娜﹣娜」香蕉啊
+仲有呢个「芭－娜－哪」香蕉啊
 Then I ate 3 bananas this morning.
 
 130
 00:08:47,292 --> 00:08:50,375
-点解雨伞会叫做「暗﹣芭﹣娜﹣娜」呢？
+点解雨伞会叫做「暗－芭－娜－哪」呢？
 Again my stomach wouldn't stop…
 
 131
@@ -709,7 +709,7 @@ Our headmaster runs a tea stand…
 
 143
 00:09:24,292 --> 00:09:27,375
-我哋一班同学仔放咗学都经常喺房餐
+我哋一班同学仔放咗学都经常去傍衬
 Which we kids frequent after class.
 
 144
@@ -789,7 +789,7 @@ you can probably tell how smart I am.
 
 159
 00:10:11,583 --> 00:10:13,958
-嗰阵我无忧无虑，冇乜所谓﹣﹣
+嗰阵我无忧无虑，冇乜所谓－－
 Nothing worried me, all things were fine.
 
 160
@@ -919,7 +919,7 @@ Offering brilliant dishes.
 
 185
 00:13:23,333 --> 00:13:25,500
-欢迎大家收睇《麦太世界》
+欢迎大家收睇＜麦太世界＞
 Welcome to “Mrs. Mc Can Cook”.
 
 186
@@ -999,7 +999,7 @@ Isn't this a lovely bun?
 
 201
 00:14:33,292 --> 00:14:37,375
-间阵要教大家一味几别致嘅小菜﹣
+间阵要教大家一味几别致嘅小菜－
 A novelty today for everyone:
 
 202
@@ -1333,7 +1333,7 @@ My favourite place is Japan.
 
 268
 00:19:36,042 --> 00:19:39,208
-嗰度有Disneyland同埋Hello Kitty Land
+嗰度有 Disney 同埋 Hello Kitty
 They have Disneyland and Hello Kitty Land.
 
 269
@@ -1543,7 +1543,7 @@ Come on, drink up!
 
 310
 00:24:45,917 --> 00:24:47,917
-妈妈你睇！
+妈妈，你睇！
 Look, mother!
 
 311
@@ -1573,7 +1573,7 @@ And I gulped it down bit by bit…
 
 316
 00:25:06,042 --> 00:25:08,333
-吓，咪我饮晒㖞！
+吓，我饮晒㖞！
 I did it!
 
 317
@@ -2056,7 +2056,7 @@ You want me to be your master?
 
 413
 00:36:50,250 --> 00:36:51,917
-拜你个头嘅！
+拜你个头！
 Forget it!
 
 414
@@ -2846,7 +2846,7 @@ And those tough toenails!
 
 571
 00:47:38,000 --> 00:47:39,667
-要行过几多座山?
+要行过几多座山
 How many hills must it travel…
 
 572
@@ -3405,12 +3405,12 @@ The turkey was ready.
 
 683
 00:54:22,208 --> 00:54:24,542
-我同妈妈，噉双手查满盐⋯
+我同妈妈，噉双手搽满盐⋯
 Following mother, with salt on both hands…
 
 684
 00:54:25,083 --> 00:54:28,292
-喺火鸡丰厚嘅鸡胸度，起势噉擦呀擦
+喺火鸡丰厚嘅鸡胸度，起细噉擦擦
 I rubbed the turkey's thick chest.
 
 685

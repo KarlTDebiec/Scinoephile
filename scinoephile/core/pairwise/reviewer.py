@@ -8,12 +8,13 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core import ScinoephileError, Series, Subtitle
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
     Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 

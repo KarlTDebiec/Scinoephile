@@ -29,9 +29,8 @@ from scinoephile.common.validation import (
     val_output_dir_path,
     val_output_path,
 )
-from scinoephile.core import ScinoephileError, Series
-from scinoephile.core.block import Block
-from scinoephile.core.blocks import get_block_indexes_by_pause
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Block, Series
 
 
 class AudioSeries(Series):
@@ -135,7 +134,7 @@ class AudioSeries(Series):
         """Initialize blocks."""
         blocks = [
             Block(self, start_idx, end_idx)
-            for start_idx, end_idx in get_block_indexes_by_pause(self)
+            for start_idx, end_idx in Series.get_block_indexes_by_pause(self)
         ]
         audio_blocks = []
         for i, block in enumerate(blocks):

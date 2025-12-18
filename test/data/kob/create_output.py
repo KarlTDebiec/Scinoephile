@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,

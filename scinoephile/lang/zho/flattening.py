@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from copy import deepcopy
 
-from scinoephile.core.series import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_zho_flattened",
