@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM correspondence text for pairwise review."""
+"""ABC for LLM correspondence text for dual track / single subtitle processing."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.llms.base import Prompt
 
-__all__ = ["PairwisePrompt"]
+__all__ = ["DualSinglePrompt"]
 
 
-class PairwisePrompt(Prompt, ABC):
-    """ABC for LLM correspondence text for pairwise review."""
+class DualSinglePrompt(Prompt, ABC):
+    """ABC for LLM correspondence text for dual track / single subtitle processing."""
 
     # Query fields
     source_one_field: ClassVar[str] = "one"
