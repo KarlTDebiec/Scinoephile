@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 transcription translation queries."""
+"""ABC for translation of 粤文 from 中文 queries."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Query
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import TranslationPrompt
+from .prompts import YueHansFromZhoTranslationPrompt
 
-__all__ = ["TranslationQuery"]
+__all__ = ["YueFromZhoTranslationQuery"]
 
 
-class TranslationQuery(Query, ABC):
-    """ABC for 粤文 transcription translation queries."""
+class YueFromZhoTranslationQuery(Query, ABC):
+    """ABC for translation of 粤文 from 中文 queries."""
 
-    prompt_cls: ClassVar[type[TranslationPrompt]]
+    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -36,7 +36,9 @@ class TranslationQuery(Query, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
+        prompt_cls: type[
+            YueHansFromZhoTranslationPrompt
+        ] = YueHansFromZhoTranslationPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -60,13 +62,13 @@ class TranslationQuery(Query, ABC):
         )
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.zhongwen_field(idx + 1)
-            description = prompt_cls.zhongwen_description(idx + 1)
-            fields[key] = (str, Field(..., description=description))
             if idx not in missing:
-                key = prompt_cls.yuewen_field(idx + 1)
-                description = prompt_cls.yuewen_query_description(idx + 1)
+                key = prompt_cls.source_one(idx + 1)
+                description = prompt_cls.source_one_desc(idx + 1)
                 fields[key] = (str, Field(..., description=description))
+            key = prompt_cls.source_two(idx + 1)
+            description = prompt_cls.source_two_desc(idx + 1)
+            fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls

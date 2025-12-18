@@ -1,10 +1,9 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 transcription translation test cases."""
+"""ABC for translation of 粤文 from 中文 test cases."""
 
 from __future__ import annotations
 
-import re
 from abc import ABC
 from functools import cache
 from typing import Any, ClassVar, Self
@@ -15,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
-from .answer import TranslationAnswer
-from .prompt import TranslationPrompt
-from .query import TranslationQuery
+from .answer import YueFromZhoTranslationAnswer
+from .prompts import YueHansFromZhoTranslationPrompt
+from .query import YueFromZhoTranslationQuery
 
-__all__ = ["TranslationTestCase"]
+__all__ = ["YueFromZhoTranslationTestCase"]
 
 
-class TranslationTestCase(TestCase, ABC):
-    """ABC for 粤文 transcription translation test cases."""
+class YueFromZhoTranslationTestCase(TestCase, ABC):
+    """ABC for translation of 粤文 from 中文 test cases."""
 
-    answer_cls: ClassVar[type[TranslationAnswer]]
+    answer_cls: ClassVar[type[YueFromZhoTranslationAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[TranslationQuery]]
+    query_cls: ClassVar[type[YueFromZhoTranslationQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[TranslationPrompt]]
+    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -43,7 +42,9 @@ class TranslationTestCase(TestCase, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
+        prompt_cls: type[
+            YueHansFromZhoTranslationPrompt
+        ] = YueHansFromZhoTranslationPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -65,8 +66,10 @@ class TranslationTestCase(TestCase, ABC):
             f"{'-'.join(map(str, [m + 1 for m in missing]))}_"
             f"{prompt_cls.__name__}",
         )
-        query_cls = TranslationQuery.get_query_cls(size, missing, prompt_cls)
-        answer_cls = TranslationAnswer.get_answer_cls(size, missing, prompt_cls)
+        query_cls = YueFromZhoTranslationQuery.get_query_cls(size, missing, prompt_cls)
+        answer_cls = YueFromZhoTranslationAnswer.get_answer_cls(
+            size, missing, prompt_cls
+        )
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
@@ -87,13 +90,16 @@ class TranslationTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls")
-        pattern = re.compile(rf"^{re.escape(prompt_cls.zhongwen_prefix)}\d+$")
-        size = sum(1 for field in data["query"] if pattern.match(field))
-        yuewen_idxs = [
-            int(key.removeprefix(prompt_cls.yuewen_prefix)) - 1
+        prompt_cls: type[YueHansFromZhoTranslationPrompt] = kwargs.get(
+            "prompt_cls", YueHansFromZhoTranslationPrompt
+        )
+        size = sum(
+            1 for key in data["query"] if key.startswith(prompt_cls.source_two_pfx)
+        )
+        source_one_idxs = [
+            int(key.removeprefix(prompt_cls.source_one_pfx)) - 1
             for key in data["query"]
-            if key.startswith(prompt_cls.yuewen_prefix)
+            if key.startswith(prompt_cls.source_one_pfx)
         ]
-        missing = tuple(idx for idx in range(size) if idx not in yuewen_idxs)
+        missing = tuple(idx for idx in range(size) if idx not in source_one_idxs)
         return cls.get_test_case_cls(size=size, missing=missing, **kwargs)

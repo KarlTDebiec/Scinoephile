@@ -13,10 +13,6 @@ import pytest
 from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
-from scinoephile.audio.cantonese.translation import (
-    TranslationPrompt,
-    TranslationTestCase,
-)
 from scinoephile.core import Series
 from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
@@ -30,6 +26,10 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
+from scinoephile.multilang.yue_zho.translation import (
+    YueFromZhoTranslationTestCase,
+    YueHansFromZhoTranslationPrompt,
+)
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -48,13 +48,14 @@ __all__ = [
     "mlamd_eng_fuse_proofread_clean",
     "mlamd_eng_fuse_proofread_clean_flatten",
     "mlamd_yue_hans",
-    "mlamd_yue_hans_review",
+    "mlamd_yue_hans_translate",
+    "mlamd_yue_hans_translate_review",
     "mlamd_zho_hans_eng",
     "mlamd_yue_hans_eng",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
-    "get_mlamd_yue_translation_test_cases",
+    "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
@@ -162,9 +163,15 @@ def mlamd_yue_hans() -> Series:
 
 
 @pytest.fixture
-def mlamd_yue_hans_review() -> Series:
-    """MLAMD 简体粤文 transcribed and reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_review.srt")
+def mlamd_yue_hans_translate() -> Series:
+    """MLAMD 简体粤文 transcribed and translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_translate.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_translate_review() -> Series:
+    """MLAMD 简体粤文 transcribed, translated, and reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_translate_review.srt")
 
 
 # Bilingual 简体粤文 and English
@@ -221,10 +228,10 @@ def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase]:
 
 
 @cache
-def get_mlamd_yue_translation_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = TranslationPrompt,
+def get_mlamd_yue_from_zho_translation_test_cases(
+    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
-) -> list[TranslationTestCase]:
+) -> list[YueFromZhoTranslationTestCase]:
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
@@ -233,15 +240,15 @@ def get_mlamd_yue_translation_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "audio" / "cantonese" / "translation.json"
+    path = title_root / "multilang" / "yue_zho" / "translation.json"
     return load_test_cases_from_json(
-        path, TranslationTestCase, prompt_cls=prompt_cls, **kwargs
+        path, YueFromZhoTranslationTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_yue_vs_zho_review_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = YueHansReviewPrompt,
+    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansReviewPrompt,
     **kwargs: Any,
 ) -> list[ManyToManyBlockwiseTestCase]:
     """Get MLAMD 粵文 review test cases.

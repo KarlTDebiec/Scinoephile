@@ -209,7 +209,7 @@ class AudioSeries(Series):
     @override
     def load(
         cls,
-        path: str,
+        path: Path | str,
         encoding: str = "utf-8",
         format_: str | None = None,
         **kwargs: Any,

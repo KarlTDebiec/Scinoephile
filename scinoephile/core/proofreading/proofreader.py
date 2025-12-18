@@ -51,10 +51,7 @@ class Proofreader:
         self.prompt_cls = prompt_cls
 
         if test_cases is None:
-            if default_test_cases is not None:
-                test_cases = default_test_cases
-            else:
-                test_cases = []
+            test_cases = default_test_cases or []
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)

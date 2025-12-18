@@ -21,7 +21,6 @@ from scinoephile.audio.cantonese.shifting import (
     ShiftingQuery,
     ShiftingTestCase,
 )
-from scinoephile.audio.cantonese.translation import TranslationTestCase
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Queryer, save_test_cases_to_json
@@ -29,12 +28,10 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.multilang.synchronization import get_sync_groups_string
 
 from .alignment import Alignment
-from .models import get_translate_models
 from .queries import (
     get_merging_test_case,
     get_proofing_test_case,
     get_shifting_test_case,
-    get_translation_test_case,
 )
 
 __all__ = ["Aligner"]
@@ -48,7 +45,6 @@ class Aligner:
         shifting_queryer: Queryer,
         merging_queryer: Queryer,
         proofing_queryer: Queryer,
-        translation_queryer: Queryer,
     ):
         """Initialize.
 
@@ -56,7 +52,6 @@ class Aligner:
             shifting_queryer: queryer for shifting
             merging_queryer: queryer for merging
             proofing_queryer: queryer for proofing
-            translation_queryer: queryer for translation
         """
         self.merging_queryer = merging_queryer
         """Merges transcribed 粤文 text based on corresponding 中文."""
@@ -64,8 +59,6 @@ class Aligner:
         """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
-        self.translation_queryer = translation_queryer
-        """Translates 粤文 text based on corresponding 中文."""
 
     async def align(
         self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
@@ -101,9 +94,6 @@ class Aligner:
 
         # Proofread 粤文 subtitles based on corresponding 中文 subtitles
         await self._proof(alignment)
-
-        # Translate 中文 subtitles for which no 粤文 was transcribed
-        await self._translate(alignment)
 
         # Return final alignment
         return alignment
@@ -377,55 +367,6 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    async def _translate(self, alignment: Alignment):
-        """Translate 粤文 subs.
-
-        Arguments:
-            alignment: Nascent alignment
-        """
-        # Get models
-        models = get_translate_models(alignment)
-        if models is None:
-            return
-        query_cls, answer_cls, test_case_cls = models
-
-        # Query for 粤文 translation
-        test_case = get_translation_test_case(alignment, test_case_cls)
-        test_case: TranslationTestCase = self.translation_queryer.call(test_case)
-
-        # Update 粤文
-        nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
-        nascent_sg = []
-        for sg_idx, sg in enumerate(alignment.sync_groups):
-            # Get 中文
-            zw_idxs = sg[0]
-            zw_idx = zw_idxs[0]
-            if len(zw_idxs) != 1:
-                raise ScinoephileError(
-                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
-                )
-            zw = alignment.zhongwen[zw_idx]
-
-            # Get 粤文
-            yw_idxs = sg[1]
-            if yw_idxs:
-                yw_idx = yw_idxs[0]
-                if len(yw_idxs) != 1:
-                    raise ScinoephileError(
-                        f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 1."
-                    )
-                yw = alignment.yuewen[yw_idx]
-            else:
-                yw_key = test_case.prompt_cls.yuewen_field(zw_idx + 1)
-                yw_text = getattr(test_case.answer, yw_key)
-                yw = deepcopy(zw)
-                yw.text = yw_text
-            nascent_yw.append(yw)
-            yw_idx = len(nascent_yw) - 1
-            nascent_sg.append(([zw_idx], [yw_idx]))
-        alignment.yuewen = nascent_yw
-        alignment._sync_groups_override = nascent_sg
-
     def update_all_test_cases(self, test_root: Path | str):
         """Update all test cases for the specified block.
 
@@ -445,8 +386,4 @@ class Aligner:
         save_test_cases_to_json(
             test_root / "audio" / "cantonese" / "proofing.json",
             list(self.proofing_queryer.encountered_test_cases.values()),
-        )
-        save_test_cases_to_json(
-            test_root / "audio" / "cantonese" / "translation.json",
-            list(self.translation_queryer.encountered_test_cases.values()),
         )

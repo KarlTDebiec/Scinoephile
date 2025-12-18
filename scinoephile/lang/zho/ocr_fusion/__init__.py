@@ -33,10 +33,10 @@ def get_default_zho_ocr_fusion_test_cases(
         default test cases
     """
     try:
-        from test.data.kob import get_kob_zho_ocr_fusion_test_cases
-        from test.data.mlamd import get_mlamd_zho_ocr_fusion_test_cases
-        from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases
-        from test.data.t import get_t_zho_ocr_fusion_test_cases
+        from test.data.kob import get_kob_zho_ocr_fusion_test_cases  # noqa: PLC0415
+        from test.data.mlamd import get_mlamd_zho_ocr_fusion_test_cases  # noqa: PLC0415
+        from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases  # noqa: PLC0415
+        from test.data.t import get_t_zho_ocr_fusion_test_cases  # noqa: PLC0415
 
         return (
             get_kob_zho_ocr_fusion_test_cases(prompt_cls)

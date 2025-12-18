@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 transcription translation answers."""
+"""ABC for translation of 粤文 from 中文 answers."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import TranslationPrompt
+from .prompts import YueHansFromZhoTranslationPrompt
 
-__all__ = ["TranslationAnswer"]
+__all__ = ["YueFromZhoTranslationAnswer"]
 
 
-class TranslationAnswer(Answer, ABC):
-    """ABC for 粤文 transcription translation answers."""
+class YueFromZhoTranslationAnswer(Answer, ABC):
+    """ABC for translation of 粤文 from 中文 answers."""
 
-    prompt_cls: ClassVar[type[TranslationPrompt]]
+    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -36,7 +36,9 @@ class TranslationAnswer(Answer, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[TranslationPrompt] = TranslationPrompt,
+        prompt_cls: type[
+            YueHansFromZhoTranslationPrompt
+        ] = YueHansFromZhoTranslationPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
@@ -61,8 +63,8 @@ class TranslationAnswer(Answer, ABC):
         fields: dict[str, Any] = {}
         for idx in range(size):
             if idx in missing:
-                key = prompt_cls.yuewen_field(idx + 1)
-                description = prompt_cls.yuewen_answer_description(idx + 1)
+                key = prompt_cls.source_one(idx + 1)
+                description = prompt_cls.source_one_desc(idx + 1)
                 fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
