@@ -13,7 +13,7 @@ from scinoephile.cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.testing import test_data_root
 
 

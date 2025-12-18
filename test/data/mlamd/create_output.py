@@ -11,7 +11,7 @@ from pathlib import Path
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core import Series, get_series_with_subs_merged
+from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,

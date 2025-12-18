@@ -1,13 +1,13 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.core.series."""
+"""Tests of scinoephile.core.subtitles.series."""
 
 from __future__ import annotations
 
 import pytest
 
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.testing import test_data_root
 
 
