@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Blockwise reviewer for subtitles."""
+"""Processes mono track / block matters."""
 
 from __future__ import annotations
 
@@ -17,25 +17,25 @@ from scinoephile.llms.base import (
 )
 from scinoephile.testing import test_data_root
 
-from .prompt import BlockwisePrompt
-from .test_case import BlockwiseTestCase
+from .prompt import MonoBlockPrompt
+from .test_case import MonoBlockTestCase
 
-__all__ = ["BlockwiseReviewer"]
+__all__ = ["MonoBlockProcessor"]
 
 
-class BlockwiseReviewer:
-    """Reviews subtitles blockwise."""
+class MonoBlockProcessor:
+    """Processes mono track / block matters."""
 
-    prompt_cls: type[BlockwisePrompt]
+    prompt_cls: type[MonoBlockPrompt]
     """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[BlockwisePrompt],
-        test_cases: list[BlockwiseTestCase] | None = None,
+        prompt_cls: type[MonoBlockPrompt],
+        test_cases: list[MonoBlockTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[BlockwiseTestCase] | None = None,
+        default_test_cases: list[MonoBlockTestCase] | None = None,
     ):
         """Initialize.
 
@@ -56,7 +56,7 @@ class BlockwiseReviewer:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    BlockwiseTestCase,
+                    MonoBlockTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -72,16 +72,16 @@ class BlockwiseReviewer:
         )
         """LLM queryer."""
 
-    def review(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Review subtitles blockwise.
+    def process(self, series: Series, stop_at_idx: int | None = None) -> Series:
+        """Processes mono track / block matters.
 
         Arguments:
             series: subtitles
             stop_at_idx: stop processing at this index
         Returns:
-            reviewed subtitles
+            processed subtitles
         """
-        # Review subtitles
+        # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
         for block_idx, block in enumerate(series.blocks):
@@ -89,7 +89,7 @@ class BlockwiseReviewer:
                 break
 
             # Query LLM
-            test_case_cls = BlockwiseTestCase.get_test_case_cls(
+            test_case_cls = MonoBlockTestCase.get_test_case_cls(
                 len(block), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls

@@ -8,12 +8,12 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
-from scinoephile.llms.blockwise import BlockwisePrompt
+from scinoephile.llms.mono_block import MonoBlockPrompt
 
 __all__ = ["EngProofreadingPrompt"]
 
 
-class EngProofreadingPrompt(BlockwisePrompt, EngPrompt):
+class EngProofreadingPrompt(MonoBlockPrompt, EngPrompt):
     """LLM correspondence text for English proofreading."""
 
     # Prompt

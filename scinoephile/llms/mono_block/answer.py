@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for blockwise review answers."""
+"""ABC for mono track / block answers."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import BlockwisePrompt
+from .prompt import MonoBlockPrompt
 
-__all__ = ["BlockwiseAnswer"]
+__all__ = ["MonoBlockAnswer"]
 
 
-class BlockwiseAnswer(Answer, ABC):
-    """ABC for blockwise review answers."""
+class MonoBlockAnswer(Answer, ABC):
+    """ABC for mono track / block answers."""
 
-    prompt_cls: ClassVar[type[BlockwisePrompt]]
+    prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -32,7 +32,7 @@ class BlockwiseAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[BlockwisePrompt],
+        prompt_cls: type[MonoBlockPrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 

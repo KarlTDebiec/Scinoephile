@@ -16,8 +16,8 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHantProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
-from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
+from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -159,9 +159,9 @@ def kob_yue_hans_eng() -> Series:
 
 @cache
 def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[BlockwisePrompt] = EngProofreadingPrompt,
+    prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
-) -> list[BlockwiseTestCase]:
+) -> list[MonoBlockTestCase]:
     """Get KOB English proofreading test cases.
 
     Arguments:
@@ -172,15 +172,15 @@ def get_kob_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
+        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[BlockwisePrompt] = ZhoHantProofreadingPrompt,
+    prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
     **kwargs: Any,
-) -> list[BlockwiseTestCase]:
+) -> list[MonoBlockTestCase]:
     """Get KOB 中文 proofreading test cases.
 
     Arguments:
@@ -191,7 +191,7 @@ def get_kob_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
+        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 

@@ -12,20 +12,20 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
     get_zho_proofreader,
 )
-from scinoephile.llms.blockwise import BlockwiseReviewer
+from scinoephile.llms.mono_block import MonoBlockProcessor
 
 
 def _test_get_zho_proofread(
-    series: Series, expected: Series, reviewer: BlockwiseReviewer | None = None
+    series: Series, expected: Series, reviewer: MonoBlockProcessor | None = None
 ):
     """Test get_zho_proofread.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
-        reviewer: BlockwiseReviewer to use for the test
+        reviewer: MonoBlockReviewer to use for the test
     """
-    output = get_zho_proofread(series, reviewer=reviewer)
+    output = get_zho_proofread(series, processor=reviewer)
 
     assert len(output) == len(expected)
 

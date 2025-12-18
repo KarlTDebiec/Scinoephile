@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for blockwise review queries."""
+"""ABC for mono track / block queries."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model
 from scinoephile.llms.base import Query
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import BlockwisePrompt
+from .prompt import MonoBlockPrompt
 
-__all__ = ["BlockwiseQuery"]
+__all__ = ["MonoBlockQuery"]
 
 
-class BlockwiseQuery(Query, ABC):
-    """ABC for blockwise review queries."""
+class MonoBlockQuery(Query, ABC):
+    """ABC for mono track / block queries."""
 
-    prompt_cls: ClassVar[type[BlockwisePrompt]]
+    prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -32,7 +32,7 @@ class BlockwiseQuery(Query, ABC):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[BlockwisePrompt],
+        prompt_cls: type[MonoBlockPrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
