@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.fusion import FusionPrompt
+from scinoephile.core.pairwise import PairwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
 
@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-class EngOcrFusionPrompt(FusionPrompt, EngPrompt):
+class EngOcrFusionPrompt(PairwisePrompt, EngPrompt):
     """LLM correspondence text for English OCR fusion."""
 
     # Prompt
@@ -56,4 +56,4 @@ class EngOcrFusionPrompt(FusionPrompt, EngPrompt):
     sources_equal_error: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens and Tesseract must differ."
     )
-    """Error message when source one and two fields are equal."""
+    """Error when source one and two fields are equal."""

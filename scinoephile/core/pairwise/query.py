@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for fusion queries."""
+"""ABC for pairwise review queries."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Query
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import FusionPrompt
+from .prompt import PairwisePrompt
 
-__all__ = ["FusionQuery"]
+__all__ = ["PairwiseQuery"]
 
 
-class FusionQuery(Query, ABC):
-    """ABC for fusion queries."""
+class PairwiseQuery(Query, ABC):
+    """ABC for pairwise review queries."""
 
-    prompt_cls: ClassVar[type[FusionPrompt]]
+    prompt_cls: ClassVar[type[PairwisePrompt]]
     """Text for LLM correspondence."""
 
     @model_validator(mode="after")
@@ -41,7 +41,7 @@ class FusionQuery(Query, ABC):
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[FusionPrompt],
+        prompt_cls: type[PairwisePrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 

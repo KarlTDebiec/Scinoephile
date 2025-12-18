@@ -57,10 +57,10 @@ class ProofingPrompt(EngPrompt):
 
     # Query validation errors
     zhongwen_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
-    """Error message when zhongwen field is missing."""
+    """Error when zhongwen field is missing."""
 
     yuewen_missing_error: ClassVar[str] = "Query must have 粤文 subtitle to proofread."
-    """Error message when yuewen field is missing."""
+    """Error when yuewen field is missing."""
 
     # Answer fields
     yuewen_proofread_field: ClassVar[str] = "yuewen_proofread"
@@ -81,14 +81,14 @@ class ProofingPrompt(EngPrompt):
         "believed to be a complete mistranscription of the spoken Cantonese "
         "and should be omitted, it must also include a note describing the issue."
     )
-    """Error message when both yuewen proofread and note fields are missing."""
+    """Error when both yuewen proofread and note fields are missing."""
 
     # Test case validation errors
     yuewen_modified_note_missing_error: ClassVar[str] = (
         "Answer's proofread 粤文 of subtitle is modified relative to query's "
         "粤文 of subtitle, but no note is provided."
     )
-    """Error message when proofread 粤文 is modified but note is omitted."""
+    """Error when proofread 粤文 is modified but note is omitted."""
 
     yuewen_unmodified_note_provided_error: ClassVar[str] = (
         "Answer's proofread 粤文 of subtitle is identical to query's 粤文 of "

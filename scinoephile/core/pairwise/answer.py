@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for fusion answers."""
+"""ABC for pairwise review answers."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Answer
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import FusionPrompt
+from .prompt import PairwisePrompt
 
-__all__ = ["FusionAnswer"]
+__all__ = ["PairwiseAnswer"]
 
 
-class FusionAnswer(Answer, ABC):
-    """ABC for fusion answers."""
+class PairwiseAnswer(Answer, ABC):
+    """ABC for pairwise review answers."""
 
-    prompt_cls: ClassVar[type[FusionPrompt]]
+    prompt_cls: ClassVar[type[PairwisePrompt]]
     """Text for LLM correspondence."""
 
     @model_validator(mode="after")
@@ -37,7 +37,7 @@ class FusionAnswer(Answer, ABC):
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[FusionPrompt],
+        prompt_cls: type[PairwisePrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 

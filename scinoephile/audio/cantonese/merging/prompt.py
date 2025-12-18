@@ -46,12 +46,12 @@ class MergingPrompt(EngPrompt):
 
     # Query validation errors
     zhongwen_missing_error: ClassVar[str] = "Query must have 中文 of subtitle."
-    """Error message when zhongwen field is missing."""
+    """Error when zhongwen field is missing."""
 
     yuewen_to_merge_missing_error: ClassVar[str] = (
         "Query must have transcribed 粤文 of subtitle."
     )
-    """Error message when yuewen_to_merge field is missing."""
+    """Error when yuewen_to_merge field is missing."""
 
     # Answer fields
     yuewen_merged_field: ClassVar[str] = "yuewen_merged"
@@ -64,7 +64,7 @@ class MergingPrompt(EngPrompt):
     yuewen_merged_missing_error: ClassVar[str] = (
         "Answer must have merged 粤文 subtitle."
     )
-    """Error message when yuewen_merged field is missing."""
+    """Error when yuewen_merged field is missing."""
 
     # Test case validation errors
     yuewen_characters_changed_error_template: ClassVar[str] = (
@@ -77,7 +77,7 @@ class MergingPrompt(EngPrompt):
 
     @classmethod
     def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
-        """Error message when merged 粤文 characters do not match original.
+        """Error when merged 粤文 characters do not match original.
 
         Arguments:
             expected: expected 粤文 characters

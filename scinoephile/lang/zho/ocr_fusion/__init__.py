@@ -8,7 +8,7 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core import Series
-from scinoephile.core.fusion import Fuser, FusionPrompt, FusionTestCase
+from scinoephile.core.pairwise import PairwisePrompt, PairwiseReviewer, PairwiseTestCase
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
@@ -23,8 +23,8 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_zho_ocr_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoHansOcrFusionPrompt,
-) -> list[FusionTestCase]:
+    prompt_cls: type[PairwisePrompt] = ZhoHansOcrFusionPrompt,
+) -> list[PairwiseTestCase]:
     """Get default 中文 OCR fusion test cases included with package.
 
     Arguments:
@@ -52,7 +52,7 @@ def get_default_zho_ocr_fusion_test_cases(
 def get_zho_ocr_fused(
     lens: Series,
     paddle: Series,
-    fuser: Fuser | None = None,
+    reviewer: PairwiseReviewer | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 中文 series fused from Google Lens and PaddleOCR outputs.
@@ -60,33 +60,33 @@ def get_zho_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
-        fuser: Fuser to use
-        kwargs: additional keyword arguments for Fuser.fuse
+        reviewer: PairwiseReviewer to use
+        kwargs: additional keyword arguments for PairwiseReviewer.review
     Returns:
         Fused series
     """
-    if fuser is None:
-        fuser = get_zho_ocr_fuser()
-    return fuser.fuse(lens, paddle, **kwargs)
+    if reviewer is None:
+        reviewer = get_zho_ocr_fuser()
+    return reviewer.review(lens, paddle, **kwargs)
 
 
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
-    default_test_cases: list[FusionTestCase] | None = None,
+    default_test_cases: list[PairwiseTestCase] | None = None,
     **kwargs: Any,
-) -> Fuser:
-    """Get a Fuser with provided configuration.
+) -> PairwiseReviewer:
+    """Get a PairwiseReviewer with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for Fuser
+        kwargs: additional keyword arguments for PairwiseReviewer
     Returns:
-        Fuser with provided configuration
+        PairwiseReviewer with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_zho_ocr_fusion_test_cases(prompt_cls)
-    return Fuser(
+    return PairwiseReviewer(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

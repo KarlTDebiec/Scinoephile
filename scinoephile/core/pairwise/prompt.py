@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM correspondence text for fusion."""
+"""ABC for LLM correspondence text for pairwise review."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["FusionPrompt"]
+__all__ = ["PairwisePrompt"]
 
 
-class FusionPrompt(Prompt, ABC):
-    """ABC for LLM correspondence text for fusion."""
+class PairwisePrompt(Prompt, ABC):
+    """ABC for LLM correspondence text for pairwise review."""
 
     # Query fields
     source_one_field: ClassVar[str] = "one"

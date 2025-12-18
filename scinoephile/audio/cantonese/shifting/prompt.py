@@ -63,7 +63,7 @@ class ShiftingPrompt(EngPrompt):
     yuewen_1_yuewen_2_missing_error: ClassVar[str] = (
         "Query must have yuewen_1, yuewen_2, or both."
     )
-    """Error message when yuewen_1 and yuewen_2 fields are missing."""
+    """Error when yuewen_1 and yuewen_2 fields are missing."""
 
     # Answer fields
     yuewen_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
@@ -84,7 +84,7 @@ class ShiftingPrompt(EngPrompt):
         "and yuewen_2; if no shift is needed, yuewen_1_shifted and yuewen_2_shifted "
         "must be empty strings."
     )
-    """Error message when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
+    """Error when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
 
     yuewen_characters_changed_error_template: ClassVar[str] = (
         "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
@@ -96,7 +96,7 @@ class ShiftingPrompt(EngPrompt):
 
     @classmethod
     def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
-        """Error message when shifted 粤文 characters do not match original.
+        """Error when shifted 粤文 characters do not match original.
 
         Arguments:
             expected: the expected concatenated 粤文 characters

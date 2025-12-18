@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for fusion test cases."""
+"""ABC for pairwise review test cases."""
 
 from __future__ import annotations
 
@@ -13,21 +13,21 @@ from pydantic import create_model
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
-from .answer import FusionAnswer
-from .prompt import FusionPrompt
-from .query import FusionQuery
+from .answer import PairwiseAnswer
+from .prompt import PairwisePrompt
+from .query import PairwiseQuery
 
-__all__ = ["FusionTestCase"]
+__all__ = ["PairwiseTestCase"]
 
 
-class FusionTestCase(TestCase, ABC):
-    """ABC for fusion test cases."""
+class PairwiseTestCase(TestCase, ABC):
+    """ABC for pairwise review test cases."""
 
-    answer_cls: ClassVar[type[FusionAnswer]]
+    answer_cls: ClassVar[type[PairwiseAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[FusionQuery]]
+    query_cls: ClassVar[type[PairwiseQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[FusionPrompt]]
+    prompt_cls: ClassVar[type[PairwisePrompt]]
     """Text for LLM correspondence."""
 
     def get_auto_verified(self) -> bool:
@@ -40,11 +40,15 @@ class FusionTestCase(TestCase, ABC):
 
         source_one = getattr(self.query, self.prompt_cls.source_one_field, None)
         source_two = getattr(self.query, self.prompt_cls.source_two_field, None)
-        fused = getattr(self.answer, self.prompt_cls.output_field, None)
-        if source_one is not None and source_two is not None and fused is not None:
-            if source_one == fused and "\n" not in source_one:
+        output_text = getattr(self.answer, self.prompt_cls.output_field, None)
+        if (
+            source_one is not None
+            and source_two is not None
+            and output_text is not None
+        ):
+            if source_one == output_text and "\n" not in source_one:
                 return True
-            if source_two == fused and "\n" not in source_two:
+            if source_two == output_text and "\n" not in source_two:
                 return True
         return super().get_auto_verified()
 
@@ -64,8 +68,8 @@ class FusionTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        if fused := getattr(self.answer, self.prompt_cls.output_field, None):
-            if "-" in fused or '"' in fused or "“" in fused or "”" in fused:
+        if output_text := getattr(self.answer, self.prompt_cls.output_field, None):
+            if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty
 
@@ -73,7 +77,7 @@ class FusionTestCase(TestCase, ABC):
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[FusionPrompt],
+        prompt_cls: type[PairwisePrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -83,8 +87,8 @@ class FusionTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = FusionQuery.get_query_cls(prompt_cls)
-        answer_cls = FusionAnswer.get_answer_cls(prompt_cls)
+        query_cls = PairwiseQuery.get_query_cls(prompt_cls)
+        answer_cls = PairwiseAnswer.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
