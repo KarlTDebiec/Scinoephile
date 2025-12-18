@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for proofreading test cases."""
+"""ABC for blockwise review test cases."""
 
 from __future__ import annotations
 
@@ -11,24 +11,25 @@ from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
-from .answer import ProofreadingAnswer
-from .prompt import ProofreadingPrompt
-from .query import ProofreadingQuery
+from .answer import BlockwiseAnswer
+from .prompt import BlockwisePrompt
+from .query import BlockwiseQuery
 
-__all__ = ["ProofreadingTestCase"]
+__all__ = ["BlockwiseTestCase"]
 
 
-class ProofreadingTestCase(TestCase, ABC):
-    """ABC for proofreading test cases."""
+class BlockwiseTestCase(TestCase, ABC):
+    """ABC for blockwise review test cases."""
 
-    answer_cls: ClassVar[type[ProofreadingAnswer]]
+    answer_cls: ClassVar[type[BlockwiseAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ProofreadingQuery]]
+    query_cls: ClassVar[type[BlockwiseQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[ProofreadingPrompt]]
+    prompt_cls: ClassVar[type[BlockwisePrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -50,7 +51,7 @@ class ProofreadingTestCase(TestCase, ABC):
             return min_difficulty
 
         if any(
-            getattr(self.answer, self.prompt_cls.revised_field(idx)) != ""
+            getattr(self.answer, self.prompt_cls.output_field(idx)) != ""
             for idx in range(1, self.size + 1)
         ):
             min_difficulty = max(min_difficulty, 1)
@@ -63,18 +64,16 @@ class ProofreadingTestCase(TestCase, ABC):
             return self
 
         for idx in range(self.size):
-            subtitle = getattr(self.query, self.prompt_cls.subtitle_field(idx + 1))
-            revised = getattr(self.answer, self.prompt_cls.revised_field(idx + 1))
+            input_text = getattr(self.query, self.prompt_cls.input_field(idx + 1))
+            output_text = getattr(self.answer, self.prompt_cls.output_field(idx + 1))
             note = getattr(self.answer, self.prompt_cls.note_field(idx + 1))
-            if revised != "":
-                if subtitle == revised:
-                    raise ValueError(
-                        self.prompt_cls.subtitle_revised_equal_error(idx + 1)
-                    )
+            if output_text != "":
+                if input_text == output_text:
+                    raise ValueError(self.prompt_cls.output_unmodified_error(idx + 1))
                 if note == "":
                     raise ValueError(self.prompt_cls.note_missing_error(idx + 1))
             elif note != "":
-                raise ValueError(self.prompt_cls.revised_missing_error(idx + 1))
+                raise ValueError(self.prompt_cls.output_missing_error(idx + 1))
         return self
 
     @classmethod
@@ -82,7 +81,7 @@ class ProofreadingTestCase(TestCase, ABC):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[ProofreadingPrompt],
+        prompt_cls: type[BlockwisePrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -93,8 +92,8 @@ class ProofreadingTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
-        query_cls = ProofreadingQuery.get_query_cls(size, prompt_cls)
-        answer_cls = ProofreadingAnswer.get_answer_cls(size, prompt_cls)
+        query_cls = BlockwiseQuery.get_query_cls(size, prompt_cls)
+        answer_cls = BlockwiseAnswer.get_answer_cls(size, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
@@ -114,7 +113,8 @@ class ProofreadingTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls")
-        pattern = re.compile(rf"^{re.escape(prompt_cls.subtitle_prefix)}\d+$")
+        if (prompt_cls := kwargs.get("prompt_cls")) is None:
+            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
+        pattern = re.compile(rf"^{re.escape(prompt_cls.input_prefix)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, **kwargs)

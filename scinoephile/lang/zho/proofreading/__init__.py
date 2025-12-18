@@ -8,10 +8,10 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core import Series
-from scinoephile.core.proofreading import (
-    Proofreader,
-    ProofreadingPrompt,
-    ProofreadingTestCase,
+from scinoephile.core.blockwise import (
+    BlockwisePrompt,
+    BlockwiseReviewer,
+    BlockwiseTestCase,
 )
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
@@ -27,8 +27,8 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ProofreadingPrompt,
-) -> list[ProofreadingTestCase]:
+    prompt_cls: type[BlockwisePrompt] = BlockwisePrompt,
+) -> list[BlockwiseTestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -57,40 +57,40 @@ def get_default_zho_proofreading_test_cases(
 
 def get_zho_proofread(
     series: Series,
-    proofreader: Proofreader | None = None,
+    reviewer: BlockwiseReviewer | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 中文 series proofread.
 
     Arguments:
         series: Series to proofread
-        proofreader: Proofreader to use
-        kwargs: additional keyword arguments for Proofreader.proofread
+        reviewer: reviewer to use
+        kwargs: additional keyword arguments for BlockwiseReviewer.review
     Returns:
         proofread Series
     """
-    if proofreader is None:
-        proofreader = get_zho_proofreader()
-    return proofreader.proofread(series, **kwargs)
+    if reviewer is None:
+        reviewer = get_zho_proofreader()
+    return reviewer.review(series, **kwargs)
 
 
 def get_zho_proofreader(
     prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
-    default_test_cases: list[ProofreadingTestCase] | None = None,
+    default_test_cases: list[BlockwiseTestCase] | None = None,
     **kwargs: Any,
-) -> Proofreader:
-    """Get Proofreader with provided configuration.
+) -> BlockwiseReviewer:
+    """Get BlockwiseReviewer with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for Proofreader
+        kwargs: additional keyword arguments for BlockwiseReviewer
     Returns:
-        Proofreader with provided configuration
+        BlockwiseReviewer with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_zho_proofreading_test_cases(prompt_cls)
-    return Proofreader(
+    return BlockwiseReviewer(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

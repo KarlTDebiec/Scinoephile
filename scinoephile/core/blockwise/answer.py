@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for proofreading answers."""
+"""ABC for blockwise review answers."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model
 from scinoephile.core.llms import Answer
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import ProofreadingPrompt
+from .prompt import BlockwisePrompt
 
-__all__ = ["ProofreadingAnswer"]
+__all__ = ["BlockwiseAnswer"]
 
 
-class ProofreadingAnswer(Answer, ABC):
-    """ABC for proofreading answers."""
+class BlockwiseAnswer(Answer, ABC):
+    """ABC for blockwise review answers."""
 
-    prompt_cls: ClassVar[type[ProofreadingPrompt]]
+    prompt_cls: ClassVar[type[BlockwisePrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -32,7 +32,7 @@ class ProofreadingAnswer(Answer, ABC):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[ProofreadingPrompt],
+        prompt_cls: type[BlockwisePrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
@@ -45,8 +45,8 @@ class ProofreadingAnswer(Answer, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.revised_field(idx + 1)
-            desc = prompt_cls.revised_description(idx + 1)
+            key = prompt_cls.output_field(idx + 1)
+            desc = prompt_cls.output_description(idx + 1)
             fields[key] = (str, Field("", description=desc, max_length=1000))
             key = prompt_cls.note_field(idx + 1)
             desc = prompt_cls.note_description(idx + 1)

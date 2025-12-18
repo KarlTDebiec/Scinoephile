@@ -14,13 +14,13 @@ from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.core import Series
+from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
 from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
 from scinoephile.core.many_to_many_blockwise import (
     ManyToManyBlockwisePrompt,
     ManyToManyBlockwiseTestCase,
 )
-from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
@@ -267,9 +267,9 @@ def get_mlamd_yue_vs_zho_review_test_cases(
 
 @cache
 def get_mlamd_eng_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = EngProofreadingPrompt,
+    prompt_cls: type[BlockwisePrompt] = EngProofreadingPrompt,
     **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+) -> list[BlockwiseTestCase]:
     """Get MLAMD English proofreading test cases.
 
     Arguments:
@@ -280,15 +280,15 @@ def get_mlamd_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhoHansProofreadingPrompt,
+    prompt_cls: type[BlockwisePrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+) -> list[BlockwiseTestCase]:
     """Get MLAMD 中文 proofreading test cases.
 
     Arguments:
@@ -299,7 +299,7 @@ def get_mlamd_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 

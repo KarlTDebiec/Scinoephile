@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.proofreading import ProofreadingPrompt
+from scinoephile.core.blockwise import BlockwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
+class ZhoHansProofreadingPrompt(BlockwisePrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt
@@ -30,40 +30,40 @@ class ZhoHansProofreadingPrompt(ProofreadingPrompt, ZhoHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    subtitle_prefix: ClassVar[str] = "zimu_"
-    """Prefix for subtitle fields in query."""
+    input_prefix: ClassVar[str] = "zimu_"
+    """Prefix for input fields in query."""
 
-    subtitle_description_template: ClassVar[str] = "第 {idx} 条字幕"
-    """Description template for subtitle fields in query."""
+    input_description_template: ClassVar[str] = "第 {idx} 条字幕"
+    """Description template for input fields in query."""
 
     # Answer fields
-    revised_prefix: ClassVar[str] = "xiugai_"
-    """Prefix of revised field in answer."""
+    output_prefix: ClassVar[str] = "xiugai_"
+    """Prefix for output fields in answer."""
 
-    revised_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
-    """Description template for revised fields in answer."""
+    output_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
+    """Description template for output fields in answer."""
 
     note_prefix: ClassVar[str] = "beizhu_"
-    """Prefix of note field in answer."""
+    """Prefix for note fields in answer."""
 
     note_description_template: ClassVar[str] = "关于第 {idx} 条字幕修改的备注说明"
     """Description template for note fields in answer."""
 
     # Test case errors
-    subtitle_revised_equal_error_template: ClassVar[str] = (
+    output_unmodified_error_template: ClassVar[str] = (
         "第 {idx} 条答案的修改文本与查询文本相同。如果不需要修改，应提供空字符串。"
     )
-    """Error template when subtitle and revised fields are equal."""
+    """Error template when output is present but unmodified."""
 
     note_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本已被修改，但未提供备注。如需修改，必须附带备注说明。"
     )
-    """Error template when note is missing for a revision."""
+    """Error template when note is missing for a change."""
 
-    revised_missing_error_template: ClassVar[str] = (
+    output_missing_error_template: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
-    """Error template when revision is missing for a note."""
+    """Error template when output is missing for a note."""
 
 
 class ZhoHantProofreadingPrompt(ZhoHansProofreadingPrompt):

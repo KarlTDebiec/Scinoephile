@@ -10,6 +10,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
@@ -95,9 +96,8 @@ class ManyToManyBlockwiseTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls: type[ManyToManyBlockwisePrompt] = kwargs.get(
-            "prompt_cls", ManyToManyBlockwisePrompt
-        )
+        if (prompt_cls := kwargs.get("prompt_cls")) is None:
+            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
         size = sum(
             1 for key in data["query"] if key.startswith(prompt_cls.source_one_pfx)
         )

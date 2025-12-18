@@ -11,9 +11,9 @@ from typing import Any
 import pytest
 
 from scinoephile.core import Series
+from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
 from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
-from scinoephile.core.proofreading import ProofreadingPrompt, ProofreadingTestCase
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
@@ -159,9 +159,9 @@ def kob_yue_hans_eng() -> Series:
 
 @cache
 def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = EngProofreadingPrompt,
+    prompt_cls: type[BlockwisePrompt] = EngProofreadingPrompt,
     **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+) -> list[BlockwiseTestCase]:
     """Get KOB English proofreading test cases.
 
     Arguments:
@@ -172,15 +172,15 @@ def get_kob_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_kob_zho_proofreading_test_cases(
-    prompt_cls: type[ProofreadingPrompt] = ZhoHantProofreadingPrompt,
+    prompt_cls: type[BlockwisePrompt] = ZhoHantProofreadingPrompt,
     **kwargs: Any,
-) -> list[ProofreadingTestCase]:
+) -> list[BlockwiseTestCase]:
     """Get KOB 中文 proofreading test cases.
 
     Arguments:
@@ -191,7 +191,7 @@ def get_kob_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, ProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+        path, BlockwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
