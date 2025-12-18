@@ -16,16 +16,16 @@ from scinoephile.llms.mono_block import MonoBlockProcessor
 
 
 def _test_get_zho_proofread(
-    series: Series, expected: Series, reviewer: MonoBlockProcessor | None = None
+    series: Series, expected: Series, processor: MonoBlockProcessor | None = None
 ):
     """Test get_zho_proofread.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
-        reviewer: MonoBlockReviewer to use for the test
+        processor: MonoBlockProcessor to use for the test
     """
-    output = get_zho_proofread(series, processor=reviewer)
+    output = get_zho_proofread(series, processor=processor)
 
     assert len(output) == len(expected)
 
