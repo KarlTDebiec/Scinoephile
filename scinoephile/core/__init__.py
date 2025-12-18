@@ -4,8 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * exceptions / text
-* llms
-* blockwise / pairwise / many_to_many_blockwise
+* subtitles
 """
 
 from __future__ import annotations
