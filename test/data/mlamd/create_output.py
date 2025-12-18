@@ -34,6 +34,8 @@ from scinoephile.multilang.yue_zho import (
     get_yue_from_zho_translated,
     get_yue_vs_zho_reviewed,
 )
+from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
+from scinoephile.multilang.yue_zho.translation import get_yue_from_zho_translator
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
@@ -158,14 +160,27 @@ if "简体粤文 (Transcription)" in actions:
     )
     yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
     outfile_path = output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt"
-    yue_hans.save(outfile_path)
     outfile_path = output_dir / "yue-Hans.srt"
     yue_hans.save(outfile_path)
     yue_hans = Series.load(outfile_path)
-    yue_hans_translate = get_yue_from_zho_translated(yue_hans, zho_hans)
+    translator = get_yue_from_zho_translator(
+        default_test_cases=[],
+        test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
+        auto_verify=True,
+    )
+    yue_hans_translate = get_yue_from_zho_translated(
+        yue_hans, zho_hans, translator=translator
+    )
     outfile_path = output_dir / "yue-Hans_translate.srt"
     yue_hans_translate.save(outfile_path)
-    yue_hans_translate_review = get_yue_vs_zho_reviewed(yue_hans_translate, zho_hans)
+    reviewer = get_yue_vs_zho_reviewer(
+        default_test_cases=[],
+        test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
+        auto_verify=True,
+    )
+    yue_hans_translate_review = get_yue_vs_zho_reviewed(
+        yue_hans_translate, zho_hans, reviewer=reviewer
+    )
     outfile_path = output_dir / "yue-Hans_translate_review.srt"
     yue_hans_translate_review.save(outfile_path)
 
