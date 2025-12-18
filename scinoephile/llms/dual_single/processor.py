@@ -21,10 +21,10 @@ from scinoephile.testing import test_data_root
 from .prompt import DualSinglePrompt
 from .test_case import DualSingleTestCase
 
-__all__ = ["DualSingleReviewer"]
+__all__ = ["DualSingleProcessor"]
 
 
-class DualSingleReviewer:
+class DualSingleProcessor:
     """Processes dual track / single subtitle matters."""
 
     def __init__(
@@ -70,7 +70,7 @@ class DualSingleReviewer:
         )
         """LLM queryer."""
 
-    def review(
+    def process(
         self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
     ) -> Series:
         """Processes dual track / single subtitle matters.
@@ -89,7 +89,7 @@ class DualSingleReviewer:
                 "subtitles."
             )
 
-        # Review subtitles
+        # Process subtitles
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(source_one)
         for sub_idx, (sub_one, sub_two) in enumerate(zip(source_one, source_two)):
@@ -141,7 +141,7 @@ class DualSingleReviewer:
             output_text = getattr(test_case.answer, self.prompt_cls.output_field)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             info(
-                f"Subtitle {sub_idx + 1} reviewed:      {sub.text.replace('\n', '\\n')}"
+                f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
             )
             output_subtitles.append(sub)
 

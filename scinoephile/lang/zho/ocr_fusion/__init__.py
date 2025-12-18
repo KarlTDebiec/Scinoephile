@@ -9,8 +9,8 @@ from typing import Any
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.dual_single import (
+    DualSingleProcessor,
     DualSinglePrompt,
-    DualSingleReviewer,
     DualSingleTestCase,
 )
 
@@ -56,7 +56,7 @@ def get_default_zho_ocr_fusion_test_cases(
 def get_zho_ocr_fused(
     lens: Series,
     paddle: Series,
-    reviewer: DualSingleReviewer | None = None,
+    reviewer: DualSingleProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 中文 series fused from Google Lens and PaddleOCR outputs.
@@ -64,33 +64,33 @@ def get_zho_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
-        reviewer: DualSingleReviewer to use
-        kwargs: additional keyword arguments for DualSingleReviewer.review
+        reviewer: DualSingleProcessor to use
+        kwargs: additional keyword arguments for DualSingleProcessor.review
     Returns:
         Fused series
     """
     if reviewer is None:
         reviewer = get_zho_ocr_fuser()
-    return reviewer.review(lens, paddle, **kwargs)
+    return reviewer.process(lens, paddle, **kwargs)
 
 
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
     default_test_cases: list[DualSingleTestCase] | None = None,
     **kwargs: Any,
-) -> DualSingleReviewer:
-    """Get a DualSingleReviewer with provided configuration.
+) -> DualSingleProcessor:
+    """Get a DualSingleProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for DualSingleReviewer
+        kwargs: additional keyword arguments for DualSingleProcessor
     Returns:
-        DualSingleReviewer with provided configuration
+        DualSingleProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_zho_ocr_fusion_test_cases(prompt_cls)
-    return DualSingleReviewer(
+    return DualSingleProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

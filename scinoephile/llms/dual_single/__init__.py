@@ -5,15 +5,15 @@
 from __future__ import annotations
 
 from .answer import DualSingleAnswer
+from .processor import DualSingleProcessor
 from .prompt import DualSinglePrompt
 from .query import DualSingleQuery
-from .reviewer import DualSingleReviewer
 from .test_case import DualSingleTestCase
 
 __all__ = [
     "DualSingleAnswer",
     "DualSinglePrompt",
     "DualSingleQuery",
-    "DualSingleReviewer",
+    "DualSingleProcessor",
     "DualSingleTestCase",
 ]
