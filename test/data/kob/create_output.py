@@ -71,7 +71,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
     zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
-    zho_fuser = get_zho_ocr_fuser(
+    zho_reviewer = get_zho_ocr_fuser(
         prompt_cls=ZhoHantOcrFusionPrompt,
         test_cases=get_mlamd_zho_ocr_fusion_test_cases()
         + get_mnt_zho_ocr_fusion_test_cases()
@@ -79,7 +79,7 @@ if "繁體中文 (OCR)" in actions:
         test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
         auto_verify=True,
     )
-    zho_hant_fuse = get_zho_ocr_fused(zho_hant_lens, zho_hant_paddle, zho_fuser)
+    zho_hant_fuse = get_zho_ocr_fused(zho_hant_lens, zho_hant_paddle, zho_reviewer)
     zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
     zho_hant_fuse = get_zho_cleaned(zho_hant_fuse)
     zho_hant_fuse = get_zho_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
@@ -99,14 +99,14 @@ if "English (OCR)" in actions:
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
     eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
     eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_fuser = get_eng_ocr_fuser(
+    eng_reviewer = get_eng_ocr_fuser(
         test_cases=get_mlamd_eng_ocr_fusion_test_cases()
         + get_mnt_eng_ocr_fusion_test_cases()
         + get_t_eng_ocr_fusion_test_cases(),
         test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
         auto_verify=True,
     )
-    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_fuser)
+    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_reviewer)
     eng_fuse.save(output_dir / "eng_fuse.srt")
     eng_proofreader = get_eng_proofreader(
         test_cases=get_mlamd_eng_proofreading_test_cases()

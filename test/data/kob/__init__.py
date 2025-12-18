@@ -12,8 +12,8 @@ import pytest
 
 from scinoephile.core import Series
 from scinoephile.core.blockwise import BlockwisePrompt, BlockwiseTestCase
-from scinoephile.core.fusion import FusionPrompt, FusionTestCase
 from scinoephile.core.llms import load_test_cases_from_json
+from scinoephile.core.pairwise import PairwisePrompt, PairwiseTestCase
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
@@ -197,8 +197,9 @@ def get_kob_zho_proofreading_test_cases(
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = EngOcrFusionPrompt, **kwargs: Any
-) -> list[FusionTestCase]:
+    prompt_cls: type[PairwisePrompt] = EngOcrFusionPrompt,
+    **kwargs: Any,
+) -> list[PairwiseTestCase]:
     """Get KOB English OCR fusion test cases.
 
     Arguments:
@@ -209,14 +210,15 @@ def get_kob_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path, PairwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_kob_zho_ocr_fusion_test_cases(
-    prompt_cls: type[FusionPrompt] = ZhoHantOcrFusionPrompt, **kwargs: Any
-) -> list[FusionTestCase]:
+    prompt_cls: type[PairwisePrompt] = ZhoHantOcrFusionPrompt,
+    **kwargs: Any,
+) -> list[PairwiseTestCase]:
     """Get KOB 中文 OCR fusion test cases.
 
     Arguments:
@@ -227,5 +229,5 @@ def get_kob_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, FusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path, PairwiseTestCase, prompt_cls=prompt_cls, **kwargs
     )

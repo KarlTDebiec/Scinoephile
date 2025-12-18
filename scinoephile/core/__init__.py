@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * exceptions / text
 * llms
-* blockwise / fusion / many_to_many_blockwise
+* blockwise / pairwise / many_to_many_blockwise
 """
 
 from __future__ import annotations

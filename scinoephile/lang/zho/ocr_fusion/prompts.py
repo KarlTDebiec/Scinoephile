@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.fusion import FusionPrompt
+from scinoephile.core.pairwise import PairwisePrompt
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class ZhoHansOcrFusionPrompt(FusionPrompt, ZhoHansPrompt):
+class ZhoHansOcrFusionPrompt(PairwisePrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 OCR fusion."""
 
     # Prompt
