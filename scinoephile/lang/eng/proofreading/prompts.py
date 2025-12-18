@@ -39,18 +39,18 @@ class EngProofreadingPrompt(BlockwisePrompt, EngPrompt):
     """Base system prompt."""
 
     input_prefix: ClassVar[str] = "subtitle_"
-    """Prefix for subtitle fields in query."""
+    """Prefix for input fields in query."""
 
     input_description_template: ClassVar[str] = "Subtitle {idx}"
-    """Description template for subtitle fields in query."""
+    """Description template for input fields in query."""
 
     output_prefix: ClassVar[str] = "revised_"
-    """Prefix for revised fields in answer."""
+    """Prefix for output fields in answer."""
 
     output_description_template: ClassVar[str] = (
         "Subtitle {idx} revised, or an empty string if no revision is necessary."
     )
-    """Description template for revised fields in answer."""
+    """Description template for output fields in answer."""
 
     note_description_template: ClassVar[str] = (
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
@@ -62,16 +62,16 @@ class EngProofreadingPrompt(BlockwisePrompt, EngPrompt):
         "Answer's revised text {idx} is not modified relative to query's text {idx}, "
         "if no revision is needed an empty string must be provided."
     )
-    """Error template when subtitle and revised fields are equal."""
+    """Error template when output is present but unmodified."""
 
     note_missing_error_template: ClassVar[str] = (
         "Answer's text {idx} is modified relative to query's text {idx}, but no note "
         "is provided, if revision is needed a note must be provided."
     )
-    """Error template when note is missing for a revision."""
+    """Error template when note is missing for a change."""
 
     output_missing_error_template: ClassVar[str] = (
         "Answer's text {idx} is not modified relative to query's text {idx}, but a "
         "note is provided, if no revisions are needed an empty string must be provided."
     )
-    """Error template when revision is missing for a note."""
+    """Error template when output is missing for a note."""
