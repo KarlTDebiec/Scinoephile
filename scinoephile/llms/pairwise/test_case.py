@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for pairwise review test cases."""
+"""ABC for dual track / single subtitle test cases."""
 
 from __future__ import annotations
 
@@ -13,21 +13,21 @@ from pydantic import create_model
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
-from .answer import PairwiseAnswer
-from .prompt import PairwisePrompt
-from .query import PairwiseQuery
+from .answer import DualSingleAnswer
+from .prompt import DualSinglePrompt
+from .query import DualSingleQuery
 
-__all__ = ["PairwiseTestCase"]
+__all__ = ["DualSingleTestCase"]
 
 
-class PairwiseTestCase(TestCase, ABC):
-    """ABC for pairwise review test cases."""
+class DualSingleTestCase(TestCase, ABC):
+    """ABC for dual track / single subtitle test cases."""
 
-    answer_cls: ClassVar[type[PairwiseAnswer]]
+    answer_cls: ClassVar[type[DualSingleAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[PairwiseQuery]]
+    query_cls: ClassVar[type[DualSingleQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[PairwisePrompt]]
+    prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
 
     def get_auto_verified(self) -> bool:
@@ -77,7 +77,7 @@ class PairwiseTestCase(TestCase, ABC):
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[PairwisePrompt],
+        prompt_cls: type[DualSinglePrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -87,8 +87,8 @@ class PairwiseTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = PairwiseQuery.get_query_cls(prompt_cls)
-        answer_cls = PairwiseAnswer.get_answer_cls(prompt_cls)
+        query_cls = DualSingleQuery.get_query_cls(prompt_cls)
+        answer_cls = DualSingleAnswer.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

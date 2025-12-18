@@ -17,7 +17,7 @@ from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
 from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
-from scinoephile.llms.pairwise import PairwisePrompt, PairwiseTestCase
+from scinoephile.llms.pairwise import DualSinglePrompt, DualSingleTestCase
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -195,9 +195,9 @@ def get_mnt_zho_proofreading_test_cases(
 
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
-    prompt_cls: type[PairwisePrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
     **kwargs: Any,
-) -> list[PairwiseTestCase]:
+) -> list[DualSingleTestCase]:
     """Get MNT English OCR fusion test cases.
 
     Arguments:
@@ -208,15 +208,15 @@ def get_mnt_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, PairwiseTestCase, prompt_cls=prompt_cls, **kwargs
+        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mnt_zho_ocr_fusion_test_cases(
-    prompt_cls: type[PairwisePrompt] = ZhoHansOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
-) -> list[PairwiseTestCase]:
+) -> list[DualSingleTestCase]:
     """Get MNT 中文 OCR fusion test cases.
 
     Arguments:
@@ -227,5 +227,5 @@ def get_mnt_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, PairwiseTestCase, prompt_cls=prompt_cls, **kwargs
+        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
     )

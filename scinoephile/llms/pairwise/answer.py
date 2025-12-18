@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for pairwise review answers."""
+"""ABC for dual track / single subtitle answers."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import PairwisePrompt
+from .prompt import DualSinglePrompt
 
-__all__ = ["PairwiseAnswer"]
+__all__ = ["DualSingleAnswer"]
 
 
-class PairwiseAnswer(Answer, ABC):
-    """ABC for pairwise review answers."""
+class DualSingleAnswer(Answer, ABC):
+    """ABC for dual track / single subtitle answers."""
 
-    prompt_cls: ClassVar[type[PairwisePrompt]]
+    prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
 
     @model_validator(mode="after")
@@ -37,7 +37,7 @@ class PairwiseAnswer(Answer, ABC):
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[PairwisePrompt],
+        prompt_cls: type[DualSinglePrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 

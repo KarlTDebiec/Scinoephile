@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for pairwise review queries."""
+"""ABC for dual track / single subtitle queries."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.llms.base import Query
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import PairwisePrompt
+from .prompt import DualSinglePrompt
 
-__all__ = ["PairwiseQuery"]
+__all__ = ["DualSingleQuery"]
 
 
-class PairwiseQuery(Query, ABC):
-    """ABC for pairwise review queries."""
+class DualSingleQuery(Query, ABC):
+    """ABC for dual track / single subtitle queries."""
 
-    prompt_cls: ClassVar[type[PairwisePrompt]]
+    prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
 
     @model_validator(mode="after")
@@ -41,7 +41,7 @@ class PairwiseQuery(Query, ABC):
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[PairwisePrompt],
+        prompt_cls: type[DualSinglePrompt],
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 

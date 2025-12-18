@@ -8,7 +8,11 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.pairwise import PairwisePrompt, PairwiseReviewer, PairwiseTestCase
+from scinoephile.llms.pairwise import (
+    DualSinglePrompt,
+    DualSingleReviewer,
+    DualSingleTestCase,
+)
 
 from .prompts import EngOcrFusionPrompt
 
@@ -22,8 +26,8 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_eng_ocr_fusion_test_cases(
-    prompt_cls: type[PairwisePrompt] = EngOcrFusionPrompt,
-) -> list[PairwiseTestCase]:
+    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+) -> list[DualSingleTestCase]:
     """Get default English OCR fusion test cases included with package.
 
     Arguments:
@@ -51,7 +55,7 @@ def get_default_eng_ocr_fusion_test_cases(
 def get_eng_ocr_fused(
     lens: Series,
     tesseract: Series,
-    reviewer: PairwiseReviewer | None = None,
+    reviewer: DualSingleReviewer | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get English series fused from Google Lens and Tesseract OCR outputs.
@@ -59,8 +63,8 @@ def get_eng_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         tesseract: subtitles OCRed using Tesseract
-        reviewer: PairwiseReviewer to use
-        kwargs: additional keyword arguments for PairwiseReviewer.review
+        reviewer: DualSingleReviewer to use
+        kwargs: additional keyword arguments for DualSingleReviewer.review
     Returns:
         fused series
     """
@@ -71,21 +75,21 @@ def get_eng_ocr_fused(
 
 def get_eng_ocr_fuser(
     prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
-    default_test_cases: list[PairwiseTestCase] | None = None,
+    default_test_cases: list[DualSingleTestCase] | None = None,
     **kwargs: Any,
-) -> PairwiseReviewer:
-    """Get a PairwiseReviewer with provided configuration.
+) -> DualSingleReviewer:
+    """Get a DualSingleReviewer with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for PairwiseReviewer
+        kwargs: additional keyword arguments for DualSingleReviewer
     Returns:
-        PairwiseReviewer with provided configuration
+        DualSingleReviewer with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_eng_ocr_fusion_test_cases(prompt_cls)
-    return PairwiseReviewer(
+    return DualSingleReviewer(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

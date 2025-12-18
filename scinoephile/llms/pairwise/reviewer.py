@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reviews subtitles pairwise."""
+"""Processes dual track / single subtitle matters."""
 
 from __future__ import annotations
 
@@ -18,22 +18,22 @@ from scinoephile.llms.base import (
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
-from .prompt import PairwisePrompt
-from .test_case import PairwiseTestCase
+from .prompt import DualSinglePrompt
+from .test_case import DualSingleTestCase
 
-__all__ = ["PairwiseReviewer"]
+__all__ = ["DualSingleReviewer"]
 
 
-class PairwiseReviewer:
-    """Reviews subtitles pairwise."""
+class DualSingleReviewer:
+    """Processes dual track / single subtitle matters."""
 
     def __init__(
         self,
-        prompt_cls: type[PairwisePrompt],
-        test_cases: list[PairwiseTestCase] | None = None,
+        prompt_cls: type[DualSinglePrompt],
+        test_cases: list[DualSingleTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[PairwiseTestCase] | None = None,
+        default_test_cases: list[DualSingleTestCase] | None = None,
     ):
         """Initialize.
 
@@ -54,7 +54,7 @@ class PairwiseReviewer:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    PairwiseTestCase,
+                    DualSingleTestCase,
                     prompt_cls=self.prompt_cls,
                 )
             )
@@ -73,14 +73,14 @@ class PairwiseReviewer:
     def review(
         self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Review subtitles pairwise.
+        """Processes dual track / single subtitle matters.
 
         Arguments:
             source_one: subtitles from source one
             source_two: subtitles from source two
             stop_at_idx: stop processing at this index
         Returns:
-            reviewed subtitles
+            processed subtitles
         """
         # Validate series
         if not are_series_one_to_one(source_one, source_two):
@@ -128,7 +128,7 @@ class PairwiseReviewer:
                 continue
 
             # Query LLM
-            test_case_cls = PairwiseTestCase.get_test_case_cls(self.prompt_cls)
+            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
                 self.prompt_cls.source_one_field: sub_one.text,
