@@ -12,12 +12,12 @@ from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 
 __all__ = [
-    "YueHansTranslationPrompt",
-    "YueHantTranslationPrompt",
+    "YueHansFromZhoTranslationPrompt",
+    "YueHantFromZhoTranslationPrompt",
 ]
 
 
-class YueHansTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
+class YueHansFromZhoTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     """LLM correspondence text for translation of 简体粤文 from 中文."""
 
     # Prompt
@@ -81,7 +81,7 @@ class YueHansTranslationPrompt(ManyToManyBlockwisePrompt, YueHansPrompt):
     """Error template when output is present but note is missing."""
 
 
-class YueHantTranslationPrompt(YueHansTranslationPrompt):
+class YueHantFromZhoTranslationPrompt(YueHansFromZhoTranslationPrompt):
     """LLM correspondence text for translation of 繁体粤文 from 中文."""
 
     opencc_config = OpenCCConfig.s2hk

@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core import Series, get_series_with_subs_merged
-from scinoephile.multilang.yue_zho import get_yue_vs_zho_translated
+from scinoephile.multilang.yue_zho import get_yue_from_zho_translated
 
 
 def _test_get_yue_vs_zho_translated(yuewen: Series, zhongwen: Series, expected: Series):
@@ -18,7 +18,7 @@ def _test_get_yue_vs_zho_translated(yuewen: Series, zhongwen: Series, expected: 
         zhongwen: 中文 Series
         expected: expected output Series
     """
-    output = get_yue_vs_zho_translated(yuewen, zhongwen)
+    output = get_yue_from_zho_translated(yuewen, zhongwen)
 
     assert len(output) == len(expected)
 

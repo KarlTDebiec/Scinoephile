@@ -26,7 +26,7 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
-from scinoephile.multilang.yue_zho.translation import YueHansTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -52,7 +52,7 @@ __all__ = [
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_merging_test_cases",
     "get_mlamd_yue_proofing_test_cases",
-    "get_mlamd_yue_translation_test_cases",
+    "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_zho_proofreading_test_cases",
@@ -225,8 +225,8 @@ def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase]:
 
 
 @cache
-def get_mlamd_yue_translation_test_cases(
-    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansTranslationPrompt,
+def get_mlamd_yue_from_zho_translation_test_cases(
+    prompt_cls: type[ManyToManyBlockwisePrompt] = YueHansFromZhoTranslationPrompt,
 ) -> list[ManyToManyBlockwiseTestCase]:
     """Get MLAMD 粵文 translation test cases.
 

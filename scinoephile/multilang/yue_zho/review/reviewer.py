@@ -96,19 +96,23 @@ class YueVsZhoReviewer:
             )
 
         # Review subtitles
-        output_series_to_concatenate: list[Series | None] = [None] * len(yuewen.blocks)
-        stop_at_idx = stop_at_idx or len(yuewen.blocks)
+        block_pairs = list(zip(yuewen.blocks, zhongwen.blocks))
+        output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
+        stop_at_idx = stop_at_idx or len(block_pairs)
         for blk_idx, (yw_blk, zw_blk) in enumerate(zip(yuewen.blocks, zhongwen.blocks)):
             if blk_idx >= stop_at_idx:
                 break
 
+            # Determine TestCase configuration
+            size = len(zw_blk)
+
             # Query LLM
             test_case_cls = ManyToManyBlockwiseTestCase.get_test_case_cls(
-                len(yw_blk), self.prompt_cls
+                size, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for sub_idx in range(len(yw_blk)):
+            for sub_idx in range(size):
                 yw_key = self.prompt_cls.source_one(sub_idx + 1)
                 yw_val = re.sub(r"\\N", "\n", yw_blk[sub_idx].text).strip()
                 query_kwargs[yw_key] = yw_val
@@ -119,6 +123,7 @@ class YueVsZhoReviewer:
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
+            # Compile series
             output_series = Series()
             for sub_idx, yw_sub in enumerate(yw_blk):
                 output_key = self.prompt_cls.output(sub_idx + 1)

@@ -31,8 +31,8 @@ from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
 from scinoephile.multilang import get_synced_series
 from scinoephile.multilang.yue_zho import (
+    get_yue_from_zho_translated,
     get_yue_vs_zho_reviewed,
-    get_yue_vs_zho_translated,
 )
 from scinoephile.testing import test_data_root
 from test.data.kob import (
@@ -162,7 +162,7 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans.srt"
     yue_hans.save(outfile_path)
     yue_hans = Series.load(outfile_path)
-    yue_hans_translate = get_yue_vs_zho_translated(yue_hans, zho_hans)
+    yue_hans_translate = get_yue_from_zho_translated(yue_hans, zho_hans)
     outfile_path = output_dir / "yue-Hans_translate.srt"
     yue_hans_translate.save(outfile_path)
     yue_hans_translate_review = get_yue_vs_zho_reviewed(yue_hans_translate, zho_hans)

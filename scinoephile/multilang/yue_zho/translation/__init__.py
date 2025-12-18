@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to translation of 粤文 against 中文."""
+"""Code related to translation of 粤文 from 中文."""
 
 from __future__ import annotations
 
@@ -10,22 +10,28 @@ from typing import Any
 from scinoephile.core import Series
 from scinoephile.core.many_to_many_blockwise import ManyToManyBlockwiseTestCase
 
-from .prompts import YueHansTranslationPrompt, YueHantTranslationPrompt
-from .translator import YueVsZhoTranslator
+from .answer import YueFromZhoTranslationAnswer
+from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
+from .query import YueFromZhoTranslationQuery
+from .test_case import YueFromZhoTranslationTestCase
+from .translator import YueFromZhoTranslator
 
 __all__ = [
-    "YueHansTranslationPrompt",
-    "YueHantTranslationPrompt",
-    "YueVsZhoTranslator",
-    "get_default_yue_vs_zho_translation_test_cases",
-    "get_yue_vs_zho_translated",
-    "get_yue_vs_zho_translator",
+    "YueFromZhoTranslationAnswer",
+    "YueFromZhoTranslationQuery",
+    "YueFromZhoTranslationTestCase",
+    "YueFromZhoTranslator",
+    "YueHansFromZhoTranslationPrompt",
+    "YueHantFromZhoTranslationPrompt",
+    "get_default_yue_from_zho_translation_test_cases",
+    "get_yue_from_zho_translated",
+    "get_yue_from_zho_translator",
 ]
 
 
 # noinspection PyUnusedImports
-def get_default_yue_vs_zho_translation_test_cases(
-    prompt_cls: type[YueHansTranslationPrompt] = YueHansTranslationPrompt,
+def get_default_yue_from_zho_translation_test_cases(
+    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
 ) -> list[ManyToManyBlockwiseTestCase]:
     """Get default test cases included with package.
 
@@ -47,13 +53,13 @@ def get_default_yue_vs_zho_translation_test_cases(
     return []
 
 
-def get_yue_vs_zho_translated(
+def get_yue_from_zho_translated(
     yuewen: Series,
     zhongwen: Series,
-    translator: YueVsZhoTranslator | None = None,
+    translator: YueFromZhoTranslator | None = None,
     **kwargs: Any,
 ) -> Series:
-    """Get 粤文 subtitles translated against 中文 subtitles.
+    """Get 粤文 subtitles translated from 中文 subtitles.
 
     Arguments:
         yuewen: 粤文 Series
@@ -61,18 +67,18 @@ def get_yue_vs_zho_translated(
         translator: Translator to use
         **kwargs: additional arguments for Translator.translate
     Returns:
-        粤文 translated against 中文
+        粤文 translated from 中文
     """
     if translator is None:
-        translator = get_yue_vs_zho_translator()
+        translator = get_yue_from_zho_translator()
     return translator.translate(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_vs_zho_translator(
-    prompt_cls: type[YueHansTranslationPrompt] = YueHansTranslationPrompt,
+def get_yue_from_zho_translator(
+    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
     default_test_cases: list[ManyToManyBlockwiseTestCase] | None = None,
     **kwargs: Any,
-) -> YueVsZhoTranslator:
+) -> YueFromZhoTranslator:
     """Get YueVsZhoTranslator with provided configuration.
 
     Arguments:
@@ -83,8 +89,8 @@ def get_yue_vs_zho_translator(
         YueVsZhoTranslator with provided configuration
     """
     if default_test_cases is None:
-        default_test_cases = get_default_yue_vs_zho_translation_test_cases(prompt_cls)
-    return YueVsZhoTranslator(
+        default_test_cases = get_default_yue_from_zho_translation_test_cases(prompt_cls)
+    return YueFromZhoTranslator(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from .review import get_yue_vs_zho_reviewed
-from .translation import get_yue_vs_zho_translated
+from .translation import get_yue_from_zho_translated
 
 __all__ = [
     "get_yue_vs_zho_reviewed",
-    "get_yue_vs_zho_translated",
+    "get_yue_from_zho_translated",
 ]
