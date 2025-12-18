@@ -11,6 +11,7 @@ from typing import Any, ClassVar, Self
 
 from pydantic import create_model, model_validator
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.models import get_model_name
 
@@ -112,7 +113,8 @@ class BlockwiseTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        prompt_cls = kwargs.get("prompt_cls")
+        if (prompt_cls := kwargs.get("prompt_cls")) is None:
+            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_prefix)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, **kwargs)

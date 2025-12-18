@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Sequence
 from logging import info
 from pathlib import Path
 
@@ -37,7 +36,7 @@ class BlockwiseReviewer:
         test_cases: list[BlockwiseTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: Sequence[BlockwiseTestCase] | None = None,
+        default_test_cases: list[BlockwiseTestCase] | None = None,
     ):
         """Initialize.
 

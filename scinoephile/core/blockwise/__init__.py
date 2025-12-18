@@ -9,9 +9,9 @@ revised series.
 from __future__ import annotations
 
 from .answer import BlockwiseAnswer
-from .blockwise_reviewer import BlockwiseReviewer
 from .prompt import BlockwisePrompt
 from .query import BlockwiseQuery
+from .reviewer import BlockwiseReviewer
 from .test_case import BlockwiseTestCase
 
 __all__ = [
