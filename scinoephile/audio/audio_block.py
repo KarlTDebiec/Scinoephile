@@ -12,7 +12,7 @@ with catch_warnings():
     filterwarnings("ignore", category=RuntimeWarning)
     from pydub import AudioSegment
 
-from scinoephile.core.block import Block
+from scinoephile.core.subtitles import Block
 
 
 class AudioBlock(Block):

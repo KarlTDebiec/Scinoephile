@@ -9,13 +9,12 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core import Series
-from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import (
     Queryer,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.testing import test_data_root
 
 from .prompt import BlockwisePrompt

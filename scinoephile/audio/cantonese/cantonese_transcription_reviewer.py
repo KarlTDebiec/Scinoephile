@@ -14,9 +14,8 @@ from scinoephile.audio.transcription import (
     get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core import Block, Series
-from scinoephile.core.blocks import get_concatenated_series
 from scinoephile.core.llms import Queryer
+from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.testing import test_data_root
 

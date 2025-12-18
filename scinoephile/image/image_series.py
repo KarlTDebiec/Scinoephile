@@ -18,7 +18,8 @@ from scinoephile.common.validation import (
     val_output_dir_path,
     val_output_path,
 )
-from scinoephile.core import ScinoephileError, Series
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
 
 from .image_subtitle import ImageSubtitle
 

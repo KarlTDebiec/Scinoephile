@@ -9,7 +9,7 @@ from copy import deepcopy
 import jieba
 from pypinyin import pinyin
 
-from scinoephile.core import Series
+from scinoephile.core.subtitles import Series
 from scinoephile.core.text import full_to_half_punc
 
 __all__ = [

@@ -29,9 +29,8 @@ from scinoephile.common.validation import (
     val_output_dir_path,
     val_output_path,
 )
-from scinoephile.core import ScinoephileError, Series
-from scinoephile.core.block import Block
-from scinoephile.core.blocks import get_block_indexes_by_pause
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Block, Series, get_block_indexes_by_pause
 
 
 class AudioSeries(Series):

@@ -14,7 +14,7 @@ with catch_warnings():
     from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment
-from scinoephile.core import Subtitle
+from scinoephile.core.subtitles import Subtitle
 
 
 class AudioSubtitle(Subtitle):
