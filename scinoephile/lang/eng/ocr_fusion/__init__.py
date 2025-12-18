@@ -8,7 +8,7 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.pairwise import (
+from scinoephile.llms.dual_single import (
     DualSinglePrompt,
     DualSingleReviewer,
     DualSingleTestCase,

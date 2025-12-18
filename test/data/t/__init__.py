@@ -17,7 +17,7 @@ from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
 from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
-from scinoephile.llms.pairwise import DualSinglePrompt, DualSingleTestCase
+from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.testing import test_data_root
 
 __all__ = [

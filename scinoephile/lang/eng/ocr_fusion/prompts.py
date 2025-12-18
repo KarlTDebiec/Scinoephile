@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
-from scinoephile.llms.pairwise import DualSinglePrompt
+from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "EngOcrFusionPrompt",

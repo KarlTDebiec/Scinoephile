@@ -20,11 +20,11 @@ from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
 from scinoephile.llms.blockwise import BlockwisePrompt, BlockwiseTestCase
+from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.many_to_many_blockwise import (
     ManyToManyBlockwisePrompt,
     ManyToManyBlockwiseTestCase,
 )
-from scinoephile.llms.pairwise import DualSinglePrompt, DualSingleTestCase
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import (
     YueFromZhoTranslationTestCase,
