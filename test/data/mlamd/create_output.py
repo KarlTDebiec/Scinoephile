@@ -67,11 +67,11 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "简体中文 (OCR)",
-    # "English (OCR)",
+    "简体中文 (OCR)",
+    "English (OCR)",
     "简体粤文 (Transcription)",
-    # "Bilingual 简体中文 and English",
-    # "Bilingual 简体粤文 and English",
+    "Bilingual 简体中文 and English",
+    "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -197,7 +197,7 @@ if "Bilingual 简体中文 and English" in actions:
     zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
 
 if "Bilingual 简体粤文 and English" in actions:
-    yue_hans = Series.load(output_dir / "yue-Hans.srt")
+    yue_hans = Series.load(output_dir / "yue-Hans_translate_review.srt")
     eng_fuse_proofread_clean_flatten = Series.load(
         output_dir / "eng_fuse_proofread_clean_flatten.srt"
     )
