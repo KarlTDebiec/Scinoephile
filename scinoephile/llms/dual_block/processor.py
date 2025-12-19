@@ -107,6 +107,8 @@ class DualBlockProcessor:
 
             # Determine TestCase configuration
             size = len(one_blk)
+
+            # Query LLM
             test_case_cls = DualBlockTestCase.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}

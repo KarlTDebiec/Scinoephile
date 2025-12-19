@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual block subtitles when the primary series has gaps."""
+"""Processes dual block gapped subtitle matters."""
 
 from __future__ import annotations
 
@@ -11,7 +11,6 @@ from pathlib import Path
 import numpy as np
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
@@ -29,7 +28,7 @@ __all__ = ["DualBlockGappedProcessor"]
 
 
 class DualBlockGappedProcessor:
-    """Processes dual block subtitles where the primary series contains gaps."""
+    """Processes dual block gapped subtitle matters."""
 
     prompt_cls: type[DualBlockGappedPrompt]
     """Text for LLM correspondence."""
@@ -79,79 +78,72 @@ class DualBlockGappedProcessor:
 
     def process(
         self,
-        primary: Series,
-        secondary: Series,
+        source_one: Series,
+        source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
         """Fill gaps in the primary series using the secondary series as reference.
 
         Arguments:
-            primary: primary subtitles (may contain gaps)
-            secondary: secondary subtitles providing reference
+            source_one: primary subtitles (may contain gaps)
+            source_two: secondary subtitles providing reference
             stop_at_idx: stop processing at this block index
         Returns:
             primary subtitles with gaps filled
         """
-        block_pairs = get_block_pairs_by_pause(primary, secondary)
+        block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         stop_at_idx = stop_at_idx or len(block_pairs)
-        for blk_idx, (prim_blk, sec_blk) in enumerate(block_pairs[:stop_at_idx]):
+        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs[:stop_at_idx]):
             if blk_idx >= stop_at_idx:
                 break
 
-            if len(sec_blk) == 0:
-                raise ScinoephileError("Secondary blocks must contain subtitles.")
-
-            size = len(sec_blk)
-            overlap = get_sync_overlap_matrix(prim_blk, sec_blk)
-            sync_groups = [([], [sec_idx]) for sec_idx in range(len(sec_blk))]
-            for prim_idx in range(len(prim_blk)):
-                sg_idx = np.argmax(overlap[prim_idx, :])
-                sync_groups[sg_idx][0].append(prim_idx)
-            missing = tuple(
-                idx for idx, group in enumerate(sync_groups) if not group[0]
-            )
-
-            if not missing:
-                output_series_to_concatenate[blk_idx] = prim_blk
+            # Determine TestCase configuration
+            size = len(two_blk)
+            overlap = get_sync_overlap_matrix(one_blk, two_blk)
+            sync_groups = [([], [two_idx]) for two_idx in range(len(two_blk))]
+            for one_idx in range(len(one_blk)):
+                two_idx = np.argmax(overlap[one_idx, :])
+                sync_groups[two_idx][0].append(one_idx)
+            gaps = tuple(idx for idx, group in enumerate(sync_groups) if not group[0])
+            if not gaps:
+                output_series_to_concatenate[blk_idx] = one_blk
                 continue
 
+            # Query LLM
             test_case_cls = DualBlockGappedTestCase.get_test_case_cls(
-                size, missing, self.prompt_cls
+                size, gaps, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            prim_idx = 0
-            for sec_idx in range(size):
-                if sec_idx not in missing:
-                    key_primary = self.prompt_cls.source_one(sec_idx + 1)
-                    val_primary = re.sub(r"\\N", "\n", prim_blk[prim_idx].text).strip()
-                    query_kwargs[key_primary] = val_primary
-                    prim_idx += 1
-                key_secondary = self.prompt_cls.source_two(sec_idx + 1)
-                val_secondary = re.sub(r"\\N", "\n", sec_blk[sec_idx].text).strip()
-                query_kwargs[key_secondary] = val_secondary
+            one_idx = 0
+            for two_idx in range(size):
+                if two_idx not in gaps:
+                    one_key = self.prompt_cls.source_one(two_idx + 1)
+                    one_val = re.sub(r"\\N", "\n", one_blk[one_idx].text).strip()
+                    query_kwargs[one_key] = one_val
+                    one_idx += 1
+                two_key = self.prompt_cls.source_two(two_idx + 1)
+                two_val = re.sub(r"\\N", "\n", two_blk[two_idx].text).strip()
+                query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
             output_series = Series()
-            for sec_idx in range(size):
-                secondary_sub = sec_blk[sec_idx]
-                start = secondary_sub.start
-                end = secondary_sub.end
-                if sec_idx not in missing:
-                    key_primary = self.prompt_cls.source_one(sec_idx + 1)
-                    primary_text = getattr(test_case.query, key_primary)
+            for two_idx in range(size):
+                two_sub = two_blk[two_idx]
+                start = two_sub.start
+                end = two_sub.end
+                if two_idx not in gaps:
+                    one_key = self.prompt_cls.source_one(two_idx + 1)
+                    output = getattr(test_case.query, one_key)
                 else:
-                    key_output = self.prompt_cls.output(sec_idx + 1)
-                    primary_text = getattr(test_case.answer, key_output)
-                output_series.append(Subtitle(start=start, end=end, text=primary_text))
+                    one_key = self.prompt_cls.output(two_idx + 1)
+                    output = getattr(test_case.answer, one_key)
+                output_series.append(Subtitle(start=start, end=end, text=output))
 
-            info(
-                f"Block {blk_idx} ({prim_blk.start_idx} - {prim_blk.end_idx}):\n"
-                f"{prim_blk.to_series().to_simple_string()}"
-            )
+            info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
         if self.test_case_path is not None:
