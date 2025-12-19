@@ -15,7 +15,6 @@ from scinoephile.audio import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import (
     ShiftingAnswer,
     ShiftingQuery,
@@ -28,11 +27,7 @@ from scinoephile.llms.base import Queryer, save_test_cases_to_json
 from scinoephile.multilang.synchronization import get_sync_groups_string
 
 from .alignment import Alignment
-from .queries import (
-    get_merging_test_case,
-    get_proofing_test_case,
-    get_shifting_test_case,
-)
+from .queries import get_merging_test_case, get_shifting_test_case
 
 __all__ = ["Aligner"]
 
@@ -44,19 +39,15 @@ class Aligner:
         self,
         shifting_queryer: Queryer,
         merging_queryer: Queryer,
-        proofing_queryer: Queryer,
     ):
         """Initialize.
 
         Arguments:
             shifting_queryer: queryer for shifting
             merging_queryer: queryer for merging
-            proofing_queryer: queryer for proofing
         """
         self.merging_queryer = merging_queryer
         """Merges transcribed 粤文 text based on corresponding 中文."""
-        self.proofing_queryer = proofing_queryer
-        """Proofreads 粤文 text based on the corresponding 中文."""
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
@@ -71,7 +62,6 @@ class Aligner:
           * At the end of this each sync group should have one 中文 subtitle and
           * zero or more 粤文 subtitles
           * Merges 粤文 subtitles using LLM to match 中文 punctuation and spacing
-          * Proofreads 粤文 subtitles using LLM
         It needs to also do the following:
         * If there is a discrepancy in the length of the 中文 and concatenated 粤文
           subtitles, prompt LLM with known one 中文 and two 中文 subtitles and ask
@@ -91,9 +81,6 @@ class Aligner:
 
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
         await self._merge(alignment)
-
-        # Proofread 粤文 subtitles based on corresponding 中文 subtitles
-        await self._proof(alignment)
 
         # Return final alignment
         return alignment
@@ -310,63 +297,6 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    async def _proof(self, alignment: Alignment):
-        """Proofread 粤文 subs.
-
-        Arguments:
-            alignment: Nascent alignment
-        """
-        for sg_idx in range(len(alignment.sync_groups)):
-            test_case = get_proofing_test_case(alignment, sg_idx)
-            if test_case is None:
-                info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
-                continue
-            test_case: ProofingTestCase = self.proofing_queryer.call(test_case)
-
-            # Get sync group
-            sg = alignment.sync_groups[sg_idx]
-
-            # Get 粤文
-            yw_idxs = sg[1]
-            if len(yw_idxs) != 1:
-                raise ScinoephileError(
-                    f"Expected one 粤文 subtitle in sync group {sg_idx}, "
-                    f"but found {len(yw_idxs)}: {yw_idxs}"
-                )
-            yw_idx = yw_idxs[0]
-            query_yuewen = getattr(test_case.query, test_case.prompt_cls.yuewen_field)
-            answer_yuewen = getattr(
-                test_case.answer, test_case.prompt_cls.yuewen_proofread_field
-            )
-            if query_yuewen == answer_yuewen:
-                continue
-            alignment.yuewen[yw_idx].text = answer_yuewen
-
-        nascent_yw = AudioSeries(audio=alignment.yuewen.audio)
-        nascent_sg = []
-        offset = 0
-        for sg_idx, sg in enumerate(alignment.sync_groups):
-            zw_idxs = sg[0]
-            zw_idx = zw_idxs[0]
-            if len(zw_idxs) != 1:
-                raise ScinoephileError(
-                    f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
-                )
-            yw_idxs = sg[1]
-            if not yw_idxs:
-                nascent_sg.append(sg)
-                continue
-            yw_idx = yw_idxs[0]
-            yw = alignment.yuewen[yw_idx]
-            if not yw.text:
-                nascent_sg.append(([zw_idx], []))
-                offset -= 1
-                continue
-            nascent_yw.append(yw)
-            nascent_sg.append(([zw_idx], [yw_idx + offset for yw_idx in yw_idxs]))
-        alignment.yuewen = nascent_yw
-        alignment._sync_groups_override = nascent_sg
-
     def update_all_test_cases(self, test_root: Path | str):
         """Update all test cases for the specified block.
 
@@ -382,8 +312,4 @@ class Aligner:
         save_test_cases_to_json(
             test_root / "audio" / "cantonese" / "merging.json",
             list(self.merging_queryer.encountered_test_cases.values()),
-        )
-        save_test_cases_to_json(
-            test_root / "audio" / "cantonese" / "proofing.json",
-            list(self.proofing_queryer.encountered_test_cases.values()),
         )

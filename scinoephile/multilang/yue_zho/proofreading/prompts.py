@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 transcription proofing."""
+"""LLM correspondence text for 粤文 proofreading against 中文."""
 
 from __future__ import annotations
 
@@ -8,12 +8,13 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.llms.dual_single import DualSinglePrompt
 
-__all__ = ["ProofingPrompt"]
+__all__ = ["YueZhoProofreadingPrompt"]
 
 
-class ProofingPrompt(EngPrompt):
-    """Text for LLM correspondence for 粤文 transcription proofing."""
+class YueZhoProofreadingPrompt(DualSinglePrompt, EngPrompt):
+    """LLM correspondence text for 粤文 proofreading against 中文."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -43,54 +44,49 @@ class ProofingPrompt(EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    zhongwen_field: ClassVar[str] = "zhongwen"
-    """Field name for 中文 subtitle."""
+    source_one_field: ClassVar[str] = "yuewen"
+    """Name of source one field in query."""
 
-    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle"
-    """Description of zhongwen field."""
+    source_one_description: ClassVar[str] = "Transcribed 粤文 of subtitle to proofread"
+    """Description of source one field in query."""
 
-    yuewen_field: ClassVar[str] = "yuewen"
-    """Field name for transcribed 粤文 of subtitle."""
+    source_two_field: ClassVar[str] = "zhongwen"
+    """Name for source two field in query."""
 
-    yuewen_description: ClassVar[str] = "Transcribed 粤文 of subtitle to proofread"
-    """Description of yuewen field."""
+    source_two_description: ClassVar[str] = "Known 中文 of subtitle"
+    """Description of source two field in query."""
 
     # Query validation errors
-    zhongwen_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
-    """Error when zhongwen field is missing."""
+    source_one_missing_error: ClassVar[str] = (
+        "Query must have 粤文 subtitle to proofread."
+    )
+    """Error when source one field is missing from query."""
 
-    yuewen_missing_error: ClassVar[str] = "Query must have 粤文 subtitle to proofread."
-    """Error when yuewen field is missing."""
+    source_two_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
+    """Error when source two field is missing from query."""
 
     # Answer fields
-    yuewen_proofread_field: ClassVar[str] = "yuewen_proofread"
-    """Field name for proofread 粤文 of subtitle."""
+    output_field: ClassVar[str] = "yuewen_proofread"
+    """Name of output field in answer."""
 
-    yuewen_proofread_description: ClassVar[str] = "Proofread 粤文 of subtitle"
-    """Description of yuewen proofread field."""
+    output_description: ClassVar[str] = (
+        "Proofread 粤文 of subtitle (may be empty if the 粤文 should be omitted)"
+    )
+    """Description of output field in answer."""
 
     note_field: ClassVar[str] = "note"
-    """Field name for description of corrections made."""
+    """Name of note field in answer."""
 
     note_description: ClassVar[str] = "Description of corrections made"
-    """Description of note field."""
+    """Description of note field in answer."""
 
     # Answer validation errors
-    yuewen_proofread_and_note_missing_error: ClassVar[str] = (
-        "If Answer omits proofread 粤文 of subtitle to indicate that 粤文 is "
-        "believed to be a complete mistranscription of the spoken Cantonese "
-        "and should be omitted, it must also include a note describing the issue."
+    output_missing_error: ClassVar[str] = (
+        "Answer must include proofread 粤文 of subtitle (use empty string if omitting)."
     )
-    """Error when both yuewen proofread and note fields are missing."""
+    """Error when output field is missing from answer."""
 
-    # Test case validation errors
-    yuewen_modified_note_missing_error: ClassVar[str] = (
-        "Answer's proofread 粤文 of subtitle is modified relative to query's "
-        "粤文 of subtitle, but no note is provided."
+    note_missing_error: ClassVar[str] = (
+        "Answer must include a note describing the changes (empty if none)."
     )
-    """Error when proofread 粤文 is modified but note is omitted."""
-
-    yuewen_unmodified_note_provided_error: ClassVar[str] = (
-        "Answer's proofread 粤文 of subtitle is identical to query's 粤文 of "
-        "subtitle, but a note is provided."
-    )
+    """Error when note field is missing from answer."""
