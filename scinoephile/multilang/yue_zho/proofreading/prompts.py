@@ -65,6 +65,9 @@ class YueZhoProofreadingPrompt(DualSinglePrompt, EngPrompt):
     source_two_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
     """Error when source two field is missing from query."""
 
+    sources_equal_error: ClassVar[str] = "Subtitle text from two sources must differ."
+    """Error when source one and two fields are equal in query."""
+
     # Answer fields
     output_field: ClassVar[str] = "yuewen_proofread"
     """Name of output field in answer."""
