@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Translates 粤文 subtitles from 中文."""
+"""Processes dual block subtitles when the primary series has gaps."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from pathlib import Path
 import numpy as np
 
 from scinoephile.common.validation import val_output_path
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
@@ -21,27 +22,25 @@ from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
-from .prompts import YueHansFromZhoTranslationPrompt
-from .test_case import YueFromZhoTranslationTestCase
+from .prompt import DualBlockGappedPrompt
+from .test_case import DualBlockGappedTestCase
 
-__all__ = ["YueFromZhoTranslator"]
+__all__ = ["DualBlockGappedProcessor"]
 
 
-class YueFromZhoTranslator:
-    """Translates 粤文 subtitles from 中文."""
+class DualBlockGappedProcessor:
+    """Processes dual block subtitles where the primary series contains gaps."""
 
-    prompt_cls: type[YueHansFromZhoTranslationPrompt]
-    """text for LLM correspondence"""
+    prompt_cls: type[DualBlockGappedPrompt]
+    """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[
-            YueHansFromZhoTranslationPrompt
-        ] = YueHansFromZhoTranslationPrompt,
-        test_cases: list[YueFromZhoTranslationTestCase] | None = None,
+        prompt_cls: type[DualBlockGappedPrompt],
+        test_cases: list[DualBlockGappedTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[YueFromZhoTranslationTestCase] | None = None,
+        default_test_cases: list[DualBlockGappedTestCase] | None = None,
     ):
         """Initialize.
 
@@ -62,7 +61,7 @@ class YueFromZhoTranslator:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    YueFromZhoTranslationTestCase,
+                    DualBlockGappedTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -78,90 +77,88 @@ class YueFromZhoTranslator:
         )
         """LLM queryer."""
 
-    def translate(
+    def process(
         self,
-        yuewen: Series,
-        zhongwen: Series,
+        primary: Series,
+        secondary: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Translate 粤文 subtitles against 中文.
+        """Fill gaps in the primary series using the secondary series as reference.
 
         Arguments:
-            yuewen: 粤文 subtitles
-            zhongwen: 中文 subtitles
+            primary: primary subtitles (may contain gaps)
+            secondary: secondary subtitles providing reference
             stop_at_idx: stop processing at this block index
         Returns:
-            translated 粤文 subtitles
+            primary subtitles with gaps filled
         """
-        # Translate subtitles
-        block_pairs = get_block_pairs_by_pause(yuewen, zhongwen)
+        block_pairs = get_block_pairs_by_pause(primary, secondary)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         stop_at_idx = stop_at_idx or len(block_pairs)
-        for blk_idx, (yw_blk, zw_blk) in enumerate(block_pairs[:stop_at_idx]):
+        for blk_idx, (prim_blk, sec_blk) in enumerate(block_pairs[:stop_at_idx]):
             if blk_idx >= stop_at_idx:
                 break
 
-            # Determine TestCase configuration
-            size = len(zw_blk)
-            overlap = get_sync_overlap_matrix(yw_blk, zw_blk)
-            sync_groups = [([], [zw_idx]) for zw_idx in range(len(zw_blk))]
-            for yw_idx in range(len(yw_blk)):
-                sg_idx = np.argmax(overlap[yw_idx, :])
-                sync_groups[sg_idx][0].append(yw_idx)
+            if len(sec_blk) == 0:
+                raise ScinoephileError("Secondary blocks must contain subtitles.")
+
+            size = len(sec_blk)
+            overlap = get_sync_overlap_matrix(prim_blk, sec_blk)
+            sync_groups = [([], [sec_idx]) for sec_idx in range(len(sec_blk))]
+            for prim_idx in range(len(prim_blk)):
+                sg_idx = np.argmax(overlap[prim_idx, :])
+                sync_groups[sg_idx][0].append(prim_idx)
             missing = tuple(
                 idx for idx, group in enumerate(sync_groups) if not group[0]
             )
 
-            # If no subtitles require translation, skip
             if not missing:
-                output_series_to_concatenate[blk_idx] = yw_blk
+                output_series_to_concatenate[blk_idx] = prim_blk
                 continue
 
-            # Query LLM
-            test_case_cls = YueFromZhoTranslationTestCase.get_test_case_cls(
+            test_case_cls = DualBlockGappedTestCase.get_test_case_cls(
                 size, missing, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            yw_idx = 0
-            for zw_idx in range(size):
-                if zw_idx not in missing:
-                    yw_key = self.prompt_cls.source_one(zw_idx + 1)
-                    yw_val = re.sub(r"\\N", "\n", yw_blk[yw_idx].text).strip()
-                    query_kwargs[yw_key] = yw_val
-                    yw_idx += 1
-                zw_key = self.prompt_cls.source_two(zw_idx + 1)
-                zw_val = re.sub(r"\\N", "\n", zw_blk[zw_idx].text).strip()
-                query_kwargs[zw_key] = zw_val
+            prim_idx = 0
+            for sec_idx in range(size):
+                if sec_idx not in missing:
+                    key_primary = self.prompt_cls.source_one(sec_idx + 1)
+                    val_primary = re.sub(r"\\N", "\n", prim_blk[prim_idx].text).strip()
+                    query_kwargs[key_primary] = val_primary
+                    prim_idx += 1
+                key_secondary = self.prompt_cls.source_two(sec_idx + 1)
+                val_secondary = re.sub(r"\\N", "\n", sec_blk[sec_idx].text).strip()
+                query_kwargs[key_secondary] = val_secondary
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            # Compile 粤文 series from source and translation
             output_series = Series()
-            for zw_idx in range(size):
-                zw_sub = zw_blk[zw_idx]
-                start = zw_sub.start
-                end = zw_sub.end
-                if zw_idx not in missing:
-                    yw_key = self.prompt_cls.source_one(zw_idx + 1)
-                    yw_val = getattr(test_case.query, yw_key)
+            for sec_idx in range(size):
+                secondary_sub = sec_blk[sec_idx]
+                start = secondary_sub.start
+                end = secondary_sub.end
+                if sec_idx not in missing:
+                    key_primary = self.prompt_cls.source_one(sec_idx + 1)
+                    primary_text = getattr(test_case.query, key_primary)
                 else:
-                    yw_key = self.prompt_cls.output(zw_idx + 1)
-                    yw_val = getattr(test_case.answer, yw_key)
-                yw_sub = Subtitle(start=start, end=end, text=yw_val)
-                output_series.append(yw_sub)
+                    key_output = self.prompt_cls.output(sec_idx + 1)
+                    primary_text = getattr(test_case.answer, key_output)
+                output_series.append(Subtitle(start=start, end=end, text=primary_text))
 
-            info(f"Block {blk_idx}:\n{yw_blk.to_simple_string()}")
+            info(
+                f"Block {blk_idx} ({prim_blk.start_idx} - {prim_blk.end_idx}):\n"
+                f"{prim_blk.to_series().to_simple_string()}"
+            )
             output_series_to_concatenate[blk_idx] = output_series
 
-        # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
-        # Organize and return
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )

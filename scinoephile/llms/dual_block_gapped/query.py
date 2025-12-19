@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for translation of 粤文 from 中文 queries."""
+"""ABC for dual block gapped queries."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import Query
 from scinoephile.llms.base.models import get_model_name
 
-from .prompts import YueHansFromZhoTranslationPrompt
+from .prompt import DualBlockGappedPrompt
 
-__all__ = ["YueFromZhoTranslationQuery"]
+__all__ = ["DualBlockGappedQuery"]
 
 
-class YueFromZhoTranslationQuery(Query, ABC):
-    """ABC for translation of 粤文 from 中文 queries."""
+class DualBlockGappedQuery(Query, ABC):
+    """ABC for dual block gapped queries."""
 
-    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
+    prompt_cls: ClassVar[type[DualBlockGappedPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
     missing: ClassVar[tuple[int, ...]]
-    """Indexes of missing subtitles (1-indexed)."""
+    """Indexes of missing subtitles (0-indexed)."""
 
     @classmethod
     @cache
@@ -36,9 +36,7 @@ class YueFromZhoTranslationQuery(Query, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[
-            YueHansFromZhoTranslationPrompt
-        ] = YueHansFromZhoTranslationPrompt,
+        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
     ) -> type[Self]:
         """Get concrete query class with provided configuration.
 
@@ -49,9 +47,9 @@ class YueFromZhoTranslationQuery(Query, ABC):
         Returns:
             Query type with appropriate configuration
         """
-        if any(m < 0 or m > size for m in missing):
+        if any(m < 0 or m >= size for m in missing):
             raise ScinoephileError(
-                f"Missing indices must be in range 1 to {size}, got {missing}."
+                f"Missing indices must be in range 0 to {size - 1}, got {missing}."
             )
 
         name = get_model_name(

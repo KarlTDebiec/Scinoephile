@@ -8,19 +8,14 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_block import DualBlockTestCase
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedProcessor,
+    DualBlockGappedTestCase,
+)
 
-from .answer import YueFromZhoTranslationAnswer
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
-from .query import YueFromZhoTranslationQuery
-from .test_case import YueFromZhoTranslationTestCase
-from .translator import YueFromZhoTranslator
 
 __all__ = [
-    "YueFromZhoTranslationAnswer",
-    "YueFromZhoTranslationQuery",
-    "YueFromZhoTranslationTestCase",
-    "YueFromZhoTranslator",
     "YueHansFromZhoTranslationPrompt",
     "YueHantFromZhoTranslationPrompt",
     "get_default_yue_from_zho_translation_test_cases",
@@ -32,7 +27,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_from_zho_translation_test_cases(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-) -> list[DualBlockTestCase]:
+) -> list[DualBlockGappedTestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -56,7 +51,7 @@ def get_default_yue_from_zho_translation_test_cases(
 def get_yue_from_zho_translated(
     yuewen: Series,
     zhongwen: Series,
-    translator: YueFromZhoTranslator | None = None,
+    translator: DualBlockGappedProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 粤文 subtitles translated from 中文 subtitles.
@@ -64,33 +59,33 @@ def get_yue_from_zho_translated(
     Arguments:
         yuewen: 粤文 Series
         zhongwen: 中文 Series
-        translator: Translator to use
-        **kwargs: additional arguments for Translator.translate
+        translator: processor to use
+        **kwargs: additional arguments for DualBlockGappedProcessor.process
     Returns:
         粤文 translated from 中文
     """
     if translator is None:
         translator = get_yue_from_zho_translator()
-    return translator.translate(yuewen, zhongwen, **kwargs)
+    return translator.process(yuewen, zhongwen, **kwargs)
 
 
 def get_yue_from_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-    default_test_cases: list[DualBlockTestCase] | None = None,
+    default_test_cases: list[DualBlockGappedTestCase] | None = None,
     **kwargs: Any,
-) -> YueFromZhoTranslator:
-    """Get YueVsZhoTranslator with provided configuration.
+) -> DualBlockGappedProcessor:
+    """Get DualBlockGappedProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        **kwargs: additional arguments for YueVsZhoTranslator
+        **kwargs: additional arguments for DualBlockGappedProcessor
     Returns:
-        YueVsZhoTranslator with provided configuration
+        DualBlockGappedProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_yue_from_zho_translation_test_cases(prompt_cls)
-    return YueFromZhoTranslator(
+    return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

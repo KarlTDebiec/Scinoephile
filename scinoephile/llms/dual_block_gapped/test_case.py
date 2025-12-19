@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for translation of 粤文 from 中文 test cases."""
+"""ABC for dual block gapped test cases."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
-from .answer import YueFromZhoTranslationAnswer
-from .prompts import YueHansFromZhoTranslationPrompt
-from .query import YueFromZhoTranslationQuery
+from .answer import DualBlockGappedAnswer
+from .prompt import DualBlockGappedPrompt
+from .query import DualBlockGappedQuery
 
-__all__ = ["YueFromZhoTranslationTestCase"]
+__all__ = ["DualBlockGappedTestCase"]
 
 
-class YueFromZhoTranslationTestCase(TestCase, ABC):
-    """ABC for translation of 粤文 from 中文 test cases."""
+class DualBlockGappedTestCase(TestCase, ABC):
+    """ABC for dual block gapped test cases."""
 
-    answer_cls: ClassVar[type[YueFromZhoTranslationAnswer]]
+    answer_cls: ClassVar[type[DualBlockGappedAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[YueFromZhoTranslationQuery]]
+    query_cls: ClassVar[type[DualBlockGappedQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
+    prompt_cls: ClassVar[type[DualBlockGappedPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
@@ -42,9 +42,7 @@ class YueFromZhoTranslationTestCase(TestCase, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[
-            YueHansFromZhoTranslationPrompt
-        ] = YueHansFromZhoTranslationPrompt,
+        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -55,9 +53,9 @@ class YueFromZhoTranslationTestCase(TestCase, ABC):
         Returns:
             TestCase type with appropriate configuration
         """
-        if any(m < 0 or m > size for m in missing):
+        if any(m < 0 or m >= size for m in missing):
             raise ScinoephileError(
-                f"Missing indices must be in range 1 to {size}, got {missing}."
+                f"Missing indices must be in range 0 to {size - 1}, got {missing}."
             )
 
         name = get_model_name(
@@ -66,10 +64,8 @@ class YueFromZhoTranslationTestCase(TestCase, ABC):
             f"{'-'.join(map(str, [m + 1 for m in missing]))}_"
             f"{prompt_cls.__name__}",
         )
-        query_cls = YueFromZhoTranslationQuery.get_query_cls(size, missing, prompt_cls)
-        answer_cls = YueFromZhoTranslationAnswer.get_answer_cls(
-            size, missing, prompt_cls
-        )
+        query_cls = DualBlockGappedQuery.get_query_cls(size, missing, prompt_cls)
+        answer_cls = DualBlockGappedAnswer.get_answer_cls(size, missing, prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

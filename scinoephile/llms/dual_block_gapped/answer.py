@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for translation of 粤文 from 中文 answers."""
+"""ABC for dual block gapped answers."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompts import YueHansFromZhoTranslationPrompt
+from .prompt import DualBlockGappedPrompt
 
-__all__ = ["YueFromZhoTranslationAnswer"]
+__all__ = ["DualBlockGappedAnswer"]
 
 
-class YueFromZhoTranslationAnswer(Answer, ABC):
-    """ABC for translation of 粤文 from 中文 answers."""
+class DualBlockGappedAnswer(Answer, ABC):
+    """ABC for dual block gapped answers."""
 
-    prompt_cls: ClassVar[type[YueHansFromZhoTranslationPrompt]]
+    prompt_cls: ClassVar[type[DualBlockGappedPrompt]]
     """Text for LLM correspondence."""
 
     size: ClassVar[int]
     """Number of subtitles."""
     missing: ClassVar[tuple[int, ...]]
-    """Indexes of missing subtitles (1-indexed)."""
+    """Indexes of missing subtitles (0-indexed)."""
 
     @classmethod
     @cache
@@ -36,9 +36,7 @@ class YueFromZhoTranslationAnswer(Answer, ABC):
         cls,
         size: int,
         missing: tuple[int, ...],
-        prompt_cls: type[
-            YueHansFromZhoTranslationPrompt
-        ] = YueHansFromZhoTranslationPrompt,
+        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
@@ -49,9 +47,9 @@ class YueFromZhoTranslationAnswer(Answer, ABC):
         Returns:
             Answer type with appropriate configuration
         """
-        if any(m < 0 or m > size for m in missing):
+        if any(m < 0 or m >= size for m in missing):
             raise ScinoephileError(
-                f"Missing indices must be in range 1 to {size}, got {missing}."
+                f"Missing indices must be in range 0 to {size - 1}, got {missing}."
             )
 
         name = get_model_name(
@@ -61,11 +59,10 @@ class YueFromZhoTranslationAnswer(Answer, ABC):
             f"{prompt_cls.__name__}",
         )
         fields: dict[str, Any] = {}
-        for idx in range(size):
-            if idx in missing:
-                key = prompt_cls.source_one(idx + 1)
-                description = prompt_cls.source_one_desc(idx + 1)
-                fields[key] = (str, Field(..., description=description))
+        for idx in missing:
+            key = prompt_cls.source_one(idx + 1)
+            description = prompt_cls.source_one_desc(idx + 1)
+            fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
         model.prompt_cls = prompt_cls
