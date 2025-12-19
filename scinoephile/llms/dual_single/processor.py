@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from logging import info
 from pathlib import Path
-from typing import Any
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
@@ -28,9 +27,6 @@ __all__ = ["DualSingleProcessor"]
 class DualSingleProcessor:
     """Processes dual track / single subtitle matters."""
 
-    test_case_base_cls: type[DualSingleTestCase] = DualSingleTestCase
-    """Base class to use for dynamic test case creation."""
-
     def __init__(
         self,
         prompt_cls: type[DualSinglePrompt],
@@ -38,7 +34,6 @@ class DualSingleProcessor:
         test_case_path: Path | None = None,
         auto_verify: bool = False,
         default_test_cases: list[DualSingleTestCase] | None = None,
-        **kwargs: Any,
     ):
         """Initialize.
 
@@ -48,14 +43,8 @@ class DualSingleProcessor:
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
             default_test_cases: default test cases
-            kwargs: optional keyword arguments; may include test_case_base_cls to
-              override the base class used for dynamic test case creation
         """
         self.prompt_cls = prompt_cls
-        test_case_base_cls = kwargs.pop(
-            "test_case_base_cls", self.__class__.test_case_base_cls
-        )
-        self.test_case_base_cls = test_case_base_cls
 
         if test_cases is None:
             test_cases = default_test_cases or []
@@ -65,7 +54,7 @@ class DualSingleProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    self.test_case_base_cls,
+                    DualSingleTestCase,
                     prompt_cls=self.prompt_cls,
                 )
             )
@@ -139,7 +128,7 @@ class DualSingleProcessor:
                 continue
 
             # Query LLM
-            test_case_cls = self.test_case_base_cls.get_test_case_cls(self.prompt_cls)
+            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
                 self.prompt_cls.source_one_field: sub_one.text,
