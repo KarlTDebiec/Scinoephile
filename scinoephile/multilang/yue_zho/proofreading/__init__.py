@@ -89,6 +89,5 @@ def get_yue_vs_zho_proofreader(
     return DualSingleProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
-        test_case_base_cls=DualSingleTestCase,
         **kwargs,
     )
