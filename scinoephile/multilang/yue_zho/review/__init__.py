@@ -8,18 +8,17 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_block import DualBlockTestCase
+from scinoephile.llms.dual_block import DualBlockProcessor, DualBlockTestCase
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
-from .reviewer import YueVsZhoReviewer
 
 __all__ = [
     "YueHansReviewPrompt",
     "YueHantReviewPrompt",
-    "YueVsZhoReviewer",
+    "DualBlockProcessor",
     "get_default_yue_vs_zho_test_cases",
     "get_yue_vs_zho_reviewed",
-    "get_yue_vs_zho_reviewer",
+    "get_yue_vs_zho_processor",
 ]
 
 
@@ -48,7 +47,7 @@ def get_default_yue_vs_zho_test_cases(
 def get_yue_vs_zho_reviewed(
     yuewen: Series,
     zhongwen: Series,
-    reviewer: YueVsZhoReviewer | None = None,
+    processor: DualBlockProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 粤文 subtitles reviewed against 中文 subtitles.
@@ -56,33 +55,33 @@ def get_yue_vs_zho_reviewed(
     Arguments:
         yuewen: 粤文 Series
         zhongwen: 中文 Series
-        reviewer: Reviewer to use
-        **kwargs: additional arguments for Reviewer.review
+        processor: processor to use
+        **kwargs: additional arguments for DualBlockProcessor.process
     Returns:
         粤文 reviewed against 中文
     """
-    if reviewer is None:
-        reviewer = get_yue_vs_zho_reviewer()
-    return reviewer.review(yuewen, zhongwen, **kwargs)
+    if processor is None:
+        processor = get_yue_vs_zho_processor()
+    return processor.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_vs_zho_reviewer(
+def get_yue_vs_zho_processor(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     default_test_cases: list[DualBlockTestCase] | None = None,
     **kwargs: Any,
-) -> YueVsZhoReviewer:
-    """Get YueZhoReviewer with provided configuration.
+) -> DualBlockProcessor:
+    """Get DualBlockProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        **kwargs: additional arguments for YueZhoReviewer
+        **kwargs: additional arguments for DualBlockProcessor
     Returns:
-        YueZhoReviewer with provided configuration
+        DualBlockProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_yue_vs_zho_test_cases(prompt_cls)
-    return YueVsZhoReviewer(
+    return DualBlockProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

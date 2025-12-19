@@ -5,12 +5,14 @@
 from __future__ import annotations
 
 from .answer import DualBlockAnswer
+from .processor import DualBlockProcessor
 from .prompt import DualBlockPrompt
 from .query import DualBlockQuery
 from .test_case import DualBlockTestCase
 
 __all__ = [
     "DualBlockAnswer",
+    "DualBlockProcessor",
     "DualBlockPrompt",
     "DualBlockQuery",
     "DualBlockTestCase",
