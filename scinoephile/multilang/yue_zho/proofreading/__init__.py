@@ -14,14 +14,10 @@ from scinoephile.llms.dual_single import (
     DualSingleTestCase,
 )
 
-from .answer import YueZhoProofreadingAnswer
 from .prompts import YueZhoProofreadingPrompt
-from .test_case import YueZhoProofreadingTestCase
 
 __all__ = [
-    "YueZhoProofreadingAnswer",
     "YueZhoProofreadingPrompt",
-    "YueZhoProofreadingTestCase",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
@@ -41,12 +37,12 @@ def get_default_yue_vs_zho_proofreading_test_cases(
     """
     try:
         from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_yue_proofreading_test_cases,
+            get_mlamd_yue_vs_zho_proofreading_test_cases,
         )
 
-        return get_mlamd_yue_proofreading_test_cases(
+        return get_mlamd_yue_vs_zho_proofreading_test_cases(
             prompt_cls=prompt_cls,
-            test_case_base_cls=YueZhoProofreadingTestCase,
+            test_case_base_cls=DualSingleTestCase,
         )
     except ImportError as exc:  # pragma: no cover - test data not installed in prod
         warning(f"Default test cases not available for 粤文 proofreading:\n{exc}")
@@ -93,6 +89,6 @@ def get_yue_vs_zho_proofreader(
     return DualSingleProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
-        test_case_base_cls=YueZhoProofreadingTestCase,
+        test_case_base_cls=DualSingleTestCase,
         **kwargs,
     )
