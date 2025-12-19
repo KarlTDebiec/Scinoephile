@@ -83,7 +83,7 @@ class DualBlockProcessor:
         """Process paired subtitle series blockwise.
 
         Arguments:
-            source_one: primary subtitles to be revised
+            source_one: primary subtitles to be processed
             source_two: secondary subtitles providing reference
             stop_at_idx: stop processing at this block index
         Returns:
@@ -97,42 +97,40 @@ class DualBlockProcessor:
         block_pairs = list(zip(source_one.blocks, source_two.blocks))
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         stop_at_idx = stop_at_idx or len(block_pairs)
-        for blk_idx, (blk_one, blk_two) in enumerate(block_pairs):
+        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
             if blk_idx >= stop_at_idx:
                 break
-            if len(blk_one) != len(blk_two):
+            if len(one_blk) != len(two_blk):
                 raise ScinoephileError(
                     "Blocks must be aligned with the same number of subtitles."
                 )
 
-            test_case_cls = DualBlockTestCase.get_test_case_cls(
-                len(blk_one), self.prompt_cls
-            )
+            # Determine TestCase configuration
+            size = len(one_blk)
+            test_case_cls = DualBlockTestCase.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for sub_idx in range(len(blk_one)):
-                key_one = self.prompt_cls.source_one(sub_idx + 1)
-                query_kwargs[key_one] = re.sub(
-                    r"\\N", "\n", blk_one[sub_idx].text
-                ).strip()
-                key_two = self.prompt_cls.source_two(sub_idx + 1)
-                query_kwargs[key_two] = re.sub(
-                    r"\\N", "\n", blk_two[sub_idx].text
-                ).strip()
+            for sub_idx in range(size):
+                one_key = self.prompt_cls.source_one(sub_idx + 1)
+                one_val = re.sub(r"\\N", "\n", one_blk[sub_idx].text).strip()
+                query_kwargs[one_key] = one_val
+                two_key = self.prompt_cls.source_two(sub_idx + 1)
+                two_val = re.sub(r"\\N", "\n", two_blk[sub_idx].text).strip()
+                query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
             output_series = Series()
-            for sub_idx, subtitle in enumerate(blk_one):
+            for sub_idx, sub in enumerate(one_blk):
                 output_key = self.prompt_cls.output(sub_idx + 1)
                 if output := getattr(test_case.answer, output_key):
-                    subtitle.text = output
-                output_series.append(subtitle)
+                    sub.text = output
+                output_series.append(sub)
 
             info(
-                f"Block {blk_idx} ({blk_one.start_idx} - {blk_one.end_idx}):\n"
-                f"{blk_one.to_series().to_simple_string()}"
+                f"Block {blk_idx} ({one_blk.start_idx} - {one_blk.end_idx}):\n"
+                f"{one_blk.to_series().to_simple_string()}"
             )
             output_series_to_concatenate[blk_idx] = output_series
 
