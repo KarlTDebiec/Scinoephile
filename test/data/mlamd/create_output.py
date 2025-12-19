@@ -34,7 +34,7 @@ from scinoephile.multilang.yue_zho import (
     get_yue_from_zho_translated,
     get_yue_vs_zho_reviewed,
 )
-from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
+from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_processor
 from scinoephile.multilang.yue_zho.translation import get_yue_from_zho_translator
 from scinoephile.testing import test_data_root
 from test.data.kob import (
@@ -172,13 +172,13 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_translate.srt"
     yue_hans_translate.save(outfile_path)
-    reviewer = get_yue_vs_zho_reviewer(
+    reviewer = get_yue_vs_zho_processor(
         default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
         auto_verify=True,
     )
     yue_hans_translate_review = get_yue_vs_zho_reviewed(
-        yue_hans_translate, zho_hans, reviewer=reviewer
+        yue_hans_translate, zho_hans, processor=reviewer
     )
     outfile_path = output_dir / "yue-Hans_translate_review.srt"
     yue_hans_translate_review.save(outfile_path)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Reviews 粤文 subtitles against 中文."""
+"""Processes dual block subtitle matters."""
 
 from __future__ import annotations
 
@@ -16,24 +16,24 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.dual_block import DualBlockTestCase
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
-from .prompts import YueHansReviewPrompt
+from .prompt import DualBlockPrompt
+from .test_case import DualBlockTestCase
 
-__all__ = ["YueVsZhoReviewer"]
+__all__ = ["DualBlockProcessor"]
 
 
-class YueVsZhoReviewer:
-    """Reviews 粤文 subtitles against 中文."""
+class DualBlockProcessor:
+    """Processes two subtitle series blockwise using a dual block prompt."""
 
-    prompt_cls: type[YueHansReviewPrompt]
-    """text for LLM correspondence"""
+    prompt_cls: type[DualBlockPrompt]
+    """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
+        prompt_cls: type[DualBlockPrompt],
         test_cases: list[DualBlockTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
@@ -74,74 +74,71 @@ class YueVsZhoReviewer:
         )
         """LLM queryer."""
 
-    def review(
+    def process(
         self,
-        yuewen: Series,
-        zhongwen: Series,
+        source_one: Series,
+        source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Review 粤文 subtitles against 中文.
+        """Process paired subtitle series blockwise.
 
         Arguments:
-            yuewen: 粤文 subtitles
-            zhongwen: 中文 subtitles
+            source_one: primary subtitles to be processed
+            source_two: secondary subtitles providing reference
             stop_at_idx: stop processing at this block index
         Returns:
-            reviewed 粤文 subtitles
+            processed subtitles based on the primary series
         """
-        if not are_series_one_to_one(yuewen, zhongwen):
+        if not are_series_one_to_one(source_one, source_two):
             raise ScinoephileError(
-                "粤文 and 中文 sources must have the same number of subtitles."
-                f" Got {len(yuewen)} 粤文 subtitles and {len(zhongwen)} 中文 subtitles."
+                "Primary and secondary series must have the same number of subtitles."
             )
 
-        # Review subtitles
-        block_pairs = list(zip(yuewen.blocks, zhongwen.blocks))
+        block_pairs = list(zip(source_one.blocks, source_two.blocks))
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         stop_at_idx = stop_at_idx or len(block_pairs)
-        for blk_idx, (yw_blk, zw_blk) in enumerate(zip(yuewen.blocks, zhongwen.blocks)):
+        for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
             if blk_idx >= stop_at_idx:
                 break
+            if len(one_blk) != len(two_blk):
+                raise ScinoephileError(
+                    "Blocks must be aligned with the same number of subtitles."
+                )
 
             # Determine TestCase configuration
-            size = len(zw_blk)
-
-            # Query LLM
+            size = len(one_blk)
             test_case_cls = DualBlockTestCase.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
-                yw_key = self.prompt_cls.source_one(sub_idx + 1)
-                yw_val = re.sub(r"\\N", "\n", yw_blk[sub_idx].text).strip()
-                query_kwargs[yw_key] = yw_val
-                zw_key = self.prompt_cls.source_two(sub_idx + 1)
-                zw_val = re.sub(r"\\N", "\n", zw_blk[sub_idx].text).strip()
-                query_kwargs[zw_key] = zw_val
+                one_key = self.prompt_cls.source_one(sub_idx + 1)
+                one_val = re.sub(r"\\N", "\n", one_blk[sub_idx].text).strip()
+                query_kwargs[one_key] = one_val
+                two_key = self.prompt_cls.source_two(sub_idx + 1)
+                two_val = re.sub(r"\\N", "\n", two_blk[sub_idx].text).strip()
+                query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            # Compile series
             output_series = Series()
-            for sub_idx, yw_sub in enumerate(yw_blk):
+            for sub_idx, sub in enumerate(one_blk):
                 output_key = self.prompt_cls.output(sub_idx + 1)
                 if output := getattr(test_case.answer, output_key):
-                    yw_sub.text = output
-                output_series.append(yw_sub)
+                    sub.text = output
+                output_series.append(sub)
 
             info(
-                f"Block {blk_idx} ({yw_blk.start_idx} - {yw_blk.end_idx}):\n"
-                f"{yw_blk.to_series().to_simple_string()}"
+                f"Block {blk_idx} ({one_blk.start_idx} - {one_blk.end_idx}):\n"
+                f"{one_blk.to_series().to_simple_string()}"
             )
             output_series_to_concatenate[blk_idx] = output_series
 
-        # Log test cases
         if self.test_case_path is not None:
             save_test_cases_to_json(
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
-        # Organize and return
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
