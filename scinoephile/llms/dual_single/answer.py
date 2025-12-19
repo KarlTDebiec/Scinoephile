@@ -27,9 +27,9 @@ class DualSingleAnswer(Answer, ABC):
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        if not getattr(self, self.prompt_cls.output_field, None):
+        if getattr(self, self.prompt_cls.output_field, None) is None:
             raise ValueError(self.prompt_cls.output_missing_error)
-        if not getattr(self, self.prompt_cls.note_field, None):
+        if getattr(self, self.prompt_cls.note_field, None) is None:
             raise ValueError(self.prompt_cls.note_missing_error)
         return self
 
