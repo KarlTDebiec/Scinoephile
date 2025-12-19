@@ -47,8 +47,8 @@ from test.data.kob import (
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
-    get_mlamd_yue_proofreading_test_cases,
     get_mlamd_yue_shifting_test_cases,
+    get_mlamd_yue_vs_zho_proofreading_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
@@ -165,7 +165,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans = Series.load(outfile_path)
 
     proofreader = get_yue_vs_zho_proofreader(
-        default_test_cases=get_mlamd_yue_proofreading_test_cases(),
+        default_test_cases=get_mlamd_yue_vs_zho_proofreading_test_cases(),
         test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
         auto_verify=True,
     )
