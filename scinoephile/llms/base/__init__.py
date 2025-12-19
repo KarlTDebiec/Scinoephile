@@ -37,7 +37,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
     Arguments:
         input_path: path to JSON file containing test cases
         test_case_base_cls: test case class to use for test cases
-        kwargs: additional keyword arguments passed to
+        **kwargs: additional keyword arguments passed to
           test_case_base_cls.get_test_case_cls
     Returns:
         list of test cases

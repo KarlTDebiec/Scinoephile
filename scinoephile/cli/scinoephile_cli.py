@@ -278,7 +278,7 @@ class ScinoephileCli(CommandLineInterface):
         """Execute with provided keyword arguments.
 
         Arguments:
-            kwargs: Keyword arguments
+            **kwargs: Keyword arguments
         """
         operations = cls.determine_operations(**kwargs)
         cls.run(operations)

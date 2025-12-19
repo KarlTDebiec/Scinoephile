@@ -40,7 +40,7 @@ def get_default_yue_vs_zho_test_cases(
 
         return get_mlamd_yue_vs_zho_review_test_cases(prompt_cls)
     except ImportError as exc:
-        warning(f"Default test cases not available for 粤文 vs.中文 review:\n{exc}")
+        warning(f"Default test cases not available:\n{exc}")
     return []
 
 

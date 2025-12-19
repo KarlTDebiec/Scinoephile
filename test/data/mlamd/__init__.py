@@ -25,14 +25,9 @@ from scinoephile.llms.dual_block_gapped import (
 )
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoProofreadingPrompt,
-    YueZhoProofreadingTestCase,
-)
+from scinoephile.multilang.yue_zho.proofreading import YueZhoProofreadingPrompt
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
-from scinoephile.multilang.yue_zho.translation import (
-    YueHansFromZhoTranslationPrompt,
-)
+from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -203,7 +198,7 @@ def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -216,7 +211,7 @@ def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -233,14 +228,12 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
-    return load_test_cases_from_json(
-        path, YueZhoProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
-    )
+    return load_test_cases_from_json(path, prompt_cls=prompt_cls, **kwargs)
 
 
 @cache
@@ -252,7 +245,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -271,7 +264,7 @@ def get_mlamd_yue_vs_zho_review_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -290,7 +283,7 @@ def get_mlamd_eng_proofreading_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -309,7 +302,7 @@ def get_mlamd_zho_proofreading_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -328,7 +321,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -347,7 +340,7 @@ def get_mlamd_zho_ocr_fusion_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """

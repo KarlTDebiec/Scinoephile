@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 粤文 proofreading against 中文."""
+"""Code related to 粤文 vs. 中文 proofreading."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ __all__ = [
 def get_default_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoProofreadingPrompt,
 ) -> list[DualSingleTestCase]:
-    """Get default 粤文 proofreading test cases included with package.
+    """Get default 粤文 vs. 中文 proofreading test cases included with package.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -40,12 +40,9 @@ def get_default_yue_vs_zho_proofreading_test_cases(
             get_mlamd_yue_vs_zho_proofreading_test_cases,
         )
 
-        return get_mlamd_yue_vs_zho_proofreading_test_cases(
-            prompt_cls=prompt_cls,
-            test_case_base_cls=DualSingleTestCase,
-        )
-    except ImportError as exc:  # pragma: no cover - test data not installed in prod
-        warning(f"Default test cases not available for 粤文 proofreading:\n{exc}")
+        return get_mlamd_yue_vs_zho_proofreading_test_cases(prompt_cls)
+    except ImportError as exc:
+        warning(f"Default test cases not available:\n{exc}")
     return []
 
 
@@ -61,9 +58,9 @@ def get_yue_vs_zho_proofread(
         yuewen: 粤文 Series
         zhongwen: 中文 Series
         processor: processor to use
-        **kwargs: additional arguments for DualSingleProcessor.process
+        **kwargs: additional keyword arguments for DualSingleProcessor.process
     Returns:
-        Proofread 粤文 subtitles
+        proofread 粤文 subtitles
     """
     if processor is None:
         processor = get_yue_vs_zho_proofreader()

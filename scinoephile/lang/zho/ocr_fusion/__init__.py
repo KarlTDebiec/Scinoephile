@@ -49,7 +49,7 @@ def get_default_zho_ocr_fusion_test_cases(
             + get_t_zho_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for 中文 OCR fusion:\n{exc}")
+        warning(f"Default test cases not available:\n{exc}")
     return []
 
 
@@ -65,7 +65,7 @@ def get_zho_ocr_fused(
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
         processor: DualSingleProcessor to use
-        kwargs: additional keyword arguments for DualSingleProcessor.process
+        **kwargs: additional keyword arguments for DualSingleProcessor.process
     Returns:
         Fused series
     """
@@ -84,7 +84,7 @@ def get_zho_ocr_fuser(
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for DualSingleProcessor
+        **kwargs: additional keyword arguments for DualSingleProcessor
     Returns:
         DualSingleProcessor with provided configuration
     """
