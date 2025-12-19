@@ -20,11 +20,14 @@ from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
 from scinoephile.llms.base import load_test_cases_from_json
 from scinoephile.llms.dual_block import DualBlockPrompt, DualBlockTestCase
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedPrompt,
+    DualBlockGappedTestCase,
+)
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import (
-    YueFromZhoTranslationTestCase,
     YueHansFromZhoTranslationPrompt,
 )
 from scinoephile.testing import test_data_root
@@ -226,9 +229,9 @@ def get_mlamd_yue_proofing_test_cases(**kwargs: Any) -> list[ProofingTestCase]:
 
 @cache
 def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
-) -> list[YueFromZhoTranslationTestCase]:
+) -> list[DualBlockGappedTestCase]:
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
@@ -239,7 +242,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "translation.json"
     return load_test_cases_from_json(
-        path, YueFromZhoTranslationTestCase, prompt_cls=prompt_cls, **kwargs
+        path, DualBlockGappedTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
