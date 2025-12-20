@@ -5660,11 +5660,11 @@
   {
     "query": {
       "yuewen": "但系「山呢个头」唔知点解特别瘾",
-      "zhongwen": "「珊你个头」却特别刺耳"
+      "zhongwen": "不知道为什么「珊你个头」却特别刺耳"
     },
     "answer": {
-      "yuewen_proofread": "但系「珊你个头」唔知点解特别核突",
-      "note": "Corrected 「山呢个头」 to 「珊你个头」 to match the name pun '珊' and replaced 「特别瘾」 with 「特别核突」 as a more plausible misheard form that fits the meaning of '刺耳' (unpleasant to hear)."
+      "yuewen_proofread": "但系「珊你个头」唔知点解特别晦",
+      "note": "Corrected 「山呢个头」 to 「珊你个头」 to match the intended pun in the Mandarin line, and changed 「特别瘾」 to 「特别晦」 as 「晦」 (annoying/harsh) better fits the meaning of “刺耳” and is a plausible mishearing."
     },
     "difficulty": 1,
     "verified": true
