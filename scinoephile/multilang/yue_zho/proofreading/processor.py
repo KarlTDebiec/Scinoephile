@@ -132,6 +132,8 @@ class YueZhoProofreadingProcessor:
                 test_case: DualSingleTestCase = self.queryer(test_case)
 
                 output = getattr(test_case.answer, self.prompt_cls.output_field)
+                if output == "\ufffd":
+                    continue
                 output_block.append(
                     Subtitle(start=one_sub.start, end=one_sub.end, text=output)
                 )
