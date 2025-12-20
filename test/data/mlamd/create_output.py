@@ -30,6 +30,10 @@ from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_proofread,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
+from scinoephile.multilang.yue_zho.translation import (
+    get_yue_from_zho_translated,
+    get_yue_from_zho_translator,
+)
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
@@ -162,17 +166,17 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_proofread.srt"
     yue_hans_proofread.save(outfile_path)
 
-    # translator = get_yue_from_zho_translator(
-    #     default_test_cases=[],
-    #     test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
-    #     auto_verify=True,
-    # )
-    # yue_hans_proofread_translate = get_yue_from_zho_translated(
-    #     yue_hans_proofread, zho_hans, translator=translator
-    # )
-    # outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
-    # yue_hans_proofread_translate.save(outfile_path)
-    #
+    translator = get_yue_from_zho_translator(
+        default_test_cases=[],
+        test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
+        auto_verify=True,
+    )
+    yue_hans_proofread_translate = get_yue_from_zho_translated(
+        yue_hans_proofread, zho_hans, translator=translator
+    )
+    outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
+    yue_hans_proofread_translate.save(outfile_path)
+
     # reviewer = get_yue_vs_zho_processor(
     #     default_test_cases=[],
     #     test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
