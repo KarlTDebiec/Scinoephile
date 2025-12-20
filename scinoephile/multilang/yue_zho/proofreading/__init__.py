@@ -14,6 +14,7 @@ from scinoephile.llms.dual_single import (
     DualSingleTestCase,
 )
 
+from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoProofreadingPrompt
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
+    "YueZhoProofreadingProcessor",
 ]
 
 
@@ -83,7 +85,7 @@ def get_yue_vs_zho_proofreader(
     """
     if default_test_cases is None:
         default_test_cases = get_default_yue_vs_zho_proofreading_test_cases(prompt_cls)
-    return DualSingleProcessor(
+    return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

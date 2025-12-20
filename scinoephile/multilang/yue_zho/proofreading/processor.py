@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual block gapped subtitle matters."""
+"""Processes for 粤文 vs. 中文 proofreading."""
 
 from __future__ import annotations
 
@@ -17,29 +17,29 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.llms.dual_single import DualSingleTestCase
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
-from .prompt import DualBlockGappedPrompt
-from .test_case import DualBlockGappedTestCase
+from .prompts import YueZhoProofreadingPrompt
 
-__all__ = ["DualBlockGappedProcessor"]
+__all__ = ["YueZhoProofreadingProcessor"]
 
 
-class DualBlockGappedProcessor:
-    """Processes dual block gapped subtitle matters."""
+class YueZhoProofreadingProcessor:
+    """Processes for 粤文 vs. 中文 proofreading."""
 
-    prompt_cls: type[DualBlockGappedPrompt]
+    prompt_cls: type[YueZhoProofreadingPrompt]
     """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[DualBlockGappedPrompt],
-        test_cases: list[DualBlockGappedTestCase] | None = None,
+        prompt_cls: type[YueZhoProofreadingPrompt],
+        test_cases: list[DualSingleTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualBlockGappedTestCase] | None = None,
+        default_test_cases: list[DualSingleTestCase] | None = None,
     ):
         """Initialize.
 
@@ -60,7 +60,7 @@ class DualBlockGappedProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualBlockGappedTestCase,
+                    DualSingleTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -82,14 +82,14 @@ class DualBlockGappedProcessor:
         source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Fill gaps in the primary series using the secondary series as reference.
+        """Proofread 粤文 against 中文 with tolerant alignment.
 
         Arguments:
-            source_one: primary subtitles (may contain gaps)
-            source_two: secondary subtitles providing reference
+            source_one: 粤文 subtitles (may omit some 中文 lines)
+            source_two: 中文 reference subtitles
             stop_at_idx: stop processing at this block index
         Returns:
-            primary subtitles with gaps filled
+            Proofread 粤文 subtitles
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
@@ -98,53 +98,46 @@ class DualBlockGappedProcessor:
             if blk_idx >= stop_at_idx:
                 break
 
-            # Determine TestCase configuration
-            size = len(two_blk)
             overlap = get_sync_overlap_matrix(one_blk, two_blk)
+            output_block = Series()
+
             sync_grps = [([], [two_idx]) for two_idx in range(len(two_blk))]
             for one_idx in range(len(one_blk)):
                 two_idx = np.argmax(overlap[one_idx, :])
                 sync_grps[two_idx][0].append(one_idx)
-            gaps = tuple(idx for idx, group in enumerate(sync_grps) if not group[0])
-            if not gaps:
-                output_series_to_concatenate[blk_idx] = one_blk
-                continue
 
             # Query LLM
-            test_case_cls = DualBlockGappedTestCase.get_test_case_cls(
-                size, gaps, self.prompt_cls
-            )
+            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
-            query_kwargs: dict[str, str] = {}
-            one_idx = 0
-            for two_idx in range(size):
-                if two_idx not in gaps:
-                    one_key = self.prompt_cls.source_one(two_idx + 1)
-                    one_val = re.sub(r"\\N", "\n", one_blk[one_idx].text).strip()
-                    query_kwargs[one_key] = one_val
-                    one_idx += 1
-                two_key = self.prompt_cls.source_two(two_idx + 1)
-                two_val = re.sub(r"\\N", "\n", two_blk[two_idx].text).strip()
-                query_kwargs[two_key] = two_val
-            query = query_cls(**query_kwargs)
-            test_case = test_case_cls(query=query)
-            test_case = self.queryer(test_case)
-
-            output_series = Series()
-            for two_idx in range(size):
+            for one_grp, two_grp in sync_grps:
+                if not one_grp:
+                    continue
+                one_idx = one_grp[0]
+                two_idx = two_grp[0]
+                one_sub = one_blk[one_idx]
                 two_sub = two_blk[two_idx]
-                start = two_sub.start
-                end = two_sub.end
-                if two_idx not in gaps:
-                    one_key = self.prompt_cls.source_one(two_idx + 1)
-                    output = getattr(test_case.query, one_key)
-                else:
-                    one_key = self.prompt_cls.output(two_idx + 1)
-                    output = getattr(test_case.answer, one_key)
-                output_series.append(Subtitle(start=start, end=end, text=output))
+                one_val = re.sub(r"\\N", "\n", one_sub.text).strip()
+                two_val = re.sub(r"\\N", "\n", two_sub.text).strip()
+                if one_val == two_val:
+                    output_block.append(
+                        Subtitle(start=one_sub.start, end=one_sub.end, text=one_val)
+                    )
+                    continue
+                query_kwargs = {
+                    self.prompt_cls.source_one_field: one_val,
+                    self.prompt_cls.source_two_field: two_val,
+                }
+                query = query_cls(**query_kwargs)
+                test_case = test_case_cls(query=query)
+                test_case: DualSingleTestCase = self.queryer(test_case)
+
+                output = getattr(test_case.answer, self.prompt_cls.output_field)
+                output_block.append(
+                    Subtitle(start=one_sub.start, end=one_sub.end, text=output)
+                )
 
             info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
-            output_series_to_concatenate[blk_idx] = output_series
+            output_series_to_concatenate[blk_idx] = output_block
 
         if self.test_case_path is not None:
             save_test_cases_to_json(
