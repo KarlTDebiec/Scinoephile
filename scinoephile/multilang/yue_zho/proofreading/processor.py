@@ -17,12 +17,12 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.dual_single import DualSingleTestCase
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
 from .prompts import YueZhoProofreadingPrompt
+from .test_case import YueZhoProofreadingTestCase
 
 __all__ = ["YueZhoProofreadingProcessor"]
 
@@ -36,10 +36,10 @@ class YueZhoProofreadingProcessor:
     def __init__(
         self,
         prompt_cls: type[YueZhoProofreadingPrompt],
-        test_cases: list[DualSingleTestCase] | None = None,
+        test_cases: list[YueZhoProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualSingleTestCase] | None = None,
+        default_test_cases: list[YueZhoProofreadingTestCase] | None = None,
     ):
         """Initialize.
 
@@ -60,7 +60,7 @@ class YueZhoProofreadingProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualSingleTestCase,
+                    YueZhoProofreadingTestCase,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -107,7 +107,9 @@ class YueZhoProofreadingProcessor:
                 sync_grps[two_idx][0].append(one_idx)
 
             # Query LLM
-            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
+            test_case_cls = YueZhoProofreadingTestCase.get_test_case_cls(
+                self.prompt_cls
+            )
             query_cls = test_case_cls.query_cls
             for one_grp, two_grp in sync_grps:
                 if not one_grp:
@@ -129,7 +131,7 @@ class YueZhoProofreadingProcessor:
                 }
                 query = query_cls(**query_kwargs)
                 test_case = test_case_cls(query=query)
-                test_case: DualSingleTestCase = self.queryer(test_case)
+                test_case: YueZhoProofreadingTestCase = self.queryer(test_case)
 
                 output = getattr(test_case.answer, self.prompt_cls.output_field)
                 if output == "\ufffd":

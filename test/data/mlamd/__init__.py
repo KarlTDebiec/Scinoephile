@@ -25,7 +25,10 @@ from scinoephile.llms.dual_block_gapped import (
 )
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
-from scinoephile.multilang.yue_zho.proofreading import YueZhoProofreadingPrompt
+from scinoephile.multilang.yue_zho.proofreading import (
+    YueZhoProofreadingPrompt,
+    YueZhoProofreadingTestCase,
+)
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
@@ -223,7 +226,7 @@ def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
 def get_mlamd_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoProofreadingPrompt,
     **kwargs: Any,
-) -> list[DualSingleTestCase]:
+) -> list[YueZhoProofreadingTestCase]:
     """Get MLAMD 粵文 proofreading test cases.
 
     Arguments:
@@ -234,7 +237,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
