@@ -29,7 +29,7 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
         唔好调整语气、语法或者量词，除非明显系转写错误。
         只可以喺有合理嘅同音误听情况下先更正（例如：临盘 vs. 临盆）。
         如果发现粤文同中文字幕完全对唔上，说明呢行粤文系彻底误写，
-        请回传空字串作为粤文，并喺备注说明无对应。
+        请回传字符 "�" 作为粤文，并喺备注说明无对应。
 
         记住：
         - 粤文转写唔需要同中文字幕逐字对应。
@@ -67,7 +67,7 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
     output_field: ClassVar[str] = "yuewen_proofread"
     """Name of output field in answer."""
 
-    output_description: ClassVar[str] = "校对后嘅粤文字幕（如需删掉请回传空字串）"
+    output_description: ClassVar[str] = '校对后嘅粤文字幕（如需删掉请回传 "�"）'
     """Description of output field in answer."""
 
     note_field: ClassVar[str] = "note"
@@ -78,7 +78,7 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
 
     # Answer validation errors
     output_missing_error: ClassVar[str] = (
-        "答案必须包含校对后嘅粤文字幕（如需省略请回传空字串）。"
+        '答案必须包含校对后嘅粤文字幕（如需省略请回传 "�"）。'
     )
     """Error when output field is missing from answer."""
 
