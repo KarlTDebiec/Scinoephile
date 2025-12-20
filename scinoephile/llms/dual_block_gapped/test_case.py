@@ -82,7 +82,7 @@ class DualBlockGappedTestCase(TestCase, ABC):
 
         Arguments:
             data: data from JSON
-            kwargs: additional keyword arguments passed to get_test_case_cls
+            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             TestCase type with appropriate configuration
         """

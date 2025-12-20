@@ -26,7 +26,7 @@ __all__ = ["DualBlockProcessor"]
 
 
 class DualBlockProcessor:
-    """Processes two subtitle series blockwise using a dual block prompt."""
+    """Processes dual block subtitle matters."""
 
     prompt_cls: type[DualBlockPrompt]
     """Text for LLM correspondence."""

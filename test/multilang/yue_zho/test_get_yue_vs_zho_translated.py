@@ -14,9 +14,9 @@ def _test_get_yue_vs_zho_translated(yuewen: Series, zhongwen: Series, expected: 
     """Test get_yue_vs_zho_translated function.
 
     Arguments:
-        yuewen: 粤文 Series
-        zhongwen: 中文 Series
-        expected: expected output Series
+        yuewen: input 粤文 subtitles
+        zhongwen: input 中文 subtitles
+        expected: expected output subtitles
     """
     output = get_yue_from_zho_translated(yuewen, zhongwen)
 
@@ -34,23 +34,23 @@ def _test_get_yue_vs_zho_translated(yuewen: Series, zhongwen: Series, expected: 
 
 
 def test_get_yue_vs_zho_translated_mlamd(
-    mlamd_yue_hans: Series,
+    mlamd_yue_hans_proofread: Series,
     mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
-    mlamd_yue_hans_translate: Series,
+    mlamd_yue_hans_proofread_translate: Series,
 ):
     """Test get_yue_vs_zho_translated with MLAMD subtitles.
 
     Arguments:
-        mlamd_yue_hans: MLAMD 粤文 subtitles fixture
-        mlamd_zho_hans_fuse_proofread_clean_flatten: MLAMD 中文 subtitles fixture
-        mlamd_yue_hans_translate: expected translated MLAMD 粤文 subtitles fixture
+        mlamd_yue_hans_proofread: input 粤文 subtitles
+        mlamd_zho_hans_fuse_proofread_clean_flatten: input 中文 subtitles
+        mlamd_yue_hans_proofread_translate: expected output subtitles fixture
     """
     zhongwen = get_series_with_subs_merged(
         mlamd_zho_hans_fuse_proofread_clean_flatten, 539
     )
 
     _test_get_yue_vs_zho_translated(
-        mlamd_yue_hans,
+        mlamd_yue_hans_proofread,
         zhongwen,
-        mlamd_yue_hans_translate,
+        mlamd_yue_hans_proofread_translate,
     )

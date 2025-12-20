@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.proofing import ProofingTestCase
 from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.core import ScinoephileError
 
@@ -14,7 +13,6 @@ from .alignment import Alignment
 __all__ = [
     "get_shifting_test_case",
     "get_merging_test_case",
-    "get_proofing_test_case",
 ]
 
 
@@ -128,55 +126,6 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
     query_kwargs = {
         test_case_cls.prompt_cls.zhongwen_field: zw,
         test_case_cls.prompt_cls.yuewen_to_merge_field: yws,
-    }
-    # noinspection PyArgumentList
-    test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
-    return test_case
-
-
-def get_proofing_test_case(
-    alignment: Alignment, sg_idx: int
-) -> ProofingTestCase | None:
-    """Get proofing query for an alignment's sync group.
-
-    Arguments:
-        alignment: Nascent Cantonese alignment
-        sg_idx: Index of sync group
-    Returns:
-        Query, or None if there are no 粤文 to proof
-    """
-    # Get sync group
-    if sg_idx < 0 or sg_idx >= len(alignment.sync_groups):
-        raise ScinoephileError(
-            f"Invalid sync group index {sg_idx} "
-            f"for alignment with {len(alignment.sync_groups)} sync groups."
-        )
-    sg = alignment.sync_groups[sg_idx]
-
-    # Get 中文
-    zw_idxs = sg[0]
-    if len(zw_idxs) != 1:
-        raise ScinoephileError(
-            f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
-        )
-    zw_idx = sg[0][0]
-    zw = alignment.zhongwen[zw_idx].text
-
-    # Get 粤文
-    yw_idxs = sg[1]
-    if len(yw_idxs) > 1:
-        raise ScinoephileError(
-            f"Sync group {sg_idx} has {len(yw_idxs)} 粤文 subs, expected 0 or 1."
-        )
-    if len(yw_idxs) == 0:
-        return None
-    yw = alignment.yuewen[yw_idxs[0]].text
-
-    # Return proof query
-    test_case_cls: type[ProofingTestCase] = ProofingTestCase.get_test_case_cls()
-    query_kwargs = {
-        test_case_cls.prompt_cls.zhongwen_field: zw,
-        test_case_cls.prompt_cls.yuewen_field: yw,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))

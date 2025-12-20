@@ -179,7 +179,7 @@ def get_t_eng_proofreading_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         English proofreading test cases
     """
@@ -198,7 +198,7 @@ def get_t_zho_proofreading_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -217,7 +217,7 @@ def get_t_eng_ocr_fusion_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
@@ -236,7 +236,7 @@ def get_t_zho_ocr_fusion_test_cases(
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        kwargs: additional keyword arguments for load_test_cases_from_json
+        **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """

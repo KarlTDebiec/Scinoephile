@@ -67,7 +67,7 @@ class TestCase(BaseModel, ABC):
 
         Arguments:
             data: data from JSON
-            kwargs: additional keyword arguments passed to get_test_case_cls
+            **kwargs: additional keyword arguments passed to get_test_case_cls
         Returns:
             test case class
         """

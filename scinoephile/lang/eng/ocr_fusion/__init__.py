@@ -48,7 +48,7 @@ def get_default_eng_ocr_fusion_test_cases(
             + get_t_eng_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for English OCR fusion:\n{exc}")
+        warning(f"Default test cases not available:\n{exc}")
     return []
 
 
@@ -64,7 +64,7 @@ def get_eng_ocr_fused(
         lens: subtitles OCRed using Google Lens
         tesseract: subtitles OCRed using Tesseract
         processor: DualSingleProcessor to use
-        kwargs: additional keyword arguments for DualSingleProcessor.process
+        **kwargs: additional keyword arguments for DualSingleProcessor.process
     Returns:
         fused series
     """
@@ -78,12 +78,12 @@ def get_eng_ocr_fuser(
     default_test_cases: list[DualSingleTestCase] | None = None,
     **kwargs: Any,
 ) -> DualSingleProcessor:
-    """Get a DualSingleProcessor with provided configuration.
+    """Get DualSingleProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for DualSingleProcessor
+        **kwargs: additional keyword arguments for DualSingleProcessor
     Returns:
         DualSingleProcessor with provided configuration
     """

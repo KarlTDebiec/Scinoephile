@@ -50,7 +50,7 @@ def get_default_eng_proofreading_test_cases(
             + get_t_eng_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available for proofreading:\n{exc}")
+        warning(f"Default test cases not available:\n{exc}")
     return []
 
 
@@ -64,7 +64,7 @@ def get_eng_proofread(
     Arguments:
         series: Series to proofread
         processor: MonoBlockProcessor to use
-        kwargs: additional keyword arguments for MonoBlockProcessor.process
+        **kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
         proofread Series
     """
@@ -83,7 +83,7 @@ def get_eng_proofreader(
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        kwargs: additional keyword arguments for MonoBlockProcessor
+        **kwargs: additional keyword arguments for MonoBlockProcessor
     Returns:
         MonoBlockProcessor with provided configuration
     """

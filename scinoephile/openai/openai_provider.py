@@ -45,7 +45,7 @@ class OpenAIProvider(LLMProvider):
             messages: messages to send
             response_format: response format
             model: model to use
-            kwargs: additional keyword arguments
+            **kwargs: additional keyword arguments
         Returns:
             completion text from the model
         Raises:
@@ -92,7 +92,7 @@ class OpenAIProvider(LLMProvider):
             messages: messages to send
             response_format: response format
             model: model to use
-            kwargs: additional keyword arguments
+            **kwargs: additional keyword arguments
         Returns:
             completion text from the model
         Raises:

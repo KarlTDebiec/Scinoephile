@@ -68,7 +68,7 @@ class DualSingleTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        if output_text := getattr(self.answer, self.prompt_cls.output_field, None):
+        if output_text := getattr(self.answer, self.prompt_cls.output_field):
             if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty

@@ -86,7 +86,7 @@ class DualSingleProcessor:
         if not are_series_one_to_one(source_one, source_two):
             raise ScinoephileError(
                 "Series from sources one and two must have the same number of "
-                "subtitles."
+                f"subtitles; got {len(source_one)} and {len(source_two)}."
             )
 
         # Process subtitles
