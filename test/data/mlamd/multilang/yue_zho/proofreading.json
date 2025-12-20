@@ -8,7 +8,7 @@
       "yuewen_proofread": "就喺麦太快要临盆嘅时候",
       "note": "Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -21,7 +21,6 @@
       "yuewen_proofread": "有一个胶兜喺九龙上空飞过",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -33,7 +32,7 @@
       "yuewen_proofread": "沿住荔枝角道直出大角咀道",
       "note": "Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is the correct word for 'road' in both cases."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -46,7 +45,7 @@
       "yuewen_proofread": "经过好彩酒家再左转返出花园街乐园牛丸王对上⋯",
       "note": "Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely mishearings of the restaurant name '好彩酒家' and '乐园牛丸王'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -58,7 +57,6 @@
       "yuewen_proofread": "都系唔好：",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -71,7 +69,6 @@
       "yuewen_proofread": "先去街市大楼嗰间妹记鱼腩粥嗰度",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -83,7 +80,6 @@
       "yuewen_proofread": "转下，转下⋯都系唔好：",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -96,7 +92,7 @@
       "yuewen_proofread": "都系出返去亚皆老街飞过火车桥右转入太平道",
       "note": "Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the street name '亚皆老街'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -109,7 +105,7 @@
       "yuewen_proofread": "再右转抹返出去窝打老道向女人街方向飞下下⋯",
       "note": "Corrected '窝打炉道' to '窝打老道' as '窝打老道' is the correct street name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -121,7 +117,6 @@
       "yuewen_proofread": "飞下，飞下⋯",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -134,7 +129,7 @@
       "yuewen_proofread": "最后胶兜飞咗入广华医院嘅候产房",
       "note": "Corrected '后产房' to '候产房' as '候产房' (waiting room for delivery) matches the meaning in the 中文, while '后产房' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -146,7 +141,7 @@
       "yuewen_proofread": "亦即系麦太右边魂精对上⋯",
       "note": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -159,7 +154,7 @@
       "yuewen_proofread": "都系唔好：左边魂精对上⋯",
       "note": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -171,7 +166,6 @@
       "yuewen_proofread": "转下，转下，转下噉⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -183,7 +177,7 @@
       "yuewen_proofread": "麦太认定呢个系异像",
       "note": "Corrected '异象' to '异像' as '异像' is the correct term in this context."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -196,7 +190,7 @@
       "yuewen_proofread": "于是向魂精对上嘅胶兜许愿",
       "note": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' (额角), matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -208,7 +202,6 @@
       "yuewen_proofread": "而脑入面亦即时出现咗快要出世个仔嘅样⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -220,7 +213,6 @@
       "yuewen_proofread": "希望佢好聪明，读书好叻！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -232,7 +224,6 @@
       "yuewen_proofread": "胶兜对麦太嘅愿望似乎冇咩表示",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -244,7 +235,6 @@
       "yuewen_proofread": "于是佢对住胶兜补充噉话：",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -256,7 +246,6 @@
       "yuewen_proofread": "或者读书唔叻，出嚟做嘢叻啦？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -268,7 +257,6 @@
       "yuewen_proofread": "又或者呢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -280,7 +268,6 @@
       "yuewen_proofread": "又或者系好靓仔，好靓仔",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -292,7 +279,6 @@
       "yuewen_proofread": "好似周润发，同埋梁朝伟咁靓仔！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -304,7 +290,6 @@
       "yuewen_proofread": "胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -316,7 +301,6 @@
       "yuewen_proofread": "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -329,7 +313,7 @@
       "yuewen_proofread": "就算唔系咁聪明同咁靓仔，只要福星高照",
       "note": "Corrected '复星高照' to '福星高照' as '福星高照' is the correct idiom meaning 'blessed with good fortune', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -341,7 +325,7 @@
       "yuewen_proofread": "一世够运，乜嘢事都逢凶化㗎喇！",
       "note": "Corrected '救运' to '够运' as '够运' is the correct term for being lucky, matching the original meaning."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -354,7 +338,6 @@
       "yuewen_proofread": "佢靠自己有料解决啲嘢就梗系好啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -366,7 +349,6 @@
       "yuewen_proofread": "不过运气都好紧要㖞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -378,7 +360,7 @@
       "yuewen_proofread": "虽然似梁朝伟周润发都行运定咗",
       "note": "Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a mishearing; '行运定咗' matches the meaning of '行运定了'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -391,7 +373,6 @@
       "yuewen_proofread": "但系都要叻仔先得㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -403,7 +384,7 @@
       "yuewen_proofread": "最后，胶兜「嘀督」一声咁落地",
       "note": "Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of the sound effect in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -415,7 +396,7 @@
       "yuewen_proofread": "嘀督？嘀督㖞，即系应承啦",
       "note": "Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了)."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -428,7 +409,6 @@
       "yuewen_proofread": "麦太心谂，今次冇死喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -440,7 +420,6 @@
       "yuewen_proofread": "但你应承咗啲咩呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -452,7 +431,7 @@
       "yuewen_proofread": "定系话似周润发啊？",
       "note": "Corrected '话自周人烦' to '话似周润发' as it is a mishearing of the actor's name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -465,7 +444,7 @@
       "yuewen_proofread": "为咗纪念呢个赐福嘅胶兜",
       "note": "Corrected '赤幅' to '赐福' as '赐福' (bestowing blessing) matches the meaning in the 中文, while '赤幅' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -477,7 +456,6 @@
       "yuewen_proofread": "麦太决定将个仔嘅名叫做麦胶",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -489,7 +467,6 @@
       "yuewen_proofread": "都系唔好，胶胶声，咁难听！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -501,7 +478,6 @@
       "yuewen_proofread": "不如叫麦兜啦！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -513,7 +489,6 @@
       "yuewen_proofread": "我就系呢个差少少就叫做麦胶嘅小朋友⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -525,7 +500,6 @@
       "yuewen_proofread": "咦，麦太，咩唔见你一排",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -538,7 +512,7 @@
       "yuewen_proofread": "个脚瓜囊粗咗咁多呀？",
       "note": "Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for 'calf', matching the meaning of '小腿'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -551,7 +525,6 @@
       "yuewen_proofread": "鬼咩，日日扑嚟扑去⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -563,7 +536,6 @@
       "yuewen_proofread": "同我仔揾幼稚园吖嘛！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -575,7 +547,7 @@
       "yuewen_proofread": "点解唔试下好彩酒楼斜对面",
       "note": "Corrected '走楼' to '酒楼' as '酒楼' is the correct term for 'restaurant' and matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -587,7 +559,7 @@
       "yuewen_proofread": "旧中侨百货公司楼上嗰间⋯",
       "note": "Corrected '中桥' to '中侨' as '中侨' matches the original name in the 中文, and '中桥' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -599,7 +571,6 @@
       "yuewen_proofread": "春田花花幼稚园呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -611,7 +582,6 @@
       "yuewen_proofread": "就系坐落喺界限街同南昌街交界⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -623,7 +593,6 @@
       "yuewen_proofread": "银城美食广场附近嗰间⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -635,7 +604,6 @@
       "yuewen_proofread": "春田花花幼稚园呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -647,7 +615,6 @@
       "yuewen_proofread": "系呀！深水埗地铁站口行过去唔使十分钟呀！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -659,7 +626,7 @@
       "yuewen_proofread": "春田花花幼稚园，师资优良⋯",
       "note": "Corrected '诗诗优良' to '师资优良' as '师资' (teaching staff) matches the meaning in the 中文, while '诗诗' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -671,7 +638,6 @@
       "yuewen_proofread": "仲系西人教英文添㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -683,7 +649,6 @@
       "yuewen_proofread": "咦，西人教英文？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -695,7 +660,6 @@
       "yuewen_proofread": "系呀！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -707,7 +671,6 @@
       "yuewen_proofread": "春田花花，真系好多西人㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -719,7 +682,6 @@
       "yuewen_proofread": "呢个扮紧白兔猪样嘅小朋友⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -731,7 +693,7 @@
       "yuewen_proofread": "即系横睇掂睇都唔似发哥或者伟仔嗰个呢⋯",
       "note": "Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname for 梁朝伟, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -743,7 +705,6 @@
       "yuewen_proofread": "就系我，麦兜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -755,7 +716,6 @@
       "yuewen_proofread": "呢间就系我读嘅幼稚园",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -767,7 +727,6 @@
       "yuewen_proofread": "校长系潮州人",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -779,7 +738,6 @@
       "yuewen_proofread": "可能仲系讲紧潮州话嘅",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -791,7 +749,6 @@
       "yuewen_proofread": "所以咁多年嚟⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -803,7 +760,7 @@
       "yuewen_proofread": "我其实唔系好知佢噏乜",
       "note": "Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches the meaning of '他的说话', while '噏文' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -816,7 +773,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '大湖荒岩宅' bears no resemblance to the original phrase '蛋挞！　　蛋挞！' and is clearly a complete transcription failure."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -828,7 +785,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '湾吉校坟交涉设' bears no resemblance to the original phrase '荔芋火鸭札！' and is clearly a complete mismatch."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -840,7 +797,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the original phrase '也不能忘记校训九十八！' and is clearly a pure artifact."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -853,7 +810,7 @@
       "yuewen_proofread": "各位同学⋯",
       "note": "Corrected '嗰个位同学' to '各位同学' as '嗰个位' is a mishearing of '各位', which is the correct address for a group."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -866,7 +823,7 @@
       "yuewen_proofread": "今次早会系要同大家分享",
       "note": "Corrected '座会' to '早会' as '早会' is the correct term for 'morning assembly', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -878,7 +835,6 @@
       "yuewen_proofread": "一个可重要嘅主题：",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -890,7 +846,6 @@
       "yuewen_proofread": "小朋友，你哋今个月交咗学费咩呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -902,7 +857,6 @@
       "yuewen_proofread": "交！",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -915,7 +869,6 @@
       "yuewen_proofread": "哎，好在！噉大家可以返去上堂喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -927,7 +880,7 @@
       "yuewen_proofread": "你哋可能觉得呢间幼稚园好烂",
       "note": "Corrected '好逗利' to '好烂' as '逗利' is a likely mishearing of '烂', which matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -939,7 +892,6 @@
       "yuewen_proofread": "但系，对于我同埋我班同学仔嚟讲",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -951,7 +903,6 @@
       "yuewen_proofread": "呢度系我哋最快乐，最美丽嘅乐园⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -963,7 +914,6 @@
       "yuewen_proofread": "⋯仲有一个好疼我哋",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -975,7 +925,7 @@
       "yuewen_proofread": "不过就有少少游魂嘅班主任Miss Chan",
       "note": "Corrected '失魂' to '游魂' as '游魂' matches the meaning of '游魂' in the 中文, while '失魂' is a likely mishearing; Corrected '班主有Miss Chan' to '班主任Miss Chan' for proper transcription of 'class teacher'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -988,7 +938,7 @@
       "yuewen_proofread": "佢嘅志愿系做下一个王菲",
       "note": "Corrected '王妃' of '王菲'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1000,7 +950,7 @@
       "yuewen_proofread": "或者系做下一个陈慧琳都得",
       "note": "Corrected '陈维林' to '陈慧琳' as '陈慧琳' is the correct name matching the original meaning."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1012,7 +962,6 @@
       "yuewen_proofread": "好喇，我哋而家开始点名",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1024,7 +973,7 @@
       "yuewen_proofread": "麦唛同学！　　到！",
       "note": "Corrected '麦麦' to '麦唛' as '麦唛' is the correct name, matching the original 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1036,7 +985,7 @@
       "yuewen_proofread": "亚辉同学！　　到！",
       "note": "Corrected '阿辉' to '亚辉' as '亚辉' is the correct name, matching the original 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1048,7 +997,7 @@
       "yuewen_proofread": "菇时同学！　　到！",
       "note": "Corrected 'Boosie' to '菇时' as 'Boosie' is a mishearing of the name '菇时'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1060,7 +1009,7 @@
       "yuewen_proofread": "得巴同学！　　到！",
       "note": "Corrected '德巴' to '得巴' as it matches the original name in the 中文 and is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1072,7 +1021,6 @@
       "yuewen_proofread": "Miss Chan，你点咗我两次喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1084,7 +1032,6 @@
       "yuewen_proofread": "啊，系咩？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1096,7 +1043,6 @@
       "yuewen_proofread": "好，我哋而家继续点名",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1108,7 +1054,7 @@
       "yuewen_proofread": "菇时同学！　　到！",
       "note": "Corrected '川明' to '菇时' as it is a mishearing of the name in the original text."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1120,7 +1066,6 @@
       "yuewen_proofread": "好，仲有边个未点？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1132,7 +1077,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '猫噢！' bears no resemblance to the original phrase '麦兜！' and is clearly a complete transcription failure."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1168,7 +1113,6 @@
       "yuewen_proofread": "好似有人嗌紧我个名噉嘅",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1180,7 +1124,6 @@
       "yuewen_proofread": "你哋唔好以为我心散啊",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1192,7 +1135,6 @@
       "yuewen_proofread": "其实我系喺度思考紧一啲学术性嘅问题：",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1204,7 +1146,7 @@
       "yuewen_proofread": "点解橙叫「疴－烂－煮」呢？",
       "note": "Corrected 'Orange' to '疴－烂－煮' as '疴－烂－煮' appears to be an indentional transliteration of 'orange' into Chinese characters, matching the styling in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -1217,7 +1159,7 @@
       "yuewen_proofread": "妈妈话食橙会通大便",
       "note": "Corrected '大变' to '大便' as '大便' is the correct term for 'bowel movement', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1229,7 +1171,7 @@
       "yuewen_proofread": "「疴」呢个我明白，但系「烂－煮」呢？",
       "note": "Corrected '噢' to '疴' and '橙' to '烂－煮' as these are likely mishearings of the intended words in the context of the question."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1241,7 +1183,7 @@
       "yuewen_proofread": "仲有呢个「芭－娜－哪」香蕉啊",
       "note": "Corrected '芭－拉－娜' to '芭－娜－哪' to match the intended playful pronunciation of 'banana' as in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1253,7 +1195,7 @@
       "yuewen_proofread": "点解雨伞会叫做「暗－芭－娜－哪」呢？",
       "note": "Corrected '雨姐' to '雨伞' as '雨姐' is a mishearing of '雨伞', and '芭－拉－娜' to '芭－娜－哪' to match the intended phonetic play in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1265,7 +1207,7 @@
       "yuewen_proofread": "嗱，我「暗」啦，噉我「暗」嗰条蕉",
       "note": "Replaced '嗰条香蕉' with '嗰条蕉' as '蕉' is the more natural and concise way to refer to 'banana' in Cantonese, matching the original phrase '掉一条蕉'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1277,7 +1219,7 @@
       "yuewen_proofread": "至多会疴烂煮啫，点解会搞到落雨呢？",
       "note": "Corrected 'Orange' to '疴烂煮' as '疴烂煮' is a transliteration of 'orange' matching the style and meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1289,7 +1231,6 @@
       "yuewen_proofread": "呢个世界仲有好多嘢我谂唔明",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1301,7 +1242,6 @@
       "yuewen_proofread": "不过我唔怕",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1313,7 +1253,6 @@
       "yuewen_proofread": "我谂，到我读完幼稚园",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1325,7 +1264,7 @@
       "yuewen_proofread": "升埋小学，上到中学",
       "note": "Corrected '识埋小学' to '升埋小学' as '升' (move up/advance) matches the meaning of '升小学' in the 中文, while '识' (know) is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1337,7 +1276,6 @@
       "yuewen_proofread": "再入埋大学⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1349,7 +1287,6 @@
       "yuewen_proofread": "等我大学毕业嗰阵",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1361,7 +1298,6 @@
       "yuewen_proofread": "我谂我乜都会明白晒！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1373,7 +1309,6 @@
       "yuewen_proofread": "到嗰阵⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1385,7 +1320,6 @@
       "yuewen_proofread": "我买层楼畀我妈妈！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1397,7 +1331,6 @@
       "yuewen_proofread": "喺幼稚园楼下，校长兼营嘅间茶餐厅",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1421,7 +1354,7 @@
       "yuewen_proofread": "唔该，鱼蛋粗面啊　　冇粗面噃",
       "note": "Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '鱼蛋粗面' is the correct dish name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1433,7 +1366,7 @@
       "yuewen_proofread": "噉啊⋯要碗鱼蛋河粉啊　　冇鱼蛋噃",
       "note": "Added '河粉' after '鱼蛋' to match the intended meaning of '鱼蛋河粉' in the 中文, as '好' is likely a mishearing of '河粉'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -1446,7 +1379,7 @@
       "yuewen_proofread": "噉啊⋯要金钱肚粗面啊　　冇粗面噃",
       "note": "Corrected '金钱透粗啊' to '金钱肚粗面啊' as '金钱肚粗面' is the correct dish name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1458,7 +1391,6 @@
       "yuewen_proofread": "噉啊咁要鱼蛋油面啊　　冇鱼蛋噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1470,7 +1402,6 @@
       "yuewen_proofread": "乜样样都冇嘅？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1482,7 +1413,7 @@
       "yuewen_proofread": "噉要墨鱼丸粗面啊　　冇粗面噃",
       "note": "Corrected '蜜丸粗啊' to '墨鱼丸粗面啊' as '蜜丸' is a mishearing of '墨鱼丸', and added '面' to match the intended dish."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -1495,7 +1426,6 @@
       "yuewen_proofread": "又冇啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1507,7 +1437,7 @@
       "yuewen_proofread": "噉唔该畀碗鱼蛋濑啊　　冇鱼蛋噃",
       "note": "Corrected '鱼蛋奶' to '鱼蛋濑' as '奶' is a mishearing of '濑', which refers to '濑粉' (lai fun noodles) in the context of the dish."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1519,7 +1449,6 @@
       "yuewen_proofread": "麦兜啊，佢哋啲鱼蛋同粗面卖晒㗎啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1531,7 +1460,6 @@
       "yuewen_proofread": "即系所有要鱼蛋或者粗面嘅配搭都冇㗎啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1543,7 +1471,6 @@
       "yuewen_proofread": "噢，冇嗰啲配搭啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1555,7 +1482,6 @@
       "yuewen_proofread": "噉唔该，净鱼蛋啊　　冇鱼蛋噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1567,7 +1493,6 @@
       "yuewen_proofread": "净粗面呢？　　冇粗面噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1579,7 +1504,6 @@
       "yuewen_proofread": "睇到呢度⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1591,7 +1515,6 @@
       "yuewen_proofread": "大家大概都知道我有几叻仔嘞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1603,7 +1526,7 @@
       "yuewen_proofread": "嗰阵我无忧无虑，冇乜所谓－－",
       "note": "Corrected '果只' to '嗰阵' as '嗰阵' (that time) is the correct term matching the meaning of '那时候' in the 中文, while '果只' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1615,7 +1538,6 @@
       "yuewen_proofread": "冇鱼蛋咩？粗面都好啊",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1639,7 +1561,7 @@
       "yuewen_proofread": "睇住自己日日疴烂煮⋯",
       "note": "Corrected '柯能处' to '疴烂煮' as '疴烂煮' is a phonetic match and matches the meaning of the 中文, while '柯能处' is a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1651,7 +1573,7 @@
       "yuewen_proofread": "日日长肉⋯",
       "note": "Corrected '掌肉' to '长肉' as '长肉' (gaining weight) matches the meaning of '长肉' in the 中文, while '掌肉' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1663,7 +1585,6 @@
       "yuewen_proofread": "感到充满力量！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1675,7 +1596,7 @@
       "yuewen_proofread": "有一首歌，Miss Chan唱得好好听呀",
       "note": "Corrected '麦词春' to 'Miss Chan' as '麦词春' is a mishearing of 'Miss Chan', matching the name in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1687,7 +1608,6 @@
       "yuewen_proofread": "我成日想学习",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1712,7 +1632,6 @@
       "yuewen_proofread": "系唔系All Things Bright and Beautiful呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1724,7 +1643,6 @@
       "yuewen_proofread": "系呀，所有嘢都几好喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1736,7 +1654,6 @@
       "yuewen_proofread": "世上一切⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1760,7 +1677,6 @@
       "yuewen_proofread": "1, 2, 3, 4, 5, 6, 7⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1772,7 +1688,7 @@
       "yuewen_proofread": "多劳多得！",
       "note": "Corrected '多喽' to '多劳' as '多劳多得' is the correct phrase meaning 'more work, more gain', and '多喽' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1784,7 +1700,7 @@
       "yuewen_proofread": "星期一至星期七⋯多劳多得！",
       "note": "Corrected '多喽多得' to '多劳多得' as '多劳多得' is the correct phrase meaning 'the more you work, the more you gain', and '喽' is a mishearing of '劳'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1796,7 +1712,6 @@
       "yuewen_proofread": "呢个嗌得特别劲嘅中年母猪",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1808,7 +1723,6 @@
       "yuewen_proofread": "就系我妈妈麦太",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1820,7 +1734,6 @@
       "yuewen_proofread": "我妈妈真系好劲呀",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1832,7 +1745,6 @@
       "yuewen_proofread": "一个女人揹起成个世界！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1844,7 +1756,6 @@
       "yuewen_proofread": "系呀，我妈妈真系好犀利㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1856,7 +1767,6 @@
       "yuewen_proofread": "除咗做保险，地产经纪同埋trading之外⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1868,7 +1778,6 @@
       "yuewen_proofread": "佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1880,7 +1789,7 @@
       "yuewen_proofread": "www．麦太世界．com",
       "note": "Corrected 'mcticege' to '麦太世界' to match the style of the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -1893,7 +1802,6 @@
       "yuewen_proofread": "佢煮嘅𩠌，一样咁犀利",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1905,7 +1813,6 @@
       "yuewen_proofread": "欢迎大家收睇＜麦太世界＞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1917,7 +1824,6 @@
       "yuewen_proofread": "今日我为大家介绍个⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1929,7 +1835,7 @@
       "yuewen_proofread": "简单又别致嘅小菜纸包鸡",
       "note": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1941,7 +1847,6 @@
       "yuewen_proofread": "家里头嘅小朋友一定好喜欢㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1953,7 +1858,6 @@
       "yuewen_proofread": "材料系好简单：我哋只需要一个鸡包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1965,7 +1869,6 @@
       "yuewen_proofread": "我哋将黐喺鸡包底嘅纸撕出嚟⋯慢慢撕",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1977,7 +1880,6 @@
       "yuewen_proofread": "咁就会得到一张鸡包纸喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -1989,7 +1891,6 @@
       "yuewen_proofread": "然后将鸡包纸一反反转",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2001,7 +1902,7 @@
       "yuewen_proofread": "呢味纸包鸡就完成喇，系咪好易整啦？",
       "note": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2013,7 +1914,6 @@
       "yuewen_proofread": "多谢大家收睇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2025,7 +1925,6 @@
       "yuewen_proofread": "好高兴咁快又同大家见面",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2037,7 +1936,6 @@
       "yuewen_proofread": "跟住落嚟我会教大家整一味纸鸡包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2049,7 +1947,6 @@
       "yuewen_proofread": "材料都好简单，只需要白纸一张",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2061,7 +1958,6 @@
       "yuewen_proofread": "我哋只需要张张纸咁样⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2073,7 +1969,6 @@
       "yuewen_proofread": "一个纸鸡包就咁完成咗喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2085,7 +1980,6 @@
       "yuewen_proofread": "各位小朋友，你哋话似唔似鸡包啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2097,7 +1991,7 @@
       "yuewen_proofread": "间阵要教大家一味几别致嘅小菜－",
       "note": "Corrected '别节' to '别致' as '别致' is the correct term for 'unique' or 'special', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -2110,7 +2004,7 @@
       "yuewen_proofread": "包鸡纸包鸡包纸包鸡",
       "note": "Corrected '鸡子' and '包子' to '鸡纸' and '包纸' respectively, as these are likely mishearings of '纸' in the repeated phrase '纸包鸡'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2122,7 +2016,7 @@
       "yuewen_proofread": "首先将纸包鸡小心噉撕开",
       "note": "Corrected '子包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name and matches the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2134,7 +2028,7 @@
       "yuewen_proofread": "大家就会有一张纸包鸡同埋一嚿鸡啦",
       "note": "Corrected '包鸡子' to '纸包鸡' as '纸包鸡' is the correct term for the dish, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2146,7 +2040,7 @@
       "yuewen_proofread": "跟住将鸡包纸好似我噉包住块鸡",
       "note": "Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of '鸡包纸' (the paper used to wrap the chicken), and '牛鸡' to '块鸡' as '牛鸡' is likely a mishearing of '块鸡'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2170,7 +2064,7 @@
       "yuewen_proofread": "咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
       "note": "Corrected '子包鸡包子包鸡' to '纸包鸡包纸包鸡' as '纸' is the correct character for '纸包鸡', matching the intended dish name in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2182,7 +2076,6 @@
       "yuewen_proofread": "系咪好简单呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2194,7 +2087,6 @@
       "yuewen_proofread": "仲真系有嚿鸡食添！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2206,7 +2098,6 @@
       "yuewen_proofread": "今日要同大家介绍一味⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2218,7 +2109,6 @@
       "yuewen_proofread": "小朋友一定喜欢嘅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2254,7 +2144,6 @@
       "yuewen_proofread": "做法都好简单",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2266,7 +2155,6 @@
       "yuewen_proofread": "我哋先将鸡包包住个鸡包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2278,7 +2166,7 @@
       "yuewen_proofread": "再包包包包包住个纸鸡包",
       "note": "Corrected '纸包鸡' to '纸鸡包'"
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -2315,7 +2203,6 @@
       "yuewen_proofread": "不过我妈妈都有佢温柔嘅一面",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2327,7 +2214,6 @@
       "yuewen_proofread": "例如每晚临睡前，佢都会讲故事畀我听",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2339,7 +2225,6 @@
       "yuewen_proofread": "从前，有个小朋友讲大话；有一日⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2351,7 +2236,6 @@
       "yuewen_proofread": "佢死咗！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2363,7 +2247,6 @@
       "yuewen_proofread": "从前，有个小朋友好勤力读书⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2375,7 +2258,6 @@
       "yuewen_proofread": "佢长大，发咗！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2387,7 +2269,6 @@
       "yuewen_proofread": "从前，有个小朋友唔孝顺，有一日⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2411,7 +2292,6 @@
       "yuewen_proofread": "妈，我想瞓啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2423,7 +2303,7 @@
       "yuewen_proofread": "从前，有个小朋友早睡晚起；第二朝⋯",
       "note": "Removed '社群提供' as it is a non-spoken subtitle credit artifact, not part of the Cantonese dialogue."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2435,7 +2315,6 @@
       "yuewen_proofread": "我妈妈就系噉，一切都咁直接",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2447,7 +2326,6 @@
       "yuewen_proofread": "佢爱得我直接⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2459,7 +2337,6 @@
       "yuewen_proofread": "对我嘅期望直接",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2471,7 +2348,6 @@
       "yuewen_proofread": "佢，一、二、三、四、五、六、七",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -2484,7 +2360,7 @@
       "yuewen_proofread": "唔得都要得",
       "note": "Removed '字幕由Amara.org' as it is not part of the spoken content and is an artifact from subtitle credits in the training set."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -2497,7 +2373,6 @@
       "yuewen_proofread": "但系如果有啲嘢，真系真系唔得呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2509,7 +2384,6 @@
       "yuewen_proofread": "日子一日一日咁过",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2521,7 +2395,6 @@
       "yuewen_proofread": "首先周润发嗰单嘢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2533,7 +2406,6 @@
       "yuewen_proofread": "大家都唔好再提！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2545,7 +2417,7 @@
       "yuewen_proofread": "我用我嘅童子手帮妈妈抽嘅六合彩number",
       "note": "Corrected '同事手' to '童子手' as '童子手' (child's hand) matches the meaning in the 中文, while '同事手' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2557,7 +2429,6 @@
       "yuewen_proofread": "竟然奇迹一样一个都未中过！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2569,7 +2440,6 @@
       "yuewen_proofread": "我试过好努力咁读书，但系⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2581,7 +2451,6 @@
       "yuewen_proofread": "但系⋯我仲可以发梦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2593,7 +2462,6 @@
       "yuewen_proofread": "马尔代夫，坐落于印度洋嘅世外桃源",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2605,7 +2473,7 @@
       "yuewen_proofread": "蓝天白云，椰林树影，水清沙幼",
       "note": "Corrected '沙游' to '沙幼' as '沙幼' (fine sand) is the correct phrase matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2617,7 +2485,7 @@
       "yuewen_proofread": "七彩缤纷嘅珊瑚，目不暇给嘅热带鱼群",
       "note": "Corrected '目不下级' to '目不暇给' as '目不暇给' is the correct idiom meaning 'too many to take in', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2629,7 +2497,7 @@
       "yuewen_proofread": "充满住赤道热力嘅原始海洋，远离繁嚣",
       "note": "Corrected '凡嚣' to '繁嚣' as '繁嚣' is the correct term for 'hustle and bustle', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2641,7 +2509,6 @@
       "yuewen_proofread": "体验热情如火嘅风土人情",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2653,7 +2520,7 @@
       "yuewen_proofread": "享受一个脱俗出尘嘅梦幻之旅",
       "note": "Corrected '脱轴' to '脱俗' as '脱俗' is the correct term for 'out of the ordinary', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2665,7 +2532,6 @@
       "yuewen_proofread": "妈妈你知唔知到马尔代夫系边㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2677,7 +2543,6 @@
       "yuewen_proofread": "啊好远㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2689,7 +2554,7 @@
       "yuewen_proofread": "有几远呀？",
       "note": "Corrected '点远发呀' to '有几远呀' as '点远发' is likely a mishearing of '有几远', which matches the meaning of '有多远'. The word '发' is not appropriate here."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2701,7 +2566,6 @@
       "yuewen_proofread": "搭飞机至到啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2713,7 +2577,7 @@
       "yuewen_proofread": "咁妈妈你会唔会走我去㗎？",
       "note": "Corrected '走落去' to '走我去'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2737,7 +2601,6 @@
       "yuewen_proofread": "咁妈妈你几时发得呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2749,7 +2612,6 @@
       "yuewen_proofread": "呃，就快啦⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2761,7 +2623,6 @@
       "yuewen_proofread": "发梦吖嘛！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2773,7 +2634,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '嗨！' bears no resemblance to the original phrase '校长早晨！' and is clearly a complete mismatch."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -2786,7 +2647,6 @@
       "yuewen_proofread": "你最喜爱嘅地方喺边度呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2798,7 +2658,6 @@
       "yuewen_proofread": "我最喜爱嘅地方呢，就系日本喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2810,7 +2669,7 @@
       "yuewen_proofread": "嗰度有 Disney 同埋 Hello Kitty",
       "note": "Corrected '好迪士尼呢同埋HelloTT呢' to '嗰度有 Disney 同埋 Hello Kitty'."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -2823,7 +2682,7 @@
       "yuewen_proofread": "我而家戴紧个发夹都系嗰边买嘅",
       "note": "Corrected '打紧个发卷' to '戴紧个发夹' as '发夹' matches the meaning of '发夹' in the 中文, and '打紧' is a mishearing of '戴紧' (wearing)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2835,7 +2694,6 @@
       "yuewen_proofread": "我最钟意嘅地方就系加拿大",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2847,7 +2705,6 @@
       "yuewen_proofread": "婆婆同埋舅父呀，佢哋都系加拿大㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2859,7 +2716,6 @@
       "yuewen_proofread": "我最钟意去嘅地方就系泰国喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2871,7 +2727,7 @@
       "yuewen_proofread": "嗰度有好多水上活动㗎，仲有鱼翅食添㖞",
       "note": "Corrected '水晶活动' to '水上活动' as '水上活动' matches the meaning of '水上活动' in the 中文, and '一次食' to '鱼翅食' as '鱼翅' is the correct term for 'shark fin' mentioned in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2883,7 +2739,6 @@
       "yuewen_proofread": "呃，我最喜爱嘅地方呢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2895,7 +2750,6 @@
       "yuewen_proofread": "就系嗰间咩嚟啰！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2907,7 +2761,7 @@
       "yuewen_proofread": "嗰度有欢乐天地啦，仲有美食广场啦",
       "note": "Corrected '米食广场' to '美食广场' as '美食广场' is the correct term for 'food court', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2919,7 +2773,7 @@
       "yuewen_proofread": "嗰度啲海南鸡饭好大碟㗎",
       "note": "Corrected '可能几份' to '海南鸡饭' as '可能几份' is a mishearing of '海南鸡饭', which matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2931,7 +2785,6 @@
       "yuewen_proofread": "系喇系喇，嗰间叫做银城中心",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -2943,7 +2796,7 @@
       "yuewen_proofread": "嗰间嘢啲饭好多，好大碟㗎！",
       "note": "Corrected '好多人' to '好多' as '好多人' means 'many people', which is a mishearing of '好多' (a lot of [rice]), matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2955,7 +2808,7 @@
       "yuewen_proofread": "不过讲到我最想去嘅地方呢，嗰度犀利啰",
       "note": "Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) means '厉害', matching the meaning in the 中文, while '细嚟' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2967,7 +2820,7 @@
       "yuewen_proofread": "嗰度蓝天白云，椰林树影，水清沙幼",
       "note": "Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as these are likely mishearings of the correct descriptive terms for the scenery."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2979,7 +2832,7 @@
       "yuewen_proofread": "座落于印度洋嘅世外桃源",
       "note": "Corrected '独来鱼' to '座落于' as '独来鱼' is a mishearing of '座落于', which means 'located at' and matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2991,7 +2844,6 @@
       "yuewen_proofread": "喂，衰仔啊，快啲起身返学喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3003,7 +2855,6 @@
       "yuewen_proofread": "开啲药过佢食就冇事㗎喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3015,7 +2866,6 @@
       "yuewen_proofread": "医生啊，啲药食咗会唔会有嗰啲咩㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3027,7 +2877,6 @@
       "yuewen_proofread": "唔会！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3039,7 +2888,6 @@
       "yuewen_proofread": "噉佢食药使唔使咩啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3051,7 +2899,6 @@
       "yuewen_proofread": "唔使！同佢打多支针添呢！",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3064,7 +2911,6 @@
       "yuewen_proofread": "吓？要打针啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3076,7 +2922,6 @@
       "yuewen_proofread": "佢好怕打针㗎㖞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3088,7 +2933,6 @@
       "yuewen_proofread": "噉佢怕唔怕死呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3100,7 +2944,6 @@
       "yuewen_proofread": "冇嘢吖嘛？快啲食埋啲药水佢先啦！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3112,7 +2955,6 @@
       "yuewen_proofread": "妈妈我唔想食药水呀",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3125,7 +2967,7 @@
       "yuewen_proofread": "唔好呀妈妈，我唔食呀",
       "note": "Corrected '唔好捞' to '唔好呀' as '唔好捞' is likely a mishearing; '唔好呀' matches the meaning of '不要呀' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3137,7 +2979,6 @@
       "yuewen_proofread": "我唔食士多啤梨药水呀！",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3150,7 +2991,6 @@
       "yuewen_proofread": "唔好喊啦，唔食药唔会好㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3162,7 +3002,7 @@
       "yuewen_proofread": "乖乖啲，病好咗妈妈带你去马尔代夫",
       "note": "Corrected '大理' to '带你' as '带你' matches the meaning of '带你去' in the 中文, while '大理' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3174,7 +3014,6 @@
       "yuewen_proofread": "真嘅？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3186,7 +3025,6 @@
       "yuewen_proofread": "妈妈几时呃过你呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3198,7 +3036,6 @@
       "yuewen_proofread": "乖，食埋啲药水先啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3210,7 +3047,7 @@
       "yuewen_proofread": "嘻嘻，好嘢，马尔代夫！",
       "note": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3222,7 +3059,7 @@
       "yuewen_proofread": "马尔代夫！",
       "note": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3234,7 +3071,6 @@
       "yuewen_proofread": "妈妈，咁我哋几时去呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3246,7 +3082,6 @@
       "yuewen_proofread": "嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3258,7 +3093,6 @@
       "yuewen_proofread": "嚟啦，食多更！",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3271,7 +3105,6 @@
       "yuewen_proofread": "妈妈你睇，我好返喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3283,7 +3116,7 @@
       "yuewen_proofread": "啲药所以我全部食晒喇",
       "note": "Corrected '啲嘢' to '啲药' as '药' matches the meaning of '药' in the 中文, while '嘢' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3295,7 +3128,6 @@
       "yuewen_proofread": "即系间屋有乜嘢唔系畀你食晒㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3307,7 +3139,6 @@
       "yuewen_proofread": "妈妈，呢次唔同㗎，本来咁大樽嘅",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3319,7 +3150,6 @@
       "yuewen_proofread": "我饮下一格，又一格，又一格⋯",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3332,7 +3162,6 @@
       "yuewen_proofread": "吓，咪我饮晒㖞！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3344,7 +3173,7 @@
       "yuewen_proofread": "饮晒就叻仔啦！",
       "note": "Corrected '饮实' to '饮晒' as '饮晒' means 'finished drinking', matching the meaning of '喝光了' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3356,7 +3185,7 @@
       "yuewen_proofread": "饮晒就好返实啦！",
       "note": "Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', matching the meaning of '喝光了' in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -3369,7 +3198,6 @@
       "yuewen_proofread": "妈妈⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3381,7 +3209,6 @@
       "yuewen_proofread": "乜嘢啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3393,7 +3220,7 @@
       "yuewen_proofread": "我哋几时去马尔代夫啊？",
       "note": "Corrected '阿哋' to '我哋' as '我哋' is the correct Cantonese pronoun for 'we', while '阿哋' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -3406,7 +3233,6 @@
       "yuewen_proofread": "乜嘢马尔代夫啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3418,7 +3244,6 @@
       "yuewen_proofread": "呢，你话我返就同我去马尔代夫㗎嘛！",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3431,7 +3256,7 @@
       "yuewen_proofread": "马尔代夫呢，椰林树影，水清沙幼⋯",
       "note": "Corrected '耶南树影' to '椰林树影' and '水清沙游' to '水清沙幼' as both are likely mishearings of the standard descriptive phrase for the Maldives."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3443,7 +3268,7 @@
       "yuewen_proofread": "座落于印度洋嘅世外桃源啦！",
       "note": "Corrected '助流于印度园嘅世外导演' to '座落于印度洋嘅世外桃源' as the original was a mishearing of the place and descriptive terms."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3455,7 +3280,6 @@
       "yuewen_proofread": "啊，估唔到你几好文采㗎噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3467,7 +3291,6 @@
       "yuewen_proofread": "讲得几好听啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3479,7 +3302,6 @@
       "yuewen_proofread": "妈妈我唔系讲喇㗎，又系你话嘅⋯",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3492,7 +3314,6 @@
       "yuewen_proofread": "你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3504,7 +3325,6 @@
       "yuewen_proofread": "我话发咗先至同你去㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3516,7 +3336,6 @@
       "yuewen_proofread": "唔系㖞，妈妈你话好咗就同我去㗎㖞",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3529,7 +3348,6 @@
       "yuewen_proofread": "你明明讲过好返就同你去马尔代夫㗎㖞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3541,7 +3359,6 @@
       "yuewen_proofread": "你讲过㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3553,7 +3370,6 @@
       "yuewen_proofread": "得啦得啦，唔好喊啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3565,7 +3381,6 @@
       "yuewen_proofread": "同你去马尔代夫啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3577,7 +3392,6 @@
       "yuewen_proofread": "真嘅？　　系啊",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3589,7 +3403,6 @@
       "yuewen_proofread": "咁几时去啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3601,7 +3414,6 @@
       "yuewen_proofread": "等我发咗先啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3613,7 +3425,6 @@
       "yuewen_proofread": "你发咗㗎喇，你发咗㗎喇⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3625,7 +3436,6 @@
       "yuewen_proofread": "系喇系喇系喇，发咗喇",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -3638,7 +3448,6 @@
       "yuewen_proofread": "下个礼拜同你去啦，得未啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3650,7 +3459,6 @@
       "yuewen_proofread": "好嘢！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3662,7 +3470,7 @@
       "yuewen_proofread": "喂，麦唛啊，我系麦兜啊",
       "note": "Corrected '麦麦' to '麦唛' and '麦豆啊我系' to '我系麦兜啊' as these are likely mishearings of the character names and the intended self-introduction."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3674,7 +3482,6 @@
       "yuewen_proofread": "即系呢，我明日就要飞喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3686,7 +3493,6 @@
       "yuewen_proofread": "系啊　　⋯系咩？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3698,7 +3504,7 @@
       "yuewen_proofread": "飞机餐好难食㗎？",
       "note": "Corrected '飞机真好难食' to '飞机餐好难食' as '飞机餐' is the correct term for 'airplane meal', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3710,7 +3516,6 @@
       "yuewen_proofread": "但点都要食㗎啦！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3722,7 +3527,6 @@
       "yuewen_proofread": "唔通自己带嘢上去食咩？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3734,7 +3538,6 @@
       "yuewen_proofread": "仲讲哦？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3746,7 +3549,6 @@
       "yuewen_proofread": "快啲嚟执埋啲行李先啦哦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3758,7 +3560,7 @@
       "yuewen_proofread": "你帮我话畀佢哋知，我明日去马尔代夫喇",
       "note": "Corrected '买热带裤薄' to '马尔代夫喇' as '买热带裤薄' is a mishearing of '马尔代夫', matching the intended meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3770,7 +3572,7 @@
       "yuewen_proofread": "嗰度蓝天白云，椰林树⋯",
       "note": "Corrected '五百云' to '白云' as it is a mishearing of '白云', and '夜临雪' to '椰林树' as it is a mishearing of '椰林树', both matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3794,7 +3596,6 @@
       "yuewen_proofread": "我嚟紧㗎喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3806,7 +3607,7 @@
       "yuewen_proofread": "我要执行李喇，返嚟先再同你倾过啦",
       "note": "Corrected '执行你' to '执行李' as '执行李' (to pack luggage) matches the meaning in the 中文, while '执行你' is a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3818,7 +3619,6 @@
       "yuewen_proofread": "拜拜！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3830,7 +3630,6 @@
       "yuewen_proofread": "哎哟，妈妈，我系咪要带埋出世纸去㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3842,7 +3641,6 @@
       "yuewen_proofread": "都要㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3854,7 +3652,6 @@
       "yuewen_proofread": "咁成绩表呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3866,7 +3663,6 @@
       "yuewen_proofread": "成绩表又唔使",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3878,7 +3674,6 @@
       "yuewen_proofread": "好嘢！吓得我啊！咁都好啲",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3890,7 +3685,6 @@
       "yuewen_proofread": "揾到喇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3902,7 +3696,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as the 粤文 is just a repeated string of '竟然' and bears no resemblance to the original phrase '出世纸给我找到了！', indicating a complete mismatch."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3914,7 +3708,6 @@
       "yuewen_proofread": "妈妈话噉先最著数",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3926,7 +3719,6 @@
       "yuewen_proofread": "就系噉样⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3938,7 +3730,6 @@
       "yuewen_proofread": "我过咗我小时候最著数⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3950,7 +3741,6 @@
       "yuewen_proofread": "最完美嘅一日",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3962,7 +3752,7 @@
       "yuewen_proofread": "噉你话，纸包唔包得住鸡呢？",
       "note": "Corrected '绝鸡' to '住鸡' as '住' is the correct word for 'wrap' or 'cover' in this context, matching the meaning of '包着鸡' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -3974,7 +3764,6 @@
       "yuewen_proofread": "都得嘅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3986,7 +3775,6 @@
       "yuewen_proofread": "尤其系细细旧嗰啲",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -3998,7 +3786,7 @@
       "yuewen_proofread": "妈妈早唞！",
       "note": "Corrected '妈妈做头' to '妈妈早唞' as '早唞' is the correct phrase for 'good night' in Cantonese, while '做头' is a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4010,7 +3798,6 @@
       "yuewen_proofread": "啱啱收到消息",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4022,7 +3809,6 @@
       "yuewen_proofread": "奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4034,7 +3820,6 @@
       "yuewen_proofread": "夺取香港历史上第一面奥运金牌！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4046,7 +3831,6 @@
       "yuewen_proofread": "消息话李丽珊喺知道自己稳夺奥运金牌之后",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4058,7 +3842,6 @@
       "yuewen_proofread": "好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4070,7 +3853,7 @@
       "yuewen_proofread": "可以证明到香港嘅运动员唔系腊鸭！",
       "note": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term, matching the meaning in the 中文, and '𫚭' is a likely mishearing or character error."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4082,7 +3865,7 @@
       "yuewen_proofread": "各位对唔住，应该　　系垃圾，唔系腊鸭！",
       "note": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and matches the meaning in the 中文, while '𫚭鸭' is a likely mishearing or character error."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4094,7 +3877,7 @@
       "yuewen_proofread": "对唔住，应该系　　唔系垃圾，亦都唔系腊鸭！",
       "note": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and matches the meaning in the 中文, while '𫚭鸭' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4106,7 +3889,7 @@
       "yuewen_proofread": "特别报告完毕",
       "note": "Corrected '报个原不' to '报告完毕' as '原不' is a mishearing of '完毕', matching the meaning of the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4118,7 +3901,6 @@
       "yuewen_proofread": "咦，妈妈好似又有计噉噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4130,7 +3912,6 @@
       "yuewen_proofread": "靓仔，好运，叻仔呀⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4142,7 +3923,6 @@
       "yuewen_proofread": "睇嚟都唔多靠得住",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4154,7 +3934,6 @@
       "yuewen_proofread": "哗，好唔好靠下个手瓜噉呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4166,7 +3945,6 @@
       "yuewen_proofread": "于是，一个梦都未醒⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4178,7 +3956,6 @@
       "yuewen_proofread": "我又得到另外一个梦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4190,7 +3967,6 @@
       "yuewen_proofread": "系咪应该系脚瓜之争",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4202,7 +3978,6 @@
       "yuewen_proofread": "我知道一啲都唔容易",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4214,7 +3989,7 @@
       "yuewen_proofread": "我知道要揾到黎根绝对唔容易",
       "note": "Corrected '励根' to '黎根' as '黎根' is the correct name, matching the 中文 and is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4226,7 +4001,6 @@
       "yuewen_proofread": "我知道要佢收我做徒弟更加唔容易",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4238,7 +4012,6 @@
       "yuewen_proofread": "但无论几唔容易，我都要试一试",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4250,7 +4023,7 @@
       "yuewen_proofread": "我要黎根收我做徒弟！",
       "note": "Corrected '来紧收我度徒弟' to '黎根收我做徒弟' as '黎根' is a mishearing of '来紧', and '做徒弟' is the correct phrase for 'become apprentice', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4262,7 +4035,7 @@
       "yuewen_proofread": "无论几辛苦，我一定要攞到奥运金牌！",
       "note": "Corrected '捞到' to '攞到' as '攞到' is the correct Cantonese verb for 'get/obtain', while '捞到' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4274,7 +4047,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '三张堂上面' bears no resemblance to the original phrase '当我站在奥运会颁奖台上' and is clearly a complete mismatch."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4286,7 +4059,7 @@
       "yuewen_proofread": "我会举起金牌同全世界讲：",
       "note": "Added '我会举起金牌' to correct the omission and mishearing of '举起金牌' as '今排', which is a phonetic confusion; this restores the intended meaning of the sentence."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4298,7 +4071,6 @@
       "yuewen_proofread": "长洲，我终于嚟到长洲嘞！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4310,7 +4082,7 @@
       "yuewen_proofread": "长洲，我要亲吻呢片圣洁嘅土地！",
       "note": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'holy' or 'sacred', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4322,7 +4094,6 @@
       "yuewen_proofread": "小朋友呀，呢度系南丫岛噃！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4334,7 +4105,7 @@
       "yuewen_proofread": "南丫岛？都孕育咗周润发噃！",
       "note": "Corrected '引用' to '孕育' as '孕育' is the correct term for 'nurtured' or 'gave rise to', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4346,7 +4117,7 @@
       "yuewen_proofread": "真估唔到我黎根避入嚟南丫岛都畀你揾到",
       "note": "Corrected '制估' to '真估' as '真估唔到' is the correct phrase for '想不到'; corrected the name '嚟跟' to '黎根' as '黎根' is the correct name; corrected '你入' to '避入' as '避入' is the correct term for '避进', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4358,7 +4129,6 @@
       "yuewen_proofread": "小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4370,7 +4140,6 @@
       "yuewen_proofread": "再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4382,7 +4151,6 @@
       "yuewen_proofread": "所以我咪过嚟南丫岛避一避",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4394,7 +4162,6 @@
       "yuewen_proofread": "至于拜师嘅嘢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4406,7 +4173,6 @@
       "yuewen_proofread": "拜你个头嘅！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4418,7 +4184,7 @@
       "yuewen_proofread": "你哋呢班住喺香港岛嘅小朋友骄生惯养",
       "note": "Corrected '娇生惯养' to '骄生惯养' to match the correct Cantonese term for 'spoiled'"
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4430,7 +4196,6 @@
       "yuewen_proofread": "边挨得苦㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4442,7 +4207,7 @@
       "yuewen_proofread": "想学珊珊攞奥运金牌？",
       "note": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4466,7 +4231,6 @@
       "yuewen_proofread": "小朋友，你睇下！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4478,7 +4242,6 @@
       "yuewen_proofread": "哗，呢只⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4490,7 +4253,7 @@
       "yuewen_proofread": "呢只脚瓜⋯好粗好大呀！仲大个节瓜呀！",
       "note": "Corrected '只瓜' to '节瓜' as '节瓜' is the correct term for 'zucchini' or 'squash', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4502,7 +4265,6 @@
       "yuewen_proofread": "脚瓜啲肌肉非常结实⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4514,7 +4276,6 @@
       "yuewen_proofread": "啲青筋凸晒出嚟，好似钢线噉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4526,7 +4287,6 @@
       "yuewen_proofread": "啲脚毛，每一条好似铁钉噉硬",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4538,7 +4298,7 @@
       "yuewen_proofread": "脚趾公啲脚甲成吋噉厚，究竟⋯",
       "note": "Corrected '脚趾弓' to '脚趾公'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4550,7 +4310,7 @@
       "yuewen_proofread": "要行过几多座山⋯",
       "note": "Corrected '行我' to '行过' as '行过' (walk across) matches the meaning of the 中文, while '行我' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4562,7 +4322,7 @@
       "yuewen_proofread": "跨过几多个海⋯",
       "note": "Corrected '跨我' to '跨过' as '跨过' is the correct verb for 'cross over', matching the meaning in the 中文, while '跨我' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4574,7 +4334,6 @@
       "yuewen_proofread": "挨过几多苦头⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4586,7 +4345,6 @@
       "yuewen_proofread": "先至可以练成呢只举世无双嘅脚瓜？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4598,7 +4356,7 @@
       "yuewen_proofread": "我⋯我一定要练成呢只脚瓜！",
       "note": "Corrected '脚挂' to '脚瓜' as '脚瓜' is the correct Cantonese term for 'calf', matching the meaning of '脚瓜' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4610,7 +4368,6 @@
       "yuewen_proofread": "师父！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4622,7 +4379,6 @@
       "yuewen_proofread": "我可唔可以去个小便呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4634,7 +4390,7 @@
       "yuewen_proofread": "唔知点解每一次唱呢首歌都会急小便",
       "note": "Corrected '而知' to '唔知' as '唔知' (don't know) is a likely mishearing and matches the meaning of the sentence; corrected '每一字' to '每一次' as '每一字' is a mishearing of '每一次' (every time)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4646,7 +4402,7 @@
       "yuewen_proofread": "今次去定先，都怕一阵会再急过",
       "note": "Corrected '仅次去定先' to '今次去定先' as '今次' (this time) is a likely mishearing of '仅次' (next time), and '今次' better matches the 中文"
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4658,7 +4414,6 @@
       "yuewen_proofread": "但系我而家一定要唱呢首歌",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4670,7 +4425,6 @@
       "yuewen_proofread": "希望可以改变黎根对我嘅睇法",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4682,7 +4436,6 @@
       "yuewen_proofread": "我要用呢首歌打动黎根",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4694,7 +4447,6 @@
       "yuewen_proofread": "嗰首歌，系噉唱嘅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4706,7 +4458,7 @@
       "yuewen_proofread": "黎根听完首歌之后，啲表情有啲古怪⋯",
       "note": "Corrected '黎今' to '黎根' as '黎今' is a mishearing of the name '黎根' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4718,7 +4470,7 @@
       "yuewen_proofread": "我一定要好好把握呢个机会",
       "note": "Removed '唔' as it is not present in the 中文 and it confuses the meaning of the sentence."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4730,7 +4482,6 @@
       "yuewen_proofread": "师父！你收我做徒弟啦！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4742,7 +4493,7 @@
       "yuewen_proofread": "你唔收我做徒弟，我呢一世都跪喺度！",
       "note": "Added '唔' before '收我做徒弟' to match the intended meaning of '你唔收我做徒弟' in the 中文, as the original 粤文 omitted the negation and reversed the meaning."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4754,7 +4505,6 @@
       "yuewen_proofread": "起身啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4766,7 +4516,6 @@
       "yuewen_proofread": "多谢师父！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4778,7 +4527,6 @@
       "yuewen_proofread": "唔系啊⋯我系叫你扶我起身啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4790,7 +4538,7 @@
       "yuewen_proofread": "顶唔顺啊！我个脚瓜太痹啊！",
       "note": "Corrected '腿挂好鼻' to '脚瓜太痹' as '脚瓜' is the correct Cantonese term for 'calf' and '太痹' matches the meaning of '太痹了'; also removed '字幕由Amara.org社群提供' as it is a transcription artifact."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4802,7 +4550,6 @@
       "yuewen_proofread": "我将今日发生嘅嘢话晒畀妈妈听",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4814,7 +4561,6 @@
       "yuewen_proofread": "妈妈佢乜嘢都冇讲到",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4826,7 +4572,7 @@
       "yuewen_proofread": "喺冰箱度攞咗只雪鸡出嚟解冻",
       "note": "Removed '净系', which does not make grammatical sense and for which there is no known phoenetically similar phrase which would make sense."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4838,7 +4584,6 @@
       "yuewen_proofread": "晚饭时候，妈妈倒咗三杯米酒",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4850,7 +4595,7 @@
       "yuewen_proofread": "再将几只橙同埋蒸熟咗嘅鸡放喺祖先前面",
       "note": "Corrected '铲' to '橙' as '橙' (oranges) matches the meaning in the 中文, while '铲' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4862,7 +4607,7 @@
       "yuewen_proofread": "妈妈叫我跪低，向祖先请请",
       "note": "Corrected '同祖先请请' to '向祖先请请' as '向' is the correct preposition for 'to' in this context, matching the meaning in the 中文, while '同' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4874,7 +4619,6 @@
       "yuewen_proofread": "跟住，妈妈口噏噏噉讲咗一啲嘢",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4886,7 +4630,6 @@
       "yuewen_proofread": "然之后我哋又一齐对住祖先拜多几拜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4898,7 +4641,7 @@
       "yuewen_proofread": "妈妈蹲低身将啲酒倒喺地上面",
       "note": "Corrected '虎低身' to '蹲低身' as '蹲低' is the correct term for 'squat down', matching the meaning in the 中文, while '虎低' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4910,7 +4653,6 @@
       "yuewen_proofread": "庄重又温柔紧同我讲：",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4922,7 +4664,6 @@
       "yuewen_proofread": "以后要生生性性",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4934,7 +4675,7 @@
       "yuewen_proofread": "跟师父学嘢，光宗耀祖！",
       "note": "Corrected '当中要祖' to '光宗耀祖' as it is a mishearing of the idiom '光宗耀祖', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4946,7 +4687,7 @@
       "yuewen_proofread": "妈妈喺长洲揾咗间酒楼摆咗几回拜师宴",
       "note": "Corrected '白丝宴' to '拜师宴' as '白丝宴' is a mishearing of '拜师宴', which matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4958,7 +4699,6 @@
       "yuewen_proofread": "因为我系师父最后一个入室弟子",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4970,7 +4710,7 @@
       "yuewen_proofread": "所以到贺嘅乡绅父老特别多",
       "note": "Corrected '到学' to '到贺'; corrected '乡亲父老' to '乡绅父老'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -4982,7 +4722,6 @@
       "yuewen_proofread": "估唔到黄德森都有嚟饮",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -4994,7 +4733,7 @@
       "yuewen_proofread": "仲赞我背脊啲肉厚添",
       "note": "Corrected '背著' to '背脊' as '背脊' is the correct term for 'back' in Cantonese, and '肉口' to '肉厚' as '肉厚' means 'thick flesh', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5006,7 +4745,7 @@
       "yuewen_proofread": "但系珊珊就去咗集训，冇嚟到",
       "note": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5018,7 +4757,7 @@
       "yuewen_proofread": "麦唛，菇时同得巴都嚟咗",
       "note": "Corrected the names '默默' to '麦唛' and '姑侍' to '菇时'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5030,7 +4769,6 @@
       "yuewen_proofread": "仲带埋成绩表，奖牌同大包嚟添",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5042,7 +4780,7 @@
       "yuewen_proofread": "佢哋都希望黎根可以收埋佢哋做徒弟",
       "note": "Corrected '嚟今' to '黎根' as '黎根' is the correct name matching the 中文, while '嚟今' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5054,7 +4792,6 @@
       "yuewen_proofread": "食完鸡丝翅，就到咗拜师仪式",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5066,7 +4803,7 @@
       "yuewen_proofread": "妈妈斟咗杯热茶畀我，叫我畀师傅饮",
       "note": "Corrected '针咗' to '斟咗' as '斟' is the correct verb for pouring tea, and removed '弟' as it is a mishearing; the sentence should be '叫我畀师傅饮' to match the meaning of the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5078,7 +4815,7 @@
       "yuewen_proofread": "哦，我千辛万苦嚟到长洲揾黎根⋯",
       "note": "Corrected '前三万苦' to '千辛万苦' as it is a mishearing of the idiom meaning 'to go through a lot of hardship', and '嚟近' to '黎根' as it is a mishearing of the person's name '黎根'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5090,7 +4827,7 @@
       "yuewen_proofread": "哦，我终于可以同珊珊一齐练习滑浪风帆啊！",
       "note": "Corrected '山神' to '珊珊' as it is a mishearing of the name, and '玩弄风范' to '滑浪风帆' as it is a mishearing of the sport '滑浪风帆' (windsurfing)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5102,7 +4839,7 @@
       "yuewen_proofread": "我将杯茶递咗畀黎根，黎根佢⋯",
       "note": "Corrected '嚟跟' to '黎根' as it is a mishearing of the name '黎根'; removed '亦唔系' as it seems to be a transcription error."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5114,7 +4851,6 @@
       "yuewen_proofread": "师父佢饮咗杯茶，正式收咗我做徒弟嘞",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5126,7 +4862,7 @@
       "yuewen_proofread": "啲来宾睇嚟好高兴",
       "note": "Corrected '高气' to '高兴' as '高兴' is the correct term for 'happy', matching the meaning in the 中文, while '高气' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5138,7 +4874,7 @@
       "yuewen_proofread": "特别系长洲啲乡绅父老拍掌拍得特别落力",
       "note": "Corrected '乡亲' to '乡绅' and '拍奖' to '拍掌' as both are likely mishearings; '乡绅' matches '乡绅' (gentry) and '拍掌' means 'clap hands', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5150,7 +4886,7 @@
       "yuewen_proofread": "多谢各位赏面！多谢各位！",
       "note": "Corrected '上面' to '赏面' as '赏面' is the correct phrase for 'giving face' or 'honoring with your presence', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5162,7 +4898,7 @@
       "yuewen_proofread": "在下平生有两项称得上得意嘅绝技",
       "note": "Corrected '评生' to '平生' as '平生' is the correct term for 'in my life', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5174,7 +4910,7 @@
       "yuewen_proofread": "第一样，系滑浪风帆！呢样早已",
       "note": "Corrected '滑浪风范' to '滑浪风帆' as '风帆' is the correct term for windsurfing, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5186,7 +4922,7 @@
       "yuewen_proofread": "传咗畀我外甥女珊珊啊",
       "note": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5198,7 +4934,6 @@
       "yuewen_proofread": "另一项绝技，我打算传畀呢个新修嘅徒弟⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5210,7 +4945,6 @@
       "yuewen_proofread": "希望我可以将我哋长洲人世世代代嘅传统",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5222,7 +4956,6 @@
       "yuewen_proofread": "噉请问嗰样绝技系乜嘢啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5234,7 +4967,6 @@
       "yuewen_proofread": "第二样绝技，就系⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5246,7 +4978,7 @@
       "yuewen_proofread": "抢包山！",
       "note": "Corrected '抢爆山' to '抢包山' as '抢包山' is the correct term for the traditional event, while '爆' is a likely mishearing of '包'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5258,7 +4990,6 @@
       "yuewen_proofread": "年轻嘅观众可能唔知乜嘢系「抢包山」呀",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5270,7 +5001,6 @@
       "yuewen_proofread": "抢包山系长洲独有嘅传统节日",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5282,7 +5012,7 @@
       "yuewen_proofread": "长洲嘅居民都会举办太平清醮",
       "note": "Corrected '太平清朝' to '太平清醮' as '清醮' is the correct term for the festival, while '清朝' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5294,7 +5024,6 @@
       "yuewen_proofread": "喺北帝庙前搭起三座包山",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5306,7 +5035,6 @@
       "yuewen_proofread": "噉乜嘢系包山呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5318,7 +5046,6 @@
       "yuewen_proofread": "包山就系一座由好多好多好多包砌起嘅山！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5330,7 +5057,6 @@
       "yuewen_proofread": "噉你可以想像一下嗰度有几多包喇？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5342,7 +5068,6 @@
       "yuewen_proofread": "噉抢包山，自然就系要将包山嘅包抢到手！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5354,7 +5079,7 @@
       "yuewen_proofread": "锣鼓响起",
       "note": "Corrected '罗古' to '锣鼓' as '锣鼓' is the correct term for 'gong and drum', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5366,7 +5091,6 @@
       "yuewen_proofread": "数以百计嘅青年就会一涌而上去抢包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5378,7 +5102,6 @@
       "yuewen_proofread": "抢到位置越高嘅包，就代表越大嘅祝福",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5390,7 +5113,6 @@
       "yuewen_proofread": "更加可以表现自己不凡嘅身手",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5402,7 +5124,7 @@
       "yuewen_proofread": "但喺1978年两座包山突然塌咗，多人重伤",
       "note": "Replaced '都去抢包山' with '多人重伤' as '都去抢包山' is a mishearing and does not match the meaning of '多人重伤' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5414,7 +5136,7 @@
       "yuewen_proofread": "�",
       "note": "Cleared as '而长洲特有嘅传统亦占备为榜！' bears no resemblance to the original phrase '「抢包山」从此被禁！' and is clearly a complete mismatch."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5426,7 +5148,7 @@
       "yuewen_proofread": "长洲特有嘅传统，亦渐被遗忘",
       "note": "Corrected '占备为榜' to '渐被遗忘' as it is a mishearing of '渐被遗忘', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5438,7 +5160,6 @@
       "yuewen_proofread": "奥运金牌⋯我谂呢一世都唔会攞到",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5450,7 +5171,6 @@
       "yuewen_proofread": "每个礼拜六我都会搭船过长洲",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5462,7 +5182,7 @@
       "yuewen_proofread": "一项冇奖牌，冇对手，冇比赛⋯",
       "note": "Corrected '一日' to '一项' as '一项' matches the meaning of '一项' (an event) in the 中文, while '一日' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5474,7 +5194,7 @@
       "yuewen_proofread": "甚至乎冇人知道佢系运动嘅运动",
       "note": "Corrected '知对' to '知道'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5486,7 +5206,6 @@
       "yuewen_proofread": "更衰嘅系，连包山都冇！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5498,7 +5217,6 @@
       "yuewen_proofread": "师傅净系叫我去佢屋企⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5510,7 +5228,6 @@
       "yuewen_proofread": "喺个组合柜度爬嚟爬去",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5522,7 +5239,7 @@
       "yuewen_proofread": "碰！三番！",
       "note": "Corrected '通' to '碰' as '碰' is the correct mahjong term matching the meaning in the 中文, and '通' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5534,7 +5251,6 @@
       "yuewen_proofread": "冇偷懒！继续练！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5546,7 +5262,7 @@
       "yuewen_proofread": "有一日，珊珊嚟咗师傅屋企！",
       "note": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5558,7 +5274,7 @@
       "yuewen_proofread": "珊珊！我个师姐珊珊啊！",
       "note": "Corrected '山伞' to '珊珊' as it is a mishearing of the name, and '师仔' to '师姐' to match the intended meaning of '师姐' (senior female schoolmate)."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5570,7 +5286,7 @@
       "yuewen_proofread": "可以见到珊珊⋯",
       "note": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5582,7 +5298,6 @@
       "yuewen_proofread": "爬得咁辛苦都系值得㗎！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5594,7 +5309,7 @@
       "yuewen_proofread": "珊珊！",
       "note": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5606,7 +5321,7 @@
       "yuewen_proofread": "珊你个头啊！继续练习！",
       "note": "Corrected '伞' to '珊' as '珊你个头' is a common Cantonese phrase, and '伞' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5618,7 +5333,7 @@
       "yuewen_proofread": "仲唔去？",
       "note": "Corrected '仲唔系？' to '仲唔去？' as '仲唔系' is a mishearing of '仲唔去', which matches the meaning of '还不去？' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5630,7 +5345,7 @@
       "yuewen_proofread": "珊珊佢见唔到我呢个师弟",
       "note": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5642,7 +5357,6 @@
       "yuewen_proofread": "我唯有死死气爬返上个组合柜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5654,7 +5368,6 @@
       "yuewen_proofread": "我咁大个仔，乜嘢「头」都畀人闹过⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5666,7 +5379,7 @@
       "yuewen_proofread": "但系「珊你个头」唔知点解特别刺耳",
       "note": "Corrected 「山呢个头」 to 「珊你个头」; changed 「特别瘾」 to 「特别刺耳」."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5678,7 +5391,7 @@
       "yuewen_proofread": "我唔学抢包山嘞！",
       "note": "Corrected '抢包纱' to '抢包山' as '抢包山' is the correct term for the bun-snatching event, and removed '字幕由纱友提供' as it is a subtitle credit artifact."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5690,7 +5403,6 @@
       "yuewen_proofread": "其实今日系我第一次咁近距离同丽根见面",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5702,7 +5414,6 @@
       "yuewen_proofread": "睇怕佢都有五十岁啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5714,7 +5425,7 @@
       "yuewen_proofread": "但系仲有副孩子脸",
       "note": "Manually overridden, '一' is not present in the audio but is present in the transcript."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5726,7 +5437,6 @@
       "yuewen_proofread": "鸡尾包！啱啱出炉嘅！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5738,7 +5448,7 @@
       "yuewen_proofread": "其实鸡尾包呢⋯",
       "note": "Corrected '鸡尾爆' to '鸡尾包' as '鸡尾包' is the correct term for the bun, and '爆' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5750,7 +5460,6 @@
       "yuewen_proofread": "吓，你话噉样似唔似鸡尾呀？哈哈哈哈",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5762,7 +5471,6 @@
       "yuewen_proofread": "麦兜嘅学嘢呢⋯都仲可以",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5774,7 +5482,6 @@
       "yuewen_proofread": "跟住黎根讲咗一大堆说话⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5786,7 +5493,6 @@
       "yuewen_proofread": "讲下佢嘅抱负，佢对麦兜嘅期望",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5798,7 +5504,6 @@
       "yuewen_proofread": "佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5810,7 +5515,6 @@
       "yuewen_proofread": "黎根越讲越兴奋",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5822,7 +5526,6 @@
       "yuewen_proofread": "佢话滑浪风帆都唔系佢最犀利嗰样",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5834,7 +5537,6 @@
       "yuewen_proofread": "佢最劲嘅就系抢包山",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5846,7 +5548,6 @@
       "yuewen_proofread": "佢话抢包山结合咗南拳",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5858,7 +5559,7 @@
       "yuewen_proofread": "神功戏同现代器械操",
       "note": "Corrected '气' to '戏' and '气蟹粗' to '器械操' as these are likely mishearings of the correct terms for '神功戏' and '器械操'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5870,7 +5571,6 @@
       "yuewen_proofread": "佢话抢包山先至系佢呢世人最大嘅成就",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5882,7 +5582,6 @@
       "yuewen_proofread": "缩嗰只脚，唔该！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5894,7 +5593,6 @@
       "yuewen_proofread": "你睇下！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5906,7 +5604,6 @@
       "yuewen_proofread": "哗，呢节⋯呢节脚瓜好粗好大呀！仲大过节瓜！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5918,7 +5615,6 @@
       "yuewen_proofread": "脚瓜嘅肌肉非常结实⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5930,7 +5626,6 @@
       "yuewen_proofread": "啲脚毛每一条都好似铁钉咁硬",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -5942,7 +5637,7 @@
       "yuewen_proofread": "脚趾公啲脚甲成寸咁厚，究竟⋯",
       "note": "Corrected '脚趾弓' to '脚趾公'; corrected '脚夹成串' to '脚甲成寸'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5954,7 +5649,7 @@
       "yuewen_proofread": "要行过几多座山?",
       "note": "Corrected '行个几度呢' to '行过'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5966,7 +5661,7 @@
       "yuewen_proofread": "跨过几多个海",
       "note": "Corrected '挂过' to '跨过' as '跨过' (to cross over) matches the meaning in the 中文, while '挂过' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5978,7 +5673,7 @@
       "yuewen_proofread": "挨过几多苦头",
       "note": "Corrected '斧头' to '苦头' as '苦头' is the correct term for 'hardship', matching the meaning in the 中文, while '斧头' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -5990,7 +5685,7 @@
       "yuewen_proofread": "先至可以练成呢一只举世无双嘅脚瓜？",
       "note": "Corrected '举细无伤' to '举世无双' as it is a mishearing of the correct phrase meaning 'peerless' or 'unparalleled', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6002,7 +5697,7 @@
       "yuewen_proofread": "你个仔，第时都会有咁大只脚瓜",
       "note": "Removed '我' from '有我咁大只脚瓜' as it is a likely mishearing; the intended meaning is 'will have such big calves', matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6014,7 +5709,6 @@
       "yuewen_proofread": "其实我都唔知我仔要咁粗嘅脚瓜⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6026,7 +5720,6 @@
       "yuewen_proofread": "有咩用",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6038,7 +5731,6 @@
       "yuewen_proofread": "但系见到佢一条条凸起嘅青筋，唔知点解⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6050,7 +5742,6 @@
       "yuewen_proofread": "我⋯我谂起麦兜嘅爸爸，阿炳",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6062,7 +5753,6 @@
       "yuewen_proofread": "我揾完成间屋都揾唔到部电子英文词典",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6074,7 +5764,6 @@
       "yuewen_proofread": "去咗边呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6086,7 +5775,6 @@
       "yuewen_proofread": "唔通⋯冇理由㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6098,7 +5786,6 @@
       "yuewen_proofread": "咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6110,7 +5797,6 @@
       "yuewen_proofread": "点解妈妈会用英文写信嘅？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6122,7 +5808,6 @@
       "yuewen_proofread": "封信好短",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6134,7 +5819,6 @@
       "yuewen_proofread": "我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6146,7 +5830,7 @@
       "yuewen_proofread": "于是我用返电子词典将封信译返做中文",
       "note": "Corrected '我让返电子词典' to '我用返电子词典' as '让返' is a mishearing of '用返', which matches the meaning of '用' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6158,7 +5842,6 @@
       "yuewen_proofread": "封信，原来系妈妈写畀奥委会主席㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6170,7 +5853,7 @@
       "yuewen_proofread": "「我们居住在香港这里的人，很爱吃包」",
       "note": "Corrected '我门' to '我们', '这类' to '这里', and '肯爱' to '很爱'; thepassage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6182,7 +5865,7 @@
       "yuewen_proofread": "「小笼包，上海包，广东包，莲蓉包」",
       "note": "Corrected '联融包' to '莲蓉包' as '莲蓉包' is the correct type of bun, matching the meaning in the 中文, and '联融' is a likely mishearing of '莲蓉'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6194,7 +5877,7 @@
       "yuewen_proofread": "抢劫那些包，十分重要」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6206,7 +5889,7 @@
       "yuewen_proofread": "「要大力！大吃晚上的粥，和大节瓜！」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6218,7 +5901,6 @@
       "yuewen_proofread": "「抢劫嗰些包，系奥运会比赛」",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6230,7 +5912,6 @@
       "yuewen_proofread": "「让全世界嘅体育家，抢过！」",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6242,7 +5923,7 @@
       "yuewen_proofread": "「世界便和平！」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6254,7 +5935,6 @@
       "yuewen_proofread": "终于讲到我啦！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6266,7 +5946,7 @@
       "yuewen_proofread": "「他是一个好男孩」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6278,7 +5958,7 @@
       "yuewen_proofread": "「他非常懂得抢劫那些包」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6290,7 +5970,7 @@
       "yuewen_proofread": "「有一天，我看见他，抢劫包⋯」",
       "note": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6302,7 +5982,6 @@
       "yuewen_proofread": "「哪便是一个母亲能够有的最好的最大的安慰」",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6314,7 +5993,6 @@
       "yuewen_proofread": "睇完妈妈封信后",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6326,7 +6004,7 @@
       "yuewen_proofread": "我决定返长洲继续捡包山",
       "note": "Corrected '抢包生' to '捡包山' as '捡包山' is the correct term for the Cheung Chau Bun Festival activity, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6338,7 +6016,7 @@
       "yuewen_proofread": "我唔系为咗见珊珊",
       "note": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6350,7 +6028,6 @@
       "yuewen_proofread": "我唔知点解要抢嗰啲包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6362,7 +6039,7 @@
       "yuewen_proofread": "我亦唔信抢包山会成为奥运项目",
       "note": "Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for the traditional event, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6374,7 +6051,7 @@
       "yuewen_proofread": "但系，我依然努力练习抢包山",
       "note": "Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for the traditional activity, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6386,7 +6063,6 @@
       "yuewen_proofread": "师傅话我嘅攀爬功夫已经唔错",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6398,7 +6074,7 @@
       "yuewen_proofread": "师傅话当年师祖要出呢套",
       "note": "Corrected '使出' to '要出' as '要出' (to want to show) matches the meaning in the 中文, while '使出' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6410,7 +6086,7 @@
       "yuewen_proofread": "连林世荣睇见都大赞好",
       "note": "Corrected '大赞老爷' to '大赞好' as '大赞好' matches the meaning of '大大赞好' in the 中文, while '老爷' is likely a mishearing of '好'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6422,7 +6098,7 @@
       "yuewen_proofread": "后来麦唛话我知⋯",
       "note": "Corrected '默默' to '麦唛' as '麦唛' is the correct name matching the 中文, while '默默' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6434,7 +6110,6 @@
       "yuewen_proofread": "林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6446,7 +6121,6 @@
       "yuewen_proofread": "我唔知到师傅似唔似黄飞鸿",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6458,7 +6132,6 @@
       "yuewen_proofread": "但系我就肯定似旧猪肉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6470,7 +6143,6 @@
       "yuewen_proofread": "我就系一个揸住两个包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6482,7 +6154,6 @@
       "yuewen_proofread": "喺长洲转嚟转去嘅猪肉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6494,7 +6165,6 @@
       "yuewen_proofread": "我一边练习，一边乱练，一边谂嘢；始终⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6506,7 +6176,6 @@
       "yuewen_proofread": "我都唔系咁钟意抢包",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6518,7 +6187,6 @@
       "yuewen_proofread": "我净系爱我妈妈",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6530,7 +6198,7 @@
       "yuewen_proofread": "于是我咬实牙根⋯",
       "note": "Corrected '咬细牙根' to '咬实牙根' as '咬实' is the correct phrase meaning 'clench (one's) teeth', while '咬细' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6542,7 +6210,6 @@
       "yuewen_proofread": "最后我终于练成「十二路抢包手」啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6554,7 +6221,6 @@
       "yuewen_proofread": "喂，我系麦兜啊",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6566,7 +6232,6 @@
       "yuewen_proofread": "正话嗰个系细路仔麦兜，我系大个佬麦兜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6578,7 +6243,6 @@
       "yuewen_proofread": "细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6590,7 +6254,6 @@
       "yuewen_proofread": "细路仔麦兜嘅世界仲有好多幻想",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6602,7 +6265,6 @@
       "yuewen_proofread": "仲有好多希望",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6614,7 +6276,6 @@
       "yuewen_proofread": "搞咗一轮，就变咗大个佬麦兜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6626,7 +6287,6 @@
       "yuewen_proofread": "不过，而家我都系想讲返细路仔麦兜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6638,7 +6298,6 @@
       "yuewen_proofread": "细路仔麦兜仲系希望希望⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6650,7 +6309,6 @@
       "yuewen_proofread": "希望真系有圣诞老人",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6662,7 +6320,6 @@
       "yuewen_proofread": "仲系好想好想试下圣诞火鸡嘅滋味",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6674,7 +6331,6 @@
       "yuewen_proofread": "系啊，我嗰阵我真系仲未食过火鸡",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6686,7 +6342,6 @@
       "yuewen_proofread": "所有关于火鸡嘅嘢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6698,7 +6353,6 @@
       "yuewen_proofread": "圣诞树一闪一闪嘅灯饰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6710,7 +6364,6 @@
       "yuewen_proofread": "就好似喺天上面落嚟嘅星星噉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6722,7 +6375,6 @@
       "yuewen_proofread": "落喺火炉旁边",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6734,7 +6386,6 @@
       "yuewen_proofread": "一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6746,7 +6397,6 @@
       "yuewen_proofread": "就喺我哋面前啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6758,7 +6408,6 @@
       "yuewen_proofread": "就连守喺灵魂旁边嘅天使都醒咗起嚟",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6770,7 +6419,7 @@
       "yuewen_proofread": "围住呢一嚿好香好香又好圣洁嘅肉⋯",
       "note": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'holy' or 'sacred', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6782,7 +6431,6 @@
       "yuewen_proofread": "喺圣诞夜里面飞呀，飞呀⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6794,7 +6442,6 @@
       "yuewen_proofread": "但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6806,7 +6453,6 @@
       "yuewen_proofread": "因为我从来都未食过火鸡⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6818,7 +6464,6 @@
       "yuewen_proofread": "就连嗰阵味都未闻过",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6830,7 +6475,6 @@
       "yuewen_proofread": "妈妈话火鸡太大",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6842,7 +6486,6 @@
       "yuewen_proofread": "我哋一家两口，点食都食唔晒",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6854,7 +6497,6 @@
       "yuewen_proofread": "有一年圣诞节妈妈买咗半边烧鸭庆祝",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6866,7 +6508,6 @@
       "yuewen_proofread": "当时我，真系十分十分之失望",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6878,7 +6519,7 @@
       "yuewen_proofread": "又有一年，有间大百货公司倒闭",
       "note": "Corrected '薄货公司' to '百货公司' as '薄货' is a mishearing of '百货', which is the correct term for 'department store'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6890,7 +6531,6 @@
       "yuewen_proofread": "妈妈用四折买咗个焗炉仔返屋企",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6902,7 +6542,7 @@
       "yuewen_proofread": "可能系因为买咗焗炉而技痒",
       "note": "Corrected '焗炉嘅样' to '焗炉而技痒'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6914,7 +6554,6 @@
       "yuewen_proofread": "嗰日妈妈竟然同我讲⋯佢话⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6926,7 +6565,7 @@
       "yuewen_proofread": "明日我哋要超级市场揪火鸡",
       "note": "Corrected '抽火鸡' to '揪火鸡' as '揪' matches the meaning of '揪' (to grab/catch) in the 中文, while '抽' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6938,7 +6577,7 @@
       "yuewen_proofread": "我同妈妈揪住只火鸡行返屋企嗰阵，喺嗰阵时⋯",
       "note": "Corrected '抽住' to '揪住' as '揪住' (pull/drag) matches the meaning of '揪回家' in the 中文, while '抽住' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6950,7 +6589,6 @@
       "yuewen_proofread": "我谂系我生命里面最开心嘅一刻",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6962,7 +6600,6 @@
       "yuewen_proofread": "火鸡终于解冻啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -6974,7 +6611,7 @@
       "yuewen_proofread": "我同妈妈，噉双手搽满盐⋯",
       "note": "Corrected '查满盐' to '搽满盐' as '搽' is the correct Cantonese verb for applying/rubbing something on the hands, matching the meaning of '涂满盐'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -6986,7 +6623,7 @@
       "yuewen_proofread": "喺火鸡丰厚嘅鸡胸度，起细噉擦擦",
       "note": "Corrected '封口' to '丰厚' to match '丰厚的鸡胸' in the 中文, and '啫啫' to '擦擦' to reflect the action '擦呀，擦' rather than a cooking sound term."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7022,7 +6659,7 @@
       "yuewen_proofread": "我话：火鸡「疴烂煮」呀！",
       "note": "Corrected '我能住' to '疴烂煮' as it is a mishearing and '疴烂煮' is a phonetic play on 'orange', matching the style and pun in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7034,7 +6671,7 @@
       "yuewen_proofread": "火鸡好勉强塞咗入焗炉度",
       "note": "Corrected '噏咗' to '塞咗' as '塞' (to stuff) matches the meaning of '塞进' in the 中文, while '噏' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7046,7 +6683,7 @@
       "yuewen_proofread": "12月24日",
       "note": "Corrected '10月24日' to '12月24日' as '10' is a likely mishearing of '12', matching the date in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7058,7 +6695,7 @@
       "yuewen_proofread": "上升嘅白烟同奇异嘅焦味拨动星星",
       "note": "Corrected '㶶味' to '焦味' as '焦味' matches the meaning of '焦味' (burnt smell) in the 中文, and '拨动声声' to '拨动星星' as '声声' is a likely mishearing of '星星'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7070,7 +6707,7 @@
       "yuewen_proofread": "个焗炉戚戚恻恻，戚戚恻恻⋯",
       "note": "Corrected '叱叱叱叱' to '戚戚恻恻' as '戚戚恻恻' matches the intended onomatopoeic phrase in the 中文, while '叱叱叱叱' is a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7082,7 +6719,7 @@
       "yuewen_proofread": "就好似天使预早畀我哋嘅福音",
       "note": "Corrected '天赐预祖' to '天使预早' as '天赐预祖' is a mishearing of '天使预早', matching the meaning of '天使预早送来的福音' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7094,7 +6731,6 @@
       "yuewen_proofread": "好靓嘅夜晚呀！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7106,7 +6742,6 @@
       "yuewen_proofread": "我同妈妈坐喺尖东海旁",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7118,7 +6753,6 @@
       "yuewen_proofread": "点点点点嘅灯光喺海上面走来走去⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7130,7 +6764,6 @@
       "yuewen_proofread": "又靓又温柔",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7142,7 +6775,6 @@
       "yuewen_proofread": "真系好靓！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7154,7 +6786,6 @@
       "yuewen_proofread": "我从未食过咁浓味嘅嘢",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7166,7 +6797,6 @@
       "yuewen_proofread": "连烧鸭连杯面都冇咁浓嘅味道",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7178,7 +6808,6 @@
       "yuewen_proofread": "火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7190,7 +6819,6 @@
       "yuewen_proofread": "就好似今晚嘅嘢噉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7202,7 +6830,6 @@
       "yuewen_proofread": "最靓最靓，最犀利，亦都系最温柔",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7214,7 +6841,7 @@
       "yuewen_proofread": "第二日我瞓到好晏⋯",
       "note": "Corrected '好硬' to '好晏' as '好晏' means 'very late', matching the meaning of '很晏' in the 中文, while '好硬' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7226,7 +6853,7 @@
       "yuewen_proofread": "刷完牙我仲感觉到火鸡嘅美味",
       "note": "Corrected '测完牙' to '刷完牙' as '刷牙' is the correct term for brushing teeth, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7238,7 +6865,7 @@
       "yuewen_proofread": "因为早餐食得晏⋯",
       "note": "Corrected '食得硬' to '食得晏' as '晏' (late) matches the meaning of '吃得晚' in the 中文, while '硬' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7250,7 +6877,7 @@
       "yuewen_proofread": "午餐妈妈净系整咗罐粟米汤畀我",
       "note": "Corrected '唔餐' to '午餐' as '唔餐' is a mishearing of '午餐', which matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7262,7 +6889,6 @@
       "yuewen_proofread": "我系噉用匙羹撩下撩下",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7274,7 +6900,6 @@
       "yuewen_proofread": "我竟然撩到一粒美味嘅火鸡肉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7298,7 +6923,6 @@
       "yuewen_proofread": "好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7310,7 +6934,7 @@
       "yuewen_proofread": "一片一片嘅火鸡肉伴碟嘅有薯仔同节瓜⋯",
       "note": "Corrected '半碟' to '伴碟' as '伴碟' (garnish/accompaniment) matches the meaning in the 中文, while '半碟' (half a plate) is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7322,7 +6946,7 @@
       "yuewen_proofread": "上面淋咗一层老抽生粉献",
       "note": "Corrected '馅' to '献' as '献' (sauce) matches the meaning of the 中文, while '馅' (filling) is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7334,7 +6958,6 @@
       "yuewen_proofread": "我哋真系好兴奋，好满足",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7346,7 +6969,6 @@
       "yuewen_proofread": "之后，我哋仲食咗一个礼拜嘅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7358,7 +6980,6 @@
       "yuewen_proofread": "火鸡三文治做早餐",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7370,7 +6991,6 @@
       "yuewen_proofread": "星期日",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7394,7 +7014,7 @@
       "yuewen_proofread": "妈妈闹我「冇衣食」⋯",
       "note": "Corrected '冇意食' to '冇衣食' as '冇衣食' (no food or clothing) matches the meaning in the 中文, while '冇意食' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7406,7 +7026,6 @@
       "yuewen_proofread": "但系都带咗我去饮茶",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7418,7 +7037,6 @@
       "yuewen_proofread": "佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7430,7 +7048,6 @@
       "yuewen_proofread": "有时都叫我帮手撕",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7442,7 +7059,6 @@
       "yuewen_proofread": "火鸡留喺指甲嗰阵味",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7454,7 +7070,6 @@
       "yuewen_proofread": "原来洗好多次都仲喺度㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7466,7 +7081,7 @@
       "yuewen_proofread": "银芽火鸡丝炒米，好味道噉",
       "note": "Corrected '银牙' to '银芽' as '银芽' (bean sprouts) is the correct term, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7478,7 +7093,7 @@
       "yuewen_proofread": "栗子焖火鸡丝煲",
       "note": "Removed the duplicated '焯焯' at the beginning as it is likely a mishearing or extraneous, and reordered to match the intended dish name; '栗子焖火鸡丝煲' accurately reflects the meaning of the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7490,7 +7105,7 @@
       "yuewen_proofread": "酿火鸡馅搽面包",
       "note": "Corrected '让' to '酿' and '茶' to '搽' as both are likely mishearings; '酿火鸡馅搽面包' matches the intended meaning of spreading turkey stuffing on bread."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7502,7 +7117,7 @@
       "yuewen_proofread": "唉，我后悔讲过「火鸡疴烂煮」呢句嘢",
       "note": "Corrected '阿宁处' to '疴烂煮' as it is a mishearing and '疴烂煮' matches the pun intended in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7514,7 +7129,7 @@
       "yuewen_proofread": "到端午节，当我督开我最钟意食嘅裹蒸粽嘅时候⋯",
       "note": "Corrected '果精粽' to '裹蒸粽' as '裹蒸粽' is the correct term for the type of rice dumpling, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7526,7 +7141,6 @@
       "yuewen_proofread": "发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7538,7 +7152,6 @@
       "yuewen_proofread": "我脑部一时想唔通，喊咗起上嚟",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7550,7 +7163,6 @@
       "yuewen_proofread": "救命啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7574,7 +7186,6 @@
       "yuewen_proofread": "原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7586,7 +7197,6 @@
       "yuewen_proofread": "我嘅美梦同噩梦都同时完结",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7598,7 +7208,6 @@
       "yuewen_proofread": "后来我先知道⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7610,7 +7219,6 @@
       "yuewen_proofread": "一只火鸡由出世到畀人㓥",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7622,7 +7230,6 @@
       "yuewen_proofread": "都不过系几个月之间嘅事",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7634,7 +7241,6 @@
       "yuewen_proofread": "即系话，只火鸡死咗之后同我哋一齐嘅日子",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7646,7 +7252,6 @@
       "yuewen_proofread": "仲长过佢自己本身条命",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7658,7 +7263,6 @@
       "yuewen_proofread": "我仲发觉到，火鸡嘅味道⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7670,7 +7274,7 @@
       "yuewen_proofread": "未食同食第一啖之间已经系佢嘅最高峰",
       "note": "Corrected '味食' to '未食' as '未食' (not yet eaten) matches the meaning of '将吃未吃' in the 中文, while '味食' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7682,7 +7286,6 @@
       "yuewen_proofread": "之后，不过都系食开就食埋落去噉解",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7694,7 +7297,7 @@
       "yuewen_proofread": "我冇哲学家嘅头脑⋯",
       "note": "Corrected '知学家' to '哲学家' as '哲学家' is the correct term for 'philosopher', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7718,7 +7321,6 @@
       "yuewen_proofread": "但系呢啲谂法⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7730,7 +7332,6 @@
       "yuewen_proofread": "喺我长大之后⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7742,7 +7343,6 @@
       "yuewen_proofread": "系一啲同圣诞节无关嘅日子⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7754,7 +7354,6 @@
       "yuewen_proofread": "无端端噉喺我脑部出现过两三次",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7766,7 +7365,6 @@
       "yuewen_proofread": "一次，喺我自己嘅婚宴上",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7778,7 +7376,6 @@
       "yuewen_proofread": "喺我妈妈火化嗰日",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7790,7 +7387,7 @@
       "yuewen_proofread": "嗰日，我望住天空几条灰色嘅烟",
       "note": "Corrected '天东' to '天空' as '天东' is a likely mishearing of '天空', which matches the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7802,7 +7399,6 @@
       "yuewen_proofread": "忽然闻到火鸡又浓又淡嘅气味",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7826,7 +7422,6 @@
       "yuewen_proofread": "特别报道",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7838,7 +7433,6 @@
       "yuewen_proofread": "奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7850,7 +7444,6 @@
       "yuewen_proofread": "香港嘅运动员唔系腊鸭",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7862,7 +7455,6 @@
       "yuewen_proofread": "另一方面⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7874,7 +7466,7 @@
       "yuewen_proofread": "中国香港体育协会暨奥委会会长霍震霆⋯",
       "note": "Corrected '企奥委会' to '暨奥委会' as '暨' is the correct conjunction, and '霍振庭' to '霍震霆' as it is the correct name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7886,7 +7478,6 @@
       "yuewen_proofread": "香港将要争夺下届亚运会嘅主办权",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7898,7 +7489,7 @@
       "yuewen_proofread": "其中港九新界竹战联谊会⋯",
       "note": "Corrected '港狗' to '港九' and '足战' to '竹战' as both are likely mishearings; '港九' refers to '香港九龙', and '竹战' matches the intended meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7910,7 +7501,6 @@
       "yuewen_proofread": "更希望打麻雀可以成为亚运项目",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7922,7 +7512,7 @@
       "yuewen_proofread": "另外，全港茶餐厅员工协会⋯",
       "note": "Corrected '联工协会' to '员工协会' as '员工协会' is the correct term for 'staff association', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7934,7 +7524,7 @@
       "yuewen_proofread": "经已发动所有会员⋯",
       "note": "Corrected '经热' to '经已' as '经已' is the correct term for 'already', matching the meaning in the 中文, while '经热' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7946,7 +7536,6 @@
       "yuewen_proofread": "争取「掟蛋挞」成为亚运会比赛项目",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7958,7 +7547,7 @@
       "yuewen_proofread": "港九烧味卤味腊味同业会",
       "note": "Corrected '港狗烧尾掳尾立尾' to '港九烧味卤味腊味' as these are mishearings of the correct terms for '港九' (Hong Kong and Kowloon), '烧味' (roast meat), '卤味' (marinated meat), and '腊味' (preserved meat), matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7970,7 +7559,6 @@
       "yuewen_proofread": "亦都向霍主席当面提出⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -7982,7 +7570,7 @@
       "yuewen_proofread": "「挂腊鸭」可以成为亚运比赛项目",
       "note": "Corrected '挂立鸭' to '挂腊鸭' as '腊鸭' is the correct term for the preserved duck, matching the meaning in the 中文, while '立鸭' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -7994,7 +7582,6 @@
       "yuewen_proofread": "较为特别嘅系，CIC保险营业员联同⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8006,7 +7593,7 @@
       "yuewen_proofread": "大角咀春田花花幼稚园⋯",
       "note": "Corrected '大角嘴' to '大角咀' as '大角咀' is the correct place name, matching the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8018,7 +7605,6 @@
       "yuewen_proofread": "附属小学嘅一班小朋友⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8030,7 +7616,6 @@
       "yuewen_proofread": "一项几乎绝迹嘅运动⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8042,7 +7627,6 @@
       "yuewen_proofread": "成为本港举办亚运重点推介嘅比赛项目",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8066,7 +7650,7 @@
       "yuewen_proofread": "最后，佢哋选咗「掟蛋挞」做推介项目",
       "note": "Corrected '定蛋挞' to '掟蛋挞' as '掟' (to throw) matches the meaning in the 中文, while '定' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8078,7 +7662,6 @@
       "yuewen_proofread": "至于香港争取申办亚运嘅口号⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8090,7 +7673,6 @@
       "yuewen_proofread": "亦都顺理成章噉叫做「香港一蛋挞」",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8102,7 +7684,7 @@
       "yuewen_proofread": "之后李丽珊蝉联失败⋯",
       "note": "Corrected '李利山' to '李丽珊' as it is a mishearing of the name, and '丧乱' to '蝉联' as '蝉联' is the correct term for 'to defend a title', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8114,7 +7696,6 @@
       "yuewen_proofread": "亦都由一个香港人从未听过嘅地方夺得",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8126,7 +7707,6 @@
       "yuewen_proofread": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8138,7 +7718,7 @@
       "yuewen_proofread": "都返返去茶餐厅继续掟佢哋嘅蛋挞",
       "note": "Corrected '钉' to '掟' as '掟' (to throw) matches the meaning of '掷' in the 中文, while '钉' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8150,7 +7730,6 @@
       "yuewen_proofread": "上个中学，我已经再冇练习抢包手",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8162,7 +7741,6 @@
       "yuewen_proofread": "间中同妈妈饮茶⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8174,7 +7752,7 @@
       "yuewen_proofread": "我都会手快快噉帮佢抢个笼大包",
       "note": "Replaced '龙大包' with '个笼大包', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8186,7 +7764,7 @@
       "yuewen_proofread": "之后，茶楼都冇卖大包",
       "note": "Corrected '埋' to '卖'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8198,7 +7776,7 @@
       "yuewen_proofread": "推车仔都转咗用点心纸",
       "note": "Corrected '退车仔' to '推车仔' as '退车仔' is a mishearing of '推车仔', which matches the meaning of '点心车' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8210,7 +7788,6 @@
       "yuewen_proofread": "一切都落空",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8222,7 +7799,7 @@
       "yuewen_proofread": "有时我都会同班同学仔返长洲烧嘢食",
       "note": "Corrected '宵夜' to '烧嘢' as '烧嘢' matches the activity described in the 中文, while '宵夜' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8234,7 +7811,6 @@
       "yuewen_proofread": "每次见到师傅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8246,7 +7822,6 @@
       "yuewen_proofread": "佢都好似老咗啲噉",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8258,7 +7833,7 @@
       "yuewen_proofread": "长洲嘅抢包经已转咗用塑胶",
       "note": "Corrected '厂包' to '抢包' as '抢包' is the correct term for the bun-snatching event, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8270,7 +7845,7 @@
       "yuewen_proofread": "师傅话，嗰阵胶气，都几臭下",
       "note": "Corrected '丑' to '臭' as '臭' (smelly) matches the meaning of '相当臭' in the 中文, while '丑' (ugly) is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8282,7 +7857,7 @@
       "yuewen_proofread": "长洲有个张保仔洞",
       "note": "Corrected '墙后' to '长洲' as it is a mishearing of the place name, and '张宝仔洞' to '张保仔洞' to match the correct name of the cave."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8294,7 +7869,7 @@
       "yuewen_proofread": "听讲海盗张保仔喺里面收埋咗好多宝藏",
       "note": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical figure, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8306,7 +7881,7 @@
       "yuewen_proofread": "班同学叫我爬去睇下，话唔定会发达",
       "note": "Corrected '班同我' to '班同学'; corrected '爬佢' to '爬去'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8318,7 +7893,6 @@
       "yuewen_proofread": "于是我就向住呢一个又黑又窄嘅洞⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8330,7 +7904,6 @@
       "yuewen_proofread": "系噉爬爬",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8342,7 +7915,6 @@
       "yuewen_proofread": "洞里面乜都冇，净系有一个盒",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8354,7 +7926,6 @@
       "yuewen_proofread": "我好小心揭开呢个盒⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8366,7 +7937,7 @@
       "yuewen_proofread": "发现入面系一个食剩咗嘅大包",
       "note": "Corrected '食净咗' to '食剩咗' as '食剩' is the correct term for 'leftover' or 'not finished', matching the meaning of '没吃完' in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8378,7 +7949,7 @@
       "yuewen_proofread": "唔知系咪张保仔食净㗎啦？",
       "note": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical figure referenced in the 中文, and '宝' is a likely mishearing of '保'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8390,7 +7961,6 @@
       "yuewen_proofread": "原来有啲嘢，冇就真系冇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8402,7 +7972,6 @@
       "yuewen_proofread": "唔得，就真系唔得",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8414,7 +7983,7 @@
       "yuewen_proofread": "冇鱼蛋冇粗面冇去马尔代夫⋯",
       "note": "Corrected '买义大夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives), matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8426,7 +7995,7 @@
       "yuewen_proofread": "冇奖牌冇张保仔宝藏",
       "note": "Corrected '宝仔' to '保仔' as '张保仔' is the correct historical figure, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8438,7 +8007,7 @@
       "yuewen_proofread": "而张保仔，亦都冇咬过个包",
       "note": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical name, matching the 中文 and likely misheard."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8450,7 +8019,7 @@
       "yuewen_proofread": "原来蠢，唔系咁好笑",
       "note": "Added '蠢'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8462,7 +8031,7 @@
       "yuewen_proofread": "蠢会失败⋯",
       "note": "Added '蠢'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8474,7 +8043,6 @@
       "yuewen_proofread": "失望，唔系咁好笑",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8486,7 +8054,6 @@
       "yuewen_proofread": "肥，都未必好笑",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8498,7 +8065,6 @@
       "yuewen_proofread": "肥，唔一定大力",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8510,7 +8076,6 @@
       "yuewen_proofread": "大力，亦都唔一定得",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8522,7 +8087,6 @@
       "yuewen_proofread": "揸住个包，我忽然喺度谂⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8534,7 +8098,7 @@
       "yuewen_proofread": "大个咗，到我要面对呢一个实掘掘⋯",
       "note": "Corrected '实角局' to '实掘掘' as '实掘掘' matches the meaning and sound of the 中文, while '实角局' is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8546,7 +8110,6 @@
       "yuewen_proofread": "未必到你发梦，又未必咁好笑嘅⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8558,7 +8121,6 @@
       "yuewen_proofread": "世界嘅时候，我会系点㗎呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8570,7 +8132,7 @@
       "yuewen_proofread": "「⋯无力挽！」",
       "note": "Corrected '无泪弯' to '无力挽' as it is a mishearing; '无力挽' matches the intended meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8582,7 +8144,7 @@
       "yuewen_proofread": "系呀，我就系大个佬麦兜喇",
       "note": "Corrected '麦豆' to '麦兜' as '麦兜' is the correct name, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8594,7 +8156,6 @@
       "yuewen_proofread": "肥啰，算大力啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8606,7 +8167,6 @@
       "yuewen_proofread": "麻麻地得咁啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8618,7 +8178,7 @@
       "yuewen_proofread": "负家产啰",
       "note": "Corrected '富家产' to '负家产' as '负家产' (negative assets) matches the meaning in the 中文, while '富家产' (rich assets) is a likely mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8630,7 +8190,7 @@
       "yuewen_proofread": "脚瓜真系几大，仲大过个节瓜",
       "note": "Corrected '折瓜' to '节瓜' as '节瓜' is the correct term for the vegetable, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8642,7 +8202,6 @@
       "yuewen_proofread": "脚瓜上面个肌肉非常结实⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8654,7 +8213,6 @@
       "yuewen_proofread": "啲青筋一条一条凸下凸下，好似钢筋",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8666,7 +8224,7 @@
       "yuewen_proofread": "至于脚趾公啲脚甲⋯",
       "note": "Corrected '脚趾弓' to '脚趾公'."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8678,7 +8236,6 @@
       "yuewen_proofread": "有次我无无聊聊真系走去卡下佢⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8690,7 +8247,7 @@
       "yuewen_proofread": "哗，足足成寸咁厚",
       "note": "Corrected '粥粥成串' to '足足成寸' as '足足' (exactly/fully) and '寸' (inch) are the correct words matching the meaning of '足有一寸厚', while '粥粥成串' is a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8702,7 +8259,6 @@
       "yuewen_proofread": "系呀，故事讲完喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8714,7 +8270,6 @@
       "yuewen_proofread": "呢个系一个尝试",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8726,7 +8281,7 @@
       "yuewen_proofread": "好多包⋯但系冇包保成功嘅故事",
       "note": "Corrected '包补' to '包保' as '包保' (guarantee) matches the meaning of '包保成功' in the 中文, while '包补' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8738,7 +8293,6 @@
       "yuewen_proofread": "故事讲咗一轮⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8750,7 +8304,6 @@
       "yuewen_proofread": "乜都冇？又唔系噃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8762,7 +8315,6 @@
       "yuewen_proofread": "就系大咗两个脚瓜",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8774,7 +8326,6 @@
       "yuewen_proofread": "但系冻住两个脚瓜企喺度⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8786,7 +8337,6 @@
       "yuewen_proofread": "当啲浪打埋嚟⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8798,7 +8348,7 @@
       "yuewen_proofread": "嗰种感觉真系好好",
       "note": "Corrected '嗰张感觉' to '嗰种感觉' as '种' is the correct classifier for '感觉', while '张' is likely a mishearing."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8810,7 +8360,6 @@
       "yuewen_proofread": "你知我麻麻地叻佬，唔识得⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8822,7 +8371,6 @@
       "yuewen_proofread": "帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8834,7 +8382,6 @@
       "yuewen_proofread": "但系，冻住两个脚瓜企喺水嗰度⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8846,7 +8393,6 @@
       "yuewen_proofread": "当风吹喺我个脑部，我会谂⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8858,7 +8404,6 @@
       "yuewen_proofread": "如果妈妈见到我呢个大脚瓜⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8870,7 +8415,6 @@
       "yuewen_proofread": "我谂，佢会好开心",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8882,7 +8426,6 @@
       "yuewen_proofread": "都系唔好呀，都系出返个锦囊先得！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8894,7 +8437,7 @@
       "yuewen_proofread": "妈妈嘅dot com散咗之后，佢又有计喇",
       "note": "Corrected '个' to '嘅' as it is a mishearing, matching the meaning in the 中文; corrected 'Doccom' to 'dot com' as it is a mishearing of the English term 'dot com', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -8918,7 +8461,6 @@
       "yuewen_proofread": "食谱最后一页系教人整烧鸡嘅",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8930,7 +8472,6 @@
       "yuewen_proofread": "方法简单，人人都学得识",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8942,7 +8483,6 @@
       "yuewen_proofread": "材料系⋯鸡",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8954,7 +8494,6 @@
       "yuewen_proofread": "方法：攞只鸡去烧佢几烧",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8966,7 +8505,6 @@
       "yuewen_proofread": "就噉，一味「烧鸡」就大功告成喇",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8978,7 +8516,6 @@
       "yuewen_proofread": "食谱度又补充噉话：",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -8990,7 +8527,6 @@
       "yuewen_proofread": "如果想你个鸡烧得美味可口⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9002,7 +8538,6 @@
       "yuewen_proofread": "冇话食完腰心腰肺顶住个胃",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9014,7 +8549,6 @@
       "yuewen_proofread": "个秘诀系：唔该，烧得佢好啲啰⋯",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9026,7 +8560,6 @@
       "yuewen_proofread": "唔该，我要一个常餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9038,7 +8571,6 @@
       "yuewen_proofread": "常餐？常餐有咩食㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9050,7 +8582,6 @@
       "yuewen_proofread": "同特餐一样啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9062,7 +8593,6 @@
       "yuewen_proofread": "噉特餐系咩嚟㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9074,7 +8604,6 @@
       "yuewen_proofread": "同快餐咁上下啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9086,7 +8615,6 @@
       "yuewen_proofread": "噉快餐又系咩嚟㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9110,7 +8638,6 @@
       "yuewen_proofread": "午餐食咩㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9122,7 +8649,6 @@
       "yuewen_proofread": "午餐同晚餐一样㗎",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9134,7 +8660,6 @@
       "yuewen_proofread": "噉晚餐又食啲咩呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9146,7 +8671,6 @@
       "yuewen_proofread": "晚餐咪真系常餐啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9158,7 +8682,6 @@
       "yuewen_proofread": "噉呀，我要两个常餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9170,7 +8693,6 @@
       "yuewen_proofread": "好嘢呀，我哋今日啲常餐！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9182,7 +8704,7 @@
       "yuewen_proofread": "唔好意思，常餐卖晒",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9194,7 +8716,6 @@
       "yuewen_proofread": "咁改要特餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9206,7 +8727,6 @@
       "yuewen_proofread": "特餐？特餐有咩食㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9218,7 +8738,6 @@
       "yuewen_proofread": "特餐就即系午餐啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9230,7 +8749,6 @@
       "yuewen_proofread": "午餐食乜嘢㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9242,7 +8760,6 @@
       "yuewen_proofread": "都系晚餐嗰啲嘢啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9254,7 +8771,6 @@
       "yuewen_proofread": "咁乜嘢系晚餐呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9266,7 +8782,6 @@
       "yuewen_proofread": "同快餐一样啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9278,7 +8793,6 @@
       "yuewen_proofread": "咁快餐食咩㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9290,7 +8804,7 @@
       "yuewen_proofread": "系，快餐就即系常餐啰",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9302,7 +8816,7 @@
       "yuewen_proofread": "咁你头先又话冇常餐？",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9314,7 +8828,7 @@
       "yuewen_proofread": "系呀，常餐就系卖晒呀，咁你试唔试下特餐啦？",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9326,7 +8840,6 @@
       "yuewen_proofread": "两份特餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9338,7 +8851,6 @@
       "yuewen_proofread": "唔好意思，特餐卖晒嘅",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -9351,7 +8863,6 @@
       "yuewen_proofread": "妈妈，不如改快餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9363,7 +8874,6 @@
       "yuewen_proofread": "快餐有咩㗎？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9375,7 +8885,7 @@
       "yuewen_proofread": "快餐即系常餐",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for 'set meal', matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9387,7 +8897,7 @@
       "yuewen_proofread": "咁常餐有咩㗎？",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "prompt": true,
     "verified": true
   },
@@ -9400,7 +8910,7 @@
       "yuewen_proofread": "常餐就即系午餐啰",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9412,7 +8922,6 @@
       "yuewen_proofread": "哎呀，咁午餐有咩食呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9424,7 +8933,6 @@
       "yuewen_proofread": "咁晚餐呢？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9436,7 +8944,6 @@
       "yuewen_proofread": "晚餐就即系特餐啰",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9448,7 +8955,6 @@
       "yuewen_proofread": "咁你头先又话冇特餐？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9460,7 +8966,6 @@
       "yuewen_proofread": "系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9472,7 +8977,6 @@
       "yuewen_proofread": "咁两份快餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9484,7 +8988,6 @@
       "yuewen_proofread": "唔好意思，冇快餐呀",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9496,7 +8999,6 @@
       "yuewen_proofread": "嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9508,7 +9010,6 @@
       "yuewen_proofread": "午餐啦，午餐好嘢呀",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9520,7 +9021,6 @@
       "yuewen_proofread": "点好嘢法呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9532,7 +9032,6 @@
       "yuewen_proofread": "同晚餐一样咁好嘢",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9544,7 +9043,6 @@
       "yuewen_proofread": "噉晚餐又点好嘢法呀？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9556,7 +9054,7 @@
       "yuewen_proofread": "同常餐一样咁好嘢啰",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9568,7 +9066,7 @@
       "yuewen_proofread": "噉常餐又点好嘢法呀？",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9580,7 +9078,7 @@
       "yuewen_proofread": "常餐，常餐一早卖晒啦，你话好唔好嘢？",
       "note": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -9592,7 +9090,6 @@
       "yuewen_proofread": "好啦好啦！要两份午餐啦",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9604,7 +9101,6 @@
       "yuewen_proofread": "唔好意思，午餐卖晒",
       "note": "No changes needed."
     },
-
     "prompt": true,
     "verified": true
   },
@@ -9617,7 +9113,6 @@
       "yuewen_proofread": "试唔试下我哋嘅晚餐啦？一样嘅啫",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9629,7 +9124,6 @@
       "yuewen_proofread": "日光日白，食乜鬼嘢晚餐啊？",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9653,7 +9147,6 @@
       "yuewen_proofread": "好啦好啦，怕咗你啦！要两份晚餐啦！快啲手啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   },
   {
@@ -9665,7 +9158,6 @@
       "yuewen_proofread": "想快？想快就要快餐啊！",
       "note": "No changes needed."
     },
-
     "verified": true
   }
 ]
