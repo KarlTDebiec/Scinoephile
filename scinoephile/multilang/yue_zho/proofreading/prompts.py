@@ -7,89 +7,87 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
-from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.lang.yue.prompts import YueHansPrompt
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
 
-__all__ = ["YueZhoProofreadingPrompt"]
+__all__ = [
+    "YueZhoHansProofreadingPrompt",
+    "YueZhoHantProofreadingPrompt",
+]
 
 
-class YueZhoProofreadingPrompt(DualSinglePrompt, EngPrompt):
-    """LLM correspondence text for 粤文 proofreading against 中文."""
+class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
+    """LLM correspondence text for 简体粤文 proofreading against 中文."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for proofreading 粤文 subtitles of Cantonese speech.
-        For reference, you are provided the corresponding 中文 subtitles of the same
-        Cantonese speech.
-        Your goal is to correct only clear transcription errors in the 粤文 —
-        specifically, cases where the transcriber likely misheard a word and wrote a
-        similar-sounding but incorrect one.
-        Do not rewrite correct phrases to match the 中文 wording.
-        Do not adjust phrasing, grammar, or classifiers unless there's a clear
-        transcription mistake.
-        Only correct 粤文 if there's a plausible phonetic confusion (e.g., 临盘 vs.
-        临盆).
-        If there is truly zero correspondence between the 粤文 and 中文, indicating a
-        complete mistranscription of the spoken Cantonese, return empty string for the
-        粤文 and a note explaining the lack of correspondence.
+        你负责为广东话语音嘅粤文字幕做校对。
+        作为参考，你会见到对应嘅中文字幕。
+        你嘅目标系纠正明显嘅转写错误，主要系听错字、写错字。
+        唔好为了贴近中文字幕而改写正确嘅粤文。
+        唔好调整语气、语法或者量词，除非明显系转写错误。
+        只可以喺有合理嘅同音误听情况下先更正（例如：临盘 vs. 临盆）。
+        如果发现粤文同中文字幕完全对唔上，说明呢行粤文系彻底误写，
+        请回传空字串作为粤文，并喺备注说明无对应。
 
-        Remember:
-        - The 粤文 transcription does not need to match the 中文 word-for-word.
-        - The speaker may naturally use different wording in Cantonese.
-        - Many differences in meaning, tone, or grammar are acceptable if they are not
-          transcription errors.
+        记住：
+        - 粤文转写唔需要同中文字幕逐字对应。
+        - 讲者可能会用唔同嘅粤语讲法。
+        - 如果唔系转写错误，意义、语气同文法嘅差异都可以接受。
 
-        Include a one-sentence explanation in English for any correction you make.
-        If you make no changes, return an empty string for the note.""")
+        如果你有修改，请用英文一句话说明改动。
+        如果冇修改，备注请回传空字串。""")
     """Base system prompt."""
 
     # Query fields
     source_one_field: ClassVar[str] = "yuewen"
     """Name of source one field in query."""
 
-    source_one_description: ClassVar[str] = "Transcribed 粤文 of subtitle to proofread"
+    source_one_description: ClassVar[str] = "要校对嘅粤文字幕转写"
     """Description of source one field in query."""
 
     source_two_field: ClassVar[str] = "zhongwen"
     """Name for source two field in query."""
 
-    source_two_description: ClassVar[str] = "Known 中文 of subtitle"
+    source_two_description: ClassVar[str] = "对应嘅中文字幕"
     """Description of source two field in query."""
 
     # Query validation errors
-    source_one_missing_error: ClassVar[str] = (
-        "Query must have 粤文 subtitle to proofread."
-    )
+    source_one_missing_error: ClassVar[str] = "查询必须包含要校对嘅粤文字幕。"
     """Error when source one field is missing from query."""
 
-    source_two_missing_error: ClassVar[str] = "Query must have 中文 subtitle."
+    source_two_missing_error: ClassVar[str] = "查询必须包含中文字幕。"
     """Error when source two field is missing from query."""
 
-    sources_equal_error: ClassVar[str] = "Subtitle text from two sources must differ."
+    sources_equal_error: ClassVar[str] = "两份来源字幕唔可以完全一样。"
     """Error when source one and two fields are equal in query."""
 
     # Answer fields
     output_field: ClassVar[str] = "yuewen_proofread"
     """Name of output field in answer."""
 
-    output_description: ClassVar[str] = (
-        "Proofread 粤文 of subtitle (may be empty if the 粤文 should be omitted)"
-    )
+    output_description: ClassVar[str] = "校对后嘅粤文字幕（如需删掉请回传空字串）"
     """Description of output field in answer."""
 
     note_field: ClassVar[str] = "note"
     """Name of note field in answer."""
 
-    note_description: ClassVar[str] = "Description of corrections made"
+    note_description: ClassVar[str] = "改动说明（英文）"
     """Description of note field in answer."""
 
     # Answer validation errors
     output_missing_error: ClassVar[str] = (
-        "Answer must include proofread 粤文 of subtitle (use empty string if omitting)."
+        "答案必须包含校对后嘅粤文字幕（如需省略请回传空字串）。"
     )
     """Error when output field is missing from answer."""
 
-    note_missing_error: ClassVar[str] = (
-        "Answer must include a note describing the changes (empty if none)."
-    )
+    note_missing_error: ClassVar[str] = "答案必须包含改动说明（如无改动请回传空字串）。"
     """Error when note field is missing from answer."""
+
+
+class YueZhoHantProofreadingPrompt(YueZhoHansProofreadingPrompt):
+    """LLM correspondence text for 繁体粤文 proofreading against 中文."""
+
+    opencc_config = OpenCCConfig.s2hk
+    """Config with which to convert characters from 简体中文 present in parent class."""

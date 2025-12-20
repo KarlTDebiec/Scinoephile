@@ -11,11 +11,12 @@ from scinoephile.core.subtitles import Series
 from scinoephile.llms.dual_single import DualSingleProcessor, DualSinglePrompt
 
 from .processor import YueZhoProofreadingProcessor
-from .prompts import YueZhoProofreadingPrompt
+from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
 from .test_case import YueZhoProofreadingTestCase
 
 __all__ = [
-    "YueZhoProofreadingPrompt",
+    "YueZhoHansProofreadingPrompt",
+    "YueZhoHantProofreadingPrompt",
     "YueZhoProofreadingTestCase",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
@@ -26,7 +27,7 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoProofreadingPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
 ) -> list[YueZhoProofreadingTestCase]:
     """Get default 粤文 vs. 中文 proofreading test cases included with package.
 
@@ -68,7 +69,7 @@ def get_yue_vs_zho_proofread(
 
 
 def get_yue_vs_zho_proofreader(
-    prompt_cls: type[YueZhoProofreadingPrompt] = YueZhoProofreadingPrompt,
+    prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
     default_test_cases: list[YueZhoProofreadingTestCase] | None = None,
     **kwargs: Any,
 ) -> DualSingleProcessor:

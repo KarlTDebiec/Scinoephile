@@ -26,7 +26,7 @@ from scinoephile.llms.dual_block_gapped import (
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoProofreadingPrompt,
+    YueZhoHansProofreadingPrompt,
     YueZhoProofreadingTestCase,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
@@ -224,7 +224,7 @@ def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
 
 @cache
 def get_mlamd_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoProofreadingPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[YueZhoProofreadingTestCase]:
     """Get MLAMD 粵文 proofreading test cases.

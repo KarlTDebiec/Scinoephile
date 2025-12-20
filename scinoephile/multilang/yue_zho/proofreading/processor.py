@@ -21,7 +21,7 @@ from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
-from .prompts import YueZhoProofreadingPrompt
+from .prompts import YueZhoHansProofreadingPrompt
 from .test_case import YueZhoProofreadingTestCase
 
 __all__ = ["YueZhoProofreadingProcessor"]
@@ -30,12 +30,12 @@ __all__ = ["YueZhoProofreadingProcessor"]
 class YueZhoProofreadingProcessor:
     """Processes for 粤文 vs. 中文 proofreading."""
 
-    prompt_cls: type[YueZhoProofreadingPrompt]
+    prompt_cls: type[YueZhoHansProofreadingPrompt]
     """Text for LLM correspondence."""
 
     def __init__(
         self,
-        prompt_cls: type[YueZhoProofreadingPrompt],
+        prompt_cls: type[YueZhoHansProofreadingPrompt],
         test_cases: list[YueZhoProofreadingTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
