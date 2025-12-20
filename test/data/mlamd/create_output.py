@@ -8,11 +8,6 @@ import asyncio
 from logging import info
 from pathlib import Path
 
-from data.mlamd import (
-    get_mlamd_yue_merging_test_cases,
-    get_mlamd_yue_shifting_test_cases,
-)
-
 from scinoephile.audio import AudioSeries
 from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
@@ -51,6 +46,10 @@ from test.data.kob import (
     get_kob_eng_proofreading_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
+)
+from test.data.mlamd import (
+    get_mlamd_yue_merging_test_cases,
+    get_mlamd_yue_shifting_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
