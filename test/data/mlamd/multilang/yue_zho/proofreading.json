@@ -5666,7 +5666,8 @@
       "yuewen_proofread": "但系「珊你个头」唔知点解特别核突",
       "note": "Corrected 「山呢个头」 to 「珊你个头」 to match the name pun '珊' and replaced 「特别瘾」 with 「特别核突」 as a more plausible misheard form that fits the meaning of '刺耳' (unpleasant to hear)."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
