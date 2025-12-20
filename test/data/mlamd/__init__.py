@@ -233,7 +233,9 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
         test cases
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
-    return load_test_cases_from_json(path, prompt_cls=prompt_cls, **kwargs)
+    return load_test_cases_from_json(
+        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache
