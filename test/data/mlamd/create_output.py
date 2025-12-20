@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-import asyncio
-from logging import info
 from pathlib import Path
 
-from scinoephile.audio import AudioSeries
-from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core.subtitles import Series, get_series_with_subs_merged
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -31,23 +27,15 @@ from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
 from scinoephile.multilang import get_synced_series
 from scinoephile.multilang.yue_zho import (
-    get_yue_from_zho_translated,
     get_yue_vs_zho_proofread,
-    get_yue_vs_zho_reviewed,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
-from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_processor
-from scinoephile.multilang.yue_zho.translation import get_yue_from_zho_translator
 from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
-)
-from test.data.mlamd import (
-    get_mlamd_yue_merging_test_cases,
-    get_mlamd_yue_shifting_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
@@ -143,26 +131,26 @@ if "English (OCR)" in actions:
 
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
-    if (
-        zho_hans.events[539].text == "不知道为什么"
-        and zho_hans.events[540].text == "「珊你个头」却特别刺耳"
-    ):
-        info(
-            "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
-            "structure is reversed in the 粤文."
-        )
-        zho_hans = get_series_with_subs_merged(zho_hans, 539)
-    yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
-    reviewer = CantoneseTranscriptionReviewer(
-        test_case_directory_path=test_data_root / "mlamd",
-        shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
-        merging_test_cases=get_mlamd_yue_merging_test_cases(),
-    )
-    yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
+    # if (
+    #     zho_hans.events[539].text == "不知道为什么"
+    #     and zho_hans.events[540].text == "「珊你个头」却特别刺耳"
+    # ):
+    #     info(
+    #         "Merging 中文 subtitles 539 and 540, which comprise one sentence whose "
+    #         "structure is reversed in the 粤文."
+    #     )
+    #     zho_hans = get_series_with_subs_merged(zho_hans, 539)
+    # yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
+    # reviewer = CantoneseTranscriptionReviewer(
+    #     test_case_directory_path=test_data_root / "mlamd",
+    #     shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
+    #     merging_test_cases=get_mlamd_yue_merging_test_cases(),
+    # )
+    # yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
     outfile_path = output_dir / "yue-Hans.srt"
-    yue_hans.save(outfile_path)
-    yue_hans = Series.load(outfile_path)
+    # yue_hans.save(outfile_path)
 
+    yue_hans = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
         default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
@@ -174,27 +162,27 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_proofread.srt"
     yue_hans_proofread.save(outfile_path)
 
-    translator = get_yue_from_zho_translator(
-        default_test_cases=[],
-        test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
-        auto_verify=True,
-    )
-    yue_hans_proofread_translate = get_yue_from_zho_translated(
-        yue_hans_proofread, zho_hans, translator=translator
-    )
-    outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
-    yue_hans_proofread_translate.save(outfile_path)
-
-    reviewer = get_yue_vs_zho_processor(
-        default_test_cases=[],
-        test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
-        auto_verify=True,
-    )
-    yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
-        yue_hans_proofread_translate, zho_hans, processor=reviewer
-    )
-    outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
-    yue_hans_proofread_translate_review.save(outfile_path)
+    # translator = get_yue_from_zho_translator(
+    #     default_test_cases=[],
+    #     test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
+    #     auto_verify=True,
+    # )
+    # yue_hans_proofread_translate = get_yue_from_zho_translated(
+    #     yue_hans_proofread, zho_hans, translator=translator
+    # )
+    # outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
+    # yue_hans_proofread_translate.save(outfile_path)
+    #
+    # reviewer = get_yue_vs_zho_processor(
+    #     default_test_cases=[],
+    #     test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
+    #     auto_verify=True,
+    # )
+    # yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
+    #     yue_hans_proofread_translate, zho_hans, processor=reviewer
+    # )
+    # outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
+    # yue_hans_proofread_translate_review.save(outfile_path)
 
 if "Bilingual 简体中文 and English" in actions:
     zho_hans_fuse_proofread_clean_flatten = Series.load(

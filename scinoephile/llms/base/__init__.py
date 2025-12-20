@@ -6,7 +6,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, cast
+from pprint import pprint
+from typing import Any
+
+from pydantic import ValidationError
 
 from .answer import Answer
 from .llm_provider import LLMProvider
@@ -50,7 +53,29 @@ def load_test_cases_from_json[TTestCase: TestCase](
         test_case_cls: type[TTestCase] = test_case_base_cls.get_test_case_cls_from_data(
             test_case_data, **kwargs
         )
-        test_case: TTestCase = test_case_cls.model_validate(test_case_data)
+        try:
+            test_case: TTestCase = test_case_cls.model_validate(test_case_data)
+        except ValidationError:
+            # No longer permitted to query if the answer matches the query
+            if test_case_data["query"]["yuewen"] == test_case_data["query"]["zhongwen"]:
+                continue
+
+            # Now always require a note
+            try:
+                if (
+                    test_case_data["query"]["yuewen"]
+                    == test_case_data["answer"]["yuewen_proofread"]
+                ):
+                    test_case_data["answer"]["note"] = "No changes needed."
+                pprint(test_case_data)
+                test_case: TTestCase = test_case_cls.model_validate(test_case_data)
+                pprint(test_case)
+            except KeyError:
+                if "yuewen_proofread" not in test_case_data["answer"]:
+                    test_case_data["answer"]["yuewen_proofread"] = "\ufffd"
+                pprint(test_case_data)
+                test_case: TTestCase = test_case_cls.model_validate(test_case_data)
+                pprint(test_case)
         test_cases.append(test_case)
 
     return test_cases
