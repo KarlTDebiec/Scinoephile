@@ -34,19 +34,17 @@ class YueHansFromZhoTranslationPrompt(DualBlockGappedPrompt, YueHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    source_one_pfx: ClassVar[str] = "yuewen_"
+    src_1_pfx: ClassVar[str] = "yuewen_"
     """Prefix for source one fields in query."""
 
-    source_one_desc_tpl: ClassVar[str] = (
-        "字幕 {idx} 现有嘅粤文内容；如果系空就代表要翻译"
-    )
-    """Description template for subtitle fields in query."""
+    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 现有嘅粤文内容；如果系空就代表要翻译"
+    """Description template for source one fields in query."""
 
-    source_two_pfx: ClassVar[str] = "zhongwen_"
+    src_2_pfx: ClassVar[str] = "zhongwen_"
     """Prefix for source two fields in query."""
 
-    source_two_desc_tpl: ClassVar[str] = "字幕 {idx} 对应嘅中文字幕"
-    """Description template for subtitle fields in query."""
+    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 对应嘅中文字幕"
+    """Description template for source two fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "yuewen_"
@@ -56,7 +54,7 @@ class YueHansFromZhoTranslationPrompt(DualBlockGappedPrompt, YueHansPrompt):
     """Description template for output fields in answer."""
 
     note_pfx: ClassVar[str] = "beizhu_"
-    """Prefix of note fields in answer."""
+    """Prefix for note fields in answer."""
 
     note_desc_tpl: ClassVar[str] = '字幕 {idx} 嘅英文备注；如果冇提供翻译请输出 ""'
     """Description template for note fields in answer."""
