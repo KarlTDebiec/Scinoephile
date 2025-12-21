@@ -17,11 +17,12 @@ from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer
+from scinoephile.llms.dual_pair import DualPairTestCase
 from scinoephile.testing import test_data_root
 
 from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
-from .shifting import ShiftingPrompt, ShiftingTestCase
+from .shifting import ShiftingPrompt
 
 
 class CantoneseTranscriptionReviewer:
@@ -30,7 +31,7 @@ class CantoneseTranscriptionReviewer:
     def __init__(
         self,
         test_case_directory_path: Path,
-        shifting_test_cases: list[ShiftingTestCase],
+        shifting_test_cases: list[DualPairTestCase],
         merging_test_cases: list[MergingTestCase],
     ):
         """Initialize.

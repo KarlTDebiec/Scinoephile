@@ -8,11 +8,12 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.llms.dual_pair import DualPairPrompt
 
 __all__ = ["ShiftingPrompt"]
 
 
-class ShiftingPrompt(EngPrompt):
+class ShiftingPrompt(DualPairPrompt, EngPrompt):
     """Text for LLM correspondence for 粤文 transcription shifting."""
 
     # Prompt
@@ -35,58 +36,58 @@ class ShiftingPrompt(EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    zhongwen_1_field: ClassVar[str] = "zhongwen_1"
+    reference_1_field: ClassVar[str] = "zhongwen_1"
     """Field name for 中文 subtitle 1."""
 
-    zhongwen_1_description: ClassVar[str] = "Known 中文 of subtitle 1"
-    """Description of zhongwen_1 field."""
+    reference_1_description: ClassVar[str] = "Known 中文 of subtitle 1"
+    """Description of reference_1 field."""
 
-    zhongwen_2_field: ClassVar[str] = "zhongwen_2"
+    reference_2_field: ClassVar[str] = "zhongwen_2"
     """Field name for 中文 subtitle 2."""
 
-    zhongwen_2_description: ClassVar[str] = "Known 中文 of subtitle 2"
-    """Description of zhongwen_2 field."""
+    reference_2_description: ClassVar[str] = "Known 中文 of subtitle 2"
+    """Description of reference_2 field."""
 
-    yuewen_1_field: ClassVar[str] = "yuewen_1"
+    target_1_field: ClassVar[str] = "yuewen_1"
     """Field name for 粤文 subtitle 1."""
 
-    yuewen_1_description: ClassVar[str] = "Transcribed 粤文 of subtitle "
-    """Description of yuewen_1 field."""
+    target_1_description: ClassVar[str] = "Transcribed 粤文 of subtitle 1"
+    """Description of target_1 field."""
 
-    yuewen_2_field: ClassVar[str] = "yuewen_2"
+    target_2_field: ClassVar[str] = "yuewen_2"
     """Field name for 粤文 subtitle 2."""
 
-    yuewen_2_description: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
-    """Description of yuewen_2 field."""
+    target_2_description: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
+    """Description of target_2 field."""
 
     # Query validation errors
-    yuewen_1_yuewen_2_missing_error: ClassVar[str] = (
+    target_1_target_2_missing_error: ClassVar[str] = (
         "Query must have yuewen_1, yuewen_2, or both."
     )
     """Error when yuewen_1 and yuewen_2 fields are missing."""
 
     # Answer fields
-    yuewen_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
+    target_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
     """Field name for shifted 粤文 subtitle 1."""
 
-    yuewen_1_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
-    """Description of yuewen_1_shifted field."""
+    target_1_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
+    """Description of target_1_shifted field."""
 
-    yuewen_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
+    target_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
     """Field name for shifted 粤文 subtitle 2."""
 
-    yuewen_2_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
-    """Description of yuewen_2_shifted field."""
+    target_2_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 2"
+    """Description of target_2_shifted field."""
 
     # Test case validation errors
-    yuewen_1_yuewen_2_unchanged_error: ClassVar[str] = (
+    target_1_target_2_unchanged_error: ClassVar[str] = (
         "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's yuewen_1 "
         "and yuewen_2; if no shift is needed, yuewen_1_shifted and yuewen_2_shifted "
         "must be empty strings."
     )
     """Error when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
 
-    yuewen_characters_changed_error_template: ClassVar[str] = (
+    target_characters_changed_error_template: ClassVar[str] = (
         "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
         "query's concatenated yuewen_1 and yuewen_2:\n"
         "Expected: {expected}\n"
@@ -104,6 +105,52 @@ class ShiftingPrompt(EngPrompt):
         Returns:
             formatted error message
         """
-        return cls.yuewen_characters_changed_error_template.format(
-            expected=expected, received=received
-        )
+        return cls.target_characters_changed_error(expected, received)
+
+    # Legacy compatibility fields
+    zhongwen_1_field: ClassVar[str] = reference_1_field
+    """Field name for 中文 subtitle 1."""
+
+    zhongwen_1_description: ClassVar[str] = reference_1_description
+    """Description of zhongwen_1 field."""
+
+    zhongwen_2_field: ClassVar[str] = reference_2_field
+    """Field name for 中文 subtitle 2."""
+
+    zhongwen_2_description: ClassVar[str] = reference_2_description
+    """Description of zhongwen_2 field."""
+
+    yuewen_1_field: ClassVar[str] = target_1_field
+    """Field name for 粤文 subtitle 1."""
+
+    yuewen_1_description: ClassVar[str] = target_1_description
+    """Description of yuewen_1 field."""
+
+    yuewen_2_field: ClassVar[str] = target_2_field
+    """Field name for 粤文 subtitle 2."""
+
+    yuewen_2_description: ClassVar[str] = target_2_description
+    """Description of yuewen_2 field."""
+
+    yuewen_1_yuewen_2_missing_error: ClassVar[str] = target_1_target_2_missing_error
+    """Error when yuewen_1 and yuewen_2 fields are missing."""
+
+    yuewen_1_shifted_field: ClassVar[str] = target_1_shifted_field
+    """Field name for shifted 粤文 subtitle 1."""
+
+    yuewen_1_shifted_description: ClassVar[str] = target_1_shifted_description
+    """Description of yuewen_1_shifted field."""
+
+    yuewen_2_shifted_field: ClassVar[str] = target_2_shifted_field
+    """Field name for shifted 粤文 subtitle 2."""
+
+    yuewen_2_shifted_description: ClassVar[str] = target_2_shifted_description
+    """Description of yuewen_2_shifted field."""
+
+    yuewen_1_yuewen_2_unchanged_error: ClassVar[str] = target_1_target_2_unchanged_error
+    """Error when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
+
+    yuewen_characters_changed_error_template: ClassVar[str] = (
+        target_characters_changed_error_template
+    )
+    """Error template when shifted 粤文 characters do not match original."""
