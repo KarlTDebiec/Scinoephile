@@ -138,7 +138,7 @@ class DualSingleProcessor:
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            output_text = getattr(test_case.answer, self.prompt_cls.output_field)
+            output_text = getattr(test_case.answer, self.prompt_cls.output)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
