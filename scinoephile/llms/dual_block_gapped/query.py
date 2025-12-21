@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual block gapped queries."""
+"""ABC for dual block / subtitle block (gapped) queries."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ __all__ = ["DualBlockGappedQuery"]
 
 
 class DualBlockGappedQuery(Query, ABC):
-    """ABC for dual block gapped queries."""
+    """ABC for dual block / subtitle block (gapped) queries."""
 
     prompt_cls: ClassVar[type[DualBlockGappedPrompt]]
     """Text for LLM correspondence."""
