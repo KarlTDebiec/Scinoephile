@@ -96,7 +96,7 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
     """Error template when shifted 粤文 characters do not match original."""
 
     @classmethod
-    def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
+    def src_2_chars_changed_err(cls, expected: str, received: str) -> str:
         """Error when shifted 粤文 characters do not match original.
 
         Arguments:
