@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for mono track / block answers."""
+"""ABC for mono track / subtitle block answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["MonoBlockAnswer"]
 
 
 class MonoBlockAnswer(Answer, ABC):
-    """ABC for mono track / block answers."""
+    """ABC for mono track / subtitle block answers."""
 
     prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for mono track / block queries."""
+"""ABC for mono track / subtitle block queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["MonoBlockQuery"]
 
 
 class MonoBlockQuery(Query, ABC):
-    """ABC for mono track / block queries."""
+    """ABC for mono track / subtitle block queries."""
 
     prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""
