@@ -105,4 +105,6 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
         Returns:
             formatted error message
         """
-        return cls.src_2_chars_changed_err(expected, received)
+        return cls.src_2_chars_changed_err_tpl.format(
+            expected=expected, received=received
+        )
