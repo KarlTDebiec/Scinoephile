@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual track / block test cases."""
+"""ABC for dual track / subtitle block test cases."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ __all__ = ["DualBlockTestCase"]
 
 
 class DualBlockTestCase(TestCase, ABC):
-    """ABC for dual track / block test cases."""
+    """ABC for dual track / subtitle block test cases."""
 
     answer_cls: ClassVar[type[DualBlockAnswer]]
     """Answer class for this test case."""

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual track / block queries."""
+"""ABC for dual track / subtitle block queries."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = [
 
 
 class DualBlockQuery(Query, ABC):
-    """ABC for dual track / block queries."""
+    """ABC for dual track / subtitle block queries."""
 
     prompt_cls: ClassVar[type[DualBlockPrompt]]
     """Text for LLM correspondence."""
