@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual pair queries."""
+"""ABC for dual track / subtitle pair queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["DualPairQuery"]
 
 
 class DualPairQuery(Query, ABC):
-    """ABC for dual pair queries."""
+    """ABC for dual track / subtitle pair queries."""
 
     prompt_cls: ClassVar[type[DualPairPrompt]]
     """Text for LLM correspondence."""

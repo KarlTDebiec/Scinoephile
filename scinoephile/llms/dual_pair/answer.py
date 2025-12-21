@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual pair answers."""
+"""ABC for dual track / subtitle pair answers."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["DualPairAnswer"]
 
 
 class DualPairAnswer(Answer, ABC):
-    """ABC for dual pair answers."""
+    """ABC for dual track / subtitle pair answers."""
 
     prompt_cls: ClassVar[type[DualPairPrompt]]
     """Text for LLM correspondence."""

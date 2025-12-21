@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual pair test cases."""
+"""ABC for dual track / subtitle pair test cases."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = ["DualPairTestCase"]
 
 
 class DualPairTestCase(TestCase, ABC):
-    """ABC for dual pair test cases."""
+    """ABC for dual track / subtitle pair test cases."""
 
     answer_cls: ClassVar[type[DualPairAnswer]]
     """Answer class for this test case."""
@@ -71,7 +71,7 @@ class DualPairTestCase(TestCase, ABC):
             self.answer, self.prompt_cls.src_2_sub_2_shifted, None
         )
         if target_1 == target_1_shifted and target_2 == target_2_shifted:
-            raise ValueError(self.prompt_cls.unchanged_err)
+            raise ValueError(self.prompt_cls.src_2_sub_1_sub_2_unchanged_err)
         if target_1_shifted != "" or target_2_shifted != "":
             expected = target_1 + target_2
             received = target_1_shifted + target_2_shifted
