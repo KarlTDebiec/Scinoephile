@@ -127,8 +127,8 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
     # Return merge query
     test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
     query_kwargs = {
-        test_case_cls.prompt_cls.zhongwen_field: zw,
-        test_case_cls.prompt_cls.yuewen_to_merge_field: yws,
+        test_case_cls.prompt_cls.zhongwen: zw,
+        test_case_cls.prompt_cls.yuewen_to_merge: yws,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
