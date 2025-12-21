@@ -29,8 +29,8 @@ class YueZhoProofreadingTestCase(DualSingleTestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        yuewen = getattr(self.query, self.prompt_cls.source_one_field, None)
-        yuewen_proofread = getattr(self.answer, self.prompt_cls.output_field, None)
+        yuewen = getattr(self.query, self.prompt_cls.src_1, None)
+        yuewen_proofread = getattr(self.answer, self.prompt_cls.output, None)
         if yuewen != yuewen_proofread:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
