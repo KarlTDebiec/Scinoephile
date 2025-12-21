@@ -17,28 +17,28 @@ class DualPairPrompt(Prompt, ABC):
 
     # Query fields
     src_1_sub_1_field: ClassVar[str] = "src_1_sub_1"
-    """Field name for source one subtitle one text."""
+    """Name of source one subtitle one field in query."""
 
     src_1_sub_1_desc: ClassVar[str] = "Source one subtitle one text"
-    """Description of src_1_sub_1 field."""
+    """Description of source one subtitle one field in query."""
 
     src_1_sub_2_field: ClassVar[str] = "src_1_sub_2"
-    """Field name for source one subtitle two text."""
+    """Name of source one subtitle two field in query."""
 
     src_1_sub_2_desc: ClassVar[str] = "Source one subtitle two text"
-    """Description of src_1_sub_2 field."""
+    """Description of source one subtitle two field in query."""
 
     src_2_sub_1_field: ClassVar[str] = "src_2_sub_1"
-    """Field name for source two subtitle one text."""
+    """Name of source two subtitle one field in query."""
 
     src_2_sub_1_desc: ClassVar[str] = "Source two subtitle one text"
-    """Description of src_2_sub_1 field."""
+    """Description of source two subtitle one field in query."""
 
     src_2_sub_2_field: ClassVar[str] = "src_2_sub_2"
-    """Field name for source two subtitle two text."""
+    """Name of source two subtitle two field in query."""
 
     src_2_sub_2_desc: ClassVar[str] = "Source two subtitle two text"
-    """Description of src_2_sub_2 field."""
+    """Description of source two subtitle two field in query."""
 
     # Query validation errors
     src_2_sub_1_sub_2_missing_error: ClassVar[str] = (
@@ -48,16 +48,16 @@ class DualPairPrompt(Prompt, ABC):
 
     # Answer fields
     src_2_sub_1_shifted_field: ClassVar[str] = "src_2_sub_1_shifted"
-    """Field name for shifted source two subtitle one text."""
+    """Name of shifted source two subtitle one field in answer."""
 
     src_2_sub_1_shifted_desc: ClassVar[str] = "Shifted source two subtitle one"
-    """Description of src_2_sub_1_shifted field."""
+    """Description of shifted source two subtitle one field in answer."""
 
     src_2_sub_2_shifted_field: ClassVar[str] = "src_2_sub_2_shifted"
-    """Field name for shifted source two subtitle two text."""
+    """Name of shifted source two subtitle two field in answer."""
 
     src_2_sub_2_shifted_desc: ClassVar[str] = "Shifted source two subtitle two"
-    """Description of src_2_sub_2_shifted field."""
+    """Description of shifted source two subtitle two field in answer."""
 
     # Test case validation errors
     src_2_sub_1_sub_2_unchanged_error: ClassVar[str] = (
