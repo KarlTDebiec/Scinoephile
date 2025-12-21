@@ -64,13 +64,13 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
     """Error when source one and two fields are equal in query."""
 
     # Answer fields
-    output: ClassVar[str] = "yuewen_proofread"
+    output: ClassVar[str] = "xiugai"
     """Name of output field in answer."""
 
     output_desc: ClassVar[str] = '校对后嘅粤文字幕（如需删掉请回传 "�"）'
     """Description of output field in answer."""
 
-    note: ClassVar[str] = "note"
+    note: ClassVar[str] = "beizhu"
     """Name of note field in answer."""
 
     note_desc: ClassVar[str] = "改动说明（英文）"
