@@ -27,10 +27,10 @@ class DualPairQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        target_1 = getattr(self, self.prompt_cls.source_two_sub_one_field, None)
-        target_2 = getattr(self, self.prompt_cls.source_two_sub_two_field, None)
+        target_1 = getattr(self, self.prompt_cls.src_2_sub_1_field, None)
+        target_2 = getattr(self, self.prompt_cls.src_2_sub_2_field, None)
         if not target_1 and not target_2:
-            raise ValueError(self.prompt_cls.source_two_sub_one_sub_two_missing_error)
+            raise ValueError(self.prompt_cls.src_2_sub_1_sub_2_missing_error)
         return self
 
     @classmethod
@@ -48,21 +48,21 @@ class DualPairQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.source_one_sub_one_field: (
+            prompt_cls.src_1_sub_1_field: (
                 str,
-                Field(..., description=prompt_cls.source_one_sub_one_desc),
+                Field(..., description=prompt_cls.src_1_sub_1_desc),
             ),
-            prompt_cls.source_one_sub_two_field: (
+            prompt_cls.src_1_sub_2_field: (
                 str,
-                Field(..., description=prompt_cls.source_one_sub_two_desc),
+                Field(..., description=prompt_cls.src_1_sub_2_desc),
             ),
-            prompt_cls.source_two_sub_one_field: (
+            prompt_cls.src_2_sub_1_field: (
                 str,
-                Field("", description=prompt_cls.source_two_sub_one_desc),
+                Field("", description=prompt_cls.src_2_sub_1_desc),
             ),
-            prompt_cls.source_two_sub_two_field: (
+            prompt_cls.src_2_sub_2_field: (
                 str,
-                Field("", description=prompt_cls.source_two_sub_two_desc),
+                Field("", description=prompt_cls.src_2_sub_2_desc),
             ),
         }
 

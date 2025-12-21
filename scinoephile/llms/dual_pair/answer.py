@@ -39,13 +39,13 @@ class DualPairAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.source_two_sub_one_shifted_field: (
+            prompt_cls.src_2_sub_1_shifted_field: (
                 str,
-                Field("", description=prompt_cls.source_two_sub_one_shifted_desc),
+                Field("", description=prompt_cls.src_2_sub_1_shifted_desc),
             ),
-            prompt_cls.source_two_sub_two_shifted_field: (
+            prompt_cls.src_2_sub_2_shifted_field: (
                 str,
-                Field("", description=prompt_cls.source_two_sub_two_shifted_desc),
+                Field("", description=prompt_cls.src_2_sub_2_shifted_desc),
             ),
         }
 

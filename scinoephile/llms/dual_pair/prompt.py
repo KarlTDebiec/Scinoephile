@@ -16,69 +16,67 @@ class DualPairPrompt(Prompt, ABC):
     """Text for LLM correspondence for dual pair matters."""
 
     # Query fields
-    source_one_sub_one_field: ClassVar[str] = "source_one_sub_one"
+    src_1_sub_1_field: ClassVar[str] = "src_1_sub_1"
     """Field name for source one subtitle one text."""
 
-    source_one_sub_one_desc: ClassVar[str] = "Source one subtitle one text"
-    """Description of source_one_sub_one field."""
+    src_1_sub_1_desc: ClassVar[str] = "Source one subtitle one text"
+    """Description of src_1_sub_1 field."""
 
-    source_one_sub_two_field: ClassVar[str] = "source_one_sub_two"
+    src_1_sub_2_field: ClassVar[str] = "src_1_sub_2"
     """Field name for source one subtitle two text."""
 
-    source_one_sub_two_desc: ClassVar[str] = "Source one subtitle two text"
-    """Description of source_one_sub_two field."""
+    src_1_sub_2_desc: ClassVar[str] = "Source one subtitle two text"
+    """Description of src_1_sub_2 field."""
 
-    source_two_sub_one_field: ClassVar[str] = "source_two_sub_one"
+    src_2_sub_1_field: ClassVar[str] = "src_2_sub_1"
     """Field name for source two subtitle one text."""
 
-    source_two_sub_one_desc: ClassVar[str] = "Source two subtitle one text"
-    """Description of source_two_sub_one field."""
+    src_2_sub_1_desc: ClassVar[str] = "Source two subtitle one text"
+    """Description of src_2_sub_1 field."""
 
-    source_two_sub_two_field: ClassVar[str] = "source_two_sub_two"
+    src_2_sub_2_field: ClassVar[str] = "src_2_sub_2"
     """Field name for source two subtitle two text."""
 
-    source_two_sub_two_desc: ClassVar[str] = "Source two subtitle two text"
-    """Description of source_two_sub_two field."""
+    src_2_sub_2_desc: ClassVar[str] = "Source two subtitle two text"
+    """Description of src_2_sub_2 field."""
 
     # Query validation errors
-    source_two_sub_one_sub_two_missing_error: ClassVar[str] = (
-        "Query must have source_two_sub_one, source_two_sub_two, or both."
+    src_2_sub_1_sub_2_missing_error: ClassVar[str] = (
+        "Query must have src_2_sub_1, src_2_sub_2, or both."
     )
-    """Error when source_two_sub_one and source_two_sub_two fields are missing."""
+    """Error when src_2_sub_1 and src_2_sub_2 fields are missing."""
 
     # Answer fields
-    source_two_sub_one_shifted_field: ClassVar[str] = "source_two_sub_one_shifted"
+    src_2_sub_1_shifted_field: ClassVar[str] = "src_2_sub_1_shifted"
     """Field name for shifted source two subtitle one text."""
 
-    source_two_sub_one_shifted_desc: ClassVar[str] = "Shifted source two subtitle one"
-    """Description of source_two_sub_one_shifted field."""
+    src_2_sub_1_shifted_desc: ClassVar[str] = "Shifted source two subtitle one"
+    """Description of src_2_sub_1_shifted field."""
 
-    source_two_sub_two_shifted_field: ClassVar[str] = "source_two_sub_two_shifted"
+    src_2_sub_2_shifted_field: ClassVar[str] = "src_2_sub_2_shifted"
     """Field name for shifted source two subtitle two text."""
 
-    source_two_sub_two_shifted_desc: ClassVar[str] = "Shifted source two subtitle two"
-    """Description of source_two_sub_two_shifted field."""
+    src_2_sub_2_shifted_desc: ClassVar[str] = "Shifted source two subtitle two"
+    """Description of src_2_sub_2_shifted field."""
 
     # Test case validation errors
-    source_two_sub_one_sub_two_unchanged_error: ClassVar[str] = (
-        "Answer's source_two_sub_one_shifted and source_two_sub_two_shifted are equal "
-        "to query's source_two_sub_one and source_two_sub_two; if no shift is needed, "
-        "source_two_sub_one_shifted and source_two_sub_two_shifted must be empty "
-        "strings."
+    src_2_sub_1_sub_2_unchanged_error: ClassVar[str] = (
+        "Answer's src_2_sub_1_shifted and src_2_sub_2_shifted are equal to query's "
+        "src_2_sub_1 and src_2_sub_2; if no shift is needed, src_2_sub_1_shifted and "
+        "src_2_sub_2_shifted must be empty strings."
     )
-    """Error when source_two_sub_one and source_two_sub_two are unchanged."""
+    """Error when src_2_sub_1 and src_2_sub_2 are unchanged."""
 
-    source_two_characters_changed_error_template: ClassVar[str] = (
-        "Answer's concatenated source_two_sub_one_shifted and "
-        "source_two_sub_two_shifted does not match query's concatenated "
-        "source_two_sub_one and source_two_sub_two:\n"
+    src_2_characters_changed_error_template: ClassVar[str] = (
+        "Answer's concatenated src_2_sub_1_shifted and src_2_sub_2_shifted does not "
+        "match query's concatenated src_2_sub_1 and src_2_sub_2:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
     """Error template when shifted source two characters do not match original."""
 
     @classmethod
-    def source_two_characters_changed_error(cls, expected: str, received: str) -> str:
+    def src_2_characters_changed_error(cls, expected: str, received: str) -> str:
         """Error when shifted source two characters do not match original.
 
         Arguments:
@@ -87,6 +85,6 @@ class DualPairPrompt(Prompt, ABC):
         Returns:
             formatted error message
         """
-        return cls.source_two_characters_changed_error_template.format(
+        return cls.src_2_characters_changed_error_template.format(
             expected=expected, received=received
         )

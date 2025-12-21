@@ -82,10 +82,10 @@ def get_shifting_test_case(
         prompt_cls=ShiftingPrompt
     )
     query_kwargs = {
-        test_case_cls.prompt_cls.source_one_sub_one_field: zw_1,
-        test_case_cls.prompt_cls.source_two_sub_one_field: yw_1,
-        test_case_cls.prompt_cls.source_one_sub_two_field: zw_2,
-        test_case_cls.prompt_cls.source_two_sub_two_field: yw_2,
+        test_case_cls.prompt_cls.src_1_sub_1_field: zw_1,
+        test_case_cls.prompt_cls.src_2_sub_1_field: yw_1,
+        test_case_cls.prompt_cls.src_1_sub_2_field: zw_2,
+        test_case_cls.prompt_cls.src_2_sub_2_field: yw_2,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
