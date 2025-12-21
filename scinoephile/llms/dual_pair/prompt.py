@@ -67,7 +67,7 @@ class DualPairPrompt(Prompt, ABC):
     )
     """Error when src_2_sub_1 and src_2_sub_2 are unchanged."""
 
-    src_2_characters_changed_err_tpl: ClassVar[str] = (
+    src_2_chars_changed_err_tpl: ClassVar[str] = (
         "Answer's concatenated src_2_sub_1_shifted and src_2_sub_2_shifted does not "
         "match query's concatenated src_2_sub_1 and src_2_sub_2:\n"
         "Expected: {expected}\n"
@@ -76,7 +76,7 @@ class DualPairPrompt(Prompt, ABC):
     """Error template when shifted source two characters do not match original."""
 
     @classmethod
-    def src_2_characters_changed_err(cls, expected: str, received: str) -> str:
+    def src_2_chars_changed_err(cls, expected: str, received: str) -> str:
         """Error when shifted source two characters do not match original.
 
         Arguments:
@@ -85,6 +85,6 @@ class DualPairPrompt(Prompt, ABC):
         Returns:
             formatted error message
         """
-        return cls.src_2_characters_changed_err_tpl.format(
+        return cls.src_2_chars_changed_err_tpl.format(
             expected=expected, received=received
         )

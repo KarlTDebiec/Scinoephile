@@ -36,58 +36,58 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    src_1_sub_1_field: ClassVar[str] = "zhongwen_1"
-    """Field name for 中文 subtitle 1."""
+    src_1_sub_1: ClassVar[str] = "zhongwen_1"
+    """Name of source one subtitle one field in query."""
 
     src_1_sub_1_desc: ClassVar[str] = "Known 中文 of subtitle 1"
-    """Description of src_1_sub_1 field."""
+    """Description of source one subtitle one field in query."""
 
-    src_1_sub_2_field: ClassVar[str] = "zhongwen_2"
-    """Field name for 中文 subtitle 2."""
+    src_1_sub_2: ClassVar[str] = "zhongwen_2"
+    """Name of source one subtitle two field in query."""
 
     src_1_sub_2_desc: ClassVar[str] = "Known 中文 of subtitle 2"
-    """Description of src_1_sub_2 field."""
+    """Description of source one subtitle two field in query."""
 
-    src_2_sub_1_field: ClassVar[str] = "yuewen_1"
-    """Field name for 粤文 subtitle 1."""
+    src_2_sub_1: ClassVar[str] = "yuewen_1"
+    """Name of source two subtitle one field in query."""
 
     src_2_sub_1_desc: ClassVar[str] = "Transcribed 粤文 of subtitle 1"
-    """Description of src_2_sub_1 field."""
+    """Description of source two subtitle one field in query."""
 
-    src_2_sub_2_field: ClassVar[str] = "yuewen_2"
-    """Field name for 粤文 subtitle 2."""
+    src_2_sub_2: ClassVar[str] = "yuewen_2"
+    """Name of source two subtitle two field in query."""
 
     src_2_sub_2_desc: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
-    """Description of src_2_sub_2 field."""
+    """Description of source two subtitle two field in query."""
 
     # Query validation errors
-    src_2_sub_1_sub_2_missing_error: ClassVar[str] = (
+    src_2_sub_1_sub_2_missing_err: ClassVar[str] = (
         "Query must have yuewen_1, yuewen_2, or both."
     )
-    """Error when yuewen_1 and yuewen_2 fields are missing."""
+    """Error when src_2_sub_1 and src_2_sub_2 fields are missing."""
 
     # Answer fields
-    src_2_sub_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
-    """Field name for shifted 粤文 subtitle 1."""
+    src_2_sub_1_shifted: ClassVar[str] = "yuewen_1_shifted"
+    """Name of shifted source two subtitle one field in answer."""
 
     src_2_sub_1_shifted_desc: ClassVar[str] = "Shifted 粤文 of subtitle 1"
-    """Description of src_2_sub_1_shifted field."""
+    """Description of shifted source two subtitle one field in answer."""
 
-    src_2_sub_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
-    """Field name for shifted 粤文 subtitle 2."""
+    src_2_sub_2_shifted: ClassVar[str] = "yuewen_2_shifted"
+    """Name of shifted source two subtitle two field in answer."""
 
     src_2_sub_2_shifted_desc: ClassVar[str] = "Shifted 粤文 of subtitle 2"
-    """Description of src_2_sub_2_shifted field."""
+    """Description of shifted source two subtitle two field in answer."""
 
     # Test case validation errors
-    src_2_sub_1_sub_2_unchanged_error: ClassVar[str] = (
+    src_2_sub_1_sub_2_unchanged_err: ClassVar[str] = (
         "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's yuewen_1 "
         "and yuewen_2; if no shift is needed, yuewen_1_shifted and yuewen_2_shifted "
         "must be empty strings."
     )
-    """Error when yuewen_1 and yuewen_2 are unchanged."""
+    """Error when src_2_sub_1 and src_2_sub_2 are unchanged."""
 
-    src_2_characters_changed_error_template: ClassVar[str] = (
+    src_2_chars_changed_err_tpl: ClassVar[str] = (
         "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
         "query's concatenated yuewen_1 and yuewen_2:\n"
         "Expected: {expected}\n"
@@ -105,4 +105,4 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
         Returns:
             formatted error message
         """
-        return cls.src_2_characters_changed_error(expected, received)
+        return cls.src_2_chars_changed_err(expected, received)
