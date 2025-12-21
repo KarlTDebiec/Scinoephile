@@ -36,7 +36,7 @@ class DualBlockPrompt(Prompt, ABC):
     """Description template for output fields in answer."""
 
     note_pfx: ClassVar[str] = "note_"
-    """Prefix of note fields in answer."""
+    """Prefix for note fields in answer."""
 
     note_desc_tpl: ClassVar[str] = 'Subtitle {idx} output note, or "" if no change.'
     """Description template for note fields in answer."""

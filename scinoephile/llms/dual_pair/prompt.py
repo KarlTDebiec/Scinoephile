@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for dual pair matters."""
+"""Text for LLM correspondence for dual track / subtitle pair matters."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["DualPairPrompt"]
 
 
 class DualPairPrompt(Prompt, ABC):
-    """Text for LLM correspondence for dual pair matters."""
+    """Text for LLM correspondence for dual track / subtitle pair matters."""
 
     # Query fields
     src_1_sub_1: ClassVar[str] = "src_1_sub_1"
