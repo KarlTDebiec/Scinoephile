@@ -27,10 +27,10 @@ class DualPairQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        target_1 = getattr(self, self.prompt_cls.target_1_field, None)
-        target_2 = getattr(self, self.prompt_cls.target_2_field, None)
+        target_1 = getattr(self, self.prompt_cls.source_two_sub_one_field, None)
+        target_2 = getattr(self, self.prompt_cls.source_two_sub_two_field, None)
         if not target_1 and not target_2:
-            raise ValueError(self.prompt_cls.target_1_target_2_missing_error)
+            raise ValueError(self.prompt_cls.source_two_sub_one_sub_two_missing_error)
         return self
 
     @classmethod
@@ -48,21 +48,21 @@ class DualPairQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.reference_1_field: (
+            prompt_cls.source_one_sub_one_field: (
                 str,
-                Field(..., description=prompt_cls.reference_1_description),
+                Field(..., description=prompt_cls.source_one_sub_one_desc),
             ),
-            prompt_cls.reference_2_field: (
+            prompt_cls.source_one_sub_two_field: (
                 str,
-                Field(..., description=prompt_cls.reference_2_description),
+                Field(..., description=prompt_cls.source_one_sub_two_desc),
             ),
-            prompt_cls.target_1_field: (
+            prompt_cls.source_two_sub_one_field: (
                 str,
-                Field("", description=prompt_cls.target_1_description),
+                Field("", description=prompt_cls.source_two_sub_one_desc),
             ),
-            prompt_cls.target_2_field: (
+            prompt_cls.source_two_sub_two_field: (
                 str,
-                Field("", description=prompt_cls.target_2_description),
+                Field("", description=prompt_cls.source_two_sub_two_desc),
             ),
         }
 

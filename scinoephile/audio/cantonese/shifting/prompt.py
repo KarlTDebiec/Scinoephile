@@ -36,58 +36,58 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    reference_1_field: ClassVar[str] = "zhongwen_1"
+    source_one_sub_one_field: ClassVar[str] = "zhongwen_1"
     """Field name for 中文 subtitle 1."""
 
-    reference_1_description: ClassVar[str] = "Known 中文 of subtitle 1"
-    """Description of reference_1 field."""
+    source_one_sub_one_desc: ClassVar[str] = "Known 中文 of subtitle 1"
+    """Description of source_one_sub_one field."""
 
-    reference_2_field: ClassVar[str] = "zhongwen_2"
+    source_one_sub_two_field: ClassVar[str] = "zhongwen_2"
     """Field name for 中文 subtitle 2."""
 
-    reference_2_description: ClassVar[str] = "Known 中文 of subtitle 2"
-    """Description of reference_2 field."""
+    source_one_sub_two_desc: ClassVar[str] = "Known 中文 of subtitle 2"
+    """Description of source_one_sub_two field."""
 
-    target_1_field: ClassVar[str] = "yuewen_1"
+    source_two_sub_one_field: ClassVar[str] = "yuewen_1"
     """Field name for 粤文 subtitle 1."""
 
-    target_1_description: ClassVar[str] = "Transcribed 粤文 of subtitle 1"
-    """Description of target_1 field."""
+    source_two_sub_one_desc: ClassVar[str] = "Transcribed 粤文 of subtitle 1"
+    """Description of source_two_sub_one field."""
 
-    target_2_field: ClassVar[str] = "yuewen_2"
+    source_two_sub_two_field: ClassVar[str] = "yuewen_2"
     """Field name for 粤文 subtitle 2."""
 
-    target_2_description: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
-    """Description of target_2 field."""
+    source_two_sub_two_desc: ClassVar[str] = "Transcribed 粤文 of subtitle 2"
+    """Description of source_two_sub_two field."""
 
     # Query validation errors
-    target_1_target_2_missing_error: ClassVar[str] = (
+    source_two_sub_one_sub_two_missing_error: ClassVar[str] = (
         "Query must have yuewen_1, yuewen_2, or both."
     )
     """Error when yuewen_1 and yuewen_2 fields are missing."""
 
     # Answer fields
-    target_1_shifted_field: ClassVar[str] = "yuewen_1_shifted"
+    source_two_sub_one_shifted_field: ClassVar[str] = "yuewen_1_shifted"
     """Field name for shifted 粤文 subtitle 1."""
 
-    target_1_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 1"
-    """Description of target_1_shifted field."""
+    source_two_sub_one_shifted_desc: ClassVar[str] = "Shifted 粤文 of subtitle 1"
+    """Description of source_two_sub_one_shifted field."""
 
-    target_2_shifted_field: ClassVar[str] = "yuewen_2_shifted"
+    source_two_sub_two_shifted_field: ClassVar[str] = "yuewen_2_shifted"
     """Field name for shifted 粤文 subtitle 2."""
 
-    target_2_shifted_description: ClassVar[str] = "Shifted 粤文 of subtitle 2"
-    """Description of target_2_shifted field."""
+    source_two_sub_two_shifted_desc: ClassVar[str] = "Shifted 粤文 of subtitle 2"
+    """Description of source_two_sub_two_shifted field."""
 
     # Test case validation errors
-    target_1_target_2_unchanged_error: ClassVar[str] = (
+    source_two_sub_one_sub_two_unchanged_error: ClassVar[str] = (
         "Answer's yuewen_1_shifted and yuewen_2_shifted are equal to query's yuewen_1 "
         "and yuewen_2; if no shift is needed, yuewen_1_shifted and yuewen_2_shifted "
         "must be empty strings."
     )
-    """Error when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
+    """Error when yuewen_1 and yuewen_2 are unchanged."""
 
-    target_characters_changed_error_template: ClassVar[str] = (
+    source_two_characters_changed_error_template: ClassVar[str] = (
         "Answer's concatenated yuewen_1_shifted and yuewen_2_shifted does not match "
         "query's concatenated yuewen_1 and yuewen_2:\n"
         "Expected: {expected}\n"
@@ -105,52 +105,56 @@ class ShiftingPrompt(DualPairPrompt, EngPrompt):
         Returns:
             formatted error message
         """
-        return cls.target_characters_changed_error(expected, received)
+        return cls.source_two_characters_changed_error(expected, received)
 
     # Legacy compatibility fields
-    zhongwen_1_field: ClassVar[str] = reference_1_field
+    zhongwen_1_field: ClassVar[str] = source_one_sub_one_field
     """Field name for 中文 subtitle 1."""
 
-    zhongwen_1_description: ClassVar[str] = reference_1_description
+    zhongwen_1_description: ClassVar[str] = source_one_sub_one_desc
     """Description of zhongwen_1 field."""
 
-    zhongwen_2_field: ClassVar[str] = reference_2_field
+    zhongwen_2_field: ClassVar[str] = source_one_sub_two_field
     """Field name for 中文 subtitle 2."""
 
-    zhongwen_2_description: ClassVar[str] = reference_2_description
+    zhongwen_2_description: ClassVar[str] = source_one_sub_two_desc
     """Description of zhongwen_2 field."""
 
-    yuewen_1_field: ClassVar[str] = target_1_field
+    yuewen_1_field: ClassVar[str] = source_two_sub_one_field
     """Field name for 粤文 subtitle 1."""
 
-    yuewen_1_description: ClassVar[str] = target_1_description
+    yuewen_1_description: ClassVar[str] = source_two_sub_one_desc
     """Description of yuewen_1 field."""
 
-    yuewen_2_field: ClassVar[str] = target_2_field
+    yuewen_2_field: ClassVar[str] = source_two_sub_two_field
     """Field name for 粤文 subtitle 2."""
 
-    yuewen_2_description: ClassVar[str] = target_2_description
+    yuewen_2_description: ClassVar[str] = source_two_sub_two_desc
     """Description of yuewen_2 field."""
 
-    yuewen_1_yuewen_2_missing_error: ClassVar[str] = target_1_target_2_missing_error
+    yuewen_1_yuewen_2_missing_error: ClassVar[str] = (
+        source_two_sub_one_sub_two_missing_error
+    )
     """Error when yuewen_1 and yuewen_2 fields are missing."""
 
-    yuewen_1_shifted_field: ClassVar[str] = target_1_shifted_field
+    yuewen_1_shifted_field: ClassVar[str] = source_two_sub_one_shifted_field
     """Field name for shifted 粤文 subtitle 1."""
 
-    yuewen_1_shifted_description: ClassVar[str] = target_1_shifted_description
+    yuewen_1_shifted_description: ClassVar[str] = source_two_sub_one_shifted_desc
     """Description of yuewen_1_shifted field."""
 
-    yuewen_2_shifted_field: ClassVar[str] = target_2_shifted_field
+    yuewen_2_shifted_field: ClassVar[str] = source_two_sub_two_shifted_field
     """Field name for shifted 粤文 subtitle 2."""
 
-    yuewen_2_shifted_description: ClassVar[str] = target_2_shifted_description
+    yuewen_2_shifted_description: ClassVar[str] = source_two_sub_two_shifted_desc
     """Description of yuewen_2_shifted field."""
 
-    yuewen_1_yuewen_2_unchanged_error: ClassVar[str] = target_1_target_2_unchanged_error
-    """Error when yuewen_1 and yuewen_2 are unchanged and not both omitted."""
+    yuewen_1_yuewen_2_unchanged_error: ClassVar[str] = (
+        source_two_sub_one_sub_two_unchanged_error
+    )
+    """Error when yuewen_1 and yuewen_2 are unchanged."""
 
     yuewen_characters_changed_error_template: ClassVar[str] = (
-        target_characters_changed_error_template
+        source_two_characters_changed_error_template
     )
     """Error template when shifted 粤文 characters do not match original."""
