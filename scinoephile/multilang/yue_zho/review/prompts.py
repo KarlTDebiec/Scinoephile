@@ -35,17 +35,17 @@ class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    source_one_pfx: ClassVar[str] = "yuewen_"
+    src_1_pfx: ClassVar[str] = "yuewen_"
     """Prefix for source one fields in query."""
 
-    source_one_desc_tpl: ClassVar[str] = "字幕 {idx} 嘅粤文转写"
-    """Description template for subtitle fields in query."""
+    src_1_desc_tpl: ClassVar[str] = "字幕 {idx} 嘅粤文转写"
+    """Description template for source one fields in query."""
 
-    source_two_pfx: ClassVar[str] = "zhongwen_"
+    src_2_pfx: ClassVar[str] = "zhongwen_"
     """Prefix for source two fields in query."""
 
-    source_two_desc_tpl: ClassVar[str] = "字幕 {idx} 已知嘅中文字幕"
-    """Description template for subtitle fields in query."""
+    src_2_desc_tpl: ClassVar[str] = "字幕 {idx} 已知嘅中文字幕"
+    """Description template for source two fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "xiugai_yuewen_"
@@ -57,7 +57,7 @@ class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """Description template for output fields in answer."""
 
     note_pfx: ClassVar[str] = "beizhu_"
-    """Prefix of note fields in answer."""
+    """Prefix for note fields in answer."""
 
     note_desc_tpl: ClassVar[str] = (
         '字幕 {idx} 嘅备注（英文）；如果冇任何修改，请回传 ""。'
