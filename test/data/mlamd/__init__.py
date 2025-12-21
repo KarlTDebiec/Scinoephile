@@ -11,7 +11,7 @@ from typing import Any
 import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingTestCase
+from scinoephile.audio.cantonese.shifting import ShiftingPrompt
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -23,6 +23,7 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedPrompt,
     DualBlockGappedTestCase,
 )
+from scinoephile.llms.dual_pair import DualPairPrompt, DualPairTestCase
 from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.multilang.yue_zho.proofreading import (
@@ -197,16 +198,22 @@ def mlamd_yue_hans_eng() -> Series:
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase]:
+def get_mlamd_yue_shifting_test_cases(
+    prompt_cls: type[DualPairPrompt] = ShiftingPrompt,
+    **kwargs: Any,
+) -> list[DualPairTestCase]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
+        prompt_cls: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "shifting.json"
-    return load_test_cases_from_json(path, ShiftingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, DualPairTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache

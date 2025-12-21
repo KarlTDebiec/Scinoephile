@@ -41,48 +41,48 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    source_one_field: ClassVar[str] = "yuewen"
+    src_1: ClassVar[str] = "yuewen"
     """Name of source one field in query."""
 
-    source_one_description: ClassVar[str] = "要校对嘅粤文字幕转写"
+    src_1_desc: ClassVar[str] = "要校对嘅粤文字幕转写"
     """Description of source one field in query."""
 
-    source_two_field: ClassVar[str] = "zhongwen"
-    """Name for source two field in query."""
+    src_2: ClassVar[str] = "zhongwen"
+    """Name of source two field in query."""
 
-    source_two_description: ClassVar[str] = "对应嘅中文字幕"
+    src_2_desc: ClassVar[str] = "对应嘅中文字幕"
     """Description of source two field in query."""
 
     # Query validation errors
-    source_one_missing_error: ClassVar[str] = "查询必须包含要校对嘅粤文字幕。"
+    src_1_missing_err: ClassVar[str] = "查询必须包含要校对嘅粤文字幕。"
     """Error when source one field is missing from query."""
 
-    source_two_missing_error: ClassVar[str] = "查询必须包含中文字幕。"
+    src_2_missing_err: ClassVar[str] = "查询必须包含中文字幕。"
     """Error when source two field is missing from query."""
 
-    sources_equal_error: ClassVar[str] = "两份来源字幕唔可以完全一样。"
+    src_1_src_2_equal_err: ClassVar[str] = "两份来源字幕唔可以完全一样。"
     """Error when source one and two fields are equal in query."""
 
     # Answer fields
-    output_field: ClassVar[str] = "yuewen_proofread"
+    output: ClassVar[str] = "yuewen_proofread"
     """Name of output field in answer."""
 
-    output_description: ClassVar[str] = '校对后嘅粤文字幕（如需删掉请回传 "�"）'
+    output_desc: ClassVar[str] = '校对后嘅粤文字幕（如需删掉请回传 "�"）'
     """Description of output field in answer."""
 
-    note_field: ClassVar[str] = "note"
+    note: ClassVar[str] = "note"
     """Name of note field in answer."""
 
-    note_description: ClassVar[str] = "改动说明（英文）"
+    note_desc: ClassVar[str] = "改动说明（英文）"
     """Description of note field in answer."""
 
     # Answer validation errors
-    output_missing_error: ClassVar[str] = (
+    output_missing_err: ClassVar[str] = (
         '答案必须包含校对后嘅粤文字幕（如需省略请回传 "�"）。'
     )
     """Error when output field is missing from answer."""
 
-    note_missing_error: ClassVar[str] = "答案必须包含改动说明（如无改动请回传空字串）。"
+    note_missing_err: ClassVar[str] = "答案必须包含改动说明（如无改动请回传空字串）。"
     """Error when note field is missing from answer."""
 
 
