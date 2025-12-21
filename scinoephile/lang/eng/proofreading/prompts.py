@@ -39,41 +39,41 @@ class EngProofreadingPrompt(MonoBlockPrompt, EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    input_prefix: ClassVar[str] = "subtitle_"
+    input_pfx: ClassVar[str] = "subtitle_"
     """Prefix for input fields in query."""
 
-    input_description_template: ClassVar[str] = "Subtitle {idx}"
+    input_desc_tpl: ClassVar[str] = "Subtitle {idx}"
     """Description template for input fields in query."""
 
     # Answer fields
-    output_prefix: ClassVar[str] = "revised_"
+    output_pfx: ClassVar[str] = "revised_"
     """Prefix for output fields in answer."""
 
-    output_description_template: ClassVar[str] = (
+    output_desc_tpl: ClassVar[str] = (
         "Subtitle {idx} revised, or an empty string if no revision is necessary."
     )
     """Description template for output fields in answer."""
 
-    note_description_template: ClassVar[str] = (
+    note_desc_tpl: ClassVar[str] = (
         "Note concerning revisions to subtitle {idx}, or an empty string if no "
         "revision is necessary."
     )
     """Description template for note fields in answer."""
 
     # Test case errors
-    output_unmodified_error_template: ClassVar[str] = (
+    output_unmodified_err_tpl: ClassVar[str] = (
         "Answer's revised text {idx} is not modified relative to query's text {idx}, "
         "if no revision is needed an empty string must be provided."
     )
     """Error template when output is present but unmodified."""
 
-    note_missing_error_template: ClassVar[str] = (
+    note_missing_err_tpl: ClassVar[str] = (
         "Answer's text {idx} is modified relative to query's text {idx}, but no note "
         "is provided, if revision is needed a note must be provided."
     )
     """Error template when note is missing for a change."""
 
-    output_missing_error_template: ClassVar[str] = (
+    output_missing_err_tpl: ClassVar[str] = (
         "Answer's text {idx} is not modified relative to query's text {idx}, but a "
         "note is provided, if no revisions are needed an empty string must be provided."
     )
