@@ -51,7 +51,7 @@ class MonoBlockTestCase(TestCase, ABC):
             return min_difficulty
 
         if any(
-            getattr(self.answer, self.prompt_cls.output_field(idx)) != ""
+            getattr(self.answer, self.prompt_cls.output(idx)) != ""
             for idx in range(1, self.size + 1)
         ):
             min_difficulty = max(min_difficulty, 1)
@@ -64,16 +64,16 @@ class MonoBlockTestCase(TestCase, ABC):
             return self
 
         for idx in range(self.size):
-            input_text = getattr(self.query, self.prompt_cls.input_field(idx + 1))
-            output_text = getattr(self.answer, self.prompt_cls.output_field(idx + 1))
-            note = getattr(self.answer, self.prompt_cls.note_field(idx + 1))
+            input_text = getattr(self.query, self.prompt_cls.input(idx + 1))
+            output_text = getattr(self.answer, self.prompt_cls.output(idx + 1))
+            note = getattr(self.answer, self.prompt_cls.note(idx + 1))
             if output_text != "":
                 if input_text == output_text:
-                    raise ValueError(self.prompt_cls.output_unmodified_error(idx + 1))
+                    raise ValueError(self.prompt_cls.output_unmodified_err(idx + 1))
                 if note == "":
-                    raise ValueError(self.prompt_cls.note_missing_error(idx + 1))
+                    raise ValueError(self.prompt_cls.note_missing_err(idx + 1))
             elif note != "":
-                raise ValueError(self.prompt_cls.output_missing_error(idx + 1))
+                raise ValueError(self.prompt_cls.output_missing_err(idx + 1))
         return self
 
     @classmethod
@@ -115,6 +115,6 @@ class MonoBlockTestCase(TestCase, ABC):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        pattern = re.compile(rf"^{re.escape(prompt_cls.input_prefix)}\d+$")
+        pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, **kwargs)

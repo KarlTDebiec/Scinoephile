@@ -45,8 +45,8 @@ class MonoBlockQuery(Query, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.input_field(idx + 1)
-            desc = prompt_cls.input_description(idx + 1)
+            key = prompt_cls.input(idx + 1)
+            desc = prompt_cls.input_desc(idx + 1)
             fields[key] = (str, Field(..., description=desc, max_length=1000))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

@@ -95,7 +95,7 @@ class MonoBlockProcessor:
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block):
-                key = self.prompt_cls.input_field(idx + 1)
+                key = self.prompt_cls.input(idx + 1)
                 query_kwargs[key] = re.sub(r"\\N", "\n", subtitle.text).strip()
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
@@ -103,7 +103,7 @@ class MonoBlockProcessor:
 
             output_series = Series()
             for sub_idx, subtitle in enumerate(block):
-                key = self.prompt_cls.output_field(sub_idx + 1)
+                key = self.prompt_cls.output(sub_idx + 1)
                 if output_text := getattr(test_case.answer, key):
                     subtitle.text = output_text
                 output_series.append(subtitle)

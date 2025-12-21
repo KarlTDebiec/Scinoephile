@@ -45,11 +45,11 @@ class MonoBlockAnswer(Answer, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.output_field(idx + 1)
-            desc = prompt_cls.output_description(idx + 1)
+            key = prompt_cls.output(idx + 1)
+            desc = prompt_cls.output_desc(idx + 1)
             fields[key] = (str, Field("", description=desc, max_length=1000))
-            key = prompt_cls.note_field(idx + 1)
-            desc = prompt_cls.note_description(idx + 1)
+            key = prompt_cls.note(idx + 1)
+            desc = prompt_cls.note_desc(idx + 1)
             fields[key] = (str, Field("", description=desc, max_length=1000))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
