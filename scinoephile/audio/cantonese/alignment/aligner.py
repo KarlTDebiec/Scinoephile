@@ -104,10 +104,10 @@ class Aligner:
             query = test_case.query
             answer = test_case.answer
             yuewen_1_shifted = getattr(
-                answer, test_case.prompt_cls.src_2_sub_1_shifted_field, None
+                answer, test_case.prompt_cls.src_2_sub_1_shifted, None
             )
             yuewen_2_shifted = getattr(
-                answer, test_case.prompt_cls.src_2_sub_2_shifted_field, None
+                answer, test_case.prompt_cls.src_2_sub_2_shifted, None
             )
             if yuewen_1_shifted == "" and yuewen_2_shifted == "":
                 continue
@@ -142,10 +142,10 @@ class Aligner:
         # Get 粤文
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1_field, None)
-        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2_field, None)
-        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted_field, None)
-        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted_field, None)
+        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, None)
+        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, None)
+        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, None)
+        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, None)
 
         # Shift 粤文
         nascent_sg = deepcopy(alignment.sync_groups)

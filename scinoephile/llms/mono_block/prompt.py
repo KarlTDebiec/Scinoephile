@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for LLM correspondence text for mono track / block processing."""
+"""ABC for LLM correspondence text for mono track / subtitle block processing."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ __all__ = ["MonoBlockPrompt"]
 
 
 class MonoBlockPrompt(Prompt, ABC):
-    """ABC for LLM correspondence text for mono track / block processing."""
+    """ABC for LLM correspondence text for mono track / subtitle block processing."""
 
     # Query fields
     input_prefix: ClassVar[str] = "input_"

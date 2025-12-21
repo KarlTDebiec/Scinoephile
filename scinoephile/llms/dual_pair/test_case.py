@@ -46,10 +46,10 @@ class DualPairTestCase(TestCase, ABC):
             return min_difficulty
 
         target_1_shifted = getattr(
-            self.answer, self.prompt_cls.src_2_sub_1_shifted_field, None
+            self.answer, self.prompt_cls.src_2_sub_1_shifted, None
         )
         target_2_shifted = getattr(
-            self.answer, self.prompt_cls.src_2_sub_2_shifted_field, None
+            self.answer, self.prompt_cls.src_2_sub_2_shifted, None
         )
         if target_1_shifted != "" or target_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
@@ -62,22 +62,22 @@ class DualPairTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        target_1 = getattr(self.query, self.prompt_cls.src_2_sub_1_field, None)
-        target_2 = getattr(self.query, self.prompt_cls.src_2_sub_2_field, None)
+        target_1 = getattr(self.query, self.prompt_cls.src_2_sub_1, None)
+        target_2 = getattr(self.query, self.prompt_cls.src_2_sub_2, None)
         target_1_shifted = getattr(
-            self.answer, self.prompt_cls.src_2_sub_1_shifted_field, None
+            self.answer, self.prompt_cls.src_2_sub_1_shifted, None
         )
         target_2_shifted = getattr(
-            self.answer, self.prompt_cls.src_2_sub_2_shifted_field, None
+            self.answer, self.prompt_cls.src_2_sub_2_shifted, None
         )
         if target_1 == target_1_shifted and target_2 == target_2_shifted:
-            raise ValueError(self.prompt_cls.src_2_sub_1_sub_2_unchanged_error)
+            raise ValueError(self.prompt_cls.unchanged_err)
         if target_1_shifted != "" or target_2_shifted != "":
             expected = target_1 + target_2
             received = target_1_shifted + target_2_shifted
             if expected != received:
                 raise ValueError(
-                    self.prompt_cls.src_2_characters_changed_error(expected, received)
+                    self.prompt_cls.src_2_chars_changed_err(expected, received)
                 )
         return self
 
