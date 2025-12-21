@@ -38,9 +38,9 @@ class DualSingleTestCase(TestCase, ABC):
         if self.get_min_difficulty() > 1:
             return False
 
-        source_one = getattr(self.query, self.prompt_cls.source_one_field, None)
-        source_two = getattr(self.query, self.prompt_cls.source_two_field, None)
-        output_text = getattr(self.answer, self.prompt_cls.output_field, None)
+        source_one = getattr(self.query, self.prompt_cls.src_1, None)
+        source_two = getattr(self.query, self.prompt_cls.src_2, None)
+        output_text = getattr(self.answer, self.prompt_cls.output, None)
         if (
             source_one is not None
             and source_two is not None
@@ -68,7 +68,7 @@ class DualSingleTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        if output_text := getattr(self.answer, self.prompt_cls.output_field):
+        if output_text := getattr(self.answer, self.prompt_cls.output):
             if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty

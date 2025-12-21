@@ -27,14 +27,14 @@ class DualSingleQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        source_one = getattr(self, self.prompt_cls.source_one_field, None)
-        source_two = getattr(self, self.prompt_cls.source_two_field, None)
+        source_one = getattr(self, self.prompt_cls.src_1, None)
+        source_two = getattr(self, self.prompt_cls.src_2, None)
         if not source_one:
-            raise ValueError(self.prompt_cls.source_one_missing_error)
+            raise ValueError(self.prompt_cls.src_1_missing_err)
         if not source_two:
-            raise ValueError(self.prompt_cls.source_two_missing_error)
+            raise ValueError(self.prompt_cls.src_2_missing_err)
         if source_one == source_two:
-            raise ValueError(self.prompt_cls.sources_equal_error)
+            raise ValueError(self.prompt_cls.src_1_src_2_equal_err)
         return self
 
     @classmethod
@@ -52,13 +52,13 @@ class DualSingleQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.source_one_field: (
+            prompt_cls.src_1: (
                 str,
-                Field(..., description=prompt_cls.source_one_description),
+                Field(..., description=prompt_cls.src_1_desc),
             ),
-            prompt_cls.source_two_field: (
+            prompt_cls.src_2: (
                 str,
-                Field(..., description=prompt_cls.source_two_description),
+                Field(..., description=prompt_cls.src_2_desc),
             ),
         }
 

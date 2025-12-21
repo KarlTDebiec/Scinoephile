@@ -115,14 +115,14 @@ class DualSingleProcessor:
             if not text_two:
                 output_subtitles.append(sub_one)
                 info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.source_one_field}: "
+                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_1}: "
                     f"{text_one.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
                 info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.source_two_field}: "
+                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_2}: "
                     f"{text_two.replace('\n', ' ')}"
                 )
                 continue
@@ -131,8 +131,8 @@ class DualSingleProcessor:
             test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
-                self.prompt_cls.source_one_field: sub_one.text,
-                self.prompt_cls.source_two_field: sub_two.text,
+                self.prompt_cls.src_1: sub_one.text,
+                self.prompt_cls.src_2: sub_two.text,
             }
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
