@@ -41,7 +41,7 @@ class DualBlockTestCase(TestCase, ABC):
             return self
 
         for idx in range(self.size):
-            source_one = getattr(self.query, self.prompt_cls.source_one(idx + 1))
+            source_one = getattr(self.query, self.prompt_cls.src_1(idx + 1))
             output = getattr(self.answer, self.prompt_cls.output(idx + 1))
             note = getattr(self.answer, self.prompt_cls.note(idx + 1))
             if output != "":
@@ -98,7 +98,5 @@ class DualBlockTestCase(TestCase, ABC):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        size = sum(
-            1 for key in data["query"] if key.startswith(prompt_cls.source_one_pfx)
-        )
+        size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_1_pfx))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
