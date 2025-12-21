@@ -88,13 +88,11 @@ class DualBlockGappedTestCase(TestCase, ABC):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        size = sum(
-            1 for key in data["query"] if key.startswith(prompt_cls.source_two_pfx)
-        )
+        size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [
-            int(key.removeprefix(prompt_cls.source_one_pfx)) - 1
+            int(key.removeprefix(prompt_cls.src_1_pfx)) - 1
             for key in data["query"]
-            if key.startswith(prompt_cls.source_one_pfx)
+            if key.startswith(prompt_cls.src_1_pfx)
         ]
         gaps = tuple(idx for idx in range(size) if idx not in source_one_idxs)
         return cls.get_test_case_cls(size=size, gaps=gaps, **kwargs)

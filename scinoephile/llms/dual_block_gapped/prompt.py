@@ -16,17 +16,17 @@ class DualBlockGappedPrompt(Prompt, ABC):
     """Text for LLM correspondence for dual block gapped matters."""
 
     # Query fields
-    source_one_pfx: ClassVar[str] = "one_"
+    src_1_pfx: ClassVar[str] = "one_"
     """Prefix for source one fields in query."""
 
-    source_one_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source one"
-    """Description template for subtitle fields in query."""
+    src_1_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source one"
+    """Description template for source one fields in query."""
 
-    source_two_pfx: ClassVar[str] = "two_"
+    src_2_pfx: ClassVar[str] = "two_"
     """Prefix for source two fields in query."""
 
-    source_two_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source two"
-    """Description template for subtitle fields in query."""
+    src_2_desc_tpl: ClassVar[str] = "Subtitle {idx} text from source two"
+    """Description template for source two fields in query."""
 
     # Answer fields
     output_pfx: ClassVar[str] = "output_"
@@ -37,24 +37,24 @@ class DualBlockGappedPrompt(Prompt, ABC):
 
     # Query fields
     @classmethod
-    def source_one(cls, idx: int) -> str:
+    def src_1(cls, idx: int) -> str:
         """Name of source one field in query."""
-        return f"{cls.source_one_pfx}{idx}"
+        return f"{cls.src_1_pfx}{idx}"
 
     @classmethod
-    def source_one_desc(cls, idx: int) -> str:
+    def src_1_desc(cls, idx: int) -> str:
         """Description of source one field in query."""
-        return cls.source_one_desc_tpl.format(idx=idx)
+        return cls.src_1_desc_tpl.format(idx=idx)
 
     @classmethod
-    def source_two(cls, idx: int) -> str:
+    def src_2(cls, idx: int) -> str:
         """Name of source two field in query."""
-        return f"{cls.source_two_pfx}{idx}"
+        return f"{cls.src_2_pfx}{idx}"
 
     @classmethod
-    def source_two_desc(cls, idx: int) -> str:
+    def src_2_desc(cls, idx: int) -> str:
         """Description of source two field in query."""
-        return cls.source_two_desc_tpl.format(idx=idx)
+        return cls.src_2_desc_tpl.format(idx=idx)
 
     # Answer fields
     @classmethod

@@ -60,8 +60,8 @@ class DualBlockGappedAnswer(Answer, ABC):
         )
         fields: dict[str, Any] = {}
         for idx in gaps:
-            key = prompt_cls.source_one(idx + 1)
-            description = prompt_cls.source_one_desc(idx + 1)
+            key = prompt_cls.src_1(idx + 1)
+            description = prompt_cls.src_1_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
