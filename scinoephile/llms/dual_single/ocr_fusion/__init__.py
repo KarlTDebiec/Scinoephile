@@ -4,14 +4,12 @@
 
 from __future__ import annotations
 
-from .answer import OcrFusionAnswer
+from .manager import OcrFusionManager
 from .processor import OcrFusionProcessor
 from .prompt import OcrFusionPrompt
-from .test_case import OcrFusionTestCase
 
 __all__ = [
-    "OcrFusionAnswer",
+    "OcrFusionManager",
     "OcrFusionProcessor",
     "OcrFusionPrompt",
-    "OcrFusionTestCase",
 ]

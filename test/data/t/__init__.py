@@ -15,10 +15,10 @@ from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
-from scinoephile.llms.base import load_test_cases_from_json
+from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionTestCase
-from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
+from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.testing import test_data_root
 
 __all__ = [
@@ -175,7 +175,7 @@ def t_zho_hans_eng() -> Series:
 def get_t_eng_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
-) -> list[MonoBlockTestCase]:
+) -> list[TestCase]:
     """Get T English proofreading test cases.
 
     Arguments:
@@ -186,7 +186,10 @@ def get_t_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        MonoBlockManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -194,7 +197,7 @@ def get_t_eng_proofreading_test_cases(
 def get_t_zho_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
-) -> list[MonoBlockTestCase]:
+) -> list[TestCase]:
     """Get T 中文 proofreading test cases.
 
     Arguments:
@@ -205,7 +208,10 @@ def get_t_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        MonoBlockManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -213,7 +219,7 @@ def get_t_zho_proofreading_test_cases(
 def get_t_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
     **kwargs: Any,
-) -> list[OcrFusionTestCase]:
+) -> list[TestCase]:
     """Get T English OCR fusion test cases.
 
     Arguments:
@@ -224,7 +230,10 @@ def get_t_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        OcrFusionManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -232,7 +241,7 @@ def get_t_eng_ocr_fusion_test_cases(
 def get_t_zho_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
-) -> list[OcrFusionTestCase]:
+) -> list[TestCase]:
     """Get T 中文 OCR fusion test cases.
 
     Arguments:
@@ -243,5 +252,8 @@ def get_t_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        OcrFusionManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )

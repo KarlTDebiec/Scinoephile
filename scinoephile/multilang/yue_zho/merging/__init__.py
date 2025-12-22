@@ -4,15 +4,11 @@
 
 from __future__ import annotations
 
-from .answer import YueZhoMergingAnswer
+from .manager import YueZhoMergingManager
 from .prompt import YueZhoHansMergingPrompt, YueZhoHantMergingPrompt
-from .query import YueZhoMergingQuery
-from .test_case import YueZhoMergingTestCase
 
 __all__ = [
     "YueZhoHansMergingPrompt",
     "YueZhoHantMergingPrompt",
-    "YueZhoMergingAnswer",
-    "YueZhoMergingQuery",
-    "YueZhoMergingTestCase",
+    "YueZhoMergingManager",
 ]

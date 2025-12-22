@@ -8,10 +8,8 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_block_gapped import (
-    DualBlockGappedProcessor,
-    DualBlockGappedTestCase,
-)
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
@@ -27,7 +25,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_from_zho_translation_test_cases(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-) -> list[DualBlockGappedTestCase]:
+) -> list[TestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -69,7 +67,7 @@ def get_yue_from_zho_translated(
 
 def get_yue_from_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-    default_test_cases: list[DualBlockGappedTestCase] | None = None,
+    default_test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> DualBlockGappedProcessor:
     """Get DualBlockGappedProcessor with provided configuration.

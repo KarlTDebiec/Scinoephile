@@ -15,24 +15,24 @@ from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
-from scinoephile.llms.base import load_test_cases_from_json
-from scinoephile.llms.dual_block import DualBlockPrompt, DualBlockTestCase
+from scinoephile.llms.base import TestCase, load_test_cases_from_json
+from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedManager,
     DualBlockGappedPrompt,
-    DualBlockGappedTestCase,
 )
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
-from scinoephile.llms.dual_pair import DualPairPrompt, DualPairTestCase
+from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionTestCase
-from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
+from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.merging import (
     YueZhoHansMergingPrompt,
-    YueZhoMergingTestCase,
+    YueZhoMergingManager,
 )
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
-    YueZhoProofreadingTestCase,
+    YueZhoProofreadingManager,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
@@ -206,7 +206,7 @@ def mlamd_yue_hans_eng() -> Series:
 def get_mlamd_yue_shifting_test_cases(
     prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
     **kwargs: Any,
-) -> list[DualPairTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
@@ -217,7 +217,10 @@ def get_mlamd_yue_shifting_test_cases(
     """
     path = title_root / "audio" / "cantonese" / "shifting.json"
     return load_test_cases_from_json(
-        path, DualPairTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        DualPairManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -225,7 +228,7 @@ def get_mlamd_yue_shifting_test_cases(
 def get_mlamd_yue_merging_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansMergingPrompt,
     **kwargs: Any,
-) -> list[YueZhoMergingTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
@@ -236,7 +239,10 @@ def get_mlamd_yue_merging_test_cases(
     """
     path = title_root / "audio" / "cantonese" / "merging.json"
     return load_test_cases_from_json(
-        path, YueZhoMergingTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        YueZhoMergingManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -244,7 +250,7 @@ def get_mlamd_yue_merging_test_cases(
 def get_mlamd_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Any,
-) -> list[YueZhoProofreadingTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 粵文 proofreading test cases.
 
     Arguments:
@@ -255,7 +261,10 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, YueZhoProofreadingTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        YueZhoProofreadingManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -263,7 +272,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
 def get_mlamd_yue_from_zho_translation_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
-) -> list[DualBlockGappedTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 粵文 translation test cases.
 
     Arguments:
@@ -274,7 +283,10 @@ def get_mlamd_yue_from_zho_translation_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "translation.json"
     return load_test_cases_from_json(
-        path, DualBlockGappedTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        DualBlockGappedManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -282,7 +294,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 def get_mlamd_yue_vs_zho_review_test_cases(
     prompt_cls: type[DualBlockPrompt] = YueHansReviewPrompt,
     **kwargs: Any,
-) -> list[DualBlockTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 粵文 review test cases.
 
     Arguments:
@@ -293,7 +305,10 @@ def get_mlamd_yue_vs_zho_review_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "review.json"
     return load_test_cases_from_json(
-        path, DualBlockTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        DualBlockManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -301,7 +316,7 @@ def get_mlamd_yue_vs_zho_review_test_cases(
 def get_mlamd_eng_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
     **kwargs: Any,
-) -> list[MonoBlockTestCase]:
+) -> list[TestCase]:
     """Get MLAMD English proofreading test cases.
 
     Arguments:
@@ -312,7 +327,10 @@ def get_mlamd_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        MonoBlockManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -320,7 +338,7 @@ def get_mlamd_eng_proofreading_test_cases(
 def get_mlamd_zho_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
-) -> list[MonoBlockTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 中文 proofreading test cases.
 
     Arguments:
@@ -331,7 +349,10 @@ def get_mlamd_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, MonoBlockTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        MonoBlockManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -339,7 +360,7 @@ def get_mlamd_zho_proofreading_test_cases(
 def get_mlamd_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
     **kwargs: Any,
-) -> list[OcrFusionTestCase]:
+) -> list[TestCase]:
     """Get MLAMD English OCR fusion test cases.
 
     Arguments:
@@ -350,7 +371,10 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        OcrFusionManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )
 
 
@@ -358,7 +382,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 def get_mlamd_zho_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
-) -> list[OcrFusionTestCase]:
+) -> list[TestCase]:
     """Get MLAMD 中文 OCR fusion test cases.
 
     Arguments:
@@ -369,5 +393,8 @@ def get_mlamd_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
+        path,
+        OcrFusionManager,
+        prompt_cls=prompt_cls,
+        **kwargs,
     )

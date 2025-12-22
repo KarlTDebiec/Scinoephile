@@ -14,6 +14,7 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
+    TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
@@ -21,8 +22,8 @@ from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
+from .manager import DualBlockGappedManager
 from .prompt import DualBlockGappedPrompt
-from .test_case import DualBlockGappedTestCase
 
 __all__ = ["DualBlockGappedProcessor"]
 
@@ -36,10 +37,10 @@ class DualBlockGappedProcessor:
     def __init__(
         self,
         prompt_cls: type[DualBlockGappedPrompt],
-        test_cases: list[DualBlockGappedTestCase] | None = None,
+        test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualBlockGappedTestCase] | None = None,
+        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -60,7 +61,7 @@ class DualBlockGappedProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualBlockGappedTestCase,
+                    DualBlockGappedManager,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -111,7 +112,7 @@ class DualBlockGappedProcessor:
                 continue
 
             # Query LLM
-            test_case_cls = DualBlockGappedTestCase.get_test_case_cls(
+            test_case_cls = DualBlockGappedManager.get_test_case_cls(
                 size, gaps, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls

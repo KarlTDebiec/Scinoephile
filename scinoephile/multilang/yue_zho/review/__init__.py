@@ -8,7 +8,8 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_block import DualBlockProcessor, DualBlockTestCase
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.dual_block import DualBlockProcessor
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
@@ -25,7 +26,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_vs_zho_test_cases(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-) -> list[DualBlockTestCase]:
+) -> list[TestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -67,7 +68,7 @@ def get_yue_vs_zho_reviewed(
 
 def get_yue_vs_zho_processor(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-    default_test_cases: list[DualBlockTestCase] | None = None,
+    default_test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> DualBlockProcessor:
     """Get DualBlockProcessor with provided configuration.

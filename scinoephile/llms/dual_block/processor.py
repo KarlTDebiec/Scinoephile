@@ -13,14 +13,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
+    TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
+from .manager import DualBlockManager
 from .prompt import DualBlockPrompt
-from .test_case import DualBlockTestCase
 
 __all__ = ["DualBlockProcessor"]
 
@@ -34,10 +35,10 @@ class DualBlockProcessor:
     def __init__(
         self,
         prompt_cls: type[DualBlockPrompt],
-        test_cases: list[DualBlockTestCase] | None = None,
+        test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualBlockTestCase] | None = None,
+        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -58,7 +59,7 @@ class DualBlockProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualBlockTestCase,
+                    DualBlockManager,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -109,7 +110,7 @@ class DualBlockProcessor:
             size = len(one_blk)
 
             # Query LLM
-            test_case_cls = DualBlockTestCase.get_test_case_cls(size, self.prompt_cls)
+            test_case_cls = DualBlockManager.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):

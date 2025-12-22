@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-from .answer import DualPairAnswer
+from .manager import DualPairManager
 from .prompt import DualPairPrompt
-from .query import DualPairQuery
-from .test_case import DualPairTestCase
 
 __all__ = [
-    "DualPairAnswer",
+    "DualPairManager",
     "DualPairPrompt",
-    "DualPairQuery",
-    "DualPairTestCase",
 ]

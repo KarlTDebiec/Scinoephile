@@ -14,6 +14,7 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
+    TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
@@ -21,8 +22,8 @@ from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 from scinoephile.testing import test_data_root
 
+from .manager import YueZhoProofreadingManager
 from .prompts import YueZhoHansProofreadingPrompt
-from .test_case import YueZhoProofreadingTestCase
 
 __all__ = ["YueZhoProofreadingProcessor"]
 
@@ -36,10 +37,10 @@ class YueZhoProofreadingProcessor:
     def __init__(
         self,
         prompt_cls: type[YueZhoHansProofreadingPrompt],
-        test_cases: list[YueZhoProofreadingTestCase] | None = None,
+        test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[YueZhoProofreadingTestCase] | None = None,
+        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -60,7 +61,7 @@ class YueZhoProofreadingProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    YueZhoProofreadingTestCase,
+                    YueZhoProofreadingManager,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -107,8 +108,8 @@ class YueZhoProofreadingProcessor:
                 sync_grps[two_idx][0].append(one_idx)
 
             # Query LLM
-            test_case_cls = YueZhoProofreadingTestCase.get_test_case_cls(
-                self.prompt_cls
+            test_case_cls = YueZhoProofreadingManager.get_test_case_cls(
+                prompt_cls=self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
             for one_grp, two_grp in sync_grps:
@@ -131,7 +132,7 @@ class YueZhoProofreadingProcessor:
                 }
                 query = query_cls(**query_kwargs)
                 test_case = test_case_cls(query=query)
-                test_case: YueZhoProofreadingTestCase = self.queryer(test_case)
+                test_case: TestCase = self.queryer(test_case)
 
                 output = getattr(test_case.answer, self.prompt_cls.output)
                 if output == "\ufffd":
