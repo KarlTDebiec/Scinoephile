@@ -1,11 +1,11 @@
 [
   {
     "query": {
-      "zhongwen": "沿荔枝角道直出大角咀道",
       "yuewen_to_merge": [
         "沿住荔枝角度",
         "直出大角咀度"
-      ]
+      ],
+      "zhongwen": "沿荔枝角道直出大角咀道"
     },
     "answer": {
       "yuewen_merged": "沿住荔枝角度直出大角咀度"
@@ -14,12 +14,12 @@
   },
   {
     "query": {
-      "zhongwen": "经好彩酒家左转花园街乐园牛丸王⋯",
       "yuewen_to_merge": [
         "经过好彩走家",
         "再左转返出花园街",
         "乐园牛园望对上"
-      ]
+      ],
+      "zhongwen": "经好彩酒家左转花园街乐园牛丸王⋯"
     },
     "answer": {
       "yuewen_merged": "经过好彩走家再左转返出花园街乐园牛园望对上⋯"
@@ -30,10 +30,10 @@
   },
   {
     "query": {
-      "zhongwen": "更正一下：",
       "yuewen_to_merge": [
         "都系唔好"
-      ]
+      ],
+      "zhongwen": "更正一下："
     },
     "answer": {
       "yuewen_merged": "都系唔好："
@@ -43,12 +43,12 @@
   },
   {
     "query": {
-      "zhongwen": "转呀，转⋯再更正一下：",
       "yuewen_to_merge": [
         "转下",
         "转下",
         "都系唔好"
-      ]
+      ],
+      "zhongwen": "转呀，转⋯再更正一下："
     },
     "answer": {
       "yuewen_merged": "转下，转下⋯都系唔好："
@@ -58,11 +58,11 @@
   },
   {
     "query": {
-      "zhongwen": "直出亚皆老街跨过火车桥右转太平道",
       "yuewen_to_merge": [
         "都系出返去阿街路街飞过火车桥",
         "右转入太平道"
-      ]
+      ],
+      "zhongwen": "直出亚皆老街跨过火车桥右转太平道"
     },
     "answer": {
       "yuewen_merged": "都系出返去阿街路街飞过火车桥右转入太平道"
@@ -71,11 +71,11 @@
   },
   {
     "query": {
-      "zhongwen": "再右拐窝打老道向女人街方向飞⋯",
       "yuewen_to_merge": [
         "再右转抹返出去窝打炉道",
         "向女人街方向飞下下"
-      ]
+      ],
+      "zhongwen": "再右拐窝打老道向女人街方向飞⋯"
     },
     "answer": {
       "yuewen_merged": "再右转抹返出去窝打炉道向女人街方向飞下下⋯"
@@ -85,11 +85,11 @@
   },
   {
     "query": {
-      "zhongwen": "飞呀，飞⋯",
       "yuewen_to_merge": [
         "飞下",
         "飞下"
-      ]
+      ],
+      "zhongwen": "飞呀，飞⋯"
     },
     "answer": {
       "yuewen_merged": "飞下，飞下⋯"
@@ -99,10 +99,10 @@
   },
   {
     "query": {
-      "zhongwen": "也就是在麦太右边额角上⋯",
       "yuewen_to_merge": [
         "亦即系麦太右边云晶对上"
-      ]
+      ],
+      "zhongwen": "也就是在麦太右边额角上⋯"
     },
     "answer": {
       "yuewen_merged": "亦即系麦太右边云晶对上⋯"
@@ -112,11 +112,11 @@
   },
   {
     "query": {
-      "zhongwen": "更正：左边额角上⋯",
       "yuewen_to_merge": [
         "都系唔好",
         "左边云晶对上"
-      ]
+      ],
+      "zhongwen": "更正：左边额角上⋯"
     },
     "answer": {
       "yuewen_merged": "都系唔好：左边云晶对上⋯"
@@ -127,12 +127,12 @@
   },
   {
     "query": {
-      "zhongwen": "转呀，转⋯",
       "yuewen_to_merge": [
         "转下",
         "转下",
         "转下噉"
-      ]
+      ],
+      "zhongwen": "转呀，转⋯"
     },
     "answer": {
       "yuewen_merged": "转下，转下，转下噉⋯"
@@ -143,10 +143,10 @@
   },
   {
     "query": {
-      "zhongwen": "脑海中同时出现即将诞生的儿子容貌⋯",
       "yuewen_to_merge": [
         "而脑入面亦即时出现咗快要出世个仔嘅样"
-      ]
+      ],
+      "zhongwen": "脑海中同时出现即将诞生的儿子容貌⋯"
     },
     "answer": {
       "yuewen_merged": "而脑入面亦即时出现咗快要出世个仔嘅样⋯"
@@ -156,11 +156,11 @@
   },
   {
     "query": {
-      "zhongwen": "希望他好聪明，读书好叻！",
       "yuewen_to_merge": [
         "希望佢好聪明",
         "读书好叻"
-      ]
+      ],
+      "zhongwen": "希望他好聪明，读书好叻！"
     },
     "answer": {
       "yuewen_merged": "希望佢好聪明，读书好叻！"
@@ -170,10 +170,10 @@
   },
   {
     "query": {
-      "zhongwen": "于是她向胶兜补充说：",
       "yuewen_to_merge": [
         "于是佢对住胶兜补充噉话"
-      ]
+      ],
+      "zhongwen": "于是她向胶兜补充说："
     },
     "answer": {
       "yuewen_merged": "于是佢对住胶兜补充噉话："
@@ -183,11 +183,11 @@
   },
   {
     "query": {
-      "zhongwen": "或者读书唔叻，工作叻呢？",
       "yuewen_to_merge": [
         "或者读书唔叻",
         "出嚟做嘢叻啦"
-      ]
+      ],
+      "zhongwen": "或者读书唔叻，工作叻呢？"
     },
     "answer": {
       "yuewen_merged": "或者读书唔叻，出嚟做嘢叻啦？"
@@ -197,10 +197,10 @@
   },
   {
     "query": {
-      "zhongwen": "又或者⋯",
       "yuewen_to_merge": [
         "又或者呢"
-      ]
+      ],
+      "zhongwen": "又或者⋯"
     },
     "answer": {
       "yuewen_merged": "又或者呢⋯"
@@ -210,10 +210,10 @@
   },
   {
     "query": {
-      "zhongwen": "又或者好靓仔，好靓仔",
       "yuewen_to_merge": [
         "又或者系好靓仔好靓仔"
-      ]
+      ],
+      "zhongwen": "又或者好靓仔，好靓仔"
     },
     "answer": {
       "yuewen_merged": "又或者系好靓仔，好靓仔"
@@ -223,10 +223,10 @@
   },
   {
     "query": {
-      "zhongwen": "跟周润发，梁朝伟那么靓仔！",
       "yuewen_to_merge": [
         "好似周润发同埋梁朝伟咁靓仔"
-      ]
+      ],
+      "zhongwen": "跟周润发，梁朝伟那么靓仔！"
     },
     "answer": {
       "yuewen_merged": "好似周润发，同埋梁朝伟咁靓仔！"
@@ -237,11 +237,11 @@
   },
   {
     "query": {
-      "zhongwen": "胶兜仍然在转，毫无点头迹象",
       "yuewen_to_merge": [
         "胶兜依然系噉喺度转",
         "好似一啲应承嘅迹象都冇"
-      ]
+      ],
+      "zhongwen": "胶兜仍然在转，毫无点头迹象"
     },
     "answer": {
       "yuewen_merged": "胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇"
@@ -251,10 +251,10 @@
   },
   {
     "query": {
-      "zhongwen": "赶忙趁胶兜落地前另许一个愿望：",
       "yuewen_to_merge": [
         "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望"
-      ]
+      ],
+      "zhongwen": "赶忙趁胶兜落地前另许一个愿望："
     },
     "answer": {
       "yuewen_merged": "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望："
@@ -265,11 +265,11 @@
   },
   {
     "query": {
-      "zhongwen": "唔聪明唔靓仔也算了，只要福星高照",
       "yuewen_to_merge": [
         "就算唔系咁聪明同咁靓仔",
         "只要复星高照"
-      ]
+      ],
+      "zhongwen": "唔聪明唔靓仔也算了，只要福星高照"
     },
     "answer": {
       "yuewen_merged": "就算唔系咁聪明同咁靓仔，只要复星高照"
@@ -280,11 +280,11 @@
   },
   {
     "query": {
-      "zhongwen": "一世够运，逢凶化吉！",
       "yuewen_to_merge": [
         "一世救运",
         "乜嘢事都逢凶化㗎喇"
-      ]
+      ],
+      "zhongwen": "一世够运，逢凶化吉！"
     },
     "answer": {
       "yuewen_merged": "一世救运，乜嘢事都逢凶化㗎喇！"
@@ -294,10 +294,10 @@
   },
   {
     "query": {
-      "zhongwen": "但总得要叻仔呀！",
       "yuewen_to_merge": [
         "但系都要叻仔先得㗎"
-      ]
+      ],
+      "zhongwen": "但总得要叻仔呀！"
     },
     "answer": {
       "yuewen_merged": "但系都要叻仔先得㗎！"
@@ -307,10 +307,10 @@
   },
   {
     "query": {
-      "zhongwen": "最后，胶兜「嘀督」一声落地",
       "yuewen_to_merge": [
         "最后胶兜滴嘟一声咁落地"
-      ]
+      ],
+      "zhongwen": "最后，胶兜「嘀督」一声落地"
     },
     "answer": {
       "yuewen_merged": "最后，胶兜「滴嘟」一声咁落地"
@@ -321,12 +321,12 @@
   },
   {
     "query": {
-      "zhongwen": "嘀督？嘀督，就是答应了",
       "yuewen_to_merge": [
         "滴嘟",
         "滴嘟㖞",
         "即系应承啦"
-      ]
+      ],
+      "zhongwen": "嘀督？嘀督，就是答应了"
     },
     "answer": {
       "yuewen_merged": "滴嘟？滴嘟㖞，即系应承啦"
@@ -336,11 +336,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦太想，这次走运了！",
       "yuewen_to_merge": [
         "麦太心谂",
         "今次冇死喇"
-      ]
+      ],
+      "zhongwen": "麦太想，这次走运了！"
     },
     "answer": {
       "yuewen_merged": "麦太心谂，今次冇死喇！"
@@ -351,10 +351,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是答应了些什么呢？",
       "yuewen_to_merge": [
         "但你应承咗啲咩呢"
-      ]
+      ],
+      "zhongwen": "可是答应了些什么呢？"
     },
     "answer": {
       "yuewen_merged": "但你应承咗啲咩呢？"
@@ -364,11 +364,11 @@
   },
   {
     "query": {
-      "zhongwen": "叻仔？好运？",
       "yuewen_to_merge": [
         "叻仔",
         "好运"
-      ]
+      ],
+      "zhongwen": "叻仔？好运？"
     },
     "answer": {
       "yuewen_merged": "叻仔？好运？"
@@ -378,10 +378,10 @@
   },
   {
     "query": {
-      "zhongwen": "还是似周润发？",
       "yuewen_to_merge": [
         "定系话自周人烦啊"
-      ]
+      ],
+      "zhongwen": "还是似周润发？"
     },
     "answer": {
       "yuewen_merged": "定系话自周人烦啊？"
@@ -391,11 +391,11 @@
   },
   {
     "query": {
-      "zhongwen": "不行，胶胶声，多难听！",
       "yuewen_to_merge": [
         "都系唔好",
         "胶胶声咁难听"
-      ]
+      ],
+      "zhongwen": "不行，胶胶声，多难听！"
     },
     "answer": {
       "yuewen_merged": "都系唔好，胶胶声，咁难听！"
@@ -406,10 +406,10 @@
   },
   {
     "query": {
-      "zhongwen": "还是唤他麦兜！",
       "yuewen_to_merge": [
         "不如叫麦兜啦"
-      ]
+      ],
+      "zhongwen": "还是唤他麦兜！"
     },
     "answer": {
       "yuewen_merged": "不如叫麦兜啦！"
@@ -419,10 +419,10 @@
   },
   {
     "query": {
-      "zhongwen": "各位⋯",
       "yuewen_to_merge": [
         "各位"
-      ]
+      ],
+      "zhongwen": "各位⋯"
     },
     "answer": {
       "yuewen_merged": "各位⋯"
@@ -432,10 +432,10 @@
   },
   {
     "query": {
-      "zhongwen": "我就是险些给定名麦胶的小朋友⋯",
       "yuewen_to_merge": [
         "我就系呢个差少少就叫做麦胶嘅小朋友"
-      ]
+      ],
+      "zhongwen": "我就是险些给定名麦胶的小朋友⋯"
     },
     "answer": {
       "yuewen_merged": "我就系呢个差少少就叫做麦胶嘅小朋友⋯"
@@ -445,10 +445,10 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜！",
       "yuewen_to_merge": [
         "麦兜"
-      ]
+      ],
+      "zhongwen": "麦兜！"
     },
     "answer": {
       "yuewen_merged": "麦兜！"
@@ -458,12 +458,12 @@
   },
   {
     "query": {
-      "zhongwen": "麦太，没见面一阵",
       "yuewen_to_merge": [
         "咦",
         "麦太",
         "咩唔见你一排"
-      ]
+      ],
+      "zhongwen": "麦太，没见面一阵"
     },
     "answer": {
       "yuewen_merged": "咦，麦太，咩唔见你一排"
@@ -473,10 +473,10 @@
   },
   {
     "query": {
-      "zhongwen": "怎么小腿粗起来了？",
       "yuewen_to_merge": [
         "个脚刮囊粗咗咁多呀"
-      ]
+      ],
+      "zhongwen": "怎么小腿粗起来了？"
     },
     "answer": {
       "yuewen_merged": "个脚刮囊粗咗咁多呀？"
@@ -486,11 +486,11 @@
   },
   {
     "query": {
-      "zhongwen": "可怜呀，每天扑来扑去⋯",
       "yuewen_to_merge": [
         "鬼咩",
         "日日扑嚟扑去"
-      ]
+      ],
+      "zhongwen": "可怜呀，每天扑来扑去⋯"
     },
     "answer": {
       "yuewen_merged": "鬼咩，日日扑嚟扑去⋯"
@@ -500,10 +500,10 @@
   },
   {
     "query": {
-      "zhongwen": "替儿子找幼稚园！",
       "yuewen_to_merge": [
         "同我仔揾幼稚园吖嘛"
-      ]
+      ],
+      "zhongwen": "替儿子找幼稚园！"
     },
     "answer": {
       "yuewen_merged": "同我仔揾幼稚园吖嘛！"
@@ -513,10 +513,10 @@
   },
   {
     "query": {
-      "zhongwen": "旧中侨国货楼上的⋯",
       "yuewen_to_merge": [
         "旧中桥百货公司楼上嗰间"
-      ]
+      ],
+      "zhongwen": "旧中侨国货楼上的⋯"
     },
     "answer": {
       "yuewen_merged": "旧中桥百货公司楼上嗰间⋯"
@@ -526,10 +526,10 @@
   },
   {
     "query": {
-      "zhongwen": "春田花花幼稚园？",
       "yuewen_to_merge": [
         "春田花花幼稚园呢"
-      ]
+      ],
+      "zhongwen": "春田花花幼稚园？"
     },
     "answer": {
       "yuewen_merged": "春田花花幼稚园呢？"
@@ -539,10 +539,10 @@
   },
   {
     "query": {
-      "zhongwen": "就是座落界限街南昌街交界⋯",
       "yuewen_to_merge": [
         "就系坐落喺界限街同南昌街交界"
-      ]
+      ],
+      "zhongwen": "就是座落界限街南昌街交界⋯"
     },
     "answer": {
       "yuewen_merged": "就系坐落喺界限街同南昌街交界⋯"
@@ -552,10 +552,10 @@
   },
   {
     "query": {
-      "zhongwen": "银城美食广场附近的⋯",
       "yuewen_to_merge": [
         "银城美食广场附近嗰间"
-      ]
+      ],
+      "zhongwen": "银城美食广场附近的⋯"
     },
     "answer": {
       "yuewen_merged": "银城美食广场附近嗰间⋯"
@@ -565,10 +565,10 @@
   },
   {
     "query": {
-      "zhongwen": "春田花花幼稚园？",
       "yuewen_to_merge": [
         "春田花花幼稚园呀"
-      ]
+      ],
+      "zhongwen": "春田花花幼稚园？"
     },
     "answer": {
       "yuewen_merged": "春田花花幼稚园呀？"
@@ -578,11 +578,11 @@
   },
   {
     "query": {
-      "zhongwen": "对！深水埗地铁站步行不用10分钟！",
       "yuewen_to_merge": [
         "系呀",
         "深水埗地铁站口行过去唔使十分钟呀"
-      ]
+      ],
+      "zhongwen": "对！深水埗地铁站步行不用10分钟！"
     },
     "answer": {
       "yuewen_merged": "系呀！深水埗地铁站口行过去唔使十分钟呀！"
@@ -593,11 +593,11 @@
   },
   {
     "query": {
-      "zhongwen": "春田花花幼稚园，师资优良⋯",
       "yuewen_to_merge": [
         "春田花花幼稚园",
         "诗诗优良"
-      ]
+      ],
+      "zhongwen": "春田花花幼稚园，师资优良⋯"
     },
     "answer": {
       "yuewen_merged": "春田花花幼稚园，诗诗优良⋯"
@@ -607,10 +607,10 @@
   },
   {
     "query": {
-      "zhongwen": "而且还有西人教英文！",
       "yuewen_to_merge": [
         "仲系西人教英文添㗎"
-      ]
+      ],
+      "zhongwen": "而且还有西人教英文！"
     },
     "answer": {
       "yuewen_merged": "仲系西人教英文添㗎！"
@@ -620,11 +620,11 @@
   },
   {
     "query": {
-      "zhongwen": "西人教英文？",
       "yuewen_to_merge": [
         "咦",
         "西人教英文"
-      ]
+      ],
+      "zhongwen": "西人教英文？"
     },
     "answer": {
       "yuewen_merged": "咦，西人教英文？"
@@ -634,10 +634,10 @@
   },
   {
     "query": {
-      "zhongwen": "是呀！",
       "yuewen_to_merge": [
         "系呀"
-      ]
+      ],
+      "zhongwen": "是呀！"
     },
     "answer": {
       "yuewen_merged": "系呀！"
@@ -647,11 +647,11 @@
   },
   {
     "query": {
-      "zhongwen": "春田花花，确有好多西人呀！",
       "yuewen_to_merge": [
         "春田花花",
         "真系好多西人㗎"
-      ]
+      ],
+      "zhongwen": "春田花花，确有好多西人呀！"
     },
     "answer": {
       "yuewen_merged": "春田花花，真系好多西人㗎！"
@@ -661,10 +661,10 @@
   },
   {
     "query": {
-      "zhongwen": "这个猪样白兔小朋友⋯",
       "yuewen_to_merge": [
         "呢个扮紧白兔猪样嘅小朋友"
-      ]
+      ],
+      "zhongwen": "这个猪样白兔小朋友⋯"
     },
     "answer": {
       "yuewen_merged": "呢个扮紧白兔猪样嘅小朋友⋯"
@@ -674,11 +674,11 @@
   },
   {
     "query": {
-      "zhongwen": "横看竖看也不像发哥伟仔的一个⋯",
       "yuewen_to_merge": [
         "即系横睇掂睇都唔似发哥或者",
         "位仔嗰个呢"
-      ]
+      ],
+      "zhongwen": "横看竖看也不像发哥伟仔的一个⋯"
     },
     "answer": {
       "yuewen_merged": "即系横睇掂睇都唔似发哥或者位仔嗰个呢⋯"
@@ -688,11 +688,11 @@
   },
   {
     "query": {
-      "zhongwen": "就是我，麦兜",
       "yuewen_to_merge": [
         "就系我",
         "麦兜"
-      ]
+      ],
+      "zhongwen": "就是我，麦兜"
     },
     "answer": {
       "yuewen_merged": "就系我，麦兜"
@@ -702,10 +702,10 @@
   },
   {
     "query": {
-      "zhongwen": "这么多年来⋯",
       "yuewen_to_merge": [
         "所以咁多年嚟"
-      ]
+      ],
+      "zhongwen": "这么多年来⋯"
     },
     "answer": {
       "yuewen_merged": "所以咁多年嚟⋯"
@@ -715,10 +715,10 @@
   },
   {
     "query": {
-      "zhongwen": "蛋挞！　　蛋挞！",
       "yuewen_to_merge": [
         "大湖荒岩宅"
-      ]
+      ],
+      "zhongwen": "蛋挞！　　蛋挞！"
     },
     "answer": {
       "yuewen_merged": "大湖荒岩宅"
@@ -728,10 +728,10 @@
   },
   {
     "query": {
-      "zhongwen": "荔芋火鸭札！　　荔芋火鸭札！",
       "yuewen_to_merge": [
         "湾吉校坟交涉设"
-      ]
+      ],
+      "zhongwen": "荔芋火鸭札！　　荔芋火鸭札！"
     },
     "answer": {
       "yuewen_merged": "湾吉校坟交涉设"
@@ -741,10 +741,10 @@
   },
   {
     "query": {
-      "zhongwen": "也不能忘记校训九十八！",
       "yuewen_to_merge": [
         "都唔好湾吉校坟交涉白"
-      ]
+      ],
+      "zhongwen": "也不能忘记校训九十八！"
     },
     "answer": {
       "yuewen_merged": "都唔好湾吉校坟交涉白！"
@@ -754,10 +754,10 @@
   },
   {
     "query": {
-      "zhongwen": "好！各位同学⋯",
       "yuewen_to_merge": [
         "嗰个位同学"
-      ]
+      ],
+      "zhongwen": "好！各位同学⋯"
     },
     "answer": {
       "yuewen_merged": "嗰个位同学⋯"
@@ -767,10 +767,10 @@
   },
   {
     "query": {
-      "zhongwen": "一个重要主题：",
       "yuewen_to_merge": [
         "一个可重要嘅主题"
-      ]
+      ],
+      "zhongwen": "一个重要主题："
     },
     "answer": {
       "yuewen_merged": "一个可重要嘅主题："
@@ -780,11 +780,11 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友，这个月你们交过学费没有？",
       "yuewen_to_merge": [
         "小朋友",
         "你哋今个月交咗学费咩呀"
-      ]
+      ],
+      "zhongwen": "小朋友，这个月你们交过学费没有？"
     },
     "answer": {
       "yuewen_merged": "小朋友，你哋今个月交咗学费咩呀？"
@@ -795,10 +795,10 @@
   },
   {
     "query": {
-      "zhongwen": "交过了！",
       "yuewen_to_merge": [
         "交"
-      ]
+      ],
+      "zhongwen": "交过了！"
     },
     "answer": {
       "yuewen_merged": "交！"
@@ -809,12 +809,12 @@
   },
   {
     "query": {
-      "zhongwen": "太好了！大家去上堂吧",
       "yuewen_to_merge": [
         "哎",
         "好在",
         "噉大家可以返去上堂喇"
-      ]
+      ],
+      "zhongwen": "太好了！大家去上堂吧"
     },
     "answer": {
       "yuewen_merged": "哎，好在！噉大家可以返去上堂喇"
@@ -825,10 +825,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是，对我和我一班同学",
       "yuewen_to_merge": [
         "但系对于我同埋我班同学仔嚟讲"
-      ]
+      ],
+      "zhongwen": "可是，对我和我一班同学"
     },
     "answer": {
       "yuewen_merged": "但系，对于我同埋我班同学仔嚟讲"
@@ -838,11 +838,11 @@
   },
   {
     "query": {
-      "zhongwen": "这儿是我们最快乐，最美丽的乐园⋯",
       "yuewen_to_merge": [
         "呢度系我哋最快乐",
         "最美丽嘅乐园"
-      ]
+      ],
+      "zhongwen": "这儿是我们最快乐，最美丽的乐园⋯"
     },
     "answer": {
       "yuewen_merged": "呢度系我哋最快乐，最美丽嘅乐园⋯"
@@ -852,10 +852,10 @@
   },
   {
     "query": {
-      "zhongwen": "⋯还有一个很疼我们",
       "yuewen_to_merge": [
         "仲有一个好疼我哋"
-      ]
+      ],
+      "zhongwen": "⋯还有一个很疼我们"
     },
     "answer": {
       "yuewen_merged": "⋯仲有一个好疼我哋"
@@ -865,11 +865,11 @@
   },
   {
     "query": {
-      "zhongwen": "就是有点游魂的Miss Chan",
       "yuewen_to_merge": [
         "不过就有少少失魂嘅班主有Miss",
         "Chan"
-      ]
+      ],
+      "zhongwen": "就是有点游魂的Miss Chan"
     },
     "answer": {
       "yuewen_merged": "不过就有少少失魂嘅班主有Miss Chan"
@@ -880,11 +880,11 @@
   },
   {
     "query": {
-      "zhongwen": "我们现在开始点名",
       "yuewen_to_merge": [
         "好喇",
         "我哋而家开始点名"
-      ]
+      ],
+      "zhongwen": "我们现在开始点名"
     },
     "answer": {
       "yuewen_merged": "好喇，我哋而家开始点名"
@@ -894,11 +894,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦唛同学！　　到！",
       "yuewen_to_merge": [
         "麦麦同学",
         "到"
-      ]
+      ],
+      "zhongwen": "麦唛同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "麦麦同学！　　到！"
@@ -908,11 +908,11 @@
   },
   {
     "query": {
-      "zhongwen": "亚辉同学！　　到！",
       "yuewen_to_merge": [
         "阿辉同学",
         "到"
-      ]
+      ],
+      "zhongwen": "亚辉同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "阿辉同学！　　到！"
@@ -922,11 +922,11 @@
   },
   {
     "query": {
-      "zhongwen": "菇时同学！　　到！",
       "yuewen_to_merge": [
         "Boosie同学",
         "到"
-      ]
+      ],
+      "zhongwen": "菇时同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "Boosie同学！　　到！"
@@ -936,11 +936,11 @@
   },
   {
     "query": {
-      "zhongwen": "得巴同学！　　到！",
       "yuewen_to_merge": [
         "德巴同学",
         "到"
-      ]
+      ],
+      "zhongwen": "得巴同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "德巴同学！　　到！"
@@ -950,11 +950,11 @@
   },
   {
     "query": {
-      "zhongwen": "阿May同学！　　到！",
       "yuewen_to_merge": [
         "阿May同学",
         "到"
-      ]
+      ],
+      "zhongwen": "阿May同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "阿May同学！　　到！"
@@ -964,11 +964,11 @@
   },
   {
     "query": {
-      "zhongwen": "阿June同学！　　到！",
       "yuewen_to_merge": [
         "阿June同学",
         "到"
-      ]
+      ],
+      "zhongwen": "阿June同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "阿June同学！　　到！"
@@ -978,10 +978,10 @@
   },
   {
     "query": {
-      "zhongwen": "阿May同学！",
       "yuewen_to_merge": [
         "阿May同学"
-      ]
+      ],
+      "zhongwen": "阿May同学！"
     },
     "answer": {
       "yuewen_merged": "阿May同学！"
@@ -991,11 +991,11 @@
   },
   {
     "query": {
-      "zhongwen": "Miss Chan，我点过两次了！",
       "yuewen_to_merge": [
         "Miss",
         "Chan你点咗我两次喇"
-      ]
+      ],
+      "zhongwen": "Miss Chan，我点过两次了！"
     },
     "answer": {
       "yuewen_merged": "Miss Chan，你点咗我两次喇！"
@@ -1006,11 +1006,11 @@
   },
   {
     "query": {
-      "zhongwen": "呀，真的吗？",
       "yuewen_to_merge": [
         "啊",
         "系咩"
-      ]
+      ],
+      "zhongwen": "呀，真的吗？"
     },
     "answer": {
       "yuewen_merged": "啊，系咩？"
@@ -1020,11 +1020,11 @@
   },
   {
     "query": {
-      "zhongwen": "我们现在继续点名",
       "yuewen_to_merge": [
         "好",
         "我哋而家继续点名"
-      ]
+      ],
+      "zhongwen": "我们现在继续点名"
     },
     "answer": {
       "yuewen_merged": "好，我哋而家继续点名"
@@ -1034,11 +1034,11 @@
   },
   {
     "query": {
-      "zhongwen": "菇时同学！　　到！",
       "yuewen_to_merge": [
         "川明同学",
         "到"
-      ]
+      ],
+      "zhongwen": "菇时同学！　　到！"
     },
     "answer": {
       "yuewen_merged": "川明同学！　　到！"
@@ -1048,11 +1048,11 @@
   },
   {
     "query": {
-      "zhongwen": "还有谁没点过吗？",
       "yuewen_to_merge": [
         "好",
         "仲有边个未点"
-      ]
+      ],
+      "zhongwen": "还有谁没点过吗？"
     },
     "answer": {
       "yuewen_merged": "好，仲有边个未点？"
@@ -1063,11 +1063,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜！",
       "yuewen_to_merge": [
         "猫",
         "噢"
-      ]
+      ],
+      "zhongwen": "麦兜！"
     },
     "answer": {
       "yuewen_merged": "猫噢！"
@@ -1077,10 +1077,10 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜同学！",
       "yuewen_to_merge": [
         "麦兜同学"
-      ]
+      ],
+      "zhongwen": "麦兜同学！"
     },
     "answer": {
       "yuewen_merged": "麦兜同学！"
@@ -1090,12 +1090,12 @@
   },
   {
     "query": {
-      "zhongwen": "麦唛呀，即是呢⋯",
       "yuewen_to_merge": [
         "妈妈啊",
         "麦兜同学",
         "即系呢"
-      ]
+      ],
+      "zhongwen": "麦唛呀，即是呢⋯"
     },
     "answer": {
       "yuewen_merged": "妈妈啊，麦兜同学，即系呢⋯"
@@ -1105,10 +1105,10 @@
   },
   {
     "query": {
-      "zhongwen": "我好像觉得呢⋯",
       "yuewen_to_merge": [
         "我个心总系仁住仁住"
-      ]
+      ],
+      "zhongwen": "我好像觉得呢⋯"
     },
     "answer": {
       "yuewen_merged": "我个心总系仁住仁住⋯"
@@ -1118,10 +1118,10 @@
   },
   {
     "query": {
-      "zhongwen": "其实我正在思考一个学术问题：",
       "yuewen_to_merge": [
         "其实我系喺度思考紧一啲学术性嘅问题"
-      ]
+      ],
+      "zhongwen": "其实我正在思考一个学术问题："
     },
     "answer": {
       "yuewen_merged": "其实我系喺度思考紧一啲学术性嘅问题："
@@ -1131,10 +1131,10 @@
   },
   {
     "query": {
-      "zhongwen": "橙，为什么会是「疴－烂－煮」呢？",
       "yuewen_to_merge": [
         "点解橙叫Orange呢"
-      ]
+      ],
+      "zhongwen": "橙，为什么会是「疴－烂－煮」呢？"
     },
     "answer": {
       "yuewen_merged": "点解橙叫「Orange」呢？"
@@ -1145,11 +1145,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈说吃橙可通大便",
       "yuewen_to_merge": [
         "妈妈话食橙会通大",
         "变"
-      ]
+      ],
+      "zhongwen": "妈妈说吃橙可通大便"
     },
     "answer": {
       "yuewen_merged": "妈妈话食橙会通大变"
@@ -1158,12 +1158,12 @@
   },
   {
     "query": {
-      "zhongwen": "「疴」这个我明白，可是「烂－煮」呢？",
       "yuewen_to_merge": [
         "噢",
         "呢个我明白",
         "但系橙呢"
-      ]
+      ],
+      "zhongwen": "「疴」这个我明白，可是「烂－煮」呢？"
     },
     "answer": {
       "yuewen_merged": "「噢」呢个我明白，但系「橙」呢？"
@@ -1174,12 +1174,12 @@
   },
   {
     "query": {
-      "zhongwen": "还有这个「芭－娜－哪」香蕉",
       "yuewen_to_merge": [
         "仲有呢个啊",
         "芭拉娜啊",
         "香蕉啊"
-      ]
+      ],
+      "zhongwen": "还有这个「芭－娜－哪」香蕉"
     },
     "answer": {
       "yuewen_merged": "仲有呢个啊「芭－拉－娜」啊香蕉啊"
@@ -1190,10 +1190,10 @@
   },
   {
     "query": {
-      "zhongwen": "为什么雨伞又会是「暗－芭－娜－哪」呢？",
       "yuewen_to_merge": [
         "点解雨姐会叫做暗芭拉娜呢"
-      ]
+      ],
+      "zhongwen": "为什么雨伞又会是「暗－芭－娜－哪」呢？"
     },
     "answer": {
       "yuewen_merged": "点解雨姐会叫做「暗－芭－拉－娜」呢？"
@@ -1204,12 +1204,12 @@
   },
   {
     "query": {
-      "zhongwen": "我「暗」的「暗」掉一条蕉",
       "yuewen_to_merge": [
         "嗱",
         "我暗啦",
         "噉我暗嗰条香蕉"
-      ]
+      ],
+      "zhongwen": "我「暗」的「暗」掉一条蕉"
     },
     "answer": {
       "yuewen_merged": "嗱，我「暗」啦，噉我「暗」嗰条香蕉"
@@ -1220,11 +1220,11 @@
   },
   {
     "query": {
-      "zhongwen": "至多是疴烂煮，怎么会下起雨来呢？",
       "yuewen_to_merge": [
         "至多会Orange啫",
         "点解会搞到落雨呢"
-      ]
+      ],
+      "zhongwen": "至多是疴烂煮，怎么会下起雨来呢？"
     },
     "answer": {
       "yuewen_merged": "至多会Orange啫，点解会搞到落雨呢？"
@@ -1234,11 +1234,11 @@
   },
   {
     "query": {
-      "zhongwen": "我想，有天我念完幼稚园",
       "yuewen_to_merge": [
         "我谂",
         "到我读完幼稚园"
-      ]
+      ],
+      "zhongwen": "我想，有天我念完幼稚园"
     },
     "answer": {
       "yuewen_merged": "我谂，到我读完幼稚园"
@@ -1249,11 +1249,11 @@
   },
   {
     "query": {
-      "zhongwen": "升小学，上中学",
       "yuewen_to_merge": [
         "识埋小学",
         "上到中学"
-      ]
+      ],
+      "zhongwen": "升小学，上中学"
     },
     "answer": {
       "yuewen_merged": "识埋小学，上到中学"
@@ -1263,10 +1263,10 @@
   },
   {
     "query": {
-      "zhongwen": "再念大学⋯",
       "yuewen_to_merge": [
         "再入埋大学"
-      ]
+      ],
+      "zhongwen": "再念大学⋯"
     },
     "answer": {
       "yuewen_merged": "再入埋大学⋯"
@@ -1276,10 +1276,10 @@
   },
   {
     "query": {
-      "zhongwen": "我知道我会明白一切！",
       "yuewen_to_merge": [
         "我谂我乜都会明白晒"
-      ]
+      ],
+      "zhongwen": "我知道我会明白一切！"
     },
     "answer": {
       "yuewen_merged": "我谂我乜都会明白晒！"
@@ -1289,10 +1289,10 @@
   },
   {
     "query": {
-      "zhongwen": "那时候⋯",
       "yuewen_to_merge": [
         "到嗰阵"
-      ]
+      ],
+      "zhongwen": "那时候⋯"
     },
     "answer": {
       "yuewen_merged": "到嗰阵⋯"
@@ -1302,10 +1302,10 @@
   },
   {
     "query": {
-      "zhongwen": "我买所房子给妈妈！",
       "yuewen_to_merge": [
         "我买层楼畀我妈妈"
-      ]
+      ],
+      "zhongwen": "我买所房子给妈妈！"
     },
     "answer": {
       "yuewen_merged": "我买层楼畀我妈妈！"
@@ -1315,10 +1315,10 @@
   },
   {
     "query": {
-      "zhongwen": "幼稚园楼下，由校长兼营的茶餐厅",
       "yuewen_to_merge": [
         "喺幼稚园楼下校长兼营嘅间茶餐厅"
-      ]
+      ],
+      "zhongwen": "幼稚园楼下，由校长兼营的茶餐厅"
     },
     "answer": {
       "yuewen_merged": "喺幼稚园楼下，校长兼营嘅间茶餐厅"
@@ -1329,11 +1329,11 @@
   },
   {
     "query": {
-      "zhongwen": "鱼蛋粗面，麻烦你　　粗面买光了",
       "yuewen_to_merge": [
         "唔该鱼蛋粗啊",
         "冇粗面噃"
-      ]
+      ],
+      "zhongwen": "鱼蛋粗面，麻烦你　　粗面买光了"
     },
     "answer": {
       "yuewen_merged": "唔该，鱼蛋粗啊　　冇粗面噃"
@@ -1344,12 +1344,12 @@
   },
   {
     "query": {
-      "zhongwen": "那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了",
       "yuewen_to_merge": [
         "噉啊",
         "要碗鱼蛋好啊",
         "冇鱼蛋噃"
-      ]
+      ],
+      "zhongwen": "那样子⋯来碗鱼蛋河粉吧　　鱼蛋买光了"
     },
     "answer": {
       "yuewen_merged": "噉啊⋯要碗鱼蛋好啊　　冇鱼蛋噃"
@@ -1360,12 +1360,12 @@
   },
   {
     "query": {
-      "zhongwen": "那么⋯金钱肚粗面好了　　粗面买光了",
       "yuewen_to_merge": [
         "噉啊",
         "要金钱透粗啊",
         "冇粗面噃"
-      ]
+      ],
+      "zhongwen": "那么⋯金钱肚粗面好了　　粗面买光了"
     },
     "answer": {
       "yuewen_merged": "噉啊⋯要金钱透粗啊　　冇粗面噃"
@@ -1375,12 +1375,12 @@
   },
   {
     "query": {
-      "zhongwen": "那么要鱼蛋油面吧　　鱼蛋买光了",
       "yuewen_to_merge": [
         "噉啊",
         "咁要鱼蛋油面啊",
         "冇鱼蛋噃"
-      ]
+      ],
+      "zhongwen": "那么要鱼蛋油面吧　　鱼蛋买光了"
     },
     "answer": {
       "yuewen_merged": "噉啊咁要鱼蛋油面啊　　冇鱼蛋噃"
@@ -1391,10 +1391,10 @@
   },
   {
     "query": {
-      "zhongwen": "怎么都买光了？",
       "yuewen_to_merge": [
         "乜样样都冇嘅"
-      ]
+      ],
+      "zhongwen": "怎么都买光了？"
     },
     "answer": {
       "yuewen_merged": "乜样样都冇嘅？"
@@ -1404,11 +1404,11 @@
   },
   {
     "query": {
-      "zhongwen": "来个墨鱼丸粗面吧　　粗面买光了",
       "yuewen_to_merge": [
         "噉要蜜丸粗啊",
         "冇粗面噃"
-      ]
+      ],
+      "zhongwen": "来个墨鱼丸粗面吧　　粗面买光了"
     },
     "answer": {
       "yuewen_merged": "噉要蜜丸粗啊　　冇粗面噃"
@@ -1418,10 +1418,10 @@
   },
   {
     "query": {
-      "zhongwen": "又买光了？",
       "yuewen_to_merge": [
         "又冇啊"
-      ]
+      ],
+      "zhongwen": "又买光了？"
     },
     "answer": {
       "yuewen_merged": "又冇啊？"
@@ -1431,11 +1431,11 @@
   },
   {
     "query": {
-      "zhongwen": "麻烦来碗鱼蛋濑吧　　鱼蛋买光了",
       "yuewen_to_merge": [
         "噉唔该畀碗鱼蛋奶啊",
         "冇鱼蛋噃"
-      ]
+      ],
+      "zhongwen": "麻烦来碗鱼蛋濑吧　　鱼蛋买光了"
     },
     "answer": {
       "yuewen_merged": "噉唔该畀碗鱼蛋奶啊　　冇鱼蛋噃"
@@ -1445,11 +1445,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜呀，鱼蛋跟粗面都买光了",
       "yuewen_to_merge": [
         "麦兜啊",
         "佢哋啲鱼蛋同粗面卖晒㗎啦"
-      ]
+      ],
+      "zhongwen": "麦兜呀，鱼蛋跟粗面都买光了"
     },
     "answer": {
       "yuewen_merged": "麦兜啊，佢哋啲鱼蛋同粗面卖晒㗎啦"
@@ -1459,11 +1459,11 @@
   },
   {
     "query": {
-      "zhongwen": "没有那些配搭吗？",
       "yuewen_to_merge": [
         "噢",
         "冇嗰啲配搭啊"
-      ]
+      ],
+      "zhongwen": "没有那些配搭吗？"
     },
     "answer": {
       "yuewen_merged": "噢，冇嗰啲配搭啊？"
@@ -1474,11 +1474,11 @@
   },
   {
     "query": {
-      "zhongwen": "麻烦你，净要鱼蛋吧　　鱼蛋买光了",
       "yuewen_to_merge": [
         "噉唔该净鱼蛋啊",
         "冇鱼蛋噃"
-      ]
+      ],
+      "zhongwen": "麻烦你，净要鱼蛋吧　　鱼蛋买光了"
     },
     "answer": {
       "yuewen_merged": "噉唔该，净鱼蛋啊　　冇鱼蛋噃"
@@ -1489,11 +1489,11 @@
   },
   {
     "query": {
-      "zhongwen": "那么净要粗面呢？　　粗面买光了",
       "yuewen_to_merge": [
         "净粗面呢",
         "冇粗面噃"
-      ]
+      ],
+      "zhongwen": "那么净要粗面呢？　　粗面买光了"
     },
     "answer": {
       "yuewen_merged": "净粗面呢？　　冇粗面噃"
@@ -1504,10 +1504,10 @@
   },
   {
     "query": {
-      "zhongwen": "看到这里⋯",
       "yuewen_to_merge": [
         "睇到呢度"
-      ]
+      ],
+      "zhongwen": "看到这里⋯"
     },
     "answer": {
       "yuewen_merged": "睇到呢度⋯"
@@ -1517,11 +1517,11 @@
   },
   {
     "query": {
-      "zhongwen": "那时候我无忧无虑，万事无所谓－－",
       "yuewen_to_merge": [
         "果只我无忧无虑",
         "冇乜所谓"
-      ]
+      ],
+      "zhongwen": "那时候我无忧无虑，万事无所谓－－"
     },
     "answer": {
       "yuewen_merged": "果只我无忧无虑，冇乜所谓－－"
@@ -1531,11 +1531,11 @@
   },
   {
     "query": {
-      "zhongwen": "鱼蛋买光了？那么粗面吧",
       "yuewen_to_merge": [
         "冇鱼蛋咩",
         "粗面都好啊"
-      ]
+      ],
+      "zhongwen": "鱼蛋买光了？那么粗面吧"
     },
     "answer": {
       "yuewen_merged": "冇鱼蛋咩？粗面都好啊"
@@ -1545,11 +1545,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜，射呀！",
       "yuewen_to_merge": [
         "麦兜",
         "转身食啊"
-      ]
+      ],
+      "zhongwen": "麦兜，射呀！"
     },
     "answer": {
       "yuewen_merged": "麦兜，转身食啊！"
@@ -1559,10 +1559,10 @@
   },
   {
     "query": {
-      "zhongwen": "看著自己每天疴烂煮⋯",
       "yuewen_to_merge": [
         "睇住自己日日柯能处"
-      ]
+      ],
+      "zhongwen": "看著自己每天疴烂煮⋯"
     },
     "answer": {
       "yuewen_merged": "睇住自己日日柯能处⋯"
@@ -1572,10 +1572,10 @@
   },
   {
     "query": {
-      "zhongwen": "每天长肉⋯",
       "yuewen_to_merge": [
         "日日掌肉"
-      ]
+      ],
+      "zhongwen": "每天长肉⋯"
     },
     "answer": {
       "yuewen_merged": "日日掌肉⋯"
@@ -1585,10 +1585,10 @@
   },
   {
     "query": {
-      "zhongwen": "我感到充满力量！",
       "yuewen_to_merge": [
         "感到充满力量"
-      ]
+      ],
+      "zhongwen": "我感到充满力量！"
     },
     "answer": {
       "yuewen_merged": "感到充满力量！"
@@ -1598,10 +1598,10 @@
   },
   {
     "query": {
-      "zhongwen": "世界好美丽！",
       "yuewen_to_merge": [
         "世界好美丽"
-      ]
+      ],
+      "zhongwen": "世界好美丽！"
     },
     "answer": {
       "yuewen_merged": "世界好美丽！"
@@ -1611,11 +1611,11 @@
   },
   {
     "query": {
-      "zhongwen": "有一首歌，Miss Chan唱的好听",
       "yuewen_to_merge": [
         "有一首歌",
         "麦词春唱得好好听呀"
-      ]
+      ],
+      "zhongwen": "有一首歌，Miss Chan唱的好听"
     },
     "answer": {
       "yuewen_merged": "有一首歌，麦词春唱得好好听呀"
@@ -1625,11 +1625,11 @@
   },
   {
     "query": {
-      "zhongwen": "可每次我总唱成「疴」什么什么的⋯",
       "yuewen_to_merge": [
         "但系唱嚟唱去都系阿伦厨",
         "咁Ballana噉"
-      ]
+      ],
+      "zhongwen": "可每次我总唱成「疴」什么什么的⋯"
     },
     "answer": {
       "yuewen_merged": "但系唱嚟唱去都系「阿伦厨」咁「Ballana」噉⋯"
@@ -1640,14 +1640,14 @@
   },
   {
     "query": {
-      "zhongwen": "是All Things Bright and Beautiful吧？",
       "yuewen_to_merge": [
         "系唔系All",
         "Things",
         "Bright",
         "and",
         "Beautiful呀"
-      ]
+      ],
+      "zhongwen": "是All Things Bright and Beautiful吧？"
     },
     "answer": {
       "yuewen_merged": "系唔系All Things Bright and Beautiful呀？"
@@ -1657,11 +1657,11 @@
   },
   {
     "query": {
-      "zhongwen": "是的，一切都好！",
       "yuewen_to_merge": [
         "系呀",
         "所有嘢都几好喇"
-      ]
+      ],
+      "zhongwen": "是的，一切都好！"
     },
     "answer": {
       "yuewen_merged": "系呀，所有嘢都几好喇！"
@@ -1671,10 +1671,10 @@
   },
   {
     "query": {
-      "zhongwen": "世上一切，一切一切⋯",
       "yuewen_to_merge": [
         "世上一切"
-      ]
+      ],
+      "zhongwen": "世上一切，一切一切⋯"
     },
     "answer": {
       "yuewen_merged": "世上一切⋯"
@@ -1685,7 +1685,6 @@
   },
   {
     "query": {
-      "zhongwen": "所有那些，都好！",
       "yuewen_to_merge": [
         "所有嗰啲嘢",
         "都几好",
@@ -1694,7 +1693,8 @@
         "Bright",
         "and",
         "Beautiful"
-      ]
+      ],
+      "zhongwen": "所有那些，都好！"
     },
     "answer": {
       "yuewen_merged": "所有嗰啲嘢，都几好！All Things Bright and Beautiful"
@@ -1704,10 +1704,10 @@
   },
   {
     "query": {
-      "zhongwen": "一、二、三、四、五、六、七⋯",
       "yuewen_to_merge": [
         "1234567"
-      ]
+      ],
+      "zhongwen": "一、二、三、四、五、六、七⋯"
     },
     "answer": {
       "yuewen_merged": "1, 2, 3, 4, 5, 6, 7⋯"
@@ -1718,10 +1718,10 @@
   },
   {
     "query": {
-      "zhongwen": "多劳多得！",
       "yuewen_to_merge": [
         "多喽多得"
-      ]
+      ],
+      "zhongwen": "多劳多得！"
     },
     "answer": {
       "yuewen_merged": "多喽多得！"
@@ -1731,10 +1731,10 @@
   },
   {
     "query": {
-      "zhongwen": "星期一至星期七⋯多劳多得！",
       "yuewen_to_merge": [
         "星期一至星期七多喽多得"
-      ]
+      ],
+      "zhongwen": "星期一至星期七⋯多劳多得！"
     },
     "answer": {
       "yuewen_merged": "星期一至星期七⋯多喽多得！"
@@ -1744,11 +1744,11 @@
   },
   {
     "query": {
-      "zhongwen": "就是我妈妈麦太",
       "yuewen_to_merge": [
         "就系我妈妈",
         "麦太"
-      ]
+      ],
+      "zhongwen": "就是我妈妈麦太"
     },
     "answer": {
       "yuewen_merged": "就系我妈妈麦太"
@@ -1757,10 +1757,10 @@
   },
   {
     "query": {
-      "zhongwen": "一个女人背起整个世界！",
       "yuewen_to_merge": [
         "一个女人揹起成个世界"
-      ]
+      ],
+      "zhongwen": "一个女人背起整个世界！"
     },
     "answer": {
       "yuewen_merged": "一个女人揹起成个世界！"
@@ -1770,11 +1770,11 @@
   },
   {
     "query": {
-      "zhongwen": "是的，我妈妈真的很厉害",
       "yuewen_to_merge": [
         "系呀",
         "我妈妈真系好犀利㗎"
-      ]
+      ],
+      "zhongwen": "是的，我妈妈真的很厉害"
     },
     "answer": {
       "yuewen_merged": "系呀，我妈妈真系好犀利㗎"
@@ -1784,10 +1784,10 @@
   },
   {
     "query": {
-      "zhongwen": "除了兼任保险，地产经纪及trading⋯",
       "yuewen_to_merge": [
         "除咗做保险地产经纪同埋trading之外"
-      ]
+      ],
+      "zhongwen": "除了兼任保险，地产经纪及trading⋯"
     },
     "answer": {
       "yuewen_merged": "除咗做保险，地产经纪同埋trading之外⋯"
@@ -1798,10 +1798,10 @@
   },
   {
     "query": {
-      "zhongwen": "她还趁高科技热潮搞了个烹饪网站⋯",
       "yuewen_to_merge": [
         "佢仲趁住高科技热潮搞咗个煮𩠌嘅网站"
-      ]
+      ],
+      "zhongwen": "她还趁高科技热潮搞了个烹饪网站⋯"
     },
     "answer": {
       "yuewen_merged": "佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯"
@@ -1811,10 +1811,10 @@
   },
   {
     "query": {
-      "zhongwen": "www．麦太世界．com",
       "yuewen_to_merge": [
         "www.mcticege.com"
-      ]
+      ],
+      "zhongwen": "www．麦太世界．com"
     },
     "answer": {
       "yuewen_merged": "www．mcticege．com"
@@ -1825,10 +1825,10 @@
   },
   {
     "query": {
-      "zhongwen": "她做的菜，同样厉害",
       "yuewen_to_merge": [
         "佢煮嘅𩠌一样咁犀利"
-      ]
+      ],
+      "zhongwen": "她做的菜，同样厉害"
     },
     "answer": {
       "yuewen_merged": "佢煮嘅𩠌，一样咁犀利"
@@ -1838,10 +1838,10 @@
   },
   {
     "query": {
-      "zhongwen": "欢迎大家收看＜麦太世界＞",
       "yuewen_to_merge": [
         "欢迎大家收睇麦太世界"
-      ]
+      ],
+      "zhongwen": "欢迎大家收看＜麦太世界＞"
     },
     "answer": {
       "yuewen_merged": "欢迎大家收睇＜麦太世界＞"
@@ -1851,10 +1851,10 @@
   },
   {
     "query": {
-      "zhongwen": "今日为大家介绍一个⋯",
       "yuewen_to_merge": [
         "今日我为大家介绍个"
-      ]
+      ],
+      "zhongwen": "今日为大家介绍一个⋯"
     },
     "answer": {
       "yuewen_merged": "今日我为大家介绍个⋯"
@@ -1864,11 +1864,11 @@
   },
   {
     "query": {
-      "zhongwen": "简单别致的小菜纸包鸡",
       "yuewen_to_merge": [
         "简单又别致嘅小菜",
         "自包鸡"
-      ]
+      ],
+      "zhongwen": "简单别致的小菜纸包鸡"
     },
     "answer": {
       "yuewen_merged": "简单又别致嘅小菜自包鸡"
@@ -1878,11 +1878,11 @@
   },
   {
     "query": {
-      "zhongwen": "材料很简单：一个鸡包",
       "yuewen_to_merge": [
         "材料系好简单",
         "我哋只需要一个鸡包"
-      ]
+      ],
+      "zhongwen": "材料很简单：一个鸡包"
     },
     "answer": {
       "yuewen_merged": "材料系好简单：我哋只需要一个鸡包"
@@ -1892,11 +1892,11 @@
   },
   {
     "query": {
-      "zhongwen": "将鸡包底部的纸撕下来⋯慢慢地撕",
       "yuewen_to_merge": [
         "我哋将黐喺鸡包底嘅纸撕出嚟",
         "慢慢撕"
-      ]
+      ],
+      "zhongwen": "将鸡包底部的纸撕下来⋯慢慢地撕"
     },
     "answer": {
       "yuewen_merged": "我哋将黐喺鸡包底嘅纸撕出嚟⋯慢慢撕"
@@ -1906,11 +1906,11 @@
   },
   {
     "query": {
-      "zhongwen": "把鸡包纸一反反转",
       "yuewen_to_merge": [
         "然后将鸡包纸一反",
         "反转"
-      ]
+      ],
+      "zhongwen": "把鸡包纸一反反转"
     },
     "answer": {
       "yuewen_merged": "然后将鸡包纸一反反转"
@@ -1920,11 +1920,11 @@
   },
   {
     "query": {
-      "zhongwen": "这一味纸包鸡就完成了，很容易是吧？",
       "yuewen_to_merge": [
         "呢味自包鸡就完成喇",
         "系咪好易整啦"
-      ]
+      ],
+      "zhongwen": "这一味纸包鸡就完成了，很容易是吧？"
     },
     "answer": {
       "yuewen_merged": "呢味自包鸡就完成喇，系咪好易整啦？"
@@ -1934,11 +1934,11 @@
   },
   {
     "query": {
-      "zhongwen": "材料也很简单，只需要白纸一张",
       "yuewen_to_merge": [
         "材料都好简单",
         "只需要白纸一张"
-      ]
+      ],
+      "zhongwen": "材料也很简单，只需要白纸一张"
     },
     "answer": {
       "yuewen_merged": "材料都好简单，只需要白纸一张"
@@ -1948,11 +1948,11 @@
   },
   {
     "query": {
-      "zhongwen": "只要把这纸这样子⋯",
       "yuewen_to_merge": [
         "我哋只需要张张纸",
         "咁样"
-      ]
+      ],
+      "zhongwen": "只要把这纸这样子⋯"
     },
     "answer": {
       "yuewen_merged": "我哋只需要张张纸咁样⋯"
@@ -1962,11 +1962,11 @@
   },
   {
     "query": {
-      "zhongwen": "各位小朋友，像鸡包不像呀？",
       "yuewen_to_merge": [
         "各位小朋友",
         "你哋话似唔似鸡包啊"
-      ]
+      ],
+      "zhongwen": "各位小朋友，像鸡包不像呀？"
     },
     "answer": {
       "yuewen_merged": "各位小朋友，你哋话似唔似鸡包啊？"
@@ -1976,10 +1976,10 @@
   },
   {
     "query": {
-      "zhongwen": "现在要教大家一味别致小菜－",
       "yuewen_to_merge": [
         "间阵要教大家一味几别节嘅小菜"
-      ]
+      ],
+      "zhongwen": "现在要教大家一味别致小菜－"
     },
     "answer": {
       "yuewen_merged": "间阵要教大家一味几别节嘅小菜－"
@@ -1989,11 +1989,11 @@
   },
   {
     "query": {
-      "zhongwen": "包鸡纸包鸡包纸包鸡",
       "yuewen_to_merge": [
         "包鸡子包",
         "鸡包子包鸡"
-      ]
+      ],
+      "zhongwen": "包鸡纸包鸡包纸包鸡"
     },
     "answer": {
       "yuewen_merged": "包鸡子包鸡包子包鸡"
@@ -2002,10 +2002,10 @@
   },
   {
     "query": {
-      "zhongwen": "一味「包鸡纸包鸡包纸包鸡」完成了！",
       "yuewen_to_merge": [
         "咁一味包鸡子包鸡包子包鸡就完成喇"
-      ]
+      ],
+      "zhongwen": "一味「包鸡纸包鸡包纸包鸡」完成了！"
     },
     "answer": {
       "yuewen_merged": "咁一味「包鸡子包鸡包子包鸡」就完成喇！"
@@ -2015,10 +2015,10 @@
   },
   {
     "query": {
-      "zhongwen": "真的很简单吧？",
       "yuewen_to_merge": [
         "系咪好简单呢"
-      ]
+      ],
+      "zhongwen": "真的很简单吧？"
     },
     "answer": {
       "yuewen_merged": "系咪好简单呢？"
@@ -2028,10 +2028,10 @@
   },
   {
     "query": {
-      "zhongwen": "还真有一块鸡吃呢！",
       "yuewen_to_merge": [
         "仲真系有嚿鸡食添"
-      ]
+      ],
+      "zhongwen": "还真有一块鸡吃呢！"
     },
     "answer": {
       "yuewen_merged": "仲真系有嚿鸡食添！"
@@ -2041,10 +2041,10 @@
   },
   {
     "query": {
-      "zhongwen": "今日为大家介绍一味⋯",
       "yuewen_to_merge": [
         "今日要同大家介绍一味"
-      ]
+      ],
+      "zhongwen": "今日为大家介绍一味⋯"
     },
     "answer": {
       "yuewen_merged": "今日要同大家介绍一味⋯"
@@ -2054,10 +2054,10 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友一定喜欢的⋯",
       "yuewen_to_merge": [
         "小朋友一定喜欢嘅"
-      ]
+      ],
+      "zhongwen": "小朋友一定喜欢的⋯"
     },
     "answer": {
       "yuewen_merged": "小朋友一定喜欢嘅⋯"
@@ -2067,14 +2067,14 @@
   },
   {
     "query": {
-      "zhongwen": "鸡包包鸡包包鸡包纸包纸⋯",
       "yuewen_to_merge": [
         "鸡包包",
         "鸡包包",
         "鸡包纸包",
         "纸包鸡",
         "包包鸡"
-      ]
+      ],
+      "zhongwen": "鸡包包鸡包包鸡包纸包纸⋯"
     },
     "answer": {
       "yuewen_merged": "鸡包包鸡包包鸡包纸包纸包鸡包包鸡⋯"
@@ -2084,11 +2084,11 @@
   },
   {
     "query": {
-      "zhongwen": "包鸡包鸡包纸包鸡",
       "yuewen_to_merge": [
         "纸包鸡",
         "包纸包鸡"
-      ]
+      ],
+      "zhongwen": "包鸡包鸡包纸包鸡"
     },
     "answer": {
       "yuewen_merged": "纸包鸡包纸包鸡"
@@ -2097,11 +2097,11 @@
   },
   {
     "query": {
-      "zhongwen": "只要将鸡包包住个鸡包",
       "yuewen_to_merge": [
         "我哋先将鸡包",
         "包住个鸡包"
-      ]
+      ],
+      "zhongwen": "只要将鸡包包住个鸡包"
     },
     "answer": {
       "yuewen_merged": "我哋先将鸡包包住个鸡包"
@@ -2110,10 +2110,10 @@
   },
   {
     "query": {
-      "zhongwen": "再包住个鸡包⋯",
       "yuewen_to_merge": [
         "再包住个鸡包"
-      ]
+      ],
+      "zhongwen": "再包住个鸡包⋯"
     },
     "answer": {
       "yuewen_merged": "再包住个鸡包⋯"
@@ -2123,11 +2123,11 @@
   },
   {
     "query": {
-      "zhongwen": "再包包包包包住个纸鸡包",
       "yuewen_to_merge": [
         "再包包包包",
         "包住个纸包鸡"
-      ]
+      ],
+      "zhongwen": "再包包包包包住个纸鸡包"
     },
     "answer": {
       "yuewen_merged": "再包包包包包住个纸包鸡"
@@ -2136,14 +2136,14 @@
   },
   {
     "query": {
-      "zhongwen": "再包包包，纸纸纸",
       "yuewen_to_merge": [
         "再包包包包",
         "包鸡包纸",
         "包纸",
         "纸纸纸纸",
         "纸包纸"
-      ]
+      ],
+      "zhongwen": "再包包包，纸纸纸"
     },
     "answer": {
       "yuewen_merged": "再包包包包包鸡包纸包纸，纸纸纸纸纸包纸"
@@ -2153,14 +2153,14 @@
   },
   {
     "query": {
-      "zhongwen": "纸包纸，纸包鸡，鸡包纸，纸包鸡⋯",
       "yuewen_to_merge": [
         "纸包鸡",
         "包鸡纸",
         "纸包鸡",
         "鸡鸡鸡",
         "纸纸纸再包鸡鸡"
-      ]
+      ],
+      "zhongwen": "纸包纸，纸包鸡，鸡包纸，纸包鸡⋯"
     },
     "answer": {
       "yuewen_merged": "纸包鸡，包鸡纸，纸包鸡，鸡鸡鸡，纸纸纸再包鸡鸡⋯"
@@ -2170,11 +2170,11 @@
   },
   {
     "query": {
-      "zhongwen": "例如每晚睡觉前，她都会说故事给我听",
       "yuewen_to_merge": [
         "例如每晚临睡前",
         "佢都会讲故事畀我听"
-      ]
+      ],
+      "zhongwen": "例如每晚睡觉前，她都会说故事给我听"
     },
     "answer": {
       "yuewen_merged": "例如每晚临睡前，佢都会讲故事畀我听"
@@ -2184,11 +2184,11 @@
   },
   {
     "query": {
-      "zhongwen": "从前，有个小朋友撒谎；有一天⋯",
       "yuewen_to_merge": [
         "从前有个小朋友讲大话",
         "有一日"
-      ]
+      ],
+      "zhongwen": "从前，有个小朋友撒谎；有一天⋯"
     },
     "answer": {
       "yuewen_merged": "从前，有个小朋友讲大话；有一日⋯"
@@ -2199,10 +2199,10 @@
   },
   {
     "query": {
-      "zhongwen": "他死了！",
       "yuewen_to_merge": [
         "佢死咗"
-      ]
+      ],
+      "zhongwen": "他死了！"
     },
     "answer": {
       "yuewen_merged": "佢死咗！"
@@ -2212,10 +2212,10 @@
   },
   {
     "query": {
-      "zhongwen": "从前，有个小朋友很勤力念书⋯",
       "yuewen_to_merge": [
         "从前有个小朋友好勤力读书"
-      ]
+      ],
+      "zhongwen": "从前，有个小朋友很勤力念书⋯"
     },
     "answer": {
       "yuewen_merged": "从前，有个小朋友好勤力读书⋯"
@@ -2225,10 +2225,10 @@
   },
   {
     "query": {
-      "zhongwen": "他长大后，发财了！",
       "yuewen_to_merge": [
         "佢长大发咗"
-      ]
+      ],
+      "zhongwen": "他长大后，发财了！"
     },
     "answer": {
       "yuewen_merged": "佢长大，发咗！"
@@ -2239,11 +2239,11 @@
   },
   {
     "query": {
-      "zhongwen": "从前，有个小朋友不孝，有天⋯",
       "yuewen_to_merge": [
         "从前有个小朋友唔孝顺",
         "有一日"
-      ]
+      ],
+      "zhongwen": "从前，有个小朋友不孝，有天⋯"
     },
     "answer": {
       "yuewen_merged": "从前，有个小朋友唔孝顺，有一日⋯"
@@ -2254,10 +2254,10 @@
   },
   {
     "query": {
-      "zhongwen": "他扭了脚骹！",
       "yuewen_to_merge": [
         "佢屈亲个脚脚"
-      ]
+      ],
+      "zhongwen": "他扭了脚骹！"
     },
     "answer": {
       "yuewen_merged": "佢屈亲个脚脚！"
@@ -2267,10 +2267,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈，我想睡觉",
       "yuewen_to_merge": [
         "妈我想瞓啦"
-      ]
+      ],
+      "zhongwen": "妈妈，我想睡觉"
     },
     "answer": {
       "yuewen_merged": "妈，我想瞓啦"
@@ -2280,12 +2280,12 @@
   },
   {
     "query": {
-      "zhongwen": "从前，有个小朋友早睡晚起；第二天⋯",
       "yuewen_to_merge": [
         "从前有个小朋友早睡晚起",
         "第二朝",
         "社群提供"
-      ]
+      ],
+      "zhongwen": "从前，有个小朋友早睡晚起；第二天⋯"
     },
     "answer": {
       "yuewen_merged": "从前，有个小朋友早睡晚起；第二朝⋯社群提供"
@@ -2295,11 +2295,11 @@
   },
   {
     "query": {
-      "zhongwen": "我妈妈就是这样子，一切都那么直接",
       "yuewen_to_merge": [
         "我妈妈就系噉",
         "一切都咁直接"
-      ]
+      ],
+      "zhongwen": "我妈妈就是这样子，一切都那么直接"
     },
     "answer": {
       "yuewen_merged": "我妈妈就系噉，一切都咁直接"
@@ -2309,10 +2309,10 @@
   },
   {
     "query": {
-      "zhongwen": "她爱得我直接⋯",
       "yuewen_to_merge": [
         "佢爱得我直接"
-      ]
+      ],
+      "zhongwen": "她爱得我直接⋯"
     },
     "answer": {
       "yuewen_merged": "佢爱得我直接⋯"
@@ -2322,10 +2322,10 @@
   },
   {
     "query": {
-      "zhongwen": "对她，一、二、三、四、五、六、七",
       "yuewen_to_merge": [
         "佢一二三四五六七"
-      ]
+      ],
+      "zhongwen": "对她，一、二、三、四、五、六、七"
     },
     "answer": {
       "yuewen_merged": "佢，一、二、三、四、五、六、七"
@@ -2335,12 +2335,12 @@
   },
   {
     "query": {
-      "zhongwen": "没有不成的事",
       "yuewen_to_merge": [
         "唔得都要得",
         "字幕由",
         "Amara.org"
-      ]
+      ],
+      "zhongwen": "没有不成的事"
     },
     "answer": {
       "yuewen_merged": "唔得都要得字幕由Amara.org"
@@ -2350,10 +2350,10 @@
   },
   {
     "query": {
-      "zhongwen": "可有些事情，要是真的不成呢？",
       "yuewen_to_merge": [
         "但系如果有啲嘢真系真系唔得呢"
-      ]
+      ],
+      "zhongwen": "可有些事情，要是真的不成呢？"
     },
     "answer": {
       "yuewen_merged": "但系如果有啲嘢，真系真系唔得呢？"
@@ -2364,10 +2364,10 @@
   },
   {
     "query": {
-      "zhongwen": "首先是周润发事件⋯",
       "yuewen_to_merge": [
         "首先周润发嗰单嘢"
-      ]
+      ],
+      "zhongwen": "首先是周润发事件⋯"
     },
     "answer": {
       "yuewen_merged": "首先周润发嗰单嘢⋯"
@@ -2377,10 +2377,10 @@
   },
   {
     "query": {
-      "zhongwen": "拜托不要再提了！",
       "yuewen_to_merge": [
         "大家都唔好再提"
-      ]
+      ],
+      "zhongwen": "拜托不要再提了！"
     },
     "answer": {
       "yuewen_merged": "大家都唔好再提！"
@@ -2390,10 +2390,10 @@
   },
   {
     "query": {
-      "zhongwen": "至于好运⋯",
       "yuewen_to_merge": [
         "至于好运"
-      ]
+      ],
+      "zhongwen": "至于好运⋯"
     },
     "answer": {
       "yuewen_merged": "至于好运⋯"
@@ -2403,11 +2403,11 @@
   },
   {
     "query": {
-      "zhongwen": "奇迹般似的一个号码也没中过！",
       "yuewen_to_merge": [
         "竟然奇迹一样",
         "一个都未中过"
-      ]
+      ],
+      "zhongwen": "奇迹般似的一个号码也没中过！"
     },
     "answer": {
       "yuewen_merged": "竟然奇迹一样一个都未中过！"
@@ -2418,10 +2418,10 @@
   },
   {
     "query": {
-      "zhongwen": "叻仔？",
       "yuewen_to_merge": [
         "叻仔"
-      ]
+      ],
+      "zhongwen": "叻仔？"
     },
     "answer": {
       "yuewen_merged": "叻仔？"
@@ -2431,11 +2431,11 @@
   },
   {
     "query": {
-      "zhongwen": "我也试过努力念书，可是⋯",
       "yuewen_to_merge": [
         "我试过好努力咁读书",
         "但系"
-      ]
+      ],
+      "zhongwen": "我也试过努力念书，可是⋯"
     },
     "answer": {
       "yuewen_merged": "我试过好努力咁读书，但系⋯"
@@ -2445,10 +2445,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是⋯我仍然有梦",
       "yuewen_to_merge": [
         "但系我仲可以发梦"
-      ]
+      ],
+      "zhongwen": "可是⋯我仍然有梦"
     },
     "answer": {
       "yuewen_merged": "但系⋯我仲可以发梦"
@@ -2458,11 +2458,11 @@
   },
   {
     "query": {
-      "zhongwen": "马尔代夫，座落于印度洋的世外桃源",
       "yuewen_to_merge": [
         "马尔代夫",
         "坐落于印度洋嘅世外桃源"
-      ]
+      ],
+      "zhongwen": "马尔代夫，座落于印度洋的世外桃源"
     },
     "answer": {
       "yuewen_merged": "马尔代夫，坐落于印度洋嘅世外桃源"
@@ -2472,12 +2472,12 @@
   },
   {
     "query": {
-      "zhongwen": "蓝天白云，椰林树影，水清沙幼",
       "yuewen_to_merge": [
         "蓝天白云",
         "椰林树影",
         "水清沙游"
-      ]
+      ],
+      "zhongwen": "蓝天白云，椰林树影，水清沙幼"
     },
     "answer": {
       "yuewen_merged": "蓝天白云，椰林树影，水清沙游"
@@ -2487,11 +2487,11 @@
   },
   {
     "query": {
-      "zhongwen": "七彩缤纷的珊瑚，目不暇给的热带鱼",
       "yuewen_to_merge": [
         "七彩缤纷嘅珊瑚",
         "目不下级嘅热带鱼群"
-      ]
+      ],
+      "zhongwen": "七彩缤纷的珊瑚，目不暇给的热带鱼"
     },
     "answer": {
       "yuewen_merged": "七彩缤纷嘅珊瑚，目不下级嘅热带鱼群"
@@ -2501,11 +2501,11 @@
   },
   {
     "query": {
-      "zhongwen": "充满赤道活力的原始海洋，脱离繁嚣",
       "yuewen_to_merge": [
         "充满住赤道热力嘅原始海洋",
         "远离凡嚣"
-      ]
+      ],
+      "zhongwen": "充满赤道活力的原始海洋，脱离繁嚣"
     },
     "answer": {
       "yuewen_merged": "充满住赤道热力嘅原始海洋，远离凡嚣"
@@ -2515,11 +2515,11 @@
   },
   {
     "query": {
-      "zhongwen": "犀利旅行社，旅行社牌照号码350999",
       "yuewen_to_merge": [
         "犀利旅行社",
         "旅行社牌照号码350999"
-      ]
+      ],
+      "zhongwen": "犀利旅行社，旅行社牌照号码350999"
     },
     "answer": {
       "yuewen_merged": "犀利旅行社，旅行社牌照号码350999"
@@ -2529,10 +2529,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈你知道马尔代夫在哪儿吗？",
       "yuewen_to_merge": [
         "妈妈你知唔知到马尔代夫系边㗎"
-      ]
+      ],
+      "zhongwen": "妈妈你知道马尔代夫在哪儿吗？"
     },
     "answer": {
       "yuewen_merged": "妈妈你知唔知到马尔代夫系边㗎？"
@@ -2542,10 +2542,10 @@
   },
   {
     "query": {
-      "zhongwen": "有多远？",
       "yuewen_to_merge": [
         "点远发呀"
-      ]
+      ],
+      "zhongwen": "有多远？"
     },
     "answer": {
       "yuewen_merged": "点远发呀？"
@@ -2555,10 +2555,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈你会带我去吗？",
       "yuewen_to_merge": [
         "咁妈妈你会唔会走落去㗎"
-      ]
+      ],
+      "zhongwen": "妈妈你会带我去吗？"
     },
     "answer": {
       "yuewen_merged": "咁妈妈你会唔会走落去㗎？"
@@ -2568,11 +2568,11 @@
   },
   {
     "query": {
-      "zhongwen": "会！发财了再说吧",
       "yuewen_to_merge": [
         "会",
         "得学发咗先啦"
-      ]
+      ],
+      "zhongwen": "会！发财了再说吧"
     },
     "answer": {
       "yuewen_merged": "会！得学发咗先啦"
@@ -2582,10 +2582,10 @@
   },
   {
     "query": {
-      "zhongwen": "那么妈妈你什么时候发？",
       "yuewen_to_merge": [
         "咁妈妈你几时发得呀"
-      ]
+      ],
+      "zhongwen": "那么妈妈你什么时候发？"
     },
     "answer": {
       "yuewen_merged": "咁妈妈你几时发得呀？"
@@ -2595,11 +2595,11 @@
   },
   {
     "query": {
-      "zhongwen": "快了⋯",
       "yuewen_to_merge": [
         "呃",
         "就快啦"
-      ]
+      ],
+      "zhongwen": "快了⋯"
     },
     "answer": {
       "yuewen_merged": "呃，就快啦⋯"
@@ -2609,10 +2609,10 @@
   },
   {
     "query": {
-      "zhongwen": "发梦呀！",
       "yuewen_to_merge": [
         "发梦吖嘛"
-      ]
+      ],
+      "zhongwen": "发梦呀！"
     },
     "answer": {
       "yuewen_merged": "发梦吖嘛！"
@@ -2622,10 +2622,10 @@
   },
   {
     "query": {
-      "zhongwen": "校长早晨！",
       "yuewen_to_merge": [
         "嗨"
-      ]
+      ],
+      "zhongwen": "校长早晨！"
     },
     "answer": {
       "yuewen_merged": "嗨！"
@@ -2635,10 +2635,10 @@
   },
   {
     "query": {
-      "zhongwen": "你最喜爱的地方是哪儿？",
       "yuewen_to_merge": [
         "你最喜爱嘅地方喺边度呀"
-      ]
+      ],
+      "zhongwen": "你最喜爱的地方是哪儿？"
     },
     "answer": {
       "yuewen_merged": "你最喜爱嘅地方喺边度呀？"
@@ -2648,11 +2648,11 @@
   },
   {
     "query": {
-      "zhongwen": "我最喜爱的地方是日本",
       "yuewen_to_merge": [
         "我最喜爱嘅地方呢",
         "就系日本喇"
-      ]
+      ],
+      "zhongwen": "我最喜爱的地方是日本"
     },
     "answer": {
       "yuewen_merged": "我最喜爱嘅地方呢，就系日本喇"
@@ -2663,11 +2663,11 @@
   },
   {
     "query": {
-      "zhongwen": "那儿有 Disneyland 和 Hello Kitty Land",
       "yuewen_to_merge": [
         "嗰度好迪士尼呢",
         "同埋HelloTT呢"
-      ]
+      ],
+      "zhongwen": "那儿有 Disneyland 和 Hello Kitty Land"
     },
     "answer": {
       "yuewen_merged": "嗰度好迪士尼呢同埋HelloTT呢"
@@ -2678,11 +2678,11 @@
   },
   {
     "query": {
-      "zhongwen": "婆婆跟舅父他们都在加拿大",
       "yuewen_to_merge": [
         "婆婆同埋舅父呀",
         "佢哋都系加拿大㗎"
-      ]
+      ],
+      "zhongwen": "婆婆跟舅父他们都在加拿大"
     },
     "answer": {
       "yuewen_merged": "婆婆同埋舅父呀，佢哋都系加拿大㗎"
@@ -2692,11 +2692,11 @@
   },
   {
     "query": {
-      "zhongwen": "那儿有很好多水上活动，还有鱼翅吃",
       "yuewen_to_merge": [
         "嗰度有好多水晶活动㗎",
         "仲有一次食添㖞"
-      ]
+      ],
+      "zhongwen": "那儿有很好多水上活动，还有鱼翅吃"
     },
     "answer": {
       "yuewen_merged": "嗰度有好多水晶活动㗎，仲有一次食添㖞"
@@ -2707,11 +2707,11 @@
   },
   {
     "query": {
-      "zhongwen": "我最喜爱的地方⋯",
       "yuewen_to_merge": [
         "呃",
         "我最喜爱嘅地方呢"
-      ]
+      ],
+      "zhongwen": "我最喜爱的地方⋯"
     },
     "answer": {
       "yuewen_merged": "呃，我最喜爱嘅地方呢⋯"
@@ -2721,10 +2721,10 @@
   },
   {
     "query": {
-      "zhongwen": "就是那间什么！",
       "yuewen_to_merge": [
         "就系嗰间咩嚟啰"
-      ]
+      ],
+      "zhongwen": "就是那间什么！"
     },
     "answer": {
       "yuewen_merged": "就系嗰间咩嚟啰！"
@@ -2734,11 +2734,11 @@
   },
   {
     "query": {
-      "zhongwen": "那儿有欢乐天地，还有美食广场",
       "yuewen_to_merge": [
         "嗰度有欢乐天地啦",
         "仲有米食广场啦"
-      ]
+      ],
+      "zhongwen": "那儿有欢乐天地，还有美食广场"
     },
     "answer": {
       "yuewen_merged": "嗰度有欢乐天地啦，仲有米食广场啦"
@@ -2748,11 +2748,11 @@
   },
   {
     "query": {
-      "zhongwen": "对了，那地方叫银城中心",
       "yuewen_to_merge": [
         "系喇系喇",
         "嗰间叫做银城中心"
-      ]
+      ],
+      "zhongwen": "对了，那地方叫银城中心"
     },
     "answer": {
       "yuewen_merged": "系喇系喇，嗰间叫做银城中心"
@@ -2762,11 +2762,11 @@
   },
   {
     "query": {
-      "zhongwen": "那店子的饭很多，很大碟的！",
       "yuewen_to_merge": [
         "嗰间嘢啲饭好多人",
         "好大碟㗎"
-      ]
+      ],
+      "zhongwen": "那店子的饭很多，很大碟的！"
     },
     "answer": {
       "yuewen_merged": "嗰间嘢啲饭好多人，好大碟㗎！"
@@ -2776,11 +2776,11 @@
   },
   {
     "query": {
-      "zhongwen": "不过说到我最想去的地方，那可厉害了",
       "yuewen_to_merge": [
         "不过讲到我最想去嘅地方呢",
         "嗰度细嚟啰"
-      ]
+      ],
+      "zhongwen": "不过说到我最想去的地方，那可厉害了"
     },
     "answer": {
       "yuewen_merged": "不过讲到我最想去嘅地方呢，嗰度细嚟啰"
@@ -2791,12 +2791,12 @@
   },
   {
     "query": {
-      "zhongwen": "那儿蓝天白云，椰林树影，水清沙幼",
       "yuewen_to_merge": [
         "嗰度南天白云",
         "夜临树影",
         "水清沙幽"
-      ]
+      ],
+      "zhongwen": "那儿蓝天白云，椰林树影，水清沙幼"
     },
     "answer": {
       "yuewen_merged": "嗰度南天白云，夜临树影，水清沙幽"
@@ -2806,11 +2806,11 @@
   },
   {
     "query": {
-      "zhongwen": "座落于印度洋的世外桃源",
       "yuewen_to_merge": [
         "独来鱼",
         "印度洋嘅世外桃源"
-      ]
+      ],
+      "zhongwen": "座落于印度洋的世外桃源"
     },
     "answer": {
       "yuewen_merged": "独来鱼印度洋嘅世外桃源"
@@ -2820,12 +2820,12 @@
   },
   {
     "query": {
-      "zhongwen": "衰仔，快点起床上学",
       "yuewen_to_merge": [
         "喂",
         "衰仔啊",
         "快啲起身返学喇"
-      ]
+      ],
+      "zhongwen": "衰仔，快点起床上学"
     },
     "answer": {
       "yuewen_merged": "喂，衰仔啊，快啲起身返学喇"
@@ -2835,10 +2835,10 @@
   },
   {
     "query": {
-      "zhongwen": "咦？",
       "yuewen_to_merge": [
         "咦"
-      ]
+      ],
+      "zhongwen": "咦？"
     },
     "answer": {
       "yuewen_merged": "咦？"
@@ -2848,10 +2848,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈！",
       "yuewen_to_merge": [
         "妈妈"
-      ]
+      ],
+      "zhongwen": "妈妈！"
     },
     "answer": {
       "yuewen_merged": "妈妈！"
@@ -2861,11 +2861,11 @@
   },
   {
     "query": {
-      "zhongwen": "医生，吃了药会不会有那个什么的？",
       "yuewen_to_merge": [
         "医生啊",
         "啲药食咗会唔会有嗰啲咩㗎"
-      ]
+      ],
+      "zhongwen": "医生，吃了药会不会有那个什么的？"
     },
     "answer": {
       "yuewen_merged": "医生啊，啲药食咗会唔会有嗰啲咩㗎？"
@@ -2875,10 +2875,10 @@
   },
   {
     "query": {
-      "zhongwen": "不会！",
       "yuewen_to_merge": [
         "唔会"
-      ]
+      ],
+      "zhongwen": "不会！"
     },
     "answer": {
       "yuewen_merged": "唔会！"
@@ -2888,10 +2888,10 @@
   },
   {
     "query": {
-      "zhongwen": "那么吃药用不用那个什么的？",
       "yuewen_to_merge": [
         "噉佢食药使唔使咩啊"
-      ]
+      ],
+      "zhongwen": "那么吃药用不用那个什么的？"
     },
     "answer": {
       "yuewen_merged": "噉佢食药使唔使咩啊？"
@@ -2901,11 +2901,11 @@
   },
   {
     "query": {
-      "zhongwen": "不用！给他打口针吧！",
       "yuewen_to_merge": [
         "唔使",
         "同佢打多支针添呢"
-      ]
+      ],
+      "zhongwen": "不用！给他打口针吧！"
     },
     "answer": {
       "yuewen_merged": "唔使！同佢打多支针添呢！"
@@ -2915,11 +2915,11 @@
   },
   {
     "query": {
-      "zhongwen": "怎么？得打针？",
       "yuewen_to_merge": [
         "吓",
         "要打针啊"
-      ]
+      ],
+      "zhongwen": "怎么？得打针？"
     },
     "answer": {
       "yuewen_merged": "吓？要打针啊？"
@@ -2929,10 +2929,10 @@
   },
   {
     "query": {
-      "zhongwen": "那么他怕不怕死？",
       "yuewen_to_merge": [
         "噉佢怕唔怕死呀"
-      ]
+      ],
+      "zhongwen": "那么他怕不怕死？"
     },
     "answer": {
       "yuewen_merged": "噉佢怕唔怕死呀？"
@@ -2942,11 +2942,11 @@
   },
   {
     "query": {
-      "zhongwen": "没事吧？快点先把药水喝掉！",
       "yuewen_to_merge": [
         "冇嘢吖嘛",
         "快啲食埋啲药水佢先啦"
-      ]
+      ],
+      "zhongwen": "没事吧？快点先把药水喝掉！"
     },
     "answer": {
       "yuewen_merged": "冇嘢吖嘛？快啲食埋啲药水佢先啦！"
@@ -2956,11 +2956,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈我不想喝药水",
       "yuewen_to_merge": [
         "妈妈",
         "我唔想食药水呀"
-      ]
+      ],
+      "zhongwen": "妈妈我不想喝药水"
     },
     "answer": {
       "yuewen_merged": "妈妈我唔想食药水呀"
@@ -2970,11 +2970,11 @@
   },
   {
     "query": {
-      "zhongwen": "不要呀妈妈，我不喝呀",
       "yuewen_to_merge": [
         "唔好捞妈妈",
         "我唔食呀"
-      ]
+      ],
+      "zhongwen": "不要呀妈妈，我不喝呀"
     },
     "answer": {
       "yuewen_merged": "唔好捞妈妈，我唔食呀"
@@ -2984,10 +2984,10 @@
   },
   {
     "query": {
-      "zhongwen": "我不喝士多啤梨药水呀！",
       "yuewen_to_merge": [
         "我唔食士多啤梨药水呀"
-      ]
+      ],
+      "zhongwen": "我不喝士多啤梨药水呀！"
     },
     "answer": {
       "yuewen_merged": "我唔食士多啤梨药水呀！"
@@ -2997,11 +2997,11 @@
   },
   {
     "query": {
-      "zhongwen": "别哭了，不喝药水病不会好的",
       "yuewen_to_merge": [
         "唔好喊啦",
         "唔食药唔会好㗎"
-      ]
+      ],
+      "zhongwen": "别哭了，不喝药水病不会好的"
     },
     "answer": {
       "yuewen_merged": "唔好喊啦，唔食药唔会好㗎"
@@ -3011,12 +3011,12 @@
   },
   {
     "query": {
-      "zhongwen": "乖乖，病好了妈妈带你去马尔代夫",
       "yuewen_to_merge": [
         "乖乖啲",
         "病好咗",
         "妈妈大理马尔代夫"
-      ]
+      ],
+      "zhongwen": "乖乖，病好了妈妈带你去马尔代夫"
     },
     "answer": {
       "yuewen_merged": "乖乖啲，病好咗妈妈大理马尔代夫"
@@ -3026,10 +3026,10 @@
   },
   {
     "query": {
-      "zhongwen": "真的吗？",
       "yuewen_to_merge": [
         "真嘅"
-      ]
+      ],
+      "zhongwen": "真的吗？"
     },
     "answer": {
       "yuewen_merged": "真嘅？"
@@ -3039,10 +3039,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈什么时候骗过你？",
       "yuewen_to_merge": [
         "妈妈几时呃过你呀"
-      ]
+      ],
+      "zhongwen": "妈妈什么时候骗过你？"
     },
     "answer": {
       "yuewen_merged": "妈妈几时呃过你呀？"
@@ -3052,11 +3052,11 @@
   },
   {
     "query": {
-      "zhongwen": "乖，先把药水喝掉",
       "yuewen_to_merge": [
         "乖",
         "食埋啲药水先啦"
-      ]
+      ],
+      "zhongwen": "乖，先把药水喝掉"
     },
     "answer": {
       "yuewen_merged": "乖，食埋啲药水先啦"
@@ -3066,12 +3066,12 @@
   },
   {
     "query": {
-      "zhongwen": "好呀，马尔代夫！",
       "yuewen_to_merge": [
         "嘻嘻",
         "好嘢",
         "买二代夫"
-      ]
+      ],
+      "zhongwen": "好呀，马尔代夫！"
     },
     "answer": {
       "yuewen_merged": "嘻嘻，好嘢，买二代夫！"
@@ -3081,10 +3081,10 @@
   },
   {
     "query": {
-      "zhongwen": "马尔代夫！",
       "yuewen_to_merge": [
         "买二代夫"
-      ]
+      ],
+      "zhongwen": "马尔代夫！"
     },
     "answer": {
       "yuewen_merged": "买二代夫！"
@@ -3094,11 +3094,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈，那么我们什么时候去？",
       "yuewen_to_merge": [
         "妈妈",
         "咁我哋几时去呀"
-      ]
+      ],
+      "zhongwen": "妈妈，那么我们什么时候去？"
     },
     "answer": {
       "yuewen_merged": "妈妈，咁我哋几时去呀？"
@@ -3108,13 +3108,13 @@
   },
   {
     "query": {
-      "zhongwen": "你先把药水喝掉，病好了我就去订机票",
       "yuewen_to_merge": [
         "嗯",
         "你乖乖哋食埋啲药",
         "好返晒啦",
         "我即刻订机票"
-      ]
+      ],
+      "zhongwen": "你先把药水喝掉，病好了我就去订机票"
     },
     "answer": {
       "yuewen_merged": "嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票"
@@ -3125,11 +3125,11 @@
   },
   {
     "query": {
-      "zhongwen": "来，多喝一点！",
       "yuewen_to_merge": [
         "嚟啦",
         "食多更"
-      ]
+      ],
+      "zhongwen": "来，多喝一点！"
     },
     "answer": {
       "yuewen_merged": "嚟啦，食多更！"
@@ -3139,11 +3139,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈你看，我病好了！",
       "yuewen_to_merge": [
         "妈妈你睇",
         "我好返喇"
-      ]
+      ],
+      "zhongwen": "妈妈你看，我病好了！"
     },
     "answer": {
       "yuewen_merged": "妈妈你睇，我好返喇！"
@@ -3153,10 +3153,10 @@
   },
   {
     "query": {
-      "zhongwen": "家中的东西有什么没给你吃光的？",
       "yuewen_to_merge": [
         "即系间屋有乜嘢唔系畀你食晒㗎"
-      ]
+      ],
+      "zhongwen": "家中的东西有什么没给你吃光的？"
     },
     "answer": {
       "yuewen_merged": "即系间屋有乜嘢唔系畀你食晒㗎？"
@@ -3166,12 +3166,12 @@
   },
   {
     "query": {
-      "zhongwen": "这次不同呀，原来这么一大樽的",
       "yuewen_to_merge": [
         "妈妈",
         "呢次唔同㗎",
         "本来咁大樽嘅"
-      ]
+      ],
+      "zhongwen": "这次不同呀，原来这么一大樽的"
     },
     "answer": {
       "yuewen_merged": "妈妈，呢次唔同㗎，本来咁大樽嘅"
@@ -3182,12 +3182,12 @@
   },
   {
     "query": {
-      "zhongwen": "我喝一格，又喝一格，又喝一格⋯",
       "yuewen_to_merge": [
         "我饮下一格",
         "又一格",
         "又一格"
-      ]
+      ],
+      "zhongwen": "我喝一格，又喝一格，又喝一格⋯"
     },
     "answer": {
       "yuewen_merged": "我饮下一格，又一格，又一格⋯"
@@ -3197,11 +3197,11 @@
   },
   {
     "query": {
-      "zhongwen": "就给我喝光了！",
       "yuewen_to_merge": [
         "吓",
         "咪我饮晒㖞"
-      ]
+      ],
+      "zhongwen": "就给我喝光了！"
     },
     "answer": {
       "yuewen_merged": "吓，咪我饮晒㖞！"
@@ -3211,10 +3211,10 @@
   },
   {
     "query": {
-      "zhongwen": "喝光了就叻仔了！",
       "yuewen_to_merge": [
         "饮实就叻仔啦"
-      ]
+      ],
+      "zhongwen": "喝光了就叻仔了！"
     },
     "answer": {
       "yuewen_merged": "饮实就叻仔啦！"
@@ -3224,10 +3224,10 @@
   },
   {
     "query": {
-      "zhongwen": "喝光了就病好了！",
       "yuewen_to_merge": [
         "饮实就好返实啦"
-      ]
+      ],
+      "zhongwen": "喝光了就病好了！"
     },
     "answer": {
       "yuewen_merged": "饮实就好返实啦！"
@@ -3237,10 +3237,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈呀⋯",
       "yuewen_to_merge": [
         "妈妈"
-      ]
+      ],
+      "zhongwen": "妈妈呀⋯"
     },
     "answer": {
       "yuewen_merged": "妈妈⋯"
@@ -3250,10 +3250,10 @@
   },
   {
     "query": {
-      "zhongwen": "什么事？",
       "yuewen_to_merge": [
         "乜嘢啊"
-      ]
+      ],
+      "zhongwen": "什么事？"
     },
     "answer": {
       "yuewen_merged": "乜嘢啊？"
@@ -3263,10 +3263,10 @@
   },
   {
     "query": {
-      "zhongwen": "我们什么时候去马尔代夫？",
       "yuewen_to_merge": [
         "阿哋几时去马尔代夫啊"
-      ]
+      ],
+      "zhongwen": "我们什么时候去马尔代夫？"
     },
     "answer": {
       "yuewen_merged": "阿哋几时去马尔代夫啊？"
@@ -3276,10 +3276,10 @@
   },
   {
     "query": {
-      "zhongwen": "什么马尔代夫？",
       "yuewen_to_merge": [
         "乜嘢马尔代夫啊"
-      ]
+      ],
+      "zhongwen": "什么马尔代夫？"
     },
     "answer": {
       "yuewen_merged": "乜嘢马尔代夫啊？"
@@ -3289,11 +3289,11 @@
   },
   {
     "query": {
-      "zhongwen": "你说我病好带我去马尔代夫的呀！",
       "yuewen_to_merge": [
         "呢",
         "你话我返就同我去马尔代夫㗎嘛"
-      ]
+      ],
+      "zhongwen": "你说我病好带我去马尔代夫的呀！"
     },
     "answer": {
       "yuewen_merged": "呢，你话我返就同我去马尔代夫㗎嘛！"
@@ -3303,12 +3303,12 @@
   },
   {
     "query": {
-      "zhongwen": "马尔代夫，椰林树影，水清沙幼⋯",
       "yuewen_to_merge": [
         "马尔代夫呢",
         "耶南树影",
         "水清沙游"
-      ]
+      ],
+      "zhongwen": "马尔代夫，椰林树影，水清沙幼⋯"
     },
     "answer": {
       "yuewen_merged": "马尔代夫呢，耶南树影，水清沙游⋯"
@@ -3318,10 +3318,10 @@
   },
   {
     "query": {
-      "zhongwen": "座落于印度洋的世外桃源呀！",
       "yuewen_to_merge": [
         "助流于印度园嘅世外导演啦"
-      ]
+      ],
+      "zhongwen": "座落于印度洋的世外桃源呀！"
     },
     "answer": {
       "yuewen_merged": "助流于印度园嘅世外导演啦！"
@@ -3331,11 +3331,11 @@
   },
   {
     "query": {
-      "zhongwen": "想不到你还有点文采",
       "yuewen_to_merge": [
         "啊",
         "估唔到你几好文采㗎噃"
-      ]
+      ],
+      "zhongwen": "想不到你还有点文采"
     },
     "answer": {
       "yuewen_merged": "啊，估唔到你几好文采㗎噃"
@@ -3345,10 +3345,10 @@
   },
   {
     "query": {
-      "zhongwen": "说得不错呀！",
       "yuewen_to_merge": [
         "讲得几好听啊"
-      ]
+      ],
+      "zhongwen": "说得不错呀！"
     },
     "answer": {
       "yuewen_merged": "讲得几好听啊！"
@@ -3358,11 +3358,11 @@
   },
   {
     "query": {
-      "zhongwen": "我不是光说的呀，妈妈你说过⋯",
       "yuewen_to_merge": [
         "妈妈我唔系讲喇㗎",
         "又系你话嘅"
-      ]
+      ],
+      "zhongwen": "我不是光说的呀，妈妈你说过⋯"
     },
     "answer": {
       "yuewen_merged": "妈妈我唔系讲喇㗎，又系你话嘅⋯"
@@ -3373,11 +3373,11 @@
   },
   {
     "query": {
-      "zhongwen": "我病好了带我去马尔代夫的！",
       "yuewen_to_merge": [
         "你话我病好咗之日就同我去马尔代夫㗎",
         "你讲过㗎"
-      ]
+      ],
+      "zhongwen": "我病好了带我去马尔代夫的！"
     },
     "answer": {
       "yuewen_merged": "你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！"
@@ -3388,12 +3388,12 @@
   },
   {
     "query": {
-      "zhongwen": "不是的，妈妈你说我病好了就去的",
       "yuewen_to_merge": [
         "唔系㖞",
         "妈妈",
         "你话好咗就同我去㗎㖞"
-      ]
+      ],
+      "zhongwen": "不是的，妈妈你说我病好了就去的"
     },
     "answer": {
       "yuewen_merged": "唔系㖞，妈妈你话好咗就同我去㗎㖞"
@@ -3403,10 +3403,10 @@
   },
   {
     "query": {
-      "zhongwen": "你讲过的！",
       "yuewen_to_merge": [
         "你讲过㗎"
-      ]
+      ],
+      "zhongwen": "你讲过的！"
     },
     "answer": {
       "yuewen_merged": "你讲过㗎！"
@@ -3416,11 +3416,11 @@
   },
   {
     "query": {
-      "zhongwen": "好了，别哭了",
       "yuewen_to_merge": [
         "得啦得啦",
         "唔好喊啦"
-      ]
+      ],
+      "zhongwen": "好了，别哭了"
     },
     "answer": {
       "yuewen_merged": "得啦得啦，唔好喊啦"
@@ -3431,11 +3431,11 @@
   },
   {
     "query": {
-      "zhongwen": "真的吗？　　对",
       "yuewen_to_merge": [
         "真嘅",
         "系啊"
-      ]
+      ],
+      "zhongwen": "真的吗？　　对"
     },
     "answer": {
       "yuewen_merged": "真嘅？　　系啊"
@@ -3445,10 +3445,10 @@
   },
   {
     "query": {
-      "zhongwen": "什么时候去？",
       "yuewen_to_merge": [
         "咁几时去啊"
-      ]
+      ],
+      "zhongwen": "什么时候去？"
     },
     "answer": {
       "yuewen_merged": "咁几时去啊？"
@@ -3458,11 +3458,11 @@
   },
   {
     "query": {
-      "zhongwen": "你早发财了⋯",
       "yuewen_to_merge": [
         "你发咗㗎喇",
         "你发咗㗎喇"
-      ]
+      ],
+      "zhongwen": "你早发财了⋯"
     },
     "answer": {
       "yuewen_merged": "你发咗㗎喇，你发咗㗎喇⋯"
@@ -3473,10 +3473,10 @@
   },
   {
     "query": {
-      "zhongwen": "好了好了，发财了",
       "yuewen_to_merge": [
         "系喇系喇系喇发咗喇"
-      ]
+      ],
+      "zhongwen": "好了好了，发财了"
     },
     "answer": {
       "yuewen_merged": "系喇系喇系喇，发咗喇"
@@ -3487,11 +3487,11 @@
   },
   {
     "query": {
-      "zhongwen": "我们下个星期去，好了吧？",
       "yuewen_to_merge": [
         "下个礼拜同你去啦",
         "得未啊"
-      ]
+      ],
+      "zhongwen": "我们下个星期去，好了吧？"
     },
     "answer": {
       "yuewen_merged": "下个礼拜同你去啦，得未啊？"
@@ -3501,10 +3501,10 @@
   },
   {
     "query": {
-      "zhongwen": "太好了！",
       "yuewen_to_merge": [
         "好嘢"
-      ]
+      ],
+      "zhongwen": "太好了！"
     },
     "answer": {
       "yuewen_merged": "好嘢！"
@@ -3514,12 +3514,12 @@
   },
   {
     "query": {
-      "zhongwen": "麦唛，我是麦兜呀",
       "yuewen_to_merge": [
         "喂",
         "麦麦啊",
         "麦豆啊我系"
-      ]
+      ],
+      "zhongwen": "麦唛，我是麦兜呀"
     },
     "answer": {
       "yuewen_merged": "喂，麦麦啊，麦豆啊我系"
@@ -3529,10 +3529,10 @@
   },
   {
     "query": {
-      "zhongwen": "是这样子的，我明天就飞了",
       "yuewen_to_merge": [
         "即系呢我明日就要飞喇"
-      ]
+      ],
+      "zhongwen": "是这样子的，我明天就飞了"
     },
     "answer": {
       "yuewen_merged": "即系呢，我明日就要飞喇"
@@ -3542,11 +3542,11 @@
   },
   {
     "query": {
-      "zhongwen": "对　　⋯是吗？",
       "yuewen_to_merge": [
         "系啊",
         "系咩"
-      ]
+      ],
+      "zhongwen": "对　　⋯是吗？"
     },
     "answer": {
       "yuewen_merged": "系啊　　⋯系咩？"
@@ -3556,10 +3556,10 @@
   },
   {
     "query": {
-      "zhongwen": "飞机餐很难吃的吗？",
       "yuewen_to_merge": [
         "飞机真好难食㗎"
-      ]
+      ],
+      "zhongwen": "飞机餐很难吃的吗？"
     },
     "answer": {
       "yuewen_merged": "飞机真好难食㗎？"
@@ -3569,10 +3569,10 @@
   },
   {
     "query": {
-      "zhongwen": "也得吃呀！",
       "yuewen_to_merge": [
         "但点都要食㗎啦"
-      ]
+      ],
+      "zhongwen": "也得吃呀！"
     },
     "answer": {
       "yuewen_merged": "但点都要食㗎啦！"
@@ -3582,10 +3582,10 @@
   },
   {
     "query": {
-      "zhongwen": "难道自己带东西上去吃吗？",
       "yuewen_to_merge": [
         "唔通自己带嘢上去食咩"
-      ]
+      ],
+      "zhongwen": "难道自己带东西上去吃吗？"
     },
     "answer": {
       "yuewen_merged": "唔通自己带嘢上去食咩？"
@@ -3595,11 +3595,11 @@
   },
   {
     "query": {
-      "zhongwen": "还在讲？",
       "yuewen_to_merge": [
         "仲讲",
         "哦"
-      ]
+      ],
+      "zhongwen": "还在讲？"
     },
     "answer": {
       "yuewen_merged": "仲讲哦？"
@@ -3609,11 +3609,11 @@
   },
   {
     "query": {
-      "zhongwen": "快点帮手执行李",
       "yuewen_to_merge": [
         "快啲嚟执埋啲行李先啦",
         "哦"
-      ]
+      ],
+      "zhongwen": "快点帮手执行李"
     },
     "answer": {
       "yuewen_merged": "快啲嚟执埋啲行李先啦哦"
@@ -3622,11 +3622,11 @@
   },
   {
     "query": {
-      "zhongwen": "跟我向他们说，我明天去马尔代夫了",
       "yuewen_to_merge": [
         "你帮我话畀佢哋知",
         "我明日去买热带裤薄"
-      ]
+      ],
+      "zhongwen": "跟我向他们说，我明天去马尔代夫了"
     },
     "answer": {
       "yuewen_merged": "你帮我话畀佢哋知，我明日去买热带裤薄"
@@ -3636,11 +3636,11 @@
   },
   {
     "query": {
-      "zhongwen": "那边蓝天白云，椰林树影⋯",
       "yuewen_to_merge": [
         "嗰度蓝天五百云",
         "夜临雪"
-      ]
+      ],
+      "zhongwen": "那边蓝天白云，椰林树影⋯"
     },
     "answer": {
       "yuewen_merged": "嗰度蓝天五百云，夜临雪⋯"
@@ -3650,10 +3650,10 @@
   },
   {
     "query": {
-      "zhongwen": "还在讲！",
       "yuewen_to_merge": [
         "水清净沙有"
-      ]
+      ],
+      "zhongwen": "还在讲！"
     },
     "answer": {
       "yuewen_merged": "水清净沙有！"
@@ -3663,10 +3663,10 @@
   },
   {
     "query": {
-      "zhongwen": "来了！",
       "yuewen_to_merge": [
         "我嚟紧㗎喇"
-      ]
+      ],
+      "zhongwen": "来了！"
     },
     "answer": {
       "yuewen_merged": "我嚟紧㗎喇！"
@@ -3676,11 +3676,11 @@
   },
   {
     "query": {
-      "zhongwen": "要执行李了，回来再跟你说吧",
       "yuewen_to_merge": [
         "我要执行你喇",
         "返嚟先再同你倾过啦"
-      ]
+      ],
+      "zhongwen": "要执行李了，回来再跟你说吧"
     },
     "answer": {
       "yuewen_merged": "我要执行你喇，返嚟先再同你倾过啦"
@@ -3690,10 +3690,10 @@
   },
   {
     "query": {
-      "zhongwen": "再见！",
       "yuewen_to_merge": [
         "拜拜"
-      ]
+      ],
+      "zhongwen": "再见！"
     },
     "answer": {
       "yuewen_merged": "拜拜！"
@@ -3703,12 +3703,12 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈，我得把出世纸带著吗？",
       "yuewen_to_merge": [
         "哎哟",
         "妈妈",
         "我系咪要带埋出世纸去㗎"
-      ]
+      ],
+      "zhongwen": "妈妈，我得把出世纸带著吗？"
     },
     "answer": {
       "yuewen_merged": "哎哟，妈妈，我系咪要带埋出世纸去㗎？"
@@ -3718,10 +3718,10 @@
   },
   {
     "query": {
-      "zhongwen": "那么成绩表呢？",
       "yuewen_to_merge": [
         "咁成绩表呢"
-      ]
+      ],
+      "zhongwen": "那么成绩表呢？"
     },
     "answer": {
       "yuewen_merged": "咁成绩表呢？"
@@ -3731,12 +3731,12 @@
   },
   {
     "query": {
-      "zhongwen": "太好了！吓得我！",
       "yuewen_to_merge": [
         "好嘢",
         "吓得我啊",
         "咁都好啲"
-      ]
+      ],
+      "zhongwen": "太好了！吓得我！"
     },
     "answer": {
       "yuewen_merged": "好嘢！吓得我啊！咁都好啲"
@@ -3746,10 +3746,10 @@
   },
   {
     "query": {
-      "zhongwen": "找到了！",
       "yuewen_to_merge": [
         "揾到喇"
-      ]
+      ],
+      "zhongwen": "找到了！"
     },
     "answer": {
       "yuewen_merged": "揾到喇！"
@@ -3759,10 +3759,10 @@
   },
   {
     "query": {
-      "zhongwen": "出世纸给我找到了！",
       "yuewen_to_merge": [
         "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
-      ]
+      ],
+      "zhongwen": "出世纸给我找到了！"
     },
     "answer": {
       "yuewen_merged": "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然！"
@@ -3772,11 +3772,11 @@
   },
   {
     "query": {
-      "zhongwen": "早机去，晚机返",
       "yuewen_to_merge": [
         "早机去",
         "晚机返"
-      ]
+      ],
+      "zhongwen": "早机去，晚机返"
     },
     "answer": {
       "yuewen_merged": "早机去，晚机返"
@@ -3786,10 +3786,10 @@
   },
   {
     "query": {
-      "zhongwen": "就这样⋯",
       "yuewen_to_merge": [
         "就系噉样"
-      ]
+      ],
+      "zhongwen": "就这样⋯"
     },
     "answer": {
       "yuewen_merged": "就系噉样⋯"
@@ -3799,10 +3799,10 @@
   },
   {
     "query": {
-      "zhongwen": "我过了我小时候最精明⋯",
       "yuewen_to_merge": [
         "我过咗我小时候最著数"
-      ]
+      ],
+      "zhongwen": "我过了我小时候最精明⋯"
     },
     "answer": {
       "yuewen_merged": "我过咗我小时候最著数⋯"
@@ -3812,10 +3812,10 @@
   },
   {
     "query": {
-      "zhongwen": "依你说，纸是否可以包著鸡呢？",
       "yuewen_to_merge": [
         "噉你话纸包唔包得绝鸡呢"
-      ]
+      ],
+      "zhongwen": "依你说，纸是否可以包著鸡呢？"
     },
     "answer": {
       "yuewen_merged": "噉你话，纸包唔包得绝鸡呢？"
@@ -3825,10 +3825,10 @@
   },
   {
     "query": {
-      "zhongwen": "也可以的⋯",
       "yuewen_to_merge": [
         "都得嘅"
-      ]
+      ],
+      "zhongwen": "也可以的⋯"
     },
     "answer": {
       "yuewen_merged": "都得嘅⋯"
@@ -3838,11 +3838,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈晚安！",
       "yuewen_to_merge": [
         "妈妈",
         "做头"
-      ]
+      ],
+      "zhongwen": "妈妈晚安！"
     },
     "answer": {
       "yuewen_merged": "妈妈做头！"
@@ -3852,10 +3852,10 @@
   },
   {
     "query": {
-      "zhongwen": "夺得香港历史上第一面奥运金牌！",
       "yuewen_to_merge": [
         "夺取香港历史上第一面奥运金牌"
-      ]
+      ],
+      "zhongwen": "夺得香港历史上第一面奥运金牌！"
     },
     "answer": {
       "yuewen_merged": "夺取香港历史上第一面奥运金牌！"
@@ -3865,11 +3865,11 @@
   },
   {
     "query": {
-      "zhongwen": "激动地对在场记者表示她今次的成绩⋯",
       "yuewen_to_merge": [
         "好激动噉同在场嘅记者讲",
         "今次佢嘅成绩"
-      ]
+      ],
+      "zhongwen": "激动地对在场记者表示她今次的成绩⋯"
     },
     "answer": {
       "yuewen_merged": "好激动噉同在场嘅记者讲今次佢嘅成绩⋯"
@@ -3879,10 +3879,10 @@
   },
   {
     "query": {
-      "zhongwen": "足以证明香港运动员不是腊鸭！",
       "yuewen_to_merge": [
         "可以证明到香港嘅运动员唔系𫚭鸭"
-      ]
+      ],
+      "zhongwen": "足以证明香港运动员不是腊鸭！"
     },
     "answer": {
       "yuewen_merged": "可以证明到香港嘅运动员唔系𫚭鸭！"
@@ -3892,12 +3892,12 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，应该　　是垃圾，不是腊鸭！",
       "yuewen_to_merge": [
         "各位对唔住",
         "应该系垃圾",
         "唔系𫚭鸭"
-      ]
+      ],
+      "zhongwen": "对不起，应该　　是垃圾，不是腊鸭！"
     },
     "answer": {
       "yuewen_merged": "各位对唔住，应该　　系垃圾，唔系𫚭鸭！"
@@ -3907,12 +3907,12 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，应该　　不是垃圾，也不是腊鸭！",
       "yuewen_to_merge": [
         "对唔住",
         "应该系唔系垃圾",
         "亦都唔系𫚭鸭"
-      ]
+      ],
+      "zhongwen": "对不起，应该　　不是垃圾，也不是腊鸭！"
     },
     "answer": {
       "yuewen_merged": "对唔住，应该系　　唔系垃圾，亦都唔系𫚭鸭！"
@@ -3922,11 +3922,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈好像又有计了",
       "yuewen_to_merge": [
         "咦",
         "妈妈好似又有计噉噃"
-      ]
+      ],
+      "zhongwen": "妈妈好像又有计了"
     },
     "answer": {
       "yuewen_merged": "咦，妈妈好似又有计噉噃"
@@ -3936,12 +3936,12 @@
   },
   {
     "query": {
-      "zhongwen": "靓仔，好运，叻仔⋯",
       "yuewen_to_merge": [
         "靓仔",
         "好运",
         "叻仔呀"
-      ]
+      ],
+      "zhongwen": "靓仔，好运，叻仔⋯"
     },
     "answer": {
       "yuewen_merged": "靓仔，好运，叻仔呀⋯"
@@ -3951,11 +3951,11 @@
   },
   {
     "query": {
-      "zhongwen": "是不是可以靠手瓜呢？",
       "yuewen_to_merge": [
         "哗",
         "好唔好靠下个手瓜噉呢"
-      ]
+      ],
+      "zhongwen": "是不是可以靠手瓜呢？"
     },
     "answer": {
       "yuewen_merged": "哗，好唔好靠下个手瓜噉呢？"
@@ -3965,11 +3965,11 @@
   },
   {
     "query": {
-      "zhongwen": "于是，一个梦还没醒⋯",
       "yuewen_to_merge": [
         "于是",
         "一个梦都未醒"
-      ]
+      ],
+      "zhongwen": "于是，一个梦还没醒⋯"
     },
     "answer": {
       "yuewen_merged": "于是，一个梦都未醒⋯"
@@ -3979,11 +3979,11 @@
   },
   {
     "query": {
-      "zhongwen": "但无论多不容易，我都要试一试",
       "yuewen_to_merge": [
         "但无论几唔容易",
         "我都要试一试"
-      ]
+      ],
+      "zhongwen": "但无论多不容易，我都要试一试"
     },
     "answer": {
       "yuewen_merged": "但无论几唔容易，我都要试一试"
@@ -3993,10 +3993,10 @@
   },
   {
     "query": {
-      "zhongwen": "我要黎根收我做徒弟！",
       "yuewen_to_merge": [
         "我要来紧收我度徒弟"
-      ]
+      ],
+      "zhongwen": "我要黎根收我做徒弟！"
     },
     "answer": {
       "yuewen_merged": "我要来紧收我度徒弟！"
@@ -4006,11 +4006,11 @@
   },
   {
     "query": {
-      "zhongwen": "无论几辛苦，我一定要得到奥运金牌！",
       "yuewen_to_merge": [
         "无论几辛苦",
         "我一定要捞到奥运金牌"
-      ]
+      ],
+      "zhongwen": "无论几辛苦，我一定要得到奥运金牌！"
     },
     "answer": {
       "yuewen_merged": "无论几辛苦，我一定要捞到奥运金牌！"
@@ -4020,10 +4020,10 @@
   },
   {
     "query": {
-      "zhongwen": "我会举起金牌跟全世界说：",
       "yuewen_to_merge": [
         "系今排同全世界讲"
-      ]
+      ],
+      "zhongwen": "我会举起金牌跟全世界说："
     },
     "answer": {
       "yuewen_merged": "系今排同全世界讲："
@@ -4033,11 +4033,11 @@
   },
   {
     "query": {
-      "zhongwen": "长洲，我终于来到长洲了！",
       "yuewen_to_merge": [
         "长洲",
         "我终于嚟到长洲嘞"
-      ]
+      ],
+      "zhongwen": "长洲，我终于来到长洲了！"
     },
     "answer": {
       "yuewen_merged": "长洲，我终于嚟到长洲嘞！"
@@ -4047,11 +4047,11 @@
   },
   {
     "query": {
-      "zhongwen": "长洲，我得亲吻这片圣洁的土地！",
       "yuewen_to_merge": [
         "长洲",
         "我要亲吻呢片盛洁嘅土地"
-      ]
+      ],
+      "zhongwen": "长洲，我得亲吻这片圣洁的土地！"
     },
     "answer": {
       "yuewen_merged": "长洲，我要亲吻呢片盛洁嘅土地！"
@@ -4061,11 +4061,11 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友，这儿是南丫岛呀！",
       "yuewen_to_merge": [
         "小朋友呀",
         "呢度系南丫岛噃"
-      ]
+      ],
+      "zhongwen": "小朋友，这儿是南丫岛呀！"
     },
     "answer": {
       "yuewen_merged": "小朋友呀，呢度系南丫岛噃！"
@@ -4075,11 +4075,11 @@
   },
   {
     "query": {
-      "zhongwen": "南丫岛？它也孕育了周润发！",
       "yuewen_to_merge": [
         "南丫岛",
         "都引用咗周润发噃"
-      ]
+      ],
+      "zhongwen": "南丫岛？它也孕育了周润发！"
     },
     "answer": {
       "yuewen_merged": "南丫岛？都引用咗周润发噃！"
@@ -4089,11 +4089,11 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友，你知道什么是狗仔队吧？",
       "yuewen_to_merge": [
         "小朋友",
         "我谂你都知道乜嘢叫做狗仔队嘞"
-      ]
+      ],
+      "zhongwen": "小朋友，你知道什么是狗仔队吧？"
     },
     "answer": {
       "yuewen_merged": "小朋友，我谂你都知道乜嘢叫做狗仔队嘞？"
@@ -4103,10 +4103,10 @@
   },
   {
     "query": {
-      "zhongwen": "至于拜师的事⋯",
       "yuewen_to_merge": [
         "至于拜师嘅嘢"
-      ]
+      ],
+      "zhongwen": "至于拜师的事⋯"
     },
     "answer": {
       "yuewen_merged": "至于拜师嘅嘢⋯"
@@ -4116,10 +4116,10 @@
   },
   {
     "query": {
-      "zhongwen": "拜你个头！",
       "yuewen_to_merge": [
         "拜你个头嘅"
-      ]
+      ],
+      "zhongwen": "拜你个头！"
     },
     "answer": {
       "yuewen_merged": "拜你个头嘅！"
@@ -4129,10 +4129,10 @@
   },
   {
     "query": {
-      "zhongwen": "怎么吃得苦？",
       "yuewen_to_merge": [
         "边挨得苦㗎"
-      ]
+      ],
+      "zhongwen": "怎么吃得苦？"
     },
     "answer": {
       "yuewen_merged": "边挨得苦㗎？"
@@ -4142,10 +4142,10 @@
   },
   {
     "query": {
-      "zhongwen": "想跟珊珊般得奥运金牌？",
       "yuewen_to_merge": [
         "想学山伞攞奥运金牌"
-      ]
+      ],
+      "zhongwen": "想跟珊珊般得奥运金牌？"
     },
     "answer": {
       "yuewen_merged": "想学山伞攞奥运金牌？"
@@ -4155,10 +4155,10 @@
   },
   {
     "query": {
-      "zhongwen": "别作梦了！",
       "yuewen_to_merge": [
         "食母你嘢"
-      ]
+      ],
+      "zhongwen": "别作梦了！"
     },
     "answer": {
       "yuewen_merged": "食母你嘢！"
@@ -4168,11 +4168,11 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友，你看！",
       "yuewen_to_merge": [
         "小朋友",
         "你睇下"
-      ]
+      ],
+      "zhongwen": "小朋友，你看！"
     },
     "answer": {
       "yuewen_merged": "小朋友，你睇下！"
@@ -4182,11 +4182,11 @@
   },
   {
     "query": {
-      "zhongwen": "这个⋯",
       "yuewen_to_merge": [
         "哗",
         "呢只"
-      ]
+      ],
+      "zhongwen": "这个⋯"
     },
     "answer": {
       "yuewen_merged": "哗，呢只⋯"
@@ -4196,11 +4196,11 @@
   },
   {
     "query": {
-      "zhongwen": "这脚瓜⋯好粗好大！比一节瓜还要大！",
       "yuewen_to_merge": [
         "呢只脚瓜好粗好大呀",
         "仲大个只瓜呀"
-      ]
+      ],
+      "zhongwen": "这脚瓜⋯好粗好大！比一节瓜还要大！"
     },
     "answer": {
       "yuewen_merged": "呢只脚瓜⋯好粗好大呀！仲大个只瓜呀！"
@@ -4210,10 +4210,10 @@
   },
   {
     "query": {
-      "zhongwen": "脚瓜的肌肉非常结实⋯",
       "yuewen_to_merge": [
         "脚瓜啲肌肉非常结实"
-      ]
+      ],
+      "zhongwen": "脚瓜的肌肉非常结实⋯"
     },
     "answer": {
       "yuewen_merged": "脚瓜啲肌肉非常结实⋯"
@@ -4223,11 +4223,11 @@
   },
   {
     "query": {
-      "zhongwen": "青筋凸现，钢线似的",
       "yuewen_to_merge": [
         "啲青筋凸晒出嚟",
         "好似钢线噉"
-      ]
+      ],
+      "zhongwen": "青筋凸现，钢线似的"
     },
     "answer": {
       "yuewen_merged": "啲青筋凸晒出嚟，好似钢线噉"
@@ -4237,11 +4237,11 @@
   },
   {
     "query": {
-      "zhongwen": "每一条脚毛都硬似铁钉",
       "yuewen_to_merge": [
         "啲脚毛",
         "每一条好似铁钉噉硬"
-      ]
+      ],
+      "zhongwen": "每一条脚毛都硬似铁钉"
     },
     "answer": {
       "yuewen_merged": "啲脚毛，每一条好似铁钉噉硬"
@@ -4251,11 +4251,11 @@
   },
   {
     "query": {
-      "zhongwen": "脚趾甲有一寸厚，究竟⋯",
       "yuewen_to_merge": [
         "脚趾弓啲脚甲成吋噉厚",
         "究竟"
-      ]
+      ],
+      "zhongwen": "脚趾甲有一寸厚，究竟⋯"
     },
     "answer": {
       "yuewen_merged": "脚趾弓啲脚甲成吋噉厚，究竟⋯"
@@ -4265,10 +4265,10 @@
   },
   {
     "query": {
-      "zhongwen": "要行过几多座山⋯",
       "yuewen_to_merge": [
         "要行我几多座山"
-      ]
+      ],
+      "zhongwen": "要行过几多座山⋯"
     },
     "answer": {
       "yuewen_merged": "要行我几多座山⋯"
@@ -4278,10 +4278,10 @@
   },
   {
     "query": {
-      "zhongwen": "跨过几多个海⋯",
       "yuewen_to_merge": [
         "跨我几多个海"
-      ]
+      ],
+      "zhongwen": "跨过几多个海⋯"
     },
     "answer": {
       "yuewen_merged": "跨我几多个海⋯"
@@ -4291,10 +4291,10 @@
   },
   {
     "query": {
-      "zhongwen": "吃过几多苦头⋯",
       "yuewen_to_merge": [
         "挨过几多苦头"
-      ]
+      ],
+      "zhongwen": "吃过几多苦头⋯"
     },
     "answer": {
       "yuewen_merged": "挨过几多苦头⋯"
@@ -4304,10 +4304,10 @@
   },
   {
     "query": {
-      "zhongwen": "才可以练成这举世无双的脚瓜？",
       "yuewen_to_merge": [
         "先至可以练成呢只举世无双嘅脚瓜"
-      ]
+      ],
+      "zhongwen": "才可以练成这举世无双的脚瓜？"
     },
     "answer": {
       "yuewen_merged": "先至可以练成呢只举世无双嘅脚瓜？"
@@ -4317,11 +4317,11 @@
   },
   {
     "query": {
-      "zhongwen": "我⋯我一定要练成这脚瓜！",
       "yuewen_to_merge": [
         "我",
         "我一定要练成呢只脚挂"
-      ]
+      ],
+      "zhongwen": "我⋯我一定要练成这脚瓜！"
     },
     "answer": {
       "yuewen_merged": "我⋯我一定要练成呢只脚挂！"
@@ -4331,10 +4331,10 @@
   },
   {
     "query": {
-      "zhongwen": "师傅！",
       "yuewen_to_merge": [
         "师父"
-      ]
+      ],
+      "zhongwen": "师傅！"
     },
     "answer": {
       "yuewen_merged": "师父！"
@@ -4344,10 +4344,10 @@
   },
   {
     "query": {
-      "zhongwen": "我可以去小个便吗？",
       "yuewen_to_merge": [
         "我可唔可以去个小便呢"
-      ]
+      ],
+      "zhongwen": "我可以去小个便吗？"
     },
     "answer": {
       "yuewen_merged": "我可唔可以去个小便呢？"
@@ -4357,10 +4357,10 @@
   },
   {
     "query": {
-      "zhongwen": "每次唱这首歌，我都会急小便",
       "yuewen_to_merge": [
         "而知点解每一字唱呢首歌都会急小便"
-      ]
+      ],
+      "zhongwen": "每次唱这首歌，我都会急小便"
     },
     "answer": {
       "yuewen_merged": "而知点解每一字唱呢首歌都会急小便"
@@ -4370,10 +4370,10 @@
   },
   {
     "query": {
-      "zhongwen": "现在先去，一回恐怕还是会急",
       "yuewen_to_merge": [
         "仅次去定先都怕一阵会再急过"
-      ]
+      ],
+      "zhongwen": "现在先去，一回恐怕还是会急"
     },
     "answer": {
       "yuewen_merged": "仅次去定先，都怕一阵会再急过"
@@ -4383,10 +4383,10 @@
   },
   {
     "query": {
-      "zhongwen": "我要黎根收我做徒弟！",
       "yuewen_to_merge": [
         "我要黎根收我做徒弟"
-      ]
+      ],
+      "zhongwen": "我要黎根收我做徒弟！"
     },
     "answer": {
       "yuewen_merged": "我要黎根收我做徒弟！"
@@ -4396,10 +4396,10 @@
   },
   {
     "query": {
-      "zhongwen": "歌，是这样唱的⋯",
       "yuewen_to_merge": [
         "嗰首歌系噉唱嘅"
-      ]
+      ],
+      "zhongwen": "歌，是这样唱的⋯"
     },
     "answer": {
       "yuewen_merged": "嗰首歌，系噉唱嘅⋯"
@@ -4409,11 +4409,11 @@
   },
   {
     "query": {
-      "zhongwen": "黎根听完歌以后，表情有点古怪⋯",
       "yuewen_to_merge": [
         "黎今听完首歌之后",
         "啲表情有啲古怪"
-      ]
+      ],
+      "zhongwen": "黎根听完歌以后，表情有点古怪⋯"
     },
     "answer": {
       "yuewen_merged": "黎今听完首歌之后，啲表情有啲古怪⋯"
@@ -4423,11 +4423,11 @@
   },
   {
     "query": {
-      "zhongwen": "我一定要好好把握这机会",
       "yuewen_to_merge": [
         "唔",
         "我一定要好好把握呢个机会"
-      ]
+      ],
+      "zhongwen": "我一定要好好把握这机会"
     },
     "answer": {
       "yuewen_merged": "唔，我一定要好好把握呢个机会"
@@ -4437,11 +4437,11 @@
   },
   {
     "query": {
-      "zhongwen": "师傅！你收我做徒弟吧！",
       "yuewen_to_merge": [
         "师父",
         "你收我做徒弟啦"
-      ]
+      ],
+      "zhongwen": "师傅！你收我做徒弟吧！"
     },
     "answer": {
       "yuewen_merged": "师父！你收我做徒弟啦！"
@@ -4451,11 +4451,11 @@
   },
   {
     "query": {
-      "zhongwen": "你唔收我做徒弟，我一世都这么跪著！",
       "yuewen_to_merge": [
         "你收我做徒弟",
         "我呢一世都跪喺度"
-      ]
+      ],
+      "zhongwen": "你唔收我做徒弟，我一世都这么跪著！"
     },
     "answer": {
       "yuewen_merged": "你收我做徒弟，我呢一世都跪喺度！"
@@ -4465,10 +4465,10 @@
   },
   {
     "query": {
-      "zhongwen": "起来呀！",
       "yuewen_to_merge": [
         "起身啊"
-      ]
+      ],
+      "zhongwen": "起来呀！"
     },
     "answer": {
       "yuewen_merged": "起身啊！"
@@ -4478,10 +4478,10 @@
   },
   {
     "query": {
-      "zhongwen": "多谢师傅！",
       "yuewen_to_merge": [
         "多谢师父"
-      ]
+      ],
+      "zhongwen": "多谢师傅！"
     },
     "answer": {
       "yuewen_merged": "多谢师父！"
@@ -4491,11 +4491,11 @@
   },
   {
     "query": {
-      "zhongwen": "不⋯我是叫你扶我起来呀！",
       "yuewen_to_merge": [
         "唔系啊",
         "我系叫你扶我起身啊"
-      ]
+      ],
+      "zhongwen": "不⋯我是叫你扶我起来呀！"
     },
     "answer": {
       "yuewen_merged": "唔系啊⋯我系叫你扶我起身啊！"
@@ -4505,14 +4505,14 @@
   },
   {
     "query": {
-      "zhongwen": "不成了！我的脚瓜太痹了！",
       "yuewen_to_merge": [
         "顶唔顺啊",
         "我个腿挂好鼻啊",
         "字幕由",
         "Amara.org",
         "社群提供"
-      ]
+      ],
+      "zhongwen": "不成了！我的脚瓜太痹了！"
     },
     "answer": {
       "yuewen_merged": "顶唔顺啊！我个腿挂好鼻啊！字幕由Amara.org社群提供"
@@ -4522,11 +4522,11 @@
   },
   {
     "query": {
-      "zhongwen": "晚饭时，妈妈倒了三杯米酒",
       "yuewen_to_merge": [
         "晚饭时候",
         "妈妈倒咗三杯米酒"
-      ]
+      ],
+      "zhongwen": "晚饭时，妈妈倒了三杯米酒"
     },
     "answer": {
       "yuewen_merged": "晚饭时候，妈妈倒咗三杯米酒"
@@ -4536,11 +4536,11 @@
   },
   {
     "query": {
-      "zhongwen": "又将几只橙和蒸好的鸡放到祖先前",
       "yuewen_to_merge": [
         "再将几个铲同埋蒸熟咗嘅鸡",
         "放喺祖先前面"
-      ]
+      ],
+      "zhongwen": "又将几只橙和蒸好的鸡放到祖先前"
     },
     "answer": {
       "yuewen_merged": "再将几个铲同埋蒸熟咗嘅鸡放喺祖先前面"
@@ -4549,11 +4549,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈叫我跪低，向祖先请请",
       "yuewen_to_merge": [
         "妈妈叫我跪低",
         "同祖先请请"
-      ]
+      ],
+      "zhongwen": "妈妈叫我跪低，向祖先请请"
     },
     "answer": {
       "yuewen_merged": "妈妈叫我跪低，同祖先请请"
@@ -4563,11 +4563,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈跟著又念念有词的",
       "yuewen_to_merge": [
         "跟住",
         "妈妈口噏噏噉讲咗一啲嘢"
-      ]
+      ],
+      "zhongwen": "妈妈跟著又念念有词的"
     },
     "answer": {
       "yuewen_merged": "跟住，妈妈口噏噏噉讲咗一啲嘢"
@@ -4577,10 +4577,10 @@
   },
   {
     "query": {
-      "zhongwen": "庄重而温柔地跟我说：",
       "yuewen_to_merge": [
         "庄重又温柔紧同我讲"
-      ]
+      ],
+      "zhongwen": "庄重而温柔地跟我说："
     },
     "answer": {
       "yuewen_merged": "庄重又温柔紧同我讲："
@@ -4590,11 +4590,11 @@
   },
   {
     "query": {
-      "zhongwen": "跟师傅学习，光宗耀祖！",
       "yuewen_to_merge": [
         "跟师父学嘢",
         "当中要祖"
-      ]
+      ],
+      "zhongwen": "跟师傅学习，光宗耀祖！"
     },
     "answer": {
       "yuewen_merged": "跟师父学嘢，当中要祖！"
@@ -4604,11 +4604,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈在长洲找了间酒楼摆拜师宴",
       "yuewen_to_merge": [
         "妈妈喺长洲揾咗间酒楼",
         "摆咗几回白丝宴"
-      ]
+      ],
+      "zhongwen": "妈妈在长洲找了间酒楼摆拜师宴"
     },
     "answer": {
       "yuewen_merged": "妈妈喺长洲揾咗间酒楼摆咗几回白丝宴"
@@ -4617,11 +4617,11 @@
   },
   {
     "query": {
-      "zhongwen": "珊珊因为去了集训，没来",
       "yuewen_to_merge": [
         "但系山神就去咗集训",
         "冇嚟到"
-      ]
+      ],
+      "zhongwen": "珊珊因为去了集训，没来"
     },
     "answer": {
       "yuewen_merged": "但系山神就去咗集训，冇嚟到"
@@ -4631,11 +4631,11 @@
   },
   {
     "query": {
-      "zhongwen": "麦唛，菇时跟得巴都来了",
       "yuewen_to_merge": [
         "默默",
         "姑侍同德巴都嚟咗"
-      ]
+      ],
+      "zhongwen": "麦唛，菇时跟得巴都来了"
     },
     "answer": {
       "yuewen_merged": "默默，姑侍同德巴都嚟咗"
@@ -4645,12 +4645,12 @@
   },
   {
     "query": {
-      "zhongwen": "还带著成绩表，奖牌和大包",
       "yuewen_to_merge": [
         "仲带埋成绩表",
         "奖牌",
         "同大包嚟添"
-      ]
+      ],
+      "zhongwen": "还带著成绩表，奖牌和大包"
     },
     "answer": {
       "yuewen_merged": "仲带埋成绩表，奖牌同大包嚟添"
@@ -4660,11 +4660,11 @@
   },
   {
     "query": {
-      "zhongwen": "吃过鸡丝翅，就是拜师仪式",
       "yuewen_to_merge": [
         "食完鸡丝翅",
         "就到咗拜师仪式"
-      ]
+      ],
+      "zhongwen": "吃过鸡丝翅，就是拜师仪式"
     },
     "answer": {
       "yuewen_merged": "食完鸡丝翅，就到咗拜师仪式"
@@ -4674,11 +4674,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈倒了杯茶给我，让我给师傅喝",
       "yuewen_to_merge": [
         "妈妈针咗杯热茶畀我",
         "叫我弟畀师父饮"
-      ]
+      ],
+      "zhongwen": "妈妈倒了杯茶给我，让我给师傅喝"
     },
     "answer": {
       "yuewen_merged": "妈妈针咗杯热茶畀我，叫我弟畀师父饮"
@@ -4688,11 +4688,11 @@
   },
   {
     "query": {
-      "zhongwen": "我千辛万苦来长洲找黎根⋯",
       "yuewen_to_merge": [
         "哦",
         "我前三万苦嚟到长洲揾嚟近"
-      ]
+      ],
+      "zhongwen": "我千辛万苦来长洲找黎根⋯"
     },
     "answer": {
       "yuewen_merged": "哦，我前三万苦嚟到长洲揾嚟近⋯"
@@ -4702,11 +4702,11 @@
   },
   {
     "query": {
-      "zhongwen": "我终于可以跟珊珊一起练滑浪风帆了！",
       "yuewen_to_merge": [
         "哦",
         "我终于可以同山神一齐练习玩弄风范啊"
-      ]
+      ],
+      "zhongwen": "我终于可以跟珊珊一起练滑浪风帆了！"
     },
     "answer": {
       "yuewen_merged": "哦，我终于可以同山神一齐练习玩弄风范啊！"
@@ -4716,11 +4716,11 @@
   },
   {
     "query": {
-      "zhongwen": "我将茶递给黎根，黎根他⋯",
       "yuewen_to_merge": [
         "我将杯茶递咗畀嚟跟嚟跟佢",
         "亦唔系"
-      ]
+      ],
+      "zhongwen": "我将茶递给黎根，黎根他⋯"
     },
     "answer": {
       "yuewen_merged": "我将杯茶递咗畀嚟跟，嚟跟佢⋯亦唔系"
@@ -4730,11 +4730,11 @@
   },
   {
     "query": {
-      "zhongwen": "师傅他把茶喝了，正式收我做徒弟",
       "yuewen_to_merge": [
         "师父佢饮咗杯茶",
         "正式收咗我做徒弟嘞"
-      ]
+      ],
+      "zhongwen": "师傅他把茶喝了，正式收我做徒弟"
     },
     "answer": {
       "yuewen_merged": "师父佢饮咗杯茶，正式收咗我做徒弟嘞"
@@ -4744,11 +4744,11 @@
   },
   {
     "query": {
-      "zhongwen": "长洲的乡绅父老拍掌拍得特别落力",
       "yuewen_to_merge": [
         "特别系长洲啲乡亲父老",
         "拍奖拍得特别落力"
-      ]
+      ],
+      "zhongwen": "长洲的乡绅父老拍掌拍得特别落力"
     },
     "answer": {
       "yuewen_merged": "特别系长洲啲乡亲父老拍奖拍得特别落力"
@@ -4757,11 +4757,11 @@
   },
   {
     "query": {
-      "zhongwen": "多谢各位赏面！多谢各位！",
       "yuewen_to_merge": [
         "多谢各位上面",
         "多谢各位"
-      ]
+      ],
+      "zhongwen": "多谢各位赏面！多谢各位！"
     },
     "answer": {
       "yuewen_merged": "多谢各位上面！多谢各位！"
@@ -4771,11 +4771,11 @@
   },
   {
     "query": {
-      "zhongwen": "第一项，是滑浪风帆！",
       "yuewen_to_merge": [
         "第一样系滑浪风范",
         "呢样早已"
-      ]
+      ],
+      "zhongwen": "第一项，是滑浪风帆！"
     },
     "answer": {
       "yuewen_merged": "第一样，系滑浪风范！呢样早已"
@@ -4785,10 +4785,10 @@
   },
   {
     "query": {
-      "zhongwen": "另一项绝技，我打算传给这个新徒弟⋯",
       "yuewen_to_merge": [
         "另一项绝技我打算传畀呢个新修嘅徒弟"
-      ]
+      ],
+      "zhongwen": "另一项绝技，我打算传给这个新徒弟⋯"
     },
     "answer": {
       "yuewen_merged": "另一项绝技，我打算传畀呢个新修嘅徒弟⋯"
@@ -4798,10 +4798,10 @@
   },
   {
     "query": {
-      "zhongwen": "发扬光大！",
       "yuewen_to_merge": [
         "发扬光大"
-      ]
+      ],
+      "zhongwen": "发扬光大！"
     },
     "answer": {
       "yuewen_merged": "发扬光大！"
@@ -4811,10 +4811,10 @@
   },
   {
     "query": {
-      "zhongwen": "请问那是什么绝技呢？",
       "yuewen_to_merge": [
         "噉请问嗰样绝技系乜嘢啊"
-      ]
+      ],
+      "zhongwen": "请问那是什么绝技呢？"
     },
     "answer": {
       "yuewen_merged": "噉请问嗰样绝技系乜嘢啊？"
@@ -4824,10 +4824,10 @@
   },
   {
     "query": {
-      "zhongwen": "第二项绝技，就是⋯",
       "yuewen_to_merge": [
         "第二样绝技就系"
-      ]
+      ],
+      "zhongwen": "第二项绝技，就是⋯"
     },
     "answer": {
       "yuewen_merged": "第二样绝技，就系⋯"
@@ -4837,10 +4837,10 @@
   },
   {
     "query": {
-      "zhongwen": "抢包山！",
       "yuewen_to_merge": [
         "抢爆山"
-      ]
+      ],
+      "zhongwen": "抢包山！"
     },
     "answer": {
       "yuewen_merged": "抢爆山！"
@@ -4850,10 +4850,10 @@
   },
   {
     "query": {
-      "zhongwen": "抢包山？",
       "yuewen_to_merge": [
         "抢包山?"
-      ]
+      ],
+      "zhongwen": "抢包山？"
     },
     "answer": {
       "yuewen_merged": "抢包山？"
@@ -4863,10 +4863,10 @@
   },
   {
     "query": {
-      "zhongwen": "年轻观众可能不知「抢包山」何物",
       "yuewen_to_merge": [
         "年轻嘅观众可能唔知乜嘢系抢包山呀"
-      ]
+      ],
+      "zhongwen": "年轻观众可能不知「抢包山」何物"
     },
     "answer": {
       "yuewen_merged": "年轻嘅观众可能唔知乜嘢系「抢包山」呀"
@@ -4876,10 +4876,10 @@
   },
   {
     "query": {
-      "zhongwen": "什么是包山呢？",
       "yuewen_to_merge": [
         "噉乜嘢系包山呢?"
-      ]
+      ],
+      "zhongwen": "什么是包山呢？"
     },
     "answer": {
       "yuewen_merged": "噉乜嘢系包山呢？"
@@ -4889,10 +4889,10 @@
   },
   {
     "query": {
-      "zhongwen": "顾名思义⋯",
       "yuewen_to_merge": [
         "顾名思义"
-      ]
+      ],
+      "zhongwen": "顾名思义⋯"
     },
     "answer": {
       "yuewen_merged": "顾名思义⋯"
@@ -4902,12 +4902,12 @@
   },
   {
     "query": {
-      "zhongwen": "包山就是一座由好多好多包砌起的山！",
       "yuewen_to_merge": [
         "包山就系一座由好多",
         "好多",
         "好多包砌起嘅山"
-      ]
+      ],
+      "zhongwen": "包山就是一座由好多好多包砌起的山！"
     },
     "answer": {
       "yuewen_merged": "包山就系一座由好多好多好多包砌起嘅山！"
@@ -4917,10 +4917,10 @@
   },
   {
     "query": {
-      "zhongwen": "一座包山，起码六、七层楼高⋯",
       "yuewen_to_merge": [
         "一座包山起码六七层楼高"
-      ]
+      ],
+      "zhongwen": "一座包山，起码六、七层楼高⋯"
     },
     "answer": {
       "yuewen_merged": "一座包山，起码六、七层楼高⋯"
@@ -4930,10 +4930,10 @@
   },
   {
     "query": {
-      "zhongwen": "你可以想像一下包山有多高了吧？",
       "yuewen_to_merge": [
         "噉你可以想像一下嗰度有几多包喇"
-      ]
+      ],
+      "zhongwen": "你可以想像一下包山有多高了吧？"
     },
     "answer": {
       "yuewen_merged": "噉你可以想像一下嗰度有几多包喇？"
@@ -4943,11 +4943,11 @@
   },
   {
     "query": {
-      "zhongwen": "抢包山，就是要把包山上的包抢到手！",
       "yuewen_to_merge": [
         "噉抢包山",
         "自然就系要将包山嘅包抢到手"
-      ]
+      ],
+      "zhongwen": "抢包山，就是要把包山上的包抢到手！"
     },
     "answer": {
       "yuewen_merged": "噉抢包山，自然就系要将包山嘅包抢到手！"
@@ -4957,11 +4957,11 @@
   },
   {
     "query": {
-      "zhongwen": "抢得位置愈高的包，就是愈大的祝福",
       "yuewen_to_merge": [
         "抢到位置越高嘅包",
         "就代表越大嘅祝福"
-      ]
+      ],
+      "zhongwen": "抢得位置愈高的包，就是愈大的祝福"
     },
     "answer": {
       "yuewen_merged": "抢到位置越高嘅包，就代表越大嘅祝福"
@@ -4971,12 +4971,12 @@
   },
   {
     "query": {
-      "zhongwen": "在1978年两座包山忽然倒下，多人重伤",
       "yuewen_to_merge": [
         "但喺1978年",
         "两座包山突然塌咗",
         "都去抢包山"
-      ]
+      ],
+      "zhongwen": "在1978年两座包山忽然倒下，多人重伤"
     },
     "answer": {
       "yuewen_merged": "但喺1978年两座包山突然塌咗，都去抢包山"
@@ -4986,10 +4986,10 @@
   },
   {
     "query": {
-      "zhongwen": "「抢包山」从此被禁！",
       "yuewen_to_merge": [
         "而长洲特有嘅传统亦占备为榜"
-      ]
+      ],
+      "zhongwen": "「抢包山」从此被禁！"
     },
     "answer": {
       "yuewen_merged": "而长洲特有嘅传统亦占备为榜！"
@@ -4999,10 +4999,10 @@
   },
   {
     "query": {
-      "zhongwen": "而长洲独有的传统，亦渐被遗忘",
       "yuewen_to_merge": [
         "长洲特有嘅传统亦占备为榜"
-      ]
+      ],
+      "zhongwen": "而长洲独有的传统，亦渐被遗忘"
     },
     "answer": {
       "yuewen_merged": "长洲特有嘅传统，亦占备为榜"
@@ -5012,11 +5012,11 @@
   },
   {
     "query": {
-      "zhongwen": "奥运金牌⋯这一世是没有机会的了",
       "yuewen_to_merge": [
         "奥运金牌",
         "我谂呢一世都唔会攞到"
-      ]
+      ],
+      "zhongwen": "奥运金牌⋯这一世是没有机会的了"
     },
     "answer": {
       "yuewen_merged": "奥运金牌⋯我谂呢一世都唔会攞到"
@@ -5026,11 +5026,11 @@
   },
   {
     "query": {
-      "zhongwen": "每个星期六我都搭船过长洲",
       "yuewen_to_merge": [
         "每个礼拜六",
         "我都会搭船过长洲"
-      ]
+      ],
+      "zhongwen": "每个星期六我都搭船过长洲"
     },
     "answer": {
       "yuewen_merged": "每个礼拜六我都会搭船过长洲"
@@ -5039,10 +5039,10 @@
   },
   {
     "query": {
-      "zhongwen": "去学抢包山⋯",
       "yuewen_to_merge": [
         "去学抢包山"
-      ]
+      ],
+      "zhongwen": "去学抢包山⋯"
     },
     "answer": {
       "yuewen_merged": "去学抢包山⋯"
@@ -5052,12 +5052,12 @@
   },
   {
     "query": {
-      "zhongwen": "一项没有奖牌，没有对手，没有比赛⋯",
       "yuewen_to_merge": [
         "一日冇奖牌",
         "冇对手",
         "冇比赛"
-      ]
+      ],
+      "zhongwen": "一项没有奖牌，没有对手，没有比赛⋯"
     },
     "answer": {
       "yuewen_merged": "一日冇奖牌，冇对手，冇比赛⋯"
@@ -5067,11 +5067,11 @@
   },
   {
     "query": {
-      "zhongwen": "更坏的是，连包山也没有！",
       "yuewen_to_merge": [
         "更衰嘅系",
         "连包山都冇"
-      ]
+      ],
+      "zhongwen": "更坏的是，连包山也没有！"
     },
     "answer": {
       "yuewen_merged": "更衰嘅系，连包山都冇！"
@@ -5081,10 +5081,10 @@
   },
   {
     "query": {
-      "zhongwen": "师傅只是叫我去他的家⋯",
       "yuewen_to_merge": [
         "师傅净系叫我去佢屋企"
-      ]
+      ],
+      "zhongwen": "师傅只是叫我去他的家⋯"
     },
     "answer": {
       "yuewen_merged": "师傅净系叫我去佢屋企⋯"
@@ -5094,11 +5094,11 @@
   },
   {
     "query": {
-      "zhongwen": "碰！三番！",
       "yuewen_to_merge": [
         "通",
         "三番"
-      ]
+      ],
+      "zhongwen": "碰！三番！"
     },
     "answer": {
       "yuewen_merged": "通！三番！"
@@ -5108,11 +5108,11 @@
   },
   {
     "query": {
-      "zhongwen": "别躲懒！继续练！",
       "yuewen_to_merge": [
         "冇偷懒",
         "继续练"
-      ]
+      ],
+      "zhongwen": "别躲懒！继续练！"
     },
     "answer": {
       "yuewen_merged": "冇偷懒！继续练！"
@@ -5122,11 +5122,11 @@
   },
   {
     "query": {
-      "zhongwen": "一天，珊珊到了师传家！",
       "yuewen_to_merge": [
         "有一日",
         "山伞嚟咗师傅屋企"
-      ]
+      ],
+      "zhongwen": "一天，珊珊到了师传家！"
     },
     "answer": {
       "yuewen_merged": "有一日，山伞嚟咗师傅屋企！"
@@ -5136,11 +5136,11 @@
   },
   {
     "query": {
-      "zhongwen": "珊珊！我的师姐珊珊！",
       "yuewen_to_merge": [
         "山伞",
         "我个师仔山伞啊"
-      ]
+      ],
+      "zhongwen": "珊珊！我的师姐珊珊！"
     },
     "answer": {
       "yuewen_merged": "山伞！我个师仔山伞啊！"
@@ -5150,10 +5150,10 @@
   },
   {
     "query": {
-      "zhongwen": "可以看见珊珊⋯",
       "yuewen_to_merge": [
         "可以见到山伞"
-      ]
+      ],
+      "zhongwen": "可以看见珊珊⋯"
     },
     "answer": {
       "yuewen_merged": "可以见到山伞⋯"
@@ -5163,11 +5163,11 @@
   },
   {
     "query": {
-      "zhongwen": "这几个星期爬得再辛苦也是值得的！",
       "yuewen_to_merge": [
         "爬得咁辛苦",
         "都系值得㗎"
-      ]
+      ],
+      "zhongwen": "这几个星期爬得再辛苦也是值得的！"
     },
     "answer": {
       "yuewen_merged": "爬得咁辛苦都系值得㗎！"
@@ -5177,10 +5177,10 @@
   },
   {
     "query": {
-      "zhongwen": "珊珊！",
       "yuewen_to_merge": [
         "山伞"
-      ]
+      ],
+      "zhongwen": "珊珊！"
     },
     "answer": {
       "yuewen_merged": "山伞！"
@@ -5190,11 +5190,11 @@
   },
   {
     "query": {
-      "zhongwen": "珊你个头！继续练习！",
       "yuewen_to_merge": [
         "伞你个头啊",
         "继续练习"
-      ]
+      ],
+      "zhongwen": "珊你个头！继续练习！"
     },
     "answer": {
       "yuewen_merged": "伞你个头啊！继续练习！"
@@ -5204,10 +5204,10 @@
   },
   {
     "query": {
-      "zhongwen": "还不去？",
       "yuewen_to_merge": [
         "仲唔系"
-      ]
+      ],
+      "zhongwen": "还不去？"
     },
     "answer": {
       "yuewen_merged": "仲唔系？"
@@ -5217,11 +5217,11 @@
   },
   {
     "query": {
-      "zhongwen": "我咁大个仔，什么「头」也给骂过⋯",
       "yuewen_to_merge": [
         "我咁大个仔",
         "乜嘢头都畀人闹过"
-      ]
+      ],
+      "zhongwen": "我咁大个仔，什么「头」也给骂过⋯"
     },
     "answer": {
       "yuewen_merged": "我咁大个仔，乜嘢「头」都畀人闹过⋯"
@@ -5231,10 +5231,10 @@
   },
   {
     "query": {
-      "zhongwen": "不知道为什么「珊你个头」却特别刺耳",
       "yuewen_to_merge": [
         "但系山呢个头唔知点解特别瘾"
-      ]
+      ],
+      "zhongwen": "不知道为什么「珊你个头」却特别刺耳"
     },
     "answer": {
       "yuewen_merged": "但系「山呢个头」唔知点解特别瘾"
@@ -5244,11 +5244,11 @@
   },
   {
     "query": {
-      "zhongwen": "我⋯我⋯",
       "yuewen_to_merge": [
         "我",
         "我"
-      ]
+      ],
+      "zhongwen": "我⋯我⋯"
     },
     "answer": {
       "yuewen_merged": "我⋯我⋯"
@@ -5258,11 +5258,11 @@
   },
   {
     "query": {
-      "zhongwen": "我唔学抢包山了！",
       "yuewen_to_merge": [
         "我唔好抢包纱嘞",
         "字幕由纱友提供"
-      ]
+      ],
+      "zhongwen": "我唔学抢包山了！"
     },
     "answer": {
       "yuewen_merged": "我唔好抢包纱嘞！字幕由纱友提供"
@@ -5272,11 +5272,11 @@
   },
   {
     "query": {
-      "zhongwen": "鸡尾包！新鲜出炉！",
       "yuewen_to_merge": [
         "鸡尾包",
         "啱啱出炉嘅"
-      ]
+      ],
+      "zhongwen": "鸡尾包！新鲜出炉！"
     },
     "answer": {
       "yuewen_merged": "鸡尾包！啱啱出炉嘅！"
@@ -5286,10 +5286,10 @@
   },
   {
     "query": {
-      "zhongwen": "其实鸡尾包呢⋯",
       "yuewen_to_merge": [
         "其实鸡尾爆呢"
-      ]
+      ],
+      "zhongwen": "其实鸡尾包呢⋯"
     },
     "answer": {
       "yuewen_merged": "其实鸡尾爆呢⋯"
@@ -5299,12 +5299,12 @@
   },
   {
     "query": {
-      "zhongwen": "你说这似不似鸡尾？",
       "yuewen_to_merge": [
         "吓",
         "你话噉样似唔似鸡尾呀",
         "哈哈哈哈"
-      ]
+      ],
+      "zhongwen": "你说这似不似鸡尾？"
     },
     "answer": {
       "yuewen_merged": "吓，你话噉样似唔似鸡尾呀？哈哈哈哈"
@@ -5314,10 +5314,10 @@
   },
   {
     "query": {
-      "zhongwen": "麦兜他学东西⋯还可以",
       "yuewen_to_merge": [
         "麦兜嘅学嘢呢都仲可以"
-      ]
+      ],
+      "zhongwen": "麦兜他学东西⋯还可以"
     },
     "answer": {
       "yuewen_merged": "麦兜嘅学嘢呢⋯都仲可以"
@@ -5327,10 +5327,10 @@
   },
   {
     "query": {
-      "zhongwen": "黎根接著说了一大堆话⋯",
       "yuewen_to_merge": [
         "跟住黎根讲咗一大堆说话"
-      ]
+      ],
+      "zhongwen": "黎根接著说了一大堆话⋯"
     },
     "answer": {
       "yuewen_merged": "跟住黎根讲咗一大堆说话⋯"
@@ -5340,11 +5340,11 @@
   },
   {
     "query": {
-      "zhongwen": "他的抱负，他对麦兜的期望",
       "yuewen_to_merge": [
         "讲下佢嘅抱负",
         "佢对麦兜嘅期望"
-      ]
+      ],
+      "zhongwen": "他的抱负，他对麦兜的期望"
     },
     "answer": {
       "yuewen_merged": "讲下佢嘅抱负，佢对麦兜嘅期望"
@@ -5354,10 +5354,10 @@
   },
   {
     "query": {
-      "zhongwen": "黎根越说越兴奋，直到双眼发光",
       "yuewen_to_merge": [
         "黎根越讲越兴奋"
-      ]
+      ],
+      "zhongwen": "黎根越说越兴奋，直到双眼发光"
     },
     "answer": {
       "yuewen_merged": "黎根越讲越兴奋"
@@ -5367,11 +5367,11 @@
   },
   {
     "query": {
-      "zhongwen": "神功戏和现代器械操",
       "yuewen_to_merge": [
         "神功气",
         "现代气蟹粗"
-      ]
+      ],
+      "zhongwen": "神功戏和现代器械操"
     },
     "answer": {
       "yuewen_merged": "神功气现代气蟹粗"
@@ -5380,10 +5380,10 @@
   },
   {
     "query": {
-      "zhongwen": "缩脚，唔该！",
       "yuewen_to_merge": [
         "缩嗰只脚唔该"
-      ]
+      ],
+      "zhongwen": "缩脚，唔该！"
     },
     "answer": {
       "yuewen_merged": "缩嗰只脚，唔该！"
@@ -5393,10 +5393,10 @@
   },
   {
     "query": {
-      "zhongwen": "你看！",
       "yuewen_to_merge": [
         "你睇下"
-      ]
+      ],
+      "zhongwen": "你看！"
     },
     "answer": {
       "yuewen_merged": "你睇下！"
@@ -5406,13 +5406,13 @@
   },
   {
     "query": {
-      "zhongwen": "这脚瓜⋯好粗好大！比一节瓜还要大！",
       "yuewen_to_merge": [
         "哗",
         "呢节",
         "呢节脚瓜好粗好大呀",
         "仲大过节瓜"
-      ]
+      ],
+      "zhongwen": "这脚瓜⋯好粗好大！比一节瓜还要大！"
     },
     "answer": {
       "yuewen_merged": "哗，呢节⋯呢节脚瓜好粗好大呀！仲大过节瓜！"
@@ -5422,10 +5422,10 @@
   },
   {
     "query": {
-      "zhongwen": "脚瓜的肌肉非常结实⋯",
       "yuewen_to_merge": [
         "脚瓜嘅肌肉非常结实"
-      ]
+      ],
+      "zhongwen": "脚瓜的肌肉非常结实⋯"
     },
     "answer": {
       "yuewen_merged": "脚瓜嘅肌肉非常结实⋯"
@@ -5435,11 +5435,11 @@
   },
   {
     "query": {
-      "zhongwen": "脚趾甲有一寸厚，究竟⋯",
       "yuewen_to_merge": [
         "脚趾弓啲脚夹成串咁厚",
         "究竟"
-      ]
+      ],
+      "zhongwen": "脚趾甲有一寸厚，究竟⋯"
     },
     "answer": {
       "yuewen_merged": "脚趾弓啲脚夹成串咁厚，究竟⋯"
@@ -5449,11 +5449,11 @@
   },
   {
     "query": {
-      "zhongwen": "要走过几多座山",
       "yuewen_to_merge": [
         "要行个几度呢?",
         "几多座山"
-      ]
+      ],
+      "zhongwen": "要走过几多座山"
     },
     "answer": {
       "yuewen_merged": "要行个几度呢?几多座山?"
@@ -5463,10 +5463,10 @@
   },
   {
     "query": {
-      "zhongwen": "才可以练成这举世无双的脚瓜？",
       "yuewen_to_merge": [
         "先至可以练成呢一只举细无伤嘅脚瓜"
-      ]
+      ],
+      "zhongwen": "才可以练成这举世无双的脚瓜？"
     },
     "answer": {
       "yuewen_merged": "先至可以练成呢一只举细无伤嘅脚瓜？"
@@ -5476,10 +5476,10 @@
   },
   {
     "query": {
-      "zhongwen": "我个仔⋯",
       "yuewen_to_merge": [
         "我个仔"
-      ]
+      ],
+      "zhongwen": "我个仔⋯"
     },
     "answer": {
       "yuewen_merged": "我个仔⋯"
@@ -5489,11 +5489,11 @@
   },
   {
     "query": {
-      "zhongwen": "你个仔，他日都会有这只大脚瓜",
       "yuewen_to_merge": [
         "你个仔",
         "第时都会有我咁大只脚瓜"
-      ]
+      ],
+      "zhongwen": "你个仔，他日都会有这只大脚瓜"
     },
     "answer": {
       "yuewen_merged": "你个仔，第时都会有我咁大只脚瓜"
@@ -5503,11 +5503,11 @@
   },
   {
     "query": {
-      "zhongwen": "其实我也不知道个仔要这么粗的脚瓜⋯",
       "yuewen_to_merge": [
         "其实",
         "我都唔知我仔要咁粗嘅脚瓜"
-      ]
+      ],
+      "zhongwen": "其实我也不知道个仔要这么粗的脚瓜⋯"
     },
     "answer": {
       "yuewen_merged": "其实我都唔知我仔要咁粗嘅脚瓜⋯"
@@ -5517,11 +5517,11 @@
   },
   {
     "query": {
-      "zhongwen": "可是看见那些凸现的青筋，不知怎样⋯",
       "yuewen_to_merge": [
         "但系见到佢一条条凸起嘅青筋",
         "唔知点解"
-      ]
+      ],
+      "zhongwen": "可是看见那些凸现的青筋，不知怎样⋯"
     },
     "answer": {
       "yuewen_merged": "但系见到佢一条条凸起嘅青筋，唔知点解⋯"
@@ -5531,12 +5531,12 @@
   },
   {
     "query": {
-      "zhongwen": "我想起麦兜的爸爸，阿炳",
       "yuewen_to_merge": [
         "我",
         "我谂起麦兜嘅爸爸",
         "阿炳"
-      ]
+      ],
+      "zhongwen": "我想起麦兜的爸爸，阿炳"
     },
     "answer": {
       "yuewen_merged": "我⋯我谂起麦兜嘅爸爸，阿炳"
@@ -5546,11 +5546,11 @@
   },
   {
     "query": {
-      "zhongwen": "我找来找去也找不到那部电子英文辞典",
       "yuewen_to_merge": [
         "我揾完成间屋",
         "都揾唔到部电子英文词典"
-      ]
+      ],
+      "zhongwen": "我找来找去也找不到那部电子英文辞典"
     },
     "answer": {
       "yuewen_merged": "我揾完成间屋都揾唔到部电子英文词典"
@@ -5559,10 +5559,10 @@
   },
   {
     "query": {
-      "zhongwen": "跑哪去了？",
       "yuewen_to_merge": [
         "去咗边呢"
-      ]
+      ],
+      "zhongwen": "跑哪去了？"
     },
     "answer": {
       "yuewen_merged": "去咗边呢？"
@@ -5572,11 +5572,11 @@
   },
   {
     "query": {
-      "zhongwen": "难道⋯不会吧？",
       "yuewen_to_merge": [
         "唔通",
         "冇理由㗎"
-      ]
+      ],
+      "zhongwen": "难道⋯不会吧？"
     },
     "answer": {
       "yuewen_merged": "唔通⋯冇理由㗎？"
@@ -5586,12 +5586,12 @@
   },
   {
     "query": {
-      "zhongwen": "想不到真的让妈妈拿去了。吓得我！",
       "yuewen_to_merge": [
         "咦",
         "估唔到真系妈妈攞咗㖞",
         "吓得我啊"
-      ]
+      ],
+      "zhongwen": "想不到真的让妈妈拿去了。吓得我！"
     },
     "answer": {
       "yuewen_merged": "咦，估唔到真系妈妈攞咗㖞。吓得我啊！"
@@ -5601,10 +5601,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈怎么会写起英文信？",
       "yuewen_to_merge": [
         "点解妈妈会用英文写信嘅"
-      ]
+      ],
+      "zhongwen": "妈妈怎么会写起英文信？"
     },
     "answer": {
       "yuewen_merged": "点解妈妈会用英文写信嘅？"
@@ -5614,11 +5614,11 @@
   },
   {
     "query": {
-      "zhongwen": "我猜是妈妈用电子辞典逐个字译成英文",
       "yuewen_to_merge": [
         "我谂妈妈佢系好辛苦用电子词典",
         "逐个逐个字译做英文"
-      ]
+      ],
+      "zhongwen": "我猜是妈妈用电子辞典逐个字译成英文"
     },
     "answer": {
       "yuewen_merged": "我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文"
@@ -5627,11 +5627,11 @@
   },
   {
     "query": {
-      "zhongwen": "于是我又用电子辞典把信译回中文",
       "yuewen_to_merge": [
         "于是我让返电子词典",
         "将封信译返做中文"
-      ]
+      ],
+      "zhongwen": "于是我又用电子辞典把信译回中文"
     },
     "answer": {
       "yuewen_merged": "于是我让返电子词典将封信译返做中文"
@@ -5640,10 +5640,10 @@
   },
   {
     "query": {
-      "zhongwen": "信，是妈妈写给奥委会主席的",
       "yuewen_to_merge": [
         "封信原来系妈妈写畀奥委会主席㗎"
-      ]
+      ],
+      "zhongwen": "信，是妈妈写给奥委会主席的"
     },
     "answer": {
       "yuewen_merged": "封信，原来系妈妈写畀奥委会主席㗎"
@@ -5653,10 +5653,10 @@
   },
   {
     "query": {
-      "zhongwen": "「亲爱的主席：」",
       "yuewen_to_merge": [
         "亲爱的主席"
-      ]
+      ],
+      "zhongwen": "「亲爱的主席：」"
     },
     "answer": {
       "yuewen_merged": "「亲爱的主席：」"
@@ -5666,11 +5666,11 @@
   },
   {
     "query": {
-      "zhongwen": "「你好吗？我很好！」",
       "yuewen_to_merge": [
         "你好吗",
         "我很好"
-      ]
+      ],
+      "zhongwen": "「你好吗？我很好！」"
     },
     "answer": {
       "yuewen_merged": "「你好吗？我很好！」"
@@ -5680,11 +5680,11 @@
   },
   {
     "query": {
-      "zhongwen": "「你吃包吗？我吃包！」",
       "yuewen_to_merge": [
         "你吃包吗",
         "我吃包"
-      ]
+      ],
+      "zhongwen": "「你吃包吗？我吃包！」"
     },
     "answer": {
       "yuewen_merged": "「你吃包吗？我吃包！」"
@@ -5694,11 +5694,11 @@
   },
   {
     "query": {
-      "zhongwen": "「我们居住在香港这里的人，很爱吃包」",
       "yuewen_to_merge": [
         "我门居住在香港这类的人",
         "肯爱吃包"
-      ]
+      ],
+      "zhongwen": "「我们居住在香港这里的人，很爱吃包」"
     },
     "answer": {
       "yuewen_merged": "「我门居住在香港这类的人，肯爱吃包」"
@@ -5708,13 +5708,13 @@
   },
   {
     "query": {
-      "zhongwen": "「小笼包，上海包，广东包，莲蓉包」",
       "yuewen_to_merge": [
         "小笼包",
         "上海包",
         "广东包",
         "联融包"
-      ]
+      ],
+      "zhongwen": "「小笼包，上海包，广东包，莲蓉包」"
     },
     "answer": {
       "yuewen_merged": "「小笼包，上海包，广东包，联融包」"
@@ -5724,11 +5724,11 @@
   },
   {
     "query": {
-      "zhongwen": "「好朋友，我认为",
       "yuewen_to_merge": [
         "好朋友",
         "我认为"
-      ]
+      ],
+      "zhongwen": "「好朋友，我认为"
     },
     "answer": {
       "yuewen_merged": "「好朋友，我认为"
@@ -5738,10 +5738,10 @@
   },
   {
     "query": {
-      "zhongwen": "抢劫那些包，十分重要」",
       "yuewen_to_merge": [
         "抢劫嗰些包十分重要"
-      ]
+      ],
+      "zhongwen": "抢劫那些包，十分重要」"
     },
     "answer": {
       "yuewen_merged": "抢劫嗰些包，十分重要」"
@@ -5751,10 +5751,10 @@
   },
   {
     "query": {
-      "zhongwen": "「也算是运动，就真！」",
       "yuewen_to_merge": [
         "也算是运动就真"
-      ]
+      ],
+      "zhongwen": "「也算是运动，就真！」"
     },
     "answer": {
       "yuewen_merged": "「也算是运动，就真！」"
@@ -5764,13 +5764,13 @@
   },
   {
     "query": {
-      "zhongwen": "「要大力！大吃晚上的粥，和大节瓜！」",
       "yuewen_to_merge": [
         "要大力",
         "大吃",
         "吻上的粥",
         "和大字瓜"
-      ]
+      ],
+      "zhongwen": "「要大力！大吃晚上的粥，和大节瓜！」"
     },
     "answer": {
       "yuewen_merged": "「要大力！大吃吻上的粥，和大字瓜！」"
@@ -5780,10 +5780,10 @@
   },
   {
     "query": {
-      "zhongwen": "「按照我愚蠢的见解⋯」",
       "yuewen_to_merge": [
         "按照我愚蠢的见解"
-      ]
+      ],
+      "zhongwen": "「按照我愚蠢的见解⋯」"
     },
     "answer": {
       "yuewen_merged": "「按照我愚蠢的见解⋯」"
@@ -5793,11 +5793,11 @@
   },
   {
     "query": {
-      "zhongwen": "「抢劫那些包，是奥运会比赛」",
       "yuewen_to_merge": [
         "抢劫嗰些包",
         "系奥运会比赛"
-      ]
+      ],
+      "zhongwen": "「抢劫那些包，是奥运会比赛」"
     },
     "answer": {
       "yuewen_merged": "「抢劫嗰些包，系奥运会比赛」"
@@ -5807,10 +5807,10 @@
   },
   {
     "query": {
-      "zhongwen": "「让全世界的体育家，抢过！」",
       "yuewen_to_merge": [
         "让全世界嘅体育家抢过"
-      ]
+      ],
+      "zhongwen": "「让全世界的体育家，抢过！」"
     },
     "answer": {
       "yuewen_merged": "「让全世界嘅体育家，抢过！」"
@@ -5820,10 +5820,10 @@
   },
   {
     "query": {
-      "zhongwen": "「世界便和平！」",
       "yuewen_to_merge": [
         "世界变和平"
-      ]
+      ],
+      "zhongwen": "「世界便和平！」"
     },
     "answer": {
       "yuewen_merged": "「世界变和平！」"
@@ -5833,10 +5833,10 @@
   },
   {
     "query": {
-      "zhongwen": "「你有孩子吗？」",
       "yuewen_to_merge": [
         "你有孩子吗"
-      ]
+      ],
+      "zhongwen": "「你有孩子吗？」"
     },
     "answer": {
       "yuewen_merged": "「你有孩子吗？」"
@@ -5846,11 +5846,11 @@
   },
   {
     "query": {
-      "zhongwen": "「我有一个孩子，麦兜」",
       "yuewen_to_merge": [
         "我有一个孩子",
         "麦兜"
-      ]
+      ],
+      "zhongwen": "「我有一个孩子，麦兜」"
     },
     "answer": {
       "yuewen_merged": "「我有一个孩子，麦兜」"
@@ -5860,10 +5860,10 @@
   },
   {
     "query": {
-      "zhongwen": "终于讲到我了！",
       "yuewen_to_merge": [
         "终于讲到我啦"
-      ]
+      ],
+      "zhongwen": "终于讲到我了！"
     },
     "answer": {
       "yuewen_merged": "终于讲到我啦！"
@@ -5873,10 +5873,10 @@
   },
   {
     "query": {
-      "zhongwen": "「他是一个好男孩」",
       "yuewen_to_merge": [
         "她系一个好男孩"
-      ]
+      ],
+      "zhongwen": "「他是一个好男孩」"
     },
     "answer": {
       "yuewen_merged": "「她系一个好男孩」"
@@ -5886,10 +5886,10 @@
   },
   {
     "query": {
-      "zhongwen": "「他非常懂得抢劫那些包」",
       "yuewen_to_merge": [
         "她非常懂得抢劫嗰些包"
-      ]
+      ],
+      "zhongwen": "「他非常懂得抢劫那些包」"
     },
     "answer": {
       "yuewen_merged": "「她非常懂得抢劫嗰些包」"
@@ -5899,10 +5899,10 @@
   },
   {
     "query": {
-      "zhongwen": "「有一天，我看见他，抢劫包⋯」",
       "yuewen_to_merge": [
         "有一天我看见她抢劫包"
-      ]
+      ],
+      "zhongwen": "「有一天，我看见他，抢劫包⋯」"
     },
     "answer": {
       "yuewen_merged": "「有一天，我看见她抢劫包⋯」"
@@ -5912,10 +5912,10 @@
   },
   {
     "query": {
-      "zhongwen": "「抢了一个奥运金牌」",
       "yuewen_to_merge": [
         "抢了一个奥运金牌"
-      ]
+      ],
+      "zhongwen": "「抢了一个奥运金牌」"
     },
     "answer": {
       "yuewen_merged": "「抢了一个奥运金牌」"
@@ -5925,11 +5925,11 @@
   },
   {
     "query": {
-      "zhongwen": "「那便是一个母亲能够有的最大的安慰」",
       "yuewen_to_merge": [
         "哪便是一个母亲能够有的最好的",
         "最大的安慰"
-      ]
+      ],
+      "zhongwen": "「那便是一个母亲能够有的最大的安慰」"
     },
     "answer": {
       "yuewen_merged": "「哪便是一个母亲能够有的最好的最大的安慰」"
@@ -5939,10 +5939,10 @@
   },
   {
     "query": {
-      "zhongwen": "「孩子的才干，得到了世界人类的知道」",
       "yuewen_to_merge": [
         "孩子的才干得到了世界人类的知道"
-      ]
+      ],
+      "zhongwen": "「孩子的才干，得到了世界人类的知道」"
     },
     "answer": {
       "yuewen_merged": "「孩子的才干，得到了世界人类的知道」"
@@ -5952,10 +5952,10 @@
   },
   {
     "query": {
-      "zhongwen": "「父母愿意做什么的东西都得」",
       "yuewen_to_merge": [
         "父母愿意做什么的东西都得"
-      ]
+      ],
+      "zhongwen": "「父母愿意做什么的东西都得」"
     },
     "answer": {
       "yuewen_merged": "「父母愿意做什么的东西都得」"
@@ -5965,10 +5965,10 @@
   },
   {
     "query": {
-      "zhongwen": "「于是我写了这忽然间的信给你」",
       "yuewen_to_merge": [
         "于是我写了这忽然间的信给你"
-      ]
+      ],
+      "zhongwen": "「于是我写了这忽然间的信给你」"
     },
     "answer": {
       "yuewen_merged": "「于是我写了这忽然间的信给你」"
@@ -5978,10 +5978,10 @@
   },
   {
     "query": {
-      "zhongwen": "「虽然你不知道我是什么微细的东西」",
       "yuewen_to_merge": [
         "虽然你不知道我是什么微细的东西"
-      ]
+      ],
+      "zhongwen": "「虽然你不知道我是什么微细的东西」"
     },
     "answer": {
       "yuewen_merged": "「虽然你不知道我是什么微细的东西」"
@@ -5991,10 +5991,10 @@
   },
   {
     "query": {
-      "zhongwen": "「但我的孩子很大，很大！」",
       "yuewen_to_merge": [
         "但我的孩子很大很大"
-      ]
+      ],
+      "zhongwen": "「但我的孩子很大，很大！」"
     },
     "answer": {
       "yuewen_merged": "「但我的孩子很大，很大！」"
@@ -6004,10 +6004,10 @@
   },
   {
     "query": {
-      "zhongwen": "「有一天，你都会知道」",
       "yuewen_to_merge": [
         "有一天你都会知道"
-      ]
+      ],
+      "zhongwen": "「有一天，你都会知道」"
     },
     "answer": {
       "yuewen_merged": "「有一天，你都会知道」"
@@ -6017,10 +6017,10 @@
   },
   {
     "query": {
-      "zhongwen": "「多谢合作！」",
       "yuewen_to_merge": [
         "多谢合作"
-      ]
+      ],
+      "zhongwen": "「多谢合作！」"
     },
     "answer": {
       "yuewen_merged": "「多谢合作！」"
@@ -6030,11 +6030,11 @@
   },
   {
     "query": {
-      "zhongwen": "「你忠实的，麦太」",
       "yuewen_to_merge": [
         "你忠实的",
         "麦太"
-      ]
+      ],
+      "zhongwen": "「你忠实的，麦太」"
     },
     "answer": {
       "yuewen_merged": "「你忠实的，麦太」"
@@ -6044,11 +6044,11 @@
   },
   {
     "query": {
-      "zhongwen": "可是，我依然努力练习抢包山",
       "yuewen_to_merge": [
         "但系",
         "我依然努力练习抢包生"
-      ]
+      ],
+      "zhongwen": "可是，我依然努力练习抢包山"
     },
     "answer": {
       "yuewen_merged": "但系，我依然努力练习抢包生"
@@ -6058,10 +6058,10 @@
   },
   {
     "query": {
-      "zhongwen": "因为，我爱我妈妈",
       "yuewen_to_merge": [
         "因为我爱我妈妈"
-      ]
+      ],
+      "zhongwen": "因为，我爱我妈妈"
     },
     "answer": {
       "yuewen_merged": "因为，我爱我妈妈"
@@ -6071,11 +6071,11 @@
   },
   {
     "query": {
-      "zhongwen": "师傅说我攀爬功夫已经不错",
       "yuewen_to_merge": [
         "师傅话",
         "我嘅攀爬功夫已经唔错"
-      ]
+      ],
+      "zhongwen": "师傅说我攀爬功夫已经不错"
     },
     "answer": {
       "yuewen_merged": "师傅话我嘅攀爬功夫已经唔错"
@@ -6084,10 +6084,10 @@
   },
   {
     "query": {
-      "zhongwen": "可以开始教我「十二路抢包手」",
       "yuewen_to_merge": [
         "可以开始教我十二路抢包手"
-      ]
+      ],
+      "zhongwen": "可以开始教我「十二路抢包手」"
     },
     "answer": {
       "yuewen_merged": "可以开始教我「十二路抢包手」"
@@ -6097,11 +6097,11 @@
   },
   {
     "query": {
-      "zhongwen": "师傅说当年师祖耍出这套",
       "yuewen_to_merge": [
         "师傅话",
         "当年师祖使出呢套"
-      ]
+      ],
+      "zhongwen": "师傅说当年师祖耍出这套"
     },
     "answer": {
       "yuewen_merged": "师傅话当年师祖使出呢套"
@@ -6110,10 +6110,10 @@
   },
   {
     "query": {
-      "zhongwen": "「十二路抢包手」⋯",
       "yuewen_to_merge": [
         "十二路抢包手"
-      ]
+      ],
+      "zhongwen": "「十二路抢包手」⋯"
     },
     "answer": {
       "yuewen_merged": "「十二路抢包手」⋯"
@@ -6123,11 +6123,11 @@
   },
   {
     "query": {
-      "zhongwen": "后来麦唛告诉我⋯",
       "yuewen_to_merge": [
         "后来",
         "默默话我知"
-      ]
+      ],
+      "zhongwen": "后来麦唛告诉我⋯"
     },
     "answer": {
       "yuewen_merged": "后来默默话我知⋯"
@@ -6137,11 +6137,11 @@
   },
   {
     "query": {
-      "zhongwen": "林世荣即是猪肉荣，是黄飞鸿的徒弟",
       "yuewen_to_merge": [
         "林世荣即系猪肉荣",
         "系黄飞鸿嘅徒弟"
-      ]
+      ],
+      "zhongwen": "林世荣即是猪肉荣，是黄飞鸿的徒弟"
     },
     "answer": {
       "yuewen_merged": "林世荣即系猪肉荣，系黄飞鸿嘅徒弟"
@@ -6151,13 +6151,13 @@
   },
   {
     "query": {
-      "zhongwen": "我一边练习，一边胡思乱想；始终⋯",
       "yuewen_to_merge": [
         "我一边练习",
         "一边乱练",
         "一边谂嘢",
         "始终"
-      ]
+      ],
+      "zhongwen": "我一边练习，一边胡思乱想；始终⋯"
     },
     "answer": {
       "yuewen_merged": "我一边练习，一边乱练，一边谂嘢；始终⋯"
@@ -6167,10 +6167,10 @@
   },
   {
     "query": {
-      "zhongwen": "于是我咬实牙根⋯",
       "yuewen_to_merge": [
         "于是我咬细牙根"
-      ]
+      ],
+      "zhongwen": "于是我咬实牙根⋯"
     },
     "answer": {
       "yuewen_merged": "于是我咬细牙根⋯"
@@ -6180,11 +6180,11 @@
   },
   {
     "query": {
-      "zhongwen": "一步一步，一爪一爪⋯",
       "yuewen_to_merge": [
         "一步一步",
         "一爪一爪"
-      ]
+      ],
+      "zhongwen": "一步一步，一爪一爪⋯"
     },
     "answer": {
       "yuewen_merged": "一步一步，一爪一爪⋯"
@@ -6194,11 +6194,11 @@
   },
   {
     "query": {
-      "zhongwen": "我最后终于练成「十二路抢包手」",
       "yuewen_to_merge": [
         "最后",
         "我终于练成十二路抢包手啦"
-      ]
+      ],
+      "zhongwen": "我最后终于练成「十二路抢包手」"
     },
     "answer": {
       "yuewen_merged": "最后我终于练成「十二路抢包手」啦"
@@ -6208,11 +6208,11 @@
   },
   {
     "query": {
-      "zhongwen": "喂，我是麦兜",
       "yuewen_to_merge": [
         "喂",
         "我系麦兜啊"
-      ]
+      ],
+      "zhongwen": "喂，我是麦兜"
     },
     "answer": {
       "yuewen_merged": "喂，我系麦兜啊"
@@ -6222,11 +6222,11 @@
   },
   {
     "query": {
-      "zhongwen": "刚才的是小朋友麦兜，我是大个佬麦兜",
       "yuewen_to_merge": [
         "正话嗰个系细路仔麦兜",
         "我系大个佬麦兜"
-      ]
+      ],
+      "zhongwen": "刚才的是小朋友麦兜，我是大个佬麦兜"
     },
     "answer": {
       "yuewen_merged": "正话嗰个系细路仔麦兜，我系大个佬麦兜"
@@ -6236,10 +6236,10 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友麦兜和大个佬麦兜除了声音不同⋯",
       "yuewen_to_merge": [
         "细路仔麦兜同大个佬麦兜除咗把声唔同之外"
-      ]
+      ],
+      "zhongwen": "小朋友麦兜和大个佬麦兜除了声音不同⋯"
     },
     "answer": {
       "yuewen_merged": "细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯"
@@ -6249,11 +6249,11 @@
   },
   {
     "query": {
-      "zhongwen": "希望⋯失望⋯",
       "yuewen_to_merge": [
         "希望",
         "失望"
-      ]
+      ],
+      "zhongwen": "希望⋯失望⋯"
     },
     "answer": {
       "yuewen_merged": "希望⋯失望⋯"
@@ -6263,10 +6263,10 @@
   },
   {
     "query": {
-      "zhongwen": "希望⋯",
       "yuewen_to_merge": [
         "希望"
-      ]
+      ],
+      "zhongwen": "希望⋯"
     },
     "answer": {
       "yuewen_merged": "希望⋯"
@@ -6276,11 +6276,11 @@
   },
   {
     "query": {
-      "zhongwen": "久而久之，就变成大个佬麦兜",
       "yuewen_to_merge": [
         "搞咗一轮",
         "就变咗大个佬麦兜"
-      ]
+      ],
+      "zhongwen": "久而久之，就变成大个佬麦兜"
     },
     "answer": {
       "yuewen_merged": "搞咗一轮，就变咗大个佬麦兜"
@@ -6290,11 +6290,11 @@
   },
   {
     "query": {
-      "zhongwen": "我现在还是多说点小朋友麦兜",
       "yuewen_to_merge": [
         "不过",
         "而家我都系想讲返细路仔麦兜"
-      ]
+      ],
+      "zhongwen": "我现在还是多说点小朋友麦兜"
     },
     "answer": {
       "yuewen_merged": "不过，而家我都系想讲返细路仔麦兜"
@@ -6304,10 +6304,10 @@
   },
   {
     "query": {
-      "zhongwen": "小朋友麦兜仍然希望希望⋯",
       "yuewen_to_merge": [
         "细路仔麦兜仲系希望希望"
-      ]
+      ],
+      "zhongwen": "小朋友麦兜仍然希望希望⋯"
     },
     "answer": {
       "yuewen_merged": "细路仔麦兜仲系希望希望⋯"
@@ -6317,12 +6317,12 @@
   },
   {
     "query": {
-      "zhongwen": "对，那时我还没吃过火鸡",
       "yuewen_to_merge": [
         "系啊",
         "我嗰阵",
         "我真系仲未食过火鸡"
-      ]
+      ],
+      "zhongwen": "对，那时我还没吃过火鸡"
     },
     "answer": {
       "yuewen_merged": "系啊，我嗰阵我真系仲未食过火鸡"
@@ -6332,10 +6332,10 @@
   },
   {
     "query": {
-      "zhongwen": "关于火鸡的一切⋯",
       "yuewen_to_merge": [
         "所有关于火鸡嘅嘢"
-      ]
+      ],
+      "zhongwen": "关于火鸡的一切⋯"
     },
     "answer": {
       "yuewen_merged": "所有关于火鸡嘅嘢⋯"
@@ -6345,11 +6345,11 @@
   },
   {
     "query": {
-      "zhongwen": "一片片比外边的雪还要白的鸡胸肉⋯",
       "yuewen_to_merge": [
         "一片一片",
         "比窗外面嘅雪仲要白嘅鸡胸肉"
-      ]
+      ],
+      "zhongwen": "一片片比外边的雪还要白的鸡胸肉⋯"
     },
     "answer": {
       "yuewen_merged": "一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯"
@@ -6359,10 +6359,10 @@
   },
   {
     "query": {
-      "zhongwen": "香气直入灵魂⋯",
       "yuewen_to_merge": [
         "香气直入灵魂"
-      ]
+      ],
+      "zhongwen": "香气直入灵魂⋯"
     },
     "answer": {
       "yuewen_merged": "香气直入灵魂⋯"
@@ -6372,10 +6372,10 @@
   },
   {
     "query": {
-      "zhongwen": "围住这香而圣洁的肉⋯",
       "yuewen_to_merge": [
         "围住呢一嚿好香好香又好盛洁嘅肉"
-      ]
+      ],
+      "zhongwen": "围住这香而圣洁的肉⋯"
     },
     "answer": {
       "yuewen_merged": "围住呢一嚿好香好香又好盛洁嘅肉⋯"
@@ -6385,12 +6385,12 @@
   },
   {
     "query": {
-      "zhongwen": "在圣诞夜中飞呀，飞⋯",
       "yuewen_to_merge": [
         "喺圣诞夜里面",
         "飞呀",
         "飞呀"
-      ]
+      ],
+      "zhongwen": "在圣诞夜中飞呀，飞⋯"
     },
     "answer": {
       "yuewen_merged": "喺圣诞夜里面飞呀，飞呀⋯"
@@ -6400,11 +6400,11 @@
   },
   {
     "query": {
-      "zhongwen": "这关于火鸡的一切，不过是我的想像",
       "yuewen_to_merge": [
         "但系呢一切一切关于火鸡嘅嘢",
         "都不过系我嘅想像"
-      ]
+      ],
+      "zhongwen": "这关于火鸡的一切，不过是我的想像"
     },
     "answer": {
       "yuewen_merged": "但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像"
@@ -6414,10 +6414,10 @@
   },
   {
     "query": {
-      "zhongwen": "我从来没吃过火鸡⋯",
       "yuewen_to_merge": [
         "因为我从来都未食过火鸡"
-      ]
+      ],
+      "zhongwen": "我从来没吃过火鸡⋯"
     },
     "answer": {
       "yuewen_merged": "因为我从来都未食过火鸡⋯"
@@ -6427,10 +6427,10 @@
   },
   {
     "query": {
-      "zhongwen": "我们一家两口，吃不下",
       "yuewen_to_merge": [
         "我哋一家两口点食都食唔晒"
-      ]
+      ],
+      "zhongwen": "我们一家两口，吃不下"
     },
     "answer": {
       "yuewen_merged": "我哋一家两口，点食都食唔晒"
@@ -6440,11 +6440,11 @@
   },
   {
     "query": {
-      "zhongwen": "有年圣诞节妈妈买了半只烧鸭庆祝",
       "yuewen_to_merge": [
         "有一年圣诞节",
         "妈妈买咗半边烧鸭庆祝"
-      ]
+      ],
+      "zhongwen": "有年圣诞节妈妈买了半只烧鸭庆祝"
     },
     "answer": {
       "yuewen_merged": "有一年圣诞节妈妈买咗半边烧鸭庆祝"
@@ -6453,10 +6453,10 @@
   },
   {
     "query": {
-      "zhongwen": "当时的我，十分十分失望",
       "yuewen_to_merge": [
         "当时我真系十分十分之失望"
-      ]
+      ],
+      "zhongwen": "当时的我，十分十分失望"
     },
     "answer": {
       "yuewen_merged": "当时我，真系十分十分之失望"
@@ -6466,11 +6466,11 @@
   },
   {
     "query": {
-      "zhongwen": "又有一年，一间百货公司结业",
       "yuewen_to_merge": [
         "又有一年",
         "有间大薄货公司倒闭"
-      ]
+      ],
+      "zhongwen": "又有一年，一间百货公司结业"
     },
     "answer": {
       "yuewen_merged": "又有一年，有间大薄货公司倒闭"
@@ -6480,11 +6480,11 @@
   },
   {
     "query": {
-      "zhongwen": "那日妈妈竟然跟我说⋯",
       "yuewen_to_merge": [
         "嗰日妈妈竟然同我讲",
         "佢话"
-      ]
+      ],
+      "zhongwen": "那日妈妈竟然跟我说⋯"
     },
     "answer": {
       "yuewen_merged": "嗰日妈妈竟然同我讲⋯佢话⋯"
@@ -6494,11 +6494,11 @@
   },
   {
     "query": {
-      "zhongwen": "我跟妈妈把火鸡揪回家的路上⋯",
       "yuewen_to_merge": [
         "我同妈妈抽住只火鸡行返屋企嗰阵",
         "喺嗰阵时"
-      ]
+      ],
+      "zhongwen": "我跟妈妈把火鸡揪回家的路上⋯"
     },
     "answer": {
       "yuewen_merged": "我同妈妈抽住只火鸡行返屋企嗰阵，喺嗰阵时⋯"
@@ -6508,10 +6508,10 @@
   },
   {
     "query": {
-      "zhongwen": "我学著妈妈，把双手涂满盐⋯",
       "yuewen_to_merge": [
         "我同妈妈噉双手查满盐"
-      ]
+      ],
+      "zhongwen": "我学著妈妈，把双手涂满盐⋯"
     },
     "answer": {
       "yuewen_merged": "我同妈妈，噉双手查满盐⋯"
@@ -6521,11 +6521,11 @@
   },
   {
     "query": {
-      "zhongwen": "在火鸡丰厚的鸡胸上擦呀，擦",
       "yuewen_to_merge": [
         "喺火鸡封口嘅鸡胸度",
         "起细噉啫啫"
-      ]
+      ],
+      "zhongwen": "在火鸡丰厚的鸡胸上擦呀，擦"
     },
     "answer": {
       "yuewen_merged": "喺火鸡封口嘅鸡胸度，起细噉啫啫"
@@ -6535,10 +6535,10 @@
   },
   {
     "query": {
-      "zhongwen": "联火鸡时⋯",
       "yuewen_to_merge": [
         "联火鸡时"
-      ]
+      ],
+      "zhongwen": "联火鸡时⋯"
     },
     "answer": {
       "yuewen_merged": "联火鸡时⋯"
@@ -6548,11 +6548,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈不留神漏出了火鸡内的洋葱粒",
       "yuewen_to_merge": [
         "妈妈一个唔觉意",
         "畀酿喺火鸡里面嘅火鸡内脏洋葱粒"
-      ]
+      ],
+      "zhongwen": "妈妈不留神漏出了火鸡内的洋葱粒"
     },
     "answer": {
       "yuewen_merged": "妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒"
@@ -6561,11 +6561,11 @@
   },
   {
     "query": {
-      "zhongwen": "我说：火鸡「疴烂煮」！",
       "yuewen_to_merge": [
         "我话",
         "火鸡我能住呀"
-      ]
+      ],
+      "zhongwen": "我说：火鸡「疴烂煮」！"
     },
     "answer": {
       "yuewen_merged": "我话：火鸡「我能住」呀！"
@@ -6575,11 +6575,11 @@
   },
   {
     "query": {
-      "zhongwen": "焗炉戚戚恻恻，戚戚恻恻⋯",
       "yuewen_to_merge": [
         "个焗炉叱叱叱叱",
         "叱叱叱咁"
-      ]
+      ],
+      "zhongwen": "焗炉戚戚恻恻，戚戚恻恻⋯"
     },
     "answer": {
       "yuewen_merged": "个焗炉叱叱叱叱，叱叱叱咁⋯"
@@ -6589,10 +6589,10 @@
   },
   {
     "query": {
-      "zhongwen": "好靓的晚上啊！",
       "yuewen_to_merge": [
         "好靓嘅夜晚呀"
-      ]
+      ],
+      "zhongwen": "好靓的晚上啊！"
     },
     "answer": {
       "yuewen_merged": "好靓嘅夜晚呀！"
@@ -6602,10 +6602,10 @@
   },
   {
     "query": {
-      "zhongwen": "点点灯光在海面走来走去⋯",
       "yuewen_to_merge": [
         "点点点点嘅灯光喺海上面走来走去"
-      ]
+      ],
+      "zhongwen": "点点灯光在海面走来走去⋯"
     },
     "answer": {
       "yuewen_merged": "点点点点嘅灯光喺海上面走来走去⋯"
@@ -6615,11 +6615,11 @@
   },
   {
     "query": {
-      "zhongwen": "美丽又温柔",
       "yuewen_to_merge": [
         "又靓",
         "又温柔"
-      ]
+      ],
+      "zhongwen": "美丽又温柔"
     },
     "answer": {
       "yuewen_merged": "又靓又温柔"
@@ -6628,10 +6628,10 @@
   },
   {
     "query": {
-      "zhongwen": "真的好靓！",
       "yuewen_to_merge": [
         "真系好靓"
-      ]
+      ],
+      "zhongwen": "真的好靓！"
     },
     "answer": {
       "yuewen_merged": "真系好靓！"
@@ -6641,10 +6641,10 @@
   },
   {
     "query": {
-      "zhongwen": "甚至杯面，烧鸭的味道也没有这么浓",
       "yuewen_to_merge": [
         "连烧鸭连杯面都冇咁浓嘅味道"
-      ]
+      ],
+      "zhongwen": "甚至杯面，烧鸭的味道也没有这么浓"
     },
     "answer": {
       "yuewen_merged": "连烧鸭连杯面都冇咁浓嘅味道"
@@ -6654,10 +6654,10 @@
   },
   {
     "query": {
-      "zhongwen": "火鸡的味道把我每一个味蕾缠住⋯",
       "yuewen_to_merge": [
         "火鸡嘅味道喺我嘅每一个味蕾度缠住"
-      ]
+      ],
+      "zhongwen": "火鸡的味道把我每一个味蕾缠住⋯"
     },
     "answer": {
       "yuewen_merged": "火鸡嘅味道喺我嘅每一个味蕾度缠住⋯"
@@ -6667,12 +6667,12 @@
   },
   {
     "query": {
-      "zhongwen": "爆发⋯缠住⋯爆发⋯",
       "yuewen_to_merge": [
         "爆发",
         "缠住",
         "爆发"
-      ]
+      ],
+      "zhongwen": "爆发⋯缠住⋯爆发⋯"
     },
     "answer": {
       "yuewen_merged": "爆发⋯缠住⋯爆发⋯"
@@ -6682,13 +6682,13 @@
   },
   {
     "query": {
-      "zhongwen": "最靓最靓，最犀利，而且最温柔",
       "yuewen_to_merge": [
         "最靓",
         "最靓",
         "最犀利",
         "亦都系最温柔"
-      ]
+      ],
+      "zhongwen": "最靓最靓，最犀利，而且最温柔"
     },
     "answer": {
       "yuewen_merged": "最靓最靓，最犀利，亦都系最温柔"
@@ -6698,10 +6698,10 @@
   },
   {
     "query": {
-      "zhongwen": "第二天我睡得很晏⋯",
       "yuewen_to_merge": [
         "第二日我瞓到好硬"
-      ]
+      ],
+      "zhongwen": "第二天我睡得很晏⋯"
     },
     "answer": {
       "yuewen_merged": "第二日我瞓到好硬⋯"
@@ -6711,11 +6711,11 @@
   },
   {
     "query": {
-      "zhongwen": "刷过牙我还感觉到火鸡的美味",
       "yuewen_to_merge": [
         "测完牙",
         "我仲感觉到火鸡嘅美味"
-      ]
+      ],
+      "zhongwen": "刷过牙我还感觉到火鸡的美味"
     },
     "answer": {
       "yuewen_merged": "测完牙我仲感觉到火鸡嘅美味"
@@ -6724,10 +6724,10 @@
   },
   {
     "query": {
-      "zhongwen": "因为早餐吃得晚⋯",
       "yuewen_to_merge": [
         "因为早餐食得硬"
-      ]
+      ],
+      "zhongwen": "因为早餐吃得晚⋯"
     },
     "answer": {
       "yuewen_merged": "因为早餐食得硬⋯"
@@ -6737,11 +6737,11 @@
   },
   {
     "query": {
-      "zhongwen": "不用说，那夜就是我渴望了⋯",
       "yuewen_to_merge": [
         "嗰晚唔使讲",
         "当然系食我限咗"
-      ]
+      ],
+      "zhongwen": "不用说，那夜就是我渴望了⋯"
     },
     "answer": {
       "yuewen_merged": "嗰晚唔使讲，当然系食我限咗⋯"
@@ -6751,10 +6751,10 @@
   },
   {
     "query": {
-      "zhongwen": "很久很久很久的⋯圣诞火鸡大餐！",
       "yuewen_to_merge": [
         "好耐好耐好耐好耐嘅圣诞火鸡大餐"
-      ]
+      ],
+      "zhongwen": "很久很久很久的⋯圣诞火鸡大餐！"
     },
     "answer": {
       "yuewen_merged": "好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！"
@@ -6764,11 +6764,11 @@
   },
   {
     "query": {
-      "zhongwen": "一片片的火鸡肉和伴碟的薯仔和节瓜⋯",
       "yuewen_to_merge": [
         "一片一片嘅火鸡肉",
         "半碟嘅有薯仔同节瓜"
-      ]
+      ],
+      "zhongwen": "一片片的火鸡肉和伴碟的薯仔和节瓜⋯"
     },
     "answer": {
       "yuewen_merged": "一片一片嘅火鸡肉半碟嘅有薯仔同节瓜⋯"
@@ -6778,11 +6778,11 @@
   },
   {
     "query": {
-      "zhongwen": "我们真的好兴奋，好满足",
       "yuewen_to_merge": [
         "我哋真系好兴奋",
         "好满足"
-      ]
+      ],
+      "zhongwen": "我们真的好兴奋，好满足"
     },
     "answer": {
       "yuewen_merged": "我哋真系好兴奋，好满足"
@@ -6792,10 +6792,10 @@
   },
   {
     "query": {
-      "zhongwen": "之后，我们吃了一个星期的⋯",
       "yuewen_to_merge": [
         "之后我哋仲食咗一个礼拜嘅"
-      ]
+      ],
+      "zhongwen": "之后，我们吃了一个星期的⋯"
     },
     "answer": {
       "yuewen_merged": "之后，我哋仲食咗一个礼拜嘅⋯"
@@ -6805,11 +6805,11 @@
   },
   {
     "query": {
-      "zhongwen": "我大著胆跟妈妈说：不如去饮茶吖",
       "yuewen_to_merge": [
         "我嘅记心肝同妈妈讲",
         "不如饮茶"
-      ]
+      ],
+      "zhongwen": "我大著胆跟妈妈说：不如去饮茶吖"
     },
     "answer": {
       "yuewen_merged": "我嘅记心肝同妈妈讲：不如饮茶"
@@ -6819,10 +6819,10 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈骂我「冇衣食」⋯",
       "yuewen_to_merge": [
         "妈妈闹我冇意食"
-      ]
+      ],
+      "zhongwen": "妈妈骂我「冇衣食」⋯"
     },
     "answer": {
       "yuewen_merged": "妈妈闹我「冇意食」⋯"
@@ -6832,10 +6832,10 @@
   },
   {
     "query": {
-      "zhongwen": "之后，妈妈又有计⋯",
       "yuewen_to_merge": [
         "之后妈妈又有计"
-      ]
+      ],
+      "zhongwen": "之后，妈妈又有计⋯"
     },
     "answer": {
       "yuewen_merged": "之后，妈妈又有计⋯"
@@ -6845,11 +6845,11 @@
   },
   {
     "query": {
-      "zhongwen": "她把冰箱内剩下来的火鸡肉撕呀撕",
       "yuewen_to_merge": [
         "佢将雪柜净返嘅火鸡肉",
         "系噉撕系噉撕"
-      ]
+      ],
+      "zhongwen": "她把冰箱内剩下来的火鸡肉撕呀撕"
     },
     "answer": {
       "yuewen_merged": "佢将雪柜净返嘅火鸡肉系噉撕系噉撕"
@@ -6858,10 +6858,10 @@
   },
   {
     "query": {
-      "zhongwen": "银芽火鸡丝炒米，好味道",
       "yuewen_to_merge": [
         "银牙火鸡丝炒米好味道噉"
-      ]
+      ],
+      "zhongwen": "银芽火鸡丝炒米，好味道"
     },
     "answer": {
       "yuewen_merged": "银牙火鸡丝炒米，好味道噉"
@@ -6871,11 +6871,11 @@
   },
   {
     "query": {
-      "zhongwen": "唉，我好后悔讲过一句「火鸡疴烂煮」",
       "yuewen_to_merge": [
         "唉",
         "我后悔讲过火鸡阿宁处呢句嘢"
-      ]
+      ],
+      "zhongwen": "唉，我好后悔讲过一句「火鸡疴烂煮」"
     },
     "answer": {
       "yuewen_merged": "唉，我后悔讲过「火鸡阿宁处」呢句嘢"
@@ -6885,11 +6885,11 @@
   },
   {
     "query": {
-      "zhongwen": "端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
       "yuewen_to_merge": [
         "到端午节",
         "当我督开我最钟意食嘅果精粽嘅时候"
-      ]
+      ],
+      "zhongwen": "端午节，当我翻开我最喜欢吃的裹蒸粽⋯"
     },
     "answer": {
       "yuewen_merged": "到端午节，当我督开我最钟意食嘅果精粽嘅时候⋯"
@@ -6899,10 +6899,10 @@
   },
   {
     "query": {
-      "zhongwen": "发现咸蛋旁边是一件火鸡背的时候⋯",
       "yuewen_to_merge": [
         "发现宿喺咸蛋旁边嘅系一件火鸡背脊"
-      ]
+      ],
+      "zhongwen": "发现咸蛋旁边是一件火鸡背的时候⋯"
     },
     "answer": {
       "yuewen_merged": "发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯"
@@ -6912,11 +6912,11 @@
   },
   {
     "query": {
-      "zhongwen": "我脑部一时想唔通，哭起来",
       "yuewen_to_merge": [
         "我脑部一时想唔通",
         "喊咗起上嚟"
-      ]
+      ],
+      "zhongwen": "我脑部一时想唔通，哭起来"
     },
     "answer": {
       "yuewen_merged": "我脑部一时想唔通，喊咗起上嚟"
@@ -6926,10 +6926,10 @@
   },
   {
     "query": {
-      "zhongwen": "救命呀！",
       "yuewen_to_merge": [
         "救命啊"
-      ]
+      ],
+      "zhongwen": "救命呀！"
     },
     "answer": {
       "yuewen_merged": "救命啊！"
@@ -6939,11 +6939,11 @@
   },
   {
     "query": {
-      "zhongwen": "我的美梦跟恶梦亦同时完结",
       "yuewen_to_merge": [
         "我嘅美梦同噩梦",
         "都同时完结"
-      ]
+      ],
+      "zhongwen": "我的美梦跟恶梦亦同时完结"
     },
     "answer": {
       "yuewen_merged": "我嘅美梦同噩梦都同时完结"
@@ -6952,10 +6952,10 @@
   },
   {
     "query": {
-      "zhongwen": "后来我才知道⋯",
       "yuewen_to_merge": [
         "后来我先知道"
-      ]
+      ],
+      "zhongwen": "后来我才知道⋯"
     },
     "answer": {
       "yuewen_merged": "后来我先知道⋯"
@@ -6965,12 +6965,12 @@
   },
   {
     "query": {
-      "zhongwen": "即是说，火鸡死掉后跟我们一起的日子",
       "yuewen_to_merge": [
         "即系话",
         "只火鸡死咗之后",
         "同我哋一齐嘅日子"
-      ]
+      ],
+      "zhongwen": "即是说，火鸡死掉后跟我们一起的日子"
     },
     "answer": {
       "yuewen_merged": "即系话，只火鸡死咗之后同我哋一齐嘅日子"
@@ -6980,11 +6980,11 @@
   },
   {
     "query": {
-      "zhongwen": "我还发觉，火鸡的味道⋯",
       "yuewen_to_merge": [
         "我仲发觉到",
         "火鸡嘅味道"
-      ]
+      ],
+      "zhongwen": "我还发觉，火鸡的味道⋯"
     },
     "answer": {
       "yuewen_merged": "我仲发觉到，火鸡嘅味道⋯"
@@ -6994,11 +6994,11 @@
   },
   {
     "query": {
-      "zhongwen": "将吃未吃和第一口之间已经是最高峰",
       "yuewen_to_merge": [
         "味食同食第一啖之间",
         "已经系佢嘅最高峰"
-      ]
+      ],
+      "zhongwen": "将吃未吃和第一口之间已经是最高峰"
     },
     "answer": {
       "yuewen_merged": "味食同食第一啖之间已经系佢嘅最高峰"
@@ -7007,11 +7007,11 @@
   },
   {
     "query": {
-      "zhongwen": "之后的，不过是开始了也就吃下去",
       "yuewen_to_merge": [
         "之后",
         "不过都系食开就食埋落去噉解"
-      ]
+      ],
+      "zhongwen": "之后的，不过是开始了也就吃下去"
     },
     "answer": {
       "yuewen_merged": "之后，不过都系食开就食埋落去噉解"
@@ -7021,10 +7021,10 @@
   },
   {
     "query": {
-      "zhongwen": "我没有哲学家的头脑⋯",
       "yuewen_to_merge": [
         "我冇知学家嘅头脑"
-      ]
+      ],
+      "zhongwen": "我没有哲学家的头脑⋯"
     },
     "answer": {
       "yuewen_merged": "我冇知学家嘅头脑⋯"
@@ -7034,11 +7034,11 @@
   },
   {
     "query": {
-      "zhongwen": "不知道两件事情应该得出什么道理",
       "yuewen_to_merge": [
         "唔知呢两样嘢要得起嘅呢个",
         "得出啲咩道理"
-      ]
+      ],
+      "zhongwen": "不知道两件事情应该得出什么道理"
     },
     "answer": {
       "yuewen_merged": "唔知呢两样嘢要得起嘅呢个得出啲咩道理"
@@ -7047,10 +7047,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是这些想法⋯",
       "yuewen_to_merge": [
         "但系呢啲谂法"
-      ]
+      ],
+      "zhongwen": "可是这些想法⋯"
     },
     "answer": {
       "yuewen_merged": "但系呢啲谂法⋯"
@@ -7060,10 +7060,10 @@
   },
   {
     "query": {
-      "zhongwen": "在我长大后⋯",
       "yuewen_to_merge": [
         "喺我长大之后"
-      ]
+      ],
+      "zhongwen": "在我长大后⋯"
     },
     "answer": {
       "yuewen_merged": "喺我长大之后⋯"
@@ -7073,10 +7073,10 @@
   },
   {
     "query": {
-      "zhongwen": "在一些跟圣诞节无关的日子⋯",
       "yuewen_to_merge": [
         "系一啲同圣诞节无关嘅日子"
-      ]
+      ],
+      "zhongwen": "在一些跟圣诞节无关的日子⋯"
     },
     "answer": {
       "yuewen_merged": "系一啲同圣诞节无关嘅日子⋯"
@@ -7086,11 +7086,11 @@
   },
   {
     "query": {
-      "zhongwen": "毫无因由的在我脑中出现过三两次",
       "yuewen_to_merge": [
         "无端端噉喺我脑部",
         "出现过两三次"
-      ]
+      ],
+      "zhongwen": "毫无因由的在我脑中出现过三两次"
     },
     "answer": {
       "yuewen_merged": "无端端噉喺我脑部出现过两三次"
@@ -7099,11 +7099,11 @@
   },
   {
     "query": {
-      "zhongwen": "一次，是在我自己的婚宴上",
       "yuewen_to_merge": [
         "一次",
         "喺我自己嘅婚宴上"
-      ]
+      ],
+      "zhongwen": "一次，是在我自己的婚宴上"
     },
     "answer": {
       "yuewen_merged": "一次，喺我自己嘅婚宴上"
@@ -7113,10 +7113,10 @@
   },
   {
     "query": {
-      "zhongwen": "一次⋯",
       "yuewen_to_merge": [
         "一次"
-      ]
+      ],
+      "zhongwen": "一次⋯"
     },
     "answer": {
       "yuewen_merged": "一次⋯"
@@ -7126,11 +7126,11 @@
   },
   {
     "query": {
-      "zhongwen": "那天，我看著天空几缕灰色的烟",
       "yuewen_to_merge": [
         "嗰日",
         "我望住天东几条灰色嘅烟"
-      ]
+      ],
+      "zhongwen": "那天，我看著天空几缕灰色的烟"
     },
     "answer": {
       "yuewen_merged": "嗰日，我望住天东几条灰色嘅烟"
@@ -7140,12 +7140,12 @@
   },
   {
     "query": {
-      "zhongwen": "我好后悔要妈妈扔掉最后几件火鸡",
       "yuewen_to_merge": [
         "我后悔",
         "要妈妈劈咗个忌廉",
         "火鸡"
-      ]
+      ],
+      "zhongwen": "我好后悔要妈妈扔掉最后几件火鸡"
     },
     "answer": {
       "yuewen_merged": "我后悔要妈妈劈咗个忌廉火鸡"
@@ -7154,10 +7154,10 @@
   },
   {
     "query": {
-      "zhongwen": "向全世界人再次证明⋯",
       "yuewen_to_merge": [
         "向全世界人再次证明"
-      ]
+      ],
+      "zhongwen": "向全世界人再次证明⋯"
     },
     "answer": {
       "yuewen_merged": "向全世界人再次证明⋯"
@@ -7167,10 +7167,10 @@
   },
   {
     "query": {
-      "zhongwen": "另方面⋯",
       "yuewen_to_merge": [
         "另一方面"
-      ]
+      ],
+      "zhongwen": "另方面⋯"
     },
     "answer": {
       "yuewen_merged": "另一方面⋯"
@@ -7180,10 +7180,10 @@
   },
   {
     "query": {
-      "zhongwen": "香港体运总会霍震霆⋯",
       "yuewen_to_merge": [
         "中国香港体育协会企奥委会会长霍振庭"
-      ]
+      ],
+      "zhongwen": "香港体运总会霍震霆⋯"
     },
     "answer": {
       "yuewen_merged": "中国香港体育协会企奥委会会长霍振庭⋯"
@@ -7193,10 +7193,10 @@
   },
   {
     "query": {
-      "zhongwen": "其中港九新界竹战联谊会⋯",
       "yuewen_to_merge": [
         "其中港狗新界足战联谊会"
-      ]
+      ],
+      "zhongwen": "其中港九新界竹战联谊会⋯"
     },
     "answer": {
       "yuewen_merged": "其中港狗新界足战联谊会⋯"
@@ -7206,11 +7206,11 @@
   },
   {
     "query": {
-      "zhongwen": "另外，全港茶餐厅员工协会⋯",
       "yuewen_to_merge": [
         "另外",
         "全港茶餐厅联工协会"
-      ]
+      ],
+      "zhongwen": "另外，全港茶餐厅员工协会⋯"
     },
     "answer": {
       "yuewen_merged": "另外，全港茶餐厅联工协会⋯"
@@ -7220,10 +7220,10 @@
   },
   {
     "query": {
-      "zhongwen": "经已发动所有会员⋯",
       "yuewen_to_merge": [
         "经热发动所有会员"
-      ]
+      ],
+      "zhongwen": "经已发动所有会员⋯"
     },
     "answer": {
       "yuewen_merged": "经热发动所有会员⋯"
@@ -7233,10 +7233,10 @@
   },
   {
     "query": {
-      "zhongwen": "争取「掷蛋挞」成为亚运比赛项目",
       "yuewen_to_merge": [
         "争取掟蛋挞成为亚运会比赛项目"
-      ]
+      ],
+      "zhongwen": "争取「掷蛋挞」成为亚运比赛项目"
     },
     "answer": {
       "yuewen_merged": "争取「掟蛋挞」成为亚运会比赛项目"
@@ -7246,12 +7246,12 @@
   },
   {
     "query": {
-      "zhongwen": "港九烧味卤味腊味同业会",
       "yuewen_to_merge": [
         "港狗烧尾",
         "掳尾",
         "立尾同业会"
-      ]
+      ],
+      "zhongwen": "港九烧味卤味腊味同业会"
     },
     "answer": {
       "yuewen_merged": "港狗烧尾掳尾立尾同业会"
@@ -7260,10 +7260,10 @@
   },
   {
     "query": {
-      "zhongwen": "亦向霍主席当面提出⋯",
       "yuewen_to_merge": [
         "亦都向霍主席当面提出"
-      ]
+      ],
+      "zhongwen": "亦向霍主席当面提出⋯"
     },
     "answer": {
       "yuewen_merged": "亦都向霍主席当面提出⋯"
@@ -7273,10 +7273,10 @@
   },
   {
     "query": {
-      "zhongwen": "「挂腊鸭」可以成为亚运比赛项目",
       "yuewen_to_merge": [
         "挂立鸭可以成为亚运比赛项目"
-      ]
+      ],
+      "zhongwen": "「挂腊鸭」可以成为亚运比赛项目"
     },
     "answer": {
       "yuewen_merged": "「挂立鸭」可以成为亚运比赛项目"
@@ -7286,11 +7286,11 @@
   },
   {
     "query": {
-      "zhongwen": "较为特别的是，CIC保险营业员联同⋯",
       "yuewen_to_merge": [
         "较为特别嘅系",
         "CIC保险营业员联同"
-      ]
+      ],
+      "zhongwen": "较为特别的是，CIC保险营业员联同⋯"
     },
     "answer": {
       "yuewen_merged": "较为特别嘅系，CIC保险营业员联同⋯"
@@ -7300,11 +7300,11 @@
   },
   {
     "query": {
-      "zhongwen": "大角咀春田花花幼稚园⋯",
       "yuewen_to_merge": [
         "大角嘴春田花花",
         "幼稚园"
-      ]
+      ],
+      "zhongwen": "大角咀春田花花幼稚园⋯"
     },
     "answer": {
       "yuewen_merged": "大角嘴春田花花幼稚园⋯"
@@ -7314,10 +7314,10 @@
   },
   {
     "query": {
-      "zhongwen": "附属小学一班小朋友⋯",
       "yuewen_to_merge": [
         "附属小学嘅一班小朋友"
-      ]
+      ],
+      "zhongwen": "附属小学一班小朋友⋯"
     },
     "answer": {
       "yuewen_merged": "附属小学嘅一班小朋友⋯"
@@ -7327,10 +7327,10 @@
   },
   {
     "query": {
-      "zhongwen": "争取「抢包山」",
       "yuewen_to_merge": [
         "争取抢包山"
-      ]
+      ],
+      "zhongwen": "争取「抢包山」"
     },
     "answer": {
       "yuewen_merged": "争取「抢包山」"
@@ -7340,10 +7340,10 @@
   },
   {
     "query": {
-      "zhongwen": "一项几乎绝迹的运动⋯",
       "yuewen_to_merge": [
         "一项几乎绝迹嘅运动"
-      ]
+      ],
+      "zhongwen": "一项几乎绝迹的运动⋯"
     },
     "answer": {
       "yuewen_merged": "一项几乎绝迹嘅运动⋯"
@@ -7353,10 +7353,10 @@
   },
   {
     "query": {
-      "zhongwen": "最后⋯",
       "yuewen_to_merge": [
         "最后"
-      ]
+      ],
+      "zhongwen": "最后⋯"
     },
     "answer": {
       "yuewen_merged": "最后⋯"
@@ -7366,10 +7366,10 @@
   },
   {
     "query": {
-      "zhongwen": "最后，一切成烟",
       "yuewen_to_merge": [
         "最后全部都系banana"
-      ]
+      ],
+      "zhongwen": "最后，一切成烟"
     },
     "answer": {
       "yuewen_merged": "最后，全部都系banana"
@@ -7379,10 +7379,10 @@
   },
   {
     "query": {
-      "zhongwen": "最后，他们选了「掷蛋挞」做推介项目",
       "yuewen_to_merge": [
         "最后佢哋选咗定蛋挞做推介项目"
-      ]
+      ],
+      "zhongwen": "最后，他们选了「掷蛋挞」做推介项目"
     },
     "answer": {
       "yuewen_merged": "最后，佢哋选咗「定蛋挞」做推介项目"
@@ -7392,10 +7392,10 @@
   },
   {
     "query": {
-      "zhongwen": "至于香港争取申办亚运的口号⋯",
       "yuewen_to_merge": [
         "至于香港争取申办亚运嘅口号"
-      ]
+      ],
+      "zhongwen": "至于香港争取申办亚运的口号⋯"
     },
     "answer": {
       "yuewen_merged": "至于香港争取申办亚运嘅口号⋯"
@@ -7405,10 +7405,10 @@
   },
   {
     "query": {
-      "zhongwen": "亦顺理成章叫成「香港一蛋挞」",
       "yuewen_to_merge": [
         "亦都顺理成章噉叫做香港一蛋挞"
-      ]
+      ],
+      "zhongwen": "亦顺理成章叫成「香港一蛋挞」"
     },
     "answer": {
       "yuewen_merged": "亦都顺理成章噉叫做「香港一蛋挞」"
@@ -7418,10 +7418,10 @@
   },
   {
     "query": {
-      "zhongwen": "之后李丽珊蝉联失败⋯",
       "yuewen_to_merge": [
         "之后李利山丧乱失败"
-      ]
+      ],
+      "zhongwen": "之后李丽珊蝉联失败⋯"
     },
     "answer": {
       "yuewen_merged": "之后李利山丧乱失败⋯"
@@ -7431,10 +7431,10 @@
   },
   {
     "query": {
-      "zhongwen": "亚运主办权⋯",
       "yuewen_to_merge": [
         "亚运主办权"
-      ]
+      ],
+      "zhongwen": "亚运主办权⋯"
     },
     "answer": {
       "yuewen_merged": "亚运主办权⋯"
@@ -7444,10 +7444,10 @@
   },
   {
     "query": {
-      "zhongwen": "想著转行当运动员的茶餐厅伙记⋯",
       "yuewen_to_merge": [
         "谂住可以转行做运动员嘅茶餐厅伙计"
-      ]
+      ],
+      "zhongwen": "想著转行当运动员的茶餐厅伙记⋯"
     },
     "answer": {
       "yuewen_merged": "谂住可以转行做运动员嘅茶餐厅伙计⋯"
@@ -7457,11 +7457,11 @@
   },
   {
     "query": {
-      "zhongwen": "上中学后，我再没有练习抢包手",
       "yuewen_to_merge": [
         "上个中学",
         "我已经再冇练习抢包手"
-      ]
+      ],
+      "zhongwen": "上中学后，我再没有练习抢包手"
     },
     "answer": {
       "yuewen_merged": "上个中学，我已经再冇练习抢包手"
@@ -7471,10 +7471,10 @@
   },
   {
     "query": {
-      "zhongwen": "有时候跟妈妈饮茶⋯",
       "yuewen_to_merge": [
         "间中同妈妈饮茶"
-      ]
+      ],
+      "zhongwen": "有时候跟妈妈饮茶⋯"
     },
     "answer": {
       "yuewen_merged": "间中同妈妈饮茶⋯"
@@ -7484,10 +7484,10 @@
   },
   {
     "query": {
-      "zhongwen": "之后，茶楼再不卖大包了",
       "yuewen_to_merge": [
         "之后茶楼都冇埋大包"
-      ]
+      ],
+      "zhongwen": "之后，茶楼再不卖大包了"
     },
     "answer": {
       "yuewen_merged": "之后，茶楼都冇埋大包"
@@ -7497,10 +7497,10 @@
   },
   {
     "query": {
-      "zhongwen": "每次看见师傅⋯",
       "yuewen_to_merge": [
         "每次见到师傅"
-      ]
+      ],
+      "zhongwen": "每次看见师傅⋯"
     },
     "answer": {
       "yuewen_merged": "每次见到师傅⋯"
@@ -7510,10 +7510,10 @@
   },
   {
     "query": {
-      "zhongwen": "因为环保⋯",
       "yuewen_to_merge": [
         "因为环保"
-      ]
+      ],
+      "zhongwen": "因为环保⋯"
     },
     "answer": {
       "yuewen_merged": "因为环保⋯"
@@ -7523,10 +7523,10 @@
   },
   {
     "query": {
-      "zhongwen": "师傅说，那阵胶气，相当臭",
       "yuewen_to_merge": [
         "师傅话嗰阵胶气都几丑下"
-      ]
+      ],
+      "zhongwen": "师傅说，那阵胶气，相当臭"
     },
     "answer": {
       "yuewen_merged": "师傅话，嗰阵胶气，都几丑下"
@@ -7536,11 +7536,11 @@
   },
   {
     "query": {
-      "zhongwen": "因为我练过抢包手，身手比较灵活⋯",
       "yuewen_to_merge": [
         "因为我练过抢包手",
         "身手比较灵活"
-      ]
+      ],
+      "zhongwen": "因为我练过抢包手，身手比较灵活⋯"
     },
     "answer": {
       "yuewen_merged": "因为我练过抢包手，身手比较灵活⋯"
@@ -7550,11 +7550,11 @@
   },
   {
     "query": {
-      "zhongwen": "同学们叫我爬进去看看，说不定会发达",
       "yuewen_to_merge": [
         "班同我叫我爬佢睇下",
         "话唔定会发达"
-      ]
+      ],
+      "zhongwen": "同学们叫我爬进去看看，说不定会发达"
     },
     "answer": {
       "yuewen_merged": "班同我叫我爬佢睇下，话唔定会发达"
@@ -7564,10 +7564,10 @@
   },
   {
     "query": {
-      "zhongwen": "于是我就向著这个又黑又窄的洞⋯",
       "yuewen_to_merge": [
         "于是我就向住呢一个又黑又窄嘅洞"
-      ]
+      ],
+      "zhongwen": "于是我就向著这个又黑又窄的洞⋯"
     },
     "answer": {
       "yuewen_merged": "于是我就向住呢一个又黑又窄嘅洞⋯"
@@ -7577,11 +7577,11 @@
   },
   {
     "query": {
-      "zhongwen": "一直爬",
       "yuewen_to_merge": [
         "系噉爬",
         "爬"
-      ]
+      ],
+      "zhongwen": "一直爬"
     },
     "answer": {
       "yuewen_merged": "系噉爬爬"
@@ -7590,11 +7590,11 @@
   },
   {
     "query": {
-      "zhongwen": "洞里面什么也没有，只有一个盒",
       "yuewen_to_merge": [
         "洞里面乜都冇",
         "净系有一个盒"
-      ]
+      ],
+      "zhongwen": "洞里面什么也没有，只有一个盒"
     },
     "answer": {
       "yuewen_merged": "洞里面乜都冇，净系有一个盒"
@@ -7604,10 +7604,10 @@
   },
   {
     "query": {
-      "zhongwen": "我小心揭开盒⋯",
       "yuewen_to_merge": [
         "我好小心揭开呢个盒"
-      ]
+      ],
+      "zhongwen": "我小心揭开盒⋯"
     },
     "answer": {
       "yuewen_merged": "我好小心揭开呢个盒⋯"
@@ -7617,10 +7617,10 @@
   },
   {
     "query": {
-      "zhongwen": "是不是张保仔吃过的呢？",
       "yuewen_to_merge": [
         "唔知系咪张宝仔食净㗎啦"
-      ]
+      ],
+      "zhongwen": "是不是张保仔吃过的呢？"
     },
     "answer": {
       "yuewen_merged": "唔知系咪张宝仔食净㗎啦？"
@@ -7630,11 +7630,11 @@
   },
   {
     "query": {
-      "zhongwen": "揸住个包，我忽然明白⋯",
       "yuewen_to_merge": [
         "揸住个包",
         "我忽然明白"
-      ]
+      ],
+      "zhongwen": "揸住个包，我忽然明白⋯"
     },
     "answer": {
       "yuewen_merged": "揸住个包，我忽然明白⋯"
@@ -7644,11 +7644,11 @@
   },
   {
     "query": {
-      "zhongwen": "原来有些事情，没有就是没有",
       "yuewen_to_merge": [
         "原来有啲嘢冇",
         "就真系冇"
-      ]
+      ],
+      "zhongwen": "原来有些事情，没有就是没有"
     },
     "answer": {
       "yuewen_merged": "原来有啲嘢，冇就真系冇"
@@ -7658,11 +7658,11 @@
   },
   {
     "query": {
-      "zhongwen": "唔得，就是唔得",
       "yuewen_to_merge": [
         "唔得",
         "就真系唔得"
-      ]
+      ],
+      "zhongwen": "唔得，就是唔得"
     },
     "answer": {
       "yuewen_merged": "唔得，就真系唔得"
@@ -7672,12 +7672,12 @@
   },
   {
     "query": {
-      "zhongwen": "没有鱼蛋没有粗面没去成马尔代夫⋯",
       "yuewen_to_merge": [
         "冇鱼蛋",
         "冇粗面",
         "冇去买义大夫"
-      ]
+      ],
+      "zhongwen": "没有鱼蛋没有粗面没去成马尔代夫⋯"
     },
     "answer": {
       "yuewen_merged": "冇鱼蛋冇粗面冇去买义大夫⋯"
@@ -7687,10 +7687,10 @@
   },
   {
     "query": {
-      "zhongwen": "而张保仔，也没有咬过那个包",
       "yuewen_to_merge": [
         "而张宝仔亦都冇咬过个包"
-      ]
+      ],
+      "zhongwen": "而张保仔，也没有咬过那个包"
     },
     "answer": {
       "yuewen_merged": "而张宝仔，亦都冇咬过个包"
@@ -7700,11 +7700,11 @@
   },
   {
     "query": {
-      "zhongwen": "原来蠢，并不那么好笑",
       "yuewen_to_merge": [
         "原来",
         "唔系咁好笑"
-      ]
+      ],
+      "zhongwen": "原来蠢，并不那么好笑"
     },
     "answer": {
       "yuewen_merged": "原来，唔系咁好笑"
@@ -7714,10 +7714,10 @@
   },
   {
     "query": {
-      "zhongwen": "蠢会失败⋯",
       "yuewen_to_merge": [
         "会失败"
-      ]
+      ],
+      "zhongwen": "蠢会失败⋯"
     },
     "answer": {
       "yuewen_merged": "会失败⋯"
@@ -7727,11 +7727,11 @@
   },
   {
     "query": {
-      "zhongwen": "失望，并不那么好笑",
       "yuewen_to_merge": [
         "失望",
         "唔系咁好笑"
-      ]
+      ],
+      "zhongwen": "失望，并不那么好笑"
     },
     "answer": {
       "yuewen_merged": "失望，唔系咁好笑"
@@ -7741,11 +7741,11 @@
   },
   {
     "query": {
-      "zhongwen": "肥，都不一定好笑",
       "yuewen_to_merge": [
         "肥",
         "都未必好笑"
-      ]
+      ],
+      "zhongwen": "肥，都不一定好笑"
     },
     "answer": {
       "yuewen_merged": "肥，都未必好笑"
@@ -7755,11 +7755,11 @@
   },
   {
     "query": {
-      "zhongwen": "肥，不一定大力",
       "yuewen_to_merge": [
         "肥",
         "唔一定大力"
-      ]
+      ],
+      "zhongwen": "肥，不一定大力"
     },
     "answer": {
       "yuewen_merged": "肥，唔一定大力"
@@ -7769,11 +7769,11 @@
   },
   {
     "query": {
-      "zhongwen": "大力，亦不一定得",
       "yuewen_to_merge": [
         "大力",
         "亦都唔一定得"
-      ]
+      ],
+      "zhongwen": "大力，亦不一定得"
     },
     "answer": {
       "yuewen_merged": "大力，亦都唔一定得"
@@ -7783,11 +7783,11 @@
   },
   {
     "query": {
-      "zhongwen": "揸住个包，我忽然想⋯",
       "yuewen_to_merge": [
         "揸住个包",
         "我忽然喺度谂"
-      ]
+      ],
+      "zhongwen": "揸住个包，我忽然想⋯"
     },
     "answer": {
       "yuewen_merged": "揸住个包，我忽然喺度谂⋯"
@@ -7797,10 +7797,10 @@
   },
   {
     "query": {
-      "zhongwen": "长大了，到我要面对这个实掘掘⋯",
       "yuewen_to_merge": [
         "大个咗到我要面对呢一个实角局"
-      ]
+      ],
+      "zhongwen": "长大了，到我要面对这个实掘掘⋯"
     },
     "answer": {
       "yuewen_merged": "大个咗，到我要面对呢一个实角局⋯"
@@ -7810,11 +7810,11 @@
   },
   {
     "query": {
-      "zhongwen": "未必可以发梦，未必那么好笑的⋯",
       "yuewen_to_merge": [
         "未必到你发梦",
         "又未必咁好笑嘅"
-      ]
+      ],
+      "zhongwen": "未必可以发梦，未必那么好笑的⋯"
     },
     "answer": {
       "yuewen_merged": "未必到你发梦，又未必咁好笑嘅⋯"
@@ -7824,11 +7824,11 @@
   },
   {
     "query": {
-      "zhongwen": "世界的时候，我会怎么样？",
       "yuewen_to_merge": [
         "世界嘅时候",
         "我会系点㗎呢"
-      ]
+      ],
+      "zhongwen": "世界的时候，我会怎么样？"
     },
     "answer": {
       "yuewen_merged": "世界嘅时候，我会系点㗎呢？"
@@ -7838,10 +7838,10 @@
   },
   {
     "query": {
-      "zhongwen": "「⋯无力挽！」",
       "yuewen_to_merge": [
         "无泪弯"
-      ]
+      ],
+      "zhongwen": "「⋯无力挽！」"
     },
     "answer": {
       "yuewen_merged": "「⋯无泪弯！」"
@@ -7851,11 +7851,11 @@
   },
   {
     "query": {
-      "zhongwen": "是的，我就是大个佬麦兜",
       "yuewen_to_merge": [
         "系呀",
         "我就系大个佬麦豆喇"
-      ]
+      ],
+      "zhongwen": "是的，我就是大个佬麦兜"
     },
     "answer": {
       "yuewen_merged": "系呀，我就系大个佬麦豆喇"
@@ -7865,11 +7865,11 @@
   },
   {
     "query": {
-      "zhongwen": "肥，算大力",
       "yuewen_to_merge": [
         "肥啰",
         "算大力啦"
-      ]
+      ],
+      "zhongwen": "肥，算大力"
     },
     "answer": {
       "yuewen_merged": "肥啰，算大力啦"
@@ -7879,11 +7879,11 @@
   },
   {
     "query": {
-      "zhongwen": "脚瓜是真的大，比一节瓜还要大",
       "yuewen_to_merge": [
         "脚瓜真系几大",
         "仲大过个折瓜"
-      ]
+      ],
+      "zhongwen": "脚瓜是真的大，比一节瓜还要大"
     },
     "answer": {
       "yuewen_merged": "脚瓜真系几大，仲大过个折瓜"
@@ -7893,10 +7893,10 @@
   },
   {
     "query": {
-      "zhongwen": "脚瓜上的肌肉非常结实⋯",
       "yuewen_to_merge": [
         "脚瓜上面个肌肉非常结实"
-      ]
+      ],
+      "zhongwen": "脚瓜上的肌肉非常结实⋯"
     },
     "answer": {
       "yuewen_merged": "脚瓜上面个肌肉非常结实⋯"
@@ -7906,11 +7906,11 @@
   },
   {
     "query": {
-      "zhongwen": "青筋一条条凸出来，似钢筋",
       "yuewen_to_merge": [
         "啲青筋一条一条凸下凸下",
         "好似钢筋"
-      ]
+      ],
+      "zhongwen": "青筋一条条凸出来，似钢筋"
     },
     "answer": {
       "yuewen_merged": "啲青筋一条一条凸下凸下，好似钢筋"
@@ -7920,10 +7920,10 @@
   },
   {
     "query": {
-      "zhongwen": "至于脚趾甲⋯",
       "yuewen_to_merge": [
         "至于脚趾弓啲脚甲"
-      ]
+      ],
+      "zhongwen": "至于脚趾甲⋯"
     },
     "answer": {
       "yuewen_merged": "至于脚趾弓啲脚甲⋯"
@@ -7933,10 +7933,10 @@
   },
   {
     "query": {
-      "zhongwen": "有次我无无聊聊真的量了一下⋯",
       "yuewen_to_merge": [
         "有次我无无聊聊真系走去卡下佢"
-      ]
+      ],
+      "zhongwen": "有次我无无聊聊真的量了一下⋯"
     },
     "answer": {
       "yuewen_merged": "有次我无无聊聊真系走去卡下佢⋯"
@@ -7946,11 +7946,11 @@
   },
   {
     "query": {
-      "zhongwen": "足有一寸厚",
       "yuewen_to_merge": [
         "哗",
         "粥粥成串咁厚"
-      ]
+      ],
+      "zhongwen": "足有一寸厚"
     },
     "answer": {
       "yuewen_merged": "哗，粥粥成串咁厚"
@@ -7960,11 +7960,11 @@
   },
   {
     "query": {
-      "zhongwen": "是的，故事讲完了",
       "yuewen_to_merge": [
         "系呀",
         "故事讲完喇"
-      ]
+      ],
+      "zhongwen": "是的，故事讲完了"
     },
     "answer": {
       "yuewen_merged": "系呀，故事讲完喇"
@@ -7974,11 +7974,11 @@
   },
   {
     "query": {
-      "zhongwen": "失败⋯尝试⋯",
       "yuewen_to_merge": [
         "失败",
         "尝试"
-      ]
+      ],
+      "zhongwen": "失败⋯尝试⋯"
     },
     "answer": {
       "yuewen_merged": "失败⋯尝试⋯"
@@ -7988,11 +7988,11 @@
   },
   {
     "query": {
-      "zhongwen": "好多包⋯可是没有包保成功的故事",
       "yuewen_to_merge": [
         "好多包",
         "但系冇包补成功嘅故事"
-      ]
+      ],
+      "zhongwen": "好多包⋯可是没有包保成功的故事"
     },
     "answer": {
       "yuewen_merged": "好多包⋯但系冇包补成功嘅故事"
@@ -8002,10 +8002,10 @@
   },
   {
     "query": {
-      "zhongwen": "故事说了一轮⋯",
       "yuewen_to_merge": [
         "故事讲咗一轮"
-      ]
+      ],
+      "zhongwen": "故事说了一轮⋯"
     },
     "answer": {
       "yuewen_merged": "故事讲咗一轮⋯"
@@ -8015,11 +8015,11 @@
   },
   {
     "query": {
-      "zhongwen": "什么也没有？也不是",
       "yuewen_to_merge": [
         "乜都冇",
         "又唔系噃"
-      ]
+      ],
+      "zhongwen": "什么也没有？也不是"
     },
     "answer": {
       "yuewen_merged": "乜都冇？又唔系噃"
@@ -8029,10 +8029,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是楝一双脚瓜站这儿⋯",
       "yuewen_to_merge": [
         "但系冻住两个脚瓜企喺度"
-      ]
+      ],
+      "zhongwen": "可是楝一双脚瓜站这儿⋯"
     },
     "answer": {
       "yuewen_merged": "但系冻住两个脚瓜企喺度⋯"
@@ -8042,10 +8042,10 @@
   },
   {
     "query": {
-      "zhongwen": "当浪打过来⋯",
       "yuewen_to_merge": [
         "当啲浪打埋嚟"
-      ]
+      ],
+      "zhongwen": "当浪打过来⋯"
     },
     "answer": {
       "yuewen_merged": "当啲浪打埋嚟⋯"
@@ -8055,11 +8055,11 @@
   },
   {
     "query": {
-      "zhongwen": "你知道我麻麻地叻佬，不懂得⋯",
       "yuewen_to_merge": [
         "你知我麻麻地叻佬",
         "唔识得"
-      ]
+      ],
+      "zhongwen": "你知道我麻麻地叻佬，不懂得⋯"
     },
     "answer": {
       "yuewen_merged": "你知我麻麻地叻佬，唔识得⋯"
@@ -8069,11 +8069,11 @@
   },
   {
     "query": {
-      "zhongwen": "替自己的故事加点教训呀锦囊呀那些",
       "yuewen_to_merge": [
         "帮自己嘅故事加啲教训呀",
         "锦囊呀嗰啲嘢"
-      ]
+      ],
+      "zhongwen": "替自己的故事加点教训呀锦囊呀那些"
     },
     "answer": {
       "yuewen_merged": "帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢"
@@ -8082,10 +8082,10 @@
   },
   {
     "query": {
-      "zhongwen": "可是，浸一双脚瓜站水中⋯",
       "yuewen_to_merge": [
         "但系冻住两个脚瓜企喺水嗰度"
-      ]
+      ],
+      "zhongwen": "可是，浸一双脚瓜站水中⋯"
     },
     "answer": {
       "yuewen_merged": "但系，冻住两个脚瓜企喺水嗰度⋯"
@@ -8095,12 +8095,12 @@
   },
   {
     "query": {
-      "zhongwen": "当风吹向我的脑，我会想⋯",
       "yuewen_to_merge": [
         "当风",
         "吹喺我个脑部",
         "我会谂"
-      ]
+      ],
+      "zhongwen": "当风吹向我的脑，我会想⋯"
     },
     "answer": {
       "yuewen_merged": "当风吹喺我个脑部，我会谂⋯"
@@ -8110,10 +8110,10 @@
   },
   {
     "query": {
-      "zhongwen": "如果妈妈看见我这个大脚瓜⋯",
       "yuewen_to_merge": [
         "如果妈妈见到我呢个大脚瓜"
-      ]
+      ],
+      "zhongwen": "如果妈妈看见我这个大脚瓜⋯"
     },
     "answer": {
       "yuewen_merged": "如果妈妈见到我呢个大脚瓜⋯"
@@ -8123,10 +8123,10 @@
   },
   {
     "query": {
-      "zhongwen": "我猜，她会好开心",
       "yuewen_to_merge": [
         "我谂佢会好开心"
-      ]
+      ],
+      "zhongwen": "我猜，她会好开心"
     },
     "answer": {
       "yuewen_merged": "我谂，佢会好开心"
@@ -8136,11 +8136,11 @@
   },
   {
     "query": {
-      "zhongwen": "不成，还是出个锦囊！",
       "yuewen_to_merge": [
         "都系唔好呀",
         "都系出返个锦囊先得"
-      ]
+      ],
+      "zhongwen": "不成，还是出个锦囊！"
     },
     "answer": {
       "yuewen_merged": "都系唔好呀，都系出返个锦囊先得！"
@@ -8150,11 +8150,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈的dot com散掉后，她又有计",
       "yuewen_to_merge": [
         "妈妈个Doccom散咗之后",
         "佢又有计喇"
-      ]
+      ],
+      "zhongwen": "妈妈的dot com散掉后，她又有计"
     },
     "answer": {
       "yuewen_merged": "妈妈个Doccom散咗之后，佢又有计喇"
@@ -8164,11 +8164,11 @@
   },
   {
     "query": {
-      "zhongwen": "她出版了一本教烹饪的食谱",
       "yuewen_to_merge": [
         "佢出咗半教主送嘅食谱",
         "谂住捞返扎沙"
-      ]
+      ],
+      "zhongwen": "她出版了一本教烹饪的食谱"
     },
     "answer": {
       "yuewen_merged": "佢出咗半教主送嘅食谱，谂住捞返扎沙"
@@ -8178,11 +8178,11 @@
   },
   {
     "query": {
-      "zhongwen": "方法简单，人人可学",
       "yuewen_to_merge": [
         "方法简单",
         "人人都学得识"
-      ]
+      ],
+      "zhongwen": "方法简单，人人可学"
     },
     "answer": {
       "yuewen_merged": "方法简单，人人都学得识"
@@ -8192,10 +8192,10 @@
   },
   {
     "query": {
-      "zhongwen": "「烧鸡」",
       "yuewen_to_merge": [
         "烧鸡"
-      ]
+      ],
+      "zhongwen": "「烧鸡」"
     },
     "answer": {
       "yuewen_merged": "「烧鸡」"
@@ -8205,11 +8205,11 @@
   },
   {
     "query": {
-      "zhongwen": "材料是⋯鸡",
       "yuewen_to_merge": [
         "材料系",
         "鸡"
-      ]
+      ],
+      "zhongwen": "材料是⋯鸡"
     },
     "answer": {
       "yuewen_merged": "材料系⋯鸡"
@@ -8219,12 +8219,12 @@
   },
   {
     "query": {
-      "zhongwen": "方法：把鸡烧几烧",
       "yuewen_to_merge": [
         "方法",
         "攞只鸡",
         "去烧佢几烧"
-      ]
+      ],
+      "zhongwen": "方法：把鸡烧几烧"
     },
     "answer": {
       "yuewen_merged": "方法：攞只鸡去烧佢几烧"
@@ -8234,12 +8234,12 @@
   },
   {
     "query": {
-      "zhongwen": "就这样，一味「烧鸡」大功告成",
       "yuewen_to_merge": [
         "就噉",
         "一味烧鸡",
         "就大功告成喇"
-      ]
+      ],
+      "zhongwen": "就这样，一味「烧鸡」大功告成"
     },
     "answer": {
       "yuewen_merged": "就噉，一味「烧鸡」就大功告成喇"
@@ -8249,10 +8249,10 @@
   },
   {
     "query": {
-      "zhongwen": "食谱里面补充说：",
       "yuewen_to_merge": [
         "食谱度又补充噉话"
-      ]
+      ],
+      "zhongwen": "食谱里面补充说："
     },
     "answer": {
       "yuewen_merged": "食谱度又补充噉话："
@@ -8262,10 +8262,10 @@
   },
   {
     "query": {
-      "zhongwen": "如果你想把鸡烧得美味可口⋯",
       "yuewen_to_merge": [
         "如果想你个鸡烧得美味可口"
-      ]
+      ],
+      "zhongwen": "如果你想把鸡烧得美味可口⋯"
     },
     "answer": {
       "yuewen_merged": "如果想你个鸡烧得美味可口⋯"
@@ -8275,11 +8275,11 @@
   },
   {
     "query": {
-      "zhongwen": "秘诀是：拜托，把鸡烧好一点⋯",
       "yuewen_to_merge": [
         "个秘诀系唔该",
         "烧得佢好啲啰"
-      ]
+      ],
+      "zhongwen": "秘诀是：拜托，把鸡烧好一点⋯"
     },
     "answer": {
       "yuewen_merged": "个秘诀系：唔该，烧得佢好啲啰⋯"
@@ -8289,10 +8289,10 @@
   },
   {
     "query": {
-      "zhongwen": "多谢合作！",
       "yuewen_to_merge": [
         "多谢合作"
-      ]
+      ],
+      "zhongwen": "多谢合作！"
     },
     "answer": {
       "yuewen_merged": "多谢合作！"
@@ -8302,11 +8302,11 @@
   },
   {
     "query": {
-      "zhongwen": "麻烦你，一客常餐",
       "yuewen_to_merge": [
         "唔该",
         "我要一个常餐啦"
-      ]
+      ],
+      "zhongwen": "麻烦你，一客常餐"
     },
     "answer": {
       "yuewen_merged": "唔该，我要一个常餐啦"
@@ -8316,11 +8316,11 @@
   },
   {
     "query": {
-      "zhongwen": "常餐？常餐有什么吃？",
       "yuewen_to_merge": [
         "常餐",
         "常餐有咩食㗎"
-      ]
+      ],
+      "zhongwen": "常餐？常餐有什么吃？"
     },
     "answer": {
       "yuewen_merged": "常餐？常餐有咩食㗎？"
@@ -8330,10 +8330,10 @@
   },
   {
     "query": {
-      "zhongwen": "特餐是什么？",
       "yuewen_to_merge": [
         "噉特餐系咩嚟㗎"
-      ]
+      ],
+      "zhongwen": "特餐是什么？"
     },
     "answer": {
       "yuewen_merged": "噉特餐系咩嚟㗎？"
@@ -8343,10 +8343,10 @@
   },
   {
     "query": {
-      "zhongwen": "快餐又是什么？",
       "yuewen_to_merge": [
         "噉快餐又系咩嚟㗎"
-      ]
+      ],
+      "zhongwen": "快餐又是什么？"
     },
     "answer": {
       "yuewen_merged": "噉快餐又系咩嚟㗎？"
@@ -8356,10 +8356,10 @@
   },
   {
     "query": {
-      "zhongwen": "午餐吃什么？",
       "yuewen_to_merge": [
         "午餐食咩㗎"
-      ]
+      ],
+      "zhongwen": "午餐吃什么？"
     },
     "answer": {
       "yuewen_merged": "午餐食咩㗎？"
@@ -8369,10 +8369,10 @@
   },
   {
     "query": {
-      "zhongwen": "晚餐又吃什么？",
       "yuewen_to_merge": [
         "噉晚餐又食啲咩呀"
-      ]
+      ],
+      "zhongwen": "晚餐又吃什么？"
     },
     "answer": {
       "yuewen_merged": "噉晚餐又食啲咩呀？"
@@ -8382,11 +8382,11 @@
   },
   {
     "query": {
-      "zhongwen": "那么，两客常餐吧",
       "yuewen_to_merge": [
         "噉呀",
         "我要两个常餐啦"
-      ]
+      ],
+      "zhongwen": "那么，两客常餐吧"
     },
     "answer": {
       "yuewen_merged": "噉呀，我要两个常餐啦"
@@ -8396,11 +8396,11 @@
   },
   {
     "query": {
-      "zhongwen": "今天常餐精采呀！",
       "yuewen_to_merge": [
         "好嘢呀",
         "我哋今日啲常餐"
-      ]
+      ],
+      "zhongwen": "今天常餐精采呀！"
     },
     "answer": {
       "yuewen_merged": "好嘢呀，我哋今日啲常餐！"
@@ -8410,11 +8410,11 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，常餐卖光了",
       "yuewen_to_merge": [
         "唔好意思",
         "上餐卖晒"
-      ]
+      ],
+      "zhongwen": "对不起，常餐卖光了"
     },
     "answer": {
       "yuewen_merged": "唔好意思，上餐卖晒"
@@ -8424,11 +8424,11 @@
   },
   {
     "query": {
-      "zhongwen": "特餐？特餐有什么吃？",
       "yuewen_to_merge": [
         "特餐",
         "特餐有咩食㗎"
-      ]
+      ],
+      "zhongwen": "特餐？特餐有什么吃？"
     },
     "answer": {
       "yuewen_merged": "特餐？特餐有咩食㗎？"
@@ -8438,10 +8438,10 @@
   },
   {
     "query": {
-      "zhongwen": "午餐又吃什么呢？",
       "yuewen_to_merge": [
         "午餐食乜嘢㗎"
-      ]
+      ],
+      "zhongwen": "午餐又吃什么呢？"
     },
     "answer": {
       "yuewen_merged": "午餐食乜嘢㗎？"
@@ -8451,10 +8451,10 @@
   },
   {
     "query": {
-      "zhongwen": "什么是晚餐？",
       "yuewen_to_merge": [
         "咁乜嘢系晚餐呀"
-      ]
+      ],
+      "zhongwen": "什么是晚餐？"
     },
     "answer": {
       "yuewen_merged": "咁乜嘢系晚餐呀？"
@@ -8464,10 +8464,10 @@
   },
   {
     "query": {
-      "zhongwen": "快餐吃什么？",
       "yuewen_to_merge": [
         "咁快餐食咩㗎"
-      ]
+      ],
+      "zhongwen": "快餐吃什么？"
     },
     "answer": {
       "yuewen_merged": "咁快餐食咩㗎？"
@@ -8477,11 +8477,11 @@
   },
   {
     "query": {
-      "zhongwen": "唉，快餐不就是常餐",
       "yuewen_to_merge": [
         "系",
         "快餐就即系上餐啰"
-      ]
+      ],
+      "zhongwen": "唉，快餐不就是常餐"
     },
     "answer": {
       "yuewen_merged": "系，快餐就即系上餐啰"
@@ -8491,10 +8491,10 @@
   },
   {
     "query": {
-      "zhongwen": "常餐不是卖光了吗？",
       "yuewen_to_merge": [
         "咁你头先又话冇上餐"
-      ]
+      ],
+      "zhongwen": "常餐不是卖光了吗？"
     },
     "answer": {
       "yuewen_merged": "咁你头先又话冇上餐？"
@@ -8504,12 +8504,12 @@
   },
   {
     "query": {
-      "zhongwen": "对，常餐卖光了，要吃特餐吗？",
       "yuewen_to_merge": [
         "系呀",
         "上餐就系卖晒呀",
         "咁你试唔试下特餐啦"
-      ]
+      ],
+      "zhongwen": "对，常餐卖光了，要吃特餐吗？"
     },
     "answer": {
       "yuewen_merged": "系呀，上餐就系卖晒呀，咁你试唔试下特餐啦？"
@@ -8519,11 +8519,11 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，特餐卖光了",
       "yuewen_to_merge": [
         "唔好意思",
         "特餐卖晒嘅"
-      ]
+      ],
+      "zhongwen": "对不起，特餐卖光了"
     },
     "answer": {
       "yuewen_merged": "唔好意思，特餐卖晒嘅"
@@ -8533,11 +8533,11 @@
   },
   {
     "query": {
-      "zhongwen": "妈妈，改快餐吧",
       "yuewen_to_merge": [
         "妈妈",
         "不如改快餐啦"
-      ]
+      ],
+      "zhongwen": "妈妈，改快餐吧"
     },
     "answer": {
       "yuewen_merged": "妈妈，不如改快餐啦"
@@ -8547,10 +8547,10 @@
   },
   {
     "query": {
-      "zhongwen": "快餐有什么？",
       "yuewen_to_merge": [
         "快餐有咩㗎"
-      ]
+      ],
+      "zhongwen": "快餐有什么？"
     },
     "answer": {
       "yuewen_merged": "快餐有咩㗎？"
@@ -8560,10 +8560,10 @@
   },
   {
     "query": {
-      "zhongwen": "常餐又有什么呢？",
       "yuewen_to_merge": [
         "咁上餐有咩㗎"
-      ]
+      ],
+      "zhongwen": "常餐又有什么呢？"
     },
     "answer": {
       "yuewen_merged": "咁上餐有咩㗎？"
@@ -8573,11 +8573,11 @@
   },
   {
     "query": {
-      "zhongwen": "那么午餐又有什么吃？",
       "yuewen_to_merge": [
         "哎呀",
         "咁午餐有咩食呀"
-      ]
+      ],
+      "zhongwen": "那么午餐又有什么吃？"
     },
     "answer": {
       "yuewen_merged": "哎呀，咁午餐有咩食呀？"
@@ -8587,10 +8587,10 @@
   },
   {
     "query": {
-      "zhongwen": "晚餐呢？",
       "yuewen_to_merge": [
         "咁晚餐呢"
-      ]
+      ],
+      "zhongwen": "晚餐呢？"
     },
     "answer": {
       "yuewen_merged": "咁晚餐呢？"
@@ -8600,10 +8600,10 @@
   },
   {
     "query": {
-      "zhongwen": "不是说特餐卖光了吗？",
       "yuewen_to_merge": [
         "咁你头先又话冇特餐"
-      ]
+      ],
+      "zhongwen": "不是说特餐卖光了吗？"
     },
     "answer": {
       "yuewen_merged": "咁你头先又话冇特餐？"
@@ -8613,13 +8613,13 @@
   },
   {
     "query": {
-      "zhongwen": "特餐卖光了，要试试快餐吗？都一样的",
       "yuewen_to_merge": [
         "系呀",
         "特餐系卖晒呀",
         "咁你试唔试下个快餐啦",
         "一样嘅啫"
-      ]
+      ],
+      "zhongwen": "特餐卖光了，要试试快餐吗？都一样的"
     },
     "answer": {
       "yuewen_merged": "系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫"
@@ -8629,10 +8629,10 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，没快餐了",
       "yuewen_to_merge": [
         "唔好意思冇快餐呀"
-      ]
+      ],
+      "zhongwen": "对不起，没快餐了"
     },
     "answer": {
       "yuewen_merged": "唔好意思，冇快餐呀"
@@ -8642,11 +8642,11 @@
   },
   {
     "query": {
-      "zhongwen": "太过份了吧？你们究竟有吃的没？",
       "yuewen_to_merge": [
         "嚟唔嚟普啲呀",
         "噉你哋究竟有啲咩餐呀"
-      ]
+      ],
+      "zhongwen": "太过份了吧？你们究竟有吃的没？"
     },
     "answer": {
       "yuewen_merged": "嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？"
@@ -8656,11 +8656,11 @@
   },
   {
     "query": {
-      "zhongwen": "午餐吧，午餐精采呀",
       "yuewen_to_merge": [
         "午餐啦",
         "午餐好嘢呀"
-      ]
+      ],
+      "zhongwen": "午餐吧，午餐精采呀"
     },
     "answer": {
       "yuewen_merged": "午餐啦，午餐好嘢呀"
@@ -8670,10 +8670,10 @@
   },
   {
     "query": {
-      "zhongwen": "怎么个精采法？",
       "yuewen_to_merge": [
         "点好嘢法呀"
-      ]
+      ],
+      "zhongwen": "怎么个精采法？"
     },
     "answer": {
       "yuewen_merged": "点好嘢法呀？"
@@ -8683,10 +8683,10 @@
   },
   {
     "query": {
-      "zhongwen": "晚餐又怎样呢？",
       "yuewen_to_merge": [
         "噉晚餐又点好嘢法呀"
-      ]
+      ],
+      "zhongwen": "晚餐又怎样呢？"
     },
     "answer": {
       "yuewen_merged": "噉晚餐又点好嘢法呀？"
@@ -8696,10 +8696,10 @@
   },
   {
     "query": {
-      "zhongwen": "常餐又怎样呢？",
       "yuewen_to_merge": [
         "噉上餐又点好嘢法呀"
-      ]
+      ],
+      "zhongwen": "常餐又怎样呢？"
     },
     "answer": {
       "yuewen_merged": "噉上餐又点好嘢法呀？"
@@ -8709,12 +8709,12 @@
   },
   {
     "query": {
-      "zhongwen": "常餐早卖光了，你说精采不？",
       "yuewen_to_merge": [
         "上餐",
         "上餐一早卖晒啦",
         "你话好唔好嘢"
-      ]
+      ],
+      "zhongwen": "常餐早卖光了，你说精采不？"
     },
     "answer": {
       "yuewen_merged": "上餐，上餐一早卖晒啦，你话好唔好嘢？"
@@ -8724,11 +8724,11 @@
   },
   {
     "query": {
-      "zhongwen": "好吧好吧！两份午餐好了",
       "yuewen_to_merge": [
         "好啦好啦",
         "要两份午餐啦"
-      ]
+      ],
+      "zhongwen": "好吧好吧！两份午餐好了"
     },
     "answer": {
       "yuewen_merged": "好啦好啦！要两份午餐啦"
@@ -8738,11 +8738,11 @@
   },
   {
     "query": {
-      "zhongwen": "对不起，午餐卖光了",
       "yuewen_to_merge": [
         "唔好意思",
         "午餐卖晒"
-      ]
+      ],
+      "zhongwen": "对不起，午餐卖光了"
     },
     "answer": {
       "yuewen_merged": "唔好意思，午餐卖晒"
@@ -8752,11 +8752,11 @@
   },
   {
     "query": {
-      "zhongwen": "要试试我们的晚餐吗？都一样的",
       "yuewen_to_merge": [
         "试唔试下我哋嘅晚餐啦",
         "一样嘅啫"
-      ]
+      ],
+      "zhongwen": "要试试我们的晚餐吗？都一样的"
     },
     "answer": {
       "yuewen_merged": "试唔试下我哋嘅晚餐啦？一样嘅啫"
@@ -8766,10 +8766,10 @@
   },
   {
     "query": {
-      "zhongwen": "光天白日，吃什么鬼晚餐？",
       "yuewen_to_merge": [
         "日光日白食乜鬼嘢晚餐啊"
-      ]
+      ],
+      "zhongwen": "光天白日，吃什么鬼晚餐？"
     },
     "answer": {
       "yuewen_merged": "日光日白，食乜鬼嘢晚餐啊？"
@@ -8779,12 +8779,12 @@
   },
   {
     "query": {
-      "zhongwen": "唉，说是说晚餐，还不就是午餐？",
       "yuewen_to_merge": [
         "系",
         "个名叫晚餐啫",
         "其实唔系真系午餐"
-      ]
+      ],
+      "zhongwen": "唉，说是说晚餐，还不就是午餐？"
     },
     "answer": {
       "yuewen_merged": "系，个名叫晚餐啫，其实唔系真系午餐？"
@@ -8794,13 +8794,13 @@
   },
   {
     "query": {
-      "zhongwen": "好吧好吧，拜托！两份晚餐！快！",
       "yuewen_to_merge": [
         "好啦好啦",
         "怕咗你啦",
         "要两份晚餐啦",
         "快啲手啊"
-      ]
+      ],
+      "zhongwen": "好吧好吧，拜托！两份晚餐！快！"
     },
     "answer": {
       "yuewen_merged": "好啦好啦，怕咗你啦！要两份晚餐啦！快啲手啊！"
@@ -8810,11 +8810,11 @@
   },
   {
     "query": {
-      "zhongwen": "要快吗？那得吃快餐了！",
       "yuewen_to_merge": [
         "想快",
         "想快就要快餐啊"
-      ]
+      ],
+      "zhongwen": "要快吗？那得吃快餐了！"
     },
     "answer": {
       "yuewen_merged": "想快？想快就要快餐啊！"
