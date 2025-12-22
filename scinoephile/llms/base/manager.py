@@ -12,9 +12,10 @@ from pydantic import Field, create_model, model_validator
 
 from scinoephile.core import ScinoephileError
 
-from . import Answer, Query
+from .answer import Answer
 from .models import get_model_name
 from .prompt import Prompt
+from .query import Query
 from .test_case import TestCase
 
 __all__ = ["Manager"]
