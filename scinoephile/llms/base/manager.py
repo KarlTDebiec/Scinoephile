@@ -82,9 +82,9 @@ class Manager(ABC):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.get_auto_verified = cls.get_auto_verified  # type: ignore[assignment]
-        model.get_min_difficulty = cls.get_min_difficulty  # type: ignore[assignment]
-        return model  # ty:ignore[invalid-return-type]
+        model.get_auto_verified = cls.get_auto_verified
+        model.get_min_difficulty = cls.get_min_difficulty
+        return model
 
     @classmethod
     def get_test_case_cls_from_data[TTestCase: TestCase](

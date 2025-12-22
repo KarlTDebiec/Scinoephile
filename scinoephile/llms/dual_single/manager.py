@@ -51,7 +51,7 @@ class DualSingleManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        return model  # ty:ignore[invalid-return-type]
+        return model
 
     @classmethod
     @cache
@@ -84,7 +84,7 @@ class DualSingleManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        return model  # ty:ignore[invalid-return-type]
+        return model
 
     @staticmethod
     def validate_query(model: Query) -> Query:
