@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""OCR fusion dual track / single subtitle test cases."""
+"""ABC for OCR fusion test cases."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ __all__ = ["OcrFusionTestCase"]
 
 
 class OcrFusionTestCase(DualSingleTestCase, ABC):
-    """OCR fusion dual track / single subtitle test cases."""
+    """ABC for OCR fusion test cases."""
 
     answer_cls: ClassVar[type[OcrFusionAnswer]]
     """Answer class for this test case."""

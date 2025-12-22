@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Test cases for 粤文 vs. 中文 proofreading."""
+"""ABC for 粤文 vs. 中文 proofreading test cases."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ __all__ = ["YueZhoProofreadingTestCase"]
 
 
 class YueZhoProofreadingTestCase(DualSingleTestCase, ABC):
-    """Test cases for 粤文 vs. 中文 proofreading."""
+    """ABC for 粤文 vs. 中文 proofreading test cases."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
