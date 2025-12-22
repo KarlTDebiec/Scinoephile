@@ -6,10 +6,11 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import create_model
 
+from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
@@ -53,3 +54,17 @@ class DualMultiSingleTestCase(TestCase, ABC):
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
         return model
+
+    @classmethod
+    def get_test_case_cls_from_data(cls, data: dict, **kwargs: Any) -> type[Self]:
+        """Get concrete test case class for provided data with provided configuration.
+
+        Arguments:
+            data: data from JSON
+            **kwargs: additional keyword arguments passed to get_test_case_cls
+        Returns:
+            test case class
+        """
+        if (prompt_cls := kwargs.get("prompt_cls")) is None:
+            raise ScinoephileError("prompt_cls must be provided as a keyword argument")
+        return cls.get_test_case_cls(prompt_cls=prompt_cls)

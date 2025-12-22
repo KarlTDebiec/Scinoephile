@@ -21,11 +21,15 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedPrompt,
     DualBlockGappedTestCase,
 )
+from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairPrompt, DualPairTestCase
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
-from scinoephile.multilang.yue_zho.merging import YueZhoMergingTestCase
+from scinoephile.multilang.yue_zho.merging import (
+    YueZhoHansMergingPrompt,
+    YueZhoMergingTestCase,
+)
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     YueZhoProofreadingTestCase,
@@ -218,16 +222,22 @@ def get_mlamd_yue_shifting_test_cases(
 
 
 @cache
-def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[YueZhoMergingTestCase]:
+def get_mlamd_yue_merging_test_cases(
+    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansMergingPrompt,
+    **kwargs: Any,
+) -> list[YueZhoMergingTestCase]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
+        prompt_cls: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "merging.json"
-    return load_test_cases_from_json(path, YueZhoMergingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, YueZhoMergingTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache

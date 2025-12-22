@@ -282,9 +282,7 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yuewen_merged = getattr(
-                test_case.answer, test_case.prompt_cls.yuewen_merged, None
-            )
+            yuewen_merged = getattr(test_case.answer, test_case.prompt_cls.output, None)
             yw = get_sub_merged(yws, text=yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
