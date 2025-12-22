@@ -23,9 +23,9 @@ __all__ = ["DualSingleTestCase"]
 class DualSingleTestCase(TestCase, ABC):
     """ABC for dual track / single subtitle test cases."""
 
-    answer_cls: ClassVar[type[DualSingleAnswer]]
+    answer_cls: ClassVar[type[DualSingleAnswer]] = DualSingleAnswer
     """Answer class for this test case."""
-    query_cls: ClassVar[type[DualSingleQuery]]
+    query_cls: ClassVar[type[DualSingleQuery]] = DualSingleQuery
     """Query class for this test case."""
     prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
@@ -44,8 +44,8 @@ class DualSingleTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = DualSingleQuery.get_query_cls(prompt_cls)
-        answer_cls = DualSingleAnswer.get_answer_cls(prompt_cls)
+        query_cls = cls.query_cls.get_query_cls(prompt_cls)
+        answer_cls = cls.answer_cls.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

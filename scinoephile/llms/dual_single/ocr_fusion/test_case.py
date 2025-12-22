@@ -5,12 +5,8 @@
 from __future__ import annotations
 
 from abc import ABC
-from functools import cache
-from typing import ClassVar, Self
+from typing import ClassVar
 
-from pydantic import create_model
-
-from scinoephile.llms.base.models import get_model_name
 from scinoephile.llms.dual_single import DualSingleQuery, DualSingleTestCase
 
 from .answer import OcrFusionAnswer
@@ -22,9 +18,9 @@ __all__ = ["OcrFusionTestCase"]
 class OcrFusionTestCase(DualSingleTestCase, ABC):
     """ABC for OCR fusion test cases."""
 
-    answer_cls: ClassVar[type[OcrFusionAnswer]]
+    answer_cls: ClassVar[type[OcrFusionAnswer]] = OcrFusionAnswer
     """Answer class for this test case."""
-    query_cls: ClassVar[type[DualSingleQuery]]
+    query_cls: ClassVar[type[DualSingleQuery]] = DualSingleQuery
     """Query class for this test case."""
     prompt_cls: ClassVar[type[OcrFusionPrompt]]
     """Text for LLM correspondence."""
@@ -71,27 +67,3 @@ class OcrFusionTestCase(DualSingleTestCase, ABC):
             if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty
-
-    @classmethod
-    @cache
-    def get_test_case_cls(
-        cls,
-        prompt_cls: type[OcrFusionPrompt],
-    ) -> type[Self]:
-        """Get concrete test case class with provided configuration.
-
-        Arguments:
-            prompt_cls: text for LLM correspondence
-        Returns:
-            TestCase type with appropriate configuration
-        """
-        name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = DualSingleQuery.get_query_cls(prompt_cls)
-        answer_cls = OcrFusionAnswer.get_answer_cls(prompt_cls)
-        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
-
-        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-        model.prompt_cls = prompt_cls
-        return model
