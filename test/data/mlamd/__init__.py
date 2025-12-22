@@ -10,7 +10,6 @@ from typing import Any
 
 import pytest
 
-from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -26,6 +25,7 @@ from scinoephile.llms.dual_pair import DualPairPrompt, DualPairTestCase
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
+from scinoephile.multilang.yue_zho.merging import YueZhoMergingTestCase
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     YueZhoProofreadingTestCase,
@@ -218,7 +218,7 @@ def get_mlamd_yue_shifting_test_cases(
 
 
 @cache
-def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
+def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[YueZhoMergingTestCase]:
     """Get MLAMD 粵文 merging test cases.
 
     Arguments:
@@ -227,7 +227,7 @@ def get_mlamd_yue_merging_test_cases(**kwargs: Any) -> list[MergingTestCase]:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "merging.json"
-    return load_test_cases_from_json(path, MergingTestCase, **kwargs)
+    return load_test_cases_from_json(path, YueZhoMergingTestCase, **kwargs)
 
 
 @cache

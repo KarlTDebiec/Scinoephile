@@ -18,11 +18,14 @@ from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer
 from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.multilang.yue_zho.merging import (
+    YueZhoHansMergingPrompt,
+    YueZhoMergingTestCase,
+)
 from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 from scinoephile.testing import test_data_root
 
 from .alignment import Aligner
-from .merging import MergingPrompt, MergingTestCase
 
 
 class CantoneseTranscriptionReviewer:
@@ -32,7 +35,7 @@ class CantoneseTranscriptionReviewer:
         self,
         test_case_directory_path: Path,
         shifting_test_cases: list[DualPairTestCase],
-        merging_test_cases: list[MergingTestCase],
+        merging_test_cases: list[YueZhoMergingTestCase],
     ):
         """Initialize.
 
@@ -52,7 +55,7 @@ class CantoneseTranscriptionReviewer:
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
             cache_dir_path=test_data_root / "cache",
         )
-        merging_queryer_cls = Queryer.get_queryer_cls(MergingPrompt)
+        merging_queryer_cls = Queryer.get_queryer_cls(YueZhoHansMergingPrompt)
         self.merging_queryer = merging_queryer_cls(
             prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
