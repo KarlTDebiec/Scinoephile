@@ -77,13 +77,10 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
     """Description of note field in answer."""
 
     # Answer validation errors
-    output_missing_err: ClassVar[str] = (
-        '答案必须包含校对后嘅粤文字幕（如需省略请回传 "�"）。'
+    output_missing_note_missing_err: ClassVar[str] = (
+        "答案必须包含改动说明（如无改动请回传空字串）。"
     )
-    """Error when output field is missing from answer."""
-
-    note_missing_err: ClassVar[str] = "答案必须包含改动说明（如无改动请回传空字串）。"
-    """Error when note field is missing from answer."""
+    """Error when output and note fields are both missing from answer."""
 
 
 class YueZhoHantProofreadingPrompt(YueZhoHansProofreadingPrompt):

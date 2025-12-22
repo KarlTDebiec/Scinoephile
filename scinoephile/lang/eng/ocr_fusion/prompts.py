@@ -8,14 +8,14 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
 
 __all__ = [
     "EngOcrFusionPrompt",
 ]
 
 
-class EngOcrFusionPrompt(DualSinglePrompt, EngPrompt):
+class EngOcrFusionPrompt(OcrFusionPrompt, EngPrompt):
     """Text for LLM correspondence for English OCR fusion."""
 
     # Prompt

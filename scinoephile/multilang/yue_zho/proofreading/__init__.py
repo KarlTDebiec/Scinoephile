@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.dual_single import DualSinglePrompt
 
+from .answer import YueZhoProofreadingAnswer
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
 from .test_case import YueZhoProofreadingTestCase
@@ -17,6 +18,7 @@ from .test_case import YueZhoProofreadingTestCase
 __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
+    "YueZhoProofreadingAnswer",
     "YueZhoProofreadingTestCase",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",

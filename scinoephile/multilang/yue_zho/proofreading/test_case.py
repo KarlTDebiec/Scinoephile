@@ -5,14 +5,29 @@
 from __future__ import annotations
 
 from abc import ABC
+from functools import cache
+from typing import ClassVar, Self
 
-from scinoephile.llms.dual_single import DualSingleTestCase
+from pydantic import create_model
+
+from scinoephile.llms.base.models import get_model_name
+from scinoephile.llms.dual_single import DualSingleQuery, DualSingleTestCase
+
+from .answer import YueZhoProofreadingAnswer
+from .prompts import YueZhoHansProofreadingPrompt
 
 __all__ = ["YueZhoProofreadingTestCase"]
 
 
 class YueZhoProofreadingTestCase(DualSingleTestCase, ABC):
     """ABC for 粤文 vs. 中文 proofreading test cases."""
+
+    answer_cls: ClassVar[type[YueZhoProofreadingAnswer]]
+    """Answer class for this test case."""
+    query_cls: ClassVar[type[DualSingleQuery]]
+    """Query class for this test case."""
+    prompt_cls: ClassVar[type[YueZhoHansProofreadingPrompt]]
+    """Text for LLM correspondence."""
 
     def get_min_difficulty(self) -> int:
         """Get minimum difficulty based on the test case properties.
@@ -34,3 +49,27 @@ class YueZhoProofreadingTestCase(DualSingleTestCase, ABC):
         if yuewen != yuewen_proofread:
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
+
+    @classmethod
+    @cache
+    def get_test_case_cls(
+        cls,
+        prompt_cls: type[YueZhoHansProofreadingPrompt],
+    ) -> type[Self]:
+        """Get concrete test case class with provided configuration.
+
+        Arguments:
+            prompt_cls: text for LLM correspondence
+        Returns:
+            TestCase type with appropriate configuration
+        """
+        name = get_model_name(cls.__name__, prompt_cls.__name__)
+        query_cls = DualSingleQuery.get_query_cls(prompt_cls)
+        answer_cls = YueZhoProofreadingAnswer.get_answer_cls(prompt_cls)
+        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
+
+        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
+        model.query_cls = query_cls
+        model.answer_cls = answer_cls
+        model.prompt_cls = prompt_cls
+        return model

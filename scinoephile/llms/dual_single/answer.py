@@ -39,8 +39,8 @@ class DualSingleAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.output: (str, Field(..., description=prompt_cls.output_desc)),
-            prompt_cls.note: (str, Field(..., description=prompt_cls.note_desc)),
+            prompt_cls.output: (str, Field("", description=prompt_cls.output_desc)),
+            prompt_cls.note: (str, Field("", description=prompt_cls.note_desc)),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

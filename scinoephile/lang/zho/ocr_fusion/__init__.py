@@ -8,9 +8,9 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import (
     OcrFusionProcessor,
+    OcrFusionPrompt,
     OcrFusionTestCase,
 )
 
@@ -27,7 +27,7 @@ __all__ = [
 
 # noinspection PyUnusedImports
 def get_default_zho_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
+    prompt_cls: type[OcrFusionPrompt] = ZhoHansOcrFusionPrompt,
 ) -> list[OcrFusionTestCase]:
     """Get default 中文 OCR fusion test cases included with package.
 

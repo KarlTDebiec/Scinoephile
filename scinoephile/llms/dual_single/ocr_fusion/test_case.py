@@ -11,13 +11,10 @@ from typing import ClassVar, Self
 from pydantic import create_model
 
 from scinoephile.llms.base.models import get_model_name
-from scinoephile.llms.dual_single import (
-    DualSinglePrompt,
-    DualSingleQuery,
-    DualSingleTestCase,
-)
+from scinoephile.llms.dual_single import DualSingleQuery, DualSingleTestCase
 
 from .answer import OcrFusionAnswer
+from .prompt import OcrFusionPrompt
 
 __all__ = ["OcrFusionTestCase"]
 
@@ -29,7 +26,7 @@ class OcrFusionTestCase(DualSingleTestCase, ABC):
     """Answer class for this test case."""
     query_cls: ClassVar[type[DualSingleQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[DualSinglePrompt]]
+    prompt_cls: ClassVar[type[OcrFusionPrompt]]
     """Text for LLM correspondence."""
 
     def get_auto_verified(self) -> bool:
@@ -79,7 +76,7 @@ class OcrFusionTestCase(DualSingleTestCase, ABC):
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[DualSinglePrompt],
+        prompt_cls: type[OcrFusionPrompt],
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 

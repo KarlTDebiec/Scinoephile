@@ -50,10 +50,3 @@ class DualSinglePrompt(Prompt, ABC):
 
     note_desc: ClassVar[str] = "Explanation of output"
     """Description of note field in answer."""
-
-    # Answer validation errors
-    output_missing_err: ClassVar[str] = "Output subtitle text is required."
-    """Error when output field is missing from answer."""
-
-    note_missing_err: ClassVar[str] = "Explanation of output is required."
-    """Error when note field is missing from answer."""

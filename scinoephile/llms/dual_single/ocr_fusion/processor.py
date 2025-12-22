@@ -15,10 +15,10 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
+from .prompt import OcrFusionPrompt
 from .test_case import OcrFusionTestCase
 
 __all__ = ["OcrFusionProcessor"]
@@ -29,7 +29,7 @@ class OcrFusionProcessor:
 
     def __init__(
         self,
-        prompt_cls: type[DualSinglePrompt],
+        prompt_cls: type[OcrFusionPrompt],
         test_cases: list[OcrFusionTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
