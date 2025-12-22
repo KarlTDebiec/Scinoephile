@@ -5,17 +5,22 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import Self
+from typing import ClassVar, Self
 
 from pydantic import model_validator
 
 from scinoephile.llms.dual_single import DualSingleAnswer
+
+from .prompts import YueZhoHansProofreadingPrompt
 
 __all__ = ["YueZhoProofreadingAnswer"]
 
 
 class YueZhoProofreadingAnswer(DualSingleAnswer, ABC):
     """ABC for 粤文 vs. 中文 proofreading answers."""
+
+    prompt_cls: ClassVar[type[YueZhoHansProofreadingPrompt]]
+    """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
