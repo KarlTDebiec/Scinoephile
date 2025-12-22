@@ -8,10 +8,10 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_single import (
-    DualSingleProcessor,
-    DualSinglePrompt,
-    DualSingleTestCase,
+from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.llms.dual_single.ocr_fusion import (
+    OcrFusionProcessor,
+    OcrFusionTestCase,
 )
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
@@ -28,7 +28,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_zho_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
-) -> list[DualSingleTestCase]:
+) -> list[OcrFusionTestCase]:
     """Get default 中文 OCR fusion test cases included with package.
 
     Arguments:
@@ -56,7 +56,7 @@ def get_default_zho_ocr_fusion_test_cases(
 def get_zho_ocr_fused(
     lens: Series,
     paddle: Series,
-    processor: DualSingleProcessor | None = None,
+    processor: OcrFusionProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 中文 series fused from Google Lens and PaddleOCR outputs.
@@ -64,8 +64,8 @@ def get_zho_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
-        processor: DualSingleProcessor to use
-        **kwargs: additional keyword arguments for DualSingleProcessor.process
+        processor: OcrFusionProcessor to use
+        **kwargs: additional keyword arguments for OcrFusionProcessor.process
     Returns:
         Fused series
     """
@@ -76,21 +76,21 @@ def get_zho_ocr_fused(
 
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
-    default_test_cases: list[DualSingleTestCase] | None = None,
+    default_test_cases: list[OcrFusionTestCase] | None = None,
     **kwargs: Any,
-) -> DualSingleProcessor:
-    """Get a DualSingleProcessor with provided configuration.
+) -> OcrFusionProcessor:
+    """Get an OcrFusionProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        **kwargs: additional keyword arguments for DualSingleProcessor
+        **kwargs: additional keyword arguments for OcrFusionProcessor
     Returns:
-        DualSingleProcessor with provided configuration
+        OcrFusionProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_zho_ocr_fusion_test_cases(prompt_cls)
-    return DualSingleProcessor(
+    return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

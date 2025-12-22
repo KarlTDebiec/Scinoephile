@@ -8,10 +8,10 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_single import (
-    DualSingleProcessor,
-    DualSinglePrompt,
-    DualSingleTestCase,
+from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.llms.dual_single.ocr_fusion import (
+    OcrFusionProcessor,
+    OcrFusionTestCase,
 )
 
 from .prompts import EngOcrFusionPrompt
@@ -27,7 +27,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-) -> list[DualSingleTestCase]:
+) -> list[OcrFusionTestCase]:
     """Get default English OCR fusion test cases included with package.
 
     Arguments:
@@ -55,7 +55,7 @@ def get_default_eng_ocr_fusion_test_cases(
 def get_eng_ocr_fused(
     lens: Series,
     tesseract: Series,
-    processor: DualSingleProcessor | None = None,
+    processor: OcrFusionProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get English series fused from Google Lens and Tesseract OCR outputs.
@@ -63,8 +63,8 @@ def get_eng_ocr_fused(
     Arguments:
         lens: subtitles OCRed using Google Lens
         tesseract: subtitles OCRed using Tesseract
-        processor: DualSingleProcessor to use
-        **kwargs: additional keyword arguments for DualSingleProcessor.process
+        processor: OcrFusionProcessor to use
+        **kwargs: additional keyword arguments for OcrFusionProcessor.process
     Returns:
         fused series
     """
@@ -75,21 +75,21 @@ def get_eng_ocr_fused(
 
 def get_eng_ocr_fuser(
     prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
-    default_test_cases: list[DualSingleTestCase] | None = None,
+    default_test_cases: list[OcrFusionTestCase] | None = None,
     **kwargs: Any,
-) -> DualSingleProcessor:
-    """Get DualSingleProcessor with provided configuration.
+) -> OcrFusionProcessor:
+    """Get OcrFusionProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        **kwargs: additional keyword arguments for DualSingleProcessor
+        **kwargs: additional keyword arguments for OcrFusionProcessor
     Returns:
-        DualSingleProcessor with provided configuration
+        OcrFusionProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_eng_ocr_fusion_test_cases(prompt_cls)
-    return DualSingleProcessor(
+    return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         default_test_cases=default_test_cases,
         **kwargs,

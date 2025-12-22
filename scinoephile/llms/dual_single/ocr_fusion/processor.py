@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual track / single subtitle matters."""
+"""OCR fusion dual track / single subtitle processors."""
 
 from __future__ import annotations
 
@@ -15,25 +15,25 @@ from scinoephile.llms.base import (
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
+from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
-from .prompt import DualSinglePrompt
-from .test_case import DualSingleTestCase
+from .test_case import OcrFusionTestCase
 
-__all__ = ["DualSingleProcessor"]
+__all__ = ["OcrFusionProcessor"]
 
 
-class DualSingleProcessor:
-    """Processes dual track / single subtitle matters."""
+class OcrFusionProcessor:
+    """Processes OCR fusion dual track / single subtitle matters."""
 
     def __init__(
         self,
         prompt_cls: type[DualSinglePrompt],
-        test_cases: list[DualSingleTestCase] | None = None,
+        test_cases: list[OcrFusionTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualSingleTestCase] | None = None,
+        default_test_cases: list[OcrFusionTestCase] | None = None,
     ):
         """Initialize.
 
@@ -54,7 +54,7 @@ class DualSingleProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualSingleTestCase,
+                    self.test_case_cls,
                     prompt_cls=self.prompt_cls,
                 )
             )
@@ -73,7 +73,7 @@ class DualSingleProcessor:
     def process(
         self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Processes dual track / single subtitle matters.
+        """Processes OCR fusion dual track / single subtitle matters.
 
         Arguments:
             source_one: subtitles from source one
@@ -128,7 +128,7 @@ class DualSingleProcessor:
                 continue
 
             # Query LLM
-            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
+            test_case_cls = self.test_case_cls.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
                 self.prompt_cls.src_1: sub_one.text,

@@ -8,7 +8,7 @@ from abc import ABC
 from functools import cache
 from typing import Any, ClassVar, Self
 
-from pydantic import Field, create_model, model_validator
+from pydantic import Field, create_model
 
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
@@ -23,15 +23,6 @@ class DualSingleAnswer(Answer, ABC):
 
     prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
-
-    @model_validator(mode="after")
-    def validate_answer(self) -> Self:
-        """Ensure answer is internally valid."""
-        if not getattr(self, self.prompt_cls.output, None):
-            raise ValueError(self.prompt_cls.output_missing_err)
-        if not getattr(self, self.prompt_cls.note, None):
-            raise ValueError(self.prompt_cls.note_missing_err)
-        return self
 
     @classmethod
     @cache
@@ -48,14 +39,8 @@ class DualSingleAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.output: (
-                str,
-                Field(..., description=prompt_cls.output_desc),
-            ),
-            prompt_cls.note: (
-                str,
-                Field(..., description=prompt_cls.note_desc),
-            ),
+            prompt_cls.output: (str, Field(..., description=prompt_cls.output_desc)),
+            prompt_cls.note: (str, Field(..., description=prompt_cls.note_desc)),
         }
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
