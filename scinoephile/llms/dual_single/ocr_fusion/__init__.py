@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from .answer import OcrFusionAnswer
 from .processor import OcrFusionProcessor
-from .query import OcrFusionQuery
 from .test_case import OcrFusionTestCase
 
 __all__ = [
     "OcrFusionAnswer",
     "OcrFusionProcessor",
-    "OcrFusionQuery",
     "OcrFusionTestCase",
 ]
