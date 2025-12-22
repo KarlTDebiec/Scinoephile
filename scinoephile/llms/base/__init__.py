@@ -10,6 +10,7 @@ from typing import Any
 
 from .answer import Answer
 from .llm_provider import LLMProvider
+from .manager import Manager
 from .prompt import Prompt
 from .query import Query
 from .queryer import Queryer
@@ -18,6 +19,7 @@ from .test_case import TestCase
 __all__ = [
     "Answer",
     "LLMProvider",
+    "Manager",
     "Prompt",
     "Query",
     "Queryer",
@@ -29,16 +31,15 @@ __all__ = [
 
 def load_test_cases_from_json[TTestCase: TestCase](
     input_path: Path,
-    test_case_base_cls: type[TTestCase],
+    manager_cls: type[Manager],
     **kwargs: Any,
 ) -> list[TTestCase]:
     """Load test cases from JSON file.
 
     Arguments:
         input_path: path to JSON file containing test cases
-        test_case_base_cls: test case class to use for test cases
-        **kwargs: additional keyword arguments passed to
-          test_case_base_cls.get_test_case_cls
+        manager_cls: manager class used to construct test case models
+        **kwargs: additional keyword arguments passed to manager_cls
     Returns:
         list of test cases
     """
@@ -47,7 +48,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
 
     test_cases: list[TTestCase] = []
     for test_case_data in raw_test_cases:
-        test_case_cls: type[TTestCase] = test_case_base_cls.get_test_case_cls_from_data(
+        test_case_cls: type[TTestCase] = manager_cls.get_test_case_cls_from_data(
             test_case_data, **kwargs
         )
         test_case: TTestCase = test_case_cls.model_validate(test_case_data)
