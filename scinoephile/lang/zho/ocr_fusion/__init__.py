@@ -8,10 +8,10 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_single.ocr_fusion import (
     OcrFusionProcessor,
     OcrFusionPrompt,
-    OcrFusionTestCase,
 )
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
@@ -28,7 +28,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_zho_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = ZhoHansOcrFusionPrompt,
-) -> list[OcrFusionTestCase]:
+) -> list[TestCase]:
     """Get default 中文 OCR fusion test cases included with package.
 
     Arguments:
@@ -76,7 +76,7 @@ def get_zho_ocr_fused(
 
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
-    default_test_cases: list[OcrFusionTestCase] | None = None,
+    default_test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> OcrFusionProcessor:
     """Get an OcrFusionProcessor with provided configuration.

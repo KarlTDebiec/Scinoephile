@@ -12,14 +12,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.base import (
     Queryer,
+    TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
+from .manager import OcrFusionManager
 from .prompt import OcrFusionPrompt
-from .test_case import OcrFusionTestCase
 
 __all__ = ["OcrFusionProcessor"]
 
@@ -30,10 +31,10 @@ class OcrFusionProcessor:
     def __init__(
         self,
         prompt_cls: type[OcrFusionPrompt],
-        test_cases: list[OcrFusionTestCase] | None = None,
+        test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[OcrFusionTestCase] | None = None,
+        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -54,7 +55,7 @@ class OcrFusionProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    OcrFusionTestCase,
+                    OcrFusionManager,
                     prompt_cls=self.prompt_cls,
                 )
             )
@@ -128,7 +129,7 @@ class OcrFusionProcessor:
                 continue
 
             # Query LLM
-            test_case_cls = OcrFusionTestCase.get_test_case_cls(self.prompt_cls)
+            test_case_cls = OcrFusionManager.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
                 self.prompt_cls.src_1: sub_one.text,

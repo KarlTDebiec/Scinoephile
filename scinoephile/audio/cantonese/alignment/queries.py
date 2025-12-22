@@ -5,10 +5,11 @@
 from __future__ import annotations
 
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.multilang.yue_zho.merging import (
     YueZhoHansMergingPrompt,
-    YueZhoMergingTestCase,
+    YueZhoMergingManager,
 )
 from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 
@@ -20,9 +21,7 @@ __all__ = [
 ]
 
 
-def get_shifting_test_case(
-    alignment: Alignment, sg_1_idx: int
-) -> DualPairTestCase | None:
+def get_shifting_test_case(alignment: Alignment, sg_1_idx: int) -> TestCase | None:
     """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
@@ -81,7 +80,7 @@ def get_shifting_test_case(
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    test_case_cls: type[DualPairTestCase] = DualPairTestCase.get_test_case_cls(
+    test_case_cls = DualPairManager.get_test_case_cls(
         prompt_cls=YueZhoHansShiftingPrompt
     )
     query_kwargs = {
@@ -95,9 +94,7 @@ def get_shifting_test_case(
     return test_case
 
 
-def get_merging_test_case(
-    alignment: Alignment, sg_idx: int
-) -> YueZhoMergingTestCase | None:
+def get_merging_test_case(alignment: Alignment, sg_idx: int) -> TestCase | None:
     """Get merging query for an alignment's sync group.
 
     Arguments:
@@ -130,8 +127,8 @@ def get_merging_test_case(
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    test_case_cls: type[YueZhoMergingTestCase] = (
-        YueZhoMergingTestCase.get_test_case_cls(YueZhoHansMergingPrompt)
+    test_case_cls = YueZhoMergingManager.get_test_case_cls(
+        prompt_cls=YueZhoHansMergingPrompt
     )
     query_kwargs = {
         test_case_cls.prompt_cls.src_2: zw,

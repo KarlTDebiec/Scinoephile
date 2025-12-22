@@ -12,13 +12,14 @@ from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.llms.base import (
     Queryer,
+    TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
 from scinoephile.testing import test_data_root
 
+from .manager import MonoBlockManager
 from .prompt import MonoBlockPrompt
-from .test_case import MonoBlockTestCase
 
 __all__ = ["MonoBlockProcessor"]
 
@@ -32,10 +33,10 @@ class MonoBlockProcessor:
     def __init__(
         self,
         prompt_cls: type[MonoBlockPrompt],
-        test_cases: list[MonoBlockTestCase] | None = None,
+        test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[MonoBlockTestCase] | None = None,
+        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -56,7 +57,7 @@ class MonoBlockProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    MonoBlockTestCase,
+                    MonoBlockManager,
                     prompt_cls=self.prompt_cls,
                 ),
             )
@@ -89,7 +90,7 @@ class MonoBlockProcessor:
                 break
 
             # Query LLM
-            test_case_cls = MonoBlockTestCase.get_test_case_cls(
+            test_case_cls = MonoBlockManager.get_test_case_cls(
                 len(block), self.prompt_cls
             )
             query_cls = test_case_cls.query_cls

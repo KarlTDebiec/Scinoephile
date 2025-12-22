@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-from .answer import DualSingleAnswer
+from .manager import DualSingleManager
 from .prompt import DualSinglePrompt
-from .query import DualSingleQuery
-from .test_case import DualSingleTestCase
 
 __all__ = [
-    "DualSingleAnswer",
+    "DualSingleManager",
     "DualSinglePrompt",
-    "DualSingleQuery",
-    "DualSingleTestCase",
 ]

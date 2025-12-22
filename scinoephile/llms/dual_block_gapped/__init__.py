@@ -9,16 +9,12 @@ blocks and output a single completed Series.
 
 from __future__ import annotations
 
-from .answer import DualBlockGappedAnswer
+from .manager import DualBlockGappedManager
 from .processor import DualBlockGappedProcessor
 from .prompt import DualBlockGappedPrompt
-from .query import DualBlockGappedQuery
-from .test_case import DualBlockGappedTestCase
 
 __all__ = [
-    "DualBlockGappedAnswer",
+    "DualBlockGappedManager",
     "DualBlockGappedProcessor",
     "DualBlockGappedPrompt",
-    "DualBlockGappedQuery",
-    "DualBlockGappedTestCase",
 ]

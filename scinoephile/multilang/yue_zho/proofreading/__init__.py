@@ -8,18 +8,17 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_single import DualSinglePrompt
 
-from .answer import YueZhoProofreadingAnswer
+from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
-from .test_case import YueZhoProofreadingTestCase
 
 __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
-    "YueZhoProofreadingAnswer",
-    "YueZhoProofreadingTestCase",
+    "YueZhoProofreadingManager",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
@@ -30,7 +29,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
-) -> list[YueZhoProofreadingTestCase]:
+) -> list[TestCase]:
     """Get default 粤文 vs. 中文 proofreading test cases included with package.
 
     Arguments:
@@ -72,7 +71,7 @@ def get_yue_vs_zho_proofread(
 
 def get_yue_vs_zho_proofreader(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
-    default_test_cases: list[YueZhoProofreadingTestCase] | None = None,
+    default_test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> YueZhoProofreadingProcessor:
     """Get YueZhoProofreadingProcessor with provided configuration.
