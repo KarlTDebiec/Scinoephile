@@ -4,9 +4,12 @@
 
 from __future__ import annotations
 
-from scinoephile.audio.cantonese.merging import MergingTestCase
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.multilang.yue_zho.merging import (
+    YueZhoHansMergingPrompt,
+    YueZhoMergingTestCase,
+)
 from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 
 from .alignment import Alignment
@@ -92,7 +95,9 @@ def get_shifting_test_case(
     return test_case
 
 
-def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase | None:
+def get_merging_test_case(
+    alignment: Alignment, sg_idx: int
+) -> YueZhoMergingTestCase | None:
     """Get merging query for an alignment's sync group.
 
     Arguments:
@@ -125,10 +130,12 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
     yws = [alignment.yuewen[i].text for i in yw_idxs]
 
     # Return merge query
-    test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
+    test_case_cls: type[YueZhoMergingTestCase] = (
+        YueZhoMergingTestCase.get_test_case_cls(YueZhoHansMergingPrompt)
+    )
     query_kwargs = {
-        test_case_cls.prompt_cls.zhongwen: zw,
-        test_case_cls.prompt_cls.yuewen_to_merge: yws,
+        test_case_cls.prompt_cls.src_2: zw,
+        test_case_cls.prompt_cls.src_1: yws,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))

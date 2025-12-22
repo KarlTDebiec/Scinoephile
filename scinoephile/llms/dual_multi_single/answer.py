@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Answer for 粤文 merging."""
+"""ABC for dual track / multi-subtitle single subtitle answers."""
 
 from __future__ import annotations
 
@@ -13,29 +13,29 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import MergingPrompt
+from .prompt import DualMultiSinglePrompt
 
-__all__ = ["MergingAnswer"]
+__all__ = ["DualMultiSingleAnswer"]
 
 
-class MergingAnswer(Answer, ABC):
-    """Answer for 粤文 merging."""
+class DualMultiSingleAnswer(Answer, ABC):
+    """ABC for dual track / multi-subtitle single subtitle answers."""
 
-    prompt_cls: ClassVar[type[MergingPrompt]]
+    prompt_cls: ClassVar[type[DualMultiSinglePrompt]]
     """Text for LLM correspondence."""
 
     @model_validator(mode="after")
     def validate_answer(self) -> Self:
         """Ensure answer is internally valid."""
-        if not getattr(self, self.prompt_cls.yuewen_merged, None):
-            raise ValueError(self.prompt_cls.yuewen_merged_missing_err)
+        if not getattr(self, self.prompt_cls.output, None):
+            raise ValueError(self.prompt_cls.output_missing_err)
         return self
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[MergingPrompt] = MergingPrompt,
+        prompt_cls: type[DualMultiSinglePrompt],
     ) -> type[Self]:
         """Get concrete answer class with provided configuration.
 
@@ -46,9 +46,9 @@ class MergingAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.yuewen_merged: (
+            prompt_cls.output: (
                 str,
-                Field(..., description=prompt_cls.yuewen_merged_desc),
+                Field(..., description=prompt_cls.output_desc),
             ),
         }
 

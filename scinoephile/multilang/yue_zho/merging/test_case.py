@@ -1,37 +1,35 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 merging test cases."""
+"""ABC for 粤文/中文 transcription merging test cases."""
 
 from __future__ import annotations
 
 from abc import ABC
-from functools import cache
 from typing import ClassVar, Self
 
-from pydantic import create_model, model_validator
+from pydantic import model_validator
 
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.models import get_model_name
+from scinoephile.llms.dual_multi_single import DualMultiSingleTestCase
 
-from .answer import MergingAnswer
-from .prompt import MergingPrompt
-from .query import MergingQuery
+from .answer import YueZhoMergingAnswer
+from .prompt import YueZhoHansMergingPrompt
+from .query import YueZhoMergingQuery
 
-__all__ = ["MergingTestCase"]
+__all__ = ["YueZhoMergingTestCase"]
 
 
-class MergingTestCase(TestCase, ABC):
-    """ABC for 粤文 merging test cases."""
+class YueZhoMergingTestCase(DualMultiSingleTestCase, ABC):
+    """ABC for 粤文/中文 transcription merging test cases."""
 
-    answer_cls: ClassVar[type[MergingAnswer]]
+    answer_cls: ClassVar[type[YueZhoMergingAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[MergingQuery]]
+    query_cls: ClassVar[type[YueZhoMergingQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[MergingPrompt]]
+    prompt_cls: ClassVar[type[YueZhoHansMergingPrompt]]
     """Text for LLM correspondence."""
 
     def get_min_difficulty(self) -> int:
@@ -49,8 +47,8 @@ class MergingTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(self.query, self.prompt_cls.zhongwen, None)
-        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged, None)
+        zhongwen = getattr(self.query, self.prompt_cls.src_2, None)
+        yuewen_merged = getattr(self.answer, self.prompt_cls.output, None)
         if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
@@ -65,8 +63,8 @@ class MergingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen_to_merge = getattr(self.query, self.prompt_cls.yuewen_to_merge, None)
-        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged, None)
+        yuewen_to_merge = getattr(self.query, self.prompt_cls.src_1, None)
+        yuewen_merged = getattr(self.answer, self.prompt_cls.output, None)
 
         expected = "".join(remove_punc_and_whitespace(s) for s in yuewen_to_merge)
         received = remove_punc_and_whitespace(yuewen_merged)
@@ -75,26 +73,3 @@ class MergingTestCase(TestCase, ABC):
                 self.prompt_cls.yuewen_chars_changed_err(expected, received)
             )
         return self
-
-    @classmethod
-    @cache
-    def get_test_case_cls(
-        cls, prompt_cls: type[MergingPrompt] = MergingPrompt
-    ) -> type[Self]:
-        """Get concrete test case class with provided configuration.
-
-        Arguments:
-            prompt_cls: text for LLM correspondence
-        Returns:
-            TestCase type with appropriate configuration
-        """
-        name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = MergingQuery.get_query_cls(prompt_cls)
-        answer_cls = MergingAnswer.get_answer_cls(prompt_cls)
-        fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
-
-        model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
-        model.query_cls = query_cls
-        model.answer_cls = answer_cls
-        model.prompt_cls = prompt_cls
-        return model
