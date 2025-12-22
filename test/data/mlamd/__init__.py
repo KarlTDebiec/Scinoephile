@@ -11,7 +11,6 @@ from typing import Any
 import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingPrompt
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -32,6 +31,7 @@ from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoProofreadingTestCase,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
+from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
 
@@ -200,7 +200,7 @@ def mlamd_yue_hans_eng() -> Series:
 
 @cache
 def get_mlamd_yue_shifting_test_cases(
-    prompt_cls: type[DualPairPrompt] = ShiftingPrompt,
+    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
     **kwargs: Any,
 ) -> list[DualPairTestCase]:
     """Get MLAMD 粵文 shifting test cases.
