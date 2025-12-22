@@ -186,10 +186,7 @@ def get_t_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path,
-        MonoBlockManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -208,10 +205,7 @@ def get_t_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path,
-        MonoBlockManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -230,10 +224,7 @@ def get_t_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path,
-        OcrFusionManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -252,8 +243,5 @@ def get_t_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path,
-        OcrFusionManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )

@@ -9,7 +9,7 @@ from typing import Any
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.llms.base import Answer, Manager, Query, TestCase
+from scinoephile.llms.base import Answer, Manager, Query
 from scinoephile.llms.base.models import get_model_name
 
 from .prompt import DualSinglePrompt
@@ -122,15 +122,4 @@ class DualSingleManager(Manager):
             raise ValueError(output_err)
         if note_err and not note:
             raise ValueError(note_err)
-        return model
-
-    @staticmethod
-    def validate_test_case(model: TestCase) -> TestCase:
-        """Ensure query and answer together are valid.
-
-        Arguments:
-            model: test case to validate
-        Returns:
-            validated test case
-        """
         return model

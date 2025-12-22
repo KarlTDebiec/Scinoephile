@@ -129,9 +129,7 @@ class OcrFusionProcessor:
                 continue
 
             # Query LLM
-            test_case_cls = OcrFusionManager.get_test_case_cls(
-                prompt_cls=self.prompt_cls
-            )
+            test_case_cls = OcrFusionManager.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
                 self.prompt_cls.src_1: sub_one.text,

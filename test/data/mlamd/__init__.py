@@ -217,10 +217,7 @@ def get_mlamd_yue_shifting_test_cases(
     """
     path = title_root / "audio" / "cantonese" / "shifting.json"
     return load_test_cases_from_json(
-        path,
-        DualPairManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -239,10 +236,7 @@ def get_mlamd_yue_merging_test_cases(
     """
     path = title_root / "audio" / "cantonese" / "merging.json"
     return load_test_cases_from_json(
-        path,
-        YueZhoMergingManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -261,10 +255,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path,
-        YueZhoProofreadingManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -283,10 +274,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "translation.json"
     return load_test_cases_from_json(
-        path,
-        DualBlockGappedManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -305,10 +293,7 @@ def get_mlamd_yue_vs_zho_review_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "review.json"
     return load_test_cases_from_json(
-        path,
-        DualBlockManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -327,10 +312,7 @@ def get_mlamd_eng_proofreading_test_cases(
     """
     path = title_root / "lang" / "eng" / "proofreading.json"
     return load_test_cases_from_json(
-        path,
-        MonoBlockManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -349,10 +331,7 @@ def get_mlamd_zho_proofreading_test_cases(
     """
     path = title_root / "lang" / "zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path,
-        MonoBlockManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -371,10 +350,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path,
-        OcrFusionManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -393,8 +369,5 @@ def get_mlamd_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path,
-        OcrFusionManager,
-        prompt_cls=prompt_cls,
-        **kwargs,
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
