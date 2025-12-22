@@ -18,11 +18,11 @@ from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer
 from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 from scinoephile.testing import test_data_root
 
 from .alignment import Aligner
 from .merging import MergingPrompt, MergingTestCase
-from .shifting import ShiftingPrompt
 
 
 class CantoneseTranscriptionReviewer:
@@ -46,7 +46,7 @@ class CantoneseTranscriptionReviewer:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=test_data_root / "cache",
         )
-        shifting_queryer_cls = Queryer.get_queryer_cls(ShiftingPrompt)
+        shifting_queryer_cls = Queryer.get_queryer_cls(YueZhoHansShiftingPrompt)
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],

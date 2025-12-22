@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingPrompt
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 
 from .alignment import Alignment
 
@@ -79,7 +79,7 @@ def get_shifting_test_case(
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
     test_case_cls: type[DualPairTestCase] = DualPairTestCase.get_test_case_cls(
-        prompt_cls=ShiftingPrompt
+        prompt_cls=YueZhoHansShiftingPrompt
     )
     query_kwargs = {
         test_case_cls.prompt_cls.src_1_sub_1: zw_1,
