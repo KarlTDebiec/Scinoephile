@@ -18,11 +18,12 @@ from scinoephile.audio import (
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import remove_punc_and_whitespace
-from scinoephile.llms.base import Queryer, save_test_cases_to_json
-from scinoephile.llms.dual_pair import (
-    DualPairAnswer,
-    DualPairQuery,
-    DualPairTestCase,
+from scinoephile.llms.base import (
+    Answer,
+    Query,
+    Queryer,
+    TestCase,
+    save_test_cases_to_json,
 )
 from scinoephile.multilang.synchronization import get_sync_groups_string
 
@@ -98,7 +99,7 @@ class Aligner:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
             # TODO: try/expect and return original 粤文 on error (not yet encountered)
-            test_case: DualPairTestCase = self.shifting_queryer.call(test_case)
+            test_case: TestCase = self.shifting_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
@@ -119,8 +120,8 @@ class Aligner:
         self,
         alignment: Alignment,
         sg_1_idx: int,
-        query: DualPairQuery,
-        answer: DualPairAnswer,
+        query: Query,
+        answer: Answer,
     ) -> bool:
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):

@@ -8,11 +8,8 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.mono_block import (
-    MonoBlockProcessor,
-    MonoBlockPrompt,
-    MonoBlockTestCase,
-)
+from scinoephile.llms.base import TestCase
+from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
@@ -28,7 +25,7 @@ __all__ = [
 # noinspection PyUnusedImports
 def get_default_zho_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
-) -> list[MonoBlockTestCase]:
+) -> list[TestCase]:
     """Get default test cases included with package.
 
     Arguments:
@@ -76,7 +73,7 @@ def get_zho_proofread(
 
 def get_zho_proofreader(
     prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
-    default_test_cases: list[MonoBlockTestCase] | None = None,
+    default_test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.

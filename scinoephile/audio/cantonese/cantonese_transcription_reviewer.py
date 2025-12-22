@@ -16,11 +16,9 @@ from scinoephile.audio.transcription import (
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.base import Queryer
-from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.llms.base import Queryer, TestCase
 from scinoephile.multilang.yue_zho.merging import (
     YueZhoHansMergingPrompt,
-    YueZhoMergingTestCase,
 )
 from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 from scinoephile.testing import test_data_root
@@ -34,8 +32,8 @@ class CantoneseTranscriptionReviewer:
     def __init__(
         self,
         test_case_directory_path: Path,
-        shifting_test_cases: list[DualPairTestCase],
-        merging_test_cases: list[YueZhoMergingTestCase],
+        shifting_test_cases: list[TestCase],
+        merging_test_cases: list[TestCase],
     ):
         """Initialize.
 
