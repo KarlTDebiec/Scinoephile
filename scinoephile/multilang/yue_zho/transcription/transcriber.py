@@ -21,17 +21,19 @@ from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.subtitles import Block, Series, get_concatenated_series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer, TestCase
-from scinoephile.multilang.yue_zho.merging import (
+from scinoephile.multilang.yue_zho.transcription.merging import (
     YueZhoHansMergingPrompt,
 )
-from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
+from scinoephile.multilang.yue_zho.transcription.shifting import (
+    YueZhoHansShiftingPrompt,
+)
 from scinoephile.testing import test_data_root
 
-from .alignment import Aligner
+from .aligner import Aligner
 
 
-class CantoneseTranscriptionReviewer:
-    """Class for reviewing and refining Cantonese transcriptions."""
+class YueTranscriber:
+    """Class for transcribing and aligning 粤文 audio."""
 
     def __init__(
         self,

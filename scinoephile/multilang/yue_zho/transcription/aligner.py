@@ -28,7 +28,6 @@ from scinoephile.llms.base import (
 from scinoephile.multilang.synchronization import get_sync_groups_string
 
 from .alignment import Alignment
-from .queries import get_merging_test_case, get_shifting_test_case
 
 __all__ = ["Aligner"]
 
@@ -94,7 +93,7 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            test_case = get_shifting_test_case(alignment, sg_1_idx)
+            test_case = alignment.get_shifting_test_case(sg_1_idx)
             if test_case is None:
                 info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
                 continue
@@ -268,7 +267,7 @@ class Aligner:
                 continue
 
             # Query for 粤文 merge
-            test_case = get_merging_test_case(alignment, sg_idx)
+            test_case = alignment.get_merging_test_case(sg_idx)
             if test_case is None:
                 info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))

@@ -26,16 +26,18 @@ from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
-from scinoephile.multilang.yue_zho.merging import (
-    YueZhoHansMergingPrompt,
-    YueZhoMergingManager,
-)
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     YueZhoProofreadingManager,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
-from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
+from scinoephile.multilang.yue_zho.transcription.merging import (
+    YueZhoHansMergingPrompt,
+    YueZhoMergingManager,
+)
+from scinoephile.multilang.yue_zho.transcription.shifting import (
+    YueZhoHansShiftingPrompt,
+)
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
 
