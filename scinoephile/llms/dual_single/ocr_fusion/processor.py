@@ -54,7 +54,7 @@ class OcrFusionProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    self.test_case_cls,
+                    OcrFusionTestCase,
                     prompt_cls=self.prompt_cls,
                 )
             )
