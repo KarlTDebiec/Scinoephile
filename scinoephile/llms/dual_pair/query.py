@@ -27,9 +27,9 @@ class DualPairQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        target_1 = getattr(self, self.prompt_cls.src_2_sub_1, None)
-        target_2 = getattr(self, self.prompt_cls.src_2_sub_2, None)
-        if not target_1 and not target_2:
+        src_1_sub_1 = getattr(self, self.prompt_cls.src_2_sub_1, None)
+        src_2_sub_2 = getattr(self, self.prompt_cls.src_2_sub_2, None)
+        if not src_1_sub_1 and not src_2_sub_2:
             raise ValueError(self.prompt_cls.src_2_sub_1_sub_2_missing_err)
         return self
 
