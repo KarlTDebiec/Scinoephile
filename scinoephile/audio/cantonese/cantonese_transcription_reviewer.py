@@ -7,7 +7,11 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
-from scinoephile.audio import AudioBlock, AudioSeries, get_series_from_segments
+from scinoephile.audio.subtitles import (
+    AudioBlock,
+    AudioSeries,
+    get_series_from_segments,
+)
 from scinoephile.audio.transcription import (
     WhisperTranscriber,
     get_segment_split_on_whitespace,

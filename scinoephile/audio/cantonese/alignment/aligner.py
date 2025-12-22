@@ -10,7 +10,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from scinoephile.audio import (
+from scinoephile.audio.subtitles import (
     AudioSeries,
     get_series_with_sub_split_at_idx,
     get_sub_merged,

@@ -19,8 +19,6 @@ with catch_warnings():
     from pydub import AudioSegment
 
 
-from scinoephile.audio.audio_block import AudioBlock
-from scinoephile.audio.audio_subtitle import AudioSubtitle
 from scinoephile.common import DirectoryNotFoundError, NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
@@ -31,6 +29,9 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Block, Series
+
+from .block import AudioBlock
+from .subtitle import AudioSubtitle
 
 
 class AudioSeries(Series):

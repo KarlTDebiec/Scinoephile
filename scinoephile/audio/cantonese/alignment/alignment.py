@@ -8,7 +8,7 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.audio import AudioSeries
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.multilang.pairs import get_pair_strings
 from scinoephile.multilang.synchronization import (
     SyncGroup,
