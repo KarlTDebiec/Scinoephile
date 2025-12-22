@@ -27,12 +27,12 @@ class MergingQuery(Query, ABC):
     @model_validator(mode="after")
     def validate_query(self) -> Self:
         """Ensure query is internally valid."""
-        zhongwen = getattr(self, self.prompt_cls.zhongwen_field, None)
-        yuewen_to_merge = getattr(self, self.prompt_cls.yuewen_to_merge_field, None)
+        zhongwen = getattr(self, self.prompt_cls.zhongwen, None)
+        yuewen_to_merge = getattr(self, self.prompt_cls.yuewen_to_merge, None)
         if not zhongwen:
-            raise ValueError(self.prompt_cls.zhongwen_missing_error)
+            raise ValueError(self.prompt_cls.zhongwen_missing_err)
         if not yuewen_to_merge:
-            raise ValueError(self.prompt_cls.yuewen_to_merge_missing_error)
+            raise ValueError(self.prompt_cls.yuewen_to_merge_missing_err)
         return self
 
     @classmethod
@@ -50,13 +50,13 @@ class MergingQuery(Query, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.zhongwen_field: (
+            prompt_cls.zhongwen: (
                 str,
-                Field(..., description=prompt_cls.zhongwen_description),
+                Field(..., description=prompt_cls.zhongwen_desc),
             ),
-            prompt_cls.yuewen_to_merge_field: (
+            prompt_cls.yuewen_to_merge: (
                 list[str],
-                Field(..., description=prompt_cls.yuewen_to_merge_description),
+                Field(..., description=prompt_cls.yuewen_to_merge_desc),
             ),
         }
 

@@ -5,8 +5,9 @@
 from __future__ import annotations
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.core import ScinoephileError
+from scinoephile.llms.dual_pair import DualPairTestCase
+from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 
 from .alignment import Alignment
 
@@ -18,7 +19,7 @@ __all__ = [
 
 def get_shifting_test_case(
     alignment: Alignment, sg_1_idx: int
-) -> ShiftingTestCase | None:
+) -> DualPairTestCase | None:
     """Get shifting query for an alignment at provided sync group index.
 
     Arguments:
@@ -77,12 +78,14 @@ def get_shifting_test_case(
     # Return
     if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
         return None
-    test_case_cls: type[ShiftingTestCase] = ShiftingTestCase.get_test_case_cls()
+    test_case_cls: type[DualPairTestCase] = DualPairTestCase.get_test_case_cls(
+        prompt_cls=YueZhoHansShiftingPrompt
+    )
     query_kwargs = {
-        test_case_cls.prompt_cls.zhongwen_1_field: zw_1,
-        test_case_cls.prompt_cls.yuewen_1_field: yw_1,
-        test_case_cls.prompt_cls.zhongwen_2_field: zw_2,
-        test_case_cls.prompt_cls.yuewen_2_field: yw_2,
+        test_case_cls.prompt_cls.src_1_sub_1: zw_1,
+        test_case_cls.prompt_cls.src_2_sub_1: yw_1,
+        test_case_cls.prompt_cls.src_1_sub_2: zw_2,
+        test_case_cls.prompt_cls.src_2_sub_2: yw_2,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
@@ -124,8 +127,8 @@ def get_merging_test_case(alignment: Alignment, sg_idx: int) -> MergingTestCase 
     # Return merge query
     test_case_cls: type[MergingTestCase] = MergingTestCase.get_test_case_cls()
     query_kwargs = {
-        test_case_cls.prompt_cls.zhongwen_field: zw,
-        test_case_cls.prompt_cls.yuewen_to_merge_field: yws,
+        test_case_cls.prompt_cls.zhongwen: zw,
+        test_case_cls.prompt_cls.yuewen_to_merge: yws,
     }
     # noinspection PyArgumentList
     test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))

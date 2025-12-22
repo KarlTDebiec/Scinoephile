@@ -49,8 +49,8 @@ class MergingTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(self.query, self.prompt_cls.zhongwen_field, None)
-        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged_field, None)
+        zhongwen = getattr(self.query, self.prompt_cls.zhongwen, None)
+        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged, None)
         if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
@@ -65,16 +65,14 @@ class MergingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen_to_merge = getattr(
-            self.query, self.prompt_cls.yuewen_to_merge_field, None
-        )
-        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged_field, None)
+        yuewen_to_merge = getattr(self.query, self.prompt_cls.yuewen_to_merge, None)
+        yuewen_merged = getattr(self.answer, self.prompt_cls.yuewen_merged, None)
 
         expected = "".join(remove_punc_and_whitespace(s) for s in yuewen_to_merge)
         received = remove_punc_and_whitespace(yuewen_merged)
         if expected != received:
             raise ValueError(
-                self.prompt_cls.yuewen_characters_changed_error(expected, received)
+                self.prompt_cls.yuewen_chars_changed_err(expected, received)
             )
         return self
 

@@ -23,55 +23,12 @@ __all__ = ["DualSingleTestCase"]
 class DualSingleTestCase(TestCase, ABC):
     """ABC for dual track / single subtitle test cases."""
 
-    answer_cls: ClassVar[type[DualSingleAnswer]]
+    answer_cls: ClassVar[type[DualSingleAnswer]] = DualSingleAnswer
     """Answer class for this test case."""
-    query_cls: ClassVar[type[DualSingleQuery]]
+    query_cls: ClassVar[type[DualSingleQuery]] = DualSingleQuery
     """Query class for this test case."""
     prompt_cls: ClassVar[type[DualSinglePrompt]]
     """Text for LLM correspondence."""
-
-    def get_auto_verified(self) -> bool:
-        """Whether this test case should automatically be verified."""
-        if self.answer is None:
-            return False
-
-        if self.get_min_difficulty() > 1:
-            return False
-
-        source_one = getattr(self.query, self.prompt_cls.source_one_field, None)
-        source_two = getattr(self.query, self.prompt_cls.source_two_field, None)
-        output_text = getattr(self.answer, self.prompt_cls.output_field, None)
-        if (
-            source_one is not None
-            and source_two is not None
-            and output_text is not None
-        ):
-            if source_one == output_text and "\n" not in source_one:
-                return True
-            if source_two == output_text and "\n" not in source_two:
-                return True
-        return super().get_auto_verified()
-
-    def get_min_difficulty(self) -> int:
-        """Get minimum difficulty based on the test case properties.
-
-        0: No change needed
-        1: Change needed
-        2: Difficult change needed, worthy of inclusion in prompt or difficult test set
-        3: Not considered realistic for LLM to handle correctly
-
-        Returns:
-            minimum difficulty level based on the test case properties
-        """
-        min_difficulty = super().get_min_difficulty()
-        min_difficulty = max(min_difficulty, 1)
-        if self.answer is None:
-            return min_difficulty
-
-        if output_text := getattr(self.answer, self.prompt_cls.output_field):
-            if any(char in output_text for char in ("-", '"', "“", "”")):
-                min_difficulty = max(min_difficulty, 2)
-        return min_difficulty
 
     @classmethod
     @cache
@@ -87,8 +44,8 @@ class DualSingleTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = DualSingleQuery.get_query_cls(prompt_cls)
-        answer_cls = DualSingleAnswer.get_answer_cls(prompt_cls)
+        query_cls = cls.query_cls.get_query_cls(prompt_cls)
+        answer_cls = cls.answer_cls.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

@@ -30,37 +30,37 @@ class ZhoHansProofreadingPrompt(MonoBlockPrompt, ZhoHansPrompt):
     """Base system prompt."""
 
     # Query fields
-    input_prefix: ClassVar[str] = "zimu_"
+    input_pfx: ClassVar[str] = "zimu_"
     """Prefix for input fields in query."""
 
-    input_description_template: ClassVar[str] = "第 {idx} 条字幕"
+    input_desc_tpl: ClassVar[str] = "第 {idx} 条字幕"
     """Description template for input fields in query."""
 
     # Answer fields
-    output_prefix: ClassVar[str] = "xiugai_"
+    output_pfx: ClassVar[str] = "xiugai_"
     """Prefix for output fields in answer."""
 
-    output_description_template: ClassVar[str] = "第 {idx} 条修改后的字幕"
+    output_desc_tpl: ClassVar[str] = "第 {idx} 条修改后的字幕"
     """Description template for output fields in answer."""
 
-    note_prefix: ClassVar[str] = "beizhu_"
+    note_pfx: ClassVar[str] = "beizhu_"
     """Prefix for note fields in answer."""
 
-    note_description_template: ClassVar[str] = "关于第 {idx} 条字幕修改的备注说明"
+    note_desc_tpl: ClassVar[str] = "关于第 {idx} 条字幕修改的备注说明"
     """Description template for note fields in answer."""
 
     # Test case errors
-    output_unmodified_error_template: ClassVar[str] = (
+    output_unmodified_err_tpl: ClassVar[str] = (
         "第 {idx} 条答案的修改文本与查询文本相同。如果不需要修改，应提供空字符串。"
     )
     """Error template when output is present but unmodified."""
 
-    note_missing_error_template: ClassVar[str] = (
+    note_missing_err_tpl: ClassVar[str] = (
         "第 {idx} 条答案的文本已被修改，但未提供备注。如需修改，必须附带备注说明。"
     )
     """Error template when note is missing for a change."""
 
-    output_missing_error_template: ClassVar[str] = (
+    output_missing_err_tpl: ClassVar[str] = (
         "第 {idx} 条答案的文本未修改，但提供了备注。如果不需要修改，应提供空字符串。"
     )
     """Error template when output is missing for a note."""

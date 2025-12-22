@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual track / single subtitle matters."""
+"""Processes OCR fusion."""
 
 from __future__ import annotations
 
@@ -18,22 +18,22 @@ from scinoephile.llms.base import (
 from scinoephile.multilang.synchronization import are_series_one_to_one
 from scinoephile.testing import test_data_root
 
-from .prompt import DualSinglePrompt
-from .test_case import DualSingleTestCase
+from .prompt import OcrFusionPrompt
+from .test_case import OcrFusionTestCase
 
-__all__ = ["DualSingleProcessor"]
+__all__ = ["OcrFusionProcessor"]
 
 
-class DualSingleProcessor:
-    """Processes dual track / single subtitle matters."""
+class OcrFusionProcessor:
+    """Processes OCR fusion."""
 
     def __init__(
         self,
-        prompt_cls: type[DualSinglePrompt],
-        test_cases: list[DualSingleTestCase] | None = None,
+        prompt_cls: type[OcrFusionPrompt],
+        test_cases: list[OcrFusionTestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[DualSingleTestCase] | None = None,
+        default_test_cases: list[OcrFusionTestCase] | None = None,
     ):
         """Initialize.
 
@@ -54,7 +54,7 @@ class DualSingleProcessor:
             test_cases.extend(
                 load_test_cases_from_json(
                     test_case_path,
-                    DualSingleTestCase,
+                    OcrFusionTestCase,
                     prompt_cls=self.prompt_cls,
                 )
             )
@@ -73,7 +73,7 @@ class DualSingleProcessor:
     def process(
         self, source_one: Series, source_two: Series, stop_at_idx: int | None = None
     ) -> Series:
-        """Processes dual track / single subtitle matters.
+        """Processes OCR fusion dual track / single subtitle matters.
 
         Arguments:
             source_one: subtitles from source one
@@ -115,30 +115,30 @@ class DualSingleProcessor:
             if not text_two:
                 output_subtitles.append(sub_one)
                 info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.source_one_field}: "
+                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_1}: "
                     f"{text_one.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
                 info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.source_two_field}: "
+                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_2}: "
                     f"{text_two.replace('\n', ' ')}"
                 )
                 continue
 
             # Query LLM
-            test_case_cls = DualSingleTestCase.get_test_case_cls(self.prompt_cls)
+            test_case_cls = OcrFusionTestCase.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
-                self.prompt_cls.source_one_field: sub_one.text,
-                self.prompt_cls.source_two_field: sub_two.text,
+                self.prompt_cls.src_1: sub_one.text,
+                self.prompt_cls.src_2: sub_two.text,
             }
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            output_text = getattr(test_case.answer, self.prompt_cls.output_field)
+            output_text = getattr(test_case.answer, self.prompt_cls.output)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"

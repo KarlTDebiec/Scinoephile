@@ -8,8 +8,9 @@ from logging import warning
 from typing import Any
 
 from scinoephile.core.subtitles import Series
-from scinoephile.llms.dual_single import DualSingleProcessor, DualSinglePrompt
+from scinoephile.llms.dual_single import DualSinglePrompt
 
+from .answer import YueZhoProofreadingAnswer
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
 from .test_case import YueZhoProofreadingTestCase
@@ -17,6 +18,7 @@ from .test_case import YueZhoProofreadingTestCase
 __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
+    "YueZhoProofreadingAnswer",
     "YueZhoProofreadingTestCase",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
@@ -50,7 +52,7 @@ def get_default_yue_vs_zho_proofreading_test_cases(
 def get_yue_vs_zho_proofread(
     yuewen: Series,
     zhongwen: Series,
-    processor: DualSingleProcessor | None = None,
+    processor: YueZhoProofreadingProcessor | None = None,
     **kwargs: Any,
 ) -> Series:
     """Get 粤文 subtitles proofread against 中文 subtitles.
@@ -59,7 +61,7 @@ def get_yue_vs_zho_proofread(
         yuewen: 粤文 Series
         zhongwen: 中文 Series
         processor: processor to use
-        **kwargs: additional keyword arguments for DualSingleProcessor.process
+        **kwargs: additional keyword arguments for YueZhoProofreadingProcessor.process
     Returns:
         proofread 粤文 subtitles
     """
@@ -72,15 +74,15 @@ def get_yue_vs_zho_proofreader(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
     default_test_cases: list[YueZhoProofreadingTestCase] | None = None,
     **kwargs: Any,
-) -> DualSingleProcessor:
-    """Get DualSingleProcessor with provided configuration.
+) -> YueZhoProofreadingProcessor:
+    """Get YueZhoProofreadingProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         default_test_cases: default test cases
-        **kwargs: additional keyword arguments for DualSingleProcessor
+        **kwargs: additional keyword arguments for YueZhoProofreadingProcessor
     Returns:
-        DualSingleProcessor with provided configuration
+        YueZhoProofreadingProcessor with provided configuration
     """
     if default_test_cases is None:
         default_test_cases = get_default_yue_vs_zho_proofreading_test_cases(prompt_cls)

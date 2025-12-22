@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 transcription shifting answers."""
+"""ABC for dual track / subtitle pair answers."""
 
 from __future__ import annotations
 
@@ -13,22 +13,22 @@ from pydantic import Field, create_model
 from scinoephile.llms.base import Answer
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import ShiftingPrompt
+from .prompt import DualPairPrompt
 
-__all__ = ["ShiftingAnswer"]
+__all__ = ["DualPairAnswer"]
 
 
-class ShiftingAnswer(Answer, ABC):
-    """ABC for 粤文 transcription shifting answers."""
+class DualPairAnswer(Answer, ABC):
+    """ABC for dual track / subtitle pair answers."""
 
-    prompt_cls: ClassVar[type[ShiftingPrompt]]
+    prompt_cls: ClassVar[type[DualPairPrompt]]
     """Text for LLM correspondence."""
 
     @classmethod
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[ShiftingPrompt] = ShiftingPrompt,
+        prompt_cls: type[DualPairPrompt] = DualPairPrompt,
     ) -> type[Self]:
         """Get concrete answer class with provided configuartion.
 
@@ -39,13 +39,13 @@ class ShiftingAnswer(Answer, ABC):
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
         fields: dict[str, Any] = {
-            prompt_cls.yuewen_1_shifted_field: (
+            prompt_cls.src_2_sub_1_shifted: (
                 str,
-                Field("", description=prompt_cls.yuewen_1_shifted_description),
+                Field("", description=prompt_cls.src_2_sub_1_shifted_desc),
             ),
-            prompt_cls.yuewen_2_shifted_field: (
+            prompt_cls.src_2_sub_2_shifted: (
                 str,
-                Field("", description=prompt_cls.yuewen_2_shifted_description),
+                Field("", description=prompt_cls.src_2_sub_2_shifted_desc),
             ),
         }
 

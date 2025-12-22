@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for 粤文 transcription shifting test cases."""
+"""ABC for dual track / subtitle pair test cases."""
 
 from __future__ import annotations
 
@@ -13,21 +13,21 @@ from pydantic import create_model, model_validator
 from scinoephile.llms.base import TestCase
 from scinoephile.llms.base.models import get_model_name
 
-from .answer import ShiftingAnswer
-from .prompt import ShiftingPrompt
-from .query import ShiftingQuery
+from .answer import DualPairAnswer
+from .prompt import DualPairPrompt
+from .query import DualPairQuery
 
-__all__ = ["ShiftingTestCase"]
+__all__ = ["DualPairTestCase"]
 
 
-class ShiftingTestCase(TestCase, ABC):
-    """ABC for 粤文 transcription shifting test cases."""
+class DualPairTestCase(TestCase, ABC):
+    """ABC for dual track / subtitle pair test cases."""
 
-    answer_cls: ClassVar[type[ShiftingAnswer]]
+    answer_cls: ClassVar[type[DualPairAnswer]]
     """Answer class for this test case."""
-    query_cls: ClassVar[type[ShiftingQuery]]
+    query_cls: ClassVar[type[DualPairQuery]]
     """Query class for this test case."""
-    prompt_cls: ClassVar[type[ShiftingPrompt]]
+    prompt_cls: ClassVar[type[DualPairPrompt]]
     """Text for LLM correspondence."""
 
     def get_min_difficulty(self) -> int:
@@ -45,13 +45,13 @@ class ShiftingTestCase(TestCase, ABC):
         if self.answer is None:
             return min_difficulty
 
-        yuewen_1_shifted = getattr(
-            self.answer, self.prompt_cls.yuewen_1_shifted_field, None
+        target_1_shifted = getattr(
+            self.answer, self.prompt_cls.src_2_sub_1_shifted, None
         )
-        yuewen_2_shifted = getattr(
-            self.answer, self.prompt_cls.yuewen_2_shifted_field, None
+        target_2_shifted = getattr(
+            self.answer, self.prompt_cls.src_2_sub_2_shifted, None
         )
-        if yuewen_1_shifted != "" or yuewen_2_shifted != "":
+        if target_1_shifted != "" or target_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
 
         return min_difficulty
@@ -62,22 +62,22 @@ class ShiftingTestCase(TestCase, ABC):
         if self.answer is None:
             return self
 
-        yuewen_1 = getattr(self.query, self.prompt_cls.yuewen_1_field, None)
-        yuewen_2 = getattr(self.query, self.prompt_cls.yuewen_2_field, None)
-        yuewen_1_shifted = getattr(
-            self.answer, self.prompt_cls.yuewen_1_shifted_field, None
+        target_1 = getattr(self.query, self.prompt_cls.src_2_sub_1, None)
+        target_2 = getattr(self.query, self.prompt_cls.src_2_sub_2, None)
+        target_1_shifted = getattr(
+            self.answer, self.prompt_cls.src_2_sub_1_shifted, None
         )
-        yuewen_2_shifted = getattr(
-            self.answer, self.prompt_cls.yuewen_2_shifted_field, None
+        target_2_shifted = getattr(
+            self.answer, self.prompt_cls.src_2_sub_2_shifted, None
         )
-        if yuewen_1 == yuewen_1_shifted and yuewen_2 == yuewen_2_shifted:
-            raise ValueError(self.prompt_cls.yuewen_1_yuewen_2_unchanged_error)
-        if yuewen_1_shifted != "" or yuewen_2_shifted != "":
-            expected = yuewen_1 + yuewen_2
-            received = yuewen_1_shifted + yuewen_2_shifted
+        if target_1 == target_1_shifted and target_2 == target_2_shifted:
+            raise ValueError(self.prompt_cls.src_2_sub_1_sub_2_unchanged_err)
+        if target_1_shifted != "" or target_2_shifted != "":
+            expected = target_1 + target_2
+            received = target_1_shifted + target_2_shifted
             if expected != received:
                 raise ValueError(
-                    self.prompt_cls.yuewen_characters_changed_error(expected, received)
+                    self.prompt_cls.src_2_chars_changed_err(expected, received)
                 )
         return self
 
@@ -85,7 +85,7 @@ class ShiftingTestCase(TestCase, ABC):
     @cache
     def get_test_case_cls(
         cls,
-        prompt_cls: type[ShiftingPrompt] = ShiftingPrompt,
+        prompt_cls: type[DualPairPrompt] = DualPairPrompt,
     ) -> type[Self]:
         """Get concrete test case class with provided configuration.
 
@@ -95,8 +95,8 @@ class ShiftingTestCase(TestCase, ABC):
             TestCase type with appropriate configuration
         """
         name = get_model_name(cls.__name__, prompt_cls.__name__)
-        query_cls = ShiftingQuery.get_query_cls(prompt_cls)
-        answer_cls = ShiftingAnswer.get_answer_cls(prompt_cls)
+        query_cls = DualPairQuery.get_query_cls(prompt_cls)
+        answer_cls = DualPairAnswer.get_answer_cls(prompt_cls)
         fields = cls.get_fields(query_cls, answer_cls, prompt_cls)
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

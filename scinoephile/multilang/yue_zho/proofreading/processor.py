@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes for 粤文 vs. 中文 proofreading."""
+"""Processes 粤文 vs. 中文 proofreading."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ __all__ = ["YueZhoProofreadingProcessor"]
 
 
 class YueZhoProofreadingProcessor:
-    """Processes for 粤文 vs. 中文 proofreading."""
+    """Processes 粤文 vs. 中文 proofreading."""
 
     prompt_cls: type[YueZhoHansProofreadingPrompt]
     """Text for LLM correspondence."""
@@ -126,14 +126,14 @@ class YueZhoProofreadingProcessor:
                     )
                     continue
                 query_kwargs = {
-                    self.prompt_cls.source_one_field: one_val,
-                    self.prompt_cls.source_two_field: two_val,
+                    self.prompt_cls.src_1: one_val,
+                    self.prompt_cls.src_2: two_val,
                 }
                 query = query_cls(**query_kwargs)
                 test_case = test_case_cls(query=query)
                 test_case: YueZhoProofreadingTestCase = self.queryer(test_case)
 
-                output = getattr(test_case.answer, self.prompt_cls.output_field)
+                output = getattr(test_case.answer, self.prompt_cls.output)
                 if output == "\ufffd":
                     continue
                 output_block.append(

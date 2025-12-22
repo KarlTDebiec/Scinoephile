@@ -11,7 +11,6 @@ from typing import Any
 import pytest
 
 from scinoephile.audio.cantonese.merging import MergingTestCase
-from scinoephile.audio.cantonese.shifting import ShiftingTestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -23,13 +22,16 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedPrompt,
     DualBlockGappedTestCase,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt, DualSingleTestCase
+from scinoephile.llms.dual_pair import DualPairPrompt, DualPairTestCase
+from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionTestCase
 from scinoephile.llms.mono_block import MonoBlockPrompt, MonoBlockTestCase
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     YueZhoProofreadingTestCase,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
+from scinoephile.multilang.yue_zho.shifting import YueZhoHansShiftingPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from scinoephile.testing import test_data_root
 
@@ -197,16 +199,22 @@ def mlamd_yue_hans_eng() -> Series:
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(**kwargs: Any) -> list[ShiftingTestCase]:
+def get_mlamd_yue_shifting_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+    **kwargs: Any,
+) -> list[DualPairTestCase]:
     """Get MLAMD 粵文 shifting test cases.
 
     Arguments:
+        prompt_cls: text for LLM correspondence
         **kwargs: additional keyword arguments for load_test_cases_from_json
     Returns:
         test cases
     """
     path = title_root / "audio" / "cantonese" / "shifting.json"
-    return load_test_cases_from_json(path, ShiftingTestCase, **kwargs)
+    return load_test_cases_from_json(
+        path, DualPairTestCase, prompt_cls=prompt_cls, **kwargs
+    )
 
 
 @cache
@@ -321,7 +329,7 @@ def get_mlamd_zho_proofreading_test_cases(
 def get_mlamd_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
     **kwargs: Any,
-) -> list[DualSingleTestCase]:
+) -> list[OcrFusionTestCase]:
     """Get MLAMD English OCR fusion test cases.
 
     Arguments:
@@ -332,7 +340,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
+        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -340,7 +348,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 def get_mlamd_zho_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
-) -> list[DualSingleTestCase]:
+) -> list[OcrFusionTestCase]:
     """Get MLAMD 中文 OCR fusion test cases.
 
     Arguments:
@@ -351,5 +359,5 @@ def get_mlamd_zho_ocr_fusion_test_cases(
     """
     path = title_root / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
-        path, DualSingleTestCase, prompt_cls=prompt_cls, **kwargs
+        path, OcrFusionTestCase, prompt_cls=prompt_cls, **kwargs
     )

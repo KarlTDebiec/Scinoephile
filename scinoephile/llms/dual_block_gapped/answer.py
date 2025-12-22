@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual block gapped answers."""
+"""ABC for dual block / subtitle block (gapped) answers."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ __all__ = ["DualBlockGappedAnswer"]
 
 
 class DualBlockGappedAnswer(Answer, ABC):
-    """ABC for dual block gapped answers."""
+    """ABC for dual block / subtitle block (gapped) answers."""
 
     prompt_cls: ClassVar[type[DualBlockGappedPrompt]]
     """Text for LLM correspondence."""
@@ -60,8 +60,8 @@ class DualBlockGappedAnswer(Answer, ABC):
         )
         fields: dict[str, Any] = {}
         for idx in gaps:
-            key = prompt_cls.source_one(idx + 1)
-            description = prompt_cls.source_one_desc(idx + 1)
+            key = prompt_cls.src_1(idx + 1)
+            description = prompt_cls.src_1_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

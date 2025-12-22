@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for English OCR fusion."""
+"""Text for LLM correspondence for English OCR fusion."""
 
 from __future__ import annotations
 
@@ -8,15 +8,15 @@ from typing import ClassVar
 
 from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.eng.prompts import EngPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
 
 __all__ = [
     "EngOcrFusionPrompt",
 ]
 
 
-class EngOcrFusionPrompt(DualSinglePrompt, EngPrompt):
-    """LLM correspondence text for English OCR fusion."""
+class EngOcrFusionPrompt(OcrFusionPrompt, EngPrompt):
+    """Text for LLM correspondence for English OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -30,30 +30,30 @@ class EngOcrFusionPrompt(DualSinglePrompt, EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    source_one_field: ClassVar[str] = "lens"
+    src_1: ClassVar[str] = "lens"
     """Name of source one field in query."""
 
-    source_one_description: ClassVar[str] = "Subtitle text OCRed using Google Lens"
+    src_1_desc: ClassVar[str] = "Subtitle text OCRed using Google Lens"
     """Description of source one field in query."""
 
-    source_two_field: ClassVar[str] = "tesseract"
+    src_2: ClassVar[str] = "tesseract"
     """Name for source two field in query."""
 
-    source_two_description: ClassVar[str] = "Subtitle text OCRed using Tesseract"
+    src_2_desc: ClassVar[str] = "Subtitle text OCRed using Tesseract"
     """Description of source two field in query."""
 
     # Query validation errors
-    source_one_missing_error: ClassVar[str] = (
+    src_1_missing_err: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens is required."
     )
     """Error when source one field is missing from query."""
 
-    source_two_missing_error: ClassVar[str] = (
+    src_2_missing_err: ClassVar[str] = (
         "Subtitle text OCRed using Tesseract is required."
     )
     """Error when source two field is missing from query."""
 
-    sources_equal_error: ClassVar[str] = (
+    src_1_src_2_equal_err: ClassVar[str] = (
         "Subtitle text OCRed using Google Lens and Tesseract must differ."
     )
     """Error when source one and two fields are equal."""

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual block subtitle matters."""
+"""Processes dual track / subtitle block matters."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ __all__ = ["DualBlockProcessor"]
 
 
 class DualBlockProcessor:
-    """Processes dual block subtitle matters."""
+    """Processes dual track / subtitle block matters."""
 
     prompt_cls: type[DualBlockPrompt]
     """Text for LLM correspondence."""
@@ -113,10 +113,10 @@ class DualBlockProcessor:
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
-                one_key = self.prompt_cls.source_one(sub_idx + 1)
+                one_key = self.prompt_cls.src_1(sub_idx + 1)
                 one_val = re.sub(r"\\N", "\n", one_blk[sub_idx].text).strip()
                 query_kwargs[one_key] = one_val
-                two_key = self.prompt_cls.source_two(sub_idx + 1)
+                two_key = self.prompt_cls.src_2(sub_idx + 1)
                 two_val = re.sub(r"\\N", "\n", two_blk[sub_idx].text).strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for dual track / block queries."""
+"""ABC for dual track / subtitle block queries."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = [
 
 
 class DualBlockQuery(Query, ABC):
-    """ABC for dual track / block queries."""
+    """ABC for dual track / subtitle block queries."""
 
     prompt_cls: ClassVar[type[DualBlockPrompt]]
     """Text for LLM correspondence."""
@@ -47,11 +47,11 @@ class DualBlockQuery(Query, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.source_one(idx + 1)
-            description = prompt_cls.source_one_desc(idx + 1)
+            key = prompt_cls.src_1(idx + 1)
+            description = prompt_cls.src_1_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
-            key = prompt_cls.source_two(idx + 1)
-            description = prompt_cls.source_two_desc(idx + 1)
+            key = prompt_cls.src_2(idx + 1)
+            description = prompt_cls.src_2_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)

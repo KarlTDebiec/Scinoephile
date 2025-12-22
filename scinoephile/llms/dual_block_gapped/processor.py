@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual block gapped subtitle matters."""
+"""Processes dual block / subtitle block (gapped) matters."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ __all__ = ["DualBlockGappedProcessor"]
 
 
 class DualBlockGappedProcessor:
-    """Processes dual block gapped subtitle matters."""
+    """Processes dual block / subtitle block (gapped) matters."""
 
     prompt_cls: type[DualBlockGappedPrompt]
     """Text for LLM correspondence."""
@@ -119,11 +119,11 @@ class DualBlockGappedProcessor:
             one_idx = 0
             for two_idx in range(size):
                 if two_idx not in gaps:
-                    one_key = self.prompt_cls.source_one(two_idx + 1)
+                    one_key = self.prompt_cls.src_1(two_idx + 1)
                     one_val = re.sub(r"\\N", "\n", one_blk[one_idx].text).strip()
                     query_kwargs[one_key] = one_val
                     one_idx += 1
-                two_key = self.prompt_cls.source_two(two_idx + 1)
+                two_key = self.prompt_cls.src_2(two_idx + 1)
                 two_val = re.sub(r"\\N", "\n", two_blk[two_idx].text).strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
@@ -136,7 +136,7 @@ class DualBlockGappedProcessor:
                 start = two_sub.start
                 end = two_sub.end
                 if two_idx not in gaps:
-                    one_key = self.prompt_cls.source_one(two_idx + 1)
+                    one_key = self.prompt_cls.src_1(two_idx + 1)
                     output = getattr(test_case.query, one_key)
                 else:
                     one_key = self.prompt_cls.output(two_idx + 1)

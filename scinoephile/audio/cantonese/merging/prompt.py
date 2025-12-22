@@ -32,42 +32,40 @@ class MergingPrompt(EngPrompt):
     """Base system prompt."""
 
     # Query fields
-    zhongwen_field: ClassVar[str] = "zhongwen"
-    """Field name for 中文 of subtitle."""
+    zhongwen: ClassVar[str] = "zhongwen"
+    """Name of 中文 field in query."""
 
-    zhongwen_description: ClassVar[str] = "Known 中文 of subtitle"
-    """Description of zhongwen field."""
+    zhongwen_desc: ClassVar[str] = "Known 中文 of subtitle"
+    """Description of 中文 field in query."""
 
-    yuewen_to_merge_field: ClassVar[str] = "yuewen_to_merge"
-    """Field name for transcribed 粤文 of subtitle."""
+    yuewen_to_merge: ClassVar[str] = "yuewen_to_merge"
+    """Name of 粤文-to-merge field in query."""
 
-    yuewen_to_merge_description: ClassVar[str] = "Transcribed 粤文 of subtitle"
-    """Description of yuewen_to_merge field."""
+    yuewen_to_merge_desc: ClassVar[str] = "Transcribed 粤文 of subtitle"
+    """Description of 粤文-to-merge field in query."""
 
     # Query validation errors
-    zhongwen_missing_error: ClassVar[str] = "Query must have 中文 of subtitle."
-    """Error when zhongwen field is missing."""
+    zhongwen_missing_err: ClassVar[str] = "Query must have 中文 of subtitle."
+    """Error when 中文 field is missing."""
 
-    yuewen_to_merge_missing_error: ClassVar[str] = (
+    yuewen_to_merge_missing_err: ClassVar[str] = (
         "Query must have transcribed 粤文 of subtitle."
     )
     """Error when yuewen_to_merge field is missing."""
 
     # Answer fields
-    yuewen_merged_field: ClassVar[str] = "yuewen_merged"
-    """Field name for merged 粤文 of subtitle."""
+    yuewen_merged: ClassVar[str] = "yuewen_merged"
+    """Name of merged 粤文 field in answer."""
 
-    yuewen_merged_description: ClassVar[str] = "Merged 粤文 of subtitle"
-    """Description of yuewen_merged field."""
+    yuewen_merged_desc: ClassVar[str] = "Merged 粤文 of subtitle"
+    """Description of merged 粤文 field in answer."""
 
     # Answer validation errors
-    yuewen_merged_missing_error: ClassVar[str] = (
-        "Answer must have merged 粤文 subtitle."
-    )
-    """Error when yuewen_merged field is missing."""
+    yuewen_merged_missing_err: ClassVar[str] = "Answer must have merged 粤文 subtitle."
+    """Error when merged 粤文 field is missing."""
 
     # Test case validation errors
-    yuewen_characters_changed_error_template: ClassVar[str] = (
+    yuewen_chars_changed_err_tpl: ClassVar[str] = (
         "Answer's 粤文 subtitle stripped of punctuation and whitespace does not match "
         "query's 粤文 subtitle concatenated:\n"
         "Expected: {expected}\n"
@@ -76,7 +74,7 @@ class MergingPrompt(EngPrompt):
     """Error template when merged 粤文 characters do not match original."""
 
     @classmethod
-    def yuewen_characters_changed_error(cls, expected: str, received: str) -> str:
+    def yuewen_chars_changed_err(cls, expected: str, received: str) -> str:
         """Error when merged 粤文 characters do not match original.
 
         Arguments:
@@ -85,6 +83,6 @@ class MergingPrompt(EngPrompt):
         Returns:
             error message
         """
-        return cls.yuewen_characters_changed_error_template.format(
+        return cls.yuewen_chars_changed_err_tpl.format(
             expected=expected, received=received
         )

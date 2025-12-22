@@ -1,6 +1,6 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""ABC for mono track / block queries."""
+"""ABC for mono track / subtitle block queries."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["MonoBlockQuery"]
 
 
 class MonoBlockQuery(Query, ABC):
-    """ABC for mono track / block queries."""
+    """ABC for mono track / subtitle block queries."""
 
     prompt_cls: ClassVar[type[MonoBlockPrompt]]
     """Text for LLM correspondence."""
@@ -45,8 +45,8 @@ class MonoBlockQuery(Query, ABC):
         name = get_model_name(cls.__name__, f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
-            key = prompt_cls.input_field(idx + 1)
-            desc = prompt_cls.input_description(idx + 1)
+            key = prompt_cls.input(idx + 1)
+            desc = prompt_cls.input_desc(idx + 1)
             fields[key] = (str, Field(..., description=desc, max_length=1000))
 
         model = create_model(name, __base__=cls, __module__=cls.__module__, **fields)
