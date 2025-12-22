@@ -9,10 +9,7 @@ from typing import Any
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_single.ocr_fusion import (
-    OcrFusionProcessor,
-    OcrFusionPrompt,
-)
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusionPrompt
 
 from .prompts import EngOcrFusionPrompt
 
