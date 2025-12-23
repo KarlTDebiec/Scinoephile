@@ -7,16 +7,15 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.core.testing import skip_if_ci
 from scinoephile.image.subtitles import ImageSeries
 
 
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        skip_if_ci()("mlamd_eng_sup_path", 942, (953, 63)),
-        skip_if_ci()("mlamd_zho_hans_sup_path", 932, (773, 73)),
-        skip_if_ci()("mlamd_zho_hant_sup_path", 932, (775, 73)),
+        ("mlamd_eng_sup_path", 942, (953, 63)),
+        ("mlamd_zho_hans_sup_path", 932, (773, 73)),
+        ("mlamd_zho_hant_sup_path", 932, (775, 73)),
     ],
 )
 def test_load_sup(
@@ -49,8 +48,8 @@ def test_load_sup(
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        skip_if_ci()("mlamd_eng_image_path", 942, (953, 63)),
-        skip_if_ci()("mlamd_zho_hans_image_path", 932, (773, 73)),
+        ("mlamd_eng_image_path", 942, (953, 63)),
+        ("mlamd_zho_hans_image_path", 932, (773, 73)),
     ],
 )
 def test_load_html(
@@ -82,8 +81,8 @@ def test_load_html(
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count",
     [
-        skip_if_ci()("mlamd_eng_image_path", 942),
-        skip_if_ci()("mlamd_zho_hans_image_path", 932),
+        ("mlamd_eng_image_path", 942),
+        ("mlamd_zho_hans_image_path", 932),
     ],
 )
 def test_save_html(
