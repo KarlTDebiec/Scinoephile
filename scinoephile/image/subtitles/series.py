@@ -217,7 +217,7 @@ class ImageSeries(Series):
         * Tested images used a 16-color palette.
         """
         hist = np.zeros(256, dtype=np.uint64)
-        for subtitle in self:
+        for subtitle in self.events:
             grayscale = subtitle.arr[:, :, 0]
             alpha = subtitle.arr[:, :, 1]
             mask = alpha != 0

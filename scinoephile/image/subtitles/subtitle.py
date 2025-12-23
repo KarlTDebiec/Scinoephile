@@ -37,7 +37,7 @@ class ImageSubtitle(Subtitle):
         self.img = img
         self._arr: np.ndarray | None = None
         self._base64: str | None = None
-        self._bboxes: list[tuple[int, int]] | None = None
+        self._bboxes: list[tuple[int, int, int, int]] | None = None
         self._char_pairs: list[CharPair] | None = None
         self._img_with_bboxes: Image.Image | None = None
         self._img_with_white_bg: Image.Image | None = None
@@ -52,8 +52,7 @@ class ImageSubtitle(Subtitle):
     @property
     def bbox_widths(self) -> list[int]:
         """Widths of bounding boxes of characters in image."""
-        if self._bboxes is None:
-            return None
+        assert self._bboxes is not None
         return [
             self._bboxes[i][2] - self._bboxes[i][0] for i in range(len(self._bboxes))
         ]
@@ -61,8 +60,7 @@ class ImageSubtitle(Subtitle):
     @property
     def bbox_heights(self) -> list[int]:
         """Heights of bounding boxes of characters in image."""
-        if self._bboxes is None:
-            return None
+        assert self._bboxes is not None
         return [
             self._bboxes[i][3] - self._bboxes[i][1] for i in range(len(self._bboxes))
         ]
@@ -70,24 +68,24 @@ class ImageSubtitle(Subtitle):
     @property
     def bbox_gaps(self) -> list[int]:
         """Gaps between bounding boxes of characters in image."""
-        if self._bboxes is None:
-            return None
+        assert self._bboxes is not None
         return [
             self._bboxes[i + 1][0] - self._bboxes[i][2]
             for i in range(len(self._bboxes) - 1)
         ]
 
     @property
-    def bboxes(self) -> list[tuple[int, int]]:
+    def bboxes(self) -> list[tuple[int, int, int, int]]:
         """Bounding boxes of characters in image."""
+        assert self._bboxes is not None
         return self._bboxes
 
     @bboxes.setter
-    def bboxes(self, bboxes: list[tuple[int, int]]):
+    def bboxes(self, bboxes: list[tuple[int, int, int, int]]):
         """Set bounding boxes of characters in image.
 
         Arguments:
-            bboxes: Bounding boxes of characters in image
+            bboxes: bounding boxes of characters in image
         """
         self._bboxes = bboxes
 
@@ -96,6 +94,7 @@ class ImageSubtitle(Subtitle):
         """Pairs of characters in image."""
         if self._char_pairs is None:
             self._init_char_pairs()
+        assert self._char_pairs is not None
         return self._char_pairs
 
     @char_pairs.setter
@@ -103,7 +102,7 @@ class ImageSubtitle(Subtitle):
         """Set pairs of characters in image.
 
         Arguments:
-            char_pairs: Character pairs
+            char_pairs: character pairs
         """
         new_text = ""
         for char_pair in char_pairs:
