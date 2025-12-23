@@ -70,12 +70,7 @@ class Series(SSAFile):
         """
         return not self == other
 
-    def __hash__(self) -> int:
-        """Hash of series content."""
-        event_tuples = tuple(
-            (event.start, event.end, event.text.replace("\n", "\\N")) for event in self
-        )
-        return hash(event_tuples)
+    __hash__ = None
 
     @override
     def __repr__(self) -> str:

@@ -55,7 +55,7 @@ class Block:
         Returns:
             iterator over subtitles in the block
         """
-        return iter(self._series.slice(self.start_idx, self.end_idx).events)
+        return iter(self._series.events[self.start_idx : self.end_idx])
 
     def __len__(self) -> int:
         """Get number of subtitles in block.
@@ -82,7 +82,7 @@ class Block:
     @property
     def events(self) -> list[Subtitle]:
         """List of subtitles in the block."""
-        return self._series.slice(self.start_idx, self.end_idx).events
+        return self._series.events[self.start_idx : self.end_idx]
 
     @property
     def start(self) -> int:
