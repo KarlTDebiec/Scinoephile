@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import re
+from html import escape, unescape
 from logging import info
 from pathlib import Path
 from typing import Any, Self, override
@@ -84,7 +86,7 @@ class ImageSeries(Series):
         # Check if directory
         if format_ == "png" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
-            self._save_png(output_dir, **kwargs)
+            self._save_png(output_dir, encoding=encoding, errors=errors)
             info(f"Saved series to {output_dir}")
             return
 
@@ -100,12 +102,33 @@ class ImageSeries(Series):
         )
         info(f"Saved series to {output_path}")
 
-    def _save_png(self, dir_path: Path, **kwargs: Any):
+    def _save_png(
+        self,
+        dir_path: Path,
+        encoding: str = "utf-8",
+        errors: str | None = None,
+    ):
         """Save series to directory of png files.
 
         Arguments:
             dir_path: Path to outpt directory
-            **kwargs: Additional keyword arguments
+            encoding: output file encoding
+            errors: encoding error handling
+        """
+        self._save_html(dir_path, encoding=encoding, errors=errors)
+
+    def _save_html(
+        self,
+        dir_path: Path,
+        encoding: str = "utf-8",
+        errors: str | None = None,
+    ):
+        """Save series to directory with HTML index and png files.
+
+        Arguments:
+            dir_path: Path to outpt directory
+            encoding: output file encoding
+            errors: encoding error handling
         """
         # Prepare empty directory, deleting existing files if needed
         if dir_path.exists() and dir_path.is_dir():
@@ -117,14 +140,45 @@ class ImageSeries(Series):
             info(f"Created directory {dir_path}")
 
         # Save images
+        image_paths = []
         for i, event in enumerate(self, 1):
-            outfile_path = dir_path / f"{i:04d}_{event.start:08d}_{event.end:08d}.png"
+            outfile_path = dir_path / f"{i:04d}.png"
             event.img.save(outfile_path)
+            image_paths.append(outfile_path)
             info(f"Saved image to {outfile_path}")
 
-        # Save text
-        outfile_path = dir_path / f"{dir_path.stem}.srt"
-        super().save(outfile_path, format_="srt")
+        # Save HTML index
+        html_lines = [
+            "<!DOCTYPE html>",
+            "<html>",
+            "<head>",
+            '   <meta charset="UTF-8" />',
+            "   <title>Subtitle images</title>",
+            "</head>",
+            "<body>",
+        ]
+        for i, (event, image_path) in enumerate(zip(self, image_paths), 1):
+            start = self._format_html_time(event.start)
+            end = self._format_html_time(event.end)
+            line = (
+                f"#{i}:{start}->{end}"
+                "<div style='text-align:center'>"
+                f"<img src='{image_path.name}' />"
+            )
+            text = event.text.replace("\\N", "\n")
+            if text.strip():
+                text = escape(text).replace("\n", "<br />")
+                line += (
+                    "<br />"
+                    "<div style='font-size:22px; background-color:WhiteSmoke'>"
+                    f"{text}</div>"
+                )
+            line += "</div><br /><hr />"
+            html_lines.append(line)
+        html_lines.extend(["</body>", "</html>"])
+        html_path = dir_path / "index.html"
+        html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
+        info(f"Saved HTML to {html_path}")
 
     @classmethod
     @override
@@ -151,69 +205,160 @@ class ImageSeries(Series):
         """
         try:
             validated_path = val_input_dir_path(path)
-            return cls._load_png(
+            return cls._load_html(
                 validated_path,
                 encoding=encoding,
-                format_=format_,
-                fps=fps,
                 errors=errors,
-                **kwargs,
             )
         except (DirectoryNotFoundError, NotADirectoryError):
             validated_path = val_input_path(path)
             if format_ == "sup" or validated_path.suffix == ".sup":
                 return cls._load_sup(validated_path)
             raise ValueError(
-                f"{cls.__name__}'s path must be path to a directory containing one srt "
-                "file containing N subtitles and N png files, or a .sup file."
+                f"{cls.__name__}'s path must be path to a directory containing one "
+                "index.html file and N png files, or a .sup file."
             )
 
     @classmethod
-    def _load_png(cls, dir_path: Path, **kwargs: Any) -> Self:
-        """Load series from a directory of png files.
+    def _load_html(
+        cls,
+        dir_path: Path,
+        encoding: str = "utf-8",
+        errors: str | None = None,
+    ) -> Self:
+        """Load series from a directory of png files and HTML index.
 
         Arguments:
             dir_path: Path to input directory
-            **kwargs: additional keyword arguments
+            encoding: input file encoding
+            errors: encoding error handling
         Returns:
             loaded series
         """
         series = cls()
         series.format = "png"
 
-        # Load text
-        srt_path = dir_path / f"{dir_path.stem}.srt"
-        text_series = Series.load(srt_path, **kwargs)
+        html_path = dir_path / "index.html"
+        if not html_path.exists():
+            raise ScinoephileError(f"Expected {html_path} to exist.")
+        html_text = html_path.read_text(encoding=encoding, errors=errors)
+        html_events = cls._parse_html_events(html_text, dir_path)
 
-        # Load images
-        infiles = sorted([path for path in dir_path.iterdir() if path.suffix == ".png"])
-        if len(text_series) != len(infiles):
-            raise ScinoephileError(
-                f"Number of images in {dir_path} ({len(series)}) "
-                f"does not match number of subtitles in {srt_path} "
-                f"({len(text_series)})"
-            )
-        for text_event, infile in zip(text_series, infiles):
-            img = Image.open(infile)
+        for html_event in html_events:
+            img = Image.open(html_event["path"])
             if img.mode == "RGBA":
                 arr = np.array(img)
                 if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
                     arr[:, :, 1] == arr[:, :, 2]
                 ):
                     img = img.convert("LA")
-                    img.save(infile)
-                    info(f"Converted {infile} to LA and resaved")
+                    img.save(html_event["path"])
+                    info(f"Converted {html_event['path']} to LA and resaved")
             series.events.append(
                 cls.event_class(
-                    start=text_event.start,
-                    end=text_event.end,
+                    start=html_event["start"],
+                    end=html_event["end"],
                     img=img,
-                    text=text_event.text,
+                    text=html_event["text"],
                     series=series,
                 )
             )
 
         return series
+
+    @staticmethod
+    def _format_html_time(time_ms: int) -> str:
+        """Format time in milliseconds for HTML image subtitles.
+
+        Arguments:
+            time_ms: time in milliseconds
+        Returns:
+            formatted time string
+        """
+        total_seconds, milliseconds = divmod(time_ms, 1000)
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if hours:
+            return f"{hours}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
+        if minutes:
+            return f"{minutes}:{seconds:02d},{milliseconds:03d}"
+        return f"{seconds},{milliseconds:03d}"
+
+    @staticmethod
+    def _parse_html_time(time_str: str) -> int:
+        """Parse time string from HTML image subtitles into milliseconds.
+
+        Arguments:
+            time_str: time string
+        Returns:
+            time in milliseconds
+        """
+        time_str = time_str.strip()
+        if "," in time_str:
+            time_part, ms_part = time_str.split(",", 1)
+        else:
+            time_part, ms_part = time_str, "0"
+        ms = int(ms_part.ljust(3, "0")[:3])
+        parts = time_part.split(":")
+        if len(parts) == 1:
+            hours = 0
+            minutes = 0
+            seconds = int(parts[0])
+        elif len(parts) == 2:
+            hours = 0
+            minutes = int(parts[0])
+            seconds = int(parts[1])
+        elif len(parts) == 3:
+            hours = int(parts[0])
+            minutes = int(parts[1])
+            seconds = int(parts[2])
+        else:
+            raise ValueError(f"Unrecognized time format: {time_str}")
+        return int(((hours * 3600) + (minutes * 60) + seconds) * 1000 + ms)
+
+    @classmethod
+    def _parse_html_events(
+        cls,
+        html_text: str,
+        dir_path: Path,
+    ) -> list[dict[str, Any]]:
+        """Parse HTML events for image subtitles.
+
+        Arguments:
+            html_text: HTML content
+            dir_path: directory containing images
+        Returns:
+            list of parsed event data
+        """
+        pattern = re.compile(
+            r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
+            r"<div style=['\"]text-align:center['\"]>"
+            r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
+            r"(?:<br /><div style=['\"]font-size:22px; "
+            r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
+            r"</div><br /><hr />",
+            re.DOTALL,
+        )
+        events = []
+        for match in pattern.finditer(html_text):
+            image_name = match.group("img")
+            image_path = dir_path / image_name
+            raw_text = match.group("text") or ""
+            text = unescape(raw_text.replace("<br />", "\n"))
+            events.append(
+                {
+                    "index": int(match.group("index")),
+                    "start": cls._parse_html_time(match.group("start")),
+                    "end": cls._parse_html_time(match.group("end")),
+                    "path": image_path,
+                    "text": text,
+                }
+            )
+        if not events:
+            raise ScinoephileError(
+                f"No subtitle entries found in HTML file for {dir_path}."
+            )
+        return events
 
     @classmethod
     def _load_sup(cls, file_path: Path) -> Self:
