@@ -5,10 +5,11 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterator
 from html import escape, unescape
 from logging import info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Any, Self, overload, override
 
 import numpy as np
 from PIL import Image
@@ -36,6 +37,26 @@ class ImageSeries(Series):
     """Class of individual subtitle events."""
     events: list[ImageSubtitle]
     """Individual subtitle events."""
+
+    def __iter__(self) -> Iterator[ImageSubtitle]:
+        """Iterate over image subtitles."""
+        return iter(self.events)
+
+    @overload
+    def __getitem__(self, index: int) -> ImageSubtitle: ...
+
+    @overload
+    def __getitem__(self, index: slice) -> list[ImageSubtitle]: ...
+
+    def __getitem__(self, index: int | slice) -> ImageSubtitle | list[ImageSubtitle]:
+        """Return image subtitles by index or slice.
+
+        Arguments:
+            index: index or slice of subtitles
+        Returns:
+            image subtitle or list of image subtitles
+        """
+        return self.events[index]
 
     @override
     def __init__(self):
