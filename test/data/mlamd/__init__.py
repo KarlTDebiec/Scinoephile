@@ -44,6 +44,7 @@ from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationP
 
 __all__ = [
     "mlamd_zho_hans_sup_path",
+    "mlamd_zho_hans_image_path",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
@@ -55,6 +56,7 @@ __all__ = [
     "mlamd_zho_hant_lens",
     "mlamd_zho_hant_paddle",
     "mlamd_eng_sup_path",
+    "mlamd_eng_image_path",
     "mlamd_eng_image",
     "mlamd_eng_lens",
     "mlamd_eng_tesseract",
@@ -89,6 +91,12 @@ output_dir = title_root / "output"
 def mlamd_zho_hans_sup_path() -> Path:
     """Path to MLAMD 简体中文 SUP subtitles."""
     return input_dir / "zho-Hans.sup"
+
+
+@pytest.fixture
+def mlamd_zho_hans_image_path() -> Path:
+    """Path to MLAMD 简体中文 image subtitles."""
+    return output_dir / "zho-Hans_image"
 
 
 @pytest.fixture
@@ -157,6 +165,12 @@ def mlamd_zho_hant_paddle() -> Series:
 def mlamd_eng_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
     return input_dir / "eng.sup"
+
+
+@pytest.fixture
+def mlamd_eng_image_path() -> Path:
+    """Path to MLAMD English image subtitles."""
+    return output_dir / "eng_image"
 
 
 @pytest.fixture
