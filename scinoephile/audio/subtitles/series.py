@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -134,17 +134,17 @@ class AudioSeries(Series):
         info(f"Saved series to {output_path}")
 
     @override
-    def slice(self, start_idx: int, end_idx: int) -> Self:
+    def slice(self, start: int, end: int) -> Self:
         """Slice series.
 
         Arguments:
-            start_idx: Start index of slice
-            end_idx: End index of slice
+            start: start index
+            end: end index
         Returns:
-            New sliced series
+            new sliced series
         """
-        sliced = super().slice(start_idx, end_idx)
-        sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
+        sliced = cast(Self, super().slice(start, end))
+        sliced.audio = self.audio[self[start].start : self[end - 1].end]
         return sliced
 
     @override
