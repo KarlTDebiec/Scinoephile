@@ -132,7 +132,7 @@ class ImageSeries(Series):
         """Save series to directory of png files.
 
         Arguments:
-            dir_path: Path to outpt directory
+            dir_path: Path to output directory
             encoding: output file encoding
             errors: encoding error handling
         """
@@ -147,7 +147,7 @@ class ImageSeries(Series):
         """Save series to directory with HTML index and png files.
 
         Arguments:
-            dir_path: Path to outpt directory
+            dir_path: Path to output directory
             encoding: output file encoding
             errors: encoding error handling
         """

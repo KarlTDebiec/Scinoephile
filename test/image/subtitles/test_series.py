@@ -61,7 +61,7 @@ def test_load_html(
     """Test loading HTML image subtitles.
 
     Arguments:
-        input_path_fixture: fixture name for the image subtitle directory
+        input_path_fixture: html input path fixture name
         expected_event_count: expected number of subtitles
         expected_first_size: expected size of the first image
         request: pytest fixture request
