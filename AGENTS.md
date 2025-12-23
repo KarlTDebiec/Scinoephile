@@ -7,7 +7,7 @@
   to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
-* Testing: `uv run pytest`
+* Testing: run pytest from `test` directory, e.g. `cd test && uv run pytest`
 
 ## Code Style
 
@@ -33,3 +33,7 @@
 * Format docstrings using Google style, with the following tweaks:
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank link between the "Arguments:" and "Returns:" sections.
+    * In argument descriptions, the first word after the colon should be lowercase
+      unless it is a type name.
+    * In the Returns section, the first word should be lowercase unless it is a type 
+      name.

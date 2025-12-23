@@ -40,7 +40,7 @@ class Series(SSAFile):
         Arguments:
             other: Series to which to compare
         Returns:
-            Whether this series is equal to another
+            whether this series is equal to another
         """
         if not isinstance(other, SSAFile):
             return NotImplemented
@@ -66,7 +66,7 @@ class Series(SSAFile):
         Arguments:
             other: Series to which to compare
         Returns:
-            Whether this series is not equal to another
+            whether this series is not equal to another
         """
         return not self == other
 
@@ -120,12 +120,12 @@ class Series(SSAFile):
         """Save series to an output file.
 
         Arguments:
-            path: Output file path
-            encoding: Output file encoding
-            format_: Output file format
-            fps: Frames per second
-            errors: Encoding error handling
-            **kwargs: Additional keyword arguments
+            path: output file path
+            encoding: output file encoding
+            format_: output file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         """
         path = val_output_path(path, exist_ok=True)
         SSAFile.save(
@@ -143,10 +143,10 @@ class Series(SSAFile):
         """Slice series.
 
         Arguments:
-            start: Start index
-            end: End index
+            start: start index
+            end: end index
         Returns:
-            Sliced series
+            sliced series
         """
         sliced = type(self)()
         sliced.events = [
@@ -159,10 +159,10 @@ class Series(SSAFile):
         """Convert series to a simple string representation.
 
         Arguments:
-            start: Start time (default is the start of the first event)
-            duration: Duration (default is the duration from the first to last event)
+            start: start time (default is the start of the first event)
+            duration: duration (default is the duration from the first to last event)
         Returns:
-            String representation of series
+            string representation of series
         """
         if not self.events:
             return ""
@@ -195,12 +195,12 @@ class Series(SSAFile):
         """Parse series from string.
 
         Arguments:
-            string: String to parse
-            format_: Input file format
-            fps: Frames per second
-            **kwargs: Additional keyword arguments
+            string: string to parse
+            format_: input file format
+            fps: frames per second
+            **kwargs: additional keyword arguments
         Returns:
-            Parsed series
+            parsed series
         """
         series = cast(
             Self,
@@ -226,14 +226,14 @@ class Series(SSAFile):
         """Load series from an input file.
 
         Arguments:
-            path : Input file path
-            encoding: Input file encoding
-            format_: Input file format
-            fps: Frames per second
-            errors: Encoding error handling
-            **kwargs: Additional keyword arguments
+            path : input file path
+            encoding: input file encoding
+            format_: input file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         validated_path = val_input_path(path)
 

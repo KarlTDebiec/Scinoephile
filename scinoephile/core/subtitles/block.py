@@ -28,7 +28,7 @@ class Block:
         """Get block at index.
 
         Arguments:
-            idx: Index of subtitle to get
+            idx: index of subtitle to get
         Returns:
             Subtitle at index
         """
@@ -53,7 +53,7 @@ class Block:
         """Iterate over subtitles in the block.
 
         Returns:
-            Iterator over subtitles in the block
+            iterator over subtitles in the block
         """
         return iter(self._series.slice(self.start_idx, self.end_idx).events)
 
@@ -61,7 +61,7 @@ class Block:
         """Get number of subtitles in block.
 
         Returns:
-            Number of subtitles in block
+            number of subtitles in block
         """
         return self.end_idx - self.start_idx
 
