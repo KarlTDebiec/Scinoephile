@@ -15,15 +15,15 @@ __all__ = [
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_image_array(bytes_: bytearray, height: int, width: int) -> np.ndarray:
+def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndarray:
     """Read a palette-compressed image from a block of bytes.
 
     Arguments:
-        bytes_: Block of bytes
+        bytes_: block of bytes
         height: height of image
         width: width of image
     Returns:
-        Compressed image
+        compressed image
     """
     array = np.zeros((height, width), np.uint8)
     byte_i = 0
@@ -69,13 +69,13 @@ def read_sup_image_array(bytes_: bytearray, height: int, width: int) -> np.ndarr
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_palette(bytes_: bytearray) -> np.ndarray:
+def read_sup_palette(bytes_: np.ndarray) -> np.ndarray:
     """Read a color palette from a block of bytes.
 
     Arguments:
-        bytes_: Block of bytes
+        bytes_: block of bytes
     Returns:
-        Palette; first index is color, second is channel
+        palette; first index is color, second is channel
     """
     palette = np.zeros((256, 4), np.uint8)
     byte_i = 0
@@ -96,18 +96,22 @@ def read_sup_palette(bytes_: bytearray) -> np.ndarray:
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_series(
-    bytes_: bytearray,
+    bytes_: np.ndarray,
 ) -> tuple[list[float], list[float], list[np.ndarray]]:
     """Read subtitle images and times from a block of bytes.
 
     Arguments:
-        bytes_: Block of bytes
+        bytes_: block of bytes
     Returns:
-        Subtitle starts, ends, and images
+        subtitle starts, ends, and images
     """
     starts = []
     ends = []
     images = []
+    palette = np.zeros((256, 4), np.uint8)
+    compressed_image = np.zeros((0, 0), np.uint8)
+    height = 0
+    width = 0
 
     byte_i = 0
     seeking_start = True

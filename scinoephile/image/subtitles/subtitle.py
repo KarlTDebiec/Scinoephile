@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any, override
+from typing import TYPE_CHECKING, Any, cast, override
 
 import numpy as np
 from PIL import Image
@@ -15,6 +15,9 @@ from scinoephile.core.text import whitespace_chars
 from scinoephile.image.base64 import get_base64_image
 from scinoephile.image.char_pair import CharPair
 from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
+
+if TYPE_CHECKING:
+    from .series import ImageSeries
 
 __all__ = ["ImageSubtitle"]
 
@@ -138,13 +141,40 @@ class ImageSubtitle(Subtitle):
         self._img_with_bboxes = None
         self._img_with_white_bg = None
 
+    @classmethod
+    def from_sup(
+        cls,
+        start_seconds: float,
+        end_seconds: float,
+        image: np.ndarray,
+        *,
+        series: ImageSeries | None = None,
+    ) -> ImageSubtitle:
+        """Create subtitle from SUP timing and image data.
+
+        Arguments:
+            start_seconds: start time in seconds
+            end_seconds: end time in seconds
+            image: image array (RGBA)
+            series: parent series
+        Returns:
+            ImageSubtitle instance
+        """
+        img = Image.fromarray(image, "RGBA")
+        return cls(
+            start=int(round(start_seconds * 1000)),
+            end=int(round(end_seconds * 1000)),
+            img=img,
+            series=series,
+        )
+
     @property
     def img_with_bboxes(self) -> Image.Image:
         """Image with bounding boxes."""
         if self._img_with_bboxes is None:
             self._img_with_bboxes = get_img_with_bboxes(
                 self.img_with_white_bg,
-                self.bboxes,
+                cast(list[tuple[int, ...]], self.bboxes),
             )
         return self._img_with_bboxes
 

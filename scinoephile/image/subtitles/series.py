@@ -14,11 +14,13 @@ from PIL import Image
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
     val_input_dir_path,
+    val_input_path,
     val_output_dir_path,
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.sup import read_sup_series
 
 from .subtitle import ImageSubtitle
 
@@ -157,11 +159,14 @@ class ImageSeries(Series):
                 errors=errors,
                 **kwargs,
             )
-        except (DirectoryNotFoundError, NotADirectoryError) as exc:
+        except (DirectoryNotFoundError, NotADirectoryError):
+            validated_path = val_input_path(path)
+            if format_ == "sup" or validated_path.suffix == ".sup":
+                return cls._load_sup(validated_path)
             raise ValueError(
                 f"{cls.__name__}'s path must be path to a directory containing one srt "
-                "file containing N subtitles and N png files."
-            ) from exc
+                "file containing N subtitles and N png files, or a .sup file."
+            )
 
     @classmethod
     def _load_png(cls, dir_path: Path, **kwargs: Any) -> Self:
@@ -208,6 +213,36 @@ class ImageSeries(Series):
                 )
             )
 
+        return series
+
+    @classmethod
+    def _load_sup(cls, file_path: Path) -> Self:
+        """Load series from a sup file.
+
+        Arguments:
+            file_path: path to sup file
+        Returns:
+            loaded series
+        """
+        data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
+        starts, ends, images = read_sup_series(data)
+        if len(starts) != len(ends) or len(starts) != len(images):
+            raise ScinoephileError(
+                f"Sup data in {file_path} is malformed: "
+                f"{len(starts)} starts, {len(ends)} ends, {len(images)} images."
+            )
+
+        series = cls()
+        series.format = "sup"
+        for start, end, image in zip(starts, ends, images):
+            series.events.append(
+                cls.event_class.from_sup(
+                    start,
+                    end,
+                    image,
+                    series=series,
+                )
+            )
         return series
 
     def _init_fill_and_outline_colors(self):
