@@ -28,7 +28,7 @@ def flaky(inner: partial | None = None) -> partial:
     """Mark test as flaky (i.e., xfail but don’t fail suite on pass/fail).
 
     Arguments:
-        inner: Nascent partial function of pytest.param with additional marks
+        inner: nascent partial function of pytest.param with additional marks
     Returns:
         partial function of pytest.param with marks
     """
@@ -42,8 +42,8 @@ def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
     """Decorator for parametrized test fixtures which provides clearer test output.
 
     Arguments:
-        cls: Stage fixture class
-        params: Fixture parameters
+        cls: stage fixture class
+        params: fixture parameters
     Returns:
         fixture with provided params and clear ids
     """
@@ -58,7 +58,7 @@ def skip_if_ci(inner: partial | None = None) -> partial:
     """Mark test to skip if running within continuous integration pipeline.
 
     Arguments:
-        inner: Nascent partial function of pytest.param with additional marks
+        inner: nascent partial function of pytest.param with additional marks
     Returns:
         partial function of pytest.param with marks
     """
@@ -72,7 +72,7 @@ def skip_if_codex(inner: partial | None = None) -> partial:
     """Mark test to skip if running within Codex environment.
 
     Arguments:
-        inner: Nascent partial function of pytest.param with additional marks
+        inner: nascent partial function of pytest.param with additional marks
     Returns:
         partial function of pytest.param with marks
     """

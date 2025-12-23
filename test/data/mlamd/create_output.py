@@ -154,6 +154,7 @@ if "简体粤文 (Transcription)" in actions:
             "structure is reversed in the 粤文."
         )
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     reviewer = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",
