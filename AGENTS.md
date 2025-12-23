@@ -3,12 +3,11 @@
 ## Tools
 
 * This repository uses `uv`. Use `uv run` when executing tools.
-* Run the following checks on **only the Python files you have changed or been asked to**:
+* Run the following checks on **only the Python files you have changed or been asked 
+  to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
-* Do not add `noqa` comments to ignore linting errors. If fixing a linting error is not
-  possible or is outside the scope of your change, that is fine.
-* Testing: `uv run pytest`
+* Testing: run pytest from `test` directory, e.g. `cd test && uv run pytest`
 
 ## Code Style
 
@@ -33,4 +32,8 @@
   with an underscore.
 * Format docstrings using Google style, with the following tweaks:
     * Use "Arguments:" instead of "Args:".
-    * Do not include a blank link between the "Arguments:" and "Returns:" sections.
+    * Do not include a blank line between the "Arguments:" and "Returns:" sections.
+    * In argument descriptions, the first word after the colon should be lowercase
+      unless it is a type name.
+    * In the Returns section, the first word should be lowercase unless it is a type 
+      name.

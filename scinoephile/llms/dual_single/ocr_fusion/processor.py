@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.testing import test_data_root
 from scinoephile.llms.base import (
     Queryer,
     TestCase,
@@ -17,7 +18,6 @@ from scinoephile.llms.base import (
     save_test_cases_to_json,
 )
 from scinoephile.multilang.synchronization import are_series_one_to_one
-from scinoephile.testing import test_data_root
 
 from .manager import OcrFusionManager
 from .prompt import OcrFusionPrompt

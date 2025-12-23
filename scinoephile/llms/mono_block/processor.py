@@ -10,13 +10,13 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.core.testing import test_data_root
 from scinoephile.llms.base import (
     Queryer,
     TestCase,
     load_test_cases_from_json,
     save_test_cases_to_json,
 )
-from scinoephile.testing import test_data_root
 
 from .manager import MonoBlockManager
 from .prompt import MonoBlockPrompt

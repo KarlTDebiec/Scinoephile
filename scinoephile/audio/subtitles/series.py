@@ -7,11 +7,10 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
-from pysubs2 import SSAFile
 
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
@@ -60,9 +59,10 @@ class AudioSeries(Series):
         super().__init__()
 
         self._audio = audio
+        self._blocks: list[AudioBlock] | None = None
 
     @property
-    def audio(self) -> AudioSegment:
+    def audio(self) -> AudioSegment | None:
         """Audio of series."""
         return self._audio
 
@@ -81,6 +81,7 @@ class AudioSeries(Series):
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
+        assert self._blocks is not None
         return self._blocks
 
     @blocks.setter
@@ -94,40 +95,58 @@ class AudioSeries(Series):
         self._blocks = blocks
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any):
+    def save(
+        self,
+        path: Path | str,
+        encoding: str = "utf-8",
+        format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
+        **kwargs: Any,
+    ) -> None:
         """Save series to an output file.
 
         Arguments:
-            path: Output file path
-            format_: Output file format
-            **kwargs: Additional keyword arguments
+            path: output file path
+            encoding: output file encoding
+            format_: output file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         """
         path = Path(path)
 
         # Check if directory
         if format_ == "wav" or (not format_ and path.suffix == ""):
-            path = val_output_dir_path(path)
-            self._save_wav(path, **kwargs)
-            info(f"Saved series to {path}")
+            output_dir = val_output_dir_path(path)
+            self._save_wav(output_dir, **kwargs)
+            info(f"Saved series to {output_dir}")
             return
 
-        # Otherwise, continue as superclass SSAFile
-        path = val_output_path(path, exist_ok=True)
-        SSAFile.save(self, path, format_=format_, **kwargs)
-        info(f"Saved series to {path}")
+        # Otherwise, continue as superclass
+        output_path = val_output_path(path, exist_ok=True)
+        super().save(
+            output_path,
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+            **kwargs,
+        )
+        info(f"Saved series to {output_path}")
 
     @override
-    def slice(self, start_idx: int, end_idx: int) -> Self:
+    def slice(self, start: int, end: int) -> Self:
         """Slice series.
 
         Arguments:
-            start_idx: Start index of slice
-            end_idx: End index of slice
+            start: start index
+            end: end index
         Returns:
-            New sliced series
+            new sliced series
         """
-        sliced = super().slice(start_idx, end_idx)
-        sliced.audio = self.audio[self[start_idx].start : self[end_idx - 1].end]
+        sliced = cast(Self, super().slice(start, end))
+        sliced.audio = self.audio[self[start].start : self[end - 1].end]
         return sliced
 
     @override
@@ -212,21 +231,32 @@ class AudioSeries(Series):
         path: Path | str,
         encoding: str = "utf-8",
         format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
         Arguments:
-            path : Input file path
-            encoding: Input file encoding
-            format_: Input file format
-            **kwargs: Additional keyword arguments
+            path : input file path
+            encoding: input file encoding
+            format_: input file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         try:
             validated_path = val_input_dir_path(path)
-            return cls._load_wav(validated_path, **kwargs)
+            return cls._load_wav(
+                validated_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
         except (DirectoryNotFoundError, NotADirectoryError):
             try:
                 validated_path = val_input_path(path)
@@ -235,6 +265,10 @@ class AudioSeries(Series):
                 return cls._load_video(
                     subtitle_path=validated_path,
                     video_path=validated_video_path,
+                    encoding=encoding,
+                    format_=format_,
+                    fps=fps,
+                    errors=errors,
                     **kwargs,
                 )
             except (FileNotFoundError, KeyError, NotAFileError) as exc:
@@ -317,14 +351,24 @@ class AudioSeries(Series):
         Arguments:
             subtitle_path: Path to subtitle file
             video_path: Path to video file
-            audio_track: Audio track (zero-indexed)
-            buffer: Additional buffer to include before and after subtitles (ms)
-            **kwargs: Additional keyword arguments
+            audio_track: audio track (zero-indexed)
+            buffer: additional buffer to include before and after subtitles (ms)
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         # Load text
-        text_series = Series.load(subtitle_path)
+        encoding = kwargs.pop("encoding", "utf-8")
+        format_ = kwargs.pop("format_", None)
+        fps = kwargs.pop("fps", None)
+        errors = kwargs.pop("errors", None)
+        text_series = Series.load(
+            subtitle_path,
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+        )
 
         # Probe audio track to determine number of channels
         info(f"Probing audio track {audio_track} in {video_path}")
@@ -355,14 +399,14 @@ class AudioSeries(Series):
 
         Arguments:
             dir_path: Path to input directory
-            buffer: Additional buffer to include before and after subtitles (ms)
-            **kwargs: Additional keyword arguments
+            buffer: additional buffer to include before and after subtitles (ms)
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         # Load text
         srt_path = dir_path / f"{dir_path.stem}.srt"
-        text_series = Series.load(srt_path)
+        text_series = Series.load(srt_path, **kwargs)
 
         # Load full audio file
         audio_path = dir_path / f"{dir_path.stem}.wav"

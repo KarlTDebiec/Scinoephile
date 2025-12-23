@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -32,36 +32,45 @@ class Series(SSAFile):
         """Initialize."""
         super().__init__()
 
-        self._blocks = None
+        self._blocks: list[Block] | None = None
 
-    @override
-    def __eq__(self, other: SSAFile) -> bool:
+    def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
 
         Arguments:
             other: Series to which to compare
         Returns:
-            Whether this series is equal to another
+            whether this series is equal to another
         """
+        if not isinstance(other, SSAFile):
+            return NotImplemented
+
         if len(self) != len(other):
             return False
 
         for self_event, other_event in zip(self, other):
-            if self_event != other_event:
+            if self_event.start != other_event.start:
+                return False
+            if self_event.end != other_event.end:
+                return False
+            if self_event.text.replace("\n", "\\N") != other_event.text.replace(
+                "\n", "\\N"
+            ):
                 return False
 
         return True
 
-    @override
-    def __ne__(self, other: SSAFile) -> bool:
+    def __ne__(self, other: object) -> bool:
         """Whether this series is not equal to another.
 
         Arguments:
             other: Series to which to compare
         Returns:
-            Whether this series is not equal to another
+            whether this series is not equal to another
         """
         return not self == other
+
+    __hash__ = None
 
     @override
     def __repr__(self) -> str:
@@ -81,6 +90,7 @@ class Series(SSAFile):
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
+        assert self._blocks is not None
         return self._blocks
 
     @blocks.setter
@@ -93,39 +103,61 @@ class Series(SSAFile):
         self._blocks = blocks
 
     @override
-    def save(self, path: Path | str, format_: str | None = None, **kwargs: Any):
+    def save(
+        self,
+        path: Path | str,
+        encoding: str = "utf-8",
+        format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
+        **kwargs: Any,
+    ) -> None:
         """Save series to an output file.
 
         Arguments:
-            path: Output file path
-            format_: Output file format
-            **kwargs: Additional keyword arguments
+            path: output file path
+            encoding: output file encoding
+            format_: output file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         """
         path = val_output_path(path, exist_ok=True)
-        SSAFile.save(self, path, format_=format_, **kwargs)
+        SSAFile.save(
+            self,
+            str(path),
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+            **kwargs,
+        )
         info(f"Saved series to {path}")
 
     def slice(self, start: int, end: int) -> Self:
         """Slice series.
 
         Arguments:
-            start: Start index
-            end: End index
+            start: start index
+            end: end index
         Returns:
-            Sliced series
+            sliced series
         """
         sliced = type(self)()
-        sliced.events = self[start:end]
+        sliced.events = [
+            self.event_class(series=sliced, **event.as_dict())
+            for event in self[start:end]
+        ]
         return sliced
 
     def to_simple_string(self, start: int | None = None, duration: int | None = None):
         """Convert series to a simple string representation.
 
         Arguments:
-            start: Start time (default is the start of the first event)
-            duration: Duration (default is the duration from the first to last event)
+            start: start time (default is the start of the first event)
+            duration: duration (default is the duration from the first to last event)
         Returns:
-            String representation of series
+            string representation of series
         """
         if not self.events:
             return ""
@@ -158,14 +190,17 @@ class Series(SSAFile):
         """Parse series from string.
 
         Arguments:
-            string: String to parse
-            format_: Input file format
-            fps: Frames per second
-            **kwargs: Additional keyword arguments
+            string: string to parse
+            format_: input file format
+            fps: frames per second
+            **kwargs: additional keyword arguments
         Returns:
-            Parsed series
+            parsed series
         """
-        series = super().from_string(string, format_=format_, fps=fps, **kwargs)
+        series = cast(
+            Self,
+            super().from_string(string, format_=format_, fps=fps, **kwargs),
+        )
         series.events = [
             cls.event_class(series=series, **ssaevent.as_dict()) for ssaevent in series
         ]
@@ -179,22 +214,29 @@ class Series(SSAFile):
         path: Path | str,
         encoding: str = "utf-8",
         format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
         Arguments:
-            path : Input file path
-            encoding: Input file encoding
-            format_: Input file format
-            **kwargs: Additional keyword arguments
+            path : input file path
+            encoding: input file encoding
+            format_: input file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         validated_path = val_input_path(path)
 
-        with open(validated_path, encoding=encoding) as input_file:
-            series = cls.from_file(input_file, format_=format_, **kwargs)
+        with open(str(validated_path), encoding=encoding, errors=errors) as input_file:
+            series = cast(
+                Self,
+                cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
+            )
             series.events = [
                 cls.event_class(series=series, **ssaevent.as_dict())
                 for ssaevent in series
@@ -216,13 +258,11 @@ class Series(SSAFile):
     ) -> list[tuple[int, int]]:
         """Get indexes of blocks in a Series split by pauses without text.
 
-        Blocks are 1-indexed and the start and end indexes are inclusive.
-
         Arguments:
             series: Series to split into blocks
-            pause_length: Split whenever a pause of this length is encountered
+            pause_length: split whenever a pause of this length is encountered
         Returns:
-            Start and end indexes of each block
+            start and end indexes of each block
         """
         if not series.events:
             return []

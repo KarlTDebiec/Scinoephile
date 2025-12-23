@@ -19,13 +19,13 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.subtitles import Block, Series, get_concatenated_series
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer, TestCase
 from scinoephile.multilang.yue_zho.transcription.merging import YueZhoHansMergingPrompt
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
-from scinoephile.testing import test_data_root
 
 from .aligner import Aligner
 

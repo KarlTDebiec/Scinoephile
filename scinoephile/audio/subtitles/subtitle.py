@@ -44,6 +44,7 @@ class AudioSubtitle(Subtitle):
     @property
     def audio(self) -> AudioSegment:
         """Audio of subtitle."""
+        assert self._audio is not None
         return self._audio
 
     @audio.setter
@@ -58,6 +59,7 @@ class AudioSubtitle(Subtitle):
     @property
     def segment(self) -> TranscribedSegment:
         """Transcribed segment of subtitle."""
+        assert self._segment is not None
         return self._segment
 
     @segment.setter

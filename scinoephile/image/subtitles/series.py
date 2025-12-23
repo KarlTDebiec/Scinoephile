@@ -10,16 +10,17 @@ from typing import Any, Self, override
 
 import numpy as np
 from PIL import Image
-from pysubs2 import SSAFile
 
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.validation import (
     val_input_dir_path,
+    val_input_path,
     val_output_dir_path,
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.sup import read_sup_series
 
 from .subtitle import ImageSubtitle
 
@@ -47,6 +48,7 @@ class ImageSeries(Series):
         """Fill color of text images."""
         if self._fill_color is None:
             self._init_fill_and_outline_colors()
+        assert self._fill_color is not None
         return self._fill_color
 
     @property
@@ -54,30 +56,49 @@ class ImageSeries(Series):
         """Outline color of text images."""
         if self._outline_color is None:
             self._init_fill_and_outline_colors()
+        assert self._outline_color is not None
         return self._outline_color
 
     @override
-    def save(self, path: str, format_: str | None = None, **kwargs: Any):
+    def save(
+        self,
+        path: Path | str,
+        encoding: str = "utf-8",
+        format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
+        **kwargs: Any,
+    ) -> None:
         """Save series to an output file.
 
         Arguments:
-            path: Output file path
-            format_: Output file format
-            **kwargs: Additional keyword arguments
+            path: output file path
+            encoding: output file encoding
+            format_: output file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         """
         path = Path(path)
 
         # Check if directory
         if format_ == "png" or (not format_ and path.suffix == ""):
-            path = val_output_dir_path(path)
-            self._save_png(path, **kwargs)
-            info(f"Saved series to {path}")
+            output_dir = val_output_dir_path(path)
+            self._save_png(output_dir, **kwargs)
+            info(f"Saved series to {output_dir}")
             return
 
-        # Otherwise, continue as superclass SSAFile
-        path = val_output_path(path)
-        SSAFile.save(self, path, format_=format_, **kwargs)
-        info(f"Saved series to {path}")
+        # Otherwise, continue as superclass
+        output_path = val_output_path(path)
+        super().save(
+            output_path,
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+            **kwargs,
+        )
+        info(f"Saved series to {output_path}")
 
     def _save_png(self, dir_path: Path, **kwargs: Any):
         """Save series to directory of png files.
@@ -109,29 +130,43 @@ class ImageSeries(Series):
     @override
     def load(
         cls,
-        path: str,
+        path: Path | str,
         encoding: str = "utf-8",
         format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
         Arguments:
-            path: Input file path
-            encoding: Input file encoding
-            format_: Input file format
-            **kwargs: Additional keyword arguments
+            path: input file path
+            encoding: input file encoding
+            format_: input file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         try:
             validated_path = val_input_dir_path(path)
-            return cls._load_png(validated_path, **kwargs)
-        except (DirectoryNotFoundError, NotADirectoryError) as exc:
+            return cls._load_png(
+                validated_path,
+                encoding=encoding,
+                format_=format_,
+                fps=fps,
+                errors=errors,
+                **kwargs,
+            )
+        except (DirectoryNotFoundError, NotADirectoryError):
+            validated_path = val_input_path(path)
+            if format_ == "sup" or validated_path.suffix == ".sup":
+                return cls._load_sup(validated_path)
             raise ValueError(
                 f"{cls.__name__}'s path must be path to a directory containing one srt "
-                "file containing N subtitles and N png files."
-            ) from exc
+                "file containing N subtitles and N png files, or a .sup file."
+            )
 
     @classmethod
     def _load_png(cls, dir_path: Path, **kwargs: Any) -> Self:
@@ -139,16 +174,16 @@ class ImageSeries(Series):
 
         Arguments:
             dir_path: Path to input directory
-            **kwargs: Additional keyword arguments
+            **kwargs: additional keyword arguments
         Returns:
-            Loaded series
+            loaded series
         """
         series = cls()
         series.format = "png"
 
         # Load text
         srt_path = dir_path / f"{dir_path.stem}.srt"
-        text_series = Series.load(srt_path)
+        text_series = Series.load(srt_path, **kwargs)
 
         # Load images
         infiles = sorted([path for path in dir_path.iterdir() if path.suffix == ".png"])
@@ -180,6 +215,36 @@ class ImageSeries(Series):
 
         return series
 
+    @classmethod
+    def _load_sup(cls, file_path: Path) -> Self:
+        """Load series from a sup file.
+
+        Arguments:
+            file_path: path to sup file
+        Returns:
+            loaded series
+        """
+        data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
+        starts, ends, images = read_sup_series(data)
+        if len(starts) != len(ends) or len(starts) != len(images):
+            raise ScinoephileError(
+                f"Sup data in {file_path} is malformed: "
+                f"{len(starts)} starts, {len(ends)} ends, {len(images)} images."
+            )
+
+        series = cls()
+        series.format = "sup"
+        for start, end, image in zip(starts, ends, images):
+            series.events.append(
+                cls.event_class.from_sup(
+                    start,
+                    end,
+                    image,
+                    series=series,
+                )
+            )
+        return series
+
     def _init_fill_and_outline_colors(self):
         """Initialzie the fill and outline colors used in this series.
 
@@ -187,7 +252,7 @@ class ImageSeries(Series):
         * Tested images used a 16-color palette.
         """
         hist = np.zeros(256, dtype=np.uint64)
-        for subtitle in self:
+        for subtitle in self.events:
             grayscale = subtitle.arr[:, :, 0]
             alpha = subtitle.arr[:, :, 1]
             mask = alpha != 0

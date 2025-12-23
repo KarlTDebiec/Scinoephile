@@ -11,6 +11,7 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -40,7 +41,6 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
 )
-from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,
@@ -154,6 +154,7 @@ if "简体粤文 (Transcription)" in actions:
             "structure is reversed in the 粤文."
         )
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     reviewer = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",

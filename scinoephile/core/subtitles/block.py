@@ -28,40 +28,40 @@ class Block:
         """Get block at index.
 
         Arguments:
-            idx: Index of subtitle to get
+            idx: index of subtitle to get
         Returns:
             Subtitle at index
         """
         if not isinstance(idx, int):
             raise TypeError(f"Index must be an int, not {type(idx).__name__}")
         if idx == 0:
-            return self._series[self.start_idx]
+            return self._series.events[self.start_idx]
         if idx < 0:
             idx += len(self)
             if idx < 0 or idx >= len(self):
                 raise IndexError(
                     f"Index {idx} out of range for block of length {len(self)}"
                 )
-            return self._series[self.start_idx + idx]
+            return self._series.events[self.start_idx + idx]
         if idx >= len(self):
             raise IndexError(
                 f"Index {idx} out of range for block of length {len(self)}"
             )
-        return self._series[self.start_idx + idx]
+        return self._series.events[self.start_idx + idx]
 
     def __iter__(self) -> Iterator[Subtitle]:
         """Iterate over subtitles in the block.
 
         Returns:
-            Iterator over subtitles in the block
+            iterator over subtitles in the block
         """
-        return iter(self._series.slice(self.start_idx, self.end_idx).events)
+        return iter(self._series.events[self.start_idx : self.end_idx])
 
     def __len__(self) -> int:
         """Get number of subtitles in block.
 
         Returns:
-            Number of subtitles in block
+            number of subtitles in block
         """
         return self.end_idx - self.start_idx
 
@@ -82,7 +82,7 @@ class Block:
     @property
     def events(self) -> list[Subtitle]:
         """List of subtitles in the block."""
-        return self._series.slice(self.start_idx, self.end_idx).events
+        return self._series.events[self.start_idx : self.end_idx]
 
     @property
     def start(self) -> int:

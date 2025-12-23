@@ -11,6 +11,7 @@ from typing import Any
 import pytest
 
 from scinoephile.core.subtitles import Series
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
@@ -39,7 +40,6 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
-from scinoephile.testing import test_data_root
 
 __all__ = [
     "mlamd_zho_hans_lens",

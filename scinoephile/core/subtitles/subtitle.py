@@ -10,7 +10,7 @@ from typing import Any, override
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-from ..text import full_punc_chars, half_punc_chars, whitespace_chars
+from scinoephile.core.text import full_punc_chars, half_punc_chars, whitespace_chars
 
 __all__ = ["Subtitle"]
 
@@ -28,7 +28,7 @@ class Subtitle(SSAEvent):
         """Initialize.
 
         Arguments:
-            **kwargs: Additional keyword arguments
+            **kwargs: additional keyword arguments
         """
         super_field_names = {f.name for f in fields(SSAEvent)}
         super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
@@ -38,14 +38,17 @@ class Subtitle(SSAEvent):
     """Comment associated with subtitle."""
 
     @override
-    def __eq__(self, other: SSAEvent) -> bool:
+    def __eq__(self, other: object) -> bool:
         """Whether this subtitle is equal to another.
 
         Arguments:
             other: Subtitle to which to compare
         Returns:
-            Whether this subtitle is equal to another
+            whether this subtitle is equal to another
         """
+        if not isinstance(other, SSAEvent):
+            return NotImplemented
+
         if self.start != other.start:
             return False
 
@@ -59,15 +62,18 @@ class Subtitle(SSAEvent):
         return False
 
     @override
-    def __ne__(self, other: SSAEvent) -> bool:
+    def __ne__(self, other: object) -> bool:
         """Whether this subtitle is not equal to another.
 
         Arguments:
             other: Subtitle to which to compare
         Returns:
-            Whether this subtitle is not equal to another
+            whether this subtitle is not equal to another
         """
-        return not self == other
+        eq_result = self == other
+        if eq_result is NotImplemented:
+            return NotImplemented
+        return not eq_result
 
     @override
     def __repr__(self) -> str:
