@@ -6,5 +6,5 @@ Package hierarchy (modules may import from any above):
 * common
 * core
 * lang
-* audio / documentation / image /openai / testing
+* audio / documentation / image /openai
 """
