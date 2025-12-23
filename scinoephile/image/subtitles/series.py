@@ -21,7 +21,7 @@ from scinoephile.common.validation import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
-from .image_subtitle import ImageSubtitle
+from .subtitle import ImageSubtitle
 
 __all__ = ["ImageSeries"]
 

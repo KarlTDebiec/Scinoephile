@@ -1,13 +1,9 @@
 #  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to Cantonese audio transcription alignment."""
+"""Cantonese transcription tooling for 粤文/中文 workflows."""
 
 from __future__ import annotations
 
-from .aligner import Aligner
-from .alignment import Alignment
+from .transcriber import YueTranscriber
 
-__all__ = [
-    "Aligner",
-    "Alignment",
-]
+__all__ = ["YueTranscriber"]

@@ -10,6 +10,7 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_input_dir_path, val_input_path
 from scinoephile.core import ScinoephileError
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .bbox_manager import BboxManager
 from .drawing import (
@@ -19,8 +20,6 @@ from .drawing import (
     get_img_scaled_to_bbox,
     get_imgs_stacked,
 )
-from .image_series import ImageSeries
-from .image_subtitle import ImageSubtitle
 from .whitespace_manager import WhitespaceManager
 
 __all__ = ["ValidationManager"]

@@ -8,8 +8,7 @@ import asyncio
 from logging import info
 from pathlib import Path
 
-from scinoephile.audio import AudioSeries
-from scinoephile.audio.cantonese import CantoneseTranscriptionReviewer
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.eng import (
@@ -36,6 +35,7 @@ from scinoephile.multilang.yue_zho import (
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_processor
+from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
@@ -155,7 +155,7 @@ if "简体粤文 (Transcription)" in actions:
         )
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
-    reviewer = CantoneseTranscriptionReviewer(
+    reviewer = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),

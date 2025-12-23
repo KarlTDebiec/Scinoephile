@@ -11,8 +11,7 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-
-from .image_subtitle import ImageSubtitle
+from scinoephile.image.subtitles import ImageSubtitle
 
 __all__ = ["BboxManager"]
 
