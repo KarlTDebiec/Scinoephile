@@ -6,8 +6,8 @@ from __future__ import annotations
 
 import pytest
 
+from scinoephile.core.testing import skip_if_ci, test_data_root
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.testing import skip_if_ci, test_data_root
 
 
 @pytest.mark.parametrize(

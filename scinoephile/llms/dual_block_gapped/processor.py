@@ -12,6 +12,7 @@ import numpy as np
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.testing import test_data_root
 from scinoephile.llms.base import (
     Queryer,
     TestCase,
@@ -20,7 +21,6 @@ from scinoephile.llms.base import (
 )
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
-from scinoephile.testing import test_data_root
 
 from .manager import DualBlockGappedManager
 from .prompt import DualBlockGappedPrompt

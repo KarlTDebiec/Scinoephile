@@ -11,6 +11,7 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -40,7 +41,6 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
 )
-from scinoephile.testing import test_data_root
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,

@@ -11,6 +11,7 @@ from typing import Any
 import pytest
 
 from scinoephile.core.subtitles import Series
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
@@ -19,7 +20,6 @@ from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
-from scinoephile.testing import test_data_root
 
 __all__ = [
     "t_zho_hans_lens",

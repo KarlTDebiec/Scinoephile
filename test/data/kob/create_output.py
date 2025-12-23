@@ -8,6 +8,7 @@ from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
+from scinoephile.core.testing import test_data_root
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -30,7 +31,6 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 from scinoephile.multilang import get_synced_series
-from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_eng_ocr_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
