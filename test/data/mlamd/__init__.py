@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.testing import test_data_root
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
@@ -42,6 +43,7 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 
 __all__ = [
+    "mlamd_zho_hans_image",
     "mlamd_zho_hans_lens",
     "mlamd_zho_hans_paddle",
     "mlamd_zho_hans_fuse",
@@ -50,6 +52,7 @@ __all__ = [
     "mlamd_zho_hans_fuse_proofread_clean_flatten",
     "mlamd_zho_hant_lens",
     "mlamd_zho_hant_paddle",
+    "mlamd_eng_image",
     "mlamd_eng_lens",
     "mlamd_eng_tesseract",
     "mlamd_eng_fuse",
@@ -79,6 +82,12 @@ output_dir = title_root / "output"
 
 
 # 简体中文 (OCR)
+@pytest.fixture
+def mlamd_zho_hans_image() -> ImageSeries:
+    """MLAMD 简体中文 image subtitles."""
+    return ImageSeries.load(output_dir / "zho-Hans_image", encoding="utf-8")
+
+
 @pytest.fixture
 def mlamd_zho_hans_lens() -> Series:
     """MLAMD 简体中文 subtitles OCRed using Google Lens."""
@@ -129,6 +138,12 @@ def mlamd_zho_hant_paddle() -> Series:
 
 
 # English (OCR)
+@pytest.fixture
+def mlamd_eng_image() -> ImageSeries:
+    """MLAMD English image subtitles."""
+    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+
+
 @pytest.fixture
 def mlamd_eng_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
