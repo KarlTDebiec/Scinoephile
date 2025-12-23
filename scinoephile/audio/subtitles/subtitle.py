@@ -44,6 +44,7 @@ class AudioSubtitle(Subtitle):
     @property
     def audio(self) -> AudioSegment:
         """Audio of subtitle."""
+        assert self._audio is not None
         return self._audio
 
     @audio.setter
