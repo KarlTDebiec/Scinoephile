@@ -59,10 +59,12 @@ class AudioSeries(Series):
         super().__init__()
 
         self._audio = audio
+        self._blocks: list[AudioBlock] | None = None
 
     @property
     def audio(self) -> AudioSegment:
         """Audio of series."""
+        assert self._audio is not None
         return self._audio
 
     @audio.setter
@@ -80,6 +82,7 @@ class AudioSeries(Series):
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
+        assert self._blocks is not None
         return self._blocks
 
     @blocks.setter
