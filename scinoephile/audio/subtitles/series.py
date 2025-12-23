@@ -195,7 +195,7 @@ class AudioSeries(Series):
         """Save series to directory of wav files.
 
         Arguments:
-            fp: Path to outpt directory
+            fp: Path to output directory
             **kwargs: Additional keyword arguments
         """
         # Prepare empty directory, deleting existing files if needed

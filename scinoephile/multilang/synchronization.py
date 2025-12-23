@@ -353,11 +353,15 @@ def _get_sync_groups(
 
     js_that_match_each_i = {}
     for i in range(len(one)):
-        js_that_match_each_i[i] = sorted(nonzero[nonzero[:, 0] == i, 1])
+        js_that_match_each_i[i] = [
+            int(j) for j in sorted(nonzero[nonzero[:, 0] == i, 1])
+        ]
 
     is_that_match_each_j = {}
     for j in range(len(two)):
-        is_that_match_each_j[j] = sorted(nonzero[nonzero[:, 1] == j, 0])
+        is_that_match_each_j[j] = [
+            int(i) for i in sorted(nonzero[nonzero[:, 1] == j, 0])
+        ]
 
     for i, js_that_match_this_i in js_that_match_each_i.items():
         if i not in available_is:
