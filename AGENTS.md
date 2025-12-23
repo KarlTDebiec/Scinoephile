@@ -3,11 +3,10 @@
 ## Tools
 
 * This repository uses `uv`. Use `uv run` when executing tools.
-* Run the following checks on **only the Python files you have changed or been asked to**:
+* Run the following checks on **only the Python files you have changed or been asked 
+  to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
-* Do not add `noqa` comments to ignore linting errors. If fixing a linting error is not
-  possible or is outside the scope of your change, that is fine.
 * Testing: `uv run pytest`
 
 ## Code Style
