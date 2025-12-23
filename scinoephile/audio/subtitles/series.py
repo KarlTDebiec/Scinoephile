@@ -62,9 +62,8 @@ class AudioSeries(Series):
         self._blocks: list[AudioBlock] | None = None
 
     @property
-    def audio(self) -> AudioSegment:
+    def audio(self) -> AudioSegment | None:
         """Audio of series."""
-        assert self._audio is not None
         return self._audio
 
     @audio.setter
