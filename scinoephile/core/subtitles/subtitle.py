@@ -38,7 +38,7 @@ class Subtitle(SSAEvent):
     """Comment associated with subtitle."""
 
     @override
-    def __eq__(self, other: SSAEvent) -> bool:
+    def __eq__(self, other: object) -> bool:
         """Whether this subtitle is equal to another.
 
         Arguments:
@@ -46,6 +46,9 @@ class Subtitle(SSAEvent):
         Returns:
             Whether this subtitle is equal to another
         """
+        if not isinstance(other, SSAEvent):
+            return NotImplemented
+
         if self.start != other.start:
             return False
 
@@ -59,7 +62,7 @@ class Subtitle(SSAEvent):
         return False
 
     @override
-    def __ne__(self, other: SSAEvent) -> bool:
+    def __ne__(self, other: object) -> bool:
         """Whether this subtitle is not equal to another.
 
         Arguments:
@@ -67,7 +70,10 @@ class Subtitle(SSAEvent):
         Returns:
             Whether this subtitle is not equal to another
         """
-        return not self == other
+        eq_result = self == other
+        if eq_result is NotImplemented:
+            return NotImplemented
+        return not eq_result
 
     @override
     def __repr__(self) -> str:
