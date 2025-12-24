@@ -146,6 +146,19 @@
   {
     "query": {
       "yuewen_to_merge": [
+        "爹",
+        "呢一步非同小可"
+      ],
+      "zhongwen": "爹，这可是非同少可"
+    },
+    "answer": {
+      "yuewen_merged": "爹，呢一步非同小可"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
         "赵爷",
         "你真系要好啲学写字"
       ],
