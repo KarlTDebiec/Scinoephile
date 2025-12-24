@@ -304,10 +304,10 @@ class Aligner:
         test_root = val_input_dir_path(test_root)
 
         save_test_cases_to_json(
-            test_root / "audio" / "cantonese" / "shifting.json",
+            test_root / "multilang" / "yue_zho" / "transcription" / "shifting.json",
             list(self.shifting_queryer.encountered_test_cases.values()),
         )
         save_test_cases_to_json(
-            test_root / "audio" / "cantonese" / "merging.json",
+            test_root / "multilang" / "yue_zho" / "transcription" / "merging.json",
             list(self.merging_queryer.encountered_test_cases.values()),
         )

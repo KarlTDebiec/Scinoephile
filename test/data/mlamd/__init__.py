@@ -267,7 +267,7 @@ def get_mlamd_yue_shifting_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "audio" / "cantonese" / "shifting.json"
+    path = title_root / "multilang" / "yue_zho" / "transcription" / "shifting.json"
     return load_test_cases_from_json(
         path, DualPairManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -286,7 +286,7 @@ def get_mlamd_yue_merging_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "audio" / "cantonese" / "merging.json"
+    path = title_root / "multilang" / "yue_zho" / "transcription" / "merging.json"
     return load_test_cases_from_json(
         path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
     )
