@@ -33,6 +33,8 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
+from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from test.data.mlamd import (
     get_mlamd_eng_ocr_fusion_test_cases,
@@ -129,14 +131,26 @@ if "简体粤文 (Transcription)" in actions:
     zho_hans = get_zho_converted(get_zho_flattened(zho_hant), OpenCCConfig.t2s)
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
-    reviewer = YueTranscriber(
+    transcriber = YueTranscriber(
         test_case_directory_path=test_data_root / "kob",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
-    yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
+    yue_hans = asyncio.run(transcriber.process_all_blocks(yue_hans, zho_hans))
     outfile_path = output_dir / "yue-Hans.srt"
     yue_hans.save(outfile_path)
+
+    yue_hans = Series.load(outfile_path)
+    proofreader = get_yue_vs_zho_proofreader(
+        default_test_cases=[],
+        test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
+        auto_verify=True,
+    )
+    yue_hans_proofread = get_yue_vs_zho_proofread(
+        yue_hans, zho_hans, processor=proofreader
+    )
+    outfile_path = output_dir / "yue-Hans_proofread.srt"
+    yue_hans_proofread.save(outfile_path)
 
 if "简体粵文 (SRT)" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
