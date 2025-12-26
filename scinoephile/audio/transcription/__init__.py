@@ -83,27 +83,84 @@ def get_segment_split_at_idx(
     Returns:
         Tuple of two new segments created by splitting the original segment
     """
+    if segment.words is None or len(segment.words) == 0:
+        message = "Cannot split segment without word timing data."
+        error(message)
+        raise ValueError(message)
+    if idx <= 0 or idx >= len(segment.text):
+        message = f"Split index {idx} out of range for {len(segment.text)} chars."
+        error(message)
+        raise ValueError(message)
+
+    first_words: list[TranscribedWord] = []
+    second_words: list[TranscribedWord] = []
+    consumed_chars = 0
+    split_done = False
+    for word in segment.words:
+        word_length = len(word.text)
+        next_consumed = consumed_chars + word_length
+        if idx == consumed_chars:
+            second_words.append(word)
+            split_done = True
+        elif idx == next_consumed:
+            first_words.append(word)
+            split_done = True
+        elif consumed_chars < idx < next_consumed:
+            split_pos = idx - consumed_chars
+            first_text = word.text[:split_pos]
+            second_text = word.text[split_pos:]
+            word_duration = word.end - word.start
+            ratio = split_pos / word_length if word_length else 0.0
+            split_time = word.start + (word_duration * ratio)
+            if first_text:
+                first_words.append(
+                    TranscribedWord(
+                        text=first_text,
+                        start=word.start,
+                        end=split_time,
+                        confidence=word.confidence,
+                    )
+                )
+            if second_text:
+                second_words.append(
+                    TranscribedWord(
+                        text=second_text,
+                        start=split_time,
+                        end=word.end,
+                        confidence=word.confidence,
+                    )
+                )
+            split_done = True
+        elif not split_done:
+            first_words.append(word)
+        else:
+            second_words.append(word)
+        consumed_chars = next_consumed
+
+    if not split_done:
+        message = (
+            f"Split index {idx} does not align with segment words ({consumed_chars})."
+        )
+        error(message)
+        raise ValueError(message)
+
     first_segment = TranscribedSegment(
         id=segment.id,
         seek=segment.seek,
         start=segment.start,
-        end=segment.words[idx - 1].end,
+        end=first_words[-1].end,
         text=segment.text[:idx],
-        words=segment.words[:idx],
+        words=first_words,
     )
 
-    try:
-        second_segment = TranscribedSegment(
-            id=segment.id + 1,
-            seek=segment.seek,
-            start=segment.words[idx].start,
-            end=segment.end,
-            text=segment.text[idx:],
-            words=segment.words[idx:],
-        )
-    except IndexError as exc:
-        error(exc)
-        print()
+    second_segment = TranscribedSegment(
+        id=segment.id + 1,
+        seek=segment.seek,
+        start=second_words[0].start,
+        end=segment.end,
+        text=segment.text[idx:],
+        words=second_words,
+    )
 
     return first_segment, second_segment
 

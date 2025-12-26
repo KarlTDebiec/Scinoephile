@@ -451,8 +451,8 @@
       "yuewen_2": "咩唔见你一排个脚刮囊粗咗咁多呀"
     },
     "answer": {
-      "yuewen_1_shifted": "咦麦太咩唔见你一排",
-      "yuewen_2_shifted": "个脚刮囊粗咗咁多呀"
+      "yuewen_1_yidong": "咦麦太咩唔见你一排",
+      "yuewen_2_yidong": "个脚刮囊粗咗咁多呀"
     },
     "difficulty": 1,
     "prompt": true,
@@ -477,8 +477,8 @@
       "yuewen_2": "日日扑嚟扑去同我仔揾幼稚园吖嘛"
     },
     "answer": {
-      "yuewen_1_shifted": "鬼咩日日扑嚟扑去",
-      "yuewen_2_shifted": "同我仔揾幼稚园吖嘛"
+      "yuewen_1_yidong": "鬼咩日日扑嚟扑去",
+      "yuewen_2_yidong": "同我仔揾幼稚园吖嘛"
     },
     "difficulty": 1,
     "prompt": true,
@@ -510,8 +510,8 @@
       "yuewen_2": "旧中桥百货公司楼上嗰间春田花花幼稚园呢"
     },
     "answer": {
-      "yuewen_1_shifted": "旧中桥百货公司楼上嗰间",
-      "yuewen_2_shifted": "春田花花幼稚园呢"
+      "yuewen_1_yidong": "旧中桥百货公司楼上嗰间",
+      "yuewen_2_yidong": "春田花花幼稚园呢"
     },
     "difficulty": 1,
     "verified": true
@@ -563,8 +563,8 @@
       "yuewen_2": "银城美食广场附近嗰间春田花花幼稚园呀"
     },
     "answer": {
-      "yuewen_1_shifted": "银城美食广场附近嗰间",
-      "yuewen_2_shifted": "春田花花幼稚园呀"
+      "yuewen_1_yidong": "银城美食广场附近嗰间",
+      "yuewen_2_yidong": "春田花花幼稚园呀"
     },
     "difficulty": 1,
     "prompt": true,
@@ -598,8 +598,8 @@
       "yuewen_2": "诗诗优良仲系西人教英文添㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "春田花花幼稚园诗诗优良",
-      "yuewen_2_shifted": "仲系西人教英文添㗎"
+      "yuewen_1_yidong": "春田花花幼稚园诗诗优良",
+      "yuewen_2_yidong": "仲系西人教英文添㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -622,7 +622,7 @@
       "yuewen_2": "西人教英文"
     },
     "answer": {
-      "yuewen_1_shifted": "咦西人教英文"
+      "yuewen_1_yidong": "咦西人教英文"
     },
     "difficulty": 1,
     "verified": true
@@ -634,8 +634,8 @@
       "yuewen_2": "系呀春田花花真系好多西人㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "系呀",
-      "yuewen_2_shifted": "春田花花真系好多西人㗎"
+      "yuewen_1_yidong": "系呀",
+      "yuewen_2_yidong": "春田花花真系好多西人㗎"
     },
     "difficulty": 1,
     "prompt": true,
@@ -669,8 +669,8 @@
       "yuewen_2": "位仔嗰个呢就系我麦兜"
     },
     "answer": {
-      "yuewen_1_shifted": "即系横睇掂睇都唔似发哥或者位仔嗰个呢",
-      "yuewen_2_shifted": "就系我麦兜"
+      "yuewen_1_yidong": "即系横睇掂睇都唔似发哥或者位仔嗰个呢",
+      "yuewen_2_yidong": "就系我麦兜"
     },
     "difficulty": 1,
     "verified": true
@@ -802,8 +802,8 @@
       "yuewen_2": "今次座会系要同大家分享一个可重要嘅主题"
     },
     "answer": {
-      "yuewen_1_shifted": "今次座会系要同大家分享",
-      "yuewen_2_shifted": "一个可重要嘅主题"
+      "yuewen_1_yidong": "今次座会系要同大家分享",
+      "yuewen_2_yidong": "一个可重要嘅主题"
     },
     "difficulty": 1,
     "verified": true
@@ -947,8 +947,8 @@
       "yuewen_2": "到阿辉同学"
     },
     "answer": {
-      "yuewen_1_shifted": "麦麦同学到",
-      "yuewen_2_shifted": "阿辉同学"
+      "yuewen_1_yidong": "麦麦同学到",
+      "yuewen_2_yidong": "阿辉同学"
     },
     "difficulty": 1,
     "verified": true
@@ -961,8 +961,8 @@
       "yuewen_2": "到Boosie同学"
     },
     "answer": {
-      "yuewen_1_shifted": "阿辉同学到",
-      "yuewen_2_shifted": "Boosie同学"
+      "yuewen_1_yidong": "阿辉同学到",
+      "yuewen_2_yidong": "Boosie同学"
     },
     "difficulty": 1,
     "verified": true
@@ -975,8 +975,8 @@
       "yuewen_2": "到德巴同学"
     },
     "answer": {
-      "yuewen_1_shifted": "Boosie同学到",
-      "yuewen_2_shifted": "德巴同学"
+      "yuewen_1_yidong": "Boosie同学到",
+      "yuewen_2_yidong": "德巴同学"
     },
     "difficulty": 1,
     "verified": true
@@ -989,8 +989,8 @@
       "yuewen_2": "到阿May同学到"
     },
     "answer": {
-      "yuewen_1_shifted": "德巴同学到",
-      "yuewen_2_shifted": "阿May同学到"
+      "yuewen_1_yidong": "德巴同学到",
+      "yuewen_2_yidong": "阿May同学到"
     },
     "difficulty": 1,
     "verified": true
@@ -1013,8 +1013,8 @@
       "yuewen_2": "到阿May同学到"
     },
     "answer": {
-      "yuewen_1_shifted": "阿June同学到",
-      "yuewen_2_shifted": "阿May同学到"
+      "yuewen_1_yidong": "阿June同学到",
+      "yuewen_2_yidong": "阿May同学到"
     },
     "difficulty": 1,
     "verified": true
@@ -1045,8 +1045,8 @@
       "yuewen_2": "阿May同学MissChan你点咗我两次喇"
     },
     "answer": {
-      "yuewen_1_shifted": "阿May同学",
-      "yuewen_2_shifted": "MissChan你点咗我两次喇"
+      "yuewen_1_yidong": "阿May同学",
+      "yuewen_2_yidong": "MissChan你点咗我两次喇"
     },
     "difficulty": 1,
     "verified": true
@@ -1098,8 +1098,8 @@
       "yuewen_2": "到阿辉同学"
     },
     "answer": {
-      "yuewen_1_shifted": "阿June同学到",
-      "yuewen_2_shifted": "阿辉同学"
+      "yuewen_1_yidong": "阿June同学到",
+      "yuewen_2_yidong": "阿辉同学"
     },
     "difficulty": 1,
     "verified": true
@@ -1112,8 +1112,8 @@
       "yuewen_2": "到德巴同学到"
     },
     "answer": {
-      "yuewen_1_shifted": "阿辉同学到",
-      "yuewen_2_shifted": "德巴同学到"
+      "yuewen_1_yidong": "阿辉同学到",
+      "yuewen_2_yidong": "德巴同学到"
     },
     "difficulty": 1,
     "verified": true
@@ -1136,8 +1136,8 @@
       "yuewen_2": "到麦麦同学到"
     },
     "answer": {
-      "yuewen_1_shifted": "阿May同学到",
-      "yuewen_2_shifted": "麦麦同学到"
+      "yuewen_1_yidong": "阿May同学到",
+      "yuewen_2_yidong": "麦麦同学到"
     },
     "difficulty": 1,
     "verified": true
@@ -1170,8 +1170,8 @@
       "yuewen_2": "到好仲有边个未点"
     },
     "answer": {
-      "yuewen_1_shifted": "川明同学到",
-      "yuewen_2_shifted": "好仲有边个未点"
+      "yuewen_1_yidong": "川明同学到",
+      "yuewen_2_yidong": "好仲有边个未点"
     },
     "difficulty": 1,
     "verified": true
@@ -1195,8 +1195,8 @@
       "yuewen_2": "噢麦兜同学"
     },
     "answer": {
-      "yuewen_1_shifted": "猫噢",
-      "yuewen_2_shifted": "麦兜同学"
+      "yuewen_1_yidong": "猫噢",
+      "yuewen_2_yidong": "麦兜同学"
     },
     "difficulty": 1,
     "verified": true
@@ -1229,7 +1229,7 @@
       "yuewen_2": "即系呢"
     },
     "answer": {
-      "yuewen_1_shifted": "妈妈啊麦兜同学即系呢"
+      "yuewen_1_yidong": "妈妈啊麦兜同学即系呢"
     },
     "difficulty": 1,
     "verified": true
@@ -1241,8 +1241,8 @@
       "yuewen_2": "我个心总系仁住仁住好似有人嗌紧我个名噉嘅"
     },
     "answer": {
-      "yuewen_1_shifted": "我个心总系仁住仁住",
-      "yuewen_2_shifted": "好似有人嗌紧我个名噉嘅"
+      "yuewen_1_yidong": "我个心总系仁住仁住",
+      "yuewen_2_yidong": "好似有人嗌紧我个名噉嘅"
     },
     "difficulty": 1,
     "verified": true
@@ -1295,8 +1295,8 @@
       "yuewen_2": "变噢呢个我明白但系橙呢"
     },
     "answer": {
-      "yuewen_1_shifted": "妈妈话食橙会通大变",
-      "yuewen_2_shifted": "噢呢个我明白但系橙呢"
+      "yuewen_1_yidong": "妈妈话食橙会通大变",
+      "yuewen_2_yidong": "噢呢个我明白但系橙呢"
     },
     "difficulty": 1,
     "verified": true
@@ -1319,8 +1319,8 @@
       "yuewen_2": "香蕉啊点解雨姐会叫做暗芭拉娜呢"
     },
     "answer": {
-      "yuewen_1_shifted": "仲有呢个啊芭拉娜啊香蕉啊",
-      "yuewen_2_shifted": "点解雨姐会叫做暗芭拉娜呢"
+      "yuewen_1_yidong": "仲有呢个啊芭拉娜啊香蕉啊",
+      "yuewen_2_yidong": "点解雨姐会叫做暗芭拉娜呢"
     },
     "difficulty": 1,
     "verified": true
@@ -1464,8 +1464,8 @@
       "yuewen_2": "冇粗面噃噉啊要碗鱼蛋好啊冇鱼蛋噃"
     },
     "answer": {
-      "yuewen_1_shifted": "唔该鱼蛋粗啊冇粗面噃",
-      "yuewen_2_shifted": "噉啊要碗鱼蛋好啊冇鱼蛋噃"
+      "yuewen_1_yidong": "唔该鱼蛋粗啊冇粗面噃",
+      "yuewen_2_yidong": "噉啊要碗鱼蛋好啊冇鱼蛋噃"
     },
     "difficulty": 1,
     "verified": true
@@ -1498,8 +1498,8 @@
       "yuewen_2": "冇鱼蛋噃乜样样都冇嘅"
     },
     "answer": {
-      "yuewen_1_shifted": "噉啊咁要鱼蛋油面啊冇鱼蛋噃",
-      "yuewen_2_shifted": "乜样样都冇嘅"
+      "yuewen_1_yidong": "噉啊咁要鱼蛋油面啊冇鱼蛋噃",
+      "yuewen_2_yidong": "乜样样都冇嘅"
     },
     "difficulty": 1,
     "verified": true
@@ -1522,8 +1522,8 @@
       "yuewen_2": "冇粗面噃又冇啊"
     },
     "answer": {
-      "yuewen_1_shifted": "噉要蜜丸粗啊冇粗面噃",
-      "yuewen_2_shifted": "又冇啊"
+      "yuewen_1_yidong": "噉要蜜丸粗啊冇粗面噃",
+      "yuewen_2_yidong": "又冇啊"
     },
     "difficulty": 1,
     "verified": true
@@ -1546,8 +1546,8 @@
       "yuewen_2": "冇鱼蛋噃麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦"
     },
     "answer": {
-      "yuewen_1_shifted": "噉唔该畀碗鱼蛋奶啊冇鱼蛋噃",
-      "yuewen_2_shifted": "麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦"
+      "yuewen_1_yidong": "噉唔该畀碗鱼蛋奶啊冇鱼蛋噃",
+      "yuewen_2_yidong": "麦兜啊佢哋啲鱼蛋同粗面卖晒㗎啦"
     },
     "difficulty": 1,
     "verified": true
@@ -1590,8 +1590,8 @@
       "yuewen_2": "冇鱼蛋噃净粗面呢冇粗面噃"
     },
     "answer": {
-      "yuewen_1_shifted": "噉唔该净鱼蛋啊冇鱼蛋噃",
-      "yuewen_2_shifted": "净粗面呢冇粗面噃"
+      "yuewen_1_yidong": "噉唔该净鱼蛋啊冇鱼蛋噃",
+      "yuewen_2_yidong": "净粗面呢冇粗面噃"
     },
     "difficulty": 1,
     "verified": true
@@ -1704,8 +1704,8 @@
       "yuewen_2": "咁Ballana噉系唔系AllThingsBrightandBeautiful呀"
     },
     "answer": {
-      "yuewen_1_shifted": "但系唱嚟唱去都系阿伦厨咁Ballana噉",
-      "yuewen_2_shifted": "系唔系AllThingsBrightandBeautiful呀"
+      "yuewen_1_yidong": "但系唱嚟唱去都系阿伦厨咁Ballana噉",
+      "yuewen_2_yidong": "系唔系AllThingsBrightandBeautiful呀"
     },
     "difficulty": 1,
     "verified": true
@@ -1728,7 +1728,7 @@
       "yuewen_2": "所有嘢都几好喇"
     },
     "answer": {
-      "yuewen_1_shifted": "系呀所有嘢都几好喇"
+      "yuewen_1_yidong": "系呀所有嘢都几好喇"
     },
     "difficulty": 1,
     "verified": true
@@ -1740,8 +1740,8 @@
       "yuewen_2": "世上一切所有嗰啲嘢都几好AllThingsBrightandBeautiful"
     },
     "answer": {
-      "yuewen_1_shifted": "世上一切",
-      "yuewen_2_shifted": "所有嗰啲嘢都几好AllThingsBrightandBeautiful"
+      "yuewen_1_yidong": "世上一切",
+      "yuewen_2_yidong": "所有嗰啲嘢都几好AllThingsBrightandBeautiful"
     },
     "difficulty": 1,
     "verified": true
@@ -1753,8 +1753,8 @@
       "yuewen_2": "1234567多喽多得"
     },
     "answer": {
-      "yuewen_1_shifted": "1234567",
-      "yuewen_2_shifted": "多喽多得"
+      "yuewen_1_yidong": "1234567",
+      "yuewen_2_yidong": "多喽多得"
     },
     "difficulty": 1,
     "verified": true
@@ -1766,7 +1766,7 @@
       "yuewen_2": "1234567"
     },
     "answer": {
-      "yuewen_1_shifted": "1234567"
+      "yuewen_1_yidong": "1234567"
     },
     "difficulty": 1,
     "prompt": true,
@@ -1779,8 +1779,8 @@
       "yuewen_2": "多喽多得星期一至星期七多喽多得"
     },
     "answer": {
-      "yuewen_1_shifted": "多喽多得",
-      "yuewen_2_shifted": "星期一至星期七多喽多得"
+      "yuewen_1_yidong": "多喽多得",
+      "yuewen_2_yidong": "星期一至星期七多喽多得"
     },
     "difficulty": 1,
     "verified": true
@@ -1801,8 +1801,8 @@
       "yuewen_2": "呢个嗌得特别劲嘅中年母猪就系我妈妈麦太"
     },
     "answer": {
-      "yuewen_1_shifted": "呢个嗌得特别劲嘅中年母猪",
-      "yuewen_2_shifted": "就系我妈妈麦太"
+      "yuewen_1_yidong": "呢个嗌得特别劲嘅中年母猪",
+      "yuewen_2_yidong": "就系我妈妈麦太"
     },
     "difficulty": 1,
     "verified": true
@@ -1913,8 +1913,8 @@
       "yuewen_2": "今日我为大家介绍个简单又别致嘅小菜自包鸡"
     },
     "answer": {
-      "yuewen_1_shifted": "今日我为大家介绍个",
-      "yuewen_2_shifted": "简单又别致嘅小菜自包鸡"
+      "yuewen_1_yidong": "今日我为大家介绍个",
+      "yuewen_2_yidong": "简单又别致嘅小菜自包鸡"
     },
     "difficulty": 1,
     "verified": true
@@ -2148,8 +2148,8 @@
       "yuewen_2": "纸包鸡包包鸡纸包鸡包纸包鸡"
     },
     "answer": {
-      "yuewen_1_shifted": "鸡包包鸡包包鸡包纸包纸包鸡包包鸡",
-      "yuewen_2_shifted": "纸包鸡包纸包鸡"
+      "yuewen_1_yidong": "鸡包包鸡包包鸡包纸包纸包鸡包包鸡",
+      "yuewen_2_yidong": "纸包鸡包纸包鸡"
     },
     "difficulty": 1,
     "verified": true
@@ -2223,8 +2223,8 @@
       "yuewen_2": "纸包纸纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡"
     },
     "answer": {
-      "yuewen_1_shifted": "再包包包包包鸡包纸包纸纸纸纸纸纸包纸",
-      "yuewen_2_shifted": "纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡"
+      "yuewen_1_yidong": "再包包包包包鸡包纸包纸纸纸纸纸纸包纸",
+      "yuewen_2_yidong": "纸包鸡包鸡纸纸包鸡鸡鸡鸡纸纸纸再包鸡鸡"
     },
     "difficulty": 3,
     "verified": true
@@ -2267,8 +2267,8 @@
       "yuewen_2": "有一日佢死咗"
     },
     "answer": {
-      "yuewen_1_shifted": "从前有个小朋友讲大话有一日",
-      "yuewen_2_shifted": "佢死咗"
+      "yuewen_1_yidong": "从前有个小朋友讲大话有一日",
+      "yuewen_2_yidong": "佢死咗"
     },
     "difficulty": 1,
     "prompt": true,
@@ -2312,8 +2312,8 @@
       "yuewen_2": "有一日佢屈亲个脚脚"
     },
     "answer": {
-      "yuewen_1_shifted": "从前有个小朋友唔孝顺有一日",
-      "yuewen_2_shifted": "佢屈亲个脚脚"
+      "yuewen_1_yidong": "从前有个小朋友唔孝顺有一日",
+      "yuewen_2_yidong": "佢屈亲个脚脚"
     },
     "difficulty": 1,
     "verified": true
@@ -2384,8 +2384,8 @@
       "yuewen_2": "佢一二三四五六七唔得都要得字幕由Amara.org"
     },
     "answer": {
-      "yuewen_1_shifted": "佢一二三四五六七",
-      "yuewen_2_shifted": "唔得都要得字幕由Amara.org"
+      "yuewen_1_yidong": "佢一二三四五六七",
+      "yuewen_2_yidong": "唔得都要得字幕由Amara.org"
     },
     "difficulty": 1,
     "verified": true
@@ -2456,8 +2456,8 @@
       "yuewen_2": "至于好运我用我嘅同事手帮妈妈抽嘅六合彩number"
     },
     "answer": {
-      "yuewen_1_shifted": "至于好运",
-      "yuewen_2_shifted": "我用我嘅同事手帮妈妈抽嘅六合彩number"
+      "yuewen_1_yidong": "至于好运",
+      "yuewen_2_yidong": "我用我嘅同事手帮妈妈抽嘅六合彩number"
     },
     "difficulty": 1,
     "verified": true
@@ -2588,8 +2588,8 @@
       "yuewen_2": "啊好远㗎点远发呀"
     },
     "answer": {
-      "yuewen_1_shifted": "啊好远㗎",
-      "yuewen_2_shifted": "点远发呀"
+      "yuewen_1_yidong": "啊好远㗎",
+      "yuewen_2_yidong": "点远发呀"
     },
     "difficulty": 1,
     "verified": true
@@ -2870,8 +2870,8 @@
       "yuewen_2": "啲药食咗会唔会有嗰啲咩㗎唔会"
     },
     "answer": {
-      "yuewen_1_shifted": "医生啊啲药食咗会唔会有嗰啲咩㗎",
-      "yuewen_2_shifted": "唔会"
+      "yuewen_1_yidong": "医生啊啲药食咗会唔会有嗰啲咩㗎",
+      "yuewen_2_yidong": "唔会"
     },
     "difficulty": 1,
     "verified": true
@@ -3015,8 +3015,8 @@
       "yuewen_2": "买二代夫买二代夫"
     },
     "answer": {
-      "yuewen_1_shifted": "嘻嘻好嘢买二代夫",
-      "yuewen_2_shifted": "买二代夫"
+      "yuewen_1_yidong": "嘻嘻好嘢买二代夫",
+      "yuewen_2_yidong": "买二代夫"
     },
     "difficulty": 1,
     "prompt": true,
@@ -3038,8 +3038,8 @@
       "yuewen_2": "买二代夫买二代夫"
     },
     "answer": {
-      "yuewen_1_shifted": "买二代夫",
-      "yuewen_2_shifted": "买二代夫"
+      "yuewen_1_yidong": "买二代夫",
+      "yuewen_2_yidong": "买二代夫"
     },
     "difficulty": 1,
     "verified": true
@@ -3160,8 +3160,8 @@
       "yuewen_2": "妈妈乜嘢啊"
     },
     "answer": {
-      "yuewen_1_shifted": "妈妈",
-      "yuewen_2_shifted": "乜嘢啊"
+      "yuewen_1_yidong": "妈妈",
+      "yuewen_2_yidong": "乜嘢啊"
     },
     "difficulty": 1,
     "verified": true
@@ -3214,8 +3214,8 @@
       "yuewen_2": "水清沙游助流于印度园嘅世外导演啦"
     },
     "answer": {
-      "yuewen_1_shifted": "马尔代夫呢耶南树影水清沙游",
-      "yuewen_2_shifted": "助流于印度园嘅世外导演啦"
+      "yuewen_1_yidong": "马尔代夫呢耶南树影水清沙游",
+      "yuewen_2_yidong": "助流于印度园嘅世外导演啦"
     },
     "difficulty": 1,
     "verified": true
@@ -3369,8 +3369,8 @@
       "yuewen_2": "你发咗㗎喇系喇系喇系喇发咗喇"
     },
     "answer": {
-      "yuewen_1_shifted": "你发咗㗎喇你发咗㗎喇",
-      "yuewen_2_shifted": "系喇系喇系喇发咗喇"
+      "yuewen_1_yidong": "你发咗㗎喇你发咗㗎喇",
+      "yuewen_2_yidong": "系喇系喇系喇发咗喇"
     },
     "difficulty": 3,
     "verified": true
@@ -3393,8 +3393,8 @@
       "yuewen_2": "得未啊好嘢"
     },
     "answer": {
-      "yuewen_1_shifted": "下个礼拜同你去啦得未啊",
-      "yuewen_2_shifted": "好嘢"
+      "yuewen_1_yidong": "下个礼拜同你去啦得未啊",
+      "yuewen_2_yidong": "好嘢"
     },
     "difficulty": 1,
     "verified": true
@@ -3467,8 +3467,8 @@
       "yuewen_2": "哦快啲嚟执埋啲行李先啦"
     },
     "answer": {
-      "yuewen_1_shifted": "仲讲哦",
-      "yuewen_2_shifted": "快啲嚟执埋啲行李先啦"
+      "yuewen_1_yidong": "仲讲哦",
+      "yuewen_2_yidong": "快啲嚟执埋啲行李先啦"
     },
     "difficulty": 1,
     "verified": true
@@ -3481,8 +3481,8 @@
       "yuewen_2": "哦你帮我话畀佢哋知我明日去买热带裤薄"
     },
     "answer": {
-      "yuewen_1_shifted": "快啲嚟执埋啲行李先啦哦",
-      "yuewen_2_shifted": "你帮我话畀佢哋知我明日去买热带裤薄"
+      "yuewen_1_yidong": "快啲嚟执埋啲行李先啦哦",
+      "yuewen_2_yidong": "你帮我话畀佢哋知我明日去买热带裤薄"
     },
     "difficulty": 1,
     "verified": true
@@ -3553,7 +3553,7 @@
       "yuewen_2": "都要㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "都要㗎"
+      "yuewen_1_yidong": "都要㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -3565,8 +3565,8 @@
       "yuewen_2": "咁成绩表呢成绩表又唔使"
     },
     "answer": {
-      "yuewen_1_shifted": "咁成绩表呢",
-      "yuewen_2_shifted": "成绩表又唔使"
+      "yuewen_1_yidong": "咁成绩表呢",
+      "yuewen_2_yidong": "成绩表又唔使"
     },
     "difficulty": 1,
     "verified": true
@@ -3597,7 +3597,7 @@
       "yuewen_2": "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
     },
     "answer": {
-      "yuewen_1_shifted": "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
+      "yuewen_1_yidong": "竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然竟然"
     },
     "difficulty": 3,
     "verified": true
@@ -3688,8 +3688,8 @@
       "yuewen_2": "奥运滑浪风帆选手李丽珊以五场四胜嘅结果夺取香港历史上第一面奥运金牌"
     },
     "answer": {
-      "yuewen_1_shifted": "奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
-      "yuewen_2_shifted": "夺取香港历史上第一面奥运金牌"
+      "yuewen_1_yidong": "奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
+      "yuewen_2_yidong": "夺取香港历史上第一面奥运金牌"
     },
     "difficulty": 1,
     "verified": true
@@ -3730,8 +3730,8 @@
       "yuewen_2": "消息话李丽珊喺知道自己稳夺奥运金牌之后好激动噉同在场嘅记者讲"
     },
     "answer": {
-      "yuewen_1_shifted": "消息话李丽珊喺知道自己稳夺奥运金牌之后",
-      "yuewen_2_shifted": "好激动噉同在场嘅记者讲"
+      "yuewen_1_yidong": "消息话李丽珊喺知道自己稳夺奥运金牌之后",
+      "yuewen_2_yidong": "好激动噉同在场嘅记者讲"
     },
     "difficulty": 1,
     "verified": true
@@ -3764,8 +3764,8 @@
       "yuewen_2": "今次佢嘅成绩可以证明到香港嘅运动员唔系𫚭鸭"
     },
     "answer": {
-      "yuewen_1_shifted": "好激动噉同在场嘅记者讲今次佢嘅成绩",
-      "yuewen_2_shifted": "可以证明到香港嘅运动员唔系𫚭鸭"
+      "yuewen_1_yidong": "好激动噉同在场嘅记者讲今次佢嘅成绩",
+      "yuewen_2_yidong": "可以证明到香港嘅运动员唔系𫚭鸭"
     },
     "difficulty": 1,
     "verified": true
@@ -3818,8 +3818,8 @@
       "yuewen_2": "叻仔呀睇嚟都唔多靠得住"
     },
     "answer": {
-      "yuewen_1_shifted": "靓仔好运叻仔呀",
-      "yuewen_2_shifted": "睇嚟都唔多靠得住"
+      "yuewen_1_yidong": "靓仔好运叻仔呀",
+      "yuewen_2_yidong": "睇嚟都唔多靠得住"
     },
     "difficulty": 1,
     "verified": true
@@ -4019,8 +4019,8 @@
       "yuewen_1": "你哋呢班住喺香港岛嘅小朋友娇生惯养边挨得苦㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "你哋呢班住喺香港岛嘅小朋友娇生惯养",
-      "yuewen_2_shifted": "边挨得苦㗎"
+      "yuewen_1_yidong": "你哋呢班住喺香港岛嘅小朋友娇生惯养",
+      "yuewen_2_yidong": "边挨得苦㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -4061,8 +4061,8 @@
       "yuewen_2": "想学山伞攞奥运金牌食母你嘢"
     },
     "answer": {
-      "yuewen_1_shifted": "想学山伞攞奥运金牌",
-      "yuewen_2_shifted": "食母你嘢"
+      "yuewen_1_yidong": "想学山伞攞奥运金牌",
+      "yuewen_2_yidong": "食母你嘢"
     },
     "difficulty": 1,
     "verified": true
@@ -4095,8 +4095,8 @@
       "yuewen_2": "呢只呢只脚瓜好粗好大呀仲大个只瓜呀"
     },
     "answer": {
-      "yuewen_1_shifted": "哗呢只",
-      "yuewen_2_shifted": "呢只脚瓜好粗好大呀仲大个只瓜呀"
+      "yuewen_1_yidong": "哗呢只",
+      "yuewen_2_yidong": "呢只脚瓜好粗好大呀仲大个只瓜呀"
     },
     "difficulty": 1,
     "verified": true
@@ -4149,8 +4149,8 @@
       "yuewen_2": "究竟要行我几多座山"
     },
     "answer": {
-      "yuewen_1_shifted": "脚趾弓啲脚甲成吋噉厚究竟",
-      "yuewen_2_shifted": "要行我几多座山"
+      "yuewen_1_yidong": "脚趾弓啲脚甲成吋噉厚究竟",
+      "yuewen_2_yidong": "要行我几多座山"
     },
     "difficulty": 1,
     "verified": true
@@ -4181,8 +4181,8 @@
       "yuewen_2": "挨过几多苦头先至可以练成呢只举世无双嘅脚瓜"
     },
     "answer": {
-      "yuewen_1_shifted": "挨过几多苦头",
-      "yuewen_2_shifted": "先至可以练成呢只举世无双嘅脚瓜"
+      "yuewen_1_yidong": "挨过几多苦头",
+      "yuewen_2_yidong": "先至可以练成呢只举世无双嘅脚瓜"
     },
     "difficulty": 1,
     "verified": true
@@ -4584,8 +4584,8 @@
       "yuewen_2": "亦唔系师父佢饮咗杯茶正式收咗我做徒弟嘞"
     },
     "answer": {
-      "yuewen_1_shifted": "我将杯茶递咗畀嚟跟嚟跟佢亦唔系",
-      "yuewen_2_shifted": "师父佢饮咗杯茶正式收咗我做徒弟嘞"
+      "yuewen_1_yidong": "我将杯茶递咗畀嚟跟嚟跟佢亦唔系",
+      "yuewen_2_yidong": "师父佢饮咗杯茶正式收咗我做徒弟嘞"
     },
     "difficulty": 1,
     "verified": true
@@ -4648,8 +4648,8 @@
       "yuewen_2": "呢样早已传咗畀我外甥女山神啊"
     },
     "answer": {
-      "yuewen_1_shifted": "第一样系滑浪风范呢样早已",
-      "yuewen_2_shifted": "传咗畀我外甥女山神啊"
+      "yuewen_1_yidong": "第一样系滑浪风范呢样早已",
+      "yuewen_2_yidong": "传咗畀我外甥女山神啊"
     },
     "difficulty": 1,
     "verified": true
@@ -4681,8 +4681,8 @@
       "yuewen_1": "希望我可以将我哋长洲人世世代代嘅传统发扬光大"
     },
     "answer": {
-      "yuewen_1_shifted": "希望我可以将我哋长洲人世世代代嘅传统",
-      "yuewen_2_shifted": "发扬光大"
+      "yuewen_1_yidong": "希望我可以将我哋长洲人世世代代嘅传统",
+      "yuewen_2_yidong": "发扬光大"
     },
     "difficulty": 1,
     "verified": true
@@ -4724,8 +4724,8 @@
       "yuewen_1": "第二样绝技就系抢爆山"
     },
     "answer": {
-      "yuewen_1_shifted": "第二样绝技就系",
-      "yuewen_2_shifted": "抢爆山"
+      "yuewen_1_yidong": "第二样绝技就系",
+      "yuewen_2_yidong": "抢爆山"
     },
     "difficulty": 1,
     "verified": true
@@ -5338,8 +5338,8 @@
       "yuewen_2": "究竟要行个几度呢?"
     },
     "answer": {
-      "yuewen_1_shifted": "脚趾弓啲脚夹成串咁厚究竟",
-      "yuewen_2_shifted": "要行个几度呢?"
+      "yuewen_1_yidong": "脚趾弓啲脚夹成串咁厚究竟",
+      "yuewen_2_yidong": "要行个几度呢?"
     },
     "difficulty": 1,
     "verified": true
@@ -5352,8 +5352,8 @@
       "yuewen_2": "几多座山挂过几多个海"
     },
     "answer": {
-      "yuewen_1_shifted": "要行个几度呢?几多座山",
-      "yuewen_2_shifted": "挂过几多个海"
+      "yuewen_1_yidong": "要行个几度呢?几多座山",
+      "yuewen_2_yidong": "挂过几多个海"
     },
     "difficulty": 1,
     "verified": true
@@ -5405,8 +5405,8 @@
       "yuewen_1": "其实我都唔知我仔要咁粗嘅脚瓜有咩用"
     },
     "answer": {
-      "yuewen_1_shifted": "其实我都唔知我仔要咁粗嘅脚瓜",
-      "yuewen_2_shifted": "有咩用"
+      "yuewen_1_yidong": "其实我都唔知我仔要咁粗嘅脚瓜",
+      "yuewen_2_yidong": "有咩用"
     },
     "difficulty": 1,
     "verified": true
@@ -5589,8 +5589,8 @@
       "yuewen_2": "我认为抢劫嗰些包十分重要"
     },
     "answer": {
-      "yuewen_1_shifted": "好朋友我认为",
-      "yuewen_2_shifted": "抢劫嗰些包十分重要"
+      "yuewen_1_yidong": "好朋友我认为",
+      "yuewen_2_yidong": "抢劫嗰些包十分重要"
     },
     "difficulty": 1,
     "verified": true
@@ -5913,8 +5913,8 @@
       "yuewen_2": "当年师祖使出呢套十二路抢包手"
     },
     "answer": {
-      "yuewen_1_shifted": "师傅话当年师祖使出呢套",
-      "yuewen_2_shifted": "十二路抢包手"
+      "yuewen_1_yidong": "师傅话当年师祖使出呢套",
+      "yuewen_2_yidong": "十二路抢包手"
     },
     "difficulty": 1,
     "verified": true
@@ -6417,8 +6417,8 @@
       "yuewen_2": "佢话明日我哋要超级市场抽火鸡"
     },
     "answer": {
-      "yuewen_1_shifted": "嗰日妈妈竟然同我讲佢话",
-      "yuewen_2_shifted": "明日我哋要超级市场抽火鸡"
+      "yuewen_1_yidong": "嗰日妈妈竟然同我讲佢话",
+      "yuewen_2_yidong": "明日我哋要超级市场抽火鸡"
     },
     "difficulty": 1,
     "verified": true
@@ -6441,8 +6441,8 @@
       "yuewen_2": "喺嗰阵时我谂系我生命里面最开心嘅一刻"
     },
     "answer": {
-      "yuewen_1_shifted": "我同妈妈抽住只火鸡行返屋企嗰阵喺嗰阵时",
-      "yuewen_2_shifted": "我谂系我生命里面最开心嘅一刻"
+      "yuewen_1_yidong": "我同妈妈抽住只火鸡行返屋企嗰阵喺嗰阵时",
+      "yuewen_2_yidong": "我谂系我生命里面最开心嘅一刻"
     },
     "difficulty": 1,
     "verified": true
@@ -6493,8 +6493,8 @@
       "yuewen_2": "联火鸡时妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒"
     },
     "answer": {
-      "yuewen_1_shifted": "联火鸡时",
-      "yuewen_2_shifted": "妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒"
+      "yuewen_1_yidong": "联火鸡时",
+      "yuewen_2_yidong": "妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒"
     },
     "difficulty": 1,
     "verified": true
@@ -6727,8 +6727,8 @@
       "yuewen_2": "当然系食我限咗好耐好耐好耐好耐嘅圣诞火鸡大餐"
     },
     "answer": {
-      "yuewen_1_shifted": "嗰晚唔使讲当然系食我限咗",
-      "yuewen_2_shifted": "好耐好耐好耐好耐嘅圣诞火鸡大餐"
+      "yuewen_1_yidong": "嗰晚唔使讲当然系食我限咗",
+      "yuewen_2_yidong": "好耐好耐好耐好耐嘅圣诞火鸡大餐"
     },
     "difficulty": 1,
     "verified": true
@@ -6799,8 +6799,8 @@
       "yuewen_2": "之后我哋仲食咗一个礼拜嘅火鸡三文治做早餐"
     },
     "answer": {
-      "yuewen_1_shifted": "之后我哋仲食咗一个礼拜嘅",
-      "yuewen_2_shifted": "火鸡三文治做早餐"
+      "yuewen_1_yidong": "之后我哋仲食咗一个礼拜嘅",
+      "yuewen_2_yidong": "火鸡三文治做早餐"
     },
     "difficulty": 1,
     "verified": true
@@ -7123,8 +7123,8 @@
       "yuewen_2": "火鸡嘅味道味食同食第一啖之间已经系佢嘅最高峰"
     },
     "answer": {
-      "yuewen_1_shifted": "我仲发觉到火鸡嘅味道",
-      "yuewen_2_shifted": "味食同食第一啖之间已经系佢嘅最高峰"
+      "yuewen_1_yidong": "我仲发觉到火鸡嘅味道",
+      "yuewen_2_yidong": "味食同食第一啖之间已经系佢嘅最高峰"
     },
     "difficulty": 1,
     "verified": true
@@ -7285,8 +7285,8 @@
       "yuewen_2": "向全世界人再次证明香港嘅运动员唔系腊鸭"
     },
     "answer": {
-      "yuewen_1_shifted": "向全世界人再次证明",
-      "yuewen_2_shifted": "香港嘅运动员唔系腊鸭"
+      "yuewen_1_yidong": "向全世界人再次证明",
+      "yuewen_2_yidong": "香港嘅运动员唔系腊鸭"
     },
     "difficulty": 1,
     "verified": true
@@ -7327,7 +7327,7 @@
       "yuewen_2": "另一方面"
     },
     "answer": {
-      "yuewen_1_shifted": "另一方面"
+      "yuewen_1_yidong": "另一方面"
     },
     "difficulty": 1,
     "verified": true
@@ -7339,8 +7339,8 @@
       "yuewen_2": "中国香港体育协会企奥委会会长霍振庭正式向亚运协会提出申请"
     },
     "answer": {
-      "yuewen_1_shifted": "中国香港体育协会企奥委会会长霍振庭",
-      "yuewen_2_shifted": "正式向亚运协会提出申请"
+      "yuewen_1_yidong": "中国香港体育协会企奥委会会长霍振庭",
+      "yuewen_2_yidong": "正式向亚运协会提出申请"
     },
     "difficulty": 1,
     "verified": true
@@ -7352,8 +7352,8 @@
       "yuewen_2": "另一方面中国香港体育协会企奥委会会长霍振庭"
     },
     "answer": {
-      "yuewen_1_shifted": "另一方面",
-      "yuewen_2_shifted": "中国香港体育协会企奥委会会长霍振庭"
+      "yuewen_1_yidong": "另一方面",
+      "yuewen_2_yidong": "中国香港体育协会企奥委会会长霍振庭"
     },
     "difficulty": 1,
     "verified": true
@@ -7404,8 +7404,8 @@
       "yuewen_2": "其中港狗新界足战联谊会更希望打麻雀可以成为亚运项目"
     },
     "answer": {
-      "yuewen_1_shifted": "其中港狗新界足战联谊会",
-      "yuewen_2_shifted": "更希望打麻雀可以成为亚运项目"
+      "yuewen_1_yidong": "其中港狗新界足战联谊会",
+      "yuewen_2_yidong": "更希望打麻雀可以成为亚运项目"
     },
     "difficulty": 1,
     "verified": true
@@ -7456,8 +7456,8 @@
       "yuewen_2": "全港茶餐厅联工协会经热发动所有会员争取掟蛋挞成为亚运会比赛项目"
     },
     "answer": {
-      "yuewen_1_shifted": "全港茶餐厅联工协会经热发动所有会员",
-      "yuewen_2_shifted": "争取掟蛋挞成为亚运会比赛项目"
+      "yuewen_1_yidong": "全港茶餐厅联工协会经热发动所有会员",
+      "yuewen_2_yidong": "争取掟蛋挞成为亚运会比赛项目"
     },
     "difficulty": 1,
     "verified": true
@@ -7470,8 +7470,8 @@
       "yuewen_2": "全港茶餐厅联工协会经热发动所有会员"
     },
     "answer": {
-      "yuewen_1_shifted": "另外全港茶餐厅联工协会",
-      "yuewen_2_shifted": "经热发动所有会员"
+      "yuewen_1_yidong": "另外全港茶餐厅联工协会",
+      "yuewen_2_yidong": "经热发动所有会员"
     },
     "difficulty": 1,
     "verified": true
@@ -7502,8 +7502,8 @@
       "yuewen_2": "经热发动所有会员争取掟蛋挞成为亚运会比赛项目"
     },
     "answer": {
-      "yuewen_1_shifted": "经热发动所有会员",
-      "yuewen_2_shifted": "争取掟蛋挞成为亚运会比赛项目"
+      "yuewen_1_yidong": "经热发动所有会员",
+      "yuewen_2_yidong": "争取掟蛋挞成为亚运会比赛项目"
     },
     "difficulty": 1,
     "verified": true
@@ -7534,8 +7534,8 @@
       "yuewen_2": "立尾同业会亦都向霍主席当面提出挂立鸭可以成为亚运比赛项目"
     },
     "answer": {
-      "yuewen_1_shifted": "立尾同业会亦都向霍主席当面提出",
-      "yuewen_2_shifted": "挂立鸭可以成为亚运比赛项目"
+      "yuewen_1_yidong": "立尾同业会亦都向霍主席当面提出",
+      "yuewen_2_yidong": "挂立鸭可以成为亚运比赛项目"
     },
     "difficulty": 1,
     "verified": true
@@ -7548,8 +7548,8 @@
       "yuewen_2": "立尾同业会亦都向霍主席当面提出"
     },
     "answer": {
-      "yuewen_1_shifted": "港狗烧尾掳尾立尾同业会",
-      "yuewen_2_shifted": "亦都向霍主席当面提出"
+      "yuewen_1_yidong": "港狗烧尾掳尾立尾同业会",
+      "yuewen_2_yidong": "亦都向霍主席当面提出"
     },
     "difficulty": 1,
     "verified": true
@@ -7582,8 +7582,8 @@
       "yuewen_2": "CIC保险营业员联同大角嘴春田花花"
     },
     "answer": {
-      "yuewen_1_shifted": "较为特别嘅系CIC保险营业员联同",
-      "yuewen_2_shifted": "大角嘴春田花花"
+      "yuewen_1_yidong": "较为特别嘅系CIC保险营业员联同",
+      "yuewen_2_yidong": "大角嘴春田花花"
     },
     "difficulty": 1,
     "verified": true
@@ -7624,8 +7624,8 @@
       "yuewen_2": "幼稚园附属小学嘅一班小朋友争取抢包山"
     },
     "answer": {
-      "yuewen_1_shifted": "幼稚园附属小学嘅一班小朋友",
-      "yuewen_2_shifted": "争取抢包山"
+      "yuewen_1_yidong": "幼稚园附属小学嘅一班小朋友",
+      "yuewen_2_yidong": "争取抢包山"
     },
     "difficulty": 1,
     "verified": true
@@ -7638,8 +7638,8 @@
       "yuewen_2": "幼稚园附属小学嘅一班小朋友"
     },
     "answer": {
-      "yuewen_1_shifted": "大角嘴春田花花幼稚园",
-      "yuewen_2_shifted": "附属小学嘅一班小朋友"
+      "yuewen_1_yidong": "大角嘴春田花花幼稚园",
+      "yuewen_2_yidong": "附属小学嘅一班小朋友"
     },
     "difficulty": 1,
     "verified": true
@@ -7670,8 +7670,8 @@
       "yuewen_2": "一项几乎绝迹嘅运动成为本港举办亚运重点推介嘅比赛项目"
     },
     "answer": {
-      "yuewen_1_shifted": "一项几乎绝迹嘅运动",
-      "yuewen_2_shifted": "成为本港举办亚运重点推介嘅比赛项目"
+      "yuewen_1_yidong": "一项几乎绝迹嘅运动",
+      "yuewen_2_yidong": "成为本港举办亚运重点推介嘅比赛项目"
     },
     "difficulty": 1,
     "verified": true
@@ -7762,8 +7762,8 @@
       "yuewen_2": "亚运主办权亦都由一个香港人从未听过嘅地方夺得"
     },
     "answer": {
-      "yuewen_1_shifted": "亚运主办权",
-      "yuewen_2_shifted": "亦都由一个香港人从未听过嘅地方夺得"
+      "yuewen_1_yidong": "亚运主办权",
+      "yuewen_2_yidong": "亦都由一个香港人从未听过嘅地方夺得"
     },
     "difficulty": 1,
     "verified": true
@@ -8034,8 +8034,8 @@
       "yuewen_2": "冇去买义大夫冇奖牌冇张宝仔宝藏"
     },
     "answer": {
-      "yuewen_1_shifted": "冇鱼蛋冇粗面冇去买义大夫",
-      "yuewen_2_shifted": "冇奖牌冇张宝仔宝藏"
+      "yuewen_1_yidong": "冇鱼蛋冇粗面冇去买义大夫",
+      "yuewen_2_yidong": "冇奖牌冇张宝仔宝藏"
     },
     "difficulty": 1,
     "verified": true
@@ -8178,8 +8178,8 @@
       "yuewen_2": "又未必咁好笑嘅世界嘅时候我会系点㗎呢"
     },
     "answer": {
-      "yuewen_1_shifted": "未必到你发梦又未必咁好笑嘅",
-      "yuewen_2_shifted": "世界嘅时候我会系点㗎呢"
+      "yuewen_1_yidong": "未必到你发梦又未必咁好笑嘅",
+      "yuewen_2_yidong": "世界嘅时候我会系点㗎呢"
     },
     "difficulty": 1,
     "verified": true
@@ -8392,8 +8392,8 @@
       "yuewen_2": "唔识得帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢"
     },
     "answer": {
-      "yuewen_1_shifted": "你知我麻麻地叻佬唔识得",
-      "yuewen_2_shifted": "帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢"
+      "yuewen_1_yidong": "你知我麻麻地叻佬唔识得",
+      "yuewen_2_yidong": "帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢"
     },
     "difficulty": 1,
     "verified": true
@@ -8506,8 +8506,8 @@
       "yuewen_2": "鸡方法攞只鸡去烧佢几烧"
     },
     "answer": {
-      "yuewen_1_shifted": "材料系鸡",
-      "yuewen_2_shifted": "方法攞只鸡去烧佢几烧"
+      "yuewen_1_yidong": "材料系鸡",
+      "yuewen_2_yidong": "方法攞只鸡去烧佢几烧"
     },
     "difficulty": 1,
     "verified": true
@@ -8590,7 +8590,7 @@
       "yuewen_2": "常餐有咩食㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "常餐常餐有咩食㗎"
+      "yuewen_1_yidong": "常餐常餐有咩食㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -8602,7 +8602,7 @@
       "yuewen_2": "同特餐一样啰"
     },
     "answer": {
-      "yuewen_1_shifted": "同特餐一样啰"
+      "yuewen_1_yidong": "同特餐一样啰"
     },
     "difficulty": 1,
     "verified": true
@@ -8614,8 +8614,8 @@
       "yuewen_2": "噉特餐系咩嚟㗎同快餐咁上下啰"
     },
     "answer": {
-      "yuewen_1_shifted": "噉特餐系咩嚟㗎",
-      "yuewen_2_shifted": "同快餐咁上下啰"
+      "yuewen_1_yidong": "噉特餐系咩嚟㗎",
+      "yuewen_2_yidong": "同快餐咁上下啰"
     },
     "difficulty": 1,
     "verified": true
@@ -8656,8 +8656,8 @@
       "yuewen_2": "午餐食咩㗎午餐同晚餐一样㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "午餐食咩㗎",
-      "yuewen_2_shifted": "午餐同晚餐一样㗎"
+      "yuewen_1_yidong": "午餐食咩㗎",
+      "yuewen_2_yidong": "午餐同晚餐一样㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -8730,8 +8730,8 @@
       "yuewen_2": "特餐有咩食㗎特餐就即系午餐啰"
     },
     "answer": {
-      "yuewen_1_shifted": "特餐特餐有咩食㗎",
-      "yuewen_2_shifted": "特餐就即系午餐啰"
+      "yuewen_1_yidong": "特餐特餐有咩食㗎",
+      "yuewen_2_yidong": "特餐就即系午餐啰"
     },
     "difficulty": 1,
     "verified": true
@@ -8772,7 +8772,7 @@
       "yuewen_2": "咁乜嘢系晚餐呀"
     },
     "answer": {
-      "yuewen_1_shifted": "咁乜嘢系晚餐呀"
+      "yuewen_1_yidong": "咁乜嘢系晚餐呀"
     },
     "difficulty": 1,
     "verified": true
@@ -8784,8 +8784,8 @@
       "yuewen_2": "同快餐一样啰咁快餐食咩㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "同快餐一样啰",
-      "yuewen_2_shifted": "咁快餐食咩㗎"
+      "yuewen_1_yidong": "同快餐一样啰",
+      "yuewen_2_yidong": "咁快餐食咩㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -8858,8 +8858,8 @@
       "yuewen_2": "不如改快餐啦快餐有咩㗎"
     },
     "answer": {
-      "yuewen_1_shifted": "妈妈不如改快餐啦",
-      "yuewen_2_shifted": "快餐有咩㗎"
+      "yuewen_1_yidong": "妈妈不如改快餐啦",
+      "yuewen_2_yidong": "快餐有咩㗎"
     },
     "difficulty": 1,
     "verified": true
@@ -8930,8 +8930,8 @@
       "yuewen_2": "咁晚餐呢晚餐就即系特餐啰"
     },
     "answer": {
-      "yuewen_1_shifted": "咁晚餐呢",
-      "yuewen_2_shifted": "晚餐就即系特餐啰"
+      "yuewen_1_yidong": "咁晚餐呢",
+      "yuewen_2_yidong": "晚餐就即系特餐啰"
     },
     "difficulty": 1,
     "verified": true
@@ -8964,8 +8964,8 @@
       "yuewen_2": "一样嘅啫咁两份快餐啦"
     },
     "answer": {
-      "yuewen_1_shifted": "系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
-      "yuewen_2_shifted": "咁两份快餐啦"
+      "yuewen_1_yidong": "系呀特餐系卖晒呀咁你试唔试下个快餐啦一样嘅啫",
+      "yuewen_2_yidong": "咁两份快餐啦"
     },
     "difficulty": 1,
     "verified": true
@@ -8998,7 +8998,7 @@
       "yuewen_2": "午餐好嘢呀"
     },
     "answer": {
-      "yuewen_1_shifted": "午餐啦午餐好嘢呀"
+      "yuewen_1_yidong": "午餐啦午餐好嘢呀"
     },
     "difficulty": 1,
     "verified": true
@@ -9010,7 +9010,7 @@
       "yuewen_2": "点好嘢法呀"
     },
     "answer": {
-      "yuewen_1_shifted": "点好嘢法呀"
+      "yuewen_1_yidong": "点好嘢法呀"
     },
     "difficulty": 1,
     "verified": true
@@ -9022,7 +9022,7 @@
       "yuewen_2": "同晚餐一样咁好嘢"
     },
     "answer": {
-      "yuewen_1_shifted": "同晚餐一样咁好嘢"
+      "yuewen_1_yidong": "同晚餐一样咁好嘢"
     },
     "difficulty": 1,
     "verified": true
@@ -9034,8 +9034,8 @@
       "yuewen_2": "噉晚餐又点好嘢法呀同上餐一样咁好嘢啰"
     },
     "answer": {
-      "yuewen_1_shifted": "噉晚餐又点好嘢法呀",
-      "yuewen_2_shifted": "同上餐一样咁好嘢啰"
+      "yuewen_1_yidong": "噉晚餐又点好嘢法呀",
+      "yuewen_2_yidong": "同上餐一样咁好嘢啰"
     },
     "difficulty": 1,
     "verified": true
@@ -9056,8 +9056,8 @@
       "yuewen_2": "噉上餐又点好嘢法呀上餐上餐一早卖晒啦你话好唔好嘢"
     },
     "answer": {
-      "yuewen_1_shifted": "噉上餐又点好嘢法呀",
-      "yuewen_2_shifted": "上餐上餐一早卖晒啦你话好唔好嘢"
+      "yuewen_1_yidong": "噉上餐又点好嘢法呀",
+      "yuewen_2_yidong": "上餐上餐一早卖晒啦你话好唔好嘢"
     },
     "difficulty": 1,
     "verified": true
@@ -9080,8 +9080,8 @@
       "yuewen_2": "午餐卖晒试唔试下我哋嘅晚餐啦"
     },
     "answer": {
-      "yuewen_1_shifted": "唔好意思午餐卖晒",
-      "yuewen_2_shifted": "试唔试下我哋嘅晚餐啦"
+      "yuewen_1_yidong": "唔好意思午餐卖晒",
+      "yuewen_2_yidong": "试唔试下我哋嘅晚餐啦"
     },
     "difficulty": 1,
     "verified": true
@@ -9094,8 +9094,8 @@
       "yuewen_2": "一样嘅啫日光日白食乜鬼嘢晚餐啊"
     },
     "answer": {
-      "yuewen_1_shifted": "试唔试下我哋嘅晚餐啦一样嘅啫",
-      "yuewen_2_shifted": "日光日白食乜鬼嘢晚餐啊"
+      "yuewen_1_yidong": "试唔试下我哋嘅晚餐啦一样嘅啫",
+      "yuewen_2_yidong": "日光日白食乜鬼嘢晚餐啊"
     },
     "difficulty": 1,
     "verified": true
@@ -9128,8 +9128,8 @@
       "yuewen_2": "快啲手啊想快想快就要快餐啊"
     },
     "answer": {
-      "yuewen_1_shifted": "好啦好啦怕咗你啦要两份晚餐啦快啲手啊",
-      "yuewen_2_shifted": "想快想快就要快餐啊"
+      "yuewen_1_yidong": "好啦好啦怕咗你啦要两份晚餐啦快啲手啊",
+      "yuewen_2_yidong": "想快想快就要快餐啊"
     },
     "difficulty": 1,
     "verified": true

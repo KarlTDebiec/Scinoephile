@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+import asyncio
 from pathlib import Path
 
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.testing import test_data_root
@@ -31,9 +33,12 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from test.data.mlamd import (
     get_mlamd_eng_ocr_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
+    get_mlamd_yue_merging_test_cases,
+    get_mlamd_yue_shifting_test_cases,
     get_mlamd_zho_ocr_fusion_test_cases,
     get_mlamd_zho_proofreading_test_cases,
 )
@@ -56,12 +61,13 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "繁體中文 (OCR)",
-    "English (OCR)",
-    "简体粵文 (SRT)",
-    "繁體粵文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体粵文 and English",
+    # "繁體中文 (OCR)",
+    # "English (OCR)",
+    "简体粤文 (Transcription)",
+    # "简体粵文 (SRT)",
+    # "繁體粵文 (SRT)",
+    # "English (SRT)",
+    # "Bilingual 简体粵文 and English",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -117,6 +123,20 @@ if "English (OCR)" in actions:
     )
     eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
     eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+
+if "简体粤文 (Transcription)" in actions:
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_proofread.srt")
+    zho_hans = get_zho_converted(get_zho_flattened(zho_hant), OpenCCConfig.t2s)
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+    yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
+    reviewer = YueTranscriber(
+        test_case_directory_path=test_data_root / "kob",
+        shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
+        merging_test_cases=get_mlamd_yue_merging_test_cases(),
+    )
+    yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
+    outfile_path = output_dir / "yue-Hans.srt"
+    yue_hans.save(outfile_path)
 
 if "简体粵文 (SRT)" in actions:
     yue_hans = Series.load(input_dir / "yue-Hans.srt")

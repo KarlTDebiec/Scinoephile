@@ -29,7 +29,7 @@ class Manager(ABC):
     def get_query_cls(
         cls,
         prompt_cls: type[Prompt],
-    ) -> type:
+    ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
         Arguments:
@@ -44,7 +44,7 @@ class Manager(ABC):
     def get_answer_cls(
         cls,
         prompt_cls: type[Prompt],
-    ) -> type:
+    ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
         Arguments:
@@ -108,8 +108,8 @@ class Manager(ABC):
     @classmethod
     def get_test_case_fields(
         cls,
-        query_cls: type,
-        answer_cls: type,
+        query_cls: type[Query],
+        answer_cls: type[Answer],
         prompt_cls: type[Prompt],
     ) -> dict[str, Any]:
         """Get fields dictionary for dynamic TestCase class creation.

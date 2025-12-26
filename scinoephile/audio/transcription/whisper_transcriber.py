@@ -30,7 +30,7 @@ class WhisperTranscriber:
         self,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
-        cache_dir_path: str | None = None,
+        cache_dir_path: Path | None = None,
     ):
         """Initialize.
 
