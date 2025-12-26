@@ -156,12 +156,12 @@ if "简体粤文 (Transcription)" in actions:
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
-    reviewer = YueTranscriber(
+    transcriber = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
-    yue_hans = asyncio.run(reviewer.process_all_blocks(yue_hans, zho_hans))
+    yue_hans = asyncio.run(transcriber.process_all_blocks(yue_hans, zho_hans))
     outfile_path = output_dir / "yue-Hans.srt"
     yue_hans.save(outfile_path)
 
@@ -188,13 +188,13 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
     yue_hans_proofread_translate.save(outfile_path)
 
-    reviewer = get_yue_vs_zho_processor(
+    transcriber = get_yue_vs_zho_processor(
         default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
         auto_verify=True,
     )
     yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
-        yue_hans_proofread_translate, zho_hans, processor=reviewer
+        yue_hans_proofread_translate, zho_hans, processor=transcriber
     )
     outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
     yue_hans_proofread_translate_review.save(outfile_path)
