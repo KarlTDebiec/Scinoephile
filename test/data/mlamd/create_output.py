@@ -12,6 +12,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.core.testing import test_data_root
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -26,6 +27,7 @@ from scinoephile.lang.zho import (
     get_zho_flattened,
     get_zho_ocr_fused,
     get_zho_proofread,
+    validate_zho_ocr,
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
@@ -70,11 +72,12 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
-    "简体粤文 (Transcription)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "简体中文 (OCR)",
+    "简体中文 (OCR Validation)",
+    # "English (OCR)",
+    # "简体粤文 (Transcription)",
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -112,6 +115,11 @@ if "简体中文 (OCR)" in actions:
     zho_hans_fuse_proofread_clean_flatten.save(
         output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt"
     )
+
+if "简体中文 (OCR Validation)" in actions:
+    zho_hans = ImageSeries.load(output_dir / "zho-Hans_image")
+    validate_zho_ocr(zho_hans, output_dir_path=output_dir / "zho-Hans_validation")
+
 
 if "English (OCR)" in actions:
     eng_lens = Series.load(input_dir / "eng_lens.srt")

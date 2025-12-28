@@ -11,7 +11,8 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.image.subtitles import ImageSubtitle
+
+from .types import OcrSubtitle
 
 __all__ = ["BboxManager"]
 
@@ -49,7 +50,7 @@ class BboxManager:
 
     def get_bboxes(
         self,
-        subtitle: ImageSubtitle,
+        subtitle: OcrSubtitle,
         interactive: bool = False,
     ) -> list[tuple[int, int, int, int]]:
         """Get character bboxes within an image.
@@ -60,13 +61,13 @@ class BboxManager:
         Returns:
             Character bounding boxes [(x1, y1, x2, y2), ...]
         """
-        arr = np.array(subtitle.img_with_white_bg)
+        white_mask = self._get_white_mask(subtitle)
 
         # Determine left and right of each section separated by whitespace
         sections = []
         section = None
-        for i, nonwhite_pixels in enumerate(np.sum(arr < 255, axis=0)):
-            if nonwhite_pixels > 0:
+        for i, white_pixels in enumerate(np.sum(white_mask, axis=0)):
+            if white_pixels > 0:
                 if section is None:
                     section = [i, i]
                 else:
@@ -80,10 +81,10 @@ class BboxManager:
         # Determine top and bottom of each section to get final bbox
         bboxes = []
         for x1, x2 in sections:
-            section = arr[:, x1:x2]
-            nonwhite_pixels = np.sum(section < 255, axis=1)
-            y1 = int(np.argmax(nonwhite_pixels > 0))
-            y2 = int(len(nonwhite_pixels) - np.argmax(nonwhite_pixels[::-1] > 0) - 1)
+            section = white_mask[:, x1:x2]
+            white_pixels = np.sum(section, axis=1)
+            y1 = int(np.argmax(white_pixels > 0))
+            y2 = int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1)
             bboxes.append((x1, y1, x2, y2))
 
         # Merge sets of adjacent bboxes known to have vertical whitespace within them
@@ -100,7 +101,85 @@ class BboxManager:
 
         return bboxes
 
-    def _apply_known_merges(
+    @staticmethod
+    def _get_white_mask(subtitle: OcrSubtitle) -> np.ndarray:
+        """Get mask of white interior pixels for a subtitle image.
+
+        Arguments:
+            subtitle: Subtitle for which to get mask
+        Returns:
+            Boolean mask of white interior pixels
+        """
+        grayscale, alpha = BboxManager._get_grayscale_and_alpha(subtitle)
+        fill_color, outline_color = BboxManager._get_fill_and_outline_colors(
+            subtitle, grayscale, alpha
+        )
+        if fill_color == outline_color:
+            threshold = max(fill_color - 10, 0)
+        else:
+            threshold = int((fill_color + outline_color) / 2)
+        return (alpha > 0) & (grayscale >= threshold)
+
+    @staticmethod
+    def _get_grayscale_and_alpha(
+        subtitle: OcrSubtitle,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Get grayscale and alpha arrays for the subtitle image.
+
+        Arguments:
+            subtitle: Subtitle for which to get grayscale and alpha
+        Returns:
+            Grayscale values and alpha mask
+        """
+        img = subtitle.img
+        arr = np.array(img)
+        if img.mode == "LA":
+            return arr[:, :, 0], arr[:, :, 1]
+        if img.mode == "RGBA":
+            rgb = arr[:, :, :3].astype(np.float32)
+            grayscale = (
+                0.299 * rgb[:, :, 0] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 2]
+            ).astype(np.uint8)
+            alpha = arr[:, :, 3]
+            return grayscale, alpha
+        raise ScinoephileError(
+            f"Unsupported image mode '{img.mode}' for white interior bboxes."
+        )
+
+    @staticmethod
+    def _get_fill_and_outline_colors(
+        subtitle: OcrSubtitle,
+        grayscale: np.ndarray,
+        alpha: np.ndarray,
+    ) -> tuple[int, int]:
+        """Get fill and outline grayscale values.
+
+        Arguments:
+            subtitle: Subtitle for which to get fill and outline colors
+            grayscale: Grayscale values
+            alpha: Alpha values
+        Returns:
+            Fill and outline grayscale values
+        """
+        series = getattr(subtitle, "series", None)
+        if (
+            series is not None
+            and hasattr(series, "fill_color")
+            and hasattr(series, "outline_color")
+        ):
+            return int(series.fill_color), int(series.outline_color)
+
+        mask = alpha != 0
+        values = grayscale[mask]
+        if values.size == 0:
+            return 255, 0
+        hist = np.bincount(values, minlength=256)
+        fill, outline = map(int, np.argsort(hist)[-2:])
+        if outline > fill:
+            fill, outline = outline, fill
+        return fill, outline
+
+    def _apply_known_merges(  # noqa: PLR0912, PLR0915
         self,
         bboxes: list[tuple[int, int, int, int]],
         text: str,

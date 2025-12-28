@@ -10,10 +10,9 @@ from typing import TYPE_CHECKING, Any, cast, override
 import numpy as np
 from PIL import Image
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Subtitle
-from scinoephile.core.text import whitespace_chars
 from scinoephile.image.base64 import get_base64_image
-from scinoephile.image.char_pair import CharPair
 from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
 
 if TYPE_CHECKING:
@@ -41,7 +40,6 @@ class ImageSubtitle(Subtitle):
         self._arr: np.ndarray | None = None
         self._base64: str | None = None
         self._bboxes: list[tuple[int, int, int, int]] | None = None
-        self._char_pairs: list[CharPair] | None = None
         self._img_with_bboxes: Image.Image | None = None
         self._img_with_white_bg: Image.Image | None = None
 
@@ -78,9 +76,8 @@ class ImageSubtitle(Subtitle):
         ]
 
     @property
-    def bboxes(self) -> list[tuple[int, int, int, int]]:
+    def bboxes(self) -> list[tuple[int, int, int, int]] | None:
         """Bounding boxes of characters in image."""
-        assert self._bboxes is not None
         return self._bboxes
 
     @bboxes.setter
@@ -91,28 +88,6 @@ class ImageSubtitle(Subtitle):
             bboxes: bounding boxes of characters in image
         """
         self._bboxes = bboxes
-
-    @property
-    def char_pairs(self) -> list[CharPair]:
-        """Pairs of characters in image."""
-        if self._char_pairs is None:
-            self._init_char_pairs()
-        assert self._char_pairs is not None
-        return self._char_pairs
-
-    @char_pairs.setter
-    def char_pairs(self, char_pairs: list[CharPair]):
-        """Set pairs of characters in image.
-
-        Arguments:
-            char_pairs: character pairs
-        """
-        new_text = ""
-        for char_pair in char_pairs:
-            new_text += char_pair.char_1 + char_pair.whitespace
-        new_text += char_pairs[-1].char_2
-        self.text = new_text
-        self._char_pairs = char_pairs
 
     @property
     def arr(self) -> np.ndarray:
@@ -137,7 +112,6 @@ class ImageSubtitle(Subtitle):
         self._arr = None
         self._base64 = None
         self._bboxes = None
-        self._char_pairs = None
         self._img_with_bboxes = None
         self._img_with_white_bg = None
 
@@ -172,6 +146,8 @@ class ImageSubtitle(Subtitle):
     def img_with_bboxes(self) -> Image.Image:
         """Image with bounding boxes."""
         if self._img_with_bboxes is None:
+            if self.bboxes is None:
+                raise ScinoephileError("Bboxes are not set for this subtitle.")
             self._img_with_bboxes = get_img_with_bboxes(
                 self.img_with_white_bg,
                 cast(list[tuple[int, ...]], self.bboxes),
@@ -184,45 +160,3 @@ class ImageSubtitle(Subtitle):
         if self._img_with_white_bg is None:
             self._img_with_white_bg = get_img_with_white_bg(self.img)
         return self._img_with_white_bg
-
-    def _init_char_pairs(self):
-        """Initialize character pairs."""
-        char_1_i = 0
-        width_1_i = 0
-        gap_i = 0
-        char_pairs = []
-        while True:
-            if char_1_i > len(self.text) - 2:
-                break
-
-            # Get char 1 and its width
-            char_1 = self.text[char_1_i]
-            width_1 = self.bbox_widths[width_1_i]
-
-            # Get provisional char 2 and its width
-            char_2_i = char_1_i + 1
-            char_2 = self.text[char_2_i]
-            width_2_i = width_1_i + 1
-            width_2 = self.bbox_widths[width_2_i]
-
-            # If char 2 is whitespace, iterate to next real char and track whitespace
-            gap_whitespace = ""
-            while char_2_i < len(self.text):
-                char_2 = self.text[char_2_i]
-                if char_2 in whitespace_chars:
-                    gap_whitespace += char_2
-                    char_2_i += 1
-                    continue
-                else:
-                    break
-
-            # Get gap between char 1 and char 2, and maximum expected gap
-            gap = self.bbox_gaps[gap_i]
-            pair = CharPair(char_1, char_2, width_1, width_2, gap, gap_whitespace)
-            char_pairs.append(pair)
-
-            char_1_i = char_2_i
-            width_1_i = width_2_i
-            gap_i += 1
-
-        self._char_pairs = char_pairs
