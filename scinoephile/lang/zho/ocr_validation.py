@@ -33,21 +33,6 @@ def validate_zho_ocr(
     for sub_idx, sub in enumerate(series.events):
         if sub_idx > stop_at_idx:
             break
-        if sub.bboxes is None:
-            sub.bboxes = bbox_mgr.get_bboxes(sub, interactive=False)
-        if sub.bboxes is None:
-            warning(f"Subtitle {sub_idx + 1:04d}: {sub.text} - no bboxes found.")
-            if output_series is not None:
-                output_series.events.append(
-                    ImageSubtitle(
-                        img=sub.img_with_white_bg,
-                        start=sub.start,
-                        end=sub.end,
-                        text=sub.text,
-                        series=output_series,
-                    )
-                )
-            continue
         for message in bbox_mgr.validate_char_bboxes(sub, sub_idx=sub_idx):
             warning(message)
         if output_dir_path is not None:
