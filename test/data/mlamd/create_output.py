@@ -122,7 +122,6 @@ if "简体中文 (OCR Validation)" in actions:
         zho_hans, output_dir_path=output_dir / "zho-Hans_validation", stop_at_idx=0
     )
 
-
 if "English (OCR)" in actions:
     eng_lens = Series.load(input_dir / "eng_lens.srt")
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
