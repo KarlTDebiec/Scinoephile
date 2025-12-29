@@ -48,7 +48,9 @@ def validate_zho_ocr(
                 f"{len(sub.text_without_whitspace)} non-whitespace characters, "
                 f"but image has {len(sub.bboxes)} bboxes."
             )
-        if output_series is not None:
+        for message in bbox_mgr.validate_char_bboxes(sub, subtitle_index=sub_idx):
+            warning(message)
+        if output_dir_path is not None:
             annotated_img = get_img_with_bboxes(sub.img_with_white_bg, sub.bboxes)
             output_series.events.append(
                 ImageSubtitle(
@@ -59,5 +61,5 @@ def validate_zho_ocr(
                     series=output_series,
                 )
             )
-    if output_series is not None:
+    if output_dir_path is not None:
         output_series.save(output_dir_path)

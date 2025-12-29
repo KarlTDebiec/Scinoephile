@@ -11,6 +11,8 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
+from scinoephile.core.text import whitespace_chars
+from scinoephile.image.drawing import get_img_of_text
 
 from .types import OcrSubtitle
 
@@ -20,17 +22,24 @@ __all__ = ["BboxManager"]
 class BboxManager:
     """Manages bboxes around characters."""
 
-    merge_three_file_path = package_root / "data" / "ocr" / "merge_threes.csv"
-    """Path to file containing specs for sets of three bboxes that should be merged."""
-    merge_threes: dict[tuple[int, int, int, int, int, int, int, int], str] = {}
-    """Dimensions and gaps betwee sets of three bboxes that should be merged."""
+    char_dims_file_path = package_root / "data" / "ocr" / "char_dims.csv"
+    """Path to file containing expected character widths and heights."""
+    char_dims: dict[str, tuple[int, int]] = {}
+    """Expected character widths and heights keyed by character."""
     merge_two_file_path = package_root / "data" / "ocr" / "merge_twos.csv"
     """Path to file containing specs for sets of two bboxes that should be merged."""
     merge_twos: dict[tuple[int, int, int, int, int], str] = {}
     """Dimensions and gaps between sets of two bboxes that should be merged."""
+    merge_three_file_path = package_root / "data" / "ocr" / "merge_threes.csv"
+    """Path to file containing specs for sets of three bboxes that should be merged."""
+    merge_threes: dict[tuple[int, int, int, int, int, int, int, int], str] = {}
+    """Dimensions and gaps betwee sets of three bboxes that should be merged."""
 
     def __init__(self):
         """Initialize."""
+        if self.char_dims_file_path.exists():
+            self.char_dims = self._load_char_dims(self.char_dims_file_path)
+            self._save_char_dims(self.char_dims, self.char_dims_file_path)
         if self.merge_two_file_path.exists():
             self.merge_twos = self._load_merge_dict(self.merge_two_file_path)
             self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
@@ -61,7 +70,11 @@ class BboxManager:
         Returns:
             Character bounding boxes [(x1, y1, x2, y2), ...]
         """
-        white_mask = self._get_white_mask(subtitle)
+        grayscale, alpha = self._get_grayscale_and_alpha(subtitle)
+        fill_color, outline_color = self._get_fill_and_outline_colors(
+            subtitle, grayscale, alpha
+        )
+        white_mask = self._get_white_mask(grayscale, alpha, fill_color, outline_color)
 
         # Determine left and right of each section separated by whitespace
         sections = []
@@ -101,19 +114,134 @@ class BboxManager:
 
         return bboxes
 
-    @staticmethod
-    def _get_white_mask(subtitle: OcrSubtitle) -> np.ndarray:
-        """Get mask of white interior pixels for a subtitle image.
+    def validate_char_bboxes(
+        self,
+        subtitle: OcrSubtitle,
+        subtitle_index: int | None = None,
+    ) -> list[str]:
+        """Validate per-character bboxes for a subtitle.
 
         Arguments:
-            subtitle: Subtitle for which to get mask
+            subtitle: Subtitle to validate
+            subtitle_index: Optional subtitle index for logging
+        Returns:
+            List of validation messages
+        """
+        if subtitle.bboxes is None:
+            raise ScinoephileError("Subtitle has no bboxes to validate.")
+
+        messages = []
+        text = subtitle.text
+        bbox_i = 0
+        char_i = 0
+        while char_i < len(text):
+            char = text[char_i]
+            if char in whitespace_chars:
+                char_i += 1
+                continue
+            if bbox_i >= len(subtitle.bboxes):
+                messages.append(
+                    self._format_message(
+                        subtitle_index,
+                        text,
+                        f"ran out of bboxes at character '{char}'.",
+                    )
+                )
+                break
+
+            expected = self._get_expected_char_dims(char, subtitle)
+            bbox = subtitle.bboxes[bbox_i]
+            bbox_dims = self._get_bbox_dims(bbox)
+            if self._dims_match(bbox_dims, expected):
+                if char not in self.char_dims:
+                    self._update_char_dims(char, bbox_dims)
+                    messages.append(
+                        self._format_message(
+                            subtitle_index,
+                            text,
+                            f"added dims for '{char}' as {bbox_dims}.",
+                        )
+                    )
+                bbox_i += 1
+                char_i += 1
+                continue
+
+            matched = False
+            if bbox_i <= len(subtitle.bboxes) - 2:
+                key, merged_bbox = self._get_key_and_merged_bbox(
+                    subtitle.bboxes, bbox_i, 2
+                )
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if self._dims_match(merged_dims, expected):
+                    self._update_merge_twos(key, char)
+                    messages.append(
+                        self._format_message(
+                            subtitle_index,
+                            text,
+                            f"merged two bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    bbox_i += 2
+                    char_i += 1
+                    matched = True
+            if not matched and bbox_i <= len(subtitle.bboxes) - 3:
+                key, merged_bbox = self._get_key_and_merged_bbox(
+                    subtitle.bboxes, bbox_i, 3
+                )
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if self._dims_match(merged_dims, expected):
+                    self._update_merge_threes(key, char)
+                    messages.append(
+                        self._format_message(
+                            subtitle_index,
+                            text,
+                            f"merged three bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    bbox_i += 3
+                    char_i += 1
+                    matched = True
+
+            if not matched:
+                messages.append(
+                    self._format_message(
+                        subtitle_index,
+                        text,
+                        f"bbox dims {bbox_dims} for '{char}' do not match "
+                        f"expected {expected}.",
+                    )
+                )
+                bbox_i += 1
+                char_i += 1
+
+        if bbox_i < len(subtitle.bboxes):
+            messages.append(
+                self._format_message(
+                    subtitle_index,
+                    text,
+                    f"{len(subtitle.bboxes) - bbox_i} extra bboxes remain.",
+                )
+            )
+
+        return messages
+
+    @staticmethod
+    def _get_white_mask(
+        grayscale: np.ndarray,
+        alpha: np.ndarray,
+        fill_color: int,
+        outline_color: int,
+    ) -> np.ndarray:
+        """Get a white interior mask from grayscale/alpha arrays.
+
+        Arguments:
+            grayscale: Grayscale values
+            alpha: Alpha values
+            fill_color: Fill color used in rendering
+            outline_color: Outline color used in rendering
         Returns:
             Boolean mask of white interior pixels
         """
-        grayscale, alpha = BboxManager._get_grayscale_and_alpha(subtitle)
-        fill_color, outline_color = BboxManager._get_fill_and_outline_colors(
-            subtitle, grayscale, alpha
-        )
         if fill_color == outline_color:
             threshold = max(fill_color - 10, 0)
         else:
@@ -131,7 +259,19 @@ class BboxManager:
         Returns:
             Grayscale values and alpha mask
         """
-        img = subtitle.img
+        return BboxManager._get_grayscale_and_alpha_from_image(subtitle.img)
+
+    @staticmethod
+    def _get_grayscale_and_alpha_from_image(
+        img,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Get grayscale and alpha arrays for an image.
+
+        Arguments:
+            img: Image from which to extract grayscale and alpha
+        Returns:
+            Grayscale values and alpha mask
+        """
         arr = np.array(img)
         if img.mode == "LA":
             return arr[:, :, 0], arr[:, :, 1]
@@ -178,6 +318,149 @@ class BboxManager:
         if outline > fill:
             fill, outline = outline, fill
         return fill, outline
+
+    def _get_expected_char_dims(
+        self, char: str, subtitle: OcrSubtitle
+    ) -> tuple[int, int]:
+        """Get expected bbox dimensions for a character.
+
+        Arguments:
+            char: Character to check
+            subtitle: Subtitle containing the character
+        Returns:
+            Expected (width, height)
+        """
+        if char in self.char_dims:
+            return self.char_dims[char]
+
+        measured = self._measure_char_dims(char, subtitle)
+        return measured
+
+    def _measure_char_dims(
+        self,
+        char: str,
+        subtitle: OcrSubtitle,
+    ) -> tuple[int, int]:
+        """Measure character dimensions by rendering the character.
+
+        Arguments:
+            char: Character to measure
+            subtitle: Subtitle containing the character
+        Returns:
+            Measured (width, height)
+        """
+        series = getattr(subtitle, "series", None)
+        fill_color = 31
+        outline_color = 235
+        if (
+            series is not None
+            and hasattr(series, "fill_color")
+            and hasattr(series, "outline_color")
+        ):
+            fill_color = int(series.fill_color)
+            outline_color = int(series.outline_color)
+
+        rendered = get_img_of_text(
+            char,
+            subtitle.img.size,
+            fill_color=fill_color,
+            outline_color=outline_color,
+        )
+        grayscale, alpha = self._get_grayscale_and_alpha_from_image(rendered)
+        mask = self._get_white_mask(grayscale, alpha, fill_color, outline_color)
+        bbox = self._get_bbox_from_mask(mask)
+        return self._get_bbox_dims(bbox)
+
+    @staticmethod
+    def _get_bbox_dims(bbox: tuple[int, int, int, int]) -> tuple[int, int]:
+        """Get width and height from a bbox."""
+        return (bbox[2] - bbox[0], bbox[3] - bbox[1])
+
+    @staticmethod
+    def _get_bbox_from_mask(mask: np.ndarray) -> tuple[int, int, int, int]:
+        """Get bbox from a boolean mask."""
+        cols = np.where(np.any(mask, axis=0))[0]
+        rows = np.where(np.any(mask, axis=1))[0]
+        if cols.size == 0 or rows.size == 0:
+            return (0, 0, 0, 0)
+        return (int(cols[0]), int(rows[0]), int(cols[-1]), int(rows[-1]))
+
+    @staticmethod
+    def _dims_match(
+        bbox_dims: tuple[int, int],
+        expected_dims: tuple[int, int],
+        tolerance: int = 1,
+    ) -> bool:
+        """Return whether bbox dimensions match expected dimensions."""
+        return (
+            abs(bbox_dims[0] - expected_dims[0]) <= tolerance
+            and abs(bbox_dims[1] - expected_dims[1]) <= tolerance
+        )
+
+    def _update_char_dims(self, char: str, dims: tuple[int, int]) -> None:
+        """Update char_dims dictionary and save.
+
+        Arguments:
+            char: Character to update
+            dims: Expected dimensions
+        """
+        self.char_dims[char] = dims
+        self._save_char_dims(self.char_dims, self.char_dims_file_path)
+
+    @staticmethod
+    def _format_message(
+        subtitle_index: int | None,
+        text: str,
+        message: str,
+    ) -> str:
+        """Format a validation message."""
+        if subtitle_index is None:
+            return f"{text} - {message}"
+        return f"Subtitle {subtitle_index:04d}: {text} - {message}"
+
+    @staticmethod
+    def _load_char_dims(
+        file_path: Path,
+    ) -> dict[str, tuple[int, int]]:
+        """Load character dimensions from file.
+
+        Arguments:
+            file_path: Path to file
+        Returns:
+            Character dimension map
+        """
+        arr = np.genfromtxt(file_path, delimiter=",", dtype=str, encoding="utf-8")
+        if arr.size == 0:
+            return {}
+        if arr.ndim == 1:
+            arr = np.array([arr])
+        char_dims = {}
+        for row in arr:
+            char = row[0]
+            width = int(row[1])
+            height = int(row[2])
+            char_dims[char] = (width, height)
+        info(f"Loaded {file_path}")
+        return char_dims
+
+    @staticmethod
+    def _save_char_dims(
+        char_dims: dict[str, tuple[int, int]],
+        file_path: Path,
+    ):
+        """Save character dimensions to file.
+
+        Arguments:
+            char_dims: Character dimension map to save
+            file_path: Path to file
+        """
+        rows = [[char, dims[0], dims[1]] for char, dims in sorted(char_dims.items())]
+        if rows:
+            arr = np.array(rows, dtype=object)
+            np.savetxt(file_path, arr, delimiter=",", fmt="%s", encoding="utf-8")
+        else:
+            file_path.write_text("", encoding="utf-8")
+        info(f"Saved {file_path}")
 
     def _apply_known_merges(  # noqa: PLR0912, PLR0915
         self,
