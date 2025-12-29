@@ -70,6 +70,45 @@ class BboxManager:
         Returns:
             Character bounding boxes [(x1, y1, x2, y2), ...]
         """
+        bboxes = self._get_initial_bboxes(subtitle)
+        merged_bboxes, _ = self._merge_and_validate_char_bboxes(
+            subtitle, bboxes, sub_idx=None
+        )
+        return merged_bboxes
+
+    def validate_char_bboxes(
+        self,
+        subtitle: OcrSubtitle,
+        sub_idx: int | None = None,
+    ) -> list[str]:
+        """Validate per-character bboxes for a subtitle.
+
+        Arguments:
+            subtitle: Subtitle to validate
+            sub_idx: optional subtitle index for logging
+        Returns:
+            List of validation messages
+        """
+        bboxes = subtitle.bboxes
+        if bboxes is None:
+            bboxes = self._get_initial_bboxes(subtitle)
+
+        merged_bboxes, messages = self._merge_and_validate_char_bboxes(
+            subtitle, bboxes, sub_idx=sub_idx
+        )
+        subtitle.bboxes = merged_bboxes
+        return messages
+
+    def _get_initial_bboxes(
+        self, subtitle: OcrSubtitle
+    ) -> list[tuple[int, int, int, int]]:
+        """Get initial bboxes from white interior pixels.
+
+        Arguments:
+            subtitle: Subtitle for which to get bboxes
+        Returns:
+            Initial bboxes before character-level merging
+        """
         grayscale, alpha = self._get_grayscale_and_alpha(subtitle)
         fill_color, outline_color = self._get_fill_and_outline_colors(
             subtitle, grayscale, alpha
@@ -100,38 +139,26 @@ class BboxManager:
             y2 = int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1)
             bboxes.append((x1, y1, x2, y2))
 
-        # Merge sets of adjacent bboxes known to have vertical whitespace within them
-        bboxes = self._apply_known_merges(bboxes, subtitle.text)
-
-        # Propose additional merges of adjacent boxes, if found
-        filtered_text = "".join(
-            [char for char in subtitle.text if char not in ("\u3000", " ")]
-        )
-        if len(filtered_text) != len(bboxes):
-            if interactive:
-                self._propose_merges(bboxes, subtitle.text)
-            bboxes = self._apply_known_merges(bboxes, subtitle.text)
-
         return bboxes
 
-    def validate_char_bboxes(
+    def _merge_and_validate_char_bboxes(  # noqa: PLR0915
         self,
         subtitle: OcrSubtitle,
-        subtitle_index: int | None = None,
-    ) -> list[str]:
-        """Validate per-character bboxes for a subtitle.
+        bboxes: list[tuple[int, int, int, int]],
+        sub_idx: int | None = None,
+    ) -> tuple[list[tuple[int, int, int, int]], list[str]]:
+        """Merge bboxes per character and collect validation messages.
 
         Arguments:
             subtitle: Subtitle to validate
-            subtitle_index: Optional subtitle index for logging
+            bboxes: Initial bboxes to validate and merge
+            sub_idx: optional subtitle index for logging
         Returns:
-            List of validation messages
+            Merged bboxes and validation messages
         """
-        if subtitle.bboxes is None:
-            raise ScinoephileError("Subtitle has no bboxes to validate.")
-
         messages = []
         text = subtitle.text
+        merged_bboxes: list[tuple[int, int, int, int]] = []
         bbox_i = 0
         char_i = 0
         while char_i < len(text):
@@ -139,10 +166,10 @@ class BboxManager:
             if char in whitespace_chars:
                 char_i += 1
                 continue
-            if bbox_i >= len(subtitle.bboxes):
+            if bbox_i >= len(bboxes):
                 messages.append(
                     self._format_message(
-                        subtitle_index,
+                        sub_idx,
                         text,
                         f"ran out of bboxes at character '{char}'.",
                     )
@@ -150,54 +177,53 @@ class BboxManager:
                 break
 
             expected = self._get_expected_char_dims(char, subtitle)
-            bbox = subtitle.bboxes[bbox_i]
+            bbox = bboxes[bbox_i]
             bbox_dims = self._get_bbox_dims(bbox)
             if self._dims_match(bbox_dims, expected):
                 if char not in self.char_dims:
                     self._update_char_dims(char, bbox_dims)
                     messages.append(
                         self._format_message(
-                            subtitle_index,
+                            sub_idx,
                             text,
                             f"added dims for '{char}' as {bbox_dims}.",
                         )
                     )
+                merged_bboxes.append(bbox)
                 bbox_i += 1
                 char_i += 1
                 continue
 
             matched = False
-            if bbox_i <= len(subtitle.bboxes) - 2:
-                key, merged_bbox = self._get_key_and_merged_bbox(
-                    subtitle.bboxes, bbox_i, 2
-                )
+            if bbox_i <= len(bboxes) - 2:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
                 merged_dims = self._get_bbox_dims(merged_bbox)
                 if self._dims_match(merged_dims, expected):
                     self._update_merge_twos(key, char)
                     messages.append(
                         self._format_message(
-                            subtitle_index,
+                            sub_idx,
                             text,
                             f"merged two bboxes for '{char}' into {merged_dims}.",
                         )
                     )
+                    merged_bboxes.append(merged_bbox)
                     bbox_i += 2
                     char_i += 1
                     matched = True
-            if not matched and bbox_i <= len(subtitle.bboxes) - 3:
-                key, merged_bbox = self._get_key_and_merged_bbox(
-                    subtitle.bboxes, bbox_i, 3
-                )
+            if not matched and bbox_i <= len(bboxes) - 3:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
                 merged_dims = self._get_bbox_dims(merged_bbox)
                 if self._dims_match(merged_dims, expected):
                     self._update_merge_threes(key, char)
                     messages.append(
                         self._format_message(
-                            subtitle_index,
+                            sub_idx,
                             text,
                             f"merged three bboxes for '{char}' into {merged_dims}.",
                         )
                     )
+                    merged_bboxes.append(merged_bbox)
                     bbox_i += 3
                     char_i += 1
                     matched = True
@@ -205,25 +231,27 @@ class BboxManager:
             if not matched:
                 messages.append(
                     self._format_message(
-                        subtitle_index,
+                        sub_idx,
                         text,
                         f"bbox dims {bbox_dims} for '{char}' do not match "
                         f"expected {expected}.",
                     )
                 )
+                merged_bboxes.append(bbox)
                 bbox_i += 1
                 char_i += 1
 
-        if bbox_i < len(subtitle.bboxes):
+        if bbox_i < len(bboxes):
+            merged_bboxes.extend(bboxes[bbox_i:])
             messages.append(
                 self._format_message(
-                    subtitle_index,
+                    sub_idx,
                     text,
-                    f"{len(subtitle.bboxes) - bbox_i} extra bboxes remain.",
+                    f"{len(bboxes) - bbox_i} extra bboxes remain.",
                 )
             )
 
-        return messages
+        return merged_bboxes, messages
 
     @staticmethod
     def _get_white_mask(
@@ -275,6 +303,9 @@ class BboxManager:
         arr = np.array(img)
         if img.mode == "LA":
             return arr[:, :, 0], arr[:, :, 1]
+        if img.mode == "L":
+            alpha = np.ones(arr.shape, dtype=np.uint8) * 255
+            return arr, alpha
         if img.mode == "RGBA":
             rgb = arr[:, :, :3].astype(np.float32)
             grayscale = (
@@ -409,14 +440,14 @@ class BboxManager:
 
     @staticmethod
     def _format_message(
-        subtitle_index: int | None,
+        sub_idx: int | None,
         text: str,
         message: str,
     ) -> str:
         """Format a validation message."""
-        if subtitle_index is None:
+        if sub_idx is None:
             return f"{text} - {message}"
-        return f"Subtitle {subtitle_index:04d}: {text} - {message}"
+        return f"Subtitle {sub_idx + 1:04d}: {text} - {message}"
 
     @staticmethod
     def _load_char_dims(
