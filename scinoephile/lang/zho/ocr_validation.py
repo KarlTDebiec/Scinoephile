@@ -18,6 +18,7 @@ def validate_zho_ocr(
     series: ImageSeries,
     output_dir_path: Path | str | None = None,
     stop_at_idx: int | None = None,
+    interactive: bool = False,
 ) -> None:
     """Validate OCR text against image series bboxes.
 
@@ -25,6 +26,7 @@ def validate_zho_ocr(
         series: ImageSeries to validate
         output_dir_path: directory in which to save validation images
         stop_at_idx: stop processing at this index
+        interactive: whether to prompt user for confirmations
     """
     bbox_mgr = BboxManager()
     output_series = ImageSeries() if output_dir_path is not None else None
@@ -33,7 +35,9 @@ def validate_zho_ocr(
     for sub_idx, sub in enumerate(series.events):
         if sub_idx > stop_at_idx:
             break
-        for message in bbox_mgr.validate_char_bboxes(sub, sub_idx=sub_idx):
+        for message in bbox_mgr.validate_char_bboxes(
+            sub, sub_idx=sub_idx, interactive=interactive
+        ):
             warning(message)
         if output_dir_path is not None:
             annotated_img = get_img_with_bboxes(sub.img_with_white_bg, sub.bboxes)
