@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
-from logging import info
+import ast
+import csv
+from logging import info, warning
 from pathlib import Path
 
 import numpy as np
@@ -12,7 +14,7 @@ import numpy as np
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import whitespace_chars
-from scinoephile.image.drawing import get_img_of_text
+from scinoephile.image.drawing import get_img_with_bboxes
 
 from .types import OcrSubtitle
 
@@ -41,10 +43,10 @@ class BboxManager:
             self.char_dims = self._load_char_dims(self.char_dims_file_path)
             self._save_char_dims(self.char_dims, self.char_dims_file_path)
         if self.merge_two_file_path.exists():
-            self.merge_twos = self._load_merge_dict(self.merge_two_file_path)
+            self.merge_twos = self._load_merge_dict(self.merge_two_file_path, 6)
             self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
         if self.merge_three_file_path.exists():
-            self.merge_threes = self._load_merge_dict(self.merge_three_file_path)
+            self.merge_threes = self._load_merge_dict(self.merge_three_file_path, 9)
             self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
 
     @property
@@ -80,12 +82,14 @@ class BboxManager:
         self,
         subtitle: OcrSubtitle,
         sub_idx: int | None = None,
+        interactive: bool = False,
     ) -> list[str]:
         """Validate per-character bboxes for a subtitle.
 
         Arguments:
             subtitle: Subtitle to validate
             sub_idx: optional subtitle index for logging
+            interactive: whether to prompt user for confirmations
         Returns:
             List of validation messages
         """
@@ -94,7 +98,10 @@ class BboxManager:
             bboxes = self._get_initial_bboxes(subtitle)
 
         merged_bboxes, messages = self._merge_and_validate_char_bboxes(
-            subtitle, bboxes, sub_idx=sub_idx
+            subtitle,
+            bboxes,
+            sub_idx=sub_idx,
+            interactive=interactive,
         )
         subtitle.bboxes = merged_bboxes
         return messages
@@ -141,11 +148,12 @@ class BboxManager:
 
         return bboxes
 
-    def _merge_and_validate_char_bboxes(  # noqa: PLR0915
+    def _merge_and_validate_char_bboxes(  # noqa: PLR0912, PLR0915
         self,
         subtitle: OcrSubtitle,
         bboxes: list[tuple[int, int, int, int]],
         sub_idx: int | None = None,
+        interactive: bool = False,
     ) -> tuple[list[tuple[int, int, int, int]], list[str]]:
         """Merge bboxes per character and collect validation messages.
 
@@ -153,6 +161,7 @@ class BboxManager:
             subtitle: Subtitle to validate
             bboxes: Initial bboxes to validate and merge
             sub_idx: optional subtitle index for logging
+            interactive: whether to prompt user for confirmations
         Returns:
             Merged bboxes and validation messages
         """
@@ -161,30 +170,56 @@ class BboxManager:
         merged_bboxes: list[tuple[int, int, int, int]] = []
         bbox_i = 0
         char_i = 0
+        char_sub_idx = 0
         while char_i < len(text):
             char = text[char_i]
             if char in whitespace_chars:
                 char_i += 1
                 continue
+            char_sub_idx += 1
             if bbox_i >= len(bboxes):
                 messages.append(
                     self._format_message(
                         sub_idx,
+                        char_sub_idx,
                         text,
                         f"ran out of bboxes at character '{char}'.",
                     )
                 )
                 break
 
-            expected = self._get_expected_char_dims(char, subtitle)
+            expected = self._get_expected_char_dims(char)
             bbox = bboxes[bbox_i]
             bbox_dims = self._get_bbox_dims(bbox)
-            if self._dims_match(bbox_dims, expected):
+            if expected is None:
+                accepted = self._confirm_bbox_dims(
+                    subtitle,
+                    bbox,
+                    char,
+                    bbox_dims,
+                    interactive,
+                )
+                if accepted:
+                    self._update_char_dims(char, bbox_dims)
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"added dims for '{char}' as {bbox_dims}.",
+                        )
+                    )
+                    merged_bboxes.append(bbox)
+                    bbox_i += 1
+                    char_i += 1
+                    continue
+            elif self._dims_match(bbox_dims, expected):
                 if char not in self.char_dims:
                     self._update_char_dims(char, bbox_dims)
                     messages.append(
                         self._format_message(
                             sub_idx,
+                            char_sub_idx,
                             text,
                             f"added dims for '{char}' as {bbox_dims}.",
                         )
@@ -198,11 +233,23 @@ class BboxManager:
             if bbox_i <= len(bboxes) - 2:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
                 merged_dims = self._get_bbox_dims(merged_bbox)
-                if self._dims_match(merged_dims, expected):
+                if expected is None:
+                    accepted = self._confirm_bbox_dims(
+                        subtitle,
+                        merged_bbox,
+                        char,
+                        merged_dims,
+                        interactive,
+                        merge_count=2,
+                    )
+                else:
+                    accepted = self._dims_match(merged_dims, expected)
+                if accepted:
                     self._update_merge_twos(key, char)
                     messages.append(
                         self._format_message(
                             sub_idx,
+                            char_sub_idx,
                             text,
                             f"merged two bboxes for '{char}' into {merged_dims}.",
                         )
@@ -214,11 +261,23 @@ class BboxManager:
             if not matched and bbox_i <= len(bboxes) - 3:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
                 merged_dims = self._get_bbox_dims(merged_bbox)
-                if self._dims_match(merged_dims, expected):
+                if expected is None:
+                    accepted = self._confirm_bbox_dims(
+                        subtitle,
+                        merged_bbox,
+                        char,
+                        merged_dims,
+                        interactive,
+                        merge_count=3,
+                    )
+                else:
+                    accepted = self._dims_match(merged_dims, expected)
+                if accepted:
                     self._update_merge_threes(key, char)
                     messages.append(
                         self._format_message(
                             sub_idx,
+                            char_sub_idx,
                             text,
                             f"merged three bboxes for '{char}' into {merged_dims}.",
                         )
@@ -232,6 +291,7 @@ class BboxManager:
                 messages.append(
                     self._format_message(
                         sub_idx,
+                        char_sub_idx,
                         text,
                         f"bbox dims {bbox_dims} for '{char}' do not match "
                         f"expected {expected}.",
@@ -246,6 +306,7 @@ class BboxManager:
             messages.append(
                 self._format_message(
                     sub_idx,
+                    None,
                     text,
                     f"{len(bboxes) - bbox_i} extra bboxes remain.",
                 )
@@ -263,18 +324,18 @@ class BboxManager:
         """Get a white interior mask from grayscale/alpha arrays.
 
         Arguments:
-            grayscale: Grayscale values
-            alpha: Alpha values
-            fill_color: Fill color used in rendering
-            outline_color: Outline color used in rendering
+            grayscale: grayscale values
+            alpha: alpha values
+            fill_color: fill color used in rendering
+            outline_color: outline color used in rendering
         Returns:
             Boolean mask of white interior pixels
         """
-        if fill_color == outline_color:
-            threshold = max(fill_color - 10, 0)
-        else:
-            threshold = int((fill_color + outline_color) / 2)
-        return (alpha > 0) & (grayscale >= threshold)
+        del outline_color
+        tolerance = 10
+        lower = max(0, fill_color - tolerance)
+        upper = min(255, fill_color + tolerance)
+        return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
 
     @staticmethod
     def _get_grayscale_and_alpha(
@@ -350,57 +411,17 @@ class BboxManager:
             fill, outline = outline, fill
         return fill, outline
 
-    def _get_expected_char_dims(
-        self, char: str, subtitle: OcrSubtitle
-    ) -> tuple[int, int]:
+    def _get_expected_char_dims(self, char: str) -> tuple[int, int] | None:
         """Get expected bbox dimensions for a character.
 
         Arguments:
             char: Character to check
-            subtitle: Subtitle containing the character
         Returns:
             Expected (width, height)
         """
         if char in self.char_dims:
             return self.char_dims[char]
-
-        measured = self._measure_char_dims(char, subtitle)
-        return measured
-
-    def _measure_char_dims(
-        self,
-        char: str,
-        subtitle: OcrSubtitle,
-    ) -> tuple[int, int]:
-        """Measure character dimensions by rendering the character.
-
-        Arguments:
-            char: Character to measure
-            subtitle: Subtitle containing the character
-        Returns:
-            Measured (width, height)
-        """
-        series = getattr(subtitle, "series", None)
-        fill_color = 31
-        outline_color = 235
-        if (
-            series is not None
-            and hasattr(series, "fill_color")
-            and hasattr(series, "outline_color")
-        ):
-            fill_color = int(series.fill_color)
-            outline_color = int(series.outline_color)
-
-        rendered = get_img_of_text(
-            char,
-            subtitle.img.size,
-            fill_color=fill_color,
-            outline_color=outline_color,
-        )
-        grayscale, alpha = self._get_grayscale_and_alpha_from_image(rendered)
-        mask = self._get_white_mask(grayscale, alpha, fill_color, outline_color)
-        bbox = self._get_bbox_from_mask(mask)
-        return self._get_bbox_dims(bbox)
+        return None
 
     @staticmethod
     def _get_bbox_dims(bbox: tuple[int, int, int, int]) -> tuple[int, int]:
@@ -438,16 +459,48 @@ class BboxManager:
         self.char_dims[char] = dims
         self._save_char_dims(self.char_dims, self.char_dims_file_path)
 
+    def _confirm_bbox_dims(  # noqa: PLR0913
+        self,
+        subtitle: OcrSubtitle,
+        bbox: tuple[int, int, int, int],
+        char: str,
+        dims: tuple[int, int],
+        interactive: bool,
+        merge_count: int = 1,
+    ) -> bool:
+        """Confirm bbox dims interactively.
+
+        Arguments:
+            subtitle: Subtitle containing the character
+            bbox: Bounding box to confirm
+            char: Character under review
+            dims: Bounding box dimensions
+            interactive: Whether to prompt user
+            merge_count: Number of merged bboxes represented
+        Returns:
+            Whether the bbox is accepted
+        """
+        if not interactive:
+            return False
+        annotated = get_img_with_bboxes(subtitle.img_with_white_bg, [bbox])
+        annotated.show()
+        merge_note = "merged " if merge_count > 1 else ""
+        response = input(f"Accept {merge_note}bbox dims {dims} for '{char}'? (y/n): ")
+        return response.lower().startswith("y")
+
     @staticmethod
     def _format_message(
         sub_idx: int | None,
+        char_sub_idx: int | None,
         text: str,
         message: str,
     ) -> str:
         """Format a validation message."""
         if sub_idx is None:
             return f"{text} - {message}"
-        return f"Subtitle {sub_idx + 1:04d}: {text} - {message}"
+        if char_sub_idx is None:
+            return f"Sub {sub_idx + 1:04d}: {text} - {message}"
+        return f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - {message}"
 
     @staticmethod
     def _load_char_dims(
@@ -737,18 +790,47 @@ class BboxManager:
     @staticmethod
     def _load_merge_dict(
         file_path: Path,
-    ) -> dict[tuple[int, int, int, int, int, int, int, int], str]:
+        expected_len: int | None = None,
+    ) -> dict[tuple[int, ...], str]:
         """Load merge dict from file.
 
         Arguments:
-            file_path: Path to file
+            file_path: path to file
+            expected_len: expected number of columns per row
         """
-        arr = np.genfromtxt(file_path, delimiter=",", dtype=str, encoding="utf-8")
-
         merge_dict = {}
-        for row in arr:
-            key = tuple(map(int, row[1:]))
-            value = row[0]
+        lines = file_path.read_text(encoding="utf-8").splitlines()
+        for line_num, line in enumerate(lines, 1):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith("[") and stripped.endswith("]"):
+                try:
+                    parts = ast.literal_eval(stripped)
+                except (ValueError, SyntaxError):
+                    warning(
+                        f"Skipping {file_path} line {line_num}: could not parse list."
+                    )
+                    continue
+            else:
+                parts = [part.strip() for part in stripped.split(",")]
+            if expected_len is None:
+                expected_len = len(parts)
+            if len(parts) != expected_len:
+                warning(
+                    f"Skipping {file_path} line {line_num}: "
+                    f"expected {expected_len} columns, got {len(parts)}."
+                )
+                continue
+            try:
+                key = tuple(map(int, parts[1:]))
+            except ValueError:
+                warning(
+                    f"Skipping {file_path} line {line_num}: "
+                    "could not parse bbox dimensions."
+                )
+                continue
+            value = parts[0]
             if key in merge_dict:
                 merge_dict[key] += value
             else:
@@ -773,13 +855,8 @@ class BboxManager:
         for key, value in merge_dict.items():
             for char in value:
                 rows.extend([[char] + list(key)])
-
-        arr = np.array(sorted(rows))
-        np.savetxt(
-            file_path,
-            arr,
-            delimiter=",",
-            fmt="%s",
-            encoding="utf-8",
-        )
+        rows = sorted({tuple(row) for row in rows})
+        with file_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.writer(handle)
+            writer.writerows(rows)
         info(f"Saved {file_path}")
