@@ -191,6 +191,82 @@ class BboxManager:
             expected = self._get_expected_char_dims(char)
             bbox = bboxes[bbox_i]
             bbox_dims = self._get_bbox_dims(bbox)
+
+            fuzzy_expected = self._get_fuzzy_char_dims(char, bbox_dims)
+            if expected is not None and self._dims_match(bbox_dims, expected):
+                merged_bboxes.append(bbox)
+                bbox_i += 1
+                char_i += 1
+                continue
+            if fuzzy_expected is not None:
+                self._update_char_dims(char, bbox_dims)
+                merged_bboxes.append(bbox)
+                bbox_i += 1
+                char_i += 1
+                continue
+
+            if bbox_i <= len(bboxes) - 2:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if key in self.merge_twos and char in self.merge_twos[key]:
+                    self._update_merge_twos(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 2
+                    char_i += 1
+                    continue
+                fuzzy_key = self._get_fuzzy_merge_key(self.merge_twos, key, char)
+                if fuzzy_key is not None:
+                    self._update_merge_twos(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 2
+                    char_i += 1
+                    continue
+                if expected is not None and self._dims_match(merged_dims, expected):
+                    self._update_merge_twos(key, char)
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"merged two bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 2
+                    char_i += 1
+                    continue
+
+            if bbox_i <= len(bboxes) - 3:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if key in self.merge_threes and char in self.merge_threes[key]:
+                    self._update_merge_threes(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 3
+                    char_i += 1
+                    continue
+                fuzzy_key = self._get_fuzzy_merge_key(self.merge_threes, key, char)
+                if fuzzy_key is not None:
+                    self._update_merge_threes(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 3
+                    char_i += 1
+                    continue
+                if expected is not None and self._dims_match(merged_dims, expected):
+                    self._update_merge_threes(key, char)
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"merged three bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 3
+                    char_i += 1
+                    continue
+
             if expected is None:
                 accepted = self._confirm_bbox_dims(
                     subtitle,
@@ -213,27 +289,10 @@ class BboxManager:
                     bbox_i += 1
                     char_i += 1
                     continue
-            elif self._dims_match(bbox_dims, expected):
-                if char not in self.char_dims:
-                    self._update_char_dims(char, bbox_dims)
-                    messages.append(
-                        self._format_message(
-                            sub_idx,
-                            char_sub_idx,
-                            text,
-                            f"added dims for '{char}' as {bbox_dims}.",
-                        )
-                    )
-                merged_bboxes.append(bbox)
-                bbox_i += 1
-                char_i += 1
-                continue
 
-            matched = False
-            if bbox_i <= len(bboxes) - 2:
-                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
-                merged_dims = self._get_bbox_dims(merged_bbox)
-                if expected is None:
+                if bbox_i <= len(bboxes) - 2:
+                    key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
+                    merged_dims = self._get_bbox_dims(merged_bbox)
                     accepted = self._confirm_bbox_dims(
                         subtitle,
                         merged_bbox,
@@ -242,26 +301,24 @@ class BboxManager:
                         interactive,
                         merge_count=2,
                     )
-                else:
-                    accepted = self._dims_match(merged_dims, expected)
-                if accepted:
-                    self._update_merge_twos(key, char)
-                    messages.append(
-                        self._format_message(
-                            sub_idx,
-                            char_sub_idx,
-                            text,
-                            f"merged two bboxes for '{char}' into {merged_dims}.",
+                    if accepted:
+                        self._update_merge_twos(key, char)
+                        messages.append(
+                            self._format_message(
+                                sub_idx,
+                                char_sub_idx,
+                                text,
+                                f"merged two bboxes for '{char}' into {merged_dims}.",
+                            )
                         )
-                    )
-                    merged_bboxes.append(merged_bbox)
-                    bbox_i += 2
-                    char_i += 1
-                    matched = True
-            if not matched and bbox_i <= len(bboxes) - 3:
-                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
-                merged_dims = self._get_bbox_dims(merged_bbox)
-                if expected is None:
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 2
+                        char_i += 1
+                        continue
+
+                if bbox_i <= len(bboxes) - 3:
+                    key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
+                    merged_dims = self._get_bbox_dims(merged_bbox)
                     accepted = self._confirm_bbox_dims(
                         subtitle,
                         merged_bbox,
@@ -270,36 +327,33 @@ class BboxManager:
                         interactive,
                         merge_count=3,
                     )
-                else:
-                    accepted = self._dims_match(merged_dims, expected)
-                if accepted:
-                    self._update_merge_threes(key, char)
-                    messages.append(
-                        self._format_message(
-                            sub_idx,
-                            char_sub_idx,
-                            text,
-                            f"merged three bboxes for '{char}' into {merged_dims}.",
+                    if accepted:
+                        self._update_merge_threes(key, char)
+                        messages.append(
+                            self._format_message(
+                                sub_idx,
+                                char_sub_idx,
+                                text,
+                                f"merged three bboxes for '{char}' into {merged_dims}.",
+                            )
                         )
-                    )
-                    merged_bboxes.append(merged_bbox)
-                    bbox_i += 3
-                    char_i += 1
-                    matched = True
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 3
+                        char_i += 1
+                        continue
 
-            if not matched:
-                messages.append(
-                    self._format_message(
-                        sub_idx,
-                        char_sub_idx,
-                        text,
-                        f"bbox dims {bbox_dims} for '{char}' do not match "
-                        f"expected {expected}.",
-                    )
+            messages.append(
+                self._format_message(
+                    sub_idx,
+                    char_sub_idx,
+                    text,
+                    f"bbox dims {bbox_dims} for '{char}' do not match "
+                    f"expected {expected}.",
                 )
-                merged_bboxes.append(bbox)
-                bbox_i += 1
-                char_i += 1
+            )
+            merged_bboxes.append(bbox)
+            bbox_i += 1
+            char_i += 1
 
         if bbox_i < len(bboxes):
             merged_bboxes.extend(bboxes[bbox_i:])
@@ -421,6 +475,52 @@ class BboxManager:
         """
         if char in self.char_dims:
             return self.char_dims[char]
+        return None
+
+    def _get_fuzzy_char_dims(
+        self, char: str, dims: tuple[int, int], tolerance: int = 1
+    ) -> tuple[int, int] | None:
+        """Get a fuzzy-matched expected bbox for a character.
+
+        Arguments:
+            char: Character to check
+            dims: Dimensions to match against
+            tolerance: Allowed difference per dimension
+        Returns:
+            Matching dimensions if found
+        """
+        expected = self.char_dims.get(char)
+        if expected is None:
+            return None
+        if (
+            abs(dims[0] - expected[0]) <= tolerance
+            and abs(dims[1] - expected[1]) <= tolerance
+        ):
+            return expected
+        return None
+
+    def _get_fuzzy_merge_key(
+        self,
+        merge_dict: dict[tuple[int, ...], str],
+        key: tuple[int, ...],
+        char: str,
+        tolerance: int = 1,
+    ) -> tuple[int, ...] | None:
+        """Return a fuzzy-matched merge key for a character.
+
+        Arguments:
+            merge_dict: Merge dictionary to search
+            key: Key to match
+            char: Character to match
+            tolerance: Allowed difference per dimension
+        Returns:
+            Matching key if found
+        """
+        for known_key, chars in merge_dict.items():
+            if char not in chars:
+                continue
+            if all(abs(known_key[i] - key[i]) <= tolerance for i in range(len(key))):
+                return known_key
         return None
 
     @staticmethod
@@ -710,6 +810,8 @@ class BboxManager:
             value: Character
         """
         if key in self.merge_threes:
+            if value in self.merge_threes[key]:
+                return
             self.merge_threes[key] += value
         else:
             self.merge_threes[key] = str(value)
@@ -728,6 +830,8 @@ class BboxManager:
             value: Character
         """
         if key in self.merge_twos:
+            if value in self.merge_twos[key]:
+                return
             self.merge_twos[key] += value
         else:
             self.merge_twos[key] = str(value)
