@@ -113,6 +113,7 @@ def get_img_of_text(
     size: tuple[int, int],
     *,
     font_path: Path | str | None = None,
+    font_size: int = 64,
     fill_color: int = 31,
     outline_color: int = 235,
 ) -> Image.Image:
@@ -122,19 +123,19 @@ def get_img_of_text(
         text: Text to draw
         size: Size of image
         font_path: Path to font file
+        font_size: Font size for rendering
         fill_color: Fill color of text
         outline_color: Outline color of text
     Returns:
         Image of text
     """
     # Create a new image with white background
-    image = Image.new("L", (size[0] * 2, size[1] * 2), 255)
+    image = Image.new("L", size, 255)
     draw = ImageDraw.Draw(image)
 
     # Determine font.
     if font_path is None:
         font_path = _get_default_font_path()
-    font_size = 40 * 2
     font = ImageFont.truetype(font_path, font_size)
 
     if get_text_type(text) == "full":
@@ -183,7 +184,7 @@ def get_img_of_text(
         text_y -= text_bbox[1]
 
         # Draw text outline and fill
-        outline_width = 2 * 2
+        outline_width = 2
         for dx in range(-outline_width, outline_width + 1):
             for dy in range(-outline_width, outline_width + 1):
                 if dx != 0 or dy != 0:
@@ -200,7 +201,6 @@ def get_img_of_text(
             fill=fill_color,
         )
 
-    image = image.resize(size, Image.Resampling.LANCZOS)
     return image
 
 
