@@ -119,7 +119,10 @@ if "简体中文 (OCR)" in actions:
 if "简体中文 (OCR Validation)" in actions:
     zho_hans = ImageSeries.load(output_dir / "zho-Hans_image")
     validate_zho_ocr(
-        zho_hans, output_dir_path=output_dir / "zho-Hans_validation", stop_at_idx=0
+        zho_hans,
+        output_dir_path=output_dir / "zho-Hans_validation",
+        stop_at_idx=0,
+        interactive=True,
     )
 
 if "English (OCR)" in actions:
