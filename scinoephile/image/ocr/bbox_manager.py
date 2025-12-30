@@ -24,40 +24,40 @@ __all__ = ["BboxManager"]
 class BboxManager:
     """Manages bboxes around characters."""
 
-    char_dims_file_path = package_root / "data" / "ocr" / "char_dims.csv"
-    """Path to file containing expected character widths and heights."""
-    char_dims: dict[str, tuple[int, int]] = {}
-    """Expected character widths and heights keyed by character."""
-    merge_two_file_path = package_root / "data" / "ocr" / "merge_twos.csv"
+    single_bbox_file_path = package_root / "data" / "ocr" / "single_bbox.csv"
+    """Path to file containing expected single bbox widths and heights."""
+    single_bbox: dict[str, tuple[int, int]] = {}
+    """Expected single bbox widths and heights keyed by character."""
+    double_bbox_file_path = package_root / "data" / "ocr" / "double_bbox.csv"
     """Path to file containing specs for sets of two bboxes that should be merged."""
-    merge_twos: dict[tuple[int, int, int, int, int], str] = {}
+    double_bbox: dict[tuple[int, int, int, int, int], str] = {}
     """Dimensions and gaps between sets of two bboxes that should be merged."""
-    merge_three_file_path = package_root / "data" / "ocr" / "merge_threes.csv"
+    triple_bbox_file_path = package_root / "data" / "ocr" / "triple_bbox.csv"
     """Path to file containing specs for sets of three bboxes that should be merged."""
-    merge_threes: dict[tuple[int, int, int, int, int, int, int, int], str] = {}
-    """Dimensions and gaps betwee sets of three bboxes that should be merged."""
+    triple_bbox: dict[tuple[int, int, int, int, int, int, int, int], str] = {}
+    """Dimensions and gaps between sets of three bboxes that should be merged."""
 
     def __init__(self):
         """Initialize."""
-        if self.char_dims_file_path.exists():
-            self.char_dims = self._load_char_dims(self.char_dims_file_path)
-            self._save_char_dims(self.char_dims, self.char_dims_file_path)
-        if self.merge_two_file_path.exists():
-            self.merge_twos = self._load_merge_dict(self.merge_two_file_path, 6)
-            self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
-        if self.merge_three_file_path.exists():
-            self.merge_threes = self._load_merge_dict(self.merge_three_file_path, 9)
-            self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
+        if self.single_bbox_file_path.exists():
+            self.single_bbox = self._load_single_bbox(self.single_bbox_file_path)
+            self._save_single_bbox(self.single_bbox, self.single_bbox_file_path)
+        if self.double_bbox_file_path.exists():
+            self.double_bbox = self._load_merge_dict(self.double_bbox_file_path, 6)
+            self._save_merge_dict(self.double_bbox, self.double_bbox_file_path)
+        if self.triple_bbox_file_path.exists():
+            self.triple_bbox = self._load_merge_dict(self.triple_bbox_file_path, 9)
+            self._save_merge_dict(self.triple_bbox, self.triple_bbox_file_path)
 
     @property
-    def merge_two_chars(self):
+    def double_bbox_chars(self):
         """Characters that are known to potentially be spread across two bboxes."""
-        return set(char for chars in self.merge_twos.values() for char in chars)
+        return set(char for chars in self.double_bbox.values() for char in chars)
 
     @property
-    def merge_three_chars(self):
+    def triple_bbox_chars(self):
         """Characters that are known to potentially be spread across three bboxes."""
-        return set(char for chars in self.merge_threes.values() for char in chars)
+        return set(char for chars in self.triple_bbox.values() for char in chars)
 
     def get_bboxes(
         self,
@@ -188,11 +188,11 @@ class BboxManager:
                 )
                 break
 
-            expected = self._get_expected_char_dims(char)
+            expected = self._get_expected_single_bbox(char)
             bbox = bboxes[bbox_i]
             bbox_dims = self._get_bbox_dims(bbox)
 
-            fuzzy_expected = self._get_fuzzy_char_dims(char, bbox_dims)
+            fuzzy_expected = self._get_fuzzy_single_bbox(char, bbox_dims)
             if expected is not None and self._dims_match(bbox_dims, expected):
                 merged_bboxes.append(bbox)
                 bbox_i += 1
@@ -207,7 +207,7 @@ class BboxManager:
                         f"accepted fuzzy dims for '{char}' as {bbox_dims}.",
                     )
                 )
-                self._update_char_dims(char, bbox_dims)
+                self._update_single_bbox(char, bbox_dims)
                 merged_bboxes.append(bbox)
                 bbox_i += 1
                 char_i += 1
@@ -216,13 +216,13 @@ class BboxManager:
             if bbox_i <= len(bboxes) - 2:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
                 merged_dims = self._get_bbox_dims(merged_bbox)
-                if key in self.merge_twos and char in self.merge_twos[key]:
-                    self._update_merge_twos(key, char)
+                if key in self.double_bbox and char in self.double_bbox[key]:
+                    self._update_double_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 2
                     char_i += 1
                     continue
-                fuzzy_key = self._get_fuzzy_merge_key(self.merge_twos, key, char)
+                fuzzy_key = self._get_fuzzy_merge_key(self.double_bbox, key, char)
                 if fuzzy_key is not None:
                     messages.append(
                         self._format_message(
@@ -232,13 +232,13 @@ class BboxManager:
                             f"accepted fuzzy merge-two for '{char}' as {merged_dims}.",
                         )
                     )
-                    self._update_merge_twos(key, char)
+                    self._update_double_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 2
                     char_i += 1
                     continue
                 if expected is not None and self._dims_match(merged_dims, expected):
-                    self._update_merge_twos(key, char)
+                    self._update_double_bbox(key, char)
                     messages.append(
                         self._format_message(
                             sub_idx,
@@ -255,13 +255,13 @@ class BboxManager:
             if bbox_i <= len(bboxes) - 3:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
                 merged_dims = self._get_bbox_dims(merged_bbox)
-                if key in self.merge_threes and char in self.merge_threes[key]:
-                    self._update_merge_threes(key, char)
+                if key in self.triple_bbox and char in self.triple_bbox[key]:
+                    self._update_triple_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 3
                     char_i += 1
                     continue
-                fuzzy_key = self._get_fuzzy_merge_key(self.merge_threes, key, char)
+                fuzzy_key = self._get_fuzzy_merge_key(self.triple_bbox, key, char)
                 if fuzzy_key is not None:
                     messages.append(
                         self._format_message(
@@ -272,13 +272,13 @@ class BboxManager:
                             f"{merged_dims}.",
                         )
                     )
-                    self._update_merge_threes(key, char)
+                    self._update_triple_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 3
                     char_i += 1
                     continue
                 if expected is not None and self._dims_match(merged_dims, expected):
-                    self._update_merge_threes(key, char)
+                    self._update_triple_bbox(key, char)
                     messages.append(
                         self._format_message(
                             sub_idx,
@@ -301,7 +301,7 @@ class BboxManager:
                     interactive,
                 )
                 if accepted:
-                    self._update_char_dims(char, bbox_dims)
+                    self._update_single_bbox(char, bbox_dims)
                     messages.append(
                         self._format_message(
                             sub_idx,
@@ -327,7 +327,7 @@ class BboxManager:
                         merge_count=2,
                     )
                     if accepted:
-                        self._update_merge_twos(key, char)
+                        self._update_double_bbox(key, char)
                         messages.append(
                             self._format_message(
                                 sub_idx,
@@ -353,7 +353,7 @@ class BboxManager:
                         merge_count=3,
                     )
                     if accepted:
-                        self._update_merge_threes(key, char)
+                        self._update_triple_bbox(key, char)
                         messages.append(
                             self._format_message(
                                 sub_idx,
@@ -490,7 +490,7 @@ class BboxManager:
             fill, outline = outline, fill
         return fill, outline
 
-    def _get_expected_char_dims(self, char: str) -> tuple[int, int] | None:
+    def _get_expected_single_bbox(self, char: str) -> tuple[int, int] | None:
         """Get expected bbox dimensions for a character.
 
         Arguments:
@@ -498,11 +498,11 @@ class BboxManager:
         Returns:
             Expected (width, height)
         """
-        if char in self.char_dims:
-            return self.char_dims[char]
+        if char in self.single_bbox:
+            return self.single_bbox[char]
         return None
 
-    def _get_fuzzy_char_dims(
+    def _get_fuzzy_single_bbox(
         self, char: str, dims: tuple[int, int], tolerance: int = 1
     ) -> tuple[int, int] | None:
         """Get a fuzzy-matched expected bbox for a character.
@@ -514,7 +514,7 @@ class BboxManager:
         Returns:
             Matching dimensions if found
         """
-        expected = self.char_dims.get(char)
+        expected = self.single_bbox.get(char)
         if expected is None:
             return None
         if (
@@ -574,15 +574,15 @@ class BboxManager:
             and abs(bbox_dims[1] - expected_dims[1]) <= tolerance
         )
 
-    def _update_char_dims(self, char: str, dims: tuple[int, int]) -> None:
-        """Update char_dims dictionary and save.
+    def _update_single_bbox(self, char: str, dims: tuple[int, int]) -> None:
+        """Update single_bbox dictionary and save.
 
         Arguments:
             char: Character to update
             dims: Expected dimensions
         """
-        self.char_dims[char] = dims
-        self._save_char_dims(self.char_dims, self.char_dims_file_path)
+        self.single_bbox[char] = dims
+        self._save_single_bbox(self.single_bbox, self.single_bbox_file_path)
 
     def _confirm_bbox_dims(  # noqa: PLR0913
         self,
@@ -628,7 +628,7 @@ class BboxManager:
         return f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - {message}"
 
     @staticmethod
-    def _load_char_dims(
+    def _load_single_bbox(
         file_path: Path,
     ) -> dict[str, tuple[int, int]]:
         """Load character dimensions from file.
@@ -643,27 +643,27 @@ class BboxManager:
             return {}
         if arr.ndim == 1:
             arr = np.array([arr])
-        char_dims = {}
+        single_bbox = {}
         for row in arr:
             char = row[0]
             width = int(row[1])
             height = int(row[2])
-            char_dims[char] = (width, height)
+            single_bbox[char] = (width, height)
         info(f"Loaded {file_path}")
-        return char_dims
+        return single_bbox
 
     @staticmethod
-    def _save_char_dims(
-        char_dims: dict[str, tuple[int, int]],
+    def _save_single_bbox(
+        single_bbox: dict[str, tuple[int, int]],
         file_path: Path,
     ):
         """Save character dimensions to file.
 
         Arguments:
-            char_dims: Character dimension map to save
+            single_bbox: Character dimension map to save
             file_path: Path to file
         """
-        rows = [[char, dims[0], dims[1]] for char, dims in sorted(char_dims.items())]
+        rows = [[char, dims[0], dims[1]] for char, dims in sorted(single_bbox.items())]
         if rows:
             arr = np.array(rows, dtype=object)
             np.savetxt(file_path, arr, delimiter=",", fmt="%s", encoding="utf-8")
@@ -700,17 +700,17 @@ class BboxManager:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
 
                 # Dimensions are known to be mergable
-                if key in self.merge_threes:
+                if key in self.triple_bbox:
                     # Dimensions and char match
-                    if char in self.merge_threes[key]:
+                    if char in self.triple_bbox[key]:
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 3
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
                     # Dimensions match, and char is known as mergable
-                    if char in self.merge_three_chars:
-                        self._update_merge_threes(key, char)
+                    if char in self.triple_bbox_chars:
+                        self._update_triple_bbox(key, char)
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 3
                         char_i = self._get_next_char_i(text, char_i)
@@ -719,7 +719,7 @@ class BboxManager:
                 # Dimensions are close to those known to be mergable for char
                 fuzzy_matches = self._fuzzy_match_key(key)
                 if char in fuzzy_matches:
-                    self._update_merge_threes(key, char)
+                    self._update_triple_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 3
                     char_i = self._get_next_char_i(text, char_i)
@@ -730,17 +730,17 @@ class BboxManager:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
 
                 # Dimensions are known to be mergable
-                if key in self.merge_twos:
+                if key in self.double_bbox:
                     # Dimensions and char match
-                    if char in self.merge_twos[key]:
+                    if char in self.double_bbox[key]:
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 2
                         char_i = self._get_next_char_i(text, char_i)
                         continue
 
                     # Dimensions match, and char is known as mergable
-                    if char in self.merge_two_chars:
-                        self._update_merge_twos(key, char)
+                    if char in self.double_bbox_chars:
+                        self._update_double_bbox(key, char)
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 2
                         char_i = self._get_next_char_i(text, char_i)
@@ -749,7 +749,7 @@ class BboxManager:
                 # Dimensions are close to those known to be mergable for char
                 fuzzy_matches = self._fuzzy_match_key(key)
                 if char in fuzzy_matches:
-                    self._update_merge_twos(key, char)
+                    self._update_double_bbox(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 2
                     char_i = self._get_next_char_i(text, char_i)
@@ -763,16 +763,16 @@ class BboxManager:
         return merged_bboxes
 
     def _fuzzy_match_key(self, key: tuple[int, ...]) -> set[str]:
-        """Fuzzy match keys in merge_threes and merge_twos.
+        """Fuzzy match keys in triple_bbox and double_bbox.
 
         Arguments:
             key: Key to match
         """
         length = len(key)
         if length == 5:
-            merge_dict = self.merge_twos
+            merge_dict = self.double_bbox
         elif length == 8:
-            merge_dict = self.merge_threes
+            merge_dict = self.triple_bbox
         else:
             raise ScinoephileError(f"Key must be of length 5 or 8, not {len(key)}")
 
@@ -795,73 +795,73 @@ class BboxManager:
         while char_i < len(text):
             char = text[char_i]
 
-            # If char is known to be a merge_three, check key for next three bboxes
-            if char in self.merge_three_chars and bbox_i <= len(bboxes) - 3:
+            # If char is known to be a triple_bbox, check key for next three bboxes
+            if char in self.triple_bbox_chars and bbox_i <= len(bboxes) - 3:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
                 response = input(
                     f"{char} may be split across three bboxes with dimensions "
                     f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}), "
                     f"{key[5]}, ({key[6]}, {key[7]})). "
-                    f"Do you want to update merge_threes? (y/n):"
+                    f"Do you want to update triple_bbox? (y/n):"
                 )
                 if response.lower() == "y":
-                    self._update_merge_threes(key, char)
+                    self._update_triple_bbox(key, char)
                     bbox_i += 3
 
-            # If char is known to be a merge_two, check key for next two bboxes
-            if char in self.merge_two_chars and bbox_i <= len(bboxes) - 2:
+            # If char is known to be a double_bbox, check key for next two bboxes
+            if char in self.double_bbox_chars and bbox_i <= len(bboxes) - 2:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 2)
                 response = input(
                     f"{char} may be split across two bboxes with dimensions "
                     f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}). "
-                    f"Do you want to update merge_twos? (y/n):"
+                    f"Do you want to update double_bbox? (y/n):"
                 )
                 if response.lower() == "y":
-                    self._update_merge_twos(key, char)
+                    self._update_double_bbox(key, char)
                     bbox_i += 2
 
             char_i = self._get_next_char_i(text, char_i)
             bbox_i += 1
 
-    def _update_merge_threes(
+    def _update_triple_bbox(
         self,
         key: tuple[int, int, int, int, int, int, int, int],
         value: str,
     ):
-        """Update merge_threes dictionary.
+        """Update triple_bbox dictionary.
 
         Arguments:
             key: Key including width, height, gap, width, height, gap, width, height
             value: Character
         """
-        if key in self.merge_threes:
-            if value in self.merge_threes[key]:
+        if key in self.triple_bbox:
+            if value in self.triple_bbox[key]:
                 return
-            self.merge_threes[key] += value
+            self.triple_bbox[key] += value
         else:
-            self.merge_threes[key] = str(value)
-        info(f"Added ({value}, {', '.join(map(str, key))}) to merge_threes")
-        self._save_merge_dict(self.merge_threes, self.merge_three_file_path)
+            self.triple_bbox[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to triple_bbox")
+        self._save_merge_dict(self.triple_bbox, self.triple_bbox_file_path)
 
-    def _update_merge_twos(
+    def _update_double_bbox(
         self,
         key: tuple[int, int, int, int, int],
         value: str,
     ):
-        """Update merge_twos dictionary.
+        """Update double_bbox dictionary.
 
         Arguments:
             key: Key including width, height, gap, width, height
             value: Character
         """
-        if key in self.merge_twos:
-            if value in self.merge_twos[key]:
+        if key in self.double_bbox:
+            if value in self.double_bbox[key]:
                 return
-            self.merge_twos[key] += value
+            self.double_bbox[key] += value
         else:
-            self.merge_twos[key] = str(value)
-        info(f"Added ({value}, {', '.join(map(str, key))}) to merge_twos")
-        self._save_merge_dict(self.merge_twos, self.merge_two_file_path)
+            self.double_bbox[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to double_bbox")
+        self._save_merge_dict(self.double_bbox, self.double_bbox_file_path)
 
     @staticmethod
     def _get_key_and_merged_bbox(
