@@ -5,17 +5,12 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import TYPE_CHECKING, Any, cast, override
+from typing import Any, override
 
 import numpy as np
 from PIL import Image
 
-from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Subtitle
-from scinoephile.image.ocr.drawing import get_img_with_bboxes
-
-if TYPE_CHECKING:
-    from .series import ImageSeries
 
 __all__ = ["ImageSubtitle"]
 
@@ -39,31 +34,6 @@ class ImageSubtitle(Subtitle):
         self._arr: np.ndarray | None = None
         self._bboxes: list[tuple[int, int, int, int]] | None = None
         self._img_with_bboxes: Image.Image | None = None
-
-    @property
-    def bbox_widths(self) -> list[int]:
-        """Widths of bounding boxes of characters in image."""
-        assert self._bboxes is not None
-        return [
-            self._bboxes[i][2] - self._bboxes[i][0] for i in range(len(self._bboxes))
-        ]
-
-    @property
-    def bbox_heights(self) -> list[int]:
-        """Heights of bounding boxes of characters in image."""
-        assert self._bboxes is not None
-        return [
-            self._bboxes[i][3] - self._bboxes[i][1] for i in range(len(self._bboxes))
-        ]
-
-    @property
-    def bbox_gaps(self) -> list[int]:
-        """Gaps between bounding boxes of characters in image."""
-        assert self._bboxes is not None
-        return [
-            self._bboxes[i + 1][0] - self._bboxes[i][2]
-            for i in range(len(self._bboxes) - 1)
-        ]
 
     @property
     def bboxes(self) -> list[tuple[int, int, int, int]] | None:
@@ -109,8 +79,6 @@ class ImageSubtitle(Subtitle):
         start_seconds: float,
         end_seconds: float,
         image: np.ndarray,
-        *,
-        series: ImageSeries | None = None,
     ) -> ImageSubtitle:
         """Create subtitle from SUP timing and image data.
 
@@ -118,7 +86,6 @@ class ImageSubtitle(Subtitle):
             start_seconds: start time in seconds
             end_seconds: end time in seconds
             image: image array (RGBA)
-            series: parent series
         Returns:
             ImageSubtitle instance
         """
@@ -127,17 +94,4 @@ class ImageSubtitle(Subtitle):
             start=int(round(start_seconds * 1000)),
             end=int(round(end_seconds * 1000)),
             img=img,
-            series=series,
         )
-
-    @property
-    def img_with_bboxes(self) -> Image.Image:
-        """Image with bounding boxes."""
-        if self._img_with_bboxes is None:
-            if self.bboxes is None:
-                raise ScinoephileError("Bboxes are not set for this subtitle.")
-            self._img_with_bboxes = get_img_with_bboxes(
-                self.img,
-                cast(list[tuple[int, ...]], self.bboxes),
-            )
-        return self._img_with_bboxes
