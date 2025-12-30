@@ -36,6 +36,14 @@ class BboxManager:
     """Path to file containing specs for sets of three bboxes that should be merged."""
     triple_bbox: dict[tuple[int, int, int, int, int, int, int, int], str] = {}
     """Dimensions and gaps between sets of three bboxes that should be merged."""
+    quadruple_bbox_file_path = package_root / "data" / "ocr" / "quadruple_bbox.csv"
+    """Path to file containing specs for sets of four bboxes that should be merged."""
+    quadruple_bbox: dict[tuple[int, ...], str] = {}
+    """Dimensions and gaps between sets of four bboxes that should be merged."""
+    quintuple_bbox_file_path = package_root / "data" / "ocr" / "quintuple_bbox.csv"
+    """Path to file containing specs for sets of five bboxes that should be merged."""
+    quintuple_bbox: dict[tuple[int, ...], str] = {}
+    """Dimensions and gaps between sets of five bboxes that should be merged."""
 
     def __init__(self):
         """Initialize."""
@@ -48,6 +56,16 @@ class BboxManager:
         if self.triple_bbox_file_path.exists():
             self.triple_bbox = self._load_merge_dict(self.triple_bbox_file_path, 9)
             self._save_merge_dict(self.triple_bbox, self.triple_bbox_file_path)
+        if self.quadruple_bbox_file_path.exists():
+            self.quadruple_bbox = self._load_merge_dict(
+                self.quadruple_bbox_file_path, 12
+            )
+            self._save_merge_dict(self.quadruple_bbox, self.quadruple_bbox_file_path)
+        if self.quintuple_bbox_file_path.exists():
+            self.quintuple_bbox = self._load_merge_dict(
+                self.quintuple_bbox_file_path, 15
+            )
+            self._save_merge_dict(self.quintuple_bbox, self.quintuple_bbox_file_path)
 
     @property
     def double_bbox_chars(self):
@@ -58,6 +76,16 @@ class BboxManager:
     def triple_bbox_chars(self):
         """Characters that are known to potentially be spread across three bboxes."""
         return set(char for chars in self.triple_bbox.values() for char in chars)
+
+    @property
+    def quadruple_bbox_chars(self):
+        """Characters that are known to potentially be spread across four bboxes."""
+        return set(char for chars in self.quadruple_bbox.values() for char in chars)
+
+    @property
+    def quintuple_bbox_chars(self):
+        """Characters that are known to potentially be spread across five bboxes."""
+        return set(char for chars in self.quintuple_bbox.values() for char in chars)
 
     def get_bboxes(
         self,
@@ -292,6 +320,84 @@ class BboxManager:
                     char_i += 1
                     continue
 
+            if bbox_i <= len(bboxes) - 4:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 4)
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if key in self.quadruple_bbox and char in self.quadruple_bbox[key]:
+                    self._update_quadruple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 4
+                    char_i += 1
+                    continue
+                fuzzy_key = self._get_fuzzy_merge_key(self.quadruple_bbox, key, char)
+                if fuzzy_key is not None:
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"accepted fuzzy merge-four for '{char}' as {merged_dims}.",
+                        )
+                    )
+                    self._update_quadruple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 4
+                    char_i += 1
+                    continue
+                if expected is not None and self._dims_match(merged_dims, expected):
+                    self._update_quadruple_bbox(key, char)
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"merged four bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 4
+                    char_i += 1
+                    continue
+
+            if bbox_i <= len(bboxes) - 5:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 5)
+                merged_dims = self._get_bbox_dims(merged_bbox)
+                if key in self.quintuple_bbox and char in self.quintuple_bbox[key]:
+                    self._update_quintuple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 5
+                    char_i += 1
+                    continue
+                fuzzy_key = self._get_fuzzy_merge_key(self.quintuple_bbox, key, char)
+                if fuzzy_key is not None:
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"accepted fuzzy merge-five for '{char}' as {merged_dims}.",
+                        )
+                    )
+                    self._update_quintuple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 5
+                    char_i += 1
+                    continue
+                if expected is not None and self._dims_match(merged_dims, expected):
+                    self._update_quintuple_bbox(key, char)
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"merged five bboxes for '{char}' into {merged_dims}.",
+                        )
+                    )
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 5
+                    char_i += 1
+                    continue
+
             if expected is None:
                 accepted = self._confirm_bbox_dims(
                     subtitle,
@@ -364,6 +470,58 @@ class BboxManager:
                         )
                         merged_bboxes.append(merged_bbox)
                         bbox_i += 3
+                        char_i += 1
+                        continue
+
+                if bbox_i <= len(bboxes) - 4:
+                    key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 4)
+                    merged_dims = self._get_bbox_dims(merged_bbox)
+                    accepted = self._confirm_bbox_dims(
+                        subtitle,
+                        merged_bbox,
+                        char,
+                        merged_dims,
+                        interactive,
+                        merge_count=4,
+                    )
+                    if accepted:
+                        self._update_quadruple_bbox(key, char)
+                        messages.append(
+                            self._format_message(
+                                sub_idx,
+                                char_sub_idx,
+                                text,
+                                f"merged four bboxes for '{char}' into {merged_dims}.",
+                            )
+                        )
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 4
+                        char_i += 1
+                        continue
+
+                if bbox_i <= len(bboxes) - 5:
+                    key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 5)
+                    merged_dims = self._get_bbox_dims(merged_bbox)
+                    accepted = self._confirm_bbox_dims(
+                        subtitle,
+                        merged_bbox,
+                        char,
+                        merged_dims,
+                        interactive,
+                        merge_count=5,
+                    )
+                    if accepted:
+                        self._update_quintuple_bbox(key, char)
+                        messages.append(
+                            self._format_message(
+                                sub_idx,
+                                char_sub_idx,
+                                text,
+                                f"merged five bboxes for '{char}' into {merged_dims}.",
+                            )
+                        )
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 5
                         char_i += 1
                         continue
 
@@ -695,6 +853,66 @@ class BboxManager:
             if bbox_i >= len(bboxes):
                 break
 
+            # Merge set of five bboxes if appropriate
+            if bbox_i <= len(bboxes) - 5:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 5)
+
+                # Dimensions are known to be mergable
+                if key in self.quintuple_bbox:
+                    # Dimensions and char match
+                    if char in self.quintuple_bbox[key]:
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 5
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
+                    # Dimensions match, and char is known as mergable
+                    if char in self.quintuple_bbox_chars:
+                        self._update_quintuple_bbox(key, char)
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 5
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
+                # Dimensions are close to those known to be mergable for char
+                fuzzy_matches = self._fuzzy_match_key(key)
+                if char in fuzzy_matches:
+                    self._update_quintuple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 5
+                    char_i = self._get_next_char_i(text, char_i)
+                    continue
+
+            # Merge set of four bboxes if appropriate
+            if bbox_i <= len(bboxes) - 4:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 4)
+
+                # Dimensions are known to be mergable
+                if key in self.quadruple_bbox:
+                    # Dimensions and char match
+                    if char in self.quadruple_bbox[key]:
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 4
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
+                    # Dimensions match, and char is known as mergable
+                    if char in self.quadruple_bbox_chars:
+                        self._update_quadruple_bbox(key, char)
+                        merged_bboxes.append(merged_bbox)
+                        bbox_i += 4
+                        char_i = self._get_next_char_i(text, char_i)
+                        continue
+
+                # Dimensions are close to those known to be mergable for char
+                fuzzy_matches = self._fuzzy_match_key(key)
+                if char in fuzzy_matches:
+                    self._update_quadruple_bbox(key, char)
+                    merged_bboxes.append(merged_bbox)
+                    bbox_i += 4
+                    char_i = self._get_next_char_i(text, char_i)
+                    continue
+
             # Merge set of three bboxes if appropriate
             if bbox_i <= len(bboxes) - 3:
                 key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 3)
@@ -773,8 +991,14 @@ class BboxManager:
             merge_dict = self.double_bbox
         elif length == 8:
             merge_dict = self.triple_bbox
+        elif length == 11:
+            merge_dict = self.quadruple_bbox
+        elif length == 14:
+            merge_dict = self.quintuple_bbox
         else:
-            raise ScinoephileError(f"Key must be of length 5 or 8, not {len(key)}")
+            raise ScinoephileError(
+                f"Key must be of length 5, 8, 11, or 14, not {len(key)}"
+            )
 
         known_values = set()
         for known_key in merge_dict.keys():
@@ -794,6 +1018,34 @@ class BboxManager:
         char_i = 0
         while char_i < len(text):
             char = text[char_i]
+
+            # If char is known to be a quintuple_bbox, check key for next five bboxes
+            if char in self.quintuple_bbox_chars and bbox_i <= len(bboxes) - 5:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 5)
+                response = input(
+                    f"{char} may be split across five bboxes with dimensions "
+                    f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}), "
+                    f"{key[5]}, ({key[6]}, {key[7]}), {key[8]}, "
+                    f"({key[9]}, {key[10]})). "
+                    f"Do you want to update quintuple_bbox? (y/n):"
+                )
+                if response.lower() == "y":
+                    self._update_quintuple_bbox(key, char)
+                    bbox_i += 5
+
+            # If char is known to be a quadruple_bbox, check key for next four bboxes
+            if char in self.quadruple_bbox_chars and bbox_i <= len(bboxes) - 4:
+                key, merged_bbox = self._get_key_and_merged_bbox(bboxes, bbox_i, 4)
+                response = input(
+                    f"{char} may be split across four bboxes with dimensions "
+                    f"(({key[0]}, {key[1]}), {key[2]}, ({key[3]}, {key[4]}), "
+                    f"{key[5]}, ({key[6]}, {key[7]}), {key[8]}, "
+                    f"({key[9]}, {key[10]})). "
+                    f"Do you want to update quadruple_bbox? (y/n):"
+                )
+                if response.lower() == "y":
+                    self._update_quadruple_bbox(key, char)
+                    bbox_i += 4
 
             # If char is known to be a triple_bbox, check key for next three bboxes
             if char in self.triple_bbox_chars and bbox_i <= len(bboxes) - 3:
@@ -842,6 +1094,46 @@ class BboxManager:
             self.triple_bbox[key] = str(value)
         info(f"Added ({value}, {', '.join(map(str, key))}) to triple_bbox")
         self._save_merge_dict(self.triple_bbox, self.triple_bbox_file_path)
+
+    def _update_quadruple_bbox(
+        self,
+        key: tuple[int, ...],
+        value: str,
+    ):
+        """Update quadruple_bbox dictionary.
+
+        Arguments:
+            key: Key including width, height, gap pairs for four bboxes
+            value: Character
+        """
+        if key in self.quadruple_bbox:
+            if value in self.quadruple_bbox[key]:
+                return
+            self.quadruple_bbox[key] += value
+        else:
+            self.quadruple_bbox[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to quadruple_bbox")
+        self._save_merge_dict(self.quadruple_bbox, self.quadruple_bbox_file_path)
+
+    def _update_quintuple_bbox(
+        self,
+        key: tuple[int, ...],
+        value: str,
+    ):
+        """Update quintuple_bbox dictionary.
+
+        Arguments:
+            key: Key including width, height, gap pairs for five bboxes
+            value: Character
+        """
+        if key in self.quintuple_bbox:
+            if value in self.quintuple_bbox[key]:
+                return
+            self.quintuple_bbox[key] += value
+        else:
+            self.quintuple_bbox[key] = str(value)
+        info(f"Added ({value}, {', '.join(map(str, key))}) to quintuple_bbox")
+        self._save_merge_dict(self.quintuple_bbox, self.quintuple_bbox_file_path)
 
     def _update_double_bbox(
         self,
