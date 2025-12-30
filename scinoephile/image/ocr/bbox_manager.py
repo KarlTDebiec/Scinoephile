@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-import ast
 import csv
 from dataclasses import dataclass, field
-from logging import info, warning
+from logging import info
 from pathlib import Path
 
 import numpy as np
@@ -38,8 +37,8 @@ class CharDimsSpec:
     """Word label for messages."""
     name_label: str
     """Name label for logging."""
-    char_dims: dict[tuple[int, ...], str] = field(default_factory=dict)
-    """Characters keyed by bbox dimensions and gaps."""
+    char_dims: dict[str, list[tuple[int, ...]]] = field(default_factory=dict)
+    """Acceptable bbox dimensions and gaps keyed by character."""
 
 
 class BboxManager:
@@ -81,8 +80,7 @@ class BboxManager:
         ]
         for spec in self.char_dims_specs:
             if spec.file_path.exists():
-                expected_len = 3 * spec.count
-                spec.char_dims = self._load_char_dims(spec.file_path, expected_len)
+                spec.char_dims = self._load_char_dims(spec.file_path)
                 self._save_char_dims(spec.char_dims, spec.file_path)
 
     def validate_bboxes(
@@ -196,19 +194,19 @@ class BboxManager:
             for spec in self.char_dims_specs:
                 if bbox_i > len(bboxes) - spec.count:
                     continue
-                key, merged_bbox = self._get_key_and_merged_bbox(
+                dims_tuple, merged_bbox = self._get_key_and_merged_bbox(
                     bboxes, bbox_i, spec.count
                 )
                 merged_dims = (merged_bbox.width, merged_bbox.height)
-                if key in spec.char_dims and char in spec.char_dims[key]:
-                    self._update_char_dims(spec, key, char)
+                if dims_tuple in spec.char_dims.get(char, []):
+                    self._update_char_dims(spec, dims_tuple, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += spec.count
                     char_i += 1
                     merged = True
                     break
-                fuzzy_key = self._get_fuzzy_merge_key(spec.char_dims, key, char)
-                if fuzzy_key is not None:
+                fuzzy_dims = self._get_fuzzy_char_dims(spec.char_dims, dims_tuple, char)
+                if fuzzy_dims is not None:
                     if spec.count == 1:
                         messages.append(
                             f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - "
@@ -220,7 +218,7 @@ class BboxManager:
                             f"{text} - accepted fuzzy merge-{spec.word_label} for "
                             f"'{char}' as {merged_dims}."
                         )
-                    self._update_char_dims(spec, key, char)
+                    self._update_char_dims(spec, dims_tuple, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += spec.count
                     char_i += 1
@@ -231,7 +229,7 @@ class BboxManager:
                     and expected
                     and self._dims_match_any(merged_dims, expected)
                 ):
-                    self._update_char_dims(spec, key, char)
+                    self._update_char_dims(spec, dims_tuple, char)
                     messages.append(
                         f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - "
                         f"merged {spec.word_label} bboxes for '{char}' into "
@@ -269,7 +267,7 @@ class BboxManager:
                 for spec in self.char_dims_specs:
                     if bbox_i > len(bboxes) - spec.count:
                         continue
-                    key, merged_bbox = self._get_key_and_merged_bbox(
+                    dims_tuple, merged_bbox = self._get_key_and_merged_bbox(
                         bboxes, bbox_i, spec.count
                     )
                     merged_dims = (merged_bbox.width, merged_bbox.height)
@@ -282,7 +280,7 @@ class BboxManager:
                         merge_count=spec.count,
                     )
                     if accepted:
-                        self._update_char_dims(spec, key, char)
+                        self._update_char_dims(spec, dims_tuple, char)
                         messages.append(
                             f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: "
                             f"{text} - merged {spec.word_label} bboxes for '{char}' "
@@ -342,14 +340,12 @@ class BboxManager:
             Expected (width, height) pairs
         """
         spec = self.char_dims_specs[0]
-        return [
-            (key[0], key[1]) for key, chars in spec.char_dims.items() if char in chars
-        ]
+        return [tuple(dim[:2]) for dim in spec.char_dims.get(char, [])]
 
-    def _get_fuzzy_merge_key(
+    def _get_fuzzy_char_dims(
         self,
-        char_dims: dict[tuple[int, ...], str],
-        key: tuple[int, ...],
+        char_dims: dict[str, list[tuple[int, ...]]],
+        dims_tuple: tuple[int, ...],
         char: str,
         tolerance: int = 1,
     ) -> tuple[int, ...] | None:
@@ -357,16 +353,17 @@ class BboxManager:
 
         Arguments:
             char_dims: Char dims dictionary to search
-            key: Key to match
+            dims_tuple: Dimensions to match
             char: Character to match
             tolerance: Allowed difference per dimension
         Returns:
             Matching key if found
         """
-        for known_key, chars in char_dims.items():
-            if char not in chars:
-                continue
-            if all(abs(known_key[i] - key[i]) <= tolerance for i in range(len(key))):
+        for known_key in char_dims.get(char, []):
+            if all(
+                abs(known_key[i] - dims_tuple[i]) <= tolerance
+                for i in range(len(dims_tuple))
+            ):
                 return known_key
         return None
 
@@ -395,22 +392,23 @@ class BboxManager:
         )
 
     def _update_char_dims(
-        self, spec: CharDimsSpec, key: tuple[int, ...], value: str
+        self, spec: CharDimsSpec, dims_tuple: tuple[int, ...], char: str
     ) -> None:
         """Update char dims and save.
 
         Arguments:
             spec: Char dims spec to update
-            key: Key including width, height, gap dimensions
-            value: Character
+            dims_tuple: Dimensions including width, height, gap values
+            char: Character
         """
-        if key in spec.char_dims:
-            if value in spec.char_dims[key]:
-                return
-            spec.char_dims[key] += value
-        else:
-            spec.char_dims[key] = str(value)
-        info(f"Added ({value}, {', '.join(map(str, key))}) to {spec.name_label}_bbox")
+        dims_list = spec.char_dims.setdefault(char, [])
+        if dims_tuple in dims_list:
+            return
+        dims_list.append(dims_tuple)
+        info(
+            f"Added ({char}, {', '.join(map(str, dims_tuple))}) to "
+            f"{spec.name_label}_bbox"
+        )
         self._save_char_dims(spec.char_dims, spec.file_path)
 
     def _confirm_bbox_dims(
@@ -477,73 +475,40 @@ class BboxManager:
         return key, merged_bbox
 
     @staticmethod
-    def _load_char_dims(
-        file_path: Path,
-        expected_len: int | None = None,
-    ) -> dict[tuple[int, ...], str]:
-        """Load char dims dict from file.
+    def _load_char_dims(file_path: Path) -> dict[str, list[tuple[int, ...]]]:
+        """Load char dims from file.
 
         Arguments:
             file_path: path to file
-            expected_len: expected number of columns per row
+        Returns:
+            char dims
         """
-        char_dims = {}
-        lines = file_path.read_text(encoding="utf-8").splitlines()
-        for line_num, line in enumerate(lines, 1):
-            stripped = line.strip()
-            if not stripped:
-                continue
-            if stripped.startswith("[") and stripped.endswith("]"):
-                try:
-                    parts = ast.literal_eval(stripped)
-                except (ValueError, SyntaxError):
-                    warning(
-                        f"Skipping {file_path} line {line_num}: could not parse list."
-                    )
+        char_dims: dict[str, list[tuple[int, ...]]] = {}
+        with file_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.reader(handle)
+            for row in reader:
+                if not row:
                     continue
-            else:
-                parts = [part.strip() for part in stripped.split(",")]
-            if expected_len is None:
-                expected_len = len(parts)
-            if len(parts) != expected_len:
-                warning(
-                    f"Skipping {file_path} line {line_num}: "
-                    f"expected {expected_len} columns, got {len(parts)}."
-                )
-                continue
-            try:
-                key = tuple(map(int, parts[1:]))
-            except ValueError:
-                warning(
-                    f"Skipping {file_path} line {line_num}: "
-                    "could not parse bbox dimensions."
-                )
-                continue
-            value = parts[0]
-            if key in char_dims:
-                char_dims[key] += value
-            else:
-                char_dims[key] = str(value)
+                char = row[0]
+                dims = tuple(map(int, row[1:]))
+                if char not in char_dims:
+                    char_dims[char] = []
+                char_dims[char].append(dims)
 
         info(f"Loaded {file_path}")
         return char_dims
 
     @staticmethod
-    def _save_char_dims(
-        char_dims: dict[tuple[int, ...], str],
-        file_path: Path,
-    ):
+    def _save_char_dims(char_dims: dict[str, list[tuple[int, ...]]], file_path: Path):
         """Save char dims dict to file.
 
         Arguments:
-            char_dims: Dictionary to save
-            file_path: Path to file
-        1st column: valuez
+            char_dims: data to save
+            file_path: path to file
         """
         rows = []
-        for key, value in char_dims.items():
-            for char in value:
-                rows.extend([[char] + list(key)])
+        for char, dims_list in char_dims.items():
+            rows.extend([[char, *dims] for dims in dims_list])
         rows = sorted({tuple(row) for row in rows})
         with file_path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.writer(handle)
