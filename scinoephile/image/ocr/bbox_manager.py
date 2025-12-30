@@ -14,6 +14,7 @@ import numpy as np
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import whitespace_chars
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSubtitle
 
 from .drawing import get_img_with_bboxes
@@ -91,14 +92,14 @@ class BboxManager:
         self,
         subtitle: ImageSubtitle,
         interactive: bool = False,
-    ) -> list[tuple[int, int, int, int]]:
+    ) -> list[Bbox]:
         """Get character bboxes within an image.
 
         Arguments:
             subtitle: Subtitle for which to get bboxes
             interactive: Whether to prompt user for input on proposed updates
         Returns:
-            Character bounding boxes [(x1, y1, x2, y2), ...]
+            Character bounding boxes
         """
         bboxes = self._get_initial_bboxes(subtitle)
         merged_bboxes, _ = self._merge_and_validate_char_bboxes(
@@ -134,9 +135,7 @@ class BboxManager:
         subtitle.bboxes = merged_bboxes
         return messages
 
-    def _get_initial_bboxes(
-        self, subtitle: ImageSubtitle
-    ) -> list[tuple[int, int, int, int]]:
+    def _get_initial_bboxes(self, subtitle: ImageSubtitle) -> list[Bbox]:
         """Get initial bboxes from white interior pixels.
 
         Arguments:
@@ -166,23 +165,23 @@ class BboxManager:
             sections.append(section)
 
         # Determine top and bottom of each section to get final bbox
-        bboxes = []
+        bboxes: list[Bbox] = []
         for x1, x2 in sections:
             section = white_mask[:, x1:x2]
             white_pixels = np.sum(section, axis=1)
             y1 = int(np.argmax(white_pixels > 0))
             y2 = int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1)
-            bboxes.append((x1, y1, x2, y2))
+            bboxes.append(Bbox(left=x1, right=x2, top=y1, bottom=y2))
 
         return bboxes
 
     def _merge_and_validate_char_bboxes(  # noqa: PLR0912, PLR0915
         self,
         subtitle: ImageSubtitle,
-        bboxes: list[tuple[int, int, int, int]],
+        bboxes: list[Bbox],
         sub_idx: int | None = None,
         interactive: bool = False,
-    ) -> tuple[list[tuple[int, int, int, int]], list[str]]:
+    ) -> tuple[list[Bbox], list[str]]:
         """Merge bboxes per character and collect validation messages.
 
         Arguments:
@@ -195,7 +194,7 @@ class BboxManager:
         """
         messages = []
         text = subtitle.text
-        merged_bboxes: list[tuple[int, int, int, int]] = []
+        merged_bboxes: list[Bbox] = []
         bbox_i = 0
         char_i = 0
         char_sub_idx = 0
@@ -707,18 +706,23 @@ class BboxManager:
         return None
 
     @staticmethod
-    def _get_bbox_dims(bbox: tuple[int, int, int, int]) -> tuple[int, int]:
+    def _get_bbox_dims(bbox: Bbox) -> tuple[int, int]:
         """Get width and height from a bbox."""
-        return (bbox[2] - bbox[0], bbox[3] - bbox[1])
+        return (bbox.width, bbox.height)
 
     @staticmethod
-    def _get_bbox_from_mask(mask: np.ndarray) -> tuple[int, int, int, int]:
+    def _get_bbox_from_mask(mask: np.ndarray) -> Bbox:
         """Get bbox from a boolean mask."""
         cols = np.where(np.any(mask, axis=0))[0]
         rows = np.where(np.any(mask, axis=1))[0]
         if cols.size == 0 or rows.size == 0:
-            return (0, 0, 0, 0)
-        return (int(cols[0]), int(rows[0]), int(cols[-1]), int(rows[-1]))
+            return Bbox(left=0, right=0, top=0, bottom=0)
+        return Bbox(
+            left=int(cols[0]),
+            right=int(cols[-1]),
+            top=int(rows[0]),
+            bottom=int(rows[-1]),
+        )
 
     @staticmethod
     def _dims_match(
@@ -745,7 +749,7 @@ class BboxManager:
     def _confirm_bbox_dims(
         self,
         subtitle: ImageSubtitle,
-        bbox: tuple[int, int, int, int],
+        bbox: Bbox,
         char: str,
         dims: tuple[int, int],
         interactive: bool,
@@ -831,13 +835,13 @@ class BboxManager:
 
     def _apply_known_merges(  # noqa: PLR0912, PLR0915
         self,
-        bboxes: list[tuple[int, int, int, int]],
+        bboxes: list[Bbox],
         text: str,
-    ) -> list[tuple[int, int, int, int]]:
+    ) -> list[Bbox]:
         """Merge sets of adjacent bboxes that match specifications.
 
         Arguments:
-            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
+            bboxes: Nascent list of bboxes
             text: Provisional text present in image
         Returns:
             bboxes with sets of adjacent bboxes matching specifications merged
@@ -1007,11 +1011,11 @@ class BboxManager:
 
         return known_values
 
-    def _propose_merges(self, bboxes: list[tuple[int, int, int, int]], text: str):
+    def _propose_merges(self, bboxes: list[Bbox], text: str):
         """Propose merges of adjacent bboxes.
 
         Arguments:
-            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
+            bboxes: Nascent list of bboxes
             text: Provisional text present in image
         """
         bbox_i = 0
@@ -1157,34 +1161,34 @@ class BboxManager:
 
     @staticmethod
     def _get_key_and_merged_bbox(
-        bboxes: list[tuple[int, int, int, int]],
+        bboxes: list[Bbox],
         i: int,
         n: int,
-    ) -> tuple[tuple[int, ...], tuple[int, int, int, int]]:
+    ) -> tuple[tuple[int, ...], Bbox]:
         """Get key and merged bbox from bboxes.
 
         Arguments:
-            bboxes: Nascent list of bboxes [(x1, y1, x2, y2), ...]
+            bboxes: Nascent list of bboxes
             i: Index of first bbox
             n: Number of bboxes whose merging is under consideration
         Returns:
             Key and merged bbox
         """
         bboxes_slice = bboxes[i : i + n]
-        widths = [bbox[2] - bbox[0] for bbox in bboxes_slice]
-        heights = [bbox[3] - bbox[1] for bbox in bboxes_slice]
+        widths = [bbox.width for bbox in bboxes_slice]
+        heights = [bbox.height for bbox in bboxes_slice]
         gaps = [
-            bboxes_slice[i + 1][0] - bboxes_slice[i][2]
+            bboxes_slice[i + 1].left - bboxes_slice[i].right
             for i in range(len(bboxes_slice) - 1)
         ]
         key = tuple(
             [dim for group in zip(widths, heights, gaps + [0]) for dim in group][:-1]
         )
-        merged_bbox = (
-            min(bbox[0] for bbox in bboxes_slice),
-            min(bbox[1] for bbox in bboxes_slice),
-            max(bbox[2] for bbox in bboxes_slice),
-            max(bbox[3] for bbox in bboxes_slice),
+        merged_bbox = Bbox(
+            left=min(bbox.left for bbox in bboxes_slice),
+            right=max(bbox.right for bbox in bboxes_slice),
+            top=min(bbox.top for bbox in bboxes_slice),
+            bottom=max(bbox.bottom for bbox in bboxes_slice),
         )
 
         return key, merged_bbox
@@ -1262,7 +1266,7 @@ class BboxManager:
 
     @staticmethod
     def _save_merge_dict(
-        merge_dict: dict[tuple[int, int, int, int], str],
+        merge_dict: dict[tuple[int, ...], str],
         file_path: Path,
     ):
         """Save merge dict to file.

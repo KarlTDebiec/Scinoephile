@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from scinoephile.core.text import get_char_type, whitespace_chars
+from scinoephile.image.bbox import Bbox
 
 __all__ = ["CharPair", "get_char_pairs"]
 
@@ -41,7 +42,7 @@ class CharPair:
 
 def get_char_pairs(
     text: str,
-    bboxes: list[tuple[int, int, int, int]],
+    bboxes: list[Bbox],
 ) -> list[CharPair]:
     """Build character pairs from text and bboxes.
 
@@ -51,8 +52,8 @@ def get_char_pairs(
     Returns:
         List of character pairs
     """
-    bbox_widths = [bbox[2] - bbox[0] for bbox in bboxes]
-    bbox_gaps = [bboxes[i + 1][0] - bboxes[i][2] for i in range(len(bboxes) - 1)]
+    bbox_widths = [bbox.width for bbox in bboxes]
+    bbox_gaps = [bboxes[i + 1].left - bboxes[i].right for i in range(len(bboxes) - 1)]
 
     char_1_i = 0
     width_1_i = 0
