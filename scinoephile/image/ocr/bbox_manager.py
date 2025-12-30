@@ -102,7 +102,7 @@ class BboxManager:
         """
         bboxes = sub.bboxes
         if bboxes is None:
-            bboxes = self._get_initial_bboxes(sub)
+            bboxes = self._get_raw_bboxes(sub)
 
         merged_bboxes, messages = self._merge_and_validate_bboxes(
             sub,
@@ -113,13 +113,13 @@ class BboxManager:
         sub.bboxes = merged_bboxes
         return messages
 
-    def _get_initial_bboxes(self, sub: ImageSubtitle) -> list[Bbox]:
-        """Get initial bboxes from white interior pixels.
+    def _get_raw_bboxes(self, sub: ImageSubtitle) -> list[Bbox]:
+        """Get raw bboxes from white interior pixels.
 
         Arguments:
-            sub: Subtitle for which to get bboxes
+            sub: subtitle for which to get bboxes
         Returns:
-            Initial bboxes before character-level merging
+            raw Bboxes
         """
         grayscale, alpha = get_grayscale_and_alpha(sub.img)
         fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
@@ -190,7 +190,7 @@ class BboxManager:
 
             expected = self._get_expected_dims(char)
             bbox = bboxes[bbox_i]
-            bbox_dims = self._get_bbox_dims(bbox)
+            bbox_dims = (bbox.width, bbox.height)
 
             merged = False
             for spec in self.char_dims_specs:
@@ -199,7 +199,7 @@ class BboxManager:
                 key, merged_bbox = self._get_key_and_merged_bbox(
                     bboxes, bbox_i, spec.count
                 )
-                merged_dims = self._get_bbox_dims(merged_bbox)
+                merged_dims = (merged_bbox.width, merged_bbox.height)
                 if key in spec.char_dims and char in spec.char_dims[key]:
                     self._update_char_dims(spec, key, char)
                     merged_bboxes.append(merged_bbox)
@@ -259,7 +259,7 @@ class BboxManager:
                         f"added dims for '{char}' as {bbox_dims}."
                     )
                     self._update_char_dims(
-                        self._get_single_spec(), (bbox_dims[0], bbox_dims[1]), char
+                        self.char_dims_specs[0], (bbox_dims[0], bbox_dims[1]), char
                     )
                     merged_bboxes.append(bbox)
                     bbox_i += 1
@@ -272,7 +272,7 @@ class BboxManager:
                     key, merged_bbox = self._get_key_and_merged_bbox(
                         bboxes, bbox_i, spec.count
                     )
-                    merged_dims = self._get_bbox_dims(merged_bbox)
+                    merged_dims = (merged_bbox.width, merged_bbox.height)
                     accepted = self._confirm_bbox_dims(
                         subtitle,
                         merged_bbox,
@@ -341,7 +341,7 @@ class BboxManager:
         Returns:
             Expected (width, height) pairs
         """
-        spec = self._get_single_spec()
+        spec = self.char_dims_specs[0]
         return [
             (key[0], key[1]) for key, chars in spec.char_dims.items() if char in chars
         ]
@@ -371,25 +371,6 @@ class BboxManager:
         return None
 
     @staticmethod
-    def _get_bbox_dims(bbox: Bbox) -> tuple[int, int]:
-        """Get width and height from a bbox."""
-        return (bbox.width, bbox.height)
-
-    @staticmethod
-    def _get_bbox_from_mask(mask: np.ndarray) -> Bbox:
-        """Get bbox from a boolean mask."""
-        cols = np.where(np.any(mask, axis=0))[0]
-        rows = np.where(np.any(mask, axis=1))[0]
-        if cols.size == 0 or rows.size == 0:
-            return Bbox(left=0, right=0, top=0, bottom=0)
-        return Bbox(
-            left=int(cols[0]),
-            right=int(cols[-1]),
-            top=int(rows[0]),
-            bottom=int(rows[-1]),
-        )
-
-    @staticmethod
     def _dims_match(
         bbox_dims: tuple[int, int],
         expected_dims: tuple[int, int],
@@ -413,10 +394,6 @@ class BboxManager:
             for expected in expected_dims
         )
 
-    def _get_single_spec(self) -> CharDimsSpec:
-        """Get the spec for single bboxes."""
-        return self.char_dims_specs[0]
-
     def _update_char_dims(
         self, spec: CharDimsSpec, key: tuple[int, ...], value: str
     ) -> None:
@@ -438,7 +415,7 @@ class BboxManager:
 
     def _confirm_bbox_dims(
         self,
-        subtitle: ImageSubtitle,
+        sub: ImageSubtitle,
         bbox: Bbox,
         char: str,
         dims: tuple[int, int],
@@ -448,7 +425,7 @@ class BboxManager:
         """Confirm bbox dims interactively.
 
         Arguments:
-            subtitle: Subtitle containing the character
+            sub: Subtitle containing the character
             bbox: Bounding box to confirm
             char: Character under review
             dims: Bounding box dimensions
@@ -459,31 +436,11 @@ class BboxManager:
         """
         if not interactive:
             return False
-        annotated = get_img_with_bboxes(subtitle.img, [bbox])
+        annotated = get_img_with_bboxes(sub.img, [bbox])
         annotated.show()
         merge_note = "merged " if merge_count > 1 else ""
         response = input(f"Accept {merge_note}bbox dims {dims} for '{char}'? (y/n): ")
         return response.lower().startswith("y")
-
-    def _fuzzy_match_key(
-        self,
-        key: tuple[int, ...],
-        char_dims: dict[tuple[int, ...], str],
-        tolerance: int = 1,
-    ) -> set[str]:
-        """Fuzzy match keys in a char dims dict.
-
-        Arguments:
-            key: Key to match
-            char_dims: Char dims dictionary to search
-            tolerance: Allowed difference per dimension
-        """
-        known_values = set()
-        for known_key, chars in char_dims.items():
-            if all(abs(known_key[i] - key[i]) <= tolerance for i in range(len(key))):
-                known_values.update(list(chars))
-
-        return known_values
 
     @staticmethod
     def _get_key_and_merged_bbox(
@@ -504,39 +461,20 @@ class BboxManager:
         widths = [bbox.width for bbox in bboxes_slice]
         heights = [bbox.height for bbox in bboxes_slice]
         gaps = [
-            bboxes_slice[i + 1].left - bboxes_slice[i].right
+            bboxes_slice[i + 1].x1 - bboxes_slice[i].x2
             for i in range(len(bboxes_slice) - 1)
         ]
         key = tuple(
             [dim for group in zip(widths, heights, gaps + [0]) for dim in group][:-1]
         )
         merged_bbox = Bbox(
-            left=min(bbox.left for bbox in bboxes_slice),
-            right=max(bbox.right for bbox in bboxes_slice),
-            top=min(bbox.top for bbox in bboxes_slice),
-            bottom=max(bbox.bottom for bbox in bboxes_slice),
+            x1=min(bbox.x1 for bbox in bboxes_slice),
+            x2=max(bbox.x2 for bbox in bboxes_slice),
+            y1=min(bbox.y1 for bbox in bboxes_slice),
+            y2=max(bbox.y2 for bbox in bboxes_slice),
         )
 
         return key, merged_bbox
-
-    @staticmethod
-    def _get_next_char_i(text: str, char_i: int) -> int:
-        """Get index of next non-whitespace character.
-
-        Arguments:
-            text: Provisional text present in image
-            char_i: Index of current character
-        Returns:
-            Index of next non-whitespace character
-        """
-        char_i += 1
-        while char_i < len(text):
-            char = text[char_i]
-            if char in ("\u3000", " "):
-                char_i += 1
-                continue
-            break
-        return char_i
 
     @staticmethod
     def _load_char_dims(
