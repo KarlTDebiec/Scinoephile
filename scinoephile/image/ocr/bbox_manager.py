@@ -14,8 +14,9 @@ import numpy as np
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import whitespace_chars
-from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSubtitle
+
+from .drawing import get_img_with_bboxes
 
 __all__ = ["BboxManager"]
 

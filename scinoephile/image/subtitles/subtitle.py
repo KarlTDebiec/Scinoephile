@@ -12,7 +12,7 @@ from PIL import Image
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Subtitle
-from scinoephile.image.drawing import get_img_with_bboxes
+from scinoephile.image.ocr.drawing import get_img_with_bboxes
 
 if TYPE_CHECKING:
     from .series import ImageSeries
