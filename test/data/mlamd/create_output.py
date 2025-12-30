@@ -121,7 +121,6 @@ if "简体中文 (OCR Validation)" in actions:
     validate_zho_ocr(
         zho_hans,
         output_dir_path=output_dir / "zho-Hans_validation",
-        stop_at_idx=0,
         interactive=True,
     )
 
