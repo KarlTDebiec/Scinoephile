@@ -40,7 +40,7 @@ def validate_zho_ocr(
         ):
             warning(message)
         if output_dir_path is not None:
-            annotated_img = get_img_with_bboxes(sub.img_with_white_bg, sub.bboxes)
+            annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
             output_series.events.append(
                 ImageSubtitle(
                     img=annotated_img,

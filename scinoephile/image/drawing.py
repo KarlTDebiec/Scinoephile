@@ -24,7 +24,6 @@ __all__ = [
     "get_img_of_text_with_bboxes",
     "get_img_scaled_to_bbox",
     "get_img_with_white_bg",
-    "get_imgs_stacked",
 ]
 
 
@@ -37,7 +36,7 @@ def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Imag
     Returns:
         image with bounding boxes drawn.
     """
-    img_with_bboxes = img.convert("RGB")
+    img_with_bboxes = img.convert("RGBA")
     draw = ImageDraw.Draw(img_with_bboxes)
 
     # Generate palette
@@ -333,25 +332,6 @@ def get_img_with_white_bg(img: Image.Image) -> Image.Image:
         return img_rgb
     else:
         raise ScinoephileError(f"Image must be in mode 'LA' or 'RGBA', is {img.mode}")
-
-
-def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
-    """Get images stacked vertically.
-
-    Arguments:
-        *imgs: images to stack
-    Returns:
-        stack of images
-    """
-    size = imgs[0].size
-
-    stack = Image.new("RGB", (size[0], size[1] * len(imgs)))
-    for i, img in enumerate(imgs):
-        if img.size != size:
-            raise ValueError("Images must be the same size")
-        stack.paste(img, (0, size[1] * i))
-
-    return stack
 
 
 @cache
