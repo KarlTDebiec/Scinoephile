@@ -11,6 +11,7 @@ import numpy as np
 from PIL import Image
 
 from scinoephile.core.subtitles import Subtitle
+from scinoephile.image.bbox import Bbox
 
 __all__ = ["ImageSubtitle"]
 
@@ -32,7 +33,7 @@ class ImageSubtitle(Subtitle):
 
         self.img = img
         self._arr: np.ndarray | None = None
-        self._bboxes: list[tuple[int, int, int, int]] | None = None
+        self._bboxes: list[Bbox] | None = None
         self._img_with_bboxes: Image.Image | None = None
 
     @property
@@ -43,12 +44,12 @@ class ImageSubtitle(Subtitle):
         return self._arr
 
     @property
-    def bboxes(self) -> list[tuple[int, int, int, int]] | None:
+    def bboxes(self) -> list[Bbox] | None:
         """Bounding boxes of characters in image."""
         return self._bboxes
 
     @bboxes.setter
-    def bboxes(self, bboxes: list[tuple[int, int, int, int]]):
+    def bboxes(self, bboxes: list[Bbox]):
         """Set bounding boxes of characters in image.
 
         Arguments:

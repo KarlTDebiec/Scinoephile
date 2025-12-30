@@ -9,15 +9,17 @@ import colorsys
 import numpy as np
 from PIL import Image, ImageDraw
 
+from scinoephile.image.bbox import Bbox
+
 __all__ = ["get_img_with_bboxes"]
 
 
-def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Image.Image:
+def get_img_with_bboxes(img: Image.Image, bboxes: list[Bbox]) -> Image.Image:
     """Draw bounding boxes on an image with rainbow colors for debugging.
 
     Arguments:
         img: reference image
-        bboxes: bounding boxes [(x1, y1, x2, y2)].
+        bboxes: bounding boxes to draw
     Returns:
         image with bounding boxes drawn.
     """
@@ -34,9 +36,9 @@ def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Imag
     ]
 
     # Draw boxes
-    for i, (x1, y1, x2, y2) in enumerate(bboxes):
+    for i, bbox in enumerate(bboxes):
         draw.rectangle(
-            [x1, y1, x2, y2],
+            [bbox.left, bbox.top, bbox.right, bbox.bottom],
             outline=palette[i],
             width=1,
         )
