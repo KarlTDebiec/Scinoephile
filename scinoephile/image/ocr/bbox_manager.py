@@ -199,6 +199,14 @@ class BboxManager:
                 char_i += 1
                 continue
             if fuzzy_expected is not None:
+                messages.append(
+                    self._format_message(
+                        sub_idx,
+                        char_sub_idx,
+                        text,
+                        f"accepted fuzzy dims for '{char}' as {bbox_dims}.",
+                    )
+                )
                 self._update_char_dims(char, bbox_dims)
                 merged_bboxes.append(bbox)
                 bbox_i += 1
@@ -216,6 +224,14 @@ class BboxManager:
                     continue
                 fuzzy_key = self._get_fuzzy_merge_key(self.merge_twos, key, char)
                 if fuzzy_key is not None:
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"accepted fuzzy merge-two for '{char}' as {merged_dims}.",
+                        )
+                    )
                     self._update_merge_twos(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 2
@@ -247,6 +263,15 @@ class BboxManager:
                     continue
                 fuzzy_key = self._get_fuzzy_merge_key(self.merge_threes, key, char)
                 if fuzzy_key is not None:
+                    messages.append(
+                        self._format_message(
+                            sub_idx,
+                            char_sub_idx,
+                            text,
+                            f"accepted fuzzy merge-three for '{char}' as "
+                            f"{merged_dims}.",
+                        )
+                    )
                     self._update_merge_threes(key, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += 3
