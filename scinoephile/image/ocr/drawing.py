@@ -38,7 +38,7 @@ def get_img_with_bboxes(img: Image.Image, bboxes: list[Bbox]) -> Image.Image:
     # Draw boxes
     for i, bbox in enumerate(bboxes):
         draw.rectangle(
-            [bbox.left, bbox.top, bbox.right, bbox.bottom],
+            [bbox.x1, bbox.y1, bbox.x2, bbox.y2],
             outline=palette[i],
             width=1,
         )

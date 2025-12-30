@@ -53,7 +53,7 @@ def get_char_pairs(
         List of character pairs
     """
     bbox_widths = [bbox.width for bbox in bboxes]
-    bbox_gaps = [bboxes[i + 1].left - bboxes[i].right for i in range(len(bboxes) - 1)]
+    bbox_gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
 
     char_1_i = 0
     width_1_i = 0

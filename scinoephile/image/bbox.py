@@ -13,21 +13,21 @@ __all__ = ["Bbox"]
 class Bbox:
     """Bounding box coordinates."""
 
-    left: int
+    x1: int
     """Left x coordinate."""
-    right: int
+    x2: int
     """Right x coordinate."""
-    top: int
+    y1: int
     """Top y coordinate."""
-    bottom: int
+    y2: int
     """Bottom y coordinate."""
 
     @property
     def width(self) -> int:
         """Width of bbox."""
-        return self.right - self.left
+        return self.x2 - self.x1
 
     @property
     def height(self) -> int:
         """Height of bbox."""
-        return self.bottom - self.top
+        return self.y2 - self.y1
