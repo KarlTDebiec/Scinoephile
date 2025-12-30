@@ -23,7 +23,6 @@ __all__ = [
     "get_img_of_text",
     "get_img_of_text_with_bboxes",
     "get_img_scaled_to_bbox",
-    "get_img_with_white_bg",
 ]
 
 
@@ -310,28 +309,6 @@ def get_img_scaled_to_bbox(ref: Image.Image, tst: Image.Image) -> Image.Image:
     tst_final.paste(tst_scaled, (ref_bbox[0], ref_bbox[1]))
 
     return tst_final
-
-
-def get_img_with_white_bg(img: Image.Image) -> Image.Image:
-    """Get image with transparency on white background.
-
-    Arguments:
-        img: image with transparency
-    Returns:
-        image on white background
-    """
-    if img.mode == "LA":
-        img_la = Image.new("LA", img.size, (255, 255))
-        img_la.paste(img, (0, 0), img)
-        img_l = img_la.convert("L")
-        return img_l
-    elif img.mode == "RGBA":
-        img_rgba = Image.new("RGBA", img.size, (255, 255, 255, 255))
-        img_rgba.paste(img, (0, 0), img)
-        img_rgb = img_rgba.convert("RGB")
-        return img_rgb
-    else:
-        raise ScinoephileError(f"Image must be in mode 'LA' or 'RGBA', is {img.mode}")
 
 
 @cache

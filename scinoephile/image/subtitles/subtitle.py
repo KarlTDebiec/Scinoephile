@@ -12,7 +12,7 @@ from PIL import Image
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Subtitle
-from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
+from scinoephile.image.drawing import get_img_with_bboxes
 
 if TYPE_CHECKING:
     from .series import ImageSeries
@@ -39,7 +39,6 @@ class ImageSubtitle(Subtitle):
         self._arr: np.ndarray | None = None
         self._bboxes: list[tuple[int, int, int, int]] | None = None
         self._img_with_bboxes: Image.Image | None = None
-        self._img_with_white_bg: Image.Image | None = None
 
     @property
     def bbox_widths(self) -> list[int]:
@@ -103,7 +102,6 @@ class ImageSubtitle(Subtitle):
         self._arr = None
         self._bboxes = None
         self._img_with_bboxes = None
-        self._img_with_white_bg = None
 
     @classmethod
     def from_sup(
@@ -139,14 +137,7 @@ class ImageSubtitle(Subtitle):
             if self.bboxes is None:
                 raise ScinoephileError("Bboxes are not set for this subtitle.")
             self._img_with_bboxes = get_img_with_bboxes(
-                self.img_with_white_bg,
+                self.img,
                 cast(list[tuple[int, ...]], self.bboxes),
             )
         return self._img_with_bboxes
-
-    @property
-    def img_with_white_bg(self) -> Image.Image:
-        """Image with white background."""
-        if self._img_with_white_bg is None:
-            self._img_with_white_bg = get_img_with_white_bg(self.img)
-        return self._img_with_white_bg

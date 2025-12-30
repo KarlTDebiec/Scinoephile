@@ -765,7 +765,7 @@ class BboxManager:
         """
         if not interactive:
             return False
-        annotated = get_img_with_bboxes(subtitle.img_with_white_bg, [bbox])
+        annotated = get_img_with_bboxes(subtitle.img, [bbox])
         annotated.show()
         merge_note = "merged " if merge_count > 1 else ""
         response = input(f"Accept {merge_note}bbox dims {dims} for '{char}'? (y/n): ")
