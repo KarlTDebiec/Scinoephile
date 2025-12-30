@@ -35,7 +35,7 @@ def validate_zho_ocr(
     for sub_idx, sub in enumerate(series.events):
         if sub_idx > stop_at_idx:
             break
-        for message in bbox_mgr.validate_char_bboxes(
+        for message in bbox_mgr.validate_bboxes(
             sub, sub_idx=sub_idx, interactive=interactive
         ):
             warning(message)

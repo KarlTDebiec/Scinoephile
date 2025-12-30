@@ -22,6 +22,7 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 
 from .subtitle import ImageSubtitle
 from .sup import read_sup_series
@@ -406,8 +407,6 @@ class ImageSeries(Series):
             values = grayscale[mask]
             np.add.at(hist, values, 1)
 
-        fill, outline = map(int, np.argsort(hist)[-2:])
-        if outline > fill:
-            fill, outline = outline, fill
+        fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline
