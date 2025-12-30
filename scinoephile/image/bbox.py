@@ -9,13 +9,13 @@ from PIL import Image, ImageChops
 __all__ = ["get_bbox"]
 
 
-def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
+def get_bbox(img: Image.Image) -> tuple[int, int, int, int] | None:
     """Get bbox of non-white/transparent pixels in an image.
 
     Arguments:
         img: Image
     Returns:
-        bbox of non-white/transparent pixels
+        bbox of non-white/transparent pixels, or None if no pixels found
     """
     img_l = img if img.mode == "L" else img.convert("L")
     mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
