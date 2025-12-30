@@ -37,7 +37,7 @@ class CharDimsSpec:
     """Word label for messages."""
     name_label: str
     """Name label for logging."""
-    char_dims: dict[str, list[tuple[int, ...]]] = field(default_factory=dict)
+    char_dims: dict[str, set[tuple[int, ...]]] = field(default_factory=dict)
     """Acceptable bbox dimensions and gaps keyed by character."""
 
 
@@ -92,11 +92,11 @@ class BboxManager:
         """Validate per-character bboxes for a subtitle.
 
         Arguments:
-            sub: Subtitle to validate
+            sub: subtitle to validate
             sub_idx: subtitle index for logging
             interactive: whether to prompt user for confirmations
         Returns:
-            List of validation messages
+            list of validation messages
         """
         bboxes = sub.bboxes
         if bboxes is None:
@@ -117,7 +117,7 @@ class BboxManager:
         Arguments:
             sub: subtitle for which to get bboxes
         Returns:
-            raw Bboxes
+            raw bboxes
         """
         grayscale, alpha = get_grayscale_and_alpha(sub.img)
         fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
@@ -159,12 +159,12 @@ class BboxManager:
         """Merge bboxes per character and collect validation messages.
 
         Arguments:
-            subtitle: Subtitle to validate
-            bboxes: Initial bboxes to validate and merge
+            subtitle: subtitle to validate
+            bboxes: initial bboxes to validate and merge
             sub_idx: subtitle index for logging
             interactive: whether to prompt user for confirmations
         Returns:
-            Merged bboxes and validation messages
+            merged bboxes and validation messages
         """
         messages = []
         text = subtitle.text
@@ -194,11 +194,11 @@ class BboxManager:
             for spec in self.char_dims_specs:
                 if bbox_i > len(bboxes) - spec.count:
                     continue
-                dims_tuple, merged_bbox = self._get_key_and_merged_bbox(
-                    bboxes, bbox_i, spec.count
+                merged_bbox, dims_tuple = self._get_merged_bbox_and_dims(
+                    bboxes[bbox_i : bbox_i + spec.count]
                 )
                 merged_dims = (merged_bbox.width, merged_bbox.height)
-                if dims_tuple in spec.char_dims.get(char, []):
+                if dims_tuple in spec.char_dims.get(char, set()):
                     self._update_char_dims(spec, dims_tuple, char)
                     merged_bboxes.append(merged_bbox)
                     bbox_i += spec.count
@@ -267,8 +267,8 @@ class BboxManager:
                 for spec in self.char_dims_specs:
                     if bbox_i > len(bboxes) - spec.count:
                         continue
-                    dims_tuple, merged_bbox = self._get_key_and_merged_bbox(
-                        bboxes, bbox_i, spec.count
+                    merged_bbox, dims_tuple = self._get_merged_bbox_and_dims(
+                        bboxes[bbox_i : bbox_i + spec.count]
                     )
                     merged_dims = (merged_bbox.width, merged_bbox.height)
                     accepted = self._confirm_bbox_dims(
@@ -324,7 +324,7 @@ class BboxManager:
             alpha: alpha values
             fill_color: fill color used in rendering
         Returns:
-            Boolean mask of white interior pixels
+            boolean mask of white interior pixels
         """
         tolerance = 10
         lower = max(0, fill_color - tolerance)
@@ -335,16 +335,16 @@ class BboxManager:
         """Get expected bbox dimensions for a character.
 
         Arguments:
-            char: Character to check
+            char: character to check
         Returns:
-            Expected (width, height) pairs
+            expected (width, height) pairs
         """
         spec = self.char_dims_specs[0]
-        return [tuple(dim[:2]) for dim in spec.char_dims.get(char, [])]
+        return [tuple(dim[:2]) for dim in spec.char_dims.get(char, set())]
 
     def _get_fuzzy_char_dims(
         self,
-        char_dims: dict[str, list[tuple[int, ...]]],
+        char_dims: dict[str, set[tuple[int, ...]]],
         dims_tuple: tuple[int, ...],
         char: str,
         tolerance: int = 1,
@@ -352,14 +352,14 @@ class BboxManager:
         """Return a fuzzy-matched key for a character.
 
         Arguments:
-            char_dims: Char dims dictionary to search
-            dims_tuple: Dimensions to match
-            char: Character to match
-            tolerance: Allowed difference per dimension
+            char_dims: char dims dictionary to search
+            dims_tuple: dimensions to match
+            char: character to match
+            tolerance: allowed difference per dimension
         Returns:
-            Matching key if found
+            matching key if found
         """
-        for known_key in char_dims.get(char, []):
+        for known_key in char_dims.get(char, set()):
             if all(
                 abs(known_key[i] - dims_tuple[i]) <= tolerance
                 for i in range(len(dims_tuple))
@@ -401,10 +401,10 @@ class BboxManager:
             dims_tuple: Dimensions including width, height, gap values
             char: Character
         """
-        dims_list = spec.char_dims.setdefault(char, [])
-        if dims_tuple in dims_list:
+        dims_set = spec.char_dims.setdefault(char, set())
+        if dims_tuple in dims_set:
             return
-        dims_list.append(dims_tuple)
+        dims_set.add(dims_tuple)
         info(
             f"Added ({char}, {', '.join(map(str, dims_tuple))}) to "
             f"{spec.name_label}_bbox"
@@ -423,14 +423,14 @@ class BboxManager:
         """Confirm bbox dims interactively.
 
         Arguments:
-            sub: Subtitle containing the character
-            bbox: Bounding box to confirm
-            char: Character under review
-            dims: Bounding box dimensions
-            interactive: Whether to prompt user
-            merge_count: Number of merged bboxes represented
+            sub: subtitle containing the character
+            bbox: bounding box to confirm
+            char: character under review
+            dims: bounding box dimensions
+            interactive: whether to prompt user
+            merge_count: number of merged bboxes represented
         Returns:
-            Whether the bbox is accepted
+            whether the bbox is accepted
         """
         if not interactive:
             return False
@@ -441,41 +441,29 @@ class BboxManager:
         return response.lower().startswith("y")
 
     @staticmethod
-    def _get_key_and_merged_bbox(
-        bboxes: list[Bbox],
-        i: int,
-        n: int,
-    ) -> tuple[tuple[int, ...], Bbox]:
-        """Get key and merged bbox from bboxes.
+    def _get_merged_bbox_and_dims(bboxes: list[Bbox]) -> tuple[Bbox, tuple[int, ...]]:
+        """Get merged bbox and dims tuple from bboxes.
 
         Arguments:
-            bboxes: Nascent list of bboxes
-            i: Index of first bbox
-            n: Number of bboxes whose merging is under consideration
+            bboxes: bboxes to merge
         Returns:
-            Key and merged bbox
+            merged bbox and dims tuple
         """
-        bboxes_slice = bboxes[i : i + n]
-        widths = [bbox.width for bbox in bboxes_slice]
-        heights = [bbox.height for bbox in bboxes_slice]
-        gaps = [
-            bboxes_slice[i + 1].x1 - bboxes_slice[i].x2
-            for i in range(len(bboxes_slice) - 1)
-        ]
-        key = tuple(
-            [dim for group in zip(widths, heights, gaps + [0]) for dim in group][:-1]
-        )
+        widths = [bbox.width for bbox in bboxes]
+        heights = [bbox.height for bbox in bboxes]
+        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
+        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
         merged_bbox = Bbox(
-            x1=min(bbox.x1 for bbox in bboxes_slice),
-            x2=max(bbox.x2 for bbox in bboxes_slice),
-            y1=min(bbox.y1 for bbox in bboxes_slice),
-            y2=max(bbox.y2 for bbox in bboxes_slice),
+            x1=min(bbox.x1 for bbox in bboxes),
+            x2=max(bbox.x2 for bbox in bboxes),
+            y1=min(bbox.y1 for bbox in bboxes),
+            y2=max(bbox.y2 for bbox in bboxes),
         )
 
-        return key, merged_bbox
+        return merged_bbox, dims
 
     @staticmethod
-    def _load_char_dims(file_path: Path) -> dict[str, list[tuple[int, ...]]]:
+    def _load_char_dims(file_path: Path) -> dict[str, set[tuple[int, ...]]]:
         """Load char dims from file.
 
         Arguments:
@@ -483,7 +471,7 @@ class BboxManager:
         Returns:
             char dims
         """
-        char_dims: dict[str, list[tuple[int, ...]]] = {}
+        char_dims: dict[str, set[tuple[int, ...]]] = {}
         with file_path.open("r", encoding="utf-8", newline="") as handle:
             reader = csv.reader(handle)
             for row in reader:
@@ -491,24 +479,23 @@ class BboxManager:
                     continue
                 char = row[0]
                 dims = tuple(map(int, row[1:]))
-                if char not in char_dims:
-                    char_dims[char] = []
-                char_dims[char].append(dims)
+                dims_set = char_dims.setdefault(char, set())
+                dims_set.add(dims)
 
         info(f"Loaded {file_path}")
         return char_dims
 
     @staticmethod
-    def _save_char_dims(char_dims: dict[str, list[tuple[int, ...]]], file_path: Path):
+    def _save_char_dims(char_dims: dict[str, set[tuple[int, ...]]], file_path: Path):
         """Save char dims dict to file.
 
         Arguments:
-            char_dims: data to save
+            char_dims: char dims to save
             file_path: path to file
         """
         rows = []
-        for char, dims_list in char_dims.items():
-            rows.extend([[char, *dims] for dims in dims_list])
+        for char, dims_set in char_dims.items():
+            rows.extend([[char, *dims] for dims in dims_set])
         rows = sorted({tuple(row) for row in rows})
         with file_path.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.writer(handle)
