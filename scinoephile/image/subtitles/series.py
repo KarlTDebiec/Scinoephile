@@ -382,7 +382,14 @@ class ImageSeries(Series):
         series = cls()
         series.format = "sup"
         for start, end, image in zip(starts, ends, images):
-            series.events.append(cls.event_class.from_sup(start, end, image))
+            img = Image.fromarray(image, "RGBA")
+            series.events.append(
+                cls.event_class(
+                    start=int(round(start * 1000)),
+                    end=int(round(end * 1000)),
+                    img=img,
+                )
+            )
         return series
 
     def _init_fill_and_outline_colors(self):

@@ -36,6 +36,13 @@ class ImageSubtitle(Subtitle):
         self._img_with_bboxes: Image.Image | None = None
 
     @property
+    def arr(self) -> np.ndarray:
+        """Image as numpy array."""
+        if self._arr is None:
+            self._arr = np.array(self.img)
+        return self._arr
+
+    @property
     def bboxes(self) -> list[tuple[int, int, int, int]] | None:
         """Bounding boxes of characters in image."""
         return self._bboxes
@@ -48,13 +55,6 @@ class ImageSubtitle(Subtitle):
             bboxes: bounding boxes of characters in image
         """
         self._bboxes = bboxes
-
-    @property
-    def arr(self) -> np.ndarray:
-        """Image as numpy array."""
-        if self._arr is None:
-            self._arr = np.array(self.img)
-        return self._arr
 
     @property
     def img(self) -> Image.Image:
@@ -72,26 +72,3 @@ class ImageSubtitle(Subtitle):
         self._arr = None
         self._bboxes = None
         self._img_with_bboxes = None
-
-    @classmethod
-    def from_sup(
-        cls,
-        start_seconds: float,
-        end_seconds: float,
-        image: np.ndarray,
-    ) -> ImageSubtitle:
-        """Create subtitle from SUP timing and image data.
-
-        Arguments:
-            start_seconds: start time in seconds
-            end_seconds: end time in seconds
-            image: image array (RGBA)
-        Returns:
-            ImageSubtitle instance
-        """
-        img = Image.fromarray(image, "RGBA")
-        return cls(
-            start=int(round(start_seconds * 1000)),
-            end=int(round(end_seconds * 1000)),
-            img=img,
-        )
