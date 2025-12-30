@@ -32,10 +32,10 @@ def get_img_with_bboxes(img: Image.Image, bboxes: list[tuple[int, ...]]) -> Imag
     """Draw bounding boxes on an image with rainbow colors for debugging.
 
     Arguments:
-        img: Reference image
-        bboxes: Bounding boxes [(x1, y1, x2, y2)].
+        img: reference image
+        bboxes: bounding boxes [(x1, y1, x2, y2)].
     Returns:
-        Image with bounding boxes drawn.
+        image with bounding boxes drawn.
     """
     img_with_bboxes = img.convert("RGB")
     draw = ImageDraw.Draw(img_with_bboxes)
@@ -64,8 +64,8 @@ def get_img_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     """Get diff between two grayscale images.
 
     Arguments:
-        ref: Reference image; must be of mode "L"
-        tst: Test image; must be of mode "L" and the same size as ref
+        ref: reference image; must be of mode "L"
+        tst: test image; must be of mode "L" and the same size as ref
     Returns:
         color diff image in which pixels that are darker in the test image are red, and
         pixels that are lighter in the test image are blue.
@@ -84,14 +84,6 @@ def get_img_diff(ref: Image.Image, tst: Image.Image) -> Image.Image:
     tst = tst.filter(ImageFilter.GaussianBlur(blur_radius))
 
     diff_arr = np.array(ref).astype(int) - np.array(tst).astype(int)
-
-    # darker_arr = diff_arr.copy()
-    # darker_arr[darker_arr > 0] = 0
-    # darker_arr = (darker_arr * -1).astype(np.uint8)
-
-    # lighter_arr = diff_arr.copy()
-    # lighter_arr[lighter_arr < 0] = 0
-    # lighter_arr = lighter_arr.astype(np.uint8)
 
     diff_sq = np.sign(diff_arr) * (diff_arr**2)
     diff_sq = (diff_sq / 65025) * 255
@@ -120,14 +112,14 @@ def get_img_of_text(
     """Get image of text, drawn using pillow.
 
     Arguments:
-        text: Text to draw
-        size: Size of image
-        font_path: Path to font file
-        font_size: Font size for rendering
-        fill_color: Fill color of text
-        outline_color: Outline color of text
+        text: text to draw
+        size: size of image
+        font_path: path to font file
+        font_size: font size for rendering
+        fill_color: fill color of text
+        outline_color: outline color of text
     Returns:
-        Image of text
+        image of text
     """
     # Create a new image with white background
     image = Image.new("L", size, 255)
@@ -217,13 +209,13 @@ def get_img_of_text_with_bboxes(
 
     Arguments:
         text: OCRed text believed to be present in image
-        size: Size of image
-        bboxes: Bounding boxes of characters in reference image
-        font_path: Path to font file
-        fill_color: Fill of text
-        outline_color: Outline of text
+        size: size of image
+        bboxes: bounding boxes of characters in reference image
+        font_path: path to font file
+        fill_color: fill of text
+        outline_color: outline of text
     Returns:
-        Image of text
+        image of text
     """
     # Check if alignment is possible
     filtered_text = "".join([char for char in text if char not in ("\u3000", " ")])
@@ -277,6 +269,8 @@ def get_img_of_text_with_bboxes(
 
         # Downscale character to fit final bounding box
         crop_bbox = get_bbox(char_img)
+        if crop_bbox is None:
+            raise ScinoephileError(f"Could not determine bbox for character '{char}'.")
         # Extend crop bbox by one pixel
         crop_bbox = (
             max(0, crop_bbox[0] - 1),
@@ -294,23 +288,22 @@ def get_img_of_text_with_bboxes(
     return img
 
 
-def get_img_scaled_to_bbox(
-    ref: Image.Image,
-    tst: Image.Image,
-) -> Image.Image:
+def get_img_scaled_to_bbox(ref: Image.Image, tst: Image.Image) -> Image.Image:
     """Get image with non-white/transparent contents scaled to dimensions of reference.
 
     Arguments:
-        ref: Reference image
-        tst: Test image
+        ref: reference image
+        tst: test image
     Returns:
-        Scaled image
+        scaled image
     """
     if ref.size != tst.size:
         raise ValueError("Images must be the same size")
 
     ref_bbox = get_bbox(ref)
     tst_bbox = get_bbox(tst)
+    if ref_bbox is None or tst_bbox is None:
+        raise ScinoephileError("Could not determine bbox for reference or test image.")
     ref_bbox_size = (ref_bbox[2] - ref_bbox[0], ref_bbox[3] - ref_bbox[1])
     tst_cropped = tst.crop(tst_bbox)
     tst_scaled = tst_cropped.resize(ref_bbox_size, Image.Resampling.LANCZOS)
@@ -324,9 +317,9 @@ def get_img_with_white_bg(img: Image.Image) -> Image.Image:
     """Get image with transparency on white background.
 
     Arguments:
-        img: Image with transparency
+        img: image with transparency
     Returns:
-        Image on white background
+        image on white background
     """
     if img.mode == "LA":
         img_la = Image.new("LA", img.size, (255, 255))
@@ -346,9 +339,9 @@ def get_imgs_stacked(*imgs: Image.Image) -> Image.Image:
     """Get images stacked vertically.
 
     Arguments:
-        *imgs: Images to stack
+        *imgs: images to stack
     Returns:
-        Stack of images
+        stack of images
     """
     size = imgs[0].size
 
@@ -366,7 +359,7 @@ def _get_default_font_path() -> Path:
     """Get path to font file.
 
     Returns:
-        Path to font file
+        path to font file
     """
     if system() == "Windows":
         return Path(r"C:\WINDOWS\FONTS\MSYH.TTC")

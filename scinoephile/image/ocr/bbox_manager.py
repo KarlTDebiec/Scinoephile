@@ -742,7 +742,7 @@ class BboxManager:
         self.single_bbox[char] = dims
         self._save_single_bbox(self.single_bbox, self.single_bbox_file_path)
 
-    def _confirm_bbox_dims(  # noqa: PLR0913
+    def _confirm_bbox_dims(
         self,
         subtitle: OcrSubtitle,
         bbox: tuple[int, int, int, int],
