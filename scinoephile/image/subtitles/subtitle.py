@@ -12,7 +12,6 @@ from PIL import Image
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Subtitle
-from scinoephile.image.base64 import get_base64_image
 from scinoephile.image.drawing import get_img_with_bboxes, get_img_with_white_bg
 
 if TYPE_CHECKING:
@@ -38,17 +37,9 @@ class ImageSubtitle(Subtitle):
 
         self.img = img
         self._arr: np.ndarray | None = None
-        self._base64: str | None = None
         self._bboxes: list[tuple[int, int, int, int]] | None = None
         self._img_with_bboxes: Image.Image | None = None
         self._img_with_white_bg: Image.Image | None = None
-
-    @property
-    def base64(self) -> str:
-        """Image encoded as base64."""
-        if self._base64 is None:
-            self._base64 = get_base64_image(self.img)
-        return self._base64
 
     @property
     def bbox_widths(self) -> list[int]:
@@ -110,7 +101,6 @@ class ImageSubtitle(Subtitle):
         """
         self._img = img
         self._arr = None
-        self._base64 = None
         self._bboxes = None
         self._img_with_bboxes = None
         self._img_with_white_bg = None
