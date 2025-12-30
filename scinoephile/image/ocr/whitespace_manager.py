@@ -12,9 +12,10 @@ from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 
 from .char_pair import CharPair, get_char_pairs
-from .types import OcrSubtitle
 
 __all__ = ["WhitespaceManager"]
+
+from ..subtitles import ImageSubtitle
 
 
 class WhitespaceManager:
@@ -44,7 +45,7 @@ class WhitespaceManager:
 
     def validate(
         self,
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         i: int,
         interactive: bool = True,
     ) -> None:

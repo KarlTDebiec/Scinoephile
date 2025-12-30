@@ -15,8 +15,7 @@ from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.drawing import get_img_with_bboxes
-
-from .types import OcrSubtitle
+from scinoephile.image.subtitles import ImageSubtitle
 
 __all__ = ["BboxManager"]
 
@@ -89,7 +88,7 @@ class BboxManager:
 
     def get_bboxes(
         self,
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         interactive: bool = False,
     ) -> list[tuple[int, int, int, int]]:
         """Get character bboxes within an image.
@@ -108,7 +107,7 @@ class BboxManager:
 
     def validate_char_bboxes(
         self,
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         sub_idx: int | None = None,
         interactive: bool = False,
     ) -> list[str]:
@@ -135,7 +134,7 @@ class BboxManager:
         return messages
 
     def _get_initial_bboxes(
-        self, subtitle: OcrSubtitle
+        self, subtitle: ImageSubtitle
     ) -> list[tuple[int, int, int, int]]:
         """Get initial bboxes from white interior pixels.
 
@@ -178,7 +177,7 @@ class BboxManager:
 
     def _merge_and_validate_char_bboxes(  # noqa: PLR0912, PLR0915
         self,
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         bboxes: list[tuple[int, int, int, int]],
         sub_idx: int | None = None,
         interactive: bool = False,
@@ -576,7 +575,7 @@ class BboxManager:
 
     @staticmethod
     def _get_grayscale_and_alpha(
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
     ) -> tuple[np.ndarray, np.ndarray]:
         """Get grayscale and alpha arrays for the subtitle image.
 
@@ -617,7 +616,7 @@ class BboxManager:
 
     @staticmethod
     def _get_fill_and_outline_colors(
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         grayscale: np.ndarray,
         alpha: np.ndarray,
     ) -> tuple[int, int]:
@@ -744,7 +743,7 @@ class BboxManager:
 
     def _confirm_bbox_dims(
         self,
-        subtitle: OcrSubtitle,
+        subtitle: ImageSubtitle,
         bbox: tuple[int, int, int, int],
         char: str,
         dims: tuple[int, int],
