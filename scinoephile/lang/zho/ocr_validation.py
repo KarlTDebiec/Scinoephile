@@ -19,7 +19,7 @@ def validate_zho_ocr(
     output_dir_path: Path | str | None = None,
     stop_at_idx: int | None = None,
     interactive: bool = False,
-) -> None:
+) -> ImageSeries:
     """Validate OCR text against image series bboxes.
 
     Arguments:
@@ -56,3 +56,5 @@ def validate_zho_ocr(
             )
     if output_dir_path is not None:
         output_series.save(output_dir_path)
+
+    return output_series
