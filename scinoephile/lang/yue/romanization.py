@@ -8,9 +8,12 @@ import pickle
 import re
 from collections import Counter
 from copy import deepcopy
-from warnings import catch_warnings, filterwarnings
+from warnings import catch_warnings, filterwarnings, simplefilter
 
-import pycantonese
+with catch_warnings():
+    simplefilter("ignore", UserWarning)
+    import pycantonese
+
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError

@@ -175,7 +175,9 @@ class BboxManager:
 
                 approved = False
                 if interactive:
-                    annotated = get_img_with_bboxes(sub.img, bboxes)
+                    annotated = get_img_with_bboxes(
+                        sub.img, bboxes[bbox_idx : bbox_idx + n]
+                    )
                     annotated.show()
                     response = input(f"Accept '{char}' bbox dims {dims}? (y/n): ")
                     approved = response.lower().startswith("y")

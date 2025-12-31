@@ -54,13 +54,14 @@ class MonoBlockProcessor:
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
-            test_cases.extend(
-                load_test_cases_from_json(
-                    test_case_path,
-                    MonoBlockManager,
-                    prompt_cls=self.prompt_cls,
-                ),
-            )
+            if test_case_path.exists():
+                test_cases.extend(
+                    load_test_cases_from_json(
+                        test_case_path,
+                        MonoBlockManager,
+                        prompt_cls=self.prompt_cls,
+                    ),
+                )
         self.test_case_path = test_case_path
         """Path to file containing test cases."""
 
