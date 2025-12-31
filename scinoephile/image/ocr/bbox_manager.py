@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import csv
-from dataclasses import dataclass, field
 from logging import info
 from pathlib import Path
 
@@ -13,7 +12,7 @@ import numpy as np
 
 from scinoephile.common import package_root
 from scinoephile.core.text import whitespace_chars
-from scinoephile.image.bbox import Bbox
+from scinoephile.image.bbox import Bbox, get_merged_bbox
 from scinoephile.image.colors import (
     get_fill_and_outline_colors,
     get_grayscale_and_alpha,
@@ -25,69 +24,21 @@ from .drawing import get_img_with_bboxes
 __all__ = ["BboxManager"]
 
 
-@dataclass(slots=True)
-class CharDimsSpec:
-    """Char dims spec for grouped bboxes."""
-
-    count: int
-    """Number of bboxes merged."""
-    file_path: Path
-    """Path to char dims csv file."""
-    word_label: str
-    """Word label for messages."""
-    name_label: str
-    """Name label for logging."""
-    char_dims: dict[str, set[tuple[int, ...]]] = field(default_factory=dict)
-    """Acceptable bbox dimensions and gaps keyed by character."""
-
-
 class BboxManager:
     """Manages bboxes around characters."""
 
     def __init__(self):
         """Initialize."""
-        self.char_dims_specs = [
-            CharDimsSpec(
-                count=1,
-                file_path=package_root / "data" / "ocr" / "char_dims_1.csv",
-                word_label="one",
-                name_label="single",
-            ),
-            CharDimsSpec(
-                count=2,
-                file_path=package_root / "data" / "ocr" / "char_dims_2.csv",
-                word_label="two",
-                name_label="double",
-            ),
-            CharDimsSpec(
-                count=3,
-                file_path=package_root / "data" / "ocr" / "char_dims_3.csv",
-                word_label="three",
-                name_label="triple",
-            ),
-            CharDimsSpec(
-                count=4,
-                file_path=package_root / "data" / "ocr" / "char_dims_4.csv",
-                word_label="four",
-                name_label="quadruple",
-            ),
-            CharDimsSpec(
-                count=5,
-                file_path=package_root / "data" / "ocr" / "char_dims_5.csv",
-                word_label="five",
-                name_label="quintuple",
-            ),
-        ]
-        for spec in self.char_dims_specs:
-            if spec.file_path.exists():
-                spec.char_dims = self._load_char_dims(spec.file_path)
-                self._save_char_dims(spec.char_dims, spec.file_path)
+        self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+        for n in range(1, 6):
+            file_path = self._char_dims_path(n)
+            if file_path.exists():
+                self.char_dims_by_n[n] = self._load_char_dims(file_path)
+            else:
+                self.char_dims_by_n[n] = {}
 
     def validate_bboxes(
-        self,
-        sub: ImageSubtitle,
-        sub_idx: int,
-        interactive: bool = False,
+        self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
     ) -> list[str]:
         """Validate per-character bboxes for a subtitle.
 
@@ -102,13 +53,8 @@ class BboxManager:
         if bboxes is None:
             bboxes = self._get_raw_bboxes(sub)
 
-        merged_bboxes, messages = self._merge_and_validate_bboxes(
-            sub,
-            bboxes,
-            sub_idx=sub_idx,
-            interactive=interactive,
-        )
-        sub.bboxes = merged_bboxes
+        bboxes, messages = self._validate_bboxes(sub, bboxes, sub_idx, interactive)
+        sub.bboxes = bboxes
         return messages
 
     def _get_raw_bboxes(self, sub: ImageSubtitle) -> list[Bbox]:
@@ -149,9 +95,9 @@ class BboxManager:
 
         return bboxes
 
-    def _merge_and_validate_bboxes(  # noqa: PLR0912, PLR0915
+    def _validate_bboxes(  # noqa: PLR0912, PLR0915
         self,
-        subtitle: ImageSubtitle,
+        sub: ImageSubtitle,
         bboxes: list[Bbox],
         sub_idx: int,
         interactive: bool = False,
@@ -159,7 +105,7 @@ class BboxManager:
         """Merge bboxes per character and collect validation messages.
 
         Arguments:
-            subtitle: subtitle to validate
+            sub: subtitle to validate
             bboxes: initial bboxes to validate and merge
             sub_idx: subtitle index for logging
             interactive: whether to prompt user for confirmations
@@ -167,149 +113,109 @@ class BboxManager:
             merged bboxes and validation messages
         """
         messages = []
-        text = subtitle.text
+        text = sub.text
 
         merged_bboxes: list[Bbox] = []
-        bbox_i = 0
-        char_i = 0
-        char_sub_idx = 0
-        while char_i < len(text):
-            char = text[char_i]
+        bbox_idx = 0
+        char_idx = 0
+        char_nonws_idx = 0
+
+        while char_idx < len(text):
+            char = text[char_idx]
             if char in whitespace_chars:
-                char_i += 1
+                char_idx += 1
                 continue
-            char_sub_idx += 1
-            if bbox_i >= len(bboxes):
-                message = f"ran out of bboxes at '{char}'."
+            char_nonws_idx += 1
+            if bbox_idx >= len(bboxes):
                 messages.append(
-                    f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - {message}"
+                    f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
+                    f"Ran out of bboxes at '{char}'"
                 )
                 break
+            char_matched_to_bbox = False
 
-            expected = self._get_expected_dims(char)
-            bbox = bboxes[bbox_i]
-            bbox_dims = (bbox.width, bbox.height)
-
-            merged = False
-            for spec in self.char_dims_specs:
-                if bbox_i > len(bboxes) - spec.count:
+            # Check if char is matched by any previously-confirmed dims
+            for n in self.char_dims_by_n.keys():
+                if bbox_idx + n > len(bboxes):
                     continue
-                merged_bbox, dims_tuple = self._get_merged_bbox_and_dims(
-                    bboxes[bbox_i : bbox_i + spec.count]
-                )
-                merged_dims = (merged_bbox.width, merged_bbox.height)
-                if dims_tuple in spec.char_dims.get(char, set()):
-                    self._update_char_dims(spec, dims_tuple, char)
-                    merged_bboxes.append(merged_bbox)
-                    bbox_i += spec.count
-                    char_i += 1
-                    merged = True
-                    break
-                fuzzy_dims = self._get_fuzzy_char_dims(spec.char_dims, dims_tuple, char)
-                if fuzzy_dims is not None:
-                    if spec.count == 1:
-                        messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - "
-                            f"accepted fuzzy dims for '{char}' as {bbox_dims}."
-                        )
-                    else:
-                        messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: "
-                            f"{text} - accepted fuzzy merge-{spec.word_label} for "
-                            f"'{char}' as {merged_dims}."
-                        )
-                    self._update_char_dims(spec, dims_tuple, char)
-                    merged_bboxes.append(merged_bbox)
-                    bbox_i += spec.count
-                    char_i += 1
-                    merged = True
-                    break
-                if (
-                    spec.count > 1
-                    and expected
-                    and self._dims_match_any(merged_dims, expected)
-                ):
-                    self._update_char_dims(spec, dims_tuple, char)
-                    messages.append(
-                        f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - "
-                        f"merged {spec.word_label} bboxes for '{char}' into "
-                        f"{merged_dims}."
+                dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
+                ok_dims = self.char_dims_by_n[n].get(char, set())
+
+                # Exact match
+                if dims in ok_dims:
+                    merged_bboxes.append(
+                        get_merged_bbox(bboxes[bbox_idx : bbox_idx + n])
                     )
-                    merged_bboxes.append(merged_bbox)
-                    bbox_i += spec.count
-                    char_i += 1
-                    merged = True
+                    bbox_idx += n
+                    char_idx += 1
+                    char_matched_to_bbox = True
                     break
-            if merged:
+
+                # Fuzzy match
+                for ok_dim in ok_dims:
+                    diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
+                    max_diff = max(diffs)
+                    if max_diff <= 2:
+                        merged_bboxes.append(
+                            get_merged_bbox(bboxes[bbox_idx : bbox_idx + n])
+                        )
+                        bbox_idx += n
+                        char_idx += 1
+                        self._update_char_dims(char, dims)
+                        char_matched_to_bbox = True
+                        break
+            if char_matched_to_bbox:
                 continue
 
-            if not expected:
-                accepted = self._confirm_bbox_dims(
-                    subtitle,
-                    bbox,
-                    char,
-                    bbox_dims,
-                    interactive,
-                )
-                if accepted:
-                    messages.append(
-                        f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - "
-                        f"added dims for '{char}' as {bbox_dims}."
-                    )
-                    self._update_char_dims(
-                        self.char_dims_specs[0], (bbox_dims[0], bbox_dims[1]), char
-                    )
-                    merged_bboxes.append(bbox)
-                    bbox_i += 1
-                    char_i += 1
+            # Prompt for confirmation if char is matched by dims
+            for n in self.char_dims_by_n.keys():
+                if bbox_idx + n > len(bboxes):
                     continue
+                dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
 
-                for spec in self.char_dims_specs:
-                    if bbox_i > len(bboxes) - spec.count:
-                        continue
-                    merged_bbox, dims_tuple = self._get_merged_bbox_and_dims(
-                        bboxes[bbox_i : bbox_i + spec.count]
+                approved = False
+                if interactive:
+                    annotated = get_img_with_bboxes(sub.img, bboxes)
+                    annotated.show()
+                    response = input(f"Accept '{char}' bbox dims {dims}? (y/n): ")
+                    approved = response.lower().startswith("y")
+
+                if approved:
+                    merged_bboxes.append(
+                        get_merged_bbox(bboxes[bbox_idx : bbox_idx + n])
                     )
-                    merged_dims = (merged_bbox.width, merged_bbox.height)
-                    accepted = self._confirm_bbox_dims(
-                        subtitle,
-                        merged_bbox,
-                        char,
-                        merged_dims,
-                        interactive,
-                        merge_count=spec.count,
-                    )
-                    if accepted:
-                        self._update_char_dims(spec, dims_tuple, char)
-                        messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: "
-                            f"{text} - merged {spec.word_label} bboxes for '{char}' "
-                            f"into {merged_dims}."
-                        )
-                        merged_bboxes.append(merged_bbox)
-                        bbox_i += spec.count
-                        char_i += 1
-                        merged = True
-                        break
-                if merged:
-                    continue
+                    bbox_idx += n
+                    char_idx += 1
+                    self._update_char_dims(char, dims)
+                    char_matched_to_bbox = True
+                    break
 
-            messages.append(
-                f"Sub {sub_idx + 1:04d} Char {char_sub_idx:02d}: {text} - bbox dims "
-                f"{bbox_dims} for '{char}' do not match expected {expected or None}."
-            )
-            merged_bboxes.append(bbox)
-            bbox_i += 1
-            char_i += 1
+            if char_matched_to_bbox:
+                continue
 
-        if bbox_i < len(bboxes):
-            merged_bboxes.extend(bboxes[bbox_i:])
+            # No match found; log message and merge single bbox
+            dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + 1])
             messages.append(
-                f"Sub {sub_idx + 1:04d}: {text} - "
-                f"{len(bboxes) - bbox_i} extra bboxes remain."
+                f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
+                f"No match for '{char}' bbox dims {dims}"
             )
 
         return merged_bboxes, messages
+
+    @staticmethod
+    def _get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
+        """Get dims tuple from bboxes.
+
+        Arguments:
+            bboxes: bboxes
+        Returns:
+            dims tuple
+        """
+        widths = [bbox.width for bbox in bboxes]
+        heights = [bbox.height for bbox in bboxes]
+        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
+        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
+        return dims
 
     @staticmethod
     def _get_white_mask(
@@ -331,136 +237,25 @@ class BboxManager:
         upper = min(255, fill_color + tolerance)
         return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
 
-    def _get_expected_dims(self, char: str) -> list[tuple[int, int]]:
-        """Get expected bbox dimensions for a character.
-
-        Arguments:
-            char: character to check
-        Returns:
-            expected (width, height) pairs
-        """
-        spec = self.char_dims_specs[0]
-        return [tuple(dim[:2]) for dim in spec.char_dims.get(char, set())]
-
-    def _get_fuzzy_char_dims(
-        self,
-        char_dims: dict[str, set[tuple[int, ...]]],
-        dims_tuple: tuple[int, ...],
-        char: str,
-        tolerance: int = 1,
-    ) -> tuple[int, ...] | None:
-        """Return a fuzzy-matched key for a character.
-
-        Arguments:
-            char_dims: char dims dictionary to search
-            dims_tuple: dimensions to match
-            char: character to match
-            tolerance: allowed difference per dimension
-        Returns:
-            matching key if found
-        """
-        for known_key in char_dims.get(char, set()):
-            if all(
-                abs(known_key[i] - dims_tuple[i]) <= tolerance
-                for i in range(len(dims_tuple))
-            ):
-                return known_key
-        return None
-
-    @staticmethod
-    def _dims_match(
-        bbox_dims: tuple[int, int],
-        expected_dims: tuple[int, int],
-        tolerance: int = 1,
-    ) -> bool:
-        """Return whether bbox dimensions match expected dimensions."""
-        return (
-            abs(bbox_dims[0] - expected_dims[0]) <= tolerance
-            and abs(bbox_dims[1] - expected_dims[1]) <= tolerance
-        )
-
-    def _dims_match_any(
-        self,
-        bbox_dims: tuple[int, int],
-        expected_dims: list[tuple[int, int]],
-        tolerance: int = 1,
-    ) -> bool:
-        """Return whether bbox dims match any expected dimensions."""
-        return any(
-            self._dims_match(bbox_dims, expected, tolerance=tolerance)
-            for expected in expected_dims
-        )
-
-    def _update_char_dims(
-        self, spec: CharDimsSpec, dims_tuple: tuple[int, ...], char: str
-    ) -> None:
+    def _update_char_dims(self, char: str, dims: tuple[int, ...]) -> None:
         """Update char dims and save.
 
         Arguments:
-            spec: Char dims spec to update
-            dims_tuple: Dimensions including width, height, gap values
             char: Character
+            dims: Dimensions including width, height, gap values
         """
-        dims_set = spec.char_dims.setdefault(char, set())
-        if dims_tuple in dims_set:
+        n = (len(dims) + 1) // 3
+        dims_set = self.char_dims_by_n[n].setdefault(char, set())
+        if dims in dims_set:
             return
-        dims_set.add(dims_tuple)
-        info(
-            f"Added ({char}, {', '.join(map(str, dims_tuple))}) to "
-            f"{spec.name_label}_bbox"
-        )
-        self._save_char_dims(spec.char_dims, spec.file_path)
-
-    def _confirm_bbox_dims(
-        self,
-        sub: ImageSubtitle,
-        bbox: Bbox,
-        char: str,
-        dims: tuple[int, int],
-        interactive: bool,
-        merge_count: int = 1,
-    ) -> bool:
-        """Confirm bbox dims interactively.
-
-        Arguments:
-            sub: subtitle containing the character
-            bbox: bounding box to confirm
-            char: character under review
-            dims: bounding box dimensions
-            interactive: whether to prompt user
-            merge_count: number of merged bboxes represented
-        Returns:
-            whether the bbox is accepted
-        """
-        if not interactive:
-            return False
-        annotated = get_img_with_bboxes(sub.img, [bbox])
-        annotated.show()
-        merge_note = "merged " if merge_count > 1 else ""
-        response = input(f"Accept {merge_note}bbox dims {dims} for '{char}'? (y/n): ")
-        return response.lower().startswith("y")
+        dims_set.add(dims)
+        info(f"Added ({char}, {dims})")
+        self._save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
 
     @staticmethod
-    def _get_merged_bbox_and_dims(bboxes: list[Bbox]) -> tuple[Bbox, tuple[int, ...]]:
-        """Get merged bbox and dims tuple from bboxes.
-
-        Arguments:
-            bboxes: bboxes to merge
-        Returns:
-            merged bbox and dims tuple
-        """
-        widths = [bbox.width for bbox in bboxes]
-        heights = [bbox.height for bbox in bboxes]
-        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
-        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
-        merged_bbox = Bbox(
-            x1=min(bbox.x1 for bbox in bboxes),
-            x2=max(bbox.x2 for bbox in bboxes),
-            y1=min(bbox.y1 for bbox in bboxes),
-            y2=max(bbox.y2 for bbox in bboxes),
-        )
-
-        return merged_bbox, dims
+    def _char_dims_path(n: int) -> Path:
+        """Path to csv file."""
+        return package_root / "data" / "ocr" / f"char_dims_{n}.csv"
 
     @staticmethod
     def _load_char_dims(file_path: Path) -> dict[str, set[tuple[int, ...]]]:

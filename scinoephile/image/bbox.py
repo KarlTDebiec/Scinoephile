@@ -6,10 +6,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = ["Bbox"]
+__all__ = [
+    "Bbox",
+    "get_merged_bbox",
+]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass
 class Bbox:
     """Bounding box coordinates."""
 
@@ -31,3 +34,19 @@ class Bbox:
     def height(self) -> int:
         """Height of bbox."""
         return self.y2 - self.y1
+
+
+def get_merged_bbox(bboxes: list[Bbox]) -> Bbox:
+    """Get merged bbox and dims tuple from bboxes.
+
+    Arguments:
+        bboxes: bboxes to merge
+    Returns:
+        merged bbox and dims tuple
+    """
+    return Bbox(
+        x1=min(bbox.x1 for bbox in bboxes),
+        x2=max(bbox.x2 for bbox in bboxes),
+        y1=min(bbox.y1 for bbox in bboxes),
+        y2=max(bbox.y2 for bbox in bboxes),
+    )
