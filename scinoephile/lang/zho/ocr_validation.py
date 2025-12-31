@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import warning
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.image.ocr import BboxManager
@@ -35,10 +35,14 @@ def validate_zho_ocr(
     for sub_idx, sub in enumerate(series.events):
         if sub_idx > stop_at_idx:
             break
-        for message in bbox_mgr.validate_bboxes(
+        messages = bbox_mgr.validate_bboxes(
             sub, sub_idx=sub_idx, interactive=interactive
-        ):
-            warning(message)
+        )
+        if messages:
+            for message in messages:
+                warning(message)
+        else:
+            info(f"Subtitle {sub_idx} |{sub.text}| validated")
         if output_dir_path is not None:
             annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
             output_series.events.append(
