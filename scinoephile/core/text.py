@@ -1,4 +1,4 @@
-#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to text."""
 
@@ -106,6 +106,7 @@ full_punc = {
     "FULLWIDTH TILDE": "～",
     "IDEOGRAPHIC COMMA": "、",
     "IDEOGRAPHIC FULL STOP": "。",
+    "KATAKANA MIDDLE DOT": "・",
     "LEFT ANGLE BRACKET": "〈",
     "LEFT BLACK LENTICULAR BRACKET": "【",
     "LEFT CORNER BRACKET": "「",
@@ -145,6 +146,7 @@ half_to_full_punc = {
     },
     "“": "〝",
     "”": "〞",
+    "·": "・",
 }
 """Mapping from half-width to full-width punctuation characters."""
 
