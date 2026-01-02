@@ -1,4 +1,4 @@
-#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to English text."""
 
@@ -54,6 +54,8 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Replace '...' with '…'
     cleaned = re.sub(r"\.\.\.", "…", cleaned)
 
+    # Clean up double quotes
+    cleaned = re.sub(r"[“”＂〞〝]", '"', cleaned)
     cleaned = _replace_half_width_double_quotes(cleaned)
 
     # Remove lines starting with dashes if they are otherwise empty

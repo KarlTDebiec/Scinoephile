@@ -1,4 +1,4 @@
-#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code related to 中文 text."""
 
@@ -46,16 +46,16 @@ def _get_zho_text_cleaned(text: str) -> str | None:
     # Revert substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
-    # Replace '...' with '⋯'
+    # Replace '...' and '…' with '⋯'
     cleaned = re.sub(r"[^\S\n]*\.\.\.[^\S\n]*", "⋯", cleaned)
-
-    # Replace '…' with '⋯'
     cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
 
     # Replace half-width punctuation with full-width punctuation
     for old_punc, new_punc in half_to_full_punc.items():
         cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
 
+    # Clean up double quotes
+    cleaned = re.sub(r"[“”〞〝\"]", "＂", cleaned)
     cleaned = _replace_full_width_double_quotes(cleaned)
 
     # Remove whitespace before and after specified characters
