@@ -29,7 +29,7 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_proofread,
     get_yue_vs_zho_reviewed,

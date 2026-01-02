@@ -26,7 +26,7 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,

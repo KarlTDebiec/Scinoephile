@@ -32,7 +32,7 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
     get_zho_proofreader,
 )
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber

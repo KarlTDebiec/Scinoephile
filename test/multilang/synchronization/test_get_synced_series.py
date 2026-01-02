@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 
 
 def _test_get_synced_series(one: Series, two: Series, expected: Series):
