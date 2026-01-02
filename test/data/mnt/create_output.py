@@ -1,4 +1,4 @@
-#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Script for creating expected test output for MNT."""
 
@@ -26,7 +26,7 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_eng_proofreading_test_cases,

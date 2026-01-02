@@ -1,4 +1,4 @@
-#  Copyright 2017-2025 Karl T Debiec. All rights reserved. This software may be modified
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Command-line interface for Scinoephile."""
 
@@ -19,7 +19,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang import get_synced_series
+from scinoephile.multilang.synchronization import get_synced_series
 
 
 class ScinoephileCli(CommandLineInterface):
