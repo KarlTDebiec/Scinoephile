@@ -29,7 +29,7 @@ class BboxManager:
 
     def __init__(self):
         """Initialize."""
-        # Set up data structure for characters in one or more bboxes
+        # Data structure for characters in one or more bboxes.
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         """Data structure for characters in one or more bboxes.
         
@@ -43,7 +43,7 @@ class BboxManager:
             if file_path.exists():
                 self.char_dims_by_n[n] = self._load_char_dims(file_path)
 
-        # Set up data structures for bboxes that contain two or more characters
+        # Data structure for bboxes containing two or more characters.
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         """Data structure for bboxes containing two or more characters.
         
@@ -106,6 +106,13 @@ class BboxManager:
                 line = None
         if line is not None:
             lines.append(line)
+
+        min_line_height = 20
+        lines = [
+            candidate
+            for candidate in lines
+            if candidate[1] - candidate[0] >= min_line_height
+        ]
 
         # Determine left and right of each section per line to get final bbox
         bboxes: list[Bbox] = []
@@ -441,8 +448,8 @@ class BboxManager:
             file_path: path to file
         """
         rows = []
-        for n, char_grop_dims_set in char_grp_dims_by_n.items():
-            for char_grp, dims_set in char_grop_dims_set.items():
+        for char_grp_dims_set in char_grp_dims_by_n.values():
+            for char_grp, dims_set in char_grp_dims_set.items():
                 rows.extend([[char_grp, *dims] for dims in dims_set])
         rows = sorted({tuple(row) for row in rows})
         with file_path.open("w", encoding="utf-8", newline="") as handle:
