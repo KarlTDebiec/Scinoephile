@@ -18,6 +18,7 @@ from scinoephile.lang.eng import (
     get_eng_flattened,
     get_eng_ocr_fused,
     get_eng_proofread,
+    validate_eng_ocr,
 )
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
@@ -73,8 +74,9 @@ set_logging_verbosity(2)
 
 actions = {
     # "简体中文 (OCR)",
-    "简体中文 (OCR Validation)",
+    # "简体中文 (OCR Validation)",
     # "English (OCR)",
+    "English (OCR Validation)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
@@ -152,6 +154,14 @@ if "English (OCR)" in actions:
     eng_fuse_proofread_clean_flatten = get_eng_flattened(eng_fuse_proofread_clean)
     eng_fuse_proofread_clean_flatten.save(
         output_dir / "eng_fuse_proofread_clean_flatten.srt"
+    )
+
+if "English (OCR Validation)" in actions:
+    eng = ImageSeries.load(output_dir / "eng_image")
+    validate_eng_ocr(
+        eng,
+        output_dir_path=output_dir / "eng_validation",
+        interactive=True,
     )
 
 if "简体粤文 (Transcription)" in actions:
