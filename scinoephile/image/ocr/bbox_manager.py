@@ -107,12 +107,16 @@ class BboxManager:
         if line is not None:
             lines.append(line)
 
-        min_line_height = 20
-        lines = [
-            candidate
-            for candidate in lines
-            if candidate[1] - candidate[0] >= min_line_height
-        ]
+        min_line_gap = 10
+        if lines:
+            merged_lines = [lines[0]]
+            for y1, y2 in lines[1:]:
+                last = merged_lines[-1]
+                if y1 - last[1] < min_line_gap:
+                    last[1] = max(last[1], y2)
+                else:
+                    merged_lines.append([y1, y2])
+            lines = merged_lines
 
         # Determine left and right of each section per line to get final bbox
         bboxes: list[Bbox] = []
