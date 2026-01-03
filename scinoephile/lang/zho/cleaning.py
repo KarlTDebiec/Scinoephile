@@ -27,9 +27,10 @@ def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
     series = deepcopy(series)
     new_events = []
     for event in series:
-        text = _get_zho_text_cleaned(event.text.strip())
+        raw_text = (event.text or "").strip()
+        text = _get_zho_text_cleaned(raw_text)
         if text or not remove_empty:
-            event.text = text
+            event.text = text if text is not None else ""
             new_events.append(event)
     series.events = new_events
     return series
