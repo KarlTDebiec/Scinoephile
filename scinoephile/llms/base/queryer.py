@@ -17,7 +17,7 @@ from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.openai import OpenAIProvider
+from scinoephile.open_ai import OpenAIProvider
 
 from .answer import Answer
 from .llm_provider import LLMProvider

@@ -34,9 +34,6 @@ class Subtitle(SSAEvent):
         super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
         super().__init__(**super_kwargs)
 
-    comment: str = ""
-    """Comment associated with subtitle."""
-
     @override
     def __eq__(self, other: object) -> bool:
         """Whether this subtitle is equal to another.

@@ -12,11 +12,13 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.core.testing import test_data_root
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
     get_eng_ocr_fused,
     get_eng_proofread,
+    validate_eng_ocr,
 )
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
@@ -26,6 +28,7 @@ from scinoephile.lang.zho import (
     get_zho_flattened,
     get_zho_ocr_fused,
     get_zho_proofread,
+    validate_zho_ocr,
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import get_zho_proofreader
@@ -70,11 +73,13 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
-    "English (OCR)",
-    "简体粤文 (Transcription)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "简体中文 (OCR)",
+    # "简体中文 (OCR Validation)",
+    # "English (OCR)",
+    "English (OCR Validation)",
+    # "简体粤文 (Transcription)",
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -113,6 +118,14 @@ if "简体中文 (OCR)" in actions:
         output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt"
     )
 
+if "简体中文 (OCR Validation)" in actions:
+    zho_hans = ImageSeries.load(output_dir / "zho-Hans_image")
+    validate_zho_ocr(
+        zho_hans,
+        output_dir_path=output_dir / "zho-Hans_validation",
+        interactive=True,
+    )
+
 if "English (OCR)" in actions:
     eng_lens = Series.load(input_dir / "eng_lens.srt")
     eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
@@ -141,6 +154,14 @@ if "English (OCR)" in actions:
     eng_fuse_proofread_clean_flatten = get_eng_flattened(eng_fuse_proofread_clean)
     eng_fuse_proofread_clean_flatten.save(
         output_dir / "eng_fuse_proofread_clean_flatten.srt"
+    )
+
+if "English (OCR Validation)" in actions:
+    eng = ImageSeries.load(output_dir / "eng_image")
+    validate_eng_ocr(
+        eng,
+        output_dir_path=output_dir / "eng_validation",
+        interactive=True,
     )
 
 if "简体粤文 (Transcription)" in actions:

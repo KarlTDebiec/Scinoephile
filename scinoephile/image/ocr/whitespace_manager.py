@@ -9,11 +9,13 @@ from logging import info
 import numpy as np
 
 from scinoephile.common import package_root
-from scinoephile.image.subtitles import ImageSubtitle
+from scinoephile.core import ScinoephileError
 
-from .char_pair import CharPair
+from .char_pair import CharPair, get_char_pairs
 
 __all__ = ["WhitespaceManager"]
+
+from ..subtitles import ImageSubtitle
 
 
 class WhitespaceManager:
@@ -46,7 +48,7 @@ class WhitespaceManager:
         subtitle: ImageSubtitle,
         i: int,
         interactive: bool = True,
-    ) -> list[str]:
+    ) -> None:
         """Validate spacing in text by comparing with bbox gaps.
 
         Arguments:
@@ -54,10 +56,16 @@ class WhitespaceManager:
             i: Subtitle index
             interactive: Whether to prompt user for input on proposed updates
         """
-        for pair in subtitle.char_pairs:
+        if subtitle.bboxes is None:
+            raise ScinoephileError(
+                f"Subtitle {i} has no bboxes; cannot validate whitespace."
+            )
+        for pair in get_char_pairs(subtitle.text, subtitle.bboxes):
             self.validate_gap(pair, i, interactive=interactive)
 
-    def validate_gap(self, pair: CharPair, i: int, interactive: bool = True) -> str:
+    def validate_gap(  # noqa: PLR0911
+        self, pair: CharPair, i: int, interactive: bool = True
+    ) -> str | None:
         """Validate that whitespace between two chars matches visual gap between them.
 
         Arguments:

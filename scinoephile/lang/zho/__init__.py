@@ -14,6 +14,7 @@ from .cleaning import get_zho_cleaned
 from .conversion import get_zho_converted
 from .flattening import get_zho_flattened
 from .ocr_fusion import get_zho_ocr_fused
+from .ocr_validation import validate_zho_ocr
 from .proofreading import get_zho_proofread
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "get_zho_flattened",
     "get_zho_ocr_fused",
     "get_zho_proofread",
+    "validate_zho_ocr",
 ]

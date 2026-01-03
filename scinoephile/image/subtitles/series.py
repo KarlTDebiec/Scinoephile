@@ -5,11 +5,10 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterator
 from html import escape, unescape
 from logging import info
 from pathlib import Path
-from typing import Any, Self, overload, override
+from typing import Any, Self, override
 
 import numpy as np
 from PIL import Image
@@ -23,9 +22,10 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.image.sup import read_sup_series
+from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 
 from .subtitle import ImageSubtitle
+from .sup import read_sup_series
 
 __all__ = ["ImageSeries"]
 
@@ -37,26 +37,6 @@ class ImageSeries(Series):
     """Class of individual subtitle events."""
     events: list[ImageSubtitle]
     """Individual subtitle events."""
-
-    def __iter__(self) -> Iterator[ImageSubtitle]:
-        """Iterate over image subtitles."""
-        return iter(self.events)
-
-    @overload
-    def __getitem__(self, index: int) -> ImageSubtitle: ...
-
-    @overload
-    def __getitem__(self, index: slice) -> list[ImageSubtitle]: ...
-
-    def __getitem__(self, index: int | slice) -> ImageSubtitle | list[ImageSubtitle]:
-        """Return image subtitles by index or slice.
-
-        Arguments:
-            index: index or slice of subtitles
-        Returns:
-            image subtitle or list of image subtitles
-        """
-        return self.events[index]
 
     @override
     def __init__(self):
@@ -71,7 +51,8 @@ class ImageSeries(Series):
         """Fill color of text images."""
         if self._fill_color is None:
             self._init_fill_and_outline_colors()
-        assert self._fill_color is not None
+        if self._fill_color is None:
+            raise ScinoephileError("Fill color could not be determined.")
         return self._fill_color
 
     @property
@@ -79,7 +60,8 @@ class ImageSeries(Series):
         """Outline color of text images."""
         if self._outline_color is None:
             self._init_fill_and_outline_colors()
-        assert self._outline_color is not None
+        if self._outline_color is None:
+            raise ScinoephileError("Outline color could not be determined.")
         return self._outline_color
 
     @override
@@ -401,18 +383,18 @@ class ImageSeries(Series):
         series = cls()
         series.format = "sup"
         for start, end, image in zip(starts, ends, images):
+            img = Image.fromarray(image, "RGBA")
             series.events.append(
-                cls.event_class.from_sup(
-                    start,
-                    end,
-                    image,
-                    series=series,
+                cls.event_class(
+                    start=int(round(start * 1000)),
+                    end=int(round(end * 1000)),
+                    img=img,
                 )
             )
         return series
 
     def _init_fill_and_outline_colors(self):
-        """Initialzie the fill and outline colors used in this series.
+        """Initialize the fill and outline colors used in this series.
 
         * Uses the most common two colors, which works correctly for tested images.
         * Tested images used a 16-color palette.
@@ -425,8 +407,6 @@ class ImageSeries(Series):
             values = grayscale[mask]
             np.add.at(hist, values, 1)
 
-        fill, outline = map(int, np.argsort(hist)[-2:])
-        if outline > fill:
-            fill, outline = outline, fill
+        fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline

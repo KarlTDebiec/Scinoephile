@@ -1,23 +1,52 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Image code related to character bounding boxes."""
+"""Bounding box utilities."""
 
 from __future__ import annotations
 
-from PIL import Image, ImageChops
+from dataclasses import dataclass
 
-__all__ = ["get_bbox"]
+__all__ = [
+    "Bbox",
+    "get_merged_bbox",
+]
 
 
-def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
-    """Get bbox of non-white/transparent pixels in an image.
+@dataclass
+class Bbox:
+    """Bounding box coordinates."""
+
+    x1: int
+    """Left x coordinate."""
+    x2: int
+    """Right x coordinate."""
+    y1: int
+    """Top y coordinate."""
+    y2: int
+    """Bottom y coordinate."""
+
+    @property
+    def width(self) -> int:
+        """Width of bbox."""
+        return self.x2 - self.x1
+
+    @property
+    def height(self) -> int:
+        """Height of bbox."""
+        return self.y2 - self.y1
+
+
+def get_merged_bbox(bboxes: list[Bbox]) -> Bbox:
+    """Get merged bbox and dims tuple from bboxes.
 
     Arguments:
-        img: Image
+        bboxes: bboxes to merge
     Returns:
-        bbox of non-white/transparent pixels
+        merged bbox and dims tuple
     """
-    img_l = img if img.mode == "L" else img.convert("L")
-    mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
-    bbox = mask.getbbox()
-    return bbox
+    return Bbox(
+        x1=min(bbox.x1 for bbox in bboxes),
+        x2=max(bbox.x2 for bbox in bboxes),
+        y1=min(bbox.y1 for bbox in bboxes),
+        y2=max(bbox.y2 for bbox in bboxes),
+    )
