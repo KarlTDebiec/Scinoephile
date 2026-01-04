@@ -94,7 +94,8 @@ class ImageSeries(Series):
             return
 
         # Otherwise, continue as superclass
-        output_path = val_output_path(path)
+        exist_ok = kwargs.pop("exist_ok", False)
+        output_path = val_output_path(path, exist_ok=exist_ok)
         super().save(
             output_path,
             encoding=encoding,
@@ -249,14 +250,10 @@ class ImageSeries(Series):
 
         for html_event in html_events:
             img = Image.open(html_event["path"])
-            if img.mode == "RGBA":
-                arr = np.array(img)
-                if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
-                    arr[:, :, 1] == arr[:, :, 2]
-                ):
-                    img = img.convert("LA")
-                    img.save(html_event["path"])
-                    info(f"Converted {html_event['path']} to LA and resaved")
+            img, converted = cls._convert_rgba_to_la(img)
+            if converted:
+                img.save(html_event["path"])
+                info(f"Converted {html_event['path']} to LA and resaved")
             series.events.append(
                 cls.event_class(
                     start=html_event["start"],
@@ -384,6 +381,7 @@ class ImageSeries(Series):
         series.format = "sup"
         for start, end, image in zip(starts, ends, images):
             img = Image.fromarray(image, "RGBA")
+            img, _ = cls._convert_rgba_to_la(img)
             series.events.append(
                 cls.event_class(
                     start=int(round(start * 1000)),
@@ -410,3 +408,21 @@ class ImageSeries(Series):
         fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline
+
+    @staticmethod
+    def _convert_rgba_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
+        """Convert RGBA images with grayscale color channels to LA.
+
+        Arguments:
+            img: Image to convert
+        Returns:
+            Image and whether it was converted
+        """
+        if img.mode != "RGBA":
+            return img, False
+        arr = np.array(img)
+        if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
+            arr[:, :, 1] == arr[:, :, 2]
+        ):
+            return img.convert("LA"), True
+        return img, False
