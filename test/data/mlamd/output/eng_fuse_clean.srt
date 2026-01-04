@@ -8,7 +8,7 @@ A pan appeared in the sky.
 
 3
 00:00:55,042 --> 00:00:58,208
-It flew along Garden Street…
+It flied along Garden Street…
 
 4
 00:00:58,375 --> 00:01:04,750
@@ -25,11 +25,11 @@ It first arrived at the Market Building…
 
 7
 00:01:10,333 --> 00:01:13,292
-Lingered a bit… Correction:
+Lingered a bit…Correction:
 
 8
 00:01:13,375 --> 00:01:18,458
-It flew over the railway, turned right…
+It flied over the railway, turned right…
 
 9
 00:01:18,583 --> 00:01:23,792
@@ -37,7 +37,7 @@ And headed directly for the Bazaar.
 
 10
 00:01:23,917 --> 00:01:25,708
-It flew on…
+It flied on…
 
 11
 00:01:25,875 --> 00:01:29,042
@@ -407,7 +407,8 @@ Roll call now.
 
 99
 00:07:28,917 --> 00:07:31,708
-- May!    - Present!
+- May!
+- Present!
 
 100
 00:07:31,875 --> 00:07:33,750
@@ -415,7 +416,8 @@ Roll call now.
 
 101
 00:07:33,917 --> 00:07:36,667
-- May!    - Present!
+- May!
+- Present!
 
 102
 00:07:36,958 --> 00:07:40,000
@@ -459,7 +461,8 @@ Back to roll call.
 
 112
 00:08:02,125 --> 00:08:03,250
-- May!    - Present!
+- May!
+- Present!
 
 113
 00:08:03,500 --> 00:08:05,500
@@ -672,7 +675,7 @@ Watching myself grow and grow…
 
 163
 00:10:26,333 --> 00:10:27,625
-Every day…
+Everyday…
 
 164
 00:10:27,833 --> 00:10:29,292
@@ -717,7 +720,7 @@ They are fine!!
 
 174
 00:11:54,708 --> 00:11:56,500
-1, 2, 3, 4, 5, 6, 7…
+1,2,3,4,5,6,7…
 
 175
 00:11:56,625 --> 00:11:57,792
@@ -729,7 +732,7 @@ Monday till Sunday… No pain no gain!
 
 177
 00:12:01,792 --> 00:12:03,750
-The middle-aged swine is Mrs. McBing,
+The middleaged swine is Mrs. McBing,
 
 178
 00:12:03,875 --> 00:12:05,750
@@ -767,7 +770,7 @@ Offering brilliant dishes.
 
 186
 00:13:23,333 --> 00:13:25,500
-Welcome to “Mrs. Mc Can Cook”.
+Welcome to“Mrs. Mc Can Cook”.
 
 187
 00:13:26,042 --> 00:13:27,542
@@ -816,7 +819,7 @@ Now we shall do a Paper Bun.
 
 198
 00:14:11,292 --> 00:14:14,667
-The ingredient takes only paper.
+The ingredient takes only a paper.
 
 199
 00:14:14,958 --> 00:14:19,333
@@ -836,7 +839,7 @@ A novelty today for everyone:
 
 203
 00:14:37,542 --> 00:14:40,958
-Chicken Bun Paper Bun-ning a Bun.
+Chicken Bun Paper Bunning a Bun.
 
 204
 00:14:41,125 --> 00:14:45,042
@@ -860,7 +863,7 @@ And then wrap it like this…
 208
 00:14:59,875 --> 00:15:05,292
 The delicious Chicken Bun Paper
-Bun-ning a Bun!
+Bunning a Bun!
 
 209
 00:15:05,458 --> 00:15:06,958
@@ -1142,7 +1145,7 @@ My favourite place is that…
 
 276
 00:20:01,417 --> 00:20:03,000
-What's-its-name.
+What's-it's name.
 
 277
 00:20:03,125 --> 00:20:06,667
@@ -1350,7 +1353,7 @@ The world outside our world!
 
 327
 00:25:36,250 --> 00:25:38,667
-Those words have flair.
+Those words have flare.
 
 328
 00:25:38,833 --> 00:25:40,125
@@ -1370,7 +1373,7 @@ I meant once I get rich.
 
 332
 00:25:54,417 --> 00:25:58,708
-No, that wasn't what you meant.
+No, that wasn't what you mean.
 
 333
 00:26:01,625 --> 00:26:06,083
@@ -1411,7 +1414,7 @@ Sure, sure, I am rich.
 
 342
 00:26:22,208 --> 00:26:23,500
-We will go next week, OK?
+We will go next week, ok?
 
 343
 00:26:23,625 --> 00:26:24,542
@@ -1576,7 +1579,7 @@ Hong Kong athletes are horrible…
 
 382
 00:34:09,292 --> 00:34:13,708
-Excuse me, it should be “honourable”.
+Excuse me, it should be“honourable”.
 
 383
 00:34:13,875 --> 00:34:18,875
@@ -1927,7 +1930,7 @@ She won't say a word…
 
 469
 00:40:14,458 --> 00:40:18,250
-But starts to defrost a chicken.
+But starts to defreeze a chicken.
 
 470
 00:40:20,667 --> 00:40:24,500
@@ -2099,7 +2102,7 @@ Is a unique Cheung Chau tradition.
 
 509
 00:43:20,625 --> 00:43:22,167
-Each year, in the fourth month,
+Each year, in the forth month,
 
 510
 00:43:22,333 --> 00:43:25,125
@@ -2249,7 +2252,7 @@ I have had a lot of things said to me…
 
 545
 00:45:39,708 --> 00:45:40,708
-But “San yourself”…
+But“San yourself”…
 
 546
 00:45:40,792 --> 00:45:43,833
@@ -2461,11 +2464,11 @@ the Olympic Committee Chairman.
 
 596
 00:49:20,042 --> 00:49:22,125
-“Dear friend,
+"Dear friend,
 
 597
 00:49:22,250 --> 00:49:25,125
-it is important to snatch buns.”
+it is important to snatch buns."
 
 598
 00:49:25,250 --> 00:49:27,708
@@ -2659,7 +2662,7 @@ Step by step, claw by claw…
 643
 00:51:55,167 --> 00:51:59,833
 I make it pass
-the “12 Bun Snatching Hands”.
+the“12 Bun Snatching Hands”.
 
 644
 00:52:10,208 --> 00:52:20,625
@@ -2802,7 +2805,7 @@ she bought a mini-oven at 60% off…
 
 677
 00:54:00,875 --> 00:54:03,833
-At a closedown sale.
+At a closed own sale.
 
 678
 00:54:04,250 --> 00:54:06,500
@@ -2881,7 +2884,7 @@ Such a beautiful night!
 
 696
 00:55:05,542 --> 00:55:07,583
-Mother and I sat at the seafront.
+Mother and me sat at the seafront.
 
 697
 00:55:08,250 --> 00:55:12,042
@@ -2957,11 +2960,11 @@ Christmas turkey dinner!
 714
 00:56:40,875 --> 00:56:44,875
 Slices of meat,
-accompanied by gourd and potato…
+accompanied by guard and potato…
 
 715
 00:56:45,083 --> 00:56:47,708
-were dressed with soy sauce.
+Were dressed with soy sauce.
 
 716
 00:56:48,833 --> 00:56:52,000
@@ -3035,7 +3038,7 @@ Paper turkey paper bun.
 
 733
 00:57:37,125 --> 00:57:39,667
-Turkey paté with bread.
+Turkey Pete with bread.
 
 734
 00:57:40,625 --> 00:57:46,625
@@ -3083,7 +3086,7 @@ A serving turkey needs only be raised…
 
 744
 00:58:18,792 --> 00:58:21,083
-for a few months.
+For a few months.
 
 745
 00:58:21,500 --> 00:58:25,417
@@ -3091,7 +3094,7 @@ The time the turkey spent with us…
 
 746
 00:58:25,625 --> 00:58:28,208
-was in fact longer than its life.
+Was in fact longer than its life.
 
 747
 00:58:28,833 --> 00:58:31,417
@@ -3163,7 +3166,7 @@ threw the turkey away.
 
 763
 01:00:21,833 --> 01:00:23,208
-“Special Report”
+'Special Report"
 
 764
 01:00:23,417 --> 01:00:28,000
@@ -3206,7 +3209,7 @@ the Bamboo Game Association…
 
 773
 01:00:50,958 --> 01:00:53,875
-is proposing Mahjong for official game.
+Is proposing Mahjong for official game.
 
 774
 01:00:54,375 --> 01:00:57,000
@@ -3218,7 +3221,7 @@ have vowed…
 
 776
 01:00:58,625 --> 01:01:02,458
-To campaign for “Tart Throwing”.
+To campaign for“Tart Throwing”.
 
 777
 01:01:02,917 --> 01:01:05,125
@@ -3327,7 +3330,7 @@ Then they stopped selling buns.
 
 801
 01:03:26,167 --> 01:03:28,708
-Carts were replaced by ordering sheets.
+Carts were replaced by ordering sheet.
 
 802
 01:03:29,417 --> 01:03:31,542
@@ -3348,7 +3351,7 @@ Each time I saw him.
 
 806
 01:03:54,250 --> 01:03:55,542
-For environmental reasons…
+For environmental reason…
 
 807
 01:03:55,708 --> 01:03:58,958
@@ -3517,391 +3520,395 @@ What shall I be?
 “Powerful”
 
 847
+01:07:42,250 --> 01:07:44,542
+
+
+848
 01:08:19,458 --> 01:08:22,333
 Right, I am McDull the big guy.
 
-848
+849
 01:08:23,542 --> 01:08:26,500
 Fat, with raw power.
 
-849
+850
 01:08:27,083 --> 01:08:28,958
 Not doing too well.
 
-850
+851
 01:08:29,750 --> 01:08:31,333
 Negative property.
 
-851
+852
 01:08:34,042 --> 01:08:38,292
 With a pair of really thick calves.
 
-852
+853
 01:08:39,250 --> 01:08:41,917
 Very muscular…
 
-853
+854
 01:08:42,375 --> 01:08:47,083
 With steely veins running down.
 
-854
+855
 01:08:47,917 --> 01:08:50,000
 As for the toenails…
 
-855
+856
 01:08:50,333 --> 01:08:53,417
 I got bored one time and stared at it…
 
-856
+857
 01:08:53,833 --> 01:08:56,750
 They're tough, no kidding!
 
-857
+858
 01:08:58,458 --> 01:09:00,958
 Yes, the story ends here.
 
-858
+859
 01:09:01,708 --> 01:09:03,500
 This is a try.
 
-859
+860
 01:09:04,375 --> 01:09:07,417
 Error… Try…
 
-860
+861
 01:09:07,917 --> 01:09:11,458
 No guarantee that one would make it.
 
-861
+862
 01:09:12,875 --> 01:09:14,500
 In the end…
 
-862
+863
 01:09:14,917 --> 01:09:18,042
 Zero gain? Not really.
 
-863
+864
 01:09:18,625 --> 01:09:21,667
 I have my calves.
 
-864
+865
 01:09:23,083 --> 01:09:25,792
 But, standing here like this…
 
-865
+866
 01:09:26,250 --> 01:09:28,250
 When the waves hit…
 
-866
+867
 01:09:29,000 --> 01:09:32,250
 I feel great.
 
-867
+868
 01:09:34,167 --> 01:09:37,083
 You see, smart guys like me
 don't really know…
 
-868
+869
 01:09:37,250 --> 01:09:41,500
 How to make a lesson out of
 his own story.
 
-869
+870
 01:09:42,042 --> 01:09:44,833
 With calves in water…
 
-870
+871
 01:09:45,292 --> 01:09:50,417
 When the wind blows, I'd think…
 
-871
+872
 01:09:50,750 --> 01:09:53,167
 If mother could see me like this…
 
-872
+873
 01:09:55,167 --> 01:09:57,208
 She'd be happy.
 
-873
+874
 01:10:12,500 --> 01:10:15,750
 I've come up with a lesson!
 
-874
+875
 01:10:16,417 --> 01:10:20,708
 Mother got inspired after
 her dot com failed.
 
-875
+876
 01:10:21,208 --> 01:10:24,958
 She published a cookbook.
 
-876
-01:10:25,250 --> 01:10:28,042
-The last recipe was “Roast Chicken”.
-
 877
+01:10:25,250 --> 01:10:28,042
+The last recipe was“Roast Chicken”.
+
+878
 01:10:28,417 --> 01:10:30,875
 A simple dish no less.
 
-878
+879
 01:10:31,000 --> 01:10:32,000
 “Roast Chicken”.
 
-879
+880
 01:10:32,292 --> 01:10:34,375
 Ingredient: chicken.
 
-880
+881
 01:10:34,625 --> 01:10:38,625
 Method: roast the chicken.
 
-881
+882
 01:10:38,833 --> 01:10:43,083
 That way, you have a roast chicken.
 
-882
+883
 01:10:44,417 --> 01:10:46,375
 There was a remark in the cookbook:
 
-883
+884
 01:10:47,083 --> 01:10:49,417
 If you want a delicious chicken…
 
-884
+885
 01:10:50,125 --> 01:10:52,750
 A chicken that wouldn't upset you…
 
-885
+886
 01:10:53,250 --> 01:10:58,250
 The secret is: please, roast it well!
 
-886
+887
 01:10:59,083 --> 01:11:01,208
 Thank you!
 
-887
+888
 01:11:40,583 --> 01:11:42,542
 One Regular, please.
 
-888
+889
 01:11:42,667 --> 01:11:44,667
 What's a Regular?
 
-889
+890
 01:11:44,833 --> 01:11:46,042
 The same as Special.
 
-890
+891
 01:11:46,167 --> 01:11:47,292
 What's a Special?
 
-891
+892
 01:11:47,458 --> 01:11:48,792
 Same as Quickie.
 
-892
+893
 01:11:48,917 --> 01:11:50,375
 What's a Quickie?
 
-893
+894
 01:11:50,625 --> 01:11:52,625
 A Quickie is a Lunch.
 
-894
+895
 01:11:52,833 --> 01:11:53,875
 What's for Lunch?
 
-895
+896
 01:11:54,000 --> 01:11:55,750
 The same as Supper.
 
-896
+897
 01:11:55,917 --> 01:11:57,333
 What's for Supper?
 
-897
+898
 01:11:57,500 --> 01:11:59,667
 Same as Regular.
 
-898
+899
 01:11:59,833 --> 01:12:01,792
 We'll have the Regular.
 
-899
+900
 01:12:01,875 --> 01:12:04,750
 Our Regular today is fantastic!
 
-900
+901
 01:12:09,125 --> 01:12:11,417
 Sorry, Regular is gone.
 
-901
+902
 01:12:11,875 --> 01:12:13,083
 We can have the Special.
 
-902
+903
 01:12:13,333 --> 01:12:15,208
 What's a Special?
 
-903
+904
 01:12:15,458 --> 01:12:17,042
 A Special is a Lunch.
 
-904
+905
 01:12:17,542 --> 01:12:18,792
 What's for Lunch?
 
-905
+906
 01:12:19,083 --> 01:12:20,625
 What you get for Supper.
 
-906
+907
 01:12:20,875 --> 01:12:22,292
 What's for Supper?
 
-907
+908
 01:12:22,458 --> 01:12:23,792
 Same as Quickie.
 
-908
+909
 01:12:23,917 --> 01:12:25,208
 What's for Quickie?
 
-909
+910
 01:12:25,375 --> 01:12:27,667
 A Quickie is a Regular.
 
-910
+911
 01:12:27,833 --> 01:12:29,750
 But you said Regular is gone!
 
-911
+912
 01:12:29,875 --> 01:12:33,417
 Regular sure is gone.
 How about the Special?
 
-912
+913
 01:12:34,167 --> 01:12:35,542
 It's the Special, then.
 
-913
+914
 01:12:37,500 --> 01:12:40,500
 Sorry, Special is gone.
 
-914
+915
 01:12:41,167 --> 01:12:43,708
 Mother, let's have the Quickie.
 
-915
+916
 01:12:44,042 --> 01:12:45,417
 What's for Quickie?
 
-916
+917
 01:12:45,542 --> 01:12:47,167
 A Quickie is a Regular.
 
-917
+918
 01:12:47,333 --> 01:12:48,833
 What's for Regular?
 
-918
+919
 01:12:49,167 --> 01:12:51,167
 A Regular is a Lunch.
 
-919
+920
 01:12:51,292 --> 01:12:52,958
 What's for Lunch?
 
-920
+921
 01:12:53,167 --> 01:12:55,375
 Same as Supper.
 
-921
+922
 01:12:55,542 --> 01:12:56,292
 And Supper?
 
-922
+923
 01:12:56,458 --> 01:12:58,125
 Supper is like Special.
 
-923
+924
 01:12:58,292 --> 01:13:00,250
 But you said the Special is gone.
 
-924
+925
 01:13:00,375 --> 01:13:05,125
 The Special sure is gone.
 Try Quickie. It's the same.
 
-925
+926
 01:13:05,292 --> 01:13:06,333
 We'll have Quickie.
 
-926
+927
 01:13:09,667 --> 01:13:11,542
 Sorry, Quickie is gone.
 
-927
+928
 01:13:11,667 --> 01:13:14,375
 This is too much!
 Is there anything we can eat here?
 
-928
+929
 01:13:14,542 --> 01:13:16,333
 Try the Lunch. It's fantastic!
 
-929
+930
 01:13:16,375 --> 01:13:17,417
 How so?
 
-930
+931
 01:13:17,583 --> 01:13:18,833
 It's like the Supper.
 
-931
+932
 01:13:18,958 --> 01:13:20,375
 What about the Supper?
 
-932
+933
 01:13:20,542 --> 01:13:22,208
 It's like the Regular.
 
-933
+934
 01:13:22,333 --> 01:13:23,542
 And what about the Regular?
 
-934
+935
 01:13:23,750 --> 01:13:27,292
 The Regular is gone. Isn't that fantastic?
 
-935
+936
 01:13:29,917 --> 01:13:31,625
 Great! We'll have Lunch.
 
-936
+937
 01:13:35,625 --> 01:13:37,625
 Sorry, Lunch is gone.
 
-937
+938
 01:13:37,792 --> 01:13:40,500
 Try our Supper. It's all the same.
 
-938
+939
 01:13:40,667 --> 01:13:42,542
 I'm not having supper
-under broad daylight!
+under board daylight!
 
-939
+940
 01:13:42,792 --> 01:13:46,125
 What's in a name?
 It's the same as Lunch.
 
-940
+941
 01:13:46,333 --> 01:13:49,750
 Great! Whatever you say!
 And make it quick!
 
-941
+942
 01:13:49,917 --> 01:13:53,417
 You want it quick? Try Quickie!
 

@@ -42,7 +42,7 @@ def validate_eng_ocr(
             for message in messages:
                 warning(message)
         else:
-            info(f"Subtitle {sub_idx} |{sub.text}| validated")
+            info(f"Subtitle {sub_idx} |{sub.text.replace('\n', '\\n')}| validated")
         if output_dir_path is not None:
             annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
             output_series.events.append(

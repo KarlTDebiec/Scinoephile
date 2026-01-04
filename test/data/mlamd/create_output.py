@@ -17,11 +17,9 @@ from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
     get_eng_ocr_fused,
-    get_eng_proofread,
     validate_eng_ocr,
 )
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
-from scinoephile.lang.eng.proofreading import get_eng_proofreader
 from scinoephile.lang.zho import (
     get_zho_cleaned,
     get_zho_converted,
@@ -46,7 +44,6 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
-    get_kob_eng_proofreading_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
     get_kob_zho_proofreading_test_cases,
 )
@@ -56,13 +53,11 @@ from test.data.mlamd import (
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
-    get_mnt_eng_proofreading_test_cases,
     get_mnt_zho_ocr_fusion_test_cases,
     get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
-    get_t_eng_proofreading_test_cases,
     get_t_zho_ocr_fusion_test_cases,
     get_t_zho_proofreading_test_cases,
 )
@@ -75,8 +70,7 @@ set_logging_verbosity(2)
 actions = {
     # "简体中文 (OCR)",
     # "简体中文 (OCR Validation)",
-    # "English (OCR)",
-    "English (OCR Validation)",
+    "English (OCR)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
@@ -126,43 +120,70 @@ if "简体中文 (OCR Validation)" in actions:
         interactive=True,
     )
 
-if "English (OCR)" in actions:
-    eng_lens = Series.load(input_dir / "eng_lens.srt")
-    eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
-    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
-    eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_ocr_fuser = get_eng_ocr_fuser(
-        test_cases=get_kob_eng_ocr_fusion_test_cases()
-        + get_mnt_eng_ocr_fusion_test_cases()
-        + get_t_eng_ocr_fusion_test_cases(),
-        test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
-        auto_verify=True,
-    )
-    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_ocr_fuser)
-    eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_proofreader = get_eng_proofreader(
-        test_cases=get_kob_eng_proofreading_test_cases()
-        + get_mnt_eng_proofreading_test_cases()
-        + get_t_eng_proofreading_test_cases(),
-        test_case_path=title_root / "lang" / "eng" / "proofreading.json",
-        auto_verify=True,
-    )
-    eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
-    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
-    eng_fuse_proofread_clean = get_eng_cleaned(eng_fuse_proofread)
-    eng_fuse_proofread_clean.save(output_dir / "eng_fuse_proofread_clean.srt")
-    eng_fuse_proofread_clean_flatten = get_eng_flattened(eng_fuse_proofread_clean)
-    eng_fuse_proofread_clean_flatten.save(
-        output_dir / "eng_fuse_proofread_clean_flatten.srt"
-    )
 
-if "English (OCR Validation)" in actions:
-    eng = ImageSeries.load(output_dir / "eng_image")
-    validate_eng_ocr(
-        eng,
+def process_eng_ocr():
+    # Fuse
+    fuse_path = output_dir / "eng_fuse.srt"
+    if fuse_path.exists():
+        fuse = Series.load(fuse_path)
+    else:
+        lens = Series.load(input_dir / "eng_lens.srt")
+        lens = get_eng_cleaned(lens, remove_empty=False)
+        tesseract = Series.load(input_dir / "eng_tesseract.srt")
+        tesseract = get_eng_cleaned(tesseract, remove_empty=False)
+        fuser = get_eng_ocr_fuser(
+            test_cases=get_kob_eng_ocr_fusion_test_cases()
+            + get_mnt_eng_ocr_fusion_test_cases()
+            + get_t_eng_ocr_fusion_test_cases(),
+            test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
+            auto_verify=True,
+        )
+        fuse = get_eng_ocr_fused(lens, tesseract, fuser)
+        fuse.save(output_dir / "eng_fuse.srt")
+
+    # Clean
+    clean_path = output_dir / "eng_fuse_clean.srt"
+    if clean_path.exists():
+        fuse_clean = Series.load(clean_path)
+    else:
+        fuse_clean = get_eng_cleaned(fuse, remove_empty=False)
+        fuse_clean.save(output_dir / "eng_fuse_clean.srt")
+
+    # Validate
+    image_path = output_dir / "eng_image"
+    if image_path.exists():
+        image = ImageSeries.load(image_path)
+    else:
+        image = ImageSeries.load(input_dir / "eng.sup")
+        for text_sub, image_sub in zip(fuse, image):
+            image_sub.text = text_sub.text
+        image.save(image_path)
+    fuse_clean_validate = validate_eng_ocr(
+        image,
         output_dir_path=output_dir / "eng_validation",
         interactive=True,
     )
+    fuse_clean_validate = get_eng_cleaned(fuse_clean_validate)
+    fuse_clean_validate.save(output_dir / "eng_fuse_clean_validate.srt")
+
+    # Flatten
+    fuse_clean_validate_flatten = get_eng_flattened(fuse_clean_validate)
+    fuse_clean_validate_flatten.save(output_dir / "eng_fuse_clean_validate_flatten.srt")
+
+    # Proofread
+    # eng_proofreader = get_eng_proofreader(
+    #     test_cases=get_kob_eng_proofreading_test_cases()
+    #     + get_mnt_eng_proofreading_test_cases()
+    #     + get_t_eng_proofreading_test_cases(),
+    #     test_case_path=title_root / "lang" / "eng" / "proofreading.json",
+    #     auto_verify=True,
+    # )
+    # eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
+    # eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+
+
+if "English (OCR)" in actions:
+    process_eng_ocr()
 
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
