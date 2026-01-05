@@ -12,6 +12,7 @@ __all__ = [
     "get_fill_and_outline_colors",
     "get_fill_and_outline_colors_from_hist",
     "get_grayscale_and_alpha",
+    "get_white_mask",
 ]
 
 
@@ -39,6 +40,26 @@ def get_grayscale_and_alpha(img) -> tuple[np.ndarray, np.ndarray]:
     raise ScinoephileError(
         f"Unsupported image mode '{img.mode}' for grayscale and alpha extraction."
     )
+
+
+def get_white_mask(
+    grayscale: np.ndarray,
+    alpha: np.ndarray,
+    fill_color: int,
+) -> np.ndarray:
+    """Get a white interior mask from grayscale/alpha arrays.
+
+    Arguments:
+        grayscale: grayscale values
+        alpha: alpha values
+        fill_color: fill color used in rendering
+    Returns:
+        boolean mask of white interior pixels
+    """
+    tolerance = 10
+    lower = max(0, fill_color - tolerance)
+    upper = min(255, fill_color + tolerance)
+    return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
 
 
 def get_fill_and_outline_colors(
