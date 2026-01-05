@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import csv
 from logging import info
 from pathlib import Path
 
@@ -19,7 +18,10 @@ from scinoephile.image.colors import (
 )
 from scinoephile.image.subtitles import ImageSubtitle
 
-from .drawing import get_img_with_bboxes
+from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
+from .char_grp_dims import save_char_grp_dims
+from .char_pair_gaps import load_char_pair_gaps
+from .drawing import get_img_with_bboxes, get_white_mask
 
 __all__ = ["BboxManager"]
 
@@ -41,7 +43,7 @@ class BboxManager:
             file_path = self._char_dims_path(n)
             self.char_dims_by_n[n] = {}
             if file_path.exists():
-                self.char_dims_by_n[n] = self._load_char_dims(file_path)
+                self.char_dims_by_n[n] = load_char_dims(file_path)
 
         # Data structure for bboxes containing two or more characters.
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
@@ -53,7 +55,7 @@ class BboxManager:
         """
         file_path = self._char_grp_dims_path()
         if file_path.exists():
-            char_grp_dims = self._load_char_dims(file_path)
+            char_grp_dims = load_char_dims(file_path)
             for char_grp, dims_set in char_grp_dims.items():
                 n = len(char_grp)
                 if n not in self.char_grp_dims_by_n:
@@ -73,7 +75,7 @@ class BboxManager:
         """
         file_path = self._char_pair_gaps_path()
         if file_path.exists():
-            self.char_pair_gaps = self._load_char_pair_gaps(file_path)
+            self.char_pair_gaps = load_char_pair_gaps(file_path)
 
     def validate(
         self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
@@ -105,7 +107,7 @@ class BboxManager:
         """
         grayscale, alpha = get_grayscale_and_alpha(sub.img)
         fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
-        white_mask = self._get_white_mask(grayscale, alpha, fill_color)
+        white_mask = get_white_mask(grayscale, alpha, fill_color)
 
         # Determine top and bottom of each line separated by whitespace
         lines = []
@@ -246,7 +248,7 @@ class BboxManager:
             for n in self.char_dims_by_n.keys():
                 if bbox_idx + n > len(bboxes):
                     continue
-                dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
+                dims = get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
                 ok_dims = self.char_dims_by_n[n].get(char, set())
 
                 # Exact match
@@ -279,7 +281,7 @@ class BboxManager:
             for n in self.char_dims_by_n.keys():
                 if bbox_idx + n > len(bboxes):
                     continue
-                dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
+                dims = get_dims_tuple(bboxes[bbox_idx : bbox_idx + n])
 
                 approved = False
                 grouped = False
@@ -333,7 +335,7 @@ class BboxManager:
                 continue
 
             # No match found; log message and merge single bbox
-            dims = self._get_dims_tuple(bboxes[bbox_idx : bbox_idx + 1])
+            dims = get_dims_tuple(bboxes[bbox_idx : bbox_idx + 1])
             messages.append(
                 f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
                 f"No match for '{char}' bbox dims {dims}"
@@ -354,7 +356,7 @@ class BboxManager:
             return
         dims_set.add(dims)
         info(f"Added ({char}, {dims})")
-        self._save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
+        save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
 
     def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]):
         """Update char group dims and save.
@@ -369,7 +371,7 @@ class BboxManager:
             return
         dims_set.add(dims)
         info(f"Added ({group}, {dims})")
-        self._save_char_grp_dims(self.char_grp_dims_by_n, self._char_grp_dims_path())
+        save_char_grp_dims(self.char_grp_dims_by_n, self._char_grp_dims_path())
 
     @staticmethod
     def _char_dims_path(n: int) -> Path:
@@ -385,164 +387,3 @@ class BboxManager:
     def _char_pair_gaps_path() -> Path:
         """Path to character pair gap csv file."""
         return package_root / "data" / "ocr" / "char_pair_gaps.csv"
-
-    @staticmethod
-    def _get_default_char_pair_cutoffs(
-        char_1: str, char_2: str
-    ) -> tuple[int, int, int, int]:
-        """Get default cutoff tuple for a character pair.
-
-        Arguments:
-            char_1: first character
-            char_2: second character
-        Returns:
-            default cutoff tuple
-        """
-        return 1, 50, 50, 100
-
-    @staticmethod
-    def _get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
-        """Get dims tuple from bboxes.
-
-        Arguments:
-            bboxes: bboxes
-        Returns:
-            dims tuple
-        """
-        widths = [bbox.width for bbox in bboxes]
-        heights = [bbox.height for bbox in bboxes]
-        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
-        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
-        return dims
-
-    @staticmethod
-    def _get_white_mask(
-        grayscale: np.ndarray,
-        alpha: np.ndarray,
-        fill_color: int,
-    ) -> np.ndarray:
-        """Get a white interior mask from grayscale/alpha arrays.
-
-        Arguments:
-            grayscale: grayscale values
-            alpha: alpha values
-            fill_color: fill color used in rendering
-        Returns:
-            boolean mask of white interior pixels
-        """
-        tolerance = 10
-        lower = max(0, fill_color - tolerance)
-        upper = min(255, fill_color + tolerance)
-        return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
-
-    @staticmethod
-    def _load_char_dims(file_path: Path) -> dict[str, set[tuple[int, ...]]]:
-        """Load char dims from file.
-
-        Arguments:
-            file_path: path to file
-        Returns:
-            char dims
-        """
-        char_dims: dict[str, set[tuple[int, ...]]] = {}
-        with file_path.open("r", encoding="utf-8", newline="") as handle:
-            reader = csv.reader(handle)
-            for row in reader:
-                if not row:
-                    continue
-                char = row[0]
-                dims = tuple(map(int, row[1:]))
-                dims_set = char_dims.setdefault(char, set())
-                dims_set.add(dims)
-
-        info(f"Loaded {file_path}")
-        return char_dims
-
-    @staticmethod
-    def _load_char_pair_gaps(
-        file_path: Path,
-    ) -> dict[tuple[str, str], tuple[int, int, int, int]]:
-        """Load char pair gaps from file.
-
-        Arguments:
-            file_path: path to file
-        Returns:
-            char pair gaps
-        """
-        char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
-        with file_path.open("r", encoding="utf-8", newline="") as handle:
-            reader = csv.reader(handle)
-            for row in reader:
-                if not row:
-                    continue
-                char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4 = row
-                char_pair_gaps[(char_1, char_2)] = (
-                    int(cutoff_1),
-                    int(cutoff_2),
-                    int(cutoff_3),
-                    int(cutoff_4),
-                )
-        return char_pair_gaps
-
-    @staticmethod
-    def _save_char_dims(char_dims: dict[str, set[tuple[int, ...]]], file_path: Path):
-        """Save char dims dict to file.
-
-        Arguments:
-            char_dims: char dims to save
-            file_path: path to file
-        """
-        rows = []
-        for char, dims_set in char_dims.items():
-            rows.extend([[char, *dims] for dims in dims_set])
-        rows = sorted({tuple(row) for row in rows})
-        with file_path.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.writer(handle)
-            writer.writerows(rows)
-        info(f"Saved {file_path}")
-
-    @staticmethod
-    def _save_char_grp_dims(
-        char_grp_dims: dict[int, dict[str, set[tuple[int, ...]]]], file_path: Path
-    ):
-        """Save character group dims dict to file.
-
-        Arguments:
-            char_grp_dims: character group dims to save
-            file_path: path to file
-        """
-        rows = []
-        for char_grp_dims_set in char_grp_dims.values():
-            for char_grp, dims_set in char_grp_dims_set.items():
-                rows.extend([[char_grp, *dims] for dims in dims_set])
-        rows = sorted({tuple(row) for row in rows})
-        with file_path.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.writer(handle)
-            writer.writerows(rows)
-        info(f"Saved {file_path}")
-
-    @staticmethod
-    def _save_char_pair_gaps(
-        char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]],
-        file_path: Path,
-    ):
-        """Save char pair gaps to file.
-
-        Arguments:
-            char_pair_gaps: char pair gaps to save
-            file_path: path to file
-        """
-        rows = [
-            (char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4)
-            for (char_1, char_2), (
-                cutoff_1,
-                cutoff_2,
-                cutoff_3,
-                cutoff_4,
-            ) in char_pair_gaps.items()
-        ]
-        rows = sorted({tuple(row) for row in rows})
-        with file_path.open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.writer(handle)
-            writer.writerows(rows)
-        info(f"Saved {file_path}.")
