@@ -62,11 +62,11 @@
   {
     "query": {
       "lens": "转呀，转⋯",
-      "paddle": "转呀 转·"
+      "paddle": "转呀 转・"
     },
     "answer": {
       "ronghe": "转呀，转⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号和省略号；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格和句号。"
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗号和省略号；省略了 PaddleOCR 中误识别的中点。"
     },
     "difficulty": 1,
     "verified": true
@@ -363,11 +363,11 @@
   {
     "query": {
       "lens": "⋯还有一个很疼我们",
-      "paddle": "·还有一个很疼我们"
+      "paddle": "・还有一个很疼我们"
     },
     "answer": {
       "ronghe": "⋯还有一个很疼我们",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "采用了 Google Lens 中更可靠的省略号“⋯”，替换了 PaddleOCR 中的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1721,11 +1721,11 @@
   {
     "query": {
       "lens": "其实我也不知道个仔要这么粗的脚瓜⋯",
-      "paddle": "其实我也不知道个仔要这么粗的脚瓜·"
+      "paddle": "其实我也不知道个仔要这么粗的脚瓜・"
     },
     "answer": {
       "ronghe": "其实我也不知道个仔要这么粗的脚瓜⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "采用了 Google Lens 中较为可靠的省略号“⋯”，替换了 PaddleOCR 中识别为顿号样符号“・”的部分。"
     },
     "difficulty": 1,
     "verified": true
@@ -2261,11 +2261,11 @@
   {
     "query": {
       "lens": "爆发⋯缠住⋯爆发⋯",
-      "paddle": "爆发⋯·缠住⋯·爆发"
+      "paddle": "爆发⋯・缠住⋯・爆发"
     },
     "answer": {
       "ronghe": "爆发⋯缠住⋯爆发⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和省略号，省略了 PaddleOCR 中多余的点号。"
+      "beizhu": "采用了 Google Lens 中的省略号和整体句式；省略了 PaddleOCR 中多余的日文中点“・”，并在末尾补全了 PaddleOCR 中缺失的省略号。"
     },
     "difficulty": 1,
     "verified": true
@@ -2345,11 +2345,11 @@
   {
     "query": {
       "lens": "端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
-      "paddle": "端午节 ， 当我翻开我最喜欢吃的裹蒸粽⋯·"
+      "paddle": "端午节 ， 当我翻开我最喜欢吃的裹蒸粽⋯・"
     },
     "answer": {
       "ronghe": "端午节，当我翻开我最喜欢吃的裹蒸粽⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格和多余的句号。"
+      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的多余空格和顿号“・”；采用了 Google Lens 中更自然的标点格式。"
     },
     "difficulty": 1,
     "verified": true
@@ -2645,11 +2645,11 @@
   {
     "query": {
       "lens": "亚运主办权⋯",
-      "paddle": "亚运主办权·"
+      "paddle": "亚运主办权・"
     },
     "answer": {
       "ronghe": "亚运主办权⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "采用了 Google Lens 中更可靠的省略号“⋯”，替换了 PaddleOCR 中错误的符号“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2957,11 +2957,11 @@
   {
     "query": {
       "lens": "可是栋一双脚瓜站这儿⋯",
-      "paddle": "可是楝一双脚瓜站这儿·"
+      "paddle": "可是楝一双脚瓜站这儿・"
     },
     "answer": {
       "ronghe": "可是栋一双脚瓜站这儿⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的“栋”字和省略号，替换了 PaddleOCR 中的“楝”字和句号。"
+      "beizhu": "采用了 Google Lens 中正确的“栋”和省略号“⋯”，忽略了 PaddleOCR 中误识的“楝”和句号“・”。"
     },
     "difficulty": 1,
     "verified": true
