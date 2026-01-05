@@ -60,6 +60,21 @@ class BboxManager:
                     self.char_grp_dims_by_n[n] = {}
                 self.char_grp_dims_by_n[n][char_grp] = dims_set
 
+        # Data structure for gaps between bboxes.
+        self.char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
+        """Data structure for gaps between bboxes.
+        
+        Key is a pair of characters.
+        Value is a tuple of four ints, representing cutoffs:
+          * Upper bound for 'adjacent' characters
+          * Lower bound for 'space' characters
+          * Upper bound for 'space' characters
+          * Lower bound for 'tab' characters
+        """
+        file_path = self._char_pair_gaps_path()
+        if file_path.exists():
+            self.char_pair_gaps = self._load_char_pair_gaps(file_path)
+
     def validate(
         self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
     ) -> list[str]:
@@ -326,7 +341,7 @@ class BboxManager:
 
         return merged_bboxes, messages
 
-    def _update_char_dims(self, char: str, dims: tuple[int, ...]) -> None:
+    def _update_char_dims(self, char: str, dims: tuple[int, ...]):
         """Update char dims and save.
 
         Arguments:
@@ -341,7 +356,7 @@ class BboxManager:
         info(f"Added ({char}, {dims})")
         self._save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
 
-    def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]) -> None:
+    def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]):
         """Update char group dims and save.
 
         Arguments:
@@ -358,13 +373,32 @@ class BboxManager:
 
     @staticmethod
     def _char_dims_path(n: int) -> Path:
-        """Path to csv file."""
+        """Path to character dimensions csv file."""
         return package_root / "data" / "ocr" / f"char_dims_{n}.csv"
 
     @staticmethod
     def _char_grp_dims_path() -> Path:
-        """Path to character group dims csv file."""
+        """Path to character group dimensions csv file."""
         return package_root / "data" / "ocr" / "char_grp_dims.csv"
+
+    @staticmethod
+    def _char_pair_gaps_path() -> Path:
+        """Path to character pair gap csv file."""
+        return package_root / "data" / "ocr" / "char_pair_gaps.csv"
+
+    @staticmethod
+    def _get_default_char_pair_cutoffs(
+        char_1: str, char_2: str
+    ) -> tuple[int, int, int, int]:
+        """Get default cutoff tuple for a character pair.
+
+        Arguments:
+            char_1: first character
+            char_2: second character
+        Returns:
+            default cutoff tuple
+        """
+        return 1, 50, 50, 100
 
     @staticmethod
     def _get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
@@ -425,6 +459,32 @@ class BboxManager:
         return char_dims
 
     @staticmethod
+    def _load_char_pair_gaps(
+        file_path: Path,
+    ) -> dict[tuple[str, str], tuple[int, int, int, int]]:
+        """Load char pair gaps from file.
+
+        Arguments:
+            file_path: path to file
+        Returns:
+            char pair gaps
+        """
+        char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
+        with file_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.reader(handle)
+            for row in reader:
+                if not row:
+                    continue
+                char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4 = row
+                char_pair_gaps[(char_1, char_2)] = (
+                    int(cutoff_1),
+                    int(cutoff_2),
+                    int(cutoff_3),
+                    int(cutoff_4),
+                )
+        return char_pair_gaps
+
+    @staticmethod
     def _save_char_dims(char_dims: dict[str, set[tuple[int, ...]]], file_path: Path):
         """Save char dims dict to file.
 
@@ -443,16 +503,16 @@ class BboxManager:
 
     @staticmethod
     def _save_char_grp_dims(
-        char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]], file_path: Path
+        char_grp_dims: dict[int, dict[str, set[tuple[int, ...]]]], file_path: Path
     ):
         """Save character group dims dict to file.
 
         Arguments:
-            char_grp_dims_by_n: character group dims to save
+            char_grp_dims: character group dims to save
             file_path: path to file
         """
         rows = []
-        for char_grp_dims_set in char_grp_dims_by_n.values():
+        for char_grp_dims_set in char_grp_dims.values():
             for char_grp, dims_set in char_grp_dims_set.items():
                 rows.extend([[char_grp, *dims] for dims in dims_set])
         rows = sorted({tuple(row) for row in rows})
@@ -460,3 +520,29 @@ class BboxManager:
             writer = csv.writer(handle)
             writer.writerows(rows)
         info(f"Saved {file_path}")
+
+    @staticmethod
+    def _save_char_pair_gaps(
+        char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]],
+        file_path: Path,
+    ):
+        """Save char pair gaps to file.
+
+        Arguments:
+            char_pair_gaps: char pair gaps to save
+            file_path: path to file
+        """
+        rows = [
+            (char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4)
+            for (char_1, char_2), (
+                cutoff_1,
+                cutoff_2,
+                cutoff_3,
+                cutoff_4,
+            ) in char_pair_gaps.items()
+        ]
+        rows = sorted({tuple(row) for row in rows})
+        with file_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.writer(handle)
+            writer.writerows(rows)
+        info(f"Saved {file_path}.")
