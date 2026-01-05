@@ -54,7 +54,7 @@ class ZhoHansPrompt(Prompt, ABC):
     test_case_invalid_post: ClassVar[str] = "请根据错误信息对你的回复进行相应修改。"
     """Text following test case validation errors."""
 
-    def __init_subclass__(cls, **kwargs: Any) -> None:
+    def __init_subclass__(cls, **kwargs: Any):
         """Automatically convert class attributes using OpenCC configuration.
 
         This metaclass hook automatically converts class attributes from simplified
