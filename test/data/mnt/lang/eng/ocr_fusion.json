@@ -144,8 +144,8 @@
       "note": "Used musical notes and correct words from Lens; corrected spacing around the first note and reduced double closing notes to a single one."
     },
     "difficulty": 1,
-    "verified": true,
-    "prompt": true
+    "prompt": true,
+    "verified": true
   },
   {
     "query": {
