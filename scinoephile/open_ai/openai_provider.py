@@ -8,7 +8,7 @@ import asyncio
 from time import sleep
 from typing import Any, override
 
-from open_ai import AsyncOpenAI, OpenAI, OpenAIError
+from openai import AsyncOpenAI, OpenAI, OpenAIError
 
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import Answer, LLMProvider
