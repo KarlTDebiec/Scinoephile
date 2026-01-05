@@ -310,7 +310,8 @@
       "zimu_18": "可以問斬",
       "zimu_19": "斬他⋯斬他"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -360,7 +361,8 @@
       "zimu_13": "長老，有人來",
       "zimu_14": "大家準備⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {

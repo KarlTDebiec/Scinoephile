@@ -866,8 +866,8 @@
       "paddle": "七姑娘⋯將就一下・"
     },
     "answer": {
-      "ronghe": "七姑娘⋯將就一下⋯",
-      "beizhu": "保留了 Google Lens OCR 中的換行前後文字與省略號，省略了換行符；用 Google Lens 的省略號替換了 PaddleOCR 中誤識別的「・」。"
+      "ronghe": "七姑娘⋯　　將就一下⋯",
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並將兩處間隙替換為兩個表意空格，以符合原文語境。"
     },
     "difficulty": 1,
     "verified": true
