@@ -16,7 +16,11 @@ from scinoephile.image.subtitles import ImageSubtitle
 
 from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
 from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
-from .char_pair_gaps import load_char_pair_gaps
+from .char_pair_gaps import (
+    get_default_char_pair_cutoffs,
+    load_char_pair_gaps,
+    save_char_pair_gaps,
+)
 
 __all__ = ["ValidationManager"]
 
@@ -326,6 +330,7 @@ class ValidationManager:
             # get gap
             gap = bbox_2.x1 - bbox_1.x2
 
+            # Log
             info(
                 f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}|{bbox_2_idx}| "
                 f"-> |{char_1}|{char_2}|{gap}|{gap_chars.replace('\n', '\\n')}|"
@@ -338,6 +343,48 @@ class ValidationManager:
                         f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
                         f"Negative gap {gap} between '{char_1}' and '{char_2}' "
                         f"but gap chars '{gap_chars}' is not newline"
+                    )
+                char_1_idx = char_2_idx
+                bbox_1_idx = bbox_2_idx
+                continue
+
+            # Validate
+            cutoffs = self.char_pair_gaps.get((char_1, char_2))
+            if not cutoffs:
+                cutoffs = get_default_char_pair_cutoffs(char_1, char_2)
+                self._update_pair_gaps((char_1, char_2), cutoffs)
+
+            # Adjacent
+            if gap <= cutoffs[0]:
+                if gap_chars != "":
+                    messages.append(
+                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'adjacent' "
+                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not empty"
+                    )
+                char_1_idx = char_2_idx
+                bbox_1_idx = bbox_2_idx
+                continue
+
+            # Space
+            if cutoffs[1] <= gap <= cutoffs[2]:
+                if gap_chars != " ":
+                    messages.append(
+                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
+                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a single space"
+                    )
+                char_1_idx = char_2_idx
+                bbox_1_idx = bbox_2_idx
+                continue
+
+            # Tab
+            if gap >= cutoffs[3]:
+                if gap_chars != "    ":
+                    messages.append(
+                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'tab' "
+                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a tab"
                     )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -376,6 +423,21 @@ class ValidationManager:
         dims_set.add(dims)
         info(f"Added ({group}, {dims})")
         save_char_grp_dims(self.char_grp_dims_by_n, self._char_grp_dims_path())
+
+    def _update_pair_gaps(
+        self, char_pair: tuple[str, str], cutoffs: tuple[int, int, int, int]
+    ):
+        """Update char pair gaps and save.
+
+        Arguments:
+            char_pair: character pair
+            cutoffs: cutoffs
+        """
+        if self.char_pair_gaps.get(char_pair) == cutoffs:
+            return
+        self.char_pair_gaps[char_pair] = cutoffs
+        info(f"Added ({char_pair}, {cutoffs})")
+        save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
 
     @staticmethod
     def _char_dims_path(n: int) -> Path:
