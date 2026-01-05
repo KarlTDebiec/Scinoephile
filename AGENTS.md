@@ -16,6 +16,9 @@
 * Include `from __future__ import annotations`, unless the file is empty (i.e., contains
   only copyright headers and module docstrings such as otherwise empty
   `__init__.py` files).
+* Include type annotations for all function and method signatures, with the following
+  exceptions:
+    * If a function always returns `None`, omit the return type annotation.
 * In `__init__.py` files, only import classes from the module, not functions or
   variables.
 * Do **not** commit binary files.
