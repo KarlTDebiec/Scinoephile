@@ -103,7 +103,7 @@ class AudioSeries(Series):
         fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
-    ) -> None:
+    ):
         """Save series to an output file.
 
         Arguments:

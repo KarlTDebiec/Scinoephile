@@ -57,7 +57,7 @@ def load_test_cases_from_json[TTestCase: TestCase](
     return test_cases
 
 
-def save_test_cases_to_json(output_path: Path, test_cases: list[TestCase]) -> None:
+def save_test_cases_to_json(output_path: Path, test_cases: list[TestCase]):
     """Save test cases to JSON file.
 
     Arguments:
