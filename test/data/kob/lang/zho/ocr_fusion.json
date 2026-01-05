@@ -673,11 +673,11 @@
       "paddle": "來拉・拉你"
     },
     "answer": {
-      "ronghe": "來拉⋯⋯拉你",
-      "beizhu": "採用了 Google Lens 中較可信的省略號“⋯⋯”，並省略了僅在 PaddleOCR 中出現的日文中點“・”。"
+      "ronghe": "來拉⋯　　拉你",
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並將其後的間隙替換為兩個表意空格，以符合原文語境。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -700,8 +700,8 @@
       "ronghe": "還有⋯還有",
       "beizhu": "採用了 Google Lens 中較為正確的省略號「⋯」，替換了 PaddleOCR 中錯誤的「・」。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -724,8 +724,8 @@
       "ronghe": "斬他⋯斬他",
       "beizhu": "採用了 Google Lens 中更可靠的省略號「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
-    "verified": true,
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
