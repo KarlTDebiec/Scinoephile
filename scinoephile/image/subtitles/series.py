@@ -23,6 +23,7 @@ from scinoephile.common.validation import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
+from scinoephile.image.drawing import convert_rgba_img_to_la
 
 from .subtitle import ImageSubtitle
 from .sup import read_sup_series
@@ -250,7 +251,7 @@ class ImageSeries(Series):
 
         for html_event in html_events:
             img = Image.open(html_event["path"])
-            img, converted = cls._convert_rgba_to_la(img)
+            img, converted = convert_rgba_img_to_la(img)
             if converted:
                 img.save(html_event["path"])
                 info(f"Converted {html_event['path']} to LA and resaved")
@@ -381,7 +382,7 @@ class ImageSeries(Series):
         series.format = "sup"
         for start, end, image in zip(starts, ends, images):
             img = Image.fromarray(image, "RGBA")
-            img, _ = cls._convert_rgba_to_la(img)
+            img, _ = convert_rgba_img_to_la(img)
             series.events.append(
                 cls.event_class(
                     start=int(round(start * 1000)),
@@ -408,21 +409,3 @@ class ImageSeries(Series):
         fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline
-
-    @staticmethod
-    def _convert_rgba_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
-        """Convert RGBA images with grayscale color channels to LA.
-
-        Arguments:
-            img: Image to convert
-        Returns:
-            Image and whether it was converted
-        """
-        if img.mode != "RGBA":
-            return img, False
-        arr = np.array(img)
-        if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
-            arr[:, :, 1] == arr[:, :, 2]
-        ):
-            return img.convert("LA"), True
-        return img, False

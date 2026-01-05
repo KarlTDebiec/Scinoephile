@@ -4,6 +4,7 @@
 
 Package hierarchy (modules may import from any above):
 * bbox / colors
-* bboxes / drawing / subtitles
+* bboxes / drawing
+* subtitles
 * ocr
 """

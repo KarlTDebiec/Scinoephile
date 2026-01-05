@@ -12,8 +12,25 @@ from PIL import Image, ImageDraw
 from .bbox import Bbox
 
 __all__ = [
+    "convert_rgba_img_to_la",
     "get_img_with_bboxes",
 ]
+
+
+def convert_rgba_img_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
+    """Convert RGBA images with grayscale color channels to LA.
+
+    Arguments:
+        img: Image to convert
+    Returns:
+        Image and whether it was converted
+    """
+    if img.mode != "RGBA":
+        return img, False
+    arr = np.array(img)
+    if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(arr[:, :, 1] == arr[:, :, 2]):
+        return img.convert("LA"), True
+    return img, False
 
 
 def get_img_with_bboxes(img: Image.Image, bboxes: list[Bbox]) -> Image.Image:
