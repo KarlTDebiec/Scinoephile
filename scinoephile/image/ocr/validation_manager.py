@@ -15,7 +15,7 @@ from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSubtitle
 
 from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
-from .char_grp_dims import save_char_grp_dims
+from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import load_char_pair_gaps
 
 __all__ = ["ValidationManager"]
@@ -26,7 +26,7 @@ class ValidationManager:
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
-    
+
     First key is the number of bboxes.
     Second key is the character.
     Values are a set of approved bbox width, heights, and gaps for that character.
@@ -34,7 +34,7 @@ class ValidationManager:
 
     char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for bboxes containing two or more characters.
-    
+
     First key is the number of characters in the group.
     Second key is the character group.
     Values are a set of approved bbox width and heights for that character group.
@@ -42,7 +42,7 @@ class ValidationManager:
 
     char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
     """Data structure for gaps between bboxes.
-    
+
     Key is a pair of characters.
     Value is a tuple of four ints, representing cutoffs:
       * Upper bound for 'adjacent' characters
@@ -63,12 +63,7 @@ class ValidationManager:
         # Initialize char_grp_dims_by_n.
         file_path = self._char_grp_dims_path()
         if file_path.exists():
-            char_grp_dims = load_char_dims(file_path)
-            for char_grp, dims_set in char_grp_dims.items():
-                n = len(char_grp)
-                if n not in self.char_grp_dims_by_n:
-                    self.char_grp_dims_by_n[n] = {}
-                self.char_grp_dims_by_n[n][char_grp] = dims_set
+            self.char_grp_dims_by_n = load_char_grp_dims(file_path)
 
         # Initialize char_pair_gaps.
         file_path = self._char_pair_gaps_path()
