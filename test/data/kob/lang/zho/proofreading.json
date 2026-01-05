@@ -502,10 +502,11 @@
       "zimu_6": "由他吧"
     },
     "answer": {
-      "xiugai_1": "姐姐·姐姐",
-      "beizhu_1": "將間隔點「・」改為標準全形間隔號「·」，修正 OCR 標點誤識。"
+      "xiugai_1": "姐姐⋯姐姐",
+      "beizhu_1": "對話更自然"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
