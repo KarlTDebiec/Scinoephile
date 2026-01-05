@@ -86,7 +86,7 @@ class BboxManager:
         """
         bboxes = sub.bboxes
         if bboxes is None:
-            bboxes = get_bboxes(sub)
+            bboxes = get_bboxes(sub.img)
 
         bboxes, messages = self._validate_chars(sub, bboxes, sub_idx, interactive)
         sub.bboxes = bboxes

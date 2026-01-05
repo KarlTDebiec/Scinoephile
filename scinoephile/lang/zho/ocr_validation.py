@@ -7,8 +7,8 @@ from __future__ import annotations
 from logging import info, warning
 from pathlib import Path
 
+from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.ocr import BboxManager
-from scinoephile.image.ocr.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 __all__ = ["validate_zho_ocr"]

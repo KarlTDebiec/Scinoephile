@@ -164,11 +164,13 @@ def process_eng_ocr():
         interactive=True,
     )
     fuse_clean_validate = get_eng_cleaned(fuse_clean_validate)
-    fuse_clean_validate.save(output_dir / "eng_fuse_clean_validate.srt")
+    fuse_clean_validate.save(output_dir / "eng_fuse_clean_validate.srt", exist_ok=True)
 
     # Flatten
     fuse_clean_validate_flatten = get_eng_flattened(fuse_clean_validate)
-    fuse_clean_validate_flatten.save(output_dir / "eng_fuse_clean_validate_flatten.srt")
+    fuse_clean_validate_flatten.save(
+        output_dir / "eng_fuse_clean_validate_flatten.srt", exist_ok=True
+    )
 
     # Proofread
     # eng_proofreader = get_eng_proofreader(
