@@ -77,11 +77,11 @@
   {
     "query": {
       "lens": "We'll run across the bridge♪",
-      "tesseract": "{\\i1}♪ We'“ run across the bridge ♪{\\i0}"
+      "tesseract": "{\\i1}♪ We'\" run across the bridge ♪{\\i0}"
     },
     "answer": {
       "output": "♪ We'll run across the bridge ♪",
-      "note": "Used musical notes and italics placement from Tesseract, corrected 'We'“' to 'We'll' from Lens."
+      "note": "Used correct text \"We'll run across the bridge\" from Lens, and added leading and trailing musical notes from Tesseract while removing the OCR error \"We'\"."
     },
     "difficulty": 1,
     "verified": true
@@ -137,15 +137,15 @@
   {
     "query": {
       "lens": "♪All come out to play♪♪",
-      "tesseract": "{\\i1}♪ A“ come out to May ♪{\\i0}"
+      "tesseract": "{\\i1}♪ A\" come out to May ♪{\\i0}"
     },
     "answer": {
       "output": "♪ All come out to play ♪",
-      "note": "Used musical notes from Lens, corrected 'A“' to 'All' and 'May' to 'play' from Lens."
+      "note": "Used musical notes and correct words from Lens; corrected spacing around the first note and reduced double closing notes to a single one."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "verified": true,
+    "prompt": true
   },
   {
     "query": {
@@ -174,11 +174,11 @@
   {
     "query": {
       "lens": "Look at all my many friends",
-      "tesseract": "{\\i1}♪ Look at a“ my many friends ♪{\\i0}"
+      "tesseract": "{\\i1}♪ Look at a\" my many friends ♪{\\i0}"
     },
     "answer": {
       "output": "♪ Look at all my many friends ♪",
-      "note": "Used musical notes and italics from Tesseract, corrected 'a“' to 'all' from Lens."
+      "note": "Used correct word 'all' from Lens instead of misrecognized 'a\"' from Tesseract; added leading and trailing musical notes from Tesseract and removed style tags."
     },
     "difficulty": 1,
     "verified": true
@@ -807,18 +807,6 @@
       "note": "Used lower-case 'and' from Tesseract."
     },
     "difficulty": 1,
-    "verified": true
-  },
-  {
-    "query": {
-      "lens": "\"We wanted to grow a beautiful\nforest with the acorns,",
-      "tesseract": "“We wanted to grow a beautiful\nforest with the acorns,"
-    },
-    "answer": {
-      "output": "“We wanted to grow a beautiful\nforest with the acorns,",
-      "note": "Used opening quotation mark from Tesseract and preserved line break as in both sources."
-    },
-    "difficulty": 2,
     "verified": true
   },
   {
@@ -1484,11 +1472,11 @@
   {
     "query": {
       "lens": "♪He plays a magic flute in the sky♪",
-      "tesseract": "{\\i1}♪ He Nays a magic flute “in the sky ♪{\\i0}"
+      "tesseract": "{\\i1}♪ He Nays a magic flute \"in the sky ♪{\\i0}"
     },
     "answer": {
       "output": "♪ He plays a magic flute in the sky ♪",
-      "note": "Used musical notes and correct text from Lens, added leading space and italics placement from Tesseract."
+      "note": "Used correct words 'plays' and 'in the sky' from Lens; kept leading and trailing musical notes and spacing pattern from Tesseract, removing italics markup."
     },
     "difficulty": 1,
     "verified": true
