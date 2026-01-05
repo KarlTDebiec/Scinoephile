@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from .bbox_manager import BboxManager
+from .validation_manager import ValidationManager
 
 __all__ = [
-    "BboxManager",
+    "ValidationManager",
 ]

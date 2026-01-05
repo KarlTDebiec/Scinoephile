@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Manages bboxes around characters."""
+"""Validates OCRed subtitle text using source images."""
 
 from __future__ import annotations
 
@@ -18,36 +18,49 @@ from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
 from .char_grp_dims import save_char_grp_dims
 from .char_pair_gaps import load_char_pair_gaps
 
-__all__ = ["BboxManager"]
+__all__ = ["ValidationManager"]
 
 
-class BboxManager:
-    """Manages bboxes around characters."""
+class ValidationManager:
+    """Validates OCRed subtitle text using source images."""
+
+    char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+    """Data structure for characters in one or more bboxes.
+    
+    First key is the number of bboxes.
+    Second key is the character.
+    Values are a set of approved bbox width, heights, and gaps for that character.
+    """
+
+    char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+    """Data structure for bboxes containing two or more characters.
+    
+    First key is the number of characters in the group.
+    Second key is the character group.
+    Values are a set of approved bbox width and heights for that character group.
+    """
+
+    char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
+    """Data structure for gaps between bboxes.
+    
+    Key is a pair of characters.
+    Value is a tuple of four ints, representing cutoffs:
+      * Upper bound for 'adjacent' characters
+      * Lower bound for 'space' characters
+      * Upper bound for 'space' characters
+      * Lower bound for 'tab' characters
+    """
 
     def __init__(self):
         """Initialize."""
-        # Data structure for characters in one or more bboxes.
-        self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        """Data structure for characters in one or more bboxes.
-        
-        First key is the number of bboxes.
-        Second key is the character.
-        Values are a set of approved bbox width, heights, and gaps for that character.
-        """
+        # Initalize char_dims_by_n.
         for n in range(1, 6):
             file_path = self._char_dims_path(n)
             self.char_dims_by_n[n] = {}
             if file_path.exists():
                 self.char_dims_by_n[n] = load_char_dims(file_path)
 
-        # Data structure for bboxes containing two or more characters.
-        self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        """Data structure for bboxes containing two or more characters.
-        
-        First key is the number of characters in the group.
-        Second key is the character group.
-        Values are a set of approved bbox width and heights for that character group.
-        """
+        # Initialize char_grp_dims_by_n.
         file_path = self._char_grp_dims_path()
         if file_path.exists():
             char_grp_dims = load_char_dims(file_path)
@@ -57,17 +70,7 @@ class BboxManager:
                     self.char_grp_dims_by_n[n] = {}
                 self.char_grp_dims_by_n[n][char_grp] = dims_set
 
-        # Data structure for gaps between bboxes.
-        self.char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
-        """Data structure for gaps between bboxes.
-        
-        Key is a pair of characters.
-        Value is a tuple of four ints, representing cutoffs:
-          * Upper bound for 'adjacent' characters
-          * Lower bound for 'space' characters
-          * Upper bound for 'space' characters
-          * Lower bound for 'tab' characters
-        """
+        # Initialize char_pair_gaps.
         file_path = self._char_pair_gaps_path()
         if file_path.exists():
             self.char_pair_gaps = load_char_pair_gaps(file_path)

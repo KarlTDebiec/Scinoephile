@@ -8,7 +8,7 @@ from logging import info, warning
 from pathlib import Path
 
 from scinoephile.image.drawing import get_img_with_bboxes
-from scinoephile.image.ocr import BboxManager
+from scinoephile.image.ocr import ValidationManager
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 __all__ = ["validate_eng_ocr"]
@@ -28,7 +28,7 @@ def validate_eng_ocr(
         stop_at_idx: stop processing at this index
         interactive: whether to prompt user for confirmations
     """
-    bbox_mgr = BboxManager()
+    bbox_mgr = ValidationManager()
     output_series = ImageSeries() if output_dir_path is not None else None
     if stop_at_idx is None:
         stop_at_idx = len(series) - 1
