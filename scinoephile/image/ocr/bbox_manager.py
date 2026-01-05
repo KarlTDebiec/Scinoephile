@@ -60,7 +60,7 @@ class BboxManager:
                     self.char_grp_dims_by_n[n] = {}
                 self.char_grp_dims_by_n[n][char_grp] = dims_set
 
-    def validate_bboxes(
+    def validate(
         self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
     ) -> list[str]:
         """Validate per-character bboxes for a subtitle.
@@ -76,7 +76,7 @@ class BboxManager:
         if bboxes is None:
             bboxes = self._get_raw_bboxes(sub)
 
-        bboxes, messages = self._validate_bboxes(sub, bboxes, sub_idx, interactive)
+        bboxes, messages = self._validate_chars(sub, bboxes, sub_idx, interactive)
         sub.bboxes = bboxes
         return messages
 
@@ -156,7 +156,7 @@ class BboxManager:
 
         return bboxes
 
-    def _validate_bboxes(  # noqa: PLR0912, PLR0915
+    def _validate_chars(  # noqa: PLR0912, PLR0915
         self,
         sub: ImageSubtitle,
         bboxes: list[Bbox],
@@ -326,41 +326,6 @@ class BboxManager:
 
         return merged_bboxes, messages
 
-    @staticmethod
-    def _get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
-        """Get dims tuple from bboxes.
-
-        Arguments:
-            bboxes: bboxes
-        Returns:
-            dims tuple
-        """
-        widths = [bbox.width for bbox in bboxes]
-        heights = [bbox.height for bbox in bboxes]
-        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
-        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
-        return dims
-
-    @staticmethod
-    def _get_white_mask(
-        grayscale: np.ndarray,
-        alpha: np.ndarray,
-        fill_color: int,
-    ) -> np.ndarray:
-        """Get a white interior mask from grayscale/alpha arrays.
-
-        Arguments:
-            grayscale: grayscale values
-            alpha: alpha values
-            fill_color: fill color used in rendering
-        Returns:
-            boolean mask of white interior pixels
-        """
-        tolerance = 10
-        lower = max(0, fill_color - tolerance)
-        upper = min(255, fill_color + tolerance)
-        return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
-
     def _update_char_dims(self, char: str, dims: tuple[int, ...]) -> None:
         """Update char dims and save.
 
@@ -400,6 +365,41 @@ class BboxManager:
     def _char_grp_dims_path() -> Path:
         """Path to character group dims csv file."""
         return package_root / "data" / "ocr" / "char_grp_dims.csv"
+
+    @staticmethod
+    def _get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
+        """Get dims tuple from bboxes.
+
+        Arguments:
+            bboxes: bboxes
+        Returns:
+            dims tuple
+        """
+        widths = [bbox.width for bbox in bboxes]
+        heights = [bbox.height for bbox in bboxes]
+        gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
+        dims = tuple([d for grp in zip(widths, heights, gaps + [0]) for d in grp][:-1])
+        return dims
+
+    @staticmethod
+    def _get_white_mask(
+        grayscale: np.ndarray,
+        alpha: np.ndarray,
+        fill_color: int,
+    ) -> np.ndarray:
+        """Get a white interior mask from grayscale/alpha arrays.
+
+        Arguments:
+            grayscale: grayscale values
+            alpha: alpha values
+            fill_color: fill color used in rendering
+        Returns:
+            boolean mask of white interior pixels
+        """
+        tolerance = 10
+        lower = max(0, fill_color - tolerance)
+        upper = min(255, fill_color + tolerance)
+        return (alpha > 0) & (grayscale >= lower) & (grayscale <= upper)
 
     @staticmethod
     def _load_char_dims(file_path: Path) -> dict[str, set[tuple[int, ...]]]:
