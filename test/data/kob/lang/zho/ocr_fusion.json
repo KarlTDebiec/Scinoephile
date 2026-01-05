@@ -2739,8 +2739,8 @@
       "paddle": "可不可以・不可以"
     },
     "answer": {
-      "ronghe": "可不可以⋯不可以",
-      "beizhu": "採用了 Google Lens 中較可靠的省略號，並省略了 Google Lens 中存在但 PaddleOCR 中不存在的換行符及 PaddleOCR 中多餘的間隔符號。"
+      "ronghe": "可不可以⋯　　不可以",
+      "beizhu": "將 Google Lens OCR 中的換行符和 PaddleOCR 中的空格替換為兩個表意空格，並採用了 Google Lens 中較為正確的省略號「⋯」替換了 PaddleOCR 中的「・」。"
     },
     "difficulty": 1,
     "verified": true
