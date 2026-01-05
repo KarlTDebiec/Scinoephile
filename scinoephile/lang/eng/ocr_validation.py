@@ -28,17 +28,14 @@ def validate_eng_ocr(
         stop_at_idx: stop processing at this index
         interactive: whether to prompt user for confirmations
     """
-    bbox_mgr = ValidationManager()
+    validation_mgr = ValidationManager()
     output_series = ImageSeries() if output_dir_path is not None else None
     if stop_at_idx is None:
         stop_at_idx = len(series) - 1
     for sub_idx, sub in enumerate(series.events):
         if sub_idx > stop_at_idx:
             break
-        messages = []
-        messages.extend(
-            bbox_mgr.validate(sub, sub_idx=sub_idx, interactive=interactive)
-        )
+        messages = validation_mgr.validate(sub, sub_idx, interactive)
         if messages:
             for message in messages:
                 warning(message)
