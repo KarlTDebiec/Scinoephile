@@ -63,13 +63,13 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "English (OCR)",
-    "简体粤文 (Transcription)",
-    # "简体粵文 (SRT)",
-    # "繁體粵文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体粵文 and English",
+    "繁體中文 (OCR)",
+    "English (OCR)",
+    # "简体粤文 (Transcription)",
+    "简体粵文 (SRT)",
+    "繁體粵文 (SRT)",
+    "English (SRT)",
+    "Bilingual 简体粵文 and English",
 }
 
 if "繁體中文 (OCR)" in actions:

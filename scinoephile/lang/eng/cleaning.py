@@ -26,9 +26,10 @@ def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:
     series = deepcopy(series)
     new_events = []
     for event in series:
-        text = _get_english_text_cleaned(event.text.strip())
+        raw_text = (event.text or "").strip()
+        text = _get_english_text_cleaned(raw_text)
         if text or not remove_empty:
-            event.text = text
+            event.text = text if text is not None else ""
             new_events.append(event)
     series.events = new_events
     return series
@@ -54,6 +55,8 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Replace '...' with '…'
     cleaned = re.sub(r"\.\.\.", "…", cleaned)
 
+    # Clean up double quotes
+    cleaned = re.sub(r"[“”＂〞〝]", '"', cleaned)
     cleaned = _replace_half_width_double_quotes(cleaned)
 
     # Remove lines starting with dashes if they are otherwise empty

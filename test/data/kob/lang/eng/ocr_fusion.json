@@ -969,11 +969,11 @@
   {
     "query": {
       "lens": "Yushang…",
-      "tesseract": "Yushang”."
+      "tesseract": "Yushang\"."
     },
     "answer": {
       "output": "Yushang…",
-      "note": "Used ellipsis '…' from Google Lens instead of closing quote from Tesseract."
+      "note": "Used the correct name and ellipsis from Google Lens; discarded the misrecognized quote and period from Tesseract."
     },
     "difficulty": 1,
     "verified": true

@@ -72,7 +72,7 @@ set_logging_verbosity(2)
 actions = {
     "简体中文 (OCR)",
     "English (OCR)",
-    "简体粤文 (Transcription)",
+    # "简体粤文 (Transcription)",
     "Bilingual 简体中文 and English",
     "Bilingual 简体粤文 and English",
 }

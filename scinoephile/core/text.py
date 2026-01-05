@@ -106,6 +106,7 @@ full_punc = {
     "FULLWIDTH TILDE": "～",
     "IDEOGRAPHIC COMMA": "、",
     "IDEOGRAPHIC FULL STOP": "。",
+    "KATAKANA MIDDLE DOT": "・",
     "LEFT ANGLE BRACKET": "〈",
     "LEFT BLACK LENTICULAR BRACKET": "【",
     "LEFT CORNER BRACKET": "「",
@@ -145,6 +146,7 @@ half_to_full_punc = {
     },
     "“": "〝",
     "”": "〞",
+    "·": "・",
 }
 """Mapping from half-width to full-width punctuation characters."""
 

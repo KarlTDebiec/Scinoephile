@@ -27,9 +27,10 @@ def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
     series = deepcopy(series)
     new_events = []
     for event in series:
-        text = _get_zho_text_cleaned(event.text.strip())
+        raw_text = (event.text or "").strip()
+        text = _get_zho_text_cleaned(raw_text)
         if text or not remove_empty:
-            event.text = text
+            event.text = text if text is not None else ""
             new_events.append(event)
     series.events = new_events
     return series
@@ -46,16 +47,16 @@ def _get_zho_text_cleaned(text: str) -> str | None:
     # Revert substitution in pysubs2/subrip.py:66
     cleaned = re.sub(r"\\N", r"\n", text).strip()
 
-    # Replace '...' with '⋯'
+    # Replace '...' and '…' with '⋯'
     cleaned = re.sub(r"[^\S\n]*\.\.\.[^\S\n]*", "⋯", cleaned)
-
-    # Replace '…' with '⋯'
     cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
 
     # Replace half-width punctuation with full-width punctuation
     for old_punc, new_punc in half_to_full_punc.items():
         cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
 
+    # Clean up double quotes
+    cleaned = re.sub(r"[“”〞〝\"]", "＂", cleaned)
     cleaned = _replace_full_width_double_quotes(cleaned)
 
     # Remove whitespace before and after specified characters

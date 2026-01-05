@@ -207,11 +207,11 @@
   {
     "query": {
       "lens": "〝哇啦哇啦〞的乱跑啊",
-      "paddle": "哇啦哇啦〝的乱跑啊"
+      "paddle": "哇啦哇啦＂的乱跑啊"
     },
     "answer": {
       "ronghe": "〝哇啦哇啦〞的乱跑啊",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的前后引号，并修正了 PaddleOCR 中引号位置错误。"
+      "beizhu": "采用了 Google Lens 中更准确的成对引号〝〞，替换了 PaddleOCR 中不完整的引号形式。"
     },
     "difficulty": 1,
     "verified": true
