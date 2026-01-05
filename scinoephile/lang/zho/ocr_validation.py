@@ -41,7 +41,7 @@ def validate_zho_ocr(
                 warning(message)
         else:
             info(f"Subtitle {sub_idx} |{sub.text}| validated")
-        if output_dir_path is not None:
+        if output_series is not None:
             annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
             output_series.events.append(
                 ImageSubtitle(
@@ -52,7 +52,7 @@ def validate_zho_ocr(
                     series=output_series,
                 )
             )
-    if output_dir_path is not None:
+    if output_series is not None:
         output_series.save(output_dir_path)
 
     return output_series
