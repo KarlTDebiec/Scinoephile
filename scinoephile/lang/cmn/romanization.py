@@ -5,8 +5,11 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from warnings import catch_warnings, simplefilter
 
-import jieba
+with catch_warnings():
+    simplefilter("ignore", SyntaxWarning)
+    import jieba
 from pypinyin import pinyin
 
 from scinoephile.core.subtitles import Series
