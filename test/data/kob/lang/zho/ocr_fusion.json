@@ -114,11 +114,11 @@
   {
     "query": {
       "lens": "阿燦，來⋯坐⋯",
-      "paddle": "阿燦，來·坐·"
+      "paddle": "阿燦，來・坐・"
     },
     "answer": {
       "ronghe": "阿燦，來⋯坐⋯",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "保留了 Google Lens 中較為可信的省略號“⋯”，並用其取代 PaddleOCR 中誤識別的間隔符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -126,11 +126,11 @@
   {
     "query": {
       "lens": "那壽頭真是⋯",
-      "paddle": "那壽頭真是·"
+      "paddle": "那壽頭真是・"
     },
     "answer": {
       "ronghe": "那壽頭真是⋯",
-      "beizhu": "采用了 Google Lens 中更准确的省略号替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 識別的省略號“⋯”，替換了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -174,11 +174,11 @@
   {
     "query": {
       "lens": "打賞⋯打賞",
-      "paddle": "打賞·打賞"
+      "paddle": "打賞・打賞"
     },
     "answer": {
       "ronghe": "打賞⋯打賞",
-      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的省略号，省略了 PaddleOCR 中存在但 Google Lens 中不存在的间隔号。"
+      "beizhu": "採用了 Google Lens 中較為常見且自然的省略號「⋯」，替換了 PaddleOCR 中不一致的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -199,11 +199,11 @@
   {
     "query": {
       "lens": "我打⋯",
-      "paddle": "我打·"
+      "paddle": "我打・"
     },
     "answer": {
       "ronghe": "我打⋯",
-      "beizhu": "采用了 Google Lens 中更准确的省略号，替换了 PaddleOCR 中的中点。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -248,11 +248,11 @@
   {
     "query": {
       "lens": "是⋯",
-      "paddle": "是·"
+      "paddle": "是・"
     },
     "answer": {
       "ronghe": "是⋯",
-      "beizhu": "采用了 Google Lens 中更准确的省略号替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 識別的省略號「⋯」，覆蓋了 PaddleOCR 中誤識別的符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -308,11 +308,11 @@
   {
     "query": {
       "lens": "蘇翁來了⋯",
-      "paddle": "蘇翁來了·"
+      "paddle": "蘇翁來了・"
     },
     "answer": {
       "ronghe": "蘇翁來了⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號，修正了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -453,11 +453,11 @@
   {
     "query": {
       "lens": "趙大人，\n那今晚⋯",
-      "paddle": "趙大人，那今晚·"
+      "paddle": "趙大人，那今晚・"
     },
     "answer": {
       "ronghe": "趙大人，那今晚⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的換行符前後的逗號與省略號，並以串聯形式呈現；省略了 PaddleOCR 中不正確的日文中點符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -465,11 +465,11 @@
   {
     "query": {
       "lens": "讓我來⋯讓我說句公道話",
-      "paddle": "讓我來·讓我說句公道話"
+      "paddle": "讓我來・讓我說句公道話"
     },
     "answer": {
       "ronghe": "讓我來⋯讓我說句公道話",
-      "beizhu": "用 Google Lens OCR 中的省略号“⋯”替换了 PaddleOCR 中的间隔号“·”。"
+      "beizhu": "用 Google Lens 識別的省略號「⋯」替換了 PaddleOCR 中的錯誤符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -489,11 +489,11 @@
   {
     "query": {
       "lens": "蘇翁⋯",
-      "paddle": "蘇翁·"
+      "paddle": "蘇翁・"
     },
     "answer": {
       "ronghe": "蘇翁⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”，而非 PaddleOCR 中的“·”。"
+      "beizhu": "採用了 Google Lens 輸出中的「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -549,11 +549,11 @@
   {
     "query": {
       "lens": "走開⋯",
-      "paddle": "走開·－"
+      "paddle": "走開・－"
     },
     "answer": {
       "ronghe": "走開⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和省略号，省略了 PaddleOCR 中错误的标点符号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，並省略了 PaddleOCR 中誤識別的「・－」符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -597,13 +597,13 @@
   {
     "query": {
       "lens": "來⋯拿去打賞給這裡的姑娘\n老爺",
-      "paddle": "來·拿去打賞給這裡的姑娘 老爺"
+      "paddle": "來・拿去打賞給這裡的姑娘 老爺"
     },
     "answer": {
       "ronghe": "來⋯拿去打賞給這裡的姑娘　　老爺",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」替換 PaddleOCR 中的「・」；並將在 Google Lens 中顯示為換行、而在 PaddleOCR 中顯示為空格的間隙統一替換為兩個表意空格。"
     },
-    "difficulty": 2,
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -658,11 +658,11 @@
   {
     "query": {
       "lens": "對呀，我是來⋯",
-      "paddle": "對呀，我是來·"
+      "paddle": "對呀，我是來・"
     },
     "answer": {
       "ronghe": "對呀，我是來⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -670,14 +670,14 @@
   {
     "query": {
       "lens": "來拉⋯⋯拉你",
-      "paddle": "來拉· 拉你"
+      "paddle": "來拉・拉你"
     },
     "answer": {
-      "ronghe": "來拉⋯　　拉你",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "ronghe": "來拉⋯⋯拉你",
+      "beizhu": "採用了 Google Lens 中較可信的省略號“⋯⋯”，並省略了僅在 PaddleOCR 中出現的日文中點“・”。"
     },
-    "difficulty": 3,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -694,14 +694,14 @@
   {
     "query": {
       "lens": "還有⋯還有",
-      "paddle": "還有·還有"
+      "paddle": "還有・還有"
     },
     "answer": {
       "ronghe": "還有⋯還有",
-      "beizhu": "用 Google Lens OCR 中的省略号“⋯”替换了 PaddleOCR 中的点号“·”，以保证汉字和标点的准确性。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號「⋯」，替換了 PaddleOCR 中錯誤的「・」。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
@@ -718,23 +718,23 @@
   {
     "query": {
       "lens": "斬他⋯斬他",
-      "paddle": "斬他·斬他"
+      "paddle": "斬他・斬他"
     },
     "answer": {
       "ronghe": "斬他⋯斬他",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中更可靠的省略號「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
-    "difficulty": 1,
-    "verified": true
+    "verified": true,
+    "difficulty": 1
   },
   {
     "query": {
       "lens": "那你是要⋯",
-      "paddle": "那你是要·"
+      "paddle": "那你是要・"
     },
     "answer": {
       "ronghe": "那你是要⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，替換了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -803,11 +803,11 @@
   {
     "query": {
       "lens": "大家準備⋯",
-      "paddle": "大家準備·"
+      "paddle": "大家準備・"
     },
     "answer": {
       "ronghe": "大家準備⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並糾正了 PaddleOCR 中錯誤的中點“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -815,11 +815,11 @@
   {
     "query": {
       "lens": "但是⋯",
-      "paddle": "但是·"
+      "paddle": "但是・"
     },
     "answer": {
       "ronghe": "但是⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens 中更可靠的省略號“⋯”，替換了 PaddleOCR 中誤識別的頓號樣符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -863,13 +863,13 @@
   {
     "query": {
       "lens": "七姑娘⋯\n將就一下⋯",
-      "paddle": "七姑娘⋯將就一下·"
+      "paddle": "七姑娘⋯將就一下・"
     },
     "answer": {
-      "ronghe": "七姑娘⋯　　將就一下⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "ronghe": "七姑娘⋯將就一下⋯",
+      "beizhu": "保留了 Google Lens OCR 中的換行前後文字與省略號，省略了換行符；用 Google Lens 的省略號替換了 PaddleOCR 中誤識別的「・」。"
     },
-    "difficulty": 2,
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -887,11 +887,11 @@
   {
     "query": {
       "lens": "不要喝⋯",
-      "paddle": "不要喝·"
+      "paddle": "不要喝・"
     },
     "answer": {
       "ronghe": "不要喝⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並糾正了 PaddleOCR 將其誤識別為頓號樣符號“・”的錯誤。"
     },
     "difficulty": 1,
     "verified": true
@@ -1019,11 +1019,11 @@
   {
     "query": {
       "lens": "蘇翁，\n我是鴇母⋯",
-      "paddle": "蘇翁，我是鴨母·"
+      "paddle": "蘇翁，我是鴨母・"
     },
     "answer": {
       "ronghe": "蘇翁，我是鴇母⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的“鴇母”和省略号“⋯”；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "採用了 Google Lens 較為可靠的「鴇母」與省略號，省略了其換行符；保留 PaddleOCR 中與 Lens 一致的逗號。"
     },
     "difficulty": 1,
     "verified": true
@@ -1043,11 +1043,11 @@
   {
     "query": {
       "lens": "那麼早，\n還未睡醒⋯",
-      "paddle": "那麼早，還未睡醒·"
+      "paddle": "那麼早，還未睡醒・"
     },
     "answer": {
       "ronghe": "那麼早，還未睡醒⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行前的省略号，并省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的換行符後續內容與省略號；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符，以及 PaddleOCR 中誤識別的頓號符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1067,11 +1067,11 @@
   {
     "query": {
       "lens": "你不用等如霜姑娘了，她已經走了⋯",
-      "paddle": "你不用等如霜姑娘了，她已經走了·"
+      "paddle": "你不用等如霜姑娘了，她已經走了・"
     },
     "answer": {
       "ronghe": "你不用等如霜姑娘了，她已經走了⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号“⋯”，而不是 PaddleOCR 的“·”。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1079,11 +1079,11 @@
   {
     "query": {
       "lens": "聽說，她⋯她去了京城",
-      "paddle": "聽說，她·她去了京城"
+      "paddle": "聽說，她・她去了京城"
     },
     "answer": {
       "ronghe": "聽說，她⋯她去了京城",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”替代 PaddleOCR 中的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1091,11 +1091,11 @@
   {
     "query": {
       "lens": "男兒為國家⋯",
-      "paddle": "男兒為國家·"
+      "paddle": "男兒為國家・"
     },
     "answer": {
       "ronghe": "男兒為國家⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中錯誤的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1103,11 +1103,11 @@
   {
     "query": {
       "lens": "⋯辮子怎樣戴⋯",
-      "paddle": "·辮子怎樣戴·"
+      "paddle": "・辮子怎樣戴・"
     },
     "answer": {
       "ronghe": "⋯辮子怎樣戴⋯",
-      "beizhu": "用 Google Lens OCR 识别的省略号“⋯”替换了 PaddleOCR 识别的“·”。"
+      "beizhu": "採用了 Google Lens 較準確的省略號「⋯」替代 PaddleOCR 中的「・」，其餘文字保持一致。"
     },
     "difficulty": 1,
     "verified": true
@@ -1127,11 +1127,11 @@
   {
     "query": {
       "lens": "我拉長它又彈它⋯",
-      "paddle": "我拉長它又彈它·"
+      "paddle": "我拉長它又彈它・"
     },
     "answer": {
       "ronghe": "我拉長它又彈它⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號「⋯」，替換了 PaddleOCR 中不正確的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1259,11 +1259,11 @@
   {
     "query": {
       "lens": "推⋯",
-      "paddle": "推·"
+      "paddle": "推・"
     },
     "answer": {
       "ronghe": "推⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”，而不是 PaddleOCR 中的间隔号“·”。"
+      "beizhu": "採用了 Google Lens 中更為常見且語境更自然的省略號「⋯」，並糾正了 PaddleOCR 將其誤識為「・」的字元。"
     },
     "difficulty": 1,
     "verified": true
@@ -1271,11 +1271,11 @@
   {
     "query": {
       "lens": "綁牢一點⋯綁牢一點",
-      "paddle": "綁牢一點·綁牢一點"
+      "paddle": "綁牢一點・綁牢一點"
     },
     "answer": {
       "ronghe": "綁牢一點⋯綁牢一點",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用 Google Lens 中更可靠的省略號「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1295,11 +1295,11 @@
   {
     "query": {
       "lens": "推到那邊⋯推到那邊",
-      "paddle": "推到那邊·推到那邊"
+      "paddle": "推到那邊・推到那邊"
     },
     "answer": {
       "ronghe": "推到那邊⋯推到那邊",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，並糾正了 PaddleOCR 中錯誤的“・”標點；未做額外空格或換行調整。"
     },
     "difficulty": 1,
     "verified": true
@@ -1331,11 +1331,11 @@
   {
     "query": {
       "lens": "來⋯進去",
-      "paddle": "來·進去"
+      "paddle": "來・進去"
     },
     "answer": {
       "ronghe": "來⋯進去",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 輸出中的省略號，替換了 PaddleOCR 中不正確的「・」，未使用 PaddleOCR 中多餘的標點。"
     },
     "difficulty": 1,
     "verified": true
@@ -1476,11 +1476,11 @@
   {
     "query": {
       "lens": "是由蒙古的博達爾多⋯",
-      "paddle": "是由蒙古的博達爾多·"
+      "paddle": "是由蒙古的博達爾多・"
     },
     "answer": {
       "ronghe": "是由蒙古的博達爾多⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”，而非 PaddleOCR 中的英文句点“·”。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，並省略了 PaddleOCR 中不一致的符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1488,11 +1488,11 @@
   {
     "query": {
       "lens": "⋯對廣東的蘇察哈爾燦",
-      "paddle": "·對廣東的蘇察哈爾燦"
+      "paddle": "・對廣東的蘇察哈爾燦"
     },
     "answer": {
       "ronghe": "⋯對廣東的蘇察哈爾燦",
-      "beizhu": "用 Google Lens OCR 中的省略号“⋯”替换了 PaddleOCR 中的点“·”。"
+      "beizhu": "採用了 Google Lens 輸出中的省略號「⋯」，替換了 PaddleOCR 中不正確的「・」。其他文字保持一致。"
     },
     "difficulty": 1,
     "verified": true
@@ -1728,23 +1728,23 @@
   {
     "query": {
       "lens": "⋯\n對⋯",
-      "paddle": "對·"
+      "paddle": "對・"
     },
     "answer": {
       "ronghe": "對⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號與漢字「對」，並省略了其換行符；捨棄了 PaddleOCR 中錯誤的「・」標點。"
     },
-    "difficulty": 3,
+    "difficulty": 1,
     "verified": true
   },
   {
     "query": {
       "lens": "你⋯你⋯",
-      "paddle": "你⋯你·"
+      "paddle": "你⋯你・"
     },
     "answer": {
       "ronghe": "你⋯你⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 較為可靠的省略號「⋯」，修正了 PaddleOCR 尾部誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1752,11 +1752,11 @@
   {
     "query": {
       "lens": "光宗耀祖了⋯",
-      "paddle": "光宗耀祖了·"
+      "paddle": "光宗耀祖了・"
     },
     "answer": {
       "ronghe": "光宗耀祖了⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用 Google Lens 中更可靠的省略號「⋯」，替換了 PaddleOCR 中錯誤的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1920,11 +1920,11 @@
   {
     "query": {
       "lens": "但貪贓依例充公，枉法嗎⋯",
-      "paddle": "但貪贓依例充公，枉法嗎·"
+      "paddle": "但貪贓依例充公，枉法嗎・"
     },
     "answer": {
       "ronghe": "但貪贓依例充公，枉法嗎⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號“⋯”，替換了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1944,11 +1944,11 @@
   {
     "query": {
       "lens": "身如柳絮⋯",
-      "paddle": "身如柳絮·"
+      "paddle": "身如柳絮・"
     },
     "answer": {
       "ronghe": "身如柳絮⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1956,11 +1956,11 @@
   {
     "query": {
       "lens": "⋯歷劫滄桑⋯鴛鴦扣",
-      "paddle": "歷劫滄桑·鴛鴦扣"
+      "paddle": "歷劫滄桑・鴛鴦扣"
     },
     "answer": {
       "ronghe": "⋯歷劫滄桑⋯鴛鴦扣",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的间隔号。"
+      "beizhu": "採用 Google Lens 識別到的前後省略號形式，並保留其中間無標點的直書格式；未採用 PaddleOCR 中的中點符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -1968,11 +1968,11 @@
   {
     "query": {
       "lens": "宜結不宜解，苦相思⋯",
-      "paddle": "宜結不宜解，苦相思·"
+      "paddle": "宜結不宜解，苦相思・"
     },
     "answer": {
       "ronghe": "宜結不宜解，苦相思⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”，而非 PaddleOCR 中的“·”。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，替換了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -1980,11 +1980,11 @@
   {
     "query": {
       "lens": "苦相思，能買不能賣⋯",
-      "paddle": "苦相思 能買不能賣·"
+      "paddle": "苦相思 能買不能賣・"
     },
     "answer": {
       "ronghe": "苦相思，能買不能賣⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格和句号。"
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號和省略號；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格和日文中點。"
     },
     "difficulty": 1,
     "verified": true
@@ -1992,11 +1992,11 @@
   {
     "query": {
       "lens": "悔不該，惹下⋯",
-      "paddle": "悔不該，惹下·"
+      "paddle": "悔不該，惹下・"
     },
     "answer": {
       "ronghe": "悔不該，惹下⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用 Google Lens 較為可靠的省略號「⋯」，並糾正 PaddleOCR 中錯誤的「・」標點。"
     },
     "difficulty": 1,
     "verified": true
@@ -2100,11 +2100,11 @@
   {
     "query": {
       "lens": "快點⋯",
-      "paddle": "快點·"
+      "paddle": "快點・"
     },
     "answer": {
       "ronghe": "快點⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號，替換了 PaddleOCR 中錯誤的「・」符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -2112,11 +2112,11 @@
   {
     "query": {
       "lens": "笑死人了⋯",
-      "paddle": "笑死人了·"
+      "paddle": "笑死人了・"
     },
     "answer": {
       "ronghe": "笑死人了⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点号。"
+      "beizhu": "採用了 Google Lens OCR 中較為可靠的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2124,11 +2124,11 @@
   {
     "query": {
       "lens": "請進，\n請進⋯",
-      "paddle": "請進，請進·"
+      "paddle": "請進，請進・"
     },
     "answer": {
       "ronghe": "請進，請進⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號，替換了 PaddleOCR 中的「・」，並省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符。"
     },
     "difficulty": 1,
     "verified": true
@@ -2160,11 +2160,11 @@
   {
     "query": {
       "lens": "善有善報，可憐我這個小乞丐⋯",
-      "paddle": "善有善報 ，可憐我這個小乞丐·"
+      "paddle": "善有善報 ，可憐我這個小乞丐・"
     },
     "answer": {
       "ronghe": "善有善報，可憐我這個小乞丐⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号和省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格和句号。"
+      "beizhu": "採用 Google Lens 識別的標點：用其逗號替換 PaddleOCR 中逗號前的多餘空格，並以省略號「⋯」取代 PaddleOCR 中的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2280,11 +2280,11 @@
   {
     "query": {
       "lens": "強盜⋯",
-      "paddle": "強盜·"
+      "paddle": "強盜・"
     },
     "answer": {
       "ronghe": "強盜⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號「⋯」，並糾正了 PaddleOCR 中誤識別的符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2316,11 +2316,11 @@
   {
     "query": {
       "lens": "不知道你老人家意思⋯",
-      "paddle": "不知道你老人家意思·"
+      "paddle": "不知道你老人家意思・"
     },
     "answer": {
       "ronghe": "不知道你老人家意思⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，替換了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2352,11 +2352,11 @@
   {
     "query": {
       "lens": "走開⋯走開",
-      "paddle": "走開·走開"
+      "paddle": "走開・走開"
     },
     "answer": {
       "ronghe": "走開⋯走開",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2400,11 +2400,11 @@
   {
     "query": {
       "lens": "阿燦⋯",
-      "paddle": "阿燦·"
+      "paddle": "阿燦・"
     },
     "answer": {
       "ronghe": "阿燦⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的中点。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，取代 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2424,11 +2424,11 @@
   {
     "query": {
       "lens": "走⋯沒事⋯走開",
-      "paddle": "走⋯沒事·走開"
+      "paddle": "走⋯沒事・走開"
     },
     "answer": {
       "ronghe": "走⋯沒事⋯走開",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和标点；将 PaddleOCR 中的间隔点替换为 Google Lens OCR 中的省略号。"
+      "beizhu": "用 Google Lens 較可靠的省略號「⋯」替換了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2448,11 +2448,11 @@
   {
     "query": {
       "lens": "不用怕，沒事的⋯",
-      "paddle": "不用怕，沒事的·"
+      "paddle": "不用怕，沒事的・"
     },
     "answer": {
       "ronghe": "不用怕，沒事的⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，並替換掉 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2460,11 +2460,11 @@
   {
     "query": {
       "lens": "一說到他我就氣死了⋯",
-      "paddle": "說到他我就氣死了·"
+      "paddle": "說到他我就氣死了・"
     },
     "answer": {
       "ronghe": "一說到他我就氣死了⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的“一”；采用了 Google Lens OCR 中更准确的省略号。"
+      "beizhu": "採用 Google Lens 較完整且標點正確的「一說到他我就氣死了⋯」，補回 PaddleOCR 中缺失的開頭「一」並以省略號「⋯」取代 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2472,11 +2472,11 @@
   {
     "query": {
       "lens": "還好我兒子有真材實料⋯",
-      "paddle": "還好我兒子有真材實料·"
+      "paddle": "還好我兒子有真材實料・"
     },
     "answer": {
       "ronghe": "還好我兒子有真材實料⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，替換了 PaddleOCR 中錯誤的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2496,11 +2496,11 @@
   {
     "query": {
       "lens": "哈爾叔⋯來⋯",
-      "paddle": "哈爾叔 來·"
+      "paddle": "哈爾叔 來・"
     },
     "answer": {
       "ronghe": "哈爾叔⋯來⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号和标点。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號“⋯”與整體文字，省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格與「・」符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -2520,11 +2520,11 @@
   {
     "query": {
       "lens": "難道要你堂堂武狀元⋯",
-      "paddle": "難道要你堂堂武狀元·"
+      "paddle": "難道要你堂堂武狀元・"
     },
     "answer": {
       "ronghe": "難道要你堂堂武狀元⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號「⋯」，並糾正了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2544,11 +2544,11 @@
   {
     "query": {
       "lens": "是的⋯",
-      "paddle": "是的·"
+      "paddle": "是的・"
     },
     "answer": {
       "ronghe": "是的⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號「⋯」，替換了 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2568,11 +2568,11 @@
   {
     "query": {
       "lens": "走，快走⋯別礙我做生意",
-      "paddle": "走，快走·別礙我做生意"
+      "paddle": "走，快走・別礙我做生意"
     },
     "answer": {
       "ronghe": "走，快走⋯別礙我做生意",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的间隔号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的“・”符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -2592,11 +2592,11 @@
   {
     "query": {
       "lens": "謝謝⋯⋯",
-      "paddle": "謝謝·"
+      "paddle": "謝謝・"
     },
     "answer": {
       "ronghe": "謝謝⋯⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了 Google Lens OCR 中較為正確的省略號“⋯⋯”，並替換了 PaddleOCR 中錯誤的頓號符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2652,11 +2652,11 @@
   {
     "query": {
       "lens": "好冷⋯阿燦！好冷⋯",
-      "paddle": "好冷⋯阿燦！好冷·"
+      "paddle": "好冷⋯阿燦！好冷・"
     },
     "answer": {
       "ronghe": "好冷⋯阿燦！好冷⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”替换了 PaddleOCR 中的“·”。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”替換 PaddleOCR 結尾處的錯誤符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2700,11 +2700,11 @@
   {
     "query": {
       "lens": "飽⋯飽也要吃，快點吃",
-      "paddle": "飽·飽也要吃，快點吃"
+      "paddle": "飽・飽也要吃，快點吃"
     },
     "answer": {
       "ronghe": "飽⋯飽也要吃，快點吃",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”和逗号，省略了 PaddleOCR 中错误的句点“·”。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”替換 PaddleOCR 中錯誤的“・”，其餘文字與標點保持不變。"
     },
     "difficulty": 1,
     "verified": true
@@ -2736,13 +2736,13 @@
   {
     "query": {
       "lens": "可不可以⋯\n不可以",
-      "paddle": "可不可以· 不可以"
+      "paddle": "可不可以・不可以"
     },
     "answer": {
-      "ronghe": "可不可以⋯　　不可以",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "ronghe": "可不可以⋯不可以",
+      "beizhu": "採用了 Google Lens 中較可靠的省略號，並省略了 Google Lens 中存在但 PaddleOCR 中不存在的換行符及 PaddleOCR 中多餘的間隔符號。"
     },
-    "difficulty": 2,
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -2760,11 +2760,11 @@
   {
     "query": {
       "lens": "姐姐⋯姐姐！\n蘇燦",
-      "paddle": "姐姐·姐姐！蘇燦"
+      "paddle": "姐姐・姐姐！蘇燦"
     },
     "answer": {
       "ronghe": "姐姐⋯姐姐！蘇燦",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號「⋯」替換 PaddleOCR 中的「・」；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的換行符。"
     },
     "difficulty": 1,
     "verified": true
@@ -2868,11 +2868,11 @@
   {
     "query": {
       "lens": "多謝⋯多謝",
-      "paddle": "多謝·多謝"
+      "paddle": "多謝・多謝"
     },
     "answer": {
       "ronghe": "多謝⋯多謝",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用 Google Lens 中較為可靠的省略號「⋯」，替換 PaddleOCR 中錯誤的「・」，其餘文字一致。"
     },
     "difficulty": 1,
     "verified": true
@@ -3000,11 +3000,11 @@
   {
     "query": {
       "lens": "你是⋯",
-      "paddle": "你是·"
+      "paddle": "你是・"
     },
     "answer": {
       "ronghe": "你是⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号替换了 PaddleOCR 中的点。"
+      "beizhu": "採用了在標點符號上更可靠的 Google Lens 版本中的省略號，替換了 PaddleOCR 中的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3012,11 +3012,11 @@
   {
     "query": {
       "lens": "正好⋯現在我們當乞丐",
-      "paddle": "正好·現在我們當乞丐"
+      "paddle": "正好・現在我們當乞丐"
     },
     "answer": {
       "ronghe": "正好⋯現在我們當乞丐",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号“⋯”，而不是 PaddleOCR 的间隔号“·”。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的“・”；其餘文字一致，未作改動。"
     },
     "difficulty": 1,
     "verified": true
@@ -3024,11 +3024,11 @@
   {
     "query": {
       "lens": "阿燦⋯他去哪兒呢？",
-      "paddle": "阿燦·他去哪兒呢？"
+      "paddle": "阿燦・他去哪兒呢？"
     },
     "answer": {
       "ronghe": "阿燦⋯他去哪兒呢？",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号“⋯”；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的间隔号“·”。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號「⋯」，沒有採用 PaddleOCR 中的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3036,11 +3036,11 @@
   {
     "query": {
       "lens": "燦⋯燦",
-      "paddle": "燦·燦"
+      "paddle": "燦・燦"
     },
     "answer": {
       "ronghe": "燦⋯燦",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”替换了 PaddleOCR 中的间隔号“·”。"
+      "beizhu": "採用了 Google Lens 中更可靠的省略號，未採用 PaddleOCR 中的中點符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -3156,11 +3156,11 @@
   {
     "query": {
       "lens": "如霜⋯如霜",
-      "paddle": "如霜·如霜"
+      "paddle": "如霜・如霜"
     },
     "answer": {
       "ronghe": "如霜⋯如霜",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用 Google Lens 識別的省略號「⋯」替換 PaddleOCR 中誤識別的「・」，其餘文字保持一致。"
     },
     "difficulty": 1,
     "verified": true
@@ -3168,11 +3168,11 @@
   {
     "query": {
       "lens": "現在⋯",
-      "paddle": "現在·"
+      "paddle": "現在・"
     },
     "answer": {
       "ronghe": "現在⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号。"
+      "beizhu": "採用了 Google Lens OCR 中較可靠的省略號“⋯”，替換了 PaddleOCR 中錯誤的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3180,11 +3180,11 @@
   {
     "query": {
       "lens": "⋯不！\n曾經",
-      "paddle": "·不！曾經"
+      "paddle": "・不！曾經"
     },
     "answer": {
       "ronghe": "⋯不！曾經",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "beizhu": "採用 Google Lens 較可靠的省略號與換行前文本，並以 PaddleOCR 的單行格式為準，將換行省略、空格省略，融合為一行「⋯不！曾經」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3204,11 +3204,11 @@
   {
     "query": {
       "lens": "所以我說，做人⋯",
-      "paddle": "所以我說，做人·"
+      "paddle": "所以我說，做人・"
     },
     "answer": {
       "ronghe": "所以我說，做人⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号“⋯”。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3276,11 +3276,11 @@
   {
     "query": {
       "lens": "乞丐？",
-      "paddle": "乞丐？·"
+      "paddle": "乞丐？・"
     },
     "answer": {
       "ronghe": "乞丐？",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余符号“·”。"
+      "beizhu": "採用了 Google Lens 輸出的文字與標點，省略了 PaddleOCR 中多出的符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3492,11 +3492,11 @@
   {
     "query": {
       "lens": "前輩⋯",
-      "paddle": "前輩·"
+      "paddle": "前輩・"
     },
     "answer": {
       "ronghe": "前輩⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。"
+      "beizhu": "採用了 Google Lens 輸出中的省略號「⋯」，替換了 PaddleOCR 中不正確的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3528,11 +3528,11 @@
   {
     "query": {
       "lens": "⋯我要把你獻給皇上",
-      "paddle": "·我要把你獻給皇上"
+      "paddle": "・我要把你獻給皇上"
     },
     "answer": {
       "ronghe": "⋯我要把你獻給皇上",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”，替换了 PaddleOCR 中的“·”。"
+      "beizhu": "將 PaddleOCR 中誤識別的「・」糾正為 Google Lens 中較可靠的省略號「⋯」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3540,11 +3540,11 @@
   {
     "query": {
       "lens": "莫大叔⋯",
-      "paddle": "莫大叔·"
+      "paddle": "莫大叔・"
     },
     "answer": {
       "ronghe": "莫大叔⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用在漢字與標點上更可靠的 Google Lens 結果中的省略號“⋯”，替換 PaddleOCR 中錯誤的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3600,11 +3600,11 @@
   {
     "query": {
       "lens": "這一招難道就是⋯",
-      "paddle": "這一招難道就是·"
+      "paddle": "這一招難道就是・"
     },
     "answer": {
       "ronghe": "這一招難道就是⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 識別的省略號「⋯」，替換了 PaddleOCR 中誤識別的符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3672,11 +3672,11 @@
   {
     "query": {
       "lens": "莫大叔⋯莫大叔！你怎麼呢？",
-      "paddle": "莫大叔·莫大叔！你怎麼呢？"
+      "paddle": "莫大叔・莫大叔！你怎麼呢？"
     },
     "answer": {
       "ronghe": "莫大叔⋯莫大叔！你怎麼呢？",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”替換 PaddleOCR 中的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3684,11 +3684,11 @@
   {
     "query": {
       "lens": "莫大叔⋯莫大叔",
-      "paddle": "莫大叔·莫大叔"
+      "paddle": "莫大叔・莫大叔"
     },
     "answer": {
       "ronghe": "莫大叔⋯莫大叔",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”替代 PaddleOCR 中的間隔符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3840,11 +3840,11 @@
   {
     "query": {
       "lens": "年年都有今日⋯",
-      "paddle": "年年都有今日·"
+      "paddle": "年年都有今日・"
     },
     "answer": {
       "ronghe": "年年都有今日⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的点号。"
+      "beizhu": "採用了 Google Lens 中較為正確的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3900,11 +3900,11 @@
   {
     "query": {
       "lens": "撒尿⋯撒尿⋯",
-      "paddle": "撤尿·撤尿·"
+      "paddle": "撤尿・撤尿・"
     },
     "answer": {
       "ronghe": "撒尿⋯撒尿⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的汉字“撒尿”及省略号“⋯”，而非 PaddleOCR 中的“撤尿”和中点“·”。"
+      "beizhu": "採用了 Google Lens 中較為正確的用字「撒尿」以及省略號「⋯」，全部替換 PaddleOCR 中誤識別的「撤尿」與符號「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -3924,11 +3924,11 @@
   {
     "query": {
       "lens": "來⋯拿著它",
-      "paddle": "來·拿著它"
+      "paddle": "來・拿著它"
     },
     "answer": {
       "ronghe": "來⋯拿著它",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，替換了 PaddleOCR 中不正確的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -4056,11 +4056,11 @@
   {
     "query": {
       "lens": "龍的傳人龍鳳呈祥⋯",
-      "paddle": "龍的傳人龍鳳呈祥·"
+      "paddle": "龍的傳人龍鳳呈祥・"
     },
     "answer": {
       "ronghe": "龍的傳人龍鳳呈祥⋯",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号。"
+      "beizhu": "採用了 Google Lens 輸出中的省略號“⋯”，覆蓋了 PaddleOCR 中誤識別的“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -4068,11 +4068,11 @@
   {
     "query": {
       "lens": "⋯龍馬精神，望夫成龍⋯",
-      "paddle": "·龍馬精神，望夫成龍·"
+      "paddle": "・龍馬精神，望夫成龍・"
     },
     "answer": {
       "ronghe": "⋯龍馬精神，望夫成龍⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号“⋯”替换了 PaddleOCR 中的“·”。"
+      "beizhu": "採用了 Google Lens 中更可信的省略號“⋯”替換 PaddleOCR 中的符號“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -4104,11 +4104,11 @@
   {
     "query": {
       "lens": "阿燦⋯你沒事吧",
-      "paddle": "阿燦·你沒事吧"
+      "paddle": "阿燦・你沒事吧"
     },
     "answer": {
       "ronghe": "阿燦⋯你沒事吧",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的间隔号。"
+      "beizhu": "採用了 Google Lens 中較可靠的省略號“⋯”，替換了 PaddleOCR 中錯誤的中點“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -4175,12 +4175,12 @@
   },
   {
     "query": {
-      "lens": "你總該給朕一點面子，讓朕好下臺",
-      "paddle": "你總該給朕一點面子， 讓朕好下臺"
+      "lens": "你總該給朕一點面子，讓朕好下台",
+      "paddle": "你總該給朕一點面子， 讓朕好下台"
     },
     "answer": {
-      "ronghe": "你總該給朕一點面子，讓朕好下臺",
-      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+      "ronghe": "你總該給朕一點面子，讓朕好下台",
+      "beizhu": "省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
@@ -4284,11 +4284,11 @@
   {
     "query": {
       "lens": "跟住我⋯走吧⋯",
-      "paddle": "跟住我·走吧·"
+      "paddle": "跟住我・走吧・"
     },
     "answer": {
       "ronghe": "跟住我⋯走吧⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，替换了 PaddleOCR 中的间隔号。"
+      "beizhu": "採用 Google Lens 中較為可靠的省略號「⋯」，替換了 PaddleOCR 中的「・」。"
     },
     "difficulty": 1,
     "verified": true
