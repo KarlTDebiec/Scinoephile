@@ -40,7 +40,7 @@ def test_load_sup(
     for event in series:
         assert event.start >= 0
         assert event.end >= event.start
-        assert event.img.mode == "RGBA"
+        assert event.img.mode == "LA"
         assert event.img.size[0] > 0
         assert event.img.size[1] > 0
 
