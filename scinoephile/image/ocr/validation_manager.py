@@ -366,6 +366,37 @@ class ValidationManager:
                 bbox_1_idx = bbox_2_idx
                 continue
 
+            # Prompt for confirmation that it should be a space
+            if cutoffs[0] <= gap <= cutoffs[1]:
+                approved = False
+                if interactive:
+                    annotated = get_img_with_bboxes(sub.img, [bbox_1, bbox_2])
+                    annotated.show()
+                    response = input(
+                        f"Gap {gap} between '{char_1}' and '{char_2}' "
+                        f"with gap chars '{gap_chars.replace(chr(10), '\\n')}' "
+                        f"should be 'space'? (y/n): "
+                    )
+                    approved = response.lower().startswith("y")
+                if approved:
+                    self._update_pair_gaps(
+                        (char_1, char_2),
+                        (cutoffs[0], gap, cutoffs[2], cutoffs[3]),
+                    )
+                    if gap_chars != " ":
+                        messages.append(
+                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                            f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
+                            f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a single space"
+                        )
+                else:
+                    self._update_pair_gaps(
+                        (char_1, char_2), (gap, cutoffs[1], cutoffs[2], cutoffs[3])
+                    )
+                char_1_idx = char_2_idx
+                bbox_1_idx = bbox_2_idx
+                continue
+
             # Space
             if cutoffs[1] <= gap <= cutoffs[2]:
                 if gap_chars != " ":
