@@ -367,7 +367,7 @@ class ValidationManager:
                 continue
 
             # Prompt for confirmation that it should be a space
-            if cutoffs[0] <= gap <= cutoffs[1]:
+            if cutoffs[0] < gap < cutoffs[1]:
                 approved = False
                 if interactive:
                     annotated = get_img_with_bboxes(sub.img, [bbox_1, bbox_2])
@@ -410,7 +410,7 @@ class ValidationManager:
                 continue
 
             # Tab
-            if gap >= cutoffs[3]:
+            if cutoffs[3] <= gap:
                 if gap_chars != "    ":
                     messages.append(
                         f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "

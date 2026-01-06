@@ -26,7 +26,7 @@ def get_default_char_pair_cutoffs(
     Returns:
         default cutoff tuple
     """
-    return 1, 50, 50, 100
+    return 8, 22, 50, 100
 
 
 def load_char_pair_gaps(
