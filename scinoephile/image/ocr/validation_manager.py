@@ -157,7 +157,7 @@ class ValidationManager:
             merged bboxes and validation messages
         """
         messages = []
-        text = sub.text
+        text = sub.text.replace("\\N", "\n")
 
         validated_bboxes: list[Bbox] = []
         bbox_idx = 0
@@ -327,7 +327,7 @@ class ValidationManager:
             bboxes and validation messages
         """
         messages = []
-        text = sub.text
+        text = sub.text.replace("\\N", "\n")
 
         validated_text: str = ""
         bbox_1_idx = 0
