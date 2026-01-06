@@ -370,7 +370,15 @@ class ValidationManager:
 
             # Get next bbox 2
             bbox_2_idx = bbox_1_idx + 1
-            bbox_2 = bboxes[bbox_2_idx]
+            try:
+                bbox_2 = bboxes[bbox_2_idx]
+            except IndexError:
+                messages.append(
+                    f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                    f"Ran out of bboxes when checking gap between '{char_1}' and "
+                    f"'{char_2}'"
+                )
+                break
 
             # get gap
             gap = bbox_2.x1 - bbox_1.x2
