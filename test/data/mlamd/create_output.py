@@ -25,11 +25,9 @@ from scinoephile.lang.zho import (
     get_zho_converted,
     get_zho_flattened,
     get_zho_ocr_fused,
-    get_zho_proofread,
     validate_zho_ocr,
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
-from scinoephile.lang.zho.proofreading import get_zho_proofreader
 from scinoephile.multilang.synchronization import get_synced_series
 from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_proofread,
@@ -45,7 +43,6 @@ from scinoephile.multilang.yue_zho.translation import (
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
-    get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
@@ -54,12 +51,10 @@ from test.data.mlamd import (
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
     get_mnt_zho_ocr_fusion_test_cases,
-    get_mnt_zho_proofreading_test_cases,
 )
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_zho_ocr_fusion_test_cases,
-    get_t_zho_proofreading_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -68,49 +63,81 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "简体中文 (OCR)",
-    # "简体中文 (OCR Validation)",
-    "English (OCR)",
+    "简体中文 (OCR)",
+    # "English (OCR)",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
 }
 
-if "简体中文 (OCR)" in actions:
-    zho_hans_lens = Series.load(input_dir / "zho-Hans_lens.srt")
-    zho_hans_lens = get_zho_cleaned(zho_hans_lens, remove_empty=False)
-    zho_hans_lens = get_zho_converted(zho_hans_lens)
-    zho_hans_paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
-    zho_hans_paddle = get_zho_cleaned(zho_hans_paddle, remove_empty=False)
-    zho_hans_paddle = get_zho_converted(zho_hans_paddle)
-    zho_ocr_fuser = get_zho_ocr_fuser(
-        test_cases=get_kob_zho_ocr_fusion_test_cases()
-        + get_mnt_zho_ocr_fusion_test_cases()
-        + get_t_zho_ocr_fusion_test_cases(),
-        test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
-        auto_verify=True,
+
+def process_zho_hans_ocr():
+    # Fuse
+    fuse_path = output_dir / "zho-Hans_fuse.srt"
+    if False:  # fuse_path.exists():
+        fuse = Series.load(fuse_path)
+    else:
+        lens = Series.load(input_dir / "zho-Hans_lens.srt")
+        lens = get_zho_cleaned(lens, remove_empty=False)
+        lens = get_zho_converted(lens)
+        paddle = Series.load(input_dir / "zho-Hans_paddle.srt")
+        paddle = get_zho_cleaned(paddle, remove_empty=False)
+        paddle = get_zho_converted(paddle)
+        fuser = get_zho_ocr_fuser(
+            test_cases=get_kob_zho_ocr_fusion_test_cases()
+            + get_mnt_zho_ocr_fusion_test_cases()
+            + get_t_zho_ocr_fusion_test_cases(),
+            test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
+            auto_verify=True,
+        )
+        fuse = get_zho_ocr_fused(lens, paddle, fuser)
+        fuse.save(fuse_path)
+
+    # Clean / Convert
+    clean_path = output_dir / "zho-Hans_fuse_clean.srt"
+    if clean_path.exists():
+        fuse_clean = Series.load(clean_path)
+    else:
+        fuse_clean = get_zho_cleaned(fuse, remove_empty=False)
+        fuse_clean = get_zho_converted(fuse_clean)
+        fuse_clean.save(output_dir / "zho-Hans_fuse_clean.srt")
+
+    # Validate
+    image_path = output_dir / "zho-Hans_image"
+    if image_path.exists():
+        image = ImageSeries.load(image_path)
+    else:
+        image = ImageSeries.load(input_dir / "zho-Hans.sup")
+        for text_sub, image_sub in zip(fuse_clean, image):
+            image_sub.text = text_sub.text
+        image.save(image_path)
+    fuse_clean_validate = validate_zho_ocr(
+        image,
+        output_dir_path=output_dir / "zho-Hans_validation",
+        interactive=True,
     )
-    zho_hans_fuse = get_zho_ocr_fused(zho_hans_lens, zho_hans_paddle, zho_ocr_fuser)
-    zho_hans_fuse.save(output_dir / "zho-Hans_fuse.srt")
-    zho_hans_fuse = get_zho_cleaned(zho_hans_fuse)
-    zho_hans_fuse = get_zho_converted(zho_hans_fuse)
-    zho_proofreader = get_zho_proofreader(
-        test_cases=get_kob_zho_proofreading_test_cases()
-        + get_mnt_zho_proofreading_test_cases()
-        + get_t_zho_proofreading_test_cases(),
-        test_case_path=title_root / "lang" / "zho" / "proofreading.json",
-        auto_verify=True,
+    fuse_clean_validate = get_zho_cleaned(fuse_clean_validate)
+    fuse_clean_validate.save(
+        output_dir / "zho-Hans_fuse_clean_validate.srt", exist_ok=True
     )
-    zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
-    zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
-    zho_hans_fuse_proofread_clean = get_zho_cleaned(zho_hans_fuse_proofread)
-    zho_hans_fuse_proofread_clean.save(output_dir / "zho-Hans_fuse_proofread_clean.srt")
-    zho_hans_fuse_proofread_clean_flatten = get_zho_flattened(
-        zho_hans_fuse_proofread_clean
+
+    # Flatten
+    fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
+    fuse_clean_validate_flatten.save(
+        output_dir / "zho-Hans_fuse_clean_validate_flatten.srt", exist_ok=True
     )
-    zho_hans_fuse_proofread_clean_flatten.save(
-        output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt"
-    )
+
+    # # Proofread
+    # zho_proofreader = get_zho_proofreader(
+    #     test_cases=get_kob_zho_proofreading_test_cases()
+    #     + get_mnt_zho_proofreading_test_cases()
+    #     + get_t_zho_proofreading_test_cases(),
+    #     test_case_path=title_root / "lang" / "zho" / "proofreading.json",
+    #     auto_verify=True,
+    # )
+    # zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
+    # zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+
 
 if "简体中文 (OCR Validation)" in actions:
     zho_hans = ImageSeries.load(output_dir / "zho-Hans_image")
@@ -139,7 +166,7 @@ def process_eng_ocr():
             auto_verify=True,
         )
         fuse = get_eng_ocr_fused(lens, tesseract, fuser)
-        fuse.save(output_dir / "eng_fuse.srt")
+        fuse.save(fuse_path)
 
     # Clean
     clean_path = output_dir / "eng_fuse_clean.srt"
@@ -155,7 +182,7 @@ def process_eng_ocr():
         image = ImageSeries.load(image_path)
     else:
         image = ImageSeries.load(input_dir / "eng.sup")
-        for text_sub, image_sub in zip(fuse, image):
+        for text_sub, image_sub in zip(fuse_clean, image):
             image_sub.text = text_sub.text
         image.save(image_path)
     fuse_clean_validate = validate_eng_ocr(
@@ -183,6 +210,9 @@ def process_eng_ocr():
     # eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
     # eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 
+
+if "简体中文 (OCR)" in actions:
+    process_zho_hans_ocr()
 
 if "English (OCR)" in actions:
     process_eng_ocr()

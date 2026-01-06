@@ -8,6 +8,8 @@ import csv
 from logging import info
 from pathlib import Path
 
+from scinoephile.core.text import get_char_type
+
 __all__ = [
     "get_default_char_pair_cutoffs",
     "load_char_pair_gaps",
@@ -26,7 +28,14 @@ def get_default_char_pair_cutoffs(
     Returns:
         default cutoff tuple
     """
-    return 8, 24, 50, 1000
+    char_1_type = get_char_type(char_1)
+    char_2_type = get_char_type(char_2)
+
+    if char_1_type == "full" and char_2_type == "full":
+        return 22, 89, 90, 200
+    if char_1_type == "full" or char_2_type == "full":
+        return 8, 89, 90, 200
+    return 8, 24, 100, 200
 
 
 def load_char_pair_gaps(
