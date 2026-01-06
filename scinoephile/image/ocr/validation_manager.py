@@ -403,9 +403,9 @@ class ValidationManager:
             if gap <= cutoffs[0]:
                 if gap_chars != "":
                     messages.append(
-                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
-                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'adjacent' "
-                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not empty"
+                        f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                        f"{self._gap_text(char_1, char_2, gap)} | "
+                        f"expected '' observed '{gap_chars.replace(chr(10), '\\n')}'"
                     )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -430,7 +430,7 @@ class ValidationManager:
                     )
                     if gap_chars != " ":
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text.replace('\n', '\\n')}: "
                             f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
                             f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a single space"
                         )
@@ -447,10 +447,10 @@ class ValidationManager:
                 expected_space = get_expected_space(char_1, char_2)
                 if gap_chars != expected_space:
                     messages.append(
-                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
-                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
-                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' "
-                        f"!= '{expected_space}'"
+                        f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                        f"{self._gap_text(char_1, char_2, gap)} | "
+                        f"expected '{expected_space}' "
+                        f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                     )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -475,7 +475,7 @@ class ValidationManager:
                     )
                     if gap_chars != "    ":
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
+                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text.replace('\n', '\\n')}: "
                             f"Gap {gap} between '{char_1}' and '{char_2}' is 'tab' "
                             f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a tab"
                         )
@@ -489,11 +489,12 @@ class ValidationManager:
 
             # Tab
             if cutoffs[3] <= gap:
-                if gap_chars != self.tab:
+                if gap_chars != self.tab and gap_chars != "\n":
                     messages.append(
-                        f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
-                        f"Gap {gap} between '{char_1}' and '{char_2}' is 'tab' "
-                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a tab"
+                        f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                        f"{self._gap_text(char_1, char_2, gap)} | "
+                        f"expected '{self.tab}' "
+                        f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                     )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -562,3 +563,33 @@ class ValidationManager:
     def _char_pair_gaps_path() -> Path:
         """Path to character pair gap csv file."""
         return package_root / "data" / "ocr" / "char_pair_gaps.csv"
+
+    @staticmethod
+    def _intro_text(sub_idx: int, char_idx: int, text: str) -> str:
+        """Format message intro.
+
+        Arguments:
+            sub_idx: subtitle index
+            char_idx: character index
+            text: subtitle text
+        Returns:
+            formatted message intro
+        """
+        return (
+            f"Sub {sub_idx + 1:4d} | "
+            f"Char {char_idx + 1:2d} | "
+            f"{text.replace(chr(10), '\\n'):60}"
+        )
+
+    @staticmethod
+    def _gap_text(char_1: str, char_2: str, gap: int) -> str:
+        """Format gap message.
+
+        Arguments:
+            char_1: first character
+            char_2: second character
+            gap: gap size
+        Returns:
+            formatted gap message
+        """
+        return f"'{char_1}' and '{char_2}' gap of {gap:3d}"
