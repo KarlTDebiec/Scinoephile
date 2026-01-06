@@ -33,7 +33,23 @@ def get_default_char_pair_cutoffs(
 
     if char_1_type == "full" and char_2_type == "full":
         return 22, 89, 90, 200
-    if char_1_type == "full" or char_2_type == "full":
+    if char_1_type == "full":
+        if char_2 in {"⋯"}:
+            return 22, 89, 90, 200
+        if char_2 in {"？"}:
+            return 40, 89, 90, 200
+        if char_2 in {"！", "，", "．", "：", "；"}:
+            return 47, 89, 90, 200
+        return 8, 89, 90, 200
+    if char_2_type == "full":
+        if char_1 in {"⋯"}:
+            return 22, 89, 90, 200
+        if char_1 in {"？"}:
+            return 40, 89, 90, 200
+        if char_1 in {"！", "，", "．", "：", "；"}:
+            return 47, 89, 90, 200
+        if char_1 in {"」"}:
+            return 61, 89, 90, 200
         return 8, 89, 90, 200
     return 8, 24, 100, 200
 
