@@ -74,7 +74,7 @@ actions = {
 def process_zho_hans_ocr():
     # Fuse
     fuse_path = output_dir / "zho-Hans_fuse.srt"
-    if False:  # fuse_path.exists():
+    if fuse_path.exists():
         fuse = Series.load(fuse_path)
     else:
         lens = Series.load(input_dir / "zho-Hans_lens.srt")

@@ -88,9 +88,9 @@ class ImageSeries(Series):
         path = Path(path)
 
         # Check if directory
-        if format_ == "png" or (not format_ and path.suffix == ""):
+        if format_ == "html" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
-            self._save_png(output_dir, encoding=encoding, errors=errors)
+            self._save_html(output_dir, encoding=encoding, errors=errors)
             info(f"Saved series to {output_dir}")
             return
 
@@ -106,21 +106,6 @@ class ImageSeries(Series):
             **kwargs,
         )
         info(f"Saved series to {output_path}")
-
-    def _save_png(
-        self,
-        dir_path: Path,
-        encoding: str = "utf-8",
-        errors: str | None = None,
-    ):
-        """Save series to directory of png files.
-
-        Arguments:
-            dir_path: Path to output directory
-            encoding: output file encoding
-            errors: encoding error handling
-        """
-        self._save_html(dir_path, encoding=encoding, errors=errors)
 
     def _save_html(
         self,
@@ -139,7 +124,7 @@ class ImageSeries(Series):
         if dir_path.exists() and dir_path.is_dir():
             for file in dir_path.iterdir():
                 file.unlink()
-                info(f"Deleted {file}")
+            info(f"Deleted {dir_path}")
         else:
             dir_path.mkdir(parents=True)
             info(f"Created directory {dir_path}")
@@ -150,7 +135,7 @@ class ImageSeries(Series):
             outfile_path = dir_path / f"{i:04d}.png"
             event.img.save(outfile_path)
             image_paths.append(outfile_path)
-            info(f"Saved image to {outfile_path}")
+        info(f"Saved images to {dir_path}")
 
         # Save HTML index
         html_lines = [

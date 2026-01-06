@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import info, warning
 from pathlib import Path
 
 from scinoephile.common import package_root
@@ -12,12 +12,13 @@ from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.drawing import get_img_with_bboxes
-from scinoephile.image.subtitles import ImageSubtitle
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
 from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import (
     get_default_char_pair_cutoffs,
+    get_expected_space,
     load_char_pair_gaps,
     save_char_pair_gaps,
 )
@@ -27,6 +28,11 @@ __all__ = ["ValidationManager"]
 
 class ValidationManager:
     """Validates OCRed subtitle text using source images."""
+
+    space = " "
+    """String used for spaces between characters."""
+    tab = "    "
+    """String used for 'tabs' between characters (typically separating two speakers)."""
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
@@ -55,8 +61,17 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(self):
-        """Initialize."""
+    def __init__(self, space: str = " ", tab: str = "    "):
+        """Initialize.
+
+        Arguments:
+            space: string used for spaces between characters
+            tab: string used for 'tabs' between characters (typically separating two
+              speakers)
+        """
+        self.space = space
+        self.tab = tab
+
         # Initalize char_dims_by_n.
         for n in range(1, 6):
             file_path = self._char_dims_path(n)
@@ -75,6 +90,36 @@ class ValidationManager:
             self.char_pair_gaps = load_char_pair_gaps(file_path)
 
     def validate(
+        self,
+        series: ImageSeries,
+        stop_at_idx: int | None = None,
+        interactive: bool = False,
+    ) -> ImageSeries:
+        output_series = ImageSeries()
+        if stop_at_idx is None:
+            stop_at_idx = len(series) - 1
+        messages = []
+        for sub_idx, sub in enumerate(series.events):
+            if sub_idx > stop_at_idx:
+                break
+            messages.extend(self._validate_sub(sub, sub_idx, interactive))
+            # info(f"Subtitle {sub_idx} |{sub.text.replace('\n', '\\n')}| validated")
+            annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
+            output_series.events.append(
+                ImageSubtitle(
+                    img=annotated_img,
+                    start=sub.start,
+                    end=sub.end,
+                    text=sub.text,
+                    series=output_series,
+                )
+            )
+        if messages:
+            for message in messages:
+                warning(message)
+        return output_series
+
+    def _validate_sub(
         self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
     ) -> list[str]:
         """Validate per-character bboxes for a subtitle.
@@ -316,10 +361,10 @@ class ValidationManager:
                 dims = (bbox_1.width, bbox_1.height)
                 ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
                 if dims in ok_dims:
-                    info(
-                        f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}| "
-                        f"-> |{char_1}|{char_2}|group|"
-                    )
+                    # info(
+                    #     f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}| "
+                    #     f"-> |{char_1}|{char_2}|group|"
+                    # )
                     char_1_idx += 1
                     continue
 
@@ -331,10 +376,10 @@ class ValidationManager:
             gap = bbox_2.x1 - bbox_1.x2
 
             # Log
-            info(
-                f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}|{bbox_2_idx}| "
-                f"-> |{char_1}|{char_2}|{gap}|{gap_chars.replace('\n', '\\n')}|"
-            )
+            # info(
+            #     f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}|{bbox_2_idx}| "
+            #     f"-> |{char_1}|{char_2}|{gap}|{gap_chars.replace('\n', '\\n')}|"
+            # )
 
             # If gap is negative, ensure that gap_chars is a newline
             if gap < 0:
@@ -399,11 +444,13 @@ class ValidationManager:
 
             # Space
             if cutoffs[1] <= gap <= cutoffs[2]:
-                if gap_chars != " ":
+                expected_space = get_expected_space(char_1, char_2)
+                if gap_chars != expected_space:
                     messages.append(
                         f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
                         f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
-                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a single space"
+                        f"but gap chars '{gap_chars.replace('\n', '\\n')}' "
+                        f"!= '{expected_space}'"
                     )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -442,7 +489,7 @@ class ValidationManager:
 
             # Tab
             if cutoffs[3] <= gap:
-                if gap_chars != "    ":
+                if gap_chars != self.tab:
                     messages.append(
                         f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text}: "
                         f"Gap {gap} between '{char_1}' and '{char_2}' is 'tab' "

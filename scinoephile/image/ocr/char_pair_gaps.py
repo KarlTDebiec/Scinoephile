@@ -8,10 +8,11 @@ import csv
 from logging import info
 from pathlib import Path
 
-from scinoephile.core.text import get_char_type
+from scinoephile.core.text import full_punc, get_char_type
 
 __all__ = [
     "get_default_char_pair_cutoffs",
+    "get_expected_space",
     "load_char_pair_gaps",
     "save_char_pair_gaps",
 ]
@@ -52,6 +53,27 @@ def get_default_char_pair_cutoffs(
             return 61, 89, 90, 200
         return 8, 89, 90, 200
     return 8, 24, 100, 200
+
+
+def get_expected_space(char_1: str, char_2: str) -> str:
+    """Get space string between two characters.
+
+    Arguments:
+        char_1: first character
+        char_2: second character
+    Returns:
+        space string
+    """
+    char_1_type = get_char_type(char_1)
+    char_2_type = get_char_type(char_2)
+
+    if char_1_type == "full" and char_2_type == "full":
+        return "　"
+    if char_1_type == "full" and char_2 in full_punc.values():
+        return "　"
+    if char_1 in full_punc.values() and char_2_type == "full":
+        return "　"
+    return " "
 
 
 def load_char_pair_gaps(

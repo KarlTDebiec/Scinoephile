@@ -156,5 +156,4 @@ class OcrFusionProcessor:
         # Organize and return
         output_series = Series()
         output_series.events = output_subtitles
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series
