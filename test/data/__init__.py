@@ -10,3 +10,185 @@ subtitles. Each directory contains the following:
 * `create_output.py` - script to read in the input files and process them to create the
    output files
 """
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from data.kob import get_kob_zho_ocr_fusion_test_cases
+from data.mnt import get_mnt_zho_ocr_fusion_test_cases
+from data.t import get_t_zho_ocr_fusion_test_cases
+
+from scinoephile.core.subtitles import Series
+from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.zho import (
+    get_zho_cleaned,
+    get_zho_converted,
+    get_zho_flattened,
+    get_zho_ocr_fused,
+    validate_zho_ocr,
+)
+from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
+
+__all__ = [
+    "process_eng_ocr",
+    "process_zho_hans_ocr",
+]
+
+
+def process_eng_ocr(title_root: Path, sup_path: Path, fuser_kw: Any | None = None):
+    # Fuse
+    fuse_path = output_dir / "eng_fuse.srt"
+    if fuse_path.exists():
+        fuse = Series.load(fuse_path)
+    else:
+        lens = Series.load(input_dir / "eng_lens.srt")
+        lens = get_eng_cleaned(lens, remove_empty=False)
+        tesseract = Series.load(input_dir / "eng_tesseract.srt")
+        tesseract = get_eng_cleaned(tesseract, remove_empty=False)
+        fuser = get_eng_ocr_fuser(
+            test_cases=get_kob_eng_ocr_fusion_test_cases()
+            + get_mnt_eng_ocr_fusion_test_cases()
+            + get_t_eng_ocr_fusion_test_cases(),
+            test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
+            auto_verify=True,
+        )
+        fuse = get_eng_ocr_fused(lens, tesseract, fuser)
+        fuse.save(fuse_path)
+
+    # Clean
+    clean_path = output_dir / "eng_fuse_clean.srt"
+    if clean_path.exists():
+        fuse_clean = Series.load(clean_path)
+    else:
+        fuse_clean = get_eng_cleaned(fuse, remove_empty=False)
+        fuse_clean.save(output_dir / "eng_fuse_clean.srt")
+
+    # Validate
+    image_path = output_dir / "eng_image"
+    if image_path.exists():
+        image = ImageSeries.load(image_path)
+    else:
+        image = ImageSeries.load(input_dir / "eng.sup")
+        for text_sub, image_sub in zip(fuse_clean, image):
+            image_sub.text = text_sub.text
+        image.save(image_path)
+    fuse_clean_validate = validate_eng_ocr(
+        image,
+        output_dir_path=output_dir / "eng_validation",
+        interactive=True,
+    )
+    fuse_clean_validate = get_eng_cleaned(fuse_clean_validate)
+    fuse_clean_validate.save(output_dir / "eng_fuse_clean_validate.srt", exist_ok=True)
+
+    # Flatten
+    fuse_clean_validate_flatten = get_eng_flattened(fuse_clean_validate)
+    fuse_clean_validate_flatten.save(
+        output_dir / "eng_fuse_clean_validate_flatten.srt", exist_ok=True
+    )
+
+    # Proofread
+    # eng_proofreader = get_eng_proofreader(
+    #     test_cases=get_kob_eng_proofreading_test_cases()
+    #     + get_mnt_eng_proofreading_test_cases()
+    #     + get_t_eng_proofreading_test_cases(),
+    #     test_case_path=title_root / "lang" / "eng" / "proofreading.json",
+    #     auto_verify=True,
+    # )
+    # eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
+    # eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
+
+
+def process_zho_hans_ocr(
+    title_root: Path,
+    sup_path: Path,
+    fuser_kw: Any | None = None,
+    overwrite_srt: bool = False,
+    overwrite_img: bool = False,
+):
+    input_dir = title_root / "input"
+    output_dir = title_root / "output"
+
+    # Fuse
+    fuse_path = output_dir / "zho-Hans_fuse.srt"
+    if fuse_path.exists() and not overwrite_srt:
+        fuse = Series.load(fuse_path)
+    else:
+        lens_path = input_dir / "zho-Hans_lens.srt"
+        lens = Series.load(lens_path)
+        lens = get_zho_cleaned(lens, remove_empty=False)
+        lens = get_zho_converted(lens)
+        lens.save(lens_path)
+
+        paddle_path = input_dir / "zho-Hans_paddle.srt"
+        paddle = Series.load(paddle_path)
+        paddle = get_zho_cleaned(paddle, remove_empty=False)
+        paddle = get_zho_converted(paddle)
+        paddle.save(paddle_path)
+
+        if fuser_kw is None:
+            fuser_kw = {}
+        fuser = get_zho_ocr_fuser(
+            test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
+            auto_verify=True,
+            **fuser_kw,
+        )
+        fuse = get_zho_ocr_fused(lens, paddle, fuser)
+        fuse.save(fuse_path)
+
+    # Clean
+    fuse_clean_path = output_dir / "zho-Hans_fuse_clean.srt"
+    if fuse_clean_path.exists() and not overwrite_srt:
+        fuse_clean = Series.load(fuse_clean_path)
+    else:
+        fuse_clean = get_zho_cleaned(fuse, remove_empty=False)
+        fuse_clean = get_zho_converted(fuse_clean)
+        fuse_clean.save(fuse_clean_path)
+
+    # Image
+    image_path = output_dir / "zho-Hans_image"
+    if image_path.exists() and not overwrite_img:
+        image = ImageSeries.load(image_path)
+    else:
+        image = ImageSeries.load(sup_path)
+        assert len(fuse_clean) == len(image), (
+            f"Length mismatch: {len(fuse_clean)} vs {len(image)}"
+        )
+        for text_sub, image_sub in zip(fuse_clean, image):
+            image_sub.text = text_sub.text
+        image.save(image_path)
+
+    # Validate
+    fuse_clean_validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
+    if fuse_clean_validate_path.exists() and not overwrite_img:
+        fuse_clean_validate = Series.load(fuse_clean_validate_path)
+    else:
+        image_validation_path = output_dir / "zho-Hans_validation"
+        fuse_clean_validate = validate_zho_ocr(
+            image,
+            output_dir_path=image_validation_path,
+            interactive=True,
+        )
+        fuse_clean_validate.save(fuse_clean_validate_path)
+
+    # Flatten
+    fuse_clean_validate_flatten_path = (
+        output_dir / "zho-Hans_fuse_clean_validate_flatten.srt"
+    )
+    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
+        fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
+    else:
+        fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
+        fuse_clean_validate_flatten.save(fuse_clean_validate_flatten_path)
+
+    # # Proofread
+    # zho_proofreader = get_zho_proofreader(
+    #     test_cases=get_kob_zho_proofreading_test_cases()
+    #     + get_mnt_zho_proofreading_test_cases()
+    #     + get_t_zho_proofreading_test_cases(),
+    #     test_case_path=title_root / "lang" / "zho" / "proofreading.json",
+    #     auto_verify=True,
+    # )
+    # zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
+    # zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
