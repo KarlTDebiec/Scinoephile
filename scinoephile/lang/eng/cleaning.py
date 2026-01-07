@@ -64,7 +64,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
 
     # Remove leading dash if there is now only one line
     cleaned = re.sub(
-        r"^(?!.*\s{4}-\s).?\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned
+        r"^(?!.*\s{4}-\s)\s*-\s*(.+)\s*$", lambda m: m.group(1).strip(), cleaned
     )
 
     # Remove empty lines
