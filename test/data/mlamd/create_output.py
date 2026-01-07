@@ -24,7 +24,7 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
 )
-from test.data import process_eng_ocr, process_zho_hans_ocr
+from test.data import process_eng_ocr, process_zho_hans_eng, process_zho_hans_ocr
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
@@ -47,8 +47,8 @@ set_logging_verbosity(2)
 actions = {
     "简体中文 (OCR)",
     "English (OCR)",
+    "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
-    # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
 }
 
@@ -62,8 +62,6 @@ if "简体中文 (OCR)" in actions:
             + get_t_zho_ocr_fusion_test_cases()
         },
     )
-
-
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
@@ -74,7 +72,12 @@ if "English (OCR)" in actions:
             + get_t_eng_ocr_fusion_test_cases()
         },
     )
-
+if "Bilingual 简体中文 and English" in actions:
+    process_zho_hans_eng(
+        title_root,
+        zho_hans_path=output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt",
+        eng_path=output_dir / "eng_fuse_proofread_clean_flatten.srt",
+    )
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
     if (
@@ -130,19 +133,6 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
     yue_hans_proofread_translate_review.save(outfile_path)
-
-if "Bilingual 简体中文 and English" in actions:
-    zho_hans_fuse_proofread_clean_flatten = Series.load(
-        output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt"
-    )
-    eng_fuse_proofread_clean_flatten = Series.load(
-        output_dir / "eng_fuse_proofread_clean_flatten.srt"
-    )
-    zho_hans_eng = get_synced_series(
-        zho_hans_fuse_proofread_clean_flatten, eng_fuse_proofread_clean_flatten
-    )
-    zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
-
 if "Bilingual 简体粤文 and English" in actions:
     yue_hans_proofread_translate_review = Series.load(
         output_dir / "yue-Hans_proofread_translate_review.srt"

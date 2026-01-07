@@ -28,6 +28,7 @@ from scinoephile.lang.zho import (
     validate_zho_ocr,
 )
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
+from scinoephile.multilang.synchronization import get_synced_series
 from test.data.kob import get_kob_zho_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases
 from test.data.t import get_t_zho_ocr_fusion_test_cases
@@ -35,6 +36,7 @@ from test.data.t import get_t_zho_ocr_fusion_test_cases
 __all__ = [
     "process_eng_ocr",
     "process_zho_hans_ocr",
+    "process_zho_hans_eng",
 ]
 
 
@@ -231,3 +233,31 @@ def process_zho_hans_ocr(
     # )
     # zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
     # zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+
+
+def process_zho_hans_eng(
+    title_root: Path,
+    zho_hans_path: Path | None = None,
+    eng_path: Path | None = None,
+    overwrite: bool = False,
+) -> Series:
+    output_dir = title_root / "output"
+
+    zho_hans_eng_path = output_dir / "zho-Hans_eng.srt"
+    if zho_hans_eng_path.exists() and not overwrite:
+        zho_hans_eng = Series.load(zho_hans_eng_path)
+    else:
+        if zho_hans_path is None:
+            zho_hans_path = output_dir / "zho-Hans.srt"
+        zho_hans = Series.load(zho_hans_path)
+        zho_hans = get_zho_flattened(zho_hans)
+
+        if eng_path is None:
+            eng_path = output_dir / "eng.srt"
+        eng = Series.load(eng_path)
+        eng = get_eng_flattened(eng)
+
+        zho_hans_eng = get_synced_series(zho_hans, eng)
+        zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
+
+    return zho_hans_eng
