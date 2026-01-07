@@ -61,8 +61,6 @@ if "简体中文 (OCR)" in actions:
             + get_mnt_zho_ocr_fusion_test_cases()
             + get_t_zho_ocr_fusion_test_cases()
         },
-        overwrite_srt=True,
-        overwrite_img=True,
     )
 
 
