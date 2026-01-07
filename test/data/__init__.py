@@ -27,7 +27,8 @@ from scinoephile.lang.zho import (
     get_zho_ocr_fused,
     validate_zho_ocr,
 )
-from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fuser
+from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.multilang.synchronization import get_synced_series
 from test.data.kob import get_kob_zho_ocr_fusion_test_cases
 from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases
@@ -37,6 +38,7 @@ __all__ = [
     "process_eng_ocr",
     "process_zho_hans_ocr",
     "process_zho_hans_eng",
+    "process_zho_hant_ocr",
 ]
 
 
@@ -237,6 +239,98 @@ def process_zho_hans_ocr(
     # )
     # zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
     # zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+
+
+def process_zho_hant_ocr(
+    title_root: Path,
+    sup_path: Path,
+    fuser_kw: Any | None = None,
+    overwrite_srt: bool = False,
+    overwrite_img: bool = False,
+    validate: bool = True,
+    simplify: bool = False,
+) -> Series:
+    input_dir = title_root / "input"
+    output_dir = title_root / "output"
+
+    # Fuse
+    fuse_path = output_dir / "zho-Hant_fuse.srt"
+    if fuse_path.exists():
+        fuse = Series.load(fuse_path)
+    else:
+        # Lens
+        lens_path = input_dir / "zho-Hant_lens.srt"
+        lens = Series.load(lens_path)
+        lens = get_zho_cleaned(lens, remove_empty=False)
+        lens = get_zho_converted(lens, OpenCCConfig.s2t)
+        lens.save(lens_path)
+
+        # PaddleOCR
+        paddle_path = input_dir / "zho-Hant_paddle.srt"
+        paddle = Series.load(paddle_path)
+        paddle = get_zho_cleaned(paddle, remove_empty=False)
+        paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
+        paddle.save(paddle_path)
+
+        fuser = get_zho_ocr_fuser(
+            prompt_cls=ZhoHantOcrFusionPrompt,
+            test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
+            auto_verify=True,
+            **fuser_kw,
+        )
+        fuse = get_zho_ocr_fused(lens, paddle, fuser)
+        fuse.save(fuse_path)
+
+    # Clean
+    fuse_clean_path = output_dir / "zho-Hant_fuse_clean.srt"
+    if fuse_clean_path.exists() and not overwrite_srt:
+        fuse_clean = Series.load(fuse_clean_path)
+    else:
+        fuse_clean = get_zho_cleaned(fuse, remove_empty=False)
+        fuse_clean = get_zho_converted(fuse_clean, OpenCCConfig.s2t)
+        fuse_clean.save(output_dir / "zho-Hant_fuse_clean.srt")
+
+    # Image
+    image_path = output_dir / "zho-Hant_image"
+    if image_path.exists() and not overwrite_img:
+        image = ImageSeries.load(image_path)
+    else:
+        image = ImageSeries.load(sup_path)
+        assert len(fuse_clean) == len(image), (
+            f"Length mismatch: {len(fuse_clean)} vs {len(image)}"
+        )
+        for text_sub, image_sub in zip(fuse_clean, image):
+            image_sub.text = text_sub.text
+        image.save(image_path)
+
+    # Validate
+    fuse_clean_validate_path = output_dir / "zho-Hant_fuse_clean_validate.srt"
+    if fuse_clean_validate_path.exists() and not overwrite_img and not validate:
+        fuse_clean_validate = Series.load(fuse_clean_validate_path)
+    else:
+        validation_path = output_dir / "zho-Hant_validation"
+        fuse_clean_validate = validate_zho_ocr(
+            image,
+            output_dir_path=validation_path,
+            interactive=True,
+        )
+        fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
+
+    # Flatten
+    fuse_clean_validate_flatten_path = (
+        output_dir / "zho-Hant_fuse_clean_validate_flatten.srt"
+    )
+    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
+        fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
+    else:
+        fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
+        fuse_clean_validate_flatten.save(
+            fuse_clean_validate_flatten_path, exist_ok=True
+        )
+
+    if simplify:
+        return get_zho_converted(fuse_clean_validate_flatten)
+    return fuse_clean_validate_flatten
 
 
 def process_zho_hans_eng(
