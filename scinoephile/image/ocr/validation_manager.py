@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info, warning
+from logging import debug, info, warning
 from pathlib import Path
 
 from scinoephile.common import package_root
@@ -329,10 +329,8 @@ class ValidationManager:
         messages = []
         text = sub.text.replace("\\N", "\n")
 
-        validated_text: str = ""
         bbox_1_idx = 0
         char_1_idx = 0
-
         while char_1_idx < len(text) - 1:
             # Get next char_1
             char_1 = text[char_1_idx]
@@ -361,10 +359,10 @@ class ValidationManager:
                 dims = (bbox_1.width, bbox_1.height)
                 ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
                 if dims in ok_dims:
-                    # info(
-                    #     f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}| "
-                    #     f"-> |{char_1}|{char_2}|group|"
-                    # )
+                    debug(
+                        f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}| "
+                        f"-> |{char_1}|{char_2}|group|"
+                    )
                     char_1_idx += 1
                     continue
 
@@ -382,12 +380,10 @@ class ValidationManager:
 
             # get gap
             gap = bbox_2.x1 - bbox_1.x2
-
-            # Log
-            # info(
-            #     f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}|{bbox_2_idx}| "
-            #     f"-> |{char_1}|{char_2}|{gap}|{gap_chars.replace('\n', '\\n')}|"
-            # )
+            debug(
+                f"|{char_1_idx}|{char_2_idx}|{bbox_1_idx}|{bbox_2_idx}| "
+                f"-> |{char_1}|{char_2}|{gap}|{gap_chars.replace('\n', '\\n')}|"
+            )
 
             # If gap is negative, ensure that gap_chars is a newline
             if gap < 0:
@@ -421,14 +417,16 @@ class ValidationManager:
 
             # Prompt for confirmation that it should be a space
             if cutoffs[0] < gap < cutoffs[1]:
+                expected_space = get_expected_space(char_1, char_2)
                 approved = False
                 if interactive:
                     annotated = get_img_with_bboxes(sub.img, [bbox_1, bbox_2])
                     annotated.show()
                     response = input(
-                        f"Gap {gap} between '{char_1}' and '{char_2}' "
-                        f"with gap chars '{gap_chars.replace(chr(10), '\\n')}' "
-                        f"should be 'space'? (y/n): "
+                        f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                        f"{self._gap_text(char_1, char_2, gap)} | "
+                        f"observed '{gap_chars.replace(chr(10), '\\n')}', "
+                        f"should be '{expected_space}'? (y/n): "
                     )
                     approved = response.lower().startswith("y")
                 if approved:
@@ -436,16 +434,23 @@ class ValidationManager:
                         (char_1, char_2),
                         (cutoffs[0], gap, cutoffs[2], cutoffs[3]),
                     )
-                    if gap_chars != " ":
+                    if gap_chars != expected_space:
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text.replace('\n', '\\n')}: "
-                            f"Gap {gap} between '{char_1}' and '{char_2}' is 'space' "
-                            f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a single space"
+                            f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                            f"{self._gap_text(char_1, char_2, gap)} | "
+                            f"expected '{expected_space}' "
+                            f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                         )
                 else:
                     self._update_pair_gaps(
                         (char_1, char_2), (gap, cutoffs[1], cutoffs[2], cutoffs[3])
                     )
+                    if gap_chars != "":
+                        messages.append(
+                            f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                            f"{self._gap_text(char_1, char_2, gap)} | "
+                            f"expected '' observed '{gap_chars.replace(chr(10), '\\n')}'"
+                        )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
                 continue
@@ -471,9 +476,10 @@ class ValidationManager:
                     annotated = get_img_with_bboxes(sub.img, [bbox_1, bbox_2])
                     annotated.show()
                     response = input(
-                        f"Gap {gap} between '{char_1}' and '{char_2}' "
-                        f"with gap chars '{gap_chars.replace(chr(10), '\\n')}' "
-                        f"should be 'tab'? (y/n): "
+                        f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                        f"{self._gap_text(char_1, char_2, gap)} | "
+                        f"observed '{gap_chars.replace(chr(10), '\\n')}', "
+                        f"should be '{self.tab}'? (y/n): "
                     )
                     approved = response.lower().startswith("y")
                 if approved:
@@ -481,16 +487,25 @@ class ValidationManager:
                         (char_1, char_2),
                         (cutoffs[0], cutoffs[1], cutoffs[2], gap),
                     )
-                    if gap_chars != "    ":
+                    if gap_chars != self.tab and gap_chars != "\n":
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_1_idx:02d} {text.replace('\n', '\\n')}: "
-                            f"Gap {gap} between '{char_1}' and '{char_2}' is 'tab' "
-                            f"but gap chars '{gap_chars.replace('\n', '\\n')}' is not a tab"
+                            f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                            f"{self._gap_text(char_1, char_2, gap)} | "
+                            f"expected '{self.tab}' "
+                            f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                         )
                 else:
                     self._update_pair_gaps(
                         (char_1, char_2), (cutoffs[0], cutoffs[1], gap, cutoffs[3])
                     )
+                    expected_space = get_expected_space(char_1, char_2)
+                    if gap_chars != expected_space:
+                        messages.append(
+                            f"{self._intro_text(sub_idx, char_1_idx, text)} | "
+                            f"{self._gap_text(char_1, char_2, gap)} | "
+                            f"expected '{expected_space}' "
+                            f"observed '{gap_chars.replace(chr(10), '\\n')}'"
+                        )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
                 continue
@@ -586,7 +601,7 @@ class ValidationManager:
         return (
             f"Sub {sub_idx + 1:4d} | "
             f"Char {char_idx + 1:2d} | "
-            f"{text.replace(chr(10), '\\n'):60}"
+            f"{text.replace(chr(10), '\\n')}"
         )
 
     @staticmethod
@@ -600,4 +615,4 @@ class ValidationManager:
         Returns:
             formatted gap message
         """
-        return f"'{char_1}' and '{char_2}' gap of {gap:3d}"
+        return f"'{char_1}' and '{char_2}' gap of {gap}"
