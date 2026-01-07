@@ -70,6 +70,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Remove empty lines
     cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
 
+    # Replace brackets to avoid problems saving and reloading
+    cleaned = cleaned.replace("<", "〈").replace(">", "〉")
+
     # Remove whitespace around <i> and <\i>
     cleaned = re.sub(r"[^\S\n]*{\\i1}[^\S\n]*", r"{\\i1}", cleaned)
     cleaned = re.sub(r"[^\S\n]*{\\i0}[^\S\n]*", r"{\\i0}", cleaned)
