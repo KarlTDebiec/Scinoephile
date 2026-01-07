@@ -248,7 +248,6 @@ def process_zho_hant_ocr(
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     validate: bool = True,
-    simplify: bool = False,
 ) -> Series:
     input_dir = title_root / "input"
     output_dir = title_root / "output"
@@ -328,8 +327,6 @@ def process_zho_hant_ocr(
             fuse_clean_validate_flatten_path, exist_ok=True
         )
 
-    if simplify:
-        return get_zho_converted(fuse_clean_validate_flatten)
     return fuse_clean_validate_flatten
 
 
