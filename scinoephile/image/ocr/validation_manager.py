@@ -132,9 +132,13 @@ class ValidationManager:
             list of validation messages
         """
         bboxes = get_bboxes(sub.img)
+
         bboxes, char_messages = self._validate_chars(sub, bboxes, sub_idx, interactive)
-        text, gap_messages = self._validate_gaps(sub, bboxes, sub_idx, interactive)
         sub.bboxes = bboxes
+        if len(char_messages) > 0:
+            return char_messages
+
+        text, gap_messages = self._validate_gaps(sub, bboxes, sub_idx, interactive)
         sub.text = text
 
         return char_messages + gap_messages
