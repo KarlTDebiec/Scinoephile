@@ -72,19 +72,19 @@ class ValidationManager:
         self.space = space
         self.tab = tab
 
-        # Initalize char_dims_by_n.
+        # Initalize char_dims_by_n
         for n in range(1, 6):
             file_path = self._char_dims_path(n)
             self.char_dims_by_n[n] = {}
             if file_path.exists():
                 self.char_dims_by_n[n] = load_char_dims(file_path)
 
-        # Initialize char_grp_dims_by_n.
+        # Initialize char_grp_dims_by_n
         file_path = self._char_grp_dims_path()
         if file_path.exists():
             self.char_grp_dims_by_n = load_char_grp_dims(file_path)
 
-        # Initialize char_pair_gaps.
+        # Initialize char_pair_gaps
         file_path = self._char_pair_gaps_path()
         if file_path.exists():
             self.char_pair_gaps = load_char_pair_gaps(file_path)
@@ -305,6 +305,12 @@ class ValidationManager:
             messages.append(
                 f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
                 f"No match for '{char}' bbox dims {dims}"
+            )
+
+        if bbox_idx != len(bboxes):
+            messages.append(
+                f"{self._intro_text(sub_idx, char_idx, text)} | "
+                f"{len(bboxes) - bbox_idx} extra bboxes remaining"
             )
 
         return validated_bboxes, messages
