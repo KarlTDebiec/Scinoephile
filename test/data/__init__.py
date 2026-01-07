@@ -114,19 +114,7 @@ def process_eng_ocr(
         )
         fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
 
-    # Flatten
-    fuse_clean_validate_flatten_path = (
-        output_dir / "eng_fuse_clean_validate_flatten.srt"
-    )
-    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
-        fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
-    else:
-        fuse_clean_validate_flatten = get_eng_flattened(fuse_clean_validate)
-        fuse_clean_validate_flatten.save(
-            fuse_clean_validate_flatten_path, exist_ok=True
-        )
-
-    return fuse_clean_validate_flatten
+    return fuse_clean_validate
 
     # Proofread
     # eng_proofreader = get_eng_proofreader(
@@ -215,19 +203,7 @@ def process_zho_hans_ocr(
         )
         fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
 
-    # Flatten
-    fuse_clean_validate_flatten_path = (
-        output_dir / "zho-Hans_fuse_clean_validate_flatten.srt"
-    )
-    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
-        fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
-    else:
-        fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
-        fuse_clean_validate_flatten.save(
-            fuse_clean_validate_flatten_path, exist_ok=True
-        )
-
-    return fuse_clean_validate_flatten
+    return fuse_clean_validate
 
     # Proofread
     # zho_proofreader = get_zho_proofreader(
