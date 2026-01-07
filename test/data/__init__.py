@@ -120,7 +120,9 @@ def process_eng_ocr(
         fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
     else:
         fuse_clean_validate_flatten = get_eng_flattened(fuse_clean_validate)
-        fuse_clean_validate_flatten.save(fuse_clean_validate_flatten_path)
+        fuse_clean_validate_flatten.save(
+            fuse_clean_validate_flatten_path, exist_ok=True
+        )
 
     return fuse_clean_validate_flatten
 
@@ -219,7 +221,9 @@ def process_zho_hans_ocr(
         fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
     else:
         fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
-        fuse_clean_validate_flatten.save(fuse_clean_validate_flatten_path)
+        fuse_clean_validate_flatten.save(
+            fuse_clean_validate_flatten_path, exist_ok=True
+        )
 
     return fuse_clean_validate_flatten
 
