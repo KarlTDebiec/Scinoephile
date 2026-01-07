@@ -95,6 +95,15 @@ class ValidationManager:
         stop_at_idx: int | None = None,
         interactive: bool = False,
     ) -> ImageSeries:
+        """Validate all subtitles in an image series.
+
+        Arguments:
+            series: image series to validate
+            stop_at_idx: optional last subtitle index to validate
+            interactive: whether to prompt user for confirmations
+        Returns:
+            validated image series
+        """
         output_series = ImageSeries()
         if stop_at_idx is None:
             stop_at_idx = len(series) - 1
@@ -260,13 +269,17 @@ class ValidationManager:
                         sub.img, bboxes[bbox_idx : bbox_idx + n]
                     )
                     annotated.show()
-                    response = input(f"Accept '{char}' bbox dims {dims}? (y/n): ")
-                    approved = response.lower().startswith("y")
+                    response = input(
+                        f"{self._intro_text(sub_idx, char_idx, text)} | "
+                        f"'{char}' bbox dims {dims} | expand? (y/n): "
+                    )
+                    approved = not response.lower().startswith("y")
                     if n == 1:
                         try:
                             group_size = int(response)
                             if group_size > 1:
                                 grouped = True
+                                approved = False
                         except ValueError:
                             pass
 
@@ -459,7 +472,8 @@ class ValidationManager:
                         messages.append(
                             f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                             f"{self._gap_text(char_1, char_2, gap)} | "
-                            f"expected '' observed '{gap_chars.replace(chr(10), '\\n')}'"
+                            "expected '' observed "
+                            f"'{gap_chars.replace(chr(10), '\\n')}'"
                         )
                 char_1_idx = char_2_idx
                 bbox_1_idx = bbox_2_idx
@@ -497,7 +511,7 @@ class ValidationManager:
                         (char_1, char_2),
                         (cutoffs[0], cutoffs[1], cutoffs[2], gap),
                     )
-                    if gap_chars != self.tab and gap_chars != "\n":
+                    if gap_chars not in (self.tab, "\n"):
                         messages.append(
                             f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                             f"{self._gap_text(char_1, char_2, gap)} | "
@@ -522,7 +536,7 @@ class ValidationManager:
 
             # Tab
             if cutoffs[3] <= gap:
-                if gap_chars != self.tab and gap_chars != "\n":
+                if gap_chars not in (self.tab, "\n"):
                     messages.append(
                         f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                         f"{self._gap_text(char_1, char_2, gap)} | "
