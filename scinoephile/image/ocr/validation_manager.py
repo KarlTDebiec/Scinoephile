@@ -621,4 +621,4 @@ class ValidationManager:
         Returns:
             formatted gap message
         """
-        return f"'{char_1}' and '{char_2}' gap of {gap}"
+        return f"'{char_1},{char_2}' gap of {gap}"
