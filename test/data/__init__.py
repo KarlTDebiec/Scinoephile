@@ -44,6 +44,7 @@ def process_eng_ocr(
     fuser_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
+    validate: bool = True,
 ) -> Series:
     input_dir = title_root / "input"
     output_dir = title_root / "output"
@@ -98,7 +99,7 @@ def process_eng_ocr(
 
     # Validate
     fuse_clean_validate_path = output_dir / "eng_fuse_clean_validate.srt"
-    if fuse_clean_validate_path.exists() and not overwrite_img:
+    if fuse_clean_validate_path.exists() and not overwrite_img and not validate:
         fuse_clean_validate = Series.load(fuse_clean_validate_path)
     else:
         validation_path = output_dir / "eng_validation"
@@ -107,7 +108,7 @@ def process_eng_ocr(
             output_dir_path=validation_path,
             interactive=True,
         )
-        fuse_clean_validate.save(fuse_clean_validate_path)
+        fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
 
     # Flatten
     fuse_clean_validate_flatten_path = (
@@ -139,6 +140,7 @@ def process_zho_hans_ocr(
     fuser_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
+    validate: bool = True,
 ) -> Series:
     input_dir = title_root / "input"
     output_dir = title_root / "output"
@@ -196,7 +198,7 @@ def process_zho_hans_ocr(
 
     # Validate
     fuse_clean_validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
-    if fuse_clean_validate_path.exists() and not overwrite_img:
+    if fuse_clean_validate_path.exists() and not overwrite_img and not validate:
         fuse_clean_validate = Series.load(fuse_clean_validate_path)
     else:
         validation_path = output_dir / "zho-Hans_validation"
@@ -205,7 +207,7 @@ def process_zho_hans_ocr(
             output_dir_path=validation_path,
             interactive=True,
         )
-        fuse_clean_validate.save(fuse_clean_validate_path)
+        fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
 
     # Flatten
     fuse_clean_validate_flatten_path = (
