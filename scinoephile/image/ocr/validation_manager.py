@@ -185,8 +185,8 @@ class ValidationManager:
             char_nonws_idx += 1
             if bbox_idx >= len(bboxes):
                 messages.append(
-                    f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
-                    f"Ran out of bboxes at '{char}'"
+                    f"{self._intro_text(sub_idx, char_idx, text)} | "
+                    f"ran out of bboxes at '{char}'"
                 )
                 break
             char_matched_to_bbox = False
