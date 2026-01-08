@@ -80,13 +80,13 @@ class ValidationManager:
         self,
         series: ImageSeries,
         stop_at_idx: int | None = None,
-        interactive: bool = False,
+        interactive: bool = True,
     ) -> ImageSeries:
         """Validate all subtitles in an image series.
 
         Arguments:
             series: image series to validate
-            stop_at_idx: optional last subtitle index to validate
+            stop_at_idx: stop validating at this index
             interactive: whether to prompt user for confirmations
         Returns:
             validated image series
@@ -99,7 +99,6 @@ class ValidationManager:
             if sub_idx > stop_at_idx:
                 break
             messages.extend(self._validate_sub(sub, sub_idx, interactive))
-            # info(f"Subtitle {sub_idx} |{sub.text.replace('\n', '\\n')}| validated")
             annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
             output_series.events.append(
                 ImageSubtitle(
@@ -110,13 +109,12 @@ class ValidationManager:
                     series=output_series,
                 )
             )
-        if messages:
-            for message in messages:
-                warning(message)
+        for message in messages:
+            warning(message)
         return output_series
 
     def _validate_sub(
-        self, sub: ImageSubtitle, sub_idx: int, interactive: bool = False
+        self, sub: ImageSubtitle, sub_idx: int, interactive: bool = True
     ) -> list[str]:
         """Validate per-character bboxes for a subtitle.
 
@@ -144,7 +142,7 @@ class ValidationManager:
         sub: ImageSubtitle,
         bboxes: list[Bbox],
         sub_idx: int,
-        interactive: bool = False,
+        interactive: bool = True,
     ) -> tuple[list[Bbox], list[str]]:
         """Merge bboxes per character and collect validation messages.
 
@@ -258,7 +256,7 @@ class ValidationManager:
                     annotated.show()
                     response = input(
                         f"{self._intro_text(sub_idx, char_idx, text)} | "
-                        f"'{char}' bbox dims {dims} | expand? (y/n): "
+                        f"'{char}' bbox dims {dims} | expand/group? (y/n): "
                     )
                     approved = not response.lower().startswith("y")
                     if n == 1:
@@ -282,16 +280,16 @@ class ValidationManager:
                 elif grouped:
                     if char_idx + group_size > len(text):
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
-                            f"Cannot group {group_size} chars starting at '{char}' "
-                            f"beyond text length"
+                            f"{self._intro_text(sub_idx, char_idx, text)} | "
+                            f"cannot group {group_size} chars starting at '{char}' "
+                            "beyond text length"
                         )
                         continue
                     char_grp = text[char_idx : char_idx + group_size]
                     if any(c in whitespace_chars for c in char_grp):
                         messages.append(
-                            f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
-                            f"Cannot group '{char_grp}' due to whitespace"
+                            f"{self._intro_text(sub_idx, char_idx, text)} | "
+                            f"cannot group '{char_grp}' due to whitespace"
                         )
                         continue
                     dims = (bboxes[bbox_idx].width, bboxes[bbox_idx].height)
@@ -307,8 +305,8 @@ class ValidationManager:
             # No match found; log message and merge single bbox
             dims = get_dims_tuple(bboxes[bbox_idx : bbox_idx + 1])
             messages.append(
-                f"Sub {sub_idx + 1:04d} Char {char_nonws_idx:02d} {text}: "
-                f"No match for '{char}' bbox dims {dims}"
+                f"{self._intro_text(sub_idx, char_idx, text)} | "
+                f"no match for '{char}' bbox dims {dims}"
             )
 
         if bbox_idx != len(bboxes):
@@ -324,7 +322,7 @@ class ValidationManager:
         sub: ImageSubtitle,
         bboxes: list[Bbox],
         sub_idx: int,
-        interactive: bool = False,
+        interactive: bool = True,
     ) -> tuple[str, list[str]]:
         """Validate gaps between bboxes and collect validation messages.
 
