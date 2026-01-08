@@ -15,6 +15,7 @@ __all__ = [
     "get_merged_bbox",
 ]
 
+
 def get_bboxes(img: Image.Image) -> list[Bbox]:
     """Get raw bboxes from white interior pixels.
 
