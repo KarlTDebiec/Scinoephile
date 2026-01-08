@@ -51,8 +51,8 @@ set_logging_verbosity(2)
 
 actions = {
     "繁體中文 (OCR)",
-    # "简体中文 (OCR)",
-    # "English (OCR)",
+    "简体中文 (OCR)",
+    "English (OCR)",
     # "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体粤文 and English",
@@ -68,7 +68,6 @@ if "繁體中文 (OCR)" in actions:
             + get_t_zho_ocr_fusion_test_cases()
         },
     )
-
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
