@@ -29,8 +29,6 @@ __all__ = ["ValidationManager"]
 class ValidationManager:
     """Validates OCRed subtitle text using source images."""
 
-    space = " "
-    """String used for spaces between characters."""
     tab = "    "
     """String used for 'tabs' between characters (typically separating two speakers)."""
 
@@ -61,15 +59,13 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(self, space: str = " ", tab: str = "    "):
+    def __init__(self, tab: str = "    "):
         """Initialize.
 
         Arguments:
-            space: string used for spaces between characters
             tab: string used for 'tabs' between characters (typically separating two
               speakers)
         """
-        self.space = space
         self.tab = tab
 
         # Initalize char_dims_by_n
