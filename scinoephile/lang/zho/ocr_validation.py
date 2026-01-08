@@ -26,7 +26,7 @@ def validate_zho_ocr(
         interactive: whether to prompt user for confirmations
         output_dir_path: directory in which to save validation images
     """
-    validation_mgr = ValidationManager(tab="　　")
+    validation_mgr = ValidationManager()
     output_series = validation_mgr.validate(series, stop_at_idx, interactive)
 
     if output_dir_path is not None:

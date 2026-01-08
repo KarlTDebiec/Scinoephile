@@ -19,6 +19,7 @@ from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import (
     get_default_char_pair_cutoffs,
     get_expected_space,
+    get_expected_tab,
     load_char_pair_gaps,
     save_char_pair_gaps,
 )
@@ -28,9 +29,6 @@ __all__ = ["ValidationManager"]
 
 class ValidationManager:
     """Validates OCRed subtitle text using source images."""
-
-    tab = "    "
-    """String used for 'tabs' between characters (typically separating two speakers)."""
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
@@ -59,15 +57,8 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(self, tab: str = "    "):
-        """Initialize.
-
-        Arguments:
-            tab: string used for 'tabs' between characters (typically separating two
-              speakers)
-        """
-        self.tab = tab
-
+    def __init__(self):
+        """Initialize."""
         # Initalize char_dims_by_n
         for n in range(1, 6):
             file_path = self._char_dims_path(n)
@@ -495,11 +486,12 @@ class ValidationManager:
                 if interactive:
                     annotated = get_img_with_bboxes(sub.img, [bbox_1, bbox_2])
                     annotated.show()
+                    expected_tab = get_expected_tab(char_1, char_2)
                     response = input(
                         f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                         f"{self._gap_text(char_1, char_2, gap)} | "
                         f"observed '{gap_chars.replace(chr(10), '\\n')}', "
-                        f"should be '{self.tab}'? (y/n): "
+                        f"should be '{expected_tab}'? (y/n): "
                     )
                     approved = response.lower().startswith("y")
                 if approved:
@@ -507,11 +499,12 @@ class ValidationManager:
                         (char_1, char_2),
                         (cutoffs[0], cutoffs[1], cutoffs[2], gap),
                     )
-                    if gap_chars not in (self.tab, "\n"):
+                    expected_tab = get_expected_tab(char_1, char_2)
+                    if gap_chars not in (expected_tab, "\n"):
                         messages.append(
                             f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                             f"{self._gap_text(char_1, char_2, gap)} | "
-                            f"expected '{self.tab}' "
+                            f"expected '{expected_tab}' "
                             f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                         )
                 else:
@@ -532,11 +525,12 @@ class ValidationManager:
 
             # Tab
             if cutoffs[3] <= gap:
-                if gap_chars not in (self.tab, "\n"):
+                expected_tab = get_expected_tab(char_1, char_2)
+                if gap_chars not in (expected_tab, "\n"):
                     messages.append(
                         f"{self._intro_text(sub_idx, char_1_idx, text)} | "
                         f"{self._gap_text(char_1, char_2, gap)} | "
-                        f"expected '{self.tab}' "
+                        f"expected '{expected_tab}' "
                         f"observed '{gap_chars.replace(chr(10), '\\n')}'"
                     )
                 char_1_idx = char_2_idx

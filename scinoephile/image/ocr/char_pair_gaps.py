@@ -13,12 +13,13 @@ from scinoephile.core.text import full_punc, get_char_type
 __all__ = [
     "get_default_char_pair_cutoffs",
     "get_expected_space",
+    "get_expected_tab",
     "load_char_pair_gaps",
     "save_char_pair_gaps",
 ]
 
 
-def get_default_char_pair_cutoffs(
+def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
     char_1: str, char_2: str
 ) -> tuple[int, int, int, int]:
     """Get default cutoff tuple for a character pair.
@@ -84,6 +85,27 @@ def get_expected_space(char_1: str, char_2: str) -> str:
     if char_1 in full_punc.values() and char_2_type == "full":
         return "　"
     return " "
+
+
+def get_expected_tab(char_1: str, char_2: str) -> str:
+    """Get tab string between two characters.
+
+    Arguments:
+        char_1: first character
+        char_2: second character
+    Returns:
+        tab string
+    """
+    char_1_type = get_char_type(char_1)
+    char_2_type = get_char_type(char_2)
+
+    if char_1_type == "full" and char_2_type == "full":
+        return "　　"
+    if char_1_type == "full" and char_2 in full_punc.values():
+        return "　　"
+    if char_1 in full_punc.values() and char_2_type == "full":
+        return "　　"
+    return "    "
 
 
 def load_char_pair_gaps(
