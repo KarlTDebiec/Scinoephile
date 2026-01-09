@@ -10,6 +10,11 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from .bbox import Bbox
+from .colors import (
+    get_fill_and_outline_colors,
+    get_fill_color_mask_arr,
+    get_grayscale_and_alpha_arrs,
+)
 
 __all__ = [
     "convert_rgba_img_to_la",
@@ -33,16 +38,33 @@ def convert_rgba_img_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
     return img, False
 
 
-def get_img_with_bboxes(img: Image.Image, bboxes: list[Bbox]) -> Image.Image:
-    """Draw bounding boxes on an image with rainbow colors for debugging.
+def get_img_with_bboxes(
+    img: Image.Image, bboxes: list[Bbox], use_fill_mask: bool = True
+) -> Image.Image:
+    """Draw bounding boxes on a 2x image with rainbow colors for debugging.
 
     Arguments:
         img: reference image
         bboxes: bounding boxes to draw
+        use_fill_mask: whether to draw on an inverted fill-color mask
     Returns:
-        image with bounding boxes drawn.
+        2x image with bounding boxes drawn
     """
-    img_with_bboxes = img.convert("RGBA")
+    resample = getattr(Image, "Resampling", Image).NEAREST
+    if use_fill_mask:
+        grayscale, alpha = get_grayscale_and_alpha_arrs(img)
+        fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
+        fill_mask = get_fill_color_mask_arr(grayscale, alpha, fill_color)
+        inverted_mask = np.logical_not(fill_mask).astype(np.uint8) * 255
+        mask_img = Image.fromarray(inverted_mask, mode="L")
+        base_img = mask_img.convert("RGBA")
+    else:
+        base_img = img.convert("RGBA")
+
+    img_with_bboxes = base_img.resize(
+        (img.width * 2, img.height * 2),
+        resample=resample,
+    )
     draw = ImageDraw.Draw(img_with_bboxes)
 
     # Generate palette
@@ -56,8 +78,12 @@ def get_img_with_bboxes(img: Image.Image, bboxes: list[Bbox]) -> Image.Image:
 
     # Draw boxes
     for i, bbox in enumerate(bboxes):
+        x1 = bbox.x1 * 2
+        y1 = bbox.y1 * 2
+        x2 = bbox.x2 * 2 - 1
+        y2 = bbox.y2 * 2 - 1
         draw.rectangle(
-            [bbox.x1, bbox.y1, bbox.x2, bbox.y2],
+            [x1, y1, x2, y2],
             outline=palette[i],
             width=1,
         )
