@@ -44,6 +44,11 @@ class CharCursor:
     bbox_idx: int = 0
 
     @property
+    def char(self) -> str:
+        """Current character."""
+        return self.sub.text_with_newline[self.char_idx]
+
+    @property
     def intro_msg(self) -> str:
         """Message intro for the current character index."""
         text = self.sub.text_with_newline.replace(chr(10), "\\n")
@@ -236,16 +241,16 @@ class ValidationManager:
 
         cursor = CharCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_idx < len(sub.text_with_newline):
-            char = sub.text_with_newline[cursor.char_idx]
-
             # No validation to perform for whitespace
-            if char in whitespace_chars or char == "\n":
+            if cursor.char in whitespace_chars or cursor.char == "\n":
                 cursor.char_idx += 1
                 continue
 
             # Cannot validate without bboxes
             if cursor.bbox_idx >= len(sub.bboxes):
-                messages.append(f"{cursor.intro_msg} | ran out of bboxes at '{char}'")
+                messages.append(
+                    f"{cursor.intro_msg} | ran out of bboxes at '{cursor.char}'"
+                )
                 break
 
             # Check if next bbox matches two or more characters
@@ -261,7 +266,8 @@ class ValidationManager:
             # Prompt user to assign bbox(es) to character(s)
             if not interactive:
                 messages.append(
-                    f"{cursor.intro_msg} | no approved or automatic match for '{char}'"
+                    f"{cursor.intro_msg} | "
+                    f"no approved or automatic match for '{cursor.char}'"
                 )
                 break
             matched, new_messages = self._prompt_char_dims(cursor)
@@ -270,9 +276,7 @@ class ValidationManager:
                 continue
 
             # May or may not be reachable
-            messages.append(
-                f"{cursor.intro_msg} | no match for '{char}' after prompting"
-            )
+            messages.append(f"{cursor.intro_msg} | unexpected state at '{cursor.char}'")
 
         # Cannot have leftover bboxes
         if cursor.bbox_idx != len(sub.bboxes):
@@ -427,7 +431,7 @@ class ValidationManager:
                 return True, messages
         return False, messages
 
-    def _validate_gaps(
+    def _validate_gaps(  # noqa: PLR0912, PLR0915
         self,
         sub: ImageSubtitle,
         sub_idx: int,
@@ -443,6 +447,7 @@ class ValidationManager:
             validation messages
         """
         messages = []
+
         cursor = GapCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_1_idx < len(sub.text_with_newline) - 1:
             # Get next char_1
