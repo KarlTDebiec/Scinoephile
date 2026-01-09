@@ -41,8 +41,8 @@ from test.data.mlamd import (
     get_mlamd_eng_proofreading_test_cases,
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_shifting_test_cases,
-    get_mlamd_zho_ocr_fusion_test_cases,
-    get_mlamd_zho_proofreading_test_cases,
+    get_mlamd_zho_hant_ocr_fusion_test_cases,
+    get_mlamd_zho_hant_proofreading_test_cases,
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
@@ -81,7 +81,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
     zho_ocr_fuser = get_zho_ocr_fuser(
         prompt_cls=ZhoHantOcrFusionPrompt,
-        test_cases=get_mlamd_zho_ocr_fusion_test_cases()
+        test_cases=get_mlamd_zho_hant_ocr_fusion_test_cases()
         + get_mnt_zho_ocr_fusion_test_cases()
         + get_t_zho_ocr_fusion_test_cases(),
         test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
@@ -93,7 +93,7 @@ if "繁體中文 (OCR)" in actions:
     zho_hant_fuse = get_zho_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
     zho_proofreader = get_zho_proofreader(
         prompt_cls=ZhoHantProofreadingPrompt,
-        test_cases=get_mlamd_zho_proofreading_test_cases()
+        test_cases=get_mlamd_zho_hant_proofreading_test_cases()
         + get_mnt_zho_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),
         test_case_path=title_root / "lang" / "zho" / "proofreading.json",

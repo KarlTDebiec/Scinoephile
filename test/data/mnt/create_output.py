@@ -36,8 +36,8 @@ from test.data.kob import (
 from test.data.mlamd import (
     get_mlamd_eng_ocr_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
-    get_mlamd_zho_ocr_fusion_test_cases,
-    get_mlamd_zho_proofreading_test_cases,
+    get_mlamd_zho_hans_ocr_fusion_test_cases,
+    get_mlamd_zho_hans_proofreading_test_cases,
 )
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
@@ -67,7 +67,7 @@ if "简体中文 (OCR)" in actions:
     zho_hans_paddle = get_zho_converted(zho_hans_paddle)
     zho_ocr_fuser = get_zho_ocr_fuser(
         test_cases=get_kob_zho_ocr_fusion_test_cases()
-        + get_mlamd_zho_ocr_fusion_test_cases()
+        + get_mlamd_zho_hans_ocr_fusion_test_cases()
         + get_t_zho_ocr_fusion_test_cases(),
         test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
         auto_verify=True,
@@ -78,7 +78,7 @@ if "简体中文 (OCR)" in actions:
     zho_hans_fuse = get_zho_converted(zho_hans_fuse)
     zho_proofreader = get_zho_proofreader(
         test_cases=get_kob_zho_proofreading_test_cases()
-        + get_mlamd_zho_proofreading_test_cases()
+        + get_mlamd_zho_hans_proofreading_test_cases()
         + get_t_zho_proofreading_test_cases(),
         test_case_path=title_root / "lang" / "zho" / "proofreading.json",
         auto_verify=True,

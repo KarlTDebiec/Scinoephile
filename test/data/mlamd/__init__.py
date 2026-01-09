@@ -15,8 +15,14 @@ from scinoephile.core.testing import test_data_root
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
-from scinoephile.lang.zho.ocr_fusion import ZhoHansOcrFusionPrompt
-from scinoephile.lang.zho.proofreading import ZhoHansProofreadingPrompt
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHansOcrFusionPrompt,
+    ZhoHantOcrFusionPrompt,
+)
+from scinoephile.lang.zho.proofreading import (
+    ZhoHansProofreadingPrompt,
+    ZhoHantProofreadingPrompt,
+)
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
@@ -82,9 +88,11 @@ __all__ = [
     "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
-    "get_mlamd_zho_proofreading_test_cases",
+    "get_mlamd_zho_hans_proofreading_test_cases",
+    "get_mlamd_zho_hant_proofreading_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
-    "get_mlamd_zho_ocr_fusion_test_cases",
+    "get_mlamd_zho_hans_ocr_fusion_test_cases",
+    "get_mlamd_zho_hant_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -413,11 +421,11 @@ def get_mlamd_eng_proofreading_test_cases(
 
 
 @cache
-def get_mlamd_zho_proofreading_test_cases(
+def get_mlamd_zho_hans_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 中文 proofreading test cases.
+    """Get MLAMD 简体中文 proofreading test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -425,7 +433,26 @@ def get_mlamd_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_zho_hant_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get MLAMD 繁体中文 proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -451,11 +478,11 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_mlamd_zho_ocr_fusion_test_cases(
+def get_mlamd_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 中文 OCR fusion test cases.
+    """Get MLAMD 简体中文 OCR fusion test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -463,7 +490,26 @@ def get_mlamd_zho_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json"
+    return load_test_cases_from_json(
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_zho_hant_ocr_fusion_test_cases(
+    prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get MLAMD 繁体中文 OCR fusion test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
