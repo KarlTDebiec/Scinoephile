@@ -282,7 +282,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Fuse
     fuse_path = output_dir / "zho-Hant_fuse.srt"
-    if False:  # fuse_path.exists() and not overwrite_srt:
+    if fuse_path.exists() and not overwrite_srt:
         fuse = Series.load(fuse_path)
     else:
         # Lens
@@ -345,7 +345,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Proofread
     proofread_path = output_dir / "zho-Hant_fuse_clean_validate_proofread.srt"
-    if False:  # proofread_path.exists() and not overwrite_srt:
+    if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
         if proofreader_kw is None:
@@ -372,7 +372,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     fuse_clean_validate_flatten_path = (
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
     )
-    if False:  # fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
+    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
         fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
     else:
         fuse_clean_validate_flatten = get_zho_flattened(proofread)
