@@ -111,6 +111,8 @@ class GapCursor:
     bbox_2_idx: int = 0
     char_1: str = ""
     char_2: str = ""
+    bbox_1: Bbox | None = None
+    bbox_2: Bbox | None = None
     gap: int = 0
     gap_chars: str = ""
 
@@ -135,12 +137,54 @@ class GapCursor:
         text = self.sub.text_with_newline.replace(chr(10), "\\n")
         return f"Sub {self.sub_idx + 1:4d} | Char {self.char_1_idx + 1:2d} | {text}"
 
+    @property
+    def char_pair(self) -> tuple[str, str]:
+        """Character pair for this gap."""
+        return self.char_1, self.char_2
+
+    def seek_char_1(self) -> bool:
+        """Seek next non-whitespace character for char_1.
+
+        Returns:
+            whether a character was found
+        """
+        text = self.sub.text_with_newline
+        while self.char_1_idx < len(text) and (
+            text[self.char_1_idx] in whitespace_chars or text[self.char_1_idx] == "\n"
+        ):
+            self.char_1_idx += 1
+        if self.char_1_idx >= len(text) - 1:
+            return False
+        self.char_1 = text[self.char_1_idx]
+        return True
+
+    def seek_char_2(self) -> bool:
+        """Seek next non-whitespace character for char_2.
+
+        Returns:
+            whether a character was found
+        """
+        text = self.sub.text_with_newline
+        self.char_2_idx = self.char_1_idx + 1
+        while self.char_2_idx < len(text) and (
+            text[self.char_2_idx] in whitespace_chars or text[self.char_2_idx] == "\n"
+        ):
+            self.char_2_idx += 1
+        if self.char_2_idx >= len(text):
+            return False
+        self.char_2 = text[self.char_2_idx]
+        return True
+
+    def gap_slice(self) -> str:
+        """Gap substring between char_1 and char_2."""
+        return self.sub.text_with_newline[self.char_1_idx + 1 : self.char_2_idx]
+
     def advance(self):
         """Advance to the next gap."""
         self.char_1_idx = self.char_2_idx
         self.bbox_1_idx = self.bbox_2_idx
 
-    def annotated_img(self, n_bboxes: int):
+    def annotated_img(self, n_bboxes: int) -> object:
         """Annotated image for current bbox group.
 
         Arguments:
@@ -159,6 +203,46 @@ class GapCursor:
             bbox group
         """
         return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
+
+    def get_bbox_1(self) -> Bbox | None:
+        """Get the current bbox_1.
+
+        Returns:
+            bbox_1 or None if out of range
+        """
+        if self.bbox_1_idx >= len(self.sub.bboxes):
+            return None
+        return self.sub.bboxes[self.bbox_1_idx]
+
+    def get_bbox_2(self) -> Bbox | None:
+        """Get the current bbox_2.
+
+        Returns:
+            bbox_2 or None if out of range
+        """
+        self.bbox_2_idx = self.bbox_1_idx + 1
+        if self.bbox_2_idx >= len(self.sub.bboxes):
+            return None
+        return self.sub.bboxes[self.bbox_2_idx]
+
+    def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
+        """Prepare gap by seeking characters and bboxes.
+
+        Returns:
+            bbox_1 and bbox_2, or None if not available
+        """
+        if not self.seek_char_1():
+            return None
+        if not self.seek_char_2():
+            return None
+        self.gap_chars = self.gap_slice()
+        self.bbox_1 = self.get_bbox_1()
+        if self.bbox_1 is None:
+            return None
+        self.bbox_2 = self.get_bbox_2()
+        if self.bbox_2 is None:
+            return None
+        return self.bbox_1, self.bbox_2
 
     def gap_chars_escaped(self) -> str:
         """Gap chars with newlines escaped."""
@@ -471,7 +555,7 @@ class ValidationManager:
                 return True, messages
         return False, messages
 
-    def _validate_gaps(
+    def _validate_gaps(  # noqa: PLR0912, PLR0915
         self,
         sub: ImageSubtitle,
         sub_idx: int,
@@ -490,33 +574,23 @@ class ValidationManager:
 
         cursor = GapCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_1_idx < len(sub.text_with_newline) - 1:
-            # Get next char_1
-            cursor.char_1 = sub.text_with_newline[cursor.char_1_idx]
-            while cursor.char_1 in whitespace_chars or cursor.char_1 == "\n":
-                cursor.char_1_idx += 1
-                cursor.char_1 = sub.text_with_newline[cursor.char_1_idx]
-                continue
-
-            # Get next char_2
-            cursor.char_2_idx = cursor.char_1_idx + 1
-            cursor.char_2 = sub.text_with_newline[cursor.char_2_idx]
-            while cursor.char_2 in whitespace_chars or cursor.char_2 == "\n":
-                cursor.char_2_idx += 1
-                cursor.char_2 = sub.text_with_newline[cursor.char_2_idx]
-                continue
-
-            # Get characters of gap
-            cursor.gap_chars = sub.text_with_newline[
-                cursor.char_1_idx + 1 : cursor.char_2_idx
-            ]
-
-            # Get next bbox 1
-            bbox_1 = sub.bboxes[cursor.bbox_1_idx]
+            if cursor.prepare_gap() is None:
+                if cursor.bbox_1_idx >= len(sub.bboxes) and cursor.char_1:
+                    messages.append(
+                        f"{cursor.intro_msg} | ran out of bboxes at '{cursor.char_1}'"
+                    )
+                elif cursor.bbox_2_idx >= len(sub.bboxes) and cursor.char_2:
+                    messages.append(
+                        f"{cursor.intro_msg} | "
+                        f"Ran out of bboxes when checking gap between "
+                        f"'{cursor.char_1}' and '{cursor.char_2}'"
+                    )
+                break
 
             # If char 1 and char 2 and bbox_1 are all together, obviously adjacent
             if len(cursor.gap_chars) == 0:
                 char_grp = f"{cursor.char_1}{cursor.char_2}"
-                dims = (bbox_1.width, bbox_1.height)
+                dims = get_dims_tuple(cursor.bbox_1)
                 ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
                 if dims in ok_dims:
                     debug(
@@ -527,20 +601,8 @@ class ValidationManager:
                     cursor.char_1_idx += 1
                     continue
 
-            # Get next bbox 2
-            cursor.bbox_2_idx = cursor.bbox_1_idx + 1
-            try:
-                bbox_2 = sub.bboxes[cursor.bbox_2_idx]
-            except IndexError:
-                messages.append(
-                    f"{cursor.intro_msg} | "
-                    f"Ran out of bboxes when checking gap between "
-                    f"'{cursor.char_1}' and '{cursor.char_2}'"
-                )
-                break
-
             # get gap
-            cursor.gap = bbox_2.x1 - bbox_1.x2
+            cursor.gap = cursor.bbox_2.x1 - cursor.bbox_1.x2
             debug(
                 f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
                 f"{cursor.bbox_1_idx}|{cursor.bbox_2_idx}| -> |"
@@ -560,10 +622,10 @@ class ValidationManager:
                 continue
 
             # Validate
-            cutoffs = self.char_pair_gaps.get((cursor.char_1, cursor.char_2))
+            cutoffs = self.char_pair_gaps.get(cursor.char_pair)
             if not cutoffs:
                 cutoffs = get_default_char_pair_cutoffs(cursor.char_1, cursor.char_2)
-                self._update_pair_gaps((cursor.char_1, cursor.char_2), cutoffs)
+                self._update_pair_gaps(cursor.char_pair, cutoffs)
 
             # Adjacent
             if cursor.gap <= cutoffs[0]:
