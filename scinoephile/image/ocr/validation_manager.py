@@ -427,7 +427,7 @@ class ValidationManager:
                 return True, messages
         return False, messages
 
-    def _validate_gaps(  # noqa: PLR0912, PLR0915
+    def _validate_gaps(
         self,
         sub: ImageSubtitle,
         sub_idx: int,
@@ -444,26 +444,26 @@ class ValidationManager:
         """
         messages = []
         cursor = GapCursor(sub=sub, sub_idx=sub_idx)
-        text = sub.text_with_newline
-
-        while cursor.char_1_idx < len(text) - 1:
+        while cursor.char_1_idx < len(sub.text_with_newline) - 1:
             # Get next char_1
-            cursor.char_1 = text[cursor.char_1_idx]
+            cursor.char_1 = sub.text_with_newline[cursor.char_1_idx]
             while cursor.char_1 in whitespace_chars or cursor.char_1 == "\n":
                 cursor.char_1_idx += 1
-                cursor.char_1 = text[cursor.char_1_idx]
+                cursor.char_1 = sub.text_with_newline[cursor.char_1_idx]
                 continue
 
             # Get next char_2
             cursor.char_2_idx = cursor.char_1_idx + 1
-            cursor.char_2 = text[cursor.char_2_idx]
+            cursor.char_2 = sub.text_with_newline[cursor.char_2_idx]
             while cursor.char_2 in whitespace_chars or cursor.char_2 == "\n":
                 cursor.char_2_idx += 1
-                cursor.char_2 = text[cursor.char_2_idx]
+                cursor.char_2 = sub.text_with_newline[cursor.char_2_idx]
                 continue
 
             # Get characters of gap
-            cursor.gap_chars = text[cursor.char_1_idx + 1 : cursor.char_2_idx]
+            cursor.gap_chars = sub.text_with_newline[
+                cursor.char_1_idx + 1 : cursor.char_2_idx
+            ]
 
             # Get next bbox 1
             bbox_1 = sub.bboxes[cursor.bbox_1_idx]
