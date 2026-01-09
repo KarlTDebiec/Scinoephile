@@ -20,6 +20,7 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.lang.zho.proofreading import get_zho_proofread, get_zho_proofreader
 from scinoephile.multilang.synchronization import get_synced_series
 
 __all__ = [
@@ -38,6 +39,18 @@ def process_eng_ocr(
     overwrite_img: bool = False,
     validate: bool = True,
 ) -> Series:
+    """Process English OCR subtitles into validated output.
+
+    Arguments:
+        title_root: title root directory
+        sup_path: subtitle image input path
+        fuser_kw: keyword arguments for OCR fuser
+        overwrite_srt: whether to overwrite subtitle outputs
+        overwrite_img: whether to overwrite image outputs
+        validate: whether to run validation
+    Returns:
+        processed series
+    """
     input_dir = title_root / "input"
     output_dir = title_root / "output"
 
@@ -116,14 +129,28 @@ def process_eng_ocr(
     # eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 
 
-def process_zho_hans_ocr(
+def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
     sup_path: Path,
     fuser_kw: Any | None = None,
+    proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     validate: bool = True,
 ) -> Series:
+    """Process 简体中文 OCR subtitles into validated output.
+
+    Arguments:
+        title_root: title root directory
+        sup_path: subtitle image input path
+        fuser_kw: keyword arguments for OCR fuser
+        proofreader_kw: keyword arguments for OCR proofreader
+        overwrite_srt: whether to overwrite subtitle outputs
+        overwrite_img: whether to overwrite image outputs
+        validate: whether to run validation
+    Returns:
+        processed series
+    """
     input_dir = title_root / "input"
     output_dir = title_root / "output"
 
@@ -190,19 +217,28 @@ def process_zho_hans_ocr(
             interactive=True,
         )
         fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
-
-    return fuse_clean_validate
+        fuse_clean_validate = Series.load(fuse_clean_validate_path)
 
     # Proofread
-    # zho_proofreader = get_zho_proofreader(
-    #     test_cases=get_kob_zho_proofreading_test_cases()
-    #     + get_mnt_zho_proofreading_test_cases()
-    #     + get_t_zho_proofreading_test_cases(),
-    #     test_case_path=title_root / "lang" / "zho" / "proofreading.json",
-    #     auto_verify=True,
-    # )
-    # zho_hans_fuse_proofread = get_zho_proofread(zho_hans_fuse, zho_proofreader)
-    # zho_hans_fuse_proofread.save(output_dir / "zho-Hans_fuse_proofread.srt")
+    proofread_path = output_dir / "zho-Hans_fuse_proofread.srt"
+    if proofread_path.exists() and not overwrite_srt:
+        proofread = Series.load(proofread_path)
+    else:
+        if proofreader_kw is None:
+            proofreader_kw = {}
+        proofreader = get_zho_proofreader(
+            test_case_path=title_root
+            / "lang"
+            / "zho"
+            / "proofreading"
+            / "zho-Hans.json",
+            auto_verify=True,
+            **proofreader_kw,
+        )
+        proofread = get_zho_proofread(fuse_clean_validate, proofreader)
+        proofread.save(proofread_path)
+
+    return proofread
 
 
 def process_zho_hant_ocr(
@@ -213,6 +249,18 @@ def process_zho_hant_ocr(
     overwrite_img: bool = False,
     validate: bool = True,
 ) -> Series:
+    """Process 繁体中文 OCR subtitles into validated output.
+
+    Arguments:
+        title_root: title root directory
+        sup_path: subtitle image input path
+        fuser_kw: keyword arguments for OCR fuser
+        overwrite_srt: whether to overwrite subtitle outputs
+        overwrite_img: whether to overwrite image outputs
+        validate: whether to run validation
+    Returns:
+        processed series
+    """
     input_dir = title_root / "input"
     output_dir = title_root / "output"
 
@@ -300,6 +348,16 @@ def process_zho_hans_eng(
     eng_path: Path | None = None,
     overwrite: bool = False,
 ) -> Series:
+    """Process bilingual 简体中文 and English subtitles into a synced series.
+
+    Arguments:
+        title_root: title root directory
+        zho_hans_path: optional 简体中文 subtitle path
+        eng_path: optional English subtitle path
+        overwrite: whether to overwrite subtitle outputs
+    Returns:
+        processed series
+    """
     output_dir = title_root / "output"
 
     zho_hans_eng_path = output_dir / "zho-Hans_eng.srt"

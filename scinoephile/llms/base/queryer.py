@@ -144,7 +144,8 @@ class Queryer[
             except ValidationError as exc:
                 error(
                     f"Query:\n{test_case.query}\n"
-                    f"Yielded invalid content (attempt {attempt}):\n{content}"
+                    f"Yielded invalid content (attempt {attempt}):\n{content}\n"
+                    f"Validation errors:\n{self._format_validation_errors(exc)}"
                 )
                 if attempt == self.max_attempts:
                     raise exc
@@ -171,7 +172,8 @@ class Queryer[
             except ValidationError as exc:
                 error(
                     f"Query:\n{test_case.query}\n"
-                    f"Yielded invalid answer (attempt {attempt}):\n{answer}"
+                    f"Yielded invalid answer (attempt {attempt}):\n{answer}\n"
+                    f"Validation errors:\n{self._format_validation_errors(exc)}"
                 )
                 if attempt == self.max_attempts:
                     raise exc
@@ -328,6 +330,22 @@ class Queryer[
             info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None
+
+    @staticmethod
+    def _format_validation_errors(exc: ValidationError) -> str:
+        """Format validation errors for logging.
+
+        Arguments:
+            exc: validation error
+        Returns:
+            formatted validation errors
+        """
+        return "\n".join(
+            [
+                f"{'.'.join(map(str, e.get('loc', [])))}: {e.get('msg')}"
+                for e in exc.errors()
+            ]
+        )
 
     @classmethod
     @cache

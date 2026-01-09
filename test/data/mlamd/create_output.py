@@ -50,9 +50,9 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "繁體中文 (OCR)",
+    # "繁體中文 (OCR)",
     "简体中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
     # "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体粤文 and English",
@@ -73,6 +73,11 @@ if "简体中文 (OCR)" in actions:
         title_root,
         title_root / "input" / "zho-Hans.sup",
         fuser_kw={
+            "test_cases": get_kob_zho_ocr_fusion_test_cases()
+            + get_mnt_zho_ocr_fusion_test_cases()
+            + get_t_zho_ocr_fusion_test_cases()
+        },
+        proofreader_kw={
             "test_cases": get_kob_zho_ocr_fusion_test_cases()
             + get_mnt_zho_ocr_fusion_test_cases()
             + get_t_zho_ocr_fusion_test_cases()
