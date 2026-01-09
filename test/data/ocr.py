@@ -282,7 +282,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Fuse
     fuse_path = output_dir / "zho-Hant_fuse.srt"
-    if fuse_path.exists():
+    if False:  # fuse_path.exists() and not overwrite_srt:
         fuse = Series.load(fuse_path)
     else:
         # Lens
