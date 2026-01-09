@@ -384,7 +384,7 @@ class ValidationManager:
                 f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
                 f"{cursor.bbox_1_idx}|{cursor.bbox_2_idx}| -> |"
                 f"{cursor.char_1}|{cursor.char_2}|{cursor.gap}|"
-                f"{cursor.gap_chars_escaped()}|"
+                f"{cursor.gap_chars_escaped}|"
             )
 
             # If gap is negative, ensure that gap_chars is a newline
@@ -393,7 +393,7 @@ class ValidationManager:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
                         f"expected '\\n' "
-                        f"observed '{cursor.gap_chars_escaped()}'"
+                        f"observed '{cursor.gap_chars_escaped}'"
                     )
                 cursor.advance()
                 continue
@@ -410,7 +410,7 @@ class ValidationManager:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
                         "expected '' observed "
-                        f"'{cursor.gap_chars_escaped()}'"
+                        f"'{cursor.gap_chars_escaped}'"
                     )
                 cursor.advance()
                 continue
@@ -433,7 +433,7 @@ class ValidationManager:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
                         f"expected '{cursor.expected_space}' "
-                        f"observed '{cursor.gap_chars_escaped()}'"
+                        f"observed '{cursor.gap_chars_escaped}'"
                     )
                 cursor.advance()
                 continue
@@ -456,7 +456,7 @@ class ValidationManager:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
                         f"expected '{cursor.expected_tab}' "
-                        f"observed '{cursor.gap_chars_escaped()}'"
+                        f"observed '{cursor.gap_chars_escaped}'"
                     )
                 cursor.advance()
                 continue
@@ -479,7 +479,7 @@ class ValidationManager:
         cursor.annotated_img(2).show()
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
-            f"observed '{cursor.gap_chars_escaped()}', "
+            f"observed '{cursor.gap_chars_escaped}', "
             f"should be '{cursor.expected_space}'? (y/n): "
         )
         approved = response.lower().startswith("y")
@@ -499,7 +499,7 @@ class ValidationManager:
             messages.append(
                 f"{cursor.intro_msg} | {cursor.gap_msg} | "
                 f"expected '{expected_gap_chars}' "
-                f"observed '{cursor.gap_chars_escaped()}'"
+                f"observed '{cursor.gap_chars_escaped}'"
             )
         return messages
 
@@ -519,7 +519,7 @@ class ValidationManager:
         cursor.annotated_img(2).show()
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
-            f"observed '{cursor.gap_chars_escaped()}', "
+            f"observed '{cursor.gap_chars_escaped}', "
             f"should be '{cursor.expected_tab}'? (y/n): "
         )
         approved = response.lower().startswith("y")
@@ -539,7 +539,7 @@ class ValidationManager:
             messages.append(
                 f"{cursor.intro_msg} | {cursor.gap_msg} | "
                 f"expected '{expected_gap_chars}' "
-                f"observed '{cursor.gap_chars_escaped()}'"
+                f"observed '{cursor.gap_chars_escaped}'"
             )
         return messages
 

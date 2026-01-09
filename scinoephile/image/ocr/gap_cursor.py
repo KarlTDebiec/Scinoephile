@@ -49,6 +49,34 @@ class GapCursor:
     gap_chars: str = ""
 
     @property
+    def bbox_1_current(self) -> Bbox | None:
+        """Get the current bbox_1.
+
+        Returns:
+            bbox_1 or None if out of range
+        """
+        if self.bbox_1_idx >= len(self.sub.bboxes):
+            return None
+        return self.sub.bboxes[self.bbox_1_idx]
+
+    @property
+    def bbox_2_current(self) -> Bbox | None:
+        """Get the current bbox_2.
+
+        Returns:
+            bbox_2 or None if out of range
+        """
+        self.bbox_2_idx = self.bbox_1_idx + 1
+        if self.bbox_2_idx >= len(self.sub.bboxes):
+            return None
+        return self.sub.bboxes[self.bbox_2_idx]
+
+    @property
+    def char_pair(self) -> tuple[str, str]:
+        """Character pair for this gap."""
+        return self.char_1, self.char_2
+
+    @property
     def expected_space(self) -> str:
         """Expected space between characters."""
         return get_expected_space(self.char_1, self.char_2)
@@ -59,9 +87,19 @@ class GapCursor:
         return get_expected_tab(self.char_1, self.char_2)
 
     @property
+    def gap_chars_escaped(self) -> str:
+        """Gap chars with newlines escaped."""
+        return self.gap_chars.replace(chr(10), "\\n")
+
+    @property
     def gap_msg(self) -> str:
         """Gap text."""
         return f"'{self.char_1},{self.char_2}' -> {self.gap}"
+
+    @property
+    def gap_slice(self) -> str:
+        """Gap substring between char_1 and char_2."""
+        return self.sub.text_with_newline[self.char_1_idx + 1 : self.char_2_idx]
 
     @property
     def intro_msg(self) -> str:
@@ -69,10 +107,49 @@ class GapCursor:
         text = self.sub.text_with_newline.replace(chr(10), "\\n")
         return f"Sub {self.sub_idx + 1:4d} | Char {self.char_1_idx + 1:2d} | {text}"
 
-    @property
-    def char_pair(self) -> tuple[str, str]:
-        """Character pair for this gap."""
-        return self.char_1, self.char_2
+    def advance(self):
+        """Advance to the next gap."""
+        self.char_1_idx = self.char_2_idx
+        self.bbox_1_idx = self.bbox_2_idx
+
+    def annotated_img(self, n_bboxes: int) -> Image.Image:
+        """Annotated image for current bbox group.
+
+        Arguments:
+            n_bboxes: number of bboxes to include
+        Returns:
+            annotated image
+        """
+        return get_img_with_bboxes(self.sub.img, self.bbox_grp(n_bboxes))
+
+    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
+        """Current bbox group.
+
+        Arguments:
+            n_bboxes: number of bboxes to include
+        Returns:
+            bbox group
+        """
+        return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
+
+    def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
+        """Prepare gap by seeking characters and bboxes.
+
+        Returns:
+            bbox_1 and bbox_2, or None if not available
+        """
+        if not self.seek_char_1():
+            return None
+        if not self.seek_char_2():
+            return None
+        self.gap_chars = self.gap_slice
+        self.bbox_1 = self.bbox_1_current
+        if self.bbox_1 is None:
+            return None
+        self.bbox_2 = self.bbox_2_current
+        if self.bbox_2 is None:
+            return None
+        return self.bbox_1, self.bbox_2
 
     def seek_char_1(self) -> bool:
         """Seek next non-whitespace character for char_1.
@@ -106,76 +183,3 @@ class GapCursor:
             return False
         self.char_2 = text[self.char_2_idx]
         return True
-
-    def gap_slice(self) -> str:
-        """Gap substring between char_1 and char_2."""
-        return self.sub.text_with_newline[self.char_1_idx + 1 : self.char_2_idx]
-
-    def advance(self):
-        """Advance to the next gap."""
-        self.char_1_idx = self.char_2_idx
-        self.bbox_1_idx = self.bbox_2_idx
-
-    def annotated_img(self, n_bboxes: int) -> Image.Image:
-        """Annotated image for current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            annotated image
-        """
-        return get_img_with_bboxes(self.sub.img, self.bbox_grp(n_bboxes))
-
-    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
-        """Current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            bbox group
-        """
-        return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
-
-    def get_bbox_1(self) -> Bbox | None:
-        """Get the current bbox_1.
-
-        Returns:
-            bbox_1 or None if out of range
-        """
-        if self.bbox_1_idx >= len(self.sub.bboxes):
-            return None
-        return self.sub.bboxes[self.bbox_1_idx]
-
-    def get_bbox_2(self) -> Bbox | None:
-        """Get the current bbox_2.
-
-        Returns:
-            bbox_2 or None if out of range
-        """
-        self.bbox_2_idx = self.bbox_1_idx + 1
-        if self.bbox_2_idx >= len(self.sub.bboxes):
-            return None
-        return self.sub.bboxes[self.bbox_2_idx]
-
-    def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
-        """Prepare gap by seeking characters and bboxes.
-
-        Returns:
-            bbox_1 and bbox_2, or None if not available
-        """
-        if not self.seek_char_1():
-            return None
-        if not self.seek_char_2():
-            return None
-        self.gap_chars = self.gap_slice()
-        self.bbox_1 = self.get_bbox_1()
-        if self.bbox_1 is None:
-            return None
-        self.bbox_2 = self.get_bbox_2()
-        if self.bbox_2 is None:
-            return None
-        return self.bbox_1, self.bbox_2
-
-    def gap_chars_escaped(self) -> str:
-        """Gap chars with newlines escaped."""
-        return self.gap_chars.replace(chr(10), "\\n")

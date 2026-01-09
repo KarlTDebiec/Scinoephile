@@ -28,6 +28,17 @@ class CharCursor:
     char_idx: int = 0
     bbox_idx: int = 0
 
+    @property
+    def char(self) -> str:
+        """Current character."""
+        return self.sub.text_with_newline[self.char_idx]
+
+    @property
+    def intro_msg(self) -> str:
+        """Message intro for the current character index."""
+        text = self.sub.text_with_newline.replace(chr(10), "\\n")
+        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_idx + 1:2d} | {text}"
+
     def advance(self, *, n_chars: int, n_bboxes: int):
         """Advance cursor indices.
 
@@ -57,14 +68,3 @@ class CharCursor:
             character group
         """
         return self.sub.text_with_newline[self.char_idx : self.char_idx + n_chars]
-
-    @property
-    def char(self) -> str:
-        """Current character."""
-        return self.sub.text_with_newline[self.char_idx]
-
-    @property
-    def intro_msg(self) -> str:
-        """Message intro for the current character index."""
-        text = self.sub.text_with_newline.replace(chr(10), "\\n")
-        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_idx + 1:2d} | {text}"
