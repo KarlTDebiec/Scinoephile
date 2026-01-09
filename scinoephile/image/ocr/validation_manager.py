@@ -252,7 +252,7 @@ class ValidationManager:
                 cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                     merged_bbox
                 ]
-                cursor.advance(n_chars=1, n_bboxes=n_bboxes)
+                cursor.advance(n_chars=1, n_bboxes=1)
                 return True
 
             # Fuzzy match
@@ -266,7 +266,7 @@ class ValidationManager:
                         merged_bbox
                     ]
                     self._update_char_dims(cursor.char, dims)
-                    cursor.advance(n_chars=1, n_bboxes=n_bboxes)
+                    cursor.advance(n_chars=1, n_bboxes=1)
                     return True
         return False
 

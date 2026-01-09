@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from PIL import Image
+
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.drawing import get_img_with_bboxes
@@ -114,7 +116,7 @@ class GapCursor:
         self.char_1_idx = self.char_2_idx
         self.bbox_1_idx = self.bbox_2_idx
 
-    def annotated_img(self, n_bboxes: int) -> object:
+    def annotated_img(self, n_bboxes: int) -> Image.Image:
         """Annotated image for current bbox group.
 
         Arguments:
