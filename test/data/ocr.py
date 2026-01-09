@@ -220,7 +220,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         fuse_clean_validate = Series.load(fuse_clean_validate_path)
 
     # Proofread
-    proofread_path = output_dir / "zho-Hans_fuse_proofread.srt"
+    proofread_path = output_dir / "zho-Hans_fuse_clean_validate_proofread.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
