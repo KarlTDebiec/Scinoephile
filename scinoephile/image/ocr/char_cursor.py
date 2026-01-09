@@ -38,16 +38,6 @@ class CharCursor:
         self.char_idx += n_chars
         self.bbox_idx += n_bboxes
 
-    def char_grp(self, n_chars: int) -> str:
-        """Current character group.
-
-        Arguments:
-            n_chars: number of characters to include
-        Returns:
-            character group
-        """
-        return self.sub.text_with_newline[self.char_idx : self.char_idx + n_chars]
-
     def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
         """Current bbox group.
 
@@ -57,6 +47,16 @@ class CharCursor:
             bbox group
         """
         return self.sub.bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
+
+    def char_grp(self, n_chars: int) -> str:
+        """Current character group.
+
+        Arguments:
+            n_chars: number of characters to include
+        Returns:
+            character group
+        """
+        return self.sub.text_with_newline[self.char_idx : self.char_idx + n_chars]
 
     @property
     def char(self) -> str:
