@@ -115,21 +115,6 @@ class GapCursor:
     gap_chars: str = ""
 
     @property
-    def intro_msg(self) -> str:
-        """Message intro for the first character index."""
-        text = self.sub.text_with_newline.replace(chr(10), "\\n")
-        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_1_idx + 1:2d} | {text}"
-
-    @property
-    def gap_msg(self) -> str:
-        """Gap text."""
-        return f"'{self.char_1},{self.char_2}' -> {self.gap}"
-
-    def gap_chars_escaped(self) -> str:
-        """Gap chars with newlines escaped."""
-        return self.gap_chars.replace(chr(10), "\\n")
-
-    @property
     def expected_space(self) -> str:
         """Expected space between characters."""
         return get_expected_space(self.char_1, self.char_2)
@@ -139,10 +124,45 @@ class GapCursor:
         """Expected tab between characters."""
         return get_expected_tab(self.char_1, self.char_2)
 
+    @property
+    def gap_msg(self) -> str:
+        """Gap text."""
+        return f"'{self.char_1},{self.char_2}' -> {self.gap}"
+
+    @property
+    def intro_msg(self) -> str:
+        """Message intro for the first character index."""
+        text = self.sub.text_with_newline.replace(chr(10), "\\n")
+        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_1_idx + 1:2d} | {text}"
+
     def advance(self):
         """Advance to the next gap."""
         self.char_1_idx = self.char_2_idx
         self.bbox_1_idx = self.bbox_2_idx
+
+    def annotated_img(self, n_bboxes: int):
+        """Annotated image for current bbox group.
+
+        Arguments:
+            n_bboxes: number of bboxes to include
+        Returns:
+            annotated image
+        """
+        return get_img_with_bboxes(self.sub.img, self.bbox_grp(n_bboxes))
+
+    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
+        """Current bbox group.
+
+        Arguments:
+            n_bboxes: number of bboxes to include
+        Returns:
+            bbox group
+        """
+        return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
+
+    def gap_chars_escaped(self) -> str:
+        """Gap chars with newlines escaped."""
+        return self.gap_chars.replace(chr(10), "\\n")
 
 
 class ValidationManager:
@@ -451,7 +471,7 @@ class ValidationManager:
                 return True, messages
         return False, messages
 
-    def _validate_gaps(  # noqa: PLR0912, PLR0915
+    def _validate_gaps(
         self,
         sub: ImageSubtitle,
         sub_idx: int,
@@ -617,13 +637,7 @@ class ValidationManager:
         """
         messages: list[str] = []
 
-        bboxes = [
-            cursor.sub.bboxes[cursor.bbox_1_idx],
-            cursor.sub.bboxes[cursor.bbox_2_idx],
-        ]
-        annotated = get_img_with_bboxes(cursor.sub.img, bboxes)
-        annotated.show()
-
+        cursor.annotated_img(2).show()
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
             f"observed '{cursor.gap_chars_escaped()}', "
@@ -663,13 +677,7 @@ class ValidationManager:
         """
         messages: list[str] = []
 
-        bboxes = [
-            cursor.sub.bboxes[cursor.bbox_1_idx],
-            cursor.sub.bboxes[cursor.bbox_2_idx],
-        ]
-        annotated = get_img_with_bboxes(cursor.sub.img, bboxes)
-        annotated.show()
-
+        cursor.annotated_img(2).show()
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
             f"observed '{cursor.gap_chars_escaped()}', "
