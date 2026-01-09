@@ -10,6 +10,7 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 from scinoephile.core.text import whitespace_chars
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -42,6 +43,36 @@ class CharCursor:
     sub_idx: int
     char_idx: int = 0
     bbox_idx: int = 0
+
+    def advance(self, *, n_chars: int, n_bboxes: int):
+        """Advance cursor indices.
+
+        Arguments:
+            n_chars: number of characters to advance
+            n_bboxes: number of bboxes to advance
+        """
+        self.char_idx += n_chars
+        self.bbox_idx += n_bboxes
+
+    def char_grp(self, n_chars: int) -> str:
+        """Current character group.
+
+        Arguments:
+            n_chars: number of characters to include
+        Returns:
+            character group
+        """
+        return self.sub.text_with_newline[self.char_idx : self.char_idx + n_chars]
+
+    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
+        """Current bbox group.
+
+        Arguments:
+            n_bboxes: number of bboxes to include
+        Returns:
+            bbox group
+        """
+        return self.sub.bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
 
     @property
     def char(self) -> str:
@@ -243,7 +274,7 @@ class ValidationManager:
         while cursor.char_idx < len(sub.text_with_newline):
             # No validation to perform for whitespace
             if cursor.char in whitespace_chars or cursor.char == "\n":
-                cursor.char_idx += 1
+                cursor.advance(n_chars=1, n_bboxes=0)
                 continue
 
             # Cannot validate without bboxes
@@ -295,21 +326,18 @@ class ValidationManager:
         Returns:
             whether a match was found
         """
-        for n in self.char_grp_dims_by_n.keys():
-            if cursor.char_idx + n > len(cursor.sub.text_with_newline):
+        for n_chars in self.char_grp_dims_by_n.keys():
+            if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
                 continue
-            char_grp = cursor.sub.text_with_newline[
-                cursor.char_idx : cursor.char_idx + n
-            ]
+            char_grp = cursor.char_grp(n_chars)
             if any(c in whitespace_chars for c in char_grp) or "\n" in char_grp:
                 continue
             dims = get_dims_tuple(cursor.sub.bboxes[cursor.bbox_idx])
-            ok_dims = self.char_grp_dims_by_n[n].get(char_grp, set())
+            ok_dims = self.char_grp_dims_by_n[n_chars].get(char_grp, set())
 
             # Exact match
             if dims in ok_dims:
-                cursor.bbox_idx += 1
-                cursor.char_idx += n
+                cursor.advance(n_chars=n_chars, n_bboxes=1)
                 return True
 
             # Fuzzy match
@@ -318,8 +346,7 @@ class ValidationManager:
                 max_diff = max(diffs)
                 if max_diff <= 2:
                     self._update_char_grp_dims(char_grp, dims)
-                    cursor.bbox_idx += 1
-                    cursor.char_idx += n
+                    cursor.advance(n_chars=n_chars, n_bboxes=1)
                     return True
         return False
 
@@ -331,21 +358,20 @@ class ValidationManager:
         Returns:
             whether a match was found
         """
-        bboxes = cursor.sub.bboxes
-        char = cursor.sub.text_with_newline[cursor.char_idx]
-        for n in self.char_dims_by_n.keys():
-            if cursor.bbox_idx + n > len(bboxes):
+        for n_bboxes in self.char_dims_by_n.keys():
+            if cursor.bbox_idx + n_bboxes > len(cursor.sub.bboxes):
                 break
-            dims = get_dims_tuple(bboxes[cursor.bbox_idx : cursor.bbox_idx + n])
-            ok_dims = self.char_dims_by_n[n].get(char, set())
+            dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
+            ok_dims = self.char_dims_by_n[n_bboxes].get(cursor.char, set())
 
             # Exact match
             if dims in ok_dims:
-                bboxes[cursor.bbox_idx : cursor.bbox_idx + n] = [
-                    get_merged_bbox(bboxes[cursor.bbox_idx : cursor.bbox_idx + n])
+                bbox_grp = cursor.bbox_grp(n_bboxes)
+                merged_bbox = get_merged_bbox(bbox_grp)
+                cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                    merged_bbox
                 ]
-                cursor.bbox_idx += 1
-                cursor.char_idx += 1
+                cursor.advance(n_chars=1, n_bboxes=n_bboxes)
                 return True
 
             # Fuzzy match
@@ -353,12 +379,13 @@ class ValidationManager:
                 diffs = [abs(dims[i] - ok_dim[i]) for i in range(len(dims))]
                 max_diff = max(diffs)
                 if max_diff <= 2:
-                    bboxes[cursor.bbox_idx : cursor.bbox_idx + n] = [
-                        get_merged_bbox(bboxes[cursor.bbox_idx : cursor.bbox_idx + n])
+                    bbox_grp = cursor.bbox_grp(n_bboxes)
+                    merged_bbox = get_merged_bbox(bbox_grp)
+                    cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                        merged_bbox
                     ]
-                    self._update_char_dims(char, dims)
-                    cursor.bbox_idx += 1
-                    cursor.char_idx += 1
+                    self._update_char_dims(cursor.char, dims)
+                    cursor.advance(n_chars=1, n_bboxes=n_bboxes)
                     return True
         return False
 
@@ -371,63 +398,56 @@ class ValidationManager:
             tuple of (matched, validation messages)
         """
         messages: list[str] = []
-        bboxes = cursor.sub.bboxes
-        char = cursor.sub.text_with_newline[cursor.char_idx]
-        for n in self.char_dims_by_n.keys():
-            if cursor.bbox_idx + n > len(bboxes):
-                break
-            dims = get_dims_tuple(bboxes[cursor.bbox_idx : cursor.bbox_idx + n])
 
-            grouped = False
-            group_size = 0
-            annotated = get_img_with_bboxes(
-                cursor.sub.img, bboxes[cursor.bbox_idx : cursor.bbox_idx + n]
-            )
+        for n_bboxes in self.char_dims_by_n.keys():
+            if cursor.bbox_idx + n_bboxes > len(cursor.sub.bboxes):
+                break
+            dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
+
+            n_chars = 0
+            annotated = get_img_with_bboxes(cursor.sub.img, cursor.bbox_grp(n_bboxes))
             annotated.show()
             response = input(
                 f"{cursor.intro_msg} | "
-                f"'{char}' bbox dims {dims} | extend/group? (y/n): "
+                f"'{cursor.char}' bbox dims {dims} | extend/group? (y/n): "
             )
             extend = not response.lower().startswith("y")
-            if n == 1:
+            if n_bboxes == 1:
                 try:
-                    group_size = int(response)
-                    if group_size > 1:
-                        grouped = True
+                    n_chars = int(response)
+                    if n_chars > 1:
                         extend = False
                 except ValueError:
                     pass
 
             if extend:
-                bboxes[cursor.bbox_idx : cursor.bbox_idx + n] = [
-                    get_merged_bbox(bboxes[cursor.bbox_idx : cursor.bbox_idx + n])
+                bbox_grp = cursor.bbox_grp(n_bboxes)
+                merged_bbox = get_merged_bbox(bbox_grp)
+                cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                    merged_bbox
                 ]
-                self._update_char_dims(char, dims)
-                cursor.bbox_idx += 1
-                cursor.char_idx += 1
+                self._update_char_dims(cursor.char, dims)
+                cursor.advance(n_chars=1, n_bboxes=1)
                 return True, messages
 
-            if grouped:
-                if cursor.char_idx + group_size > len(cursor.sub.text_with_newline):
+            if n_chars > 1:
+                if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
                     messages.append(
                         f"{cursor.intro_msg} | "
-                        f"cannot group {group_size} chars starting at '{char}' "
+                        f"cannot group {n_chars} chars starting at '{cursor.char}' "
                         "beyond text length"
                     )
                     continue
-                char_grp = cursor.sub.text_with_newline[
-                    cursor.char_idx : cursor.char_idx + group_size
-                ]
+                char_grp = cursor.char_grp(n_chars)
                 if any(c in whitespace_chars for c in char_grp):
                     messages.append(
                         f"{cursor.intro_msg} | "
                         f"cannot group '{char_grp}' due to whitespace"
                     )
                     continue
-                dims = (bboxes[cursor.bbox_idx].width, bboxes[cursor.bbox_idx].height)
+                dims = get_dims_tuple(cursor.bbox_grp(1))
                 self._update_char_grp_dims(char_grp, dims)
-                cursor.bbox_idx += 1
-                cursor.char_idx += group_size
+                cursor.advance(n_chars=n_chars, n_bboxes=1)
                 return True, messages
         return False, messages
 
