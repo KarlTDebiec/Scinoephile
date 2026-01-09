@@ -221,8 +221,8 @@
       "paddle": "鹅满是快烙滴好耳痛＂"
     },
     "answer": {
-      "ronghe": "鹅满是快烙滴好耳痛⋯",
-      "beizhu": "采用了 Google Lens 识别的汉字和省略号，未采用 PaddleOCR 末尾的引号。"
+      "ronghe": "〝鹅满是快烙滴好耳痛⋯〞",
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的引号和省略号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的全角引号。"
     },
     "difficulty": 1,
     "verified": true
@@ -1015,10 +1015,10 @@
       "paddle": "那儿有Disneyｌand 和Hello Kitty Land"
     },
     "answer": {
-      "ronghe": "那儿有 Disneyland 和Hello Kitty Land",
-      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和标点，并修正了 PaddleOCR 中 'Disneyｌand' 的错误拼写和多余空格。"
+      "ronghe": "那儿有Disneyland 和Hello Kitty Land",
+      "beizhu": "采用了 Google Lens OCR 中更准确的单词拼写，省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的多余空格。"
     },
-    "difficulty": 2,
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -1736,8 +1736,8 @@
       "paddle": "难道⋯不会吧？"
     },
     "answer": {
-      "ronghe": "难道⋯不会吧？",
-      "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "ronghe": "难道⋯　不会吧？",
+      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
@@ -2960,8 +2960,8 @@
       "paddle": "可是楝一双脚瓜站这儿・"
     },
     "answer": {
-      "ronghe": "可是栋一双脚瓜站这儿⋯",
-      "beizhu": "采用了 Google Lens 中正确的“栋”和省略号“⋯”，忽略了 PaddleOCR 中误识的“楝”和句号“・”。"
+      "ronghe": "可是楝一双脚瓜站这儿⋯",
+      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和省略号，省略了 PaddleOCR 中错误的“栋”和“・”。"
     },
     "difficulty": 1,
     "verified": true
@@ -3080,8 +3080,8 @@
       "paddle": "常餐？ 常餐有什么吃？"
     },
     "answer": {
-      "ronghe": "常餐？常餐有什么吃？",
-      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "ronghe": "常餐？　常餐有什么吃？",
+      "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 2,
     "verified": true
