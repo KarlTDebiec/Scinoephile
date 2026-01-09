@@ -132,6 +132,7 @@ def process_eng_ocr(
 def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
     sup_path: Path,
+    *,
     fuser_kw: Any | None = None,
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
@@ -184,13 +185,13 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         fuse.save(fuse_path)
 
     # Clean
-    fuse_clean_path = output_dir / "zho-Hans_fuse_clean.srt"
-    if fuse_clean_path.exists() and not overwrite_srt:
-        fuse_clean = Series.load(fuse_clean_path)
+    clean_path = output_dir / "zho-Hans_fuse_clean.srt"
+    if clean_path.exists() and not overwrite_srt:
+        clean = Series.load(clean_path)
     else:
-        fuse_clean = get_zho_cleaned(fuse, remove_empty=False)
-        fuse_clean = get_zho_converted(fuse_clean)
-        fuse_clean.save(fuse_clean_path)
+        clean = get_zho_cleaned(fuse, remove_empty=False)
+        clean = get_zho_converted(clean)
+        clean.save(clean_path)
 
     # Image
     image_path = output_dir / "zho-Hans_image"
@@ -198,26 +199,26 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         image = ImageSeries.load(image_path)
     else:
         image = ImageSeries.load(sup_path)
-        assert len(fuse_clean) == len(image), (
-            f"Length mismatch: {len(fuse_clean)} vs {len(image)}"
+        assert len(clean) == len(image), (
+            f"Length mismatch: {len(clean)} vs {len(image)}"
         )
-        for text_sub, image_sub in zip(fuse_clean, image):
+        for text_sub, image_sub in zip(clean, image):
             image_sub.text = text_sub.text
         image.save(image_path)
 
     # Validate
-    fuse_clean_validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
-    if fuse_clean_validate_path.exists() and not overwrite_img and not validate:
-        fuse_clean_validate = Series.load(fuse_clean_validate_path)
+    validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
+    if validate_path.exists() and not overwrite_img and not validate:
+        validate = Series.load(validate_path)
     else:
         validation_path = output_dir / "zho-Hans_validation"
-        fuse_clean_validate = validate_zho_ocr(
+        validate = validate_zho_ocr(
             image,
             output_dir_path=validation_path,
             interactive=True,
         )
-        fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
-        fuse_clean_validate = Series.load(fuse_clean_validate_path)
+        validate.save(validate_path, exist_ok=True)
+        validate = Series.load(validate_path)
 
     # Proofread
     proofread_path = output_dir / "zho-Hans_fuse_clean_validate_proofread.srt"
@@ -235,10 +236,18 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_zho_proofread(fuse_clean_validate, proofreader)
+        proofread = get_zho_proofread(validate, proofreader)
         proofread.save(proofread_path)
 
-    return proofread
+    # Flatten
+    flatten_path = output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    if flatten_path.exists() and not overwrite_srt:
+        flatten = Series.load(flatten_path)
+    else:
+        flatten = get_zho_flattened(proofread)
+        flatten.save(flatten_path, exist_ok=True)
+
+    return flatten
 
 
 def process_zho_hant_ocr(
