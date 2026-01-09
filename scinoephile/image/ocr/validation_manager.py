@@ -417,6 +417,23 @@ class ValidationManager:
 
             # Adjacent or space? Prompt the user
             if cutoffs[0] < cursor.gap < cutoffs[1]:
+                if cursor.gap == cutoffs[0] + 1 and cursor.gap_chars == "":
+                    self._update_pair_gaps(
+                        cursor.char_pair,
+                        (cursor.gap, cutoffs[1], cutoffs[2], cutoffs[3]),
+                    )
+                    cursor.advance()
+                    continue
+                if (
+                    cursor.gap == cutoffs[1] - 1
+                    and cursor.gap_chars == cursor.expected_space
+                ):
+                    self._update_pair_gaps(
+                        cursor.char_pair,
+                        (cutoffs[0], cursor.gap, cutoffs[2], cutoffs[3]),
+                    )
+                    cursor.advance()
+                    continue
                 if not interactive:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
@@ -440,6 +457,26 @@ class ValidationManager:
 
             # Space or tab? Prompt the user
             if cutoffs[2] < cursor.gap < cutoffs[3]:
+                if (
+                    cursor.gap == cutoffs[2] + 1
+                    and cursor.gap_chars == cursor.expected_space
+                ):
+                    self._update_pair_gaps(
+                        cursor.char_pair,
+                        (cutoffs[0], cutoffs[1], cursor.gap, cutoffs[3]),
+                    )
+                    cursor.advance()
+                    continue
+                if cursor.gap == cutoffs[3] - 1 and cursor.gap_chars in (
+                    cursor.expected_tab,
+                    "\n",
+                ):
+                    self._update_pair_gaps(
+                        cursor.char_pair,
+                        (cutoffs[0], cutoffs[1], cutoffs[2], cursor.gap),
+                    )
+                    cursor.advance()
+                    continue
                 if not interactive:
                     messages.append(
                         f"{cursor.intro_msg} | {cursor.gap_msg} | "
