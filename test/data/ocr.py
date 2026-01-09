@@ -20,7 +20,11 @@ from scinoephile.lang.zho import (
 )
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
-from scinoephile.lang.zho.proofreading import get_zho_proofread, get_zho_proofreader
+from scinoephile.lang.zho.proofreading import (
+    ZhoHantProofreadingPrompt,
+    get_zho_proofread,
+    get_zho_proofreader,
+)
 from scinoephile.multilang.synchronization import get_synced_series
 
 __all__ = [
@@ -250,10 +254,12 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     return flatten
 
 
-def process_zho_hant_ocr(
+def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
     sup_path: Path,
+    *,
     fuser_kw: Any | None = None,
+    proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     validate: bool = True,
@@ -264,6 +270,7 @@ def process_zho_hant_ocr(
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
+        proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         validate: whether to run validation
@@ -336,14 +343,34 @@ def process_zho_hant_ocr(
         )
         fuse_clean_validate.save(fuse_clean_validate_path, exist_ok=True)
 
+    # Proofread
+    proofread_path = output_dir / "zho-Hant_fuse_clean_validate_proofread.srt"
+    if proofread_path.exists() and not overwrite_srt:
+        proofread = Series.load(proofread_path)
+    else:
+        if proofreader_kw is None:
+            proofreader_kw = {}
+        proofreader = get_zho_proofreader(
+            prompt_cls=ZhoHantProofreadingPrompt,
+            test_case_path=title_root
+            / "lang"
+            / "zho"
+            / "proofreading"
+            / "zho-Hant.json",
+            auto_verify=True,
+            **proofreader_kw,
+        )
+        proofread = get_zho_proofread(fuse_clean_validate, proofreader)
+        proofread.save(proofread_path)
+
     # Flatten
     fuse_clean_validate_flatten_path = (
-        output_dir / "zho-Hant_fuse_clean_validate_flatten.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
     )
     if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
         fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
     else:
-        fuse_clean_validate_flatten = get_zho_flattened(fuse_clean_validate)
+        fuse_clean_validate_flatten = get_zho_flattened(proofread)
         fuse_clean_validate_flatten.save(
             fuse_clean_validate_flatten_path, exist_ok=True
         )
