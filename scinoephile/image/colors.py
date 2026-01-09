@@ -5,24 +5,25 @@
 from __future__ import annotations
 
 import numpy as np
+from PIL import Image
 
 from scinoephile.core import ScinoephileError
 
 __all__ = [
     "get_fill_and_outline_colors",
     "get_fill_and_outline_colors_from_hist",
-    "get_grayscale_and_alpha",
-    "get_white_mask",
+    "get_grayscale_and_alpha_arrs",
+    "get_fill_color_mask_arr",
 ]
 
 
-def get_grayscale_and_alpha(img) -> tuple[np.ndarray, np.ndarray]:
-    """Get grayscale and alpha arrays for an image.
+def get_grayscale_and_alpha_arrs(img: Image.Image) -> tuple[np.ndarray, np.ndarray]:
+    """Get arrays of grayscale and alpha channels of an Image in LA, L, or RGBA mode.
 
     Arguments:
         img: Image from which to extract grayscale and alpha
     Returns:
-        Grayscale values and alpha mask
+        grayscale values and alpha mask
     """
     arr = np.array(img)
     if img.mode == "LA":
@@ -42,19 +43,19 @@ def get_grayscale_and_alpha(img) -> tuple[np.ndarray, np.ndarray]:
     )
 
 
-def get_white_mask(
+def get_fill_color_mask_arr(
     grayscale: np.ndarray,
     alpha: np.ndarray,
     fill_color: int,
 ) -> np.ndarray:
-    """Get a white interior mask from grayscale/alpha arrays.
+    """Get a boolean mask array that is true for pixels close to a provided fill color.
 
     Arguments:
         grayscale: grayscale values
         alpha: alpha values
-        fill_color: fill color used in rendering
+        fill_color: fill color
     Returns:
-        boolean mask of white interior pixels
+        boolean mask array that is true for pixels close to the provided fill color
     """
     tolerance = 10
     lower = max(0, fill_color - tolerance)

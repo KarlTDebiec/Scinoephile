@@ -8,7 +8,11 @@ import numpy as np
 from PIL import Image
 
 from .bbox import Bbox
-from .colors import get_fill_and_outline_colors, get_grayscale_and_alpha, get_white_mask
+from .colors import (
+    get_fill_and_outline_colors,
+    get_fill_color_mask_arr,
+    get_grayscale_and_alpha_arrs,
+)
 
 __all__ = [
     "get_bboxes",
@@ -16,17 +20,21 @@ __all__ = [
 ]
 
 
-def get_bboxes(img: Image.Image) -> list[Bbox]:
-    """Get raw bboxes from white interior pixels.
+def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912
+    """Get bboxes surrounding the fill color interiors of characters in an image.
+
+    First attempts to split the image into multiple lines of text, if applicable.
+    Then splits each line into bboxes horizontally, and fits the top and bottom.
+    Note that characters with vertical gaps such as ":" have one bbox.
 
     Arguments:
-        img: subtitle for which to get bboxes
+        img: subtitle image to analyze
     Returns:
-        raw bboxes
+        bboxes
     """
-    grayscale, alpha = get_grayscale_and_alpha(img)
+    grayscale, alpha = get_grayscale_and_alpha_arrs(img)
     fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
-    white_mask = get_white_mask(grayscale, alpha, fill_color)
+    white_mask = get_fill_color_mask_arr(grayscale, alpha, fill_color)
 
     # Determine top and bottom of each line separated by whitespace
     lines = []
@@ -34,9 +42,9 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:
     for i, white_pixels in enumerate(np.sum(white_mask, axis=1)):
         if white_pixels > 0:
             if line is None:
-                line = [i, i]
+                line = [i, i + 1]
             else:
-                line[1] = i
+                line[1] = i + 1
         elif line is not None:
             lines.append(line)
             line = None
@@ -63,9 +71,9 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:
         for i, white_pixels in enumerate(np.sum(line_mask, axis=0)):
             if white_pixels > 0:
                 if section is None:
-                    section = [i, i]
+                    section = [i, i + 1]
                 else:
-                    section[1] = i
+                    section[1] = i + 1
             elif section is not None:
                 sections.append(section)
                 section = None
@@ -78,7 +86,9 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:
             if np.max(white_pixels) == 0:
                 continue
             section_y1 = int(np.argmax(white_pixels > 0))
-            section_y2 = int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1)
+            section_y2 = (
+                int(len(white_pixels) - np.argmax(white_pixels[::-1] > 0) - 1) + 1
+            )
             bboxes.append(
                 Bbox(
                     x1=x1,
@@ -92,12 +102,12 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:
 
 
 def get_merged_bbox(bboxes: list[Bbox]) -> Bbox:
-    """Get merged bbox and dims tuple from bboxes.
+    """Get merged bbox from a list of bboxes.
 
     Arguments:
         bboxes: bboxes to merge
     Returns:
-        merged bbox and dims tuple
+        merged bbox
     """
     return Bbox(
         x1=min(bbox.x1 for bbox in bboxes),
