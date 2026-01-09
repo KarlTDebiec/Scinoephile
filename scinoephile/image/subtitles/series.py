@@ -144,6 +144,12 @@ class ImageSeries(Series):
             "<head>",
             '   <meta charset="UTF-8" />',
             "   <title>Subtitle images</title>",
+            "   <style>",
+            "      img {",
+            "         image-rendering: pixelated;",
+            "         image-rendering: crisp-edges;",
+            "      }",
+            "   </style>",
             "</head>",
             "<body>",
         ]
