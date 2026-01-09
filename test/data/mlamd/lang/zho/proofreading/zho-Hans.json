@@ -35,7 +35,8 @@
       "zimu_32": "虽是说像梁朝伟周润发也行运定了",
       "zimu_33": "但总得要叻仔呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -53,13 +54,8 @@
       "zimu_12": "我就是险些给定名麦胶的小朋友⋯",
       "zimu_13": "麦兜！"
     },
-    "answer": {
-      "xiugai_1": "最后，胶兜「滴督」一声落地",
-      "beizhu_1": "将“嘀督”更正为拟声词常见写法“滴督”，属于输入性错误更正。",
-      "xiugai_2": "滴督？滴督，就是答应了",
-      "beizhu_2": "与上一条保持一致，将“嘀督”更正为“滴督”。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -80,7 +76,8 @@
       "zimu_15": "是呀！",
       "zimu_16": "春田花花，确有好多西人呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -108,7 +105,8 @@
       "zimu_22": "交过了！",
       "zimu_23": "太好了！大家去上堂吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -168,7 +166,8 @@
       "zimu_54": "那时候⋯",
       "zimu_55": "我买所房子给妈妈！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -224,7 +223,8 @@
       "zimu_3": "我感到充满力量！",
       "zimu_4": "世界好美丽！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -252,7 +252,8 @@
       "zimu_6": "我妈妈真的很劲",
       "zimu_7": "一个女人背起整个世界！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -307,7 +308,8 @@
       "zimu_8": "真的很简单吧？",
       "zimu_9": "还真有一块鸡吃呢！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -332,7 +334,8 @@
       "zimu_19": "他扭了脚骹！",
       "zimu_20": "妈妈，我想睡觉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -344,7 +347,8 @@
       "zimu_6": "对她，一、二、三、四、五、六、七",
       "zimu_7": "没有不成的事"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -359,7 +363,8 @@
       "zimu_9": "我也试过努力念书，可是⋯",
       "zimu_10": "可是⋯我仍然有梦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -380,7 +385,8 @@
       "zimu_15": "快了⋯",
       "zimu_16": "发梦呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -420,7 +426,8 @@
       "zimu_2": "咦？",
       "zimu_3": "妈妈！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -433,7 +440,8 @@
       "zimu_7": "他最怕打针的了",
       "zimu_8": "那么他怕不怕死？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -447,7 +455,8 @@
       "zimu_8": "妈妈什么时候骗过你？",
       "zimu_9": "乖，先把药水喝掉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -459,7 +468,8 @@
       "zimu_6": "你先把药水喝掉，病好了我就去订机票",
       "zimu_7": "来，多喝一点！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -471,7 +481,8 @@
       "zimu_6": "我喝一格，又喝一格，又喝一格⋯",
       "zimu_7": "就给我喝光了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -502,7 +513,8 @@
       "zimu_25": "我们下个星期去，好了吧？",
       "zimu_26": "太好了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -583,7 +595,8 @@
     "query": {
       "zimu_1": "妈妈晚安！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -597,7 +610,8 @@
       "zimu_8": "对不起，应该　　不是垃圾，也不是腊鸭！",
       "zimu_9": "特别报告完毕"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -612,7 +626,8 @@
       "zimu_9": "我知道要找到黎根绝对不容易",
       "zimu_10": "我知道要他收我做徒弟更加不容易"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -620,7 +635,8 @@
       "zimu_2": "我要黎根收我做徒弟！",
       "zimu_3": "无论几辛苦，我一定要得到奥运金牌！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -630,26 +646,30 @@
       "zimu_4": "我会举起金牌跟全世界说：",
       "zimu_5": "香港运动员不是垃圾！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "长洲，我终于来到长洲了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "长洲，我得亲吻这片圣洁的土地！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小朋友，这儿是南丫岛呀！",
       "zimu_2": "南丫岛？它也孕育了周润发！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -676,7 +696,8 @@
     "query": {
       "zimu_1": "小朋友，你看！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -691,20 +712,23 @@
       "zimu_9": "吃过几多苦头⋯",
       "zimu_10": "才可以练成这举世无双的脚瓜？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我⋯我一定要练成这脚瓜！",
       "zimu_2": "师傅！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我可以去小个便吗？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -735,7 +759,8 @@
       "zimu_25": "「大包，整多两笼」",
       "zimu_26": "「大包，整多两笼唔怕滞」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -816,7 +841,8 @@
       "zimu_1": "第二项绝技，就是⋯",
       "zimu_2": "抢包山！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -840,7 +866,8 @@
       "zimu_18": "「抢包山」从此被禁！",
       "zimu_19": "而长洲独有的传统，亦渐被遗忘"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -861,7 +888,8 @@
       "zimu_15": "珊珊！",
       "zimu_16": "珊你个头！继续练习！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -874,7 +902,8 @@
       "zimu_7": "我⋯我⋯",
       "zimu_8": "我唔学抢包山了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -883,14 +912,16 @@
       "zimu_3": "却还是一副孩子脸",
       "zimu_4": "鸡尾包！新鲜出炉！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "其实鸡尾包呢⋯",
       "zimu_2": "你说这似不似鸡尾？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -916,7 +947,8 @@
       "zimu_20": "吃过几多苦头",
       "zimu_21": "才可以练成这举世无双的脚瓜？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -927,7 +959,8 @@
       "zimu_5": "可是看见那些凸现的青筋，不知怎样⋯",
       "zimu_6": "我想起麦兜的爸爸，阿炳"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -935,7 +968,8 @@
       "zimu_2": "跑哪去了？",
       "zimu_3": "难道⋯　不会吧？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -975,7 +1009,8 @@
       "zimu_34": "「多谢合作！」",
       "zimu_35": "「你忠实的，麦太」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1004,7 +1039,8 @@
       "zimu_23": "一步一步，一爪一爪⋯",
       "zimu_24": "我最后终于练成「十二路抢包手」"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1059,7 +1095,8 @@
       "zimu_49": "焗炉戚戚恻恻，戚戚恻恻⋯",
       "zimu_50": "有如天使预早送来的福音"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1069,7 +1106,8 @@
       "zimu_4": "美丽又温柔",
       "zimu_5": "真的好靓！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1080,7 +1118,8 @@
       "zimu_5": "就像今晚的一切",
       "zimu_6": "最靓最靓，最犀利，而且最温柔"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1212,7 +1251,8 @@
       "zimu_5": "点心车亦转成点心纸",
       "zimu_6": "一切落空"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1220,7 +1260,8 @@
       "zimu_2": "每次看见师傅⋯",
       "zimu_3": "他都好像老了一点"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1299,7 +1340,8 @@
     "query": {
       "zimu_1": "橙"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1330,7 +1372,8 @@
       "zimu_25": "如果妈妈看见我这个大脚瓜⋯",
       "zimu_26": "我猜，她会好开心"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1371,7 +1414,8 @@
       "zimu_12": "那么，两客常餐吧",
       "zimu_13": "今天常餐精采呀！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1423,7 +1467,8 @@
       "zimu_9": "常餐早卖光了，你说精采不？",
       "zimu_10": "好吧好吧！两份午餐好了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1434,6 +1479,7 @@
       "zimu_5": "好吧好吧，拜托！两份晚餐！快！",
       "zimu_6": "要快吗？那得吃快餐了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]
