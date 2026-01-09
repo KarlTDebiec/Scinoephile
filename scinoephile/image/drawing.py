@@ -39,7 +39,7 @@ def convert_rgba_img_to_la(img: Image.Image) -> tuple[Image.Image, bool]:
 
 
 def get_img_with_bboxes(
-    img: Image.Image, bboxes: list[Bbox], use_fill_mask: bool = True
+    img: Image.Image, bboxes: list[Bbox], use_fill_mask: bool = False
 ) -> Image.Image:
     """Draw bounding boxes on a 2x image with rainbow colors for debugging.
 
