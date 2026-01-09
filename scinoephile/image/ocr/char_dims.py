@@ -17,14 +17,18 @@ __all__ = [
 ]
 
 
-def get_dims_tuple(bboxes: list[Bbox]) -> tuple[int, ...]:
+def get_dims_tuple(bboxes: Bbox | list[Bbox]) -> tuple[int, ...]:
     """Get dims tuple from bboxes.
 
     Arguments:
-        bboxes: bboxes
+        bboxes: bbox or list of bboxes
     Returns:
         dims tuple
     """
+    if isinstance(bboxes, Bbox):
+        return (bboxes.width, bboxes.height)
+    if len(bboxes) == 1:
+        return (bboxes[0].width, bboxes[0].height)
     widths = [bbox.width for bbox in bboxes]
     heights = [bbox.height for bbox in bboxes]
     gaps = [bboxes[i + 1].x1 - bboxes[i].x2 for i in range(len(bboxes) - 1)]
