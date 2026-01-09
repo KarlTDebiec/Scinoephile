@@ -61,20 +61,20 @@ def test_get_synced_series_kob(
 
 
 def test_get_synced_series_mlamd(
-    mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
-    mlamd_eng_fuse_proofread_clean_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_eng_fuse_clean_validate_flatten: Series,
     mlamd_zho_hans_eng: Series,
 ):
     """Test get_synced_series with MLAMD subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_proofread_clean_flatten: 中文 subtitle fixture
-        mlamd_eng_fuse_proofread_clean_flatten: English subtitle fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: 中文 subtitle fixture
+        mlamd_eng_fuse_clean_validate_flatten: English subtitle fixture
         mlamd_zho_hans_eng: expected synced subtitle fixture
     """
     _test_get_synced_series(
-        mlamd_zho_hans_fuse_proofread_clean_flatten,
-        mlamd_eng_fuse_proofread_clean_flatten,
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        mlamd_eng_fuse_clean_validate_flatten,
         mlamd_zho_hans_eng,
     )
 

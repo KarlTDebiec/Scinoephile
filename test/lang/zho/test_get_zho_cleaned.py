@@ -44,19 +44,17 @@ def test_get_zho_cleaned_kob(
 
 
 def test_get_zho_cleaned_mlamd(
-    mlamd_zho_hans_fuse_proofread: Series,
-    mlamd_zho_hans_fuse_proofread_clean: Series,
+    mlamd_zho_hans_fuse: Series,
+    mlamd_zho_hans_fuse_clean: Series,
 ):
     """Test get_zho_cleaned with MLAMD 繁体中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_proofread: MLAMD 繁体中文 series fixture
-        mlamd_zho_hans_fuse_proofread_clean: Expected cleaned MLAMD 繁体中文 series
+        mlamd_zho_hans_fuse: MLAMD 繁体中文 series fixture
+        mlamd_zho_hans_fuse_clean: Expected cleaned MLAMD 繁体中文 series
           fixture
     """
-    _test_get_zho_cleaned(
-        mlamd_zho_hans_fuse_proofread, mlamd_zho_hans_fuse_proofread_clean
-    )
+    _test_get_zho_cleaned(mlamd_zho_hans_fuse, mlamd_zho_hans_fuse_clean)
 
 
 def test_get_zho_cleaned_mnt(

@@ -47,16 +47,16 @@ def test_get_eng_cleaned_kob(
 
 
 def test_get_eng_cleaned_mlamd(
-    mlamd_eng_fuse_proofread: Series,
-    mlamd_eng_fuse_proofread_clean: Series,
+    mlamd_eng_fuse: Series,
+    mlamd_eng_fuse_clean: Series,
 ):
     """Test get_eng_cleaned with MLAMD English subtitles.
 
     Arguments:
-        mlamd_eng_fuse_proofread: MLAMD English series fixture
-        mlamd_eng_fuse_proofread_clean: Expected cleaned MLAMD English series fixture
+        mlamd_eng_fuse: MLAMD English series fixture
+        mlamd_eng_fuse_clean: Expected cleaned MLAMD English series fixture
     """
-    _test_get_eng_cleaned(mlamd_eng_fuse_proofread, mlamd_eng_fuse_proofread_clean)
+    _test_get_eng_cleaned(mlamd_eng_fuse, mlamd_eng_fuse_clean)
 
 
 def test_get_eng_cleaned_mnt(

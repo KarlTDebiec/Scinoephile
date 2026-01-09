@@ -15,8 +15,8 @@ from scinoephile.core.testing import test_data_root
     "relative_path",
     [
         "kob/input/eng.srt",
-        "mlamd/output/eng_fuse_proofread_clean.srt",
-        "mnt/output/eng_fuse_proofread_clean.srt",
+        "mlamd/output/eng.srt",
+        "mnt/output/eng.srt",
         "t/input/eng.srt",
     ],
 )

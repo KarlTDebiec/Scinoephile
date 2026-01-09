@@ -51,18 +51,18 @@ def test_get_eng_flattened_kob(
 
 
 def test_get_eng_flattened_mlamd(
-    mlamd_eng_fuse_proofread_clean: Series,
-    mlamd_eng_fuse_proofread_clean_flatten: Series,
+    mlamd_eng_fuse_clean_validate: Series,
+    mlamd_eng_fuse_clean_validate_flatten: Series,
 ):
     """Test get_eng_flattened with MLAMD English subtitles.
 
     Arguments:
-        mlamd_eng_fuse_proofread_clean: MLAMD English series fixture
-        mlamd_eng_fuse_proofread_clean_flatten: Expected flattened MLAMD English series
+        mlamd_eng_fuse_clean_validate: MLAMD English series fixture
+        mlamd_eng_fuse_clean_validate_flatten: Expected flattened MLAMD English series
           fixture
     """
     _test_get_eng_flattened(
-        mlamd_eng_fuse_proofread_clean, mlamd_eng_fuse_proofread_clean_flatten
+        mlamd_eng_fuse_clean_validate, mlamd_eng_fuse_clean_validate_flatten
     )
 
 

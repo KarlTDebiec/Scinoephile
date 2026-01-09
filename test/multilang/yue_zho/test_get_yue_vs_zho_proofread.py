@@ -35,18 +35,18 @@ def _test_get_yue_vs_zho_proofread(yuewen: Series, zhongwen: Series, expected: S
 
 def test_get_yue_vs_zho_proofread_mlamd(
     mlamd_yue_hans: Series,
-    mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mlamd_yue_hans_proofread: Series,
 ):
     """Test get_yue_vs_zho_proofread with MLAMD subtitles.
 
     Arguments:
         mlamd_yue_hans: input 粤文 subtitles
-        mlamd_zho_hans_fuse_proofread_clean_flatten: input 中文 subtitles
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: input 中文 subtitles
         mlamd_yue_hans_proofread: expected output subtitles
     """
     zhongwen = get_series_with_subs_merged(
-        mlamd_zho_hans_fuse_proofread_clean_flatten, 539
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten, 539
     )
 
     _test_get_yue_vs_zho_proofread(

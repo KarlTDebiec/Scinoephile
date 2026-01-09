@@ -50,18 +50,19 @@ def test_get_zho_flattened_kob(
 
 
 def test_get_zho_flattened_mlamd(
-    mlamd_zho_hans_fuse_proofread_clean: Series,
-    mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
 ):
     """Test get_zho_flattened with MLAMD 简体中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_proofread_clean: MLAMD 简体中文 series fixture
-        mlamd_zho_hans_fuse_proofread_clean_flatten: Expected flattened MLAMD 简体中文
-          series fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread: MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened
+          MLAMD 简体中文 series fixture
     """
     _test_get_zho_flattened(
-        mlamd_zho_hans_fuse_proofread_clean, mlamd_zho_hans_fuse_proofread_clean_flatten
+        mlamd_zho_hans_fuse_clean_validate_proofread,
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
     )
 
 

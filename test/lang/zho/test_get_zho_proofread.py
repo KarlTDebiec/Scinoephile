@@ -58,16 +58,20 @@ def test_get_zho_proofread_kob(
 
 
 def test_get_zho_proofread_mlamd(
-    mlamd_zho_hans_fuse: Series,
-    mlamd_zho_hans_fuse_proofread: Series,
+    mlamd_zho_hans_fuse_clean_validate: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread: Series,
 ):
     """Test get_zho_proofread with MLAMD English subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse: MLAMD English series fixture
-        mlamd_zho_hans_fuse_proofread: Expected proofread MLAMD English series fixture
+        mlamd_zho_hans_fuse_clean_validate: MLAMD English series fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread: Expected proofread MLAMD English
+          series fixture
     """
-    _test_get_zho_proofread(mlamd_zho_hans_fuse, mlamd_zho_hans_fuse_proofread)
+    _test_get_zho_proofread(
+        mlamd_zho_hans_fuse_clean_validate,
+        mlamd_zho_hans_fuse_clean_validate_proofread,
+    )
 
 
 def test_get_zho_proofread_mnt(
