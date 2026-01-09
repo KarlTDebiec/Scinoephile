@@ -4,249 +4,26 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from logging import debug, info, warning
 from pathlib import Path
 
 from scinoephile.common import package_root
 from scinoephile.core.text import whitespace_chars
-from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
+from .char_cursor import CharCursor
 from .char_dims import get_dims_tuple, load_char_dims, save_char_dims
 from .char_grp_dims import load_char_grp_dims, save_char_grp_dims
 from .char_pair_gaps import (
     get_default_char_pair_cutoffs,
-    get_expected_space,
-    get_expected_tab,
     load_char_pair_gaps,
     save_char_pair_gaps,
 )
+from .gap_cursor import GapCursor
 
 __all__ = ["ValidationManager"]
-
-
-@dataclass
-class CharCursor:
-    """Tracks cursor state while validating character bboxes.
-
-    Arguments:
-        sub: subtitle being validated
-        sub_idx: subtitle index for logging
-        char_idx: current character index
-        bbox_idx: current bbox index
-    """
-
-    sub: ImageSubtitle
-    sub_idx: int
-    char_idx: int = 0
-    bbox_idx: int = 0
-
-    def advance(self, *, n_chars: int, n_bboxes: int):
-        """Advance cursor indices.
-
-        Arguments:
-            n_chars: number of characters to advance
-            n_bboxes: number of bboxes to advance
-        """
-        self.char_idx += n_chars
-        self.bbox_idx += n_bboxes
-
-    def char_grp(self, n_chars: int) -> str:
-        """Current character group.
-
-        Arguments:
-            n_chars: number of characters to include
-        Returns:
-            character group
-        """
-        return self.sub.text_with_newline[self.char_idx : self.char_idx + n_chars]
-
-    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
-        """Current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            bbox group
-        """
-        return self.sub.bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
-
-    @property
-    def char(self) -> str:
-        """Current character."""
-        return self.sub.text_with_newline[self.char_idx]
-
-    @property
-    def intro_msg(self) -> str:
-        """Message intro for the current character index."""
-        text = self.sub.text_with_newline.replace(chr(10), "\\n")
-        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_idx + 1:2d} | {text}"
-
-
-@dataclass
-class GapCursor:
-    """Tracks state while validating a single gap.
-
-    Arguments:
-        sub: subtitle being validated
-        sub_idx: subtitle index for logging
-        char_1_idx: first character index
-        char_2_idx: second character index
-        bbox_1_idx: first bbox index
-        bbox_2_idx: second bbox index
-        char_1: first character
-        char_2: second character
-        gap: gap size
-        gap_chars: observed gap characters
-    """
-
-    sub: ImageSubtitle
-    sub_idx: int
-    char_1_idx: int = 0
-    char_2_idx: int = 0
-    bbox_1_idx: int = 0
-    bbox_2_idx: int = 0
-    char_1: str = ""
-    char_2: str = ""
-    bbox_1: Bbox | None = None
-    bbox_2: Bbox | None = None
-    gap: int = 0
-    gap_chars: str = ""
-
-    @property
-    def expected_space(self) -> str:
-        """Expected space between characters."""
-        return get_expected_space(self.char_1, self.char_2)
-
-    @property
-    def expected_tab(self) -> str:
-        """Expected tab between characters."""
-        return get_expected_tab(self.char_1, self.char_2)
-
-    @property
-    def gap_msg(self) -> str:
-        """Gap text."""
-        return f"'{self.char_1},{self.char_2}' -> {self.gap}"
-
-    @property
-    def intro_msg(self) -> str:
-        """Message intro for the first character index."""
-        text = self.sub.text_with_newline.replace(chr(10), "\\n")
-        return f"Sub {self.sub_idx + 1:4d} | Char {self.char_1_idx + 1:2d} | {text}"
-
-    @property
-    def char_pair(self) -> tuple[str, str]:
-        """Character pair for this gap."""
-        return self.char_1, self.char_2
-
-    def seek_char_1(self) -> bool:
-        """Seek next non-whitespace character for char_1.
-
-        Returns:
-            whether a character was found
-        """
-        text = self.sub.text_with_newline
-        while self.char_1_idx < len(text) and (
-            text[self.char_1_idx] in whitespace_chars or text[self.char_1_idx] == "\n"
-        ):
-            self.char_1_idx += 1
-        if self.char_1_idx >= len(text) - 1:
-            return False
-        self.char_1 = text[self.char_1_idx]
-        return True
-
-    def seek_char_2(self) -> bool:
-        """Seek next non-whitespace character for char_2.
-
-        Returns:
-            whether a character was found
-        """
-        text = self.sub.text_with_newline
-        self.char_2_idx = self.char_1_idx + 1
-        while self.char_2_idx < len(text) and (
-            text[self.char_2_idx] in whitespace_chars or text[self.char_2_idx] == "\n"
-        ):
-            self.char_2_idx += 1
-        if self.char_2_idx >= len(text):
-            return False
-        self.char_2 = text[self.char_2_idx]
-        return True
-
-    def gap_slice(self) -> str:
-        """Gap substring between char_1 and char_2."""
-        return self.sub.text_with_newline[self.char_1_idx + 1 : self.char_2_idx]
-
-    def advance(self):
-        """Advance to the next gap."""
-        self.char_1_idx = self.char_2_idx
-        self.bbox_1_idx = self.bbox_2_idx
-
-    def annotated_img(self, n_bboxes: int) -> object:
-        """Annotated image for current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            annotated image
-        """
-        return get_img_with_bboxes(self.sub.img, self.bbox_grp(n_bboxes))
-
-    def bbox_grp(self, n_bboxes: int) -> list[Bbox]:
-        """Current bbox group.
-
-        Arguments:
-            n_bboxes: number of bboxes to include
-        Returns:
-            bbox group
-        """
-        return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
-
-    def get_bbox_1(self) -> Bbox | None:
-        """Get the current bbox_1.
-
-        Returns:
-            bbox_1 or None if out of range
-        """
-        if self.bbox_1_idx >= len(self.sub.bboxes):
-            return None
-        return self.sub.bboxes[self.bbox_1_idx]
-
-    def get_bbox_2(self) -> Bbox | None:
-        """Get the current bbox_2.
-
-        Returns:
-            bbox_2 or None if out of range
-        """
-        self.bbox_2_idx = self.bbox_1_idx + 1
-        if self.bbox_2_idx >= len(self.sub.bboxes):
-            return None
-        return self.sub.bboxes[self.bbox_2_idx]
-
-    def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
-        """Prepare gap by seeking characters and bboxes.
-
-        Returns:
-            bbox_1 and bbox_2, or None if not available
-        """
-        if not self.seek_char_1():
-            return None
-        if not self.seek_char_2():
-            return None
-        self.gap_chars = self.gap_slice()
-        self.bbox_1 = self.get_bbox_1()
-        if self.bbox_1 is None:
-            return None
-        self.bbox_2 = self.get_bbox_2()
-        if self.bbox_2 is None:
-            return None
-        return self.bbox_1, self.bbox_2
-
-    def gap_chars_escaped(self) -> str:
-        """Gap chars with newlines escaped."""
-        return self.gap_chars.replace(chr(10), "\\n")
 
 
 class ValidationManager:
