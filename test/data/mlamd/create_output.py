@@ -74,9 +74,9 @@ if "繁體中文 (OCR)" in actions:
             + get_t_zho_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            "test_cases": get_kob_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases()
+            # "test_cases": get_kob_zho_proofreading_test_cases()
+            # + get_mnt_zho_proofreading_test_cases()
+            # + get_t_zho_proofreading_test_cases()
         },
     )
 if "简体中文 (OCR)" in actions:

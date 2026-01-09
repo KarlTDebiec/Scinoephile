@@ -22,7 +22,7 @@ class ZhoHansProofreadingPrompt(MonoBlockPrompt, ZhoHansPrompt):
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        你负责校对简体中文字幕。
+        你负责校对中文字幕。
         仅修正排版与错别字等排版性/输入性错误。
         不要润色、改写、改动语气或用词，也不要根据上下文改剧情。
         如果没有明显的错别字或排版错误，请保持原文不变。

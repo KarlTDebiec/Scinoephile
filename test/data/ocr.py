@@ -226,7 +226,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
     # Proofread
     proofread_path = output_dir / "zho-Hans_fuse_clean_validate_proofread.srt"
-    if False:  # proofread_path.exists() and not overwrite_srt:
+    if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
         if proofreader_kw is None:
@@ -345,7 +345,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Proofread
     proofread_path = output_dir / "zho-Hant_fuse_clean_validate_proofread.srt"
-    if proofread_path.exists() and not overwrite_srt:
+    if False:  # proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
         if proofreader_kw is None:
@@ -360,14 +360,19 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_zho_proofread(fuse_clean_validate, proofreader)
+        text_series = Series()
+        text_series.events = [
+            text_series.event_class(series=text_series, **event.as_dict())
+            for event in fuse_clean_validate
+        ]
+        proofread = get_zho_proofread(text_series, proofreader)
         proofread.save(proofread_path)
 
     # Flatten
     fuse_clean_validate_flatten_path = (
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
     )
-    if fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
+    if False:  # fuse_clean_validate_flatten_path.exists() and not overwrite_srt:
         fuse_clean_validate_flatten = Series.load(fuse_clean_validate_flatten_path)
     else:
         fuse_clean_validate_flatten = get_zho_flattened(proofread)
