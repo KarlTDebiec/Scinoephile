@@ -115,10 +115,10 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     if validate_path.exists() and not overwrite_img and not validate:
         validate = Series.load(validate_path)
     else:
-        validation_path = output_dir / "eng_validation"
+        image_validation_path = output_dir / "eng_validation"
         validate = validate_eng_ocr(
             image,
-            output_dir_path=validation_path,
+            output_dir_path=image_validation_path,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -232,10 +232,10 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     if validate_path.exists() and not overwrite_img and not validate:
         validate = Series.load(validate_path)
     else:
-        validation_path = output_dir / "zho-Hans_validation"
+        image_validation_path = output_dir / "zho-Hans_validation"
         validate = validate_zho_ocr(
             image,
-            output_dir_path=validation_path,
+            output_dir_path=image_validation_path,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -352,10 +352,10 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     if validate_path.exists() and not overwrite_img and not validate:
         validate = Series.load(validate_path)
     else:
-        validation_path = output_dir / "zho-Hant_validation"
+        image_validation_path = output_dir / "zho-Hant_validation"
         validate = validate_zho_ocr(
             image,
-            output_dir_path=validation_path,
+            output_dir_path=image_validation_path,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
