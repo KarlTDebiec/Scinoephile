@@ -46,16 +46,19 @@ def test_get_eng_proofread_kob(
 
 
 def test_get_eng_proofread_mlamd(
-    mlamd_eng_fuse: Series,
-    mlamd_eng_fuse_proofread: Series,
+    mlamd_eng_fuse_clean_validate: Series,
+    mlamd_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with MLAMD English subtitles.
 
     Arguments:
-        mlamd_eng_fuse: MLAMD English series fixture
-        mlamd_eng_fuse_proofread: Expected proofread MLAMD English series fixture
+        mlamd_eng_fuse_clean_validate: MLAMD English series fixture
+        mlamd_eng_fuse_clean_validate_proofread: Expected proofread MLAMD English series
+          fixture
     """
-    _test_get_eng_proofread(mlamd_eng_fuse, mlamd_eng_fuse_proofread)
+    _test_get_eng_proofread(
+        mlamd_eng_fuse_clean_validate, mlamd_eng_fuse_clean_validate_proofread
+    )
 
 
 def test_get_eng_proofread_mnt(
