@@ -47,7 +47,7 @@ set_logging_verbosity(2)
 
 actions = {
     "繁體中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
     # "简体粤文 (Transcription)",
     # "简体粵文 (SRT)",
     # "繁體粵文 (SRT)",
@@ -58,7 +58,6 @@ actions = {
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
-        title_root / "input" / "zho-Hant.sup",
         fuser_kw={
             "test_cases": get_mlamd_zho_hant_ocr_fusion_test_cases()
             + get_mnt_zho_hans_ocr_fusion_test_cases()
@@ -69,7 +68,6 @@ if "繁體中文 (OCR)" in actions:
             + get_mnt_zho_hans_proofreading_test_cases()
             + get_t_zho_hans_proofreading_test_cases()
         },
-        validate=False,
     )
 
 if "English (OCR)" in actions:
@@ -86,7 +84,6 @@ if "English (OCR)" in actions:
             + get_mnt_eng_proofreading_test_cases()
             + get_t_eng_proofreading_test_cases()
         },
-        validate=False,
     )
 
 if "简体粤文 (Transcription)" in actions:

@@ -156,7 +156,6 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
-    validate: bool = True,
 ) -> Series:
     """Process 简体中文 OCR subtitles into validated output.
 
@@ -167,7 +166,6 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
-        validate: whether to run validation
     Returns:
         processed series
     """
@@ -271,13 +269,12 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
 def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
-    sup_path: Path | None,
+    sup_path: Path | None = None,
     *,
     fuser_kw: Any | None = None,
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
-    validate: bool = True,
 ) -> Series:
     """Process 繁体中文 OCR subtitles into validated output.
 
@@ -288,7 +285,6 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
-        validate: whether to run validation
     Returns:
         processed series
     """
