@@ -98,10 +98,10 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     # Clean
     clean_path = output_dir / "eng_fuse_clean.srt"
     if clean_path.exists() and not overwrite_srt:
-        fuse_clean = Series.load(clean_path)
+        clean = Series.load(clean_path)
     else:
-        fuse_clean = get_eng_cleaned(fuse, remove_empty=False)
-        fuse_clean.save(output_dir / "eng_fuse_clean.srt")
+        clean = get_eng_cleaned(fuse, remove_empty=False)
+        clean.save(output_dir / "eng_fuse_clean.srt")
 
     # Validate
     validate_path = output_dir / "eng_fuse_clean_validate.srt"
@@ -111,14 +111,20 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         image_path = output_dir / "eng_image"
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
+            # assert len(clean) == len(image), (
+            #     f"Length mismatch: {len(clean)} vs {len(image)}"
+            # )
+            # for text_sub, image_sub in zip(clean, image):
+            #     image_sub.text = text_sub.text
+            # image.save(image_path)
         else:
             if not sup_path:
                 raise ScinoephileError("sup_path is required to build image output")
             image = ImageSeries.load(sup_path)
-            assert len(fuse_clean) == len(image), (
-                f"Length mismatch: {len(fuse_clean)} vs {len(image)}"
+            assert len(clean) == len(image), (
+                f"Length mismatch: {len(clean)} vs {len(image)}"
             )
-            for text_sub, image_sub in zip(fuse_clean, image):
+            for text_sub, image_sub in zip(clean, image):
                 image_sub.text = text_sub.text
             image.save(image_path)
         image_validation_path = output_dir / "eng_validation"

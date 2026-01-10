@@ -2633,12 +2633,14 @@
   {
     "query": {
       "subtitle_1": "There is smoke ahead,\nsomeone must have alarmed them",
-      "subtitle_2": "- Get ready the Unicorn Smoke\n- Yes",
+      "subtitle_2": "- Get ready the Unicom Smoke\n- Yes",
       "subtitle_3": "Attack the main camp"
     },
-    "answer": {},
-    "prompt": true,
-    "verified": true
+    "answer": {
+      "revised_2": "- Get ready the Unicorn Smoke\n- Yes",
+      "note_2": "Corrected 'Unicom' to 'Unicorn', which is the intended term used elsewhere ('Unicorn Smoke')."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2669,10 +2671,9 @@
   },
   {
     "query": {
-      "subtitle_1": "The Unicorn Smoke of the Tin Li Sect"
+      "subtitle_1": "The Unicom Smoke of the Tin Li Sect"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
