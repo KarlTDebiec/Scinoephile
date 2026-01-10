@@ -75,7 +75,8 @@ __all__ = [
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
     "mlamd_eng_fuse_clean_validate",
-    "mlamd_eng_fuse_clean_validate_flatten",
+    "mlamd_eng_fuse_clean_validate_proofread",
+    "mlamd_eng_fuse_clean_validate_proofread_flatten",
     "mlamd_yue_hans",
     "mlamd_yue_hans_proofread",
     "mlamd_yue_hans_proofread_translate",
@@ -263,9 +264,15 @@ def mlamd_eng_fuse_clean_validate() -> Series:
 
 
 @pytest.fixture
-def mlamd_eng_fuse_clean_validate_flatten() -> Series:
-    """MLAMD English fused, cleaned, validated, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_flatten.srt")
+def mlamd_eng_fuse_clean_validate_proofread() -> Series:
+    """MLAMD English fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_clean_validate_proofread_flatten() -> Series:
+    """MLAMD English fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
 
 
 @pytest.fixture

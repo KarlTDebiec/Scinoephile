@@ -105,7 +105,7 @@ if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        eng_path=output_dir / "eng_fuse_clean_validate_flatten.srt",
+        eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
     )
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(
@@ -165,13 +165,7 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
     yue_hans_proofread_translate_review.save(outfile_path)
 if "Bilingual 简体粤文 and English" in actions:
-    yue_hans_proofread_translate_review = Series.load(
-        output_dir / "yue-Hans_proofread_translate_review.srt"
-    )
-    eng_fuse_clean_validate_flatten = Series.load(
-        output_dir / "eng_fuse_clean_validate_flatten.srt"
-    )
-    yue_hans_eng = get_synced_series(
-        yue_hans_proofread_translate_review, eng_fuse_clean_validate_flatten
-    )
+    yue_hans = Series.load(output_dir / "yue-Hans_proofread_translate_review.srt")
+    eng = Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
+    yue_hans_eng = get_synced_series(yue_hans, eng)
     yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
