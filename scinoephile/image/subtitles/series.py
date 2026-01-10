@@ -241,7 +241,8 @@ class ImageSeries(Series):
         html_events = cls._parse_html_events(html_text, dir_path)
 
         for html_event in html_events:
-            img = Image.open(html_event["path"])
+            with Image.open(html_event["path"]) as opened:
+                img = opened.copy()
             img, converted = convert_rgba_img_to_la(img)
             if converted:
                 img.save(html_event["path"])
