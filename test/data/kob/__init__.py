@@ -203,44 +203,6 @@ def kob_yue_hans_eng() -> Series:
 
 
 @cache
-def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
-    **kwargs: Any,
-) -> list[TestCase]:
-    """Get KOB English proofreading test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "eng" / "proofreading.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_kob_zho_hant_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
-    **kwargs: Any,
-) -> list[TestCase]:
-    """Get KOB 中文 proofreading test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
 def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
     **kwargs: Any,
@@ -275,4 +237,42 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
     path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_eng_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB English proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "eng" / "proofreading.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_zho_hant_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB 中文 proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )

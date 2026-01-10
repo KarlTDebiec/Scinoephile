@@ -900,7 +900,7 @@
       "tesseract": "May|…"
     },
     "answer": {
-      "output": "- May I… - No",
+      "output": "- May I…\n- No",
       "note": "Manually corrected."
     },
     "difficulty": 3,
@@ -1143,7 +1143,7 @@
       "output": "Bullshit, throw him to death",
       "note": "Used 'Bullshit' as one word from Tesseract."
     },
-    "difficulty": 1,
+    "difficulty": 3,
     "verified": true
   },
   {
@@ -1383,7 +1383,7 @@
       "output": "- Get ready the Unicorn Smoke\n- Yes",
       "note": "Combined 'Unicorn Smoke' on one line and added '-' and line break as in Tesseract."
     },
-    "difficulty": 2,
+    "difficulty": 3,
     "verified": true
   },
   {
@@ -1524,8 +1524,8 @@
       "tesseract": "Mister So!"
     },
     "answer": {
-      "output": "Mister\nSo!",
-      "note": "Kept line break from Google Lens, as Tesseract did not provide one and Lens is generally more reliable for text recognition."
+      "output": "Mister So!",
+      "note": "Used space instead of newline."
     },
     "difficulty": 1,
     "verified": true
@@ -1609,9 +1609,9 @@
     },
     "answer": {
       "output": "- …to Your Majesty\n- Get up",
-      "note": "Manually corrected."
+      "note": "Added '-' and line break as in Tesseract; added ellipsis at start."
     },
-    "difficulty": 2,
+    "difficulty": 3,
     "verified": true
   },
   {
