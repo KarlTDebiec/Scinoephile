@@ -27,7 +27,6 @@ from scinoephile.multilang.yue_zho.translation import (
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
     get_kob_zho_ocr_fusion_test_cases,
-    get_kob_zho_proofreading_test_cases,
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
@@ -36,7 +35,6 @@ from test.data.mlamd import (
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
     get_mnt_zho_ocr_fusion_test_cases,
-    get_mnt_zho_proofreading_test_cases,
 )
 from test.data.ocr import (
     process_eng_ocr,
@@ -47,7 +45,6 @@ from test.data.ocr import (
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_zho_ocr_fusion_test_cases,
-    get_t_zho_proofreading_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -56,9 +53,9 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "繁體中文 (OCR)",
+    # "繁體中文 (OCR)",
     # "简体中文 (OCR)",
-    # "English (OCR)",
+    "English (OCR)",
     # "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体粤文 and English",
@@ -89,9 +86,9 @@ if "简体中文 (OCR)" in actions:
             + get_t_zho_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            "test_cases": get_kob_zho_proofreading_test_cases()
-            + get_mnt_zho_proofreading_test_cases()
-            + get_t_zho_proofreading_test_cases()
+            # "test_cases": get_kob_zho_proofreading_test_cases()
+            # + get_mnt_zho_proofreading_test_cases()
+            # + get_t_zho_proofreading_test_cases()
         },
     )
 if "English (OCR)" in actions:
