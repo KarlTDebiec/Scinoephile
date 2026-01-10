@@ -275,6 +275,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
+    force_validation: bool = False,
 ) -> Series:
     """Process 繁体中文 OCR subtitles into validated output.
 
@@ -285,6 +286,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
+        force_validation: whether to force validation even if validation output exists
     Returns:
         processed series
     """
@@ -330,11 +332,11 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hant_fuse_clean_validate.srt"
-    if validate_path.exists():
+    if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
         image_path = output_dir / "zho-Hant_image"
-        if image_path.exists():
+        if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
         else:
             if not sup_path:
