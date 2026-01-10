@@ -56,7 +56,7 @@ actions = {
     "繁體中文 (OCR)",
     "简体中文 (OCR)",
     "English (OCR)",
-    # "Bilingual 简体中文 and English",
+    "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
     # "Bilingual 简体粤文 and English",
 }
