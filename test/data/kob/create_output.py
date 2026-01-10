@@ -46,8 +46,8 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "繁體中文 (OCR)",
-    # "English (OCR)",
+    # "繁體中文 (OCR)",
+    "English (OCR)",
     # "简体粤文 (Transcription)",
     # "简体粵文 (SRT)",
     # "繁體粵文 (SRT)",
@@ -68,8 +68,6 @@ if "繁體中文 (OCR)" in actions:
             + get_mnt_zho_hans_proofreading_test_cases()
             + get_t_zho_hans_proofreading_test_cases()
         },
-        overwrite_srt=True,
-        force_validation=True,
     )
 
 if "English (OCR)" in actions:
@@ -86,6 +84,8 @@ if "English (OCR)" in actions:
             + get_mnt_eng_proofreading_test_cases()
             + get_t_eng_proofreading_test_cases()
         },
+        overwrite_srt=True,
+        force_validation=True,
     )
 
 if "简体粤文 (Transcription)" in actions:

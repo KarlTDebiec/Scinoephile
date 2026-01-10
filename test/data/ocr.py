@@ -11,7 +11,11 @@ from core import ScinoephileError
 
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
+from scinoephile.lang.eng import (
+    get_eng_cleaned,
+    get_eng_flattened,
+    validate_eng_ocr,
+)
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.eng.proofreading import get_eng_proofread, get_eng_proofreader
 from scinoephile.lang.zho import (
@@ -40,12 +44,13 @@ __all__ = [
 
 def process_eng_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
-    sup_path: Path,
+    sup_path: Path | None = None,
     *,
     fuser_kw: Any | None = None,
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
+    force_validation: bool = False,
 ) -> Series:
     """Process English OCR subtitles into validated output.
 
@@ -56,6 +61,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
+        force_validation: whether to rerun validation if output exists
     Returns:
         processed series
     """
@@ -99,11 +105,11 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "eng_fuse_clean_validate.srt"
-    if validate_path.exists():
+    if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
         image_path = output_dir / "eng_image"
-        if image_path.exists():
+        if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
         else:
             if not sup_path:
@@ -115,9 +121,11 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             for text_sub, image_sub in zip(fuse_clean, image):
                 image_sub.text = text_sub.text
             image.save(image_path)
-        image_validation_path = output_dir / "zho-Hans_validation"
-        validate = validate_zho_ocr(
-            image, output_dir_path=image_validation_path, interactive=True
+        image_validation_path = output_dir / "eng_validation"
+        validate = validate_eng_ocr(
+            image,
+            output_dir_path=image_validation_path,
+            interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
