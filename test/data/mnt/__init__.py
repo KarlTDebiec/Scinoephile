@@ -25,9 +25,10 @@ __all__ = [
     "mnt_zho_hans_lens",
     "mnt_zho_hans_paddle",
     "mnt_zho_hans_fuse",
-    "mnt_zho_hans_fuse_proofread",
-    "mnt_zho_hans_fuse_proofread_clean",
-    "mnt_zho_hans_fuse_proofread_clean_flatten",
+    "mnt_zho_hans_fuse_clean",
+    "mnt_zho_hans_fuse_clean_validate",
+    "mnt_zho_hans_fuse_clean_validate_proofread",
+    "mnt_zho_hans_fuse_clean_validate_proofread_flatten",
     "mnt_zho_hant",
     "mnt_zho_hant_clean",
     "mnt_zho_hant_clean_flatten",
@@ -35,14 +36,15 @@ __all__ = [
     "mnt_eng_lens",
     "mnt_eng_tesseract",
     "mnt_eng_fuse",
-    "mnt_eng_fuse_proofread",
-    "mnt_eng_fuse_proofread_clean",
-    "mnt_eng_fuse_proofread_clean_flatten",
+    "mnt_eng_fuse_clean",
+    "mnt_eng_fuse_clean_validate",
+    "mnt_eng_fuse_clean_validate_proofread",
+    "mnt_eng_fuse_clean_validate_proofread_flatten",
     "mnt_zho_hans_eng",
     "get_mnt_eng_proofreading_test_cases",
-    "get_mnt_zho_proofreading_test_cases",
+    "get_mnt_zho_hans_proofreading_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
-    "get_mnt_zho_ocr_fusion_test_cases",
+    "get_mnt_zho_hans_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -70,21 +72,29 @@ def mnt_zho_hans_fuse() -> Series:
 
 
 @pytest.fixture
-def mnt_zho_hans_fuse_proofread() -> Series:
-    """MNT 简体中文 fused and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
+def mnt_zho_hans_fuse_clean() -> Series:
+    """MNT 简体中文 fused and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
 
 
 @pytest.fixture
-def mnt_zho_hans_fuse_proofread_clean() -> Series:
-    """MNT 简体中文 fused, proofread, and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean.srt")
+def mnt_zho_hans_fuse_clean_validate() -> Series:
+    """MNT 简体中文 fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
 
 
 @pytest.fixture
-def mnt_zho_hans_fuse_proofread_clean_flatten() -> Series:
-    """MNT 简体中文 fused, proofread, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread_clean_flatten.srt")
+def mnt_zho_hans_fuse_clean_validate_proofread() -> Series:
+    """MNT 简体中文 fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
+    """MNT 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
 
 
 # 繁体中文 (SRT)
@@ -132,21 +142,27 @@ def mnt_eng_fuse() -> Series:
 
 
 @pytest.fixture
-def mnt_eng_fuse_proofread() -> Series:
-    """MNT English fused and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_proofread.srt")
+def mnt_eng_fuse_clean() -> Series:
+    """MNT English fused and cleaned subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean.srt")
 
 
 @pytest.fixture
-def mnt_eng_fuse_proofread_clean() -> Series:
-    """MNT English fused, proofread, and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_proofread_clean.srt")
+def mnt_eng_fuse_clean_validate() -> Series:
+    """MNT English fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
 
 
 @pytest.fixture
-def mnt_eng_fuse_proofread_clean_flatten() -> Series:
-    """MNT English fused, proofread, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_proofread_clean_flatten.srt")
+def mnt_eng_fuse_clean_validate_proofread() -> Series:
+    """MNT English fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mnt_eng_fuse_clean_validate_proofread_flatten() -> Series:
+    """MNT English fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
 
 
 # Bilingual 简体中文 and English
@@ -176,7 +192,7 @@ def get_mnt_eng_proofreading_test_cases(
 
 
 @cache
-def get_mnt_zho_proofreading_test_cases(
+def get_mnt_zho_hans_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
@@ -188,7 +204,7 @@ def get_mnt_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -214,7 +230,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_mnt_zho_ocr_fusion_test_cases(
+def get_mnt_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
@@ -226,7 +242,7 @@ def get_mnt_zho_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )

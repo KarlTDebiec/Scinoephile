@@ -25,7 +25,10 @@ __all__ = [
     "t_zho_hans_lens",
     "t_zho_hans_paddle",
     "t_zho_hans_fuse",
-    "t_zho_hans_fuse_proofread",
+    "t_zho_hans_fuse_clean",
+    "t_zho_hans_fuse_clean_validate",
+    "t_zho_hans_fuse_clean_validate_proofread",
+    "t_zho_hans_fuse_clean_validate_proofread_flatten",
     "t_zho_hans",
     "t_zho_hans_clean",
     "t_zho_hans_clean_flatten",
@@ -35,14 +38,17 @@ __all__ = [
     "t_eng_lens",
     "t_eng_tesseract",
     "t_eng_fuse",
-    "t_eng_fuse_proofread",
+    "t_eng_fuse_clean",
+    "t_eng_fuse_clean_validate",
+    "t_eng_fuse_clean_validate_proofread",
+    "t_eng_fuse_clean_validate_proofread_flatten",
     "t_eng_clean",
     "t_eng_clean_flatten",
     "t_zho_hans_eng",
     "get_t_eng_proofreading_test_cases",
-    "get_t_zho_proofreading_test_cases",
+    "get_t_zho_hans_proofreading_test_cases",
     "get_t_eng_ocr_fusion_test_cases",
-    "get_t_zho_ocr_fusion_test_cases",
+    "get_t_zho_hans_ocr_fusion_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -70,9 +76,29 @@ def t_zho_hans_fuse() -> Series:
 
 
 @pytest.fixture
-def t_zho_hans_fuse_proofread() -> Series:
-    """T 简体中文 fused and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
+def t_zho_hans_fuse_clean() -> Series:
+    """T 简体中文 fused and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_clean_validate() -> Series:
+    """T 简体中文 fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_clean_validate_proofread() -> Series:
+    """T 简体中文 fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
+    """T 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
 
 
 # 繁體中文 (OCR)
@@ -108,9 +134,27 @@ def t_eng_fuse() -> Series:
 
 
 @pytest.fixture
-def t_eng_fuse_proofread() -> Series:
-    """T English fused and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_proofread.srt")
+def t_eng_fuse_clean() -> Series:
+    """T English fused and cleaned subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean.srt")
+
+
+@pytest.fixture
+def t_eng_fuse_clean_validate() -> Series:
+    """T English fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
+
+
+@pytest.fixture
+def t_eng_fuse_clean_validate_proofread() -> Series:
+    """T English fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def t_eng_fuse_clean_validate_proofread_flatten() -> Series:
+    """T English fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
 
 
 # 简体中文 (SRT)
@@ -191,7 +235,7 @@ def get_t_eng_proofreading_test_cases(
 
 
 @cache
-def get_t_zho_proofreading_test_cases(
+def get_t_zho_hans_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
@@ -203,7 +247,7 @@ def get_t_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading.json"
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -229,7 +273,7 @@ def get_t_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_t_zho_ocr_fusion_test_cases(
+def get_t_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
@@ -241,7 +285,7 @@ def get_t_zho_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion.json"
+    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )

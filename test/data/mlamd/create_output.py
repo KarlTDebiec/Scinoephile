@@ -34,7 +34,7 @@ from test.data.mlamd import (
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
-    get_mnt_zho_ocr_fusion_test_cases,
+    get_mnt_zho_hans_ocr_fusion_test_cases,
 )
 from test.data.ocr import (
     process_eng_ocr,
@@ -44,7 +44,7 @@ from test.data.ocr import (
 )
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
-    get_t_zho_ocr_fusion_test_cases,
+    get_t_zho_hans_ocr_fusion_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -67,13 +67,13 @@ if "繁體中文 (OCR)" in actions:
         title_root / "input" / "zho-Hant.sup",
         fuser_kw={
             "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_ocr_fusion_test_cases()
-            + get_t_zho_ocr_fusion_test_cases()
+            + get_mnt_zho_hans_ocr_fusion_test_cases()
+            + get_t_zho_hans_ocr_fusion_test_cases()
         },
         proofreader_kw={
             # "test_cases": get_kob_zho_hant_proofreading_test_cases()
-            # + get_mnt_zho_proofreading_test_cases()
-            # + get_t_zho_proofreading_test_cases()
+            # + get_mnt_zho_hans_proofreading_test_cases()
+            # + get_t_zho_hans_proofreading_test_cases()
         },
     )
 if "简体中文 (OCR)" in actions:
@@ -82,13 +82,13 @@ if "简体中文 (OCR)" in actions:
         title_root / "input" / "zho-Hans.sup",
         fuser_kw={
             "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_ocr_fusion_test_cases()
-            + get_t_zho_ocr_fusion_test_cases()
+            + get_mnt_zho_hans_ocr_fusion_test_cases()
+            + get_t_zho_hans_ocr_fusion_test_cases()
         },
         proofreader_kw={
             # "test_cases": get_kob_zho_hant_proofreading_test_cases()
-            # + get_mnt_zho_proofreading_test_cases()
-            # + get_t_zho_proofreading_test_cases()
+            # + get_mnt_zho_hans_proofreading_test_cases()
+            # + get_t_zho_hans_proofreading_test_cases()
         },
     )
 if "English (OCR)" in actions:

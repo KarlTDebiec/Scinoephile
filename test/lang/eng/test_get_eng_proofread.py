@@ -66,26 +66,33 @@ def test_get_eng_proofread_mlamd(
 
 
 def test_get_eng_proofread_mnt(
-    mnt_eng_fuse: Series,
-    mnt_eng_fuse_proofread: Series,
+    mnt_eng_fuse_clean_validate: Series,
+    mnt_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse: MNT English series fixture
-        mnt_eng_fuse_proofread: Expected proofread MNT English series fixture
+        mnt_eng_fuse_clean_validate: MNT English series fixture
+        mnt_eng_fuse_clean_validate_proofread: Expected proofread MNT English series
+          fixture
     """
-    _test_get_eng_proofread(mnt_eng_fuse, mnt_eng_fuse_proofread)
+    _test_get_eng_proofread(
+        mnt_eng_fuse_clean_validate,
+        mnt_eng_fuse_clean_validate_proofread,
+    )
 
 
 def test_get_eng_proofread_t(
-    t_eng_fuse: Series,
-    t_eng_fuse_proofread: Series,
+    t_eng_fuse_clean_validate: Series,
+    t_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with T English subtitles.
 
     Arguments:
-        t_eng_fuse: T English series fixture
-        t_eng_fuse_proofread: Expected proofread T English series fixture
+        t_eng_fuse_clean_validate: T English series fixture
+        t_eng_fuse_clean_validate_proofread: Expected proofread T English series fixture
     """
-    _test_get_eng_proofread(t_eng_fuse, t_eng_fuse_proofread)
+    _test_get_eng_proofread(
+        t_eng_fuse_clean_validate,
+        t_eng_fuse_clean_validate_proofread,
+    )
