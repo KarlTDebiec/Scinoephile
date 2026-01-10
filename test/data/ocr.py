@@ -214,18 +214,15 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite_img:
+    if validate_path.exists():
         validate = Series.load(validate_path)
-    elif validate:
-        # Image
+    else:
         image_path = output_dir / "zho-Hans_image"
-        if image_path.exists() and not overwrite_img:
+        if image_path.exists():
             image = ImageSeries.load(image_path)
         else:
-            if sup_path is None:
-                raise ValueError(
-                    "sup_path is required to rebuild zho-Hans image output"
-                )
+            if not sup_path:
+                raise ScinoephileError("sup_path is required to build image output")
             image = ImageSeries.load(sup_path)
             assert len(clean) == len(image), (
                 f"Length mismatch: {len(clean)} vs {len(image)}"
@@ -241,28 +238,6 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
-    else:
-        # Image
-        image_path = output_dir / "zho-Hans_image"
-        if image_path.exists() and not overwrite_img:
-            image = ImageSeries.load(image_path)
-        else:
-            if sup_path is None:
-                raise ValueError(
-                    "sup_path is required to rebuild zho-Hans image output"
-                )
-            image = ImageSeries.load(sup_path)
-            assert len(clean) == len(image), (
-                f"Length mismatch: {len(clean)} vs {len(image)}"
-            )
-            for text_sub, image_sub in zip(clean, image):
-                image_sub.text = text_sub.text
-            image.save(image_path)
-        validate = Series()
-        validate.events = [
-            validate.event_class(series=validate, **event.as_dict()) for event in image
-        ]
-        validate.save(validate_path, exist_ok=True)
 
     # Proofread
     proofread_path = output_dir / "zho-Hans_fuse_clean_validate_proofread.srt"
@@ -359,18 +334,15 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hant_fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite_img:
+    if validate_path.exists():
         validate = Series.load(validate_path)
-    elif validate:
-        # Image
+    else:
         image_path = output_dir / "zho-Hant_image"
-        if image_path.exists() and not overwrite_img:
+        if image_path.exists():
             image = ImageSeries.load(image_path)
         else:
-            if sup_path is None:
-                raise ValueError(
-                    "sup_path is required to rebuild zho-Hant image output"
-                )
+            if not sup_path:
+                raise ScinoephileError("sup_path is required to build image output")
             image = ImageSeries.load(sup_path)
             assert len(clean) == len(image), (
                 f"Length mismatch: {len(clean)} vs {len(image)}"
@@ -386,28 +358,6 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
-    else:
-        # Image
-        image_path = output_dir / "zho-Hant_image"
-        if image_path.exists() and not overwrite_img:
-            image = ImageSeries.load(image_path)
-        else:
-            if sup_path is None:
-                raise ValueError(
-                    "sup_path is required to rebuild zho-Hant image output"
-                )
-            image = ImageSeries.load(sup_path)
-            assert len(clean) == len(image), (
-                f"Length mismatch: {len(clean)} vs {len(image)}"
-            )
-            for text_sub, image_sub in zip(clean, image):
-                image_sub.text = text_sub.text
-            image.save(image_path)
-        validate = Series()
-        validate.events = [
-            validate.event_class(series=validate, **event.as_dict()) for event in image
-        ]
-        validate.save(validate_path, exist_ok=True)
 
     # Proofread
     proofread_path = output_dir / "zho-Hant_fuse_clean_validate_proofread.srt"
