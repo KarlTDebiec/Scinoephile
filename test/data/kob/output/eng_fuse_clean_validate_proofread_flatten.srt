@@ -3384,7 +3384,7 @@ What?
 
 847
 00:54:55,167 --> 00:54:57,169
-- May I… - No
+- May I…    - No
 
 848
 00:55:15,395 --> 00:55:22,152
@@ -4156,7 +4156,7 @@ Very good! Very good!
 
 1040
 01:06:03,376 --> 01:06:06,838
-But I won't cheat you, from your head to toe
+But I won't cheat you, from your head to toes
 
 1041
 01:06:06,838 --> 01:06:09,174
@@ -5056,15 +5056,15 @@ I haven't finished
 
 1265
 01:25:42,638 --> 01:25:45,098
-There is smoke ahead, someone must have alarmed them
+There is smoke ahead, someone must have alarmed them.
 
 1266
 01:25:47,601 --> 01:25:48,894
-- Get ready the Unicorn Smoke    - Yes
+- Get ready the Unicom Smoke.    - Yes.
 
 1267
 01:25:48,894 --> 01:25:49,936
-Attack the main camp
+Attack the main camp.
 
 1268
 01:26:51,248 --> 01:26:54,584
@@ -5548,7 +5548,7 @@ if you don't respect me, I will kill you
 
 1388
 01:36:56,894 --> 01:36:59,647
-If so, you needn't squat and talk to me
+If so, you needn't squat to talk to me
 
 1389
 01:36:59,939 --> 01:37:02,650
@@ -5564,7 +5564,7 @@ we have nothing to chat about
 
 1392
 01:37:09,407 --> 01:37:10,783
-You have billions of fellows
+You have billions of fellows.
 
 1393
 01:37:10,992 --> 01:37:13,453
@@ -5588,7 +5588,7 @@ If you are great, making the society peaceful and wealthy,
 
 1398
 01:37:23,129 --> 01:37:24,922
-no one wishes to be beggar, right?
+no one wishes to be a beggar, right?
 
 1399
 01:37:27,300 --> 01:37:29,552
@@ -5612,7 +5612,7 @@ Long life…
 
 1404
 01:37:37,393 --> 01:37:39,187
-- …to Your Majesty    - Get up
+- … to Your Majesty    - Get up
 
 1405
 01:37:45,735 --> 01:37:47,403

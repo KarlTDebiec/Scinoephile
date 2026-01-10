@@ -1577,12 +1577,15 @@
   {
     "query": {
       "subtitle_1": "Give me money please",
-      "subtitle_2": "Go, go, I won't give you money",
+      "subtitle_2": "Go, go , I won't give you money",
       "subtitle_3": "Go, don't stop me from doing business",
       "subtitle_4": "Chan, dad is leaving"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "revised_2": "Go, go, I won't give you money",
+      "note_2": "Removed the extra space before the comma in 'go ,'."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -1640,10 +1643,9 @@
       "subtitle_7": "Come on, eat them all",
       "subtitle_8": "Little kid!",
       "subtitle_9": "What?",
-      "subtitle_10": "- May I… - No"
+      "subtitle_10": "- May I…\n- No"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -2033,7 +2035,7 @@
   },
   {
     "query": {
-      "subtitle_1": "But, don't worry, you were my benefit or,",
+      "subtitle_1": "But, don't worry, you were my benefitor,",
       "subtitle_2": "I will repay you one day",
       "subtitle_3": "Thank you very much",
       "subtitle_4": "But, you can't buy back what you lost",
@@ -2060,26 +2062,23 @@
     },
     "answer": {
       "revised_1": "But, don't worry, you were my benefactor,",
-      "note_1": "Corrected 'benefit or' to 'benefactor'.",
+      "note_1": "Corrected 'benefitor' to 'benefactor'.",
       "revised_5": "even if you have money again",
-      "note_5": "Added 'if' to correct the conditional phrase: 'even if you have money again'.",
+      "note_5": "Added 'if' after 'even' for correct grammar.",
       "revised_10": "I am Hung Yat-sun, nicknamed Old Bag Sun",
       "note_10": "Corrected 'nicked name' to 'nicknamed'.",
       "revised_12": "It's good to be a beggar",
-      "note_12": "Added 'a' before 'beggar' for correct grammar.",
+      "note_12": "Added article 'a' before 'beggar' for correct grammar.",
       "revised_17": "Don't you think you are not human-like?",
-      "note_17": "Added hyphen to 'human-like' for correct compound adjective.",
+      "note_17": "Added hyphen in 'human-like' to form a correct compound adjective.",
       "revised_19": "So you have to be a beggar now",
-      "note_19": "Added 'a' before 'beggar' for correct grammar.",
-      "revised_21": "But I won't cheat you, from your head to toe",
-      "note_21": "Changed 'toes' to 'toe' for the correct idiom: 'from head to toe'.",
+      "note_19": "Added article 'a' before 'beggar' for correct grammar.",
       "revised_22": "Every part of you is beggar-like",
-      "note_22": "Changed 'Every parts' to 'Every part' and added hyphen to 'beggar-like'.",
+      "note_22": "Changed 'Every parts' to singular 'Every part' and 'are' to 'is' for subject-verb agreement; added hyphen in 'beggar-like'.",
       "revised_24": "That means, you will be a beggar for your life",
-      "note_24": "Added 'a' before 'beggar' for correct grammar."
+      "note_24": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2304,10 +2303,13 @@
       "subtitle_4": "Chan, it's not a game",
       "subtitle_5": "You will be killed, come down",
       "subtitle_6": "It doesn't matter, I have forgotten\nmy life already",
-      "subtitle_7": "Bullshit, throw him to death"
+      "subtitle_7": "Bull shit, throw him to death"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "revised_7": "Bullshit, throw him to death",
+      "note_7": "Corrected 'Bull shit' to the standard single-word form 'Bullshit'."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2637,8 +2639,12 @@
       "subtitle_3": "Attack the main camp"
     },
     "answer": {
-      "revised_2": "- Get ready the Unicorn Smoke\n- Yes",
-      "note_2": "Corrected 'Unicom' to 'Unicorn', which is the intended term used elsewhere ('Unicorn Smoke')."
+      "revised_1": "There is smoke ahead,\nsomeone must have alarmed them.",
+      "note_1": "Added a period at the end of the sentence for proper punctuation.",
+      "revised_2": "- Get ready the Unicom Smoke.\n- Yes.",
+      "note_2": "Added periods at the end of both lines for proper sentence punctuation.",
+      "revised_3": "Attack the main camp.",
+      "note_3": "Added a period at the end of the sentence for proper punctuation."
     },
     "difficulty": 1
   },
@@ -2955,7 +2961,7 @@
     "query": {
       "subtitle_1": "Nothing special, let's go",
       "subtitle_2": "Pick me up",
-      "subtitle_3": "Mister\nSo!",
+      "subtitle_3": "Mister So!",
       "subtitle_4": "Put me down",
       "subtitle_5": "Although you have saved me,",
       "subtitle_6": "if you don't respect me, I will kill you",
@@ -2975,18 +2981,23 @@
       "subtitle_20": "give me some face",
       "subtitle_21": "Yes",
       "subtitle_22": "Long life…",
-      "subtitle_23": "- …to Your Majesty\n- Get up"
+      "subtitle_23": "- … to Your Majesty\n- Get up"
     },
     "answer": {
+      "revised_7": "If so, you needn't squat to talk to me",
+      "note_7": "Added 'to' in 'squat to talk' for correct verb construction.",
       "revised_10": "we have nothing to chat about",
-      "note_10": "Added 'about' to complete the phrase 'nothing to chat about'.",
+      "note_10": "Added 'about' to complete the phrasal verb 'chat about'.",
+      "revised_11": "You have billions of fellows.",
+      "note_11": "Added a period at the end of the sentence for consistency with surrounding subtitles.",
       "revised_13": "The number of fellows doesn't depend on me,",
-      "note_13": "Changed 'fellow' to 'fellows' for subject-verb agreement: 'number of fellows'.",
+      "note_13": "Changed 'fellow' to 'fellows' and 'does not' contraction to agree with the plural subject.",
       "revised_16": "If you are great, making the\nsociety peaceful and wealthy,",
-      "note_16": "Corrected 'peace' to 'peaceful' for correct adjective usage: 'peaceful and wealthy'."
+      "note_16": "Corrected 'peace' to the adjective 'peaceful' to match 'wealthy'.",
+      "revised_17": "no one wishes to be a beggar, right?",
+      "note_17": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
