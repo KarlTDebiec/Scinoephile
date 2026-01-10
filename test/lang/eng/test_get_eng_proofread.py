@@ -33,16 +33,20 @@ def _test_get_eng_proofread(series: Series, expected: Series):
 
 
 def test_get_eng_proofread_kob(
-    kob_eng_fuse: Series,
-    kob_eng_fuse_proofread: Series,
+    kob_eng_fuse_clean_validate: Series,
+    kob_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with KOB English subtitles.
 
     Arguments:
-        kob_eng_fuse: KOB English series fixture
-        kob_eng_fuse_proofread: Expected proofread KOB English series fixture
+        kob_eng_fuse_clean_validate: KOB English series fixture
+        kob_eng_fuse_clean_validate_proofread: Expected proofread KOB English series
+          fixture
     """
-    _test_get_eng_proofread(kob_eng_fuse, kob_eng_fuse_proofread)
+    _test_get_eng_proofread(
+        kob_eng_fuse_clean_validate,
+        kob_eng_fuse_clean_validate_proofread,
+    )
 
 
 def test_get_eng_proofread_mlamd(

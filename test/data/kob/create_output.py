@@ -11,27 +11,9 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.testing import test_data_root
-from scinoephile.lang.eng import (
-    get_eng_cleaned,
-    get_eng_flattened,
-    get_eng_ocr_fused,
-    get_eng_proofread,
-)
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fuser
-from scinoephile.lang.eng.proofreading import get_eng_proofreader
-from scinoephile.lang.zho import (
-    get_zho_cleaned,
-    get_zho_converted,
-    get_zho_flattened,
-    get_zho_ocr_fused,
-    get_zho_proofread,
-)
+from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
+from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
-from scinoephile.lang.zho.proofreading import (
-    ZhoHantProofreadingPrompt,
-    get_zho_proofreader,
-)
 from scinoephile.multilang.synchronization import get_synced_series
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
@@ -50,6 +32,7 @@ from test.data.mnt import (
     get_mnt_zho_ocr_fusion_test_cases,
     get_mnt_zho_proofreading_test_cases,
 )
+from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
@@ -66,68 +49,48 @@ actions = {
     "繁體中文 (OCR)",
     "English (OCR)",
     # "简体粤文 (Transcription)",
-    "简体粵文 (SRT)",
-    "繁體粵文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体粵文 and English",
+    # "简体粵文 (SRT)",
+    # "繁體粵文 (SRT)",
+    # "English (SRT)",
+    # "Bilingual 简体粵文 and English",
 }
 
 if "繁體中文 (OCR)" in actions:
-    zho_hant_lens = Series.load(input_dir / "zho-Hant_lens.srt")
-    zho_hant_lens = get_zho_cleaned(zho_hant_lens, remove_empty=False)
-    zho_hant_lens = get_zho_converted(zho_hant_lens, config=OpenCCConfig.s2t)
-    zho_hant_paddle = Series.load(input_dir / "zho-Hant_paddle.srt")
-    zho_hant_paddle = get_zho_cleaned(zho_hant_paddle, remove_empty=False)
-    zho_hant_paddle = get_zho_converted(zho_hant_paddle, config=OpenCCConfig.s2t)
-    zho_ocr_fuser = get_zho_ocr_fuser(
-        prompt_cls=ZhoHantOcrFusionPrompt,
-        test_cases=get_mlamd_zho_hant_ocr_fusion_test_cases()
-        + get_mnt_zho_ocr_fusion_test_cases()
-        + get_t_zho_ocr_fusion_test_cases(),
-        test_case_path=title_root / "lang" / "zho" / "ocr_fusion.json",
-        auto_verify=True,
+    process_zho_hant_ocr(
+        title_root,
+        title_root / "input" / "zho-Hant.sup",
+        fuser_kw={
+            "test_cases": get_mlamd_zho_hant_ocr_fusion_test_cases()
+            + get_mnt_zho_ocr_fusion_test_cases()
+            + get_t_zho_ocr_fusion_test_cases()
+        },
+        proofreader_kw={
+            "test_cases": get_mlamd_zho_hant_proofreading_test_cases()
+            + get_mnt_zho_proofreading_test_cases()
+            + get_t_zho_proofreading_test_cases()
+        },
+        validate=False,
     )
-    zho_hant_fuse = get_zho_ocr_fused(zho_hant_lens, zho_hant_paddle, zho_ocr_fuser)
-    zho_hant_fuse.save(output_dir / "zho-Hant_fuse.srt")
-    zho_hant_fuse = get_zho_cleaned(zho_hant_fuse)
-    zho_hant_fuse = get_zho_converted(zho_hant_fuse, config=OpenCCConfig.s2t)
-    zho_proofreader = get_zho_proofreader(
-        prompt_cls=ZhoHantProofreadingPrompt,
-        test_cases=get_mlamd_zho_hant_proofreading_test_cases()
-        + get_mnt_zho_proofreading_test_cases()
-        + get_t_zho_proofreading_test_cases(),
-        test_case_path=title_root / "lang" / "zho" / "proofreading.json",
-        auto_verify=True,
-    )
-    zho_hant_fuse_proofread = get_zho_proofread(zho_hant_fuse, zho_proofreader)
-    zho_hant_fuse_proofread.save(output_dir / "zho-Hant_fuse_proofread.srt")
 
 if "English (OCR)" in actions:
-    eng_lens = Series.load(input_dir / "eng_lens.srt")
-    eng_lens = get_eng_cleaned(eng_lens, remove_empty=False)
-    eng_tesseract = Series.load(input_dir / "eng_tesseract.srt")
-    eng_tesseract = get_eng_cleaned(eng_tesseract, remove_empty=False)
-    eng_ocr_fuser = get_eng_ocr_fuser(
-        test_cases=get_mlamd_eng_ocr_fusion_test_cases()
-        + get_mnt_eng_ocr_fusion_test_cases()
-        + get_t_eng_ocr_fusion_test_cases(),
-        test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
-        auto_verify=True,
+    process_eng_ocr(
+        title_root,
+        title_root / "input" / "zho-Hant.sup",
+        fuser_kw={
+            "test_cases": get_mlamd_eng_ocr_fusion_test_cases()
+            + get_mnt_eng_ocr_fusion_test_cases()
+            + get_t_eng_ocr_fusion_test_cases()
+        },
+        proofreader_kw={
+            "test_cases": get_mlamd_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases()
+        },
+        validate=False,
     )
-    eng_fuse = get_eng_ocr_fused(eng_lens, eng_tesseract, eng_ocr_fuser)
-    eng_fuse.save(output_dir / "eng_fuse.srt")
-    eng_proofreader = get_eng_proofreader(
-        test_cases=get_mlamd_eng_proofreading_test_cases()
-        + get_mnt_eng_proofreading_test_cases()
-        + get_t_eng_proofreading_test_cases(),
-        test_case_path=title_root / "lang" / "eng" / "proofreading.json",
-        auto_verify=True,
-    )
-    eng_fuse_proofread = get_eng_proofread(eng_fuse, eng_proofreader)
-    eng_fuse_proofread.save(output_dir / "eng_fuse_proofread.srt")
 
 if "简体粤文 (Transcription)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_proofread.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
     zho_hans = get_zho_converted(get_zho_flattened(zho_hant), OpenCCConfig.t2s)
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")

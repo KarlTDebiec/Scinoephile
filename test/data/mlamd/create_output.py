@@ -26,7 +26,7 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
-    get_kob_zho_ocr_fusion_test_cases,
+    get_kob_zho_hant_ocr_fusion_test_cases,
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
@@ -66,12 +66,12 @@ if "繁體中文 (OCR)" in actions:
         title_root,
         title_root / "input" / "zho-Hant.sup",
         fuser_kw={
-            "test_cases": get_kob_zho_ocr_fusion_test_cases()
+            "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
             + get_mnt_zho_ocr_fusion_test_cases()
             + get_t_zho_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            # "test_cases": get_kob_zho_proofreading_test_cases()
+            # "test_cases": get_kob_zho_hant_proofreading_test_cases()
             # + get_mnt_zho_proofreading_test_cases()
             # + get_t_zho_proofreading_test_cases()
         },
@@ -81,12 +81,12 @@ if "简体中文 (OCR)" in actions:
         title_root,
         title_root / "input" / "zho-Hans.sup",
         fuser_kw={
-            "test_cases": get_kob_zho_ocr_fusion_test_cases()
+            "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
             + get_mnt_zho_ocr_fusion_test_cases()
             + get_t_zho_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            # "test_cases": get_kob_zho_proofreading_test_cases()
+            # "test_cases": get_kob_zho_hant_proofreading_test_cases()
             # + get_mnt_zho_proofreading_test_cases()
             # + get_t_zho_proofreading_test_cases()
         },

@@ -112,9 +112,9 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "eng_fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite_img and not validate:
+    if validate_path.exists() and not overwrite_img:
         validate = Series.load(validate_path)
-    else:
+    elif validate:
         image_validation_path = output_dir / "eng_validation"
         validate = validate_eng_ocr(
             image,
@@ -123,6 +123,8 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
+    else:
+        image.save(validate_path, exist_ok=True)
 
     # Proofread
     proofread_path = output_dir / "eng_fuse_clean_validate_proofread.srt"
@@ -229,9 +231,9 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite_img and not validate:
+    if validate_path.exists() and not overwrite_img:
         validate = Series.load(validate_path)
-    else:
+    elif validate:
         image_validation_path = output_dir / "zho-Hans_validation"
         validate = validate_zho_ocr(
             image,
@@ -240,6 +242,8 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
+    else:
+        image.save(validate_path, exist_ok=True)
 
     # Proofread
     proofread_path = output_dir / "zho-Hans_fuse_clean_validate_proofread.srt"
@@ -349,9 +353,9 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hant_fuse_clean_validate.srt"
-    if validate_path.exists() and not overwrite_img and not validate:
+    if validate_path.exists() and not overwrite_img:
         validate = Series.load(validate_path)
-    else:
+    elif validate:
         image_validation_path = output_dir / "zho-Hant_validation"
         validate = validate_zho_ocr(
             image,
@@ -360,6 +364,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         )
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
+    else:
+        image.save(validate_path, exist_ok=True)
 
     # Proofread
     proofread_path = output_dir / "zho-Hant_fuse_clean_validate_proofread.srt"

@@ -41,18 +41,19 @@ def _test_get_zho_proofread(
 
 
 def test_get_zho_proofread_kob(
-    kob_zho_hant_fuse: Series,
-    kob_zho_hant_fuse_proofread: Series,
+    kob_zho_hant_fuse_clean_validate: Series,
+    kob_zho_hant_fuse_clean_validate_proofread: Series,
 ):
-    """Test get_zho_proofread with KOB English subtitles.
+    """Test get_zho_proofread with KOB ?? subtitles.
 
     Arguments:
-        kob_zho_hant_fuse: KOB English series fixture
-        kob_zho_hant_fuse_proofread: Expected proofread KOB English series fixture
+        kob_zho_hant_fuse_clean_validate: KOB ?? series fixture
+        kob_zho_hant_fuse_clean_validate_proofread: Expected proofread KOB ?? series
+          fixture
     """
     _test_get_zho_proofread(
-        kob_zho_hant_fuse,
-        kob_zho_hant_fuse_proofread,
+        kob_zho_hant_fuse_clean_validate,
+        kob_zho_hant_fuse_clean_validate_proofread,
         get_zho_proofreader(prompt_cls=ZhoHantProofreadingPrompt),
     )
 
