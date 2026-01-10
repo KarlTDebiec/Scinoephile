@@ -68,6 +68,7 @@ if "繁體中文 (OCR)" in actions:
             + get_mnt_zho_hans_proofreading_test_cases()
             + get_t_zho_hans_proofreading_test_cases()
         },
+        overwrite_srt=True,
         force_validation=True,
     )
 
