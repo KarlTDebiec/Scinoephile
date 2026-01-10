@@ -2499,8 +2499,8 @@
       "paddle": "哈爾叔 來・"
     },
     "answer": {
-      "ronghe": "哈爾叔⋯來⋯",
-      "beizhu": "採用了 Google Lens 中較可靠的省略號“⋯”與整體文字，省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格與「・」符號。"
+      "ronghe": "哈爾叔　　來⋯",
+      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格，并采用 Google Lens 較為可靠的省略號「⋯」，取代 PaddleOCR 中誤識別的「・」。"
     },
     "difficulty": 1,
     "verified": true
@@ -2595,8 +2595,8 @@
       "paddle": "謝謝・"
     },
     "answer": {
-      "ronghe": "謝謝⋯⋯",
-      "beizhu": "採用了 Google Lens OCR 中較為正確的省略號“⋯⋯”，並替換了 PaddleOCR 中錯誤的頓號符號“・”。"
+      "ronghe": "謝謝⋯",
+      "beizhu": "採用了 Google Lens 中較為可靠的省略號“⋯”，並糾正了 PaddleOCR 中誤識別的“・”符號。"
     },
     "difficulty": 1,
     "verified": true
@@ -2979,8 +2979,8 @@
       "paddle": "甚麼肉絲？是肉排"
     },
     "answer": {
-      "ronghe": "甚麼　　肉絲？是肉排",
-      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
+      "ronghe": "甚麼肉絲？是肉排",
+      "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
     },
     "difficulty": 2,
     "verified": true
@@ -3947,12 +3947,12 @@
   },
   {
     "query": {
-      "lens": "託皇上鴻福，風向轉變",
-      "paddle": "託皇上鴻福   風向轉變"
+      "lens": "托皇上鴻福，風向轉變",
+      "paddle": "托皇上鴻福   風向轉變"
     },
     "answer": {
-      "ronghe": "託皇上鴻福，風向轉變",
-      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的逗号；省略了 PaddleOCR 中存在但 Google Lens OCR 中不存在的空格。"
+      "ronghe": "托皇上鴻福，風向轉變",
+      "beizhu": "包括了 Google Lens 中存在但 PaddleOCR 中不存在的逗號；省略了 PaddleOCR 中存在但 Google Lens 中不存在的空格。"
     },
     "difficulty": 1,
     "verified": true
