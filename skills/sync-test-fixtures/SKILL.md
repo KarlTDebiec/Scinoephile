@@ -20,10 +20,21 @@ Follow this workflow to keep test fixtures aligned with the files on disk.
   - `.srt` and `_image` directories are of interest.
 - Compare against fixtures and `__all__` in `test/data/<dataset>/__init__.py`.
 
-Suggested commands:
+Suggested commands (PowerShell):
+
+```powershell
+Get-ChildItem -Path test/data/<dataset>/input | Sort-Object Name | Select-Object Name
+Get-ChildItem -Path test/data/<dataset>/output | Sort-Object Name | Select-Object Name
+Get-ChildItem -Path test/data/<dataset> -Recurse -Filter *.json | Sort-Object FullName | Select-Object FullName
+rg -n "output_dir /" test/data/<dataset>/__init__.py
+```
+
+Suggested commands (bash):
 
 ```bash
-Get-ChildItem -Path test/data/<dataset>/output | Sort-Object Name | Select-Object Name
+ls -1 test/data/<dataset>/input | sort
+ls -1 test/data/<dataset>/output | sort
+find test/data/<dataset> -name "*.json" | sort
 rg -n "output_dir /" test/data/<dataset>/__init__.py
 ```
 
@@ -68,3 +79,6 @@ cd test && uv run pytest
 ## Notes
 
 - Keep changes minimal and consistent with existing naming patterns.
+- Ensure files/directories of interest (all extensions and formats, including `_image`)
+  are actually under version control before adding fixtures for them.
+- Keep the grouping/order in `__all__` aligned with fixture grouping (input/action/output).
