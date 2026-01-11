@@ -38,12 +38,12 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
+    # "简体中文 (OCR)",
     "English (OCR)",
-    "简体中文 (SRT)",
-    "繁體中文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体中文 and English",
+    # "简体中文 (SRT)",
+    # "繁體中文 (SRT)",
+    # "English (SRT)",
+    # "Bilingual 简体中文 and English",
 }
 
 if "简体中文 (OCR)" in actions:
@@ -77,7 +77,8 @@ if "English (OCR)" in actions:
             + get_mlamd_eng_proofreading_test_cases()
             + get_mnt_eng_proofreading_test_cases()
         },
-        validate=False,
+        overwrite_srt=True,
+        force_validation=True,
     )
 
 if "简体中文 (SRT)" in actions:
