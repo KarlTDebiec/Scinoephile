@@ -191,8 +191,6 @@
     "answer": {
       "revised_9": "Miss Yushang comes to be a part-time hooker only",
       "note_9": "Added 'a' before 'part-time hooker' and hyphenated 'part-time' for correct grammar and adjective use.",
-      "revised_16": "The room service, please",
-      "note_16": "Added comma for correct phrasing: 'The room service, please.'",
       "revised_24": "How are you, Mr Chiu?",
       "note_24": "Added comma and question mark for correct address and sentence completion."
     },
@@ -253,11 +251,7 @@
       "subtitle_9": "None of my business",
       "subtitle_10": "How bold are you?"
     },
-    "answer": {
-      "revised_5": "Yushang doesn't like me. I deserve it.",
-      "note_5": "Replaced comma with a period to separate two sentences."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -915,7 +909,7 @@
     "answer": {
       "revised_25": "What do you think?",
       "note_25": "Corrected 'thing' to 'think'.",
-      "revised_27": "But he has worked vert hard",
+      "revised_27": "But he has worked very hard",
       "note_27": "Change 'achieved' to 'worked'.",
       "revised_35": "You have good analysis",
       "note_35": "Corrected 'analyse' to 'analysis'."
@@ -1585,7 +1579,8 @@
       "revised_2": "Go, go, I won't give you money",
       "note_2": "Removed the extra space before the comma in 'go ,'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1645,7 +1640,8 @@
       "subtitle_9": "What?",
       "subtitle_10": "- May I…\n- No"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2078,7 +2074,8 @@
       "revised_24": "That means, you will be a beggar for your life",
       "note_24": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2309,7 +2306,8 @@
       "revised_7": "Bullshit, throw him to death",
       "note_7": "Corrected 'Bull shit' to the standard single-word form 'Bullshit'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2646,7 +2644,8 @@
       "revised_3": "Attack the main camp.",
       "note_3": "Added a period at the end of the sentence for proper punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2679,7 +2678,8 @@
     "query": {
       "subtitle_1": "The Unicom Smoke of the Tin Li Sect"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2997,7 +2997,8 @@
       "revised_17": "no one wishes to be a beggar, right?",
       "note_17": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
