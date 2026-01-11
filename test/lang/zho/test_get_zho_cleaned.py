@@ -58,16 +58,18 @@ def test_get_zho_cleaned_mlamd(
 
 
 def test_get_zho_cleaned_mnt(
-    mnt_zho_hans_fuse: Series,
-    mnt_zho_hans_fuse_clean: Series,
+    mnt_zho_hans_fuse_proofread: Series,
+    mnt_zho_hans_fuse_proofread_clean: Series,
 ):
     """Test get_zho_cleaned with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hans_fuse: MNT 繁体中文 series fixture
-        mnt_zho_hans_fuse_clean: Expected cleaned MNT 繁体中文 series fixture
+        mnt_zho_hans_fuse_proofread: MNT 繁体中文 series fixture
+        mnt_zho_hans_fuse_proofread_clean: Expected cleaned MNT 繁体中文 series fixture
     """
-    _test_get_zho_cleaned(mnt_zho_hans_fuse, mnt_zho_hans_fuse_clean)
+    _test_get_zho_cleaned(
+        mnt_zho_hans_fuse_proofread, mnt_zho_hans_fuse_proofread_clean
+    )
 
 
 def test_get_zho_cleaned_t(

@@ -68,19 +68,19 @@ def test_get_eng_flattened_mlamd(
 
 
 def test_get_eng_flattened_mnt(
-    mnt_eng_fuse_clean_validate_proofread: Series,
-    mnt_eng_fuse_clean_validate_proofread_flatten: Series,
+    mnt_eng_fuse_proofread_clean: Series,
+    mnt_eng_fuse_proofread_clean_flatten: Series,
 ):
     """Test get_eng_flattened with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse_clean_validate_proofread: MNT English series fixture
-        mnt_eng_fuse_clean_validate_proofread_flatten: Expected flattened MNT English
+        mnt_eng_fuse_proofread_clean: MNT English series fixture
+        mnt_eng_fuse_proofread_clean_flatten: Expected flattened MNT English
           series fixture
     """
     _test_get_eng_flattened(
-        mnt_eng_fuse_clean_validate_proofread,
-        mnt_eng_fuse_clean_validate_proofread_flatten,
+        mnt_eng_fuse_proofread_clean,
+        mnt_eng_fuse_proofread_clean_flatten,
     )
 
 

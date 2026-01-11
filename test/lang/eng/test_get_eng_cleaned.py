@@ -60,16 +60,16 @@ def test_get_eng_cleaned_mlamd(
 
 
 def test_get_eng_cleaned_mnt(
-    mnt_eng_fuse: Series,
-    mnt_eng_fuse_clean: Series,
+    mnt_eng_fuse_proofread: Series,
+    mnt_eng_fuse_proofread_clean: Series,
 ):
     """Test get_eng_cleaned with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse: MNT English series fixture
-        mnt_eng_fuse_clean: Expected cleaned MNT English series fixture
+        mnt_eng_fuse_proofread: MNT English series fixture
+        mnt_eng_fuse_proofread_clean: Expected cleaned MNT English series fixture
     """
-    _test_get_eng_cleaned(mnt_eng_fuse, mnt_eng_fuse_clean)
+    _test_get_eng_cleaned(mnt_eng_fuse_proofread, mnt_eng_fuse_proofread_clean)
 
 
 def test_get_eng_cleaned_t(

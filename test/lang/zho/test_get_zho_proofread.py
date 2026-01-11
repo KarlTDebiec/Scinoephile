@@ -76,34 +76,34 @@ def test_get_zho_proofread_mlamd(
 
 
 def test_get_zho_proofread_mnt(
-    mnt_zho_hans_fuse_clean_validate: Series,
-    mnt_zho_hans_fuse_clean_validate_proofread: Series,
+    mnt_zho_hans_fuse: Series,
+    mnt_zho_hans_fuse_proofread: Series,
 ):
-    """Test get_zho_proofread with MNT English subtitles.
+    """Test get_zho_proofread with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hans_fuse_clean_validate: MNT English series fixture
-        mnt_zho_hans_fuse_clean_validate_proofread: Expected proofread MNT English
+        mnt_zho_hans_fuse: MNT 繁体中文 series fixture
+        mnt_zho_hans_fuse_proofread: Expected proofread MNT 繁体中文
           series fixture
     """
     _test_get_zho_proofread(
-        mnt_zho_hans_fuse_clean_validate,
-        mnt_zho_hans_fuse_clean_validate_proofread,
+        mnt_zho_hans_fuse,
+        mnt_zho_hans_fuse_proofread,
     )
 
 
 def test_get_zho_proofread_t(
-    t_zho_hans_fuse_clean_validate: Series,
-    t_zho_hans_fuse_clean_validate_proofread: Series,
+    t_zho_hans_fuse: Series,
+    t_zho_hans_fuse_proofread: Series,
 ):
     """Test get_zho_proofread with T English subtitles.
 
     Arguments:
-        t_zho_hans_fuse_clean_validate: T English series fixture
-        t_zho_hans_fuse_clean_validate_proofread: Expected proofread T English series
+        t_zho_hans_fuse: T English series fixture
+        t_zho_hans_fuse_proofread: Expected proofread T English series
           fixture
     """
     _test_get_zho_proofread(
-        t_zho_hans_fuse_clean_validate,
-        t_zho_hans_fuse_clean_validate_proofread,
+        t_zho_hans_fuse,
+        t_zho_hans_fuse_proofread,
     )

@@ -22,33 +22,29 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 
 __all__ = [
-    "t_zho_hans_lens",
-    "t_zho_hans_paddle",
-    "t_zho_hans_fuse",
-    "t_zho_hans_fuse_clean",
-    "t_zho_hans_fuse_clean_validate",
-    "t_zho_hans_fuse_clean_validate_proofread",
-    "t_zho_hans_fuse_clean_validate_proofread_flatten",
-    "t_zho_hans",
-    "t_zho_hans_clean",
-    "t_zho_hans_clean_flatten",
-    "t_zho_hant",
-    "t_zho_hant_simplify",
     "t_eng",
     "t_eng_lens",
     "t_eng_tesseract",
-    "t_eng_fuse",
-    "t_eng_fuse_clean",
-    "t_eng_fuse_clean_validate",
-    "t_eng_fuse_clean_validate_proofread",
-    "t_eng_fuse_clean_validate_proofread_flatten",
+    "t_zho_hans",
+    "t_zho_hans_lens",
+    "t_zho_hans_paddle",
+    "t_zho_hant",
+    "t_zho_hant_lens",
+    "t_zho_hant_paddle",
     "t_eng_clean",
     "t_eng_clean_flatten",
+    "t_eng_fuse",
+    "t_eng_fuse_proofread",
+    "t_zho_hans_clean",
+    "t_zho_hans_clean_flatten",
     "t_zho_hans_eng",
-    "get_t_eng_proofreading_test_cases",
-    "get_t_zho_hans_proofreading_test_cases",
+    "t_zho_hans_fuse",
+    "t_zho_hans_fuse_proofread",
+    "t_zho_hant_simplify",
     "get_t_eng_ocr_fusion_test_cases",
+    "get_t_eng_proofreading_test_cases",
     "get_t_zho_hans_ocr_fusion_test_cases",
+    "get_t_zho_hans_proofreading_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -56,62 +52,11 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
-# 简体中文 (OCR)
+# English (SRT)
 @pytest.fixture
-def t_zho_hans_lens() -> Series:
-    """T 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_lens.srt")
-
-
-@pytest.fixture
-def t_zho_hans_paddle() -> Series:
-    """T 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_paddle.srt")
-
-
-@pytest.fixture
-def t_zho_hans_fuse() -> Series:
-    """T 简体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse.srt")
-
-
-@pytest.fixture
-def t_zho_hans_fuse_clean() -> Series:
-    """T 简体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
-
-
-@pytest.fixture
-def t_zho_hans_fuse_clean_validate() -> Series:
-    """T 简体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
-
-
-@pytest.fixture
-def t_zho_hans_fuse_clean_validate_proofread() -> Series:
-    """T 简体中文 fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
-
-
-@pytest.fixture
-def t_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
-    """T 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
-    )
-
-
-# 繁體中文 (OCR)
-@pytest.fixture
-def t_zho_hant_lens() -> Series:
-    """T 繁體中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
-
-
-@pytest.fixture
-def t_zho_hant_paddle() -> Series:
-    """T 繁體中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+def t_eng() -> Series:
+    """T English series."""
+    return Series.load(input_dir / "eng.srt")
 
 
 # English (OCR)
@@ -127,75 +72,47 @@ def t_eng_tesseract() -> Series:
     return Series.load(input_dir / "eng_tesseract.srt")
 
 
-@pytest.fixture
-def t_eng_fuse() -> Series:
-    """T English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
-
-
-@pytest.fixture
-def t_eng_fuse_clean() -> Series:
-    """T English fused and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean.srt")
-
-
-@pytest.fixture
-def t_eng_fuse_clean_validate() -> Series:
-    """T English fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
-
-
-@pytest.fixture
-def t_eng_fuse_clean_validate_proofread() -> Series:
-    """T English fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
-
-
-@pytest.fixture
-def t_eng_fuse_clean_validate_proofread_flatten() -> Series:
-    """T English fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
-
-
-# 简体中文 (SRT)
+# ???? (SRT)
 @pytest.fixture
 def t_zho_hans() -> Series:
-    """T 简体中文 series."""
+    """T ???? series."""
     return Series.load(input_dir / "zho-Hans.srt")
 
 
+# ???? (OCR)
 @pytest.fixture
-def t_zho_hans_clean() -> Series:
-    """T 简体中文 cleaned series."""
-    return Series.load(output_dir / "zho-Hans_clean.srt")
+def t_zho_hans_lens() -> Series:
+    """T ???? subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "zho-Hans_lens.srt")
 
 
 @pytest.fixture
-def t_zho_hans_clean_flatten() -> Series:
-    """T 简体中文 cleaned and flattened series."""
-    return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
+def t_zho_hans_paddle() -> Series:
+    """T ???? subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hans_paddle.srt")
 
 
-# 繁体中文
+# ????
 @pytest.fixture
 def t_zho_hant() -> Series:
-    """T 繁体中文 series."""
+    """T ???? series."""
     return Series.load(input_dir / "zho-Hant.srt")
 
 
+# ???? (OCR)
 @pytest.fixture
-def t_zho_hant_simplify() -> Series:
-    """T 繁体中文 simplified series."""
-    return Series.load(output_dir / "zho-Hant_simplify.srt")
+def t_zho_hant_lens() -> Series:
+    """T ???? subtitles OCRed using Google Lens."""
+    return Series.load(input_dir / "zho-Hant_lens.srt")
 
 
-# English (SRT)
 @pytest.fixture
-def t_eng() -> Series:
-    """T English series."""
-    return Series.load(input_dir / "eng.srt")
+def t_zho_hant_paddle() -> Series:
+    """T ???? subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_paddle.srt")
 
 
+# English (Output)
 @pytest.fixture
 def t_eng_clean() -> Series:
     """T English cleaned series."""
@@ -208,11 +125,53 @@ def t_eng_clean_flatten() -> Series:
     return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
-# Bilingual 简体中文 and English
+@pytest.fixture
+def t_eng_fuse() -> Series:
+    """T English fused subtitles."""
+    return Series.load(output_dir / "eng_fuse.srt")
+
+
+@pytest.fixture
+def t_eng_fuse_proofread() -> Series:
+    """T English fused and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_proofread.srt")
+
+
+# ???? (Output)
+@pytest.fixture
+def t_zho_hans_clean() -> Series:
+    """T ???? cleaned series."""
+    return Series.load(output_dir / "zho-Hans_clean.srt")
+
+
+@pytest.fixture
+def t_zho_hans_clean_flatten() -> Series:
+    """T ???? cleaned and flattened series."""
+    return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
+
+
 @pytest.fixture
 def t_zho_hans_eng() -> Series:
-    """T Bilingual 简体粤文 and English series."""
+    """T Bilingual ???? and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse() -> Series:
+    """T ???? fused subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse.srt")
+
+
+@pytest.fixture
+def t_zho_hans_fuse_proofread() -> Series:
+    """T ???? fused and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_proofread.srt")
+
+
+@pytest.fixture
+def t_zho_hant_simplify() -> Series:
+    """T ???? simplified series."""
+    return Series.load(output_dir / "zho-Hant_simplify.srt")
 
 
 @cache
@@ -239,7 +198,7 @@ def get_t_zho_hans_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get T 中文 proofreading test cases.
+    """Get T ?? proofreading test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -277,7 +236,7 @@ def get_t_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get T 中文 OCR fusion test cases.
+    """Get T ?? OCR fusion test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
