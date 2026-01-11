@@ -7,15 +7,17 @@ description: Sync test fixtures in test/data/* by comparing the input and output
 
 Follow this workflow to keep test fixtures aligned with the files on disk.
 
-## Scan files
+## Scan Files
 
 - List each test dataset under `test/data` (e.g., `kob`, `mlamd`, `mnt`, `t`).
-- For each dataset, list `test/data/<dataset>/input` contents
-  - `.srt` and `.sup` files are of interest
-- For each dataset, list `test/data/<dataset>/output` contents
-  - `.srt` and `_image` directories are of interest
-For each dataset, list the contents of other directories under `test/data/<dataset>` recursively
-- `.json` directories are of interest
+- For each dataset, list `test/data/<dataset>/input` contents.
+  - `.srt` and `.sup` files are of interest.
+- For each dataset, list the contents of other directories under `test/data/<dataset>` recursively.
+  - These contain data related to "actions" taken on inputs, such as proofreading.
+  - Example directories of interest include `lang/` and `multilang/`.
+  - `.json` files are of interest.
+- For each dataset, list `test/data/<dataset>/output` contents.
+  - `.srt` and `_image` directories are of interest.
 - Compare against fixtures and `__all__` in `test/data/<dataset>/__init__.py`.
 
 Suggested commands:
@@ -25,7 +27,7 @@ Get-ChildItem -Path test/data/<dataset>/output | Sort-Object Name | Select-Objec
 rg -n "output_dir /" test/data/<dataset>/__init__.py
 ```
 
-## Update fixtures
+## Update Fixtures
 
 - Add/remove fixtures in `test/data/<dataset>/__init__.py` to match output files/dirs.
 - Keep fixture names consistent with filenames (match the naming convention used in the repo).
@@ -36,7 +38,7 @@ rg -n "output_dir /" test/data/<dataset>/__init__.py
 - Within each group, sort fixtures alphabetically.
 - Update `__all__` to match fixture names, maintaining the same grouping and order as above.
 
-## Update tests
+## Update Tests
 
 - Use `rg` to find fixture usages in `test/` and update to the new fixture names.
 - Prefer replacing old fixture names with the most semantically equivalent new ones.
