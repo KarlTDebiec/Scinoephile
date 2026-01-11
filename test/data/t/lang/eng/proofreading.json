@@ -1613,8 +1613,8 @@
       "subtitle_3": "They robbed me! Me!",
       "subtitle_4": "We're good buddies.",
       "subtitle_5": "Who do you think you are?",
-      "subtitle_6": "A pet it bourgeois!",
-      "subtitle_7": "A greedy, smuggling, tax-evading pet it bourgeois!",
+      "subtitle_6": "A petit bourgeois!",
+      "subtitle_7": "A greedy, smuggling, tax-evading petit bourgeois!",
       "subtitle_8": "Don't think too highly of yourself.",
       "subtitle_9": "We're good buddies.",
       "subtitle_10": "Take them away!",
@@ -1623,10 +1623,10 @@
       "subtitle_13": "I'll act according to the law!"
     },
     "answer": {
-      "revised_6": "A petit bourgeois!",
-      "note_6": "Corrected 'pet it bourgeois' to 'petit bourgeois'.",
-      "revised_7": "A greedy, smuggling, tax-evading petit bourgeois!",
-      "note_7": "Corrected 'pet it bourgeois' to 'petit bourgeois'."
+      "revised_6": "A petite bourgeois!",
+      "note_6": "Corrected the misspelling 'petit' to 'petite' to match the French term for 'small'.",
+      "revised_7": "A greedy, smuggling, tax-evading petite bourgeois!",
+      "note_7": "Corrected the misspelling 'petit' to 'petite' to match the French term for 'small'."
     },
     "difficulty": 1,
     "verified": true
