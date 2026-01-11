@@ -38,18 +38,18 @@ def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
 
 
 def test_get_block_pairs_by_pause_mnt(
-    mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    mnt_eng_fuse_clean_validate_proofread_flatten: Series,
+    mnt_zho_hans_fuse_proofread_clean_flatten: Series,
+    mnt_eng_fuse_proofread_clean_flatten: Series,
 ):
     """Test get_block_pairs_by_pause with MNT 繁体中文 and English subtitles.
 
     Arguments:
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten: MNT 繁体中文 series fixture
-        mnt_eng_fuse_clean_validate_proofread_flatten: MNT English series fixture
+        mnt_zho_hans_fuse_proofread_clean_flatten: MNT 繁体中文 series fixture
+        mnt_eng_fuse_proofread_clean_flatten: MNT English series fixture
     """
     _test_get_block_pairs_by_pause(
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten,
-        mnt_eng_fuse_clean_validate_proofread_flatten,
+        mnt_zho_hans_fuse_proofread_clean_flatten,
+        mnt_eng_fuse_proofread_clean_flatten,
         177,
     )
 

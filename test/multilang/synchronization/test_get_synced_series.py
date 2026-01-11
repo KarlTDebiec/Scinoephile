@@ -80,23 +80,23 @@ def test_get_synced_series_mlamd(
 
 
 def test_get_synced_series_mnt(
-    mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    mnt_eng_fuse_clean_validate_proofread_flatten: Series,
+    mnt_zho_hans_fuse_proofread_clean_flatten: Series,
+    mnt_eng_fuse_proofread_clean_flatten: Series,
     mnt_zho_hans_eng: Series,
 ):
     """Test get_synced_series with MNT subtitles.
 
     Arguments:
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten: 中文 subtitle fixture
-        mnt_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
+        mnt_zho_hans_fuse_proofread_clean_flatten: 中文 subtitle fixture
+        mnt_eng_fuse_proofread_clean_flatten: English subtitle fixture
         mnt_zho_hans_eng: expected synced subtitle fixture
     """
-    del mnt_zho_hans_fuse_clean_validate_proofread_flatten.events[0]
-    del mnt_zho_hans_fuse_clean_validate_proofread_flatten.events[-1]
-    mnt_eng_fuse_clean_validate_proofread_flatten.shift(s=-4.5)
+    del mnt_zho_hans_fuse_proofread_clean_flatten.events[0]
+    del mnt_zho_hans_fuse_proofread_clean_flatten.events[-1]
+    mnt_eng_fuse_proofread_clean_flatten.shift(s=-4.5)
     _test_get_synced_series(
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten,
-        mnt_eng_fuse_clean_validate_proofread_flatten,
+        mnt_zho_hans_fuse_proofread_clean_flatten,
+        mnt_eng_fuse_proofread_clean_flatten,
         mnt_zho_hans_eng,
     )
 
