@@ -232,6 +232,12 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         image_path = output_dir / "zho-Hans_image"
         if image_path.exists():
             image = ImageSeries.load(image_path)
+            assert len(clean) == len(image), (
+                f"Length mismatch: {len(clean)} vs {len(image)}"
+            )
+            for text_sub, image_sub in zip(clean, image):
+                image_sub.text = text_sub.text
+            image.save(image_path)
         else:
             if not sup_path:
                 raise ScinoephileError("sup_path is required to build image output")
@@ -352,6 +358,12 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         image_path = output_dir / "zho-Hant_image"
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
+            # assert len(clean) == len(image), (
+            #     f"Length mismatch: {len(clean)} vs {len(image)}"
+            # )
+            # for text_sub, image_sub in zip(clean, image):
+            #     image_sub.text = text_sub.text
+            # image.save(image_path)
         else:
             if not sup_path:
                 raise ScinoephileError("sup_path is required to build image output")
