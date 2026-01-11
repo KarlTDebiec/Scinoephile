@@ -58,6 +58,17 @@ __all__ = [
     "mlamd_zho_hant_lens",
     "mlamd_zho_hant_paddle",
     "mlamd_zho_hant_sup_path",
+    "get_mlamd_eng_ocr_fusion_test_cases",
+    "get_mlamd_eng_proofreading_test_cases",
+    "get_mlamd_yue_from_zho_translation_test_cases",
+    "get_mlamd_yue_merging_test_cases",
+    "get_mlamd_yue_shifting_test_cases",
+    "get_mlamd_yue_vs_zho_proofreading_test_cases",
+    "get_mlamd_yue_vs_zho_review_test_cases",
+    "get_mlamd_zho_hans_ocr_fusion_test_cases",
+    "get_mlamd_zho_hans_proofreading_test_cases",
+    "get_mlamd_zho_hant_ocr_fusion_test_cases",
+    "get_mlamd_zho_hant_proofreading_test_cases",
     "mlamd_eng_clean",
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
@@ -88,17 +99,6 @@ __all__ = [
     "mlamd_zho_hant_fuse_clean_validate_proofread_flatten",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
-    "get_mlamd_eng_ocr_fusion_test_cases",
-    "get_mlamd_eng_proofreading_test_cases",
-    "get_mlamd_yue_from_zho_translation_test_cases",
-    "get_mlamd_yue_merging_test_cases",
-    "get_mlamd_yue_shifting_test_cases",
-    "get_mlamd_yue_vs_zho_proofreading_test_cases",
-    "get_mlamd_yue_vs_zho_review_test_cases",
-    "get_mlamd_zho_hans_ocr_fusion_test_cases",
-    "get_mlamd_zho_hans_proofreading_test_cases",
-    "get_mlamd_zho_hant_ocr_fusion_test_cases",
-    "get_mlamd_zho_hant_proofreading_test_cases",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -106,7 +106,6 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
-# English (OCR input)
 @pytest.fixture
 def mlamd_eng_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
@@ -125,229 +124,40 @@ def mlamd_eng_tesseract() -> Series:
     return Series.load(input_dir / "eng_tesseract.srt")
 
 
-# ???? (OCR input)
 @pytest.fixture
 def mlamd_zho_hans_sup_path() -> Path:
-    """Path to MLAMD ???? SUP subtitles."""
+    """Path to MLAMD 简体中文 SUP subtitles."""
     return input_dir / "zho-Hans.sup"
 
 
 @pytest.fixture
 def mlamd_zho_hans_lens() -> Series:
-    """MLAMD ???? subtitles OCRed using Google Lens."""
+    """MLAMD 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_lens.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hans_paddle() -> Series:
-    """MLAMD ???? subtitles OCRed using PaddleOCR."""
+    """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hans_paddle.srt")
 
 
-# ???? (OCR input)
 @pytest.fixture
 def mlamd_zho_hant_sup_path() -> Path:
-    """Path to MLAMD ???? SUP subtitles."""
+    """Path to MLAMD 繁体中文 SUP subtitles."""
     return input_dir / "zho-Hant.sup"
 
 
 @pytest.fixture
 def mlamd_zho_hant_lens() -> Series:
-    """MLAMD ???? subtitles OCRed using Google Lens."""
+    """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_lens.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hant_paddle() -> Series:
-    """MLAMD ???? subtitles OCRed using PaddleOCR."""
+    """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_paddle.srt")
-
-
-# English (Output)
-@pytest.fixture
-def mlamd_eng_image_path() -> Path:
-    """Path to MLAMD English image subtitles."""
-    return output_dir / "eng_image"
-
-
-@pytest.fixture
-def mlamd_eng_image() -> ImageSeries:
-    """MLAMD English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
-
-
-@pytest.fixture
-def mlamd_eng_fuse() -> Series:
-    """MLAMD English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
-
-
-@pytest.fixture
-def mlamd_eng_fuse_clean() -> Series:
-    """MLAMD English fused and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean.srt")
-
-
-@pytest.fixture
-def mlamd_eng_fuse_clean_validate() -> Series:
-    """MLAMD English fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
-
-
-@pytest.fixture
-def mlamd_eng_fuse_clean_validate_proofread() -> Series:
-    """MLAMD English fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
-
-
-@pytest.fixture
-def mlamd_eng_fuse_clean_validate_proofread_flatten() -> Series:
-    """MLAMD English fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
-
-
-@pytest.fixture
-def mlamd_eng_clean() -> Series:
-    """MLAMD English cleaned subtitles."""
-    return Series.load(output_dir / "eng_clean.srt")
-
-
-# ???? (Output)
-@pytest.fixture
-def mlamd_yue_hans_audio_path() -> Path:
-    """Path to MLAMD ???? audio subtitles."""
-    return output_dir / "yue-Hans_audio"
-
-
-@pytest.fixture
-def mlamd_yue_hans_audio() -> AudioSeries:
-    """MLAMD ???? audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_audio")
-
-
-@pytest.fixture
-def mlamd_yue_hans() -> Series:
-    """MLAMD ???? subtitles."""
-    return Series.load(output_dir / "yue-Hans.srt")
-
-
-@pytest.fixture
-def mlamd_yue_hans_proofread() -> Series:
-    """MLAMD ???? proofread subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread.srt")
-
-
-@pytest.fixture
-def mlamd_yue_hans_proofread_translate() -> Series:
-    """MLAMD ???? proofread and translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread_translate.srt")
-
-
-@pytest.fixture
-def mlamd_yue_hans_proofread_translate_review() -> Series:
-    """MLAMD ???? proofread, translated, and reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread_translate_review.srt")
-
-
-@pytest.fixture
-def mlamd_yue_hans_eng() -> Series:
-    """MLAMD Bilingual ???? and English subtitles."""
-    return Series.load(output_dir / "yue-Hans_eng.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_eng() -> Series:
-    """MLAMD Bilingual ???? and English series."""
-    return Series.load(output_dir / "zho-Hans_eng.srt")
-
-
-# ???? (OCR output)
-@pytest.fixture
-def mlamd_zho_hans_image_path() -> Path:
-    """Path to MLAMD ???? image subtitles."""
-    return output_dir / "zho-Hans_image"
-
-
-@pytest.fixture
-def mlamd_zho_hans_image() -> ImageSeries:
-    """MLAMD ???? image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hans_image", encoding="utf-8")
-
-
-@pytest.fixture
-def mlamd_zho_hans_fuse() -> Series:
-    """MLAMD ???? fused subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_fuse_clean() -> Series:
-    """MLAMD ???? fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate() -> Series:
-    """MLAMD ???? fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate_proofread() -> Series:
-    """MLAMD ???? fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
-    """MLAMD ???? fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
-    )
-
-
-@pytest.fixture
-def mlamd_zho_hant_image_path() -> Path:
-    """Path to MLAMD ???? image subtitles."""
-    return output_dir / "zho-Hant_image"
-
-
-@pytest.fixture
-def mlamd_zho_hant_image() -> ImageSeries:
-    """MLAMD ???? image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
-
-
-@pytest.fixture
-def mlamd_zho_hant_fuse() -> Series:
-    """MLAMD ???? fused subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_fuse_clean() -> Series:
-    """MLAMD ???? fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate() -> Series:
-    """MLAMD ???? fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread() -> Series:
-    """MLAMD ???? fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
-
-
-@pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
-    """MLAMD ???? fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
-    )
 
 
 @cache
@@ -355,7 +165,7 @@ def get_mlamd_yue_shifting_test_cases(
     prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD ???? shifting test cases.
+    """Get MLAMD 粤语 shifting test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -374,7 +184,7 @@ def get_mlamd_yue_merging_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueZhoHansMergingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD ???? merging test cases.
+    """Get MLAMD 粤语 merging test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -393,7 +203,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualBlockPrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD ???? vs ???? proofreading test cases.
+    """Get MLAMD 粤语 vs 中文 proofreading test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -412,7 +222,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD ???? from ???? translation test cases.
+    """Get MLAMD 粤语 from 中文 translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -431,7 +241,7 @@ def get_mlamd_yue_vs_zho_review_test_cases(
     prompt_cls: type[DualBlockPrompt] = YueHansReviewPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD ???? vs ???? review test cases.
+    """Get MLAMD 粤语 vs 中文 review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -557,3 +367,187 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
+
+
+@pytest.fixture
+def mlamd_eng_clean() -> Series:
+    """MLAMD English cleaned subtitles."""
+    return Series.load(output_dir / "eng_clean.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse() -> Series:
+    """MLAMD English fused subtitles."""
+    return Series.load(output_dir / "eng_fuse.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_clean() -> Series:
+    """MLAMD English fused and cleaned subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_clean_validate() -> Series:
+    """MLAMD English fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_clean_validate_proofread() -> Series:
+    """MLAMD English fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_eng_fuse_clean_validate_proofread_flatten() -> Series:
+    """MLAMD English fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
+
+
+@pytest.fixture
+def mlamd_eng_image() -> ImageSeries:
+    """MLAMD English image subtitles."""
+    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+
+
+@pytest.fixture
+def mlamd_eng_image_path() -> Path:
+    """Path to MLAMD English image subtitles."""
+    return output_dir / "eng_image"
+
+
+@pytest.fixture
+def mlamd_yue_hans_audio() -> AudioSeries:
+    """MLAMD 简体粤文 audio subtitles."""
+    return AudioSeries.load(output_dir / "yue-Hans_audio")
+
+
+@pytest.fixture
+def mlamd_yue_hans_audio_path() -> Path:
+    """Path to MLAMD 简体粤文 audio subtitles."""
+    return output_dir / "yue-Hans_audio"
+
+
+@pytest.fixture
+def mlamd_yue_hans() -> Series:
+    """MLAMD 简体粤文 subtitles."""
+    return Series.load(output_dir / "yue-Hans.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_eng() -> Series:
+    """MLAMD Bilingual 简体粤文 and English subtitles."""
+    return Series.load(output_dir / "yue-Hans_eng.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_proofread() -> Series:
+    """MLAMD 简体粤文 proofread subtitles."""
+    return Series.load(output_dir / "yue-Hans_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_proofread_translate() -> Series:
+    """MLAMD 简体粤文 proofread and translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_proofread_translate.srt")
+
+
+@pytest.fixture
+def mlamd_yue_hans_proofread_translate_review() -> Series:
+    """MLAMD 简体粤文 proofread, translated, and reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_proofread_translate_review.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_eng() -> Series:
+    """MLAMD Bilingual 简体中文 and English series."""
+    return Series.load(output_dir / "zho-Hans_eng.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse() -> Series:
+    """MLAMD 简体中文 fused subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean() -> Series:
+    """MLAMD 简体中文 fused and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate() -> Series:
+    """MLAMD 简体中文 fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate_proofread() -> Series:
+    """MLAMD 简体中文 fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
+    """MLAMD 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hans_image() -> ImageSeries:
+    """MLAMD 简体中文 image subtitles."""
+    return ImageSeries.load(output_dir / "zho-Hans_image", encoding="utf-8")
+
+
+@pytest.fixture
+def mlamd_zho_hans_image_path() -> Path:
+    """Path to MLAMD 简体中文 image subtitles."""
+    return output_dir / "zho-Hans_image"
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse() -> Series:
+    """MLAMD 繁体中文 fused subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean() -> Series:
+    """MLAMD 繁体中文 fused and cleaned subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse_clean.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate() -> Series:
+    """MLAMD 繁体中文 fused, cleaned, and validated subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse_clean_validate.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate_proofread() -> Series:
+    """MLAMD 繁体中文 fused, cleaned, validated, and proofread subtitles."""
+    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
+    """MLAMD 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    return Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hant_image() -> ImageSeries:
+    """MLAMD 繁体中文 image subtitles."""
+    return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
+
+
+@pytest.fixture
+def mlamd_zho_hant_image_path() -> Path:
+    """Path to MLAMD 繁体中文 image subtitles."""
+    return output_dir / "zho-Hant_image"
