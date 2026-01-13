@@ -1772,8 +1772,8 @@
       "paddle": "是．"
     },
     "answer": {
-      "ronghe": "是⋯⋯",
-      "beizhu": "采用了 Google Lens OCR 中更准确的省略号，省略了 PaddleOCR 中的句号。"
+      "ronghe": "是⋯",
+      "beizhu": "采用了 Google Lens 中较可信的省略号“⋯”；舍弃了 PaddleOCR 中误识别的句号“．”。"
     },
     "difficulty": 1,
     "verified": true
@@ -2794,8 +2794,8 @@
       "paddle": "我只好顺水推舟⋯你等一会！别挂啊"
     },
     "answer": {
-      "ronghe": "我只好顺水推舟⋯你等一会！别挂啊",
-      "beizhu": "省略了 Google Lens OCR 中存在但 PaddleOCR 中不存在的换行符。"
+      "ronghe": "我只好顺水推舟⋯　　你等一会！别挂啊",
+      "beizhu": "将了 Google Lens OCR 中显示为换行符和 PaddleOCR 中显示为空格的间隙替换为两个表意空格。"
     },
     "difficulty": 1,
     "verified": true
