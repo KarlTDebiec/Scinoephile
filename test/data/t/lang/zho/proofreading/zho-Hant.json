@@ -4,7 +4,8 @@
       "zimu_1": "警察",
       "zimu_2": "拿身份證出來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -14,14 +15,15 @@
       "zimu_4": "尾數一，季正雄",
       "zimu_5": "打開"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "協議中有關香港的安排",
       "zimu_2": "不是權宜之計",
       "zimu_3": "這些安排是長期的政策",
-      "zimu_4": "它們將寫入為香港製定的基本法",
+      "zimu_4": "它們將寫入為香港制定的基本法",
       "zimu_5": "五十年不變",
       "zimu_6": "五十年不變",
       "zimu_7": "確保《聯合聲明》",
@@ -29,11 +31,8 @@
       "zimu_9": "是中英兩國的共同利益",
       "zimu_10": "也是我們雙方共同的責任"
     },
-    "answer": {
-      "xiugai_4": "它們將寫入為香港制定的基本法",
-      "beizhu_4": "將「製定」更正為「制定」，屬於常見輸入錯別字。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -42,7 +41,7 @@
       "zimu_3": "連環打劫物華街五間金行",
       "zimu_4": "去你媽的！",
       "zimu_5": "由觀眾提供片段，見到賊人離開的時候",
-      "zimu_6": "在附近祕密執勤的飛虎隊員發生槍戰",
+      "zimu_6": "在附近秘密執勤的飛虎隊員發生槍戰",
       "zimu_7": "雙方開槍過百發",
       "zimu_8": "事件中，兩名途人及三名軍裝警員受傷",
       "zimu_9": "五間金行合共損失大約一千萬",
@@ -55,11 +54,8 @@
       "zimu_16": "你看！到處都是血！",
       "zimu_17": "拿去吧，混蛋！"
     },
-    "answer": {
-      "xiugai_6": "在附近秘密執勤的飛虎隊員發生槍戰",
-      "beizhu_6": "「祕密」改為「秘密」，用字正體常用寫法。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -74,7 +70,8 @@
       "zimu_9": "今時不同往日",
       "zimu_10": "外面的警察盯得很緊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -85,7 +82,8 @@
       "zimu_5": "四折！",
       "zimu_6": "歡哥開口，怎麼著都行！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -95,13 +93,15 @@
       "zimu_4": "開保險箱！",
       "zimu_5": "你算是搶我？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不要逼我自己動手"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -110,19 +110,22 @@
       "zimu_3": "不要再合作",
       "zimu_4": "各走各路！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "歡哥，火！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "船家！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -135,14 +138,16 @@
       "zimu_7": "人家有靠山，拿牌照做生意的！",
       "zimu_8": "一部電視機，香港賣兩千，大陸賣八千"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "一趟都數百萬！",
       "zimu_2": "賺到笑！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -154,7 +159,8 @@
       "zimu_6": "沈經理，籌到多少？",
       "zimu_7": "霍經理！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -164,11 +170,8 @@
       "zimu_4": "卓先生",
       "zimu_5": "要不我們先談談銀碼？"
     },
-    "answer": {
-      "xiugai_2": "只一心　等一天　日月如飛　卻等不到你",
-      "beizhu_2": "將「祇」改為「只」，修正常用字，避免以「祇」誤代「只」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -178,20 +181,23 @@
       "zimu_4": "紅裙　紅絲巾",
       "zimu_5": "白紙般"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我說再唱一次，你聽不見？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我說再唱一次，你聽到沒有？",
       "zimu_2": "別再浪費時間！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -201,7 +207,8 @@
       "zimu_4": "突然要那麼多現金，不可能",
       "zimu_5": "我現在手上就這五億"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -217,13 +224,15 @@
       "zimu_10": "四十八小時就會放了我",
       "zimu_11": "不過，那時候你兒子就⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "打電話給警務處處長！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -234,27 +243,31 @@
       "zimu_5": "不要！不要！",
       "zimu_6": "對不起，對不起！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "早點說，不就沒事了嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "怎麼了？",
       "zimu_2": "警務處處長不接你電話？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你要我的吧？",
       "zimu_2": "我就有多大玩多大！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -262,12 +275,13 @@
       "zimu_2": "大富翁找你！",
       "zimu_3": "大富翁！你不是找警察嗎？過來！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "何先生",
-      "zimu_2": "這羣狗仔隊負責跟我",
+      "zimu_2": "這群狗仔隊負責跟我",
       "zimu_3": "非常無能",
       "zimu_4": "不然怎會那麼容易抓到你兒子？",
       "zimu_5": "你肯招認了？",
@@ -288,22 +302,16 @@
       "zimu_20": "你剛才說借多少錢給我？",
       "zimu_21": "三十億"
     },
-    "answer": {
-      "xiugai_2": "這群狗仔隊負責跟我",
-      "beizhu_2": "將「羣」更正為常用字「群」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "David Michael Wu",
       "zimu_2": "來廣州做生意還是旅？"
     },
-    "answer": {
-      "xiugai_2": "來廣州做生意還是旅行？",
-      "beizhu_2": "將「旅？」修正為常用完整說法「旅行？」屬於明顯殘字補全。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -311,13 +319,15 @@
       "zimu_2": "公幹？旅遊？",
       "zimu_3": "是，我是商人"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "廣州站"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -325,7 +335,8 @@
       "zimu_2": "明天八時",
       "zimu_3": "姓陳的，謝謝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -335,7 +346,8 @@
       "zimu_4": "別他媽要我等你！",
       "zimu_5": "就這樣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -353,11 +365,8 @@
       "zimu_12": "行了，走吧",
       "zimu_13": "陳科"
     },
-    "answer": {
-      "xiugai_6": "拿著　　什麼？",
-      "beizhu_6": "將「甚麼」改為「什麼」，統一為常用字形。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -374,7 +383,8 @@
       "zimu_11": "來，坐",
       "zimu_12": "乾杯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -384,7 +394,8 @@
       "zimu_4": "是",
       "zimu_5": "乾，乾"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -423,7 +434,8 @@
       "zimu_33": "乾",
       "zimu_34": "乾！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -436,7 +448,8 @@
       "zimu_7": "每晚喝到天昏地暗",
       "zimu_8": "最近還包養了小明星"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -449,7 +462,8 @@
       "zimu_7": "請慢用",
       "zimu_8": "關門"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -470,17 +484,8 @@
       "zimu_15": "人生就這樣",
       "zimu_16": "不然怎麼精彩？"
     },
-    "answer": {
-      "xiugai_4": "不要吐，飯是冷的！",
-      "beizhu_4": "刪除多餘空格，改用逗號分隔兩句，使標點與排版更自然。",
-      "xiugai_6": "不好意思，飯是冷的嗎？我要茶！",
-      "beizhu_6": "刪除中間多餘空格，保留原有兩句內容不變。",
-      "xiugai_7": "快點，小姐，麻煩你告訴我⋯",
-      "beizhu_7": "刪除多餘空格，將停頓改為逗號。",
-      "xiugai_8": "我要茶！等我一下，我帶你去",
-      "beizhu_8": "刪除多餘空格，保留原本兩句話連貫。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -491,7 +496,8 @@
       "zimu_5": "那你想到甚麼好主意？",
       "zimu_6": "說出來，我們商量一下"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -514,17 +520,15 @@
       "zimu_17": "對，現在沒人用傳呼機了",
       "zimu_18": "好了，不說了，談正事，一會兒再聊"
     },
-    "answer": {
-      "xiugai_12": "現在愈便宜越好",
-      "beizhu_12": "將「現在愈便宜愈好」中的第二個「愈」改為「越」，以符合常見搭配「愈A越B」，屬於小幅度用字校正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "潮哥，不好意思"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -537,13 +541,15 @@
       "zimu_7": "全都賊眉賊眼，都是蠢貨",
       "zimu_8": "幹你娘的，你該收山了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "他看甚麼？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -552,7 +558,8 @@
       "zimu_3": "這次兩個就夠了？",
       "zimu_4": "帶他們去開開眼界嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -563,11 +570,8 @@
       "zimu_5": "走了！別喝了！走了！",
       "zimu_6": "你們兩個，跟我進來"
     },
-    "answer": {
-      "xiugai_3": "你看看，他媽的看甚麼？",
-      "beizhu_3": "刪除重複的「看看看」，判斷為輸入時多按一次造成的疊字錯誤，保留口語語氣不變。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -584,14 +588,16 @@
       "zimu_11": "裝扮一下來香港見我",
       "zimu_12": "好，一定，我會的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "他媽的",
       "zimu_2": "坐，吃飯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -599,7 +605,8 @@
       "zimu_2": "這潮哥是甚麼來頭？",
       "zimu_3": "他就是不讓你知道他甚麼來頭"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -613,19 +620,8 @@
       "zimu_8": "然後又蹦出個潮哥出來",
       "zimu_9": "「潮哥」，不就是個名字而已"
     },
-    "answer": {
-      "xiugai_2": "反正就是見一個人，",
-      "beizhu_2": "補上頓號，使語氣停頓更符合口語節奏，屬標點排版調整。",
-      "xiugai_4": "跟他媽早年香港那個「隱形賊王」季正雄",
-      "beizhu_4": "為綽號「隱形賊王」加上全形引號，屬標點排版補全。",
-      "xiugai_5": "一個他媽的樣子。",
-      "beizhu_5": "句末補上句號，屬標點排版補全。",
-      "xiugai_8": "然後又蹦出個「潮哥」出來",
-      "beizhu_8": "為稱呼「潮哥」加上全形引號，屬標點排版統一。",
-      "xiugai_9": "「潮哥」不就是個名字而已。",
-      "beizhu_9": "去掉多餘逗號並在句末加句號，使標點更符合語法與排版習慣。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -643,11 +639,8 @@
       "zimu_12": "你說泰語嗎？",
       "zimu_13": "難道我講法語嗎？"
     },
-    "answer": {
-      "xiugai_4": "有人找你，喂",
-      "beizhu_4": "刪除「你」與「喂」之間多餘的全形空格，使標點與排版更自然。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -672,7 +665,8 @@
       "zimu_19": "甚麼沒咳嗽？你就會頂嘴！",
       "zimu_20": "總之不能喝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -680,13 +674,15 @@
       "zimu_2": "現在就出去？",
       "zimu_3": "是的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "乖乖的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -694,7 +690,8 @@
       "zimu_2": "她不吃？",
       "zimu_3": "她去上夜班"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -705,18 +702,16 @@
       "zimu_5": "去不去海洋公園？",
       "zimu_6": "玩過雲霄飛車嗎？想玩嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我帶你飛高一點，遠一點，好嗎？",
       "zimu_2": "不答我？搔你癢"
     },
-    "answer": {
-      "xiugai_2": "不答我？搔你癢。",
-      "beizhu_2": "句末補上頓號句號為全形句號，統一標點用法。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -759,11 +754,8 @@
       "zimu_37": "生活沒保障，覺也睡不好",
       "zimu_38": "又不是賺很多，也不知為了甚麼"
     },
-    "answer": {
-      "xiugai_8": "我待會打你屁股。真乖",
-      "beizhu_8": "補上句號，去掉多餘空格，與前後字幕標點風格一致。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -777,13 +769,15 @@
       "zimu_8": "來了！",
       "zimu_9": "行了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": ""
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -793,11 +787,8 @@
       "zimu_4": "另外八十部VCD機，每部四千",
       "zimu_5": "多謝你，六十八萬"
     },
-    "answer": {
-      "xiugai_3": "三十部廿九吋新畫王，每部一萬二",
-      "beizhu_3": "將「畫皇」改為常見品牌用語「畫王」，屬輸入錯誤修正。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -807,7 +798,8 @@
       "zimu_4": "陳科的三十萬，你點算一下",
       "zimu_5": "企業法人營業執照"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -835,11 +827,8 @@
       "zimu_22": "張總",
       "zimu_23": "甚麼事？"
     },
-    "answer": {
-      "xiugai_21": "快點，甚麼事？",
-      "beizhu_21": "去除字幕中多餘空格，改為使用逗號連接前後片語，以符合正常排版。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -847,13 +836,15 @@
       "zimu_2": "不是，關門",
       "zimu_3": "關門"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "嘴這麼硬？打給你老婆報平安"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -862,14 +853,16 @@
       "zimu_3": "打死我，你一分錢也拿不到",
       "zimu_4": "敢唬弄我？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "卓，耐心點",
       "zimu_2": "他再不說，就斷他糧水吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -922,25 +915,24 @@
       "zimu_47": "站穩馬步",
       "zimu_48": "射他老子"
     },
-    "answer": {
-      "xiugai_10": "賺不了錢！記得要跟緊我",
-      "beizhu_10": "移除「錢！」與「記得」之間多餘的全形空格，使句子連貫。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "怎麼了？跟就跟",
       "zimu_2": "不跟就回去吃屎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "潮哥，那⋯",
       "zimu_2": "我們打個小金行，能賺多少錢？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -951,7 +943,8 @@
       "zimu_5": "起甚麼名字好呢？",
       "zimu_6": "打不打電話？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -959,7 +952,8 @@
       "zimu_2": "金庫？",
       "zimu_3": "馬場？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -967,7 +961,8 @@
       "zimu_2": "魯平？",
       "zimu_3": "不行"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -980,7 +975,8 @@
       "zimu_7": "我要水，水！",
       "zimu_8": "我肯打了，我打了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -990,7 +986,8 @@
       "zimu_4": "卓先生，你怎麼才肯放過我丈夫？",
       "zimu_5": "要不你開個價，我自己掏腰包⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1000,7 +997,8 @@
       "zimu_4": "就八千吧",
       "zimu_5": "給我找葉國歡、季正雄！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1014,7 +1012,8 @@
       "zimu_8": "這座山，就是我要找的山",
       "zimu_9": "喜瑪拉雅山！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1022,7 +1021,8 @@
       "zimu_2": "冰箱有可樂",
       "zimu_3": "行，自己來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1038,20 +1038,23 @@
       "zimu_10": "好的",
       "zimu_11": "我縫好衣服就去睡覺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "正在帶客人過來，三分鐘到",
       "zimu_2": "收到"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "阿貴、阿廣，卸貨，趕快！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1060,7 +1063,8 @@
       "zimu_3": "金，金！",
       "zimu_4": "阿忠，停車"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1072,13 +1076,15 @@
       "zimu_6": "那阿金怎麼辦？",
       "zimu_7": "找方老闆"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "中國海關"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1088,7 +1094,8 @@
       "zimu_4": "想請教一下",
       "zimu_5": "蓮花山那批貨還有人，能不能通融通融？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1097,27 +1104,31 @@
       "zimu_3": "貨物充公，人就槍斃",
       "zimu_4": "是，明白明白"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "科長，有人找你",
       "zimu_2": "好，好⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "龍科今天很忙",
       "zimu_2": "明天再來吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好，是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1128,7 +1139,8 @@
       "zimu_5": "是否不想救阿金？",
       "zimu_6": "好，是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1137,7 +1149,8 @@
       "zimu_3": "好",
       "zimu_4": "風滿樓，風滿樓！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1150,7 +1163,8 @@
       "zimu_7": "快些！",
       "zimu_8": "行⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1181,17 +1195,8 @@
       "zimu_25": "鮑參翅肚！",
       "zimu_26": "服務員！"
     },
-    "answer": {
-      "xiugai_2": "海關龍哥",
-      "beizhu_2": "將「龍科」改為「龍哥」，依常見稱呼判斷為輸入錯誤。",
-      "xiugai_4": "龍哥你好",
-      "beizhu_4": "與第 2 條統一，將稱呼「龍科」改為「龍哥」。",
-      "xiugai_5": "有人架子真大，官大人！",
-      "beizhu_5": "「官等人」似為聽寫或輸入錯誤，依語境應為尊稱「官大人」。",
-      "xiugai_12": "龍哥，他是我的好兄弟",
-      "beizhu_12": "與前文統一，將稱呼「龍科」改為「龍哥」。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1218,14 +1223,16 @@
       "xiugai_11": "KTV 的卡片，還有電話",
       "beizhu_11": "在「KTV」與「的」之間增加空格，符合中英文混排習慣。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不要忘了花瓶啊",
       "zimu_2": "是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1240,14 +1247,16 @@
       "zimu_9": "吃吃喝喝也埋怨？",
       "zimu_10": "看在錢的份上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "喂，你們過來",
       "zimu_2": "我們的貨！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1259,26 +1268,30 @@
       "zimu_6": "沒問題的話，在這裡簽個字，別弄錯了",
       "zimu_7": "感謝"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "行了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "叫你派線人到警察局找季正雄的檔案",
       "zimu_2": "還沒找到？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "那麼葉國歡潛逃回大陸，還沒找到？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1287,14 +1300,16 @@
       "zimu_3": "也找不到？",
       "zimu_4": "沒有？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好",
       "zimu_2": "好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1316,7 +1331,8 @@
       "zimu_16": "肯定派很多人來打聽",
       "zimu_17": "想想怎麼甩掉他們吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1325,7 +1341,8 @@
       "zimu_3": "是卓老闆嗎？",
       "zimu_4": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1333,14 +1350,16 @@
       "zimu_2": "我找人接你",
       "zimu_3": "上車"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "脫衣服",
       "zimu_2": "全脫掉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1351,7 +1370,8 @@
       "zimu_5": "是",
       "zimu_6": "就這樣了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1391,7 +1411,8 @@
       "zimu_34": "明天站在你倆面前",
       "zimu_35": "來⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1399,20 +1420,23 @@
       "zimu_2": "多謝",
       "zimu_3": "帶你去逛街好嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "怎麼了，台山仔，最近手頭很緊？",
       "zimu_2": "三根槍夠用了嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "槍不是用來嗅的，是用來開的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1435,11 +1459,8 @@
       "zimu_17": "老弟，有消息就告訴我",
       "zimu_18": "有消息就告訴我"
     },
-    "answer": {
-      "xiugai_3": "有否嗅到卓子強在找葉國歡和季正雄？",
-      "beizhu_3": "刪除「卓子強」後面多餘的逗號，使句子標點更通順。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1449,7 +1470,8 @@
       "zimu_4": "回家",
       "zimu_5": "身份證"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1461,11 +1483,8 @@
       "zimu_6": "可樂哥，接走她也通知一聲嘛",
       "zimu_7": "我剛好順路　　嚇壞我們了"
     },
-    "answer": {
-      "xiugai_7": "我剛好順路，嚇壞我們了",
-      "beizhu_7": "將中間多餘的空格改為逗號，使標點與排版正常；不改動原有用詞與語氣。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1479,17 +1498,15 @@
       "zimu_8": "先回家吧",
       "zimu_9": "感謝"
     },
-    "answer": {
-      "xiugai_6": "不好意思，把小女孩嚇壞了",
-      "beizhu_6": "刪除多餘空格，使標點與文字間距正常。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不好意思"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1505,26 +1522,30 @@
       "zimu_10": "張總",
       "zimu_11": "我倒要請你幫個忙"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "讓他消消氣",
       "zimu_2": "還跑！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "品茶之道，宋局才是專家"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1536,7 +1557,8 @@
       "zimu_6": "這事別追究了",
       "zimu_7": "給我一個面子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1554,7 +1576,8 @@
       "zimu_12": "斃了他",
       "zimu_13": "我就依法辦事"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1562,13 +1585,15 @@
       "zimu_2": "幸好廁所有⋯",
       "zimu_3": "小小的，先頂替"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好兄弟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1585,7 +1610,8 @@
       "zimu_11": "歡哥，卓子強真的瘋了",
       "zimu_12": "他真的開了專線找你！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1613,7 +1639,8 @@
       "zimu_22": "我已經很克制",
       "zimu_23": "要不然，我連你也揍了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1621,7 +1648,8 @@
       "zimu_2": "你不報警我就放人了",
       "zimu_3": "怎麼樣？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1634,11 +1662,8 @@
       "zimu_7": "我們皇家警察抓不抓到人就看你！",
       "zimu_8": "靠你的電話啊！"
     },
-    "answer": {
-      "xiugai_3": "你襲警？別耍花樣",
-      "beizhu_3": "刪除「？　　」中的多餘全形空格，統一為正常問號後直接接後文，以修正常見排版錯誤。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1648,7 +1673,8 @@
       "zimu_4": "就算打我",
       "zimu_5": "我也要說，死路一條！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1667,7 +1693,8 @@
       "zimu_13": "最冷的是「好天氣」，是九十九倍",
       "zimu_14": "全買獨贏及位置"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1677,7 +1704,8 @@
       "zimu_4": "這場賽事的一億七千多萬的多寶獎金",
       "zimu_5": "吸引到很多人下注"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1686,7 +1714,8 @@
       "zimu_3": "幫我去拿",
       "zimu_4": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1704,25 +1733,29 @@
       "zimu_12": "後面的都很難追得上",
       "zimu_13": "上！上！上！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快！快！快！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "又爆冷，沒有人中，庫房又滿瀉了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "潮哥"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1731,7 +1764,8 @@
       "zimu_3": "我就是昆西",
       "zimu_4": "上來海陸豐找我，保證你不會失望"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1740,7 +1774,8 @@
       "zimu_3": "你跟老大說",
       "zimu_4": "慘了，這次傾家蕩產入貨"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1756,7 +1791,8 @@
       "zimu_10": "拿來！",
       "zimu_11": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1766,7 +1802,8 @@
       "zimu_4": "來到這兒，一個錢也沒得分就回去",
       "zimu_5": "還在這兒啃麵包"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1774,13 +1811,15 @@
       "zimu_2": "我們來到香港也不容易",
       "zimu_3": "總不能，就這樣回去吧？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "潮哥，真要我們回去嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1788,7 +1827,8 @@
       "zimu_2": "也算我們兩兄弟一份",
       "zimu_3": "我們甚麼都可以做的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1798,46 +1838,53 @@
       "zimu_4": "規矩我懂，一定不會跟別人亂說話的",
       "zimu_5": "我們也是講義氣的嘛"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "分了它"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "說真的，我們可以的",
       "zimu_2": "你們三大賊王合作⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "多管閒事",
       "zimu_2": "知道這麼多幹嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不是要洗腎嗎？還抽煙？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "都說你狗改不了吃屎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不是還生氣吧？",
       "zimu_2": "你們想打劫樓下的金行嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1853,66 +1900,76 @@
       "zimu_10": "生活過得很好",
       "zimu_11": "你不要來搞我家人好嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "這次是老大不對"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你也知道現在賺錢不易"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大家好兄弟",
       "zimu_2": "這次是我欠你的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "這幾天的事就算是粉筆字，抹了它",
       "zimu_2": "不要對人說"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "老大明天一早就走",
       "zimu_2": "總之你不會再見到我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "可樂叔叔",
       "zimu_2": "還未睡？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "海陸豐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "香港西環碼頭"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "卓老闆",
       "zimu_2": "久仰大名"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1932,15 +1989,8 @@
       "zimu_14": "炸甚麼都行！",
       "zimu_15": "葉國歡啊！"
     },
-    "answer": {
-      "xiugai_7": "吃完找兩個髮花幫你洗頭髮",
-      "beizhu_7": "將「洗頭」補全為常用說法「洗頭髮」，屬細微用語補全，未改變語氣與含義。",
-      "xiugai_10": "什麼貨我都有",
-      "beizhu_10": "「甚麼」改為「什麼」，以現代通用字形統一。",
-      "xiugai_14": "炸什麼都行！",
-      "beizhu_14": "「甚麼」改為「什麼」，以現代通用字形統一。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1948,19 +1998,22 @@
       "zimu_2": "膽大包天，身經百戰！",
       "zimu_3": "我要葉國歡！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "零錢！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "拿來！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1981,7 +2034,8 @@
       "zimu_15": "去你媽的！",
       "zimu_16": "下來！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1990,11 +2044,8 @@
       "zimu_3": "跟我合作不更好？",
       "zimu_4": "你是誰啊？"
     },
-    "answer": {
-      "xiugai_2": "他以前跟我的。",
-      "beizhu_2": "將感嘆號改為句號，以符合一般標點用法，無改動語氣用詞。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2002,7 +2053,8 @@
       "zimu_2": "喂，卓子強",
       "zimu_3": "我是葉國歡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2017,11 +2069,8 @@
       "zimu_9": "喂",
       "zimu_10": "喂！"
     },
-    "answer": {
-      "xiugai_3": "我葉國寬有麟有角！",
-      "beizhu_3": "將「歡」改為角色常見人名「寬」，屬於明顯的人名輸入錯誤。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2033,7 +2082,8 @@
       "zimu_6": "是不是卓子強？",
       "zimu_7": "誰？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2053,11 +2103,8 @@
       "zimu_14": "他老哥愛上鏡，警察又笨",
       "zimu_15": "我只好順水推舟⋯　　你等一會！別掛啊"
     },
-    "answer": {
-      "xiugai_15": "我只好順水推舟⋯你等一會！別掛啊",
-      "beizhu_15": "刪除「⋯」和「你」之間多餘的全形空格，屬於排版清理。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2071,7 +2118,8 @@
       "zimu_8": "我要遮遮掩掩？",
       "zimu_9": "鬼鬼祟祟？見不了人啊？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2080,13 +2128,15 @@
       "zimu_3": "香港",
       "zimu_4": "好，回香港再聯絡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "喂？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2097,14 +2147,16 @@
       "zimu_5": "你現在在哪？",
       "zimu_6": "香港"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "回香港再聯絡",
       "zimu_2": "再聊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2113,13 +2165,15 @@
       "zimu_3": "一場來到",
       "zimu_4": "怎樣也要留下些甚麼吧？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "是"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2127,21 +2181,24 @@
       "zimu_2": "卓老闆的性命",
       "zimu_3": "怎麼也值一個「紅白藍」吧！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "放下槍！",
       "zimu_2": "部隊？走！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "車匙",
       "zimu_2": "車匙！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2155,7 +2212,8 @@
       "zimu_8": "老大，你說甚麼就是甚麼",
       "zimu_9": "我們怎樣也會挺你！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2170,7 +2228,8 @@
       "zimu_9": "現在樓上投訴",
       "zimu_10": "證件呢？　　有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2181,7 +2240,8 @@
       "zimu_5": "報上電台",
       "zimu_6": "PC1844，叫電台"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2191,7 +2251,8 @@
       "zimu_4": "在前面！",
       "zimu_5": "追他！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2205,7 +2266,8 @@
       "zimu_8": "我就不信這次不轟動！",
       "zimu_9": "媽的！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2220,32 +2282,37 @@
       "zimu_9": "待會出去大街，坐的士",
       "zimu_10": "「打的」啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "「大陸喱」，懵頭懵腦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "快"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "「大陸喱」？",
       "zimu_2": "我是葉國歡！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "武警"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2279,21 +2346,8 @@
       "zimu_28": "茶，我幫你拿",
       "zimu_29": "等一下，你們都等我一下，馬上回來"
     },
-    "answer": {
-      "xiugai_2": "你好，先生，請問幾位？",
-      "beizhu_2": "在「先生」後面補上逗號以分隔稱呼與後文，符合書面標點習慣。",
-      "xiugai_18": "不是去了洗手間嗎？怎麼會在這裡出現？",
-      "beizhu_18": "句末補上問號，完整標示疑問句。",
-      "xiugai_21": "喂，這邊請",
-      "beizhu_21": "去除多餘空格，改用逗號連接稱呼與後文，使排版正常。",
-      "xiugai_24": "不好意思，飯是冷的嗎？我要茶！",
-      "beizhu_24": "去除中間多餘空格，使兩句連貫，中間保留全形問號分句。",
-      "xiugai_26": "快！小姐，你告訴我，我自己去找吧",
-      "beizhu_26": "去除中間多餘空格，以標點斷句。",
-      "xiugai_27": "我要茶！我帶你去，等我一下",
-      "beizhu_27": "去除中間多餘空格，使兩句連接自然。"
-    },
-    "difficulty": 1
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2301,6 +2355,7 @@
       "zimu_2": "我們會以最關切的目光",
       "zimu_3": "看著你們開展非凡的新時代"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]
