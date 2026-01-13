@@ -1742,13 +1742,12 @@
   },
   {
     "query": {
-      "subtitle_1": "Mr. KUSAKABE? Telegram!",
-      "subtitle_2": "Mr. KUSAKABE?",
+      "subtitle_1": "Mr. Kusakabe? Telegram!",
+      "subtitle_2": "Mr. Kusakabe?",
       "subtitle_3": "A telegram for you.",
       "subtitle_4": "Huh. No one's home."
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -1869,11 +1868,10 @@
       "subtitle_6": "Hello?",
       "subtitle_7": "Yes.",
       "subtitle_8": "Hello? I need to speak to my dad\nin the archaeology department.",
-      "subtitle_9": "I mean, I need to speak\nto Mr. KUSAKABE.",
-      "subtitle_10": "My name is Satsuki KUSAKABE."
+      "subtitle_9": "I mean, I need to speak\nto Mr. Kusakabe.",
+      "subtitle_10": "My name is Satsuki Kusakabe."
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
