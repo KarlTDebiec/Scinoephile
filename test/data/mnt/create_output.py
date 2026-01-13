@@ -22,13 +22,17 @@ from test.data.mlamd import (
     get_mlamd_eng_proofreading_test_cases,
     get_mlamd_zho_hans_ocr_fusion_test_cases,
     get_mlamd_zho_hans_proofreading_test_cases,
+    get_mlamd_zho_hant_ocr_fusion_test_cases,
+    get_mlamd_zho_hant_proofreading_test_cases,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hans_ocr
+from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
     get_t_zho_hans_ocr_fusion_test_cases,
     get_t_zho_hans_proofreading_test_cases,
+    get_t_zho_hant_ocr_fusion_test_cases,
+    get_t_zho_hant_proofreading_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -37,12 +41,29 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "简体中文 (OCR)",
+    # "繁體中文 (OCR)",
+    # "简体中文 (OCR)",
     "English (OCR)",
-    "繁體中文 (SRT)",
-    "Bilingual 简体中文 and English",
+    # "繁體中文 (SRT)",
+    # "Bilingual 简体中文 and English",
 }
-
+if "繁體中文 (OCR)" in actions:
+    process_zho_hant_ocr(
+        title_root,
+        title_root / "input" / "zho-Hans.sup",
+        fuser_kw={
+            "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
+            + get_mlamd_zho_hant_ocr_fusion_test_cases()
+            + get_t_zho_hant_ocr_fusion_test_cases()
+        },
+        proofreader_kw={
+            "test_cases": get_kob_zho_hant_proofreading_test_cases()
+            + get_mlamd_zho_hant_proofreading_test_cases()
+            + get_t_zho_hant_proofreading_test_cases()
+        },
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
@@ -57,9 +78,9 @@ if "简体中文 (OCR)" in actions:
             + get_mlamd_zho_hans_proofreading_test_cases()
             + get_t_zho_hans_proofreading_test_cases()
         },
-        validate=False,
+        overwrite_srt=True,
+        force_validation=True,
     )
-
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
@@ -74,7 +95,8 @@ if "English (OCR)" in actions:
             + get_mlamd_eng_proofreading_test_cases()
             + get_t_eng_proofreading_test_cases()
         },
-        validate=False,
+        overwrite_srt=True,
+        force_validation=True,
     )
 
 if "繁體中文 (SRT)" in actions:
