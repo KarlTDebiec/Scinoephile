@@ -41,9 +41,9 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "繁體中文 (OCR)",
+    "繁體中文 (OCR)",
     # "简体中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
     # "繁體中文 (SRT)",
     # "Bilingual 简体中文 and English",
 }

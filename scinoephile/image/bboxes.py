@@ -20,7 +20,7 @@ __all__ = [
 ]
 
 
-def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912
+def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
     """Get bboxes surrounding the fill color interiors of characters in an image.
 
     First attempts to split the image into multiple lines of text, if applicable.
@@ -51,20 +51,29 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912
     if line is not None:
         lines.append(line)
 
-    min_line_gap = 10
+    min_line_gap = 5
+    min_line_height = 40
     if lines:
         merged_lines = [lines[0]]
         for y1, y2 in lines[1:]:
             last = merged_lines[-1]
-            if y1 - last[1] < min_line_gap:
+            if y1 - last[1] < min_line_gap or (y2 - y1) < min_line_height:
                 last[1] = max(last[1], y2)
             else:
                 merged_lines.append([y1, y2])
-        lines = merged_lines
+        if len(merged_lines) > 1:
+            filtered_lines = [merged_lines[0]]
+            for y1, y2 in merged_lines[1:]:
+                if (y2 - y1) < min_line_height:
+                    filtered_lines[-1][1] = max(filtered_lines[-1][1], y2)
+                else:
+                    filtered_lines.append([y1, y2])
+            merged_lines = filtered_lines
+        final_lines = merged_lines
 
     # Determine left and right of each section per line to get final bbox
     bboxes: list[Bbox] = []
-    for y1, y2 in lines:
+    for y1, y2 in final_lines:
         line_mask = white_mask[y1:y2]
         sections = []
         section = None
