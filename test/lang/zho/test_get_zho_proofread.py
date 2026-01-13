@@ -93,17 +93,17 @@ def test_get_zho_proofread_mnt(
 
 
 def test_get_zho_proofread_t(
-    t_zho_hans_fuse: Series,
-    t_zho_hans_fuse_proofread: Series,
+    t_zho_hans_fuse_clean_validate: Series,
+    t_zho_hans_fuse_clean_validate_proofread: Series,
 ):
     """Test get_zho_proofread with T English subtitles.
 
     Arguments:
-        t_zho_hans_fuse: T English series fixture
-        t_zho_hans_fuse_proofread: Expected proofread T English series
+        t_zho_hans_fuse_clean_validate: T English series fixture
+        t_zho_hans_fuse_clean_validate_proofread: Expected proofread T English series
           fixture
     """
     _test_get_zho_proofread(
-        t_zho_hans_fuse,
-        t_zho_hans_fuse_proofread,
+        t_zho_hans_fuse_clean_validate,
+        t_zho_hans_fuse_clean_validate_proofread,
     )

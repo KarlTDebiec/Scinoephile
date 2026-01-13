@@ -83,16 +83,16 @@ def test_get_eng_proofread_mnt(
 
 
 def test_get_eng_proofread_t(
-    t_eng_fuse: Series,
-    t_eng_fuse_proofread: Series,
+    t_eng_fuse_clean_validate: Series,
+    t_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with T English subtitles.
 
     Arguments:
-        t_eng_fuse: T English series fixture
-        t_eng_fuse_proofread: Expected proofread T English series fixture
+        t_eng_fuse_clean_validate: T English series fixture
+        t_eng_fuse_clean_validate_proofread: Expected proofread T English series fixture
     """
     _test_get_eng_proofread(
-        t_eng_fuse,
-        t_eng_fuse_proofread,
+        t_eng_fuse_clean_validate,
+        t_eng_fuse_clean_validate_proofread,
     )
