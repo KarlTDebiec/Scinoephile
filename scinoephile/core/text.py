@@ -39,6 +39,7 @@ half_punc = {
     "COMMA": ",",
     "DOT OPERATOR": "⋅",
     "DOUBLE VERTICAL LINE": "‖",
+    "EIGHTH NOTE": "♪",
     "EM DASH": "—",
     "EN DASH": "–",
     "EXCLAMATION MARK": "!",
