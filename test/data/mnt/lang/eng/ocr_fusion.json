@@ -703,15 +703,14 @@
   },
   {
     "query": {
-      "lens": "Mmm. Huh?",
+      "lens": "- Mmm. Huh?\n",
       "tesseract": "- Mmm.\n- Huh?"
     },
     "answer": {
       "output": "- Mmm.\n- Huh?",
-      "note": "Added '-' and line break as in Tesseract for dialogue formatting."
+      "note": "Used Tesseract’s two-line dialogue structure with a dash before each line, which better reflects separate speakers."
     },
-    "difficulty": 2,
-    "verified": true
+    "difficulty": 2
   },
   {
     "query": {

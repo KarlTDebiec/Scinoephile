@@ -1,14 +1,14 @@
 1
 00:00:34,826 --> 00:00:36,703
-<i>♪</i>Hey, let's go ♪
+♪ Hey, let's go ♪
 
 2
 00:00:36,870 --> 00:00:38,914
-<i>♪</i>Hey, let's go ♪
+♪ Hey, let's go ♪
 
 3
 00:00:39,081 --> 00:00:42,834
-<i>♪ I'm happy as can be ♪</i>
+♪ I'm happy as can be ♪
 
 4
 00:00:43,001 --> 00:00:46,713
@@ -23,15 +23,15 @@ Come on, let's go ♪
 6
 00:00:51,009 --> 00:00:54,763
 ♪ Over the hill
-Across the field<i>♪</i>
+Across the field ♪
 
 7
 00:00:54,930 --> 00:00:58,559
-♪ Through the tunnel we'll 90 ♪
+♪ Through the tunnel we'll go ♪
 
 8
 00:00:58,725 --> 00:01:02,020
-<i>♪ We'" run across the bridge ♪</i>
+♪ We'll run across the bridge ♪
 
 9
 00:01:02,187 --> 00:01:06,567
@@ -39,23 +39,23 @@ Across the field<i>♪</i>
 
 10
 00:01:06,733 --> 00:01:10,320
-<i>♪ Right beneath the spider's web ♪</i>
+♪ Right beneath the spider's web ♪
 
 11
 00:01:10,487 --> 00:01:13,448
-<i>♪</i>Ready, set, let's go ♪
+♪ Ready, set, let's go ♪
 
 12
 00:01:22,916 --> 00:01:24,793
-<i>♪</i>Hey, let's go ♪
+♪ Hey, let's go ♪
 
 13
 00:01:24,960 --> 00:01:26,962
-<i>♪</i>Hey, let's go ♪
+♪ Hey, let's go ♪
 
 14
 00:01:27,129 --> 00:01:30,882
-<i>♪ I'm happy as can be ♪</i>
+♪ I'm happy as can be ♪
 
 15
 00:01:31,049 --> 00:01:34,720
@@ -73,7 +73,7 @@ Come on, let's go ♪
 
 18
 00:01:42,853 --> 00:01:46,607
-<i>♪ A" come out to May ♪</i>
+♪ All come out to play ♪
 
 19
 00:01:46,773 --> 00:01:50,068
@@ -85,19 +85,19 @@ Come on, let's go ♪
 
 21
 00:01:54,865 --> 00:01:58,327
-<i>♪ Look at a" my many friends ♪</i>
+♪ Look at all my many friends ♪
 
 22
 00:01:58,452 --> 00:02:01,455
-<i>♪</i>Ready, set, let's go ♪
+♪ Ready, set, let's go ♪
 
 23
 00:02:03,081 --> 00:02:06,418
-<i>♪ Look at a" my many friends ♪</i>
+♪ Look at all my many friends ♪
 
 24
 00:02:06,585 --> 00:02:09,630
-<i>♪</i>Ready, set, let's go ♪
+♪ Ready, set, let's go ♪
 
 25
 00:02:17,846 --> 00:02:19,973
@@ -110,7 +110,7 @@ Come on, let's go ♪
 27
 00:02:35,989 --> 00:02:39,409
 - Hey Dad, want some caramel?
--Thanks. How you doing back there?
+- Thanks. How you doing back there?
 
 28
 00:02:39,576 --> 00:02:40,952
@@ -184,7 +184,7 @@ This is it, girls.
 
 44
 00:04:24,514 --> 00:04:26,725
--Wait up!
+- Wait up!
 - Here you go.
 
 45
@@ -343,7 +343,7 @@ An acorn.
 
 82
 00:06:38,940 --> 00:06:41,234
-Let me<i>see.</i>
+Let me see.
 
 83
 00:06:41,401 --> 00:06:43,778
@@ -463,8 +463,8 @@ Well, hurry it up, then.
 
 110
 00:08:31,011 --> 00:08:32,512
--The bath.
--Yep.
+- The bath.
+- Yep.
 
 111
 00:08:38,601 --> 00:08:40,103
@@ -722,8 +722,8 @@ I caught one! Satsuki, look!
 
 171
 00:13:26,681 --> 00:13:29,309
-<i>- Ah'.
-- 001'.!</i>
+- Ah!
+- Oof!
 
 172
 00:13:30,560 --> 00:13:31,519
@@ -911,7 +911,7 @@ So what? I'm not afraid.
 
 214
 00:15:32,598 --> 00:15:34,767
-Right.Then you can go to the bathroom
+Right. Then you can go to the bathroom
 
 215
 00:15:34,934 --> 00:15:36,436
@@ -1014,7 +1014,7 @@ Hey, you in there!
 
 239
 00:17:30,299 --> 00:17:34,554
--Your house is haunted!
+- Your house is haunted!
 - Kanta!
 
 240
@@ -1194,12 +1194,12 @@ That's it.
 
 282
 00:21:09,518 --> 00:21:11,771
-Okay.That's all the chores.
+Okay. That's all the chores.
 
 283
 00:21:11,937 --> 00:21:14,815
--You're done.
-- BOTH:Yay!
+- You're done.
+- BOTH: Yay!
 
 284
 00:21:22,323 --> 00:21:24,283
@@ -1310,7 +1310,7 @@ Have you settled in?
 
 309
 00:23:10,723 --> 00:23:14,560
--Yeah.
+- Yeah.
 - Hmm?
 
 310
@@ -1344,7 +1344,7 @@ come home if the house was haunted.
 316
 00:23:30,826 --> 00:23:32,953
 - Do you two like it?
--Yeah!
+- Yeah!
 
 317
 00:23:33,078 --> 00:23:34,997
@@ -1367,11 +1367,11 @@ Did you do this, Satsuki?
 321
 00:23:43,339 --> 00:23:47,051
 - What a lucky girl you are.
--Yeah, but she yells at me a lot.
+- Yeah, but she yells at me a lot.
 
 322
 00:23:47,217 --> 00:23:51,221
--That's because you never sit still.
+- That's because you never sit still.
 - Let's see your hair, Satsuki.
 
 323
@@ -1385,7 +1385,7 @@ No, I like it this way, Mom.
 325
 00:23:55,225 --> 00:23:58,312
 - Brush my hair! Brush mine!
--Wait your turn, Mei.
+- Wait your turn, Mei.
 
 326
 00:23:58,520 --> 00:24:00,648
@@ -1434,7 +1434,7 @@ to come home real soon.
 336
 00:24:35,808 --> 00:24:39,645
 - So she'll be home tomorrow?
--There she goes again with tomorrow.
+- There she goes again with tomorrow.
 
 337
 00:24:39,812 --> 00:24:41,689
@@ -1522,7 +1522,7 @@ so it stays fresh. Okay?
 356
 00:25:56,221 --> 00:26:00,768
 - Satsuki!
--That's Michiko.
+- That's Michiko.
 
 357
 00:26:00,934 --> 00:26:02,644
@@ -1564,7 +1564,7 @@ Hi, Michiko.
 366
 00:26:22,873 --> 00:26:25,167
 - Hi. Ready for school?
--Yep.
+- Yep.
 
 367
 00:26:25,375 --> 00:26:29,254
@@ -1824,7 +1824,7 @@ To-to-ro!
 
 431
 00:34:28,692 --> 00:34:29,734
-<i>Totem?</i>
+Totoro?
 
 432
 00:34:29,901 --> 00:34:32,487
@@ -1960,7 +1960,7 @@ Maybe you were dreaming.
 463
 00:37:07,267 --> 00:37:09,894
 - No, I saw Totoro.
--Totoro?
+- Totoro?
 
 464
 00:37:10,061 --> 00:37:12,272
@@ -2001,7 +2001,7 @@ There you are.
 
 473
 00:37:33,168 --> 00:37:35,712
-Wow.This would make
+Wow. This would make
 a great secret hiding place.
 
 474
@@ -2011,7 +2011,7 @@ she saw a Totoro here.
 
 475
 00:37:38,882 --> 00:37:40,842
--A Totoro?
+- A Totoro?
 - Mmm-hmm.
 
 476
@@ -2186,7 +2186,7 @@ It's been around since long ago,
 516
 00:40:15,663 --> 00:40:18,833
 back in the time when trees
-and people used to befriends.
+and people used to be friends.
 
 517
 00:40:24,088 --> 00:40:28,426
@@ -2491,12 +2491,12 @@ Hey!
 
 586
 00:46:01,926 --> 00:46:04,011
--That was lucky, wasn't it?
+- That was lucky, wasn't it?
 - Mmm-hmm.
 
 587
 00:46:05,930 --> 00:46:08,808
-- MEI:This umbrella has holes.
+- MEI: This umbrella has holes.
 - Hmm.
 
 588
@@ -2584,12 +2584,12 @@ from school with me.
 607
 00:47:12,747 --> 00:47:15,708
 So, it was really nice of him
-to help us out.Tell him thank you.
+to help us out. Tell him thank you.
 
 608
 00:47:15,875 --> 00:47:17,960
 - He must have been drenched.
--That's okay.
+- That's okay.
 
 609
 00:47:18,085 --> 00:47:21,881
@@ -2603,7 +2603,7 @@ your dad at the bus stop?
 
 611
 00:47:24,091 --> 00:47:26,510
-- SATSUKI:Yes, he forgot his umbrella.
+- SATSUKI: Yes, he forgot his umbrella.
 - Such good kids.
 
 612
@@ -2867,7 +2867,7 @@ We saw a cat bus, too!
 
 675
 00:54:51,538 --> 00:54:54,416
--What?
+- What?
 - It was huge!
 
 676
@@ -2968,12 +2968,12 @@ forest with the acorns,
 
 699
 00:55:55,018 --> 00:55:58,272
-“ so we planted them
+“so we planted them
 in your garden out back, but…”
 
 700
 00:55:58,397 --> 00:56:01,275
-SATSUKI: they just won't grow.
+SATSUKI: …they just won't grow.
 Mei watches them
 
 701
@@ -3118,11 +3118,11 @@ ALL: Ahh!
 
 735
 00:59:22,267 --> 00:59:25,395
-GIRLS:Yay! We did it! We did it!
+GIRLS: Yay! We did it! We did it!
 
 736
 00:59:25,604 --> 00:59:26,813
-GIRLS:Yay!
+GIRLS: Yay!
 
 737
 00:59:26,938 --> 00:59:27,981
@@ -3198,12 +3198,12 @@ Mmm…
 
 755
 01:01:45,410 --> 01:01:46,661
-Where'd the tree 90?
+Where'd the tree go?
 
 756
 01:01:47,495 --> 01:01:49,581
--Ahh!
--Ahh!
+- Ahh!
+- Ahh!
 
 757
 01:01:52,042 --> 01:01:53,710
@@ -3290,7 +3290,7 @@ is just like a market.
 
 777
 01:03:13,790 --> 01:03:17,210
-<i>We've</i>picked enough,
+We've picked enough,
 haven't we? Let's take a rest.
 
 778
@@ -3362,11 +3362,11 @@ That will make her better.
 792
 01:04:15,143 --> 01:04:18,355
 - I bet that will do her wonders.
--Yep.
+- Yep.
 
 793
 01:04:26,196 --> 01:04:28,406
-Here.The postman
+Here. The postman
 left us your telegram.
 
 794
@@ -3484,7 +3484,7 @@ Hello, Dad? Is that you? It's Satsuki.
 
 820
 01:06:38,203 --> 01:06:40,205
-- Satsuki, what's<i>wrong?</i>
+- Satsuki, what's wrong?
 - We got a telegram.
 
 821
@@ -3516,8 +3516,8 @@ I'll call you right back. Okay?
 
 827
 01:06:55,011 --> 01:06:56,513
--Yeah.
--<i>Just wait</i>by the phone.
+- Yeah.
+- Just wait by the phone.
 
 828
 01:06:56,679 --> 01:06:59,474
@@ -3600,7 +3600,7 @@ Mei, we just have to wait a little longer.
 846
 01:08:08,626 --> 01:08:12,797
 - No!
--You want her to die, Mei?
+- You want her to die, Mei?
 
 847
 01:08:12,964 --> 01:08:16,009
@@ -3781,7 +3781,7 @@ Excuse me, mister! Hello!
 
 887
 01:12:12,078 --> 01:12:14,872
--Yeah?
+- Yeah?
 - I'm looking for my sister.
 
 888
@@ -3855,7 +3855,7 @@ Oh. I didn't see her. Did you?
 
 904
 01:13:38,706 --> 01:13:40,833
-No. We just<i>came</i>from the hospital,
+No. We just came from the hospital,
 
 905
 01:13:41,000 --> 01:13:44,462
@@ -3877,7 +3877,7 @@ Matsugo! Ho!
 
 909
 01:13:51,427 --> 01:13:54,347
-A four-year—old couldn't walk this far.
+A four-year-old couldn't walk this far.
 
 910
 01:13:54,472 --> 01:13:55,431
@@ -3917,7 +3917,7 @@ to the hospital for you.
 
 918
 01:14:22,208 --> 01:14:24,460
--You should go back home.
+- You should go back home.
 - Check all around.
 
 919
@@ -4083,7 +4083,7 @@ It's an emergency.
 
 957
 01:17:50,875 --> 01:17:51,876
-Toto ro!
+Totoro!
 
 958
 01:17:54,128 --> 01:17:58,215
@@ -4268,7 +4268,7 @@ Especially Satsuki.
 1000
 01:22:32,906 --> 01:22:37,453
 - She tries to act so adult.
--That's true.
+- That's true.
 
 1001
 01:22:37,619 --> 01:22:39,079
@@ -4294,7 +4294,7 @@ Look at Mom. She's laughing.
 1006
 01:22:52,342 --> 01:22:55,220
 - Everything must be okay.
--Yeah.
+- Yeah.
 
 1007
 01:23:02,895 --> 01:23:04,980
@@ -4332,11 +4332,11 @@ It sounds crazy, but maybe you did.
 
 1015
 01:23:34,259 --> 01:23:37,763
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1016
 01:23:37,930 --> 01:23:41,141
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1017
 01:23:49,566 --> 01:23:53,195
@@ -4344,7 +4344,7 @@ It sounds crazy, but maybe you did.
 
 1018
 01:23:53,362 --> 01:23:56,490
-<i>♪ For you to find ♪</i>
+♪ For you to find ♪
 
 1019
 01:23:56,657 --> 01:23:59,910
@@ -4352,7 +4352,7 @@ It sounds crazy, but maybe you did.
 
 1020
 01:24:00,077 --> 01:24:04,456
-<i>♪ A treasure there I'</i>
+♪ A treasure there ♪
 
 1021
 01:24:04,623 --> 01:24:08,126
@@ -4364,19 +4364,19 @@ It sounds crazy, but maybe you did.
 
 1023
 01:24:11,630 --> 01:24:14,883
-♪ It may<i>seem</i>like a dream<i>♪</i>
+♪ It may seem like a dream ♪
 
 1024
 01:24:15,050 --> 01:24:18,845
-<i>♪ Things are not what they seem ♪</i>
+♪ Things are not what they seem ♪
 
 1025
 01:24:19,012 --> 01:24:22,015
-<i>♪</i>Now begins a new adventure ♪
+♪ Now begins a new adventure ♪
 
 1026
 01:24:22,182 --> 01:24:23,809
-<i>♪</i>For you ♪
+♪ For you ♪
 
 1027
 01:24:25,477 --> 01:24:27,437
@@ -4388,7 +4388,7 @@ It sounds crazy, but maybe you did.
 
 1029
 01:24:30,232 --> 01:24:33,735
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1030
 01:24:33,902 --> 01:24:37,239
@@ -4400,28 +4400,28 @@ It sounds crazy, but maybe you did.
 
 1032
 01:24:40,409 --> 01:24:44,871
-♪) There you'll be with Totoro, Totoro ♪’
+♪ There you'll be with Totoro, Totoro ♪
 
 1033
 01:24:45,038 --> 01:24:48,500
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1034
 01:24:48,667 --> 01:24:52,212
 ♪ You only see him
-When you're very young<i>♪</i>
+When you're very young ♪
 
 1035
 01:24:52,379 --> 01:24:56,758
-PA magical adventure for you ♪
+♪ A magical adventure for you ♪
 
 1036
 01:24:56,925 --> 01:25:00,637
-<i>♪</i>It's magic for you ♪
+♪ It's magic for you ♪
 
 1037
 01:25:02,306 --> 01:25:05,934
-<i>♪</i>Rain tumbles down ♪
+♪ Rain tumbles down ♪
 
 1038
 01:25:06,101 --> 01:25:09,104
@@ -4429,7 +4429,7 @@ PA magical adventure for you ♪
 
 1039
 01:25:09,271 --> 01:25:12,399
-<i>♪ Suddenly, a flurry white giant ♪</i>
+♪ Suddenly, a furry white giant ♪
 
 1040
 01:25:12,566 --> 01:25:17,029
@@ -4437,15 +4437,15 @@ PA magical adventure for you ♪
 
 1041
 01:25:17,195 --> 01:25:20,782
-<i>♪ Don't be afraid ♪</i>
+♪ Don't be afraid ♪
 
 1042
 01:25:20,949 --> 01:25:23,952
-<i>♪ Just open wide ♪</i>
+♪ Just open wide ♪
 
 1043
 01:25:24,119 --> 01:25:27,789
-♪ Your umbrella for him<i>♪</i>
+♪ Your umbrella for him ♪
 
 1044
 01:25:27,956 --> 01:25:31,335
@@ -4453,11 +4453,11 @@ PA magical adventure for you ♪
 
 1045
 01:25:31,543 --> 01:25:34,796
-<i>♪</i>Now begins a new adventure ♪
+♪ Now begins a new adventure ♪
 
 1046
 01:25:34,963 --> 01:25:37,924
-<i>♪</i>For you ♪
+♪ For you ♪
 
 1047
 01:25:38,133 --> 01:25:39,968
@@ -4469,19 +4469,19 @@ PA magical adventure for you ♪
 
 1049
 01:25:42,804 --> 01:25:46,892
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1050
 01:25:47,059 --> 01:25:49,895
-<i>♪ And on a moon fit night ♪</i>
+♪ And on a moonlit night ♪
 
 1051
 01:25:50,062 --> 01:25:52,856
-<i>♪ He Nays a magic flute "in the sky ♪</i>
+♪ He plays a magic flute in the sky ♪
 
 1052
 01:25:53,023 --> 01:25:54,941
-♪ There you'll be with Totoro<i>♪</i>
+♪ There you'll be with Totoro ♪
 
 1053
 01:25:55,108 --> 01:25:57,569
@@ -4489,18 +4489,18 @@ PA magical adventure for you ♪
 
 1054
 01:25:57,736 --> 01:26:01,073
-<i>♪</i>Totoro, Totoro ♪
+♪ Totoro, Totoro ♪
 
 1055
 01:26:01,198 --> 01:26:04,826
 ♪ You only see him
-When you're very young<i>♪</i>
+When you're very young ♪
 
 1056
 01:26:04,993 --> 01:26:09,373
-PA magical adventure for you ♪
+♪ A magical adventure for you ♪
 
 1057
 01:26:09,498 --> 01:26:14,503
-<i>♪</i>It's magic for you ♪
+♪ It's magic for you ♪
 
