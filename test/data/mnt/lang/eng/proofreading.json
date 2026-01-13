@@ -1589,8 +1589,8 @@
       "subtitle_10": "Ahh.",
       "subtitle_11": "(CHUCKLING)",
       "subtitle_12": "\"We wanted to grow a beautiful\nforest with the acorns,",
-      "subtitle_13": "“so we planted them\nin your garden out back, but…”",
-      "subtitle_14": "SATSUKI: …they just won't grow.\nMei watches them",
+      "subtitle_13": "“ so we planted them\nin your garden out back, but…”",
+      "subtitle_14": "SATSUKI: … they just won't grow.\nMei watches them",
       "subtitle_15": "all day, every day,",
       "subtitle_16": "waiting for them to sprout,",
       "subtitle_17": "it's starting to make her crabby.",
@@ -1610,8 +1610,11 @@
       "subtitle_31": "Good night, girls.",
       "subtitle_32": "(CRICKETS CHIRPING)"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
+      "note_12": "Changed the opening quotation mark from a straight double quote to a curly one to match the style used in subtitle 13."
+    },
+    "difficulty": 1
   },
   {
     "query": {
