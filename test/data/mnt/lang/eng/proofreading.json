@@ -1612,9 +1612,12 @@
     },
     "answer": {
       "revised_12": "“We wanted to grow a beautiful\nforest with the acorns,",
-      "note_12": "Changed the opening quotation mark from a straight double quote to a curly one to match the style used in subtitle 13."
+      "note_12": "Changed the opening quotation mark from a straight double quote to a curly one to match the style used in subtitle 13.",
+      "revised_13": "so we planted them\nin your garden out back, but…”",
+      "note_13": "Changed the closing quotation mark from a straight double quote to a curly one to match the style used in subtitle 12."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1750,7 +1753,8 @@
       "subtitle_3": "A telegram for you.",
       "subtitle_4": "Huh. No one's home."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1874,7 +1878,8 @@
       "subtitle_9": "I mean, I need to speak\nto Mr. Kusakabe.",
       "subtitle_10": "My name is Satsuki Kusakabe."
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
