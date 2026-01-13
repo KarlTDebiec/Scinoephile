@@ -164,12 +164,13 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
 def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     title_root: Path,
-    sup_path: Path | None,
+    sup_path: Path | None = None,
     *,
     fuser_kw: Any | None = None,
     proofreader_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
+    force_validation: bool = False,
 ) -> Series:
     """Process 简体中文 OCR subtitles into validated output.
 
@@ -180,6 +181,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         proofreader_kw: keyword arguments for OCR proofreader
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
+        force_validation: whether to force validation even if validation output exists
     Returns:
         processed series
     """
@@ -226,11 +228,11 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
     # Validate
     validate_path = output_dir / "zho-Hans_fuse_clean_validate.srt"
-    if validate_path.exists():
+    if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
         image_path = output_dir / "zho-Hans_image"
-        if image_path.exists():
+        if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             assert len(clean) == len(image), (
                 f"Length mismatch: {len(clean)} vs {len(image)}"
