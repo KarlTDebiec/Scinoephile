@@ -182,8 +182,10 @@ class ValidationManager:
                     f"no approved or automatic match for '{cursor.char}'"
                 )
                 break
-            matched, new_messages = self._prompt_char_dims(cursor)
+            matched, new_messages, skipped = self._prompt_char_dims(cursor)
             messages.extend(new_messages)
+            if skipped:
+                return messages
             if matched:
                 continue
 
@@ -270,13 +272,13 @@ class ValidationManager:
                     return True
         return False
 
-    def _prompt_char_dims(self, cursor: CharCursor) -> tuple[bool, list[str]]:
+    def _prompt_char_dims(self, cursor: CharCursor) -> tuple[bool, list[str], bool]:
         """Prompt user to confirm character dimensions.
 
         Arguments:
             cursor: character cursor
         Returns:
-            tuple of (matched, validation messages)
+            tuple of (matched, validation messages, skip_subtitle)
         """
         messages: list[str] = []
 
@@ -290,8 +292,11 @@ class ValidationManager:
             annotated.show()
             response = input(
                 f"{cursor.intro_msg} | "
-                f"'{cursor.char}' bbox dims {dims} | extend/group? (y/n): "
+                f"'{cursor.char}' bbox dims {dims} | extend/group? (y/n/s): "
             )
+            if response.lower().startswith("s"):
+                messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+                return False, messages, True
             extend = not response.lower().startswith("y")
             if n_bboxes == 1:
                 try:
@@ -309,7 +314,7 @@ class ValidationManager:
                 ]
                 self._update_char_dims(cursor.char, dims)
                 cursor.advance(n_chars=1, n_bboxes=1)
-                return True, messages
+                return True, messages, False
 
             if n_chars > 1:
                 if cursor.char_idx + n_chars > len(cursor.sub.text_with_newline):
@@ -329,8 +334,8 @@ class ValidationManager:
                 dims = get_dims_tuple(cursor.bbox_grp(1))
                 self._update_char_grp_dims(char_grp, dims)
                 cursor.advance(n_chars=n_chars, n_bboxes=1)
-                return True, messages
-        return False, messages
+                return True, messages, False
+        return False, messages, False
 
     def _validate_gaps(  # noqa: PLR0912, PLR0915
         self,
@@ -440,7 +445,10 @@ class ValidationManager:
                         "no approved or automatic match for gap"
                     )
                     return messages
-                messages.extend(self._prompt_space_gap(cursor, cutoffs))
+                gap_messages, skipped = self._prompt_space_gap(cursor, cutoffs)
+                messages.extend(gap_messages)
+                if skipped:
+                    return messages
                 cursor.advance()
                 continue
 
@@ -483,7 +491,10 @@ class ValidationManager:
                         "no approved or automatic match for gap"
                     )
                     return messages
-                messages.extend(self._prompt_tab_gap(cursor, cutoffs))
+                gap_messages, skipped = self._prompt_tab_gap(cursor, cutoffs)
+                messages.extend(gap_messages)
+                if skipped:
+                    return messages
                 cursor.advance()
                 continue
 
@@ -502,14 +513,14 @@ class ValidationManager:
 
     def _prompt_space_gap(
         self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
-    ) -> list[str]:
+    ) -> tuple[list[str], bool]:
         """Prompt user to confirm a space gap.
 
         Arguments:
             cursor: gap cursor
             cutoffs: gap cutoffs for this character pair
         Returns:
-            validation messages
+            tuple of (validation messages, skip_subtitle)
         """
         messages: list[str] = []
 
@@ -517,8 +528,11 @@ class ValidationManager:
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
             f"observed '{cursor.gap_chars_escaped}', "
-            f"should be '{cursor.expected_space}'? (y/n): "
+            f"should be '{cursor.expected_space}'? (y/n/s): "
         )
+        if response.lower().startswith("s"):
+            messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+            return messages, True
         approved = response.lower().startswith("y")
         if approved:
             self._update_pair_gaps(
@@ -538,18 +552,18 @@ class ValidationManager:
                 f"expected '{expected_gap_chars}' "
                 f"observed '{cursor.gap_chars_escaped}'"
             )
-        return messages
+        return messages, False
 
     def _prompt_tab_gap(
         self, cursor: GapCursor, cutoffs: tuple[int, int, int, int]
-    ) -> list[str]:
+    ) -> tuple[list[str], bool]:
         """Prompt user to confirm a tab gap.
 
         Arguments:
             cursor: gap cursor
             cutoffs: gap cutoffs for this character pair
         Returns:
-            validation messages
+            tuple of (validation messages, skip_subtitle)
         """
         messages: list[str] = []
 
@@ -557,8 +571,11 @@ class ValidationManager:
         response = input(
             f"{cursor.intro_msg} | {cursor.gap_msg} | "
             f"observed '{cursor.gap_chars_escaped}', "
-            f"should be '{cursor.expected_tab}'? (y/n): "
+            f"should be '{cursor.expected_tab}'? (y/n/s): "
         )
+        if response.lower().startswith("s"):
+            messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+            return messages, True
         approved = response.lower().startswith("y")
         if approved:
             self._update_pair_gaps(
@@ -578,7 +595,7 @@ class ValidationManager:
                 f"expected '{expected_gap_chars}' "
                 f"observed '{cursor.gap_chars_escaped}'"
             )
-        return messages
+        return messages, False
 
     def _update_char_dims(self, char: str, dims: tuple[int, ...]):
         """Update char dims and save.

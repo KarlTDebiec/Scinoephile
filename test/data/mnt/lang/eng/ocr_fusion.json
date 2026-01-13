@@ -710,7 +710,8 @@
       "output": "- Mmm.\n- Huh?",
       "note": "Used Tesseract’s line break and separate dialogue lines while keeping the text from Lens, since Tesseract is more reliable for line breaks in dialogue."
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
