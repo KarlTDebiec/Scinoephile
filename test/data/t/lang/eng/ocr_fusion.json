@@ -277,12 +277,12 @@
   },
   {
     "query": {
-      "lens": "I'll spank you. Good girl.",
+      "lens": "- I'll spank you. Good girl.",
       "tesseract": "- I'll spank you.\n- Good girl."
     },
     "answer": {
       "output": "- I'll spank you.\n- Good girl.",
-      "note": "Added '-' and line break as in Tesseract."
+      "note": "Used Tesseract’s line break and second dialogue dash to separate the two spoken lines as alternating dialogue."
     },
     "difficulty": 2,
     "verified": true
@@ -313,12 +313,12 @@
   },
   {
     "query": {
-      "lens": "Quick - What's wrong?",
+      "lens": "- Quick - What's wrong?",
       "tesseract": "- Quick\n- What's wrong?"
     },
     "answer": {
       "output": "- Quick\n- What's wrong?",
-      "note": "Added '-' and line break as in Tesseract."
+      "note": "Kept Tesseract’s line break and leading dash on the second line to format the dialogue properly, instead of Lens’s single-line version."
     },
     "difficulty": 2,
     "verified": true

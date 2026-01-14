@@ -10,7 +10,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_flattened
 
 # noinspection PyProtectedMember
-from scinoephile.lang.zho.flattening import _get_zho_text_flattened
 
 
 def _test_get_zho_flattened(series: Series, expected: Series):
@@ -37,71 +36,68 @@ def _test_get_zho_flattened(series: Series, expected: Series):
 
 
 def test_get_zho_flattened_kob(
-    kob_yue_hans_clean: Series,
-    kob_yue_hans_clean_flatten: Series,
+    kob_zho_hant_fuse_clean_validate_proofread: Series,
+    kob_zho_hant_fuse_clean_validate_proofread_flatten: Series,
 ):
-    """Test get_zho_flattened with KOB 简体粤文 subtitles.
+    """Test get_zho_flattened with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_yue_hans_clean: KOB 简体粤文 series fixture
-        kob_yue_hans_clean_flatten: Expected flattened KOB 简体粤文 series fixture
+        kob_zho_hant_fuse_clean_validate_proofread: KOB 繁体中文 series fixture
+        kob_zho_hant_fuse_clean_validate_proofread_flatten: Expected flattened KOB
+          繁体中文 series fixture
     """
-    _test_get_zho_flattened(kob_yue_hans_clean, kob_yue_hans_clean_flatten)
+    _test_get_zho_flattened(
+        kob_zho_hant_fuse_clean_validate_proofread,
+        kob_zho_hant_fuse_clean_validate_proofread_flatten,
+    )
 
 
 def test_get_zho_flattened_mlamd(
-    mlamd_zho_hans_fuse_proofread_clean: Series,
-    mlamd_zho_hans_fuse_proofread_clean_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread: Series,
+    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
 ):
     """Test get_zho_flattened with MLAMD 简体中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_proofread_clean: MLAMD 简体中文 series fixture
-        mlamd_zho_hans_fuse_proofread_clean_flatten: Expected flattened MLAMD 简体中文
-          series fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread: MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened
+          MLAMD 简体中文 series fixture
     """
     _test_get_zho_flattened(
-        mlamd_zho_hans_fuse_proofread_clean, mlamd_zho_hans_fuse_proofread_clean_flatten
+        mlamd_zho_hans_fuse_clean_validate_proofread,
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
     )
 
 
 def test_get_zho_flattened_mnt(
-    mnt_zho_hant_clean: Series,
-    mnt_zho_hant_clean_flatten: Series,
+    mnt_zho_hant_fuse_clean_validate_proofread: Series,
+    mnt_zho_hant_fuse_clean_validate_proofread_flatten: Series,
 ):
     """Test get_zho_flattened with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hant_clean: MNT 繁体中文 series fixture
-        mnt_zho_hant_clean_flatten: Expected flattened MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_proofread: MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten: Expected flattened MNT
+          繁体中文 series fixture
     """
-    _test_get_zho_flattened(mnt_zho_hant_clean, mnt_zho_hant_clean_flatten)
+    _test_get_zho_flattened(
+        mnt_zho_hant_fuse_clean_validate_proofread,
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten,
+    )
 
 
 def test_get_zho_flattened_t(
-    t_zho_hans_clean: Series,
-    t_zho_hans_clean_flatten: Series,
+    t_zho_hans_fuse_clean_validate_proofread: Series,
+    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
 ):
-    """Test get_zho_flattened with T 簡體中文 subtitles.
+    """Test get_zho_flattened with T 简体中文 subtitles.
 
     Arguments:
-        t_zho_hans_clean: T 簡體中文 series fixture
-        t_zho_hans_clean_flatten: Expected flattened T 簡體中文 series fixture
+        t_zho_hans_fuse_clean_validate_proofread: T 简体中文 series fixture
+        t_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened T
+          简体中文 series fixture
     """
-    _test_get_zho_flattened(t_zho_hans_clean, t_zho_hans_clean_flatten)
-
-
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("line 1\nline 2", "line 1　line 2"),
-    ],
-)
-def test_get_zho_text_flattened(text: str, expected: str):
-    """Test _get_zho_text_flattened.
-
-    Arguments:
-        text: Text to flatten
-        expected: Expected flattened text
-    """
-    assert _get_zho_text_flattened(text) == expected
+    _test_get_zho_flattened(
+        t_zho_hans_fuse_clean_validate_proofread,
+        t_zho_hans_fuse_clean_validate_proofread_flatten,
+    )

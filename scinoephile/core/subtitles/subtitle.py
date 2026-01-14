@@ -90,6 +90,11 @@ class Subtitle(SSAEvent):
         return "".join([c for c in self.text if c not in chars_to_remove])
 
     @property
+    def text_with_newline(self) -> str:
+        """Text with newline escapes replaced."""
+        return self.text.replace("\\N", "\n")
+
+    @property
     def text_without_whitspace(self) -> str:
         """Text excluding whitespace."""
         return "".join([c for c in self.text if c not in whitespace_chars])

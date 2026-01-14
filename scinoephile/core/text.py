@@ -25,7 +25,6 @@ __all__ = [
     "re_western",
     "get_char_type",
     "get_dedented_and_compacted_multiline_text",
-    "get_text_type",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
@@ -40,6 +39,7 @@ half_punc = {
     "COMMA": ",",
     "DOT OPERATOR": "⋅",
     "DOUBLE VERTICAL LINE": "‖",
+    "EIGHTH NOTE": "♪",
     "EM DASH": "—",
     "EN DASH": "–",
     "EXCLAMATION MARK": "!",
@@ -225,21 +225,6 @@ def get_dedented_and_compacted_multiline_text(text: str) -> str:
     text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
     text = re.sub(r"\n{2,}", "\n", text)
     return text
-
-
-@cache
-def get_text_type(text: str) -> str:
-    """Determine whether a string contains Chinese characters.
-
-    Arguments:
-        text: Text to analyze
-    Returns:
-        Whether the text contains Chinese characters
-    """
-    for char in text:
-        if get_char_type(char) == "full":
-            return "full"
-    return "half"
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:

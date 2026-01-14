@@ -15,9 +15,12 @@ from scinoephile.core.testing import test_data_root
     "relative_path",
     [
         "kob/input/eng.srt",
-        "mlamd/output/eng_fuse_proofread_clean.srt",
-        "mnt/output/eng_fuse_proofread_clean.srt",
+        "kob/input/yue-Hans.srt",
+        "kob/input/yue-Hant.srt",
+        "mnt/input/zho-Hant.srt",
         "t/input/eng.srt",
+        "t/input/zho-Hans.srt",
+        "t/input/zho-Hant.srt",
     ],
 )
 def test_series(relative_path: str):

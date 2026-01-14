@@ -12,6 +12,7 @@ from __future__ import annotations
 from .cleaning import get_eng_cleaned
 from .flattening import get_eng_flattened
 from .ocr_fusion import get_eng_ocr_fused
+from .ocr_validation import validate_eng_ocr
 from .proofreading import get_eng_proofread
 
 __all__ = [
@@ -19,4 +20,5 @@ __all__ = [
     "get_eng_flattened",
     "get_eng_ocr_fused",
     "get_eng_proofread",
+    "validate_eng_ocr",
 ]

@@ -34,18 +34,28 @@ def get_default_zho_proofreading_test_cases(
         default test cases
     """
     try:
-        from test.data.kob import get_kob_zho_proofreading_test_cases  # noqa: PLC0415
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_zho_proofreading_test_cases,
+        from test.data.kob import (  # noqa: PLC0415
+            get_kob_zho_hant_proofreading_test_cases,
         )
-        from test.data.mnt import get_mnt_zho_proofreading_test_cases  # noqa: PLC0415
-        from test.data.t import get_t_zho_proofreading_test_cases  # noqa: PLC0415
+        from test.data.mlamd import (  # noqa: PLC0415
+            get_mlamd_zho_hans_proofreading_test_cases,
+            get_mlamd_zho_hant_proofreading_test_cases,
+        )
+        from test.data.mnt import (  # noqa: PLC0415
+            get_mnt_zho_hans_proofreading_test_cases,
+        )
+        from test.data.t import get_t_zho_hans_proofreading_test_cases  # noqa: PLC0415
+
+        if prompt_cls is ZhoHantProofreadingPrompt:
+            mlamd_test_cases = get_mlamd_zho_hant_proofreading_test_cases(prompt_cls)
+        else:
+            mlamd_test_cases = get_mlamd_zho_hans_proofreading_test_cases(prompt_cls)
 
         return (
-            get_kob_zho_proofreading_test_cases(prompt_cls)
-            + get_mlamd_zho_proofreading_test_cases(prompt_cls)
-            + get_mnt_zho_proofreading_test_cases(prompt_cls)
-            + get_t_zho_proofreading_test_cases(prompt_cls)
+            get_kob_zho_hant_proofreading_test_cases(prompt_cls)
+            + mlamd_test_cases
+            + get_mnt_zho_hans_proofreading_test_cases(prompt_cls)
+            + get_t_zho_hans_proofreading_test_cases(prompt_cls)
         )
     except ImportError as exc:
         warning(f"Default test cases not available:\n{exc}")

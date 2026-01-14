@@ -76,6 +76,7 @@ select = [
 ignore = [
     "D410", # Missing blank line after section
     "D411", # Missing blank line before section
+    "PLR0913", # Too many arguments in function definition
     "PLR2004" # Magic value used in comparison
 ]
 

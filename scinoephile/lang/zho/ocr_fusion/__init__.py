@@ -37,16 +37,28 @@ def get_default_zho_ocr_fusion_test_cases(
         default test cases
     """
     try:
-        from test.data.kob import get_kob_zho_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mlamd import get_mlamd_zho_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mnt import get_mnt_zho_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.t import get_t_zho_ocr_fusion_test_cases  # noqa: PLC0415
+        from test.data.kob import (  # noqa: PLC0415
+            get_kob_zho_hant_ocr_fusion_test_cases,
+        )
+        from test.data.mlamd import (  # noqa: PLC0415
+            get_mlamd_zho_hans_ocr_fusion_test_cases,
+            get_mlamd_zho_hant_ocr_fusion_test_cases,
+        )
+        from test.data.mnt import (  # noqa: PLC0415
+            get_mnt_zho_hans_ocr_fusion_test_cases,
+        )
+        from test.data.t import get_t_zho_hans_ocr_fusion_test_cases  # noqa: PLC0415
+
+        if prompt_cls is ZhoHantOcrFusionPrompt:
+            mlamd_test_cases = get_mlamd_zho_hant_ocr_fusion_test_cases(prompt_cls)
+        else:
+            mlamd_test_cases = get_mlamd_zho_hans_ocr_fusion_test_cases(prompt_cls)
 
         return (
-            get_kob_zho_ocr_fusion_test_cases(prompt_cls)
-            + get_mlamd_zho_ocr_fusion_test_cases(prompt_cls)
-            + get_mnt_zho_ocr_fusion_test_cases(prompt_cls)
-            + get_t_zho_ocr_fusion_test_cases(prompt_cls)
+            get_kob_zho_hant_ocr_fusion_test_cases(prompt_cls)
+            + mlamd_test_cases
+            + get_mnt_zho_hans_ocr_fusion_test_cases(prompt_cls)
+            + get_t_zho_hans_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
         warning(f"Default test cases not available:\n{exc}")
@@ -76,22 +88,22 @@ def get_zho_ocr_fused(
 
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
-    default_test_cases: list[TestCase] | None = None,
+    test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> OcrFusionProcessor:
     """Get an OcrFusionProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        default_test_cases: default test cases
+        test_cases: test cases
         **kwargs: additional keyword arguments for OcrFusionProcessor
     Returns:
         OcrFusionProcessor with provided configuration
     """
-    if default_test_cases is None:
-        default_test_cases = get_default_zho_ocr_fusion_test_cases(prompt_cls)
+    if test_cases is None:
+        test_cases = get_default_zho_ocr_fusion_test_cases(prompt_cls)
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
-        default_test_cases=default_test_cases,
+        test_cases=test_cases,
         **kwargs,
     )

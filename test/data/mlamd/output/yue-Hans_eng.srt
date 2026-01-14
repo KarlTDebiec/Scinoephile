@@ -310,7 +310,7 @@ Yeah!
 63
 00:05:17,125 --> 00:05:22,417
 春田花花，真系好多西人㗎！
-Spring Flower offer white teachers!
+Spring Flower offers white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
@@ -695,7 +695,7 @@ I shall understand everything!
 140
 00:09:13,458 --> 00:09:14,583
 到嗰阵⋯
-And then…
+And then …
 
 141
 00:09:15,125 --> 00:09:17,292
@@ -859,7 +859,7 @@ They are fine!!
 
 173
 00:11:54,708 --> 00:11:56,500
-1, 2, 3, 4, 5, 6, 7⋯
+1，2，3，4，5，6，7⋯
 1, 2, 3, 4, 5, 6, 7…
 
 174
@@ -970,7 +970,7 @@ Thank you, everyone!
 195
 00:14:04,667 --> 00:14:07,083
 好高兴咁快又同大家见面
-How time flies since last episode!
+How time flies since the last episode!
 
 196
 00:14:07,250 --> 00:14:10,708
@@ -980,7 +980,7 @@ Now we shall do a Paper Bun.
 197
 00:14:11,292 --> 00:14:14,667
 材料都好简单，只需要白纸一张
-The ingredient takes only paper.
+The ingredient takes only a piece of paper.
 
 198
 00:14:14,958 --> 00:14:19,333
@@ -1005,7 +1005,7 @@ A novelty today for everyone:
 202
 00:14:37,542 --> 00:14:40,958
 包鸡纸包鸡包纸包鸡
-Chicken Bun Paper Bun-ning a Bun.
+Chicken Bun Paper Bunning a Bun.
 
 203
 00:14:41,125 --> 00:14:45,042
@@ -1030,7 +1030,7 @@ And then wrap it like this…
 207
 00:14:59,875 --> 00:15:05,292
 咁一味「包鸡纸包鸡包纸包鸡」就完成喇！
-The delicious Chicken Bun Paper Bun-ning a Bun!
+The delicious Chicken Bun Paper Bunning a Bun!
 
 208
 00:15:05,458 --> 00:15:06,958
@@ -1947,7 +1947,7 @@ Another one begins.
 
 391
 00:34:41,000 --> 00:34:43,417
-“Aka: How Does a Calf Become a Calf?”
+“aka: How Does a Calf Become a Calf?”
 
 392
 00:34:43,500 --> 00:34:45,417
@@ -2911,7 +2911,7 @@ Could it be that…?
 
 584
 00:48:36,750 --> 00:48:40,875
-咦，估唔到真系妈妈攞咗㖞。吓得我啊！
+咦，估唔到真系妈妈攞咗㖞．吓得我啊！
 So mother has been using the dictionary?
 
 585
@@ -3142,7 +3142,7 @@ in its prime…
 630
 00:51:18,125 --> 00:51:21,042
 连林世荣睇见都大赞好
-Was much admired by Butcher Lin!
+was much admired by Butcher Lin!
 
 631
 00:51:22,167 --> 00:51:24,000
@@ -3202,7 +3202,7 @@ Step by step, claw by claw…
 642
 00:51:55,167 --> 00:51:59,833
 最后我终于练成「十二路抢包手」啦
-I make it pass the “12 Bun Snatching Hands”.
+I make it past the “12 Bun Snatching Hands”.
 
 643
 00:52:10,208 --> 00:52:20,625
@@ -3611,7 +3611,7 @@ What was left of the turkey was sliced…
 724
 00:57:12,208 --> 00:57:14,625
 有时都叫我帮手撕
-With me helping out at times.
+with me helping out at times.
 
 725
 00:57:15,208 --> 00:57:16,917
@@ -3651,7 +3651,7 @@ Paper turkey paper bun.
 732
 00:57:37,125 --> 00:57:39,667
 酿火鸡馅搽面包
-Turkey paté with bread.
+Turkey pâté with bread.
 
 733
 00:57:40,625 --> 00:57:46,625
@@ -3686,7 +3686,7 @@ When mother finally disposed of the turkey…
 739
 00:58:06,167 --> 00:58:10,417
 原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事
-It was already half year later.
+It was already half a year later.
 
 740
 00:58:10,542 --> 00:58:14,542
@@ -3701,7 +3701,7 @@ Later, I learned that…
 742
 00:58:16,792 --> 00:58:18,625
 一只火鸡由出世到畀人㓥
-A serving turkey needs only be raised…
+A serving turkey needs only to be raised…
 
 743
 00:58:18,792 --> 00:58:21,083
@@ -3726,7 +3726,7 @@ I realized also, with turkey…
 747
 00:58:31,583 --> 00:58:35,792
 未食同食第一啖之间已经系佢嘅最高峰
-Taking the first bite is all it matters.
+taking the first bite is all that matters.
 
 748
 00:58:36,333 --> 00:58:40,083
@@ -3791,7 +3791,7 @@ Suddenly, the smell of the turkey returned.
 760
 00:59:18,000 --> 00:59:22,542
 我后悔要妈妈撇咗几件火鸡
-I regretted I made mother threw the turkey away.
+I regretted I made mother throw the turkey away.
 
 761
 01:00:21,833 --> 01:00:23,208
@@ -4344,7 +4344,7 @@ I've come up with a lesson!
 
 871
 01:10:16,417 --> 01:10:20,708
-妈妈嘅dot com散咗之后，佢又有计喇
+妈妈嘅 dot com 散咗之后，佢又有计喇
 Mother got inspired after her dot com failed.
 
 872

@@ -5,11 +5,10 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterator
 from html import escape, unescape
 from logging import info
 from pathlib import Path
-from typing import Any, Self, overload, override
+from typing import Any, Self, override
 
 import numpy as np
 from PIL import Image
@@ -23,9 +22,11 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.image.sup import read_sup_series
+from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
+from scinoephile.image.drawing import convert_rgba_img_to_la
 
 from .subtitle import ImageSubtitle
+from .sup import read_sup_series
 
 __all__ = ["ImageSeries"]
 
@@ -37,26 +38,6 @@ class ImageSeries(Series):
     """Class of individual subtitle events."""
     events: list[ImageSubtitle]
     """Individual subtitle events."""
-
-    def __iter__(self) -> Iterator[ImageSubtitle]:
-        """Iterate over image subtitles."""
-        return iter(self.events)
-
-    @overload
-    def __getitem__(self, index: int) -> ImageSubtitle: ...
-
-    @overload
-    def __getitem__(self, index: slice) -> list[ImageSubtitle]: ...
-
-    def __getitem__(self, index: int | slice) -> ImageSubtitle | list[ImageSubtitle]:
-        """Return image subtitles by index or slice.
-
-        Arguments:
-            index: index or slice of subtitles
-        Returns:
-            image subtitle or list of image subtitles
-        """
-        return self.events[index]
 
     @override
     def __init__(self):
@@ -71,7 +52,8 @@ class ImageSeries(Series):
         """Fill color of text images."""
         if self._fill_color is None:
             self._init_fill_and_outline_colors()
-        assert self._fill_color is not None
+        if self._fill_color is None:
+            raise ScinoephileError("Fill color could not be determined.")
         return self._fill_color
 
     @property
@@ -79,7 +61,8 @@ class ImageSeries(Series):
         """Outline color of text images."""
         if self._outline_color is None:
             self._init_fill_and_outline_colors()
-        assert self._outline_color is not None
+        if self._outline_color is None:
+            raise ScinoephileError("Outline color could not be determined.")
         return self._outline_color
 
     @override
@@ -105,14 +88,15 @@ class ImageSeries(Series):
         path = Path(path)
 
         # Check if directory
-        if format_ == "png" or (not format_ and path.suffix == ""):
+        if format_ == "html" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
-            self._save_png(output_dir, encoding=encoding, errors=errors)
+            self._save_html(output_dir, encoding=encoding, errors=errors)
             info(f"Saved series to {output_dir}")
             return
 
         # Otherwise, continue as superclass
-        output_path = val_output_path(path)
+        exist_ok = kwargs.pop("exist_ok", False)
+        output_path = val_output_path(path, exist_ok=exist_ok)
         super().save(
             output_path,
             encoding=encoding,
@@ -122,21 +106,6 @@ class ImageSeries(Series):
             **kwargs,
         )
         info(f"Saved series to {output_path}")
-
-    def _save_png(
-        self,
-        dir_path: Path,
-        encoding: str = "utf-8",
-        errors: str | None = None,
-    ):
-        """Save series to directory of png files.
-
-        Arguments:
-            dir_path: Path to output directory
-            encoding: output file encoding
-            errors: encoding error handling
-        """
-        self._save_html(dir_path, encoding=encoding, errors=errors)
 
     def _save_html(
         self,
@@ -155,7 +124,7 @@ class ImageSeries(Series):
         if dir_path.exists() and dir_path.is_dir():
             for file in dir_path.iterdir():
                 file.unlink()
-                info(f"Deleted {file}")
+            info(f"Deleted {dir_path}")
         else:
             dir_path.mkdir(parents=True)
             info(f"Created directory {dir_path}")
@@ -166,7 +135,7 @@ class ImageSeries(Series):
             outfile_path = dir_path / f"{i:04d}.png"
             event.img.save(outfile_path)
             image_paths.append(outfile_path)
-            info(f"Saved image to {outfile_path}")
+        info(f"Saved images to {dir_path}")
 
         # Save HTML index
         html_lines = [
@@ -175,6 +144,12 @@ class ImageSeries(Series):
             "<head>",
             '   <meta charset="UTF-8" />',
             "   <title>Subtitle images</title>",
+            "   <style>",
+            "      img {",
+            "         image-rendering: pixelated;",
+            "         image-rendering: crisp-edges;",
+            "      }",
+            "   </style>",
             "</head>",
             "<body>",
         ]
@@ -266,15 +241,12 @@ class ImageSeries(Series):
         html_events = cls._parse_html_events(html_text, dir_path)
 
         for html_event in html_events:
-            img = Image.open(html_event["path"])
-            if img.mode == "RGBA":
-                arr = np.array(img)
-                if np.all(arr[:, :, 0] == arr[:, :, 1]) and np.all(
-                    arr[:, :, 1] == arr[:, :, 2]
-                ):
-                    img = img.convert("LA")
-                    img.save(html_event["path"])
-                    info(f"Converted {html_event['path']} to LA and resaved")
+            with Image.open(html_event["path"]) as opened:
+                img = opened.copy()
+            img, converted = convert_rgba_img_to_la(img)
+            if converted:
+                img.save(html_event["path"])
+                info(f"Converted {html_event['path']} to LA and resaved")
             series.events.append(
                 cls.event_class(
                     start=html_event["start"],
@@ -401,18 +373,19 @@ class ImageSeries(Series):
         series = cls()
         series.format = "sup"
         for start, end, image in zip(starts, ends, images):
+            img = Image.fromarray(image, "RGBA")
+            img, _ = convert_rgba_img_to_la(img)
             series.events.append(
-                cls.event_class.from_sup(
-                    start,
-                    end,
-                    image,
-                    series=series,
+                cls.event_class(
+                    start=int(round(start * 1000)),
+                    end=int(round(end * 1000)),
+                    img=img,
                 )
             )
         return series
 
     def _init_fill_and_outline_colors(self):
-        """Initialzie the fill and outline colors used in this series.
+        """Initialize the fill and outline colors used in this series.
 
         * Uses the most common two colors, which works correctly for tested images.
         * Tested images used a 16-color palette.
@@ -425,8 +398,6 @@ class ImageSeries(Series):
             values = grayscale[mask]
             np.add.at(hist, values, 1)
 
-        fill, outline = map(int, np.argsort(hist)[-2:])
-        if outline > fill:
-            fill, outline = outline, fill
+        fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline

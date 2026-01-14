@@ -1,4 +1,4 @@
-﻿1
+1
 00:02:00,625 --> 00:02:02,333
 Police.
 
@@ -19,7 +19,7 @@ Show me your ID.
 5
 00:02:14,708 --> 00:02:19,042
 - Let me see.
-- please verify ID number 0532743...
+- please verify ID number 0532743…
 
 6
 00:02:19,042 --> 00:02:20,625
@@ -97,7 +97,7 @@ were injured in the incident.
 
 23
 00:03:48,292 --> 00:03:51,292
-The <i>5</i> gold shops lost $1 OM in total.
+The<i>5</i>gold shops lost $1 OM in total.
 
 24
 00:03:51,292 --> 00:03:53,583
@@ -105,7 +105,7 @@ The police believe the mastermind
 
 25
 00:03:53,583 --> 00:03:55,500
-is the "Most Wanted" Yip Kwok-foon.
+is the “Most Wanted” Yip Kwok-foon.
 
 26
 00:03:58,167 --> 00:04:02,333
@@ -315,7 +315,7 @@ We are in love but can't be together.
 
 77
 00:08:45,833 --> 00:08:54,833
-I wait day by day but you never come back...
+I wait day by day but you never come back…
 
 78
 00:08:54,833 --> 00:09:04,167
@@ -347,7 +347,7 @@ red skirt, red scarf,
 
 85
 00:09:28,375 --> 00:09:30,750
-like white paper...
+like white paper…
 
 86
 00:09:40,792 --> 00:09:43,500
@@ -420,7 +420,7 @@ But after 48 hours, they have to release me.
 
 103
 00:10:55,458 --> 00:10:58,042
-By that time, however, you son will be...
+By that time, however, you son will be…
 
 104
 00:11:01,625 --> 00:11:03,792
@@ -517,7 +517,7 @@ Shouldn't you ask Mr Ho where his son is?
 
 127
 00:12:50,750 --> 00:12:52,125
-My son...
+My son…
 
 128
 00:12:52,417 --> 00:12:53,792
@@ -561,7 +561,7 @@ Mr Tycoon,
 
 138
 00:13:15,667 --> 00:13:17,583
-how much will you "lend" me?
+how much will you “lend” me?
 
 139
 00:13:18,042 --> 00:13:19,333
@@ -971,7 +971,7 @@ Give me a second.
 239
 00:19:30,958 --> 00:19:32,458
 - Hurry up!
-- Tell me the room number...
+- Tell me the room number…
 
 240
 00:19:32,458 --> 00:19:34,625
@@ -1539,7 +1539,7 @@ I've quit smoking.
 
 379
 00:27:46,500 --> 00:27:47,917
-"Whoring, gambling, drinking, roaming...
+"Whoring, gambling, drinking, roaming…
 
 380
 00:27:47,917 --> 00:27:49,583
@@ -1888,7 +1888,7 @@ we rob the gold shop right away.
 465
 00:32:42,583 --> 00:32:45,125
 It's the racing night. It will be crowded.
-After it's done...
+After it's done…
 
 466
 00:32:45,125 --> 00:32:47,375
@@ -2165,7 +2165,7 @@ Mr Cheuk, can you let my husband go?
 
 533
 00:36:46,500 --> 00:36:49,125
-Name a price. I'll pay you from my own pocket...
+Name a price. I'll pay you from my own pocket…
 
 534
 00:36:56,875 --> 00:36:58,042
@@ -2250,7 +2250,7 @@ We have a daughter.
 
 554
 00:38:19,917 --> 00:38:21,792
-I don't feel comfortable...
+I don't feel comfortable…
 
 555
 00:38:21,792 --> 00:38:23,750
@@ -2394,7 +2394,7 @@ Come again tomorrow.
 
 590
 00:41:11,250 --> 00:41:13,500
-All right. Yes...
+All right. Yes…
 
 591
 00:41:18,167 --> 00:41:20,042
@@ -2618,7 +2618,7 @@ Let's go for more fun.
 
 646
 00:43:49,833 --> 00:43:52,042
-I can't...
+I can't…
 
 647
 00:43:53,917 --> 00:43:55,750
@@ -3343,11 +3343,11 @@ I'll act according to the law!
 
 824
 00:58:22,833 --> 00:58:23,625
-Great, there's a vase in the toilet...
+Great, there's a vase in the toilet…
 
 825
 00:58:23,625 --> 00:58:24,667
-We're lucky...
+We're lucky…
 
 826
 00:58:24,667 --> 00:58:26,333
@@ -3756,7 +3756,7 @@ You already know all those officials
 
 926
 01:07:42,750 --> 01:07:44,750
-and connections well...
+and connections well…
 
 927
 01:07:44,917 --> 01:07:46,333
@@ -3872,7 +3872,7 @@ Seriously, we can make it work.
 
 955
 01:09:49,625 --> 01:09:51,208
-The 3 Kings of Thieves join forces...
+The 3 Kings of Thieves join forces…
 
 956
 01:10:27,917 --> 01:10:32,333
@@ -3904,7 +3904,7 @@ You're here just for the location.
 
 963
 01:11:29,500 --> 01:11:30,167
-Listen to me...
+Listen to me…
 
 964
 01:11:30,167 --> 01:11:31,250
@@ -3912,7 +3912,7 @@ No more!
 
 965
 01:11:31,250 --> 01:11:31,708
-Listen to me...
+Listen to me…
 
 966
 01:11:31,708 --> 01:11:33,167
@@ -4264,7 +4264,7 @@ in 1988.
 
 1053
 01:18:21,333 --> 01:18:22,625
-And Landmark in 1992...
+And Landmark in 1992…
 
 1054
 01:18:23,875 --> 01:18:27,458
@@ -4294,7 +4294,7 @@ and the cops were dumb.
 
 1060
 01:18:42,583 --> 01:18:45,792
-- I just took advantage of the situation...
+- I just took advantage of the situation…
 - Hold on! Don't hang up.
 
 1061
@@ -4453,7 +4453,7 @@ Big Bro, we always follow your orders.
 
 1099
 01:22:38,375 --> 01:22:40,500
-You said "drop the guns," we dropped the guns.
+You said “drop the guns,” we dropped the guns.
 
 1100
 01:22:40,500 --> 01:22:41,458

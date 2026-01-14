@@ -18,14 +18,14 @@ class EngProofreadingPrompt(MonoBlockPrompt, EngPrompt):
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
-        You are responsible for proofreading English subtitles generated using OCR.
+        You are responsible for proofreading English subtitles.
         For each subtitle, you are to provide revised subtitle only if revisions are
         necessary.
         If revisions are needed, return the full revised subtitle, and a note describing
         the changes made.
         If no revisions are needed, return an empty string for the revised subtitle and
         its note.
-        Make changes only when necessary to correct errors clearly resulting from OCR.
+        Make changes only when necessary to correct typographical errors.
 
         Do not add stylistic changes or improve phrasing.
 

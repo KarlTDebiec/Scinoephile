@@ -34,7 +34,6 @@ class OcrFusionProcessor:
         test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
-        default_test_cases: list[TestCase] | None = None,
     ):
         """Initialize.
 
@@ -43,12 +42,11 @@ class OcrFusionProcessor:
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
-            default_test_cases: default test cases
         """
         self.prompt_cls = prompt_cls
 
         if test_cases is None:
-            test_cases = default_test_cases or []
+            test_cases = []
 
         if test_case_path is not None:
             test_case_path = val_output_path(test_case_path, exist_ok=True)
@@ -156,5 +154,4 @@ class OcrFusionProcessor:
         # Organize and return
         output_series = Series()
         output_series.events = output_subtitles
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

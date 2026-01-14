@@ -1,23 +1,33 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Image code related to character bounding boxes."""
+"""Bounding box coordinates."""
 
 from __future__ import annotations
 
-from PIL import Image, ImageChops
+from dataclasses import dataclass
 
-__all__ = ["get_bbox"]
+__all__ = ["Bbox"]
 
 
-def get_bbox(img: Image.Image) -> tuple[int, int, int, int]:
-    """Get bbox of non-white/transparent pixels in an image.
+@dataclass
+class Bbox:
+    """Bounding box coordinates."""
 
-    Arguments:
-        img: Image
-    Returns:
-        bbox of non-white/transparent pixels
-    """
-    img_l = img if img.mode == "L" else img.convert("L")
-    mask = ImageChops.invert(img_l).point(lambda p: p > 0 and 255)
-    bbox = mask.getbbox()
-    return bbox
+    x1: int
+    """Left x coordinate."""
+    x2: int
+    """Right x coordinate."""
+    y1: int
+    """Top y coordinate."""
+    y2: int
+    """Bottom y coordinate."""
+
+    @property
+    def width(self) -> int:
+        """Width of bbox."""
+        return self.x2 - self.x1
+
+    @property
+    def height(self) -> int:
+        """Height of bbox."""
+        return self.y2 - self.y1

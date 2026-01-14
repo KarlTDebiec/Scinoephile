@@ -4,7 +4,7 @@
       "subtitle_1": "When Mrs. McBing was in labour…",
       "subtitle_2": "A pan appeared in the sky.",
       "subtitle_3": "It flied along Garden Street…",
-      "subtitle_4": "Turned left, and stopped\nat the Beef ball King.",
+      "subtitle_4": "Turned left, and stopped\nat the Beefball King.",
       "subtitle_5": "Correction:",
       "subtitle_6": "It first arrived at the Market Building…",
       "subtitle_7": "Lingered a bit…Correction:",
@@ -38,15 +38,16 @@
     "answer": {
       "revised_3": "It flew along Garden Street…",
       "note_3": "Corrected 'flied' to 'flew'.",
+      "revised_4": "Turned left, and stopped\nat the Beef ball King.",
+      "note_4": "Separated 'Beefball' into 'Beef ball' to correct the compound noun spelling.",
       "revised_7": "Lingered a bit… Correction:",
-      "note_7": "Added a space after the ellipsis before 'Correction:' for clarity.",
+      "note_7": "Added a space after the ellipsis before 'Correction:' for clarity and consistency.",
       "revised_8": "It flew over the railway, turned right…",
       "note_8": "Corrected 'flied' to 'flew'.",
       "revised_10": "It flew on…",
       "note_10": "Corrected 'flied' to 'flew'."
     },
     "difficulty": 1,
-    "prompt": true,
     "verified": true
   },
   {
@@ -57,7 +58,7 @@
       "subtitle_4": "But what had the pan granted her?",
       "subtitle_5": "A smart boy? A lucky boy?",
       "subtitle_6": "Or a Chow look-alike?",
-      "subtitle_7": "To commemorate this, Mrs. McBing…",
+      "subtitle_7": "To commemorate this, Mrs. McBing …",
       "subtitle_8": "Decided to name her son McNificient.",
       "subtitle_9": "No! It's better to be humble!",
       "subtitle_10": "I'll name him McDull!",
@@ -65,7 +66,11 @@
       "subtitle_12": "I am the boy, no more McNificient…",
       "subtitle_13": "I'm McDull!"
     },
-    "answer": {},
+    "answer": {
+      "revised_7": "To commemorate this, Mrs. McBing…",
+      "note_7": "Removed the extra space before the ellipsis after 'McBing' for correct punctuation spacing."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -78,7 +83,7 @@
       "subtitle_6": "Why not try the one…",
       "subtitle_7": "at the Emporium?",
       "subtitle_8": "The Spring Flower Kindergarten?",
-      "subtitle_9": "Yeah! The one at the junction…",
+      "subtitle_9": "Yeah! The one at the junction… …",
       "subtitle_10": "Right next to Silver City Food Mall.",
       "subtitle_11": "The Spring Flower Kindergarten!",
       "subtitle_12": "Only 10 minutes walk from\nthe MTR Station!",
@@ -88,7 +93,13 @@
       "subtitle_16": "Yeah!",
       "subtitle_17": "Spring Flower offer white teachers!"
     },
-    "answer": {},
+    "answer": {
+      "revised_9": "Yeah! The one at the junction…",
+      "note_9": "Removed the duplicated ellipsis to correct the punctuation.",
+      "revised_17": "Spring Flower offers white teachers!",
+      "note_17": "Corrected verb agreement from 'offer' to 'offers' to match singular subject 'Spring Flower'."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -134,9 +145,9 @@
       "subtitle_10": "- Fai!    - Present!",
       "subtitle_11": "- Goosie!    - Present!",
       "subtitle_12": "- Darby!    - Present!",
-      "subtitle_13": "- May!\n- Present!",
+      "subtitle_13": "- May!    - Present!",
       "subtitle_14": "- June!    - Present!",
-      "subtitle_15": "- May!\n- Present!",
+      "subtitle_15": "- May!    - Present!",
       "subtitle_16": "- McMug!    - Present!",
       "subtitle_17": "May!",
       "subtitle_18": "Miss Chan, I've been called twice!",
@@ -147,7 +158,7 @@
       "subtitle_23": "- Fai!    - Present!",
       "subtitle_24": "- Fai!    - Present!",
       "subtitle_25": "- Darby!    - Present!",
-      "subtitle_26": "- May!\n- Present!",
+      "subtitle_26": "- May!    - Present!",
       "subtitle_27": "- McMug!    - Present!",
       "subtitle_28": "- Goosie!    - Present!",
       "subtitle_29": "- Goosie!    - Present!",
@@ -175,24 +186,15 @@
       "subtitle_51": "And get my degree.",
       "subtitle_52": "When I graduate from university, I know…",
       "subtitle_53": "I shall understand everything!",
-      "subtitle_54": "And then…",
+      "subtitle_54": "And then …",
       "subtitle_55": "I will buy my mother a house!"
     },
-    "answer": {
-      "revised_13": "- May!    - Present!",
-      "note_13": "Added four spaces between speakers for consistency with other roll call lines.",
-      "revised_15": "- May!    - Present!",
-      "note_15": "Added four spaces between speakers for consistency with other roll call lines.",
-      "revised_26": "- May!    - Present!",
-      "note_26": "Added four spaces between speakers for consistency with other roll call lines."
-    },
-    "difficulty": 1,
-    "prompt": true,
+    "answer": {},
     "verified": true
   },
   {
     "query": {
-      "subtitle_1": "Our headmaster runs a tea stand…",
+      "subtitle_1": "Our headmaster runs a teastand…",
       "subtitle_2": "Which we kids frequent after class.",
       "subtitle_3": "- Fishball noodle, please.\n- No noodle left.",
       "subtitle_4": "- Fishball rice noodle then.\n- No fishball left.",
@@ -213,7 +215,11 @@
       "subtitle_19": "No fishball left? Let's get some noodle.",
       "subtitle_20": "Shoot, Dull!"
     },
-    "answer": {},
+    "answer": {
+      "revised_1": "Our headmaster runs a tea stand…",
+      "note_1": "Corrected the misspelling 'teastand' to 'tea stand'."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -305,8 +311,10 @@
       "subtitle_6": "Isn't this a lovely bun?"
     },
     "answer": {
-      "revised_3": "The ingredient takes only paper.",
-      "note_3": "Removed the article 'a' before 'paper' to correct the phrase to 'takes only paper.'"
+      "revised_1": "How time flies since the last episode!",
+      "note_1": "Added 'the' before 'last episode' for correct phrasing.",
+      "revised_3": "The ingredient takes only a piece of paper.",
+      "note_3": "Changed 'a paper' to 'a piece of paper' to correct the noun phrase."
     },
     "difficulty": 1,
     "verified": true
@@ -323,13 +331,7 @@
       "subtitle_8": "Such a simple dish!",
       "subtitle_9": "See if the chicken is good!"
     },
-    "answer": {
-      "revised_2": "Chicken Bun Paper Bun-ning a Bun.",
-      "note_2": "Added hyphen to 'Bun-ning' to clarify the play on words and match the likely intended pun.",
-      "revised_7": "The delicious Chicken Bun Paper\nBun-ning a Bun!",
-      "note_7": "Added hyphen to 'Bun-ning' to match the correction in subtitle 2 and maintain consistency."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -628,7 +630,7 @@
       "subtitle_5": "“Looking for Logan”",
       "subtitle_6": "And so, while one dream lingers on…",
       "subtitle_7": "Another one begins.",
-      "subtitle_8": "“Aka: How Does a Calf Become a Calf?”",
+      "subtitle_8": "“aka: How Does a Calf Become a Calf?”",
       "subtitle_9": "It's about the Calf!",
       "subtitle_10": "I know it is not easy.",
       "subtitle_11": "I know it is not easy to find Logan.",
@@ -1051,8 +1053,10 @@
       "subtitle_24": "I make it pass\nthe“12 Bun Snatching Hands”."
     },
     "answer": {
-      "revised_24": "I make it pass\nthe \"12 Bun Snatching Hands\".",
-      "note_24": "Added a space after 'the' for correct phrase formatting."
+      "revised_12": "was much admired by Butcher Lin!",
+      "note_12": "Changed capital 'W' in 'Was' to lowercase for correct sentence case continuation.",
+      "revised_24": "I make it past\nthe “12 Bun Snatching Hands”.",
+      "note_24": "Corrected 'pass' to 'past' for correct usage in context; added a space after 'the' before the opening quotation mark."
     },
     "difficulty": 1,
     "verified": true
@@ -1092,7 +1096,7 @@
       "subtitle_31": "One Christmas we celebrated with\nroast duck.",
       "subtitle_32": "I was really, really disappointed.",
       "subtitle_33": "Another year,\nshe bought a mini-oven at 60% off…",
-      "subtitle_34": "At a closed own sale.",
+      "subtitle_34": "At a closedown sale.",
       "subtitle_35": "Thanks to the oven…",
       "subtitle_36": "Mother decided one day…",
       "subtitle_37": "We would go shopping for a turkey.",
@@ -1111,11 +1115,7 @@
       "subtitle_50": "The oven hummed. Hummed.",
       "subtitle_51": "It was like early blessing from the angels."
     },
-    "answer": {
-      "revised_34": "At a closedown sale.",
-      "note_34": "Corrected 'closed own sale' to 'closedown sale'."
-    },
-    "difficulty": 1,
+    "answer": {},
     "verified": true
   },
   {
@@ -1174,7 +1174,7 @@
       "subtitle_25": "Peanut congee with turkey bone.",
       "subtitle_26": "Paper turkey bun.",
       "subtitle_27": "Paper turkey paper bun.",
-      "subtitle_28": "Turkey Pete with bread.",
+      "subtitle_28": "Turkey pete with bread.",
       "subtitle_29": "I shouldn't have said anything about\nthe turkey's stomach.",
       "subtitle_30": "Came Dragon Boat Festival,\nwhen I dug into the dumpling…",
       "subtitle_31": "And found more pieces of turkey…",
@@ -1190,7 +1190,7 @@
       "subtitle_41": "Was in fact longer than its life.",
       "subtitle_42": "I realized also, with turkey…",
       "subtitle_43": "Taking the first bite is all it matters.",
-      "subtitle_44": "Afterwards,\nit is just “be over and done with it”.",
+      "subtitle_44": "Afterwards,\nit is just“be over and done with it”.",
       "subtitle_45": "I am no philosopher.",
       "subtitle_46": "I could not come up with any profundity.",
       "subtitle_47": "But, such thoughts…",
@@ -1208,13 +1208,25 @@
       "revised_9": "Slices of meat,\naccompanied by gourd and potato…",
       "note_9": "Corrected 'guard' to 'gourd', which fits the food context.",
       "revised_10": "were dressed with soy sauce.",
-      "note_10": "Changed capital 'W' to lowercase 'w' mid-sentence.",
-      "revised_28": "Turkey paté with bread.",
-      "note_28": "Corrected 'Pete' to 'paté', a food item that fits the context.",
+      "note_10": "Lowercased 'Were' to 'were' to continue the sentence from the previous line.",
+      "revised_20": "with me helping out at times.",
+      "note_20": "Lowercased 'With' to 'with' to continue the sentence from the previous line.",
+      "revised_28": "Turkey pâté with bread.",
+      "note_28": "Corrected 'pete' to 'pâté', the correct word for a turkey spread.",
+      "revised_35": "It was already half a year later.",
+      "note_35": "Inserted 'a' in 'half a year' for correct expression.",
+      "revised_38": "A serving turkey needs only to be raised…",
+      "note_38": "Inserted 'to' in 'needs only to be raised' for correct grammar.",
       "revised_39": "for a few months.",
-      "note_39": "Changed capital 'F' to lowercase 'f' mid-sentence.",
+      "note_39": "Lowercased 'For' to 'for' to continue the sentence from the previous line.",
       "revised_41": "was in fact longer than its life.",
-      "note_41": "Changed capital 'W' to lowercase 'w' mid-sentence."
+      "note_41": "Lowercased 'Was' to 'was' to continue the sentence from the previous line.",
+      "revised_43": "taking the first bite is all that matters.",
+      "note_43": "Lowercased 'Taking' to continue the sentence and inserted 'that' for correct idiom 'all that matters.'",
+      "revised_44": "Afterwards,\nit is just “be over and done with it”.",
+      "note_44": "Inserted a space before the opening quotation mark for proper spacing.",
+      "revised_56": "I regretted I made mother\nthrow the turkey away.",
+      "note_56": "Changed 'threw' to 'throw' to match the infinitive form after 'made.'"
     },
     "difficulty": 1,
     "verified": true
@@ -1332,7 +1344,7 @@
       "subtitle_10": "Maybe the pirate didn't get to finish it.",
       "subtitle_11": "“Eating 6 buns last night…”",
       "subtitle_12": "“Still left me hungry.”",
-      "subtitle_13": "“Eating 1½lb white bread last night…”",
+      "subtitle_13": "“Eating 1½lb white bread last night… ”",
       "subtitle_14": "“Still left me hungry.”",
       "subtitle_15": "“Excelled 6 sets of steps\nwhen I was young…”",
       "subtitle_16": "“Still left me empty.”",
@@ -1355,7 +1367,11 @@
       "subtitle_33": "This not so dreamy, not so funny world…",
       "subtitle_34": "What shall I be?"
     },
-    "answer": {},
+    "answer": {
+      "revised_13": "“Eating 1½lb white bread last night…”",
+      "note_13": "Removed the extra space before the closing quotation mark for consistency."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
