@@ -42,21 +42,22 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
 
 
 def test_get_synced_series_kob(
-    kob_yue_hans_clean_flatten: Series,
+    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
     kob_eng_fuse_clean_validate_proofread_flatten: Series,
-    kob_yue_hans_eng: Series,
+    kob_zho_hans_eng: Series,
 ):
     """Test get_synced_series with KOB subtitles.
 
     Arguments:
-        kob_yue_hans_clean_flatten: 简体粤文 subtitle fixture
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: 简体中文
+          subtitle fixture
         kob_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
-        kob_yue_hans_eng: expected synced subtitles fixture
+        kob_zho_hans_eng: expected synced subtitles fixture
     """
     _test_get_synced_series(
-        kob_yue_hans_clean_flatten,
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
         kob_eng_fuse_clean_validate_proofread_flatten,
-        kob_yue_hans_eng,
+        kob_zho_hans_eng,
     )
 
 
