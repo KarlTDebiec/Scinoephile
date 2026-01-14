@@ -66,19 +66,19 @@ def test_get_eng_proofread_mlamd(
 
 
 def test_get_eng_proofread_mnt(
-    mnt_eng_fuse: Series,
-    mnt_eng_fuse_proofread: Series,
+    mnt_eng_fuse_clean_validate: Series,
+    mnt_eng_fuse_clean_validate_proofread: Series,
 ):
     """Test get_eng_proofread with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse: MNT English series fixture
-        mnt_eng_fuse_proofread: Expected proofread MNT English series
+        mnt_eng_fuse_clean_validate: MNT English series fixture
+        mnt_eng_fuse_clean_validate_proofread: Expected proofread MNT English series
           fixture
     """
     _test_get_eng_proofread(
-        mnt_eng_fuse,
-        mnt_eng_fuse_proofread,
+        mnt_eng_fuse_clean_validate,
+        mnt_eng_fuse_clean_validate_proofread,
     )
 
 

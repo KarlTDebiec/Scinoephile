@@ -44,17 +44,12 @@ __all__ = [
     "get_t_zho_hans_proofreading_test_cases",
     "get_t_zho_hant_ocr_fusion_test_cases",
     "get_t_zho_hant_proofreading_test_cases",
-    "t_eng_clean",
-    "t_eng_clean_flatten",
     "t_eng_fuse",
     "t_eng_fuse_clean",
     "t_eng_fuse_clean_validate",
     "t_eng_fuse_clean_validate_proofread",
     "t_eng_fuse_clean_validate_proofread_flatten",
-    "t_eng_fuse_proofread",
     "t_eng_image",
-    "t_zho_hans_clean",
-    "t_zho_hans_clean_flatten",
     "t_zho_hans_eng",
     "t_zho_hans_fuse",
     "t_zho_hans_fuse_clean",
@@ -68,7 +63,6 @@ __all__ = [
     "t_zho_hant_fuse_clean_validate_proofread",
     "t_zho_hant_fuse_clean_validate_proofread_flatten",
     "t_zho_hant_image",
-    "t_zho_hant_simplify",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -244,19 +238,6 @@ def get_t_zho_hant_ocr_fusion_test_cases(
     )
 
 
-@pytest.fixture
-def t_eng_clean() -> Series:
-    """T English cleaned series."""
-    return Series.load(output_dir / "eng_clean.srt")
-
-
-@pytest.fixture
-def t_eng_clean_flatten() -> Series:
-    """T English cleaned and flattened series."""
-    return Series.load(output_dir / "eng_clean_flatten.srt")
-
-
-@pytest.fixture
 def t_eng_fuse() -> Series:
     """T English fused subtitles."""
     return Series.load(output_dir / "eng_fuse.srt")
@@ -286,31 +267,11 @@ def t_eng_fuse_clean_validate_proofread_flatten() -> Series:
     return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
 
 
-@pytest.fixture
-def t_eng_fuse_proofread() -> Series:
-    """T English fused and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_proofread.srt")
-
-
-@pytest.fixture
 def t_eng_image() -> ImageSeries:
     """T English image subtitles."""
     return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
 
 
-@pytest.fixture
-def t_zho_hans_clean() -> Series:
-    """T 简体中文 cleaned series."""
-    return Series.load(output_dir / "zho-Hans_clean.srt")
-
-
-@pytest.fixture
-def t_zho_hans_clean_flatten() -> Series:
-    """T 简体中文 cleaned and flattened series."""
-    return Series.load(output_dir / "zho-Hans_clean_flatten.srt")
-
-
-@pytest.fixture
 def t_zho_hans_eng() -> Series:
     """T Bilingual 简体中文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
@@ -390,9 +351,3 @@ def t_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
 def t_zho_hant_image() -> ImageSeries:
     """T 繁体中文 image subtitles."""
     return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
-
-
-@pytest.fixture
-def t_zho_hant_simplify() -> Series:
-    """T 繁体中文 simplified series."""
-    return Series.load(output_dir / "zho-Hant_simplify.srt")

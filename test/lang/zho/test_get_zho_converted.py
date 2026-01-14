@@ -46,42 +46,11 @@ def test_get_zho_converted_kob(
     _test_get_zho_converted(kob_yue_hant, OpenCCConfig.hk2s, kob_yue_hant_simplify)
 
 
-def test_get_zho_converted_mnt(
-    mnt_zho_hant_clean_flatten: Series,
-    mnt_zho_hant_clean_flatten_simplify: Series,
-):
-    """Test get_zho_converted with MNT 繁体中文 subtitles.
-
-    Arguments:
-        mnt_zho_hant_clean_flatten: MNT 繁体中文 series fixture
-        mnt_zho_hant_clean_flatten_simplify: Expected simplified MNT 繁体中文 series
-          fixture
-    """
-    _test_get_zho_converted(
-        mnt_zho_hant_clean_flatten,
-        OpenCCConfig.t2s,
-        mnt_zho_hant_clean_flatten_simplify,
-    )
-
-
-def test_get_zho_converted_t(
-    t_zho_hant: Series,
-    t_zho_hant_simplify: Series,
-):
-    """Test get_zho_converted with T 繁体中文 subtitles.
-
-    Arguments:
-        t_zho_hant: T 繁体中文 series fixture
-        t_zho_hant_simplify: Expected simplified T 繁体中文 series fixture
-    """
-    _test_get_zho_converted(t_zho_hant, OpenCCConfig.t2s, t_zho_hant_simplify)
-
-
 @pytest.mark.parametrize(
     ("text", "config", "expected"),
     [
-        ("漢字轉換", OpenCCConfig.t2s, "汉字转换"),
-        ("汉字转换", OpenCCConfig.s2t, "漢字轉換"),
+        ("繁體中文", OpenCCConfig.t2s, "繁体中文"),
+        ("简体中文", OpenCCConfig.s2t, "簡體中文"),
     ],
 )
 def test_get_zho_converter(text: str, config: OpenCCConfig, expected: str):

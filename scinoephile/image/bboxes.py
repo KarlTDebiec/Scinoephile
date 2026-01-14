@@ -52,23 +52,43 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
         lines.append(line)
 
     min_line_gap = 5
-    min_line_height = 40
+    min_line_height = 30
+    final_lines = lines
     if lines:
-        merged_lines = [lines[0]]
-        for y1, y2 in lines[1:]:
-            last = merged_lines[-1]
-            if y1 - last[1] < min_line_gap or (y2 - y1) < min_line_height:
-                last[1] = max(last[1], y2)
+        merge_dirs: list[str | None] = [None] * len(lines)
+        for idx, (y1, y2) in enumerate(lines):
+            if (y2 - y1) >= min_line_height:
+                continue
+            prev_gap = y1 - lines[idx - 1][1] if idx > 0 else None
+            next_gap = lines[idx + 1][0] - y2 if idx + 1 < len(lines) else None
+            if prev_gap is None and next_gap is None:
+                continue
+            if prev_gap is None:
+                merge_dirs[idx] = "down"
+            elif next_gap is None:
+                merge_dirs[idx] = "up"
+            elif next_gap <= prev_gap:
+                merge_dirs[idx] = "down"
             else:
-                merged_lines.append([y1, y2])
-        if len(merged_lines) > 1:
-            filtered_lines = [merged_lines[0]]
-            for y1, y2 in merged_lines[1:]:
-                if (y2 - y1) < min_line_height:
-                    filtered_lines[-1][1] = max(filtered_lines[-1][1], y2)
-                else:
-                    filtered_lines.append([y1, y2])
-            merged_lines = filtered_lines
+                merge_dirs[idx] = "up"
+
+        for idx, direction in enumerate(merge_dirs):
+            if direction == "up" and idx > 0:
+                lines[idx - 1][1] = max(lines[idx - 1][1], lines[idx][1])
+                lines[idx] = None
+            elif direction == "down" and idx + 1 < len(lines):
+                lines[idx + 1][0] = min(lines[idx + 1][0], lines[idx][0])
+                lines[idx + 1][1] = max(lines[idx + 1][1], lines[idx][1])
+                lines[idx] = None
+
+        merged_lines: list[list[int]] = []
+        for line in lines:
+            if line is None:
+                continue
+            if merged_lines and line[0] - merged_lines[-1][1] < min_line_gap:
+                merged_lines[-1][1] = max(merged_lines[-1][1], line[1])
+            else:
+                merged_lines.append(line)
         final_lines = merged_lines
 
     # Determine left and right of each section per line to get final bbox

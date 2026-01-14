@@ -67,37 +67,39 @@ def test_get_zho_flattened_mlamd(
 
 
 def test_get_zho_flattened_mnt(
-    mnt_zho_hant_clean: Series,
-    mnt_zho_hant_clean_flatten: Series,
+    mnt_zho_hant_fuse_clean_validate_proofread: Series,
+    mnt_zho_hant_fuse_clean_validate_proofread_flatten: Series,
 ):
     """Test get_zho_flattened with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hant_clean: MNT 繁体中文 series fixture
-        mnt_zho_hant_clean_flatten: Expected flattened MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_proofread: MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten: Expected flattened MNT
+          繁体中文 series fixture
     """
-    _test_get_zho_flattened(mnt_zho_hant_clean, mnt_zho_hant_clean_flatten)
+    _test_get_zho_flattened(
+        mnt_zho_hant_fuse_clean_validate_proofread,
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten,
+    )
 
 
 def test_get_zho_flattened_t(
-    t_zho_hans_clean: Series,
-    t_zho_hans_clean_flatten: Series,
+    t_zho_hans_fuse_clean_validate_proofread: Series,
+    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
 ):
-    """Test get_zho_flattened with T 簡體中文 subtitles.
+    """Test get_zho_flattened with T 简体中文 subtitles.
 
     Arguments:
-        t_zho_hans_clean: T 簡體中文 series fixture
-        t_zho_hans_clean_flatten: Expected flattened T 簡體中文 series fixture
+        t_zho_hans_fuse_clean_validate_proofread: T 简体中文 series fixture
+        t_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened T
+          简体中文 series fixture
     """
-    _test_get_zho_flattened(t_zho_hans_clean, t_zho_hans_clean_flatten)
+    _test_get_zho_flattened(
+        t_zho_hans_fuse_clean_validate_proofread,
+        t_zho_hans_fuse_clean_validate_proofread_flatten,
+    )
 
 
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("line 1\nline 2", "line 1　line 2"),
-    ],
-)
 def test_get_zho_text_flattened(text: str, expected: str):
     """Test _get_zho_text_flattened.
 

@@ -460,7 +460,7 @@ Thank you then
 
 116
 00:07:30,742 --> 00:07:31,576
-The room service, please
+The room service please
 
 117
 00:07:32,369 --> 00:07:35,372
@@ -588,7 +588,7 @@ I think, my hat doesn't match me
 
 148
 00:09:03,877 --> 00:09:06,755
-Yushang doesn't like me. I deserve it.
+Yushang doesn't like me, I deserve it
 
 149
 00:09:06,796 --> 00:09:08,048
@@ -1948,7 +1948,7 @@ He has been disappointing the audience
 
 488
 00:32:19,104 --> 00:32:21,440
-But he has worked vert hard
+But he has worked very hard
 
 489
 00:32:21,731 --> 00:32:23,233

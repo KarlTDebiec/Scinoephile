@@ -34,16 +34,16 @@ def _test_get_eng_cleaned(series: Series, expected: Series):
 
 
 def test_get_eng_cleaned_kob(
-    kob_eng: Series,
-    kob_eng_clean: Series,
+    kob_eng_fuse: Series,
+    kob_eng_fuse_clean: Series,
 ):
     """Test get_eng_cleaned with KOB English subtitles.
 
     Arguments:
-        kob_eng: KOB English series fixture
-        kob_eng_clean: Expected cleaned KOB English series fixture
+        kob_eng_fuse: KOB English series fixture
+        kob_eng_fuse_clean: Expected cleaned KOB English series fixture
     """
-    _test_get_eng_cleaned(kob_eng, kob_eng_clean)
+    _test_get_eng_cleaned(kob_eng_fuse, kob_eng_fuse_clean)
 
 
 def test_get_eng_cleaned_mlamd(
@@ -60,29 +60,29 @@ def test_get_eng_cleaned_mlamd(
 
 
 def test_get_eng_cleaned_mnt(
-    mnt_eng_fuse_proofread: Series,
-    mnt_eng_fuse_proofread_clean: Series,
+    mnt_eng_fuse: Series,
+    mnt_eng_fuse_clean: Series,
 ):
     """Test get_eng_cleaned with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse_proofread: MNT English series fixture
-        mnt_eng_fuse_proofread_clean: Expected cleaned MNT English series fixture
+        mnt_eng_fuse: MNT English series fixture
+        mnt_eng_fuse_clean: Expected cleaned MNT English series fixture
     """
-    _test_get_eng_cleaned(mnt_eng_fuse_proofread, mnt_eng_fuse_proofread_clean)
+    _test_get_eng_cleaned(mnt_eng_fuse, mnt_eng_fuse_clean)
 
 
 def test_get_eng_cleaned_t(
-    t_eng: Series,
-    t_eng_clean: Series,
+    t_eng_fuse: Series,
+    t_eng_fuse_clean: Series,
 ):
     """Test get_eng_cleaned with T English subtitles.
 
     Arguments:
-        t_eng: T English series fixture
-        t_eng_clean: Expected cleaned T English series fixture
+        t_eng_fuse: T English series fixture
+        t_eng_fuse_clean: Expected cleaned T English series fixture
     """
-    _test_get_eng_cleaned(t_eng, t_eng_clean)
+    _test_get_eng_cleaned(t_eng_fuse, t_eng_fuse_clean)
 
 
 @pytest.mark.parametrize(

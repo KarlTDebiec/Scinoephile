@@ -19,24 +19,40 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHantProofreadingPrompt
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
+from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedManager,
+    DualBlockGappedPrompt,
+)
+from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.multilang.yue_zho.proofreading import (
+    YueZhoHansProofreadingPrompt,
+)
+from scinoephile.multilang.yue_zho.transcription.merging import (
+    YueZhoHansMergingPrompt,
+)
+from scinoephile.multilang.yue_zho.transcription.shifting import (
+    YueZhoHansShiftingPrompt,
+)
 
 __all__ = [
     "kob_eng",
     "kob_eng_lens",
     "kob_eng_tesseract",
-    "kob_yue_hans",
+    "kob_yue_hans_input",
     "kob_yue_hant",
     "kob_zho_hant_lens",
     "kob_zho_hant_paddle",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_eng_proofreading_test_cases",
+    "get_kob_yue_merging_test_cases",
+    "get_kob_yue_shifting_test_cases",
+    "get_kob_yue_vs_zho_proofreading_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
     "get_kob_zho_hant_proofreading_test_cases",
-    "kob_eng_clean",
-    "kob_eng_clean_flatten",
     "kob_eng_fuse",
     "kob_eng_fuse_clean",
     "kob_eng_fuse_clean_validate",
@@ -44,18 +60,19 @@ __all__ = [
     "kob_eng_fuse_clean_validate_proofread_flatten",
     "kob_eng_image",
     "kob_eng_image_path",
+    "kob_yue_hans",
     "kob_yue_hans_audio",
     "kob_yue_hans_audio_path",
     "kob_yue_hans_clean",
     "kob_yue_hans_clean_flatten",
     "kob_yue_hans_eng",
-    "kob_yue_hans_proofread",
     "kob_yue_hant_simplify",
     "kob_zho_hant_fuse",
     "kob_zho_hant_fuse_clean",
     "kob_zho_hant_fuse_clean_validate",
     "kob_zho_hant_fuse_clean_validate_proofread",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten",
+    "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
     "kob_zho_hant_image",
     "kob_zho_hant_image_path",
 ]
@@ -84,8 +101,8 @@ def kob_eng_tesseract() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans() -> Series:
-    """KOB 简体粤文 subtitles."""
+def kob_yue_hans_input() -> Series:
+    """KOB 简体粤文 subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
 
 
@@ -146,6 +163,63 @@ def get_kob_eng_proofreading_test_cases(
 
 
 @cache
+def get_kob_yue_shifting_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB 简体粤文 shifting test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "multilang" / "yue_zho" / "transcription" / "shifting.json"
+    return load_test_cases_from_json(
+        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_merging_test_cases(
+    prompt_cls: type[DualBlockGappedPrompt] = YueZhoHansMergingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB 简体粤文 merging test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "multilang" / "yue_zho" / "transcription" / "merging.json"
+    return load_test_cases_from_json(
+        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_kob_yue_vs_zho_proofreading_test_cases(
+    prompt_cls: type[DualBlockPrompt] = YueZhoHansProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB 简体粤文 vs 简体中文 proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "multilang" / "yue_zho" / "proofreading.json"
+    return load_test_cases_from_json(
+        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
     **kwargs: Any,
@@ -181,18 +255,6 @@ def get_kob_zho_hant_proofreading_test_cases(
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
-
-
-@pytest.fixture
-def kob_eng_clean() -> Series:
-    """KOB English cleaned subtitles."""
-    return Series.load(output_dir / "eng_clean.srt")
-
-
-@pytest.fixture
-def kob_eng_clean_flatten() -> Series:
-    """KOB English cleaned and flattened subtitles."""
-    return Series.load(output_dir / "eng_clean_flatten.srt")
 
 
 @pytest.fixture
@@ -238,6 +300,12 @@ def kob_eng_image_path() -> Path:
 
 
 @pytest.fixture
+def kob_yue_hans() -> Series:
+    """KOB 简体粤文 subtitles."""
+    return Series.load(output_dir / "yue-Hans.srt")
+
+
+@pytest.fixture
 def kob_yue_hans_audio() -> AudioSeries:
     """KOB 简体粤文 audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_audio")
@@ -265,12 +333,6 @@ def kob_yue_hans_clean_flatten() -> Series:
 def kob_yue_hans_eng() -> Series:
     """KOB Bilingual 简体粤文 and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
-
-
-@pytest.fixture
-def kob_yue_hans_proofread() -> Series:
-    """KOB 简体粤文 proofread subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread.srt")
 
 
 @pytest.fixture
@@ -308,6 +370,14 @@ def kob_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
     """KOB 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
+    """KOB 繁体中文 simplified fused/cleaned/validated/proofread/flattened subtitles."""
+    return Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
     )
 
 
