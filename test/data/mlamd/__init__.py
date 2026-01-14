@@ -197,7 +197,7 @@ def get_mlamd_yue_merging_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueZhoHansProofreadingPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 proofreading test cases.
@@ -210,7 +210,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

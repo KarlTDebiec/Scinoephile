@@ -19,7 +19,6 @@ from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import ZhoHantProofreadingPrompt
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
-from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedPrompt,
@@ -30,6 +29,7 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
+    YueZhoProofreadingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.merging import (
     YueZhoHansMergingPrompt,
@@ -201,7 +201,7 @@ def get_kob_yue_merging_test_cases(
 
 @cache
 def get_kob_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueZhoHansProofreadingPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 proofreading test cases.
@@ -214,7 +214,7 @@ def get_kob_yue_vs_zho_proofreading_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "proofreading.json"
     return load_test_cases_from_json(
-        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
