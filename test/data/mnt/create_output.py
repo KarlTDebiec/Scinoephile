@@ -42,7 +42,7 @@ actions = {
     "繁體中文 (OCR)",
     "简体中文 (OCR)",
     "English (OCR)",
-    "Bilingual 简体中文 and English",
+    # "Bilingual 简体中文 and English",
 }
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
