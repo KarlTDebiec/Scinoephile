@@ -196,7 +196,8 @@
       "zimu_1": "我说再唱一次，你听到没有？",
       "zimu_2": "别再浪费时间！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -768,7 +769,8 @@
       "zimu_8": "来了！",
       "zimu_9": "行了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -796,7 +798,8 @@
       "zimu_4": "陈科的三十万，你点算一下",
       "zimu_5": "企业法人营业执照"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -940,7 +943,8 @@
       "zimu_5": "起什么名字好呢？",
       "zimu_6": "打不打电话？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1191,7 +1195,8 @@
       "zimu_25": "鲍参翅肚！",
       "zimu_26": "服务员！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1212,14 +1217,22 @@
       "zimu_15": "泡澡，泡澡好",
       "zimu_16": "找间桑拿"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_8": "我们去找间 KTV，先唱歌吧",
+      "beizhu_8": "在“KTV”前增加空格，使中英混排更规范。",
+      "xiugai_11": "KTV 的卡片，还有电话",
+      "beizhu_11": "在“KTV”和“的”之间增加空格，使中英混排更规范。"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不要忘了花瓶啊",
       "zimu_2": "是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1255,7 +1268,8 @@
       "zimu_6": "没问题的话，在这里签个字，别弄错了",
       "zimu_7": "感谢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1336,7 +1350,8 @@
       "zimu_2": "我找人接你",
       "zimu_3": "上车"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1974,7 +1989,8 @@
       "zimu_14": "炸什么都行！",
       "zimu_15": "叶国欢啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
