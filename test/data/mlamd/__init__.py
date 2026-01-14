@@ -66,7 +66,6 @@ __all__ = [
     "get_mlamd_zho_hans_proofreading_test_cases",
     "get_mlamd_zho_hant_ocr_fusion_test_cases",
     "get_mlamd_zho_hant_proofreading_test_cases",
-    "mlamd_eng_clean",
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
     "mlamd_eng_fuse_clean_validate",
@@ -74,13 +73,13 @@ __all__ = [
     "mlamd_eng_fuse_clean_validate_proofread_flatten",
     "mlamd_eng_image",
     "mlamd_eng_image_path",
-    "mlamd_yue_hans",
     "mlamd_yue_hans_audio",
     "mlamd_yue_hans_audio_path",
     "mlamd_yue_hans_eng",
-    "mlamd_yue_hans_proofread",
-    "mlamd_yue_hans_proofread_translate",
-    "mlamd_yue_hans_proofread_translate_review",
+    "mlamd_yue_hans_transcribe",
+    "mlamd_yue_hans_transcribe_proofread",
+    "mlamd_yue_hans_transcribe_proofread_translate",
+    "mlamd_yue_hans_transcribe_proofread_translate_review",
     "mlamd_zho_hans_eng",
     "mlamd_zho_hans_fuse",
     "mlamd_zho_hans_fuse_clean",
@@ -94,6 +93,7 @@ __all__ = [
     "mlamd_zho_hant_fuse_clean_validate",
     "mlamd_zho_hant_fuse_clean_validate_proofread",
     "mlamd_zho_hant_fuse_clean_validate_proofread_flatten",
+    "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
 ]
@@ -367,12 +367,6 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
 
 
 @pytest.fixture
-def mlamd_eng_clean() -> Series:
-    """MLAMD English cleaned subtitles."""
-    return Series.load(output_dir / "eng_clean.srt")
-
-
-@pytest.fixture
 def mlamd_eng_fuse() -> Series:
     """MLAMD English fused subtitles."""
     return Series.load(output_dir / "eng_fuse.srt")
@@ -427,36 +421,37 @@ def mlamd_yue_hans_audio_path() -> Path:
 
 
 @pytest.fixture
-def mlamd_yue_hans() -> Series:
-    """MLAMD 简体粤文 subtitles."""
-    return Series.load(output_dir / "yue-Hans.srt")
-
-
-@pytest.fixture
 def mlamd_yue_hans_eng() -> Series:
     """MLAMD Bilingual 简体粤文 and English subtitles."""
     return Series.load(output_dir / "yue-Hans_eng.srt")
 
 
 @pytest.fixture
-def mlamd_yue_hans_proofread() -> Series:
-    """MLAMD 简体粤文 proofread subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread.srt")
+def mlamd_yue_hans_transcribe() -> Series:
+    """MLAMD 简体粤文 transcribed subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe.srt")
 
 
 @pytest.fixture
-def mlamd_yue_hans_proofread_translate() -> Series:
-    """MLAMD 简体粤文 proofread and translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread_translate.srt")
+def mlamd_yue_hans_transcribe_proofread() -> Series:
+    """MLAMD 简体粤文 transcribed and proofread subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_proofread.srt")
 
 
 @pytest.fixture
-def mlamd_yue_hans_proofread_translate_review() -> Series:
-    """MLAMD 简体粤文 proofread, translated, and reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_proofread_translate_review.srt")
+def mlamd_yue_hans_transcribe_proofread_translate() -> Series:
+    """MLAMD 简体粤文 transcribed, proofread, and translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_proofread_translate.srt")
 
 
 @pytest.fixture
+def mlamd_yue_hans_transcribe_proofread_translate_review() -> Series:
+    """MLAMD 简体粤文 transcribed, proofread, translated, and reviewed subtitles."""
+    return Series.load(
+        output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
+    )
+
+
 def mlamd_zho_hans_eng() -> Series:
     """MLAMD Bilingual 简体中文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
@@ -535,6 +530,14 @@ def mlamd_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
     """MLAMD 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
+    """MLAMD 繁体中文 simplified fused/cleaned/validated/proofread/flattened subs."""
+    return Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
     )
 
 
