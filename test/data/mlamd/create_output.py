@@ -12,7 +12,6 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.core.testing import test_data_root
-from scinoephile.multilang.synchronization import get_synced_series
 from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_proofread,
     get_yue_vs_zho_reviewed,
@@ -26,7 +25,9 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 from test.data.kob import (
     get_kob_eng_ocr_fusion_test_cases,
+    get_kob_eng_proofreading_test_cases,
     get_kob_zho_hant_ocr_fusion_test_cases,
+    get_kob_zho_hant_proofreading_test_cases,
 )
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
@@ -34,17 +35,25 @@ from test.data.mlamd import (
 )
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
+    get_mnt_eng_proofreading_test_cases,
     get_mnt_zho_hans_ocr_fusion_test_cases,
+    get_mnt_zho_hans_proofreading_test_cases,
+    get_mnt_zho_hant_ocr_fusion_test_cases,
+    get_mnt_zho_hant_proofreading_test_cases,
 )
 from test.data.ocr import (
     process_eng_ocr,
     process_zho_hans_ocr,
     process_zho_hant_ocr,
 )
-from test.data.synchronization import process_zho_hans_eng
+from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
+    get_t_eng_proofreading_test_cases,
     get_t_zho_hans_ocr_fusion_test_cases,
+    get_t_zho_hans_proofreading_test_cases,
+    get_t_zho_hant_ocr_fusion_test_cases,
+    get_t_zho_hant_proofreading_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -67,29 +76,31 @@ if "繁體中文 (OCR)" in actions:
         title_root / "input" / "zho-Hant.sup",
         fuser_kw={
             "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_hans_ocr_fusion_test_cases()
-            + get_t_zho_hans_ocr_fusion_test_cases()
+            + get_mnt_zho_hant_ocr_fusion_test_cases()
+            + get_t_zho_hant_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            # "test_cases": get_kob_zho_hant_proofreading_test_cases()
-            # + get_mnt_zho_hans_proofreading_test_cases()
-            # + get_t_zho_hans_proofreading_test_cases()
+            "test_cases": get_kob_zho_hant_proofreading_test_cases()
+            + get_mnt_zho_hant_proofreading_test_cases()
+            + get_t_zho_hant_proofreading_test_cases()
         },
+        overwrite_srt=True,
+        force_validation=True,
     )
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
         title_root / "input" / "zho-Hans.sup",
         fuser_kw={
-            "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_hans_ocr_fusion_test_cases()
+            "test_cases": get_mnt_zho_hans_ocr_fusion_test_cases()
             + get_t_zho_hans_ocr_fusion_test_cases()
         },
         proofreader_kw={
-            # "test_cases": get_kob_zho_hant_proofreading_test_cases()
-            # + get_mnt_zho_hans_proofreading_test_cases()
-            # + get_t_zho_hans_proofreading_test_cases()
+            "test_cases": get_mnt_zho_hans_proofreading_test_cases()
+            + get_t_zho_hans_proofreading_test_cases()
         },
+        overwrite_srt=True,
+        force_validation=True,
     )
 if "English (OCR)" in actions:
     process_eng_ocr(
@@ -100,12 +111,20 @@ if "English (OCR)" in actions:
             + get_mnt_eng_ocr_fusion_test_cases()
             + get_t_eng_ocr_fusion_test_cases()
         },
+        proofreader_kw={
+            "test_cases": get_kob_eng_proofreading_test_cases()
+            + get_mnt_eng_proofreading_test_cases()
+            + get_t_eng_proofreading_test_cases()
+        },
+        overwrite_srt=True,
+        force_validation=True,
     )
 if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(
@@ -128,7 +147,7 @@ if "简体粤文 (Transcription)" in actions:
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
     yue_hans = asyncio.run(transcriber.process_all_blocks(yue_hans, zho_hans))
-    outfile_path = output_dir / "yue-Hans.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
     yue_hans = Series.load(outfile_path)
@@ -140,7 +159,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread = get_yue_vs_zho_proofread(
         yue_hans, zho_hans, processor=proofreader
     )
-    outfile_path = output_dir / "yue-Hans_proofread.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
     yue_hans_proofread.save(outfile_path)
 
     translator = get_yue_from_zho_translator(
@@ -151,7 +170,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread_translate = get_yue_from_zho_translated(
         yue_hans_proofread, zho_hans, translator=translator
     )
-    outfile_path = output_dir / "yue-Hans_proofread_translate.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate.srt"
     yue_hans_proofread_translate.save(outfile_path)
 
     transcriber = get_yue_vs_zho_processor(
@@ -162,10 +181,12 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
         yue_hans_proofread_translate, zho_hans, processor=transcriber
     )
-    outfile_path = output_dir / "yue-Hans_proofread_translate_review.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
     yue_hans_proofread_translate_review.save(outfile_path)
 if "Bilingual 简体粤文 and English" in actions:
-    yue_hans = Series.load(output_dir / "yue-Hans_proofread_translate_review.srt")
-    eng = Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
-    yue_hans_eng = get_synced_series(yue_hans, eng)
-    yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
+    process_yue_hans_eng(
+        title_root,
+        yue_hans_path=output_dir / "yue-Hans_transcribe_proofread_translate_review.srt",
+        eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        overwrite=True,
+    )
