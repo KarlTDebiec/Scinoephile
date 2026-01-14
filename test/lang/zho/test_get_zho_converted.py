@@ -46,7 +46,7 @@ def test_get_zho_converted_kob(
     """
     _test_get_zho_converted(
         kob_zho_hant_fuse_clean_validate_proofread_flatten,
-        OpenCCConfig.hk2s,
+        OpenCCConfig.t2s,
         kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
     )
 
