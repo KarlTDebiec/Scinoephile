@@ -60,13 +60,12 @@ __all__ = [
     "kob_eng_fuse_clean_validate_proofread_flatten",
     "kob_eng_image",
     "kob_eng_image_path",
-    "kob_yue_hans",
     "kob_yue_hans_audio",
     "kob_yue_hans_audio_path",
-    "kob_yue_hans_clean",
-    "kob_yue_hans_clean_flatten",
-    "kob_yue_hans_eng",
-    "kob_yue_hant_simplify",
+    "kob_yue_hant_clean",
+    "kob_yue_hant_clean_flatten",
+    "kob_yue_hant_clean_flatten_simplify",
+    "kob_zho_hans_eng",
     "kob_zho_hant_fuse",
     "kob_zho_hant_fuse_clean",
     "kob_zho_hant_fuse_clean_validate",
@@ -300,12 +299,6 @@ def kob_eng_image_path() -> Path:
 
 
 @pytest.fixture
-def kob_yue_hans() -> Series:
-    """KOB 简体粤文 subtitles."""
-    return Series.load(output_dir / "yue-Hans.srt")
-
-
-@pytest.fixture
 def kob_yue_hans_audio() -> AudioSeries:
     """KOB 简体粤文 audio subtitles."""
     return AudioSeries.load(output_dir / "yue-Hans_audio")
@@ -318,30 +311,29 @@ def kob_yue_hans_audio_path() -> Path:
 
 
 @pytest.fixture
-def kob_yue_hans_clean() -> Series:
-    """KOB 简体粤文 cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hans_clean.srt")
+def kob_yue_hant_clean() -> Series:
+    """KOB 繁体粤文 cleaned subtitles."""
+    return Series.load(output_dir / "yue-Hant_clean.srt")
 
 
 @pytest.fixture
-def kob_yue_hans_clean_flatten() -> Series:
-    """KOB 简体粤文 cleaned and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hans_clean_flatten.srt")
+def kob_yue_hant_clean_flatten() -> Series:
+    """KOB 繁体粤文 cleaned and flattened subtitles."""
+    return Series.load(output_dir / "yue-Hant_clean_flatten.srt")
 
 
 @pytest.fixture
-def kob_yue_hans_eng() -> Series:
-    """KOB Bilingual 简体粤文 and English subtitles."""
-    return Series.load(output_dir / "yue-Hans_eng.srt")
+def kob_yue_hant_clean_flatten_simplify() -> Series:
+    """KOB 繁体粤文 cleaned, flattened, and simplified subtitles."""
+    return Series.load(output_dir / "yue-Hant_clean_flatten_simplify.srt")
 
 
 @pytest.fixture
-def kob_yue_hant_simplify() -> Series:
-    """KOB 繁体粤文 simplified subtitles."""
-    return Series.load(output_dir / "yue-Hant_simplify.srt")
+def kob_zho_hans_eng() -> Series:
+    """KOB Bilingual 简体中文 and English subtitles."""
+    return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
-@pytest.fixture
 def kob_zho_hant_fuse() -> Series:
     """KOB 繁体中文 fused subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse.srt")

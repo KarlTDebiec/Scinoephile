@@ -7,28 +7,15 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
-from data.mnt import get_mnt_zho_hant_ocr_fusion_test_cases
-from data.synchronization import process_yue_hans_eng
-from data.t import (
-    get_t_zho_hant_ocr_fusion_test_cases,
-    get_t_zho_hant_proofreading_test_cases,
-)
-
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.testing import test_data_root
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.proofreading import (
-    ZhoHantProofreadingPrompt,
-    get_zho_proofread,
-    get_zho_proofreader,
-)
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
-from test.data.kob import get_kob_zho_hant_proofreading_test_cases
 from test.data.mlamd import (
     get_mlamd_eng_ocr_fusion_test_cases,
     get_mlamd_eng_proofreading_test_cases,
@@ -40,13 +27,16 @@ from test.data.mlamd import (
 from test.data.mnt import (
     get_mnt_eng_ocr_fusion_test_cases,
     get_mnt_eng_proofreading_test_cases,
+    get_mnt_zho_hant_ocr_fusion_test_cases,
     get_mnt_zho_hant_proofreading_test_cases,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_zho_hans_eng
+from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
+    get_t_zho_hant_ocr_fusion_test_cases,
+    get_t_zho_hant_proofreading_test_cases,
 )
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -108,16 +98,6 @@ if "繁體粵文 (SRT)" in actions:
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     clean = get_zho_cleaned(yue_hant)
     clean.save(output_dir / "yue-Hant_clean.srt")
-    proofreader = get_zho_proofreader(
-        prompt_cls=ZhoHantProofreadingPrompt,
-        test_cases=get_kob_zho_hant_proofreading_test_cases()
-        + get_mlamd_zho_hant_proofreading_test_cases()
-        + get_mnt_zho_hant_proofreading_test_cases(),
-        # + get_t_zho_hant_proofreading_test_cases(),
-        test_case_path=title_root / "lang" / "zho" / "proofreading" / "yue-Hant.json",
-        auto_verify=True,
-    )
-    proofread = get_zho_proofread(clean, proofreader)
     flatten = get_zho_flattened(clean)
     flatten.save(output_dir / "yue-Hant_clean_flatten.srt")
     simplify = get_zho_converted(flatten, OpenCCConfig.hk2s)
