@@ -295,7 +295,7 @@ class ValidationManager:
                 f"'{cursor.char}' bbox dims {dims} | extend/group? (y/n/s): "
             )
             if response.lower().startswith("s"):
-                messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+                messages.append(f"{cursor.intro_msg} | skipped by user")
                 return False, messages, True
             extend = not response.lower().startswith("y")
             if n_bboxes == 1:
@@ -531,7 +531,7 @@ class ValidationManager:
             f"should be '{cursor.expected_space}'? (y/n/s): "
         )
         if response.lower().startswith("s"):
-            messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+            messages.append(f"{cursor.intro_msg} | skipped by user")
             return messages, True
         approved = response.lower().startswith("y")
         if approved:
@@ -574,7 +574,7 @@ class ValidationManager:
             f"should be '{cursor.expected_tab}'? (y/n/s): "
         )
         if response.lower().startswith("s"):
-            messages.append(f"{cursor.intro_msg} | user skipped subtitle")
+            messages.append(f"{cursor.intro_msg} | skipped by user")
             return messages, True
         approved = response.lower().startswith("y")
         if approved:
