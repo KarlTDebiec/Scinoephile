@@ -8,8 +8,7 @@ from logging import info
 from pathlib import Path
 from typing import Any
 
-from core import ScinoephileError
-
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import (
@@ -33,12 +32,10 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofread,
     get_zho_proofreader,
 )
-from scinoephile.multilang.synchronization import get_synced_series
 
 __all__ = [
     "process_eng_ocr",
     "process_zho_hans_ocr",
-    "process_zho_hans_eng",
     "process_zho_hant_ocr",
 ]
 
@@ -429,41 +426,3 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         simplify.save(simplify_path, exist_ok=True)
 
     return flatten
-
-
-def process_zho_hans_eng(
-    title_root: Path,
-    zho_hans_path: Path | None = None,
-    eng_path: Path | None = None,
-    overwrite: bool = False,
-) -> Series:
-    """Process bilingual 简体中文 and English subtitles into a synced series.
-
-    Arguments:
-        title_root: title root directory
-        zho_hans_path: optional 简体中文 subtitle path
-        eng_path: optional English subtitle path
-        overwrite: whether to overwrite subtitle outputs
-    Returns:
-        processed series
-    """
-    output_dir = title_root / "output"
-
-    zho_hans_eng_path = output_dir / "zho-Hans_eng.srt"
-    if zho_hans_eng_path.exists() and not overwrite:
-        zho_hans_eng = Series.load(zho_hans_eng_path)
-    else:
-        if zho_hans_path is None:
-            zho_hans_path = output_dir / "zho-Hans.srt"
-        zho_hans = Series.load(zho_hans_path)
-        zho_hans = get_zho_flattened(zho_hans)
-
-        if eng_path is None:
-            eng_path = output_dir / "eng.srt"
-        eng = Series.load(eng_path)
-        eng = get_eng_flattened(eng)
-
-        zho_hans_eng = get_synced_series(zho_hans, eng)
-        zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
-
-    return zho_hans_eng

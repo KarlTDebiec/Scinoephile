@@ -38,10 +38,10 @@ from test.data.mnt import (
 )
 from test.data.ocr import (
     process_eng_ocr,
-    process_zho_hans_eng,
     process_zho_hans_ocr,
     process_zho_hant_ocr,
 )
+from test.data.synchronization import process_zho_hans_eng
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_zho_hans_ocr_fusion_test_cases,
