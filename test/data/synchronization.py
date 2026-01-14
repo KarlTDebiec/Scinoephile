@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng import get_eng_flattened
-from scinoephile.lang.zho import get_zho_flattened
+from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
+from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.synchronization import get_synced_series
 
 __all__ = [
@@ -42,11 +42,13 @@ def process_yue_hans_eng(
         if yue_hans_path is None:
             yue_hans_path = output_dir / "yue-Hans.srt"
         yue_hans = Series.load(yue_hans_path)
+        yue_hans = get_zho_cleaned(yue_hans)
         yue_hans = get_zho_flattened(yue_hans)
 
         if eng_path is None:
             eng_path = output_dir / "eng.srt"
         eng = Series.load(eng_path)
+        eng = get_eng_cleaned(eng)
         eng = get_eng_flattened(eng)
 
         yue_hans_eng = get_synced_series(yue_hans, eng)
@@ -80,11 +82,13 @@ def process_zho_hans_eng(
         if zho_hans_path is None:
             zho_hans_path = output_dir / "zho-Hans.srt"
         zho_hans = Series.load(zho_hans_path)
+        zho_hans = get_zho_cleaned(zho_hans)
         zho_hans = get_zho_flattened(zho_hans)
 
         if eng_path is None:
             eng_path = output_dir / "eng.srt"
         eng = Series.load(eng_path)
+        eng = get_eng_cleaned(eng)
         eng = get_eng_flattened(eng)
 
         zho_hans_eng = get_synced_series(zho_hans, eng)

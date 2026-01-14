@@ -22,15 +22,15 @@ from scinoephile.core.testing import test_data_root
     [
         (
             (ScinoephileCli,),
-            "t/input/eng.srt",
+            "mnt/output/eng_fuse.srt",
             "--clean",
-            "t/output/eng_clean.srt",
+            "mnt/output/eng_fuse_clean.srt",
         ),
         (
             (ScinoephileCli,),
-            "t/output/eng_clean.srt",
+            "mnt/output/eng_fuse_clean_validate_proofread.srt",
             "--flatten",
-            "t/output/eng_clean_flatten.srt",
+            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
         ),
     ],
 )
@@ -71,15 +71,15 @@ def test_english(
     [
         (
             (ScinoephileCli,),
-            "t/output/zho-Hans_clean.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
             "--flatten",
-            "t/output/zho-Hans_clean_flatten.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
         ),
         (
             (ScinoephileCli,),
-            "t/input/zho-Hant.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert",
-            "t/output/zho-Hant_simplify.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
         ),
     ],
 )
@@ -120,10 +120,10 @@ def test_chinese(
     [
         (
             (ScinoephileCli,),
-            "t/input/zho-Hans.srt",
-            "t/input/eng.srt",
+            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
             "--clean --flatten",
-            "t/output/zho-Hans_eng.srt",
+            "mlamd/output/zho-Hans_eng.srt",
         ),
     ],
 )
