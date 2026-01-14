@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from logging import info
 from pathlib import Path
 from typing import Any
 
@@ -112,6 +113,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
+                info("Copying OCRed text into image subtitles")
                 assert len(clean) == len(image), (
                     f"Length mismatch: {len(clean)} vs {len(image)}"
                 )
@@ -236,6 +238,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
+                info("Copying OCRed text into image subtitles")
                 assert len(clean) == len(image), (
                     f"Length mismatch: {len(clean)} vs {len(image)}"
                 )
@@ -363,6 +366,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
+                info("Copying OCRed text into image subtitles")
                 assert len(clean) == len(image), (
                     f"Length mismatch: {len(clean)} vs {len(image)}"
                 )
