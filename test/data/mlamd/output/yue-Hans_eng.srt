@@ -310,7 +310,7 @@ Yeah!
 63
 00:05:17,125 --> 00:05:22,417
 春田花花，真系好多西人㗎！
-Spring Flower offer white teachers!
+Spring Flower offers white teachers!
 
 64
 00:05:31,292 --> 00:05:35,958
@@ -695,7 +695,7 @@ I shall understand everything!
 140
 00:09:13,458 --> 00:09:14,583
 到嗰阵⋯
-And then…
+And then …
 
 141
 00:09:15,125 --> 00:09:17,292
@@ -970,7 +970,7 @@ Thank you, everyone!
 195
 00:14:04,667 --> 00:14:07,083
 好高兴咁快又同大家见面
-How time flies since last episode!
+How time flies since the last episode!
 
 196
 00:14:07,250 --> 00:14:10,708
@@ -980,7 +980,7 @@ Now we shall do a Paper Bun.
 197
 00:14:11,292 --> 00:14:14,667
 材料都好简单，只需要白纸一张
-The ingredient takes only paper.
+The ingredient takes only a piece of paper.
 
 198
 00:14:14,958 --> 00:14:19,333
@@ -1005,7 +1005,7 @@ A novelty today for everyone:
 202
 00:14:37,542 --> 00:14:40,958
 包鸡纸包鸡包纸包鸡
-Chicken Bun Paper Bun-ning a Bun.
+Chicken Bun Paper Bunning a Bun.
 
 203
 00:14:41,125 --> 00:14:45,042
@@ -1030,7 +1030,7 @@ And then wrap it like this…
 207
 00:14:59,875 --> 00:15:05,292
 咁一味「包鸡纸包鸡包纸包鸡」就完成喇！
-The delicious Chicken Bun Paper Bun-ning a Bun!
+The delicious Chicken Bun Paper Bunning a Bun!
 
 208
 00:15:05,458 --> 00:15:06,958
@@ -1947,7 +1947,7 @@ Another one begins.
 
 391
 00:34:41,000 --> 00:34:43,417
-“Aka: How Does a Calf Become a Calf?”
+“aka: How Does a Calf Become a Calf?”
 
 392
 00:34:43,500 --> 00:34:45,417
@@ -2967,12 +2967,12 @@ It is addressed to the Olympic Committee Chairman.
 595
 00:49:20,042 --> 00:49:22,125
 「好朋友，我认为
-"Dear friend,
+“Dear friend,
 
 596
 00:49:22,250 --> 00:49:25,125
 抢劫那些包，十分重要」
-it is important to snatch buns."
+it is important to snatch buns.”
 
 597
 00:49:25,250 --> 00:49:27,708
@@ -3142,7 +3142,7 @@ in its prime…
 630
 00:51:18,125 --> 00:51:21,042
 连林世荣睇见都大赞好
-Was much admired by Butcher Lin!
+was much admired by Butcher Lin!
 
 631
 00:51:22,167 --> 00:51:24,000
@@ -3202,7 +3202,7 @@ Step by step, claw by claw…
 642
 00:51:55,167 --> 00:51:59,833
 最后我终于练成「十二路抢包手」啦
-I make it pass the “12 Bun Snatching Hands”.
+I make it past the “12 Bun Snatching Hands”.
 
 643
 00:52:10,208 --> 00:52:20,625
@@ -3611,7 +3611,7 @@ What was left of the turkey was sliced…
 724
 00:57:12,208 --> 00:57:14,625
 有时都叫我帮手撕
-With me helping out at times.
+with me helping out at times.
 
 725
 00:57:15,208 --> 00:57:16,917
@@ -3651,7 +3651,7 @@ Paper turkey paper bun.
 732
 00:57:37,125 --> 00:57:39,667
 酿火鸡馅搽面包
-Turkey paté with bread.
+Turkey pâté with bread.
 
 733
 00:57:40,625 --> 00:57:46,625
@@ -3686,7 +3686,7 @@ When mother finally disposed of the turkey…
 739
 00:58:06,167 --> 00:58:10,417
 原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事
-It was already half year later.
+It was already half a year later.
 
 740
 00:58:10,542 --> 00:58:14,542
@@ -3701,7 +3701,7 @@ Later, I learned that…
 742
 00:58:16,792 --> 00:58:18,625
 一只火鸡由出世到畀人㓥
-A serving turkey needs only be raised…
+A serving turkey needs only to be raised…
 
 743
 00:58:18,792 --> 00:58:21,083
@@ -3726,7 +3726,7 @@ I realized also, with turkey…
 747
 00:58:31,583 --> 00:58:35,792
 未食同食第一啖之间已经系佢嘅最高峰
-Taking the first bite is all it matters.
+taking the first bite is all that matters.
 
 748
 00:58:36,333 --> 00:58:40,083
@@ -3791,7 +3791,7 @@ Suddenly, the smell of the turkey returned.
 760
 00:59:18,000 --> 00:59:22,542
 我后悔要妈妈撇咗几件火鸡
-I regretted I made mother threw the turkey away.
+I regretted I made mother throw the turkey away.
 
 761
 01:00:21,833 --> 01:00:23,208
@@ -4203,481 +4203,484 @@ What shall I be?
 “Fat, Still”
 
 843
-01:07:39,792 --> 01:07:44,542
-橙
+01:07:39,792 --> 01:07:41,625
 “Powerful”
 
 844
+01:07:42,250 --> 01:07:44,542
+橙
+
+845
 01:08:19,458 --> 01:08:22,333
 系呀，我就系大个佬麦兜喇
 Right, I am McDull the big guy.
 
-845
+846
 01:08:23,542 --> 01:08:26,500
 肥啰，算大力啦
 Fat, with raw power.
 
-846
+847
 01:08:27,083 --> 01:08:28,958
 麻麻地得咁啦
 Not doing too well.
 
-847
+848
 01:08:29,750 --> 01:08:31,333
 负家产啰
 Negative property.
 
-848
+849
 01:08:34,042 --> 01:08:38,292
 脚瓜真系几大，仲大过个节瓜
 With a pair of really thick calves.
 
-849
+850
 01:08:39,250 --> 01:08:41,917
 脚瓜上面个肌肉非常结实⋯
 Very muscular…
 
-850
+851
 01:08:42,375 --> 01:08:47,083
 啲青筋一条一条凸下凸下，好似钢筋
 With steely veins running down.
 
-851
+852
 01:08:47,917 --> 01:08:50,000
 至于脚趾公啲脚甲⋯
 As for the toenails…
 
-852
+853
 01:08:50,333 --> 01:08:53,417
 有次我无无聊聊真系走去卡下佢⋯
 I got bored one time and stared at it…
 
-853
+854
 01:08:53,833 --> 01:08:56,750
 哗，足足成寸咁厚
 They're tough, no kidding!
 
-854
+855
 01:08:58,458 --> 01:09:00,958
 系呀，故事讲完喇
 Yes, the story ends here.
 
-855
+856
 01:09:01,708 --> 01:09:03,500
 呢个系一个尝试
 This is a try.
 
-856
+857
 01:09:04,375 --> 01:09:07,417
 失败⋯尝试⋯
 Error… Try…
 
-857
+858
 01:09:07,917 --> 01:09:11,458
 好多包⋯但系冇包保成功嘅故事
 No guarantee that one would make it.
 
-858
+859
 01:09:12,875 --> 01:09:14,500
 故事讲咗一轮⋯
 In the end…
 
-859
+860
 01:09:14,917 --> 01:09:18,042
 乜都冇？又唔系噃
 Zero gain? Not really.
 
-860
+861
 01:09:18,625 --> 01:09:21,667
 就系大咗两个脚瓜
 I have my calves.
 
-861
+862
 01:09:23,083 --> 01:09:25,792
 但系冻住两个脚瓜企喺度⋯
 But, standing here like this…
 
-862
+863
 01:09:26,250 --> 01:09:28,250
 当啲浪打埋嚟⋯
 When the waves hit…
 
-863
+864
 01:09:29,000 --> 01:09:32,250
 嗰种感觉真系好好
 I feel great.
 
-864
+865
 01:09:34,167 --> 01:09:37,083
 你知我麻麻地叻佬，唔识得⋯
 You see, smart guys like me don't really know…
 
-865
+866
 01:09:37,250 --> 01:09:41,500
 帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢
 How to make a lesson out of his own story.
 
-866
+867
 01:09:42,042 --> 01:09:44,833
 但系，冻住两个脚瓜企喺水嗰度⋯
 With calves in water…
 
-867
+868
 01:09:45,292 --> 01:09:50,417
 当风吹喺我个脑部，我会谂⋯
 When the wind blows, I'd think…
 
-868
+869
 01:09:50,750 --> 01:09:53,167
 如果妈妈见到我呢个大脚瓜⋯
 If mother could see me like this…
 
-869
+870
 01:09:55,167 --> 01:09:57,208
 我谂，佢会好开心
 She'd be happy.
 
-870
+871
 01:10:12,500 --> 01:10:15,750
 都系唔好呀，都系出返个锦囊先得！
 I've come up with a lesson!
 
-871
+872
 01:10:16,417 --> 01:10:20,708
 妈妈嘅dot com散咗之后，佢又有计喇
 Mother got inspired after her dot com failed.
 
-872
+873
 01:10:21,208 --> 01:10:24,958
 佢出咗本教煮餸嘅食谱，咁煮喇饭咋晒
 She published a cookbook.
 
-873
+874
 01:10:25,250 --> 01:10:28,042
 食谱最后一页系教人整烧鸡嘅
 The last recipe was “Roast Chicken”.
 
-874
+875
 01:10:28,417 --> 01:10:30,875
 方法简单，人人都学得识
 A simple dish no less.
 
-875
+876
 01:10:31,000 --> 01:10:32,000
 「烧鸡」
 “Roast Chicken”.
 
-876
+877
 01:10:32,292 --> 01:10:34,375
 材料系⋯鸡
 Ingredient: chicken.
 
-877
+878
 01:10:34,625 --> 01:10:38,625
 方法：攞只鸡去烧佢几烧
 Method: roast the chicken.
 
-878
+879
 01:10:38,833 --> 01:10:43,083
 就噉，一味「烧鸡」就大功告成喇
 That way, you have a roast chicken.
 
-879
+880
 01:10:44,417 --> 01:10:46,375
 食谱度又补充噉话：
 There was a remark in the cookbook:
 
-880
+881
 01:10:47,083 --> 01:10:49,417
 如果想你个鸡烧得美味可口⋯
 If you want a delicious chicken…
 
-881
+882
 01:10:50,125 --> 01:10:52,750
 冇话食完腰心腰肺顶住个胃
 A chicken that wouldn't upset you…
 
-882
+883
 01:10:53,250 --> 01:10:58,250
 个秘诀系：唔该，烧得佢好啲啰⋯
 The secret is: please, roast it well!
 
-883
+884
 01:10:59,083 --> 01:11:01,208
 多谢合作！
 Thank you!
 
-884
+885
 01:11:40,583 --> 01:11:42,542
 唔该，我要一个常餐啦
 One Regular, please.
 
-885
+886
 01:11:42,667 --> 01:11:44,667
 常餐？常餐有咩食㗎？
 What's a Regular?
 
-886
+887
 01:11:44,833 --> 01:11:46,042
 同特餐一样啰
 The same as Special.
 
-887
+888
 01:11:46,167 --> 01:11:47,292
 噉特餐系咩嚟㗎？
 What's a Special?
 
-888
+889
 01:11:47,458 --> 01:11:48,792
 同快餐咁上下啰
 Same as Quickie.
 
-889
+890
 01:11:48,917 --> 01:11:50,375
 噉快餐又系咩嚟㗎？
 What's a Quickie?
 
-890
+891
 01:11:50,625 --> 01:11:52,625
 啫快餐咪就係午餐
 A Quickie is a Lunch.
 
-891
+892
 01:11:52,833 --> 01:11:53,875
 午餐食咩㗎？
 What's for Lunch?
 
-892
+893
 01:11:54,000 --> 01:11:55,750
 午餐同晚餐一样㗎
 The same as Supper.
 
-893
+894
 01:11:55,917 --> 01:11:57,333
 噉晚餐又食啲咩呀？
 What's for Supper?
 
-894
+895
 01:11:57,500 --> 01:11:59,667
 晚餐咪真系常餐啰
 Same as Regular.
 
-895
+896
 01:11:59,833 --> 01:12:01,792
 噉呀，我要两个常餐啦
 We'll have the Regular.
 
-896
+897
 01:12:01,875 --> 01:12:04,750
 好嘢呀，我哋今日啲常餐！
 Our Regular today is fantastic!
 
-897
+898
 01:12:09,125 --> 01:12:11,417
 唔好意思，常餐卖晒
 Sorry, Regular is gone.
 
-898
+899
 01:12:11,875 --> 01:12:13,083
 咁改要特餐啦
 We can have the Special.
 
-899
+900
 01:12:13,333 --> 01:12:15,208
 特餐？特餐有咩食㗎？
 What's a Special?
 
-900
+901
 01:12:15,458 --> 01:12:17,042
 特餐就即系午餐啰
 A Special is a Lunch.
 
-901
+902
 01:12:17,542 --> 01:12:18,792
 午餐食乜嘢㗎？
 What's for Lunch?
 
-902
+903
 01:12:19,083 --> 01:12:20,625
 都系晚餐嗰啲嘢啰
 What you get for Supper.
 
-903
+904
 01:12:20,875 --> 01:12:22,292
 咁乜嘢系晚餐呀？
 What's for Supper?
 
-904
+905
 01:12:22,458 --> 01:12:23,792
 同快餐一样啰
 Same as Quickie.
 
-905
+906
 01:12:23,917 --> 01:12:25,208
 咁快餐食咩㗎？
 What's for Quickie?
 
-906
+907
 01:12:25,375 --> 01:12:27,667
 系，快餐就即系常餐啰
 A Quickie is a Regular.
 
-907
+908
 01:12:27,833 --> 01:12:29,750
 咁你头先又话冇常餐？
 But you said Regular is gone!
 
-908
+909
 01:12:29,875 --> 01:12:33,417
 系呀，常餐就系卖晒呀，咁你试唔试下特餐啦？
 Regular sure is gone. How about the Special?
 
-909
+910
 01:12:34,167 --> 01:12:35,542
 两份特餐啦
 It's the Special, then.
 
-910
+911
 01:12:37,500 --> 01:12:40,500
 唔好意思，特餐卖晒嘅
 Sorry, Special is gone.
 
-911
+912
 01:12:41,167 --> 01:12:43,708
 妈妈，不如改快餐啦
 Mother, let's have the Quickie.
 
-912
+913
 01:12:44,042 --> 01:12:45,417
 快餐有咩㗎？
 What's for Quickie?
 
-913
+914
 01:12:45,542 --> 01:12:47,167
 快餐即系常餐
 A Quickie is a Regular.
 
-914
+915
 01:12:47,333 --> 01:12:48,833
 咁常餐有咩㗎？
 What's for Regular?
 
-915
+916
 01:12:49,167 --> 01:12:51,167
 常餐就即系午餐啰
 A Regular is a Lunch.
 
-916
+917
 01:12:51,292 --> 01:12:52,958
 哎呀，咁午餐有咩食呀？
 What's for Lunch?
 
-917
+918
 01:12:53,167 --> 01:12:55,375
 午餐同晚餐一样㗎
 Same as Supper.
 
-918
+919
 01:12:55,542 --> 01:12:56,292
 咁晚餐呢？
 And Supper?
 
-919
+920
 01:12:56,458 --> 01:12:58,125
 晚餐就即系特餐啰
 Supper is like Special.
 
-920
+921
 01:12:58,292 --> 01:13:00,250
 咁你头先又话冇特餐？
 But you said the Special is gone.
 
-921
+922
 01:13:00,375 --> 01:13:05,125
 系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫
 The Special sure is gone. Try Quickie. It's the same.
 
-922
+923
 01:13:05,292 --> 01:13:06,333
 咁两份快餐啦
 We'll have Quickie.
 
-923
+924
 01:13:09,667 --> 01:13:11,542
 唔好意思，冇快餐呀
 Sorry, Quickie is gone.
 
-924
+925
 01:13:11,667 --> 01:13:14,375
 嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？
 This is too much! Is there anything we can eat here?
 
-925
+926
 01:13:14,542 --> 01:13:16,333
 午餐啦，午餐好嘢呀
 Try the Lunch. It's fantastic!
 
-926
+927
 01:13:16,375 --> 01:13:17,417
 点好嘢法呀？
 How so?
 
-927
+928
 01:13:17,583 --> 01:13:18,833
 同晚餐一样咁好嘢
 It's like the Supper.
 
-928
+929
 01:13:18,958 --> 01:13:20,375
 噉晚餐又点好嘢法呀？
 What about the Supper?
 
-929
+930
 01:13:20,542 --> 01:13:22,208
 同常餐一样咁好嘢啰
 It's like the Regular.
 
-930
+931
 01:13:22,333 --> 01:13:23,542
 噉常餐又点好嘢法呀？
 And what about the Regular?
 
-931
+932
 01:13:23,750 --> 01:13:27,292
 常餐，常餐一早卖晒啦，你话好唔好嘢？
 The Regular is gone. Isn't that fantastic?
 
-932
+933
 01:13:29,917 --> 01:13:31,625
 好啦好啦！要两份午餐啦
 Great! We'll have Lunch.
 
-933
+934
 01:13:35,625 --> 01:13:37,625
 唔好意思，午餐卖晒
 Sorry, Lunch is gone.
 
-934
+935
 01:13:37,792 --> 01:13:40,500
 试唔试下我哋嘅晚餐啦？一样嘅啫
 Try our Supper. It's all the same.
 
-935
+936
 01:13:40,667 --> 01:13:42,542
 日光日白，食乜鬼嘢晚餐啊？
 I'm not having supper under broad daylight!
 
-936
+937
 01:13:42,792 --> 01:13:46,125
 系，个名叫晚餐啫，其实咪就係午餐？
 What's in a name? It's the same as Lunch.
 
-937
+938
 01:13:46,333 --> 01:13:49,750
 好啦好啦，怕咗你啦！要两份晚餐啦！快啲手啊！
 Great! Whatever you say! And make it quick!
 
-938
+939
 01:13:49,917 --> 01:13:53,417
 想快？想快就要快餐啊！
 You want it quick? Try Quickie!
