@@ -51,6 +51,6 @@ def test_get_yue_vs_zho_translated_mlamd(
 
     _test_get_yue_vs_zho_translated(
         mlamd_yue_hans_transcribe_proofread,
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        zhongwen,
         mlamd_yue_hans_transcribe_proofread_translate,
     )

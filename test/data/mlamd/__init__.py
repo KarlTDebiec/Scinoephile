@@ -26,6 +26,10 @@ from scinoephile.lang.zho.proofreading import (
 )
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedManager,
+    DualBlockGappedPrompt,
+)
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
@@ -216,7 +220,7 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
 
 @cache
 def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 from 简体中文 translation test cases.
@@ -229,7 +233,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "translation.json"
     return load_test_cases_from_json(
-        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
+        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
