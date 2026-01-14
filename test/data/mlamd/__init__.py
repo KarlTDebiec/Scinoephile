@@ -26,10 +26,6 @@ from scinoephile.lang.zho.proofreading import (
 )
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
-from scinoephile.llms.dual_block_gapped import (
-    DualBlockGappedManager,
-    DualBlockGappedPrompt,
-)
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
@@ -42,6 +38,7 @@ from scinoephile.multilang.yue_zho.proofreading import (
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.transcription.merging import (
     YueZhoHansMergingPrompt,
+    YueZhoMergingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -181,7 +178,7 @@ def get_mlamd_yue_shifting_test_cases(
 
 @cache
 def get_mlamd_yue_merging_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueZhoHansMergingPrompt,
+    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansMergingPrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 merging test cases.
@@ -194,7 +191,7 @@ def get_mlamd_yue_merging_test_cases(
     """
     path = title_root / "multilang" / "yue_zho" / "transcription" / "merging.json"
     return load_test_cases_from_json(
-        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
