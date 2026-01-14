@@ -318,8 +318,8 @@
       "paddle": "替我帮妳们妈妈问好"
     },
     "answer": {
-      "ronghe": "替我帮你们妈妈问好",
-      "beizhu": "采用了 Google Lens OCR 中的“你”字，因其对汉字识别更可靠。"
+      "ronghe": "替我帮妳们妈妈问好",
+      "beizhu": "采用了 PaddleOCR 中的“妳”字，认为其汉字识别更可靠。"
     },
     "difficulty": 1,
     "verified": true
@@ -342,8 +342,8 @@
       "paddle": "那妳们两个呢"
     },
     "answer": {
-      "ronghe": "那你们两个呢？",
-      "beizhu": "采用了 Google Lens OCR 中更准确的“你”和句号。"
+      "ronghe": "那妳们两个呢？",
+      "beizhu": "包括了 Google Lens OCR 中存在但 PaddleOCR 中不存在的问号。"
     },
     "difficulty": 1,
     "verified": true
@@ -366,8 +366,8 @@
       "paddle": "还不都是因为妳不乖"
     },
     "answer": {
-      "ronghe": "还不都是因为你不乖",
-      "beizhu": "采用了 Google Lens OCR 识别的“你”字，替换了 PaddleOCR 中的“妳”字。"
+      "ronghe": "还不都是因为妳不乖",
+      "beizhu": "采用了 PaddleOCR 中的“妳”字，认为其汉字识别更可靠。"
     },
     "difficulty": 1,
     "verified": true
@@ -414,8 +414,8 @@
       "paddle": "妳不是说妳已经长大\n要自己一个人睡的吗？"
     },
     "answer": {
-      "ronghe": "妳不是说你已经长大\n要自己一个人睡的吗？",
-      "beizhu": "采用了 Google Lens OCR 识别的“你”字，认为其汉字识别更可靠；保留了 PaddleOCR 的换行格式。"
+      "ronghe": "妳不是说妳已经长大\n要自己一个人睡的吗？",
+      "beizhu": "采用了 PaddleOCR 中的“妳”字，认为其汉字识别更可靠。"
     },
     "difficulty": 1,
     "verified": true
@@ -570,8 +570,8 @@
       "paddle": "妳们两个等等我"
     },
     "answer": {
-      "ronghe": "你们两个等等我",
-      "beizhu": "采用了 Google Lens OCR 中更可靠的“你”字，替换了 PaddleOCR 中的“妳”。"
+      "ronghe": "妳们两个等等我",
+      "beizhu": "采用了 PaddleOCR 中的“妳”字，认为其汉字识别更可靠。"
     },
     "difficulty": 1,
     "verified": true
@@ -762,8 +762,8 @@
       "paddle": "早跟妳说过的嘛"
     },
     "answer": {
-      "ronghe": "早跟你说过的嘛",
-      "beizhu": "采用了 Google Lens OCR 中的“你”，因为其汉字识别更可靠。"
+      "ronghe": "早跟妳说过的嘛",
+      "beizhu": "采用了 PaddleOCR 中的“妳”字，认为其汉字识别更可靠。"
     },
     "difficulty": 1,
     "verified": true
@@ -1026,7 +1026,7 @@
       "paddle": "良子啊，妳刚才有没有看到"
     },
     "answer": {
-      "ronghe": "良子啊，你刚才有没有看到",
+      "ronghe": "良子啊，妳刚才有没有看到",
       "beizhu": "采用了 Google Lens OCR 中的“你”替换了 PaddleOCR 中的“妳”，因 Google Lens OCR 在识别汉字方面更可靠。"
     },
     "difficulty": 1,
@@ -1038,8 +1038,8 @@
       "paddle": "妳从哪里来的 1？"
     },
     "answer": {
-      "ronghe": "你从哪里来的？",
-      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和标点，省略了 PaddleOCR 中错误的“妳”和多余的“1”。"
+      "ronghe": "她从哪里来的？",
+      "beizhu": "采用了 Google Lens OCR 中更准确的汉字和标点，省略了 PaddleOCR 中多余的“1”。"
     },
     "difficulty": 1,
     "verified": true
