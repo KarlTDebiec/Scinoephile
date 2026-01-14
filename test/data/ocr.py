@@ -420,6 +420,14 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         flatten = get_zho_flattened(proofread)
         flatten.save(flatten_path, exist_ok=True)
 
+    # Simplify
+    simplify_path = (
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+    )
+    if not simplify_path.exists() or overwrite_srt:
+        simplify = get_zho_converted(flatten, OpenCCConfig.t2s)
+        simplify.save(simplify_path, exist_ok=True)
+
     return flatten
 
 
