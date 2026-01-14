@@ -55,9 +55,9 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 简体中文 and English",
+    "繁體中文 (OCR)",
+    "English (OCR)",
+    "Bilingual 简体中文 and English",
     "繁體粵文 (SRT)",
     # "Bilingual 简体粵文 and English",
     # "简体粤文 (Transcription)",
@@ -73,7 +73,7 @@ if "繁體中文 (OCR)" in actions:
         },
         proofreader_kw={
             "test_cases": get_mlamd_zho_hant_proofreading_test_cases()
-            + get_mnt_zho_hant_proofreading_test_cases
+            + get_mnt_zho_hant_proofreading_test_cases()
             + get_t_zho_hant_proofreading_test_cases()
         },
         overwrite_srt=True,
@@ -102,6 +102,7 @@ if "Bilingual 简体中文 and English" in actions:
         zho_hans_path=output_dir
         / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        overwrite=True,
     )
 if "繁體粵文 (SRT)" in actions:
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
@@ -126,6 +127,7 @@ if "Bilingual 简体粵文 and English" in actions:
         title_root,
         yue_hans_path=output_dir / "yue-Hant_clean_flatten_simplify.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(
