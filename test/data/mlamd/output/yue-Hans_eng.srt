@@ -2911,7 +2911,7 @@ Could it be that…?
 
 584
 00:48:36,750 --> 00:48:40,875
-咦，估唔到真系妈妈攞咗㖞。吓得我啊！
+咦，估唔到真系妈妈攞咗㖞．吓得我啊！
 So mother has been using the dictionary?
 
 585
@@ -4344,7 +4344,7 @@ I've come up with a lesson!
 
 871
 01:10:16,417 --> 01:10:20,708
-妈妈嘅dot com散咗之后，佢又有计喇
+妈妈嘅 dot com 散咗之后，佢又有计喇
 Mother got inspired after her dot com failed.
 
 872

@@ -5779,11 +5779,11 @@
   },
   {
     "query": {
-      "yuewen": "咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
-      "zhongwen": "想不到真的让妈妈拿去了。吓得我！"
+      "yuewen": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
+      "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "xiugai": "咦，估唔到真系妈妈攞咗㖞。吓得我啊！",
+      "xiugai": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
       "beizhu": "No changes needed."
     },
     "verified": true
@@ -6996,7 +6996,7 @@
   {
     "query": {
       "yuewen": "我嘅记心肝同妈妈讲：不如饮茶",
-      "zhongwen": "我大著胆跟妈妈说：不如去饮茶吖"
+      "zhongwen": "我大着胆跟妈妈说：不如去饮茶吖"
     },
     "answer": {
       "xiugai": "我大着胆同妈妈讲：不如饮茶",
@@ -7701,7 +7701,7 @@
   {
     "query": {
       "yuewen": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
-      "zhongwen": "想著转行当运动员的茶餐厅伙记⋯"
+      "zhongwen": "想着转行当运动员的茶餐厅伙记⋯"
     },
     "answer": {
       "xiugai": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
@@ -8431,10 +8431,10 @@
   {
     "query": {
       "yuewen": "妈妈个Doccom散咗之后，佢又有计喇",
-      "zhongwen": "妈妈的dot com散掉后，她又有计"
+      "zhongwen": "妈妈的 dot com 散掉后，她又有计"
     },
     "answer": {
-      "xiugai": "妈妈嘅dot com散咗之后，佢又有计喇",
+      "xiugai": "妈妈嘅 dot com 散咗之后，佢又有计喇",
       "beizhu": "Corrected '个' to '嘅' as it is a mishearing, matching the meaning in the 中文; corrected 'Doccom' to 'dot com' as it is a mishearing of the English term 'dot com', matching the meaning in the 中文."
     },
     "difficulty": 1,

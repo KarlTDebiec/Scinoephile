@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_reviewed
 
 
@@ -45,8 +45,12 @@ def test_get_yue_vs_zho_reviewed_mlamd(
         mlamd_zho_hans_fuse_clean_validate_proofread_flatten: input 中文 subtitles
         mlamd_yue_hans_transcribe_proofread_translate_review: Expected output subtitles
     """
+    zhongwen = get_series_with_subs_merged(
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten, 539
+    )
+
     _test_get_yue_vs_zho_reviewed(
         mlamd_yue_hans_transcribe_proofread_translate,
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        zhongwen,
         mlamd_yue_hans_transcribe_proofread_translate_review,
     )
