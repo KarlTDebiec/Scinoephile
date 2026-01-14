@@ -10,7 +10,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_flattened
 
 # noinspection PyProtectedMember
-from scinoephile.lang.zho.flattening import _get_zho_text_flattened
 
 
 def _test_get_zho_flattened(series: Series, expected: Series):
@@ -102,13 +101,3 @@ def test_get_zho_flattened_t(
         t_zho_hans_fuse_clean_validate_proofread,
         t_zho_hans_fuse_clean_validate_proofread_flatten,
     )
-
-
-def test_get_zho_text_flattened(text: str, expected: str):
-    """Test _get_zho_text_flattened.
-
-    Arguments:
-        text: Text to flatten
-        expected: Expected flattened text
-    """
-    assert _get_zho_text_flattened(text) == expected

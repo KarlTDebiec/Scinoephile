@@ -334,6 +334,7 @@ def kob_zho_hans_eng() -> Series:
     return Series.load(output_dir / "zho-Hans_eng.srt")
 
 
+@pytest.fixture
 def kob_zho_hant_fuse() -> Series:
     """KOB 繁体中文 fused subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse.srt")

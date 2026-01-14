@@ -17,7 +17,7 @@ def _test_get_zho_cleaned(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_zho_cleaned(series)
+    output = get_zho_cleaned(series, remove_empty=False)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):
