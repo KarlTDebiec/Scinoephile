@@ -7,6 +7,8 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.eng import get_eng_cleaned
+from scinoephile.lang.zho import get_zho_cleaned
 from scinoephile.multilang.synchronization import get_synced_series
 
 
@@ -18,6 +20,8 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
         two: subtitles series two
         expected: expected output series
     """
+    one = get_zho_cleaned(one)
+    two = get_eng_cleaned(two)
     output = get_synced_series(one, two)
 
     errors = []

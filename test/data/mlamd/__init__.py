@@ -452,6 +452,7 @@ def mlamd_yue_hans_transcribe_proofread_translate_review() -> Series:
     )
 
 
+@pytest.fixture
 def mlamd_zho_hans_eng() -> Series:
     """MLAMD Bilingual 简体中文 and English series."""
     return Series.load(output_dir / "zho-Hans_eng.srt")
