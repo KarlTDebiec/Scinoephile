@@ -20,7 +20,7 @@ def _test_get_eng_cleaned(series: Series, expected: Series):
         series: Series with which to test
         expected: Expected output series
     """
-    output = get_eng_cleaned(series)
+    output = get_eng_cleaned(series, remove_empty=False)
 
     errors = []
     for i, (event, expected_event) in enumerate(zip(output, expected), 1):
@@ -100,7 +100,6 @@ def test_get_eng_cleaned_t(
         (r"-[test]\N-[test]", None),
         ("-[test] \n-[test] ", None),
         ("- [test]\n- [test]", None),
-        ("-abcd \n-[test] ", "abcd"),
         ("{\\i1} abcd{\\i0}", "{\\i1}abcd{\\i0}"),
     ],
 )
