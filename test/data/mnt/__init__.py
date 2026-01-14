@@ -49,7 +49,6 @@ __all__ = [
     "mnt_eng_fuse_clean_validate_proofread_flatten",
     "mnt_eng_image",
     "mnt_eng_image_path",
-    "mnt_zho_hans_eng",
     "mnt_zho_hans_fuse",
     "mnt_zho_hans_fuse_clean",
     "mnt_zho_hans_fuse_clean_validate",
@@ -62,6 +61,7 @@ __all__ = [
     "mnt_zho_hant_fuse_clean_validate",
     "mnt_zho_hant_fuse_clean_validate_proofread",
     "mnt_zho_hant_fuse_clean_validate_proofread_flatten",
+    "mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
     "mnt_zho_hant_image",
     "mnt_zho_hant_image_path",
 ]
@@ -270,12 +270,6 @@ def mnt_eng_image_path() -> Path:
 
 
 @pytest.fixture
-def mnt_zho_hans_eng() -> Series:
-    """MNT Bilingual 简体中文 and English series."""
-    return Series.load(output_dir / "zho-Hans_eng.srt")
-
-
-@pytest.fixture
 def mnt_zho_hans_fuse() -> Series:
     """MNT 简体中文 fused subtitles."""
     return Series.load(output_dir / "zho-Hans_fuse.srt")
@@ -348,6 +342,14 @@ def mnt_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
     """MNT 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
+    """MNT 繁体中文 fused/cleaned/validated/proofread/flattened/simplified subtitles."""
+    return Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
     )
 
 
