@@ -32,7 +32,7 @@ from test.data.mnt import (
     get_mnt_zho_hans_ocr_fusion_test_cases,
     get_mnt_zho_hans_proofreading_test_cases,
 )
-from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
+from test.data.ocr import process_eng_ocr, process_zho_hans_eng, process_zho_hant_ocr
 from test.data.t import (
     get_t_eng_ocr_fusion_test_cases,
     get_t_eng_proofreading_test_cases,
@@ -47,7 +47,8 @@ set_logging_verbosity(2)
 
 actions = {
     # "繁體中文 (OCR)",
-    "English (OCR)",
+    # "English (OCR)",
+    "Bilingual 简体中文 and English",
     # "简体粤文 (Transcription)",
     # "简体粵文 (SRT)",
     # "繁體粵文 (SRT)",
@@ -71,7 +72,6 @@ if "繁體中文 (OCR)" in actions:
         overwrite_srt=True,
         force_validation=True,
     )
-
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
@@ -89,7 +89,13 @@ if "English (OCR)" in actions:
         overwrite_srt=True,
         force_validation=True,
     )
-
+if "Bilingual 简体中文 and English" in actions:
+    process_zho_hans_eng(
+        title_root,
+        zho_hans_path=output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
+        eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+    )
 if "简体粤文 (Transcription)" in actions:
     zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
     zho_hans = get_zho_converted(get_zho_flattened(zho_hant), OpenCCConfig.t2s)
