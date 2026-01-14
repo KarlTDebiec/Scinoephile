@@ -34,16 +34,21 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):
 
 
 def test_get_zho_converted_kob(
-    kob_yue_hant: Series,
-    kob_yue_hant_simplify: Series,
+    kob_zho_hant_fuse_clean_validate_proofread_flatten: Series,
+    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
 ):
-    """Test get_zho_converted with KOB 繁体粤文 subtitles.
+    """Test get_zho_converted with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_yue_hant: KOB 繁体粤文 series fixture
-        kob_yue_hant_simplify: Expected simplified KOB 繁体粤文 series fixture
+        kob_zho_hant_fuse_clean_validate_proofread_flatten: KOB 繁体中文 series fixture
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Expected simplified
+          KOB 繁体中文 series fixture
     """
-    _test_get_zho_converted(kob_yue_hant, OpenCCConfig.hk2s, kob_yue_hant_simplify)
+    _test_get_zho_converted(
+        kob_zho_hant_fuse_clean_validate_proofread_flatten,
+        OpenCCConfig.hk2s,
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+    )
 
 
 @pytest.mark.parametrize(
