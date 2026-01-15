@@ -5,7 +5,8 @@
 Package hierarchy (modules may import from any above):
 * exceptions / text
 * subtitles
-* timing
+* timing / pairs
+* synchronization
 """
 
 from __future__ import annotations

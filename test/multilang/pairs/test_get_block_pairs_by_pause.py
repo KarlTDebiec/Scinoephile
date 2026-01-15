@@ -1,11 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.pairs.get_block_pairs_by_pause."""
+"""Tests of scinoephile.core.pairs.get_block_pairs_by_pause."""
 
 from __future__ import annotations
 
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.pairs import get_block_pairs_by_pause
 
 
 def _test_get_block_pairs_by_pause(

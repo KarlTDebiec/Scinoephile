@@ -9,10 +9,10 @@ from logging import info
 
 import numpy as np
 
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.base import Processor, TestCase, save_test_cases_to_json
-from scinoephile.multilang.pairs import get_block_pairs_by_pause
-from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 
 from .manager import YueZhoProofreadingManager
 from .prompts import YueZhoHansProofreadingPrompt
