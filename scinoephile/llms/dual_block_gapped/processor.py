@@ -6,19 +6,11 @@ from __future__ import annotations
 
 import re
 from logging import info
-from pathlib import Path
 
 import numpy as np
 
-from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
-from scinoephile.core.testing import test_data_root
-from scinoephile.llms.base import (
-    Queryer,
-    TestCase,
-    load_test_cases_from_json,
-    save_test_cases_to_json,
-)
+from scinoephile.llms.base import Processor, save_test_cases_to_json
 from scinoephile.multilang.pairs import get_block_pairs_by_pause
 from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 
@@ -28,53 +20,14 @@ from .prompt import DualBlockGappedPrompt
 __all__ = ["DualBlockGappedProcessor"]
 
 
-class DualBlockGappedProcessor:
+class DualBlockGappedProcessor(Processor):
     """Processes dual block / subtitle block (gapped) matters."""
 
     prompt_cls: type[DualBlockGappedPrompt]
     """Text for LLM correspondence."""
 
-    def __init__(
-        self,
-        prompt_cls: type[DualBlockGappedPrompt],
-        test_cases: list[TestCase] | None = None,
-        test_case_path: Path | None = None,
-        auto_verify: bool = False,
-    ):
-        """Initialize.
-
-        Arguments:
-            prompt_cls: text for LLM correspondence
-            test_cases: test cases
-            test_case_path: path to file containing test cases
-            auto_verify: automatically verify test cases if they meet selected criteria
-        """
-        self.prompt_cls = prompt_cls
-
-        if test_cases is None:
-            test_cases = []
-
-        if test_case_path is not None:
-            test_case_path = val_output_path(test_case_path, exist_ok=True)
-            if test_case_path.exists():
-                test_cases.extend(
-                    load_test_cases_from_json(
-                        test_case_path,
-                        DualBlockGappedManager,
-                        prompt_cls=self.prompt_cls,
-                    ),
-                )
-        self.test_case_path = test_case_path
-        """Path to file containing test cases."""
-
-        queryer_cls = Queryer.get_queryer_cls(self.prompt_cls)
-        self.queryer = queryer_cls(
-            prompt_test_cases=[tc for tc in test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in test_cases if tc.verified],
-            cache_dir_path=test_data_root / "cache",
-            auto_verify=auto_verify,
-        )
-        """LLM queryer."""
+    manager_cls = DualBlockGappedManager
+    """Manager class used to construct test case models."""
 
     def process(
         self,
