@@ -71,22 +71,22 @@ def get_yue_vs_zho_proofread(
 
 def get_yue_vs_zho_proofreader(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
-    default_test_cases: list[TestCase] | None = None,
+    test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> YueZhoProofreadingProcessor:
     """Get YueZhoProofreadingProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        default_test_cases: default test cases
+        test_cases: test cases
         **kwargs: additional keyword arguments for YueZhoProofreadingProcessor
     Returns:
         YueZhoProofreadingProcessor with provided configuration
     """
-    if default_test_cases is None:
-        default_test_cases = get_default_yue_vs_zho_proofreading_test_cases(prompt_cls)
+    if test_cases is None:
+        test_cases = get_default_yue_vs_zho_proofreading_test_cases(prompt_cls)
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
-        default_test_cases=default_test_cases,
+        test_cases=test_cases,
         **kwargs,
     )

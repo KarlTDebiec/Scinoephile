@@ -72,22 +72,22 @@ def get_eng_proofread(
 
 def get_eng_proofreader(
     prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
-    default_test_cases: list[TestCase] | None = None,
+    test_cases: list[TestCase] | None = None,
     **kwargs: Any,
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
-        default_test_cases: default test cases
+        test_cases: test cases
         **kwargs: additional keyword arguments for MonoBlockProcessor
     Returns:
         MonoBlockProcessor with provided configuration
     """
-    if default_test_cases is None:
-        default_test_cases = get_default_eng_proofreading_test_cases(prompt_cls)
+    if test_cases is None:
+        test_cases = get_default_eng_proofreading_test_cases(prompt_cls)
     return MonoBlockProcessor(
         prompt_cls=prompt_cls,
-        default_test_cases=default_test_cases,
+        test_cases=test_cases,
         **kwargs,
     )
