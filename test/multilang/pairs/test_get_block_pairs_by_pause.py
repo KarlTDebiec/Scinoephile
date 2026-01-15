@@ -23,15 +23,15 @@ def _test_get_block_pairs_by_pause(
 
 
 # get_block_pairs_by_pause
-def test_get_block_pairs_by_pause_kob(kob_yue_hans_input: Series, kob_eng: Series):
+def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
     """Test get_block_pairs_by_pause with KOB 简体粤文 and English subtitles.
 
     Arguments:
-        kob_yue_hans_input: KOB 简体粤文 series fixture
+        kob_yue_hans: KOB 简体粤文 series fixture
         kob_eng: KOB English series fixture
     """
     _test_get_block_pairs_by_pause(
-        kob_yue_hans_input,
+        kob_yue_hans,
         kob_eng,
         193,
     )
