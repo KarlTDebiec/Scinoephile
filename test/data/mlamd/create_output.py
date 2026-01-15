@@ -152,7 +152,6 @@ if "简体粤文 (Transcription)" in actions:
 
     yue_hans = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
-        default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
         auto_verify=True,
     )
@@ -163,7 +162,6 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread.save(outfile_path)
 
     translator = get_yue_from_zho_translator(
-        default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
         auto_verify=True,
     )
@@ -174,7 +172,6 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread_translate.save(outfile_path)
 
     transcriber = get_yue_vs_zho_processor(
-        default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
         auto_verify=True,
     )
