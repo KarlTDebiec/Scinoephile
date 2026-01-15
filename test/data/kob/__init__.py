@@ -42,7 +42,7 @@ __all__ = [
     "kob_eng",
     "kob_eng_lens",
     "kob_eng_tesseract",
-    "kob_yue_hans_input",
+    "kob_yue_hans",
     "kob_yue_hant",
     "kob_zho_hant_lens",
     "kob_zho_hant_paddle",
@@ -58,13 +58,18 @@ __all__ = [
     "kob_eng_fuse_clean_validate",
     "kob_eng_fuse_clean_validate_proofread",
     "kob_eng_fuse_clean_validate_proofread_flatten",
+    "kob_eng_timewarp",
+    "kob_eng_timewarp_clean",
+    "kob_eng_timewarp_clean_proofread",
+    "kob_eng_timewarp_clean_proofread_flatten",
     "kob_eng_image",
-    "kob_eng_image_path",
     "kob_yue_hans_audio",
-    "kob_yue_hans_audio_path",
-    "kob_yue_hant_clean",
-    "kob_yue_hant_clean_flatten",
-    "kob_yue_hant_clean_flatten_simplify",
+    "kob_yue_hans_timewarp",
+    "kob_yue_hans_timewarp_clean",
+    "kob_yue_hans_timewarp_clean_flatten",
+    "kob_yue_hant_timewarp",
+    "kob_yue_hant_timewarp_clean",
+    "kob_yue_hant_timewarp_clean_flatten",
     "kob_zho_hans_eng",
     "kob_zho_hant_fuse",
     "kob_zho_hant_fuse_clean",
@@ -73,7 +78,6 @@ __all__ = [
     "kob_zho_hant_fuse_clean_validate_proofread_flatten",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
     "kob_zho_hant_image",
-    "kob_zho_hant_image_path",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -100,7 +104,7 @@ def kob_eng_tesseract() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans_input() -> Series:
+def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
 
@@ -155,10 +159,15 @@ def get_kob_eng_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "proofreading.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    ocr_path = title_root / "lang" / "eng" / "proofreading" / "eng_ocr.json"
+    srt_path = title_root / "lang" / "eng" / "proofreading" / "eng_srt.json"
+    ocr_test_cases = load_test_cases_from_json(
+        ocr_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
+    srt_test_cases = load_test_cases_from_json(
+        srt_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+    return ocr_test_cases + srt_test_cases
 
 
 @cache
@@ -287,15 +296,33 @@ def kob_eng_fuse_clean_validate_proofread_flatten() -> Series:
 
 
 @pytest.fixture
-def kob_eng_image() -> ImageSeries:
-    """KOB English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+def kob_eng_timewarp() -> Series:
+    """KOB English timewarp subtitles."""
+    return Series.load(output_dir / "eng_timewarp.srt")
 
 
 @pytest.fixture
-def kob_eng_image_path() -> Path:
-    """Path to KOB English image subtitles."""
-    return output_dir / "eng_image"
+def kob_eng_timewarp_clean() -> Series:
+    """KOB English timewarp and cleaned subtitles."""
+    return Series.load(output_dir / "eng_timewarp_clean.srt")
+
+
+@pytest.fixture
+def kob_eng_timewarp_clean_proofread() -> Series:
+    """KOB English timewarp, cleaned, and proofread subtitles."""
+    return Series.load(output_dir / "eng_timewarp_clean_proofread.srt")
+
+
+@pytest.fixture
+def kob_eng_timewarp_clean_proofread_flatten() -> Series:
+    """KOB English timewarp, cleaned, proofread, and flattened subtitles."""
+    return Series.load(output_dir / "eng_timewarp_clean_proofread_flatten.srt")
+
+
+@pytest.fixture
+def kob_eng_image() -> ImageSeries:
+    """KOB English image subtitles."""
+    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
 
 
 @pytest.fixture
@@ -305,27 +332,39 @@ def kob_yue_hans_audio() -> AudioSeries:
 
 
 @pytest.fixture
-def kob_yue_hans_audio_path() -> Path:
-    """Path to KOB 简体粤文 audio subtitles."""
-    return output_dir / "yue-Hans_audio"
+def kob_yue_hans_timewarp() -> Series:
+    """KOB 简体粤文 timewarp subtitles."""
+    return Series.load(output_dir / "yue-Hans_timewarp.srt")
 
 
 @pytest.fixture
-def kob_yue_hant_clean() -> Series:
-    """KOB 繁体粤文 cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hant_clean.srt")
+def kob_yue_hans_timewarp_clean() -> Series:
+    """KOB 简体粤文 timewarp and cleaned subtitles."""
+    return Series.load(output_dir / "yue-Hans_timewarp_clean.srt")
 
 
 @pytest.fixture
-def kob_yue_hant_clean_flatten() -> Series:
-    """KOB 繁体粤文 cleaned and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hant_clean_flatten.srt")
+def kob_yue_hans_timewarp_clean_flatten() -> Series:
+    """KOB 简体粤文 timewarp, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
 
 
 @pytest.fixture
-def kob_yue_hant_clean_flatten_simplify() -> Series:
-    """KOB 繁体粤文 cleaned, flattened, and simplified subtitles."""
-    return Series.load(output_dir / "yue-Hant_clean_flatten_simplify.srt")
+def kob_yue_hant_timewarp() -> Series:
+    """KOB 繁體粵文 timewarp subtitles."""
+    return Series.load(output_dir / "yue-Hant_timewarp.srt")
+
+
+@pytest.fixture
+def kob_yue_hant_timewarp_clean() -> Series:
+    """KOB 繁體粵文 timewarp and cleaned subtitles."""
+    return Series.load(output_dir / "yue-Hant_timewarp_clean.srt")
+
+
+@pytest.fixture
+def kob_yue_hant_timewarp_clean_flatten() -> Series:
+    """KOB 繁體粵文 timewarp, cleaned, and flattened subtitles."""
+    return Series.load(output_dir / "yue-Hant_timewarp_clean_flatten.srt")
 
 
 @pytest.fixture
@@ -378,9 +417,3 @@ def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
 def kob_zho_hant_image() -> ImageSeries:
     """KOB 繁体中文 image subtitles."""
     return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
-
-
-@pytest.fixture
-def kob_zho_hant_image_path() -> Path:
-    """Path to KOB 繁体中文 image subtitles."""
-    return output_dir / "zho-Hant_image"
