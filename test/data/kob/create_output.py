@@ -19,27 +19,11 @@ from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from test.data.mlamd import (
-    get_mlamd_eng_ocr_fusion_test_cases,
-    get_mlamd_eng_proofreading_test_cases,
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_shifting_test_cases,
-    get_mlamd_zho_hant_ocr_fusion_test_cases,
-    get_mlamd_zho_hant_proofreading_test_cases,
-)
-from test.data.mnt import (
-    get_mnt_eng_ocr_fusion_test_cases,
-    get_mnt_eng_proofreading_test_cases,
-    get_mnt_zho_hant_ocr_fusion_test_cases,
-    get_mnt_zho_hant_proofreading_test_cases,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
-from test.data.t import (
-    get_t_eng_ocr_fusion_test_cases,
-    get_t_eng_proofreading_test_cases,
-    get_t_zho_hant_ocr_fusion_test_cases,
-    get_t_zho_hant_proofreading_test_cases,
-)
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
@@ -52,42 +36,22 @@ actions = {
     # "Bilingual 繁體中文 and English",
     # "繁體粵文 (SRT)",
     # "简体粤文 (SRT)",
-    "English (SRT)",
-    # "Bilingual 简体粤文 and English",
+    # "English (SRT)",
+    "Bilingual 简体粤文 and English",
     # "简体粤文 (Transcription)",
 }
 
 
 if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(
-        title_root,
-        fuser_kw={
-            "test_cases": get_mlamd_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_hant_ocr_fusion_test_cases()
-            + get_t_zho_hant_ocr_fusion_test_cases()
-        },
-        proofreader_kw={
-            "test_cases": get_mlamd_zho_hant_proofreading_test_cases()
-            + get_mnt_zho_hant_proofreading_test_cases()
-            + get_t_zho_hant_proofreading_test_cases()
-        },
-        overwrite_srt=True,
-        force_validation=True,
-    )
+    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "English (OCR)" in actions:
+    proofreader_kw = dict(
+        test_case_path=title_root / "lang" / "eng" / "proofreading" / "eng_ocr.json",
+    )
     process_eng_ocr(
         title_root,
         title_root / "input" / "zho-Hant.sup",
-        fuser_kw={
-            "test_cases": get_mlamd_eng_ocr_fusion_test_cases()
-            + get_mnt_eng_ocr_fusion_test_cases()
-            + get_t_eng_ocr_fusion_test_cases()
-        },
-        proofreader_kw={
-            "test_cases": get_mlamd_eng_proofreading_test_cases()
-            + get_mnt_eng_proofreading_test_cases()
-            + get_t_eng_proofreading_test_cases()
-        },
+        proofreader_kw=proofreader_kw,
         overwrite_srt=True,
         force_validation=True,
     )
@@ -103,10 +67,7 @@ if "繁體粵文 (SRT)" in actions:
     zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
-        zho_hant,
-        yue_hant,
-        one_end_idx=1421,
-        two_end_idx=1461,
+        zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
     )
     yue_hant_timewarp.save(output_dir / "yue-Hant_timewarp.srt")
     clean = get_zho_cleaned(yue_hant_timewarp)
@@ -117,10 +78,7 @@ if "简体粤文 (SRT)" in actions:
     zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
-        zho_hant,
-        yue_hans,
-        one_end_idx=1421,
-        two_end_idx=1461,
+        zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
     )
     yue_hans_timewarp.save(output_dir / "yue-Hans_timewarp.srt")
     yue_hans_clean = get_zho_cleaned(yue_hans_timewarp)
@@ -130,11 +88,7 @@ if "简体粤文 (SRT)" in actions:
 if "English (SRT)" in actions:
     eng_ocr = Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
     eng_srt = Series.load(input_dir / "eng.srt")
-    eng_timewarp = get_series_timewarped(
-        eng_ocr,
-        eng_srt,
-        one_end_idx=1421,
-    )
+    eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
     eng_timewarp.save(output_dir / "eng_timewarp.srt")
     eng_clean = get_eng_cleaned(eng_timewarp)
     eng_clean.save(output_dir / "eng_timewarp_clean.srt")
@@ -146,7 +100,7 @@ if "English (SRT)" in actions:
     eng_proofread.save(output_dir / "eng_timewarp_clean_proofread.srt")
     eng_flatten = get_eng_flattened(eng_proofread)
     eng_flatten.save(output_dir / "eng_timewarp_clean_proofread_flatten.srt")
-if "Bilingual 简体粵文 and English" in actions:
+if "Bilingual 简体粤文 and English" in actions:
     process_yue_hans_eng(
         title_root,
         yue_hans_path=output_dir / "yue-Hans_timewarp_clean_flatten.srt",

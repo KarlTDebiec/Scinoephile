@@ -159,10 +159,15 @@ def get_kob_eng_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "proofreading.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    ocr_path = title_root / "lang" / "eng" / "proofreading" / "eng_ocr.json"
+    srt_path = title_root / "lang" / "eng" / "proofreading" / "eng_srt.json"
+    ocr_test_cases = load_test_cases_from_json(
+        ocr_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
+    srt_test_cases = load_test_cases_from_json(
+        srt_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+    return ocr_test_cases + srt_test_cases
 
 
 @cache

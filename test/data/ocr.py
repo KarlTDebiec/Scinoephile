@@ -85,8 +85,11 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
         if fuser_kw is None:
             fuser_kw = {}
+        fuser_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "eng" / "ocr_fusion.json",
+        )
         fuser = get_eng_ocr_fuser(
-            test_case_path=title_root / "lang" / "eng" / "ocr_fusion.json",
             auto_verify=True,
             **fuser_kw,
         )
@@ -143,8 +146,11 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     else:
         if proofreader_kw is None:
             proofreader_kw = {}
+        proofreader_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "eng" / "proofreading.json",
+        )
         proofreader = get_eng_proofreader(
-            test_case_path=title_root / "lang" / "eng" / "proofreading.json",
             auto_verify=True,
             **proofreader_kw,
         )
@@ -209,8 +215,11 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
         if fuser_kw is None:
             fuser_kw = {}
+        fuser_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json",
+        )
         fuser = get_zho_ocr_fuser(
-            test_case_path=title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json",
             auto_verify=True,
             **fuser_kw,
         )
@@ -268,12 +277,11 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     else:
         if proofreader_kw is None:
             proofreader_kw = {}
+        proofreader_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json",
+        )
         proofreader = get_zho_proofreader(
-            test_case_path=title_root
-            / "lang"
-            / "zho"
-            / "proofreading"
-            / "zho-Hans.json",
             auto_verify=True,
             **proofreader_kw,
         )
@@ -336,9 +344,12 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
         paddle.save(paddle_path)
 
+        fuser_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json",
+        )
         fuser = get_zho_ocr_fuser(
             prompt_cls=ZhoHantOcrFusionPrompt,
-            test_case_path=title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json",
             auto_verify=True,
             **fuser_kw,
         )
@@ -396,13 +407,12 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     else:
         if proofreader_kw is None:
             proofreader_kw = {}
+        proofreader_kw.setdefault(
+            "test_case_path",
+            title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json",
+        )
         proofreader = get_zho_proofreader(
             prompt_cls=ZhoHantProofreadingPrompt,
-            test_case_path=title_root
-            / "lang"
-            / "zho"
-            / "proofreading"
-            / "zho-Hant.json",
             auto_verify=True,
             **proofreader_kw,
         )
