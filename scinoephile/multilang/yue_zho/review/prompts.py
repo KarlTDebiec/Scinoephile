@@ -84,7 +84,7 @@ class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """Error template when output is present but note is missing."""
 
 
-class YueHantReviewPrompt:
+class YueHantReviewPrompt(YueHansReviewPrompt):
     """Text for LLM correspondence for 繁体粤文 review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk
