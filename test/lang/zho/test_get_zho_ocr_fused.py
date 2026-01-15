@@ -9,17 +9,25 @@ import pytest
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 
-def _test_get_zho_ocr_fused(lens: Series, paddle: Series, expected: Series):
+def _test_get_zho_ocr_fused(
+    lens: Series,
+    paddle: Series,
+    expected: Series,
+    processor: OcrFusionProcessor | None = None,
+):
     """Test get_zho_ocr_fused.
 
     Arguments:
         lens: subtitles OCRed using Google Lens
         paddle: subtitles OCRed using PaddleOCR
         expected: expected output series
+        processor: processor to use
     """
-    output = get_zho_ocr_fused(lens, paddle)
+    output = get_zho_ocr_fused(lens, paddle, processor=processor)
 
     assert len(output) == len(expected)
 
@@ -50,7 +58,12 @@ def test_get_zho_ocr_fused_kob(
     lens = get_zho_converted(lens, config=OpenCCConfig.s2t)
     paddle = get_zho_cleaned(kob_zho_hant_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle, config=OpenCCConfig.s2t)
-    _test_get_zho_ocr_fused(lens, paddle, kob_zho_hant_fuse)
+    _test_get_zho_ocr_fused(
+        lens,
+        paddle,
+        kob_zho_hant_fuse,
+        get_zho_ocr_fuser(prompt_cls=ZhoHantOcrFusionPrompt),
+    )
 
 
 def test_get_zho_ocr_fused_mlamd(

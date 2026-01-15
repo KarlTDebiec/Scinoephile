@@ -126,7 +126,6 @@ if "简体粤文 (Transcription)" in actions:
 
     yue_hans = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
-        default_test_cases=[],
         test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
         auto_verify=True,
     )
