@@ -46,17 +46,23 @@ def get_default_zho_ocr_fusion_test_cases(
         )
         from test.data.mnt import (  # noqa: PLC0415
             get_mnt_zho_hans_ocr_fusion_test_cases,
+            get_mnt_zho_hant_ocr_fusion_test_cases,
         )
-        from test.data.t import get_t_zho_hans_ocr_fusion_test_cases  # noqa: PLC0415
+        from test.data.t import (  # noqa: PLC0415
+            get_t_zho_hans_ocr_fusion_test_cases,
+            get_t_zho_hant_ocr_fusion_test_cases,
+        )
 
         if prompt_cls is ZhoHantOcrFusionPrompt:
-            mlamd_test_cases = get_mlamd_zho_hant_ocr_fusion_test_cases(prompt_cls)
-        else:
-            mlamd_test_cases = get_mlamd_zho_hans_ocr_fusion_test_cases(prompt_cls)
+            return (
+                get_kob_zho_hant_ocr_fusion_test_cases(prompt_cls)
+                + get_mlamd_zho_hant_ocr_fusion_test_cases(prompt_cls)
+                + get_mnt_zho_hant_ocr_fusion_test_cases(prompt_cls)
+                + get_t_zho_hant_ocr_fusion_test_cases(prompt_cls)
+            )
 
         return (
-            get_kob_zho_hant_ocr_fusion_test_cases(prompt_cls)
-            + mlamd_test_cases
+            get_mlamd_zho_hans_ocr_fusion_test_cases(prompt_cls)
             + get_mnt_zho_hans_ocr_fusion_test_cases(prompt_cls)
             + get_t_zho_hans_ocr_fusion_test_cases(prompt_cls)
         )
