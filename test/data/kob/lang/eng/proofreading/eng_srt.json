@@ -137,7 +137,7 @@
       "revised_3": "But, I appreciate\nto view this",
       "note_3": "Changed 'I am appreciated' to 'I appreciate' to correct the verb form.",
       "revised_32": "Has your dad passed away?",
-      "note_32": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct verb form.",
+      "note_32": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar.",
       "revised_35": "the emperor will\ngive you an award for this",
       "note_35": "Changed 'give you award' to 'give you an award' to add the necessary article."
     },
@@ -164,9 +164,9 @@
     },
     "answer": {
       "revised_2": "Congratulations!",
-      "note_2": "Changed 'Congratulation' to the correct plural form 'Congratulations!'.",
+      "note_2": "Corrected 'Congratulation!' to 'Congratulations!' for proper usage.",
       "revised_5": "We have some new girls,\nyou must be satisfied with them",
-      "note_5": "Changed 'it' to 'them' to agree with the plural noun 'girls'.",
+      "note_5": "Changed 'it' to 'them' to correctly refer to 'girls' (plural).",
       "revised_6": "What are they?\nGoldfish, or cooked fish?",
       "note_6": "Corrected 'Gold fish' to 'Goldfish' as a single word.",
       "revised_8": "You idiot! Goldfish are\nfor watching only",
@@ -218,7 +218,7 @@
     },
     "answer": {
       "revised_7": "How are you, Mr Chiu?",
-      "note_7": "Changed the period to a question mark and replaced the full stop after 'you' with a comma to form a single correct question sentence."
+      "note_7": "Added comma and question mark for correct address and sentence completion."
     },
     "difficulty": 1,
     "verified": true
@@ -246,7 +246,7 @@
       "revised_3": "100,000 taels",
       "note_3": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
       "revised_5": "You are not welcome",
-      "note_5": "Corrected 'welcomed' to 'welcome' for proper usage in this context.",
+      "note_5": "Corrected 'welcomed' to 'welcome'.",
       "revised_10": "more than 100,000 taels",
       "note_10": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
       "revised_12": "Don't quarrel because of such\na small amount",
@@ -268,7 +268,8 @@
       "revised_2": "Mr Chiu, I will wait\nfor you in my room",
       "note_2": "Inserted missing word 'for' in the phrase 'wait for you'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -284,14 +285,16 @@
       "subtitle_10": "None of my business",
       "subtitle_11": "How bold are you?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Mantis Fist?\nIt seems to be powerful",
       "subtitle_2": "Music!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -312,7 +315,8 @@
       "revised_3": "Well, try me, mantis!",
       "note_3": "Added a comma after 'me' for correct punctuation in direct address."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -335,7 +339,8 @@
       "subtitle_2": "It seems to be powerful…",
       "subtitle_3": "Kid, you don't know how\nthe wind blows"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -352,7 +357,8 @@
       "subtitle_11": "Just take a look",
       "subtitle_12": "The King of Iron Hat?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -364,12 +370,13 @@
       "subtitle_6": "King of Iron Hat, Seng-ko-lin-ch'in\nis written on the medal"
     },
     "answer": {
-      "revised_3": "They send you so valuable a present,\nyou'd stop bullying them",
-      "note_3": "Inserted the article 'a' and adjusted word order to correct the grammatical error ('so valuable present' → 'so valuable a present').",
+      "revised_3": "They send you such a valuable present,\nyou'd stop bullying them",
+      "note_3": "Changed 'so' to 'such' for correct usage: 'such a valuable present'.",
       "revised_6": "King of Iron Hat, Seng-ko-lin-ch'in,\nis written on the medal",
       "note_6": "Added a comma after 'Seng-ko-lin-ch'in' for correct punctuation in the clause."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -400,10 +407,11 @@
       "note_8": "Added a space after the hyphen for consistent dialogue formatting.",
       "revised_16": "Today is the birthday of\nthe ex-Empress Dowager",
       "note_16": "Lowercased 'Ex' to 'ex-' to follow standard compound title capitalization.",
-      "revised_18": "It may cause capital punishment",
-      "note_18": "Removed unnecessary 'to' for correct grammar."
+      "revised_18": "It may lead to capital punishment",
+      "note_18": "Changed 'cause to capital punishment' to 'lead to capital punishment' for correct phrasing."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -426,7 +434,8 @@
       "subtitle_17": "Just forget the trouble",
       "subtitle_18": "Young master, your hat"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -457,10 +466,13 @@
       "note_3": "Changed 'The' to lowercase 'the' in 'the Taiping Reign' for correct capitalization within a sentence.",
       "revised_4": "And he framed us, the Beggars Association,\nto be the assassins",
       "note_4": "Corrected 'assassinators' to 'assassins'.",
-      "revised_11": "Because we can't defeat him even\nif we group together",
-      "note_11": "Inserted 'if' after 'even' for correct grammar."
+      "revised_6": "to be despised by the world",
+      "note_6": "Changed 'being despised by the world' to 'to be despised by the world' for correct grammar.",
+      "revised_11": "Because we can't defeat him even if\nwe group together",
+      "note_11": "Added 'if' after 'even' for correct grammar: 'even if we group together'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -486,8 +498,8 @@
       "note_1": "Added a period at the end of the sentence.",
       "revised_3": "The pearl of Mr. Chiu is broken",
       "note_3": "Added a period after 'Mr' to be consistent with abbreviation formatting.",
-      "revised_4": "by Mr. So and become pearl powder",
-      "note_4": "Added a period after 'Mr' to be consistent with abbreviation formatting.",
+      "revised_4": "by Mr So and became pearl powder",
+      "note_4": "Changed 'become' to 'became' for correct past tense.",
       "revised_5": "I have drunk it.",
       "note_5": "Added a period at the end of the sentence.",
       "revised_6": "Don't judge Mr. So from his hair,",
@@ -507,7 +519,8 @@
       "revised_16": "Just accept this.",
       "note_16": "Added a period at the end of the sentence."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -532,9 +545,12 @@
       "revised_5": "To me, this is bad news",
       "note_5": "Removed the article 'a' before 'bad news' because 'news' is uncountable.",
       "revised_9": "for your company tonight",
-      "note_9": "Removed the extra 'you' to fix the typo 'for you your company tonight'."
+      "note_9": "Removed extra 'you' to correct the phrase to 'for your company tonight'.",
+      "revised_12": "I haven't chosen the wrong one",
+      "note_12": "Changed 'a wrong one' to 'the wrong one' for correct idiomatic usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -556,10 +572,13 @@
       "subtitle_16": "Are there anyone hiding here?"
     },
     "answer": {
+      "revised_4": "You know kung fu?",
+      "note_4": "Corrected 'Kung-fu' to 'kung fu' for standard spelling.",
       "revised_16": "Is there anyone hiding here?",
-      "note_16": "Changed 'Are there anyone' to 'Is there anyone' for correct grammatical agreement with the singular 'anyone'."
+      "note_16": "Corrected 'Are there anyone' to 'Is there anyone' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -581,7 +600,8 @@
       "revised_8": "Don't you know it's not that easy\nto be my husband?",
       "note_8": "Inserted 'not' to correct the likely typo in the phrase 'it's that easy' to 'it's not that easy', matching the intended meaning given the context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -595,12 +615,13 @@
       "subtitle_8": "I won't leave until seeing you"
     },
     "answer": {
-      "revised_5": "Because this is too easy for me\nto be the Kung-fu scholar!",
-      "note_5": "Removed unnecessary comma after 'Because' and corrected 'to me' to 'for me' for proper usage.",
+      "revised_5": "Because, this is too easy for me\nto be the Kung-fu scholar!",
+      "note_5": "Corrected 'to me' to 'for me' for correct grammar.",
       "revised_6": "OK, but you'd give me some time\nto consider it.",
       "note_6": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -647,7 +668,8 @@
       "subtitle_5": "Forget it,\nhe doesn't mean to bother us",
       "subtitle_6": "Let him go"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -682,9 +704,10 @@
       "revised_5": "You have a flat figure,\nwhere are your busts?",
       "note_5": "Added the article 'a' before 'flat figure' for correct grammar.",
       "revised_6": "It's early in the morning,\nthey haven't woken up yet",
-      "note_6": "Corrected 'waken' to 'woken' for proper past participle usage."
+      "note_6": "Corrected 'waken' to 'woken' for correct verb form."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -758,17 +781,30 @@
     },
     "answer": {
       "revised_5": "Where should I put my pigtail?",
-      "note_5": "Corrected 'pig-tail' to 'pigtail' (standard single-word spelling).",
+      "note_5": "Corrected 'pig-tail' to 'pigtail'.",
+      "revised_9": "I decided to join the examination for the\nScholar of Martial Arts",
+      "note_9": "Capitalized 'Scholar' to match the title format used elsewhere.",
+      "revised_12": "For the sake of our family, you should do that",
+      "note_12": "Changed 'For the family of us' to 'For the sake of our family' for correct phrasing.",
+      "revised_16": "For a girl, you want to be the Scholar\nof Martial Arts!",
+      "note_16": "Capitalized 'Scholar' to match the title format used elsewhere.",
       "revised_30": "If you break my stuff,\nI will teach you a good lesson",
-      "note_30": "Added missing article 'a' in 'teach you a good lesson'.",
+      "note_30": "Added 'a' before 'good lesson' for correct grammar.",
+      "revised_32": "Good morning Dad",
+      "note_32": "Capitalized 'Dad' as a form of address.",
       "revised_36": "Please leave me a cloth",
-      "note_36": "Corrected 'clothe' (verb) to 'cloth' (noun) to match context.",
+      "note_36": "Corrected 'clothe' to 'cloth'.",
       "revised_38": "But I am not small",
       "note_38": "Corrected 'no' to 'not' for grammatical correctness.",
+      "revised_46": "Please, work hard, men!",
+      "note_46": "Added comma after 'hard' for correct address to 'men'.",
       "revised_56": "Take care of my Lychee,\nyou fathead!",
-      "note_56": "Changed 'fat headed' to the standard noun 'fathead'."
+      "note_56": "Changed 'fat headed' to the standard noun 'fathead'.",
+      "revised_61": "Hope you will serve our Ching Dynasty\nwholeheartedly",
+      "note_61": "Changed 'whole-heartedly' to 'wholeheartedly' (no hyphen needed)."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -795,7 +831,8 @@
       "revised_7": "Hide in here",
       "note_7": "Completed the phrase 'Hide in' to 'Hide in here' for grammatical correctness and clarity."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -842,12 +879,17 @@
       "note_2": "Added a period at the end of the sentence for correct punctuation.",
       "revised_5": "You are bad, how can\nyou say that to me?",
       "note_5": "Changed 'so' to 'that' for correct usage in this context.",
-      "revised_8": "You are Dad",
-      "note_8": "Capitalised 'Dad' as it is used as a form of address/name.",
+      "revised_8": "You are a dad.",
+      "note_8": "Added 'a' before 'dad' for correct grammar and added period at the end.",
       "revised_11": "I wanted to trick you actually,\nyou are really smart.",
-      "note_11": "Added a period at the end of the sentence for correct punctuation."
+      "note_11": "Added a period at the end of the sentence for correct punctuation.",
+      "revised_26": "It depends on fate.",
+      "note_26": "Removed 'the' before 'fate' for correct idiomatic usage and added period at the end.",
+      "revised_35": "My son is keen on martial arts.",
+      "note_35": "Changed 'keen in' to 'keen on' for correct usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -856,9 +898,10 @@
     },
     "answer": {
       "revised_2": "The arrows teams go sideways,\nthe gunmen stay back",
-      "note_2": "Corrected 'side ways' to 'sideways' as one word."
+      "note_2": "Corrected 'side ways' to 'sideways'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -873,7 +916,8 @@
       "subtitle_2": "I don't want to waste my force",
       "subtitle_3": "Shameless? Damn you!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -890,7 +934,8 @@
       "subtitle_4": "Bravo…",
       "subtitle_5": "And So Cha Ha Yee\nChan from Canton"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -941,17 +986,21 @@
     },
     "answer": {
       "revised_21": "What do you think?",
-      "note_21": "Corrected typo 'thing' to 'think'.",
+      "note_21": "Corrected 'thing' to 'think'.",
+      "revised_23": "But he has worked very hard",
+      "note_23": "Change 'vert' to 'very'.",
       "revised_31": "You have good analysis",
-      "note_31": "Corrected noun form from 'analyse' to 'analysis'."
+      "note_31": "Corrected 'analyse' to 'analysis'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "What? Isn't Cheng the examiner?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -978,34 +1027,39 @@
       "subtitle_3": "I do think so"
     },
     "answer": {
-      "revised_2": "They should add 2 more marks for that\npowerful shot",
-      "note_2": "Corrected 'act' to 'add' and 'shoot' to 'shot' for proper word choice."
+      "revised_2": "They should add 2 more marks for that\npowerful shoot",
+      "note_2": "Corrected 'act' to 'add' for correct meaning: 'add 2 more marks'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "So's arrow isn't on the target,\nPo won this section"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Kidding? Damn you!\nThey are cheating"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "The candidates please\nget on the horses"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Mr Chiu"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1026,10 +1080,11 @@
       "subtitle_2": "It's corrupt!\nMay I give up the betting?"
     },
     "answer": {
-      "revised_1": "They trick again.",
-      "note_1": "Added a period at the end to complete the sentence."
+      "revised_1": "They tricked again",
+      "note_1": "Changed 'trick' to 'tricked' for correct tense."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1084,11 +1139,12 @@
       "revised_1": "How can you use\nsuch a dirty stance?",
       "note_1": "Added the article 'a' before 'dirty stance' for correct grammar and inserted a space after 'such'.",
       "revised_2": "Have you woken?",
-      "note_2": "Corrected verb form from 'waken' to 'woken'.",
-      "revised_10": "There is no regulation stating that\nweapons are not allowed",
-      "note_10": "Changed 'weapon is' to 'weapons are' for correct grammar and agreement."
+      "note_2": "Corrected 'waken' to 'woken'.",
+      "revised_10": "There is no regulation stating that a\nweapon is not allowed",
+      "note_10": "Added 'a' before 'weapon' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1105,7 +1161,8 @@
       "subtitle_11": "Po is the Scholar of Martial Arts",
       "subtitle_12": "I did win! Objection"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1113,7 +1170,8 @@
       "subtitle_2": "The dart is poisoned",
       "subtitle_3": "He deserves it!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1122,7 +1180,8 @@
       "subtitle_3": "I am going to be rich!",
       "subtitle_4": "Yes!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1130,7 +1189,8 @@
       "subtitle_2": "You have good judgement",
       "subtitle_3": "Sir, His Majesty wants to appoint\nthe title himself"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1143,7 +1203,8 @@
       "revised_1": "I want to take some statements\nfrom you as record",
       "note_1": "Changed 'some statement' to 'some statements' for correct plural usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1153,7 +1214,8 @@
       "subtitle_4": "Who is the new Scholar\nof Martial Arts?",
       "subtitle_5": "Your Majesty, So Chan from Canton\nis the Scholar this year"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1164,7 +1226,12 @@
       "subtitle_5": "So how could he answer the\nquestion paper of strategy?",
       "subtitle_6": "That should be tricks"
     },
-    "answer": {}
+    "answer": {
+      "revised_6": "That should be a trick",
+      "note_6": "Changed 'tricks' to 'a trick' for correct singular usage in context."
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1180,7 +1247,8 @@
       "subtitle_2": "Thank God, he knows how to\nwrite his name!",
       "subtitle_3": "He can write his name!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1210,7 +1278,8 @@
       "revised_18": "You two cooperated to cheat me",
       "note_18": "Corrected 'co-operated' to 'cooperated' (no hyphen needed)."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1226,12 +1295,13 @@
       "subtitle_10": "is forfeiture of property only"
     },
     "answer": {
-      "revised_4": "But their ancestors achieved a lot\nto Ching, they can be exempted",
-      "note_4": "Corrected 'exampled' to 'exempted', which fits the legal context of avoiding punishment.",
+      "revised_4": "But their ancestors achieved a lot\nfor Ching, they can be exempted",
+      "note_4": "Corrected 'to Ching, they can be exampled' to 'for Ching, they can be exempted' for correct meaning and grammar.",
       "revised_8": "So, he didn't miscarry any duty",
       "note_8": "Removed incorrect 'out' from 'miscarry out'; the intended phrase is 'miscarry any duty'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1257,7 +1327,8 @@
       "revised_7": "Why couldn't you find out they cheated during the examination?",
       "note_7": "Removed the unnecessary line break to keep the sentence on one line."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1328,9 +1399,12 @@
     },
     "answer": {
       "revised_4": "Master, I will take good care of\nLittle Turtle",
-      "note_4": "Capitalized 'Little Turtle' to match its use as a proper name."
+      "note_4": "Capitalized 'Little Turtle' to match its use as a proper name.",
+      "revised_52": "Am I like a beggar?",
+      "note_52": "Added 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1353,7 +1427,8 @@
       "revised_3": "maybe we can have something\nto eat tonight",
       "note_3": "Corrected 'may be' to 'maybe'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1389,15 +1464,16 @@
     },
     "answer": {
       "revised_12": "Begging? How dare you, you beggar,\nyou are cheating me!",
-      "note_12": "Corrected word order from 'How dare are you' to 'How dare you'.",
+      "note_12": "Corrected 'How dare are you' to 'How dare you' for correct grammar.",
       "revised_16": "Have you had any ideas?",
       "note_16": "Changed 'idea' to 'ideas' to match the idiomatic expression 'had any ideas'.",
       "revised_17": "I have a friend's girlfriend",
-      "note_17": "Changed 'girl-friend' to 'girlfriend' (closed compound).",
+      "note_17": "Corrected 'girl-friend' to 'girlfriend' (no hyphen needed).",
       "revised_29": "The one wearing the red dress who stands\nunder the lantern, that's her",
       "note_29": "Added 'the' before 'red dress' for correct noun phrase usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1429,7 +1505,8 @@
       "subtitle_7": "Get lost…",
       "subtitle_8": "No show here"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1456,13 +1533,14 @@
     },
     "answer": {
       "revised_4": "It's the Royal instruction that",
-      "note_4": "Removed the extraneous comma at the end of the sentence fragment.",
+      "note_4": "Removed comma.",
       "revised_7": "I am carrying my duty only.\nMen!",
       "note_7": "Added a period after 'only' and separated 'Men!' onto a new line for correct sentence punctuation and structure.",
       "revised_19": "Last time you could escape from\nYee Hung Hostel",
       "note_19": "Changed 'can' to 'could' to maintain correct past tense."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1477,7 +1555,8 @@
       "revised_4": "I can't give him another chance\nto counterattack",
       "note_4": "Corrected 'counter attack' to the single word 'counterattack'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1495,7 +1574,8 @@
       "revised_5": "You will be a cripple for the\nrest of your life",
       "note_5": "Added article 'a' before 'cripple' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1544,19 +1624,22 @@
       "revised_16": "during the examination.",
       "note_16": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Write your name at once"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "I don't know how to write"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1590,9 +1673,10 @@
       "revised_3": "your legs and hands have not been\ntotally recovered.",
       "note_3": "Added a period at the end of the sentence for correct punctuation.",
       "revised_9": "This job should be left to me",
-      "note_9": "Corrected verb form from 'should leave' to 'should be left' for proper grammar."
+      "note_9": "Corrected 'should leave to me' to 'should be left to me' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1608,9 +1692,10 @@
     },
     "answer": {
       "revised_2": "there are some lessons!",
-      "note_2": "Corrected 'is' to 'are' to agree with the plural noun 'lessons'."
+      "note_2": "Corrected 'there is some lessons!' to 'there are some lessons!' for subject-verb agreement."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1622,15 +1707,17 @@
       "revised_1": "Give me money, please",
       "note_1": "Added a comma before 'please' for correct punctuation.",
       "revised_2": "Go, go, I won't give you money",
-      "note_2": "Removed the extra space before the comma after the second 'go'."
+      "note_2": "Removed the extra space before the comma in 'go ,'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Chan, dad is leaving"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1652,7 +1739,8 @@
       "revised_4": "Don't you think I am an idiot?",
       "note_4": "Added 'an' before 'idiot' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1682,7 +1770,8 @@
       "subtitle_1": "You bastard, why don't you eat?",
       "subtitle_2": "You should eat more so as\nto be strong!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1692,7 +1781,8 @@
       "subtitle_4": "OK, just forget it,\nlet's go home",
       "subtitle_5": "Come on, eat them all"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1701,7 +1791,8 @@
       "subtitle_3": "May I…",
       "subtitle_4": "No"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1719,11 +1810,12 @@
     },
     "answer": {
       "revised_2": "Be merciful to me, please",
-      "note_2": "Added a comma before 'please' for correct punctuation.",
+      "note_2": "Added a comma after 'me' for correct punctuation.",
       "revised_8": "No, you are mistaken",
-      "note_8": "Changed 'have mistaken' to 'are mistaken' for correct usage."
+      "note_8": "Changed 'you have mistaken' to 'you are mistaken' for correct usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1745,16 +1837,17 @@
       "subtitle_9": "Take it"
     },
     "answer": {
-      "revised_2": "I am sorry, I have mistaken.",
-      "note_2": "Added a period at the end of the sentence for correct punctuation.",
+      "revised_2": "I am sorry, I was mistaken",
+      "note_2": "Changed 'have mistaken' to 'was mistaken' for correct usage.",
       "revised_3": "Tracy, take some dumplings out",
-      "note_3": "Changed 'dumpling' to 'dumplings' for correct plural form.",
+      "note_3": "Changed 'dumpling' to 'dumplings' for correct plural usage.",
       "revised_4": "You have mistaken,\nhe is not So Chan",
       "note_4": "Changed 'mistake' to 'mistaken' to match the intended verb form.",
       "revised_8": "Dumplings",
-      "note_8": "Changed 'Dumpling' to 'Dumplings' for correct plural form."
+      "note_8": "Changed 'Dumpling' to 'Dumplings' for correct plural usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1766,7 +1859,8 @@
       "revised_3": "if it were not for you",
       "note_3": "Corrected the phrase 'if not were you' to the grammatically correct 'if it were not for you'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1791,12 +1885,13 @@
       "note_2": "Added a period at the end of the sentence for correct punctuation.",
       "revised_3": "So I bit the dumpling of the kid.",
       "note_3": "Added a period at the end of the sentence for correct punctuation.",
-      "revised_4": "I have dumpling, take it back.",
-      "note_4": "Added a period at the end of the sentence for correct punctuation.",
+      "revised_4": "I have a dumpling, take it back",
+      "note_4": "Added 'a' before 'dumpling' for correct grammar.",
       "revised_6": "if I chopped yours?",
       "note_6": "Added a question mark at the end of the question for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1824,7 +1919,8 @@
       "subtitle_6": "Stop fighting",
       "subtitle_7": "Stand properly"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1832,7 +1928,8 @@
       "subtitle_2": "It's quite delicious",
       "subtitle_3": "Try some. Come on"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1870,9 +1967,10 @@
       "revised_5": "I want to save it\nfor a midnight snack",
       "note_5": "Added article 'a' before 'midnight snack' to correct the noun phrase.",
       "revised_8": "The Scholar is eating dog food",
-      "note_8": "Changed \"dog's food\" to the standard phrase \"dog food\"."
+      "note_8": "Changed \"dog's food\" to \"dog food\" for correct usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1899,13 +1997,14 @@
     },
     "answer": {
       "revised_2": "My dad was the Master of the\nBeggars' Association",
-      "note_2": "Corrected \"Beggar's Association\" to \"Beggars' Association\" for proper plural possessive form.",
+      "note_2": "Added apostrophe to 'Beggars'' for correct possessive form.",
       "revised_3": "Why don't you join our Beggars'\nAssociation",
       "note_3": "Corrected \"Beggar's Association\" to \"Beggars' Association\" for proper plural possessive form.",
       "revised_9": "It's wise to join the Beggars' Association\nso as to be taken care of",
-      "note_9": "Corrected \"Beggars' Association\" to use the proper plural possessive form and added \"of\" to complete the phrase \"taken care of\"."
+      "note_9": "Added 'of' to complete the phrase 'taken care of'. Added apostrophe to 'Beggars'' for correct possessive form."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1939,12 +2038,13 @@
     "answer": {
       "revised_5": "One cloth is for you",
       "note_5": "Corrected 'clothe' to the noun 'cloth'.",
-      "revised_18": "Uncle Mok, we needn't give red\npockets to each other",
-      "note_18": "Changed 'pocket' to plural 'pockets' for correct usage.",
+      "revised_18": "Uncle Mok, we needn't give red\npackets to each other",
+      "note_18": "Changed 'red pocket' to 'red packets' for correct plural usage.",
       "revised_23": "I will cook you some new year cakes",
       "note_23": "Changed 'cake' to plural 'cakes' to match 'some'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1973,6 +2073,8 @@
     "answer": {
       "revised_2": "To fight against Chiu, we need a union of\nthe Beggars' Association",
       "note_2": "Corrected the association name to the proper plural possessive form: 'Beggars'' instead of 'Beggar's'.",
+      "revised_3": "So we must choose a new master to\nbe in charge of the association",
+      "note_3": "Changed 'in-charge' to 'be in charge of' for correct usage.",
       "revised_7": "Uncle, I don't have\nfaith in defeating them",
       "note_7": "Changed 'faith to defeat' to 'faith in defeating' for correct grammatical use of 'faith in'.",
       "revised_17": "Look at him, he is so lazy,",
@@ -1980,7 +2082,8 @@
       "revised_19": "He is not even\nqualified to be a beggar!",
       "note_19": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1996,13 +2099,14 @@
     },
     "answer": {
       "revised_2": "I have faith in you",
-      "note_2": "Corrected the preposition from 'on' to 'in' in the phrase 'have faith in you'.",
+      "note_2": "Corrected 'faith on you' to 'faith in you'.",
       "revised_5": "only if you try hard,",
-      "note_5": "Inserted 'if' to correct the conditional phrase 'only if you try hard'.",
+      "note_5": "Added 'if' to correct the conditional phrase: 'only if you try hard'.",
       "revised_6": "you can achieve something.",
       "note_6": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2028,7 +2132,8 @@
       "subtitle_2": "I tried very hard\nto get this for you",
       "subtitle_3": "Try hard to practise, be good"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2037,7 +2142,8 @@
       "subtitle_3": "you should give me a waddy first",
       "subtitle_4": "I am sorry, catch it"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2048,7 +2154,8 @@
       "revised_1": "Before being appointed an\nimportant task,",
       "note_1": "Inserted missing article 'an' before 'important task' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2070,7 +2177,8 @@
       "revised_7": "Is there anything to eat?",
       "note_7": "Changed 'Are there anything' to 'Is there anything' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2096,9 +2204,10 @@
     },
     "answer": {
       "revised_19": "I wouldn't be a beggar!",
-      "note_19": "Added the article 'a' before 'beggar' for correct grammar."
+      "note_19": "Added 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2137,7 +2246,7 @@
       "revised_1": "But, don't worry,\nyou were my benefactor,",
       "note_1": "Corrected the misspelling 'benefitor' to 'benefactor'.",
       "revised_5": "even if you have money again",
-      "note_5": "Added 'if' to correct the grammatical structure 'even if you have money again'.",
+      "note_5": "Added 'if' after 'even' for correct grammar.",
       "revised_10": "I am Hung Yat-sun,\nnicknamed Old Bag Sun",
       "note_10": "Corrected 'nicked name' to 'nicknamed'.",
       "revised_12": "It's good to be a beggar",
@@ -2147,7 +2256,7 @@
       "revised_19": "So you have to be a beggar now",
       "note_19": "Added article 'a' before 'beggar' for correct grammar.",
       "revised_22": "Every part of you is beggar-like",
-      "note_22": "Changed 'Every parts' to singular 'Every part' and 'are' to 'is' for subject-verb agreement, and added hyphen in 'beggar-like'.",
+      "note_22": "Changed 'Every parts' to singular 'Every part' and 'are' to 'is' for subject-verb agreement; added hyphen in 'beggar-like'.",
       "revised_24": "That means, you will be a beggar\nfor your life",
       "note_24": "Added article 'a' before 'beggar' for correct grammar.",
       "revised_25": "I don't want to talk to you,\nI want to sleep first",
@@ -2157,7 +2266,8 @@
       "revised_29": "King of Beggars,\nwhat does that mean?",
       "note_29": "Capitalised 'Beggars' in the title for consistency with previous subtitle."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2175,7 +2285,8 @@
       "revised_4": "No… I just want to sleep with you.",
       "note_4": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2210,9 +2321,10 @@
     },
     "answer": {
       "revised_3": "Now you regret it",
-      "note_3": "Changed 'regretted' to 'regret it' for correct tense and object in this context."
+      "note_3": "Changed 'regretted' to 'regret it' for correct tense and grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2256,7 +2368,8 @@
       "subtitle_6": "I can take over his reign",
       "subtitle_7": "I will give you a share of wealth!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2291,11 +2404,12 @@
     },
     "answer": {
       "revised_3": "You killed a woman…",
-      "note_3": "Inserted the article 'a' before 'woman' for correct grammar.",
+      "note_3": "Added 'a' before 'woman' for correct grammar.",
       "revised_4": "You should replace her as\na gift to the Emperor!",
-      "note_4": "Changed 'replace her to be' to 'replace her as' to correct the expression while keeping the original meaning."
+      "note_4": "Changed 'replace her to be' to 'replace her as' for correct usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2309,16 +2423,18 @@
       "subtitle_8": "Are there any affair between them?"
     },
     "answer": {
-      "revised_8": "Are there any affairs between them?",
-      "note_8": "Changed 'affair' to 'affairs' for correct usage in this context."
+      "revised_8": "Is there any affair between them?",
+      "note_8": "Changed 'Are there any affair between them?' to 'Is there any affair between them?' for correct subject-verb agreement and singular noun usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Now, we are going to choose\nthe new leader"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2335,7 +2451,8 @@
       "revised_6": "We'd find someone to compete\nfor the leadership.",
       "note_6": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2374,7 +2491,8 @@
     "query": {
       "subtitle_1": "Well, I will make\nyour wish come true"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2418,7 +2536,8 @@
       "revised_5": "You are not qualified to be\nthe leader of us.",
       "note_5": "Added a period at the end to complete the sentence."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2438,7 +2557,8 @@
       "revised_3": "But it's unlike\nfrom the standard stances!",
       "note_3": "Corrected 'dislike' to 'unlike' to fix the typographical error."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2494,7 +2614,8 @@
       "revised_31": "We'll have a better living",
       "note_31": "Added 'a' to form the phrase 'a better living' for correct usage."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2509,7 +2630,8 @@
       "subtitle_9": "Yushang didn't make a wrong choice",
       "subtitle_10": "Bravo! Bravo!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2538,14 +2660,15 @@
     "answer": {
       "revised_4": "After getting the\nhelp of Taiwan Pill,",
       "note_4": "Added a comma at the end of the line for correct punctuation within the sentence.",
-      "revised_6": "I can control the 17th stance",
-      "note_6": "Corrected plural 'stances' to singular 'stance' to agree with '17th'.",
+      "revised_6": "I can control the 17 stances",
+      "note_6": "Corrected '17th stances' to '17 stances' for grammatical accuracy.",
       "revised_8": "there is no picture\nor description of it.",
       "note_8": "Added a full stop at the end of the sentence.",
       "revised_9": "I can't understand it at all",
       "note_9": "Inserted 'it' for grammatical completeness."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2575,7 +2698,8 @@
       "revised_3": "I know the Emperor\nloves pretty women",
       "note_3": "Corrected singular 'woman' to plural 'women' to agree with 'pretty' in this generic context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2586,7 +2710,8 @@
       "subtitle_5": "I want to take a bath first,\nbring her to me later",
       "subtitle_6": "Yes"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2595,9 +2720,10 @@
     },
     "answer": {
       "revised_2": "if I let him see His Majesty often,\nmy post will be taken away",
-      "note_2": "Corrected the nonstandard adverb 'oftenly' to 'often'."
+      "note_2": "Corrected 'oftenly' to 'often'."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2610,7 +2736,8 @@
       "revised_3": "Check what has happened",
       "note_3": "Changed 'had' to 'has' for correct tense in this context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2621,14 +2748,16 @@
       "subtitle_5": "Be alert",
       "subtitle_6": "Yes"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "There is smoke ahead,\nlet's get armed",
       "subtitle_2": "Yes"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2650,7 +2779,12 @@
       "subtitle_9": "How dare you frame the courtier?",
       "subtitle_10": "I will kill you if you step forward"
     },
-    "answer": {}
+    "answer": {
+      "revised_5": "Chiu wants to raise a rebellion,",
+      "note_5": "Corrected 'raise a rebel' to 'raise a rebellion' for correct meaning."
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2674,17 +2808,19 @@
       "subtitle_18": "Go on after I left",
       "subtitle_19": "Sure"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "There is smoke ahead,\nsomeone must have alarmed them"
     },
     "answer": {
-      "revised_1": "There is smoke ahead,\nsomeone must have alerted them",
-      "note_1": "Corrected 'alarmed' to 'alerted' for proper usage in this context."
+      "revised_1": "There is smoke ahead,\nsomeone must have alarmed them.",
+      "note_1": "Added a period at the end of the sentence for proper punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2692,7 +2828,12 @@
       "subtitle_2": "Yes",
       "subtitle_3": "Attack the main camp"
     },
-    "answer": {}
+    "answer": {
+      "revised_3": "Attack the main camp.",
+      "note_3": "Added a period at the end of the sentence for proper punctuation."
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2702,7 +2843,8 @@
       "subtitle_4": "Shit, the poisoned smoke",
       "subtitle_5": "is blowing to the Royal camp"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2724,14 +2866,16 @@
     "query": {
       "subtitle_1": "The Unicom Smoke of\nthe Tin Li Sect"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Be calm, urine is the antidote\nto the poison",
       "subtitle_2": "Come and piss"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2739,7 +2883,8 @@
       "subtitle_2": "Don't worry,\nI can give you some urine",
       "subtitle_3": "Come on, hold it"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2767,9 +2912,12 @@
       "revised_3": "The smoke is going\nin the other direction",
       "note_3": "Corrected the preposition from 'to' to 'in' for proper usage in this context.",
       "revised_6": "Bring me the sword",
-      "note_6": "Changed 'Take me the sword' to 'Bring me the sword' to correct the verb choice in this context."
+      "note_6": "Changed 'Take me the sword' to 'Bring me the sword' for correct usage.",
+      "revised_10": "Get lost, don't you want\nto wait for death? Get lost",
+      "note_10": "Added a question mark after 'wait for death' to correct the sentence structure."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2805,7 +2953,8 @@
       "revised_15": "To protect the Emperor",
       "note_15": "Corrected 'to' to 'the' for proper grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2827,7 +2976,8 @@
       "subtitle_1": "You bastard, give your kingdom to me",
       "subtitle_2": "Are you telling him?"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2853,20 +3003,23 @@
       "revised_3": "Are you interested in joining us?",
       "note_3": "Changed 'interested to join' to 'interested in joining' for correct verb pattern."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Did you generate all your force?\nI didn't"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "Fool, only the “Dragon Suppressing\nStances” scare me",
       "subtitle_2": "I won't give a damn\nto any other stances"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2881,7 +3034,8 @@
       "subtitle_9": "Dragon's spirit, dragon's couple",
       "subtitle_10": "Finished"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2906,13 +3060,15 @@
       "subtitle_2": "it's the 18th stance then",
       "subtitle_3": "I am too smart!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "subtitle_1": "The 18 stance, “It's a regret to\nkill the Dragon”!"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2923,7 +3079,12 @@
       "subtitle_5": "Idiot, I am fine",
       "subtitle_6": "I can marry tonight"
     },
-    "answer": {}
+    "answer": {
+      "revised_3": "Your pose is really smart",
+      "note_3": "Corrected 'post' to 'pose' to match the intended meaning."
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2939,9 +3100,10 @@
     },
     "answer": {
       "revised_6": "He became ashes",
-      "note_6": "Changed 'ash' to 'ashes' for correct usage in this context."
+      "note_6": "Corrected 'ash' to 'ashes' for proper usage in this context."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -2966,12 +3128,13 @@
       "note_3": "Added a period at the end of the sentence for correct punctuation.",
       "revised_6": "But I don't like Scholar at all.",
       "note_6": "Added a period at the end of the sentence for correct punctuation.",
-      "revised_7": "I love beggar.",
-      "note_7": "Added a period at the end of the sentence for correct punctuation.",
+      "revised_7": "I love beggars.",
+      "note_7": "Changed 'beggar' to 'beggars' for correct grammar (referring to a group/type, not a single person).",
       "revised_8": "You first, I will go after you.",
       "note_8": "Added a period at the end of the sentence for correct punctuation."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3022,15 +3185,18 @@
     },
     "answer": {
       "revised_9": "we have nothing to chat about",
-      "note_9": "Added 'about' to complete the phrase 'nothing to chat about'.",
+      "note_9": "Added 'about' to complete the phrasal verb 'chat about'.",
+      "revised_10": "You have billions of fellows.",
+      "note_10": "Added a period at the end of the sentence for consistency with surrounding subtitles.",
       "revised_12": "The number of fellows doesn't\ndepend on me,",
       "note_12": "Corrected singular 'fellow' to plural 'fellows' to agree with 'number of', and changed 'doesn't' to match plural subject.",
       "revised_15": "If you are great, making the\nsociety peaceful and wealthy,",
-      "note_15": "Corrected adjective 'peace' to 'peaceful' to modify 'society'.",
+      "note_15": "Corrected 'peace' to the adjective 'peaceful' to match 'wealthy'.",
       "revised_16": "no one wishes to be a beggar, right?",
       "note_16": "Added article 'a' before 'beggar' for correct grammar."
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3058,6 +3224,7 @@
       "subtitle_1": "Say thank you now",
       "subtitle_2": "Thank you, uncle"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]

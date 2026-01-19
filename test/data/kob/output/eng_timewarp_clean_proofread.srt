@@ -357,7 +357,7 @@ You should be frank!
 
 84
 00:06:01,117 --> 00:06:03,828
-Your hat is like
+Your hat, is like
 the mourning uniform!
 
 85
@@ -825,7 +825,7 @@ Chan
 
 194
 00:11:09,092 --> 00:11:10,635
-They send you so valuable a present,
+They send you such a valuable present,
 you'd stop bullying them
 
 195
@@ -918,7 +918,7 @@ So your crime is doubled
 
 215
 00:11:57,967 --> 00:11:59,093
-It may cause capital punishment
+It may lead to capital punishment
 
 216
 00:11:59,177 --> 00:12:01,680
@@ -1030,7 +1030,7 @@ Thus made us
 
 241
 00:13:19,371 --> 00:13:20,914
-being despised by the world
+to be despised by the world
 
 242
 00:13:21,832 --> 00:13:23,208
@@ -1052,8 +1052,8 @@ until he is trapped
 
 246
 00:13:31,756 --> 00:13:34,133
-Because we can't defeat him even
-if we group together
+Because we can't defeat him even if
+we group together
 
 247
 00:13:34,467 --> 00:13:36,010
@@ -1083,7 +1083,7 @@ The pearl of Mr. Chiu is broken
 
 253
 00:13:54,025 --> 00:13:55,985
-by Mr. So and become pearl powder
+by Mr So and became pearl powder
 
 254
 00:13:56,069 --> 00:13:57,362
@@ -1181,7 +1181,7 @@ Please get out
 
 277
 00:14:43,443 --> 00:14:44,569
-I haven't chosen a wrong one
+I haven't chosen the wrong one
 
 278
 00:14:44,652 --> 00:14:46,571
@@ -1205,7 +1205,7 @@ Hands off!
 
 283
 00:15:01,918 --> 00:15:02,961
-You know Kung-fu?
+You know kung fu?
 
 284
 00:15:03,961 --> 00:15:05,670
@@ -1333,7 +1333,7 @@ for our wedding
 
 313
 00:16:23,905 --> 00:16:26,532
-Because this is too easy for me
+Because, this is too easy for me
 to be the Kung-fu scholar!
 
 314
@@ -1530,7 +1530,7 @@ Dad!
 359
 00:20:34,955 --> 00:20:36,540
 I decided to join the examination for the
-scholar of Martial Arts
+Scholar of Martial Arts
 
 360
 00:20:36,873 --> 00:20:38,249
@@ -1543,7 +1543,7 @@ for 25 years
 
 362
 00:20:41,001 --> 00:20:42,753
-For the family of us, you should do that
+For the sake of our family, you should do that
 
 363
 00:20:42,837 --> 00:20:45,006
@@ -1560,7 +1560,7 @@ What a hero!
 
 366
 00:20:47,507 --> 00:20:49,676
-For a girl, you want to be the scholar
+For a girl, you want to be the Scholar
 of Martial Arts!
 
 367
@@ -1629,7 +1629,7 @@ Be careful!
 
 382
 00:21:23,580 --> 00:21:24,331
-Good morning dad
+Good morning Dad
 
 383
 00:21:24,414 --> 00:21:24,998
@@ -1691,7 +1691,7 @@ such a big house!
 
 396
 00:21:48,018 --> 00:21:49,811
-Please, work hard men!
+Please, work hard, men!
 
 397
 00:21:49,895 --> 00:21:53,689
@@ -1756,7 +1756,7 @@ the Deputy Secretary
 411
 00:22:32,139 --> 00:22:35,141
 Hope you will serve our Ching Dynasty
-whole-heartedly
+wholeheartedly
 
 412
 00:22:35,767 --> 00:22:36,851
@@ -1866,7 +1866,7 @@ You can't cheat me
 
 437
 00:26:15,832 --> 00:26:16,750
-You are Dad
+You are a dad.
 
 438
 00:26:16,833 --> 00:26:20,044
@@ -1943,7 +1943,7 @@ Doesn't he seem to be the winner?
 
 455
 00:26:59,453 --> 00:27:00,454
-It depends on the fate
+It depends on fate.
 
 456
 00:27:01,538 --> 00:27:03,540
@@ -1982,7 +1982,7 @@ Don't worry
 
 464
 00:27:14,675 --> 00:27:16,886
-My son is keen in martial arts
+My son is keen on martial arts.
 
 465
 00:27:16,969 --> 00:27:20,305
@@ -2144,7 +2144,7 @@ the audience
 
 501
 00:32:18,520 --> 00:32:21,398
-But he has achieved very hard
+But he has worked very hard
 
 502
 00:32:21,523 --> 00:32:22,940
@@ -2268,7 +2268,7 @@ Bravo…
 531
 00:34:07,572 --> 00:34:10,492
 They should add 2 more marks for that
-powerful shot
+powerful shoot
 
 532
 00:34:10,575 --> 00:34:12,326
@@ -2304,7 +2304,7 @@ Here comes the 2nd round
 
 539
 00:35:19,301 --> 00:35:20,636
-They trick again.
+They tricked again
 
 540
 00:35:21,553 --> 00:35:24,513
@@ -2379,8 +2379,8 @@ It's English
 
 557
 00:37:47,137 --> 00:37:48,597
-There is no regulation stating that
-weapons are not allowed
+There is no regulation stating that a
+weapon is not allowed
 
 558
 00:37:49,014 --> 00:37:52,308
@@ -2544,7 +2544,7 @@ question paper of strategy?
 
 595
 00:40:12,387 --> 00:40:13,388
-That should be tricks
+That should be a trick
 
 596
 00:40:18,100 --> 00:40:19,226
@@ -2669,7 +2669,7 @@ sentenced to death
 625
 00:41:35,375 --> 00:41:37,961
 But their ancestors achieved a lot
-to Ching, they can be exempted
+for Ching, they can be exempted
 
 626
 00:41:38,044 --> 00:41:41,172
@@ -2986,7 +2986,7 @@ That's true
 
 701
 00:45:02,387 --> 00:45:03,221
-Am I like beggar?
+Am I like a beggar?
 
 702
 00:45:03,305 --> 00:45:04,306
@@ -3786,7 +3786,7 @@ Miss, who are you looking for?
 
 891
 00:56:04,041 --> 00:56:05,625
-I am sorry, I have mistaken.
+I am sorry, I was mistaken
 
 892
 00:56:06,084 --> 00:56:07,627
@@ -3845,7 +3845,7 @@ So I bit the dumpling of the kid.
 
 905
 00:56:56,419 --> 00:56:58,004
-I have dumpling, take it back.
+I have a dumpling, take it back
 
 906
 00:56:58,087 --> 00:56:58,879
@@ -4136,7 +4136,7 @@ Thank you…
 975
 01:00:27,684 --> 01:00:28,685
 Uncle Mok, we needn't give red
-pockets to each other
+packets to each other
 
 976
 01:00:28,769 --> 01:00:29,853
@@ -4183,7 +4183,7 @@ the Beggars' Association
 986
 01:00:59,254 --> 01:01:01,590
 So we must choose a new master to
-in-charge the association
+be in charge of the association
 
 987
 01:01:02,881 --> 01:01:04,800
@@ -4812,7 +4812,7 @@ then they went away
 
 1132
 01:11:07,194 --> 01:11:08,362
-Are there any affairs between them?
+Is there any affair between them?
 
 1133
 01:11:20,164 --> 01:11:21,499
@@ -5196,7 +5196,7 @@ My initial power is increased
 
 1221
 01:19:25,625 --> 01:19:28,210
-I can control the 17th stance
+I can control the 17 stances
 
 1222
 01:19:28,627 --> 01:19:31,296
@@ -5394,7 +5394,7 @@ It's you who will be killed
 
 1268
 01:24:40,020 --> 01:24:41,396
-Chiu wants to raise a rebel,
+Chiu wants to raise a rebellion,
 
 1269
 01:24:41,480 --> 01:24:42,982
@@ -5497,7 +5497,7 @@ Sure
 1293
 01:25:42,200 --> 01:25:44,201
 There is smoke ahead,
-someone must have alerted them
+someone must have alarmed them.
 
 1294
 01:25:47,204 --> 01:25:48,038
@@ -5509,7 +5509,7 @@ Yes
 
 1296
 01:25:48,705 --> 01:25:49,664
-Attack the main camp
+Attack the main camp.
 
 1297
 01:26:50,633 --> 01:26:53,845
@@ -5622,7 +5622,7 @@ don't go!
 1322
 01:28:39,435 --> 01:28:42,313
 Get lost, don't you want
-to wait for death, get lost
+to wait for death? Get lost
 
 1323
 01:28:43,731 --> 01:28:44,773
@@ -5865,7 +5865,7 @@ think I am alright?
 
 1380
 01:34:59,597 --> 01:35:00,723
-Your post is really smart
+Your pose is really smart
 
 1381
 01:35:00,806 --> 01:35:02,598
@@ -5947,7 +5947,7 @@ But I don't like Scholar at all.
 
 1400
 01:35:55,853 --> 01:35:57,271
-I love beggar.
+I love beggars.
 
 1401
 01:35:59,232 --> 01:36:00,482
@@ -6031,7 +6031,7 @@ we have nothing to chat about
 
 1420
 01:37:08,750 --> 01:37:10,210
-You have billions of fellows
+You have billions of fellows.
 
 1421
 01:37:10,293 --> 01:37:12,669

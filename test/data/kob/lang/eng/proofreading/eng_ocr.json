@@ -125,7 +125,9 @@
     },
     "answer": {
       "revised_25": "Has your dad passed away?",
-      "note_25": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar."
+      "note_25": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar.",
+      "revised_28": "the emperor will give you an award for this",
+      "note_28": "Changed 'give you award' to 'give you an award' to add the necessary article."
     },
     "difficulty": 1,
     "verified": true

@@ -32,12 +32,12 @@ set_logging_verbosity(2)
 
 actions = {
     # "繁體中文 (OCR)",
-    # "English (OCR)",
+    "English (OCR)",
     # "Bilingual 繁體中文 and English",
     # "繁體粵文 (SRT)",
     # "简体粤文 (SRT)",
-    # "English (SRT)",
-    "Bilingual 简体粤文 and English",
+    "English (SRT)",
+    # "Bilingual 简体粤文 and English",
     # "简体粤文 (Transcription)",
 }
 
