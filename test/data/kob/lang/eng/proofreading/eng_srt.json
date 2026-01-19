@@ -134,8 +134,8 @@
     "answer": {
       "revised_1": "Your Majesty, what do you think about\nthe Cantonese Opera?",
       "note_1": "Changed 'how do you think about' to 'what do you think about' for correct phrasing.",
-      "revised_3": "But, I appreciate\nto view this",
-      "note_3": "Changed 'I am appreciated' to 'I appreciate' to correct the verb form.",
+      "revised_3": "But, I appreciate\nviewing this",
+      "note_3": "Changed 'appreciate to view' to 'appreciate viewing' for correct phrasing.",
       "revised_32": "Has your dad passed away?",
       "note_32": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar.",
       "revised_35": "the emperor will\ngive you an award for this",
@@ -247,10 +247,10 @@
       "note_3": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
       "revised_5": "You are not welcome",
       "note_5": "Corrected 'welcomed' to 'welcome'.",
-      "revised_10": "more than 100,000 taels",
-      "note_10": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
-      "revised_12": "Don't quarrel because of such\na small amount",
-      "note_12": "Added 'a' before 'small amount' for correct grammar."
+      "revised_10": "Yushang will sleep with them",
+      "note_10": "Replaced 'whom' with 'them' to match intended meaning.",
+      "revised_12": "Don't quarrel because of such\na small amount,",
+      "note_12": "Added 'a' before 'small amount' for correct grammar and retained the trailing comma."
     },
     "difficulty": 1,
     "verified": true
@@ -266,7 +266,9 @@
     },
     "answer": {
       "revised_2": "Mr Chiu, I will wait\nfor you in my room",
-      "note_2": "Inserted missing word 'for' in the phrase 'wait for you'."
+      "note_2": "Inserted missing word 'for' in the phrase 'wait for you'.",
+      "revised_3": "Is the pearl worth 100,000 taels?",
+      "note_3": "Changed 'Does the pearl worth $100,000?' to 'Is the pearl worth 100,000 taels?' for correct grammar and currency."
     },
     "difficulty": 1,
     "verified": true
@@ -326,10 +328,7 @@
       "subtitle_4": "it's beggar's fists!",
       "subtitle_5": "That's why it's too weak"
     },
-    "answer": {
-      "revised_2": "Your Tiger's Claws are defeated",
-      "note_2": "Capitalized 'Claws' to match the usage in the following subtitle and for consistency."
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -403,10 +402,10 @@
     "answer": {
       "revised_4": "Courtier is not allowed hooking",
       "note_4": "Corrected 'to' to 'not' for proper meaning and grammar.",
+      "revised_6": "Do you know you have violated\nthe laws of Ching?",
+      "note_6": "Changed 'committed the laws of Ching' to 'violated the laws of Ching' for correct meaning.",
       "revised_8": "- You mean me?\n- Yes!",
       "note_8": "Added a space after the hyphen for consistent dialogue formatting.",
-      "revised_16": "Today is the birthday of\nthe ex-Empress Dowager",
-      "note_16": "Lowercased 'Ex' to 'ex-' to follow standard compound title capitalization.",
       "revised_18": "It may lead to capital punishment",
       "note_18": "Changed 'cause to capital punishment' to 'lead to capital punishment' for correct phrasing."
     },
@@ -434,7 +433,13 @@
       "subtitle_17": "Just forget the trouble",
       "subtitle_18": "Young master, your hat"
     },
-    "answer": {},
+    "answer": {
+      "revised_5": "You can see as much as you want!\nFat-head",
+      "note_5": "Changed 'Fat-headed' to 'Fat-head' for proper insult form.",
+      "revised_15": "Master, you can't fool this guy.\nLet's go",
+      "note_15": "Added a period after 'guy' for correct punctuation."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -462,8 +467,6 @@
       "subtitle_14": "Get ready…"
     },
     "answer": {
-      "revised_3": "and some generals of\nthe Taiping Reign",
-      "note_3": "Changed 'The' to lowercase 'the' in 'the Taiping Reign' for correct capitalization within a sentence.",
       "revised_4": "And he framed us, the Beggars Association,\nto be the assassins",
       "note_4": "Corrected 'assassinators' to 'assassins'.",
       "revised_6": "to be despised by the world",
@@ -494,18 +497,12 @@
       "subtitle_16": "Just accept this"
     },
     "answer": {
-      "revised_1": "Miss Yushang, we meet again.",
-      "note_1": "Added a period at the end of the sentence.",
       "revised_3": "The pearl of Mr. Chiu is broken",
       "note_3": "Added a period after 'Mr' to be consistent with abbreviation formatting.",
       "revised_4": "by Mr So and became pearl powder",
       "note_4": "Changed 'become' to 'became' for correct past tense.",
-      "revised_5": "I have drunk it.",
-      "note_5": "Added a period at the end of the sentence.",
       "revised_6": "Don't judge Mr. So from his hair,",
       "note_6": "Added a period after 'Mr' to be consistent with abbreviation formatting.",
-      "revised_7": "he is really romantic and funny.",
-      "note_7": "Added a period at the end of the sentence.",
       "revised_9": "Stop, I have taken his money,\n100,000 taels, you know?",
       "note_9": "Added a comma after 'taels' for correct punctuation.",
       "revised_10": "I won't give it back.",
@@ -782,16 +779,10 @@
     "answer": {
       "revised_5": "Where should I put my pigtail?",
       "note_5": "Corrected 'pig-tail' to 'pigtail'.",
-      "revised_9": "I decided to join the examination for the\nScholar of Martial Arts",
-      "note_9": "Capitalized 'Scholar' to match the title format used elsewhere.",
       "revised_12": "For the sake of our family, you should do that",
       "note_12": "Changed 'For the family of us' to 'For the sake of our family' for correct phrasing.",
-      "revised_16": "For a girl, you want to be the Scholar\nof Martial Arts!",
-      "note_16": "Capitalized 'Scholar' to match the title format used elsewhere.",
       "revised_30": "If you break my stuff,\nI will teach you a good lesson",
       "note_30": "Added 'a' before 'good lesson' for correct grammar.",
-      "revised_32": "Good morning Dad",
-      "note_32": "Capitalized 'Dad' as a form of address.",
       "revised_36": "Please leave me a cloth",
       "note_36": "Corrected 'clothe' to 'cloth'.",
       "revised_38": "But I am not small",
@@ -1398,8 +1389,6 @@
       "subtitle_57": "It's weird! Let's eat"
     },
     "answer": {
-      "revised_4": "Master, I will take good care of\nLittle Turtle",
-      "note_4": "Capitalized 'Little Turtle' to match its use as a proper name.",
       "revised_52": "Am I like a beggar?",
       "note_52": "Added 'a' before 'beggar' for correct grammar."
     },
@@ -2260,11 +2249,7 @@
       "revised_24": "That means, you will be a beggar\nfor your life",
       "note_24": "Added article 'a' before 'beggar' for correct grammar.",
       "revised_25": "I don't want to talk to you,\nI want to sleep first",
-      "note_25": "Changed 'a sleep' to 'sleep' for natural and correct usage.",
-      "revised_28": "you will be the King of Beggars",
-      "note_28": "Capitalised the title 'King of Beggars' for consistency with it being a formal title.",
-      "revised_29": "King of Beggars,\nwhat does that mean?",
-      "note_29": "Capitalised 'Beggars' in the title for consistency with previous subtitle."
+      "note_25": "Changed 'a sleep' to 'sleep' for natural and correct usage."
     },
     "difficulty": 1,
     "verified": true
@@ -2351,10 +2336,7 @@
       "subtitle_3": "My mother, give me power",
       "subtitle_4": "To save the people!"
     },
-    "answer": {
-      "revised_2": "Here comes the White Goat",
-      "note_2": "Capitalized 'White Goat' as it appears to be a proper noun or title."
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
