@@ -247,8 +247,10 @@
       "note_3": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
       "revised_5": "You are not welcome",
       "note_5": "Corrected 'welcomed' to 'welcome'.",
-      "revised_10": "Yushang will sleep with them",
-      "note_10": "Replaced 'whom' with 'them' to match intended meaning.",
+      "revised_10": "more than 100,000 taels",
+      "note_10": "Changed '$100,000' to '100,000 taels' to match the currency context of the setting.",
+      "revised_11": "Yushang will sleep with them",
+      "note_11": "Replaced 'whom' with 'them' to match intended meaning.",
       "revised_12": "Don't quarrel because of such\na small amount,",
       "note_12": "Added 'a' before 'small amount' for correct grammar and retained the trailing comma."
     },

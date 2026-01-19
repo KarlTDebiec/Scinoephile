@@ -30,6 +30,7 @@ class LineDifferenceType(Enum):
     SPLIT = "split"
     MERGED = "merged"
     MODIFIED = "modified"
+    SHIFTED = "shifted"
 
 
 def _get_series_text_lines(series: Series) -> list[str]:
@@ -92,6 +93,102 @@ def _add_missing_line_msgs(
     )
 
 
+def _add_replace_block_msgs(
+    msgs: list[str],
+    *,
+    one_lines: list[str],
+    two_lines: list[str],
+    one_keys: list[str],
+    two_keys: list[str],
+    one_start: int,
+    one_end: int,
+    two_start: int,
+    two_end: int,
+    one_label: str,
+    two_label: str,
+    similarity_cutoff: float,
+) -> None:
+    """Add messages for a replace opcode block.
+
+    Arguments:
+        msgs: list of messages to append to
+        one_lines: raw lines from first series
+        two_lines: raw lines from second series
+        one_keys: normalized lines from first series
+        two_keys: normalized lines from second series
+        one_start: starting index in first series
+        one_end: ending index in first series
+        two_start: starting index in second series
+        two_end: ending index in second series
+        one_label: label for first series in messages
+        two_label: label for second series in messages
+        similarity_cutoff: similarity cutoff for pairing replacements
+    """
+    one_block = list(range(one_start, one_end))
+    two_block = list(range(two_start, two_end))
+    if len(one_block) == len(two_block):
+        if len(one_block) > 1:
+            one_joined = _normalize_line(" ".join(one_lines[idx] for idx in one_block))
+            two_joined = _normalize_line(" ".join(two_lines[idx] for idx in two_block))
+            joined_ratio = difflib.SequenceMatcher(
+                None, one_joined, two_joined, autojunk=False
+            ).ratio()
+            if joined_ratio >= similarity_cutoff:
+                one_text = [one_lines[idx] for idx in one_block]
+                two_text = [two_lines[idx] for idx in two_block]
+                msgs.append(
+                    f"{LineDifferenceType.SHIFTED.value}: "
+                    f"{one_label}[{one_start + 1}:{one_end + 1}] != "
+                    f"{two_label}[{two_start + 1}:{two_end + 1}]: "
+                    f"{one_text!r} != {two_text!r}"
+                )
+                return
+        for one_idx, two_idx in zip(one_block, two_block, strict=False):
+            ratio = difflib.SequenceMatcher(
+                None, one_keys[one_idx], two_keys[two_idx], autojunk=False
+            ).ratio()
+            if ratio >= similarity_cutoff:
+                msgs.append(
+                    f"{LineDifferenceType.MODIFIED.value}: "
+                    f"{one_label}[{one_idx + 1}] != "
+                    f"{two_label}[{two_idx + 1}]: "
+                    f"{one_lines[one_idx]!r} != {two_lines[two_idx]!r}"
+                )
+            else:
+                msgs.append(
+                    f"{LineDifferenceType.MODIFIED.value}: "
+                    f"{one_label}[{one_idx + 1}] != "
+                    f"{two_label}[{two_idx + 1}]: "
+                    f"{one_lines[one_idx]!r} != {two_lines[two_idx]!r}"
+                )
+        return
+    one_text = [one_lines[idx] for idx in one_block]
+    two_text = [two_lines[idx] for idx in two_block]
+    one_joined = _normalize_line(" ".join(one_lines[idx] for idx in one_block))
+    two_joined = _normalize_line(" ".join(two_lines[idx] for idx in two_block))
+    joined_ratio = difflib.SequenceMatcher(
+        None, one_joined, two_joined, autojunk=False
+    ).ratio()
+    if joined_ratio >= similarity_cutoff:
+        msgs.append(
+            f"{LineDifferenceType.MODIFIED.value}: "
+            f"{one_label}[{one_start + 1}:{one_end + 1}] != "
+            f"{two_label}[{two_start + 1}:{two_end + 1}]: "
+            f"{one_text!r} != {two_text!r}"
+        )
+        return
+    if len(one_block) < len(two_block):
+        diff_type = LineDifferenceType.SPLIT
+    else:
+        diff_type = LineDifferenceType.MERGED
+    msgs.append(
+        f"{diff_type.value}: "
+        f"{one_label}[{one_start + 1}:{one_end + 1}] != "
+        f"{two_label}[{two_start + 1}:{two_end + 1}]: "
+        f"{one_text!r} != {two_text!r}"
+    )
+
+
 def get_series_text_line_differences(
     one: Series,
     two: Series,
@@ -143,41 +240,20 @@ def get_series_text_line_differences(
             continue
         if tag != "replace":
             raise ScinoephileError(f"Unhandled opcode: {tag}")
-
-        one_block = list(range(one_start, one_end))
-        two_block = list(range(two_start, two_end))
-        if len(one_block) == len(two_block):
-            for one_idx, two_idx in zip(one_block, two_block, strict=False):
-                ratio = difflib.SequenceMatcher(
-                    None, one_keys[one_idx], two_keys[two_idx], autojunk=False
-                ).ratio()
-                if ratio >= similarity_cutoff:
-                    msgs.append(
-                        f"{LineDifferenceType.MODIFIED.value}: "
-                        f"{one_label}[{one_idx + 1}] != "
-                        f"{two_label}[{two_idx + 1}]: "
-                        f"{one_lines[one_idx]!r} != {two_lines[two_idx]!r}"
-                    )
-                else:
-                    msgs.append(
-                        f"{LineDifferenceType.MODIFIED.value}: "
-                        f"{one_label}[{one_idx + 1}] != "
-                        f"{two_label}[{two_idx + 1}]: "
-                        f"{one_lines[one_idx]!r} != {two_lines[two_idx]!r}"
-                    )
-        else:
-            one_text = [one_lines[idx] for idx in one_block]
-            two_text = [two_lines[idx] for idx in two_block]
-            if len(one_block) < len(two_block):
-                diff_type = LineDifferenceType.SPLIT
-            else:
-                diff_type = LineDifferenceType.MERGED
-            msgs.append(
-                f"{diff_type.value}: "
-                f"{one_label}[{one_start + 1}:{one_end + 1}] != "
-                f"{two_label}[{two_start + 1}:{two_end + 1}]: "
-                f"{one_text!r} != {two_text!r}"
-            )
+        _add_replace_block_msgs(
+            msgs,
+            one_lines=one_lines,
+            two_lines=two_lines,
+            one_keys=one_keys,
+            two_keys=two_keys,
+            one_start=one_start,
+            one_end=one_end,
+            two_start=two_start,
+            two_end=two_end,
+            one_label=one_label,
+            two_label=two_label,
+            similarity_cutoff=similarity_cutoff,
+        )
 
     return msgs
 

@@ -8,6 +8,7 @@ import re
 from copy import deepcopy
 from logging import info
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 __all__ = [
@@ -70,4 +71,8 @@ def _get_eng_text_flattened(text: str) -> str:
         flattened,
         flags=re.M,
     )
+    if "\n" in flattened:
+        raise ScinoephileError(
+            f"English text flattening did not produce a single line: {flattened!r}"
+        )
     return flattened
