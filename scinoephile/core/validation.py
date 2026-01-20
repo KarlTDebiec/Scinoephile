@@ -88,7 +88,7 @@ class LineDiffer:
         one_lbl: str = "one",
         two_lbl: str = "two",
         similarity_cutoff: float = 0.6,
-    ) -> None:
+    ):
         """Initialize line differ state.
 
         Arguments:
@@ -138,31 +138,29 @@ class LineDiffer:
         normalized = re.sub(r"\s+", " ", stripped).strip()
         return normalized
 
-    def _add_delete_msgs(self, indices: list[int]) -> None:
-        """Add messages for lines deleted from the second series."""
-        for idx in indices:
-            self.msgs.append(
-                LineDiff(
-                    kind=LineDiffKind.DELETE,
-                    one_lbl=self.one_lbl,
-                    two_lbl=self.two_lbl,
-                    one_idxs=[idx],
-                    one_txts=[self.one_lines[idx]],
-                )
+    def _process_delete(self, one_start: int, one_end: int):
+        """Process delete opcode block."""
+        for idx in range(one_start, one_end):
+            msg = LineDiff(
+                kind=LineDiffKind.DELETE,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=[idx],
+                one_txts=[self.one_lines[idx]],
             )
+            self.msgs.append(msg)
 
-    def _add_insert_msgs(self, indices: list[int]) -> None:
-        """Add messages for lines inserted in the second series."""
-        for idx in indices:
-            self.msgs.append(
-                LineDiff(
-                    kind=LineDiffKind.INSERT,
-                    one_lbl=self.two_lbl,
-                    two_lbl=self.one_lbl,
-                    one_idxs=[idx],
-                    one_txts=[self.two_lines[idx]],
-                )
+    def _process_insert(self, two_start: int, two_end: int):
+        """Process insert opcode block."""
+        for idx in range(two_start, two_end):
+            msg = LineDiff(
+                kind=LineDiffKind.INSERT,
+                one_lbl=self.two_lbl,
+                two_lbl=self.one_lbl,
+                one_idxs=[idx],
+                one_txts=[self.two_lines[idx]],
             )
+            self.msgs.append(msg)
 
     def _append_block_msg(
         self,
@@ -170,7 +168,7 @@ class LineDiffer:
         diff_type: LineDiffKind,
         one_slice: list[int],
         two_slice: list[int],
-    ) -> None:
+    ):
         """Append a block-level message."""
         one_text = [self.one_lines[idx] for idx in one_slice]
         two_text = [self.two_lines[idx] for idx in two_slice]
@@ -191,7 +189,7 @@ class LineDiffer:
         *,
         one_idx: int,
         two_idx: int,
-    ) -> None:
+    ):
         """Append an edited-line message."""
         self.msgs.append(
             LineDiff(
@@ -205,12 +203,7 @@ class LineDiffer:
             )
         )
 
-    def _add_replace_block_equal_msgs(
-        self,
-        *,
-        one_block: list[int],
-        two_block: list[int],
-    ) -> None:
+    def _process_replace_equal(self, one_block: list[int], two_block: list[int]):
         """Add messages for equal-sized replace blocks."""
         if len(one_block) == 2 and len(two_block) == 2:
             two_joined = self._normalize_line(
@@ -221,7 +214,7 @@ class LineDiffer:
             if merged_key == two_joined.casefold() and all(
                 missing_key != self.two_keys[idx].casefold() for idx in two_block
             ):
-                self._add_delete_msgs([one_block[0]])
+                self._process_delete(one_start=one_block[0], one_end=one_block[0] + 1)
                 self._append_block_msg(
                     diff_type=LineDiffKind.SPLIT,
                     one_slice=[one_block[1]],
@@ -257,12 +250,11 @@ class LineDiffer:
         for one_idx, two_idx in zip(one_block, two_block, strict=False):
             self._append_modified_msg(one_idx=one_idx, two_idx=two_idx)
 
-    def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
+    def _process_replace_unequal(  # noqa: PLR0912, PLR0915
         self,
-        *,
         one_block: list[int],
         two_block: list[int],
-    ) -> None:
+    ):
         """Add messages for unequal-sized replace blocks."""
         i = 0
         j = 0
@@ -484,7 +476,7 @@ class LineDiffer:
                     None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
                 ).ratio()
                 if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
-                    self._add_delete_msgs([one_idx])
+                    self._process_delete(one_start=one_idx, one_end=one_idx + 1)
                     self._append_modified_msg(
                         one_idx=one_block[i + 1],
                         two_idx=two_idx,
@@ -582,32 +574,21 @@ class LineDiffer:
             )
             return
         if i < len(one_block):
-            self._add_delete_msgs(one_block[i:])
+            self._process_delete(one_start=one_block[i], one_end=one_block[-1] + 1)
             return
         if j < len(two_block):
-            self._add_insert_msgs(two_block[j:])
+            self._process_insert(two_start=two_block[j], two_end=two_block[-1] + 1)
 
-    def _add_replace_block_msgs(
-        self,
-        *,
-        one_start: int,
-        one_end: int,
-        two_start: int,
-        two_end: int,
-    ) -> None:
-        """Add messages for a replace opcode block."""
+    def _process_replace(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
+    ):
+        """Process replace opcode block."""
         one_block = list(range(one_start, one_end))
         two_block = list(range(two_start, two_end))
         if len(one_block) == len(two_block):
-            self._add_replace_block_equal_msgs(
-                one_block=one_block,
-                two_block=two_block,
-            )
+            self._process_replace_equal(one_block, two_block)
             return
-        self._add_replace_block_unequal_msgs(
-            one_block=one_block,
-            two_block=two_block,
-        )
+        self._process_replace_unequal(one_block, two_block)
 
     def diff(self) -> list[LineDiff]:
         """Compare subtitle series by line content.
@@ -622,18 +603,14 @@ class LineDiffer:
             if tag == "equal":
                 continue
             if tag == "delete":
-                self._add_delete_msgs(list(range(one_start, one_end)))
+                self._process_delete(one_start, one_end)
                 continue
             if tag == "insert":
-                self._add_insert_msgs(list(range(two_start, two_end)))
+                self._process_insert(two_start, two_end)
                 continue
             if tag == "replace":
-                self._add_replace_block_msgs(
-                    one_start=one_start,
-                    one_end=one_end,
-                    two_start=two_start,
-                    two_end=two_end,
-                )
+                self._process_replace(one_start, one_end, two_start, two_end)
+                continue
             raise ScinoephileError(f"Unhandled opcode: {tag}")
 
         return self.msgs
@@ -643,6 +620,11 @@ def get_series_diff(
     one: Series,
     two: Series,
     line_differ: LineDiffer | None = None,
+    *,
+    one_lbl: str = "one",
+    two_lbl: str = "two",
+    similarity_cutoff: float = 0.6,
+    **kwargs: Any,
 ) -> list[LineDiff]:
     """Compare two subtitle series by line content.
 
@@ -650,22 +632,51 @@ def get_series_diff(
         one: First subtitle series
         two: Second subtitle series
         line_differ: preconfigured LineDiffer instance
+        one_lbl: label for first series in messages
+        two_lbl: label for second series in messages
+        similarity_cutoff: similarity cutoff for pairing replacements
+        **kwargs: additional keyword arguments for get_line_differ
     Returns:
         list of difference messages
     """
     if line_differ is None:
-        line_differ = get_line_differ()
-    return line_differ.diff(one, two)
+        line_differ = get_line_differ(
+            one,
+            two,
+            one_lbl=one_lbl,
+            two_lbl=two_lbl,
+            similarity_cutoff=similarity_cutoff,
+            **kwargs,
+        )
+    return line_differ.diff()
 
 
-def get_line_differ(one: Series, two: Series, **kwargs: Any) -> LineDiffer:
+def get_line_differ(
+    one: Series,
+    two: Series,
+    *,
+    one_lbl: str = "one",
+    two_lbl: str = "two",
+    similarity_cutoff: float = 0.6,
+    **kwargs: Any,
+) -> LineDiffer:
     """Get LineDiffer with provided configuration.
 
     Arguments:
         one: first subtitle series
         two: second subtitle series
+        one_lbl: label for first series in messages
+        two_lbl: label for second series in messages
+        similarity_cutoff: similarity cutoff for pairing replacements
         **kwargs: additional keyword arguments for LineDiffer
     Returns:
         LineDiffer with provided configuration
     """
-    return LineDiffer(one, two, **kwargs)
+    return LineDiffer(
+        one,
+        two,
+        one_lbl=one_lbl,
+        two_lbl=two_lbl,
+        similarity_cutoff=similarity_cutoff,
+        **kwargs,
+    )
