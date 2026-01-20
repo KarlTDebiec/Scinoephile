@@ -208,6 +208,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
     """Add messages for unequal-sized replace blocks."""
     i = 0
     j = 0
+    last_was_split = False
     while i < len(one_block) and j < len(two_block):
         one_idx = one_block[i]
         two_idx = two_block[j]
@@ -245,6 +246,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 )
                 i += 1
                 j += 2
+                last_was_split = True
                 continue
         ratio = difflib.SequenceMatcher(
             None, one_keys[one_idx], two_keys[two_idx], autojunk=False
@@ -261,6 +263,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             )
             i += 1
             j += 1
+            last_was_split = False
             continue
         if j + 1 < len(two_block):
             two_joined = _normalize_line(
@@ -270,23 +273,25 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 None, one_keys[one_idx], two_joined, autojunk=False
             ).ratio()
             if merged_ratio >= similarity_cutoff:
-                if len(one_block) == 1:
-                    diff_type = (
-                        LineDifferenceType.SPLIT
-                        if one_keys[one_idx] == two_joined
-                        else LineDifferenceType.SPLIT_MODIFIED
-                    )
+                one_slice = [one_idx]
+                two_slice = [two_block[j], two_block[j + 1]]
+                if one_keys[one_idx] == two_joined:
+                    split_type = LineDifferenceType.SPLIT
+                    merged_type = LineDifferenceType.MERGED
                 else:
-                    diff_type = (
-                        LineDifferenceType.MERGED
-                        if one_keys[one_idx] == two_joined
-                        else LineDifferenceType.MERGED_MODIFIED
-                    )
+                    split_type = LineDifferenceType.SPLIT_MODIFIED
+                    merged_type = LineDifferenceType.MERGED_MODIFIED
+                if i == 0 or last_was_split:
+                    diff_type = split_type
+                    last_was_split = True
+                else:
+                    diff_type = merged_type
+                    last_was_split = False
                 _append_block_msg(
                     msgs,
                     diff_type=diff_type,
-                    one_slice=[one_idx],
-                    two_slice=[two_block[j], two_block[j + 1]],
+                    one_slice=one_slice,
+                    two_slice=two_slice,
                     one_lines=one_lines,
                     two_lines=two_lines,
                     one_label=one_label,
@@ -296,6 +301,24 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 j += 2
                 continue
         if len(two_block) == 1 and i + 1 < len(one_block):
+            one_joined = _normalize_line(
+                f"{one_lines[one_block[i]]} {one_lines[one_block[i + 1]]}"
+            )
+            if one_joined == two_keys[two_idx]:
+                _append_block_msg(
+                    msgs,
+                    diff_type=LineDifferenceType.SPLIT,
+                    one_slice=[one_block[i], one_block[i + 1]],
+                    two_slice=[two_idx],
+                    one_lines=one_lines,
+                    two_lines=two_lines,
+                    one_label=one_label,
+                    two_label=two_label,
+                )
+                i += 2
+                j += 1
+                last_was_split = True
+                continue
             ratio_next = difflib.SequenceMatcher(
                 None, one_keys[one_block[i + 1]], two_keys[two_idx], autojunk=False
             ).ratio()
@@ -322,6 +345,33 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 )
                 i += 2
                 j += 1
+                last_was_split = False
+                continue
+            one_joined = _normalize_line(
+                f"{one_lines[one_block[i]]} {one_lines[one_block[i + 1]]}"
+            )
+            split_ratio = difflib.SequenceMatcher(
+                None, one_joined, two_keys[two_idx], autojunk=False
+            ).ratio()
+            if split_ratio >= similarity_cutoff:
+                diff_type = (
+                    LineDifferenceType.SPLIT
+                    if one_joined == two_keys[two_idx]
+                    else LineDifferenceType.SPLIT_MODIFIED
+                )
+                _append_block_msg(
+                    msgs,
+                    diff_type=diff_type,
+                    one_slice=[one_block[i], one_block[i + 1]],
+                    two_slice=[two_idx],
+                    one_lines=one_lines,
+                    two_lines=two_lines,
+                    one_label=one_label,
+                    two_label=two_label,
+                )
+                i += 2
+                j += 1
+                last_was_split = True
                 continue
         if i + 1 < len(one_block):
             one_joined = _normalize_line(
@@ -348,6 +398,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 )
                 i += 2
                 j += 1
+                last_was_split = True
                 continue
         _append_modified_msg(
             msgs,
@@ -360,6 +411,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
         )
         i += 1
         j += 1
+        last_was_split = False
     if i < len(one_block) and j < len(two_block):
         one_slice = one_block[i:]
         two_slice = two_block[j:]

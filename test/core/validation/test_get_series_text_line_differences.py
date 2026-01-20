@@ -206,6 +206,31 @@ def test_get_series_text_line_differences_kob(
             "modified: OCR[570] != SRT[584]: "
             "'Is Miss Yushang his mom?' != 'Is Miss Yushang your mom?'"
         ),
+        (
+            "split: OCR[599:600] != SRT[613:615]: "
+            "['- Kill me    - No, kill me'] != ['Kill me', 'No, kill me']"
+        ),
+        (
+            "split_modified: OCR[600:601] != SRT[615:617]: "
+            '["- Kill me.    - Your Majesty, you\'d better kill me"] != '
+            "['Kill me', \"Your Majesty, you'd better kill me\"]"
+        ),
+        (
+            "split: OCR[607:608] != SRT[623:625]: "
+            '["So\'s family should be sentenced to death"] != '
+            "[\"So's family should be\", 'sentenced to death']"
+        ),
+        (
+            "modified: OCR[612] != SRT[629]: "
+            '"So, he didn\'t miscarry out any duty" != '
+            '"So, he didn\'t miscarry any duty"'
+        ),
+        (
+            "split: OCR[621:623] != SRT[638:639]: "
+            "[\"Why couldn't you find out\", 'they cheated during the examination?'] "
+            "!= "
+            '["Why couldn\'t you find out they cheated during the examination?"]'
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
