@@ -7,11 +7,11 @@
 from __future__ import annotations
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.validation import get_series_diff
+from scinoephile.core.validation import LineDiff, get_series_diff
 
 
 def _assert_expected_differences(
-    differences: list[str],
+    differences: list[LineDiff],
     expected: list[str],
 ) -> None:
     """Assert that expected differences are present.
@@ -20,7 +20,8 @@ def _assert_expected_differences(
         differences: list of differences to check
         expected: list of expected difference strings
     """
-    missing = [diff for diff in expected if diff not in differences]
+    formatted_differences = [str(diff) for diff in differences]
+    missing = [diff for diff in expected if diff not in formatted_differences]
     if missing:
         formatted = "\n".join(missing)
         raise AssertionError(f"Missing expected differences:\n{formatted}")
