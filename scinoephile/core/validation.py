@@ -182,8 +182,10 @@ class SeriesDiff:
                 self._process_delete(one_start=one_block[0], one_end=one_block[0] + 1)
                 self._append_block_msg(
                     diff_type=LineDiffKind.SPLIT,
-                    one_slice=[one_block[1]],
-                    two_slice=two_block,
+                    one_start=one_block[1],
+                    one_end=one_block[1] + 1,
+                    two_start=two_block[0],
+                    two_end=two_block[-1] + 1,
                 )
                 return
         if len(one_block) > 1:
@@ -208,12 +210,14 @@ class SeriesDiff:
             ):
                 self._append_block_msg(
                     diff_type=LineDiffKind.SHIFT,
-                    one_slice=one_block,
-                    two_slice=two_block,
+                    one_start=one_block[0],
+                    one_end=one_block[-1] + 1,
+                    two_start=two_block[0],
+                    two_end=two_block[-1] + 1,
                 )
                 return
         for one_idx, two_idx in zip(one_block, two_block, strict=False):
-            self._append_modified_msg(one_idx=one_idx, two_idx=two_idx)
+            self._append_modified_msg(one_idx, two_idx)
 
     def _process_replace_unequal(self, one_block: list[int], two_block: list[int]):
         """Add messages for unequal-sized replace blocks."""
@@ -230,8 +234,10 @@ class SeriesDiff:
                 if one_joined == self.two_keys[two_idx]:
                     self._append_block_msg(
                         diff_type=LineDiffKind.MERGE,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=[two_idx],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_idx,
+                        two_end=two_idx + 1,
                     )
                     i += 2
                     j += 1
@@ -254,8 +260,10 @@ class SeriesDiff:
                 ):
                     self._append_block_msg(
                         diff_type=LineDiffKind.MERGE_EDIT,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=[two_idx],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_idx,
+                        two_end=two_idx + 1,
                     )
                     i += 2
                     j += 1
@@ -299,13 +307,17 @@ class SeriesDiff:
                     )
                     self._append_block_msg(
                         diff_type=first_type,
-                        one_slice=[one_idx],
-                        two_slice=[two_block[j], two_block[j + 1]],
+                        one_start=one_idx,
+                        one_end=one_idx + 1,
+                        two_start=two_block[j],
+                        two_end=two_block[j + 1] + 1,
                     )
                     self._append_block_msg(
                         diff_type=second_type,
-                        one_slice=[one_block[i + 1]],
-                        two_slice=[two_block[j + 2], two_block[j + 3]],
+                        one_start=one_block[i + 1],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_block[j + 2],
+                        two_end=two_block[j + 3] + 1,
                     )
                     i += 2
                     j += 4
@@ -335,8 +347,10 @@ class SeriesDiff:
                     )
                     self._append_block_msg(
                         diff_type=diff_type,
-                        one_slice=[one_idx],
-                        two_slice=[two_block[j], two_block[j + 1]],
+                        one_start=one_idx,
+                        one_end=one_idx + 1,
+                        two_start=two_block[j],
+                        two_end=two_block[j + 1] + 1,
                     )
                     i += 1
                     j += 2
@@ -367,8 +381,10 @@ class SeriesDiff:
                     )
                     self._append_block_msg(
                         diff_type=diff_type,
-                        one_slice=[one_idx],
-                        two_slice=[two_block[j], two_block[j + 1]],
+                        one_start=one_idx,
+                        one_end=one_idx + 1,
+                        two_start=two_block[j],
+                        two_end=two_block[j + 1] + 1,
                     )
                     i += 1
                     j += 2
@@ -378,7 +394,7 @@ class SeriesDiff:
                 None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
             ).ratio()
             if ratio >= self.similarity_cutoff:
-                self._append_modified_msg(one_idx=one_idx, two_idx=two_idx)
+                self._append_modified_msg(one_idx, two_idx)
                 i += 1
                 j += 1
                 last_was_split = False
@@ -407,8 +423,10 @@ class SeriesDiff:
                         last_was_split = False
                     self._append_block_msg(
                         diff_type=diff_type,
-                        one_slice=one_slice,
-                        two_slice=two_slice,
+                        one_start=one_slice[0],
+                        one_end=one_slice[-1] + 1,
+                        two_start=two_slice[0],
+                        two_end=two_slice[-1] + 1,
                     )
                     i += 1
                     j += 2
@@ -420,8 +438,10 @@ class SeriesDiff:
                 if one_joined == self.two_keys[two_idx]:
                     self._append_block_msg(
                         diff_type=LineDiffKind.MERGE,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=[two_idx],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_idx,
+                        two_end=two_idx + 1,
                     )
                     i += 2
                     j += 1
@@ -438,10 +458,7 @@ class SeriesDiff:
                 ).ratio()
                 if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
                     self._process_delete(one_start=one_idx, one_end=one_idx + 1)
-                    self._append_modified_msg(
-                        one_idx=one_block[i + 1],
-                        two_idx=two_idx,
-                    )
+                    self._append_modified_msg(one_block[i + 1], two_idx)
                     i += 2
                     j += 1
                     last_was_split = False
@@ -460,8 +477,10 @@ class SeriesDiff:
                     )
                     self._append_block_msg(
                         diff_type=diff_type,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=[two_idx],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_idx,
+                        two_end=two_idx + 1,
                     )
                     i += 2
                     j += 1
@@ -477,8 +496,10 @@ class SeriesDiff:
                 if one_joined == two_joined:
                     self._append_block_msg(
                         diff_type=LineDiffKind.SPLIT,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=two_block[j:],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_block[j],
+                        two_end=two_block[-1] + 1,
                     )
                     return
             if i + 1 < len(one_block):
@@ -496,14 +517,16 @@ class SeriesDiff:
                     )
                     self._append_block_msg(
                         diff_type=diff_type,
-                        one_slice=[one_block[i], one_block[i + 1]],
-                        two_slice=[two_idx],
+                        one_start=one_block[i],
+                        one_end=one_block[i + 1] + 1,
+                        two_start=two_idx,
+                        two_end=two_idx + 1,
                     )
                     i += 2
                     j += 1
                     last_was_split = True
                     continue
-            self._append_modified_msg(one_idx=one_idx, two_idx=two_idx)
+            self._append_modified_msg(one_idx, two_idx)
             i += 1
             j += 1
             last_was_split = False
@@ -530,8 +553,10 @@ class SeriesDiff:
                 )
             self._append_block_msg(
                 diff_type=diff_type,
-                one_slice=one_slice,
-                two_slice=two_slice,
+                one_start=one_slice[0],
+                one_end=one_slice[-1] + 1,
+                two_start=two_slice[0],
+                two_end=two_slice[-1] + 1,
             )
             return
         if i < len(one_block):
@@ -542,12 +567,15 @@ class SeriesDiff:
 
     def _append_block_msg(
         self,
-        *,
         diff_type: LineDiffKind,
-        one_slice: list[int],
-        two_slice: list[int],
+        one_start: int,
+        one_end: int,
+        two_start: int,
+        two_end: int,
     ):
         """Append a block-level message."""
+        one_slice = list(range(one_start, one_end))
+        two_slice = list(range(two_start, two_end))
         one_text = [self.one_lines[idx] for idx in one_slice]
         two_text = [self.two_lines[idx] for idx in two_slice]
         self.msgs.append(
@@ -562,12 +590,7 @@ class SeriesDiff:
             )
         )
 
-    def _append_modified_msg(
-        self,
-        *,
-        one_idx: int,
-        two_idx: int,
-    ):
+    def _append_modified_msg(self, one_idx: int, two_idx: int):
         """Append an edited-line message."""
         self.msgs.append(
             LineDiff(
