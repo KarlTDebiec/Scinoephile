@@ -479,6 +479,187 @@ def test_get_series_text_line_differences_kob(
             "'Are you interested to join us?' != "
             "'Are you interested in joining us?'"
         ),
+        "added: SRT[8] 'Damn!' not present in OCR",
+        (
+            "modified: OCR[632] != SRT[648]: "
+            '"you\'d be hardworking to learn how to write" != '
+            '"you\'d be hard working to learn how to write"'
+        ),
+        (
+            "split: OCR[801:802] != SRT[830:832]: "
+            "['I will make the last herbal tea for you later'] != "
+            "['I will make the last herbal tea', 'for you later']"
+        ),
+        (
+            "split_modified: OCR[939:940] != SRT[973:975]: "
+            "['- Wish you ever beauty    - Thank you'] != "
+            "['Wish you ever beauty', 'Thank you…']"
+        ),
+        (
+            "modified: OCR[945] != SRT[980]: "
+            "'I will cook you some new year cake' != "
+            "'I will cook you some new year cakes'"
+        ),
+        (
+            "modified: OCR[950] != SRT[985]: "
+            '"To fight against Chiu, we need a union of the Beggar\'s Association" != '
+            '"To fight against Chiu, we need a union of the Beggars\' Association"'
+        ),
+        (
+            "modified: OCR[955] != SRT[990]: "
+            '"Uncle, I don\'t have faith to defeat them" != '
+            '"Uncle, I don\'t have faith in defeating them"'
+        ),
+        (
+            "split: OCR[986:987] != SRT[1020:1022]: "
+            "['Son, I tried very hard to get this for you'] != "
+            "['Son,', 'I tried very hard to get this for you']"
+        ),
+        (
+            "modified: OCR[995] != SRT[1030]: "
+            "\"It's ugly, it's right to wipe it away\" != "
+            "\"It's ugly, it's right to wipe it away.\""
+        ),
+        (
+            "split: OCR[1000:1001] != SRT[1035:1037]: "
+            "['- Is there anything to eat?    - No'] != "
+            "['Is there anything to eat?', 'No']"
+        ),
+        (
+            "split: OCR[1002:1003] != SRT[1038:1040]: "
+            '["See your look, it\'s a waste for you not to beg"] != '
+            "['See your look,', \"it's a waste for you not to beg\"]"
+        ),
+        "modified: OCR[1028] != SRT[1065]: 'Who are you?' != 'What are you?'",
+        (
+            "modified: OCR[1050] != SRT[1087]: "
+            '"I won\'t care who you are, I just want to stop the conversation" != '
+            '"I won\'t care who you are, I just want to stop the conversation."'
+        ),
+        (
+            "modified: OCR[1065] != SRT[1101]: "
+            "'Hope you can make good use of it. Come on' != "
+            "'Hope you can make good use of it Come on'"
+        ),
+        "added: SRT[1127] 'Ask that old bag to hand us the waddy' not present in OCR",
+        (
+            "modified: OCR[1099] != SRT[1136]: "
+            '"I think you won\'t come back" != "I think you won\'t come back."'
+        ),
+        (
+            "modified: OCR[1102] != SRT[1139]: "
+            '"We\'d better find someone to compete for the leadership" != '
+            '"We\'d find someone to compete for the leadership."'
+        ),
+        "modified: OCR[1122] != SRT[1159]: 'I won' != 'I won.'",
+        (
+            "modified: OCR[1125] != SRT[1162]: "
+            "'You are not qualified to be the leader of us' != "
+            "'You are not qualified to be the leader of us.'"
+        ),
+        (
+            "modified: OCR[1129] != SRT[1166]: "
+            '"But it\'s different from the standard stances!" != '
+            '"But it\'s unlike from the standard stances!"'
+        ),
+        (
+            "modified: OCR[1138] != SRT[1175]: "
+            "'We becomes the biggest association' != "
+            "'We become the biggest association'"
+        ),
+        (
+            "modified: OCR[1155] != SRT[1192]: "
+            "'whole-heartedly, to care much for him, maybe, treat him dinner' != "
+            "'whole-heartedly, to care much for him, maybe treat him dinner'"
+        ),
+        (
+            "modified: OCR[1162] != SRT[1199]: "
+            "'They are easily to be cheated, I am really a genius!' != "
+            "'They are easily cheated, I am really a genius!'"
+        ),
+        (
+            "modified: OCR[1163] != SRT[1200]: "
+            '"We\'ll have better living" != "We\'ll have a better living"'
+        ),
+        (
+            "modified: OCR[1182] != SRT[1219]: "
+            "'After getting the help of Taiwan Pill' != "
+            "'After getting the help of Taiwan Pill,'"
+        ),
+        (
+            "modified: OCR[1186] != SRT[1223]: "
+            "'there is no picture or description of it' != "
+            "'there is no picture or description of it.'"
+        ),
+        (
+            "modified: OCR[1187] != SRT[1224]: "
+            '"I can\'t understand at all" != "I can\'t understand it at all"'
+        ),
+        (
+            "split: OCR[1216:1217] != SRT[1253:1255]: "
+            "['- Check what has happened    - Yes'] != "
+            "['Check what has happened', 'Yes']"
+        ),
+        (
+            "split_modified: OCR[1253:1254] != SRT[1291:1293]: "
+            '["- Go on after I\'ve left    - Sure"] != '
+            "['Go on after I left', 'Sure']"
+        ),
+        (
+            "split_modified: OCR[1255:1256] != SRT[1294:1296]: "
+            "['- Get ready the Unicom Smoke.    - Yes.'] != "
+            "['Get ready the Unicom Smoke', 'Yes']"
+        ),
+        (
+            "shifted: OCR[1295:1297] != SRT[1335:1337]: "
+            "['- Really?    - Yes', 'Then I want to eat a sweet potato'] != "
+            "['Really?', 'Yes, then I want to eat a sweet potato']"
+        ),
+        (
+            "modified: OCR[1334] != SRT[1374]: "
+            '"I\'ve got it. Just mix the 17 stances," != '
+            '"I\'ve got it Just mix the 17 stances,"'
+        ),
+        "modified: OCR[1344] != SRT[1384]: 'You are great!' != 'Sister!'",
+        "modified: OCR[1345] != SRT[1385]: 'Chan! Are you okay?' != 'Tracy!'",
+        (
+            "modified: OCR[1352] != SRT[1392]: "
+            '"Chiu\'s fellows have all been caught by us" != '
+            '"Chiu\'s fellows are all caught by us"'
+        ),
+        (
+            "modified: OCR[1356] != SRT[1396]: "
+            "'Yes, be the top of all' != 'Yes, be the top of all.'"
+        ),
+        (
+            "modified: OCR[1359] != SRT[1399]: "
+            '"But I don\'t like Scholar at all" != '
+            '"But I don\'t like Scholar at all."'
+        ),
+        (
+            "modified: OCR[1361] != SRT[1401]: "
+            "'You first, I will go after you' != "
+            "'You first, I will go after you.'"
+        ),
+        "missing: OCR[1372] 'Pick me up' not present in SRT",
+        "modified: OCR[1374] != SRT[1413]: 'Put me down' != 'Put it down'",
+        (
+            "modified: OCR[1377] != SRT[1416]: "
+            '"If so, you needn\'t squat to talk to me" != '
+            '"If so, you needn\'t squat and talk to me"'
+        ),
+        (
+            "split: OCR[1388:1389] != SRT[1427:1429]: "
+            '["- It\'s reasonable    - Be smart"] != '
+            "[\"It's reasonable\", 'Be smart']"
+        ),
+        (
+            "shifted: OCR[1392:1394] != SRT[1432:1434]: "
+            "['Long life…', '- … to Your Majesty    - Get up'] != "
+            "['Long life to Your Majesty', 'Get up']"
+        ),
+        "missing: OCR[1411] 'Hurry up' not present in SRT",
+        "missing: OCR[1412] 'Follow me… go…' not present in SRT",
     ]
     _assert_expected_differences(differences, expected)
     print()
