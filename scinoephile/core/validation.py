@@ -161,38 +161,35 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process replace opcode block."""
-        one_block = list(range(one_start, one_end))
-        two_block = list(range(two_start, two_end))
-        if len(one_block) == len(two_block):
-            self._process_replace_equal(one_block, two_block)
+        one_blk = list(range(one_start, one_end))
+        two_blk = list(range(two_start, two_end))
+        if len(one_blk) == len(two_blk):
+            self._process_replace_equal(one_blk, two_blk)
             return
-        self._process_replace_unequal(one_block, two_block)
+        self._process_replace_unequal(one_blk, two_blk)
 
-    def _process_replace_equal(self, one_block: list[int], two_block: list[int]):
+    def _process_replace_equal(self, one_blk: list[int], two_blk: list[int]):
         """Add messages for equal-sized replace blocks."""
-        if len(one_block) == 2 and len(two_block) == 2:
+        if len(one_blk) == 2 and len(two_blk) == 2:
             two_joined = self._normalize_line(
-                " ".join(self.two_lines[idx] for idx in two_block)
+                " ".join(self.two_lines[idx] for idx in two_blk)
             )
-            missing_key = self.one_keys[one_block[0]].casefold()
-            merged_key = self.one_keys[one_block[1]].casefold()
+            missing_key = self.one_keys[one_blk[0]].casefold()
+            merged_key = self.one_keys[one_blk[1]].casefold()
             if merged_key == two_joined.casefold() and all(
-                missing_key != self.two_keys[idx].casefold() for idx in two_block
+                missing_key != self.two_keys[idx].casefold() for idx in two_blk
             ):
-                self._process_delete(one_start=one_block[0], one_end=one_block[0] + 1)
+                self._process_delete(one_start=one_blk[0], one_end=one_blk[0] + 1)
                 self._process_split(
-                    one_start=one_block[1],
-                    one_end=one_block[1] + 1,
-                    two_start=two_block[0],
-                    two_end=two_block[-1] + 1,
+                    one_blk[1], one_blk[1] + 1, two_blk[0], two_blk[-1] + 1
                 )
                 return
-        if len(one_block) > 1:
+        if len(one_blk) > 1:
             one_joined = self._normalize_line(
-                " ".join(self.one_lines[idx] for idx in one_block)
+                " ".join(self.one_lines[idx] for idx in one_blk)
             )
             two_joined = self._normalize_line(
-                " ".join(self.two_lines[idx] for idx in two_block)
+                " ".join(self.two_lines[idx] for idx in two_blk)
             )
             joined_ratio = difflib.SequenceMatcher(
                 None, one_joined, two_joined, autojunk=False
@@ -202,39 +199,33 @@ class SeriesDiff:
                 difflib.SequenceMatcher(
                     None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
                 ).ratio()
-                for one_idx, two_idx in zip(one_block, two_block, strict=False)
+                for one_idx, two_idx in zip(one_blk, two_blk, strict=False)
             ]
             if joined_ratio >= self.similarity_cutoff and any(
                 ratio < line_shift_cutoff for ratio in line_ratios
             ):
                 self._process_shift(
-                    one_start=one_block[0],
-                    one_end=one_block[-1] + 1,
-                    two_start=two_block[0],
-                    two_end=two_block[-1] + 1,
+                    one_blk[0], one_blk[-1] + 1, two_blk[0], two_blk[-1] + 1
                 )
                 return
-        for one_idx, two_idx in zip(one_block, two_block, strict=False):
+        for one_idx, two_idx in zip(one_blk, two_blk, strict=False):
             self._process_edit(one_idx, two_idx)
 
-    def _process_replace_unequal(self, one_block: list[int], two_block: list[int]):
+    def _process_replace_unequal(self, one_blk: list[int], two_blk: list[int]):
         """Add messages for unequal-sized replace blocks."""
         i = 0
         j = 0
         last_was_split = False
-        while i < len(one_block) and j < len(two_block):
-            one_idx = one_block[i]
-            two_idx = two_block[j]
-            if len(two_block) == 1 and i + 1 < len(one_block):
+        while i < len(one_blk) and j < len(two_blk):
+            one_idx = one_blk[i]
+            two_idx = two_blk[j]
+            if len(two_blk) == 1 and i + 1 < len(one_blk):
                 one_joined = self._normalize_line(
-                    f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
+                    f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
                 )
                 if one_joined == self.two_keys[two_idx]:
                     self._process_merge(
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_idx,
-                        two_end=two_idx + 1,
+                        one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                     )
                     i += 2
                     j += 1
@@ -248,7 +239,7 @@ class SeriesDiff:
                 ).ratio()
                 ratio_next = difflib.SequenceMatcher(
                     None,
-                    self.one_keys[one_block[i + 1]],
+                    self.one_keys[one_blk[i + 1]],
                     self.two_keys[two_idx],
                     autojunk=False,
                 ).ratio()
@@ -256,34 +247,30 @@ class SeriesDiff:
                     ratio_curr, ratio_next
                 ):
                     self._process_merge_edit(
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_idx,
-                        two_end=two_idx + 1,
+                        one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                     )
                     i += 2
                     j += 1
                     last_was_split = False
                     continue
             if (
-                j + 3 < len(two_block)
-                and i + 1 < len(one_block)
-                and len(one_block) - i == 2
-                and len(two_block) - j == 4
+                j + 3 < len(two_blk)
+                and i + 1 < len(one_blk)
+                and len(one_blk) - i == 2
+                and len(two_blk) - j == 4
             ):
                 two_joined_first = self._normalize_line(
-                    f"{self.two_lines[two_block[j]]} {self.two_lines[two_block[j + 1]]}"
+                    f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
                 )
                 two_joined_second = self._normalize_line(
-                    f"{self.two_lines[two_block[j + 2]]} "
-                    f"{self.two_lines[two_block[j + 3]]}"
+                    f"{self.two_lines[two_blk[j + 2]]} {self.two_lines[two_blk[j + 3]]}"
                 )
                 first_ratio = difflib.SequenceMatcher(
                     None, self.one_keys[one_idx], two_joined_first, autojunk=False
                 ).ratio()
                 second_ratio = difflib.SequenceMatcher(
                     None,
-                    self.one_keys[one_block[i + 1]],
+                    self.one_keys[one_blk[i + 1]],
                     two_joined_second,
                     autojunk=False,
                 ).ratio()
@@ -298,47 +285,41 @@ class SeriesDiff:
                     )
                     second_type = (
                         LineDiffKind.SPLIT
-                        if self.one_keys[one_block[i + 1]] == two_joined_second
+                        if self.one_keys[one_blk[i + 1]] == two_joined_second
                         else LineDiffKind.SPLIT_EDIT
                     )
                     if first_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     if second_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_block[i + 1],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_block[j + 2],
-                            two_end=two_block[j + 3] + 1,
+                            one_blk[i + 1],
+                            one_blk[i + 1] + 1,
+                            two_blk[j + 2],
+                            two_blk[j + 3] + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_block[i + 1],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_block[j + 2],
-                            two_end=two_block[j + 3] + 1,
+                            one_blk[i + 1],
+                            one_blk[i + 1] + 1,
+                            two_blk[j + 2],
+                            two_blk[j + 3] + 1,
                         )
                     i += 2
                     j += 4
                     last_was_split = True
                     continue
-            if len(one_block) == 1 and j + 1 < len(two_block):
+            if len(one_blk) == 1 and j + 1 < len(two_blk):
                 two_joined = self._normalize_line(
-                    f"{self.two_lines[two_block[j]]} {self.two_lines[two_block[j + 1]]}"
+                    f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
                 )
                 two_joined_rev = self._normalize_line(
-                    f"{self.two_lines[two_block[j + 1]]} {self.two_lines[two_block[j]]}"
+                    f"{self.two_lines[two_blk[j + 1]]} {self.two_lines[two_blk[j]]}"
                 )
                 merged_ratio = difflib.SequenceMatcher(
                     None, self.one_keys[one_idx], two_joined, autojunk=False
@@ -357,25 +338,19 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     i += 1
                     j += 2
                     last_was_split = True
                     continue
-            if j + 2 < len(two_block) and i + 1 < len(one_block):
+            if j + 2 < len(two_blk) and i + 1 < len(one_blk):
                 two_joined = self._normalize_line(
-                    f"{self.two_lines[two_block[j]]} {self.two_lines[two_block[j + 1]]}"
+                    f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
                 )
                 merged_ratio = difflib.SequenceMatcher(
                     None, self.one_keys[one_idx], two_joined, autojunk=False
@@ -383,8 +358,8 @@ class SeriesDiff:
                 split_join_cutoff = 0.95
                 next_ratio = difflib.SequenceMatcher(
                     None,
-                    self.one_keys[one_block[i + 1]],
-                    self.two_keys[two_block[j + 2]],
+                    self.one_keys[one_blk[i + 1]],
+                    self.two_keys[two_blk[j + 2]],
                     autojunk=False,
                 ).ratio()
                 if (
@@ -398,17 +373,11 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_idx,
-                            one_end=one_idx + 1,
-                            two_start=two_block[j],
-                            two_end=two_block[j + 1] + 1,
+                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
                         )
                     i += 1
                     j += 2
@@ -423,16 +392,16 @@ class SeriesDiff:
                 j += 1
                 last_was_split = False
                 continue
-            if j + 1 < len(two_block):
+            if j + 1 < len(two_blk):
                 two_joined = self._normalize_line(
-                    f"{self.two_lines[two_block[j]]} {self.two_lines[two_block[j + 1]]}"
+                    f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
                 )
                 merged_ratio = difflib.SequenceMatcher(
                     None, self.one_keys[one_idx], two_joined, autojunk=False
                 ).ratio()
                 if merged_ratio >= self.similarity_cutoff:
-                    one_slice = [one_idx]
-                    two_slice = [two_block[j], two_block[j + 1]]
+                    one_slc = [one_idx]
+                    two_slc = [two_blk[j], two_blk[j + 1]]
                     if self.one_keys[one_idx] == two_joined:
                         split_type = LineDiffKind.SPLIT
                         merged_type = LineDiffKind.MERGE
@@ -447,45 +416,30 @@ class SeriesDiff:
                         last_was_split = False
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_slice[0],
-                            one_end=one_slice[-1] + 1,
-                            two_start=two_slice[0],
-                            two_end=two_slice[-1] + 1,
+                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                         )
                     elif diff_type == LineDiffKind.SPLIT_EDIT:
                         self._process_split_edit(
-                            one_start=one_slice[0],
-                            one_end=one_slice[-1] + 1,
-                            two_start=two_slice[0],
-                            two_end=two_slice[-1] + 1,
+                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                         )
                     elif diff_type == LineDiffKind.MERGE:
                         self._process_merge(
-                            one_start=one_slice[0],
-                            one_end=one_slice[-1] + 1,
-                            two_start=two_slice[0],
-                            two_end=two_slice[-1] + 1,
+                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                         )
                     else:
                         self._process_merge_edit(
-                            one_start=one_slice[0],
-                            one_end=one_slice[-1] + 1,
-                            two_start=two_slice[0],
-                            two_end=two_slice[-1] + 1,
+                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                         )
                     i += 1
                     j += 2
                     continue
-            if len(two_block) == 1 and i + 1 < len(one_block):
+            if len(two_blk) == 1 and i + 1 < len(one_blk):
                 one_joined = self._normalize_line(
-                    f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
+                    f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
                 )
                 if one_joined == self.two_keys[two_idx]:
                     self._process_merge(
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_idx,
-                        two_end=two_idx + 1,
+                        one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                     )
                     i += 2
                     j += 1
@@ -493,7 +447,7 @@ class SeriesDiff:
                     continue
                 ratio_next = difflib.SequenceMatcher(
                     None,
-                    self.one_keys[one_block[i + 1]],
+                    self.one_keys[one_blk[i + 1]],
                     self.two_keys[two_idx],
                     autojunk=False,
                 ).ratio()
@@ -502,13 +456,13 @@ class SeriesDiff:
                 ).ratio()
                 if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
                     self._process_delete(one_start=one_idx, one_end=one_idx + 1)
-                    self._process_edit(one_block[i + 1], two_idx)
+                    self._process_edit(one_blk[i + 1], two_idx)
                     i += 2
                     j += 1
                     last_was_split = False
                     continue
                 one_joined = self._normalize_line(
-                    f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
+                    f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
                 )
                 split_ratio = difflib.SequenceMatcher(
                     None, one_joined, self.two_keys[two_idx], autojunk=False
@@ -521,40 +475,31 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_block[i],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_idx,
-                            two_end=two_idx + 1,
+                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_block[i],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_idx,
-                            two_end=two_idx + 1,
+                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                         )
                     i += 2
                     j += 1
                     last_was_split = True
                     continue
-            if len(two_block) >= 2 and i + 1 < len(one_block):
+            if len(two_blk) >= 2 and i + 1 < len(one_blk):
                 one_joined = self._normalize_line(
-                    f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
+                    f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
                 )
                 two_joined = self._normalize_line(
-                    " ".join(self.two_lines[idx] for idx in two_block[j:])
+                    " ".join(self.two_lines[idx] for idx in two_blk[j:])
                 )
                 if one_joined == two_joined:
                     self._process_split(
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_block[j],
-                        two_end=two_block[-1] + 1,
+                        one_blk[i], one_blk[i + 1] + 1, two_blk[j], two_blk[-1] + 1
                     )
                     return
-            if i + 1 < len(one_block):
+            if i + 1 < len(one_blk):
                 one_joined = self._normalize_line(
-                    f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
+                    f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
                 )
                 split_ratio = difflib.SequenceMatcher(
                     None, one_joined, self.two_keys[two_idx], autojunk=False
@@ -567,17 +512,11 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_start=one_block[i],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_idx,
-                            two_end=two_idx + 1,
+                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                         )
                     else:
                         self._process_split_edit(
-                            one_start=one_block[i],
-                            one_end=one_block[i + 1] + 1,
-                            two_start=two_idx,
-                            two_end=two_idx + 1,
+                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
                         )
                     i += 2
                     j += 1
@@ -587,16 +526,16 @@ class SeriesDiff:
             i += 1
             j += 1
             last_was_split = False
-        if i < len(one_block) and j < len(two_block):
-            one_slice = one_block[i:]
-            two_slice = two_block[j:]
+        if i < len(one_blk) and j < len(two_blk):
+            one_slc = one_blk[i:]
+            two_slc = two_blk[j:]
             one_joined = self._normalize_line(
-                " ".join(self.one_lines[idx] for idx in one_slice)
+                " ".join(self.one_lines[idx] for idx in one_slc)
             )
             two_joined = self._normalize_line(
-                " ".join(self.two_lines[idx] for idx in two_slice)
+                " ".join(self.two_lines[idx] for idx in two_slc)
             )
-            if len(one_slice) < len(two_slice):
+            if len(one_slc) < len(two_slc):
                 diff_type = (
                     LineDiffKind.SPLIT
                     if one_joined == two_joined
@@ -610,38 +549,26 @@ class SeriesDiff:
                 )
             if diff_type == LineDiffKind.SPLIT:
                 self._process_split(
-                    one_start=one_slice[0],
-                    one_end=one_slice[-1] + 1,
-                    two_start=two_slice[0],
-                    two_end=two_slice[-1] + 1,
+                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                 )
             elif diff_type == LineDiffKind.SPLIT_EDIT:
                 self._process_split_edit(
-                    one_start=one_slice[0],
-                    one_end=one_slice[-1] + 1,
-                    two_start=two_slice[0],
-                    two_end=two_slice[-1] + 1,
+                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                 )
             elif diff_type == LineDiffKind.MERGE:
                 self._process_merge(
-                    one_start=one_slice[0],
-                    one_end=one_slice[-1] + 1,
-                    two_start=two_slice[0],
-                    two_end=two_slice[-1] + 1,
+                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                 )
             else:
                 self._process_merge_edit(
-                    one_start=one_slice[0],
-                    one_end=one_slice[-1] + 1,
-                    two_start=two_slice[0],
-                    two_end=two_slice[-1] + 1,
+                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
                 )
             return
-        if i < len(one_block):
-            self._process_delete(one_start=one_block[i], one_end=one_block[-1] + 1)
+        if i < len(one_blk):
+            self._process_delete(one_start=one_blk[i], one_end=one_blk[-1] + 1)
             return
-        if j < len(two_block):
-            self._process_insert(two_start=two_block[j], two_end=two_block[-1] + 1)
+        if j < len(two_blk):
+            self._process_insert(two_start=two_blk[j], two_end=two_blk[-1] + 1)
 
     def _process_edit(self, one_idx: int, two_idx: int):
         """Process edit opcode block."""
@@ -660,16 +587,16 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process merge opcode block."""
-        one_slice = list(range(one_start, one_end))
-        two_slice = list(range(two_start, two_end))
+        one_slc = list(range(one_start, one_end))
+        two_slc = list(range(two_start, two_end))
         msg = LineDiff(
             kind=LineDiffKind.MERGE,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slice,
-            two_idxs=two_slice,
-            one_texts=[self.one_lines[idx] for idx in one_slice],
-            two_texts=[self.two_lines[idx] for idx in two_slice],
+            one_idxs=one_slc,
+            two_idxs=two_slc,
+            one_texts=[self.one_lines[idx] for idx in one_slc],
+            two_texts=[self.two_lines[idx] for idx in two_slc],
         )
         self.msgs.append(msg)
 
@@ -677,16 +604,16 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process merge-edit opcode block."""
-        one_slice = list(range(one_start, one_end))
-        two_slice = list(range(two_start, two_end))
+        one_slc = list(range(one_start, one_end))
+        two_slc = list(range(two_start, two_end))
         msg = LineDiff(
             kind=LineDiffKind.MERGE_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slice,
-            two_idxs=two_slice,
-            one_texts=[self.one_lines[idx] for idx in one_slice],
-            two_texts=[self.two_lines[idx] for idx in two_slice],
+            one_idxs=one_slc,
+            two_idxs=two_slc,
+            one_texts=[self.one_lines[idx] for idx in one_slc],
+            two_texts=[self.two_lines[idx] for idx in two_slc],
         )
         self.msgs.append(msg)
 
@@ -694,16 +621,16 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process shift opcode block."""
-        one_slice = list(range(one_start, one_end))
-        two_slice = list(range(two_start, two_end))
+        one_slc = list(range(one_start, one_end))
+        two_slc = list(range(two_start, two_end))
         msg = LineDiff(
             kind=LineDiffKind.SHIFT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slice,
-            two_idxs=two_slice,
-            one_texts=[self.one_lines[idx] for idx in one_slice],
-            two_texts=[self.two_lines[idx] for idx in two_slice],
+            one_idxs=one_slc,
+            two_idxs=two_slc,
+            one_texts=[self.one_lines[idx] for idx in one_slc],
+            two_texts=[self.two_lines[idx] for idx in two_slc],
         )
         self.msgs.append(msg)
 
@@ -711,16 +638,16 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process split opcode block."""
-        one_slice = list(range(one_start, one_end))
-        two_slice = list(range(two_start, two_end))
+        one_slc = list(range(one_start, one_end))
+        two_slc = list(range(two_start, two_end))
         msg = LineDiff(
             kind=LineDiffKind.SPLIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slice,
-            two_idxs=two_slice,
-            one_texts=[self.one_lines[idx] for idx in one_slice],
-            two_texts=[self.two_lines[idx] for idx in two_slice],
+            one_idxs=one_slc,
+            two_idxs=two_slc,
+            one_texts=[self.one_lines[idx] for idx in one_slc],
+            two_texts=[self.two_lines[idx] for idx in two_slc],
         )
         self.msgs.append(msg)
 
@@ -728,16 +655,16 @@ class SeriesDiff:
         self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
         """Process split-edit opcode block."""
-        one_slice = list(range(one_start, one_end))
-        two_slice = list(range(two_start, two_end))
+        one_slc = list(range(one_start, one_end))
+        two_slc = list(range(two_start, two_end))
         msg = LineDiff(
             kind=LineDiffKind.SPLIT_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slice,
-            two_idxs=two_slice,
-            one_texts=[self.one_lines[idx] for idx in one_slice],
-            two_texts=[self.two_lines[idx] for idx in two_slice],
+            one_idxs=one_slc,
+            two_idxs=two_slc,
+            one_texts=[self.one_lines[idx] for idx in one_slc],
+            two_texts=[self.two_lines[idx] for idx in two_slc],
         )
         self.msgs.append(msg)
 
