@@ -4,11 +4,14 @@
 
 from __future__ import annotations
 
-from scinoephile.core.analysis.line_diff import LineDiff
-from scinoephile.core.analysis.series_diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 
-__all__ = ["get_series_diff"]
+from .line_diff import LineDiff
+from .series_diff import SeriesDiff
+
+__all__ = [
+    "get_series_diff",
+]
 
 
 def get_series_diff(
