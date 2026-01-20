@@ -226,7 +226,7 @@ def test_get_series_text_line_differences_kob(
             '"So, he didn\'t miscarry any duty"'
         ),
         (
-            "split: OCR[621:623] != SRT[638:639]: "
+            "merged: OCR[621:623] != SRT[638:639]: "
             "[\"Why couldn't you find out\", 'they cheated during the examination?'] "
             "!= "
             '["Why couldn\'t you find out they cheated during the examination?"]'
@@ -435,6 +435,11 @@ def test_get_series_text_line_differences_kob(
             "split_modified: OCR[936:937] != SRT[969:971]: "
             '["It\'s new year, you should receive a red packet"] != '
             "[\"It's new year,\", 'you should receive red pocket']"
+        ),
+        (
+            "merged: OCR[963:965] != SRT[998:999]: "
+            "['He was a scholar of Martial Arts', 'before…'] != "
+            "['He was a scholar of Martial Arts before…']"
         ),
     ]
     _assert_expected_differences(differences, expected)
