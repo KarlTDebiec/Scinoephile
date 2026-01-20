@@ -153,6 +153,32 @@ def _add_replace_block_equal_msgs(
     similarity_cutoff: float,
 ) -> None:
     """Add messages for equal-sized replace blocks."""
+    if len(one_block) == 2 and len(two_block) == 2:
+        two_joined = _normalize_line(" ".join(two_lines[idx] for idx in two_block))
+        missing_key = one_keys[one_block[0]].casefold()
+        merged_key = one_keys[one_block[1]].casefold()
+        if merged_key == two_joined.casefold() and all(
+            missing_key != two_keys[idx].casefold() for idx in two_block
+        ):
+            _add_missing_line_msgs(
+                msgs,
+                diff_type=LineDifferenceType.MISSING,
+                source_label=one_label,
+                target_label=two_label,
+                lines=one_lines,
+                indices=[one_block[0]],
+            )
+            _append_block_msg(
+                msgs,
+                diff_type=LineDifferenceType.SPLIT,
+                one_slice=[one_block[1]],
+                two_slice=two_block,
+                one_lines=one_lines,
+                two_lines=two_lines,
+                one_label=one_label,
+                two_label=two_label,
+            )
+            return
     if len(one_block) > 1:
         one_joined = _normalize_line(" ".join(one_lines[idx] for idx in one_block))
         two_joined = _normalize_line(" ".join(two_lines[idx] for idx in two_block))

@@ -459,6 +459,12 @@ def test_get_series_text_line_differences_kob(
             "modified: OCR[1166] != SRT[1203]: "
             "'Bravo…' != 'You should have faith, you won, bravo…'"
         ),
+        "missing: OCR[1179] 'Chan,' not present in SRT",
+        (
+            "split: OCR[1180:1181] != SRT[1216:1218]: "
+            "['do you understand everything written in this book?'] != "
+            "['Do you understand everything', 'written in this book?']"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
