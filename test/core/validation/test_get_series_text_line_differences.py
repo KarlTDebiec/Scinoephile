@@ -290,6 +290,152 @@ def test_get_series_text_line_differences_kob(
             "['- Yes!    - Remove all the things'] != "
             "['Yes!', 'Remove all the things']"
         ),
+        (
+            "split: OCR[751:752] != SRT[776:778]: "
+            '["- No, we can\'t move it    - Let me do it"] != '
+            "[\"No, we can't move it\", 'Let me do it']"
+        ),
+        (
+            "modified: OCR[753] != SRT[779]: "
+            "'Last time you escaped from Yee Hung Hostel' != "
+            "'Last time you could escape from Yee Hung Hostel'"
+        ),
+        (
+            "split: OCR[756:757] != SRT[782:784]: "
+            '["I\'ve got to defeat him by one powerful strike"] != '
+            "[\"I've got to defeat him\", 'by one powerful strike']"
+        ),
+        (
+            "split: OCR[760:761] != SRT[787:789]: "
+            "['Your legs and hands are all broken by me'] != "
+            "['Your legs and hands', 'are all broken by me']"
+        ),
+        (
+            "modified: OCR[767] != SRT[795]: "
+            "\"Don't panic, you'll be alright… Chan!\" != "
+            "\"Don't panic, you'll be all right… Chan!\""
+        ),
+        'missing: OCR[768] "Don\'t panic" not present in SRT',
+        (
+            "modified: OCR[772] != SRT[799]: "
+            '"He is Seng-ko-lin-ch\'in, that bastard" != '
+            '"He is Seng-ko-lin-ch\'in, that bastard."'
+        ),
+        (
+            "modified: OCR[775] != SRT[802]: "
+            "'Let me stop here first, I want a smoke' != "
+            "'Let me stop here first, I want a smoke.'"
+        ),
+        (
+            "modified: OCR[776] != SRT[803]: "
+            '"It\'s better to smoke now" != "It\'s better to smoke now."'
+        ),
+        ('modified: OCR[777] != SRT[804]: "Yes, it\'s better" != "Yes, it\'s better."'),
+        (
+            "modified: OCR[779] != SRT[806]: "
+            "'the Yee Hung Brothel' != 'the Yee Hung Brothel.'"
+        ),
+        (
+            "modified: OCR[780] != SRT[807]: "
+            "'But he framed us in return' != 'But he framed us in return.'"
+        ),
+        (
+            "modified: OCR[782] != SRT[809]: "
+            "'during the examination' != 'during the examination.'"
+        ),
+        "added: SRT[811] 'He finally won the race' not present in OCR",
+        (
+            "modified: OCR[791] != SRT[819]: "
+            "'Because being the scholar is too simple for me' != "
+            "'Because being the scholar is too simple to me'"
+        ),
+        (
+            "split: OCR[797:798] != SRT[825:827]: "
+            '["Although you have taken 2 months\' rest,"] != '
+            "['Although you have taken', \"2 months' rest,\"]"
+        ),
+        (
+            "modified: OCR[798] != SRT[827]: "
+            "'your legs and hands have not been totally recovered' != "
+            "'your legs and hands have not been totally recovered.'"
+        ),
+        "modified: OCR[799] != SRT[828]: '- Mr. Ha Yee    - Coming' != 'Coming'",
+        (
+            "modified: OCR[812] != SRT[842]: "
+            '"We can\'t beg for food if we are late!" != '
+            '"We can\'t beg for good if we are late!"'
+        ),
+        'missing: OCR[814] "You\'re not a master now." not present in SRT',
+        (
+            "modified: OCR[815] != SRT[844]: "
+            "'Give me money please' != 'Give me money, please'"
+        ),
+        (
+            "modified: OCR[823] != SRT[852]: "
+            "'You are off duty, so I just want to lend it' != "
+            "'You are off duty, so I just want to lend it.'"
+        ),
+        (
+            "split: OCR[847:848] != SRT[876:878]: "
+            "['- May I…    - No'] != ['May I…', 'No']"
+        ),
+        (
+            "modified: OCR[851] != SRT[881]: "
+            "'Beggar, do you want the broken charcoal?' != "
+            "'Beggar, do you want the broken carbon?'"
+        ),
+        (
+            "modified: OCR[863] != SRT[893]: "
+            "'You are mistaken, he is not So Chan' != "
+            "'You have mistaken, he is not So Chan'"
+        ),
+        (
+            "shifted: OCR[870:872] != SRT[900:902]: "
+            "['Sister,', \"he wouldn't be that poor if it were not for you\"] != "
+            "[\"Sister, he wouldn't be that poor\", 'if it were not for you']"
+        ),
+        (
+            "modified: OCR[873] != SRT[903]: "
+            '"I can\'t stand the hunger" != "I can\'t stand the hunger."'
+        ),
+        (
+            "modified: OCR[874] != SRT[904]: "
+            "'So I bit the dumpling of the kid' != "
+            "'So I bit the dumpling of the kid.'"
+        ),
+        (
+            "modified: OCR[877] != SRT[907]: "
+            "'if I chopped yours' != 'if I chopped yours?'"
+        ),
+        (
+            "split: OCR[885:886] != SRT[915:917]: "
+            "['Are they going to treat me some food?'] != "
+            "['Are they going to treat me', 'some food?']"
+        ),
+        (
+            "modified: OCR[898] != SRT[929]: "
+            '"Dad. It\'s quite delicious" != "It\'s quite delicious"'
+        ),
+        (
+            "modified: OCR[908] != SRT[939]: "
+            "'I want to save it for midnight snack' != "
+            "'I want to save it for a midnight snack'"
+        ),
+        (
+            "split: OCR[931:932] != SRT[962:964]: "
+            "['One cloth is for you and the other is for Chan'] != "
+            "['One cloth is for you', 'and the other is for Chan']"
+        ),
+        (
+            "split: OCR[935:936] != SRT[967:969]: "
+            "['- Give them to me, come on    - What for?'] != "
+            "['Give them to me, come on', 'What for?']"
+        ),
+        (
+            "split_modified: OCR[936:937] != SRT[969:971]: "
+            '["It\'s new year, you should receive a red packet"] != '
+            "[\"It's new year,\", 'you should receive red pocket']"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
