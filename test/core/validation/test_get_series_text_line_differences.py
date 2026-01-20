@@ -465,6 +465,20 @@ def test_get_series_text_line_differences_kob(
             "['do you understand everything written in this book?'] != "
             "['Do you understand everything', 'written in this book?']"
         ),
+        (
+            "modified: OCR[1306] != SRT[1346]: "
+            "'What are you telling him?' != 'Are you telling him?'"
+        ),
+        (
+            "modified: OCR[1312] != SRT[1352]: "
+            "'Yes. Look at you, you are like beggar too' != "
+            "'Yes. Look at you, you are like a beggar too'"
+        ),
+        (
+            "modified: OCR[1313] != SRT[1353]: "
+            "'Are you interested to join us?' != "
+            "'Are you interested in joining us?'"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()

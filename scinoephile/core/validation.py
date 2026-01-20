@@ -185,7 +185,7 @@ def _add_replace_block_equal_msgs(
         joined_ratio = difflib.SequenceMatcher(
             None, one_joined, two_joined, autojunk=False
         ).ratio()
-        line_shift_cutoff = 0.9
+        line_shift_cutoff = 0.85
         line_ratios = [
             difflib.SequenceMatcher(
                 None, one_keys[one_idx], two_keys[two_idx], autojunk=False
