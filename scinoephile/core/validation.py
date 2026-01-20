@@ -16,8 +16,8 @@ from scinoephile.core.subtitles import Series
 __all__ = [
     "LineDiff",
     "LineDiffKind",
-    "get_line_differ",
     "get_series_diff",
+    "SeriesDiff",
 ]
 
 
@@ -77,7 +77,7 @@ class LineDiff:
         )
 
 
-class LineDiffer:
+class SeriesDiff:
     """Compute line-level differences between subtitle series."""
 
     def __init__(
@@ -89,7 +89,7 @@ class LineDiffer:
         two_lbl: str = "two",
         similarity_cutoff: float = 0.6,
     ):
-        """Initialize line differ state.
+        """Initialize series diff state.
 
         Arguments:
             one: First subtitle series
@@ -106,37 +106,32 @@ class LineDiffer:
         self.one_keys = [self._normalize_line(line) for line in self.one_lines]
         self.two_keys = [self._normalize_line(line) for line in self.two_lines]
         self.msgs: list[LineDiff] = []
+        self._diff()
 
-    @staticmethod
-    def _get_series_text_lines(series: Series) -> list[str]:
-        """Extract raw text lines from a subtitle series.
+    def _diff(self) -> list[LineDiff]:
+        """Compare subtitle series by line content.
 
-        Arguments:
-            series: Subtitle series to extract text lines from
         Returns:
-            list of text lines
+            list of difference messages
         """
-        lines: list[str] = []
-        for subtitle in series:
-            text = subtitle.text.replace("\\N", "\n")
-            for line in text.splitlines():
-                stripped = line.strip()
-                if stripped:
-                    lines.append(stripped)
-        return lines
+        matcher = difflib.SequenceMatcher(
+            None, self.one_keys, self.two_keys, autojunk=False
+        )
+        for tag, one_start, one_end, two_start, two_end in matcher.get_opcodes():
+            if tag == "equal":
+                continue
+            if tag == "delete":
+                self._process_delete(one_start, one_end)
+                continue
+            if tag == "insert":
+                self._process_insert(two_start, two_end)
+                continue
+            if tag == "replace":
+                self._process_replace(one_start, one_end, two_start, two_end)
+                continue
+            raise ScinoephileError(f"Unhandled opcode: {tag}")
 
-    @staticmethod
-    def _normalize_line(text: str) -> str:
-        """Normalize a subtitle line for approximate matching.
-
-        Arguments:
-            text: Subtitle line to normalize
-        Returns:
-            Normalized line
-        """
-        stripped = re.sub(r"(?:^|\s)(?:[-–])\s+", " ", text.strip())
-        normalized = re.sub(r"\s+", " ", stripped).strip()
-        return normalized
+        return self.msgs
 
     def _process_delete(self, one_start: int, one_end: int):
         """Process delete opcode block."""
@@ -162,46 +157,16 @@ class LineDiffer:
             )
             self.msgs.append(msg)
 
-    def _append_block_msg(
-        self,
-        *,
-        diff_type: LineDiffKind,
-        one_slice: list[int],
-        two_slice: list[int],
+    def _process_replace(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
-        """Append a block-level message."""
-        one_text = [self.one_lines[idx] for idx in one_slice]
-        two_text = [self.two_lines[idx] for idx in two_slice]
-        self.msgs.append(
-            LineDiff(
-                kind=diff_type,
-                one_lbl=self.one_lbl,
-                two_lbl=self.two_lbl,
-                one_idxs=one_slice,
-                two_idxs=two_slice,
-                one_texts=one_text,
-                two_texts=two_text,
-            )
-        )
-
-    def _append_modified_msg(
-        self,
-        *,
-        one_idx: int,
-        two_idx: int,
-    ):
-        """Append an edited-line message."""
-        self.msgs.append(
-            LineDiff(
-                kind=LineDiffKind.EDIT,
-                one_lbl=self.one_lbl,
-                two_lbl=self.two_lbl,
-                one_idxs=[one_idx],
-                two_idxs=[two_idx],
-                one_texts=[self.one_lines[one_idx]],
-                two_texts=[self.two_lines[two_idx]],
-            )
-        )
+        """Process replace opcode block."""
+        one_block = list(range(one_start, one_end))
+        two_block = list(range(two_start, two_end))
+        if len(one_block) == len(two_block):
+            self._process_replace_equal(one_block, two_block)
+            return
+        self._process_replace_unequal(one_block, two_block)
 
     def _process_replace_equal(self, one_block: list[int], two_block: list[int]):
         """Add messages for equal-sized replace blocks."""
@@ -575,104 +540,87 @@ class LineDiffer:
         if j < len(two_block):
             self._process_insert(two_start=two_block[j], two_end=two_block[-1] + 1)
 
-    def _process_replace(
-        self, one_start: int, one_end: int, two_start: int, two_end: int
+    def _append_block_msg(
+        self,
+        *,
+        diff_type: LineDiffKind,
+        one_slice: list[int],
+        two_slice: list[int],
     ):
-        """Process replace opcode block."""
-        one_block = list(range(one_start, one_end))
-        two_block = list(range(two_start, two_end))
-        if len(one_block) == len(two_block):
-            self._process_replace_equal(one_block, two_block)
-            return
-        self._process_replace_unequal(one_block, two_block)
-
-    def diff(self) -> list[LineDiff]:
-        """Compare subtitle series by line content.
-
-        Returns:
-            list of difference messages
-        """
-        matcher = difflib.SequenceMatcher(
-            None, self.one_keys, self.two_keys, autojunk=False
+        """Append a block-level message."""
+        one_text = [self.one_lines[idx] for idx in one_slice]
+        two_text = [self.two_lines[idx] for idx in two_slice]
+        self.msgs.append(
+            LineDiff(
+                kind=diff_type,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=one_slice,
+                two_idxs=two_slice,
+                one_texts=one_text,
+                two_texts=two_text,
+            )
         )
-        for tag, one_start, one_end, two_start, two_end in matcher.get_opcodes():
-            if tag == "equal":
-                continue
-            if tag == "delete":
-                self._process_delete(one_start, one_end)
-                continue
-            if tag == "insert":
-                self._process_insert(two_start, two_end)
-                continue
-            if tag == "replace":
-                self._process_replace(one_start, one_end, two_start, two_end)
-                continue
-            raise ScinoephileError(f"Unhandled opcode: {tag}")
 
-        return self.msgs
+    def _append_modified_msg(
+        self,
+        *,
+        one_idx: int,
+        two_idx: int,
+    ):
+        """Append an edited-line message."""
+        self.msgs.append(
+            LineDiff(
+                kind=LineDiffKind.EDIT,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=[one_idx],
+                two_idxs=[two_idx],
+                one_texts=[self.one_lines[one_idx]],
+                two_texts=[self.two_lines[two_idx]],
+            )
+        )
+
+    @staticmethod
+    def _get_series_text_lines(series: Series) -> list[str]:
+        """Extract raw text lines from a subtitle series.
+
+        Arguments:
+            series: Subtitle series to extract text lines from
+        Returns:
+            list of text lines
+        """
+        lines: list[str] = []
+        for subtitle in series:
+            text = subtitle.text.replace("\\N", "\n")
+            for line in text.splitlines():
+                stripped = line.strip()
+                if stripped:
+                    lines.append(stripped)
+        return lines
+
+    @staticmethod
+    def _normalize_line(text: str) -> str:
+        """Normalize a subtitle line for approximate matching.
+
+        Arguments:
+            text: Subtitle line to normalize
+        Returns:
+            Normalized line
+        """
+        stripped = re.sub(r"(?:^|\s)(?:[-–])\s+", " ", text.strip())
+        normalized = re.sub(r"\s+", " ", stripped).strip()
+        return normalized
 
 
-def get_series_diff(
-    one: Series,
-    two: Series,
-    line_differ: LineDiffer | None = None,
-    *,
-    one_lbl: str = "one",
-    two_lbl: str = "two",
-    similarity_cutoff: float = 0.6,
-    **kwargs: Any,
-) -> list[LineDiff]:
+def get_series_diff(one: Series, two: Series, **kwargs: Any) -> list[LineDiff]:
     """Compare two subtitle series by line content.
 
     Arguments:
         one: First subtitle series
         two: Second subtitle series
-        line_differ: preconfigured LineDiffer instance
-        one_lbl: label for first series in messages
-        two_lbl: label for second series in messages
-        similarity_cutoff: similarity cutoff for pairing replacements
-        **kwargs: additional keyword arguments for get_line_differ
+        **kwargs: additional keyword arguments for SeriesDiff
     Returns:
         list of difference messages
     """
-    if line_differ is None:
-        line_differ = get_line_differ(
-            one,
-            two,
-            one_lbl=one_lbl,
-            two_lbl=two_lbl,
-            similarity_cutoff=similarity_cutoff,
-            **kwargs,
-        )
-    return line_differ.diff()
-
-
-def get_line_differ(
-    one: Series,
-    two: Series,
-    *,
-    one_lbl: str = "one",
-    two_lbl: str = "two",
-    similarity_cutoff: float = 0.6,
-    **kwargs: Any,
-) -> LineDiffer:
-    """Get LineDiffer with provided configuration.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-        one_lbl: label for first series in messages
-        two_lbl: label for second series in messages
-        similarity_cutoff: similarity cutoff for pairing replacements
-        **kwargs: additional keyword arguments for LineDiffer
-    Returns:
-        LineDiffer with provided configuration
-    """
-    return LineDiffer(
-        one,
-        two,
-        one_lbl=one_lbl,
-        two_lbl=two_lbl,
-        similarity_cutoff=similarity_cutoff,
-        **kwargs,
-    )
+    return SeriesDiff(one, two, **kwargs).msgs
