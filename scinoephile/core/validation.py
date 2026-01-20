@@ -9,28 +9,25 @@ import re
 from enum import Enum
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
-from scinoephile.core.synchronization import get_sync_groups
 
 __all__ = [
-    "LineDifferenceType",
-    "get_series_text_differences",
-    "get_series_text_line_differences",
+    "DiffKind",
+    "get_series_diff",
 ]
 
 
-class LineDifferenceType(Enum):
+class DiffKind(Enum):
     """Types of line-level differences."""
 
-    MISSING = "missing"
-    ADDED = "added"
+    DELETE = "delete"
+    EDIT = "edit"
+    INSERT = "insert"
+    MERGE = "merge"
+    MERGE_EDIT = "merge_edit"
+    SHIFT = "shift"
     SPLIT = "split"
-    SPLIT_MODIFIED = "split_modified"
-    MERGED = "merged"
-    MERGED_MODIFIED = "merged_modified"
-    MODIFIED = "modified"
-    SHIFTED = "shifted"
+    SPLIT_EDIT = "split_edit"
 
 
 def _get_series_text_lines(series: Series) -> list[str]:
@@ -67,7 +64,7 @@ def _normalize_line(text: str) -> str:
 def _add_missing_line_msgs(
     msgs: list[str],
     *,
-    diff_type: LineDifferenceType,
+    diff_type: DiffKind,
     source_label: str,
     target_label: str,
     lines: list[str],
@@ -97,7 +94,7 @@ def _add_missing_line_msgs(
 def _append_block_msg(
     msgs: list[str],
     *,
-    diff_type: LineDifferenceType,
+    diff_type: DiffKind,
     one_slice: list[int],
     two_slice: list[int],
     one_lines: list[str],
@@ -109,14 +106,20 @@ def _append_block_msg(
     one_text = [one_lines[idx] for idx in one_slice]
     two_text = [two_lines[idx] for idx in two_slice]
     one_start_idx = one_slice[0] + 1
-    one_end_idx = one_slice[-1] + 2
+    one_end_idx = one_slice[-1] + 1
     two_start_idx = two_slice[0] + 1
-    two_end_idx = two_slice[-1] + 2
+    two_end_idx = two_slice[-1] + 1
+    one_idx_text = (
+        f"{one_start_idx}" if len(one_slice) == 1 else f"{one_start_idx}-{one_end_idx}"
+    )
+    two_idx_text = (
+        f"{two_start_idx}" if len(two_slice) == 1 else f"{two_start_idx}-{two_end_idx}"
+    )
     msgs.append(
         f"{diff_type.value}: "
-        f"{one_label}[{one_start_idx}:{one_end_idx}] != "
-        f"{two_label}[{two_start_idx}:{two_end_idx}]: "
-        f"{one_text!r} != {two_text!r}"
+        f"{one_label}[{one_idx_text}] -> "
+        f"{two_label}[{two_idx_text}]: "
+        f"{one_text!r} -> {two_text!r}"
     )
 
 
@@ -132,10 +135,10 @@ def _append_modified_msg(
 ) -> None:
     """Append a modified-line message."""
     msgs.append(
-        f"{LineDifferenceType.MODIFIED.value}: "
-        f"{one_label}[{one_idx + 1}] != "
+        f"{DiffKind.EDIT.value}: "
+        f"{one_label}[{one_idx + 1}] -> "
         f"{two_label}[{two_idx + 1}]: "
-        f"{one_lines[one_idx]!r} != {two_lines[two_idx]!r}"
+        f"{one_lines[one_idx]!r} -> {two_lines[two_idx]!r}"
     )
 
 
@@ -162,7 +165,7 @@ def _add_replace_block_equal_msgs(
         ):
             _add_missing_line_msgs(
                 msgs,
-                diff_type=LineDifferenceType.MISSING,
+                diff_type=DiffKind.DELETE,
                 source_label=one_label,
                 target_label=two_label,
                 lines=one_lines,
@@ -170,7 +173,7 @@ def _add_replace_block_equal_msgs(
             )
             _append_block_msg(
                 msgs,
-                diff_type=LineDifferenceType.SPLIT,
+                diff_type=DiffKind.SPLIT,
                 one_slice=[one_block[1]],
                 two_slice=two_block,
                 one_lines=one_lines,
@@ -197,7 +200,7 @@ def _add_replace_block_equal_msgs(
         ):
             _append_block_msg(
                 msgs,
-                diff_type=LineDifferenceType.SHIFTED,
+                diff_type=DiffKind.SHIFT,
                 one_slice=one_block,
                 two_slice=two_block,
                 one_lines=one_lines,
@@ -245,7 +248,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             if one_joined == two_keys[two_idx]:
                 _append_block_msg(
                     msgs,
-                    diff_type=LineDifferenceType.MERGED,
+                    diff_type=DiffKind.MERGE,
                     one_slice=[one_block[i], one_block[i + 1]],
                     two_slice=[two_idx],
                     one_lines=one_lines,
@@ -271,7 +274,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             ):
                 _append_block_msg(
                     msgs,
-                    diff_type=LineDifferenceType.MERGED_MODIFIED,
+                    diff_type=DiffKind.MERGE_EDIT,
                     one_slice=[one_block[i], one_block[i + 1]],
                     two_slice=[two_idx],
                     one_lines=one_lines,
@@ -303,14 +306,14 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             ).ratio()
             if first_ratio >= similarity_cutoff and second_ratio >= similarity_cutoff:
                 first_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_keys[one_idx] == two_joined_first
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 second_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_keys[one_block[i + 1]] == two_joined_second
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 _append_block_msg(
                     msgs,
@@ -354,9 +357,9 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             )
             if max(merged_ratio, merged_ratio_rev) >= similarity_cutoff:
                 diff_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_keys[one_idx] == best_joined
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 _append_block_msg(
                     msgs,
@@ -388,9 +391,9 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             ).ratio()
             if merged_ratio >= split_join_cutoff and next_ratio >= similarity_cutoff:
                 diff_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_keys[one_idx] == two_joined
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 _append_block_msg(
                     msgs,
@@ -434,11 +437,11 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 one_slice = [one_idx]
                 two_slice = [two_block[j], two_block[j + 1]]
                 if one_keys[one_idx] == two_joined:
-                    split_type = LineDifferenceType.SPLIT
-                    merged_type = LineDifferenceType.MERGED
+                    split_type = DiffKind.SPLIT
+                    merged_type = DiffKind.MERGE
                 else:
-                    split_type = LineDifferenceType.SPLIT_MODIFIED
-                    merged_type = LineDifferenceType.MERGED_MODIFIED
+                    split_type = DiffKind.SPLIT_EDIT
+                    merged_type = DiffKind.MERGE_EDIT
                 if one_keys[one_idx] == two_joined or i == 0 or last_was_split:
                     diff_type = split_type
                     last_was_split = True
@@ -465,7 +468,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             if one_joined == two_keys[two_idx]:
                 _append_block_msg(
                     msgs,
-                    diff_type=LineDifferenceType.MERGED,
+                    diff_type=DiffKind.MERGE,
                     one_slice=[one_block[i], one_block[i + 1]],
                     two_slice=[two_idx],
                     one_lines=one_lines,
@@ -486,7 +489,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             if ratio_next >= similarity_cutoff and ratio_next > ratio_curr:
                 _add_missing_line_msgs(
                     msgs,
-                    diff_type=LineDifferenceType.MISSING,
+                    diff_type=DiffKind.DELETE,
                     source_label=one_label,
                     target_label=two_label,
                     lines=one_lines,
@@ -513,9 +516,9 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             ).ratio()
             if split_ratio >= similarity_cutoff:
                 diff_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_joined == two_keys[two_idx]
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 _append_block_msg(
                     msgs,
@@ -541,7 +544,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             if one_joined == two_joined:
                 _append_block_msg(
                     msgs,
-                    diff_type=LineDifferenceType.SPLIT,
+                    diff_type=DiffKind.SPLIT,
                     one_slice=[one_block[i], one_block[i + 1]],
                     two_slice=two_block[j:],
                     one_lines=one_lines,
@@ -559,9 +562,9 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
             ).ratio()
             if split_ratio >= similarity_cutoff:
                 diff_type = (
-                    LineDifferenceType.SPLIT
+                    DiffKind.SPLIT
                     if one_joined == two_keys[two_idx]
-                    else LineDifferenceType.SPLIT_MODIFIED
+                    else DiffKind.SPLIT_EDIT
                 )
                 _append_block_msg(
                     msgs,
@@ -596,15 +599,11 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
         two_joined = _normalize_line(" ".join(two_lines[idx] for idx in two_slice))
         if len(one_slice) < len(two_slice):
             diff_type = (
-                LineDifferenceType.SPLIT
-                if one_joined == two_joined
-                else LineDifferenceType.SPLIT_MODIFIED
+                DiffKind.SPLIT if one_joined == two_joined else DiffKind.SPLIT_EDIT
             )
         else:
             diff_type = (
-                LineDifferenceType.MERGED
-                if one_joined == two_joined
-                else LineDifferenceType.MERGED_MODIFIED
+                DiffKind.MERGE if one_joined == two_joined else DiffKind.MERGE_EDIT
             )
         _append_block_msg(
             msgs,
@@ -620,7 +619,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
     if i < len(one_block):
         _add_missing_line_msgs(
             msgs,
-            diff_type=LineDifferenceType.MISSING,
+            diff_type=DiffKind.DELETE,
             source_label=one_label,
             target_label=two_label,
             lines=one_lines,
@@ -630,7 +629,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
     if j < len(two_block):
         _add_missing_line_msgs(
             msgs,
-            diff_type=LineDifferenceType.ADDED,
+            diff_type=DiffKind.INSERT,
             source_label=two_label,
             target_label=one_label,
             lines=two_lines,
@@ -684,7 +683,7 @@ def _add_replace_block_msgs(
     )
 
 
-def get_series_text_line_differences(
+def get_series_diff(
     one: Series,
     two: Series,
     *,
@@ -716,7 +715,7 @@ def get_series_text_line_differences(
         if tag == "delete":
             _add_missing_line_msgs(
                 msgs,
-                diff_type=LineDifferenceType.MISSING,
+                diff_type=DiffKind.DELETE,
                 source_label=one_label,
                 target_label=two_label,
                 lines=one_lines,
@@ -726,7 +725,7 @@ def get_series_text_line_differences(
         if tag == "insert":
             _add_missing_line_msgs(
                 msgs,
-                diff_type=LineDifferenceType.ADDED,
+                diff_type=DiffKind.INSERT,
                 source_label=two_label,
                 target_label=one_label,
                 lines=two_lines,
@@ -749,80 +748,5 @@ def get_series_text_line_differences(
             two_label=two_label,
             similarity_cutoff=similarity_cutoff,
         )
-
-    return msgs
-
-
-def get_series_text_differences(
-    one: Series,
-    two: Series,
-    *,
-    pause_length: int = 3000,
-    cutoff: float = 0.16,
-) -> list[str]:
-    """Compare two subtitle series and log textual differences.
-
-    Arguments:
-        one: First subtitle series
-        two: Second subtitle series
-        pause_length: pause length for block splitting
-        cutoff: overlap cutoff for sync grouping
-    Returns:
-        list of difference messages
-    """
-    msgs: list[str] = []
-    blk_pairs = get_block_pairs_by_pause(one, two, pause_length=pause_length)
-    one_blk_start_idx = 1
-    two_blk_start_idx = 1
-    for one_blk, two_blk in blk_pairs:
-        for one_idxs, two_idxs in get_sync_groups(one_blk, two_blk, cutoff=cutoff):
-            if len(one_idxs) == 1 and len(two_idxs) == 0:
-                one_text = one_blk[one_idxs[0]].text
-                one_idx = one_blk_start_idx + one_idxs[0]
-                msgs.append(f"one[{one_idx}] missing in two: {one_text!r}")
-                continue
-            if len(one_idxs) == 0 and len(two_idxs) == 1:
-                two_text = two_blk[two_idxs[0]].text
-                two_idx = two_blk_start_idx + two_idxs[0]
-                msgs.append(f"one missing two[{two_idx}]: {two_text!r}")
-                continue
-            if len(one_idxs) == 1 and len(two_idxs) == 1:
-                one_text = one_blk[one_idxs[0]].text
-                two_text = two_blk[two_idxs[0]].text
-                one_idx = one_blk_start_idx + one_idxs[0]
-                two_idx = two_blk_start_idx + two_idxs[0]
-                if one_text != two_text:
-                    msgs.append(
-                        f"one[{one_idx}] != two[{two_idx}]: "
-                        f"{one_text!r} != {two_text!r}"
-                    )
-                continue
-            if len(one_idxs) > 1 and len(two_idxs) == 1:
-                one_text = str([one_blk[i].text for i in one_idxs])
-                two_text = two_blk[two_idxs[0]].text
-                one_start_idx = one_blk_start_idx + one_idxs[0]
-                one_end_idx = one_blk_start_idx + one_idxs[-1]
-                two_idx = two_blk_start_idx + two_idxs[0]
-                msgs.append(
-                    f"one[{one_start_idx}:{one_end_idx + 1}] != two[{two_idx}]: "
-                    f"{one_text!r} != {two_text!r}"
-                )
-                continue
-            if len(one_idxs) == 1 and len(two_idxs) > 1:
-                one_text = one_blk[one_idxs[0]].text
-                two_text = str([two_blk[i].text for i in two_idxs])
-                one_idx = one_blk_start_idx + one_idxs[0]
-                two_start_idx = two_blk_start_idx + two_idxs[0]
-                two_end_idx = two_blk_start_idx + two_idxs[-1]
-                msgs.append(
-                    f"one[{one_idx}] != two[{two_start_idx}:{two_end_idx + 1}]: "
-                    f"{one_text!r} != {two_text!r}"
-                )
-                continue
-            raise ScinoephileError(
-                f"Unhandled sync group: one={one_idxs}, two={two_idxs}"
-            )
-        one_blk_start_idx += len(one_blk)
-        two_blk_start_idx += len(two_blk)
 
     return msgs
