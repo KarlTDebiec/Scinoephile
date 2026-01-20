@@ -43,8 +43,8 @@ class LineDiff:
     two_lbl: str | None = None
     one_idxs: list[int] | None = None
     two_idxs: list[int] | None = None
-    one_txts: list[str] | None = None
-    two_txts: list[str] | None = None
+    one_texts: list[str] | None = None
+    two_texts: list[str] | None = None
 
     @staticmethod
     def _format_idxs(idxs: list[int]) -> str:
@@ -54,21 +54,21 @@ class LineDiff:
 
     def __str__(self) -> str:
         """Format the diff as a display string."""
-        if self.one_idxs and self.one_txts and self.two_idxs is None:
+        if self.one_idxs and self.one_texts and self.two_idxs is None:
             missing_idx = self.one_idxs[0]
-            missing_txt = self.one_txts[0]
+            missing_text = self.one_texts[0]
             return (
                 f"{self.kind.value}: "
                 f"{self.one_lbl}[{missing_idx + 1}] "
-                f"{missing_txt!r} not present in {self.two_lbl}"
+                f"{missing_text!r} not present in {self.two_lbl}"
             )
         one_idxs = self.one_idxs or []
         two_idxs = self.two_idxs or []
-        one_txts = self.one_txts or []
-        two_txts = self.two_txts or []
+        one_texts = self.one_texts or []
+        two_texts = self.two_texts or []
         use_list_repr = len(one_idxs) != 1 or len(two_idxs) != 1
-        one_text_repr = repr(one_txts) if use_list_repr else repr(one_txts[0])
-        two_text_repr = repr(two_txts) if use_list_repr else repr(two_txts[0])
+        one_text_repr = repr(one_texts) if use_list_repr else repr(one_texts[0])
+        two_text_repr = repr(two_texts) if use_list_repr else repr(two_texts[0])
         return (
             f"{self.kind.value}: "
             f"{self.one_lbl}[{self._format_idxs(one_idxs)}] -> "
@@ -146,7 +146,7 @@ class LineDiffer:
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
                 one_idxs=[idx],
-                one_txts=[self.one_lines[idx]],
+                one_texts=[self.one_lines[idx]],
             )
             self.msgs.append(msg)
 
@@ -158,7 +158,7 @@ class LineDiffer:
                 one_lbl=self.two_lbl,
                 two_lbl=self.one_lbl,
                 one_idxs=[idx],
-                one_txts=[self.two_lines[idx]],
+                one_texts=[self.two_lines[idx]],
             )
             self.msgs.append(msg)
 
@@ -179,8 +179,8 @@ class LineDiffer:
                 two_lbl=self.two_lbl,
                 one_idxs=one_slice,
                 two_idxs=two_slice,
-                one_txts=one_text,
-                two_txts=two_text,
+                one_texts=one_text,
+                two_texts=two_text,
             )
         )
 
@@ -198,8 +198,8 @@ class LineDiffer:
                 two_lbl=self.two_lbl,
                 one_idxs=[one_idx],
                 two_idxs=[two_idx],
-                one_txts=[self.one_lines[one_idx]],
-                two_txts=[self.two_lines[two_idx]],
+                one_texts=[self.one_lines[one_idx]],
+                two_texts=[self.two_lines[two_idx]],
             )
         )
 
@@ -250,11 +250,7 @@ class LineDiffer:
         for one_idx, two_idx in zip(one_block, two_block, strict=False):
             self._append_modified_msg(one_idx=one_idx, two_idx=two_idx)
 
-    def _process_replace_unequal(  # noqa: PLR0912, PLR0915
-        self,
-        one_block: list[int],
-        two_block: list[int],
-    ):
+    def _process_replace_unequal(self, one_block: list[int], two_block: list[int]):
         """Add messages for unequal-sized replace blocks."""
         i = 0
         j = 0
