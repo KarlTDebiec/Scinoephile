@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
+from scinoephile.core.analysis.line_diff import LineDiff
+from scinoephile.core.analysis.series_diff import SeriesDiff
 from scinoephile.core.subtitles import Series
-from scinoephile.core.validation.line_diff import LineDiff
-from scinoephile.core.validation.series_diff import SeriesDiff
 
 __all__ = ["get_series_diff"]
 

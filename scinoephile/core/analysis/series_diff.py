@@ -8,9 +8,9 @@ import difflib
 import re
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.analysis.line_diff import LineDiff
+from scinoephile.core.analysis.line_diff_kind import LineDiffKind
 from scinoephile.core.subtitles import Series
-from scinoephile.core.validation.line_diff import LineDiff
-from scinoephile.core.validation.line_diff_kind import LineDiffKind
 
 __all__ = ["SeriesDiff"]
 
