@@ -7,6 +7,7 @@ from __future__ import annotations
 import difflib
 import re
 from collections.abc import Callable
+from typing import TypedDict
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -15,7 +16,15 @@ from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .replace_cursor import ReplaceCursor
 
-__all__ = ["SeriesDiff"]
+__all__ = ["SeriesDiff", "SeriesDiffKwargs"]
+
+
+class SeriesDiffKwargs(TypedDict, total=False):
+    """Keyword arguments for SeriesDiff."""
+
+    one_lbl: str
+    two_lbl: str
+    similarity_cutoff: float
 
 
 class SeriesDiff:
@@ -155,6 +164,7 @@ class SeriesDiff:
     def _process_replace_unequal(self, one_blk: list[int], two_blk: list[int]):
         """Add messages for unequal-sized replace blocks."""
         cursor = ReplaceCursor(one_blk=one_blk, two_blk=two_blk)
+        # NOTE: Handler order is behavior-defining; update expected diffs if changed.
         handlers: tuple[Callable[[ReplaceCursor], bool], ...] = (
             self._process_replace_unequal_merge_candidate,
             self._process_replace_unequal_two_to_four,
@@ -182,12 +192,9 @@ class SeriesDiff:
                 return
         self._process_replace_unequal_tail(one_blk, two_blk, cursor.i, cursor.j)
 
-    def _process_replace_unequal_merge_candidate(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_merge_candidate(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace when a merge is strongly indicated."""
-        if len(cursor.two_blk) != 1 or cursor.i + 1 >= len(cursor.one_blk):
+        if len(cursor.two_blk) != 1 or not cursor.one_has_next:
             return False
         one_idx = cursor.one_idx
         two_idx = cursor.two_idx
@@ -229,16 +236,13 @@ class SeriesDiff:
             return True
         return False
 
-    def _process_replace_unequal_two_to_four(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_two_to_four(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace for a two-to-four split pattern."""
         if not (
             cursor.j + 3 < len(cursor.two_blk)
-            and cursor.i + 1 < len(cursor.one_blk)
-            and len(cursor.one_blk) - cursor.i == 2
-            and len(cursor.two_blk) - cursor.j == 4
+            and cursor.one_has_next
+            and cursor.one_remaining == 2
+            and cursor.two_remaining == 4
         ):
             return False
         one_idx = cursor.one_idx
@@ -305,12 +309,9 @@ class SeriesDiff:
         cursor.advance(n_one=2, n_two=4, last_was_split=True)
         return True
 
-    def _process_replace_unequal_one_to_two(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_one_to_two(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace when one line may split into two."""
-        if len(cursor.one_blk) != 1 or cursor.j + 1 >= len(cursor.two_blk):
+        if len(cursor.one_blk) != 1 or not cursor.two_has_pair:
             return False
         one_idx = cursor.one_idx
         two_joined = self._normalize_line(
@@ -352,12 +353,9 @@ class SeriesDiff:
         cursor.advance(n_one=1, n_two=2, last_was_split=True)
         return True
 
-    def _process_replace_unequal_two_to_three(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_two_to_three(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace when two lines map onto three."""
-        if cursor.j + 2 >= len(cursor.two_blk) or cursor.i + 1 >= len(cursor.one_blk):
+        if cursor.j + 2 >= len(cursor.two_blk) or not cursor.one_has_next:
             return False
         one_idx = cursor.one_idx
         two_joined = self._normalize_line(
@@ -398,10 +396,7 @@ class SeriesDiff:
         cursor.advance(n_one=1, n_two=2, last_was_split=True)
         return True
 
-    def _process_replace_unequal_similarity_edit(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_similarity_edit(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace when a simple edit matches well."""
         one_idx = cursor.one_idx
         two_idx = cursor.two_idx
@@ -415,11 +410,10 @@ class SeriesDiff:
         return True
 
     def _process_replace_unequal_joined_split_or_merge(
-        self,
-        cursor: ReplaceCursor,
+        self, cursor: ReplaceCursor
     ) -> bool:
         """Process unequal replace for joined split/merge candidates."""
-        if cursor.j + 1 >= len(cursor.two_blk):
+        if not cursor.two_has_pair:
             return False
         one_idx = cursor.one_idx
         two_joined = self._normalize_line(
@@ -469,11 +463,10 @@ class SeriesDiff:
         return True
 
     def _process_replace_unequal_many_to_one_followup(
-        self,
-        cursor: ReplaceCursor,
+        self, cursor: ReplaceCursor
     ) -> bool:
         """Process unequal replace for follow-up many-to-one checks."""
-        if len(cursor.two_blk) != 1 or cursor.i + 1 >= len(cursor.one_blk):
+        if len(cursor.two_blk) != 1 or not cursor.one_has_next:
             return False
         one_idx = cursor.one_idx
         two_idx = cursor.two_idx
@@ -522,12 +515,9 @@ class SeriesDiff:
         cursor.advance(n_one=2, n_two=1, last_was_split=True)
         return True
 
-    def _process_replace_unequal_joined_remaining(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_joined_remaining(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace when remaining blocks fully join."""
-        if len(cursor.two_blk) < 2 or cursor.i + 1 >= len(cursor.one_blk):
+        if cursor.two_remaining < 2 or not cursor.one_has_next:
             return False
         one_joined = self._normalize_line(
             f"{self.one_lines[cursor.one_blk[cursor.i]]} "
@@ -545,15 +535,12 @@ class SeriesDiff:
             cursor.two_blk[-1] + 1,
         )
         cursor.advance(n_one=2, n_two=1, last_was_split=True)
-        cursor.mark_return()
+        cursor.should_return = True
         return True
 
-    def _process_replace_unequal_split_pair(
-        self,
-        cursor: ReplaceCursor,
-    ) -> bool:
+    def _process_replace_unequal_split_pair(self, cursor: ReplaceCursor) -> bool:
         """Process unequal replace for split pair candidates."""
-        if cursor.i + 1 >= len(cursor.one_blk):
+        if not cursor.one_has_next:
             return False
         one_joined = self._normalize_line(
             f"{self.one_lines[cursor.one_blk[cursor.i]]} "
@@ -588,11 +575,7 @@ class SeriesDiff:
         return True
 
     def _process_replace_unequal_tail(
-        self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
+        self, one_blk: list[int], two_blk: list[int], i: int, j: int
     ):
         """Process remaining unequal replace block tail cases."""
         if i < len(one_blk) and j < len(two_blk):

@@ -4,20 +4,20 @@
 
 from __future__ import annotations
 
+from typing import Unpack
+
 from scinoephile.core.subtitles import Series
 
 from .line_diff import LineDiff
-from .series_diff import SeriesDiff
+from .series_diff import SeriesDiff, SeriesDiffKwargs
 
-__all__ = [
-    "get_series_diff",
-]
+__all__ = ["get_series_diff"]
 
 
 def get_series_diff(
     one: Series,
     two: Series,
-    **kwargs: object,
+    **kwargs: Unpack[SeriesDiffKwargs],
 ) -> list[LineDiff]:
     """Compare two subtitle series by line content.
 

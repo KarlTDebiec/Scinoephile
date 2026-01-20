@@ -35,9 +35,34 @@ class ReplaceCursor:
         return self.one_blk[self.i]
 
     @property
+    def one_has_next(self) -> bool:
+        """Whether another item exists in the first block."""
+        return self.i + 1 < len(self.one_blk)
+
+    @property
+    def one_remaining(self) -> int:
+        """Number of remaining items in the first block."""
+        return len(self.one_blk) - self.i
+
+    @property
     def two_idx(self) -> int:
         """Current index in the second block."""
         return self.two_blk[self.j]
+
+    @property
+    def two_has_next(self) -> bool:
+        """Whether another item exists in the second block."""
+        return self.j + 1 < len(self.two_blk)
+
+    @property
+    def two_has_pair(self) -> bool:
+        """Whether a two-item pair exists in the second block."""
+        return self.two_has_next
+
+    @property
+    def two_remaining(self) -> int:
+        """Number of remaining items in the second block."""
+        return len(self.two_blk) - self.j
 
     def advance(self, *, n_one: int, n_two: int, last_was_split: bool | None = None):
         """Advance cursor indices.
@@ -51,7 +76,3 @@ class ReplaceCursor:
         self.j += n_two
         if last_was_split is not None:
             self.last_was_split = last_was_split
-
-    def mark_return(self):
-        """Mark the cursor for an early return."""
-        self.should_return = True
