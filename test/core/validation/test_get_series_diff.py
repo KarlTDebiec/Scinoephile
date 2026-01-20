@@ -7,7 +7,8 @@
 from __future__ import annotations
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.validation import LineDiff, get_series_diff
+from scinoephile.core.validation import get_series_diff
+from scinoephile.core.validation.line_diff import LineDiff
 
 
 def _assert_expected_differences(

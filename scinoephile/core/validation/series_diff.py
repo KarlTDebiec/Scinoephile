@@ -1,80 +1,18 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to validation."""
+"""Series-level line diffing."""
 
 from __future__ import annotations
 
 import difflib
 import re
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.core.validation.line_diff import LineDiff
+from scinoephile.core.validation.line_diff_kind import LineDiffKind
 
-__all__ = [
-    "LineDiff",
-    "LineDiffKind",
-    "get_series_diff",
-    "SeriesDiff",
-]
-
-
-class LineDiffKind(Enum):
-    """Types of line-level differences."""
-
-    DELETE = "delete"
-    EDIT = "edit"
-    INSERT = "insert"
-    MERGE = "merge"
-    MERGE_EDIT = "merge_edit"
-    SHIFT = "shift"
-    SPLIT = "split"
-    SPLIT_EDIT = "split_edit"
-
-
-@dataclass(frozen=True)
-class LineDiff:
-    """Represents a line-level difference."""
-
-    kind: LineDiffKind
-    one_lbl: str | None = None
-    two_lbl: str | None = None
-    one_idxs: list[int] | None = None
-    two_idxs: list[int] | None = None
-    one_texts: list[str] | None = None
-    two_texts: list[str] | None = None
-
-    @staticmethod
-    def _format_idxs(idxs: list[int]) -> str:
-        if len(idxs) == 1:
-            return str(idxs[0] + 1)
-        return f"{idxs[0] + 1}-{idxs[-1] + 1}"
-
-    def __str__(self) -> str:
-        """Format the diff as a display string."""
-        if self.one_idxs and self.one_texts and self.two_idxs is None:
-            missing_idx = self.one_idxs[0]
-            missing_text = self.one_texts[0]
-            return (
-                f"{self.kind.value}: "
-                f"{self.one_lbl}[{missing_idx + 1}] "
-                f"{missing_text!r} not present in {self.two_lbl}"
-            )
-        one_idxs = self.one_idxs or []
-        two_idxs = self.two_idxs or []
-        one_texts = self.one_texts or []
-        two_texts = self.two_texts or []
-        use_list_repr = len(one_idxs) != 1 or len(two_idxs) != 1
-        one_text_repr = repr(one_texts) if use_list_repr else repr(one_texts[0])
-        two_text_repr = repr(two_texts) if use_list_repr else repr(two_texts[0])
-        return (
-            f"{self.kind.value}: "
-            f"{self.one_lbl}[{self._format_idxs(one_idxs)}] -> "
-            f"{self.two_lbl}[{self._format_idxs(two_idxs)}]: "
-            f"{one_text_repr} -> {two_text_repr}"
-        )
+__all__ = ["SeriesDiff"]
 
 
 class SeriesDiff:
@@ -290,11 +228,17 @@ class SeriesDiff:
                     )
                     if first_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     if second_type == LineDiffKind.SPLIT:
                         self._process_split(
@@ -338,11 +282,17 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     i += 1
                     j += 2
@@ -373,11 +323,17 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                            one_idx,
+                            one_idx + 1,
+                            two_blk[j],
+                            two_blk[j + 1] + 1,
                         )
                     i += 1
                     j += 2
@@ -416,19 +372,31 @@ class SeriesDiff:
                         last_was_split = False
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                            one_slc[0],
+                            one_slc[-1] + 1,
+                            two_slc[0],
+                            two_slc[-1] + 1,
                         )
                     elif diff_type == LineDiffKind.SPLIT_EDIT:
                         self._process_split_edit(
-                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                            one_slc[0],
+                            one_slc[-1] + 1,
+                            two_slc[0],
+                            two_slc[-1] + 1,
                         )
                     elif diff_type == LineDiffKind.MERGE:
                         self._process_merge(
-                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                            one_slc[0],
+                            one_slc[-1] + 1,
+                            two_slc[0],
+                            two_slc[-1] + 1,
                         )
                     else:
                         self._process_merge_edit(
-                            one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                            one_slc[0],
+                            one_slc[-1] + 1,
+                            two_slc[0],
+                            two_slc[-1] + 1,
                         )
                     i += 1
                     j += 2
@@ -475,11 +443,17 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                            one_blk[i],
+                            one_blk[i + 1] + 1,
+                            two_idx,
+                            two_idx + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                            one_blk[i],
+                            one_blk[i + 1] + 1,
+                            two_idx,
+                            two_idx + 1,
                         )
                     i += 2
                     j += 1
@@ -494,7 +468,10 @@ class SeriesDiff:
                 )
                 if one_joined == two_joined:
                     self._process_split(
-                        one_blk[i], one_blk[i + 1] + 1, two_blk[j], two_blk[-1] + 1
+                        one_blk[i],
+                        one_blk[i + 1] + 1,
+                        two_blk[j],
+                        two_blk[-1] + 1,
                     )
                     return
             if i + 1 < len(one_blk):
@@ -512,11 +489,17 @@ class SeriesDiff:
                     )
                     if diff_type == LineDiffKind.SPLIT:
                         self._process_split(
-                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                            one_blk[i],
+                            one_blk[i + 1] + 1,
+                            two_idx,
+                            two_idx + 1,
                         )
                     else:
                         self._process_split_edit(
-                            one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                            one_blk[i],
+                            one_blk[i + 1] + 1,
+                            two_idx,
+                            two_idx + 1,
                         )
                     i += 2
                     j += 1
@@ -549,19 +532,31 @@ class SeriesDiff:
                 )
             if diff_type == LineDiffKind.SPLIT:
                 self._process_split(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             elif diff_type == LineDiffKind.SPLIT_EDIT:
                 self._process_split_edit(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             elif diff_type == LineDiffKind.MERGE:
                 self._process_merge(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             else:
                 self._process_merge_edit(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             return
         if i < len(one_blk):
@@ -572,16 +567,17 @@ class SeriesDiff:
 
     def _process_edit(self, one_idx: int, two_idx: int):
         """Process edit opcode block."""
-        msg = LineDiff(
-            kind=LineDiffKind.EDIT,
-            one_lbl=self.one_lbl,
-            two_lbl=self.two_lbl,
-            one_idxs=[one_idx],
-            two_idxs=[two_idx],
-            one_texts=[self.one_lines[one_idx]],
-            two_texts=[self.two_lines[two_idx]],
+        self.msgs.append(
+            LineDiff(
+                kind=LineDiffKind.EDIT,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=[one_idx],
+                two_idxs=[two_idx],
+                one_texts=[self.one_lines[one_idx]],
+                two_texts=[self.two_lines[two_idx]],
+            )
         )
-        self.msgs.append(msg)
 
     def _process_merge(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -698,16 +694,3 @@ class SeriesDiff:
         stripped = re.sub(r"(?:^|\s)(?:[-–])\s+", " ", text.strip())
         normalized = re.sub(r"\s+", " ", stripped).strip()
         return normalized
-
-
-def get_series_diff(one: Series, two: Series, **kwargs: Any) -> list[LineDiff]:
-    """Compare two subtitle series by line content.
-
-    Arguments:
-        one: First subtitle series
-        two: Second subtitle series
-        **kwargs: additional keyword arguments for SeriesDiff
-    Returns:
-        list of difference messages
-    """
-    return SeriesDiff(one, two, **kwargs).msgs
