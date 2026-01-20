@@ -8,6 +8,7 @@ import difflib
 import re
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -15,6 +16,7 @@ from scinoephile.core.subtitles import Series
 __all__ = [
     "LineDiff",
     "LineDiffKind",
+    "get_line_differ",
     "get_series_diff",
 ]
 
@@ -37,42 +39,40 @@ class LineDiff:
     """Represents a line-level difference."""
 
     kind: LineDiffKind
-    one_label: str | None = None
-    two_label: str | None = None
-    one_indices: list[int] | None = None
-    two_indices: list[int] | None = None
-    one_texts: list[str] | None = None
-    two_texts: list[str] | None = None
-    present_label: str | None = None
-    missing_label: str | None = None
-    missing_index: int | None = None
-    missing_text: str | None = None
+    one_lbl: str | None = None
+    two_lbl: str | None = None
+    one_idxs: list[int] | None = None
+    two_idxs: list[int] | None = None
+    one_txts: list[str] | None = None
+    two_txts: list[str] | None = None
 
     @staticmethod
-    def _format_indices(indices: list[int]) -> str:
-        if len(indices) == 1:
-            return str(indices[0] + 1)
-        return f"{indices[0] + 1}-{indices[-1] + 1}"
+    def _format_idxs(idxs: list[int]) -> str:
+        if len(idxs) == 1:
+            return str(idxs[0] + 1)
+        return f"{idxs[0] + 1}-{idxs[-1] + 1}"
 
     def __str__(self) -> str:
         """Format the diff as a display string."""
-        if self.missing_index is not None:
+        if self.one_idxs and self.one_txts and self.two_idxs is None:
+            missing_idx = self.one_idxs[0]
+            missing_txt = self.one_txts[0]
             return (
                 f"{self.kind.value}: "
-                f"{self.present_label}[{self.missing_index + 1}] "
-                f"{self.missing_text!r} not present in {self.missing_label}"
+                f"{self.one_lbl}[{missing_idx + 1}] "
+                f"{missing_txt!r} not present in {self.two_lbl}"
             )
-        one_indices = self.one_indices or []
-        two_indices = self.two_indices or []
-        one_texts = self.one_texts or []
-        two_texts = self.two_texts or []
-        use_list_repr = len(one_indices) != 1 or len(two_indices) != 1
-        one_text_repr = repr(one_texts) if use_list_repr else repr(one_texts[0])
-        two_text_repr = repr(two_texts) if use_list_repr else repr(two_texts[0])
+        one_idxs = self.one_idxs or []
+        two_idxs = self.two_idxs or []
+        one_txts = self.one_txts or []
+        two_txts = self.two_txts or []
+        use_list_repr = len(one_idxs) != 1 or len(two_idxs) != 1
+        one_text_repr = repr(one_txts) if use_list_repr else repr(one_txts[0])
+        two_text_repr = repr(two_txts) if use_list_repr else repr(two_txts[0])
         return (
             f"{self.kind.value}: "
-            f"{self.one_label}[{self._format_indices(one_indices)}] -> "
-            f"{self.two_label}[{self._format_indices(two_indices)}]: "
+            f"{self.one_lbl}[{self._format_idxs(one_idxs)}] -> "
+            f"{self.two_lbl}[{self._format_idxs(two_idxs)}]: "
             f"{one_text_repr} -> {two_text_repr}"
         )
 
@@ -85,21 +85,21 @@ class LineDiffer:
         one: Series,
         two: Series,
         *,
-        one_label: str,
-        two_label: str,
-        similarity_cutoff: float,
+        one_lbl: str = "one",
+        two_lbl: str = "two",
+        similarity_cutoff: float = 0.6,
     ) -> None:
         """Initialize line differ state.
 
         Arguments:
             one: First subtitle series
             two: Second subtitle series
-            one_label: label for first series in messages
-            two_label: label for second series in messages
+            one_lbl: label for first series in messages
+            two_lbl: label for second series in messages
             similarity_cutoff: similarity cutoff for pairing replacements
         """
-        self.one_label = one_label
-        self.two_label = two_label
+        self.one_lbl = one_lbl
+        self.two_lbl = two_lbl
         self.similarity_cutoff = similarity_cutoff
         self.one_lines = self._get_series_text_lines(one)
         self.two_lines = self._get_series_text_lines(two)
@@ -138,54 +138,31 @@ class LineDiffer:
         normalized = re.sub(r"\s+", " ", stripped).strip()
         return normalized
 
-    def _add_missing_lines(
-        self,
-        *,
-        diff_type: LineDiffKind,
-        present_label: str,
-        missing_label: str,
-        lines: list[str],
-        indices: list[int],
-    ) -> None:
-        """Add diffs for lines missing from another series.
-
-        Arguments:
-            diff_type: difference type to label messages
-            present_label: label for the series containing the lines
-            missing_label: label for the series missing the lines
-            lines: lines to reference
-            indices: indices of lines in the present list
-        """
+    def _add_delete_msgs(self, indices: list[int]) -> None:
+        """Add messages for lines deleted from the second series."""
         for idx in indices:
             self.msgs.append(
                 LineDiff(
-                    kind=diff_type,
-                    present_label=present_label,
-                    missing_label=missing_label,
-                    missing_index=idx,
-                    missing_text=lines[idx],
+                    kind=LineDiffKind.DELETE,
+                    one_lbl=self.one_lbl,
+                    two_lbl=self.two_lbl,
+                    one_idxs=[idx],
+                    one_txts=[self.one_lines[idx]],
                 )
             )
 
-    def _add_delete_msgs(self, indices: list[int]) -> None:
-        """Add messages for lines deleted from the second series."""
-        self._add_missing_lines(
-            diff_type=LineDiffKind.DELETE,
-            present_label=self.one_label,
-            missing_label=self.two_label,
-            lines=self.one_lines,
-            indices=indices,
-        )
-
     def _add_insert_msgs(self, indices: list[int]) -> None:
         """Add messages for lines inserted in the second series."""
-        self._add_missing_lines(
-            diff_type=LineDiffKind.INSERT,
-            present_label=self.two_label,
-            missing_label=self.one_label,
-            lines=self.two_lines,
-            indices=indices,
-        )
+        for idx in indices:
+            self.msgs.append(
+                LineDiff(
+                    kind=LineDiffKind.INSERT,
+                    one_lbl=self.two_lbl,
+                    two_lbl=self.one_lbl,
+                    one_idxs=[idx],
+                    one_txts=[self.two_lines[idx]],
+                )
+            )
 
     def _append_block_msg(
         self,
@@ -200,12 +177,12 @@ class LineDiffer:
         self.msgs.append(
             LineDiff(
                 kind=diff_type,
-                one_label=self.one_label,
-                two_label=self.two_label,
-                one_indices=one_slice,
-                two_indices=two_slice,
-                one_texts=one_text,
-                two_texts=two_text,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=one_slice,
+                two_idxs=two_slice,
+                one_txts=one_text,
+                two_txts=two_text,
             )
         )
 
@@ -219,12 +196,12 @@ class LineDiffer:
         self.msgs.append(
             LineDiff(
                 kind=LineDiffKind.EDIT,
-                one_label=self.one_label,
-                two_label=self.two_label,
-                one_indices=[one_idx],
-                two_indices=[two_idx],
-                one_texts=[self.one_lines[one_idx]],
-                two_texts=[self.two_lines[two_idx]],
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=[one_idx],
+                two_idxs=[two_idx],
+                one_txts=[self.one_lines[one_idx]],
+                two_txts=[self.two_lines[two_idx]],
             )
         )
 
@@ -244,13 +221,7 @@ class LineDiffer:
             if merged_key == two_joined.casefold() and all(
                 missing_key != self.two_keys[idx].casefold() for idx in two_block
             ):
-                self._add_missing_lines(
-                    diff_type=LineDiffKind.DELETE,
-                    present_label=self.one_label,
-                    missing_label=self.two_label,
-                    lines=self.one_lines,
-                    indices=[one_block[0]],
-                )
+                self._add_delete_msgs([one_block[0]])
                 self._append_block_msg(
                     diff_type=LineDiffKind.SPLIT,
                     one_slice=[one_block[1]],
@@ -513,13 +484,7 @@ class LineDiffer:
                     None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
                 ).ratio()
                 if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
-                    self._add_missing_lines(
-                        diff_type=LineDiffKind.DELETE,
-                        present_label=self.one_label,
-                        missing_label=self.two_label,
-                        lines=self.one_lines,
-                        indices=[one_idx],
-                    )
+                    self._add_delete_msgs([one_idx])
                     self._append_modified_msg(
                         one_idx=one_block[i + 1],
                         two_idx=two_idx,
@@ -617,22 +582,10 @@ class LineDiffer:
             )
             return
         if i < len(one_block):
-            self._add_missing_lines(
-                diff_type=LineDiffKind.DELETE,
-                present_label=self.one_label,
-                missing_label=self.two_label,
-                lines=self.one_lines,
-                indices=one_block[i:],
-            )
+            self._add_delete_msgs(one_block[i:])
             return
         if j < len(two_block):
-            self._add_missing_lines(
-                diff_type=LineDiffKind.INSERT,
-                present_label=self.two_label,
-                missing_label=self.one_label,
-                lines=self.two_lines,
-                indices=two_block[j:],
-            )
+            self._add_insert_msgs(two_block[j:])
 
     def _add_replace_block_msgs(
         self,
@@ -674,40 +627,45 @@ class LineDiffer:
             if tag == "insert":
                 self._add_insert_msgs(list(range(two_start, two_end)))
                 continue
-            if tag != "replace":
-                raise ScinoephileError(f"Unhandled opcode: {tag}")
-            self._add_replace_block_msgs(
-                one_start=one_start,
-                one_end=one_end,
-                two_start=two_start,
-                two_end=two_end,
-            )
+            if tag == "replace":
+                self._add_replace_block_msgs(
+                    one_start=one_start,
+                    one_end=one_end,
+                    two_start=two_start,
+                    two_end=two_end,
+                )
+            raise ScinoephileError(f"Unhandled opcode: {tag}")
+
         return self.msgs
 
 
 def get_series_diff(
     one: Series,
     two: Series,
-    *,
-    one_label: str = "one",
-    two_label: str = "two",
-    similarity_cutoff: float = 0.6,
+    line_differ: LineDiffer | None = None,
 ) -> list[LineDiff]:
     """Compare two subtitle series by line content.
 
     Arguments:
         one: First subtitle series
         two: Second subtitle series
-        one_label: label for first series in messages
-        two_label: label for second series in messages
-        similarity_cutoff: similarity cutoff for pairing replacements
+        line_differ: preconfigured LineDiffer instance
     Returns:
         list of difference messages
     """
-    return LineDiffer(
-        one,
-        two,
-        one_label=one_label,
-        two_label=two_label,
-        similarity_cutoff=similarity_cutoff,
-    ).diff()
+    if line_differ is None:
+        line_differ = get_line_differ()
+    return line_differ.diff(one, two)
+
+
+def get_line_differ(one: Series, two: Series, **kwargs: Any) -> LineDiffer:
+    """Get LineDiffer with provided configuration.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+        **kwargs: additional keyword arguments for LineDiffer
+    Returns:
+        LineDiffer with provided configuration
+    """
+    return LineDiffer(one, two, **kwargs)

@@ -40,8 +40,8 @@ def test_get_series_diff_kob(
     differences = get_series_diff(
         kob_eng_fuse_clean_validate_proofread_flatten,
         kob_eng_timewarp_clean_proofread_flatten,
-        one_label="OCR",
-        two_label="SRT",
+        one_lbl="OCR",
+        two_lbl="SRT",
     )
     # NOTE: Do not change expected entries through OCR[249]/SRT[260]; only adjust below.
     expected = [
@@ -206,8 +206,8 @@ def test_get_series_diff_mlamd_zho_simplify(
     differences = get_series_diff(
         mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
         mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
-        one_label="SIMP",
-        two_label="TRAD",
+        one_lbl="SIMP",
+        two_lbl="TRAD",
     )
     expected = [
         "edit: SIMP[178] -> TRAD[178]: '一个女人背起整个世界！' -> '一个女人指起整个世界！'",
@@ -252,8 +252,8 @@ def test_get_series_diff_mnt_zho_simplify(
     differences = get_series_diff(
         mnt_zho_hans_fuse_clean_validate_proofread_flatten,
         mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
-        one_label="SIMP",
-        two_label="TRAD",
+        one_lbl="SIMP",
+        two_lbl="TRAD",
     )
     expected = [
         "edit: SIMP[1] -> TRAD[1]: '《龙猫》' -> '龙猫'",
@@ -369,8 +369,8 @@ def test_get_series_diff_t_zho_simplify(
     differences = get_series_diff(
         t_zho_hans_fuse_clean_validate_proofread_flatten,
         t_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
-        one_label="SIMP",
-        two_label="TRAD",
+        one_lbl="SIMP",
+        two_lbl="TRAD",
     )
     expected = [
         "edit: SIMP[4] -> TRAD[4]: '袋子里装什么？\\u3000\\u3000总机' -> '袋子里装甚么？\\u3000\\u3000总机'",
