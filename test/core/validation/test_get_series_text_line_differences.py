@@ -441,6 +441,15 @@ def test_get_series_text_line_differences_kob(
             "['He was a scholar of Martial Arts', 'before…'] != "
             "['He was a scholar of Martial Arts before…']"
         ),
+        (
+            "modified: OCR[976] != SRT[1010]: "
+            "'you can achieve something' != 'you can achieve something.'"
+        ),
+        (
+            "modified: OCR[1051] != SRT[1088]: "
+            '"Please step aside, don\'t stop me from sleeping" != '
+            '"Please step aside, don\'t stop me from sleeping."'
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
