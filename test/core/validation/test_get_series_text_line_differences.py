@@ -231,6 +231,60 @@ def test_get_series_text_line_differences_kob(
             "!= "
             '["Why couldn\'t you find out they cheated during the examination?"]'
         ),
+        (
+            "modified: OCR[637] != SRT[653]: "
+            "'Master, I will take good care of the little turtle' != "
+            "'Master, I will take good care of little turtle'"
+        ),
+        (
+            "split: OCR[642:643] != SRT[658:660]: "
+            "['If I did better, you could have many babies'] != "
+            "['If I did better,', 'you could have many babies']"
+        ),
+        (
+            "split: OCR[643:644] != SRT[660:662]: "
+            "['But I think Chan is enough for me'] != "
+            "['But I think', 'Chan is enough for me']"
+        ),
+        "added: SRT[671] 'How is it?' not present in OCR",
+        "added: SRT[673] 'What happened?' not present in OCR",
+        (
+            "split_modified: OCR[660:661] != SRT[680:682]: "
+            "['Son. Have you kept any money?'] != ['Son', 'Have you kept any money?']"
+        ),
+        (
+            "split: OCR[664:665] != SRT[685:687]: "
+            "['Be merciful, please give money to us'] != "
+            "['Be merciful,', 'please give money to us']"
+        ),
+        (
+            "modified: OCR[677] != SRT[699]: "
+            '"Even the Gods won\'t let me be a beggar" != '
+            '"Even the Gods won\'t let me be beggars"'
+        ),
+        (
+            "split: OCR[686:687] != SRT[708:710]: "
+            "['Let me take a seat, maybe we can have something to eat tonight'] != "
+            "['Let me take a seat,', 'maybe we can have something to eat tonight']"
+        ),
+        (
+            "split: OCR[695:696] != SRT[718:720]: "
+            "['- Yes    - Just give it to me'] != ['Yes', 'Just give it to me']"
+        ),
+        (
+            "modified: OCR[712] != SRT[736]: "
+            "'Have you had any idea?' != 'Have you had any ideas?'"
+        ),
+        (
+            "modified: OCR[725] != SRT[749]: "
+            '"The one wearing red dress who stands under the lantern, that\'s her" != '
+            '"The one wearing the red dress who stands under the lantern, that\'s her"'
+        ),
+        (
+            "modified: OCR[743] != SRT[767]: "
+            "'I am carrying out my duty only, men!' != "
+            "'I am carrying my duty only. Men!'"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
