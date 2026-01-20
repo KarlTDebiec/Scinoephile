@@ -455,6 +455,10 @@ def test_get_series_text_line_differences_kob(
             "['No… I just want to sleep', 'with you'] != "
             "['No… I just want to sleep with you.']"
         ),
+        (
+            "modified: OCR[1166] != SRT[1203]: "
+            "'Bravo…' != 'You should have faith, you won, bravo…'"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
