@@ -281,7 +281,7 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 else:
                     split_type = LineDifferenceType.SPLIT_MODIFIED
                     merged_type = LineDifferenceType.MERGED_MODIFIED
-                if i == 0 or last_was_split:
+                if one_keys[one_idx] == two_joined or i == 0 or last_was_split:
                     diff_type = split_type
                     last_was_split = True
                 else:

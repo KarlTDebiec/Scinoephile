@@ -285,6 +285,11 @@ def test_get_series_text_line_differences_kob(
             "'I am carrying out my duty only, men!' != "
             "'I am carrying my duty only. Men!'"
         ),
+        (
+            "split: OCR[744:745] != SRT[768:770]: "
+            "['- Yes!    - Remove all the things'] != "
+            "['Yes!', 'Remove all the things']"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
