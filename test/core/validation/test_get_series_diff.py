@@ -10,26 +10,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.validation import get_series_diff
 
 
-def _get_series_diff(
-    ocr_series: Series,
-    srt_series: Series,
-) -> list[str]:
-    """Get get_series_diff output.
-
-    Arguments:
-        ocr_series: OCR subtitle series
-        srt_series: SRT subtitle series
-    Returns:
-        list of differences
-    """
-    return get_series_diff(
-        ocr_series,
-        srt_series,
-        one_label="OCR",
-        two_label="SRT",
-    )
-
-
 def _assert_expected_differences(
     differences: list[str],
     expected: list[str],
@@ -56,9 +36,11 @@ def test_get_series_diff_kob(
         kob_eng_fuse_clean_validate_proofread_flatten: OCR English subtitles
         kob_eng_timewarp_clean_proofread_flatten: timewarped SRT English subtitles
     """
-    differences = _get_series_diff(
+    differences = get_series_diff(
         kob_eng_fuse_clean_validate_proofread_flatten,
         kob_eng_timewarp_clean_proofread_flatten,
+        one_label="OCR",
+        two_label="SRT",
     )
     # NOTE: Do not change expected entries through OCR[249]/SRT[260]; only adjust below.
     expected = [
@@ -213,3 +195,254 @@ def test_get_series_diff_kob(
     print()
     for i, diff in enumerate(differences, 1):
         print(f"{i:>3d}: {diff}")
+
+
+def test_get_series_diff_mlamd_zho_simplify(
+    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
+) -> None:
+    """Test get_series_diff with MLAMD Simplified vs Traditional simplified subtitles."""
+    differences = get_series_diff(
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+        one_label="SIMP",
+        two_label="TRAD",
+    )
+    expected = [
+        "edit: SIMP[178] -> TRAD[178]: '一个女人背起整个世界！' -> '一个女人指起整个世界！'",
+        "edit: SIMP[227] -> TRAD[227]: '他扭了脚骹！' -> '他扭了脚骸！'",
+        "edit: SIMP[239] -> TRAD[239]: '拜托不要再提了！' -> '拜託不要再提了！'",
+        "edit: SIMP[355] -> TRAD[355]: '妈妈，我得把出世纸带着吗？' -> '妈妈，我得把出世纸带著吗？'",
+        "edit: SIMP[359] -> TRAD[359]: '太好了！吓得我！' -> '太好了！嚇得我！'",
+        "edit: SIMP[369] -> TRAD[369]: '依你说，纸是否可以包着鸡呢？' -> '依你说，纸是否可以包著鸡呢？'",
+        "edit: SIMP[420] -> TRAD[420]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
+        "edit: SIMP[457] -> TRAD[457]: '你唔收我做徒弟，我一世都这么跪着！' -> '你唔收我做徒弟，我一世都这么跪著！'",
+        "edit: SIMP[461] -> TRAD[461]: '不成了！我的脚瓜太痹了！' -> '不成了！我的脚瓜太痺了！'",
+        "edit: SIMP[468] -> TRAD[468]: '妈妈跟着又念念有词的' -> '妈妈跟著又念念有词的'",
+        "edit: SIMP[481] -> TRAD[481]: '还带着成绩表，奖牌和大包' -> '还带著成绩表，奖牌和大包'",
+        "edit: SIMP[566] -> TRAD[566]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
+        "edit: SIMP[579] -> TRAD[579]: '难道⋯\\u3000不会吧？' -> '难道⋯不会吧？'",
+        "edit: SIMP[580] -> TRAD[580]: '想不到真的让妈妈拿去了．吓得我！' -> '想不到真的让妈妈拿去了，嚇得我！'",
+        "edit: SIMP[665] -> TRAD[665]: '连它的气味也没嗅过' -> '连牠的气味也没嗅过'",
+        "edit: SIMP[714] -> TRAD[714]: '我大着胆跟妈妈说：不如去饮茶吖' -> '我大著胆跟妈妈说：不如去饮茶吖'",
+        "edit: SIMP[723] -> TRAD[723]: '栗子炆火鸡丝㷛' -> '栗子\\u3000\\u3000火鸡丝堡'",
+        "edit: SIMP[740] -> TRAD[740]: '还要长过它的一生' -> '还要长过牠的一生'",
+        "edit: SIMP[753] -> TRAD[753]: '那天，我看着天空几缕灰色的烟' -> '那天，我看著天空几缕灰色的烟'",
+        "edit: SIMP[757] -> TRAD[757]: '奥运金牌得主李丽珊决定参加今届奥运会' -> '奥运金牌得主李丽珊决定参加今届奥运'",
+        "edit: SIMP[787] -> TRAD[787]: '想着转行当运动员的茶餐厅伙记⋯' -> '想著转行当运动员的茶餐厅伙记⋯'",
+        "edit: SIMP[806] -> TRAD[806]: '于是我就向着这个又黑又窄的洞⋯' -> '于是我就向著这个又黑又窄的洞⋯'",
+        "edit: SIMP[808] -> TRAD[808]: '洞里面什么也没有，只有一个盒子' -> '洞里面什么也没有，只有一个盒'",
+        "edit: SIMP[809] -> TRAD[809]: '我小心揭开盒子⋯' -> '我小心揭开盒⋯'",
+        "edit: SIMP[836] -> TRAD[836]: '「⋯无力挽回！」' -> '「⋯无力挽！」'",
+        "edit: SIMP[847] -> TRAD[847]: '足有一寸厚' -> '足有一吋厚'",
+        "edit: SIMP[855] -> TRAD[855]: '可是楝一双脚瓜站这儿⋯' -> '可是冻一双脚瓜站这儿⋯'",
+        "edit: SIMP[865] -> TRAD[865]: '妈妈的 dot com 散掉后，她又有计' -> '妈妈的dot com散掉后，她又有计'",
+        "edit: SIMP[876] -> TRAD[876]: '秘诀是：拜托，把鸡烧好一点⋯' -> '秘诀是：拜託，把鸡烧好一点⋯'",
+        "edit: SIMP[931] -> TRAD[931]: '好吧好吧，拜托！两份晚餐！快！' -> '好吧好吧，拜託！两份晚餐！快！'",
+    ]
+    _assert_expected_differences(differences, expected)
+
+
+def test_get_series_diff_mnt_zho_simplify(
+    mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
+) -> None:
+    """Test get_series_diff with MNT Simplified vs Traditional simplified subtitles."""
+    differences = get_series_diff(
+        mnt_zho_hans_fuse_clean_validate_proofread_flatten,
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+        one_label="SIMP",
+        two_label="TRAD",
+    )
+    expected = [
+        "edit: SIMP[1] -> TRAD[1]: '《龙猫》' -> '龙猫'",
+        "edit: SIMP[4] -> TRAD[4]: '你们两个累不累啊' -> '妳们两个累不累啊'",
+        "edit: SIMP[20] -> TRAD[20]: '爸爸，这里好棒啊' -> '爸爸，这里太好了'",
+        "shift: SIMP[43-44] -> TRAD[43-44]: ['橡果子', '有很多橡果子掉到屋里'] -> ['橡果', '有很多橡果掉到屋里']",
+        "edit: SIMP[48] -> TRAD[48]: '还是\\u3000吃橡果子的老鼠呢？' -> '还是吃橡果子的老鼠呢？'",
+        "edit: SIMP[56] -> TRAD[56]: '等人家嘛' -> '等等'",
+        "edit: SIMP[58] -> TRAD[58]: '进去罗' -> '进去啰'",
+        "edit: SIMP[68] -> TRAD[68]: '那一定是〝灰尘精灵〞' -> '那一定是「灰尘精灵」'",
+        "edit: SIMP[77] -> TRAD[77]: '你要躲着不出来\\u3000我就把你眼睛挖出来！' -> '你要躲著不出来\\u3000我就把你眼睛挖出来！'",
+        "edit: SIMP[83] -> TRAD[83]: '人家也要' -> '小美也要'",
+        "edit: SIMP[85] -> TRAD[85]: '甚么？' -> '咦？'",
+        "edit: SIMP[86] -> TRAD[86]: '甚么？' -> '咦？'",
+        "edit: SIMP[87] -> TRAD[87]: '甚么？' -> '咦？'",
+        "edit: SIMP[88] -> TRAD[88]: '甚么？' -> '咦？'",
+        "edit: SIMP[89] -> TRAD[89]: '甚么？' -> '咦？'",
+        "edit: SIMP[100] -> TRAD[100]: '那真是太棒了' -> '那真是太好了'",
+        "edit: SIMP[113] -> TRAD[113]: '如果你们不急着搬进来' -> '如果你们不急著搬进来'",
+        "edit: SIMP[127] -> TRAD[127]: '〝哇啦哇啦〞的乱跑啊' -> '「哇啦哇啦」的乱跑啊'",
+        "shift: SIMP[140-141] -> TRAD[140-141]: ['可是要是来这么一大堆\\u3000该怎么办？', '人家才不怕那些'] -> ['可是要是来这么一大堆，\\u3000该怎么办？', '小美才不怕那些']",
+        "edit: SIMP[143] -> TRAD[143]: '那以后晚上\\u3000姐姐就不陪妳上厕所' -> '那以后晚上，\\u3000姐姐就不陪妳上厕所'",
+        "shift: SIMP[147-148] -> TRAD[147-148]: ['人家也要去', '小美，妳在一边等着'] -> ['小美也要去', '小美，妳在一边等著']",
+        "edit: SIMP[154] -> TRAD[154]: '你不是刚刚那个吗？\\u3000有事吗' -> '你不是刚刚那个吗？有事吗'",
+        "edit: SIMP[163] -> TRAD[163]: '不过\\u3000婆婆这个糯米团很好吃' -> '不过婆婆这个糯米团很好吃'",
+        "edit: SIMP[165] -> TRAD[165]: '婆婆，谢谢您的糯米团' -> '谢谢您'",
+        "shift: SIMP[172-174] -> TRAD[172-174]: ['人家才不怕呢！', '人家才不怕呢！', '一、二、一、二、一、二'] -> ['小美才不怕呢！', '小美才不怕呢！', '一，二，一，二，一，二']",
+        "edit: SIMP[185] -> TRAD[185]: '替我帮妳们妈妈问好' -> '替我帮你们妈妈问好'",
+        "edit: SIMP[191] -> TRAD[191]: '小美妳也来啦' -> '小美，妳也来啦'",
+        "edit: SIMP[195] -> TRAD[195]: '今天田里休息一天' -> '今天是农假，学校休息一天'",
+        "edit: SIMP[219] -> TRAD[219]: '人家也要！人家也要！' -> '小美也要！小美也要！'",
+        "edit: SIMP[233] -> TRAD[233]: '可是人家好想要跟妈妈一起睡' -> '妈妈说想跟小美一起睡'",
+        "edit: SIMP[259] -> TRAD[259]: '早，赶快走吧\\u3000好' -> '﹣早，赶快走吧\\u3000\\u3000﹣好'",
+        "edit: SIMP[262] -> TRAD[262]: '妳拿着便当要上哪儿去？' -> '你拿著便当要上哪儿去？'",
+        "shift: SIMP[298-299] -> TRAD[298-299]: ['它的名字叫做大龙猫啊', '它的毛好多啊'] -> ['牠的名字叫做大龙猫啊', '牠的毛好多啊']",
+        "edit: SIMP[313] -> TRAD[313]: '它刚才\\u3000睡在一棵很大的树里面' -> '牠刚才睡在一棵很大的树里面'",
+        "edit: SIMP[321] -> TRAD[321]: '人家没有骗你们' -> '我没有骗你们'",
+        "edit: SIMP[324] -> TRAD[324]: '小美刚才一定是\\u3000遇到了森林的主人' -> '小美刚才一定是遇到了森林的主人'",
+        "edit: SIMP[327] -> TRAD[327]: '来，我们去跟它打个招呼吧' -> '对了，我们还没有跟它打招呼'",
+        "edit: SIMP[355] -> TRAD[355]: '人家也要去' -> '小美也要去'",
+        "edit: SIMP[360] -> TRAD[360]: '我们比赛看谁先到家' -> '比赛跑回家'",
+        "edit: SIMP[362] -> TRAD[362]: '等人家嘛' -> '等等'",
+        "edit: SIMP[364] -> TRAD[364]: '等人家嘛' -> '等等嘛'",
+        "edit: SIMP[367] -> TRAD[367]: '我好希望我也能够见它一面' -> '我好希望我也能够见牠一面'",
+        "edit: SIMP[369] -> TRAD[369]: '再不快点就要迟到了\\u3000嗯' -> '﹣再不快点就要迟到了\\u3000\\u3000﹣嗯'",
+        "delete: SIMP[374] '你们看，你们看，她妹妹' not present in TRAD",
+        "edit: SIMP[375] -> TRAD[374]: '婆婆、小美？' -> '婆婆，小美？'",
+        "edit: SIMP[377] -> TRAD[376]: '她一直吵着\\u3000要到姐姐那边去所以⋯' -> '她一直吵著\\u3000要到姐姐那边去，所以⋯'",
+        "shift: SIMP[382-383] -> TRAD[381-382]: ['你要在婆婆家\\u3000乖乖等姊姊放学的吗？', '姊姊还要再上两个小时的课'] -> ['你要在婆婆家\\u3000乖乖等姐姐放学的吗？', '姐姐还要再上两个小时的课']",
+        "edit: SIMP[390] -> TRAD[389]: '好、好' -> '是的'",
+        "edit: SIMP[402] -> TRAD[401]: '人家都没有哭，棒不棒？\\u3000嗯' -> '﹣小美都没有哭，了不起。\\u3000\\u3000﹣嗯'",
+        "shift: SIMP[406-407] -> TRAD[405-406]: ['姊姊，有伞子真棒啊', '可是伞子顶破了一个大洞'] -> ['姐姐，有伞子真好啊', '伞子破了好多洞洞']",
+        "edit: SIMP[409] -> TRAD[408]: '人家也要去接爸爸' -> '小美也要去接爸爸'",
+        "edit: SIMP[412] -> TRAD[411]: '竟然还会傻得忘了带伞\\u3000你骗鬼啊！' -> '竟然还会傻得忘了带伞\\u3000你骗鬼啊'",
+        "edit: SIMP[414] -> TRAD[413]: '我看啊\\u3000你八成是把伞子弄坏了' -> '我看啊\\u3000你八成是把伞弄坏了'",
+        "edit: SIMP[421] -> TRAD[420]: '对了\\u3000这是勘太今天借我们的伞' -> '对了，这是勘太今天借我们的伞'",
+        "edit: SIMP[447] -> TRAD[446]: '爸爸就快到了\\u3000撑着点啊' -> '爸爸就快到了，撑著点啊'",
+        "edit: SIMP[453] -> TRAD[452]: '快点啊\\u3000小美快要掉下来了啦' -> '快点啊，小美快要掉下来了啦'",
+        "edit: SIMP[466] -> TRAD[465]: '吓死人了' -> '嚇死人了'",
+        "edit: SIMP[468] -> TRAD[467]: '好棒啊' -> '太好了！'",
+        "edit: SIMP[469] -> TRAD[468]: '好吓人啊' -> '好嚇人啊'",
+        "edit: SIMP[472] -> TRAD[471]: '今天真是既吓人又惊奇\\u3000又开心的一天' -> '今天真是既嚇人又惊奇\\u3000又开心的一天'",
+        "edit: SIMP[473] -> TRAD[472]: '而且大龙猫送给我们的礼物\\u3000实在是太棒了' -> '而且大龙猫送给我们的礼物\\u3000实在是妙极了'",
+        "edit: SIMP[474] -> TRAD[473]: '是一个用竹叶包着' -> '是一个用竹叶包著'",
+        "edit: SIMP[475] -> TRAD[474]: '然后外面再用\\u3000龙须草绑着的小包包' -> '然后外面再用\\u3000龙须草绑著的小包包'",
+        "edit: SIMP[478] -> TRAD[477]: '我们想家里院子\\u3000变成森林的话一定很棒' -> '我们想家里院子\\u3000变成森林的话一定很精彩'",
+        "edit: SIMP[486] -> TRAD[485]: '希望妈妈的病\\u3000能够快点好起来好吗？' -> '希望妈妈的病能够快点好起来好吗？'",
+        "edit: SIMP[496] -> TRAD[495]: '太棒了！' -> '太好了！'",
+        "edit: SIMP[531] -> TRAD[530]: '星期一还得回去复诊' -> '星期一还得回去覆诊'",
+        "merge_edit: SIMP[546-547] -> TRAD[545]: ['婆婆，怎么办？', '医院要我们跟他们联络'] -> ['婆婆，怎么办？医院要我们跟他们联络']",
+        "edit: SIMP[550] -> TRAD[548]: '爸爸研究室的电话号码\\u3000我是知道' -> '爸爸研究室的电话号码我是知道'",
+        "edit: SIMP[552] -> TRAD[550]: '勘太\\u3000你带小月去打电话' -> '勘太，你带小月去打电话'",
+        "edit: SIMP[561] -> TRAD[559]: '我爸爸⋯\\u3000麻烦请草壁先生听电话' -> '我爸爸⋯\\u3000麻烦请草壁先生接电话'",
+        "edit: SIMP[566] -> TRAD[564]: '爸爸现在就\\u3000打电话到医院去问' -> '爸爸现在就打电话到医院去问'",
+        "edit: SIMP[570] -> TRAD[568]: '爸爸给医院打过电话\\u3000就马上就回妳电话' -> '爸爸给医院打过电话就马上就回妳电话'",
+        "edit: SIMP[576] -> TRAD[574]: '姊姊' -> '姐姐'",
+        "edit: SIMP[586] -> TRAD[584]: '妈妈要是勉强出院\\u3000反而更严重了那怎么办' -> '妈妈要是勉强出院\\u3000反而更严重了那怎么办？'",
+        "edit: SIMP[590] -> TRAD[588]: '那妈妈死掉\\u3000也没有关系是不是' -> '那妈妈死掉\\u3000也没有关系是不是？'",
+        "edit: SIMP[595] -> TRAD[593]: '姊姊大坏蛋！' -> '姐姐是大坏蛋！'",
+        "edit: SIMP[606] -> TRAD[604]: '我妈妈要是死了该怎么办' -> '我妈妈要是死了该怎么办？'",
+        "edit: SIMP[613] -> TRAD[611]: '婆婆都会陪着妳的\\u3000好不好呀' -> '婆婆都会陪著妳的\\u3000好不好呀'",
+        "edit: SIMP[618] -> TRAD[616]: '没在公车站牌那边吗？' -> '没在巴士站牌那边吗？'",
+        "edit: SIMP[623] -> TRAD[621]: '她会不会\\u3000跑去妈妈住的医院了' -> '她会不会跑去妈妈住的医院了'",
+        "edit: SIMP[625] -> TRAD[623]: '可是就连大人也得\\u3000走上三个钟头才会到' -> '可是就连大人也得走上三个钟头才会到'",
+        "edit: SIMP[631] -> TRAD[629]: '打搅了，伯伯，请问⋯' -> '打扰了，伯伯，请问⋯'",
+        "edit: SIMP[651] -> TRAD[649]: '她从哪里来的？' -> '妳从哪里来的？'",
+        "edit: SIMP[655] -> TRAD[653]: '就是啊' -> '再见啰'",
+        "edit: SIMP[669] -> TRAD[667]: '喃呒阿弥陀佛' -> '南无阿弥陀佛'",
+        "edit: SIMP[672] -> TRAD[670]: '喃呒阿弥陀佛\\u3000婆婆，小月来了' -> '婆婆，小月来了'",
+        "edit: SIMP[677] -> TRAD[675]: '我还以\\u3000这是小美的' -> '我还以为这是小美的'",
+        "edit: SIMP[683] -> TRAD[681]: '不好意思啊' -> '大家，不好意思啊'",
+        "edit: SIMP[684] -> TRAD[682]: '大家辛苦你们\\u3000再回头去找找好了' -> '麻烦再分开找找'",
+        "edit: SIMP[695] -> TRAD[693]: '她一定已经吓哭了' -> '她一定已经嚇哭了'",
+        "split_edit: SIMP[697] -> TRAD[695-696]: ['大家都看不到它'] -> ['大家都看不到牠', '「小美」']",
+        "edit: SIMP[701] -> TRAD[700]: '姊姊' -> '姐姐'",
+        "edit: SIMP[702] -> TRAD[701]: '姊姊' -> '姐姐'",
+        "edit: SIMP[705] -> TRAD[704]: '姊姊' -> '姐姐'",
+        "edit: SIMP[709] -> TRAD[708]: '〝七国山医院〞' -> '「七国山医院」'",
+        "shift: SIMP[723-724] -> TRAD[722-723]: ['出院以后我一定要好好疼她们', '让她们尽情耍耍小脾气'] -> ['出院以后我要好好疼疼她们\\u3000让她们尽情耍耍小脾气', '妳呀']",
+        "edit: SIMP[731] -> TRAD[730]: '我好像看到小月和小美坐在那棵松树上笑' -> '我好像看到小月和小美\\u3000坐在那棵松树上笑'",
+        "edit: SIMP[735] -> TRAD[734]: '谢谢观看' -> '〝送给妈妈〞'",
+        "insert: TRAD[735] '〝送给妈妈〞' not present in SIMP",
+        "insert: TRAD[736] '完' not present in SIMP",
+    ]
+    _assert_expected_differences(differences, expected)
+
+
+def test_get_series_diff_t_zho_simplify(
+    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    t_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
+) -> None:
+    """Test get_series_diff with T Simplified vs Traditional simplified subtitles."""
+    differences = get_series_diff(
+        t_zho_hans_fuse_clean_validate_proofread_flatten,
+        t_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+        one_label="SIMP",
+        two_label="TRAD",
+    )
+    expected = [
+        "edit: SIMP[4] -> TRAD[4]: '袋子里装什么？\\u3000\\u3000总机' -> '袋子里装甚么？\\u3000\\u3000总机'",
+        "edit: SIMP[50] -> TRAD[50]: '欢哥开口，怎么着都行！' -> '欢哥开口，怎么著都行！'",
+        "edit: SIMP[65] -> TRAD[65]: '什么「易发」？' -> '甚么「易发」？'",
+        "edit: SIMP[81] -> TRAD[81]: '只一心\\u3000等一天\\u3000日月如飞\\u3000却等不到你' -> '祇一心\\u3000等一天\\u3000日月如飞\\u3000却等不到你'",
+        "edit: SIMP[95] -> TRAD[95]: '还谈什么？' -> '还谈甚么？'",
+        "edit: SIMP[99] -> TRAD[99]: '五亿，先拿着吧' -> '五亿，先拿著吧'",
+        "edit: SIMP[119] -> TRAD[119]: '你耍我的吧？' -> '你要我的吧？'",
+        "edit: SIMP[147] -> TRAD[147]: '什么？' -> '甚么？'",
+        "shift: SIMP[164-165] -> TRAD[164-165]: ['拿着\\u3000\\u3000什么？', '拿着，我要戴狗带'] -> ['拿著\\u3000\\u3000甚么？', '拿著，我要戴狗带']",
+        "edit: SIMP[174] -> TRAD[174]: '这位就是接手「易发」铺位的张大宝' -> '这位就是接手「易发」舖位的张大宝'",
+        "edit: SIMP[211] -> TRAD[211]: '张总，看看想吃什么？' -> '张总，看看想吃甚么？'",
+        "edit: SIMP[259] -> TRAD[259]: '那你想到什么好主意？' -> '那你想到甚么好主意？'",
+        "edit: SIMP[288] -> TRAD[288]: '他看什么？' -> '他看甚么？'",
+        "edit: SIMP[295] -> TRAD[295]: '你看看看，他妈的看什么？' -> '你看看看，他妈的看甚么？'",
+        "edit: SIMP[314] -> TRAD[314]: '这潮哥是什么来头？' -> '这潮哥是甚么来头？'",
+        "edit: SIMP[315] -> TRAD[315]: '他就是不让你知道他什么来头' -> '他就是不让你知道他甚么来头'",
+        "edit: SIMP[327] -> TRAD[327]: '什么事？' -> '甚么事？'",
+        "edit: SIMP[333] -> TRAD[333]: '你什么时候回来的？' -> '你甚么时候回来的？'",
+        "edit: SIMP[335] -> TRAD[335]: '你干什么？这么客气，进来坐' -> '你干甚么？这么客气，进来坐'",
+        "edit: SIMP[348] -> TRAD[348]: '慢慢来，宝儿，这么着急' -> '慢慢来，宝儿，这么著急'",
+        "edit: SIMP[356] -> TRAD[356]: '什么没咳嗽？你就会顶嘴！' -> '甚么没咳嗽？你就会顶嘴！'",
+        "edit: SIMP[392] -> TRAD[392]: '最近在干什么？' -> '最近在干甚么？'",
+        "edit: SIMP[393] -> TRAD[393]: '我可以干什么？' -> '我可以干甚么？'",
+        "edit: SIMP[410] -> TRAD[410]: '又不是赚很多，也不知为了什么' -> '又不是赚很多，也不知为了甚么'",
+        "edit: SIMP[412] -> TRAD[412]: '什么？' -> '甚么？'",
+        "edit: SIMP[414] -> TRAD[414]: '干什么？' -> '干甚么？'",
+        "edit: SIMP[449] -> TRAD[449]: '快点\\u3000\\u3000什么事？' -> '快点\\u3000\\u3000甚么事？'",
+        "edit: SIMP[451] -> TRAD[451]: '什么事？' -> '甚么事？'",
+        "edit: SIMP[463] -> TRAD[463]: '喂，干什么？' -> '喂，干甚么？'",
+        "edit: SIMP[472] -> TRAD[472]: '你刚说什么？' -> '你刚说甚么？'",
+        "edit: SIMP[478] -> TRAD[478]: '什么三大贼王？' -> '甚么三大贼王？'",
+        "edit: SIMP[494] -> TRAD[494]: '三个风格不一样，搞什么？' -> '三个风格不一样，搞甚么？'",
+        "shift: SIMP[506-507] -> TRAD[506-507]: ['不是托着', '而是按着'] -> ['不是托著', '而是按著']",
+        "edit: SIMP[518] -> TRAD[518]: '起什么名字好呢？' -> '起甚么名字好呢？'",
+        "edit: SIMP[526] -> TRAD[526]: '搞什么？' -> '搞甚么？'",
+        "shift: SIMP[528-529] -> TRAD[528-529]: ['唱什么歌？', '唱什么也听不到，有什么好听？'] -> ['唱甚么歌？', '唱甚么也听不到，有甚么好听？']",
+        "edit: SIMP[531] -> TRAD[531]: '唱什么也很厉害' -> '唱甚么也很厉害'",
+        "edit: SIMP[544] -> TRAD[544]: '搞什么？' -> '搞甚么？'",
+        "shift: SIMP[546-547] -> TRAD[546-547]: ['搞什么都厉害！', '什么也没想到'] -> ['搞甚么都厉害！', '甚么也没想到']",
+        "edit: SIMP[556] -> TRAD[556]: '辉，你朋友要住到什么时候？' -> '辉，你朋友要住到甚么时候？'",
+        "edit: SIMP[561] -> TRAD[561]: '他做什么工作的？' -> '他做甚么工作的？'",
+        "edit: SIMP[583] -> TRAD[583]: '什么事？' -> '甚么事？'",
+        "shift: SIMP[634-635] -> TRAD[634-635]: ['吃什么？吃什么？', '吃什么？'] -> ['吃甚么？吃甚么？', '吃甚么？']",
+        "edit: SIMP[641] -> TRAD[641]: '你，叫什么总？' -> '你，叫甚么总？'",
+        "edit: SIMP[646] -> TRAD[646]: '龙科，那事就拜托你' -> '龙科，那事就拜託你'",
+        "edit: SIMP[729] -> TRAD[729]: '打劫前，最重要教他们什么？' -> '打劫前，最重要教他们甚么？'",
+        "edit: SIMP[740] -> TRAD[740]: '潮州威吓得枪都掉了！' -> '潮州威嚇得枪都掉了！'",
+        "edit: SIMP[779] -> TRAD[779]: '什么事？' -> '甚么事？'",
+        "edit: SIMP[789] -> TRAD[789]: '我刚好顺路\\u3000\\u3000吓坏我们了' -> '我刚好顺路\\u3000\\u3000嚇坏我们了'",
+        "edit: SIMP[792] -> TRAD[792]: '什么事？' -> '甚么事？'",
+        "edit: SIMP[795] -> TRAD[795]: '不好意思\\u3000\\u3000把小女孩吓坏了' -> '不好意思\\u3000\\u3000把小女孩嚇坏了'",
+        "edit: SIMP[808] -> TRAD[808]: '算不了什么' -> '算不了甚么'",
+        "edit: SIMP[817] -> TRAD[817]: '什么意思？' -> '甚么意思？'",
+        "edit: SIMP[823] -> TRAD[823]: '你这次也没什么损失' -> '你这次也没甚么损失'",
+        "edit: SIMP[848] -> TRAD[848]: '你做什么？' -> '你做甚么？'",
+        "edit: SIMP[862] -> TRAD[862]: '脱什么节？' -> '脱甚么节？'",
+        "edit: SIMP[906] -> TRAD[906]: '3T什么意思？' -> '3T甚么意思？'",
+        "edit: SIMP[939] -> TRAD[939]: '你说什么？' -> '你说甚么？'",
+        "edit: SIMP[957] -> TRAD[957]: '你们要是真有什么大茶饭的话' -> '你们要是真有甚么大茶饭的话'",
+        "edit: SIMP[959] -> TRAD[959]: '我们什么都可以做的' -> '我们甚么都可以做的'",
+        "edit: SIMP[977] -> TRAD[977]: '还有什么好说？' -> '还有甚么好说？'",
+        "edit: SIMP[1008] -> TRAD[1008]: '什么货我都有' -> '甚么货我都有'",
+        "edit: SIMP[1012] -> TRAD[1012]: '炸什么都行！' -> '炸甚么都行！'",
+        "edit: SIMP[1048] -> TRAD[1048]: '等什么？喂？' -> '等甚么？喂？'",
+        "edit: SIMP[1074] -> TRAD[1074]: '刚刚最后一句你说什么？' -> '刚刚最后一句你说甚么？'",
+        "edit: SIMP[1100] -> TRAD[1100]: '怎样也要留下些什么吧？' -> '怎样也要留下些甚么吧？'",
+        "edit: SIMP[1116] -> TRAD[1116]: '老大，你说什么就是什么' -> '老大，你说甚么就是甚么'",
+        "edit: SIMP[1123] -> TRAD[1123]: '这么晚在吵什么？' -> '这么晚在吵甚么？'",
+        "edit: SIMP[1129] -> TRAD[1129]: '但不知这里是什么地方' -> '但不知这里是甚么地方'",
+        "edit: SIMP[1143] -> TRAD[1143]: '我想到干什么了！' -> '我想到干甚么了！'",
+        "edit: SIMP[1151] -> TRAD[1151]: '这里水静鹅飞，什么人也没有，完毕' -> '这里水静鹅飞，甚么人也没有，完毕'",
+        "edit: SIMP[1194] -> TRAD[1194]: '看着你们开展非凡的新时代' -> '看著你们开展非凡的新时代'",
+    ]
+    _assert_expected_differences(differences, expected)
