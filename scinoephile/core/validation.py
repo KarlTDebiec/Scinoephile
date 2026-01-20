@@ -180,8 +180,7 @@ class SeriesDiff:
                 missing_key != self.two_keys[idx].casefold() for idx in two_block
             ):
                 self._process_delete(one_start=one_block[0], one_end=one_block[0] + 1)
-                self._append_block_msg(
-                    diff_type=LineDiffKind.SPLIT,
+                self._process_split(
                     one_start=one_block[1],
                     one_end=one_block[1] + 1,
                     two_start=two_block[0],
@@ -208,8 +207,7 @@ class SeriesDiff:
             if joined_ratio >= self.similarity_cutoff and any(
                 ratio < line_shift_cutoff for ratio in line_ratios
             ):
-                self._append_block_msg(
-                    diff_type=LineDiffKind.SHIFT,
+                self._process_shift(
                     one_start=one_block[0],
                     one_end=one_block[-1] + 1,
                     two_start=two_block[0],
@@ -217,7 +215,7 @@ class SeriesDiff:
                 )
                 return
         for one_idx, two_idx in zip(one_block, two_block, strict=False):
-            self._append_modified_msg(one_idx, two_idx)
+            self._process_edit(one_idx, two_idx)
 
     def _process_replace_unequal(self, one_block: list[int], two_block: list[int]):
         """Add messages for unequal-sized replace blocks."""
@@ -232,8 +230,7 @@ class SeriesDiff:
                     f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
                 )
                 if one_joined == self.two_keys[two_idx]:
-                    self._append_block_msg(
-                        diff_type=LineDiffKind.MERGE,
+                    self._process_merge(
                         one_start=one_block[i],
                         one_end=one_block[i + 1] + 1,
                         two_start=two_idx,
@@ -258,8 +255,7 @@ class SeriesDiff:
                 if merged_ratio >= self.similarity_cutoff and merged_ratio > max(
                     ratio_curr, ratio_next
                 ):
-                    self._append_block_msg(
-                        diff_type=LineDiffKind.MERGE_EDIT,
+                    self._process_merge_edit(
                         one_start=one_block[i],
                         one_end=one_block[i + 1] + 1,
                         two_start=two_idx,
@@ -305,20 +301,34 @@ class SeriesDiff:
                         if self.one_keys[one_block[i + 1]] == two_joined_second
                         else LineDiffKind.SPLIT_EDIT
                     )
-                    self._append_block_msg(
-                        diff_type=first_type,
-                        one_start=one_idx,
-                        one_end=one_idx + 1,
-                        two_start=two_block[j],
-                        two_end=two_block[j + 1] + 1,
-                    )
-                    self._append_block_msg(
-                        diff_type=second_type,
-                        one_start=one_block[i + 1],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_block[j + 2],
-                        two_end=two_block[j + 3] + 1,
-                    )
+                    if first_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
+                    if second_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_block[i + 1],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_block[j + 2],
+                            two_end=two_block[j + 3] + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_block[i + 1],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_block[j + 2],
+                            two_end=two_block[j + 3] + 1,
+                        )
                     i += 2
                     j += 4
                     last_was_split = True
@@ -345,13 +355,20 @@ class SeriesDiff:
                         if self.one_keys[one_idx] == best_joined
                         else LineDiffKind.SPLIT_EDIT
                     )
-                    self._append_block_msg(
-                        diff_type=diff_type,
-                        one_start=one_idx,
-                        one_end=one_idx + 1,
-                        two_start=two_block[j],
-                        two_end=two_block[j + 1] + 1,
-                    )
+                    if diff_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
                     i += 1
                     j += 2
                     last_was_split = True
@@ -379,13 +396,20 @@ class SeriesDiff:
                         if self.one_keys[one_idx] == two_joined
                         else LineDiffKind.SPLIT_EDIT
                     )
-                    self._append_block_msg(
-                        diff_type=diff_type,
-                        one_start=one_idx,
-                        one_end=one_idx + 1,
-                        two_start=two_block[j],
-                        two_end=two_block[j + 1] + 1,
-                    )
+                    if diff_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_idx,
+                            one_end=one_idx + 1,
+                            two_start=two_block[j],
+                            two_end=two_block[j + 1] + 1,
+                        )
                     i += 1
                     j += 2
                     last_was_split = True
@@ -394,7 +418,7 @@ class SeriesDiff:
                 None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
             ).ratio()
             if ratio >= self.similarity_cutoff:
-                self._append_modified_msg(one_idx, two_idx)
+                self._process_edit(one_idx, two_idx)
                 i += 1
                 j += 1
                 last_was_split = False
@@ -421,13 +445,34 @@ class SeriesDiff:
                     else:
                         diff_type = merged_type
                         last_was_split = False
-                    self._append_block_msg(
-                        diff_type=diff_type,
-                        one_start=one_slice[0],
-                        one_end=one_slice[-1] + 1,
-                        two_start=two_slice[0],
-                        two_end=two_slice[-1] + 1,
-                    )
+                    if diff_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_slice[0],
+                            one_end=one_slice[-1] + 1,
+                            two_start=two_slice[0],
+                            two_end=two_slice[-1] + 1,
+                        )
+                    elif diff_type == LineDiffKind.SPLIT_EDIT:
+                        self._process_split_edit(
+                            one_start=one_slice[0],
+                            one_end=one_slice[-1] + 1,
+                            two_start=two_slice[0],
+                            two_end=two_slice[-1] + 1,
+                        )
+                    elif diff_type == LineDiffKind.MERGE:
+                        self._process_merge(
+                            one_start=one_slice[0],
+                            one_end=one_slice[-1] + 1,
+                            two_start=two_slice[0],
+                            two_end=two_slice[-1] + 1,
+                        )
+                    else:
+                        self._process_merge_edit(
+                            one_start=one_slice[0],
+                            one_end=one_slice[-1] + 1,
+                            two_start=two_slice[0],
+                            two_end=two_slice[-1] + 1,
+                        )
                     i += 1
                     j += 2
                     continue
@@ -436,8 +481,7 @@ class SeriesDiff:
                     f"{self.one_lines[one_block[i]]} {self.one_lines[one_block[i + 1]]}"
                 )
                 if one_joined == self.two_keys[two_idx]:
-                    self._append_block_msg(
-                        diff_type=LineDiffKind.MERGE,
+                    self._process_merge(
                         one_start=one_block[i],
                         one_end=one_block[i + 1] + 1,
                         two_start=two_idx,
@@ -458,7 +502,7 @@ class SeriesDiff:
                 ).ratio()
                 if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
                     self._process_delete(one_start=one_idx, one_end=one_idx + 1)
-                    self._append_modified_msg(one_block[i + 1], two_idx)
+                    self._process_edit(one_block[i + 1], two_idx)
                     i += 2
                     j += 1
                     last_was_split = False
@@ -475,13 +519,20 @@ class SeriesDiff:
                         if one_joined == self.two_keys[two_idx]
                         else LineDiffKind.SPLIT_EDIT
                     )
-                    self._append_block_msg(
-                        diff_type=diff_type,
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_idx,
-                        two_end=two_idx + 1,
-                    )
+                    if diff_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_block[i],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_idx,
+                            two_end=two_idx + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_block[i],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_idx,
+                            two_end=two_idx + 1,
+                        )
                     i += 2
                     j += 1
                     last_was_split = True
@@ -494,8 +545,7 @@ class SeriesDiff:
                     " ".join(self.two_lines[idx] for idx in two_block[j:])
                 )
                 if one_joined == two_joined:
-                    self._append_block_msg(
-                        diff_type=LineDiffKind.SPLIT,
+                    self._process_split(
                         one_start=one_block[i],
                         one_end=one_block[i + 1] + 1,
                         two_start=two_block[j],
@@ -515,18 +565,25 @@ class SeriesDiff:
                         if one_joined == self.two_keys[two_idx]
                         else LineDiffKind.SPLIT_EDIT
                     )
-                    self._append_block_msg(
-                        diff_type=diff_type,
-                        one_start=one_block[i],
-                        one_end=one_block[i + 1] + 1,
-                        two_start=two_idx,
-                        two_end=two_idx + 1,
-                    )
+                    if diff_type == LineDiffKind.SPLIT:
+                        self._process_split(
+                            one_start=one_block[i],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_idx,
+                            two_end=two_idx + 1,
+                        )
+                    else:
+                        self._process_split_edit(
+                            one_start=one_block[i],
+                            one_end=one_block[i + 1] + 1,
+                            two_start=two_idx,
+                            two_end=two_idx + 1,
+                        )
                     i += 2
                     j += 1
                     last_was_split = True
                     continue
-            self._append_modified_msg(one_idx, two_idx)
+            self._process_edit(one_idx, two_idx)
             i += 1
             j += 1
             last_was_split = False
@@ -551,13 +608,34 @@ class SeriesDiff:
                     if one_joined == two_joined
                     else LineDiffKind.MERGE_EDIT
                 )
-            self._append_block_msg(
-                diff_type=diff_type,
-                one_start=one_slice[0],
-                one_end=one_slice[-1] + 1,
-                two_start=two_slice[0],
-                two_end=two_slice[-1] + 1,
-            )
+            if diff_type == LineDiffKind.SPLIT:
+                self._process_split(
+                    one_start=one_slice[0],
+                    one_end=one_slice[-1] + 1,
+                    two_start=two_slice[0],
+                    two_end=two_slice[-1] + 1,
+                )
+            elif diff_type == LineDiffKind.SPLIT_EDIT:
+                self._process_split_edit(
+                    one_start=one_slice[0],
+                    one_end=one_slice[-1] + 1,
+                    two_start=two_slice[0],
+                    two_end=two_slice[-1] + 1,
+                )
+            elif diff_type == LineDiffKind.MERGE:
+                self._process_merge(
+                    one_start=one_slice[0],
+                    one_end=one_slice[-1] + 1,
+                    two_start=two_slice[0],
+                    two_end=two_slice[-1] + 1,
+                )
+            else:
+                self._process_merge_edit(
+                    one_start=one_slice[0],
+                    one_end=one_slice[-1] + 1,
+                    two_start=two_slice[0],
+                    two_end=two_slice[-1] + 1,
+                )
             return
         if i < len(one_block):
             self._process_delete(one_start=one_block[i], one_end=one_block[-1] + 1)
@@ -565,44 +643,103 @@ class SeriesDiff:
         if j < len(two_block):
             self._process_insert(two_start=two_block[j], two_end=two_block[-1] + 1)
 
-    def _append_block_msg(
-        self,
-        diff_type: LineDiffKind,
-        one_start: int,
-        one_end: int,
-        two_start: int,
-        two_end: int,
+    def _process_edit(self, one_idx: int, two_idx: int):
+        """Process edit opcode block."""
+        msg = LineDiff(
+            kind=LineDiffKind.EDIT,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=[one_idx],
+            two_idxs=[two_idx],
+            one_texts=[self.one_lines[one_idx]],
+            two_texts=[self.two_lines[two_idx]],
+        )
+        self.msgs.append(msg)
+
+    def _process_merge(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
     ):
-        """Append a block-level message."""
+        """Process merge opcode block."""
         one_slice = list(range(one_start, one_end))
         two_slice = list(range(two_start, two_end))
-        one_text = [self.one_lines[idx] for idx in one_slice]
-        two_text = [self.two_lines[idx] for idx in two_slice]
-        self.msgs.append(
-            LineDiff(
-                kind=diff_type,
-                one_lbl=self.one_lbl,
-                two_lbl=self.two_lbl,
-                one_idxs=one_slice,
-                two_idxs=two_slice,
-                one_texts=one_text,
-                two_texts=two_text,
-            )
+        msg = LineDiff(
+            kind=LineDiffKind.MERGE,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=one_slice,
+            two_idxs=two_slice,
+            one_texts=[self.one_lines[idx] for idx in one_slice],
+            two_texts=[self.two_lines[idx] for idx in two_slice],
         )
+        self.msgs.append(msg)
 
-    def _append_modified_msg(self, one_idx: int, two_idx: int):
-        """Append an edited-line message."""
-        self.msgs.append(
-            LineDiff(
-                kind=LineDiffKind.EDIT,
-                one_lbl=self.one_lbl,
-                two_lbl=self.two_lbl,
-                one_idxs=[one_idx],
-                two_idxs=[two_idx],
-                one_texts=[self.one_lines[one_idx]],
-                two_texts=[self.two_lines[two_idx]],
-            )
+    def _process_merge_edit(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
+    ):
+        """Process merge-edit opcode block."""
+        one_slice = list(range(one_start, one_end))
+        two_slice = list(range(two_start, two_end))
+        msg = LineDiff(
+            kind=LineDiffKind.MERGE_EDIT,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=one_slice,
+            two_idxs=two_slice,
+            one_texts=[self.one_lines[idx] for idx in one_slice],
+            two_texts=[self.two_lines[idx] for idx in two_slice],
         )
+        self.msgs.append(msg)
+
+    def _process_shift(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
+    ):
+        """Process shift opcode block."""
+        one_slice = list(range(one_start, one_end))
+        two_slice = list(range(two_start, two_end))
+        msg = LineDiff(
+            kind=LineDiffKind.SHIFT,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=one_slice,
+            two_idxs=two_slice,
+            one_texts=[self.one_lines[idx] for idx in one_slice],
+            two_texts=[self.two_lines[idx] for idx in two_slice],
+        )
+        self.msgs.append(msg)
+
+    def _process_split(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
+    ):
+        """Process split opcode block."""
+        one_slice = list(range(one_start, one_end))
+        two_slice = list(range(two_start, two_end))
+        msg = LineDiff(
+            kind=LineDiffKind.SPLIT,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=one_slice,
+            two_idxs=two_slice,
+            one_texts=[self.one_lines[idx] for idx in one_slice],
+            two_texts=[self.two_lines[idx] for idx in two_slice],
+        )
+        self.msgs.append(msg)
+
+    def _process_split_edit(
+        self, one_start: int, one_end: int, two_start: int, two_end: int
+    ):
+        """Process split-edit opcode block."""
+        one_slice = list(range(one_start, one_end))
+        two_slice = list(range(two_start, two_end))
+        msg = LineDiff(
+            kind=LineDiffKind.SPLIT_EDIT,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=one_slice,
+            two_idxs=two_slice,
+            one_texts=[self.one_lines[idx] for idx in one_slice],
+            two_texts=[self.two_lines[idx] for idx in two_slice],
+        )
+        self.msgs.append(msg)
 
     @staticmethod
     def _get_series_text_lines(series: Series) -> list[str]:
