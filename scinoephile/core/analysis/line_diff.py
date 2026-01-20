@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scinoephile.core.analysis.line_diff_kind import LineDiffKind
+from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]
 

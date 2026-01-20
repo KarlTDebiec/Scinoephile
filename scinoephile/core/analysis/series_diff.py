@@ -6,24 +6,16 @@ from __future__ import annotations
 
 import difflib
 import re
-from dataclasses import dataclass
+from collections.abc import Callable
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.analysis.line_diff import LineDiff
-from scinoephile.core.analysis.line_diff_kind import LineDiffKind
 from scinoephile.core.subtitles import Series
 
+from .line_diff import LineDiff
+from .line_diff_kind import LineDiffKind
+from .replace_cursor import ReplaceCursor
+
 __all__ = ["SeriesDiff"]
-
-
-@dataclass(frozen=True)
-class _UnequalStepResult:
-    """Represents a single unequal replace step outcome."""
-
-    i: int
-    j: int
-    last_was_split: bool
-    should_return: bool = False
 
 
 class SeriesDiff:
@@ -162,10 +154,8 @@ class SeriesDiff:
 
     def _process_replace_unequal(self, one_blk: list[int], two_blk: list[int]):
         """Add messages for unequal-sized replace blocks."""
-        i = 0
-        j = 0
-        last_was_split = False
-        handlers = (
+        cursor = ReplaceCursor(one_blk=one_blk, two_blk=two_blk)
+        handlers: tuple[Callable[[ReplaceCursor], bool], ...] = (
             self._process_replace_unequal_merge_candidate,
             self._process_replace_unequal_two_to_four,
             self._process_replace_unequal_one_to_two,
@@ -176,47 +166,44 @@ class SeriesDiff:
             self._process_replace_unequal_joined_remaining,
             self._process_replace_unequal_split_pair,
         )
-        while i < len(one_blk) and j < len(two_blk):
-            one_idx = one_blk[i]
-            two_idx = two_blk[j]
-            result = None
+        while cursor.i < len(one_blk) and cursor.j < len(two_blk):
+            one_idx = cursor.one_idx
+            two_idx = cursor.two_idx
+            handled = False
             for handler in handlers:
-                result = handler(one_blk, two_blk, i, j, last_was_split)
-                if result is not None:
+                if handler(cursor):
+                    handled = True
                     break
-            if result is None:
+            if not handled:
                 self._process_edit(one_idx, two_idx)
-                i += 1
-                j += 1
-                last_was_split = False
+                cursor.advance(n_one=1, n_two=1, last_was_split=False)
                 continue
-            if result.should_return:
+            if cursor.should_return:
                 return
-            i = result.i
-            j = result.j
-            last_was_split = result.last_was_split
-        self._process_replace_unequal_tail(one_blk, two_blk, i, j)
+        self._process_replace_unequal_tail(one_blk, two_blk, cursor.i, cursor.j)
 
     def _process_replace_unequal_merge_candidate(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace when a merge is strongly indicated."""
-        del last_was_split
-        if len(two_blk) != 1 or i + 1 >= len(one_blk):
-            return None
-        one_idx = one_blk[i]
-        two_idx = two_blk[j]
+        if len(cursor.two_blk) != 1 or cursor.i + 1 >= len(cursor.one_blk):
+            return False
+        one_idx = cursor.one_idx
+        two_idx = cursor.two_idx
         one_joined = self._normalize_line(
-            f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
+            f"{self.one_lines[cursor.one_blk[cursor.i]]} "
+            f"{self.one_lines[cursor.one_blk[cursor.i + 1]]}"
         )
         if one_joined == self.two_keys[two_idx]:
-            self._process_merge(one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1)
-            return _UnequalStepResult(i + 2, j + 1, False)
+            self._process_merge(
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
+            )
+            cursor.advance(n_one=2, n_two=1, last_was_split=False)
+            return True
         merged_ratio = difflib.SequenceMatcher(
             None, one_joined, self.two_keys[two_idx], autojunk=False
         ).ratio()
@@ -225,7 +212,7 @@ class SeriesDiff:
         ).ratio()
         ratio_next = difflib.SequenceMatcher(
             None,
-            self.one_keys[one_blk[i + 1]],
+            self.one_keys[cursor.one_blk[cursor.i + 1]],
             self.two_keys[two_idx],
             autojunk=False,
         ).ratio()
@@ -233,41 +220,42 @@ class SeriesDiff:
             ratio_curr, ratio_next
         ):
             self._process_merge_edit(
-                one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
             )
-            return _UnequalStepResult(i + 2, j + 1, False)
-        return None
+            cursor.advance(n_one=2, n_two=1, last_was_split=False)
+            return True
+        return False
 
     def _process_replace_unequal_two_to_four(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace for a two-to-four split pattern."""
-        del last_was_split
         if not (
-            j + 3 < len(two_blk)
-            and i + 1 < len(one_blk)
-            and len(one_blk) - i == 2
-            and len(two_blk) - j == 4
+            cursor.j + 3 < len(cursor.two_blk)
+            and cursor.i + 1 < len(cursor.one_blk)
+            and len(cursor.one_blk) - cursor.i == 2
+            and len(cursor.two_blk) - cursor.j == 4
         ):
-            return None
-        one_idx = one_blk[i]
+            return False
+        one_idx = cursor.one_idx
         two_joined_first = self._normalize_line(
-            f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
         )
         two_joined_second = self._normalize_line(
-            f"{self.two_lines[two_blk[j + 2]]} {self.two_lines[two_blk[j + 3]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j + 2]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j + 3]]}"
         )
         first_ratio = difflib.SequenceMatcher(
             None, self.one_keys[one_idx], two_joined_first, autojunk=False
         ).ratio()
         second_ratio = difflib.SequenceMatcher(
             None,
-            self.one_keys[one_blk[i + 1]],
+            self.one_keys[cursor.one_blk[cursor.i + 1]],
             two_joined_second,
             autojunk=False,
         ).ratio()
@@ -275,7 +263,7 @@ class SeriesDiff:
             first_ratio >= self.similarity_cutoff
             and second_ratio >= self.similarity_cutoff
         ):
-            return None
+            return False
         first_type = (
             LineDiffKind.SPLIT
             if self.one_keys[one_idx] == two_joined_first
@@ -283,49 +271,55 @@ class SeriesDiff:
         )
         second_type = (
             LineDiffKind.SPLIT
-            if self.one_keys[one_blk[i + 1]] == two_joined_second
+            if self.one_keys[cursor.one_blk[cursor.i + 1]] == two_joined_second
             else LineDiffKind.SPLIT_EDIT
         )
         if first_type == LineDiffKind.SPLIT:
-            self._process_split(one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1)
+            self._process_split(
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
+            )
         else:
             self._process_split_edit(
-                one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
             )
         if second_type == LineDiffKind.SPLIT:
             self._process_split(
-                one_blk[i + 1],
-                one_blk[i + 1] + 1,
-                two_blk[j + 2],
-                two_blk[j + 3] + 1,
+                cursor.one_blk[cursor.i + 1],
+                cursor.one_blk[cursor.i + 1] + 1,
+                cursor.two_blk[cursor.j + 2],
+                cursor.two_blk[cursor.j + 3] + 1,
             )
         else:
             self._process_split_edit(
-                one_blk[i + 1],
-                one_blk[i + 1] + 1,
-                two_blk[j + 2],
-                two_blk[j + 3] + 1,
+                cursor.one_blk[cursor.i + 1],
+                cursor.one_blk[cursor.i + 1] + 1,
+                cursor.two_blk[cursor.j + 2],
+                cursor.two_blk[cursor.j + 3] + 1,
             )
-        return _UnequalStepResult(i + 2, j + 4, True)
+        cursor.advance(n_one=2, n_two=4, last_was_split=True)
+        return True
 
     def _process_replace_unequal_one_to_two(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace when one line may split into two."""
-        del last_was_split
-        if len(one_blk) != 1 or j + 1 >= len(two_blk):
-            return None
-        one_idx = one_blk[i]
+        if len(cursor.one_blk) != 1 or cursor.j + 1 >= len(cursor.two_blk):
+            return False
+        one_idx = cursor.one_idx
         two_joined = self._normalize_line(
-            f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
         )
         two_joined_rev = self._normalize_line(
-            f"{self.two_lines[two_blk[j + 1]]} {self.two_lines[two_blk[j]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j + 1]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j]]}"
         )
         merged_ratio = difflib.SequenceMatcher(
             None, self.one_keys[one_idx], two_joined, autojunk=False
@@ -335,35 +329,40 @@ class SeriesDiff:
         ).ratio()
         best_joined = two_joined_rev if merged_ratio_rev > merged_ratio else two_joined
         if max(merged_ratio, merged_ratio_rev) < self.similarity_cutoff:
-            return None
+            return False
         diff_type = (
             LineDiffKind.SPLIT
             if self.one_keys[one_idx] == best_joined
             else LineDiffKind.SPLIT_EDIT
         )
         if diff_type == LineDiffKind.SPLIT:
-            self._process_split(one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1)
+            self._process_split(
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
+            )
         else:
             self._process_split_edit(
-                one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
             )
-        return _UnequalStepResult(i + 1, j + 2, True)
+        cursor.advance(n_one=1, n_two=2, last_was_split=True)
+        return True
 
     def _process_replace_unequal_two_to_three(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace when two lines map onto three."""
-        del last_was_split
-        if j + 2 >= len(two_blk) or i + 1 >= len(one_blk):
-            return None
-        one_idx = one_blk[i]
+        if cursor.j + 2 >= len(cursor.two_blk) or cursor.i + 1 >= len(cursor.one_blk):
+            return False
+        one_idx = cursor.one_idx
         two_joined = self._normalize_line(
-            f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
         )
         merged_ratio = difflib.SequenceMatcher(
             None, self.one_keys[one_idx], two_joined, autojunk=False
@@ -371,74 +370,80 @@ class SeriesDiff:
         split_join_cutoff = 0.95
         next_ratio = difflib.SequenceMatcher(
             None,
-            self.one_keys[one_blk[i + 1]],
-            self.two_keys[two_blk[j + 2]],
+            self.one_keys[cursor.one_blk[cursor.i + 1]],
+            self.two_keys[cursor.two_blk[cursor.j + 2]],
             autojunk=False,
         ).ratio()
         if merged_ratio < split_join_cutoff or next_ratio < self.similarity_cutoff:
-            return None
+            return False
         diff_type = (
             LineDiffKind.SPLIT
             if self.one_keys[one_idx] == two_joined
             else LineDiffKind.SPLIT_EDIT
         )
         if diff_type == LineDiffKind.SPLIT:
-            self._process_split(one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1)
+            self._process_split(
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
+            )
         else:
             self._process_split_edit(
-                one_idx, one_idx + 1, two_blk[j], two_blk[j + 1] + 1
+                one_idx,
+                one_idx + 1,
+                cursor.two_blk[cursor.j],
+                cursor.two_blk[cursor.j + 1] + 1,
             )
-        return _UnequalStepResult(i + 1, j + 2, True)
+        cursor.advance(n_one=1, n_two=2, last_was_split=True)
+        return True
 
     def _process_replace_unequal_similarity_edit(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace when a simple edit matches well."""
-        del last_was_split
-        one_idx = one_blk[i]
-        two_idx = two_blk[j]
+        one_idx = cursor.one_idx
+        two_idx = cursor.two_idx
         ratio = difflib.SequenceMatcher(
             None, self.one_keys[one_idx], self.two_keys[two_idx], autojunk=False
         ).ratio()
         if ratio < self.similarity_cutoff:
-            return None
+            return False
         self._process_edit(one_idx, two_idx)
-        return _UnequalStepResult(i + 1, j + 1, False)
+        cursor.advance(n_one=1, n_two=1, last_was_split=False)
+        return True
 
     def _process_replace_unequal_joined_split_or_merge(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace for joined split/merge candidates."""
-        if j + 1 >= len(two_blk):
-            return None
-        one_idx = one_blk[i]
+        if cursor.j + 1 >= len(cursor.two_blk):
+            return False
+        one_idx = cursor.one_idx
         two_joined = self._normalize_line(
-            f"{self.two_lines[two_blk[j]]} {self.two_lines[two_blk[j + 1]]}"
+            f"{self.two_lines[cursor.two_blk[cursor.j]]} "
+            f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
         )
         merged_ratio = difflib.SequenceMatcher(
             None, self.one_keys[one_idx], two_joined, autojunk=False
         ).ratio()
         if merged_ratio < self.similarity_cutoff:
-            return None
+            return False
         one_slc = [one_idx]
-        two_slc = [two_blk[j], two_blk[j + 1]]
+        two_slc = [cursor.two_blk[cursor.j], cursor.two_blk[cursor.j + 1]]
         if self.one_keys[one_idx] == two_joined:
             split_type = LineDiffKind.SPLIT
             merged_type = LineDiffKind.MERGE
         else:
             split_type = LineDiffKind.SPLIT_EDIT
             merged_type = LineDiffKind.MERGE_EDIT
-        if self.one_keys[one_idx] == two_joined or i == 0 or last_was_split:
+        if (
+            self.one_keys[one_idx] == two_joined
+            or cursor.i == 0
+            or cursor.last_was_split
+        ):
             diff_type = split_type
             last_was_split = True
         else:
@@ -460,25 +465,21 @@ class SeriesDiff:
             self._process_merge_edit(
                 one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
             )
-        return _UnequalStepResult(i + 1, j + 2, last_was_split)
+        cursor.advance(n_one=1, n_two=2, last_was_split=last_was_split)
+        return True
 
     def _process_replace_unequal_many_to_one_followup(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace for follow-up many-to-one checks."""
-        del last_was_split
-        if len(two_blk) != 1 or i + 1 >= len(one_blk):
-            return None
-        one_idx = one_blk[i]
-        two_idx = two_blk[j]
+        if len(cursor.two_blk) != 1 or cursor.i + 1 >= len(cursor.one_blk):
+            return False
+        one_idx = cursor.one_idx
+        two_idx = cursor.two_idx
         ratio_next = difflib.SequenceMatcher(
             None,
-            self.one_keys[one_blk[i + 1]],
+            self.one_keys[cursor.one_blk[cursor.i + 1]],
             self.two_keys[two_idx],
             autojunk=False,
         ).ratio()
@@ -487,85 +488,104 @@ class SeriesDiff:
         ).ratio()
         if ratio_next >= self.similarity_cutoff and ratio_next > ratio_curr:
             self._process_delete(one_start=one_idx, one_end=one_idx + 1)
-            self._process_edit(one_blk[i + 1], two_idx)
-            return _UnequalStepResult(i + 2, j + 1, False)
+            self._process_edit(cursor.one_blk[cursor.i + 1], two_idx)
+            cursor.advance(n_one=2, n_two=1, last_was_split=False)
+            return True
         one_joined = self._normalize_line(
-            f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
+            f"{self.one_lines[cursor.one_blk[cursor.i]]} "
+            f"{self.one_lines[cursor.one_blk[cursor.i + 1]]}"
         )
         split_ratio = difflib.SequenceMatcher(
             None, one_joined, self.two_keys[two_idx], autojunk=False
         ).ratio()
         if split_ratio < self.similarity_cutoff:
-            return None
+            return False
         diff_type = (
             LineDiffKind.SPLIT
             if one_joined == self.two_keys[two_idx]
             else LineDiffKind.SPLIT_EDIT
         )
         if diff_type == LineDiffKind.SPLIT:
-            self._process_split(one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1)
+            self._process_split(
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
+            )
         else:
             self._process_split_edit(
-                one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
             )
-        return _UnequalStepResult(i + 2, j + 1, True)
+        cursor.advance(n_one=2, n_two=1, last_was_split=True)
+        return True
 
     def _process_replace_unequal_joined_remaining(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace when remaining blocks fully join."""
-        del last_was_split
-        if len(two_blk) < 2 or i + 1 >= len(one_blk):
-            return None
+        if len(cursor.two_blk) < 2 or cursor.i + 1 >= len(cursor.one_blk):
+            return False
         one_joined = self._normalize_line(
-            f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
+            f"{self.one_lines[cursor.one_blk[cursor.i]]} "
+            f"{self.one_lines[cursor.one_blk[cursor.i + 1]]}"
         )
         two_joined = self._normalize_line(
-            " ".join(self.two_lines[idx] for idx in two_blk[j:])
+            " ".join(self.two_lines[idx] for idx in cursor.two_blk[cursor.j :])
         )
         if one_joined != two_joined:
-            return None
-        self._process_split(one_blk[i], one_blk[i + 1] + 1, two_blk[j], two_blk[-1] + 1)
-        return _UnequalStepResult(i + 2, j + 1, True, should_return=True)
+            return False
+        self._process_split(
+            cursor.one_blk[cursor.i],
+            cursor.one_blk[cursor.i + 1] + 1,
+            cursor.two_blk[cursor.j],
+            cursor.two_blk[-1] + 1,
+        )
+        cursor.advance(n_one=2, n_two=1, last_was_split=True)
+        cursor.mark_return()
+        return True
 
     def _process_replace_unequal_split_pair(
         self,
-        one_blk: list[int],
-        two_blk: list[int],
-        i: int,
-        j: int,
-        last_was_split: bool,
-    ) -> _UnequalStepResult | None:
+        cursor: ReplaceCursor,
+    ) -> bool:
         """Process unequal replace for split pair candidates."""
-        del last_was_split
-        if i + 1 >= len(one_blk):
-            return None
+        if cursor.i + 1 >= len(cursor.one_blk):
+            return False
         one_joined = self._normalize_line(
-            f"{self.one_lines[one_blk[i]]} {self.one_lines[one_blk[i + 1]]}"
+            f"{self.one_lines[cursor.one_blk[cursor.i]]} "
+            f"{self.one_lines[cursor.one_blk[cursor.i + 1]]}"
         )
-        two_idx = two_blk[j]
+        two_idx = cursor.two_idx
         split_ratio = difflib.SequenceMatcher(
             None, one_joined, self.two_keys[two_idx], autojunk=False
         ).ratio()
         if split_ratio < self.similarity_cutoff:
-            return None
+            return False
         diff_type = (
             LineDiffKind.SPLIT
             if one_joined == self.two_keys[two_idx]
             else LineDiffKind.SPLIT_EDIT
         )
         if diff_type == LineDiffKind.SPLIT:
-            self._process_split(one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1)
+            self._process_split(
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
+            )
         else:
             self._process_split_edit(
-                one_blk[i], one_blk[i + 1] + 1, two_idx, two_idx + 1
+                cursor.one_blk[cursor.i],
+                cursor.one_blk[cursor.i + 1] + 1,
+                two_idx,
+                two_idx + 1,
             )
-        return _UnequalStepResult(i + 2, j + 1, True)
+        cursor.advance(n_one=2, n_two=1, last_was_split=True)
+        return True
 
     def _process_replace_unequal_tail(
         self,
@@ -598,19 +618,31 @@ class SeriesDiff:
                 )
             if diff_type == LineDiffKind.SPLIT:
                 self._process_split(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             elif diff_type == LineDiffKind.SPLIT_EDIT:
                 self._process_split_edit(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             elif diff_type == LineDiffKind.MERGE:
                 self._process_merge(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             else:
                 self._process_merge_edit(
-                    one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
+                    one_slc[0],
+                    one_slc[-1] + 1,
+                    two_slc[0],
+                    two_slc[-1] + 1,
                 )
             return
         if i < len(one_blk):
