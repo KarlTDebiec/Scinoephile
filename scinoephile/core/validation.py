@@ -231,6 +231,32 @@ def _add_replace_block_unequal_msgs(  # noqa: PLR0912, PLR0915
                 j += 1
                 last_was_split = False
                 continue
+            merged_ratio = difflib.SequenceMatcher(
+                None, one_joined, two_keys[two_idx], autojunk=False
+            ).ratio()
+            ratio_curr = difflib.SequenceMatcher(
+                None, one_keys[one_idx], two_keys[two_idx], autojunk=False
+            ).ratio()
+            ratio_next = difflib.SequenceMatcher(
+                None, one_keys[one_block[i + 1]], two_keys[two_idx], autojunk=False
+            ).ratio()
+            if merged_ratio >= similarity_cutoff and merged_ratio > max(
+                ratio_curr, ratio_next
+            ):
+                _append_block_msg(
+                    msgs,
+                    diff_type=LineDifferenceType.MERGED_MODIFIED,
+                    one_slice=[one_block[i], one_block[i + 1]],
+                    two_slice=[two_idx],
+                    one_lines=one_lines,
+                    two_lines=two_lines,
+                    one_label=one_label,
+                    two_label=two_label,
+                )
+                i += 2
+                j += 1
+                last_was_split = False
+                continue
         if (
             j + 3 < len(two_block)
             and i + 1 < len(one_block)

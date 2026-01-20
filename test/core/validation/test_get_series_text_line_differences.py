@@ -450,6 +450,11 @@ def test_get_series_text_line_differences_kob(
             '"Please step aside, don\'t stop me from sleeping" != '
             '"Please step aside, don\'t stop me from sleeping."'
         ),
+        (
+            "merged_modified: OCR[1053:1055] != SRT[1090:1091]: "
+            "['No… I just want to sleep', 'with you'] != "
+            "['No… I just want to sleep with you.']"
+        ),
     ]
     _assert_expected_differences(differences, expected)
     print()
