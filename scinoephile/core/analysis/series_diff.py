@@ -177,15 +177,13 @@ class SeriesDiff:
             self._process_replace_unequal_split_pair,
         )
         while cursor.i < len(one_blk) and cursor.j < len(two_blk):
-            one_idx = cursor.one_idx
-            two_idx = cursor.two_idx
             handled = False
             for handler in handlers:
                 if handler(cursor):
                     handled = True
                     break
             if not handled:
-                self._process_edit(one_idx, two_idx)
+                self._process_edit(cursor.one_idx, cursor.two_idx)
                 cursor.advance(n_one=1, n_two=1, last_was_split=False)
                 continue
             if cursor.should_return:
