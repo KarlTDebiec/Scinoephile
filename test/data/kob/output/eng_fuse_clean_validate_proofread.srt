@@ -212,7 +212,7 @@ I want a better invitation card!
 
 52
 00:04:57,714 --> 00:05:00,967
-Your Majesty, how do you think about
+Your Majesty, what do you think about
 the Cantonese Opera?
 
 53
@@ -293,8 +293,8 @@ Nothing!
 
 71
 00:05:46,596 --> 00:05:49,224
-- Come into my room…
-- Please follow me.
+- Come into my room.
+- Please follow me
 
 72
 00:05:51,184 --> 00:05:53,228
@@ -339,7 +339,7 @@ the Hairy Gang,
 
 82
 00:06:13,164 --> 00:06:15,417
-the emperor will give you award for this
+the emperor will give you an award for this
 
 83
 00:06:15,959 --> 00:06:17,878
@@ -377,7 +377,7 @@ you must be satisfied with them
 
 91
 00:06:36,688 --> 00:06:37,772
-What are they? Gold fish, or cooked fish?
+What are they? Goldfish, or cooked fish?
 
 92
 00:06:38,148 --> 00:06:39,941
@@ -385,7 +385,7 @@ What does that mean?
 
 93
 00:06:39,983 --> 00:06:41,776
-You idiot! Gold fish is for watching only
+You idiot! Goldfish are for watching only
 
 94
 00:06:41,776 --> 00:06:43,486
@@ -504,8 +504,8 @@ Let's go
 
 122
 00:07:43,004 --> 00:07:44,130
-- May I be excused
-- Mr Chiu
+- May I be excused,
+- Mr Chiu,
 
 123
 00:07:44,130 --> 00:07:45,715
@@ -554,7 +554,7 @@ If any of you can offer more than 100,000 taels
 
 134
 00:08:19,290 --> 00:08:20,834
-Yushang will sleep with whom
+Yushang will sleep with them
 
 135
 00:08:21,001 --> 00:08:24,004
@@ -584,7 +584,7 @@ Mr Chiu, I will wait for you in my room
 
 141
 00:08:45,275 --> 00:08:46,901
-Does the pearl worth 100,000 taels?
+Is the pearl worth 100,000 taels?
 
 142
 00:08:47,736 --> 00:08:49,779
@@ -664,7 +664,7 @@ I know Tiger Claws and Crane's Fists too!
 
 161
 00:09:55,470 --> 00:09:57,597
-Well, try my mantis!
+Well, try me, mantis!
 
 162
 00:10:10,735 --> 00:10:12,695
@@ -672,7 +672,7 @@ Bravo…
 
 163
 00:10:12,695 --> 00:10:15,573
-Your Tiger's Claws are defeated
+Your Tiger's claws are defeated
 
 164
 00:10:17,325 --> 00:10:18,827
@@ -762,13 +762,12 @@ you'd stop bullying them
 
 185
 00:11:10,920 --> 00:11:12,589
-- Come on, give tips to the girl here
+- Come on, give tips to the girls here
 - Master
 
 186
 00:11:12,630 --> 00:11:15,425
-King of Iron Hat, Seng-ko-lin-ch'in
-is written on the medal
+King of Iron Hat, Seng-ko-lin-ch'in, is written on the medal
 
 187
 00:11:25,977 --> 00:11:27,520
@@ -815,7 +814,7 @@ That's right, I come…
 197
 00:11:43,286 --> 00:11:44,954
 - Him!
-- Arrest him
+- Arrest him!
 
 198
 00:11:45,205 --> 00:11:46,664
@@ -835,7 +834,7 @@ What else? Go ahead
 
 202
 00:11:52,420 --> 00:11:55,590
-Today is the birthday of the ex-Empress Dowager
+Today is the birthday of the Ex-Empress Dowager
 
 203
 00:11:56,257 --> 00:11:57,842
@@ -994,7 +993,7 @@ Why do you come here? Where is Mister Chiu?
 
 241
 00:13:52,665 --> 00:13:54,208
-The pearl of Mr Chiu is broken
+The pearl of Mr. Chiu is broken
 
 242
 00:13:54,292 --> 00:13:56,044
@@ -1006,7 +1005,7 @@ I have drunk it
 
 244
 00:13:58,212 --> 00:14:00,048
-Don't judge Mr So from his hair,
+Don't judge Mr. So from his hair,
 
 245
 00:14:00,340 --> 00:14:02,633
@@ -1428,7 +1427,7 @@ Dad!
 347
 00:20:34,942 --> 00:20:36,485
 I decided to join the examination for the
-Scholar of Martial Arts
+scholar of Martial Arts
 
 348
 00:20:37,194 --> 00:20:38,154
@@ -1456,7 +1455,7 @@ What a hero!
 
 354
 00:20:47,371 --> 00:20:49,665
-For a girl, you want to be the Scholar
+For a girl, you want to be the scholar
 of Martial Arts!
 
 355
@@ -1523,7 +1522,7 @@ Be careful!
 
 370
 00:21:23,491 --> 00:21:24,116
-Good morning Dad
+Good morning dad
 
 371
 00:21:24,283 --> 00:21:24,909
@@ -1869,7 +1868,7 @@ We are friends, but that is business
 
 455
 00:27:30,023 --> 00:27:34,236
-Let the horse teams be the pioneer
+Let the Horse teams be the pioneer
 
 456
 00:27:34,444 --> 00:27:36,989
@@ -4375,7 +4374,7 @@ Long life to you…
 
 1069
 01:08:02,495 --> 01:08:05,415
-Here comes the White Goat
+Here comes the white Goat
 
 1070
 01:08:05,832 --> 01:08:10,211

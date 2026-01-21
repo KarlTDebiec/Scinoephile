@@ -17,6 +17,7 @@ from scinoephile.audio.subtitles import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
+from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.base import (
     Answer,
@@ -25,7 +26,6 @@ from scinoephile.llms.base import (
     TestCase,
     save_test_cases_to_json,
 )
-from scinoephile.multilang.synchronization import get_sync_groups_string
 
 from .alignment import Alignment
 

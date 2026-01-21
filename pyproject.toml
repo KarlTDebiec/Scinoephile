@@ -56,6 +56,8 @@ profile = 'black'
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+log_cli = true
+log_cli_level = "INFO"
 
 [tool.ruff]
 line-length = 88

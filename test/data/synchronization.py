@@ -7,9 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.core.subtitles import Series
+from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
-from scinoephile.multilang.synchronization import get_synced_series
 
 __all__ = [
     "process_yue_hans_eng",

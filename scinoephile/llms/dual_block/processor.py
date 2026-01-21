@@ -4,13 +4,12 @@
 
 from __future__ import annotations
 
-import re
 from logging import info
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.core.synchronization import are_series_one_to_one
 from scinoephile.llms.base import Processor, save_test_cases_to_json
-from scinoephile.multilang.synchronization import are_series_one_to_one
 
 from .manager import DualBlockManager
 from .prompt import DualBlockPrompt
@@ -67,10 +66,10 @@ class DualBlockProcessor(Processor):
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
                 one_key = self.prompt_cls.src_1(sub_idx + 1)
-                one_val = re.sub(r"\\N", "\n", one_blk[sub_idx].text).strip()
+                one_val = one_blk[sub_idx].text_with_newline.strip()
                 query_kwargs[one_key] = one_val
                 two_key = self.prompt_cls.src_2(sub_idx + 1)
-                two_val = re.sub(r"\\N", "\n", two_blk[sub_idx].text).strip()
+                two_val = two_blk[sub_idx].text_with_newline.strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)

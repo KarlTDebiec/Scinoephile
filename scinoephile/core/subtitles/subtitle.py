@@ -10,8 +10,6 @@ from typing import Any, override
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-from scinoephile.core.text import full_punc_chars, half_punc_chars, whitespace_chars
-
 __all__ = ["Subtitle"]
 
 
@@ -84,17 +82,6 @@ class Subtitle(SSAEvent):
         )
 
     @property
-    def text_without_punc_and_whitespace(self) -> str:
-        """Text without punctuation."""
-        chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
-        return "".join([c for c in self.text if c not in chars_to_remove])
-
-    @property
     def text_with_newline(self) -> str:
         """Text with newline escapes replaced."""
         return self.text.replace("\\N", "\n")
-
-    @property
-    def text_without_whitspace(self) -> str:
-        """Text excluding whitespace."""
-        return "".join([c for c in self.text if c not in whitespace_chars])

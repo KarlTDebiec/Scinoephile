@@ -36,19 +36,22 @@ def _get_zho_text_flattened(text: str) -> str:
     # TODO: Consider replacing two western spaces with one eastern space
 
     Arguments:
-        text: Text to flatten
+        text: text to flatten
     Returns:
         Flattened text
     """
-    # Revert strange substitution in pysubs2/subrip.py:66
-    flattened = re.sub(r"\\N", r"\n", text)
+    line_sep = "\\N"
+    flattened = text.replace("\r\n", "\n").replace("\n", line_sep)
 
     # Merge lines
-    flattened = re.sub(r"^(.+)\n(.+)$", r"\1　\2", flattened, flags=re.M)
+    if line_sep in flattened:
+        parts = [part.strip() for part in flattened.split(line_sep) if part.strip()]
+        flattened = "　".join(parts)
 
     # Merge conversations
     conversation = re.match(
-        r"^[-－﹣]?[^\S\n]*(?P<first>.+)[\s]+[-－﹣][^\S\n]*(?P<second>.+)$", flattened
+        r"^[-－﹣]?\s*(?P<first>.+)\s+[-－﹣]\s*(?P<second>.+)$",
+        flattened,
     )
     if conversation is not None:
         flattened = (

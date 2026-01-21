@@ -39,12 +39,12 @@ def _get_english_text_cleaned(text: str) -> str | None:
     """Get English text cleaned.
 
     Arguments:
-        text: Text to clean
+        text: text to clean
     Returns:
         Cleaned text, or None if no text remains
     """
-    # Revert strange substitution in pysubs2/subrip.py:66
-    cleaned = re.sub(r"\\N", r"\n", text).strip()
+    line_sep = r"\\N"
+    cleaned = text.strip()
 
     # Remove ASS hard-space \h
     cleaned = re.sub(r"\\h", "", cleaned)
@@ -60,17 +60,19 @@ def _get_english_text_cleaned(text: str) -> str | None:
     cleaned = _replace_half_width_double_quotes(cleaned)
 
     # Remove lines starting with dashes if they are otherwise empty
-    cleaned = re.sub(r"^\s*-\s*$", "", cleaned, flags=re.M)
+    lines = [line.strip() for line in cleaned.split(line_sep)]
+    lines = [line for line in lines if not re.fullmatch(r"\s*-\s*", line)]
 
     # Remove empty lines
-    cleaned = re.sub(r"\s*\n\s*", "\n", cleaned)
+    lines = [line for line in lines if line.strip()]
+    cleaned = line_sep.join(lines)
 
     # Replace brackets to avoid problems saving and reloading
     cleaned = cleaned.replace("<", "〈").replace(">", "〉")
 
     # Remove whitespace around <i> and <\i>
-    cleaned = re.sub(r"[^\S\n]*{\\i1}[^\S\n]*", r"{\\i1}", cleaned)
-    cleaned = re.sub(r"[^\S\n]*{\\i0}[^\S\n]*", r"{\\i0}", cleaned)
+    cleaned = re.sub(r"[^\S]*{\\i1}[^\S]*", r"{\\i1}", cleaned)
+    cleaned = re.sub(r"[^\S]*{\\i0}[^\S]*", r"{\\i0}", cleaned)
 
     # Collapse adjacent <\i><i>
     cleaned = re.sub(r"\{\\i0\}[ \t]*\{\\i1\}", "", cleaned)
@@ -78,7 +80,9 @@ def _get_english_text_cleaned(text: str) -> str | None:
     # Check if any substantive text remains
     if not cleaned:
         return None
-    if re.fullmatch(r"^\s*-?\s*\n\s*-?\s*", cleaned):
+    if cleaned and all(
+        re.fullmatch(r"\s*-?\s*", line) for line in cleaned.split(line_sep)
+    ):
         return None
 
     return cleaned

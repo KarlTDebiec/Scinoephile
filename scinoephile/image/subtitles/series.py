@@ -161,7 +161,7 @@ class ImageSeries(Series):
                 "<div style='text-align:center'>"
                 f"<img src='{image_path.name}' />"
             )
-            text = event.text.replace("\\N", "\n")
+            text = event.text_with_newline
             if text.strip():
                 text = escape(text).replace("\n", "<br />")
                 line += (
@@ -337,7 +337,7 @@ class ImageSeries(Series):
             image_name = match.group("img")
             image_path = dir_path / image_name
             raw_text = match.group("text") or ""
-            text = unescape(raw_text.replace("<br />", "\n"))
+            text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
             events.append(
                 {
                     "index": int(match.group("index")),

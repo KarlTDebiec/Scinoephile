@@ -83,6 +83,8 @@
       "subtitle_3": "But, I am appreciated to view this"
     },
     "answer": {
+      "revised_1": "Your Majesty, what do you think about\nthe Cantonese Opera?",
+      "note_1": "Changed 'how do you think about' to 'what do you think about' for correct phrasing.",
       "revised_3": "But, I appreciate viewing this",
       "note_3": "Corrected 'I am appreciated to view this' to 'I appreciate viewing this' for correct grammar."
     },
@@ -124,8 +126,12 @@
       "subtitle_31": "Please have the towel"
     },
     "answer": {
+      "revised_17": "- Come into my room.\n- Please follow me",
+      "note_17": "Removed trailing period after 'Please follow me' for consistency with the other subtitle source.",
       "revised_25": "Has your dad passed away?",
-      "note_25": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar."
+      "note_25": "Changed 'Is your dad passed away?' to 'Has your dad passed away?' for correct grammar.",
+      "revised_28": "the emperor will give you an award for this",
+      "note_28": "Changed 'give you award' to 'give you an award' to add the necessary article."
     },
     "difficulty": 1,
     "verified": true
@@ -153,6 +159,10 @@
       "note_2": "Corrected 'Congratulation!' to 'Congratulations!' for proper usage.",
       "revised_5": "We have some new girls,\nyou must be satisfied with them",
       "note_5": "Changed 'it' to 'them' to correctly refer to 'girls' (plural).",
+      "revised_6": "What are they? Goldfish, or cooked fish?",
+      "note_6": "Corrected 'Gold fish' to 'Goldfish' (one word) for proper noun usage.",
+      "revised_8": "You idiot! Goldfish are for watching only",
+      "note_8": "Changed 'Gold fish is' to 'Goldfish are' for correct plural subject-verb agreement.",
       "revised_11": "You, cooked fish, why don't you\ncome and serve Mr So?",
       "note_11": "Changed 'cooked fishes' to 'cooked fish' for correct pluralization (fish is both singular and plural).",
       "revised_14": "I won't mind, every woman is just the same",
@@ -191,6 +201,8 @@
     "answer": {
       "revised_9": "Miss Yushang comes to be a part-time hooker only",
       "note_9": "Added 'a' before 'part-time hooker' and hyphenated 'part-time' for correct grammar and adjective use.",
+      "revised_22": "- May I be excused,\n- Mr Chiu,",
+      "note_22": "Added a comma after 'Mr Chiu' to match address punctuation.",
       "revised_24": "How are you, Mr Chiu?",
       "note_24": "Added comma and question mark for correct address and sentence completion."
     },
@@ -217,6 +229,8 @@
     "answer": {
       "revised_5": "You are not welcome",
       "note_5": "Corrected 'welcomed' to 'welcome'.",
+      "revised_10": "Yushang will sleep with them",
+      "note_10": "Replaced 'whom' with 'them' to match intended meaning.",
       "revised_11": "Don't quarrel because of such\na small amount, isn't it right?",
       "note_11": "Added 'a' before 'small amount' for correct grammar."
     },
@@ -233,7 +247,9 @@
     },
     "answer": {
       "revised_2": "Mr Chiu, I will wait for you in my room",
-      "note_2": "Added 'for' to correct the phrase to 'wait for you'."
+      "note_2": "Added 'for' to correct the phrase to 'wait for you'.",
+      "revised_3": "Is the pearl worth 100,000 taels?",
+      "note_3": "Changed 'Does the pearl worth 100,000 taels?' to 'Is the pearl worth 100,000 taels?' for correct grammar."
     },
     "difficulty": 1,
     "verified": true
@@ -277,7 +293,11 @@
       "subtitle_2": "I know Tiger Claws and Crane's Fists too!",
       "subtitle_3": "Well, try my mantis!"
     },
-    "answer": {},
+    "answer": {
+      "revised_3": "Well, try me, mantis!",
+      "note_3": "Changed 'my mantis' to 'me, mantis' for correct phrasing."
+    },
+    "difficulty": 1,
     "verified": true
   },
   {
@@ -288,10 +308,7 @@
       "subtitle_4": "it's beggar's fists!",
       "subtitle_5": "That's why it's too weak"
     },
-    "answer": {
-      "revised_2": "Your Tiger's Claws are defeated",
-      "note_2": "Capitalized 'Claws' to match the usage in the following subtitle and for consistency."
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },
@@ -326,7 +343,11 @@
     },
     "answer": {
       "revised_15": "They send you such a valuable present,\nyou'd stop bullying them",
-      "note_15": "Changed 'so' to 'such' for correct usage: 'such a valuable present'."
+      "note_15": "Changed 'so' to 'such' for correct usage: 'such a valuable present'.",
+      "revised_16": "- Come on, give tips to the girls here\n- Master",
+      "note_16": "Changed 'girl' to 'girls' to match the addressed group.",
+      "revised_17": "King of Iron Hat, Seng-ko-lin-ch'in, is written on the medal",
+      "note_17": "Added a comma after 'Seng-ko-lin-ch'in' to set off the appositive phrase."
     },
     "difficulty": 1,
     "verified": true
@@ -356,8 +377,8 @@
     "answer": {
       "revised_6": "Do you know you have violated the laws of Ching?",
       "note_6": "Changed 'committed the laws of Ching' to 'violated the laws of Ching' for correct meaning.",
-      "revised_16": "Today is the birthday of the ex-Empress Dowager",
-      "note_16": "Changed 'Ex-Empress' to 'ex-Empress' (lowercase 'ex-' as per convention).",
+      "revised_11": "- Him!\n- Arrest him!",
+      "note_11": "Added an exclamation mark to match the emphatic command 'Arrest him!'",
       "revised_18": "It may lead to capital punishment",
       "note_18": "Changed 'cause to capital punishment' to 'lead to capital punishment' for correct phrasing."
     },
@@ -446,8 +467,12 @@
       "subtitle_15": "- Miss Seven…\n- Just accept this"
     },
     "answer": {
+      "revised_3": "The pearl of Mr. Chiu is broken",
+      "note_3": "Added a period after 'Mr' to be consistent with abbreviation formatting.",
       "revised_4": "by Mr So and became pearl powder",
-      "note_4": "Changed 'become' to 'became' for correct past tense."
+      "note_4": "Changed 'become' to 'became' for correct past tense.",
+      "revised_6": "Don't judge Mr. So from his hair,",
+      "note_6": "Added a period after 'Mr' to be consistent with abbreviation formatting."
     },
     "difficulty": 1,
     "verified": true
@@ -708,16 +733,10 @@
     "answer": {
       "revised_5": "Where should I put my pigtail?",
       "note_5": "Corrected 'pig-tail' to 'pigtail'.",
-      "revised_9": "I decided to join the examination for the\nScholar of Martial Arts",
-      "note_9": "Capitalized 'Scholar' to match the title format used elsewhere.",
       "revised_12": "For the sake of our family, you should do that",
       "note_12": "Changed 'For the family of us' to 'For the sake of our family' for correct phrasing.",
-      "revised_16": "For a girl, you want to be the Scholar\nof Martial Arts!",
-      "note_16": "Capitalized 'Scholar' to match the title format used elsewhere.",
       "revised_30": "If you break my stuff,\nI will teach you a good lesson",
       "note_30": "Added 'a' before 'good lesson' for correct grammar.",
-      "revised_32": "Good morning Dad",
-      "note_32": "Capitalized 'Dad' as a form of address.",
       "revised_36": "Please leave me a cloth",
       "note_36": "Corrected 'clothe' to 'cloth'.",
       "revised_46": "Please, work hard, men!",
@@ -817,8 +836,6 @@
       "subtitle_2": "The arrows teams go side ways,\nthe gunmen stay back"
     },
     "answer": {
-      "revised_1": "Let the horse teams be the pioneer",
-      "note_1": "Changed 'Horse' to lowercase 'horse' for consistency with 'arrows teams' and 'gunmen'.",
       "revised_2": "The arrows teams go sideways,\nthe gunmen stay back",
       "note_2": "Corrected 'side ways' to 'sideways'."
     },
@@ -2170,10 +2187,7 @@
       "subtitle_3": "My mother, give me power",
       "subtitle_4": "To save the people!"
     },
-    "answer": {
-      "revised_2": "Here comes the White Goat",
-      "note_2": "Capitalized 'White Goat' as it appears to be a proper noun or title."
-    },
+    "answer": {},
     "difficulty": 1,
     "verified": true
   },

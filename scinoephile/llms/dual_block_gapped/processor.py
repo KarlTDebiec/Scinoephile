@@ -4,15 +4,14 @@
 
 from __future__ import annotations
 
-import re
 from logging import info
 
 import numpy as np
 
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.base import Processor, save_test_cases_to_json
-from scinoephile.multilang.pairs import get_block_pairs_by_pause
-from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 
 from .manager import DualBlockGappedManager
 from .prompt import DualBlockGappedPrompt
@@ -73,11 +72,11 @@ class DualBlockGappedProcessor(Processor):
             for two_idx in range(size):
                 if two_idx not in gaps:
                     one_key = self.prompt_cls.src_1(two_idx + 1)
-                    one_val = re.sub(r"\\N", "\n", one_blk[one_idx].text).strip()
+                    one_val = one_blk[one_idx].text_with_newline.strip()
                     query_kwargs[one_key] = one_val
                     one_idx += 1
                 two_key = self.prompt_cls.src_2(two_idx + 1)
-                two_val = re.sub(r"\\N", "\n", two_blk[two_idx].text).strip()
+                two_val = two_blk[two_idx].text_with_newline.strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)

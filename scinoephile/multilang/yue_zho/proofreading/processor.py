@@ -4,15 +4,14 @@
 
 from __future__ import annotations
 
-import re
 from logging import info
 
 import numpy as np
 
+from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.synchronization import get_sync_overlap_matrix
 from scinoephile.llms.base import Processor, TestCase, save_test_cases_to_json
-from scinoephile.multilang.pairs import get_block_pairs_by_pause
-from scinoephile.multilang.synchronization import get_sync_overlap_matrix
 
 from .manager import YueZhoProofreadingManager
 from .prompts import YueZhoHansProofreadingPrompt
@@ -71,8 +70,8 @@ class YueZhoProofreadingProcessor(Processor):
                 two_idx = two_grp[0]
                 one_sub = one_blk[one_idx]
                 two_sub = two_blk[two_idx]
-                one_val = re.sub(r"\\N", "\n", one_sub.text).strip()
-                two_val = re.sub(r"\\N", "\n", two_sub.text).strip()
+                one_val = one_sub.text_with_newline.strip()
+                two_val = two_sub.text_with_newline.strip()
                 if one_val == two_val:
                     output_block.append(
                         Subtitle(start=one_sub.start, end=one_sub.end, text=one_val)

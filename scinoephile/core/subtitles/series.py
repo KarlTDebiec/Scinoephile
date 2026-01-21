@@ -169,7 +169,7 @@ class Series(SSAFile):
 
         string = ""
         for i, event in enumerate(self, 1):
-            text = event.text.replace("\n", " ")
+            text = event.text_with_newline.replace("\n", " ")
             string += (
                 f"{i:2d} | "
                 f"{round(100 * (event.start - start) / duration):3d}-"
