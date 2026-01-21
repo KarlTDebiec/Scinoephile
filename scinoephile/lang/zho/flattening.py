@@ -40,8 +40,8 @@ def _get_zho_text_flattened(text: str) -> str:
     Returns:
         Flattened text
     """
-    line_sep = r"\\N"
-    flattened = text
+    line_sep = "\\N"
+    flattened = text.replace("\r\n", "\n").replace("\n", line_sep)
 
     # Merge lines
     if line_sep in flattened:
