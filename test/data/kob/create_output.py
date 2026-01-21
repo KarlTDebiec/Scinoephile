@@ -50,7 +50,6 @@ if "English (OCR)" in actions:
     )
     process_eng_ocr(
         title_root,
-        title_root / "input" / "zho-Hant.sup",
         proofreader_kw=proofreader_kw,
         overwrite_srt=True,
         force_validation=True,
