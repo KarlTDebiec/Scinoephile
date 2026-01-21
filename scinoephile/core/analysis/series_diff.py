@@ -154,6 +154,7 @@ class SeriesDiff:
         Returns:
             None.
         """
+        # Prefer a delete+split when the first line is missing but the second merges.
         if len(one_blk) == 2 and len(two_blk) == 2:
             two_joined = self._normalize_line(
                 " ".join(self.two_lines[idx] for idx in two_blk)
@@ -168,6 +169,8 @@ class SeriesDiff:
                     one_blk[1], one_blk[1] + 1, two_blk[0], two_blk[-1] + 1
                 )
                 return
+
+        # Detect line shifts by comparing joined and per-line similarity.
         if len(one_blk) > 1:
             one_joined = self._normalize_line(
                 " ".join(self.one_lines[idx] for idx in one_blk)
@@ -195,6 +198,8 @@ class SeriesDiff:
                     one_blk[0], one_blk[-1] + 1, two_blk[0], two_blk[-1] + 1
                 )
                 return
+
+        # Fall back to per-line edits.
         for one_idx, two_idx in zip(one_blk, two_blk, strict=False):
             self._process_edit(one_idx, two_idx)
 
@@ -320,6 +325,7 @@ class SeriesDiff:
           ]
         """
         # Only consider the exact 2-line -> 4-line situation at the tail.
+        # Only consider the exact 2-line -> 4-line situation at the tail.
         if not (
             cursor.j + 3 < len(cursor.two_blk)
             and cursor.one_has_next
@@ -327,6 +333,8 @@ class SeriesDiff:
             and cursor.two_remaining == 4
         ):
             return False
+
+        # Join two-line pairs to compare with each source line.
         two_joined_first = self._normalize_line(
             f"{self.two_lines[cursor.two_blk[cursor.j]]} "
             f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
@@ -335,6 +343,7 @@ class SeriesDiff:
             f"{self.two_lines[cursor.two_blk[cursor.j + 2]]} "
             f"{self.two_lines[cursor.two_blk[cursor.j + 3]]}"
         )
+
         # Verify each one-line entry roughly matches its corresponding two-line join.
         first_ratio = difflib.SequenceMatcher(
             None, self.one_normlines[cursor.one_idx], two_joined_first, autojunk=False
@@ -350,6 +359,7 @@ class SeriesDiff:
             and second_ratio >= self.similarity_cutoff
         ):
             return False
+
         # Emit split/split_edit for each side based on exact normalized equality.
         first_type = (
             LineDiffKind.SPLIT
@@ -407,8 +417,11 @@ class SeriesDiff:
             "Kidding? Damn you beggar!",
           ]
         """
+        # Require a single source line and at least two target lines.
         if len(cursor.one_blk) != 1 or not cursor.two_has_pair:
             return False
+
+        # Compare the source line to both possible join orders.
         two_joined = self._normalize_line(
             f"{self.two_lines[cursor.two_blk[cursor.j]]} "
             f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
@@ -426,6 +439,8 @@ class SeriesDiff:
         best_joined = two_joined_rev if merged_ratio_rev > merged_ratio else two_joined
         if max(merged_ratio, merged_ratio_rev) < self.similarity_cutoff:
             return False
+
+        # Emit split vs split_edit based on exact normalized equality.
         diff_type = (
             LineDiffKind.SPLIT
             if self.one_normlines[cursor.one_idx] == best_joined
@@ -465,8 +480,11 @@ class SeriesDiff:
             "your legs and hands have not been totally recovered.",
           ]
         """
+        # Require two source lines and three target lines.
         if cursor.j + 2 >= len(cursor.two_blk) or not cursor.one_has_next:
             return False
+
+        # Join the first two target lines and compare with the first source line.
         two_joined = self._normalize_line(
             f"{self.two_lines[cursor.two_blk[cursor.j]]} "
             f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
@@ -483,6 +501,8 @@ class SeriesDiff:
         ).ratio()
         if merged_ratio < split_join_cutoff or next_ratio < self.similarity_cutoff:
             return False
+
+        # Emit split vs split_edit based on exact normalized equality.
         diff_type = (
             LineDiffKind.SPLIT
             if self.one_normlines[cursor.one_idx] == two_joined
@@ -517,6 +537,7 @@ class SeriesDiff:
           ["Leave here first"]
           -> ["Leave here first."]
         """
+        # Use a direct edit if the current lines are sufficiently similar.
         ratio = difflib.SequenceMatcher(
             None,
             self.one_normlines[cursor.one_idx],
@@ -525,6 +546,7 @@ class SeriesDiff:
         ).ratio()
         if ratio < self.similarity_cutoff:
             return False
+
         self._process_edit(cursor.one_idx, cursor.two_idx)
         cursor.advance(n_one=1, n_two=1, last_was_split=False)
         return True
@@ -546,8 +568,11 @@ class SeriesDiff:
             "Just accept this.",
           ]
         """
+        # Require at least two target lines for a join comparison.
         if not cursor.two_has_pair:
             return False
+
+        # Join two target lines and compare with the source line.
         two_joined = self._normalize_line(
             f"{self.two_lines[cursor.two_blk[cursor.j]]} "
             f"{self.two_lines[cursor.two_blk[cursor.j + 1]]}"
@@ -557,6 +582,8 @@ class SeriesDiff:
         ).ratio()
         if merged_ratio < self.similarity_cutoff:
             return False
+
+        # Decide whether the situation is a split or merge, then emit accordingly.
         one_slc = [cursor.one_idx]
         two_slc = [cursor.two_blk[cursor.j], cursor.two_blk[cursor.j + 1]]
         if self.one_normlines[cursor.one_idx] == two_joined:
@@ -575,6 +602,7 @@ class SeriesDiff:
         else:
             diff_type = merged_type
             last_was_split = False
+
         if diff_type == LineDiffKind.SPLIT:
             self._process_split(
                 one_slc[0], one_slc[-1] + 1, two_slc[0], two_slc[-1] + 1
@@ -608,8 +636,11 @@ class SeriesDiff:
           ["OK", "I want to take a statement from you as record"]
           -> ["I want to take some statements from you as record"]
         """
+        # Only consider many-to-one when the target is a single line.
         if len(cursor.two_blk) != 1 or not cursor.one_has_next:
             return False
+
+        # If the next line matches better, delete the current and edit the next.
         ratio_next = difflib.SequenceMatcher(
             None,
             self.one_normlines[cursor.one_blk[cursor.i + 1]],
@@ -627,6 +658,8 @@ class SeriesDiff:
             self._process_edit(cursor.one_blk[cursor.i + 1], cursor.two_idx)
             cursor.advance(n_one=2, n_two=1, last_was_split=False)
             return True
+
+        # Otherwise, treat the two source lines as a possible split.
         one_joined = self._normalize_line(
             " ".join(
                 self.one_lines[idx] for idx in cursor.one_blk[cursor.i : cursor.i + 2]
@@ -637,6 +670,8 @@ class SeriesDiff:
         ).ratio()
         if split_ratio < self.similarity_cutoff:
             return False
+
+        # Emit split vs split_edit based on exact normalized equality.
         diff_type = (
             LineDiffKind.SPLIT
             if one_joined == self.two_normlines[cursor.two_idx]
