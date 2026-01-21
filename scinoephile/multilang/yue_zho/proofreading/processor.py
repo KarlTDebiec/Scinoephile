@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import re
 from logging import info
 
 import numpy as np
@@ -71,8 +70,8 @@ class YueZhoProofreadingProcessor(Processor):
                 two_idx = two_grp[0]
                 one_sub = one_blk[one_idx]
                 two_sub = two_blk[two_idx]
-                one_val = re.sub(r"\\N", "\n", one_sub.text).strip()
-                two_val = re.sub(r"\\N", "\n", two_sub.text).strip()
+                one_val = one_sub.text_with_newline.strip()
+                two_val = two_sub.text_with_newline.strip()
                 if one_val == two_val:
                     output_block.append(
                         Subtitle(start=one_sub.start, end=one_sub.end, text=one_val)

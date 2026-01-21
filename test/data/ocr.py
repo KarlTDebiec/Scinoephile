@@ -344,6 +344,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
         paddle.save(paddle_path)
 
+        if fuser_kw is None:
+            fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
             title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json",

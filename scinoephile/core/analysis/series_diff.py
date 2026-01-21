@@ -925,7 +925,7 @@ class SeriesDiff:
         """
         lines: list[str] = []
         for subtitle in series:
-            text = subtitle.text.replace("\\N", "\n")
+            text = subtitle.text_with_newline
             for line in text.splitlines():
                 stripped = line.strip()
                 if stripped:

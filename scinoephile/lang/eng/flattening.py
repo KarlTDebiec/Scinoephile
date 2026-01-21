@@ -42,36 +42,29 @@ def _get_eng_text_flattened(text: str) -> str:
     Accounts for dashes ('-') used for dialogue from multiple sources.
 
     Arguments:
-        text: Text to flatten
+        text: text to flatten
     Returns:
         Flattened text
     """
-    # Revert strange substitution in pysubs2/subrip.py:66
-    flattened = re.sub(r"\\N", r"\n", text)
+    line_sep = "\\N"
+    flattened = text.replace("\r\n", "\n").replace("\n", line_sep)
 
     # Merge conversations
-    flattened = re.sub(
-        r"^\s*[–-]\s*(.+)\n[–-]\s*(.+)\s*$",
-        lambda m: f"- {m.group(1).strip()}    - {m.group(2).strip()}",
-        flattened,
-        flags=re.M,
-    )
+    lines = flattened.split(line_sep)
+    if len(lines) == 2:
+        first = re.match(r"^\s*[–-]\s*(.+)\s*$", lines[0])
+        second = re.match(r"^\s*[–-]\s*(.+)\s*$", lines[1])
+        if first and second:
+            return f"- {first.group(1).strip()}    - {second.group(1).strip()}"
 
     # Merge italics
-    flattened = re.sub(
-        r"{\\i0}[^\S\n]*\n[^\S\n]*{\\i1}[^\S\n]*",
-        " ",
-        flattened,
-    )
+    flattened = re.sub(r"{\\i0}\s*\\N\s*{\\i1}", " ", flattened)
 
     # Merge lines
-    flattened = re.sub(
-        r"\s*(.+)\s*\n\s*(.+)\s*",
-        lambda m: f"{m.group(1).strip()} {m.group(2).strip()}",
-        flattened,
-        flags=re.M,
-    )
-    if "\n" in flattened:
+    if line_sep in flattened:
+        parts = [part.strip() for part in flattened.split(line_sep) if part.strip()]
+        flattened = " ".join(parts)
+    if line_sep in flattened:
         raise ScinoephileError(
             f"English text flattening did not produce a single line: {flattened!r}"
         )

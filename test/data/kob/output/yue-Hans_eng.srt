@@ -276,7 +276,7 @@ For sure, it can't compete with Peking Opera!
 56
 00:05:05,945 --> 00:05:08,198
 不过都算系一番见识！
-But, I appreciate to view this
+But, I appreciate viewing this
 
 57
 00:05:10,407 --> 00:05:13,078
@@ -416,7 +416,7 @@ You should be frank!
 84
 00:06:01,117 --> 00:06:03,830
 你顶帽呀，披麻带孝咁
-Your hat is like the mourning uniform!
+Your hat, is like the mourning uniform!
 
 85
 00:06:03,912 --> 00:06:05,248
@@ -701,12 +701,12 @@ more than 100,000 taels
 141
 00:08:19,320 --> 00:08:21,033
 咁如霜姑娘咪陪边个啰
-Yushang will sleep with whom
+Yushang will sleep with them
 
 142
 00:08:21,072 --> 00:08:22,784
 千祈唔好伤咗和气呀！
-Don't quarrel because of such a small amount
+Don't quarrel because of such a small amount,
 
 143
 00:08:22,782 --> 00:08:24,369
@@ -741,7 +741,7 @@ Mr Chiu, I will wait for you in my room
 149
 00:08:45,385 --> 00:08:47,139
 呢粒珠值唔值十万两呀？
-Does the pearl worth $100,000?
+Is the pearl worth 100,000 taels?
 
 150
 00:08:48,011 --> 00:08:50,183
@@ -861,7 +861,7 @@ Bravo…
 173
 00:10:12,960 --> 00:10:15,299
 我嘅螳螂拳再破你嘅虎鹤双形
-Your Tiger's Claws are defeated
+Your Tiger's claws are defeated
 
 174
 00:10:17,380 --> 00:10:18,593
@@ -966,7 +966,7 @@ Chan
 194
 00:11:09,092 --> 00:11:10,722
 人家送到咁厚礼就唔好再恰佢喇
-They send you so valuable a present, you'd stop bullying them
+They send you such a valuable present, you'd stop bullying them
 
 195
 00:11:11,136 --> 00:11:12,307
@@ -1011,7 +1011,7 @@ Now, you are in the brothel
 203
 00:11:35,239 --> 00:11:37,370
 知法犯法，该当何罪？
-Do you know you have committed the laws of Ching?
+Do you know you have violated the laws of Ching?
 
 204
 00:11:37,783 --> 00:11:38,746
@@ -1061,7 +1061,7 @@ What else? Go ahead
 213
 00:11:52,754 --> 00:11:55,678
 今日系清太祖皇后叶赫拿拉氏嘅忌辰
-Today is the birthday of the ex-Empress Dowager
+Today is the birthday of the Ex-Empress Dowager
 
 214
 00:11:55,716 --> 00:11:57,972
@@ -1071,7 +1071,7 @@ So your crime is doubled
 215
 00:11:57,967 --> 00:11:59,139
 可以问斩喇佢！
-It may cause capital punishment
+It may lead to capital punishment
 
 216
 00:11:59,177 --> 00:12:01,724
@@ -1101,7 +1101,7 @@ Do you want to see my hair?
 221
 00:12:15,357 --> 00:12:16,654
 多多都有呀，懵炳
-You can see as much as you want! Fat-headed
+You can see as much as you want! Fat-head
 
 222
 00:12:16,734 --> 00:12:19,156
@@ -1151,7 +1151,7 @@ Let's go
 231
 00:12:35,541 --> 00:12:38,923
 老爷！呢个玩唔起嘅，见好就收喇
-Master, you can't fool this guy Let's go
+Master, you can't fool this guy. Let's go
 
 232
 00:12:39,921 --> 00:12:40,550
@@ -1186,7 +1186,7 @@ Chiu assassinated our Master
 238
 00:13:13,199 --> 00:13:15,205
 同埋太平天国几个将领
-and some generals of the Taiping Reign
+and some generals of The Taiping Reign
 
 239
 00:13:15,284 --> 00:13:16,873
@@ -1201,7 +1201,7 @@ Thus made us
 241
 00:13:19,371 --> 00:13:20,960
 个个都睇我地唔起
-being despised by the world
+to be despised by the world
 
 242
 00:13:21,832 --> 00:13:23,254
@@ -1246,7 +1246,7 @@ Get ready…
 250
 00:13:48,980 --> 00:13:50,486
 如霜姑娘我地又见面喇
-Miss Yushang, we meet again.
+Miss Yushang, we meet again
 
 251
 00:13:50,523 --> 00:13:52,571
@@ -1261,12 +1261,12 @@ The pearl of Mr. Chiu is broken
 253
 00:13:54,025 --> 00:13:56,074
 俾苏翁一打就变咗珍珠末
-by Mr. So and become pearl powder
+by Mr So and became pearl powder
 
 254
 00:13:56,069 --> 00:13:57,408
 我冲水饮埋添啦
-I have drunk it.
+I have drunk it
 
 255
 00:13:58,196 --> 00:14:00,119
@@ -1276,7 +1276,7 @@ Don't judge Mr. So from his hair,
 256
 00:14:00,156 --> 00:14:02,496
 实在佢份人好有情趣嘅
-he is really romantic and funny.
+he is really romantic and funny
 
 257
 00:14:02,867 --> 00:14:03,580
@@ -1381,7 +1381,7 @@ Please get out
 277
 00:14:43,443 --> 00:14:44,575
 我果然冇拣错人
-I haven't chosen a wrong one
+I haven't chosen the wrong one
 
 278
 00:14:44,652 --> 00:14:46,577
@@ -1411,7 +1411,7 @@ Hands off!
 283
 00:15:01,918 --> 00:15:02,966
 你居然识武功？
-You know Kung-fu?
+You know kung fu?
 
 284
 00:15:03,961 --> 00:15:05,676
@@ -1561,7 +1561,7 @@ Well, I think we should fix a date for our wedding
 313
 00:16:23,905 --> 00:16:26,580
 因为做状元对我嚟讲易如反掌
-Because this is too easy for me to be the Kung-fu scholar!
+Because, this is too easy for me to be the Kung-fu scholar!
 
 314
 00:16:27,491 --> 00:16:31,042
@@ -1806,7 +1806,7 @@ I have been longing for this word for 25 years
 362
 00:20:41,001 --> 00:20:42,802
 为咗苏察哈尔家，你应该咁做
-For the family of us, you should do that
+For the sake of our family, you should do that
 
 363
 00:20:42,837 --> 00:20:45,055
@@ -1976,7 +1976,7 @@ It's a hard job to remove such a big house!
 396
 00:21:48,018 --> 00:21:49,819
 唔该大家落力些呀好唔好呀！
-Please, work hard men!
+Please, work hard, men!
 
 397
 00:21:49,895 --> 00:21:53,739
@@ -2051,7 +2051,7 @@ Fine, I am now appointing you to be the Deputy Secretary
 411
 00:22:32,139 --> 00:22:35,151
 希望你日后好好为大清尽力
-Hope you will serve our Ching Dynasty whole-heartedly
+Hope you will serve our Ching Dynasty wholeheartedly
 
 412
 00:22:35,767 --> 00:22:36,902
@@ -2181,7 +2181,7 @@ What? Pregnant woman? You can't cheat me
 437
 00:26:15,832 --> 00:26:16,802
 你系阿爹
-You are Dad
+You are a dad.
 
 438
 00:26:16,833 --> 00:26:20,096
@@ -2271,7 +2271,7 @@ Doesn't he seem to be the winner?
 455
 00:26:59,453 --> 00:27:00,506
 睇佢造化喇
-It depends on the fate
+It depends on fate.
 
 456
 00:27:01,538 --> 00:27:03,593
@@ -2316,7 +2316,7 @@ Don't worry
 464
 00:27:14,675 --> 00:27:16,937
 我个仔十八般武艺件件皆精
-My son is keen in martial arts
+My son is keen on martial arts.
 
 465
 00:27:16,969 --> 00:27:20,315
@@ -2501,7 +2501,7 @@ He has been disappointing the audience
 501
 00:32:18,520 --> 00:32:21,452
 但系一路杀入到决赛都系有Heart嘅
-But he has achieved very hard
+But he has worked very hard
 
 502
 00:32:21,523 --> 00:32:23,037
@@ -2651,7 +2651,7 @@ Bravo…
 531
 00:34:07,572 --> 00:34:10,492
 靶都射穿埋！最少都加多两分啦！
-They should add 2 more marks for that powerful shot
+They should add 2 more marks for that powerful shoot
 
 532
 00:34:10,575 --> 00:34:12,382
@@ -2691,7 +2691,7 @@ Here comes the 2nd round
 539
 00:35:19,301 --> 00:35:20,691
 兵器都做埋手脚？
-They trick again.
+They tricked again
 
 540
 00:35:21,553 --> 00:35:24,569
@@ -2781,7 +2781,7 @@ It's English
 557
 00:37:47,137 --> 00:37:48,653
 例上冇讲明唔准用暗器！
-There is no regulation stating that weapons are not allowed
+There is no regulation stating that a weapon is not allowed
 
 558
 00:37:49,014 --> 00:37:52,323
@@ -2971,7 +2971,7 @@ So how could he answer the question paper of strategy?
 595
 00:40:12,387 --> 00:40:13,445
 分明有诈！
-That should be tricks
+That should be a trick
 
 596
 00:40:18,100 --> 00:40:19,243
@@ -3121,7 +3121,7 @@ sentenced to death
 625
 00:41:35,375 --> 00:41:38,019
 不过佢系功臣之后！可免一死！
-But their ancestors achieved a lot to Ching, they can be exempted
+But their ancestors achieved a lot for Ching, they can be exempted
 
 626
 00:41:38,044 --> 00:41:41,230
@@ -3261,7 +3261,7 @@ I regret that…
 653
 00:43:20,966 --> 00:43:23,737
 老爷，我会好好咁养大细龟嘅啦
-Master, I will take good care of Little Turtle
+Master, I will take good care of little turtle
 
 654
 00:43:23,801 --> 00:43:25,112
@@ -3501,7 +3501,7 @@ That's true
 701
 00:45:02,387 --> 00:45:03,240
 我有边忽似乞儿呀？
-Am I like beggar?
+Am I like a beggar?
 
 702
 00:45:03,305 --> 00:45:04,323
@@ -4451,7 +4451,7 @@ Miss, who are you looking for?
 891
 00:56:04,041 --> 00:56:05,649
 对唔住，我认错人！
-I am sorry, I have mistaken.
+I am sorry, I was mistaken
 
 892
 00:56:06,084 --> 00:56:07,651
@@ -4521,7 +4521,7 @@ So I bit the dumpling of the kid.
 905
 00:56:56,401 --> 00:56:58,027
 我呢度有馒头！我还番俾你地！
-I have dumpling, take it back.
+I have a dumpling, take it back
 
 906
 00:56:58,087 --> 00:56:58,903
@@ -4871,7 +4871,7 @@ Thank you…
 975
 01:00:27,668 --> 01:00:28,685
 莫大叔，我地亲家两免喇！
-Uncle Mok, we needn't give red pockets to each other
+Uncle Mok, we needn't give red packets to each other
 
 976
 01:00:28,753 --> 01:00:29,853
@@ -4926,7 +4926,7 @@ To fight against Chiu, we need a union of the Beggars' Association
 986
 01:00:59,254 --> 01:01:01,697
 我地即刻选位新帮主出嚟主持大局！
-So we must choose a new master to in-charge the association
+So we must choose a new master to be in charge of the association
 
 987
 01:01:02,881 --> 01:01:04,800
@@ -5416,12 +5416,12 @@ From my judgement,
 1084
 01:06:22,435 --> 01:06:24,117
 你会系乞儿中嘅霸主！
-you will be the King of Beggars
+you will be the king of beggars
 
 1085
 01:06:24,645 --> 01:06:27,078
 乞儿中嘅霸主？即系咩呀？
-King of Beggars, what does that mean?
+King of beggars, what does that mean?
 
 1086
 01:06:28,899 --> 01:06:29,955
@@ -5521,7 +5521,7 @@ Long life to you…
 1105
 01:08:02,231 --> 01:08:04,787
 白羊降世，天理循环
-Here comes the White Goat
+Here comes the white Goat
 
 1106
 01:08:05,454 --> 01:08:09,612
@@ -5656,7 +5656,7 @@ then they went away
 1132
 01:11:07,182 --> 01:11:08,392
 唔通佢两只嘢有路？
-Are there any affairs between them?
+Is there any affair between them?
 
 1133
 01:11:20,164 --> 01:11:21,570
@@ -6129,7 +6129,7 @@ My initial power is increased
 1228
 01:19:25,616 --> 01:19:28,210
 降龙十八掌嘅头十七掌我已经领会到
-I can control the 17th stance
+I can control the 17 stances
 
 1229
 01:19:28,619 --> 01:19:31,296
@@ -6380,7 +6380,7 @@ It's you who will be killed
 1279
 01:24:40,014 --> 01:24:41,432
 赵无极阴谋造反！
-Chiu wants to raise a rebel,
+Chiu wants to raise a rebellion,
 
 1280
 01:24:41,480 --> 01:24:42,982
@@ -6505,7 +6505,7 @@ Sure
 1304
 01:25:42,193 --> 01:25:44,237
 前面放狼烟，一定有人打草惊蛇
-There is smoke ahead, someone must have alerted them
+There is smoke ahead, someone must have alarmed them.
 
 1305
 01:25:47,197 --> 01:25:48,038
@@ -6520,7 +6520,7 @@ Yes
 1307
 01:25:48,699 --> 01:25:49,664
 攻入大营！
-Attack the main camp
+Attack the main camp.
 
 1308
 01:26:50,628 --> 01:26:53,845
@@ -6650,7 +6650,7 @@ Your Majesty, it's dangerous, don't go!
 1333
 01:28:39,431 --> 01:28:42,351
 唔去！唔通坐系度等死呀？行开
-Get lost, don't you want to wait for death, get lost
+Get lost, don't you want to wait for death? Get lost
 
 1334
 01:28:43,726 --> 01:28:44,852
@@ -6940,7 +6940,7 @@ See, don't you think I am alright?
 1391
 01:34:59,594 --> 01:35:00,723
 你个姿势仲好有型！
-Your post is really smart
+Your pose is really smart
 
 1392
 01:35:00,804 --> 01:35:02,598
@@ -7040,7 +7040,7 @@ But I don't like Scholar at all.
 1411
 01:35:55,852 --> 01:35:57,271
 我钟意乞儿！
-I love beggar.
+I love beggars.
 
 1412
 01:35:59,230 --> 01:36:00,522
@@ -7140,7 +7140,7 @@ we have nothing to chat about
 1431
 01:37:08,750 --> 01:37:10,210
 我丐帮弟子几千万
-You have billions of fellows
+You have billions of fellows.
 
 1432
 01:37:10,292 --> 01:37:12,669

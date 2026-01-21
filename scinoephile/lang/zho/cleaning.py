@@ -40,32 +40,37 @@ def _get_zho_text_cleaned(text: str) -> str | None:
     """Get 中文 text cleaned.
 
     Arguments:
-        text: Text to clean
+        text: text to clean
     Returns:
         Cleaned text
     """
-    # Revert substitution in pysubs2/subrip.py:66
-    cleaned = re.sub(r"\\N", r"\n", text).strip()
+    line_sep = r"\N"
+    cleaned = text.strip()
 
-    # Replace '...' and '…' with '⋯'
-    cleaned = re.sub(r"[^\S\n]*\.\.\.[^\S\n]*", "⋯", cleaned)
-    cleaned = re.sub(r"[^\S\n]*…[^\S\n]*", "⋯", cleaned)
+    cleaned_lines = []
+    for raw_line in cleaned.split(line_sep):
+        cleaned_line = raw_line.strip()
 
-    # Replace half-width punctuation with full-width punctuation
-    for old_punc, new_punc in half_to_full_punc.items():
-        cleaned = re.sub(rf"[^\S\n]*{re.escape(old_punc)}[^\S\n]*", new_punc, cleaned)
+        # Replace '...' and '…' with '⋯'
+        cleaned_line = re.sub(r"[^\S]*\.\.\.[^\S]*", "⋯", cleaned_line)
+        cleaned_line = re.sub(r"[^\S]*…[^\S]*", "⋯", cleaned_line)
 
-    # Clean up double quotes
-    cleaned = re.sub(r"[“”〞〝\"]", "＂", cleaned)
-    cleaned = _replace_full_width_double_quotes(cleaned)
+        # Replace half-width punctuation with full-width punctuation
+        for old_punc, new_punc in half_to_full_punc.items():
+            cleaned_line = re.sub(
+                rf"[^\S]*{re.escape(old_punc)}[^\S]*", new_punc, cleaned_line
+            )
 
-    # Remove whitespace before and after specified characters
-    cleaned = re.sub(r"[^\S\n]*([、「」『』《》])[^\S\n]*", r"\1", cleaned)
+        # Clean up double quotes
+        cleaned_line = re.sub(r"[“”〞〝\"]", "＂", cleaned_line)
+        cleaned_line = _replace_full_width_double_quotes(cleaned_line)
 
-    # Remove empty lines but preserve newlines
-    cleaned = re.sub(r"[ \t]*\n[ \t]*", "\n", cleaned)
+        # Remove whitespace before and after specified characters
+        cleaned_line = re.sub(r"[^\S]*([、「」『』《》])[^\S]*", r"\1", cleaned_line)
 
-    return cleaned
+        cleaned_lines.append(cleaned_line)
+
+    return line_sep.join(cleaned_lines)
 
 
 def _replace_full_width_double_quotes(text: str) -> str:

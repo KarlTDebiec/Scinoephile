@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import re
 from logging import info
 
 import numpy as np
@@ -73,11 +72,11 @@ class DualBlockGappedProcessor(Processor):
             for two_idx in range(size):
                 if two_idx not in gaps:
                     one_key = self.prompt_cls.src_1(two_idx + 1)
-                    one_val = re.sub(r"\\N", "\n", one_blk[one_idx].text).strip()
+                    one_val = one_blk[one_idx].text_with_newline.strip()
                     query_kwargs[one_key] = one_val
                     one_idx += 1
                 two_key = self.prompt_cls.src_2(two_idx + 1)
-                two_val = re.sub(r"\\N", "\n", two_blk[two_idx].text).strip()
+                two_val = two_blk[two_idx].text_with_newline.strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)

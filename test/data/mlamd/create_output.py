@@ -23,38 +23,12 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
 )
-from test.data.kob import (
-    get_kob_eng_ocr_fusion_test_cases,
-    get_kob_eng_proofreading_test_cases,
-    get_kob_zho_hant_ocr_fusion_test_cases,
-    get_kob_zho_hant_proofreading_test_cases,
-)
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_shifting_test_cases,
 )
-from test.data.mnt import (
-    get_mnt_eng_ocr_fusion_test_cases,
-    get_mnt_eng_proofreading_test_cases,
-    get_mnt_zho_hans_ocr_fusion_test_cases,
-    get_mnt_zho_hans_proofreading_test_cases,
-    get_mnt_zho_hant_ocr_fusion_test_cases,
-    get_mnt_zho_hant_proofreading_test_cases,
-)
-from test.data.ocr import (
-    process_eng_ocr,
-    process_zho_hans_ocr,
-    process_zho_hant_ocr,
-)
+from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
-from test.data.t import (
-    get_t_eng_ocr_fusion_test_cases,
-    get_t_eng_proofreading_test_cases,
-    get_t_zho_hans_ocr_fusion_test_cases,
-    get_t_zho_hans_proofreading_test_cases,
-    get_t_zho_hant_ocr_fusion_test_cases,
-    get_t_zho_hant_proofreading_test_cases,
-)
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
@@ -73,49 +47,21 @@ actions = {
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
-        title_root / "input" / "zho-Hant.sup",
-        fuser_kw={
-            "test_cases": get_kob_zho_hant_ocr_fusion_test_cases()
-            + get_mnt_zho_hant_ocr_fusion_test_cases()
-            + get_t_zho_hant_ocr_fusion_test_cases()
-        },
-        proofreader_kw={
-            "test_cases": get_kob_zho_hant_proofreading_test_cases()
-            + get_mnt_zho_hant_proofreading_test_cases()
-            + get_t_zho_hant_proofreading_test_cases()
-        },
+        input_dir / "zho-Hant.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
-        title_root / "input" / "zho-Hans.sup",
-        fuser_kw={
-            "test_cases": get_mnt_zho_hans_ocr_fusion_test_cases()
-            + get_t_zho_hans_ocr_fusion_test_cases()
-        },
-        proofreader_kw={
-            "test_cases": get_mnt_zho_hans_proofreading_test_cases()
-            + get_t_zho_hans_proofreading_test_cases()
-        },
+        input_dir / "zho-Hans.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
-        title_root / "input" / "zho-Hans.sup",
-        fuser_kw={
-            "test_cases": get_kob_eng_ocr_fusion_test_cases()
-            + get_mnt_eng_ocr_fusion_test_cases()
-            + get_t_eng_ocr_fusion_test_cases()
-        },
-        proofreader_kw={
-            "test_cases": get_kob_eng_proofreading_test_cases()
-            + get_mnt_eng_proofreading_test_cases()
-            + get_t_eng_proofreading_test_cases()
-        },
+        input_dir / "zho-Hans.sup",
         overwrite_srt=True,
         force_validation=True,
     )

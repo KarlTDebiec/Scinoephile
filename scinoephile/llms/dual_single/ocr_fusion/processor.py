@@ -61,21 +61,21 @@ class OcrFusionProcessor(Processor):
                 output_subtitles.append(sub_one)
                 info(
                     f"Subtitle {sub_idx + 1} identical:     "
-                    f"{text_one.replace('\n', ' ')}"
+                    f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_two:
                 output_subtitles.append(sub_one)
                 info(
                     f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_1}: "
-                    f"{text_one.replace('\n', ' ')}"
+                    f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
                 info(
                     f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_2}: "
-                    f"{text_two.replace('\n', ' ')}"
+                    f"{sub_two.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
 
@@ -83,8 +83,8 @@ class OcrFusionProcessor(Processor):
             test_case_cls = OcrFusionManager.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
-                self.prompt_cls.src_1: sub_one.text,
-                self.prompt_cls.src_2: sub_two.text,
+                self.prompt_cls.src_1: sub_one.text_with_newline,
+                self.prompt_cls.src_2: sub_two.text_with_newline,
             }
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
