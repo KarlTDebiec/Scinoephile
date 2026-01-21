@@ -1,6 +1,6 @@
 ---
-name: scinoephile-test-authoring
-description: Add or update pytest tests in Scinoephile's test/ suite, including new test modules, fixtures under test/data, or expected-output generation scripts for subtitle/LLM/CLI workflows.
+name: author-test
+description: Add or update pytest tests in Scinoephile's test/ suite, including new test modules organized by domain (for example, test/lang/eng or test/lang/zho), fixtures under test/data, or expected-output generation scripts for subtitle/LLM/CLI workflows.
 ---
 
 # Add a Test in Scinoephile
@@ -15,6 +15,7 @@ description: Add or update pytest tests in Scinoephile's test/ suite, including 
 
 ## Test module pattern
 - Include the standard copyright header, module docstring, and `from __future__ import annotations`.
+- Match directory and filename conventions already in the suite (for example, `test/lang/eng/test_<topic>.py`, `test/lang/zho/test_<topic>.py`, `test/core/...`).
 - Use pytest fixtures from `test.data.*` (imported into `test/conftest.py`).
 - Add type annotations to all function signatures; omit return type when the function returns `None`.
 - Prefer helper functions for repeated assertions; include Google-style docstrings using `Arguments:` and `Returns:`.
