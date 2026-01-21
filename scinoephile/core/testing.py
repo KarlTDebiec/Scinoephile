@@ -13,7 +13,9 @@ from pytest import fixture, mark, param
 from scinoephile.common import package_root
 
 __all__ = [
+    "assert_expected_warnings",
     "flaky",
+    "get_warning_messages",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
@@ -22,6 +24,37 @@ __all__ = [
 
 
 test_data_root = package_root.parent / "test" / "data"
+
+
+def assert_expected_warnings(
+    warnings: list[str], expected: list[str], label: str
+) -> None:
+    """Assert that warning messages match expected values.
+
+    Arguments:
+        warnings: warning messages captured during validation
+        expected: expected warning messages
+        label: label for error messages
+    """
+    if warnings != expected:
+        formatted_actual = "\n".join(warnings)
+        formatted_expected = "\n".join(expected)
+        raise AssertionError(
+            f"{label} warnings mismatch.\n"
+            f"Expected:\n{formatted_expected}\n"
+            f"Actual:\n{formatted_actual}"
+        )
+
+
+def get_warning_messages(records: list[Any]) -> list[str]:
+    """Collect warning messages from captured log records.
+
+    Arguments:
+        records: log records captured during validation
+    Returns:
+        list of warning messages
+    """
+    return [record.getMessage() for record in records]
 
 
 def flaky(inner: partial | None = None) -> partial:
