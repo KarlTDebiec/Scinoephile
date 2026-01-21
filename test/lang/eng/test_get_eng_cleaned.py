@@ -10,7 +10,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned
 
 # noinspection PyProtectedMember
-from scinoephile.lang.eng.cleaning import _get_english_text_cleaned
 
 
 def _test_get_eng_cleaned(series: Series, expected: Series):
@@ -83,31 +82,3 @@ def test_get_eng_cleaned_t(
         t_eng_fuse_clean: Expected cleaned T English series fixture
     """
     _test_get_eng_cleaned(t_eng_fuse, t_eng_fuse_clean)
-
-
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("[test]", None),
-        ("[test] ", None),
-        ("[test] abcd", "abcd"),
-        ("[test]\nabcd", "abcd"),
-        ("[test\ntest]", None),
-        ("abcd [test]", "abcd"),
-        ("abcd\ndefg [test]", "abcd\ndefg"),
-        ("-[test] abcd\n-defg", "-abcd\n-defg"),
-        ("-[test]\n-[test]", None),
-        (r"-[test]\N-[test]", None),
-        ("-[test] \n-[test] ", None),
-        ("- [test]\n- [test]", None),
-        ("{\\i1} abcd{\\i0}", "{\\i1}abcd{\\i0}"),
-    ],
-)
-def test_get_eng_text_cleaned(text: str, expected: str):
-    """Test _get_eng_text_cleaned.
-
-    Arguments:
-        text: Text to clean
-        expected: Expected cleaned text
-    """
-    assert _get_english_text_cleaned(text) == expected
