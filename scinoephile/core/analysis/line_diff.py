@@ -25,12 +25,25 @@ class LineDiff:
 
     @staticmethod
     def _format_idxs(idxs: list[int]) -> str:
+        """Format indices for display.
+
+        Arguments:
+            idxs: indices to format
+        Returns:
+            formatted index range
+        """
         if len(idxs) == 1:
             return str(idxs[0] + 1)
         return f"{idxs[0] + 1}-{idxs[-1] + 1}"
 
     def __str__(self) -> str:
-        """Format the diff as a display string."""
+        """Format the diff as a display string.
+
+        Arguments:
+            None.
+        Returns:
+            formatted diff string
+        """
         if self.one_idxs and self.one_texts and self.two_idxs is None:
             missing_idx = self.one_idxs[0]
             missing_text = self.one_texts[0]

@@ -22,8 +22,8 @@ def get_series_diff(
     """Compare two subtitle series by line content.
 
     Arguments:
-        one: First subtitle series
-        two: Second subtitle series
+        one: first subtitle series
+        two: second subtitle series
         **kwargs: additional keyword arguments for SeriesDiff
     Returns:
         list of difference messages
