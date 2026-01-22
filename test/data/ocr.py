@@ -445,9 +445,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         output_dir
         / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
-    if simplify_proofread_path.exists() and not overwrite_srt:
-        simplify_proofread = Series.load(simplify_proofread_path)
-    else:
+    if not simplify_proofread_path.exists() or overwrite_srt:
         simplify_proofreader = get_zho_proofreader(
             prompt_cls=ZhoHansProofreadingPrompt,
             test_case_path=title_root
