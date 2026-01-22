@@ -70,6 +70,7 @@ __all__ = [
     "get_mlamd_zho_hans_proofreading_test_cases",
     "get_mlamd_zho_hant_ocr_fusion_test_cases",
     "get_mlamd_zho_hant_proofreading_test_cases",
+    "get_mlamd_zho_hant_simplify_proofreading_test_cases",
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
     "mlamd_eng_fuse_clean_validate",
@@ -98,6 +99,7 @@ __all__ = [
     "mlamd_zho_hant_fuse_clean_validate_proofread",
     "mlamd_zho_hant_fuse_clean_validate_proofread_flatten",
     "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
+    "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
 ]
@@ -308,6 +310,25 @@ def get_mlamd_zho_hant_proofreading_test_cases(
         test cases
     """
     path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_zho_hant_simplify_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get MLAMD 繁体中文 simplification proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant_simplify.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -543,6 +564,15 @@ def mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
     """MLAMD 繁体中文 simplified fused/cleaned/validated/proofread/flattened subs."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread() -> Series:
+    """MLAMD 繁体中文 simplified/proofread fused/cleaned subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
 
 

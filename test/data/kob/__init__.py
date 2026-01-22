@@ -17,7 +17,10 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
-from scinoephile.lang.zho.proofreading import ZhoHantProofreadingPrompt
+from scinoephile.lang.zho.proofreading import (
+    ZhoHansProofreadingPrompt,
+    ZhoHantProofreadingPrompt,
+)
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
 from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
@@ -53,6 +56,7 @@ __all__ = [
     "get_kob_yue_vs_zho_proofreading_test_cases",
     "get_kob_zho_hant_ocr_fusion_test_cases",
     "get_kob_zho_hant_proofreading_test_cases",
+    "get_kob_zho_hant_simplify_proofreading_test_cases",
     "kob_eng_fuse",
     "kob_eng_fuse_clean",
     "kob_eng_fuse_clean_validate",
@@ -77,6 +81,7 @@ __all__ = [
     "kob_zho_hant_fuse_clean_validate_proofread",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
+    "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
     "kob_zho_hant_image",
 ]
 
@@ -265,6 +270,25 @@ def get_kob_zho_hant_proofreading_test_cases(
     )
 
 
+@cache
+def get_kob_zho_hant_simplify_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get KOB 繁体中文 simplification proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant_simplify.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
 @pytest.fixture
 def kob_eng_fuse() -> Series:
     """KOB English fused subtitles."""
@@ -410,6 +434,15 @@ def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
     """KOB 繁体中文 simplified fused/cleaned/validated/proofread/flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+    )
+
+
+@pytest.fixture
+def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread() -> Series:
+    """KOB 繁体中文 simplified/proofread fused/cleaned subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
 
 
