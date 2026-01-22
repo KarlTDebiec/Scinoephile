@@ -42,6 +42,7 @@ __all__ = [
     "get_mnt_zho_hans_proofreading_test_cases",
     "get_mnt_zho_hant_ocr_fusion_test_cases",
     "get_mnt_zho_hant_proofreading_test_cases",
+    "get_mnt_zho_hant_simplify_proofreading_test_cases",
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
     "mnt_eng_fuse_clean_validate",
@@ -62,6 +63,7 @@ __all__ = [
     "mnt_zho_hant_fuse_clean_validate_proofread",
     "mnt_zho_hant_fuse_clean_validate_proofread_flatten",
     "mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
+    "mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
     "mnt_zho_hant_image",
     "mnt_zho_hant_image_path",
 ]
@@ -227,6 +229,25 @@ def get_mnt_zho_hant_proofreading_test_cases(
     )
 
 
+@cache
+def get_mnt_zho_hant_simplify_proofreading_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get MNT 繁体中文 simplification proofreading test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant_simplify.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
 @pytest.fixture
 def mnt_eng_fuse() -> Series:
     """MNT English fused subtitles."""
@@ -350,6 +371,15 @@ def mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
     """MNT 繁体中文 fused/cleaned/validated/proofread/flattened/simplified subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+    )
+
+
+@pytest.fixture
+def mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread() -> Series:
+    """MNT 繁体中文 simplified/proofread fused/cleaned subtitles."""
+    return Series.load(
+        output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
 
 

@@ -28,6 +28,7 @@ from scinoephile.lang.zho import (
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.lang.zho.proofreading import (
+    ZhoHansProofreadingPrompt,
     ZhoHantProofreadingPrompt,
     get_zho_proofread,
     get_zho_proofreader,
@@ -433,8 +434,28 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     simplify_path = (
         output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
     )
-    if not simplify_path.exists() or overwrite_srt:
+    if simplify_path.exists() and not overwrite_srt:
+        simplify = Series.load(simplify_path)
+    else:
         simplify = get_zho_converted(flatten, OpenCCConfig.t2s)
         simplify.save(simplify_path, exist_ok=True)
+
+    # Simplify proofread
+    simplify_proofread_path = (
+        output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+    )
+    if not simplify_proofread_path.exists() or overwrite_srt:
+        simplify_proofreader = get_zho_proofreader(
+            prompt_cls=ZhoHansProofreadingPrompt,
+            test_case_path=title_root
+            / "lang"
+            / "zho"
+            / "proofreading"
+            / "zho-Hant_simplify.json",
+            auto_verify=True,
+        )
+        simplify_proofread = get_zho_proofread(simplify, simplify_proofreader)
+        simplify_proofread.save(simplify_proofread_path, exist_ok=True)
 
     return flatten

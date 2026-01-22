@@ -32,18 +32,11 @@ set_logging_verbosity(2)
 
 actions = {
     "繁體中文 (OCR)",
-    "English (OCR)",
-    "Bilingual 繁體中文 and English",
-    "繁體粵文 (SRT)",
-    "简体粤文 (SRT)",
-    "English (SRT)",
-    "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
 }
 
 
 if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
 if "English (OCR)" in actions:
     proofreader_kw = dict(
         test_case_path=title_root / "lang" / "eng" / "proofreading" / "eng_ocr.json",
@@ -58,7 +51,7 @@ if "Bilingual 繁體中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
         overwrite=True,
     )
@@ -108,7 +101,8 @@ if "Bilingual 简体粤文 and English" in actions:
     )
 if "简体粤文 (Transcription)" in actions:
     zho_hans = Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+        output_dir
+        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
