@@ -50,13 +50,18 @@ class AudioSeries(Series):
     """Pattern for subtitle audio files."""
 
     @override
-    def __init__(self, audio: AudioSegment | None = None):
+    def __init__(
+        self,
+        audio: AudioSegment | None = None,
+        events: list[AudioSubtitle] | None = None,
+    ):
         """Initialize.
 
         Arguments:
             audio: Series audio
+            events: individual subtitle events
         """
-        super().__init__()
+        super().__init__(events=events)
 
         self._audio = audio
         self._blocks: list[AudioBlock] | None = None
@@ -295,10 +300,10 @@ class AudioSeries(Series):
         Returns:
             Loaded series with audio clips
         """
-        series = cls()
+        series = cls(audio=full_audio)
         series.format = "wav"
-        series.audio = full_audio
 
+        events = []
         for i, event in enumerate(text_series, 1):
             original_start = event.start
             original_end = event.end
@@ -325,7 +330,7 @@ class AudioSeries(Series):
 
             debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
             clip = full_audio[start_time:end_time]
-            series.events.append(
+            events.append(
                 cls.event_class(
                     start=original_start,
                     end=original_end,
@@ -334,6 +339,7 @@ class AudioSeries(Series):
                     series=series,
                 )
             )
+        series.events = events
 
         return series
 

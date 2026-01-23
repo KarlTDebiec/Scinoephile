@@ -46,9 +46,7 @@ def get_series_from_segments(
         )
         events.append(event)
 
-    series = AudioSeries()
-    series.events = events
-    return series
+    return AudioSeries(events=events)
 
 
 def get_series_with_sub_split_at_idx(
@@ -65,11 +63,10 @@ def get_series_with_sub_split_at_idx(
     """
     sub = series.events[sub_idx]
     one, two = get_sub_split_at_idx(sub, char_idx)
-    new_series = AudioSeries(audio=series.audio)
-    new_series.events = (
-        series.events[:sub_idx] + [one, two] + series.events[sub_idx + 1 :]
+    return AudioSeries(
+        audio=series.audio,
+        events=series.events[:sub_idx] + [one, two] + series.events[sub_idx + 1 :],
     )
-    return new_series
 
 
 def get_sub_merged(

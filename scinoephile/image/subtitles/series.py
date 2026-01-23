@@ -40,9 +40,13 @@ class ImageSeries(Series):
     """Individual subtitle events."""
 
     @override
-    def __init__(self):
-        """Initialize."""
-        super().__init__()
+    def __init__(self, events: list[ImageSubtitle] | None = None):
+        """Initialize.
+
+        Arguments:
+            events: individual subtitle events
+        """
+        super().__init__(events=events)
 
         self._fill_color = None
         self._outline_color = None
@@ -231,15 +235,15 @@ class ImageSeries(Series):
         Returns:
             loaded series
         """
-        series = cls()
-        series.format = "png"
-
         html_path = dir_path / "index.html"
         if not html_path.exists():
             raise ScinoephileError(f"Expected {html_path} to exist.")
         html_text = html_path.read_text(encoding=encoding, errors=errors)
         html_events = cls._parse_html_events(html_text, dir_path)
 
+        series = cls()
+        series.format = "png"
+        events = []
         for html_event in html_events:
             with Image.open(html_event["path"]) as opened:
                 img = opened.copy()
@@ -247,7 +251,7 @@ class ImageSeries(Series):
             if converted:
                 img.save(html_event["path"])
                 info(f"Converted {html_event['path']} to LA and resaved")
-            series.events.append(
+            events.append(
                 cls.event_class(
                     start=html_event["start"],
                     end=html_event["end"],
@@ -256,6 +260,8 @@ class ImageSeries(Series):
                     series=series,
                 )
             )
+        series.events = events
+        return series
 
         return series
 
@@ -370,18 +376,19 @@ class ImageSeries(Series):
                 f"{len(starts)} starts, {len(ends)} ends, {len(images)} images."
             )
 
-        series = cls()
-        series.format = "sup"
+        events = []
         for start, end, image in zip(starts, ends, images):
             img = Image.fromarray(image, "RGBA")
             img, _ = convert_rgba_img_to_la(img)
-            series.events.append(
+            events.append(
                 cls.event_class(
                     start=int(round(start * 1000)),
                     end=int(round(end * 1000)),
                     img=img,
                 )
             )
+        series = cls(events=events)
+        series.format = "sup"
         return series
 
     def _init_fill_and_outline_colors(self):
