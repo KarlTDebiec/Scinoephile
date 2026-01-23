@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles import ImageBlock, ImageSeries
 
 
 @pytest.mark.parametrize(
@@ -111,3 +111,49 @@ def test_save_html(
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == expected_event_count
+
+
+@pytest.mark.parametrize(
+    "input_path_fixture",
+    [
+        "mlamd_eng_sup_path",
+        "mlamd_zho_hans_sup_path",
+    ],
+)
+def test_image_blocks(input_path_fixture: str, request: pytest.FixtureRequest):
+    """Test ImageBlock functionality.
+
+    Arguments:
+        input_path_fixture: sup input path fixture name
+        request: pytest fixture request
+    """
+    input_path = request.getfixturevalue(input_path_fixture)
+    series = ImageSeries.load(input_path)
+
+    # Test blocks property returns ImageBlock instances
+    blocks = series.blocks
+    assert len(blocks) > 0
+    assert all(isinstance(block, ImageBlock) for block in blocks)
+
+    # Test that blocks contain the correct subtitles
+    for block in blocks:
+        assert len(block) > 0
+        assert block.start_idx < block.end_idx
+        assert block.end_idx <= len(series)
+
+        # Test block iteration
+        block_events = list(block)
+        assert len(block_events) == len(block)
+        assert all(hasattr(event, "img") for event in block_events)
+
+        # Test block indexing
+        first_event = block[0]
+        assert first_event == series[block.start_idx]
+        if len(block) > 1:
+            last_event = block[-1]
+            assert last_event == series[block.end_idx - 1]
+
+        # Test block time properties
+        assert block.start == series[block.start_idx].start
+        assert block.end == series[block.end_idx - 1].end
+        assert block.start < block.end
