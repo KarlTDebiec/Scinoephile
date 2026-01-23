@@ -28,10 +28,16 @@ class Series(SSAFile):
     """Individual subtitle events."""
 
     @override
-    def __init__(self):
-        """Initialize."""
+    def __init__(self, events: list[Subtitle] | None = None):
+        """Initialize.
+
+        Arguments:
+            events: individual subtitle events
+        """
         super().__init__()
 
+        if events is not None:
+            self.events = events
         self._blocks: list[Block] | None = None
 
     def __eq__(self, other: object) -> bool:

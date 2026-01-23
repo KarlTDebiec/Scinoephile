@@ -35,13 +35,11 @@ def get_series_with_subs_merged(series: Series, idx: int) -> Series:
             f"{len(series.events)} subtitles."
         )
 
-    merged_series = type(series)()
-    merged_series.events = (
-        series.events[:idx]
+    return type(series)(
+        events=series.events[:idx]
         + [get_sub_merged([series.events[idx], series.events[idx + 1]])]
         + series.events[idx + 2 :]
     )
-    return merged_series
 
 
 def get_sub_merged(subs: list[Subtitle], *, text: str | None = None) -> Subtitle:
@@ -70,8 +68,8 @@ def get_concatenated_series(blocks: list[Series]) -> Series:
     """
     if len(blocks) == 0:
         raise ScinoephileError("No blocks to concatenate")
-    concatenated = type(blocks[0])()
+    all_events = []
     for block in blocks:
-        concatenated.events.extend(block.events)
-    concatenated.events.sort(key=lambda x: x.start)
-    return concatenated
+        all_events.extend(block.events)
+    all_events.sort(key=lambda x: x.start)
+    return type(blocks[0])(events=all_events)

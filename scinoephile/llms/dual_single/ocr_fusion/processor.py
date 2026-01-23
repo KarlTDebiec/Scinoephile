@@ -104,6 +104,4 @@ class OcrFusionProcessor(Processor):
             )
 
         # Organize and return
-        output_series = Series()
-        output_series.events = output_subtitles
-        return output_series
+        return Series(events=output_subtitles)

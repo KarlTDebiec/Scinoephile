@@ -90,24 +90,28 @@ class ValidationManager:
         Returns:
             validated image series
         """
-        output_series = ImageSeries()
         if stop_at_idx is None:
             stop_at_idx = len(series) - 1
         messages = []
+        events = []
         for sub_idx, sub in enumerate(series.events):
             if sub_idx > stop_at_idx:
                 break
             messages.extend(self._validate_sub(sub, sub_idx, interactive))
             annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
-            output_series.events.append(
+            events.append(
                 ImageSubtitle(
                     img=annotated_img,
                     start=sub.start,
                     end=sub.end,
                     text=sub.text,
-                    series=output_series,
+                    series=None,  # Will be set when added to series
                 )
             )
+        output_series = ImageSeries(events=events)
+        # Update series references in events
+        for event in output_series.events:
+            event.series = output_series
         for message in messages:
             warning(message)
         return output_series
