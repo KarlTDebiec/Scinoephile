@@ -263,8 +263,6 @@ class ImageSeries(Series):
         series.events = events
         return series
 
-        return series
-
     @staticmethod
     def _format_html_time(time_ms: int) -> str:
         """Format time in milliseconds for HTML image subtitles.
