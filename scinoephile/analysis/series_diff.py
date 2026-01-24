@@ -325,7 +325,6 @@ class SeriesDiff:
           ]
         """
         # Only consider the exact 2-line -> 4-line situation at the tail.
-        # Only consider the exact 2-line -> 4-line situation at the tail.
         if not (
             cursor.j + 3 < len(cursor.two_blk)
             and cursor.one_has_next
