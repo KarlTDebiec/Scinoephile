@@ -53,17 +53,17 @@ jobs:
           tool: ruff
           tool_infile: .github/outputs/ruff.json
 
-      - name: Run pyright
+      - name: Run ty
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run pyright . --outputjson | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.json || echo
+          uv run ty check --output-format json . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
 
-      - name: Annotate with pyright results
+      - name: Annotate with ty results
         uses: KarlTDebiec/LinterPrinter@main
         with:
-          tool: pyright
-          tool_infile: .github/outputs/pyright.json
+          tool: ty
+          tool_infile: .github/outputs/ty.json
 
       - name: Run pytest
         run: |
