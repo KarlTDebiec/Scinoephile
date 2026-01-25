@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ty check --output-format json . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
+          uv run ty check --output-format gitlab . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
 
       - name: Annotate with ty results
         uses: KarlTDebiec/LinterPrinter@main
