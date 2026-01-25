@@ -797,9 +797,9 @@ sdist = { url = "https://files.pythonhosted.org/packages/35/8e/d36f8880bcf18ec02
 
 [[package]]
 name = "opencc"
-version = "1.1.9"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e6/a2/0e86df1284143c389a3a6e33b159394da34b500a62b2b9c918949a2e6438/opencc-1.1.9.tar.gz", hash = "sha256:8ad72283732951303390fae33a1ceda98ac9b03368a8f2912edc934d74077e4a", size = 3409025, upload-time = "2024-08-08T04:55:32.483Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/92/92f4519221b833801be1d037cde747f04c4e29e33bd7574b36b898d9e2bf/opencc-1.2.0.tar.gz", hash = "sha256:2bb913c7ed388466b26d38af4c8c4bb419ddb503235d070f0ee1b24998ef8bca", size = 3420630, upload-time = "2026-01-22T09:23:12.382Z" }
 
 [[package]]
 name = "packaging"
