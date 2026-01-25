@@ -45,25 +45,25 @@ jobs:
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ruff check | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.txt || echo
+          uv run ruff check --output-format json | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.json || echo
 
       - name: Annotate with ruff results
         uses: KarlTDebiec/LinterPrinter@main
         with:
           tool: ruff
-          tool_infile: .github/outputs/ruff.txt
+          tool_infile: .github/outputs/ruff.json
 
-      - name: Run pyright
+      - name: Run ty
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run pyright . | tee ${GITHUB_WORKSPACE}/.github/outputs/pyright.txt || echo
+          uv run ty check --output-format gitlab . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
 
-      - name: Annotate with pyright results
+      - name: Annotate with ty results
         uses: KarlTDebiec/LinterPrinter@main
         with:
-          tool: pyright
-          tool_infile: .github/outputs/pyright.txt
+          tool: ty
+          tool_infile: .github/outputs/ty.json
 
       - name: Run pytest
         run: |
