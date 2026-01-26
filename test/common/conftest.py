@@ -9,17 +9,8 @@ from pathlib import Path
 
 # Add the parent package directory to sys.path to allow importing 'common'
 # This assumes the structure: <package>/{common/, test/common/}
-# When copying to other projects, ensure test/common/ is at the same level
-# relative to the common module as it is here
-test_dir = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(test_dir))
-
-# Try to import from the expected location
-try:
-    import common  # noqa: F401
-except ModuleNotFoundError:
-    # If that fails, try adding the parent of common to the path
-    # This handles cases where common is in a subdirectory like project/common
-    common_parent = test_dir / "scinoephile"
-    if common_parent.exists():
-        sys.path.insert(0, str(common_parent))
+# When copying to other projects, ensure the parent directory containing
+# 'common' is added to sys.path
+project_root = Path(__file__).parent.parent.parent
+package_dir = project_root / "scinoephile"
+sys.path.insert(0, str(package_dir))
