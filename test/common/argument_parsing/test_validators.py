@@ -17,6 +17,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
+from scinoephile.common.exception import DirectoryNotFoundError
 
 
 def test_float_arg():
@@ -81,7 +82,7 @@ def test_input_dir_arg(tmp_path: Path):
     assert result.is_dir()
 
     # DirectoryNotFoundError is not caught by get_validator
-    with pytest.raises(Exception):  # Could be DirectoryNotFoundError or similar
+    with pytest.raises(DirectoryNotFoundError):
         validator(str(tmp_path / "nonexistent"))
 
 
