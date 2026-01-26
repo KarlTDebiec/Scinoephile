@@ -20,7 +20,7 @@ def test_run_command_success():
 
 def test_run_command_with_stderr():
     """Test running a command that writes to stderr."""
-    # Use python to write to stderr
+    # Use Python to write to stderr.
     exitcode, stdout, stderr = run_command(
         "python3 -c \"import sys; sys.stderr.write('error message')\"",
         acceptable_exitcodes=[0],
@@ -45,13 +45,13 @@ def test_run_command_failure_custom_acceptable():
 
 def test_run_command_timeout():
     """Test command timeout behavior."""
-    # Command that sleeps longer than timeout
-    # The command will be killed and return a negative exit code
+    # Command that sleeps longer than timeout. The command will be killed and
+    # return a negative exit code.
     exitcode, stdout, stderr = run_command(
         "sleep 10", timeout=1, acceptable_exitcodes=[-9, -15]
     )
 
-    # Command should be killed, exitcode is negative (signal)
+    # Command should be killed, exitcode is negative (signal).
     assert exitcode in [-9, -15]  # SIGKILL or SIGTERM
 
 
