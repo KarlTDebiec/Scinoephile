@@ -9,6 +9,7 @@
   2. `uv run ruff check --fix`
 * Run `ruff format` only on Python files (do not run it on JSON or other data files).
 * Testing: run pytest from `test` directory, e.g. `cd test && uv run pytest`
+* Test files do **not** need `__init__.py` files. Pytest can discover tests without them.
 
 ## Code Style
 

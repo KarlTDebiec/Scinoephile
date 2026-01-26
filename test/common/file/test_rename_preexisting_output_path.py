@@ -1,75 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for file utilities."""
+"""Tests for rename_preexisting_output_path function."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.file import (
-    get_temp_directory_path,
-    get_temp_file_path,
-    rename_preexisting_output_path,
-)
-
-
-def test_get_temp_directory_path():
-    """Test temporary directory creation and cleanup."""
-    temp_dir = None
-    with get_temp_directory_path() as temp_directory_path:
-        temp_dir = temp_directory_path
-        assert temp_directory_path.exists()
-        assert temp_directory_path.is_dir()
-        assert temp_directory_path.is_absolute()
-
-        # Create a file inside to verify cleanup
-        test_file = temp_directory_path / "test.txt"
-        test_file.write_text("test content")
-        assert test_file.exists()
-
-    # After context manager exits, directory should be cleaned up
-    assert not temp_dir.exists()
-
-
-def test_get_temp_file_path_no_suffix():
-    """Test temporary file path without suffix."""
-    temp_file = None
-    with get_temp_file_path() as temp_file_path:
-        temp_file = temp_file_path
-        # File path is provided but file doesn't exist initially
-        assert not temp_file_path.exists()
-        assert temp_file_path.is_absolute()
-
-        # Write to the file
-        temp_file_path.write_text("test content")
-        assert temp_file_path.exists()
-
-    # After context manager exits, file should be cleaned up
-    assert not temp_file.exists()
-
-
-def test_get_temp_file_path_with_suffix():
-    """Test temporary file path with suffix."""
-    with get_temp_file_path(suffix=".txt") as temp_file_path:
-        assert temp_file_path.suffix == ".txt"
-        assert not temp_file_path.exists()
-        assert temp_file_path.is_absolute()
-
-
-def test_get_temp_file_path_cleanup_on_exception():
-    """Test temporary file cleanup even when exception occurs."""
-    temp_file = None
-    try:
-        with get_temp_file_path() as temp_file_path:
-            temp_file = temp_file_path
-            temp_file_path.write_text("test content")
-            assert temp_file_path.exists()
-            raise ValueError("Test exception")
-    except ValueError:
-        pass
-
-    # File should still be cleaned up
-    assert not temp_file.exists()
+from scinoephile.common.file import rename_preexisting_output_path
 
 
 def test_rename_preexisting_output_path_no_existing_file(tmp_path: Path):
