@@ -57,8 +57,8 @@ def test_name_with_cli_suffix():
 
 
 def test_name_without_cli_suffix():
-    """Test name() with class name not ending in 'Cli'."""
-    # Name still strips 'Cli' suffix (case-insensitive)
+    """Test name() with class name ending in 'Cli'."""
+    # AnotherTestCli ends with 'Cli', so it gets stripped
     assert AnotherTestCli.name() == "anothertest"
 
 
