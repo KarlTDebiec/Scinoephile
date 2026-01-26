@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import DEBUG, ERROR, INFO, WARNING, getLogger
 
-from scinoephile.common.logs import set_logging_verbosity
+from common.logs import set_logging_verbosity
 
 
 def test_set_logging_verbosity_error():

@@ -7,9 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
-from scinoephile.common.exception import NotAFileError
-from scinoephile.common.validation import val_input_path
+from common.exception import NotAFileError
+from common.validation import val_input_path
 
 
 def test_val_input_path_valid(tmp_path: Path):
@@ -140,7 +139,7 @@ def test_val_input_path_expands_user(tmp_path: Path, monkeypatch: pytest.MonkeyP
             return str(test_file)
         return path
 
-    monkeypatch.setattr("scinoephile.common.validation.expanduser", mock_expanduser)
+    monkeypatch.setattr("common.validation.expanduser", mock_expanduser)
 
     result = val_input_path("~/test.txt")
     assert result.exists()

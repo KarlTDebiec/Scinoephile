@@ -5,8 +5,7 @@
 from __future__ import annotations
 
 import pytest
-
-from scinoephile.common.exception import (
+from common.exception import (
     ArgumentConflictError,
     DirectoryExistsError,
     DirectoryNotFoundError,

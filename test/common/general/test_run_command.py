@@ -5,8 +5,7 @@
 from __future__ import annotations
 
 import pytest
-
-from scinoephile.common.general import run_command
+from common.general import run_command
 
 
 def test_run_command_success():

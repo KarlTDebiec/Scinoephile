@@ -7,8 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
-from scinoephile.common.argument_parsing import (
+from common.argument_parsing import (
     float_arg,
     input_dir_arg,
     input_file_arg,
@@ -17,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exception import DirectoryNotFoundError
+from common.exception import DirectoryNotFoundError
 
 
 def test_float_arg():

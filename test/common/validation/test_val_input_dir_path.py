@@ -7,9 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
-from scinoephile.common.exception import DirectoryNotFoundError
-from scinoephile.common.validation import val_input_dir_path
+from common.exception import DirectoryNotFoundError
+from common.validation import val_input_dir_path
 
 
 def test_val_input_dir_path_valid(tmp_path: Path):
@@ -142,7 +141,7 @@ def test_val_input_dir_path_expands_user(
             return str(test_dir)
         return path
 
-    monkeypatch.setattr("scinoephile.common.validation.expanduser", mock_expanduser)
+    monkeypatch.setattr("common.validation.expanduser", mock_expanduser)
 
     result = val_input_dir_path("~/testdir")
     assert result.exists()

@@ -5,8 +5,7 @@
 from __future__ import annotations
 
 import pytest
-
-from scinoephile.common.validation import val_str
+from common.validation import val_str
 
 
 def test_val_str_valid():

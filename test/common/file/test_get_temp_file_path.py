@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.common.file import get_temp_file_path
+from common.file import get_temp_file_path
 
 
 def test_get_temp_file_path_no_suffix():

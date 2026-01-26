@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.common.file import get_temp_directory_path
+from common.file import get_temp_directory_path
 
 
 def test_get_temp_directory_path():

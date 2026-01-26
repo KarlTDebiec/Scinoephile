@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.common.file import rename_preexisting_output_path
+from common.file import rename_preexisting_output_path
 
 
 def test_rename_preexisting_output_path_no_existing_file(tmp_path: Path):

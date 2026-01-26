@@ -5,9 +5,8 @@
 from __future__ import annotations
 
 import pytest
-
-from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.common.validation import val_float
+from common.exception import ArgumentConflictError
+from common.validation import val_float
 
 
 def test_val_float_single_valid():
