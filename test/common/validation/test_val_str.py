@@ -34,9 +34,11 @@ def test_val_str_from_int():
 
 
 def test_val_str_invalid_type():
-    """Test validation with invalid type that cannot be cast to string."""
-    # Note: None can be cast to string as "None", so it will fail validation
-    # because "none" is not in the options
+    """Test validation with None value that gets cast to string.
+
+    Note: None is cast to string "None", which becomes "none" when lowercased.
+    This doesn't match any of the provided options, so ValueError is raised.
+    """
     with pytest.raises(ValueError, match="is not one of options"):
         val_str(None, ["option1", "option2"])
 
@@ -54,7 +56,11 @@ def test_val_str_single_option():
 
 
 def test_val_str_invalid_option_type():
-    """Test validation with option that can be cast to string."""
-    # Note: None can be cast to string as "None", so it becomes a valid option
+    """Test validation with None in options list.
+
+    Note: None is cast to string "None", which becomes "none" when lowercased.
+    The function performs case-insensitive matching, so "none", "None", and
+    "NONE" all match the "None" option.
+    """
     assert val_str("none", [None, "option2"]) == "None"
     assert val_str("NONE", [None, "option2"]) == "None"
