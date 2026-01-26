@@ -1,0 +1,60 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests for val_str function."""
+
+from __future__ import annotations
+
+import pytest
+
+from scinoephile.common.validation import val_str
+
+
+def test_val_str_valid():
+    """Test validation of valid string."""
+    assert val_str("option1", ["option1", "option2", "option3"]) == "option1"
+    assert val_str("option2", ["option1", "option2", "option3"]) == "option2"
+
+
+def test_val_str_case_insensitive():
+    """Test case-insensitive validation."""
+    assert val_str("OPTION1", ["option1", "option2"]) == "option1"
+    assert val_str("Option1", ["option1", "option2"]) == "option1"
+    assert val_str("option1", ["OPTION1", "OPTION2"]) == "OPTION1"
+
+
+def test_val_str_invalid_option():
+    """Test validation with invalid option."""
+    with pytest.raises(ValueError, match="is not one of options"):
+        val_str("invalid", ["option1", "option2"])
+
+
+def test_val_str_from_int():
+    """Test validation of string from int."""
+    assert val_str(1, ["1", "2", "3"]) == "1"
+
+
+def test_val_str_invalid_type():
+    """Test validation with invalid type that cannot be cast to string."""
+    # Note: None can be cast to string as "None", so it will fail validation
+    # because "none" is not in the options
+    with pytest.raises(ValueError, match="is not one of options"):
+        val_str(None, ["option1", "option2"])
+
+
+def test_val_str_empty_options():
+    """Test validation with empty options list."""
+    with pytest.raises(ValueError, match="is not one of options"):
+        val_str("any", [])
+
+
+def test_val_str_single_option():
+    """Test validation with single option."""
+    assert val_str("only", ["only"]) == "only"
+    assert val_str("ONLY", ["only"]) == "only"
+
+
+def test_val_str_invalid_option_type():
+    """Test validation with option that can be cast to string."""
+    # Note: None can be cast to string as "None", so it becomes a valid option
+    assert val_str("none", [None, "option2"]) == "None"
+    assert val_str("NONE", [None, "option2"]) == "None"
