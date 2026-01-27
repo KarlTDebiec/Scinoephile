@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from logging import info
 from pathlib import Path
 from typing import Any, Self, cast, override
@@ -39,6 +40,15 @@ class Series(SSAFile):
         if events is not None:
             self.events = events
         self._blocks: list[Block] | None = None
+
+    @override
+    def __iter__(self) -> Iterator[Subtitle]:
+        """Iterate over subtitle events.
+
+        Returns:
+            iterator over subtitle events
+        """
+        return iter(self.events)
 
     def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
@@ -152,7 +162,7 @@ class Series(SSAFile):
         sliced = type(self)()
         sliced.events = [
             self.event_class(series=sliced, **event.as_dict())
-            for event in self[start:end]
+            for event in self.events[start:end]
         ]
         return sliced
 
@@ -169,9 +179,9 @@ class Series(SSAFile):
             return ""
 
         if start is None:
-            start = self[0].start
+            start = self.events[0].start
         if duration is None:
-            duration = self[-1].end - self[0].start
+            duration = self.events[-1].end - self.events[0].start
 
         string = ""
         for i, event in enumerate(self, 1):

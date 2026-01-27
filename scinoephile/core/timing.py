@@ -51,10 +51,10 @@ def get_series_timewarped(
     _validate_idx(two_start_idx, source_two, "source two start")
     _validate_idx(two_end_idx, source_two, "source two end")
 
-    one_start_event = source_one[one_start_idx - 1]
-    one_end_event = source_one[one_end_idx - 1]
-    two_start_event = source_two[two_start_idx - 1]
-    two_end_event = source_two[two_end_idx - 1]
+    one_start_event = source_one.events[one_start_idx - 1]
+    one_end_event = source_one.events[one_end_idx - 1]
+    two_start_event = source_two.events[two_start_idx - 1]
+    two_end_event = source_two.events[two_end_idx - 1]
 
     two_duration = two_end_event.end - two_start_event.start
     if two_duration == 0:

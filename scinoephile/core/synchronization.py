@@ -61,13 +61,14 @@ def get_overlap_string(overlap: np.ndarray) -> str:
     Returns:
         String representation of overlap matrix
     """
+    max_items = 1_000_000
     matrix = np.array2string(
         overlap,
         precision=2,
         suppress_small=True,
-        max_line_width=np.inf,
-        threshold=np.inf,
-        edgeitems=np.inf,
+        max_line_width=max_items,
+        threshold=max_items,
+        edgeitems=max_items,
     )
     matrix = matrix.replace("0.  ", "____").replace("[", " ").replace("]", " ")
     columns = [f"{j:>5}" for j in range(1, overlap.shape[1] + 1)]
@@ -213,8 +214,8 @@ def get_synced_series_from_groups(
     synced = Series()
 
     for group in groups:
-        one_subs = [one[i] for i in group[0]]
-        two_subs = [two[i] for i in group[1]]
+        one_subs = [one.events[i] for i in group[0]]
+        two_subs = [two.events[i] for i in group[1]]
 
         # Zero to one mapping
         if len(one_subs) == 0 and len(two_subs) == 1:
