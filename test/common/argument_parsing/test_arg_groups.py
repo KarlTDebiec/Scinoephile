@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 
-import pytest
 from common.argument_parsing import (  # ty:ignore[unresolved-import]
     get_arg_groups_by_name,
     get_optional_args_group,
@@ -18,17 +17,9 @@ def test_get_optional_args_group():
     """Test retrieving the optional arguments group."""
     parser = ArgumentParser()
 
-    # In newer Python versions, the title may be "options" instead of
-    # "optional arguments". The function expects "optional arguments" so it may
-    # fail on newer versions. This test checks if the function can find the group
-    try:
-        optional_group = get_optional_args_group(parser)
-        assert optional_group is not None
-        assert optional_group.title in ["optional arguments", "options"]
-    except StopIteration:
-        # In Python 3.13+, the default group is "options", not "optional arguments"
-        # The function may not find it if it only looks for "optional arguments"
-        pytest.skip("get_optional_args_group requires 'optional arguments' group")
+    optional_group = get_optional_args_group(parser)
+    assert optional_group is not None
+    assert optional_group.title in ["optional arguments", "options"]
 
 
 def test_get_required_args_group_new():

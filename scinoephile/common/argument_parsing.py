@@ -25,7 +25,7 @@ from .validation import (
 
 
 def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
-    """Get the 'optional arguments' group from an argparser.
+    """Get the optional arguments group from an argparser.
 
     Arguments:
         parser: Argparser to get group from
@@ -33,7 +33,9 @@ def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
         Optional arguments group
     """
     action_groups = parser._action_groups  # noqa pylint: disable=protected-access
-    return next(ag for ag in action_groups if ag.title == "optional arguments")
+    return next(
+        ag for ag in action_groups if ag.title in ["optional arguments", "options"]
+    )
 
 
 def get_required_args_group(parser: ArgumentParser) -> _ArgumentGroup:
