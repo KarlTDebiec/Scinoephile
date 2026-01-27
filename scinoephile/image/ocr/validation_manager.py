@@ -360,7 +360,8 @@ class ValidationManager:
 
         cursor = GapCursor(sub=sub, sub_idx=sub_idx)
         while cursor.char_1_idx < len(sub.text_with_newline) - 1:
-            if cursor.prepare_gap() is None:
+            prepared = cursor.prepare_gap()
+            if prepared is None:
                 if cursor.bbox_1_idx >= len(sub.bboxes) and cursor.char_1:
                     messages.append(
                         f"{cursor.intro_msg} | ran out of bboxes at '{cursor.char_1}'"
@@ -372,11 +373,12 @@ class ValidationManager:
                         f"'{cursor.char_1}' and '{cursor.char_2}'"
                     )
                 break
+            bbox_1, bbox_2 = prepared
 
             # If char 1 and char 2 and bbox_1 are all together, obviously adjacent
             if len(cursor.gap_chars) == 0:
                 char_grp = f"{cursor.char_1}{cursor.char_2}"
-                dims = get_dims_tuple(cursor.bbox_1)
+                dims = get_dims_tuple(bbox_1)
                 ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
                 if dims in ok_dims:
                     debug(
@@ -388,7 +390,7 @@ class ValidationManager:
                     continue
 
             # get gap
-            cursor.gap = cursor.bbox_2.x1 - cursor.bbox_1.x2
+            cursor.gap = bbox_2.x1 - bbox_1.x2
             debug(
                 f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
                 f"{cursor.bbox_1_idx}|{cursor.bbox_2_idx}| -> |"
