@@ -5,16 +5,13 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import TYPE_CHECKING, Any, override
+from typing import Any, override
 
 import numpy as np
 from PIL import Image
 
 from scinoephile.core.subtitles import Subtitle
 from scinoephile.image.bbox import Bbox
-
-if TYPE_CHECKING:
-    from .series import ImageSeries
 
 __all__ = ["ImageSubtitle"]
 
@@ -26,14 +23,12 @@ class ImageSubtitle(Subtitle):
     def __init__(
         self,
         img: Image.Image,
-        series: ImageSeries | None = None,
         **kwargs: Any,
     ):
         """Initialize.
 
         Arguments:
             img: Image of subtitle
-            series: Series containing this subtitle
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
@@ -41,7 +36,6 @@ class ImageSubtitle(Subtitle):
         super().__init__(**super_kwargs)
 
         self.img = img
-        self.series = series
         self._arr: np.ndarray | None = None
         self._bboxes: list[Bbox] | None = None
         self._img_with_bboxes: Image.Image | None = None

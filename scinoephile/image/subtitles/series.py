@@ -279,7 +279,6 @@ class ImageSeries(Series):
                     end=html_event["end"],
                     img=img,
                     text=html_event["text"],
-                    series=series,
                 )
             )
         series.events = events

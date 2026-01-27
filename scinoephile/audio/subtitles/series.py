@@ -152,8 +152,7 @@ class AudioSeries(Series):
         audio = self.audio[self.events[start].start : self.events[end - 1].end]
         sliced = type(self)(audio=audio)
         sliced.events = [
-            self.event_class(series=sliced, **event.as_dict())
-            for event in self.events[start:end]
+            self.event_class(**event.as_dict()) for event in self.events[start:end]
         ]
         return sliced
 
@@ -339,7 +338,6 @@ class AudioSeries(Series):
                     end=original_end,
                     audio=clip,
                     text=event.text,
-                    series=series,
                 )
             )
         series.events = events
