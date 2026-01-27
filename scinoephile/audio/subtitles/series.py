@@ -63,6 +63,9 @@ class AudioSeries(Series):
         if events is not None:
             self.events = events
         self._blocks: list[Self] | None = None
+        # Attributes for AudioSeries blocks created by _init_blocks
+        self.buffered_start: int | None = None
+        self.buffered_end: int | None = None
 
     @property
     def audio(self) -> AudioSegment:
@@ -81,7 +84,15 @@ class AudioSeries(Series):
     @property
     @override
     def blocks(self) -> list[Self]:
-        """List of blocks in the series."""
+        """List of blocks in the series.
+
+        For AudioSeries, each returned AudioSeries block includes:
+        - buffered_start: Start time of buffered audio (extends before subtitles)
+        - buffered_end: End time of buffered audio (extends after subtitles)
+        - audio: Buffered audio segment (includes audio beyond subtitle times)
+
+        The buffering provides context audio around subtitle boundaries.
+        """
         if self._blocks is None:
             self._init_blocks()
         assert self._blocks is not None
