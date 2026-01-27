@@ -36,7 +36,7 @@ class MonoBlockProcessor(Processor):
         # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
-        
+
         # Track indices for logging
         current_idx = 0
         for block_idx, block in enumerate(series.blocks):

@@ -49,7 +49,7 @@ class DualBlockProcessor(Processor):
         block_pairs = list(zip(source_one.blocks, source_two.blocks))
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
         stop_at_idx = stop_at_idx or len(block_pairs)
-        
+
         # Track indices for logging
         current_idx = 0
         for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
