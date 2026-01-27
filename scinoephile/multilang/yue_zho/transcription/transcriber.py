@@ -149,7 +149,9 @@ class YueTranscriber:
 
         # Merge segments into a series
         yuewen_block_series = get_series_from_segments(
-            converted_segments, offset=yuewen_block[0].start
+            converted_segments,
+            audio=yuewen_block.audio,
+            offset=yuewen_block[0].start,
         )
 
         # Sync segments with the corresponding 中文 subtitles

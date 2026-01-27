@@ -50,7 +50,6 @@ def get_img_with_bboxes(
     Returns:
         2x image with bounding boxes drawn
     """
-    resample = getattr(Image, "Resampling", Image).NEAREST
     if use_fill_mask:
         grayscale, alpha = get_grayscale_and_alpha_arrs(img)
         fill_color, _outline = get_fill_and_outline_colors(grayscale, alpha)
@@ -63,7 +62,7 @@ def get_img_with_bboxes(
 
     img_with_bboxes = base_img.resize(
         (img.width * 2, img.height * 2),
-        resample=resample,
+        resample=Image.Resampling.NEAREST,
     )
     draw = ImageDraw.Draw(img_with_bboxes)
 

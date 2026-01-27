@@ -77,7 +77,7 @@ class Block:
     @property
     def end(self) -> int:
         """End time of block."""
-        return self._series[self.end_idx - 1].end
+        return self._series.events[self.end_idx - 1].end
 
     @property
     def events(self) -> list[Subtitle]:
@@ -87,9 +87,9 @@ class Block:
     @property
     def start(self) -> int:
         """Start time of block."""
-        return self._series[self.start_idx].start
+        return self._series.events[self.start_idx].start
 
-    def to_series(self):
+    def to_series(self) -> Series:
         """Convert block to a Series.
 
         Returns:

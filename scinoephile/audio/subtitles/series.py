@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any, Self, cast, override
+from typing import Any, Self, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -50,24 +50,23 @@ class AudioSeries(Series):
     """Pattern for subtitle audio files."""
 
     @override
-    def __init__(
-        self,
-        audio: AudioSegment | None = None,
-        events: list[AudioSubtitle] | None = None,
-    ):
+    def __init__(self, audio: AudioSegment, events: list[AudioSubtitle] | None = None):
         """Initialize.
 
         Arguments:
             audio: Series audio
             events: individual subtitle events
         """
-        super().__init__(events=events)
-
+        if audio is None:
+            raise ValueError("AudioSeries requires audio")
+        super().__init__()
         self._audio = audio
+        if events is not None:
+            self.events = events
         self._blocks: list[AudioBlock] | None = None
 
     @property
-    def audio(self) -> AudioSegment | None:
+    def audio(self) -> AudioSegment:
         """Audio of series."""
         return self._audio
 
@@ -150,8 +149,12 @@ class AudioSeries(Series):
         Returns:
             new sliced series
         """
-        sliced = cast(Self, super().slice(start, end))
-        sliced.audio = self.audio[self[start].start : self[end - 1].end]
+        audio = self.audio[self.events[start].start : self.events[end - 1].end]
+        sliced = type(self)(audio=audio)
+        sliced.events = [
+            self.event_class(series=sliced, **event.as_dict())
+            for event in self.events[start:end]
+        ]
         return sliced
 
     @override

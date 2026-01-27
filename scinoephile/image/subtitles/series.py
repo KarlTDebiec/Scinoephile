@@ -47,10 +47,12 @@ class ImageSeries(Series):
         Arguments:
             events: individual subtitle events
         """
-        super().__init__(events=events)
-
+        super().__init__()
+        if events is not None:
+            self.events = events
         self._fill_color = None
         self._outline_color = None
+        self._blocks: list[ImageBlock] | None = None
 
     @property
     def fill_color(self) -> int:
