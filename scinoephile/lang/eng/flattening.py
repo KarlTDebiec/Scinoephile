@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable
 from copy import deepcopy
 from logging import info
 
@@ -16,7 +17,9 @@ __all__ = [
 ]
 
 
-def get_eng_flattened(series: Series, exclusions: list[int] = None) -> Series:
+def get_eng_flattened(
+    series: Series, exclusions: Iterable[int] | None = None
+) -> Series:
     """Get multi-line English series flattened to single lines.
 
     Arguments:
@@ -25,11 +28,12 @@ def get_eng_flattened(series: Series, exclusions: list[int] = None) -> Series:
     Returns:
         flattened Series
     """
-    if not exclusions:
-        exclusions = []
+    exclusion_set = set(exclusions or [])
+    if any(idx < 1 for idx in exclusion_set):
+        raise ScinoephileError("Exclusion indexes must be positive (1-based).")
     series = deepcopy(series)
     for i, event in enumerate(series, 1):
-        if i in exclusions:
+        if i in exclusion_set:
             info(f"Skipping flattening of subtitle {i}, with text:\n{event.text}")
             continue
         event.text = _get_eng_text_flattened(event.text.strip())
