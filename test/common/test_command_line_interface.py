@@ -11,7 +11,9 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
-from common.command_line_interface import CommandLineInterface
+from common.command_line_interface import (  # ty:ignore[unresolved-import]
+    CommandLineInterface,
+)
 
 
 class TestCli(CommandLineInterface):

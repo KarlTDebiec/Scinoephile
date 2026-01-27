@@ -7,7 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from common.argument_parsing import input_file_arg, int_arg
+from common.argument_parsing import (  # ty:ignore[unresolved-import]
+    input_file_arg,
+    int_arg,
+)
 
 
 def test_validators_in_argparse(tmp_path: Path):

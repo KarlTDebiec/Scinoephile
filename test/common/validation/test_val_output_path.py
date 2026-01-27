@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from common.validation import val_output_path
+from common.validation import val_output_path  # ty:ignore[unresolved-import]
 
 
 def test_val_output_path_valid(tmp_path: Path):

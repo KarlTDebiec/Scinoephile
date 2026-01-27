@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import pytest
-from common.exception import (
+from common.exception import (  # ty:ignore[unresolved-import]
     ArgumentConflictError,
     DirectoryExistsError,
     DirectoryNotFoundError,

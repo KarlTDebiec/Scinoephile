@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import pytest
-from common.validation import val_str
+from common.validation import val_str  # ty:ignore[unresolved-import]
 
 
 def test_val_str_valid():

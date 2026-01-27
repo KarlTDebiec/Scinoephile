@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from common.file import get_temp_directory_path
+from common.file import get_temp_directory_path  # ty:ignore[unresolved-import]
 
 
 def test_get_temp_directory_path():

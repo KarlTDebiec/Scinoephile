@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 import pytest
-from common.exception import ArgumentConflictError
-from common.validation import val_float
+from common.exception import ArgumentConflictError  # ty:ignore[unresolved-import]
+from common.validation import val_float  # ty:ignore[unresolved-import]
 
 
 def test_val_float_single_valid():

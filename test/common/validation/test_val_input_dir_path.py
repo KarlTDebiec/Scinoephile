@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from common.exception import DirectoryNotFoundError
-from common.validation import val_input_dir_path
+from common.exception import DirectoryNotFoundError  # ty:ignore[unresolved-import]
+from common.validation import val_input_dir_path  # ty:ignore[unresolved-import]
 
 
 def test_val_input_dir_path_valid(tmp_path: Path):

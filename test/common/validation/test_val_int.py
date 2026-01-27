@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 import pytest
-from common.exception import ArgumentConflictError
-from common.validation import val_int
+from common.exception import ArgumentConflictError  # ty:ignore[unresolved-import]
+from common.validation import val_int  # ty:ignore[unresolved-import]
 
 
 def test_val_int_single_valid():

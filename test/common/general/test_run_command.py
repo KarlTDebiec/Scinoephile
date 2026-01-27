@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import pytest
-from common.general import run_command
+from common.general import run_command  # ty:ignore[unresolved-import]
 
 
 def test_run_command_success():

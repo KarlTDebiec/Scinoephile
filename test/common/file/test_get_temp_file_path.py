@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from common.file import get_temp_file_path
+from common.file import get_temp_file_path  # ty:ignore[unresolved-import]
 
 
 def test_get_temp_file_path_no_suffix():
@@ -21,6 +21,7 @@ def test_get_temp_file_path_no_suffix():
         assert temp_file_path.exists()
 
     # After context manager exits, file should be cleaned up
+    assert temp_file is not None
     assert not temp_file.exists()
 
 
@@ -45,4 +46,5 @@ def test_get_temp_file_path_cleanup_on_exception():
         pass
 
     # File should still be cleaned up
+    assert temp_file is not None
     assert not temp_file.exists()

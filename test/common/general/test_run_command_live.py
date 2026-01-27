@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import pytest
-from common.general import run_command_live
+from common.general import run_command_live  # ty:ignore[unresolved-import]
 
 
 def test_run_command_live_success():

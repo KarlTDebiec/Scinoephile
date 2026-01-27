@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentTypeError
 
 import pytest
-from common.argument_parsing import get_validator
+from common.argument_parsing import get_validator  # ty:ignore[unresolved-import]
 
 
 def test_get_validator_basic():

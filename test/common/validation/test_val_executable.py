@@ -8,11 +8,11 @@ from pathlib import Path
 from platform import system
 
 import pytest
-from common.exception import (
+from common.exception import (  # ty:ignore[unresolved-import]
     ExecutableNotFoundError,
     UnsupportedPlatformError,
 )
-from common.validation import val_executable
+from common.validation import val_executable  # ty:ignore[unresolved-import]
 
 
 def test_val_executable_valid():

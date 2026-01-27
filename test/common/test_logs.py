@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import DEBUG, ERROR, INFO, WARNING, getLogger
 
-from common.logs import set_logging_verbosity
+from common.logs import set_logging_verbosity  # ty:ignore[unresolved-import]
 
 
 def test_set_logging_verbosity_error():
