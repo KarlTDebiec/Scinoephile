@@ -173,7 +173,7 @@ class AudioSeries(Series):
         block_indexes = Series.get_block_indexes_by_pause(self)
 
         # Calculate buffered times and create series for each block
-        audio_series_blocks = []
+        blocks = []
         for i, (start_idx, end_idx) in enumerate(block_indexes):
             block_start_time = self.events[start_idx].start
             block_end_time = self.events[end_idx - 1].end
@@ -202,16 +202,16 @@ class AudioSeries(Series):
             block_audio = self.audio[buffered_start:buffered_end]
 
             # Create AudioSeries block
-            block_series = self.slice(start_idx, end_idx)
+            block = self.slice(start_idx, end_idx)
             # Store buffered timing information as attributes
-            block_series.buffered_start = buffered_start
-            block_series.buffered_end = buffered_end
+            block.buffered_start = buffered_start
+            block.buffered_end = buffered_end
             # Override the audio with the buffered version
-            block_series.audio = block_audio
+            block.audio = block_audio
 
-            audio_series_blocks.append(block_series)
+            blocks.append(block)
 
-        self._blocks = audio_series_blocks
+        self._blocks = blocks
 
     def _save_wav(self, fp: Path, **kwargs: Any):
         """Save series to directory of wav files.
