@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for val_str function."""
+"""Tests of common.validation.val_str."""
 
 from __future__ import annotations
 
