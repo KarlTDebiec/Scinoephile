@@ -27,9 +27,8 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Block, Series
+from scinoephile.core.subtitles import Series
 
-from .block import AudioBlock
 from .subtitle import AudioSubtitle
 
 
@@ -63,7 +62,7 @@ class AudioSeries(Series):
         self._audio = audio
         if events is not None:
             self.events = events
-        self._blocks: list[AudioBlock] | None = None
+        self._blocks: list[Self] | None = None
 
     @property
     def audio(self) -> AudioSegment:
@@ -81,7 +80,7 @@ class AudioSeries(Series):
 
     @property
     @override
-    def blocks(self) -> list[AudioBlock]:
+    def blocks(self) -> list[Self]:
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
@@ -90,7 +89,7 @@ class AudioSeries(Series):
 
     @blocks.setter
     @override
-    def blocks(self, blocks: list[AudioBlock]):
+    def blocks(self, blocks: list[Self]):
         """Set blocks of the series.
 
         Arguments:
@@ -159,44 +158,49 @@ class AudioSeries(Series):
     @override
     def _init_blocks(self):
         """Initialize blocks."""
-        blocks = [
-            Block(self, start_idx, end_idx)
-            for start_idx, end_idx in Series.get_block_indexes_by_pause(self)
-        ]
-        audio_blocks = []
-        for i, block in enumerate(blocks):
+        # First get the basic block indexes
+        block_indexes = Series.get_block_indexes_by_pause(self)
+        
+        # Calculate buffered times and create series for each block
+        audio_series_blocks = []
+        for i, (start_idx, end_idx) in enumerate(block_indexes):
+            block_start_time = self.events[start_idx].start
+            block_end_time = self.events[end_idx - 1].end
+            
             # Buffer start
             if i == 0:
-                buffered_start = max(0, block.start - 1000)
+                buffered_start = max(0, block_start_time - 1000)
             else:
-                max_unbuffered_end = (blocks[i - 1].end + block.start) // 2
-                buffered_start = max(max_unbuffered_end, block.start - 1000)
-
+                prev_end = self.events[block_indexes[i - 1][1] - 1].end
+                max_unbuffered_end = (prev_end + block_start_time) // 2
+                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
+            
             # Buffer end
-            if i < len(blocks) - 1:
-                min_unbuffered_start = (block.end + blocks[i + 1].start) // 2
-                buffered_end = min(block.end + 1000, min_unbuffered_start)
+            if i < len(block_indexes) - 1:
+                next_start = self.events[block_indexes[i + 1][0]].start
+                min_unbuffered_start = (block_end_time + next_start) // 2
+                buffered_end = min(block_end_time + 1000, min_unbuffered_start)
             else:
-                buffered_end = min(len(self.audio), block.end + 1000)
-
+                buffered_end = min(len(self.audio), block_end_time + 1000)
+            
             # Slice audio
             debug(
-                f"Slicing audio for block {block.start}-{block.end} "
+                f"Slicing audio for block {block_start_time}-{block_end_time} "
                 f"({buffered_start} - {buffered_end})"
             )
-            audio = self.audio[buffered_start:buffered_end]
-
-            # Create Audio Block
-            audio_block = AudioBlock(
-                series=self,
-                start_idx=block.start_idx,
-                end_idx=block.end_idx,
-                buffered_start=buffered_start,
-                buffered_end=buffered_end,
-                audio=audio,
-            )
-            audio_blocks.append(audio_block)
-        self._blocks = audio_blocks
+            block_audio = self.audio[buffered_start:buffered_end]
+            
+            # Create AudioSeries block
+            block_series = self.slice(start_idx, end_idx)
+            # Store buffered timing information as attributes
+            block_series.buffered_start = buffered_start
+            block_series.buffered_end = buffered_end
+            # Override the audio with the buffered version
+            block_series.audio = block_audio
+            
+            audio_series_blocks.append(block_series)
+        
+        self._blocks = audio_series_blocks
 
     def _save_wav(self, fp: Path, **kwargs: Any):
         """Save series to directory of wav files.
@@ -219,9 +223,16 @@ class AudioSeries(Series):
         outfile_path = fp / f"{fp.stem}.wav"
         self.audio.export(outfile_path, format="wav")
         info(f"Saved full audio to {outfile_path}")
+        
+        # Calculate block indices and save block audio
+        current_idx = 0
         for block in self.blocks:
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
+            
             outfile_path = (
-                fp / f"{block.start_idx + 1:04d}-{block.end_idx:04d}_"
+                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
                 f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
             )
             block.audio.export(outfile_path, format="wav")

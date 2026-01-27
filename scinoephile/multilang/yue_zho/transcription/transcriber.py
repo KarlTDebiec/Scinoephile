@@ -8,7 +8,6 @@ import asyncio
 from pathlib import Path
 
 from scinoephile.audio.subtitles import (
-    AudioBlock,
     AudioSeries,
     get_series_from_segments,
 )
@@ -18,7 +17,7 @@ from scinoephile.audio.transcription import (
     get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core.subtitles import Block, Series, get_concatenated_series
+from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.testing import test_data_root
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer, TestCase
@@ -98,11 +97,8 @@ class YueTranscriber:
                 yuewen_block_series = await self.process_block(
                     block_idx, yuewen_block, zhongwen_block
                 )
-            print(
-                f"BLOCK {block_idx} "
-                f"({yuewen_block.start_idx} - {yuewen_block.end_idx}):"
-            )
-            print(f"中文:\n{zhongwen_block.to_series().to_simple_string()}")
+            print(f"BLOCK {block_idx}:")
+            print(f"中文:\n{zhongwen_block.to_simple_string()}")
             print(f"粤文:\n{yuewen_block_series.to_simple_string()}")
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
@@ -123,8 +119,8 @@ class YueTranscriber:
     async def process_block(
         self,
         idx: int,
-        yuewen_block: AudioBlock,
-        zhongwen_block: Block,
+        yuewen_block: AudioSeries,
+        zhongwen_block: Series,
     ) -> AudioSeries:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
@@ -155,9 +151,7 @@ class YueTranscriber:
         )
 
         # Sync segments with the corresponding 中文 subtitles
-        alignment = await self.aligner.align(
-            zhongwen_block.to_series(), yuewen_block_series
-        )
+        alignment = await self.aligner.align(zhongwen_block, yuewen_block_series)
         yuewen_block_series = alignment.yuewen
 
         self.aligner.update_all_test_cases(self.test_case_directory_path)

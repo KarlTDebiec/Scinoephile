@@ -4,12 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.image.subtitles.block import ImageBlock
 from scinoephile.image.subtitles.series import ImageSeries
 from scinoephile.image.subtitles.subtitle import ImageSubtitle
 
 __all__ = [
-    "ImageBlock",
     "ImageSeries",
     "ImageSubtitle",
 ]

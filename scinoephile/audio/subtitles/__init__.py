@@ -17,12 +17,10 @@ from scinoephile.audio.transcription import (
     get_segment_split_at_idx,
 )
 
-from .block import AudioBlock
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
 
 __all__ = [
-    "AudioBlock",
     "AudioSeries",
     "AudioSubtitle",
     "get_series_from_segments",
