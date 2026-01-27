@@ -6,9 +6,10 @@ from __future__ import annotations
 
 import asyncio
 from time import sleep
-from typing import Any, override
+from typing import Any, cast, override
 
 from openai import AsyncOpenAI, OpenAI, OpenAIError
+from openai.types.chat import ChatCompletionMessageParam
 
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import Answer, LLMProvider
@@ -52,20 +53,24 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
+            typed_messages = cast(list[ChatCompletionMessageParam], messages)
             if response_format:
                 completion = self.sync_client.beta.chat.completions.parse(
-                    messages=messages,
+                    messages=typed_messages,
                     response_format=response_format,
                     model=model,
                     **kwargs,
                 )
             else:
                 completion = self.sync_client.chat.completions.create(
-                    messages=messages,
+                    messages=typed_messages,
                     model=model,
                     **kwargs,
                 )
-            return completion.choices[0].message.content
+            content = completion.choices[0].message.content
+            if content is None:
+                raise ScinoephileError("OpenAI API returned empty message content.")
+            return content
         except OpenAIError as exc:
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
@@ -99,20 +104,24 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
+            typed_messages = cast(list[ChatCompletionMessageParam], messages)
             if response_format:
                 completion = await self.async_client.beta.chat.completions.parse(
-                    messages=messages,
+                    messages=typed_messages,
                     response_format=response_format,
                     model=model,
                     **kwargs,
                 )
             else:
                 completion = await self.async_client.chat.completions.create(
-                    messages=messages,
+                    messages=typed_messages,
                     model=model,
                     **kwargs,
                 )
-            return completion.choices[0].message.content
+            content = completion.choices[0].message.content
+            if content is None:
+                raise ScinoephileError("OpenAI API returned empty message content.")
+            return content
         except OpenAIError as exc:
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
