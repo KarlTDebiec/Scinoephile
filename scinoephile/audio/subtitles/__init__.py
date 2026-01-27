@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pydub import AudioSegment
+
 from scinoephile.audio.transcription import (
     TranscribedSegment,
     get_segment_merged,
@@ -26,12 +28,13 @@ __all__ = [
 
 
 def get_series_from_segments(
-    segments: list[TranscribedSegment], offset: int = 0
+    segments: list[TranscribedSegment], audio: AudioSegment, offset: int = 0
 ) -> AudioSeries:
     """Compile transcribed segments to a subtitle series.
 
     Arguments:
         segments: Transcribed segments to compile
+        audio: Series audio
         offset: Time offset to apply
     Returns:
         Compiled subtitle series
@@ -46,7 +49,7 @@ def get_series_from_segments(
         )
         events.append(event)
 
-    return AudioSeries(events=events)
+    return AudioSeries(audio=audio, events=events)
 
 
 def get_series_with_sub_split_at_idx(
