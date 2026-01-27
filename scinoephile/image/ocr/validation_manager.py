@@ -105,13 +105,9 @@ class ValidationManager:
                     start=sub.start,
                     end=sub.end,
                     text=sub.text,
-                    series=None,  # Will be set when added to series
                 )
             )
         output_series = ImageSeries(events=events)
-        # Update series references in events
-        for event in output_series.events:
-            event.series = output_series
         for message in messages:
             warning(message)
         return output_series

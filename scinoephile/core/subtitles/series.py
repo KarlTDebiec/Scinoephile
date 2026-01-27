@@ -161,8 +161,7 @@ class Series(SSAFile):
         """
         sliced = type(self)()
         sliced.events = [
-            self.event_class(series=sliced, **event.as_dict())
-            for event in self.events[start:end]
+            self.event_class(**event.as_dict()) for event in self.events[start:end]
         ]
         return sliced
 
@@ -217,9 +216,7 @@ class Series(SSAFile):
             Self,
             super().from_string(string, format_=format_, fps=fps, **kwargs),
         )
-        series.events = [
-            cls.event_class(series=series, **ssaevent.as_dict()) for ssaevent in series
-        ]
+        series.events = [cls.event_class(**ssaevent.as_dict()) for ssaevent in series]
 
         return series
 
@@ -254,8 +251,7 @@ class Series(SSAFile):
                 cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
             )
             series.events = [
-                cls.event_class(series=series, **ssaevent.as_dict())
-                for ssaevent in series
+                cls.event_class(**ssaevent.as_dict()) for ssaevent in series
             ]
 
         info(f"Loaded series from {validated_path}")
