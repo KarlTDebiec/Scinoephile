@@ -47,8 +47,9 @@ def get_required_args_group(parser: ArgumentParser) -> _ArgumentGroup:
         Required arguments group
     """
     action_groups = parser._action_groups  # noqa pylint: disable=protected-access
-    if any((required := ag).title == "required arguments" for ag in action_groups):
-        return required
+    for group in action_groups:
+        if group.title == "required arguments":
+            return group
 
     # Move "optional arguments" group below "required arguments" group
     optional = action_groups.pop()
@@ -137,7 +138,7 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
     return wrapped
 
 
-def float_arg(**kwargs: Any) -> Callable[[Any], float]:
+def float_arg(**kwargs: Any) -> Callable[[Any], float | list[float]]:
     """Validate a float argument.
 
     Arguments:
@@ -148,7 +149,7 @@ def float_arg(**kwargs: Any) -> Callable[[Any], float]:
     return get_validator(val_float, **kwargs)
 
 
-def input_dir_arg(**kwargs: Any) -> Callable[[Any], Path]:
+def input_dir_arg(**kwargs: Any) -> Callable[[Any], Path | list[Path]]:
     """Validate an input directory path argument.
 
     Arguments:
@@ -159,7 +160,7 @@ def input_dir_arg(**kwargs: Any) -> Callable[[Any], Path]:
     return get_validator(val_input_dir_path, **kwargs)
 
 
-def input_file_arg(**kwargs: Any) -> Callable[[Any], Path]:
+def input_file_arg(**kwargs: Any) -> Callable[[Any], Path | list[Path]]:
     """Validate an input file path argument.
 
     Arguments:
@@ -170,7 +171,7 @@ def input_file_arg(**kwargs: Any) -> Callable[[Any], Path]:
     return get_validator(val_input_path, **kwargs)
 
 
-def int_arg(**kwargs: Any) -> Callable[[Any], int]:
+def int_arg(**kwargs: Any) -> Callable[[Any], int | list[int]]:
     """Validate an int argument.
 
     Arguments:
@@ -181,7 +182,7 @@ def int_arg(**kwargs: Any) -> Callable[[Any], int]:
     return get_validator(val_int, **kwargs)
 
 
-def output_dir_arg(**kwargs: Any) -> Callable[[Any], Path]:
+def output_dir_arg(**kwargs: Any) -> Callable[[Any], Path | list[Path]]:
     """Validate an output directory path argument.
 
     Arguments:
@@ -192,7 +193,7 @@ def output_dir_arg(**kwargs: Any) -> Callable[[Any], Path]:
     return get_validator(val_output_dir_path, **kwargs)
 
 
-def output_file_arg(**kwargs: Any) -> Callable[[Any], Path]:
+def output_file_arg(**kwargs: Any) -> Callable[[Any], Path | list[Path]]:
     """Validate an output file path argument.
 
     Arguments:
