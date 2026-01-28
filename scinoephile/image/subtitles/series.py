@@ -25,7 +25,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
-from .block import ImageBlock
 from .subtitle import ImageSubtitle
 from .sup import read_sup_series
 
@@ -52,7 +51,7 @@ class ImageSeries(Series):
             self.events = events
         self._fill_color = None
         self._outline_color = None
-        self._blocks: list[ImageBlock] | None = None
+        self._blocks: list[Self] | None = None
 
     @property
     def fill_color(self) -> int:
@@ -74,7 +73,7 @@ class ImageSeries(Series):
 
     @property
     @override
-    def blocks(self) -> list[ImageBlock]:
+    def blocks(self) -> list[Self]:
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
@@ -83,7 +82,7 @@ class ImageSeries(Series):
 
     @blocks.setter
     @override
-    def blocks(self, blocks: list[ImageBlock]):
+    def blocks(self, blocks: list[Self]):
         """Set blocks of the series.
 
         Arguments:
@@ -414,7 +413,7 @@ class ImageSeries(Series):
     def _init_blocks(self):
         """Initialize blocks."""
         self._blocks = [
-            ImageBlock(self, start_idx, end_idx)
+            self.slice(start_idx, end_idx)
             for start_idx, end_idx in Series.get_block_indexes_by_pause(self)
         ]
 

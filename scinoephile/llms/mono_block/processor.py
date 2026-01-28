@@ -36,6 +36,9 @@ class MonoBlockProcessor(Processor):
         # Process subtitles
         output_series_to_concatenate: list[Series | None] = [None] * len(series.blocks)
         stop_at_idx = stop_at_idx or len(series.blocks)
+
+        # Track indices for logging
+        current_idx = 0
         for block_idx, block in enumerate(series.blocks):
             if block_idx >= stop_at_idx:
                 break
@@ -60,9 +63,12 @@ class MonoBlockProcessor(Processor):
                     subtitle.text = output_text
                 output_series.append(subtitle)
 
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
             info(
-                f"Block {block_idx} ({block.start_idx} - {block.end_idx}):\n"
-                f"{block.to_series().to_simple_string()}"
+                f"Block {block_idx} ({start_idx} - {end_idx}):\n"
+                f"{block.to_simple_string()}"
             )
             output_series_to_concatenate[block_idx] = output_series
 

@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from scinoephile.core.exceptions import ScinoephileError
 
-from .block import Block
 from .series import Series
 from .subtitle import Subtitle
 
 __all__ = [
-    "Block",
     "Series",
     "Subtitle",
     "get_concatenated_series",

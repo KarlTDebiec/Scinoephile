@@ -14,7 +14,6 @@ from pysubs2.time import ms_to_str
 
 from scinoephile.common.validation import val_input_path, val_output_path
 
-from .block import Block
 from .subtitle import Subtitle
 
 __all__ = ["Series"]
@@ -39,7 +38,7 @@ class Series(SSAFile):
 
         if events is not None:
             self.events = events
-        self._blocks: list[Block] | None = None
+        self._blocks: list[Self] | None = None
 
     @override
     def __iter__(self) -> Iterator[Subtitle]:
@@ -102,7 +101,7 @@ class Series(SSAFile):
         )
 
     @property
-    def blocks(self) -> list[Block]:
+    def blocks(self) -> list[Self]:
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
@@ -110,7 +109,7 @@ class Series(SSAFile):
         return self._blocks
 
     @blocks.setter
-    def blocks(self, blocks: list[Block]):
+    def blocks(self, blocks: list[Self]):
         """Set blocks of the series.
 
         Arguments:
@@ -260,7 +259,7 @@ class Series(SSAFile):
     def _init_blocks(self):
         """Initialize blocks."""
         self._blocks = [
-            Block(self, start_idx, end_idx)
+            self.slice(start_idx, end_idx)
             for start_idx, end_idx in self.get_block_indexes_by_pause(self)
         ]
 
