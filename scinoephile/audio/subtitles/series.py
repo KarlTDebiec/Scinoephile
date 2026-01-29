@@ -62,7 +62,7 @@ class AudioSeries(Series):
         self._audio = audio
         if events is not None:
             self.events = events
-        self._blocks: list[Self] | None = None
+        self._blocks: list[AudioSeries] | None = None
         # Attributes for AudioSeries blocks created by _init_blocks
         self.buffered_start: int | None = None
         self.buffered_end: int | None = None
@@ -83,7 +83,7 @@ class AudioSeries(Series):
 
     @property
     @override
-    def blocks(self) -> list[Self]:
+    def blocks(self) -> list[AudioSeries]:
         """List of blocks in the series.
 
         For AudioSeries, each returned AudioSeries block includes:
@@ -100,7 +100,7 @@ class AudioSeries(Series):
 
     @blocks.setter
     @override
-    def blocks(self, blocks: list[Self]):
+    def blocks(self, blocks: list[AudioSeries]):
         """Set blocks of the series.
 
         Arguments:
