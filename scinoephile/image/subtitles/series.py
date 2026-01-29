@@ -51,7 +51,7 @@ class ImageSeries(Series):
             self.events = events
         self._fill_color = None
         self._outline_color = None
-        self._blocks: list[Self] | None = None
+        self._blocks: list[ImageSeries] | None = None
 
     @property
     def fill_color(self) -> int:
@@ -73,7 +73,7 @@ class ImageSeries(Series):
 
     @property
     @override
-    def blocks(self) -> list[Self]:
+    def blocks(self) -> list[ImageSeries]:
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
@@ -82,7 +82,7 @@ class ImageSeries(Series):
 
     @blocks.setter
     @override
-    def blocks(self, blocks: list[Self]):
+    def blocks(self, blocks: list[ImageSeries]):
         """Set blocks of the series.
 
         Arguments:

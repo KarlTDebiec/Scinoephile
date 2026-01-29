@@ -38,7 +38,7 @@ class Series(SSAFile):
 
         if events is not None:
             self.events = events
-        self._blocks: list[Self] | None = None
+        self._blocks: list[Series] | None = None
 
     @override
     def __iter__(self) -> Iterator[Subtitle]:
@@ -101,7 +101,7 @@ class Series(SSAFile):
         )
 
     @property
-    def blocks(self) -> list[Self]:
+    def blocks(self) -> list[Series]:
         """List of blocks in the series."""
         if self._blocks is None:
             self._init_blocks()
@@ -109,7 +109,7 @@ class Series(SSAFile):
         return self._blocks
 
     @blocks.setter
-    def blocks(self, blocks: list[Self]):
+    def blocks(self, blocks: list[Series]):
         """Set blocks of the series.
 
         Arguments:
