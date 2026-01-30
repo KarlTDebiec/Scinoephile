@@ -82,14 +82,10 @@ def process_zho_hans_eng(
         if zho_hans_path is None:
             zho_hans_path = output_dir / "zho-Hans.srt"
         zho_hans = Series.load(zho_hans_path)
-        zho_hans = get_zho_cleaned(zho_hans)
-        zho_hans = get_zho_flattened(zho_hans)
 
         if eng_path is None:
             eng_path = output_dir / "eng.srt"
         eng = Series.load(eng_path)
-        eng = get_eng_cleaned(eng)
-        eng = get_eng_flattened(eng)
 
         zho_hans_eng = get_synced_series(zho_hans, eng)
         zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
