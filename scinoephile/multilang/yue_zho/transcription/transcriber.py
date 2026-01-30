@@ -70,7 +70,7 @@ class YueTranscriber:
     async def process_all_blocks(
         self,
         yuewen: AudioSeries,
-        zhongwen: AudioSeries,
+        zhongwen: Series,
         stop_at_idx: int | None = None,
     ):
         """Process all blocks of audio, transcribing and aligning them with subtitles.
@@ -120,7 +120,7 @@ class YueTranscriber:
         self,
         idx: int,
         yuewen_block: AudioSeries,
-        zhongwen_block: AudioSeries,
+        zhongwen_block: Series,
     ) -> AudioSeries:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 

@@ -54,7 +54,7 @@ class Aligner:
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
     async def align(
-        self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
+        self, zhongwen_subs: Series, yuewen_subs: AudioSeries
     ) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
