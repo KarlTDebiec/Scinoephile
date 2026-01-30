@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli
+from scinoephile.cli import EngCli, EngZhoCli, EngZhoSyncCli, ScinoephileCli, ZhoCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 
@@ -20,6 +20,10 @@ from scinoephile.common.testing import run_cli_with_args
     "cli",
     [
         (ScinoephileCli,),
+        (ScinoephileCli, EngCli),
+        (ScinoephileCli, ZhoCli),
+        (ScinoephileCli, EngZhoCli),
+        (ScinoephileCli, EngZhoCli, EngZhoSyncCli),
     ],
 )
 def test_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -48,6 +52,10 @@ def test_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (ScinoephileCli,),
+        (ScinoephileCli, EngCli),
+        (ScinoephileCli, ZhoCli),
+        (ScinoephileCli, EngZhoCli),
+        (ScinoephileCli, EngZhoCli, EngZhoSyncCli),
     ],
 )
 def test_usage(cli: tuple[type[CommandLineInterface], ...]):

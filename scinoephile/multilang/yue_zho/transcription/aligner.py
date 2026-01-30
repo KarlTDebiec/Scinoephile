@@ -53,9 +53,7 @@ class Aligner:
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
-    async def align(
-        self, zhongwen_subs: Series, yuewen_subs: AudioSeries
-    ) -> Alignment:
+    async def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
         Presently, this does the following:

@@ -9,7 +9,7 @@ from io import StringIO
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli
+from scinoephile.cli import EngCli, EngZhoCli, EngZhoSyncCli, ScinoephileCli, ZhoCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -21,13 +21,13 @@ from scinoephile.core.testing import test_data_root
     ("cli", "input_path", "args", "expected_path"),
     [
         (
-            (ScinoephileCli,),
+            (ScinoephileCli, EngCli),
             "mnt/output/eng_fuse.srt",
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            (ScinoephileCli,),
+            (ScinoephileCli, EngCli),
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
@@ -58,7 +58,9 @@ def test_english(
         with redirect_stderr(stderr):
             with get_temp_file_path(".srt") as output_path:
                 run_cli_with_args(
-                    cli[0], f"{subcommands} -eif {input_path} {args} -eof {output_path}"
+                    cli[0],
+                    f"{subcommands} --infile {input_path} {args} "
+                    f"--outfile {output_path}",
                 )
                 output = Series.load(output_path)
                 expected = Series.load(test_data_root / expected_path)
@@ -70,13 +72,13 @@ def test_english(
     ("cli", "input_path", "args", "expected_path"),
     [
         (
-            (ScinoephileCli,),
+            (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
         ),
         (
-            (ScinoephileCli,),
+            (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
@@ -107,7 +109,9 @@ def test_chinese(
         with redirect_stderr(stderr):
             with get_temp_file_path(".srt") as output_path:
                 run_cli_with_args(
-                    cli[0], f"{subcommands} -cif {input_path} {args} -cof {output_path}"
+                    cli[0],
+                    f"{subcommands} --infile {input_path} {args} "
+                    f"--outfile {output_path}",
                 )
                 output = Series.load(output_path)
                 expected = Series.load(test_data_root / expected_path)
@@ -119,10 +123,10 @@ def test_chinese(
     ("cli", "chinese_input_path", "english_input_path", "args", "expected_path"),
     [
         (
-            (ScinoephileCli,),
+            (ScinoephileCli, EngZhoCli, EngZhoSyncCli),
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
-            "--clean --flatten",
+            "--clean",
             "mlamd/output/zho-Hans_eng.srt",
         ),
     ],
@@ -155,10 +159,38 @@ def test_bilingual(
             with get_temp_file_path(".srt") as output_path:
                 run_cli_with_args(
                     cli[0],
-                    f"{subcommands} -cif {chinese_input_path} "
-                    f"-eif {english_input_path} {args} -bof {output_path}",
+                    f"{subcommands} --zho-infile {chinese_input_path} "
+                    f"--eng-infile {english_input_path} {args} "
+                    f"--outfile {output_path}",
                 )
                 output = Series.load(output_path)
                 expected = Series.load(test_data_root / expected_path)
 
                 assert output == expected
+
+
+def test_zho_proofread_script_validation():
+    """Test zho proofread script validation against conversion output."""
+    input_path = (
+        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+    stdout = StringIO()
+    stderr = StringIO()
+
+    try:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                with get_temp_file_path(".srt") as output_path:
+                    run_cli_with_args(
+                        ScinoephileCli,
+                        "zho --infile "
+                        f"{input_path} "
+                        "--convert t2s "
+                        "--proofread "
+                        "--proofread-script traditional "
+                        f"--outfile {output_path}",
+                    )
+    except SystemExit as exc:
+        assert exc.code == 2
+        assert "Proofread script must match post-conversion script" in stderr.getvalue()
