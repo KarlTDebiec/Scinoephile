@@ -33,11 +33,11 @@ def test_load_sup(
         request: pytest fixture request
     """
     input_path = request.getfixturevalue(input_path_fixture)
-    series = ImageSeries.load(input_path)
+    series: ImageSeries = ImageSeries.load(input_path)
 
     assert len(series) == expected_event_count
-    assert series[0].img.size == expected_first_size
-    for event in series:
+    assert series.events[0].img.size == expected_first_size
+    for event in series.events:
         assert event.start >= 0
         assert event.end >= event.start
         assert event.img.mode == "LA"
@@ -67,11 +67,11 @@ def test_load_html(
         request: pytest fixture request
     """
     path = request.getfixturevalue(input_path_fixture)
-    series = ImageSeries.load(path, encoding="utf-8")
+    series: ImageSeries = ImageSeries.load(path, encoding="utf-8")
 
     assert len(series) == expected_event_count
-    assert series[0].img.size == expected_first_size
-    for event in series:
+    assert series.events[0].img.size == expected_first_size
+    for event in series.events:
         assert event.start >= 0
         assert event.end >= event.start
         assert event.img.size[0] > 0
