@@ -18,7 +18,7 @@ from scinoephile.common.testing import (
     run_cli_with_args,
 )
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import test_data_root
+from scinoephile.core.testing import skip_if_ci, test_data_root
 
 
 @pytest.mark.parametrize(
@@ -90,6 +90,7 @@ def test_zho_file_processing(
     assert output == expected
 
 
+@skip_if_ci()
 def test_zho_proofread_file_processing():
     """Test 中文 proofreading with file arguments."""
     input_path = test_data_root / "mnt/output/zho-Hant_fuse_clean_validate.srt"
