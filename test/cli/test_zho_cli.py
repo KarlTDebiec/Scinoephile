@@ -62,6 +62,12 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
         (
             (ScinoephileCli, ZhoCli),
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "--romanize",
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt",
+        ),
+        (
+            (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",

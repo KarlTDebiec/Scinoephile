@@ -13,33 +13,50 @@ from scinoephile.lang.cmn import get_cmn_romanized
 from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized
 
 
-def _test_get_mandarin_romanization(series: Series):
-    """Test get_mandarin_romanization.
+def _test_get_cmn_romanized(series: Series, expected: Series):
+    """Test get_cmn_romanized.
 
     Arguments:
         series: Series with which to test
+        expected: Expected output series
     """
-    output = get_cmn_romanized(series)
-    assert len(series) == len(output)
+    output = get_cmn_romanized(series, append=True)
+    assert output == expected
 
 
-# get_mandarin_romanization
-def test_get_mandarin_romanization_mnt(mnt_zho_hant: Series):
-    """Test get_mandarin_romanization with MNT 繁体中文 subtitles.
+@pytest.mark.parametrize(
+    ("series_fixture", "expected_fixture"),
+    [
+        (
+            "mlamd_zho_hans_fuse_clean_validate_proofread_flatten",
+            "mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+        ),
+        (
+            "mnt_zho_hans_fuse_clean_validate_proofread_flatten",
+            "mnt_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+        ),
+        (
+            "t_zho_hans_fuse_clean_validate_proofread_flatten",
+            "t_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+        ),
+    ],
+)
+def test_get_cmn_romanized_titles(
+    request: pytest.FixtureRequest,
+    series_fixture: str,
+    expected_fixture: str,
+):
+    """Test get_cmn_romanized against expected romanized outputs.
 
     Arguments:
-        mnt_zho_hant: MNT 繁体中文 series fixture
+        request: pytest request for fixture lookup
+        series_fixture: Fixture name for input series
+        expected_fixture: Fixture name for expected output series
     """
-    _test_get_mandarin_romanization(mnt_zho_hant)
-
-
-def test_get_mandarin_romanization_t(t_zho_hans: Series):
-    """Test get_mandarin_romanization with T 简体中文 subtitles.
-
-    Arguments:
-        t_zho_hans: T 简体中文 series fixture
-    """
-    _test_get_mandarin_romanization(t_zho_hans)
+    _test_get_cmn_romanized(
+        request.getfixturevalue(series_fixture),
+        request.getfixturevalue(expected_fixture),
+    )
 
 
 @pytest.mark.parametrize(

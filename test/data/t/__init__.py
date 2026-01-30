@@ -57,6 +57,7 @@ __all__ = [
     "t_zho_hans_fuse_clean_validate",
     "t_zho_hans_fuse_clean_validate_proofread",
     "t_zho_hans_fuse_clean_validate_proofread_flatten",
+    "t_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
     "t_zho_hans_image",
     "t_zho_hant_fuse",
     "t_zho_hant_fuse_clean",
@@ -331,6 +332,14 @@ def t_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
     """T 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def t_zho_hans_fuse_clean_validate_proofread_flatten_romanize() -> Series:
+    """T 简体中文 fused/cleaned/validated/proofread/flattened romanized subtitles."""
+    return Series.load(
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt"
     )
 
 
