@@ -5,9 +5,8 @@
 from __future__ import annotations
 
 from logging import info
-from typing import cast
 
-from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
+from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.llms.base import Processor, save_test_cases_to_json
 
 from .manager import MonoBlockManager
@@ -50,9 +49,9 @@ class MonoBlockProcessor(Processor):
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for idx, subtitle in enumerate(block):
+            for idx, subtitle in enumerate(block.events):
                 key = self.prompt_cls.input(idx + 1)
-                query_kwargs[key] = cast(Subtitle, subtitle).text_with_newline.strip()
+                query_kwargs[key] = subtitle.text_with_newline.strip()
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)

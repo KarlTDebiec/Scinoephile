@@ -34,7 +34,7 @@ __all__ = ["Alignment"]
 class Alignment:
     """Nascent alignment between 中文 and 粤文 subtitles."""
 
-    def __init__(self, zhongwen: AudioSeries | Series, yuewen: AudioSeries):
+    def __init__(self, zhongwen: AudioSeries, yuewen: AudioSeries):
         """Initialize.
 
         Arguments:

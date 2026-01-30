@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import info
-from typing import cast
 
 import numpy as np
 
@@ -69,10 +68,10 @@ class YueZhoProofreadingProcessor(Processor):
                     continue
                 one_idx = one_grp[0]
                 two_idx = two_grp[0]
-                one_sub = one_blk[one_idx]
-                two_sub = two_blk[two_idx]
-                one_val = cast(Subtitle, one_sub).text_with_newline.strip()
-                two_val = cast(Subtitle, two_sub).text_with_newline.strip()
+                one_sub = one_blk.events[one_idx]
+                two_sub = two_blk.events[two_idx]
+                one_val = one_sub.text_with_newline.strip()
+                two_val = two_sub.text_with_newline.strip()
                 if one_val == two_val:
                     output_block.append(
                         Subtitle(start=one_sub.start, end=one_sub.end, text=one_val)

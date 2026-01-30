@@ -173,13 +173,13 @@ class DualPairManager(Manager):
         if model.answer is None:
             return model
 
-        target_1 = getattr(model.query, model.prompt_cls.src_2_sub_1, None) or ""
-        target_2 = getattr(model.query, model.prompt_cls.src_2_sub_2, None) or ""
-        target_1_shifted = (
-            getattr(model.answer, model.prompt_cls.src_2_sub_1_shifted, None) or ""
+        target_1 = getattr(model.query, model.prompt_cls.src_2_sub_1, "")
+        target_2 = getattr(model.query, model.prompt_cls.src_2_sub_2, "")
+        target_1_shifted = getattr(
+            model.answer, model.prompt_cls.src_2_sub_1_shifted, ""
         )
-        target_2_shifted = (
-            getattr(model.answer, model.prompt_cls.src_2_sub_2_shifted, None) or ""
+        target_2_shifted = getattr(
+            model.answer, model.prompt_cls.src_2_sub_2_shifted, ""
         )
         if target_1 == target_1_shifted and target_2 == target_2_shifted:
             raise ValueError(model.prompt_cls.src_2_sub_1_sub_2_unchanged_err)

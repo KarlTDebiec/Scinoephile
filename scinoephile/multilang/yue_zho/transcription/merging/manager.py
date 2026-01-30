@@ -37,8 +37,8 @@ class YueZhoMergingManager(DualMultiSingleManager):
         if model.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(model.query, model.prompt_cls.src_2, None) or ""
-        yuewen_merged = getattr(model.answer, model.prompt_cls.output, None) or ""
+        zhongwen = getattr(model.query, model.prompt_cls.src_2, "")
+        yuewen_merged = getattr(model.answer, model.prompt_cls.output, "")
         if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(

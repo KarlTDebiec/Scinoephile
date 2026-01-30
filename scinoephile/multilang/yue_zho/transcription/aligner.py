@@ -54,7 +54,7 @@ class Aligner:
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
     async def align(
-        self, zhongwen_subs: AudioSeries | Series, yuewen_subs: AudioSeries
+        self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
     ) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
@@ -144,10 +144,10 @@ class Aligner:
         # Get 粤文
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, None) or ""
-        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, None) or ""
-        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, None) or ""
-        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, None) or ""
+        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, "")
+        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, "")
+        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, "")
+        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, "")
 
         # Shift 粤文
         nascent_sg = deepcopy(alignment.sync_groups)
