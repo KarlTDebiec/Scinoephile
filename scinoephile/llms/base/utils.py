@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Unpack
 
-from .manager import Manager
+from .manager import Manager, TestCaseClsKwargs
 from .test_case import TestCase
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
@@ -17,7 +17,7 @@ __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
 def load_test_cases_from_json[TTestCase: TestCase](
     input_path: Path,
     manager_cls: type[Manager],
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TTestCase]:
     """Load test cases from JSON file.
 

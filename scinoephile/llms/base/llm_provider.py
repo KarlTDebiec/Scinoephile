@@ -5,11 +5,26 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, TypedDict, Unpack
 
 from .answer import Answer
 
-__all__ = ["LLMProvider"]
+__all__ = ["LLMProvider", "ChatCompletionKwargs"]
+
+
+class ChatCompletionKwargs(TypedDict, total=False):
+    """Keyword arguments for LLM chat completion methods.
+    
+    These correspond to common parameters accepted by LLM APIs like OpenAI.
+    """
+
+    temperature: float
+    max_tokens: int
+    top_p: float
+    frequency_penalty: float
+    presence_penalty: float
+    stop: str | list[str]
+    seed: int
 
 
 class LLMProvider(ABC):
@@ -20,7 +35,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
 
@@ -40,7 +55,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text asynchronously.
 

@@ -7,7 +7,7 @@ from __future__ import annotations
 from collections.abc import Iterator
 from logging import info
 from pathlib import Path
-from typing import Any, Self, cast, override
+from typing import Self, TypedDict, Unpack, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -16,7 +16,17 @@ from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
 
-__all__ = ["Series"]
+__all__ = ["Series", "SeriesKwargs"]
+
+
+class SeriesKwargs(TypedDict, total=False):
+    """Keyword arguments for Series methods.
+    
+    Note: pysubs2 SSAFile methods do not accept additional kwargs beyond their
+    documented parameters. This TypedDict is empty but provided for consistency.
+    """
+
+    pass
 
 
 class Series(SSAFile):
@@ -125,7 +135,7 @@ class Series(SSAFile):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ):
         """Save series to an output file.
 
@@ -199,7 +209,7 @@ class Series(SSAFile):
         string: str,
         format_: str | None = None,
         fps: float | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ) -> Self:
         """Parse series from string.
 
@@ -228,7 +238,7 @@ class Series(SSAFile):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ) -> Self:
         """Load series from an input file.
 

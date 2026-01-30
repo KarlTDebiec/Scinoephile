@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any, override
+from typing import Unpack, override
 from warnings import catch_warnings, filterwarnings
 
 with catch_warnings():
@@ -14,7 +14,9 @@ with catch_warnings():
     from pydub import AudioSegment
 
 from scinoephile.audio.transcription import TranscribedSegment
-from scinoephile.core.subtitles import Subtitle
+from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
+
+__all__ = ["AudioSubtitle"]
 
 
 class AudioSubtitle(Subtitle):
@@ -25,7 +27,7 @@ class AudioSubtitle(Subtitle):
         self,
         audio: AudioSegment | None = None,
         segment: TranscribedSegment | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SubtitleKwargs],
     ):
         """Initialize.
 

@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -15,10 +16,25 @@ from .prompts import EngProofreadingPrompt
 
 __all__ = [
     "EngProofreadingPrompt",
+    "EngProofreadingProcessKwargs",
+    "EngProofreadingProcessorKwargs",
     "get_default_eng_proofreading_test_cases",
     "get_eng_proofread",
     "get_eng_proofreader",
 ]
+
+
+class EngProofreadingProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for MonoBlockProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class EngProofreadingProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for MonoBlockProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -54,7 +70,7 @@ def get_default_eng_proofreading_test_cases(
 def get_eng_proofread(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[EngProofreadingProcessKwargs],
 ) -> Series:
     """Get English series proofread.
 
@@ -73,7 +89,7 @@ def get_eng_proofread(
 def get_eng_proofreader(
     prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[EngProofreadingProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
