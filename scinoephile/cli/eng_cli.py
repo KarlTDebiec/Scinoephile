@@ -72,6 +72,7 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+        parser.set_defaults(_parser=parser)
 
     @classmethod
     def _main(cls, **kwargs: Any):
@@ -80,6 +81,7 @@ class EngCli(CommandLineInterface):
         Arguments:
             **kwargs: Keyword arguments
         """
+        parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")
         clean = kwargs.pop("clean")
@@ -88,7 +90,7 @@ class EngCli(CommandLineInterface):
         overwrite = kwargs.pop("overwrite")
 
         if not (clean or flatten or proofread):
-            cls.argparser().error("At least one operation required")
+            parser.error("At least one operation required")
         series = cls._load_series(infile)
         if clean:
             series = get_eng_cleaned(series)
@@ -96,7 +98,7 @@ class EngCli(CommandLineInterface):
             series = get_eng_proofread(series)
         if flatten:
             series = get_eng_flattened(series)
-        cls._write_series(series, outfile, overwrite)
+        cls._write_series(parser, series, outfile, overwrite)
 
     @classmethod
     def _load_series(cls, infile: str) -> Series:
@@ -113,10 +115,17 @@ class EngCli(CommandLineInterface):
         return Series.load(input_path)
 
     @classmethod
-    def _write_series(cls, series: Series, outfile: str, overwrite: bool):
+    def _write_series(
+        cls,
+        parser: ArgumentParser,
+        series: Series,
+        outfile: str,
+        overwrite: bool,
+    ):
         """Write a Series to a file path or stdout.
 
         Arguments:
+            parser: Argument parser for error reporting
             series: Series to write
             outfile: Output file path or "-" for stdout
             overwrite: Whether to overwrite an existing file
@@ -126,7 +135,7 @@ class EngCli(CommandLineInterface):
             return
         output_path = val_output_path(outfile, exist_ok=True)
         if output_path.exists() and not overwrite:
-            cls.argparser().error(f"{output_path} already exists")
+            parser.error(f"{output_path} already exists")
         series.save(output_path)
 
 

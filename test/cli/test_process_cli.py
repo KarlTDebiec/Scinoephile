@@ -178,7 +178,7 @@ def test_zho_proofread_script_validation():
     stdout = StringIO()
     stderr = StringIO()
 
-    try:
+    with pytest.raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
                 with get_temp_file_path(".srt") as output_path:
@@ -191,6 +191,5 @@ def test_zho_proofread_script_validation():
                         "--proofread-script traditional "
                         f"--outfile {output_path}",
                     )
-    except SystemExit as exc:
-        assert exc.code == 2
-        assert "Proofread script must match post-conversion script" in stderr.getvalue()
+    assert excinfo.value.code == 2
+    assert "Proofread script must match post-conversion script" in stderr.getvalue()

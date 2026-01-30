@@ -83,6 +83,7 @@ class EngZhoSyncCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+        parser.set_defaults(_parser=parser)
 
     @classmethod
     def _main(cls, **kwargs: Any):
@@ -91,6 +92,7 @@ class EngZhoSyncCli(CommandLineInterface):
         Arguments:
             **kwargs: Keyword arguments
         """
+        parser = kwargs.pop("_parser", cls.argparser())
         eng_infile = kwargs.pop("eng_infile")
         zho_infile = kwargs.pop("zho_infile")
         outfile = kwargs.pop("outfile")
@@ -99,7 +101,7 @@ class EngZhoSyncCli(CommandLineInterface):
         overwrite = kwargs.pop("overwrite")
 
         if outfile.exists() and not overwrite:
-            cls.argparser().error(f"{outfile} already exists")
+            parser.error(f"{outfile} already exists")
 
         eng = Series.load(eng_infile)
         zho = Series.load(zho_infile)

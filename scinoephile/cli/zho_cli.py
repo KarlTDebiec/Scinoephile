@@ -114,6 +114,7 @@ class ZhoCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+        parser.set_defaults(_parser=parser)
 
     @classmethod
     def _main(cls, **kwargs: Any):
@@ -122,6 +123,7 @@ class ZhoCli(CommandLineInterface):
         Arguments:
             **kwargs: Keyword arguments
         """
+        parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")
         clean = kwargs.pop("clean")
@@ -132,8 +134,8 @@ class ZhoCli(CommandLineInterface):
         overwrite = kwargs.pop("overwrite")
 
         if not (clean or flatten or convert or proofread):
-            cls.argparser().error("At least one operation required")
-        cls._validate_proofread_script(convert, proofread, proofread_script)
+            parser.error("At least one operation required")
+        cls._validate_proofread_script(parser, convert, proofread, proofread_script)
 
         series = cls._load_series(infile)
         if clean:
@@ -146,7 +148,7 @@ class ZhoCli(CommandLineInterface):
             series = get_zho_proofread(series, processor=proofreader)
         if flatten:
             series = get_zho_flattened(series)
-        cls._write_series(series, outfile, overwrite)
+        cls._write_series(parser, series, outfile, overwrite)
 
     @classmethod
     def _get_proofread_prompt_cls(
@@ -181,6 +183,7 @@ class ZhoCli(CommandLineInterface):
     @classmethod
     def _validate_proofread_script(
         cls,
+        parser: ArgumentParser,
         convert: OpenCCConfig | None,
         proofread: bool,
         proofread_script: str,
@@ -188,6 +191,7 @@ class ZhoCli(CommandLineInterface):
         """Validate that proofread script matches conversion output.
 
         Arguments:
+            parser: Argument parser for error reporting
             convert: OpenCC configuration
             proofread: Whether proofreading is enabled
             proofread_script: Script identifier for proofreading
@@ -198,7 +202,7 @@ class ZhoCli(CommandLineInterface):
         if convert_script is None:
             return
         if convert_script != proofread_script:
-            cls.argparser().error(
+            parser.error(
                 "Proofread script must match post-conversion script: "
                 f"{convert} yields {convert_script}"
             )
@@ -218,10 +222,17 @@ class ZhoCli(CommandLineInterface):
         return Series.load(input_path)
 
     @classmethod
-    def _write_series(cls, series: Series, outfile: str, overwrite: bool):
+    def _write_series(
+        cls,
+        parser: ArgumentParser,
+        series: Series,
+        outfile: str,
+        overwrite: bool,
+    ):
         """Write a Series to a file path or stdout.
 
         Arguments:
+            parser: Argument parser for error reporting
             series: Series to write
             outfile: Output file path or "-" for stdout
             overwrite: Whether to overwrite an existing file
@@ -231,7 +242,7 @@ class ZhoCli(CommandLineInterface):
             return
         output_path = val_output_path(outfile, exist_ok=True)
         if output_path.exists() and not overwrite:
-            cls.argparser().error(f"{output_path} already exists")
+            parser.error(f"{output_path} already exists")
         series.save(output_path)
 
 
