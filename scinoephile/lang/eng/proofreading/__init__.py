@@ -15,9 +15,9 @@ from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
 from .prompts import EngProofreadingPrompt
 
 __all__ = [
+    "EngProofreadingPrompt",
     "EngProofreadingProcessKwargs",
     "EngProofreadingProcessorKwargs",
-    "EngProofreadingPrompt",
     "get_default_eng_proofreading_test_cases",
     "get_eng_proofread",
     "get_eng_proofreader",
