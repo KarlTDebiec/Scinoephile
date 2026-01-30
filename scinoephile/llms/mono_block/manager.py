@@ -6,12 +6,12 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Unpack
 
 from pydantic import Field, create_model
 
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.base import Answer, Manager, Query, TestCase
+from scinoephile.llms.base import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.llms.base.models import get_model_name
 
 from .prompt import MonoBlockPrompt
@@ -132,7 +132,7 @@ class MonoBlockManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Any,
+        **kwargs: Unpack[TestCaseClsKwargs],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 

@@ -8,7 +8,7 @@ import re
 from html import escape, unescape
 from logging import info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Any, Self, TypedDict, Unpack, override
 
 import numpy as np
 from PIL import Image
@@ -21,7 +21,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, SeriesKwargs
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
@@ -98,7 +98,7 @@ class ImageSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ):
         """Save series to an output file.
 
@@ -210,7 +210,7 @@ class ImageSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ) -> Self:
         """Load series from an input file.
 

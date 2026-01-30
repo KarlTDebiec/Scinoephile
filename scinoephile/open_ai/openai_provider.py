@@ -6,13 +6,13 @@ from __future__ import annotations
 
 import asyncio
 from time import sleep
-from typing import Any, cast, override
+from typing import Any, Unpack, cast, override
 
 from openai import AsyncOpenAI, OpenAI, OpenAIError
 from openai.types.chat import ChatCompletionMessageParam
 
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.base import Answer, LLMProvider
+from scinoephile.llms.base import Answer, ChatCompletionKwargs, LLMProvider
 
 __all__ = ["OpenAIProvider"]
 
@@ -38,7 +38,7 @@ class OpenAIProvider(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
         model: str = "gpt-5.1",
-        **kwargs: Any,
+        **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
 
@@ -89,7 +89,7 @@ class OpenAIProvider(LLMProvider):
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
         model: str = "gpt-5.1",
-        **kwargs: Any,
+        **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text asynchronously.
 

@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -16,10 +17,25 @@ from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 __all__ = [
     "ZhoHansProofreadingPrompt",
     "ZhoHantProofreadingPrompt",
+    "ZhoProofreadingProcessKwargs",
+    "ZhoProofreadingProcessorKwargs",
     "get_default_zho_proofreading_test_cases",
     "get_zho_proofread",
     "get_zho_proofreader",
 ]
+
+
+class ZhoProofreadingProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for MonoBlockProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class ZhoProofreadingProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for MonoBlockProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -71,7 +87,7 @@ def get_default_zho_proofreading_test_cases(
 def get_zho_proofread(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[ZhoProofreadingProcessKwargs],
 ) -> Series:
     """Get 中文 series proofread.
 
@@ -90,7 +106,7 @@ def get_zho_proofread(
 def get_zho_proofreader(
     prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[ZhoProofreadingProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 

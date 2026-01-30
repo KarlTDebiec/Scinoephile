@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any
+from typing import Any, TypedDict, Unpack
 
 from pydantic import Field, create_model, model_validator
 
@@ -18,7 +18,17 @@ from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
-__all__ = ["Manager"]
+__all__ = [
+    "Manager",
+    "TestCaseClsKwargs",
+]
+
+
+class TestCaseClsKwargs(TypedDict, total=False):
+    """Keyword arguments for Manager.get_test_case_cls_from_data."""
+
+    prompt_cls: type[Prompt]
+    manager_cls: type[Manager]
 
 
 class Manager(ABC):
@@ -90,7 +100,7 @@ class Manager(ABC):
     def get_test_case_cls_from_data[TTestCase: TestCase](
         cls,
         data: dict,
-        **kwargs: Any,
+        **kwargs: Unpack[TestCaseClsKwargs],
     ) -> type[TTestCase]:
         """Get concrete test case class for provided data with provided configuration.
 

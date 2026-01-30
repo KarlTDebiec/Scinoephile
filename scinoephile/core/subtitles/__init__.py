@@ -6,12 +6,14 @@ from __future__ import annotations
 
 from scinoephile.core.exceptions import ScinoephileError
 
-from .series import Series
-from .subtitle import Subtitle
+from .series import Series, SeriesKwargs
+from .subtitle import Subtitle, SubtitleKwargs
 
 __all__ = [
     "Series",
+    "SeriesKwargs",
     "Subtitle",
+    "SubtitleKwargs",
     "get_concatenated_series",
     "get_series_with_subs_merged",
     "get_sub_merged",

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, Unpack
 
 import pytest
 
@@ -24,9 +24,11 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
 )
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
+from scinoephile.llms.base.manager import TestCaseClsKwargs
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+
 
 __all__ = [
     "mnt_eng_lens",
@@ -119,7 +121,7 @@ def mnt_zho_hant_paddle() -> Series:
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
 
@@ -138,7 +140,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 @cache
 def get_mnt_eng_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT English proofreading test cases.
 
@@ -157,7 +159,7 @@ def get_mnt_eng_proofreading_test_cases(
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT 简体中文 OCR fusion test cases.
 
@@ -176,7 +178,7 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 @cache
 def get_mnt_zho_hans_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT 简体中文 proofreading test cases.
 
@@ -195,7 +197,7 @@ def get_mnt_zho_hans_proofreading_test_cases(
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT 繁体中文 OCR fusion test cases.
 
@@ -214,7 +216,7 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_mnt_zho_hant_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT 繁体中文 proofreading test cases.
 
@@ -233,7 +235,7 @@ def get_mnt_zho_hant_proofreading_test_cases(
 @cache
 def get_mnt_zho_hant_simplify_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MNT 繁体中文 simplification proofreading test cases.
 

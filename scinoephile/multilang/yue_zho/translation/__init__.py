@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -16,10 +17,25 @@ from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationP
 __all__ = [
     "YueHansFromZhoTranslationPrompt",
     "YueHantFromZhoTranslationPrompt",
+    "YueFromZhoTranslationProcessKwargs",
+    "YueFromZhoTranslationProcessorKwargs",
     "get_default_yue_from_zho_translation_test_cases",
     "get_yue_from_zho_translated",
     "get_yue_from_zho_translator",
 ]
+
+
+class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for DualBlockGappedProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for DualBlockGappedProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -48,7 +64,7 @@ def get_yue_from_zho_translated(
     yuewen: Series,
     zhongwen: Series,
     translator: DualBlockGappedProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueFromZhoTranslationProcessKwargs],
 ) -> Series:
     """Get 粤文 subtitles translated from 中文 subtitles.
 
@@ -68,7 +84,7 @@ def get_yue_from_zho_translated(
 def get_yue_from_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueFromZhoTranslationProcessorKwargs],
 ) -> DualBlockGappedProcessor:
     """Get DualBlockGappedProcessor with provided configuration.
 

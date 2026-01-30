@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any, override
+from typing import Unpack, override
 
 import numpy as np
 from PIL import Image
 
-from scinoephile.core.subtitles import Subtitle
+from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
 from scinoephile.image.bbox import Bbox
 
 __all__ = ["ImageSubtitle"]
@@ -23,7 +23,7 @@ class ImageSubtitle(Subtitle):
     def __init__(
         self,
         img: Image.Image,
-        **kwargs: Any,
+        **kwargs: Unpack[SubtitleKwargs],
     ):
         """Initialize.
 

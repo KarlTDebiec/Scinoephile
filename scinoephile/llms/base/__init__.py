@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 from .answer import Answer
-from .llm_provider import LLMProvider
-from .manager import Manager
+from .llm_provider import ChatCompletionKwargs, LLMProvider
+from .manager import Manager, TestCaseClsKwargs
 from .processor import Processor
 from .prompt import Prompt
 from .query import Query
@@ -16,12 +16,14 @@ from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [
     "Answer",
+    "ChatCompletionKwargs",
     "LLMProvider",
     "Manager",
     "Processor",
     "Prompt",
     "Query",
     "Queryer",
+    "TestCaseClsKwargs",
     "TestCase",
     "load_test_cases_from_json",
     "save_test_cases_to_json",

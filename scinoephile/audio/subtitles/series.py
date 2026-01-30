@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from logging import debug, info
 from pathlib import Path
-from typing import Any, Self, override
+from typing import Self, TypedDict, Unpack, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -27,9 +27,22 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, SeriesKwargs
 
 from .subtitle import AudioSubtitle
+
+__all__ = [
+    "AudioSeries",
+    "AudioSeriesLoadKwargs",
+]
+
+
+class AudioSeriesLoadKwargs(TypedDict, total=False):
+    """Keyword arguments for AudioSeries.load() methods."""
+
+    buffer: int
+    audio_track: int
+    channels: int
 
 
 class AudioSeries(Series):
@@ -116,7 +129,7 @@ class AudioSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[SeriesKwargs],
     ):
         """Save series to an output file.
 
@@ -213,7 +226,7 @@ class AudioSeries(Series):
 
         self._blocks = blocks
 
-    def _save_wav(self, fp: Path, **kwargs: Any):
+    def _save_wav(self, fp: Path, **kwargs: Unpack[SeriesKwargs]):
         """Save series to directory of wav files.
 
         Arguments:
@@ -262,7 +275,7 @@ class AudioSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Any,
+        **kwargs: Unpack[AudioSeriesLoadKwargs],
     ) -> Self:
         """Load series from an input file.
 
@@ -373,7 +386,7 @@ class AudioSeries(Series):
         video_path: Path,
         audio_track: int = 0,
         buffer=1000,
-        **kwargs: Any,
+        **kwargs: Unpack[AudioSeriesLoadKwargs],
     ) -> Self:
         """Load series from a subtitle file and associated video file.
 
@@ -423,7 +436,9 @@ class AudioSeries(Series):
         return cls._build_series(text_series, full_audio, buffer)
 
     @classmethod
-    def _load_wav(cls, dir_path: Path, buffer=1000, **kwargs: Any) -> Self:
+    def _load_wav(
+        cls, dir_path: Path, buffer=1000, **kwargs: Unpack[SeriesKwargs]
+    ) -> Self:
         """Load series from a directory of wav files.
 
         Arguments:

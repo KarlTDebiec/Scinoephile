@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from sys import stdin, stdout
-from typing import Any
+from typing import Unpack
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
 )
@@ -75,7 +75,7 @@ class EngCli(CommandLineInterface):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

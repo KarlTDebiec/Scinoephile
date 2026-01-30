@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Unpack
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.llms.base import Answer, Manager, Query, TestCase
+from scinoephile.llms.base import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.llms.base.models import get_model_name
 
 from .prompt import DualMultiSinglePrompt
@@ -101,7 +101,7 @@ class DualMultiSingleManager(Manager):
     def get_test_case_cls_from_data(
         cls,
         data: dict,
-        **kwargs: Any,
+        **kwargs: Unpack[TestCaseClsKwargs],
     ) -> type[TestCase]:
         """Get concrete test case class for provided data.
 

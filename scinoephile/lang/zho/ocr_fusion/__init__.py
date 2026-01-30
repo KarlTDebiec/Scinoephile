@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -19,10 +20,25 @@ from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 __all__ = [
     "ZhoHansOcrFusionPrompt",
     "ZhoHantOcrFusionPrompt",
+    "ZhoOcrFusionProcessKwargs",
+    "ZhoOcrFusionProcessorKwargs",
     "get_default_zho_ocr_fusion_test_cases",
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
+
+
+class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for OcrFusionProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for OcrFusionProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -75,7 +91,7 @@ def get_zho_ocr_fused(
     lens: Series,
     paddle: Series,
     processor: OcrFusionProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[ZhoOcrFusionProcessKwargs],
 ) -> Series:
     """Get 中文 series fused from Google Lens and PaddleOCR outputs.
 
@@ -95,7 +111,7 @@ def get_zho_ocr_fused(
 def get_zho_ocr_fuser(
     prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[ZhoOcrFusionProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get an OcrFusionProcessor with provided configuration.
 

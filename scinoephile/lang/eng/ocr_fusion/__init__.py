@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -15,10 +16,25 @@ from .prompts import EngOcrFusionPrompt
 
 __all__ = [
     "EngOcrFusionPrompt",
+    "EngOcrFusionProcessKwargs",
+    "EngOcrFusionProcessorKwargs",
     "get_default_eng_ocr_fusion_test_cases",
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
+
+
+class EngOcrFusionProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for OcrFusionProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class EngOcrFusionProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for OcrFusionProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -53,7 +69,7 @@ def get_eng_ocr_fused(
     lens: Series,
     tesseract: Series,
     processor: OcrFusionProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[EngOcrFusionProcessKwargs],
 ) -> Series:
     """Get English series fused from Google Lens and Tesseract OCR outputs.
 
@@ -73,7 +89,7 @@ def get_eng_ocr_fused(
 def get_eng_ocr_fuser(
     prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[EngOcrFusionProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get OcrFusionProcessor with provided configuration.
 

@@ -5,12 +5,34 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Any, override
+from typing import TypedDict, Unpack, override
 
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-__all__ = ["Subtitle"]
+__all__ = [
+    "Subtitle",
+    "SubtitleKwargs",
+]
+
+
+class SubtitleKwargs(TypedDict, total=False):
+    """Keyword arguments for Subtitle initialization.
+
+    These correspond to the fields of pysubs2.SSAEvent.
+    """
+
+    start: int
+    end: int
+    text: str
+    style: str
+    name: str
+    marked: bool
+    effect: str
+    layer: int
+    margin_l: int
+    margin_r: int
+    margin_v: int
 
 
 class Subtitle(SSAEvent):
@@ -22,7 +44,7 @@ class Subtitle(SSAEvent):
     __hash__ = None
 
     @override
-    def __init__(self, **kwargs: Any):
+    def __init__(self, **kwargs: Unpack[SubtitleKwargs]):
         """Initialize.
 
         Arguments:
