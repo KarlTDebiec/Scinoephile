@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for the English/中文 sync CLI."""
+"""Tests of scinoephile.cli.EngZhoSyncCli."""
 
 from __future__ import annotations
 
@@ -68,22 +68,22 @@ def _run_sync(
     assert output == expected
 
 
-def test_eng_zho_sync_clean():
-    """Test English/中文 sync with cleaning enabled."""
+def test_eng_zho_sync_basic():
+    """Test English/中文 sync with file arguments."""
     _run_sync(
         (EngZhoSyncCli,),
-        "--clean",
+        "",
         zho_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
         eng_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
         expected_path="mlamd/output/zho-Hans_eng.srt",
     )
 
 
-def test_eng_zho_sync_convert_as_subcommand():
-    """Test English/中文 sync conversion as subcommand."""
+def test_eng_zho_sync_as_subcommand():
+    """Test English/中文 sync as subcommand."""
     _run_sync(
         (ScinoephileCli, EngZhoCli, EngZhoSyncCli),
-        "--convert",
+        "",
         zho_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
         eng_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
         expected_path="mlamd/output/zho-Hans_eng.srt",

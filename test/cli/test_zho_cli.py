@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests for the 中文 CLI."""
+"""Tests of scinoephile.cli.ZhoCli."""
 
 from __future__ import annotations
 
@@ -100,8 +100,7 @@ def test_zho_proofread_file_processing():
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             ZhoCli,
-            "--proofread --proofread-script traditional "
-            f"--infile {input_path} --outfile {output_path}",
+            f"--proofread traditional --infile {input_path} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(expected_path)
@@ -143,8 +142,7 @@ def test_zho_proofread_script_validation():
                     "zho --infile "
                     f"{input_path} "
                     "--convert t2s "
-                    "--proofread "
-                    "--proofread-script traditional "
+                    "--proofread traditional "
                     "--outfile -",
                 )
 

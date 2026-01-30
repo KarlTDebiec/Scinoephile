@@ -83,7 +83,6 @@ class ZhoCli(CommandLineInterface):
             metavar="CONFIG",
             nargs="?",
             const=OpenCCConfig.t2s,
-            default=None,
             type=OpenCCConfig,
             help=(
                 "convert Chinese characters using specified OpenCC configuration"
@@ -92,14 +91,14 @@ class ZhoCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--proofread",
-            action="store_true",
-            help="proofread subtitles using configured LLM workflow",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--proofread-script",
-            default="simplified",
+            metavar="SCRIPT",
+            nargs="?",
+            const="simplified",
             type=str_arg(options=("simplified", "traditional")),
-            help="proofreading prompt script (default: %(default)s)",
+            help=(
+                "proofread subtitles using configured LLM workflow"
+                " (default: simplified)"
+            ),
         )
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -129,20 +128,19 @@ class ZhoCli(CommandLineInterface):
         clean = kwargs.pop("clean")
         flatten = kwargs.pop("flatten")
         convert = kwargs.pop("convert")
-        proofread = kwargs.pop("proofread")
-        proofread_script = kwargs.pop("proofread_script")
+        proofread_script = kwargs.pop("proofread")
         overwrite = kwargs.pop("overwrite")
 
-        if not (clean or flatten or convert or proofread):
+        if not (clean or flatten or convert or proofread_script):
             parser.error("At least one operation required")
-        cls._validate_proofread_script(parser, convert, proofread, proofread_script)
+        cls._validate_proofread_script(parser, convert, proofread_script)
 
         series = cls._load_series(infile)
         if clean:
             series = get_zho_cleaned(series)
         if convert is not None:
             series = get_zho_converted(series, convert)
-        if proofread:
+        if proofread_script is not None:
             prompt_cls = cls._get_proofread_prompt_cls(proofread_script)
             proofreader = get_zho_proofreader(prompt_cls=prompt_cls)
             series = get_zho_proofread(series, processor=proofreader)
@@ -185,18 +183,16 @@ class ZhoCli(CommandLineInterface):
         cls,
         parser: ArgumentParser,
         convert: OpenCCConfig | None,
-        proofread: bool,
-        proofread_script: str,
+        proofread_script: str | None,
     ):
         """Validate that proofread script matches conversion output.
 
         Arguments:
             parser: Argument parser for error reporting
             convert: OpenCC configuration
-            proofread: Whether proofreading is enabled
             proofread_script: Script identifier for proofreading
         """
-        if not proofread or convert is None:
+        if proofread_script is None or convert is None:
             return
         convert_script = cls._get_script_for_conversion(convert)
         if convert_script is None:

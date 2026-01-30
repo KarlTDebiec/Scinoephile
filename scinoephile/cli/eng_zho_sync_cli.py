@@ -15,9 +15,6 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
-from scinoephile.lang.zho.conversion import OpenCCConfig
 
 
 class EngZhoSyncCli(CommandLineInterface):
@@ -53,23 +50,6 @@ class EngZhoSyncCli(CommandLineInterface):
             type=input_file_arg(),
             help="中文 subtitle infile",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--clean",
-            action="store_true",
-            help="clean subtitles of closed-caption annotations and other anomalies",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--convert",
-            metavar="CONFIG",
-            nargs="?",
-            const=OpenCCConfig.t2s,
-            default=None,
-            type=OpenCCConfig,
-            help=(
-                "convert Chinese characters using specified OpenCC configuration"
-                " (default: t2s)"
-            ),
-        )
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -96,8 +76,6 @@ class EngZhoSyncCli(CommandLineInterface):
         eng_infile = kwargs.pop("eng_infile")
         zho_infile = kwargs.pop("zho_infile")
         outfile = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        convert = kwargs.pop("convert")
         overwrite = kwargs.pop("overwrite")
 
         if outfile.exists() and not overwrite:
@@ -105,15 +83,6 @@ class EngZhoSyncCli(CommandLineInterface):
 
         eng = Series.load(eng_infile)
         zho = Series.load(zho_infile)
-
-        if clean:
-            eng = get_eng_cleaned(eng)
-            zho = get_zho_cleaned(zho)
-        if convert is not None:
-            zho = get_zho_converted(zho, convert)
-
-        eng = get_eng_flattened(eng)
-        zho = get_zho_flattened(zho)
 
         bilingual = get_synced_series(zho, eng)
         bilingual.save(outfile)
