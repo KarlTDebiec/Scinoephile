@@ -14,7 +14,6 @@ with catch_warnings():
     simplefilter("ignore", UserWarning)
     import pycantonese
 
-
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -55,7 +54,24 @@ if unmatched_hanzi_file_path.exists():
     with open(unmatched_hanzi_file_path, "rb") as infile:
         unmatched = pickle.load(infile)
 
-re_jyutping = re.compile(r"[a-z]+\d")
+# Load Hanzi to Jyutping mapping
+hanzi_to_jyutping = {}
+hanzi_to_jyutping_path = data_root / "hanzi_to_jyutping.cha"
+if hanzi_to_jyutping_path.exists():
+    current_hanzi: str | None = None
+    with open(hanzi_to_jyutping_path, encoding="utf-8") as infile:
+        for raw_line in infile:
+            line = raw_line.strip()
+            if line.startswith("*XXA:"):
+                current_hanzi = line.replace("*XXA:", "", 1).strip()
+            elif line.startswith("%mor:") and current_hanzi is not None:
+                entry = line.replace("%mor:", "", 1).strip()
+                if "|" in entry:
+                    _, jyutping = entry.split("|", 1)
+                    hanzi_to_jyutping[current_hanzi] = jyutping.strip()
+                current_hanzi = None
+
+re_jyutping = re.compile(r"[a-z]+\\d")
 
 
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
@@ -91,13 +107,25 @@ def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912
             "get_cantonese_character_romanization only accepts single Chinese character"
         )
 
+    # If cached, use that value
+    if hanzi in hanzi_to_romanization and hanzi_to_romanization[hanzi] is not None:
+        return hanzi_to_romanization[hanzi]
+
+    # If provided by mapping, use that value
+    if hanzi in hanzi_to_jyutping:
+        try:
+            yale = pycantonese.jyutping_to_yale(hanzi_to_jyutping[hanzi])[0]
+        except ValueError:
+            yale = None
+        if yale is not None:
+            hanzi_to_romanization[hanzi] = yale
+            with open(hanzi_to_yale_file_path, "wb") as outfile:
+                pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
+        return yale
+
     # If known to be unmatched, stop early
     if hanzi in unmatched:
         return None
-
-    # If cached, use that value
-    elif hanzi in hanzi_to_romanization:
-        return hanzi_to_romanization[hanzi]
 
     # Otherwise search corpus for value
     matches = corpus.search(character=hanzi)
