@@ -8,6 +8,7 @@ import pickle
 import re
 from collections import Counter
 from copy import deepcopy
+from logging import getLogger
 from warnings import catch_warnings, filterwarnings, simplefilter
 
 with catch_warnings():
@@ -23,6 +24,8 @@ from scinoephile.lang.zho.conversion import get_zho_converter
 __all__ = [
     "get_yue_romanized",
 ]
+
+logger = getLogger(__name__)
 
 data_root = package_root / "data/cantonese/"
 
@@ -94,7 +97,7 @@ def get_yue_romanized(series: Series, append: bool = True) -> Series:
     return series
 
 
-def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912
+def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PLR0915
     """Get the Yale Cantonese romanization of a single Chinese character.
 
     Arguments:
@@ -156,7 +159,13 @@ def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912
                 ]
                 token = [m for m in matches if m.word == most_common_word][0]
                 index = token.word.index(hanzi)
-                jyutping = re_jyutping.findall(token.jyutping)[index]
+                jyutping_matches = re_jyutping.findall(token.jyutping)
+                if index >= len(jyutping_matches):
+                    unmatched.add(hanzi)
+                    with open(unmatched_hanzi_file_path, "wb") as outfile:
+                        pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
+                    return None
+                jyutping = jyutping_matches[index]
             except TypeError:
                 unmatched.add(hanzi)
                 with open(unmatched_hanzi_file_path, "wb") as outfile:
@@ -204,6 +213,9 @@ def _get_yue_text_romanized(text: str) -> str:
                     if romanization is not None:
                         section_romanization += " " + romanization
                     else:
+                        logger.warning(
+                            "No Cantonese romanization for character: %s", char
+                        )
                         section_romanization += char
             line_romanization += "  " + section_romanization.strip()
         text_romanization += "\n" + line_romanization.strip()
