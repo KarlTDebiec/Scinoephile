@@ -11,6 +11,7 @@ import numpy as np
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
 from scinoephile.core.pairs import get_pair_strings
+from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import (
     SyncGroup,
     get_overlap_string,
@@ -33,7 +34,7 @@ __all__ = ["Alignment"]
 class Alignment:
     """Nascent alignment between 中文 and 粤文 subtitles."""
 
-    def __init__(self, zhongwen: AudioSeries, yuewen: AudioSeries):
+    def __init__(self, zhongwen: Series, yuewen: AudioSeries):
         """Initialize.
 
         Arguments:
@@ -120,12 +121,12 @@ class Alignment:
         return sorted(set(range(len(self.yuewen))) - yw_idxs)
 
     @property
-    def zhongwen(self) -> AudioSeries:
+    def zhongwen(self) -> AudioSeries | Series:
         """中文 series."""
         return self._zhongwen
 
     @zhongwen.setter
-    def zhongwen(self, value: AudioSeries):
+    def zhongwen(self, value: AudioSeries | Series):
         """Set 中文 series and clear cached values.
 
         Arguments:

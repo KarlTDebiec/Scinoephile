@@ -68,8 +68,8 @@ class YueZhoProofreadingProcessor(Processor):
                     continue
                 one_idx = one_grp[0]
                 two_idx = two_grp[0]
-                one_sub = one_blk[one_idx]
-                two_sub = two_blk[two_idx]
+                one_sub = one_blk.events[one_idx]
+                two_sub = two_blk.events[two_idx]
                 one_val = one_sub.text_with_newline.strip()
                 two_val = two_sub.text_with_newline.strip()
                 if one_val == two_val:

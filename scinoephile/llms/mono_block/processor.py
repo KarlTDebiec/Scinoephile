@@ -49,7 +49,7 @@ class MonoBlockProcessor(Processor):
             )
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
-            for idx, subtitle in enumerate(block):
+            for idx, subtitle in enumerate(block.events):
                 key = self.prompt_cls.input(idx + 1)
                 query_kwargs[key] = subtitle.text_with_newline.strip()
             query = query_cls(**query_kwargs)
