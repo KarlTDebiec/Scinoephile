@@ -12,11 +12,13 @@ from pydantic import ValidationError
 
 from scinoephile.audio.subtitles import (
     AudioSeries,
+    AudioSubtitle,
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.base import (
@@ -52,7 +54,7 @@ class Aligner:
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
     async def align(
-        self, zhongwen_subs: AudioSeries, yuewen_subs: AudioSeries
+        self, zhongwen_subs: AudioSeries | Series, yuewen_subs: AudioSeries
     ) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
@@ -142,10 +144,10 @@ class Aligner:
         # Get 粤文
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, None)
-        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, None)
-        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, None)
-        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, None)
+        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, None) or ""
+        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, None) or ""
+        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, None) or ""
+        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, None) or ""
 
         # Shift 粤文
         nascent_sg = deepcopy(alignment.sync_groups)
@@ -253,7 +255,7 @@ class Aligner:
 
             # Get 粤文
             yw_idxs = sg[1]
-            yws = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
+            yws: list[AudioSubtitle] = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
 
             # If there is no punctuation, whitespace, or ambiguity, just copy over
             if zw.text == remove_punc_and_whitespace(zw.text) and len(yws) == 1:
