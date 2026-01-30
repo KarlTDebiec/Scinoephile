@@ -235,7 +235,11 @@ def get_synced_series_from_groups(
                 Subtitle(
                     start=min(one_subs[0].start, two_subs[0].start),
                     end=max(one_subs[0].end, two_subs[0].end),
-                    text=f"{one_text}\n{two_text}" if two_text else one_text,
+                    text=(
+                        f"{one_text}\\N{two_text}"
+                        if one_text and two_text
+                        else one_text or two_text
+                    ),
                 )
             )
             continue
@@ -254,7 +258,11 @@ def get_synced_series_from_groups(
                     Subtitle(
                         start=start,
                         end=end,
-                        text=f"{one_text}\n{two_text}" if two_text else one_text,
+                        text=(
+                            f"{one_text}\\N{two_text}"
+                            if one_text and two_text
+                            else one_text or two_text
+                        ),
                     )
                 )
             continue
@@ -273,7 +281,11 @@ def get_synced_series_from_groups(
                     Subtitle(
                         start=start,
                         end=end,
-                        text=f"{one_text}\n{two_text}" if one_text else two_text,
+                        text=(
+                            f"{one_text}\\N{two_text}"
+                            if one_text and two_text
+                            else one_text or two_text
+                        ),
                     )
                 )
             continue
