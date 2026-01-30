@@ -24,7 +24,7 @@ class EngZhoCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="subcommand",
+            dest="eng_zho_subcommand",
             help="subcommand",
             required=True,
         )
@@ -34,7 +34,7 @@ class EngZhoCli(CommandLineInterface):
     @classmethod
     def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments."""
-        subcommand_name = kwargs.pop("subcommand")
+        subcommand_name = kwargs.pop("eng_zho_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 

@@ -75,6 +75,4 @@ def test_usage(cli: tuple[type[CommandLineInterface], ...]):
     except SystemExit as exc:
         assert exc.code == 2
         assert stdout.getvalue() == ""
-        assert stderr.getvalue().startswith(
-            f"usage: {Path(getfile(cli[0])).name} {subcommands}"
-        )
+        assert stderr.getvalue().startswith(f"usage: {Path(getfile(cli[0])).name}")

@@ -5,14 +5,14 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from sys import stdin, stdout
 from typing import Any
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
-    input_file_arg,
-    output_file_arg,
 )
+from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 
@@ -40,9 +40,9 @@ class EngCli(CommandLineInterface):
             "-i",
             "--infile",
             metavar="FILE",
-            required=True,
-            type=input_file_arg(),
-            help="English subtitle infile",
+            default="-",
+            type=str,
+            help="English subtitle infile (default: stdin)",
         )
         arg_groups["operation arguments"].add_argument(
             "--clean",
@@ -63,9 +63,9 @@ class EngCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="FILE",
-            required=True,
-            type=output_file_arg(exist_ok=True),
-            help="English subtitle outfile",
+            default="-",
+            type=str,
+            help="English subtitle outfile (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -89,17 +89,45 @@ class EngCli(CommandLineInterface):
 
         if not (clean or flatten or proofread):
             cls.argparser().error("At least one operation required")
-        if outfile.exists() and not overwrite:
-            cls.argparser().error(f"{outfile} already exists")
-
-        series = Series.load(infile)
+        series = cls._load_series(infile)
         if clean:
             series = get_eng_cleaned(series)
         if proofread:
             series = get_eng_proofread(series)
         if flatten:
             series = get_eng_flattened(series)
-        series.save(outfile)
+        cls._write_series(series, outfile, overwrite)
+
+    @classmethod
+    def _load_series(cls, infile: str) -> Series:
+        """Load a Series from a file path or stdin.
+
+        Arguments:
+            infile: Input file path or "-" for stdin
+        Returns:
+            loaded Series
+        """
+        if infile == "-":
+            return Series.from_string(stdin.read(), format_="srt")
+        input_path = val_input_path(infile)
+        return Series.load(input_path)
+
+    @classmethod
+    def _write_series(cls, series: Series, outfile: str, overwrite: bool):
+        """Write a Series to a file path or stdout.
+
+        Arguments:
+            series: Series to write
+            outfile: Output file path or "-" for stdout
+            overwrite: Whether to overwrite an existing file
+        """
+        if outfile == "-":
+            stdout.write(series.to_string(format_="srt"))
+            return
+        output_path = val_output_path(outfile, exist_ok=True)
+        if output_path.exists() and not overwrite:
+            cls.argparser().error(f"{output_path} already exists")
+        series.save(output_path)
 
 
 if __name__ == "__main__":
