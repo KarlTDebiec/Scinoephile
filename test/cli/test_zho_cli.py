@@ -75,17 +75,17 @@ def test_zho_file_processing(
     expected_path: str,
 ):
     """Test 中文 CLI processing with file arguments."""
-    input_path = test_data_root / input_path
-    expected_path = test_data_root / expected_path
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             cli[0],
-            f"{subcommands} --infile {input_path} {args} --outfile {output_path}",
+            f"{subcommands} --infile {full_input_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
-        expected = Series.load(expected_path)
+        expected = Series.load(full_expected_path)
 
     assert output == expected
 

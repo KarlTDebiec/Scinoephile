@@ -53,7 +53,7 @@ def _run_sync(
     """Run sync CLI with file arguments and compare output."""
     zho_input_path = test_data_root / zho_input
     eng_input_path = test_data_root / eng_input
-    expected_path = test_data_root / expected_path
+    full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
@@ -63,7 +63,7 @@ def _run_sync(
             f"--eng-infile {eng_input_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
-        expected = Series.load(expected_path)
+        expected = Series.load(full_expected_path)
 
     assert output == expected
 
