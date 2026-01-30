@@ -8,8 +8,6 @@ import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.lang.eng import get_eng_cleaned
-from scinoephile.lang.zho import get_zho_cleaned
 
 
 def _test_get_synced_series(one: Series, two: Series, expected: Series):
@@ -20,8 +18,6 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
         two: subtitles series two
         expected: expected output series
     """
-    one = get_zho_cleaned(one)
-    two = get_eng_cleaned(two)
     output = get_synced_series(one, two)
 
     errors = []
@@ -46,20 +42,20 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
 
 
 def test_get_synced_series_kob(
-    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
+    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
     kob_eng_fuse_clean_validate_proofread_flatten: Series,
     kob_zho_hans_eng: Series,
 ):
     """Test get_synced_series with KOB subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: 简体中文
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: 简体中文
           subtitle fixture
         kob_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
         kob_zho_hans_eng: expected synced subtitles fixture
     """
     _test_get_synced_series(
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
         kob_eng_fuse_clean_validate_proofread_flatten,
         kob_zho_hans_eng,
     )

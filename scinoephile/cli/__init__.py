@@ -4,8 +4,16 @@
 
 from __future__ import annotations
 
+from scinoephile.cli.eng_cli import EngCli
+from scinoephile.cli.eng_zho_cli import EngZhoCli
+from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.zho_cli import ZhoCli
 
 __all__ = [
+    "EngCli",
+    "EngZhoCli",
+    "EngZhoSyncCli",
     "ScinoephileCli",
+    "ZhoCli",
 ]

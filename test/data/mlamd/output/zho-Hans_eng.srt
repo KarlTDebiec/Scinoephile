@@ -2967,12 +2967,12 @@ It is addressed to the Olympic Committee Chairman.
 595
 00:49:20,042 --> 00:49:22,125
 「好朋友，我认为
-"Dear friend,
+“Dear friend,
 
 596
 00:49:22,250 --> 00:49:25,125
 抢劫那些包，十分重要」
-it is important to snatch buns."
+it is important to snatch buns.”
 
 597
 00:49:25,250 --> 00:49:27,708
@@ -4203,481 +4203,484 @@ What shall I be?
 “Fat, Still”
 
 843
-01:07:39,792 --> 01:07:44,542
-橙
+01:07:39,792 --> 01:07:41,625
 “Powerful”
 
 844
+01:07:42,250 --> 01:07:44,542
+橙
+
+845
 01:08:19,458 --> 01:08:22,333
 是的，我就是大个佬麦兜
 Right, I am McDull the big guy.
 
-845
+846
 01:08:23,542 --> 01:08:26,500
 肥，算大力
 Fat, with raw power.
 
-846
+847
 01:08:27,083 --> 01:08:28,958
 麻麻地可以
 Not doing too well.
 
-847
+848
 01:08:29,750 --> 01:08:31,333
 负家产
 Negative property.
 
-848
+849
 01:08:34,042 --> 01:08:38,292
 脚瓜是真的大，比一节瓜还要大
 With a pair of really thick calves.
 
-849
+850
 01:08:39,250 --> 01:08:41,917
 脚瓜上的肌肉非常结实⋯
 Very muscular…
 
-850
+851
 01:08:42,375 --> 01:08:47,083
 青筋一条条凸出来，似钢筋
 With steely veins running down.
 
-851
+852
 01:08:47,917 --> 01:08:50,000
 至于脚趾甲⋯
 As for the toenails…
 
-852
+853
 01:08:50,333 --> 01:08:53,417
 有次我无无聊聊真的量了一下⋯
 I got bored one time and stared at it…
 
-853
+854
 01:08:53,833 --> 01:08:56,750
 足有一寸厚
 They're tough, no kidding!
 
-854
+855
 01:08:58,458 --> 01:09:00,958
 是的，故事讲完了
 Yes, the story ends here.
 
-855
+856
 01:09:01,708 --> 01:09:03,500
 这是一个尝试
 This is a try.
 
-856
+857
 01:09:04,375 --> 01:09:07,417
 失败⋯尝试⋯
 Error… Try…
 
-857
+858
 01:09:07,917 --> 01:09:11,458
 好多包⋯可是没有包保成功的故事
 No guarantee that one would make it.
 
-858
+859
 01:09:12,875 --> 01:09:14,500
 故事说了一轮⋯
 In the end…
 
-859
+860
 01:09:14,917 --> 01:09:18,042
 什么也没有？也不是
 Zero gain? Not really.
 
-860
+861
 01:09:18,625 --> 01:09:21,667
 就是大了双脚瓜
 I have my calves.
 
-861
+862
 01:09:23,083 --> 01:09:25,792
 可是楝一双脚瓜站这儿⋯
 But, standing here like this…
 
-862
+863
 01:09:26,250 --> 01:09:28,250
 当浪打过来⋯
 When the waves hit…
 
-863
+864
 01:09:29,000 --> 01:09:32,250
 那感觉还真不错
 I feel great.
 
-864
+865
 01:09:34,167 --> 01:09:37,083
 你知道我麻麻地叻佬，不懂得⋯
 You see, smart guys like me don't really know…
 
-865
+866
 01:09:37,250 --> 01:09:41,500
 替自己的故事加点教训呀锦囊呀那些
 How to make a lesson out of his own story.
 
-866
+867
 01:09:42,042 --> 01:09:44,833
 可是，浸一双脚瓜站水中⋯
 With calves in water…
 
-867
+868
 01:09:45,292 --> 01:09:50,417
 当风吹向我的脑，我会想⋯
 When the wind blows, I'd think…
 
-868
+869
 01:09:50,750 --> 01:09:53,167
 如果妈妈看见我这个大脚瓜⋯
 If mother could see me like this…
 
-869
+870
 01:09:55,167 --> 01:09:57,208
 我猜，她会好开心
 She'd be happy.
 
-870
+871
 01:10:12,500 --> 01:10:15,750
 不成，还是出个锦囊！
 I've come up with a lesson!
 
-871
+872
 01:10:16,417 --> 01:10:20,708
 妈妈的 dot com 散掉后，她又有计
 Mother got inspired after her dot com failed.
 
-872
+873
 01:10:21,208 --> 01:10:24,958
 她出版了一本教烹饪的食谱
 She published a cookbook.
 
-873
+874
 01:10:25,250 --> 01:10:28,042
 食谱最后一页教人整烧鸡
 The last recipe was “Roast Chicken”.
 
-874
+875
 01:10:28,417 --> 01:10:30,875
 方法简单，人人可学
 A simple dish no less.
 
-875
+876
 01:10:31,000 --> 01:10:32,000
 「烧鸡」
 “Roast Chicken”.
 
-876
+877
 01:10:32,292 --> 01:10:34,375
 材料是⋯鸡
 Ingredient: chicken.
 
-877
+878
 01:10:34,625 --> 01:10:38,625
 方法：把鸡烧几烧
 Method: roast the chicken.
 
-878
+879
 01:10:38,833 --> 01:10:43,083
 就这样，一味「烧鸡」大功告成
 That way, you have a roast chicken.
 
-879
+880
 01:10:44,417 --> 01:10:46,375
 食谱里面补充说：
 There was a remark in the cookbook:
 
-880
+881
 01:10:47,083 --> 01:10:49,417
 如果你想把鸡烧得美味可口⋯
 If you want a delicious chicken…
 
-881
+882
 01:10:50,125 --> 01:10:52,750
 吃完后不会心肺实胃气涨
 A chicken that wouldn't upset you…
 
-882
+883
 01:10:53,250 --> 01:10:58,250
 秘诀是：拜托，把鸡烧好一点⋯
 The secret is: please, roast it well!
 
-883
+884
 01:10:59,083 --> 01:11:01,208
 多谢合作！
 Thank you!
 
-884
+885
 01:11:40,583 --> 01:11:42,542
 麻烦你，一客常餐
 One Regular, please.
 
-885
+886
 01:11:42,667 --> 01:11:44,667
 常餐？　常餐有什么吃？
 What's a Regular?
 
-886
+887
 01:11:44,833 --> 01:11:46,042
 跟特餐一样吧
 The same as Special.
 
-887
+888
 01:11:46,167 --> 01:11:47,292
 特餐是什么？
 What's a Special?
 
-888
+889
 01:11:47,458 --> 01:11:48,792
 跟快餐差不多
 Same as Quickie.
 
-889
+890
 01:11:48,917 --> 01:11:50,375
 快餐又是什么？
 What's a Quickie?
 
-890
+891
 01:11:50,625 --> 01:11:52,625
 快餐即是午餐
 A Quickie is a Lunch.
 
-891
+892
 01:11:52,833 --> 01:11:53,875
 午餐吃什么？
 What's for Lunch?
 
-892
+893
 01:11:54,000 --> 01:11:55,750
 午餐跟晚餐一样
 The same as Supper.
 
-893
+894
 01:11:55,917 --> 01:11:57,333
 晚餐又吃什么？
 What's for Supper?
 
-894
+895
 01:11:57,500 --> 01:11:59,667
 晚餐即是常餐
 Same as Regular.
 
-895
+896
 01:11:59,833 --> 01:12:01,792
 那么，两客常餐吧
 We'll have the Regular.
 
-896
+897
 01:12:01,875 --> 01:12:04,750
 今天常餐精采呀！
 Our Regular today is fantastic!
 
-897
+898
 01:12:09,125 --> 01:12:11,417
 对不起，常餐卖光了
 Sorry, Regular is gone.
 
-898
+899
 01:12:11,875 --> 01:12:13,083
 那改要特餐吧
 We can have the Special.
 
-899
+900
 01:12:13,333 --> 01:12:15,208
 特餐？特餐有什么吃？
 What's a Special?
 
-900
+901
 01:12:15,458 --> 01:12:17,042
 特餐即是午餐呀
 A Special is a Lunch.
 
-901
+902
 01:12:17,542 --> 01:12:18,792
 午餐又吃什么呢？
 What's for Lunch?
 
-902
+903
 01:12:19,083 --> 01:12:20,625
 都是晚餐那些吧
 What you get for Supper.
 
-903
+904
 01:12:20,875 --> 01:12:22,292
 什么是晚餐？
 What's for Supper?
 
-904
+905
 01:12:22,458 --> 01:12:23,792
 跟快餐一样
 Same as Quickie.
 
-905
+906
 01:12:23,917 --> 01:12:25,208
 快餐吃什么？
 What's for Quickie?
 
-906
+907
 01:12:25,375 --> 01:12:27,667
 唉，快餐不就是常餐
 A Quickie is a Regular.
 
-907
+908
 01:12:27,833 --> 01:12:29,750
 常餐不是卖光了吗？
 But you said Regular is gone!
 
-908
+909
 01:12:29,875 --> 01:12:33,417
 对，常餐卖光了，要吃特餐吗？
 Regular sure is gone. How about the Special?
 
-909
+910
 01:12:34,167 --> 01:12:35,542
 来两份特餐吧
 It's the Special, then.
 
-910
+911
 01:12:37,500 --> 01:12:40,500
 对不起，特餐卖光了
 Sorry, Special is gone.
 
-911
+912
 01:12:41,167 --> 01:12:43,708
 妈妈，改快餐吧
 Mother, let's have the Quickie.
 
-912
+913
 01:12:44,042 --> 01:12:45,417
 快餐有什么？
 What's for Quickie?
 
-913
+914
 01:12:45,542 --> 01:12:47,167
 快餐即是常餐
 A Quickie is a Regular.
 
-914
+915
 01:12:47,333 --> 01:12:48,833
 常餐又有什么呢？
 What's for Regular?
 
-915
+916
 01:12:49,167 --> 01:12:51,167
 常餐即是午餐
 A Regular is a Lunch.
 
-916
+917
 01:12:51,292 --> 01:12:52,958
 那么午餐又有什么吃？
 What's for Lunch?
 
-917
+918
 01:12:53,167 --> 01:12:55,375
 午餐跟晚餐一样
 Same as Supper.
 
-918
+919
 01:12:55,542 --> 01:12:56,292
 晚餐呢？
 And Supper?
 
-919
+920
 01:12:56,458 --> 01:12:58,125
 晚餐不就是特餐
 Supper is like Special.
 
-920
+921
 01:12:58,292 --> 01:13:00,250
 不是说特餐卖光了吗？
 But you said the Special is gone.
 
-921
+922
 01:13:00,375 --> 01:13:05,125
 特餐卖光了，要试试快餐吗？都一样的
 The Special sure is gone. Try Quickie. It's the same.
 
-922
+923
 01:13:05,292 --> 01:13:06,333
 来两份快餐吧
 We'll have Quickie.
 
-923
+924
 01:13:09,667 --> 01:13:11,542
 对不起，没快餐了
 Sorry, Quickie is gone.
 
-924
+925
 01:13:11,667 --> 01:13:14,375
 太过份了吧？你们究竟有吃的没？
 This is too much! Is there anything we can eat here?
 
-925
+926
 01:13:14,542 --> 01:13:16,333
 午餐吧，午餐精采呀
 Try the Lunch. It's fantastic!
 
-926
+927
 01:13:16,375 --> 01:13:17,417
 怎么个精采法？
 How so?
 
-927
+928
 01:13:17,583 --> 01:13:18,833
 跟晚餐一样精采
 It's like the Supper.
 
-928
+929
 01:13:18,958 --> 01:13:20,375
 晚餐又怎样呢？
 What about the Supper?
 
-929
+930
 01:13:20,542 --> 01:13:22,208
 跟常餐一样精采
 It's like the Regular.
 
-930
+931
 01:13:22,333 --> 01:13:23,542
 常餐又怎样呢？
 And what about the Regular?
 
-931
+932
 01:13:23,750 --> 01:13:27,292
 常餐早卖光了，你说精采不？
 The Regular is gone. Isn't that fantastic?
 
-932
+933
 01:13:29,917 --> 01:13:31,625
 好吧好吧！两份午餐好了
 Great! We'll have Lunch.
 
-933
+934
 01:13:35,625 --> 01:13:37,625
 对不起，午餐卖光了
 Sorry, Lunch is gone.
 
-934
+935
 01:13:37,792 --> 01:13:40,500
 要试试我们的晚餐吗？都一样的
 Try our Supper. It's all the same.
 
-935
+936
 01:13:40,667 --> 01:13:42,542
 光天白日，吃什么鬼晚餐？
 I'm not having supper under broad daylight!
 
-936
+937
 01:13:42,792 --> 01:13:46,125
 唉，说是说晚餐，还不就是午餐？
 What's in a name? It's the same as Lunch.
 
-937
+938
 01:13:46,333 --> 01:13:49,750
 好吧好吧，拜托！两份晚餐！快！
 Great! Whatever you say! And make it quick!
 
-938
+939
 01:13:49,917 --> 01:13:53,417
 要快吗？那得吃快餐了！
 You want it quick? Try Quickie!

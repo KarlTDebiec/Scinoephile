@@ -53,9 +53,7 @@ class Aligner:
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
-    async def align(
-        self, zhongwen_subs: Series, yuewen_subs: AudioSeries
-    ) -> Alignment:
+    async def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
         Presently, this does the following:
@@ -255,7 +253,9 @@ class Aligner:
 
             # Get 粤文
             yw_idxs = sg[1]
-            yws: list[AudioSubtitle] = [alignment.yuewen[yw_i] for yw_i in yw_idxs]
+            yws: list[AudioSubtitle] = [
+                alignment.yuewen.events[yw_i] for yw_i in yw_idxs
+            ]
 
             # If there is no punctuation, whitespace, or ambiguity, just copy over
             if zw.text == remove_punc_and_whitespace(zw.text) and len(yws) == 1:

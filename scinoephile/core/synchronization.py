@@ -229,11 +229,17 @@ def get_synced_series_from_groups(
 
         # One to one mapping
         if len(one_subs) == 1 and len(two_subs) == 1:
+            one_text = one_subs[0].text
+            two_text = two_subs[0].text
             synced.events.append(
                 Subtitle(
                     start=min(one_subs[0].start, two_subs[0].start),
                     end=max(one_subs[0].end, two_subs[0].end),
-                    text=f"{one_subs[0].text}\n{two_subs[0].text}",
+                    text=(
+                        f"{one_text}\\N{two_text}"
+                        if one_text and two_text
+                        else one_text or two_text
+                    ),
                 )
             )
             continue
@@ -246,11 +252,17 @@ def get_synced_series_from_groups(
             edges = np.linspace(group_start, group_end, len(one_subs) + 1, dtype=int)
 
             for one_sub, start, end in zip(one_subs, edges[:-1], edges[1:]):
+                one_text = one_sub.text
+                two_text = two_sub.text
                 synced.events.append(
                     Subtitle(
                         start=start,
                         end=end,
-                        text=f"{one_sub.text}\n{two_sub.text}",
+                        text=(
+                            f"{one_text}\\N{two_text}"
+                            if one_text and two_text
+                            else one_text or two_text
+                        ),
                     )
                 )
             continue
@@ -263,11 +275,17 @@ def get_synced_series_from_groups(
             edges = np.linspace(group_start, group_end, len(two_subs) + 1, dtype=int)
 
             for two_sub, start, end in zip(two_subs, edges[:-1], edges[1:]):
+                one_text = one_sub.text
+                two_text = two_sub.text
                 synced.events.append(
                     Subtitle(
                         start=start,
                         end=end,
-                        text=f"{one_sub.text}\n{two_sub.text}",
+                        text=(
+                            f"{one_text}\\N{two_text}"
+                            if one_text and two_text
+                            else one_text or two_text
+                        ),
                     )
                 )
             continue
