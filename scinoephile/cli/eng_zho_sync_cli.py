@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Any
+from typing import Unpack
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -13,6 +13,7 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
+from scinoephile.common.command_line_interface import CLIKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
 
@@ -66,7 +67,7 @@ class EngZhoSyncCli(CommandLineInterface):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

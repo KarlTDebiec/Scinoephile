@@ -7,13 +7,19 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, Unpack
 from unittest.mock import patch
 
 import pytest
 from common.command_line_interface import (  # ty:ignore[unresolved-import]
     CommandLineInterface,
 )
+
+
+class TestCliKwargs(TypedDict, total=False):
+    """Keyword arguments for TestCli _main method."""
+
+    pass
 
 
 class TestCli(CommandLineInterface):
@@ -24,7 +30,7 @@ class TestCli(CommandLineInterface):
     """
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
         """Execute test CLI."""
         pass
 
@@ -33,7 +39,7 @@ class TestCliWithoutDoc(CommandLineInterface):
     """Test CLI without detailed documentation."""
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
         """Execute test CLI."""
         pass
 
@@ -42,7 +48,7 @@ class AnotherTestCli(CommandLineInterface):
     """Another test CLI."""
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
         """Execute test CLI."""
         pass
 
@@ -75,7 +81,7 @@ def test_description_no_docstring():
 
     class NoDocCli(CommandLineInterface):
         @classmethod
-        def _main(cls, **kwargs: Any):
+        def _main(cls, **kwargs: Unpack[TestCliKwargs]):
             """Execute test CLI."""
             pass
 

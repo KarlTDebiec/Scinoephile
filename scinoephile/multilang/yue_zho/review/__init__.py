@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -17,10 +18,25 @@ __all__ = [
     "YueHansReviewPrompt",
     "YueHantReviewPrompt",
     "DualBlockProcessor",
+    "YueZhoReviewProcessKwargs",
+    "YueZhoReviewProcessorKwargs",
     "get_default_yue_vs_zho_test_cases",
     "get_yue_vs_zho_reviewed",
     "get_yue_vs_zho_processor",
 ]
+
+
+class YueZhoReviewProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for DualBlockProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class YueZhoReviewProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for DualBlockProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -49,7 +65,7 @@ def get_yue_vs_zho_reviewed(
     yuewen: Series,
     zhongwen: Series,
     processor: DualBlockProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueZhoReviewProcessKwargs],
 ) -> Series:
     """Get 粤文 subtitles reviewed against 中文 subtitles.
 
@@ -69,7 +85,7 @@ def get_yue_vs_zho_reviewed(
 def get_yue_vs_zho_processor(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueZhoReviewProcessorKwargs],
 ) -> DualBlockProcessor:
     """Get DualBlockProcessor with provided configuration.
 

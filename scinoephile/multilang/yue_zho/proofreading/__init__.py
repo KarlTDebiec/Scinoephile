@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import warning
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
@@ -19,11 +20,26 @@ __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
     "YueZhoProofreadingManager",
+    "YueZhoProofreadingProcessKwargs",
+    "YueZhoProofreadingProcessorKwargs",
     "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
     "YueZhoProofreadingProcessor",
 ]
+
+
+class YueZhoProofreadingProcessKwargs(TypedDict, total=False):
+    """Keyword arguments for YueZhoProofreadingProcessor.process."""
+
+    stop_at_idx: int | None
+
+
+class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
+    """Keyword arguments for YueZhoProofreadingProcessor initialization."""
+
+    test_case_path: Path | None
+    auto_verify: bool
 
 
 # noinspection PyUnusedImports
@@ -52,7 +68,7 @@ def get_yue_vs_zho_proofread(
     yuewen: Series,
     zhongwen: Series,
     processor: YueZhoProofreadingProcessor | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueZhoProofreadingProcessKwargs],
 ) -> Series:
     """Get 粤文 subtitles proofread against 中文 subtitles.
 
@@ -72,7 +88,7 @@ def get_yue_vs_zho_proofread(
 def get_yue_vs_zho_proofreader(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
-    **kwargs: Any,
+    **kwargs: Unpack[YueZhoProofreadingProcessorKwargs],
 ) -> YueZhoProofreadingProcessor:
     """Get YueZhoProofreadingProcessor with provided configuration.
 

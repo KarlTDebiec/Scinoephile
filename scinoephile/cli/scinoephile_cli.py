@@ -5,12 +5,13 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Any
+from typing import Unpack
 
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.eng_zho_cli import EngZhoCli
 from scinoephile.cli.zho_cli import ZhoCli
 from scinoephile.common import CommandLineInterface
+from scinoephile.common.command_line_interface import CLIKwargs
 
 
 class ScinoephileCli(CommandLineInterface):
@@ -35,7 +36,7 @@ class ScinoephileCli(CommandLineInterface):
             subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments."""
         subcommand_name = kwargs.pop("subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
