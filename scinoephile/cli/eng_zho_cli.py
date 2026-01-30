@@ -28,8 +28,9 @@ class EngZhoCli(CommandLineInterface):
             help="subcommand",
             required=True,
         )
-        for name in sorted(cls.subcommands()):
-            cls.subcommands()[name].argparser(subparsers=subparsers)
+        subcommands = cls.subcommands()
+        for name in sorted(subcommands):
+            subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
     def _main(cls, **kwargs: Any):
