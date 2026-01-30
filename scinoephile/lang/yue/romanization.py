@@ -58,21 +58,27 @@ if unmatched_hanzi_file_path.exists():
 re_jyutping = re.compile(r"[a-z]+\d")
 
 
-def get_yue_romanized(series: Series) -> Series:
+def get_yue_romanized(series: Series, append: bool = True) -> Series:
     """Get the Yale Cantonese romanization of a Chinese series.
 
     Arguments:
         series: Series for which to get Yale Cantonese romanization
+        append: Whether to append romanization to original text
     Returns:
         Yale Cantonese romanization of series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_yue_text_romanized(event.text)
+        romanized = _get_yue_text_romanized(event.text)
+        if append:
+            if romanized:
+                event.text = f"{event.text}\\N{romanized}"
+        else:
+            event.text = romanized
     return series
 
 
-def _get_yue_character_romanized(hanzi: str) -> str | None:
+def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912
     """Get the Yale Cantonese romanization of a single Chinese character.
 
     Arguments:
@@ -159,7 +165,10 @@ def _get_yue_text_romanized(text: str) -> str:
             section_romanization = ""
             for char in section:
                 if char in full_to_half_punc:
-                    section_romanization += full_to_half_punc[char]
+                    if char in {"＜", "＞"}:
+                        section_romanization += char
+                    else:
+                        section_romanization += full_to_half_punc[char]
                 elif re_western.match(char):
                     section_romanization += char
                 elif get_char_type(char) == "full":

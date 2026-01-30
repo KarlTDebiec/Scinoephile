@@ -14,6 +14,7 @@ from scinoephile.core.testing import test_data_root
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
+from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
@@ -83,6 +84,8 @@ if "简体粤文 (SRT)" in actions:
     yue_hans_clean.save(output_dir / "yue-Hans_timewarp_clean.srt")
     yue_hans_flatten = get_zho_flattened(yue_hans_clean)
     yue_hans_flatten.save(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    yue_hans_romanized = get_yue_romanized(yue_hans_flatten, append=True)
+    yue_hans_romanized.save(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
 if "English (SRT)" in actions:
     eng_ocr = Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
     eng_srt = Series.load(input_dir / "eng.srt")
