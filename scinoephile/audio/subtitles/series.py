@@ -31,7 +31,10 @@ from scinoephile.core.subtitles import Series, SeriesKwargs
 
 from .subtitle import AudioSubtitle
 
-__all__ = ["AudioSeries", "AudioSeriesLoadKwargs"]
+__all__ = [
+    "AudioSeries",
+    "AudioSeriesLoadKwargs",
+]
 
 
 class AudioSeriesLoadKwargs(TypedDict, total=False):

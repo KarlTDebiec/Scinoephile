@@ -7,13 +7,12 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.common.command_line_interface import CLIKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
 

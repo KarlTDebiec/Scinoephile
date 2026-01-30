@@ -16,15 +16,14 @@ from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
 
-__all__ = ["Series", "SeriesKwargs"]
+__all__ = [
+    "Series",
+    "SeriesKwargs",
+]
 
 
 class SeriesKwargs(TypedDict, total=False):
-    """Keyword arguments for Series methods.
-
-    Note: pysubs2 SSAFile methods do not accept additional kwargs beyond their
-    documented parameters. This TypedDict is empty but provided for consistency.
-    """
+    """Keyword arguments for Series methods."""
 
     pass
 

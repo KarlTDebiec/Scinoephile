@@ -17,7 +17,6 @@ from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 __all__ = [
     "YueHansReviewPrompt",
     "YueHantReviewPrompt",
-    "DualBlockProcessor",
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
     "get_default_yue_vs_zho_test_cases",

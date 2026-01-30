@@ -8,8 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
-from scinoephile.common import CommandLineInterface
-from scinoephile.common.command_line_interface import CLIKwargs
+from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
 class EngZhoCli(CommandLineInterface):

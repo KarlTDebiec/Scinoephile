@@ -16,7 +16,7 @@ from common.command_line_interface import (  # ty:ignore[unresolved-import]
 )
 
 
-class TestCliKwargs(TypedDict, total=False):
+class CliTestKwargs(TypedDict, total=False):
     """Keyword arguments for TestCli _main method."""
 
     pass
@@ -30,7 +30,7 @@ class TestCli(CommandLineInterface):
     """
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
+    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
         """Execute test CLI."""
         pass
 
@@ -39,7 +39,7 @@ class TestCliWithoutDoc(CommandLineInterface):
     """Test CLI without detailed documentation."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
+    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
         """Execute test CLI."""
         pass
 
@@ -48,7 +48,7 @@ class AnotherTestCli(CommandLineInterface):
     """Another test CLI."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[TestCliKwargs]):
+    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
         """Execute test CLI."""
         pass
 
@@ -81,7 +81,7 @@ def test_description_no_docstring():
 
     class NoDocCli(CommandLineInterface):
         @classmethod
-        def _main(cls, **kwargs: Unpack[TestCliKwargs]):
+        def _main(cls, **kwargs: Unpack[CliTestKwargs]):
             """Execute test CLI."""
             pass
 

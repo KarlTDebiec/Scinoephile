@@ -9,7 +9,10 @@ from typing import Any, TypedDict, Unpack
 
 from .answer import Answer
 
-__all__ = ["LLMProvider", "ChatCompletionKwargs"]
+__all__ = [
+    "ChatCompletionKwargs",
+    "LLMProvider",
+]
 
 
 class ChatCompletionKwargs(TypedDict, total=False):

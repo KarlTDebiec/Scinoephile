@@ -10,8 +10,7 @@ from typing import Unpack
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.eng_zho_cli import EngZhoCli
 from scinoephile.cli.zho_cli import ZhoCli
-from scinoephile.common import CommandLineInterface
-from scinoephile.common.command_line_interface import CLIKwargs
+from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
 class ScinoephileCli(CommandLineInterface):

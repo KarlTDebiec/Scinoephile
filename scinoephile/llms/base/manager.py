@@ -18,7 +18,10 @@ from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
 
-__all__ = ["Manager", "TestCaseClsKwargs"]
+__all__ = [
+    "Manager",
+    "TestCaseClsKwargs",
+]
 
 
 class TestCaseClsKwargs(TypedDict, total=False):

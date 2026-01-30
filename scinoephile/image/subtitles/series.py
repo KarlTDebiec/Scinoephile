@@ -21,7 +21,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, SeriesKwargs
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
@@ -29,16 +29,6 @@ from .subtitle import ImageSubtitle
 from .sup import read_sup_series
 
 __all__ = ["ImageSeries"]
-
-
-class ImageSeriesKwargs(TypedDict, total=False):
-    """Keyword arguments for ImageSeries methods.
-
-    Note: Currently empty as ImageSeries methods do not accept additional kwargs
-    beyond their documented parameters.
-    """
-
-    pass
 
 
 class ImageSeries(Series):
@@ -108,7 +98,7 @@ class ImageSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[ImageSeriesKwargs],
+        **kwargs: Unpack[SeriesKwargs],
     ):
         """Save series to an output file.
 
@@ -220,7 +210,7 @@ class ImageSeries(Series):
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[ImageSeriesKwargs],
+        **kwargs: Unpack[SeriesKwargs],
     ) -> Self:
         """Load series from an input file.
 

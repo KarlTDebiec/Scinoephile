@@ -8,9 +8,8 @@ from argparse import ArgumentParser
 from sys import stdin, stdout
 from typing import Unpack
 
-from scinoephile.common import CommandLineInterface
+from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
-from scinoephile.common.command_line_interface import CLIKwargs
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.cmn import get_cmn_romanized

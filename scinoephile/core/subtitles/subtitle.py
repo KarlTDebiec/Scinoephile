@@ -10,7 +10,10 @@ from typing import TypedDict, Unpack, override
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
 
-__all__ = ["Subtitle", "SubtitleKwargs"]
+__all__ = [
+    "Subtitle",
+    "SubtitleKwargs",
+]
 
 
 class SubtitleKwargs(TypedDict, total=False):
