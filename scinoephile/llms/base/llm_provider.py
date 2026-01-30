@@ -14,7 +14,7 @@ __all__ = ["LLMProvider", "ChatCompletionKwargs"]
 
 class ChatCompletionKwargs(TypedDict, total=False):
     """Keyword arguments for LLM chat completion methods.
-    
+
     These correspond to common parameters accepted by LLM APIs like OpenAI.
     """
 

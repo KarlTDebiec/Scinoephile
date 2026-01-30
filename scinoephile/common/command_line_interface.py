@@ -16,7 +16,7 @@ from inspect import cleandoc
 from logging import FileHandler, basicConfig, getLogger, info
 from pathlib import Path
 from sys import argv
-from typing import Any, TypedDict, Unpack
+from typing import TypedDict, Unpack
 
 from .logs import set_logging_verbosity
 

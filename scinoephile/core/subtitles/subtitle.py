@@ -15,7 +15,7 @@ __all__ = ["Subtitle", "SubtitleKwargs"]
 
 class SubtitleKwargs(TypedDict, total=False):
     """Keyword arguments for Subtitle initialization.
-    
+
     These correspond to the fields of pysubs2.SSAEvent.
     """
 

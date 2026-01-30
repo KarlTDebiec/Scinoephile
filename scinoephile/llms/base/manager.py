@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import TypedDict, Unpack
+from typing import Any, TypedDict, Unpack
 
 from pydantic import Field, create_model, model_validator
 

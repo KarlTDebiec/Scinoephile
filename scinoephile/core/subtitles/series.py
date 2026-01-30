@@ -21,7 +21,7 @@ __all__ = ["Series", "SeriesKwargs"]
 
 class SeriesKwargs(TypedDict, total=False):
     """Keyword arguments for Series methods.
-    
+
     Note: pysubs2 SSAFile methods do not accept additional kwargs beyond their
     documented parameters. This TypedDict is empty but provided for consistency.
     """

@@ -167,7 +167,9 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
     return wrapped
 
 
-def float_arg(**kwargs: Unpack[FloatValidatorKwargs]) -> Callable[[Any], float | list[float]]:
+def float_arg(
+    **kwargs: Unpack[FloatValidatorKwargs],
+) -> Callable[[Any], float | list[float]]:
     """Validate a float argument.
 
     Arguments:
@@ -216,7 +218,9 @@ def output_dir_arg() -> Callable[[Any], Path | list[Path]]:
     return get_validator(val_output_dir_path)
 
 
-def output_file_arg(**kwargs: Unpack[OutputPathValidatorKwargs]) -> Callable[[Any], Path | list[Path]]:
+def output_file_arg(
+    **kwargs: Unpack[OutputPathValidatorKwargs],
+) -> Callable[[Any], Path | list[Path]]:
     """Validate an output file path argument.
 
     Arguments:

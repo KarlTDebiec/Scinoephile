@@ -433,7 +433,9 @@ class AudioSeries(Series):
         return cls._build_series(text_series, full_audio, buffer)
 
     @classmethod
-    def _load_wav(cls, dir_path: Path, buffer=1000, **kwargs: Unpack[SeriesKwargs]) -> Self:
+    def _load_wav(
+        cls, dir_path: Path, buffer=1000, **kwargs: Unpack[SeriesKwargs]
+    ) -> Self:
         """Load series from a directory of wav files.
 
         Arguments:
