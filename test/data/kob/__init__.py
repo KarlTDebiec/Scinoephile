@@ -76,6 +76,7 @@ __all__ = [
     "kob_yue_hans_timewarp",
     "kob_yue_hans_timewarp_clean",
     "kob_yue_hans_timewarp_clean_flatten",
+    "kob_yue_hans_timewarp_clean_flatten_romanize",
     "kob_yue_hant_timewarp",
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
@@ -87,6 +88,7 @@ __all__ = [
     "kob_zho_hant_fuse_clean_validate_proofread_flatten",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
     "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
+    "kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread_romanize",
     "kob_zho_hant_image",
 ]
 
@@ -379,6 +381,12 @@ def kob_yue_hans_timewarp_clean_flatten() -> Series:
 
 
 @pytest.fixture
+def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
+    """KOB 简体粤文 timewarp/cleaned/flattened romanized subtitles."""
+    return Series.load(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
+
+
+@pytest.fixture
 def kob_yue_hant_timewarp() -> Series:
     """KOB 繁體粵文 timewarp subtitles."""
     return Series.load(output_dir / "yue-Hant_timewarp.srt")
@@ -448,6 +456,16 @@ def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread() -> S
     return Series.load(
         output_dir
         / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+    )
+
+
+@pytest.fixture
+def kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread_romanize(  # noqa: E501
+) -> Series:
+    """KOB 简体中文 simplified/proofread fused/cleaned romanized subtitles."""
+    return Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_"
+        "simplify_proofread_romanize.srt"
     )
 
 

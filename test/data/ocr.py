@@ -11,6 +11,7 @@ from typing import Any
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.cmn import get_cmn_romanized
 from scinoephile.lang.eng import (
     get_eng_cleaned,
     get_eng_flattened,
@@ -297,6 +298,14 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         flatten = get_zho_flattened(proofread)
         flatten.save(flatten_path, exist_ok=True)
 
+    # Romanize
+    romanize_path = (
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt"
+    )
+    if not romanize_path.exists() or overwrite_srt:
+        romanized = get_cmn_romanized(flatten, append=True)
+        romanized.save(romanize_path, exist_ok=True)
+
     return flatten
 
 
@@ -445,7 +454,9 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         output_dir
         / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
     )
-    if not simplify_proofread_path.exists() or overwrite_srt:
+    if simplify_proofread_path.exists() and not overwrite_srt:
+        simplify_proofread = Series.load(simplify_proofread_path)
+    else:
         simplify_proofreader = get_zho_proofreader(
             prompt_cls=ZhoHansProofreadingPrompt,
             test_case_path=title_root
@@ -457,5 +468,14 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         )
         simplify_proofread = get_zho_proofread(simplify, simplify_proofreader)
         simplify_proofread.save(simplify_proofread_path, exist_ok=True)
+
+    # Romanize
+    romanize_path = (
+        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_"
+        "simplify_proofread_romanize.srt"
+    )
+    if not romanize_path.exists() or overwrite_srt:
+        romanized = get_cmn_romanized(simplify_proofread, append=True)
+        romanized.save(romanize_path, exist_ok=True)
 
     return flatten

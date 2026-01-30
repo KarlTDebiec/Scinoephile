@@ -98,6 +98,7 @@ __all__ = [
     "mlamd_zho_hans_fuse_clean_validate",
     "mlamd_zho_hans_fuse_clean_validate_proofread",
     "mlamd_zho_hans_fuse_clean_validate_proofread_flatten",
+    "mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_image_path",
     "mlamd_zho_hant_fuse",
@@ -519,6 +520,14 @@ def mlamd_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+
+@pytest.fixture
+def mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize() -> Series:
+    """MLAMD 简体中文 fused/cleaned/validated/proofread/flattened romanized subs."""
+    return Series.load(
+        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt"
     )
 
 

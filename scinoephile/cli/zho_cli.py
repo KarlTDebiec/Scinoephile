@@ -13,6 +13,8 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
 from scinoephile.common.command_line_interface import CLIKwargs
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.cmn import get_cmn_romanized
+from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.proofreading import (
@@ -101,6 +103,14 @@ class ZhoCli(CommandLineInterface):
                 " (default: simplified)"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--romanize",
+            metavar="LANGUAGE",
+            nargs="?",
+            const="mandarin",
+            type=str_arg(options=("mandarin", "cantonese")),
+            help="append romanization to subtitles (default: mandarin)",
+        )
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -130,9 +140,10 @@ class ZhoCli(CommandLineInterface):
         flatten = kwargs.pop("flatten")
         convert = kwargs.pop("convert")
         proofread_script = kwargs.pop("proofread")
+        romanize = kwargs.pop("romanize")
         overwrite = kwargs.pop("overwrite")
 
-        if not (clean or flatten or convert or proofread_script):
+        if not (clean or flatten or convert or proofread_script or romanize):
             parser.error("At least one operation required")
         cls._validate_proofread_script(parser, convert, proofread_script)
 
@@ -147,6 +158,10 @@ class ZhoCli(CommandLineInterface):
             series = get_zho_proofread(series, processor=proofreader)
         if flatten:
             series = get_zho_flattened(series)
+        if romanize == "mandarin":
+            series = get_cmn_romanized(series, append=True)
+        elif romanize == "cantonese":
+            series = get_yue_romanized(series, append=True)
         cls._write_series(parser, series, outfile, overwrite)
 
     @classmethod

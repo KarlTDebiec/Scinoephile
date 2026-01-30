@@ -20,17 +20,23 @@ __all__ = [
 ]
 
 
-def get_cmn_romanized(series: Series) -> Series:
+def get_cmn_romanized(series: Series, append: bool = True) -> Series:
     """Get the Mandarin pinyin romanization of Hanzi series.
 
     Arguments:
         series: Series for which to get Mandarin pinyin romanization
+        append: Whether to append romanization to original text
     Returns:
         Mandarin pinyin romanization of series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_cmn_text_romanized(event.text)
+        romanized = _get_cmn_text_romanized(event.text)
+        if append:
+            if romanized:
+                event.text = f"{event.text}\\N{romanized}"
+        else:
+            event.text = romanized
     return series
 
 
@@ -49,7 +55,10 @@ def _get_cmn_text_romanized(text: str) -> str:
             section_romanization = ""
             for word in jieba.cut(section):
                 if word in full_to_half_punc:
-                    section_romanization += full_to_half_punc[word]
+                    if word in {"＜", "＞"}:
+                        section_romanization += word
+                    else:
+                        section_romanization += full_to_half_punc[word]
                 else:
                     section_romanization += " " + "".join([a[0] for a in pinyin(word)])
             line_romanization += "  " + section_romanization.strip()

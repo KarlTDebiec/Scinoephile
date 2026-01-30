@@ -8,12 +8,12 @@ import pickle
 import re
 from collections import Counter
 from copy import deepcopy
+from logging import getLogger
 from warnings import catch_warnings, filterwarnings, simplefilter
 
 with catch_warnings():
     simplefilter("ignore", UserWarning)
     import pycantonese
-
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
@@ -24,6 +24,8 @@ from scinoephile.lang.zho.conversion import get_zho_converter
 __all__ = [
     "get_yue_romanized",
 ]
+
+logger = getLogger(__name__)
 
 data_root = package_root / "data/cantonese/"
 
@@ -55,24 +57,47 @@ if unmatched_hanzi_file_path.exists():
     with open(unmatched_hanzi_file_path, "rb") as infile:
         unmatched = pickle.load(infile)
 
-re_jyutping = re.compile(r"[a-z]+\d")
+# Load Hanzi to Jyutping mapping
+hanzi_to_jyutping = {}
+hanzi_to_jyutping_path = data_root / "hanzi_to_jyutping.cha"
+if hanzi_to_jyutping_path.exists():
+    current_hanzi: str | None = None
+    with open(hanzi_to_jyutping_path, encoding="utf-8") as infile:
+        for raw_line in infile:
+            line = raw_line.strip()
+            if line.startswith("*XXA:"):
+                current_hanzi = line.replace("*XXA:", "", 1).strip()
+            elif line.startswith("%mor:") and current_hanzi is not None:
+                entry = line.replace("%mor:", "", 1).strip()
+                if "|" in entry:
+                    _, jyutping = entry.split("|", 1)
+                    hanzi_to_jyutping[current_hanzi] = jyutping.strip()
+                current_hanzi = None
+
+re_jyutping = re.compile(r"[a-z]+\\d")
 
 
-def get_yue_romanized(series: Series) -> Series:
+def get_yue_romanized(series: Series, append: bool = True) -> Series:
     """Get the Yale Cantonese romanization of a Chinese series.
 
     Arguments:
         series: Series for which to get Yale Cantonese romanization
+        append: Whether to append romanization to original text
     Returns:
         Yale Cantonese romanization of series
     """
     series = deepcopy(series)
     for event in series:
-        event.text = _get_yue_text_romanized(event.text)
+        romanized = _get_yue_text_romanized(event.text)
+        if append:
+            if romanized:
+                event.text = f"{event.text}\\N{romanized}"
+        else:
+            event.text = romanized
     return series
 
 
-def _get_yue_character_romanized(hanzi: str) -> str | None:
+def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PLR0915
     """Get the Yale Cantonese romanization of a single Chinese character.
 
     Arguments:
@@ -85,13 +110,25 @@ def _get_yue_character_romanized(hanzi: str) -> str | None:
             "get_cantonese_character_romanization only accepts single Chinese character"
         )
 
+    # If cached, use that value
+    if hanzi in hanzi_to_romanization and hanzi_to_romanization[hanzi] is not None:
+        return hanzi_to_romanization[hanzi]
+
+    # If provided by mapping, use that value
+    if hanzi in hanzi_to_jyutping:
+        try:
+            yale = pycantonese.jyutping_to_yale(hanzi_to_jyutping[hanzi])[0]
+        except ValueError:
+            yale = None
+        if yale is not None:
+            hanzi_to_romanization[hanzi] = yale
+            with open(hanzi_to_yale_file_path, "wb") as outfile:
+                pickle.dump(hanzi_to_romanization, outfile, pickle.HIGHEST_PROTOCOL)
+        return yale
+
     # If known to be unmatched, stop early
     if hanzi in unmatched:
         return None
-
-    # If cached, use that value
-    elif hanzi in hanzi_to_romanization:
-        return hanzi_to_romanization[hanzi]
 
     # Otherwise search corpus for value
     matches = corpus.search(character=hanzi)
@@ -122,7 +159,13 @@ def _get_yue_character_romanized(hanzi: str) -> str | None:
                 ]
                 token = [m for m in matches if m.word == most_common_word][0]
                 index = token.word.index(hanzi)
-                jyutping = re_jyutping.findall(token.jyutping)[index]
+                jyutping_matches = re_jyutping.findall(token.jyutping)
+                if index >= len(jyutping_matches):
+                    unmatched.add(hanzi)
+                    with open(unmatched_hanzi_file_path, "wb") as outfile:
+                        pickle.dump(unmatched, outfile, pickle.HIGHEST_PROTOCOL)
+                    return None
+                jyutping = jyutping_matches[index]
             except TypeError:
                 unmatched.add(hanzi)
                 with open(unmatched_hanzi_file_path, "wb") as outfile:
@@ -159,7 +202,10 @@ def _get_yue_text_romanized(text: str) -> str:
             section_romanization = ""
             for char in section:
                 if char in full_to_half_punc:
-                    section_romanization += full_to_half_punc[char]
+                    if char in {"＜", "＞"}:
+                        section_romanization += char
+                    else:
+                        section_romanization += full_to_half_punc[char]
                 elif re_western.match(char):
                     section_romanization += char
                 elif get_char_type(char) == "full":
@@ -167,6 +213,9 @@ def _get_yue_text_romanized(text: str) -> str:
                     if romanization is not None:
                         section_romanization += " " + romanization
                     else:
+                        logger.warning(
+                            "No Cantonese romanization for character: %s", char
+                        )
                         section_romanization += char
             line_romanization += "  " + section_romanization.strip()
         text_romanization += "\n" + line_romanization.strip()
