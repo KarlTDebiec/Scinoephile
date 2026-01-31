@@ -20,6 +20,19 @@ from .exception import (
     UnsupportedPlatformError,
 )
 
+__all__ = [
+    "val_executable",
+    "val_float",
+    "val_input_dir_path",
+    "val_input_path",
+    "val_int",
+    "val_output_dir_path",
+    "val_output_path",
+    "val_str",
+]
+
+logger = getLogger(__name__)
+
 
 def val_executable(
     name: str, supported_platforms: Collection[str] | None = None
@@ -462,18 +475,3 @@ def val_str(value: Any, options: Iterable[str]) -> str:
         ) from None
 
     return case_insensitive_options[value]
-
-
-__all__ = [
-    "val_executable",
-    "val_float",
-    "val_input_dir_path",
-    "val_input_path",
-    "val_int",
-    "val_output_dir_path",
-    "val_output_path",
-    "val_str",
-]
-
-
-logger = getLogger(__name__)

@@ -12,6 +12,14 @@ from pathlib import Path
 from shutil import move, rmtree
 from tempfile import NamedTemporaryFile, mkdtemp
 
+__all__ = [
+    "get_temp_directory_path",
+    "get_temp_file_path",
+    "rename_preexisting_output_path",
+]
+
+logger = getLogger(__name__)
+
 
 @contextmanager
 def get_temp_directory_path() -> Generator[Path]:
@@ -72,13 +80,3 @@ def rename_preexisting_output_path(output_path: Path):
                 move(output_path, backup_path)
                 break
             backup_i += 1
-
-
-__all__ = [
-    "get_temp_directory_path",
-    "get_temp_file_path",
-    "rename_preexisting_output_path",
-]
-
-
-logger = getLogger(__name__)

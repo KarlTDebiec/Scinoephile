@@ -9,6 +9,12 @@ from logging import DEBUG, ERROR, INFO, WARNING, Formatter, StreamHandler, getLo
 DEFAULT_LOG_FORMAT = "%(levelname)s: %(name)s: %(message)s"
 """Default format for log messages."""
 
+__all__ = [
+    "DEFAULT_LOG_FORMAT",
+    "configure_logging",
+    "set_logging_verbosity",
+]
+
 
 def configure_logging(verbosity: int = 1, log_format: str | None = None):
     """Configure logging with appropriate verbosity level and format.
@@ -55,10 +61,3 @@ def set_logging_verbosity(verbosity: int):
         verbosity: level of verbosity (0=ERROR, 1=WARNING, 2=INFO, 3+=DEBUG)
     """
     configure_logging(verbosity)
-
-
-__all__ = [
-    "DEFAULT_LOG_FORMAT",
-    "configure_logging",
-    "set_logging_verbosity",
-]
