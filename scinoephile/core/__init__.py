@@ -5,7 +5,7 @@
 Module hierarchy (within scinoephile):
 This module may import from: common
 
-Package hierarchy (within core, modules may import from any above):
+Hierarchy within module:
 * exceptions / text
 * subtitles
 * timing / pairs

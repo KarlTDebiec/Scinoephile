@@ -5,7 +5,7 @@
 Module hierarchy (within scinoephile):
 This module may import from: common, core
 
-Package hierarchy (within image, modules may import from any above):
+Hierarchy within module:
 * bbox / colors
 * bboxes / drawing
 * subtitles

@@ -4,4 +4,7 @@
 
 Module hierarchy (within scinoephile):
 This module may import from: common, core, lang, audio, llms
+
+Hierarchy within module:
+* yue_zho
 """

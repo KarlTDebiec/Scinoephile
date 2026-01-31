@@ -4,6 +4,11 @@
 
 Module hierarchy (within scinoephile):
 This module may import from: common, core
+
+Hierarchy within module:
+* line_diff_kind / replace_cursor
+* line_diff
+* series_diff
 """
 
 from __future__ import annotations

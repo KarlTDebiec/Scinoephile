@@ -4,4 +4,8 @@
 
 Module hierarchy (within scinoephile):
 This module may import from: common, core, lang
+
+Hierarchy within module:
+* transcription
+* subtitles
 """
