@@ -23,7 +23,7 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-__all__ = ["BboxValidator", "ValidationManager"]
+__all__ = ["BboxValidator"]
 
 
 logger = getLogger(__name__)
@@ -108,6 +108,7 @@ class BboxValidator:
                     start=sub.start,
                     end=sub.end,
                     text=sub.text,
+                    bboxes=sub.bboxes,
                 )
             )
         output_series = ImageSeries(events=events)
@@ -661,7 +662,3 @@ class BboxValidator:
     def _char_pair_gaps_path() -> Path:
         """Path to character pair gap csv file."""
         return package_root / "data" / "ocr" / "char_pair_gaps.csv"
-
-
-# Backward compatibility alias
-ValidationManager = BboxValidator

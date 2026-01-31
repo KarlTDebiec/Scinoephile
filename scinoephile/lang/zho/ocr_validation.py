@@ -17,7 +17,7 @@ def validate_zho_ocr(
     stop_at_idx: int | None = None,
     interactive: bool = False,
     output_dir_path: Path | str | None = None,
-    validate_chars: bool = False,
+    validate_chars: bool = True,
 ) -> ImageSeries:
     """Validate OCR text against image series images.
 
