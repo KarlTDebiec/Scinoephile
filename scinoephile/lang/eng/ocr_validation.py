@@ -17,6 +17,7 @@ def validate_eng_ocr(
     stop_at_idx: int | None = None,
     interactive: bool = False,
     output_dir_path: Path | str | None = None,
+    use_ml_validation: bool = False,
 ) -> ImageSeries:
     """Validate OCR text against image series images.
 
@@ -25,8 +26,9 @@ def validate_eng_ocr(
         stop_at_idx: stop processing at this index
         interactive: whether to prompt user for confirmations
         output_dir_path: directory in which to save validation images
+        use_ml_validation: whether to use ML-based character validation
     """
-    validation_mgr = ValidationManager()
+    validation_mgr = ValidationManager(use_ml_validation=use_ml_validation)
     output_series = validation_mgr.validate(series, stop_at_idx, interactive)
 
     if output_dir_path is not None:

@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+from .ml_validator import MLCharacterValidator
 from .validation_manager import ValidationManager
 
 __all__ = [
+    "MLCharacterValidator",
     "ValidationManager",
 ]
