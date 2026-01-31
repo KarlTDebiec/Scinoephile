@@ -2,7 +2,6 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code.
 
-Module hierarchy (within scinoephile):
 This module may import from: common
 
 Hierarchy within module:

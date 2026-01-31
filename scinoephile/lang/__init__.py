@@ -2,7 +2,6 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Language-specific code for scinoephile.
 
-Module hierarchy (within scinoephile):
 This module may import from: common, core, image, llms
 
 Hierarchy within module:
