@@ -9,7 +9,7 @@ import json
 from abc import ABC
 from functools import cache
 from json import JSONDecodeError
-from logging import debug, error, info, warning
+from logging import getLogger
 from pathlib import Path
 from typing import ClassVar, Self, cast
 
@@ -26,6 +26,8 @@ from .query import Query
 from .test_case import TestCase
 
 __all__ = ["Queryer"]
+
+logger = getLogger(__name__)
 
 
 class Queryer[
@@ -133,7 +135,7 @@ class Queryer[
             try:
                 content = self.provider.chat_completion(messages, test_case.answer_cls)
             except ScinoephileError as exc:
-                error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
+                logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
                 if attempt == self.max_attempts:
                     raise
                 continue
@@ -142,7 +144,7 @@ class Queryer[
             try:
                 answer = test_case.answer_cls.model_validate_json(content)
             except ValidationError as exc:
-                error(
+                logger.error(
                     f"Query:\n{test_case.query}\n"
                     f"Yielded invalid content (attempt {attempt}):\n{content}\n"
                     f"Validation errors:\n{self._format_validation_errors(exc)}"
@@ -170,7 +172,7 @@ class Queryer[
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
             except ValidationError as exc:
-                error(
+                logger.error(
                     f"Query:\n{test_case.query}\n"
                     f"Yielded invalid answer (attempt {attempt}):\n{answer}\n"
                     f"Validation errors:\n{self._format_validation_errors(exc)}"
@@ -205,7 +207,7 @@ class Queryer[
             )
             with open(cache_path, mode="w", encoding="utf-8") as f:
                 f.write(contents)
-            debug(f"Saved to cache: {cache_path}")
+            logger.debug(f"Saved to cache: {cache_path}")
 
         return test_case
 
@@ -216,7 +218,7 @@ class Queryer[
         few_shot = f"\n\n{self.prompt_cls.few_shot_intro}"
         for test_case in self.prompt_test_cases.values():
             if test_case.answer is None:
-                warning(
+                logger.warning(
                     f"Prompt test case {test_case.query.key_str} has no answer; "
                     "skipping."
                 )
@@ -241,7 +243,7 @@ class Queryer[
         test_case.prompt = key in self.prompt_test_cases
         test_case.verified = key in self.verified_test_cases
         self.encountered_test_cases[key] = test_case
-        debug(f"Logged test case: {test_case.query.key_str}")
+        logger.debug(f"Logged test case: {test_case.query.key_str}")
 
     @cache
     def _get_cache_path(self, system_prompt: str, query_prompt: str) -> Path | None:
@@ -289,15 +291,15 @@ class Queryer[
             if self.auto_verify and test_case.get_auto_verified():
                 test_case.verified = True
             self.log_encountered_test_case(test_case)
-            info(f"Loaded from cache: {test_case.query.key_str}")
+            logger.info(f"Loaded from cache: {test_case.query.key_str}")
             cache_path.touch()
             return test_case
         except (AttributeError, JSONDecodeError, ValidationError) as exc:
-            error(
+            logger.error(
                 f"Cache content for query {test_case.query.key_str} is invalid: {exc}"
             )
             cache_path.unlink()
-            info(f"Deleted invalid cache file: {cache_path}")
+            logger.info(f"Deleted invalid cache file: {cache_path}")
         return None
 
     def _get_system_prompt(self, answer_cls: type[Answer]) -> str:
@@ -327,7 +329,7 @@ class Queryer[
         """
         if test_case := self.verified_test_cases.get(query.key):
             self.log_encountered_test_case(test_case)
-            info(f"Loaded from verified log: {query.key_str}")
+            logger.info(f"Loaded from verified log: {query.key_str}")
             return test_case
         return None
 

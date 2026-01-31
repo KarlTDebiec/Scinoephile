@@ -150,7 +150,7 @@ def test_argparser_with_subparsers():
 def test_log_command_line():
     """Test log_command_line() logs the command line."""
     with patch("common.command_line_interface.argv", ["script.py", "arg1", "arg2"]):
-        with patch("common.command_line_interface.info") as mock_info:
+        with patch("common.command_line_interface.logger.info") as mock_info:
             TestCli.log_command_line()
             mock_info.assert_called_once()
             call_args = mock_info.call_args[0][0]
