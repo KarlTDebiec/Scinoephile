@@ -1,6 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""General-purpose code not tied to a particular project."""
+"""General-purpose code not tied to a particular project.
+
+Module hierarchy (within scinoephile):
+This module is at the base of the hierarchy and should not import from other
+scinoephile modules.
+"""
 
 from __future__ import annotations
 

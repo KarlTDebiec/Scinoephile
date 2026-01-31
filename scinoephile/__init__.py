@@ -2,10 +2,13 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code for scinoephile.
 
-Package hierarchy (modules may import from any above):
+Module hierarchy (modules may import from any above):
 * common
 * core
 * analysis
 * lang
-* audio / documentation / image /openai
+* audio / image / open_ai
+* llms
+* multilang
+* cli
 """

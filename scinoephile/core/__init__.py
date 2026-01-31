@@ -2,7 +2,10 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Core code.
 
-Package hierarchy (modules may import from any above):
+Module hierarchy (within scinoephile):
+This module may import from: common
+
+Package hierarchy (within core, modules may import from any above):
 * exceptions / text
 * subtitles
 * timing / pairs
