@@ -2,7 +2,7 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """General-purpose code not tied to a particular project.
 
-This module should not import from other modules outside of the standard library.
+This module should not import from other modules outside the standard library.
 """
 
 from __future__ import annotations
