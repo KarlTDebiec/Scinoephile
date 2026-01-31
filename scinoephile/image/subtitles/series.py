@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import re
 from html import escape, unescape
-from logging import info
+from logging import getLogger
 from pathlib import Path
-from typing import Any, Self, TypedDict, Unpack, override
+from typing import Any, Self, Unpack, override
 
 import numpy as np
 from PIL import Image
@@ -29,6 +29,9 @@ from .subtitle import ImageSubtitle
 from .sup import read_sup_series
 
 __all__ = ["ImageSeries"]
+
+
+logger = getLogger(__name__)
 
 
 class ImageSeries(Series):
@@ -116,7 +119,7 @@ class ImageSeries(Series):
         if format_ == "html" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
             self._save_html(output_dir, encoding=encoding, errors=errors)
-            info(f"Saved series to {output_dir}")
+            logger.info(f"Saved series to {output_dir}")
             return
 
         # Otherwise, continue as superclass
@@ -130,7 +133,7 @@ class ImageSeries(Series):
             errors=errors,
             **kwargs,
         )
-        info(f"Saved series to {output_path}")
+        logger.info(f"Saved series to {output_path}")
 
     def _save_html(
         self,
@@ -149,10 +152,10 @@ class ImageSeries(Series):
         if dir_path.exists() and dir_path.is_dir():
             for file in dir_path.iterdir():
                 file.unlink()
-            info(f"Deleted {dir_path}")
+            logger.info(f"Deleted {dir_path}")
         else:
             dir_path.mkdir(parents=True)
-            info(f"Created directory {dir_path}")
+            logger.info(f"Created directory {dir_path}")
 
         # Save images
         image_paths = []
@@ -160,7 +163,7 @@ class ImageSeries(Series):
             outfile_path = dir_path / f"{i:04d}.png"
             event.img.save(outfile_path)
             image_paths.append(outfile_path)
-        info(f"Saved images to {dir_path}")
+        logger.info(f"Saved images to {dir_path}")
 
         # Save HTML index
         html_lines = [
@@ -199,7 +202,7 @@ class ImageSeries(Series):
         html_lines.extend(["</body>", "</html>"])
         html_path = dir_path / "index.html"
         html_path.write_text("\n".join(html_lines), encoding=encoding, errors=errors)
-        info(f"Saved HTML to {html_path}")
+        logger.info(f"Saved HTML to {html_path}")
 
     @classmethod
     @override
@@ -271,7 +274,7 @@ class ImageSeries(Series):
             img, converted = convert_rgba_img_to_la(img)
             if converted:
                 img.save(html_event["path"])
-                info(f"Converted {html_event['path']} to LA and resaved")
+                logger.info(f"Converted {html_event['path']} to LA and resaved")
             events.append(
                 cls.event_class(
                     start=html_event["start"],

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import csv
-from logging import info
+from logging import getLogger
 from pathlib import Path
 
 from scinoephile.core.text import full_punc, get_char_type
@@ -17,6 +17,9 @@ __all__ = [
     "load_char_pair_gaps",
     "save_char_pair_gaps",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912
@@ -156,4 +159,4 @@ def save_char_pair_gaps(
     with file_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerows(rows)
-    info(f"Saved {file_path}.")
+    logger.info(f"Saved {file_path}.")

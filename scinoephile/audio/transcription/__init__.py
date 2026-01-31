@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from logging import error
+from logging import getLogger
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -21,6 +21,8 @@ __all__ = [
     "get_segment_split_on_whitespace",
     "get_segment_zho_converted",
 ]
+
+logger = getLogger(__name__)
 
 
 def get_segment_zho_converted(
@@ -85,11 +87,11 @@ def get_segment_split_at_idx(
     """
     if segment.words is None or len(segment.words) == 0:
         message = "Cannot split segment without word timing data."
-        error(message)
+        logger.error(message)
         raise ValueError(message)
     if idx <= 0 or idx >= len(segment.text):
         message = f"Split index {idx} out of range for {len(segment.text)} chars."
-        error(message)
+        logger.error(message)
         raise ValueError(message)
 
     first_words: list[TranscribedWord] = []
@@ -141,7 +143,7 @@ def get_segment_split_at_idx(
         message = (
             f"Split index {idx} does not align with segment words ({consumed_chars})."
         )
-        error(message)
+        logger.error(message)
         raise ValueError(message)
 
     first_segment = TranscribedSegment(

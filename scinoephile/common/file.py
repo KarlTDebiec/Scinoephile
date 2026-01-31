@@ -6,11 +6,19 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from contextlib import contextmanager
-from logging import debug, info
+from logging import getLogger
 from os import remove
 from pathlib import Path
 from shutil import move, rmtree
 from tempfile import NamedTemporaryFile, mkdtemp
+
+__all__ = [
+    "get_temp_directory_path",
+    "get_temp_file_path",
+    "rename_preexisting_output_path",
+]
+
+logger = getLogger(__name__)
 
 
 @contextmanager
@@ -50,7 +58,7 @@ def get_temp_file_path(suffix: str | None = None) -> Generator[Path]:
             try:
                 remove(temp_file_path)
             except PermissionError as exc:
-                debug(
+                logger.debug(
                     f"temp_file_path encountered PermissionException '{exc}'; "
                     f"temporary file {temp_file_path}, will not be removed."
                 )
@@ -68,14 +76,7 @@ def rename_preexisting_output_path(output_path: Path):
         while True:
             backup_path = output_path.with_stem(f"{output_path.stem}_{backup_i:03d}")
             if not backup_path.exists():
-                info(f"Moving pre-existing file {output_path} to {backup_path}")
+                logger.info(f"Moving pre-existing file {output_path} to {backup_path}")
                 move(output_path, backup_path)
                 break
             backup_i += 1
-
-
-__all__ = [
-    "get_temp_directory_path",
-    "get_temp_file_path",
-    "rename_preexisting_output_path",
-]

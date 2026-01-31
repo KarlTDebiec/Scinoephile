@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import debug, info
+from logging import getLogger
 from pprint import pformat
 
 import numpy as np
@@ -24,6 +24,8 @@ __all__ = [
     "get_synced_series",
     "get_synced_series_from_groups",
 ]
+
+logger = getLogger(__name__)
 
 SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
@@ -130,7 +132,7 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
         return [([i], []) for i in range(len(one))]
 
     overlap = get_sync_overlap_matrix(one, two)
-    debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
+    logger.debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
 
     sync_groups = None
     while True:
@@ -182,14 +184,14 @@ def get_synced_series(one: Series, two: Series) -> Series:
     block_pairs = get_block_pairs_by_pause(one, two)
     for one_block, two_block in block_pairs:
         one_str, two_str = get_pair_strings(one_block, two_block)
-        debug(f"ONE:\n{one_str}")
-        debug(f"TWO:\n{two_str}")
+        logger.debug(f"ONE:\n{one_str}")
+        logger.debug(f"TWO:\n{two_str}")
 
         groups = get_sync_groups(one_block, two_block)
-        info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
+        logger.info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
 
         synced_block = get_synced_series_from_groups(one_block, two_block, groups)
-        info(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
+        logger.info(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
     synced = get_concatenated_series(synced_blocks)
@@ -363,7 +365,7 @@ def _get_sync_groups(
                 if overlap[i, j] / scale < cutoff:
                     overlap[i, j] = 0
 
-    debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
+    logger.debug(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     available_is = set(range(len(one)))
     available_js = set(range(len(two)))
@@ -436,7 +438,7 @@ def _get_sync_groups(
     # Sort sync groups by their indexes
     sync_groups = _sort_sync_groups(sync_groups)
 
-    info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
+    logger.info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     return sync_groups
 

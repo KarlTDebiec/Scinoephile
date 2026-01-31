@@ -5,13 +5,16 @@
 from __future__ import annotations
 
 import csv
-from logging import info
+from logging import getLogger
 from pathlib import Path
 
 __all__ = [
     "load_char_grp_dims",
     "save_char_grp_dims",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def load_char_grp_dims(
@@ -38,7 +41,7 @@ def load_char_grp_dims(
             )
             dims_set.add(dims)
 
-    info(f"Loaded {file_path}")
+    logger.info(f"Loaded {file_path}")
     return char_grp_dims
 
 
@@ -59,4 +62,4 @@ def save_char_grp_dims(
     with file_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerows(rows)
-    info(f"Saved {file_path}")
+    logger.info(f"Saved {file_path}")

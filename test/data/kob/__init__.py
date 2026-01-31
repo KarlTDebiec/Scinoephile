@@ -40,7 +40,6 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 
-
 __all__ = [
     "kob_eng",
     "kob_eng_lens",

@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import getLogger
 
 import numpy as np
 
@@ -17,6 +17,9 @@ from .manager import DualBlockGappedManager
 from .prompt import DualBlockGappedPrompt
 
 __all__ = ["DualBlockGappedProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class DualBlockGappedProcessor(Processor):
@@ -95,7 +98,7 @@ class DualBlockGappedProcessor(Processor):
                     output = getattr(test_case.answer, one_key)
                 output_series.append(Subtitle(start=start, end=end, text=output))
 
-            info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
+            logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
         if self.test_case_path is not None:
@@ -106,5 +109,5 @@ class DualBlockGappedProcessor(Processor):
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
+        logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Collection, Iterable
-from logging import info
+from logging import getLogger
 from os.path import defpath, expanduser, expandvars
 from pathlib import Path
 from platform import system
@@ -19,6 +19,19 @@ from .exception import (
     NotAFileError,
     UnsupportedPlatformError,
 )
+
+__all__ = [
+    "val_executable",
+    "val_float",
+    "val_input_dir_path",
+    "val_input_path",
+    "val_int",
+    "val_output_dir_path",
+    "val_output_path",
+    "val_str",
+]
+
+logger = getLogger(__name__)
 
 
 def val_executable(
@@ -356,7 +369,7 @@ def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list
             ) from exc
         if not validated_value.exists():
             validated_value.mkdir(parents=True)
-            info(f"Created directory {validated_value}")
+            logger.info(f"Created directory {validated_value}")
             return validated_value
         if not validated_value.is_dir():
             raise NotADirectoryError(f"{validated_value} is not a directory")
@@ -416,7 +429,7 @@ def val_output_path(
             raise FileExistsError(f"Output file {validated_value} already exists")
         if not validated_value.parent.exists():
             validated_value.parent.mkdir(parents=True)
-            info(f"Created directory {validated_value.parent}")
+            logger.info(f"Created directory {validated_value.parent}")
         return validated_value
 
     # Handle non-iterables and iterables we don't want to iterate over
@@ -462,15 +475,3 @@ def val_str(value: Any, options: Iterable[str]) -> str:
         ) from None
 
     return case_insensitive_options[value]
-
-
-__all__ = [
-    "val_executable",
-    "val_float",
-    "val_input_dir_path",
-    "val_input_path",
-    "val_int",
-    "val_output_dir_path",
-    "val_output_path",
-    "val_str",
-]

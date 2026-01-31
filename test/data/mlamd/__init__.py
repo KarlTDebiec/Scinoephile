@@ -50,7 +50,6 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 
-
 __all__ = [
     "mlamd_eng_lens",
     "mlamd_eng_sup_path",

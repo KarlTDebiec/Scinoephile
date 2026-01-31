@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable
 from copy import deepcopy
-from logging import info
+from logging import getLogger
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -15,6 +15,9 @@ from scinoephile.core.subtitles import Series
 __all__ = [
     "get_eng_flattened",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def get_eng_flattened(
@@ -34,7 +37,9 @@ def get_eng_flattened(
     series = deepcopy(series)
     for i, event in enumerate(series, 1):
         if i in exclusion_set:
-            info(f"Skipping flattening of subtitle {i}, with text:\n{event.text}")
+            logger.info(
+                f"Skipping flattening of subtitle {i}, with text:\n{event.text}"
+            )
             continue
         event.text = _get_eng_text_flattened(event.text.strip())
     return series

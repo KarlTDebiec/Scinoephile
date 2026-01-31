@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import getLogger
 
 import numpy as np
 
@@ -17,6 +17,9 @@ from .manager import YueZhoProofreadingManager
 from .prompts import YueZhoHansProofreadingPrompt
 
 __all__ = ["YueZhoProofreadingProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class YueZhoProofreadingProcessor(Processor):
@@ -92,7 +95,7 @@ class YueZhoProofreadingProcessor(Processor):
                     Subtitle(start=one_sub.start, end=one_sub.end, text=output)
                 )
 
-            info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
+            logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_block
 
         if self.test_case_path is not None:
@@ -103,5 +106,5 @@ class YueZhoProofreadingProcessor(Processor):
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
+        logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

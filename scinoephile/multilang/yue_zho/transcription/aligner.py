@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from logging import error, info
+from logging import getLogger
 from pathlib import Path
 
 from pydantic import ValidationError
@@ -32,6 +32,9 @@ from scinoephile.llms.base import (
 from .alignment import Alignment
 
 __all__ = ["Aligner"]
+
+
+logger = getLogger(__name__)
 
 
 class Aligner:
@@ -95,7 +98,9 @@ class Aligner:
             # Run query
             test_case = alignment.get_shifting_test_case(sg_1_idx)
             if test_case is None:
-                info(f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文")
+                logger.info(
+                    f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文"
+                )
                 continue
             # TODO: try/expect and return original 粤文 on error (not yet encountered)
             test_case: TestCase = self.shifting_queryer.call(test_case)
@@ -271,14 +276,14 @@ class Aligner:
             # Query for 粤文 merge
             test_case = alignment.get_merging_test_case(sg_idx)
             if test_case is None:
-                info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
+                logger.info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
                 test_case = self.merging_queryer.call(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
-                error(
+                logger.error(
                     f"Error merging sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
                     f"{test_case}\n"

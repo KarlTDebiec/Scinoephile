@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from logging import info
+from logging import getLogger
 from pathlib import Path
 from typing import Self, TypedDict, Unpack, cast, override
 
@@ -20,6 +20,8 @@ __all__ = [
     "Series",
     "SeriesKwargs",
 ]
+
+logger = getLogger(__name__)
 
 
 class SeriesKwargs(TypedDict, total=False):
@@ -156,7 +158,7 @@ class Series(SSAFile):
             errors=errors,
             **kwargs,
         )
-        info(f"Saved series to {path}")
+        logger.info(f"Saved series to {path}")
 
     def slice(self, start: int, end: int) -> Self:
         """Slice series.
@@ -262,7 +264,7 @@ class Series(SSAFile):
                 cls.event_class(**ssaevent.as_dict()) for ssaevent in series
             ]
 
-        info(f"Loaded series from {validated_path}")
+        logger.info(f"Loaded series from {validated_path}")
         return series
 
     def _init_blocks(self):

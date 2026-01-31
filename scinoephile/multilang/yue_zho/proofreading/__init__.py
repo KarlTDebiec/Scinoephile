@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import warning
+from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
@@ -27,6 +27,9 @@ __all__ = [
     "get_yue_vs_zho_proofreader",
     "YueZhoProofreadingProcessor",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class YueZhoProofreadingProcessKwargs(TypedDict, total=False):
@@ -60,7 +63,7 @@ def get_default_yue_vs_zho_proofreading_test_cases(
 
         return get_mlamd_yue_vs_zho_proofreading_test_cases(prompt_cls)
     except ImportError as exc:
-        warning(f"Default test cases not available:\n{exc}")
+        logger.warning(f"Default test cases not available:\n{exc}")
     return []
 
 
