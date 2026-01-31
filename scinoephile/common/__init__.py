@@ -2,8 +2,7 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """General-purpose code not tied to a particular project.
 
-This module is at the base of the hierarchy and should not import from other
-scinoephile modules.
+This module is at the base of the hierarchy and should not import from other modules.
 """
 
 from __future__ import annotations
