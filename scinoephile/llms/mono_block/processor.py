@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import getLogger
 
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.llms.base import Processor, save_test_cases_to_json
@@ -12,6 +12,7 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 from .manager import MonoBlockManager
 from .prompt import MonoBlockPrompt
 
+logger = getLogger(__name__)
 __all__ = ["MonoBlockProcessor"]
 
 
@@ -66,7 +67,7 @@ class MonoBlockProcessor(Processor):
             start_idx = current_idx
             end_idx = current_idx + len(block)
             current_idx = end_idx
-            info(
+            logger.info(
                 f"Block {block_idx} ({start_idx} - {end_idx}):\n"
                 f"{block.to_simple_string()}"
             )
@@ -82,5 +83,5 @@ class MonoBlockProcessor(Processor):
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
+        logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

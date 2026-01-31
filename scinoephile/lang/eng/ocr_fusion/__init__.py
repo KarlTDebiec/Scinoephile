@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import warning
+from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
@@ -14,6 +14,7 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusio
 
 from .prompts import EngOcrFusionPrompt
 
+logger = getLogger(__name__)
 __all__ = [
     "EngOcrFusionPrompt",
     "EngOcrFusionProcessKwargs",
@@ -61,7 +62,7 @@ def get_default_eng_ocr_fusion_test_cases(
             + get_t_eng_ocr_fusion_test_cases(prompt_cls)
         )
     except ImportError as exc:
-        warning(f"Default test cases not available:\n{exc}")
+        logger.warning(f"Default test cases not available:\n{exc}")
     return []
 
 

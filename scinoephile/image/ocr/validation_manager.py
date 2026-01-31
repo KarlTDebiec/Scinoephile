@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import debug, info, warning
+from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
@@ -22,6 +22,8 @@ from .char_pair_gaps import (
     save_char_pair_gaps,
 )
 from .gap_cursor import GapCursor
+
+logger = getLogger(__name__)
 
 __all__ = ["ValidationManager"]
 
@@ -109,7 +111,7 @@ class ValidationManager:
             )
         output_series = ImageSeries(events=events)
         for message in messages:
-            warning(message)
+            logger.warning(message)
         return output_series
 
     def _validate_sub(
@@ -377,7 +379,7 @@ class ValidationManager:
                 dims = get_dims_tuple(bbox_1)
                 ok_dims = self.char_grp_dims_by_n[2].get(char_grp, set())
                 if dims in ok_dims:
-                    debug(
+                    logger.debug(
                         f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
                         f"{cursor.bbox_1_idx}| -> |"
                         f"{cursor.char_1}|{cursor.char_2}|group|"
@@ -387,7 +389,7 @@ class ValidationManager:
 
             # get gap
             cursor.gap = bbox_2.x1 - bbox_1.x2
-            debug(
+            logger.debug(
                 f"|{cursor.char_1_idx}|{cursor.char_2_idx}|"
                 f"{cursor.bbox_1_idx}|{cursor.bbox_2_idx}| -> |"
                 f"{cursor.char_1}|{cursor.char_2}|{cursor.gap}|"
@@ -611,7 +613,7 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
-        info(f"Added ({char}, {dims})")
+        logger.info(f"Added ({char}, {dims})")
         save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
 
     def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]):
@@ -626,7 +628,7 @@ class ValidationManager:
         if dims in dims_set:
             return
         dims_set.add(dims)
-        info(f"Added ({group}, {dims})")
+        logger.info(f"Added ({group}, {dims})")
         save_char_grp_dims(self.char_grp_dims_by_n, self._char_grp_dims_path())
 
     def _update_pair_gaps(
@@ -641,7 +643,7 @@ class ValidationManager:
         if self.char_pair_gaps.get(char_pair) == cutoffs:
             return
         self.char_pair_gaps[char_pair] = cutoffs
-        info(f"Added ({char_pair}, {cutoffs})")
+        logger.info(f"Added ({char_pair}, {cutoffs})")
         save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
 
     @staticmethod

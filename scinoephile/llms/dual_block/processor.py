@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import getLogger
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, get_concatenated_series
@@ -14,6 +14,7 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 from .manager import DualBlockManager
 from .prompt import DualBlockPrompt
 
+logger = getLogger(__name__)
 __all__ = ["DualBlockProcessor"]
 
 
@@ -88,7 +89,7 @@ class DualBlockProcessor(Processor):
             start_idx = current_idx
             end_idx = current_idx + len(one_blk)
             current_idx = end_idx
-            info(
+            logger.info(
                 f"Block {blk_idx} ({start_idx} - {end_idx}):\n"
                 f"{one_blk.to_simple_string()}"
             )
@@ -102,5 +103,5 @@ class DualBlockProcessor(Processor):
         output_series = get_concatenated_series(
             [s for s in output_series_to_concatenate if s is not None]
         )
-        info(f"Concatenated Series:\n{output_series.to_simple_string()}")
+        logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

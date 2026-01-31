@@ -5,11 +5,12 @@
 from __future__ import annotations
 
 import csv
-from logging import info
+from logging import getLogger
 from pathlib import Path
 
 from scinoephile.image.bbox import Bbox
 
+logger = getLogger(__name__)
 __all__ = [
     "get_dims_tuple",
     "load_char_dims",
@@ -55,7 +56,7 @@ def load_char_dims(file_path: Path) -> dict[str, set[tuple[int, ...]]]:
             dims_set = char_dims.setdefault(char, set())
             dims_set.add(dims)
 
-    info(f"Loaded {file_path}")
+    logger.info(f"Loaded {file_path}")
     return char_dims
 
 
@@ -73,4 +74,4 @@ def save_char_dims(char_dims: dict[str, set[tuple[int, ...]]], file_path: Path):
     with file_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerows(rows)
-    info(f"Saved {file_path}")
+    logger.info(f"Saved {file_path}")

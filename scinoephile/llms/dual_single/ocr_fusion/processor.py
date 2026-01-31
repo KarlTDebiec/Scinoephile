@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import info
+from logging import getLogger
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
@@ -13,6 +13,7 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 
 from .manager import OcrFusionManager
 
+logger = getLogger(__name__)
 __all__ = ["OcrFusionProcessor"]
 
 
@@ -55,25 +56,25 @@ class OcrFusionProcessor(Processor):
                 output_subtitles.append(
                     Subtitle(start=sub_one.start, end=sub_one.end, text="")
                 )
-                info(f"Subtitle {sub_idx + 1} empty.")
+                logger.info(f"Subtitle {sub_idx + 1} empty.")
                 continue
             if text_one == text_two:
                 output_subtitles.append(sub_one)
-                info(
+                logger.info(
                     f"Subtitle {sub_idx + 1} identical:     "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_two:
                 output_subtitles.append(sub_one)
-                info(
+                logger.info(
                     f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_1}: "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
-                info(
+                logger.info(
                     f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_2}: "
                     f"{sub_two.text_with_newline.replace('\n', ' ')}"
                 )
@@ -92,7 +93,7 @@ class OcrFusionProcessor(Processor):
 
             output_text = getattr(test_case.answer, self.prompt_cls.output)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
-            info(
+            logger.info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
             )
             output_subtitles.append(sub)

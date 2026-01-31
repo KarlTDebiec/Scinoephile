@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 import re
-from logging import debug, info
+from logging import getLogger
 from pathlib import Path
 from typing import Self, TypedDict, Unpack, override
 from warnings import catch_warnings, filterwarnings
@@ -30,6 +30,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, SeriesKwargs
 
 from .subtitle import AudioSubtitle
+
+logger = getLogger(__name__)
 
 __all__ = [
     "AudioSeries",
@@ -147,7 +149,7 @@ class AudioSeries(Series):
         if format_ == "wav" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
             self._save_wav(output_dir, **kwargs)
-            info(f"Saved series to {output_dir}")
+            logger.info(f"Saved series to {output_dir}")
             return
 
         # Otherwise, continue as superclass
@@ -160,7 +162,7 @@ class AudioSeries(Series):
             errors=errors,
             **kwargs,
         )
-        info(f"Saved series to {output_path}")
+        logger.info(f"Saved series to {output_path}")
 
     @override
     def slice(self, start: int, end: int) -> Self:
@@ -208,7 +210,7 @@ class AudioSeries(Series):
                 buffered_end = min(len(self.audio), block_end_time + 1000)
 
             # Slice audio
-            debug(
+            logger.debug(
                 f"Slicing audio for block {block_start_time}-{block_end_time} "
                 f"({buffered_start} - {buffered_end})"
             )
@@ -238,15 +240,15 @@ class AudioSeries(Series):
             for file in fp.iterdir():
                 if file.is_file() or file.is_symlink():
                     file.unlink()
-                    info(f"Deleted {file}")
+                    logger.info(f"Deleted {file}")
         else:
             fp.mkdir(parents=True)
-            info(f"Created directory {fp}")
+            logger.info(f"Created directory {fp}")
 
         # Save audio
         outfile_path = fp / f"{fp.stem}.wav"
         self.audio.export(outfile_path, format="wav")
-        info(f"Saved full audio to {outfile_path}")
+        logger.info(f"Saved full audio to {outfile_path}")
 
         # Calculate block indices and save block audio
         current_idx = 0
@@ -260,7 +262,7 @@ class AudioSeries(Series):
                 f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
             )
             block.audio.export(outfile_path, format="wav")
-            info(f"Saved block audio to {outfile_path}")
+            logger.info(f"Saved block audio to {outfile_path}")
 
         # Save text
         outfile_path = fp / f"{fp.stem}.srt"
@@ -365,7 +367,7 @@ class AudioSeries(Series):
             else:
                 end_time = min(len(full_audio), original_end + buffer)
 
-            debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
+            logger.debug(f"Slicing audio for subtitle {i} ({start_time} - {end_time})")
             clip = full_audio[start_time:end_time]
             events.append(
                 cls.event_class(
@@ -413,13 +415,13 @@ class AudioSeries(Series):
         )
 
         # Probe audio track to determine number of channels
-        info(f"Probing audio track {audio_track} in {video_path}")
+        logger.info(f"Probing audio track {audio_track} in {video_path}")
         probe = ffmpeg.probe(str(video_path))
         audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
         try:
             stream = audio_streams[audio_track]
             channels = int(stream["channels"])
-            info(f"Audio track has {channels} channels")
+            logger.info(f"Audio track has {channels} channels")
         except (IndexError, KeyError, ValueError) as exc:
             raise ScinoephileError(
                 f"Could not determine number of channels for audio track {audio_track} "
@@ -430,7 +432,7 @@ class AudioSeries(Series):
         with get_temp_directory_path() as temp_dir_path:
             full_audio_path = temp_dir_path / "full_audio.wav"
             cls._extract_audio_track(video_path, full_audio_path, audio_track, channels)
-            info(f"Loading full audio from {full_audio_path}")
+            logger.info(f"Loading full audio from {full_audio_path}")
             full_audio = AudioSegment.from_wav(full_audio_path)
 
         return cls._build_series(text_series, full_audio, buffer)
@@ -455,7 +457,7 @@ class AudioSeries(Series):
         # Load full audio file
         audio_path = dir_path / f"{dir_path.stem}.wav"
         full_audio = AudioSegment.from_wav(audio_path)
-        info(f"Loaded full audio from {audio_path}")
+        logger.info(f"Loaded full audio from {audio_path}")
 
         return cls._build_series(text_series, full_audio, buffer)
 
@@ -475,7 +477,7 @@ class AudioSeries(Series):
             channels: Number of channels in audio track
         """
         if channels >= 6:
-            info(
+            logger.info(
                 "Extracting center channel of audio stream "
                 f"{audio_track} from {video_input_path} to {audio_output_path}"
             )
@@ -489,7 +491,7 @@ class AudioSeries(Series):
                 },
             ).run(quiet=False, overwrite_output=True)
         else:
-            info(
+            logger.info(
                 f"Downmixing audio stream {audio_track} from {video_input_path} to "
                 f"{audio_output_path}"
             )
