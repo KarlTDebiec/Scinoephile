@@ -314,7 +314,7 @@ class CharValidator:
         predicted_char = text[:1] if text else ""
         is_valid = predicted_char == expected_char
 
-        logger.debug(
+        logger.info(
             f"Char validation: expected='{expected_char}', "
             f"predicted='{predicted_char}', is_valid={is_valid}"
         )
