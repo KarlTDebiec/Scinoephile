@@ -1,23 +1,49 @@
 # Plan
 
-Wrap up this PR by removing network/ML side effects from the default Chinese OCR validation path, fixing `ImageSubtitle` bbox state handling, making `CharValidator` robust to missing bboxes, and reducing import-time ML dependency loading. Keep tests fast and offline-friendly.
+Get this working on this computer right now: make the new default character validation run end-to-end locally, then clean up correctness issues and tests. We can worry about CI/other environments later.
 
 ## Scope
-- In: make `validate_zho_ocr()` default behavior not load/download ML models; fix `ImageSubtitle.img` bbox clearing; handle `bboxes=None` in `CharValidator`; avoid eager ML imports from `scinoephile.image.ocr`; update/add tests; run ruff + pytest.
-- Out: changing OCR algorithms/accuracy, training new models, or adding new runtime dependencies.
+- In: When validating 中文 OCR, after validating bboxes, validate the characters using this single-character OCR model: https://huggingface.co/saudadez/rec_chinese_char
+- Out: changing OCR algorithms/accuracy, training new models, or adding new runtime dependencies. DO NOT WRITE ANY TESTS OR DO ANY TESTING OUTSIDE `uv run python test/data/mlamd/create_output.py`.
 
 ## Action items
-[ ] Keep `validate_zho_ocr()` defaulting `validate_chars=True`, and ensure the default path is stable/reproducible (pin model artifacts, deterministic init, clear failures) while still remaining reasonably fast.
-[ ] Make `CharValidator` model loading/download explicitly opt-in (e.g., lazy init or a clear flag) so that even accidental construction cannot hang offline runs.
-[ ] Fix `ImageSubtitle.img` setter to clear bbox state consistently (reset `self.bboxes` rather than an unused `_bboxes`) and add a regression test for reassigning `img`.
-[ ] Update `CharValidator` to handle `sub.bboxes is None` deterministically (skip with a warning or raise a clear exception instructing callers to run `BboxValidator` first).
-[ ] Adjust `scinoephile/image/ocr/__init__.py` to avoid importing heavy ML dependencies at import time (use lazy import/`__getattr__`, or stop re-exporting `CharValidator` from the package root).
-[ ] Update/add tests to ensure `validate_zho_ocr()` runs offline by default (e.g., monkeypatch `snapshot_download` / assert `CharValidator` is not constructed) and that bbox state/None-bbox behavior is covered.
-[ ] Run `uv run ruff format` and `uv run ruff check --fix` on the modified Python files only.
-[ ] Run targeted pytest for the affected areas (e.g., `cd test && uv run pytest test/lang/zho/test_validate_zho_ocr.py` plus any new tests), then the full test suite if time permits.
-[ ] Consider CI changes needed for the new default to pass (e.g., cache/prefetch the model, point to a vendored/local model directory, or selectively skip ML validation tests in CI/offline environments).
+[x] 1. Update `CharValidator` to handle `sub.bboxes is None` deterministically (add a warning message and skip; log messages at end).
+[ ] 2. Make CharValidator download the fucking model.
+  * Maybe look at what we did for Whisper under `scinoephile/audio`. I don't recall this being a fucking hour-long ordeal to code last time.
+[ ] 3. Implement logic necessary for expanding bboxes.
+  * Bboxes currently cover only the center of each character.
+  * Bboxes should be expanded vertically to cover the full height of the subtitle.
+    * We will cover multi-line subtitles later.
+  * Bboxes should be expanded horizontally to the midpoint between adjacent bboxes.
+    * The first and last bbox should be expanded to the edges of the subtitle.
+  * The character should be extracted from the expanded bbox and centered on a 48x48 pixel white canvas.
+  * This shit can all go in CharValidator in static methods and shit.
+[ ] 4. Implement the loop over characters and their corresponding bboxes.
+[ ] 5. Validate the first character and bbox.
+[ ] 6. Figure out where to go from there.
 
-## Open questions
-- Should `CharValidator` on `bboxes=None` raise (strict) or warn-and-skip (lenient)?
-- Do we want a separate “ML validation” helper entrypoint to make the opt-in path obvious (vs. a boolean flag)?
-- Should `scinoephile.image.ocr` still re-export `CharValidator`, or require `from scinoephile.image.ocr.char_validator import CharValidator` to avoid accidental heavy imports?
+## Development loop
+* Test by running `uv run python test/data/mlamd/create_output.py`.
+* Fix the shit.
+* Test by running `uv run python test/data/mlamd/create_output.py`.
+* Fix the shit.
+* ...
+
+## Usage sample
+```python
+import paddle
+from paddleocr import PaddleOCR
+
+gpu_available = paddle.device.is_compiled_with_cuda()
+ocr = PaddleOCR(
+    use_angle_cls=False,
+    lang='ch',
+    det=False,
+    use_gpu=gpu_available,
+    rec_model_dir='your_model_dir',  # path to this model
+    rec_char_dict_path='your_model_dir/rec_custom_keys.txt',
+    rec_image_shape='3,48,48',
+)
+
+result = ocr.ocr('path/to/image.jpg')
+```

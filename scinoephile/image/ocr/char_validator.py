@@ -49,10 +49,7 @@ class CharValidator:
         if self._paddle_model_dir is not None:
             return self._paddle_model_dir
 
-        model_name_as_path = Path(self.model_name)
-        if model_name_as_path.exists():
-            return model_name_as_path
-
+        logger.info(f"Downloading Hugging Face model {self.model_name}")
         download_dir = Path(snapshot_download(repo_id=self.model_name))
         return download_dir
 
@@ -109,6 +106,9 @@ class CharValidator:
         Returns:
             list of validation messages
         """
+        if sub.bboxes is None:
+            return [f"Sub {sub_idx:4d} | No bboxes; run BboxValidator first"]
+
         messages = []
 
         # Validate each bbox/character pair

@@ -30,6 +30,7 @@ class ImageSubtitle(Subtitle):
 
         Arguments:
             img: Image of subtitle
+            bboxes: bounding boxes for characters in img
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
@@ -37,15 +38,8 @@ class ImageSubtitle(Subtitle):
         super().__init__(**super_kwargs)
 
         self.img = img
-        self._arr: np.ndarray | None = None
+        self.arr = np.array(self.img)
         self.bboxes = bboxes
-
-    @property
-    def arr(self) -> np.ndarray:
-        """Image as numpy array."""
-        if self._arr is None:
-            self._arr = np.array(self.img)
-        return self._arr
 
     @property
     def img(self) -> Image.Image:
@@ -60,5 +54,5 @@ class ImageSubtitle(Subtitle):
             img: Image of subtitle
         """
         self._img = img
-        self._arr = None
-        self._bboxes = None
+        self.arr = np.array(self.img)
+        self.bboxes = None
