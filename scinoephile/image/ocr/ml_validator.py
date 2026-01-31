@@ -67,7 +67,10 @@ class MLCharacterValidator:
             bbox: bounding box for the character to validate
             expected_char: the expected character from OCR
         Returns:
-            tuple of (is_valid, predicted_char, confidence)
+            tuple of (is_valid, predicted_char, confidence).
+            Note: confidence is currently a binary value (1.0 for match, 0.0 for
+            mismatch). A more sophisticated confidence score would require accessing
+            the model's logits, which is not currently implemented.
         """
         # Crop the character from the image
         char_img = img.crop((bbox.x1, bbox.y1, bbox.x2, bbox.y2))
@@ -88,9 +91,8 @@ class MLCharacterValidator:
         # Check if prediction matches expected character
         is_valid = predicted_text == expected_char
 
-        # For confidence, we can use the model's output probability
-        # This is a simplified version - confidence score would require
-        # accessing the model's logits
+        # Binary confidence score based on match
+        # TODO: Calculate actual confidence from model logits if needed
         confidence = 1.0 if is_valid else 0.0
 
         logger.debug(

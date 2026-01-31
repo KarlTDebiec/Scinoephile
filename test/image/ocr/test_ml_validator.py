@@ -43,6 +43,11 @@ def test_ml_validator_custom_model():
 def test_ml_validator_validate_character(sample_chinese_char_image: Image.Image):
     """Test character validation with ML model.
 
+    This test is skipped by default because it requires downloading the Hugging Face
+    model (~500MB) and running inference, which is slow. To run this test, remove
+    the skip decorator. The test validates that the ML validator can process an image
+    and return predictions in the expected format.
+
     Arguments:
         sample_chinese_char_image: test image fixture
     """
