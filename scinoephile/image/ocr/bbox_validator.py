@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Validates OCRed subtitle text using source images."""
+"""Determines and validates bounding boxes for OCRed subtitle text."""
 
 from __future__ import annotations
 
@@ -22,16 +22,15 @@ from .char_pair_gaps import (
     save_char_pair_gaps,
 )
 from .gap_cursor import GapCursor
-from .ml_validator import MLCharacterValidator
 
-__all__ = ["ValidationManager"]
+__all__ = ["BboxValidator", "ValidationManager"]
 
 
 logger = getLogger(__name__)
 
 
-class ValidationManager:
-    """Validates OCRed subtitle text using source images."""
+class BboxValidator:
+    """Determines and validates bounding boxes for OCRed subtitle text."""
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
@@ -60,12 +59,8 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(self, use_ml_validation: bool = False):
-        """Initialize.
-
-        Arguments:
-            use_ml_validation: whether to use ML-based character validation
-        """
+    def __init__(self):
+        """Initialize."""
         # Initalize char_dims_by_n
         for n in range(1, 6):
             file_path = self._char_dims_path(n)
@@ -82,17 +77,6 @@ class ValidationManager:
         file_path = self._char_pair_gaps_path()
         if file_path.exists():
             self.char_pair_gaps = load_char_pair_gaps(file_path)
-
-        # Initialize ML validator if requested
-        self.use_ml_validation = use_ml_validation
-        self._ml_validator = None
-
-    @property
-    def ml_validator(self):
-        """Lazy-load ML validator."""
-        if self.use_ml_validation and self._ml_validator is None:
-            self._ml_validator = MLCharacterValidator()
-        return self._ml_validator
 
     def validate(
         self,
@@ -273,9 +257,6 @@ class ValidationManager:
                 cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                     merged_bbox
                 ]
-                # Apply ML validation if enabled
-                if self.use_ml_validation:
-                    self._ml_validate_character(cursor, merged_bbox)
                 cursor.advance(n_chars=1, n_bboxes=1)
                 return True
 
@@ -290,9 +271,6 @@ class ValidationManager:
                         merged_bbox
                     ]
                     self._update_char_dims(cursor.char, dims)
-                    # Apply ML validation if enabled
-                    if self.use_ml_validation:
-                        self._ml_validate_character(cursor, merged_bbox)
                     cursor.advance(n_chars=1, n_bboxes=1)
                     return True
         return False
@@ -669,26 +647,6 @@ class ValidationManager:
         logger.info(f"Added ({char_pair}, {cutoffs})")
         save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
 
-    def _ml_validate_character(self, cursor: CharCursor, bbox):
-        """Validate character using ML model.
-
-        Arguments:
-            cursor: character cursor
-            bbox: bounding box for the character
-        """
-        if self.ml_validator is None:
-            return
-
-        is_valid, predicted_char, confidence = self.ml_validator.validate_character(
-            cursor.sub.img, bbox, cursor.char
-        )
-
-        if not is_valid:
-            logger.info(
-                f"{cursor.intro_msg} | ML validation mismatch: "
-                f"expected='{cursor.char}', predicted='{predicted_char}'"
-            )
-
     @staticmethod
     def _char_dims_path(n: int) -> Path:
         """Path to character dimensions csv file."""
@@ -703,3 +661,7 @@ class ValidationManager:
     def _char_pair_gaps_path() -> Path:
         """Path to character pair gap csv file."""
         return package_root / "data" / "ocr" / "char_pair_gaps.csv"
+
+
+# Backward compatibility alias
+ValidationManager = BboxValidator

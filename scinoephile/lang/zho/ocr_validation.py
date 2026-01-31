@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.image.ocr import ValidationManager
+from scinoephile.image.ocr import BboxValidator, CharValidator
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["validate_zho_ocr"]
@@ -17,7 +17,7 @@ def validate_zho_ocr(
     stop_at_idx: int | None = None,
     interactive: bool = False,
     output_dir_path: Path | str | None = None,
-    use_ml_validation: bool = False,
+    validate_chars: bool = False,
 ) -> ImageSeries:
     """Validate OCR text against image series images.
 
@@ -26,10 +26,14 @@ def validate_zho_ocr(
         stop_at_idx: stop processing at this index
         interactive: whether to prompt user for confirmations
         output_dir_path: directory in which to save validation images
-        use_ml_validation: whether to use ML-based character validation
+        validate_chars: whether to use ML-based character validation
     """
-    validation_mgr = ValidationManager(use_ml_validation=use_ml_validation)
-    output_series = validation_mgr.validate(series, stop_at_idx, interactive)
+    bbox_validator = BboxValidator()
+    output_series = bbox_validator.validate(series, stop_at_idx, interactive)
+
+    if validate_chars:
+        char_validator = CharValidator()
+        output_series = char_validator.validate(output_series, stop_at_idx)
 
     if output_dir_path is not None:
         output_series.save(output_dir_path)

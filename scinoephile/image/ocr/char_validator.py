@@ -5,20 +5,19 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
 
 from PIL import Image
 from transformers import AutoTokenizer, TrOCRProcessor, VisionEncoderDecoderModel
 
-if TYPE_CHECKING:
-    from scinoephile.image.bbox import Bbox
+from scinoephile.image.bbox import Bbox
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-__all__ = ["MLCharacterValidator"]
+__all__ = ["CharValidator"]
 
 logger = getLogger(__name__)
 
 
-class MLCharacterValidator:
+class CharValidator:
     """ML-based character validator using Hugging Face rec_chinese_char model."""
 
     def __init__(self, model_name: str = "saudadez/rec_chinese_char"):
@@ -57,7 +56,63 @@ class MLCharacterValidator:
             self._tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         return self._tokenizer
 
-    def validate_character(
+    def validate(
+        self,
+        series: ImageSeries,
+        stop_at_idx: int | None = None,
+    ) -> ImageSeries:
+        """Validate all characters in an image series using ML.
+
+        Arguments:
+            series: image series to validate
+            stop_at_idx: stop validating at this index
+        Returns:
+            image series (unchanged, validation is for logging only)
+        """
+        if stop_at_idx is None:
+            stop_at_idx = len(series) - 1
+
+        messages = []
+        for sub_idx, sub in enumerate(series.events):
+            if sub_idx > stop_at_idx:
+                break
+            messages.extend(self._validate_sub(sub, sub_idx))
+
+        for message in messages:
+            logger.warning(message)
+
+        return series
+
+    def _validate_sub(self, sub: ImageSubtitle, sub_idx: int) -> list[str]:
+        """Validate all characters in a subtitle.
+
+        Arguments:
+            sub: subtitle to validate
+            sub_idx: subtitle index for logging
+        Returns:
+            list of validation messages
+        """
+        messages = []
+
+        # Validate each bbox/character pair
+        for bbox_idx, bbox in enumerate(sub.bboxes):
+            # Get the corresponding character from text
+            # Note: This assumes bboxes and characters are 1:1 aligned
+            if bbox_idx < len(sub.text):
+                expected_char = sub.text[bbox_idx]
+                is_valid, predicted_char, _ = self._validate_character(
+                    sub.img, bbox, expected_char
+                )
+
+                if not is_valid:
+                    messages.append(
+                        f"Sub {sub_idx:4d} | Bbox {bbox_idx:3d} | "
+                        f"expected='{expected_char}', predicted='{predicted_char}'"
+                    )
+
+        return messages
+
+    def _validate_character(
         self, img: Image.Image, bbox: Bbox, expected_char: str
     ) -> tuple[bool, str, float]:
         """Validate a character using ML model.
