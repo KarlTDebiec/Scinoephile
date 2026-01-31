@@ -2,7 +2,9 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code related to images.
 
-Package hierarchy (modules may import from any above):
+This module may import from: common, core
+
+Hierarchy within module:
 * bbox / colors
 * bboxes / drawing
 * subtitles
