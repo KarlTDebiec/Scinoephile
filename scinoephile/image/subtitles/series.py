@@ -28,9 +28,10 @@ from scinoephile.image.drawing import convert_rgba_img_to_la
 from .subtitle import ImageSubtitle
 from .sup import read_sup_series
 
-logger = getLogger(__name__)
-
 __all__ = ["ImageSeries"]
+
+
+logger = getLogger(__name__)
 
 
 class ImageSeries(Series):

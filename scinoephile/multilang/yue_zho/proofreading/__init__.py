@@ -16,7 +16,6 @@ from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
@@ -28,6 +27,9 @@ __all__ = [
     "get_yue_vs_zho_proofreader",
     "YueZhoProofreadingProcessor",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class YueZhoProofreadingProcessKwargs(TypedDict, total=False):

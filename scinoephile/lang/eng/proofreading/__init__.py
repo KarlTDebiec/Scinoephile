@@ -14,7 +14,6 @@ from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
 
 from .prompts import EngProofreadingPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "EngProofreadingPrompt",
     "EngProofreadingProcessKwargs",
@@ -23,6 +22,9 @@ __all__ = [
     "get_eng_proofread",
     "get_eng_proofreader",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class EngProofreadingProcessKwargs(TypedDict, total=False):

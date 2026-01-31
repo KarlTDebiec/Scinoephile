@@ -20,8 +20,6 @@ from .exception import (
     UnsupportedPlatformError,
 )
 
-logger = getLogger(__name__)
-
 
 def val_executable(
     name: str, supported_platforms: Collection[str] | None = None
@@ -476,3 +474,6 @@ __all__ = [
     "val_output_path",
     "val_str",
 ]
+
+
+logger = getLogger(__name__)

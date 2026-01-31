@@ -10,7 +10,6 @@ from pathlib import Path
 
 from scinoephile.core.text import full_punc, get_char_type
 
-logger = getLogger(__name__)
 __all__ = [
     "get_default_char_pair_cutoffs",
     "get_expected_space",
@@ -18,6 +17,9 @@ __all__ = [
     "load_char_pair_gaps",
     "save_char_pair_gaps",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def get_default_char_pair_cutoffs(  # noqa: PLR0911, PLR0912

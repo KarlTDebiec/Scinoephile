@@ -14,7 +14,6 @@ from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "ZhoHansProofreadingPrompt",
     "ZhoHantProofreadingPrompt",
@@ -24,6 +23,9 @@ __all__ = [
     "get_zho_proofread",
     "get_zho_proofreader",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class ZhoProofreadingProcessKwargs(TypedDict, total=False):

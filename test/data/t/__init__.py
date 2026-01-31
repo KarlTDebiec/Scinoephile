@@ -29,7 +29,6 @@ from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 
-
 __all__ = [
     "t_eng",
     "t_eng_lens",

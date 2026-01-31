@@ -23,9 +23,10 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-logger = getLogger(__name__)
-
 __all__ = ["ValidationManager"]
+
+
+logger = getLogger(__name__)
 
 
 class ValidationManager:

@@ -31,12 +31,12 @@ from scinoephile.core.subtitles import Series, SeriesKwargs
 
 from .subtitle import AudioSubtitle
 
-logger = getLogger(__name__)
-
 __all__ = [
     "AudioSeries",
     "AudioSeriesLoadKwargs",
 ]
+
+logger = getLogger(__name__)
 
 
 class AudioSeriesLoadKwargs(TypedDict, total=False):

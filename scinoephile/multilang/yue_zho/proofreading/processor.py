@@ -16,8 +16,10 @@ from scinoephile.llms.base import Processor, TestCase, save_test_cases_to_json
 from .manager import YueZhoProofreadingManager
 from .prompts import YueZhoHansProofreadingPrompt
 
-logger = getLogger(__name__)
 __all__ = ["YueZhoProofreadingProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class YueZhoProofreadingProcessor(Processor):

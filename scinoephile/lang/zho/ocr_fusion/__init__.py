@@ -17,8 +17,6 @@ from scinoephile.llms.dual_single.ocr_fusion import (
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
-logger = getLogger(__name__)
-
 __all__ = [
     "ZhoHansOcrFusionPrompt",
     "ZhoHantOcrFusionPrompt",
@@ -28,6 +26,9 @@ __all__ = [
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class ZhoOcrFusionProcessKwargs(TypedDict, total=False):

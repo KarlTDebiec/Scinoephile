@@ -14,7 +14,6 @@ from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "YueHansFromZhoTranslationPrompt",
     "YueHantFromZhoTranslationPrompt",
@@ -24,6 +23,9 @@ __all__ = [
     "get_yue_from_zho_translated",
     "get_yue_from_zho_translator",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):

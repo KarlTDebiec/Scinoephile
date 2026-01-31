@@ -12,7 +12,6 @@ from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
 
-logger = getLogger(__name__)
 __all__ = [
     "TranscribedSegment",
     "TranscribedWord",
@@ -22,6 +21,8 @@ __all__ = [
     "get_segment_split_on_whitespace",
     "get_segment_zho_converted",
 ]
+
+logger = getLogger(__name__)
 
 
 def get_segment_zho_converted(

@@ -10,12 +10,14 @@ from pathlib import Path
 
 from scinoephile.image.bbox import Bbox
 
-logger = getLogger(__name__)
 __all__ = [
     "get_dims_tuple",
     "load_char_dims",
     "save_char_dims",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def get_dims_tuple(bboxes: Bbox | list[Bbox]) -> tuple[int, ...]:

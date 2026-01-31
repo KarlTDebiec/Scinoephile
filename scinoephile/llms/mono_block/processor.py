@@ -12,8 +12,10 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 from .manager import MonoBlockManager
 from .prompt import MonoBlockPrompt
 
-logger = getLogger(__name__)
 __all__ = ["MonoBlockProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class MonoBlockProcessor(Processor):

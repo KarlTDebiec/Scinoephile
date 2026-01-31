@@ -31,9 +31,10 @@ from scinoephile.llms.base import (
 
 from .alignment import Alignment
 
-logger = getLogger(__name__)
-
 __all__ = ["Aligner"]
+
+
+logger = getLogger(__name__)
 
 
 class Aligner:

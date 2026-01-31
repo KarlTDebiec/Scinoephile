@@ -14,7 +14,6 @@ from scinoephile.llms.dual_block import DualBlockProcessor
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "YueHansReviewPrompt",
     "YueHantReviewPrompt",
@@ -24,6 +23,9 @@ __all__ = [
     "get_yue_vs_zho_reviewed",
     "get_yue_vs_zho_processor",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class YueZhoReviewProcessKwargs(TypedDict, total=False):

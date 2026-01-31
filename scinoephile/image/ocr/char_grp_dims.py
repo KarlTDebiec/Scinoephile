@@ -8,11 +8,13 @@ import csv
 from logging import getLogger
 from pathlib import Path
 
-logger = getLogger(__name__)
 __all__ = [
     "load_char_grp_dims",
     "save_char_grp_dims",
 ]
+
+
+logger = getLogger(__name__)
 
 
 def load_char_grp_dims(

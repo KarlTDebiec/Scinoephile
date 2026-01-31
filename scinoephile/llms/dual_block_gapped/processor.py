@@ -16,8 +16,10 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 from .manager import DualBlockGappedManager
 from .prompt import DualBlockGappedPrompt
 
-logger = getLogger(__name__)
 __all__ = ["DualBlockGappedProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class DualBlockGappedProcessor(Processor):

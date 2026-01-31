@@ -12,8 +12,6 @@ from pathlib import Path
 from shutil import move, rmtree
 from tempfile import NamedTemporaryFile, mkdtemp
 
-logger = getLogger(__name__)
-
 
 @contextmanager
 def get_temp_directory_path() -> Generator[Path]:
@@ -81,3 +79,6 @@ __all__ = [
     "get_temp_file_path",
     "rename_preexisting_output_path",
 ]
+
+
+logger = getLogger(__name__)

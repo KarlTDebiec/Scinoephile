@@ -13,8 +13,10 @@ from scinoephile.llms.base import Processor, save_test_cases_to_json
 
 from .manager import OcrFusionManager
 
-logger = getLogger(__name__)
 __all__ = ["OcrFusionProcessor"]
+
+
+logger = getLogger(__name__)
 
 
 class OcrFusionProcessor(Processor):

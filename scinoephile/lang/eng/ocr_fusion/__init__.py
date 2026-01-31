@@ -14,7 +14,6 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusio
 
 from .prompts import EngOcrFusionPrompt
 
-logger = getLogger(__name__)
 __all__ = [
     "EngOcrFusionPrompt",
     "EngOcrFusionProcessKwargs",
@@ -23,6 +22,9 @@ __all__ = [
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
+
+
+logger = getLogger(__name__)
 
 
 class EngOcrFusionProcessKwargs(TypedDict, total=False):
