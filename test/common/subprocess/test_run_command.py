@@ -1,11 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of common.general.run_command."""
+"""Tests of common.subprocess.run_command."""
 
 from __future__ import annotations
 
 import pytest
-from common.general import run_command  # ty:ignore[unresolved-import]
+from common.subprocess import run_command  # ty:ignore[unresolved-import]
 
 
 def test_run_command_success():
