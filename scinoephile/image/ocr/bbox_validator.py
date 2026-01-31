@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Validates OCRed subtitle text using source images."""
+"""Determines and validates bounding boxes for OCRed subtitle text."""
 
 from __future__ import annotations
 
@@ -23,14 +23,14 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-__all__ = ["ValidationManager"]
+__all__ = ["BboxValidator"]
 
 
 logger = getLogger(__name__)
 
 
-class ValidationManager:
-    """Validates OCRed subtitle text using source images."""
+class BboxValidator:
+    """Determines and validates bounding boxes for OCRed subtitle text."""
 
     char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
     """Data structure for characters in one or more bboxes.
@@ -108,6 +108,7 @@ class ValidationManager:
                     start=sub.start,
                     end=sub.end,
                     text=sub.text,
+                    bboxes=sub.bboxes,
                 )
             )
         output_series = ImageSeries(events=events)

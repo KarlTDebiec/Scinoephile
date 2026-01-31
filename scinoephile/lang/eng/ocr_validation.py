@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.image.ocr import ValidationManager
+from scinoephile.image.ocr import BboxValidator
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["validate_eng_ocr"]
@@ -26,8 +26,8 @@ def validate_eng_ocr(
         interactive: whether to prompt user for confirmations
         output_dir_path: directory in which to save validation images
     """
-    validation_mgr = ValidationManager()
-    output_series = validation_mgr.validate(series, stop_at_idx, interactive)
+    bbox_validator = BboxValidator()
+    output_series = bbox_validator.validate(series, stop_at_idx, interactive)
 
     if output_dir_path is not None:
         output_series.save(output_dir_path)
