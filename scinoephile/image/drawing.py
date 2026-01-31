@@ -9,6 +9,8 @@ import colorsys
 import numpy as np
 from PIL import Image, ImageDraw
 
+from scinoephile.core import ScinoephileError
+
 from .bbox import Bbox
 from .colors import (
     get_fill_and_outline_colors,
@@ -19,6 +21,7 @@ from .colors import (
 __all__ = [
     "convert_rgba_img_to_la",
     "get_img_with_bboxes",
+    "get_img_with_white_bg",
 ]
 
 
@@ -88,3 +91,25 @@ def get_img_with_bboxes(
         )
 
     return img_with_bboxes
+
+
+def get_img_with_white_bg(img: Image.Image) -> Image.Image:
+    """Get image with transparency on white background.
+
+    Arguments:
+        img: Image with transparency
+    Returns:
+        Image on white background
+    """
+    if img.mode == "LA":
+        img_la = Image.new("LA", img.size, (255, 255))
+        img_la.paste(img, (0, 0), img)
+        img_l = img_la.convert("L")
+        return img_l
+    elif img.mode == "RGBA":
+        img_rgba = Image.new("RGBA", img.size, (255, 255, 255, 255))
+        img_rgba.paste(img, (0, 0), img)
+        img_rgb = img_rgba.convert("RGB")
+        return img_rgb
+    else:
+        raise ScinoephileError(f"Image must be in mode 'LA' or 'RGBA', is {img.mode}")

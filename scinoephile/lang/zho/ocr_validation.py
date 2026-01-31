@@ -29,12 +29,13 @@ def validate_zho_ocr(
         validate_chars: whether to use ML-based character validation
     """
     bbox_validator = BboxValidator()
-    output_series = bbox_validator.validate(series, stop_at_idx, interactive)
+    bbox_series = bbox_validator.validate(series, stop_at_idx, interactive)
+    output_series = series
 
     if validate_chars:
         char_validator = CharValidator()
-        output_series = char_validator.validate(output_series, stop_at_idx)
+        output_series = char_validator.validate(output_series, stop_at_idx=10)
 
     if output_dir_path is not None:
-        output_series.save(output_dir_path)
+        bbox_series.save(output_dir_path)
     return output_series

@@ -3,6 +3,9 @@
 ## Tools
 
 * This repository uses `uv`. Use `uv run` when executing tools.
+* To activate the venv in your shell: `source .venv/bin/activate` (deactivate with `deactivate`).
+* When running Python scripts that import from the `test/` package (e.g. `test/data/**`),
+  set `PYTHONPATH` to the repo root, e.g. `PYTHONPATH=$PWD uv run python test/data/mlamd/create_output.py`.
 * Run the following checks on **only the Python files you have changed or been asked 
   to**:
   1. `uv run ruff format`
