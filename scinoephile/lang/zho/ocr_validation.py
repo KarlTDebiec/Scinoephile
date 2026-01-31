@@ -34,7 +34,7 @@ def validate_zho_ocr(
 
     if validate_chars:
         char_validator = CharValidator()
-        output_series = char_validator.validate(output_series, stop_at_idx=10)
+        output_series = char_validator.validate(output_series, stop_at_idx=stop_at_idx)
 
     if output_dir_path is not None:
         bbox_series.save(output_dir_path)

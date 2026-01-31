@@ -16,6 +16,7 @@ from PIL import Image
 
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bbox import Bbox
+from scinoephile.image.drawing import get_img_with_white_bg
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 __all__ = ["CharValidator"]
@@ -397,7 +398,7 @@ class CharValidator:
 
     @staticmethod
     def _prepare_single_char_image(img: Image.Image, bbox: Bbox) -> Image.Image:
-        """Extract a character crop and center it on a 48x48 white canvas.
+        """Extract a character crop and resize to 48x48.
 
         Arguments:
             img: full subtitle image
@@ -406,34 +407,7 @@ class CharValidator:
             48x48 RGB image on a white background
         """
         crop = img.crop((bbox.x1, bbox.y1, bbox.x2, bbox.y2))
+        crop_white_bg = get_img_with_white_bg(crop)
+        crop_rgb = crop_white_bg.convert("RGB")
 
-        crop_rgba = crop.convert("RGBA")
-        white_rgba = Image.new("RGBA", crop_rgba.size, (255, 255, 255, 255))
-        composed_rgb = Image.alpha_composite(white_rgba, crop_rgba).convert("RGB")
-
-        # Subtitle glyphs are typically light (with a dark outline). To present the
-        # character to the recognizer as "dark ink on white paper", invert only
-        # pixels within the glyph mask, leaving the background white.
-        alpha_arr = np.asarray(crop_rgba.getchannel("A"))
-        rgb_arr = np.asarray(composed_rgb)
-        mask = alpha_arr > 0
-        rgb_arr[mask] = 255 - rgb_arr[mask]
-        composed = Image.fromarray(rgb_arr, mode="RGB")
-
-        canvas_size = 48
-        crop_width, crop_height = composed.size
-        if crop_width <= 0 or crop_height <= 0:
-            return Image.new("RGB", (canvas_size, canvas_size), (255, 255, 255))
-
-        scale = min(canvas_size / crop_width, canvas_size / crop_height)
-        resized_w = max(1, int(round(crop_width * scale)))
-        resized_h = max(1, int(round(crop_height * scale)))
-
-        resample = getattr(Image, "Resampling", Image).BICUBIC
-        resized = composed.resize((resized_w, resized_h), resample=resample)
-
-        canvas = Image.new("RGB", (canvas_size, canvas_size), (255, 255, 255))
-        paste_x = (canvas_size - resized_w) // 2
-        paste_y = (canvas_size - resized_h) // 2
-        canvas.paste(resized, (paste_x, paste_y))
-        return canvas
+        return crop_rgb.resize((48, 48), resample=Image.Resampling.LANCZOS)
