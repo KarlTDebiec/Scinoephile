@@ -23,12 +23,14 @@ class ImageSubtitle(Subtitle):
     def __init__(
         self,
         img: Image.Image,
+        bboxes: list[Bbox] | None = None,
         **kwargs: Unpack[SubtitleKwargs],
     ):
         """Initialize.
 
         Arguments:
             img: Image of subtitle
+            bboxes: bounding boxes for characters in img
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
@@ -36,32 +38,8 @@ class ImageSubtitle(Subtitle):
         super().__init__(**super_kwargs)
 
         self.img = img
-        self._arr: np.ndarray | None = None
-        self._bboxes: list[Bbox] | None = None
-        self._img_with_bboxes: Image.Image | None = None
-
-    @property
-    def arr(self) -> np.ndarray:
-        """Image as numpy array."""
-        if self._arr is None:
-            self._arr = np.array(self.img)
-        return self._arr
-
-    @property
-    def bboxes(self) -> list[Bbox]:
-        """Bounding boxes of characters in image."""
-        if self._bboxes is None:
-            raise ValueError("Bounding boxes have not been initialized.")
-        return self._bboxes
-
-    @bboxes.setter
-    def bboxes(self, bboxes: list[Bbox]):
-        """Set bounding boxes of characters in image.
-
-        Arguments:
-            bboxes: bounding boxes of characters in image
-        """
-        self._bboxes = bboxes
+        self.arr = np.array(self.img)
+        self.bboxes = bboxes
 
     @property
     def img(self) -> Image.Image:
@@ -76,6 +54,5 @@ class ImageSubtitle(Subtitle):
             img: Image of subtitle
         """
         self._img = img
-        self._arr = None
-        self._bboxes = None
-        self._img_with_bboxes = None
+        self.arr = np.array(self.img)
+        self.bboxes = None
