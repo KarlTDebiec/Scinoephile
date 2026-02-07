@@ -19,3 +19,4 @@ test/htmlcov
 /test/data/cache/**
 /.venv/
 /test_logging_migration.py
+/demo_logging.py

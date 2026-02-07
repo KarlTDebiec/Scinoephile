@@ -100,9 +100,9 @@ class YueTranscriber:
                 yuewen_block_series = await self.process_block(
                     block_idx, yuewen_block, zhongwen_block
                 )
-            logger.info(f"BLOCK {block_idx}:")
-            logger.info(f"中文:\n{zhongwen_block.to_simple_string()}")
-            logger.info(f"粤文:\n{yuewen_block_series.to_simple_string()}")
+            logger.info("BLOCK %s:", block_idx)
+            logger.info("中文:\n%s", zhongwen_block.to_simple_string())
+            logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Run all blocks
@@ -116,7 +116,7 @@ class YueTranscriber:
         yuewen_series = get_concatenated_series(
             [s for s in all_yuewen_block_series if s is not None]
         )
-        logger.info(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
+        logger.info("Concatenated Series:\n%s", yuewen_series.to_simple_string())
         return yuewen_series
 
     async def process_block(
