@@ -181,3 +181,30 @@ def test_get_sync_overlap_matrix_last_subtitle_zero_duration():
     error_msg = str(exc_info.value)
     assert "Subtitle 3" in error_msg  # Last subtitle, 1-indexed
     assert "series one" in error_msg
+
+
+def test_get_sync_overlap_matrix_empty_series():
+    """Test that empty series handle correctly without errors.
+
+    Although get_sync_groups handles empty series before calling
+    get_sync_overlap_matrix, we test the function directly to ensure
+    it handles empty input gracefully.
+    """
+    one = Series()
+    two = Series()
+
+    # Empty series should return empty matrix
+    overlap = get_sync_overlap_matrix(one, two)
+    assert overlap.shape == (0, 0)
+
+
+def test_get_sync_overlap_matrix_one_empty_series():
+    """Test overlap matrix with one empty series."""
+    one = Series()
+    one.events.append(Subtitle(start=0, end=100, text="A"))
+
+    two = Series()
+
+    # Empty series two should return empty matrix
+    overlap = get_sync_overlap_matrix(one, two)
+    assert overlap.shape == (1, 0)
