@@ -5,8 +5,11 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
+
+logger = getLogger(__name__)
 
 
 def run_command(
@@ -85,7 +88,7 @@ def run_command_live(
 
     def read_stream(stream, lines):
         for line in iter(stream.readline, ""):
-            print(line, end="")
+            logger.info(line.rstrip())
             lines.append(line)
         stream.close()
 
