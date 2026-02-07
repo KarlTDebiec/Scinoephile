@@ -134,12 +134,20 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     overlap = get_sync_overlap_matrix(one, two)
     logger.debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
 
+    max_cutoff = 1.0
     sync_groups = None
     while True:
         try:
             sync_groups = _get_sync_groups(one, two, overlap.copy(), cutoff)
         except ScinoephileError:
             cutoff += 0.01
+            if cutoff > max_cutoff:
+                raise ScinoephileError(
+                    f"Failed to compute sync groups: cutoff exceeded {max_cutoff}. "
+                    f"Final cutoff: {cutoff:.2f}. "
+                    f"Overlap matrix shape: {overlap.shape}. "
+                    f"This may indicate malformed or incompatible subtitle timing."
+                )
             continue
         break
 
