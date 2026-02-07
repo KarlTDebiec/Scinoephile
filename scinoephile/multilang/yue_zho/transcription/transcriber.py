@@ -106,7 +106,7 @@ class YueTranscriber:
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Run all blocks
-        if not stop_at_idx:
+        if stop_at_idx is None:
             stop_at_idx = len(yuewen.blocks) - 1
         async with asyncio.TaskGroup() as task_group:
             for block_idx in range(stop_at_idx + 1):
