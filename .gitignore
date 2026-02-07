@@ -18,5 +18,3 @@ test/htmlcov
 /test/data/*/output/**/*.wav
 /test/data/cache/**
 /.venv/
-/test_logging_migration.py
-/demo_logging.py
