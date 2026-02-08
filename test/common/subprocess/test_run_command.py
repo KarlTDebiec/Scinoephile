@@ -57,6 +57,31 @@ def test_run_command_with_special_chars():
     assert "; ls" in stdout
 
 
+def test_run_command_injection_prevention():
+    """Test that command injection is prevented.
+
+    This test verifies that shell metacharacters like semicolons, pipes,
+    and command substitution are treated as literal strings rather than
+    being executed as shell commands.
+    """
+    # This would be dangerous with shell=True, but is safe now
+    exitcode, stdout, stderr = run_command(["echo", "test; rm -rf /"])
+
+    assert exitcode == 0
+    # The semicolon and rm command should be in the output as literal text
+    assert "test; rm -rf /" in stdout
+
+    # Test pipe character
+    exitcode, stdout, stderr = run_command(["echo", "test | cat /etc/passwd"])
+    assert exitcode == 0
+    assert "test | cat /etc/passwd" in stdout
+
+    # Test backticks
+    exitcode, stdout, stderr = run_command(["echo", "`whoami`"])
+    assert exitcode == 0
+    assert "`whoami`" in stdout
+
+
 def test_run_command_with_quotes():
     """Test running a command with quoted arguments."""
     exitcode, stdout, stderr = run_command(
