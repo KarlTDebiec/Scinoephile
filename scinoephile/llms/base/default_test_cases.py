@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from functools import cache
 from logging import getLogger
 from pathlib import Path
 
@@ -26,60 +27,57 @@ __all__ = [
 
 logger = getLogger(__name__)
 
-ENG_PROOFREADING_JSON_PATHS = [
+ENG_PROOFREADING_JSON_PATHS = (
     Path("kob/lang/eng/proofreading/eng_ocr.json"),
     Path("kob/lang/eng/proofreading/eng_srt.json"),
     Path("mlamd/lang/eng/proofreading.json"),
     Path("mnt/lang/eng/proofreading.json"),
     Path("t/lang/eng/proofreading.json"),
-]
+)
 
-ENG_OCR_FUSION_JSON_PATHS = [
+ENG_OCR_FUSION_JSON_PATHS = (
     Path("kob/lang/eng/ocr_fusion.json"),
     Path("mlamd/lang/eng/ocr_fusion.json"),
     Path("mnt/lang/eng/ocr_fusion.json"),
     Path("t/lang/eng/ocr_fusion.json"),
-]
+)
 
-ZHO_HANS_PROOFREADING_JSON_PATHS = [
+ZHO_HANS_PROOFREADING_JSON_PATHS = (
     Path("mlamd/lang/zho/proofreading/zho-Hans.json"),
     Path("mnt/lang/zho/proofreading/zho-Hans.json"),
     Path("t/lang/zho/proofreading/zho-Hans.json"),
-]
+)
 
-ZHO_HANT_PROOFREADING_JSON_PATHS = [
+ZHO_HANT_PROOFREADING_JSON_PATHS = (
     Path("kob/lang/zho/proofreading/zho-Hant.json"),
     Path("mlamd/lang/zho/proofreading/zho-Hant.json"),
     Path("mnt/lang/zho/proofreading/zho-Hant.json"),
     Path("t/lang/zho/proofreading/zho-Hant.json"),
-]
+)
 
-ZHO_HANS_OCR_FUSION_JSON_PATHS = [
+ZHO_HANS_OCR_FUSION_JSON_PATHS = (
     Path("mlamd/lang/zho/ocr_fusion/zho-Hans.json"),
     Path("mnt/lang/zho/ocr_fusion/zho-Hans.json"),
     Path("t/lang/zho/ocr_fusion/zho-Hans.json"),
-]
+)
 
-ZHO_HANT_OCR_FUSION_JSON_PATHS = [
+ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("kob/lang/zho/ocr_fusion/zho-Hant.json"),
     Path("mlamd/lang/zho/ocr_fusion/zho-Hant.json"),
     Path("mnt/lang/zho/ocr_fusion/zho-Hant.json"),
     Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
-]
+)
 
-YUE_ZHO_PROOFREADING_JSON_PATHS = [
-    Path("mlamd/multilang/yue_zho/proofreading.json"),
-]
+YUE_ZHO_PROOFREADING_JSON_PATHS = (Path("mlamd/multilang/yue_zho/proofreading.json"),)
 
-YUE_ZHO_REVIEW_JSON_PATHS = [
-    Path("mlamd/multilang/yue_zho/review.json"),
-]
+YUE_ZHO_REVIEW_JSON_PATHS = (Path("mlamd/multilang/yue_zho/review.json"),)
 
-YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = [
+YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = (
     Path("mlamd/multilang/yue_zho/translation.json"),
-]
+)
 
 
+@cache
 def get_repo_test_data_root() -> Path | None:
     """Get repository test data root if available.
 
@@ -97,12 +95,13 @@ def get_repo_test_data_root() -> Path | None:
     return test_data_root
 
 
-def load_default_test_cases_from_repo_data(
+@cache
+def _load_default_test_cases_from_repo_data_cached(
     manager_cls: type[Manager],
     prompt_cls: type,
-    relative_paths: list[Path],
-) -> list[TestCase]:
-    """Load default test cases from repository JSON files.
+    relative_paths: tuple[Path, ...],
+) -> tuple[TestCase, ...]:
+    """Load default test cases from repository JSON files and cache the result.
 
     Arguments:
         manager_cls: manager class used to construct test case models
@@ -115,7 +114,7 @@ def load_default_test_cases_from_repo_data(
     """
     test_data_root = get_repo_test_data_root()
     if test_data_root is None:
-        return []
+        return ()
 
     loaded_test_cases: list[TestCase] = []
     for relative_path in relative_paths:
@@ -127,4 +126,27 @@ def load_default_test_cases_from_repo_data(
         loaded_test_cases.extend(
             load_test_cases_from_json(path, manager_cls, prompt_cls=prompt_cls)
         )
-    return loaded_test_cases
+    return tuple(loaded_test_cases)
+
+
+def load_default_test_cases_from_repo_data(
+    manager_cls: type[Manager],
+    prompt_cls: type,
+    relative_paths: list[Path] | tuple[Path, ...],
+) -> list[TestCase]:
+    """Load default test cases from repository JSON files.
+
+    Arguments:
+        manager_cls: manager class used to construct test case models
+        prompt_cls: text for LLM correspondence
+        relative_paths: paths relative to repository test data root
+    Returns:
+        loaded test cases
+    """
+    return list(
+        _load_default_test_cases_from_repo_data_cached(
+            manager_cls,
+            prompt_cls,
+            tuple(relative_paths),
+        )
+    )

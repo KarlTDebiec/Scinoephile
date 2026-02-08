@@ -9,7 +9,7 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.testing.default_test_cases import (
+from scinoephile.llms.base.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
 )

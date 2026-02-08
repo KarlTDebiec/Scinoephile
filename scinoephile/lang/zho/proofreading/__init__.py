@@ -9,12 +9,12 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
-from scinoephile.testing.default_test_cases import (
+from scinoephile.llms.base.default_test_cases import (
     ZHO_HANS_PROOFREADING_JSON_PATHS,
     ZHO_HANT_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
 )
+from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
