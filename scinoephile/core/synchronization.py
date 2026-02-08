@@ -134,12 +134,20 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     overlap = get_sync_overlap_matrix(one, two)
     logger.debug(f"OVERLAP:\n{get_overlap_string(overlap)}")
 
+    max_cutoff = 1.0
     sync_groups = None
     while True:
         try:
             sync_groups = _get_sync_groups(one, two, overlap.copy(), cutoff)
         except ScinoephileError:
             cutoff += 0.01
+            if cutoff > max_cutoff:
+                raise ScinoephileError(
+                    f"Failed to compute sync groups: cutoff exceeded {max_cutoff}. "
+                    f"Final cutoff: {cutoff:.2f}. "
+                    f"Overlap matrix shape: {overlap.shape}. "
+                    f"This may indicate malformed or incompatible subtitle timing."
+                )
             continue
         break
 
@@ -157,7 +165,29 @@ def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
         one, whose columns correspond to subtitle indexes within series two, and whose
         values are the proportion of each subtitle in series two which overlaps with
         each subtitle in series one.
+    Raises:
+        ScinoephileError: if any subtitle has zero or negative duration
     """
+    # Validate subtitle durations in series one
+    for i, event in enumerate(one.events):
+        duration = event.end - event.start
+        if duration <= 0:
+            raise ScinoephileError(
+                f"Subtitle {i + 1} in series one has invalid duration "
+                f"(start={event.start}, end={event.end}, duration={duration}). "
+                f"Subtitles must have positive duration for synchronization."
+            )
+
+    # Validate subtitle durations in series two
+    for i, event in enumerate(two.events):
+        duration = event.end - event.start
+        if duration <= 0:
+            raise ScinoephileError(
+                f"Subtitle {i + 1} in series two has invalid duration "
+                f"(start={event.start}, end={event.end}, duration={duration}). "
+                f"Subtitles must have positive duration for synchronization."
+            )
+
     one_mu = np.array([e.start + (e.end - e.start) / 2 for e in one])
     one_sigma = np.array([(e.end - e.start) / 4 for e in one])
     two_mu = np.array([e.start + (e.end - e.start) / 2 for e in two])

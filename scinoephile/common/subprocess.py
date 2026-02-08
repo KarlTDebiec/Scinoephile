@@ -5,19 +5,22 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
 
+logger = getLogger(__name__)
+
 
 def run_command(
-    command: str,
+    command: list[str],
     timeout: int = 600,
     acceptable_exitcodes: Iterable[int] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command.
 
     Arguments:
-        command: command to run
+        command: command to run as a list of arguments
         timeout: maximum time to await command's completion
         acceptable_exitcodes: acceptable exit codes
     Returns:
@@ -28,7 +31,7 @@ def run_command(
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
 
-    with Popen(command, shell=True, stdout=PIPE, stderr=PIPE) as child:
+    with Popen(command, stdout=PIPE, stderr=PIPE) as child:
         try:
             stdout, stderr = child.communicate(timeout=timeout)
         except TimeoutExpired:
@@ -48,9 +51,10 @@ def run_command(
         exitcode = child.returncode
 
         if exitcode not in acceptable_exitcodes:
+            command_str = " ".join(command)
             raise ValueError(
                 f"subprocess for command:\n"
-                f"{command}\n\n"
+                f"{command_str}\n\n"
                 f"failed with exit code {exitcode};\n\n"
                 f"STDOUT:\n"
                 f"{stdout_str}\n\n"
@@ -62,14 +66,14 @@ def run_command(
 
 
 def run_command_live(
-    command: str,
+    command: list[str],
     timeout: int | None = 43200,
     acceptable_exitcodes: Iterable[int] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command and stream output live.
 
     Arguments:
-        command: Command to run
+        command: command to run as a list of arguments
         timeout: Maximum time to await command's completion
         acceptable_exitcodes: Acceptable exit codes
     Returns:
@@ -85,13 +89,12 @@ def run_command_live(
 
     def read_stream(stream, lines):
         for line in iter(stream.readline, ""):
-            print(line, end="")
+            logger.info(line.rstrip())
             lines.append(line)
         stream.close()
 
     with Popen(
         command,
-        shell=True,
         stdout=PIPE,
         stderr=PIPE,
         text=True,
@@ -111,9 +114,10 @@ def run_command_live(
         stderr_str = "".join(stderr_lines)
 
         if exitcode not in acceptable_exitcodes:
+            command_str = " ".join(command)
             raise ValueError(
                 f"subprocess for command:\n"
-                f"{command}\n\n"
+                f"{command_str}\n\n"
                 f"failed with exit code {exitcode};\n\n"
                 f"STDOUT:\n"
                 f"{stdout_str}\n\n"

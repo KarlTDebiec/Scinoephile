@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+from logging import getLogger
 from pathlib import Path
 
 from scinoephile.audio.subtitles import (
@@ -27,6 +28,8 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 )
 
 from .aligner import Aligner
+
+logger = getLogger(__name__)
 
 
 class YueTranscriber:
@@ -97,13 +100,13 @@ class YueTranscriber:
                 yuewen_block_series = await self.process_block(
                     block_idx, yuewen_block, zhongwen_block
                 )
-            print(f"BLOCK {block_idx}:")
-            print(f"中文:\n{zhongwen_block.to_simple_string()}")
-            print(f"粤文:\n{yuewen_block_series.to_simple_string()}")
+            logger.info("BLOCK %s:", block_idx)
+            logger.info("中文:\n%s", zhongwen_block.to_simple_string())
+            logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Run all blocks
-        if not stop_at_idx:
+        if stop_at_idx is None:
             stop_at_idx = len(yuewen.blocks) - 1
         async with asyncio.TaskGroup() as task_group:
             for block_idx in range(stop_at_idx + 1):
@@ -113,7 +116,7 @@ class YueTranscriber:
         yuewen_series = get_concatenated_series(
             [s for s in all_yuewen_block_series if s is not None]
         )
-        print(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
+        logger.info("Concatenated Series:\n%s", yuewen_series.to_simple_string())
         return yuewen_series
 
     async def process_block(
