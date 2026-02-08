@@ -10,10 +10,11 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
+from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.testing.default_test_cases import (
+    YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
@@ -33,10 +34,6 @@ __all__ = [
 
 
 logger = getLogger(__name__)
-
-_YUE_ZHO_PROOFREADING_JSON_PATHS = [
-    Path("mlamd/multilang/yue_zho/proofreading.json"),
-]
 
 
 class YueZhoProofreadingProcessKwargs(TypedDict, total=False):
@@ -65,7 +62,7 @@ def get_default_yue_vs_zho_proofreading_test_cases(
     return load_default_test_cases_from_repo_data(
         YueZhoProofreadingManager,
         prompt_cls,
-        _YUE_ZHO_PROOFREADING_JSON_PATHS,
+        YUE_ZHO_PROOFREADING_JSON_PATHS,
     )
 
 

@@ -8,6 +8,7 @@ Module hierarchy (modules may import from any above):
 * analysis
 * image / open_ai
 * llms
+* testing
 * lang
 * audio
 * multilang

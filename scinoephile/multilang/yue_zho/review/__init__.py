@@ -10,11 +10,12 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
-    load_default_test_cases_from_repo_data,
-)
 from scinoephile.llms.dual_block import DualBlockProcessor
 from scinoephile.llms.dual_block.manager import DualBlockManager
+from scinoephile.testing.default_test_cases import (
+    YUE_ZHO_REVIEW_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
@@ -30,10 +31,6 @@ __all__ = [
 
 
 logger = getLogger(__name__)
-
-_YUE_ZHO_REVIEW_JSON_PATHS = [
-    Path("mlamd/multilang/yue_zho/review.json"),
-]
 
 
 class YueZhoReviewProcessKwargs(TypedDict, total=False):
@@ -62,7 +59,7 @@ def get_default_yue_vs_zho_test_cases(
     return load_default_test_cases_from_repo_data(
         DualBlockManager,
         prompt_cls,
-        _YUE_ZHO_REVIEW_JSON_PATHS,
+        YUE_ZHO_REVIEW_JSON_PATHS,
     )
 
 

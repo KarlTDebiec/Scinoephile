@@ -18,7 +18,7 @@ from scinoephile.common.testing import (
     run_cli_with_args,
 )
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import skip_if_ci, test_data_root
+from scinoephile.testing import skip_if_ci, test_data_root
 
 
 @pytest.mark.parametrize(

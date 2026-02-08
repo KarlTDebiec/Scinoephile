@@ -10,11 +10,12 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
-    load_default_test_cases_from_repo_data,
-)
 from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
+from scinoephile.testing.default_test_cases import (
+    YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
@@ -30,10 +31,6 @@ __all__ = [
 
 
 logger = getLogger(__name__)
-
-_YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = [
-    Path("mlamd/multilang/yue_zho/translation.json"),
-]
 
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
@@ -62,7 +59,7 @@ def get_default_yue_from_zho_translation_test_cases(
     return load_default_test_cases_from_repo_data(
         DualBlockGappedManager,
         prompt_cls,
-        _YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+        YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     )
 
 

@@ -6,13 +6,12 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Unpack
 
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import test_data_root
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -39,6 +38,7 @@ from scinoephile.multilang.yue_zho.transcription.merging import (
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
+from scinoephile.testing import test_data_root
 
 __all__ = [
     "kob_eng",

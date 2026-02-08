@@ -10,11 +10,13 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
-    load_default_test_cases_from_repo_data,
-)
 from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
 from scinoephile.llms.mono_block.manager import MonoBlockManager
+from scinoephile.testing.default_test_cases import (
+    ZHO_HANS_PROOFREADING_JSON_PATHS,
+    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
@@ -30,18 +32,6 @@ __all__ = [
 
 
 logger = getLogger(__name__)
-
-_ZHO_HANS_PROOFREADING_JSON_PATHS = [
-    Path("mlamd/lang/zho/proofreading/zho-Hans.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hans.json"),
-    Path("t/lang/zho/proofreading/zho-Hans.json"),
-]
-_ZHO_HANT_PROOFREADING_JSON_PATHS = [
-    Path("kob/lang/zho/proofreading/zho-Hant.json"),
-    Path("mlamd/lang/zho/proofreading/zho-Hant.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hant.json"),
-    Path("t/lang/zho/proofreading/zho-Hant.json"),
-]
 
 
 class ZhoProofreadingProcessKwargs(TypedDict, total=False):
@@ -71,12 +61,12 @@ def get_default_zho_proofreading_test_cases(
         return load_default_test_cases_from_repo_data(
             MonoBlockManager,
             prompt_cls,
-            _ZHO_HANT_PROOFREADING_JSON_PATHS,
+            ZHO_HANT_PROOFREADING_JSON_PATHS,
         )
     return load_default_test_cases_from_repo_data(
         MonoBlockManager,
         prompt_cls,
-        _ZHO_HANS_PROOFREADING_JSON_PATHS,
+        ZHO_HANS_PROOFREADING_JSON_PATHS,
     )
 
 

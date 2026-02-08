@@ -10,9 +10,9 @@ import logging
 
 import pytest
 
-from scinoephile.core.testing import assert_expected_warnings, get_warning_messages
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.testing import assert_expected_warnings, get_warning_messages
 
 
 def test_validate_zho_ocr_mlamd_hans(

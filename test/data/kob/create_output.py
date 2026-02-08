@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import test_data_root
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
@@ -19,6 +18,7 @@ from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
+from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_shifting_test_cases,

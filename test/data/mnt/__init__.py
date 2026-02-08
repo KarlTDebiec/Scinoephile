@@ -6,12 +6,11 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Unpack
 
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import test_data_root
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
@@ -28,6 +27,7 @@ from scinoephile.llms.base.manager import TestCaseClsKwargs
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.testing import test_data_root
 
 __all__ = [
     "mnt_eng_lens",

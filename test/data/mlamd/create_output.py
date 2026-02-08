@@ -11,7 +11,6 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.core.testing import test_data_root
 from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_proofread,
     get_yue_vs_zho_reviewed,
@@ -23,6 +22,7 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
     get_yue_from_zho_translator,
 )
+from scinoephile.testing import test_data_root
 from test.data.mlamd import (
     get_mlamd_yue_merging_test_cases,
     get_mlamd_yue_shifting_test_cases,

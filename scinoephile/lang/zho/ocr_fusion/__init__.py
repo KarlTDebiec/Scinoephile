@@ -10,14 +10,16 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
-    load_default_test_cases_from_repo_data,
-)
 from scinoephile.llms.dual_single.ocr_fusion import (
     OcrFusionProcessor,
     OcrFusionPrompt,
 )
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
+from scinoephile.testing.default_test_cases import (
+    ZHO_HANS_OCR_FUSION_JSON_PATHS,
+    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
@@ -33,18 +35,6 @@ __all__ = [
 
 
 logger = getLogger(__name__)
-
-_ZHO_HANS_OCR_FUSION_JSON_PATHS = [
-    Path("mlamd/lang/zho/ocr_fusion/zho-Hans.json"),
-    Path("mnt/lang/zho/ocr_fusion/zho-Hans.json"),
-    Path("t/lang/zho/ocr_fusion/zho-Hans.json"),
-]
-_ZHO_HANT_OCR_FUSION_JSON_PATHS = [
-    Path("kob/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("mlamd/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("mnt/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
-]
 
 
 class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
@@ -74,12 +64,12 @@ def get_default_zho_ocr_fusion_test_cases(
         return load_default_test_cases_from_repo_data(
             OcrFusionManager,
             prompt_cls,
-            _ZHO_HANT_OCR_FUSION_JSON_PATHS,
+            ZHO_HANT_OCR_FUSION_JSON_PATHS,
         )
     return load_default_test_cases_from_repo_data(
         OcrFusionManager,
         prompt_cls,
-        _ZHO_HANS_OCR_FUSION_JSON_PATHS,
+        ZHO_HANS_OCR_FUSION_JSON_PATHS,
     )
 
 
