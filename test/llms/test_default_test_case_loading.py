@@ -42,8 +42,6 @@ from scinoephile.testing.default_test_cases import (
     load_default_test_cases_from_repo_data,
 )
 
-Loader = Callable[[], list[TestCase]]
-
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
     """Get expected number of test cases from JSON files.
@@ -174,7 +172,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
 )
 def test_default_loader_coverage(
     name: str,
-    loader: Loader,
+    loader: Callable[[], list[TestCase]],
     relative_paths: list[str],
 ):
     """Test that each default loader includes all configured repository cases.
