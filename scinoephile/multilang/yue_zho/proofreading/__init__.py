@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.testing.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
@@ -26,14 +24,10 @@ __all__ = [
     "YueZhoProofreadingManager",
     "YueZhoProofreadingProcessKwargs",
     "YueZhoProofreadingProcessorKwargs",
-    "get_default_yue_vs_zho_proofreading_test_cases",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
     "YueZhoProofreadingProcessor",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class YueZhoProofreadingProcessKwargs(TypedDict, total=False):
@@ -47,23 +41,6 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-def get_default_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
-) -> list[TestCase]:
-    """Get default 粤文 vs. 中文 proofreading test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    return load_default_test_cases_from_repo_data(
-        YueZhoProofreadingManager,
-        prompt_cls,
-        YUE_ZHO_PROOFREADING_JSON_PATHS,
-    )
 
 
 def get_yue_vs_zho_proofread(
@@ -102,7 +79,11 @@ def get_yue_vs_zho_proofreader(
         YueZhoProofreadingProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_yue_vs_zho_proofreading_test_cases(prompt_cls)
+        test_cases = load_default_test_cases_from_repo_data(
+            YueZhoProofreadingManager,
+            prompt_cls,
+            YUE_ZHO_PROOFREADING_JSON_PATHS,
+        )
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

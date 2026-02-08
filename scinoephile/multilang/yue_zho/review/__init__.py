@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
@@ -24,13 +23,9 @@ __all__ = [
     "YueHantReviewPrompt",
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
-    "get_default_yue_vs_zho_test_cases",
     "get_yue_vs_zho_reviewed",
     "get_yue_vs_zho_processor",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class YueZhoReviewProcessKwargs(TypedDict, total=False):
@@ -44,23 +39,6 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-def get_default_yue_vs_zho_test_cases(
-    prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
-) -> list[TestCase]:
-    """Get default test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    return load_default_test_cases_from_repo_data(
-        DualBlockManager,
-        prompt_cls,
-        YUE_ZHO_REVIEW_JSON_PATHS,
-    )
 
 
 def get_yue_vs_zho_reviewed(
@@ -99,7 +77,11 @@ def get_yue_vs_zho_processor(
         DualBlockProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_yue_vs_zho_test_cases(prompt_cls)
+        test_cases = load_default_test_cases_from_repo_data(
+            DualBlockManager,
+            prompt_cls,
+            YUE_ZHO_REVIEW_JSON_PATHS,
+        )
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

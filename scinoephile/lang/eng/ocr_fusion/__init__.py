@@ -4,13 +4,12 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusionPrompt
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.testing.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
@@ -23,13 +22,9 @@ __all__ = [
     "EngOcrFusionPrompt",
     "EngOcrFusionProcessKwargs",
     "EngOcrFusionProcessorKwargs",
-    "get_default_eng_ocr_fusion_test_cases",
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class EngOcrFusionProcessKwargs(TypedDict, total=False):
@@ -43,23 +38,6 @@ class EngOcrFusionProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-def get_default_eng_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = EngOcrFusionPrompt,
-) -> list[TestCase]:
-    """Get default English OCR fusion test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    return load_default_test_cases_from_repo_data(
-        OcrFusionManager,
-        prompt_cls,
-        ENG_OCR_FUSION_JSON_PATHS,
-    )
 
 
 def get_eng_ocr_fused(
@@ -98,7 +76,11 @@ def get_eng_ocr_fuser(
         OcrFusionProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_eng_ocr_fusion_test_cases(prompt_cls)
+        test_cases = load_default_test_cases_from_repo_data(
+            OcrFusionManager,
+            prompt_cls,
+            ENG_OCR_FUSION_JSON_PATHS,
+        )
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

@@ -12,36 +12,36 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common import package_root
-from scinoephile.lang.eng.ocr_fusion import (
-    EngOcrFusionPrompt,
-    get_default_eng_ocr_fusion_test_cases,
-)
-from scinoephile.lang.eng.proofreading import (
-    EngProofreadingPrompt,
-    get_default_eng_proofreading_test_cases,
-)
+from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import (
     ZhoHansOcrFusionPrompt,
     ZhoHantOcrFusionPrompt,
-    get_default_zho_ocr_fusion_test_cases,
 )
 from scinoephile.lang.zho.proofreading import (
     ZhoHansProofreadingPrompt,
     ZhoHantProofreadingPrompt,
-    get_default_zho_proofreading_test_cases,
 )
 from scinoephile.llms.base import TestCase
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    get_default_yue_vs_zho_proofreading_test_cases,
-)
-from scinoephile.multilang.yue_zho.review import (
-    YueHansReviewPrompt,
-    get_default_yue_vs_zho_test_cases,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueHansFromZhoTranslationPrompt,
-    get_default_yue_from_zho_translation_test_cases,
+from scinoephile.llms.dual_block.manager import DualBlockManager
+from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
+from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
+from scinoephile.llms.mono_block.manager import MonoBlockManager
+from scinoephile.multilang.yue_zho.proofreading import YueZhoHansProofreadingPrompt
+from scinoephile.multilang.yue_zho.proofreading.manager import YueZhoProofreadingManager
+from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
+from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
+from scinoephile.testing.default_test_cases import (
+    ENG_OCR_FUSION_JSON_PATHS,
+    ENG_PROOFREADING_JSON_PATHS,
+    YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    YUE_ZHO_PROOFREADING_JSON_PATHS,
+    YUE_ZHO_REVIEW_JSON_PATHS,
+    ZHO_HANS_OCR_FUSION_JSON_PATHS,
+    ZHO_HANS_PROOFREADING_JSON_PATHS,
+    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
 )
 
 Loader = Callable[[], list[TestCase]]
@@ -73,7 +73,9 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     [
         (
             "eng_proofreading",
-            lambda: get_default_eng_proofreading_test_cases(EngProofreadingPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                MonoBlockManager, EngProofreadingPrompt, ENG_PROOFREADING_JSON_PATHS
+            ),
             [
                 "kob/lang/eng/proofreading/eng_ocr.json",
                 "kob/lang/eng/proofreading/eng_srt.json",
@@ -84,7 +86,9 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "eng_ocr_fusion",
-            lambda: get_default_eng_ocr_fusion_test_cases(EngOcrFusionPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                OcrFusionManager, EngOcrFusionPrompt, ENG_OCR_FUSION_JSON_PATHS
+            ),
             [
                 "kob/lang/eng/ocr_fusion.json",
                 "mlamd/lang/eng/ocr_fusion.json",
@@ -94,7 +98,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hans_proofreading",
-            lambda: get_default_zho_proofreading_test_cases(ZhoHansProofreadingPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                MonoBlockManager,
+                ZhoHansProofreadingPrompt,
+                ZHO_HANS_PROOFREADING_JSON_PATHS,
+            ),
             [
                 "mlamd/lang/zho/proofreading/zho-Hans.json",
                 "mnt/lang/zho/proofreading/zho-Hans.json",
@@ -103,7 +111,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hant_proofreading",
-            lambda: get_default_zho_proofreading_test_cases(ZhoHantProofreadingPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                MonoBlockManager,
+                ZhoHantProofreadingPrompt,
+                ZHO_HANT_PROOFREADING_JSON_PATHS,
+            ),
             [
                 "kob/lang/zho/proofreading/zho-Hant.json",
                 "mlamd/lang/zho/proofreading/zho-Hant.json",
@@ -113,7 +125,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hans_ocr_fusion",
-            lambda: get_default_zho_ocr_fusion_test_cases(ZhoHansOcrFusionPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                OcrFusionManager,
+                ZhoHansOcrFusionPrompt,
+                ZHO_HANS_OCR_FUSION_JSON_PATHS,
+            ),
             [
                 "mlamd/lang/zho/ocr_fusion/zho-Hans.json",
                 "mnt/lang/zho/ocr_fusion/zho-Hans.json",
@@ -122,7 +138,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hant_ocr_fusion",
-            lambda: get_default_zho_ocr_fusion_test_cases(ZhoHantOcrFusionPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                OcrFusionManager,
+                ZhoHantOcrFusionPrompt,
+                ZHO_HANT_OCR_FUSION_JSON_PATHS,
+            ),
             [
                 "kob/lang/zho/ocr_fusion/zho-Hant.json",
                 "mlamd/lang/zho/ocr_fusion/zho-Hant.json",
@@ -132,20 +152,28 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "yue_zho_proofreading",
-            lambda: get_default_yue_vs_zho_proofreading_test_cases(
-                YueZhoHansProofreadingPrompt
+            lambda: load_default_test_cases_from_repo_data(
+                YueZhoProofreadingManager,
+                YueZhoHansProofreadingPrompt,
+                YUE_ZHO_PROOFREADING_JSON_PATHS,
             ),
             ["mlamd/multilang/yue_zho/proofreading.json"],
         ),
         (
             "yue_zho_review",
-            lambda: get_default_yue_vs_zho_test_cases(YueHansReviewPrompt),
+            lambda: load_default_test_cases_from_repo_data(
+                DualBlockManager,
+                YueHansReviewPrompt,
+                YUE_ZHO_REVIEW_JSON_PATHS,
+            ),
             ["mlamd/multilang/yue_zho/review.json"],
         ),
         (
             "yue_from_zho_translation",
-            lambda: get_default_yue_from_zho_translation_test_cases(
-                YueHansFromZhoTranslationPrompt
+            lambda: load_default_test_cases_from_repo_data(
+                DualBlockGappedManager,
+                YueHansFromZhoTranslationPrompt,
+                YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
             ["mlamd/multilang/yue_zho/translation.json"],
         ),
