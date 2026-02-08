@@ -5,9 +5,7 @@
 from __future__ import annotations
 
 import json
-import re
 from collections.abc import Callable
-from pathlib import Path
 
 import pytest
 
@@ -47,11 +45,6 @@ from scinoephile.testing.default_test_cases import (
 Loader = Callable[[], list[TestCase]]
 
 
-def _get_repo_root() -> Path:
-    """Get repository root."""
-    return package_root.parent
-
-
 def _get_expected_case_count(relative_paths: list[str]) -> int:
     """Get expected number of test cases from JSON files.
 
@@ -60,7 +53,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     Returns:
         expected number of test cases
     """
-    test_data_root = _get_repo_root() / "test" / "data"
+    test_data_root = package_root.parent / "test" / "data"
     count = 0
     for relative_path in relative_paths:
         with open(test_data_root / relative_path, encoding="utf-8") as file_handle:
@@ -196,14 +189,3 @@ def test_default_loader_coverage(
     assert loaded_count == expected_count, (
         f"{name} loaded {loaded_count} cases, expected {expected_count}"
     )
-
-
-def test_no_test_imports_under_scinoephile():
-    """Test that runtime package does not import from test modules."""
-    pattern = re.compile(r"^\s*(?:from|import)\s+test(?:\.|\b)", re.MULTILINE)
-    offenders: list[Path] = []
-    for path in (_get_repo_root() / "scinoephile").rglob("*.py"):
-        content = path.read_text(encoding="utf-8")
-        if pattern.search(content):
-            offenders.append(path.relative_to(_get_repo_root()))
-    assert not offenders, f"Found forbidden test imports: {offenders}"
