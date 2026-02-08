@@ -88,7 +88,7 @@ def get_repo_test_data_root() -> Path | None:
     """
     test_data_root = package_root.parent / "test" / "data"
     if not test_data_root.is_dir():
-        logger.warning(
+        logger.info(
             "Repository test data directory is not available at %s; "
             "default test cases were not loaded.",
             test_data_root,
