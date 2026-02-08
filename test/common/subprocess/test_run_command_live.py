@@ -8,19 +8,70 @@ import pytest
 from common.subprocess import run_command_live  # ty:ignore[unresolved-import]
 
 
-def test_run_command_live_success():
-    """Test running a successful command with live output."""
-    exitcode, stdout, stderr = run_command_live("echo 'Hello World'")
+def test_run_command_live_success_list():
+    """Test running a successful command with live output using list format."""
+    exitcode, stdout, stderr = run_command_live(["echo", "Hello World"])
 
     assert exitcode == 0
     assert "Hello World" in stdout
     assert stderr == ""
 
 
+def test_run_command_live_success_string_deprecated():
+    """Test running a successful command with deprecated string format."""
+    with pytest.warns(DeprecationWarning, match="Passing command as a string"):
+        exitcode, stdout, stderr = run_command_live("echo 'Hello World'")
+
+    assert exitcode == 0
+    assert "Hello World" in stdout
+    assert stderr == ""
+
+
+def test_run_command_live_with_arguments():
+    """Test running a command with multiple arguments."""
+    exitcode, stdout, stderr = run_command_live(["echo", "arg1", "arg2", "arg3"])
+
+    assert exitcode == 0
+    assert "arg1" in stdout
+    assert "arg2" in stdout
+    assert "arg3" in stdout
+
+
+def test_run_command_live_with_spaces():
+    """Test running a command with arguments containing spaces."""
+    exitcode, stdout, stderr = run_command_live(["echo", "hello world"])
+
+    assert exitcode == 0
+    assert "hello world" in stdout
+
+
+def test_run_command_live_with_special_chars():
+    """Test running a command with special shell characters."""
+    # Test with characters that would be problematic with shell=True
+    exitcode, stdout, stderr = run_command_live(["echo", "$HOME", "$(whoami)", "; ls"])
+
+    assert exitcode == 0
+    # These should be printed literally, not expanded
+    assert "$HOME" in stdout
+    assert "$(whoami)" in stdout
+    assert "; ls" in stdout
+
+
+def test_run_command_live_with_quotes():
+    """Test running a command with quoted arguments."""
+    exitcode, stdout, stderr = run_command_live(
+        ["echo", "'single quotes'", '"double quotes"']
+    )
+
+    assert exitcode == 0
+    assert "'single quotes'" in stdout
+    assert '"double quotes"' in stdout
+
+
 def test_run_command_live_with_stderr():
     """Test running a command with live stderr output."""
     exitcode, stdout, stderr = run_command_live(
-        "python3 -c \"import sys; sys.stderr.write('error message')\"",
+        ["python3", "-c", "import sys; sys.stderr.write('error message')"],
         acceptable_exitcodes=[0],
     )
 
@@ -31,19 +82,23 @@ def test_run_command_live_with_stderr():
 def test_run_command_live_failure_default():
     """Test running a command that fails with default acceptable exitcodes."""
     with pytest.raises(ValueError, match="failed with exit code"):
-        run_command_live("exit 1")
+        run_command_live(["sh", "-c", "exit 1"])
 
 
 def test_run_command_live_failure_custom_acceptable():
     """Test running a command with custom acceptable exitcodes."""
-    exitcode, stdout, stderr = run_command_live("exit 42", acceptable_exitcodes=[42])
+    exitcode, stdout, stderr = run_command_live(
+        ["sh", "-c", "exit 42"], acceptable_exitcodes=[42]
+    )
 
     assert exitcode == 42
 
 
 def test_run_command_live_multiple_lines():
     """Test command with multiple lines of output."""
-    exitcode, stdout, stderr = run_command_live("echo 'line1'; echo 'line2'")
+    exitcode, stdout, stderr = run_command_live(
+        ["sh", "-c", "echo 'line1'; echo 'line2'"]
+    )
 
     assert exitcode == 0
     assert "line1" in stdout
@@ -52,8 +107,26 @@ def test_run_command_live_multiple_lines():
 
 def test_run_command_live_empty_output():
     """Test command with no output using live streaming."""
-    exitcode, stdout, stderr = run_command_live("true")
+    exitcode, stdout, stderr = run_command_live(["true"])
 
     assert exitcode == 0
     assert stdout == ""
     assert stderr == ""
+
+
+def test_run_command_live_with_path():
+    """Test command with executable specified by full path."""
+    exitcode, stdout, stderr = run_command_live(["/bin/echo", "test"])
+
+    assert exitcode == 0
+    assert "test" in stdout
+
+
+def test_run_command_live_string_with_complex_quoting():
+    """Test deprecated string format handles complex quoting correctly."""
+    with pytest.warns(DeprecationWarning):
+        exitcode, stdout, stderr = run_command_live("echo 'hello world' \"foo bar\"")
+
+    assert exitcode == 0
+    assert "hello world" in stdout
+    assert "foo bar" in stdout

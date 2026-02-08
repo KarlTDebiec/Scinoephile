@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import shlex
+import warnings
 from collections.abc import Iterable
 from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
@@ -13,14 +15,17 @@ logger = getLogger(__name__)
 
 
 def run_command(
-    command: str,
+    command: list[str] | str,
     timeout: int = 600,
     acceptable_exitcodes: Iterable[int] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command.
 
     Arguments:
-        command: command to run
+        command: command to run as a list of arguments (preferred) or a string
+            (deprecated). When provided as a string, it will be parsed using
+            shlex.split() for safety. Using strings is deprecated and will be
+            removed in a future version.
         timeout: maximum time to await command's completion
         acceptable_exitcodes: acceptable exit codes
     Returns:
@@ -31,7 +36,19 @@ def run_command(
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
 
-    with Popen(command, shell=True, stdout=PIPE, stderr=PIPE) as child:
+    # Handle backward compatibility for string commands
+    if isinstance(command, str):
+        warnings.warn(
+            "Passing command as a string is deprecated and will be removed in a "
+            "future version. Please pass command as a list of arguments instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        command_list = shlex.split(command)
+    else:
+        command_list = command
+
+    with Popen(command_list, stdout=PIPE, stderr=PIPE) as child:
         try:
             stdout, stderr = child.communicate(timeout=timeout)
         except TimeoutExpired:
@@ -51,9 +68,14 @@ def run_command(
         exitcode = child.returncode
 
         if exitcode not in acceptable_exitcodes:
+            # Format command for error message
+            if isinstance(command, str):
+                command_str = command
+            else:
+                command_str = " ".join(command_list)
             raise ValueError(
                 f"subprocess for command:\n"
-                f"{command}\n\n"
+                f"{command_str}\n\n"
                 f"failed with exit code {exitcode};\n\n"
                 f"STDOUT:\n"
                 f"{stdout_str}\n\n"
@@ -65,14 +87,17 @@ def run_command(
 
 
 def run_command_live(
-    command: str,
+    command: list[str] | str,
     timeout: int | None = 43200,
     acceptable_exitcodes: Iterable[int] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command and stream output live.
 
     Arguments:
-        command: Command to run
+        command: command to run as a list of arguments (preferred) or a string
+            (deprecated). When provided as a string, it will be parsed using
+            shlex.split() for safety. Using strings is deprecated and will be
+            removed in a future version.
         timeout: Maximum time to await command's completion
         acceptable_exitcodes: Acceptable exit codes
     Returns:
@@ -82,6 +107,18 @@ def run_command_live(
     """
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
+
+    # Handle backward compatibility for string commands
+    if isinstance(command, str):
+        warnings.warn(
+            "Passing command as a string is deprecated and will be removed in a "
+            "future version. Please pass command as a list of arguments instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        command_list = shlex.split(command)
+    else:
+        command_list = command
 
     stdout_lines = []
     stderr_lines = []
@@ -93,8 +130,7 @@ def run_command_live(
         stream.close()
 
     with Popen(
-        command,
-        shell=True,
+        command_list,
         stdout=PIPE,
         stderr=PIPE,
         text=True,
@@ -114,9 +150,14 @@ def run_command_live(
         stderr_str = "".join(stderr_lines)
 
         if exitcode not in acceptable_exitcodes:
+            # Format command for error message
+            if isinstance(command, str):
+                command_str = command
+            else:
+                command_str = " ".join(command_list)
             raise ValueError(
                 f"subprocess for command:\n"
-                f"{command}\n\n"
+                f"{command_str}\n\n"
                 f"failed with exit code {exitcode};\n\n"
                 f"STDOUT:\n"
                 f"{stdout_str}\n\n"
