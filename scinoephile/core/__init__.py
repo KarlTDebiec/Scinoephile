@@ -6,6 +6,7 @@ This module may import from: common
 
 Hierarchy within module:
 * exceptions / text
+* paths
 * subtitles
 * timing / pairs
 * synchronization

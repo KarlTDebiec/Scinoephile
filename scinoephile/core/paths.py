@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Runtime path helpers for LLM workflows."""
+"""Runtime path helpers."""
 
 from __future__ import annotations
 
