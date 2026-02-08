@@ -17,16 +17,6 @@ def test_run_command_live_success_list():
     assert stderr == ""
 
 
-def test_run_command_live_success_string_deprecated():
-    """Test running a successful command with deprecated string format."""
-    with pytest.warns(DeprecationWarning, match="Passing command as a string"):
-        exitcode, stdout, stderr = run_command_live("echo 'Hello World'")
-
-    assert exitcode == 0
-    assert "Hello World" in stdout
-    assert stderr == ""
-
-
 def test_run_command_live_with_arguments():
     """Test running a command with multiple arguments."""
     exitcode, stdout, stderr = run_command_live(["echo", "arg1", "arg2", "arg3"])
@@ -145,13 +135,3 @@ def test_run_command_live_with_path():
 
     assert exitcode == 0
     assert "test" in stdout
-
-
-def test_run_command_live_string_with_complex_quoting():
-    """Test deprecated string format handles complex quoting correctly."""
-    with pytest.warns(DeprecationWarning):
-        exitcode, stdout, stderr = run_command_live("echo 'hello world' \"foo bar\"")
-
-    assert exitcode == 0
-    assert "hello world" in stdout
-    assert "foo bar" in stdout
