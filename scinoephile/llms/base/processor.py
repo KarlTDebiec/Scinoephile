@@ -12,7 +12,7 @@ from scinoephile.common.validation import val_output_path
 from .manager import Manager
 from .prompt import Prompt
 from .queryer import Queryer
-from .runtime_paths import get_runtime_cache_dir
+from .runtime_paths import get_runtime_cache_dir_path
 from .test_case import TestCase
 from .utils import load_test_cases_from_json
 
@@ -67,7 +67,7 @@ class Processor(ABC):
         self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
-            cache_dir_path=get_runtime_cache_dir("llm"),
+            cache_dir_path=get_runtime_cache_dir_path("llm"),
             auto_verify=auto_verify,
         )
         """LLM queryer."""

@@ -5,6 +5,11 @@
 * This repository uses a virtual environment. To activate the venv in your shell: `source .venv/bin/activate`.
 * This repository uses `uv`. Use `uv run` when executing tools.
 
+### Version Control
+
+* Branches should be named in the format `feature/brief-description`.
+* Interact with GitHub using the GitHub MCP; do not use the `gh` CLI.
+
 ### Linting
 
 * Run the following checks on **only the Python files you have changed or been asked to**:
@@ -30,6 +35,10 @@
 * Use the `logging` module rather than `print` for any user-facing output in scripts or
   libraries.
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.
+* Use explicit path nomenclature:
+    * variables or parameters holding `Path` objects should end in `_path` (e.g., `file_path`, `dir_path`, `cache_dir_path`)
+    * use `*_name` for bare names and `*_stem` for stems, not for full paths
+    * prefer `*_dir_path` over `*_directory` when the value is a path
 
 ## Documentation
 
