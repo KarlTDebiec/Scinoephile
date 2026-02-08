@@ -9,8 +9,10 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
-from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedManager,
+    DualBlockGappedProcessor,
+)
 from scinoephile.testing.default_test_cases import (
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     load_default_test_cases_from_repo_data,
