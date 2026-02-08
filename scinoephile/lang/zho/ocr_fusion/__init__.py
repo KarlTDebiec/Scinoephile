@@ -10,10 +10,14 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.default_test_cases import (
+    load_default_test_cases_from_repo_data,
+)
 from scinoephile.llms.dual_single.ocr_fusion import (
     OcrFusionProcessor,
     OcrFusionPrompt,
 )
+from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
@@ -30,6 +34,18 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_ZHO_HANS_OCR_FUSION_JSON_PATHS = [
+    Path("mlamd/lang/zho/ocr_fusion/zho-Hans.json"),
+    Path("mnt/lang/zho/ocr_fusion/zho-Hans.json"),
+    Path("t/lang/zho/ocr_fusion/zho-Hans.json"),
+]
+_ZHO_HANT_OCR_FUSION_JSON_PATHS = [
+    Path("kob/lang/zho/ocr_fusion/zho-Hant.json"),
+    Path("mlamd/lang/zho/ocr_fusion/zho-Hant.json"),
+    Path("mnt/lang/zho/ocr_fusion/zho-Hant.json"),
+    Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
+]
+
 
 class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor.process."""
@@ -44,7 +60,6 @@ class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-# noinspection PyUnusedImports
 def get_default_zho_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = ZhoHansOcrFusionPrompt,
 ) -> list[TestCase]:
@@ -55,39 +70,17 @@ def get_default_zho_ocr_fusion_test_cases(
     Returns:
         default test cases
     """
-    try:
-        from test.data.kob import (  # noqa: PLC0415
-            get_kob_zho_hant_ocr_fusion_test_cases,
+    if prompt_cls is ZhoHantOcrFusionPrompt:
+        return load_default_test_cases_from_repo_data(
+            OcrFusionManager,
+            prompt_cls,
+            _ZHO_HANT_OCR_FUSION_JSON_PATHS,
         )
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_zho_hans_ocr_fusion_test_cases,
-            get_mlamd_zho_hant_ocr_fusion_test_cases,
-        )
-        from test.data.mnt import (  # noqa: PLC0415
-            get_mnt_zho_hans_ocr_fusion_test_cases,
-            get_mnt_zho_hant_ocr_fusion_test_cases,
-        )
-        from test.data.t import (  # noqa: PLC0415
-            get_t_zho_hans_ocr_fusion_test_cases,
-            get_t_zho_hant_ocr_fusion_test_cases,
-        )
-
-        if prompt_cls is ZhoHantOcrFusionPrompt:
-            return (
-                get_kob_zho_hant_ocr_fusion_test_cases(prompt_cls)
-                + get_mlamd_zho_hant_ocr_fusion_test_cases(prompt_cls)
-                + get_mnt_zho_hant_ocr_fusion_test_cases(prompt_cls)
-                + get_t_zho_hant_ocr_fusion_test_cases(prompt_cls)
-            )
-
-        return (
-            get_mlamd_zho_hans_ocr_fusion_test_cases(prompt_cls)
-            + get_mnt_zho_hans_ocr_fusion_test_cases(prompt_cls)
-            + get_t_zho_hans_ocr_fusion_test_cases(prompt_cls)
-        )
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
+    return load_default_test_cases_from_repo_data(
+        OcrFusionManager,
+        prompt_cls,
+        _ZHO_HANS_OCR_FUSION_JSON_PATHS,
+    )
 
 
 def get_zho_ocr_fused(

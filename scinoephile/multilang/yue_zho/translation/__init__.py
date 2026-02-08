@@ -10,7 +10,11 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.default_test_cases import (
+    load_default_test_cases_from_repo_data,
+)
 from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
+from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
@@ -27,6 +31,10 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = [
+    Path("mlamd/multilang/yue_zho/translation.json"),
+]
+
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockGappedProcessor.process."""
@@ -41,7 +49,6 @@ class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-# noinspection PyUnusedImports
 def get_default_yue_from_zho_translation_test_cases(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
 ) -> list[TestCase]:
@@ -52,15 +59,11 @@ def get_default_yue_from_zho_translation_test_cases(
     Returns:
         default test cases
     """
-    try:
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_yue_from_zho_translation_test_cases,
-        )
-
-        return get_mlamd_yue_from_zho_translation_test_cases(prompt_cls)
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
+    return load_default_test_cases_from_repo_data(
+        DualBlockGappedManager,
+        prompt_cls,
+        _YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    )
 
 
 def get_yue_from_zho_translated(

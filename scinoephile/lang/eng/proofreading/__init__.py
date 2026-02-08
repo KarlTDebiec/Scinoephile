@@ -10,7 +10,11 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.default_test_cases import (
+    load_default_test_cases_from_repo_data,
+)
 from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
+from scinoephile.llms.mono_block.manager import MonoBlockManager
 
 from .prompts import EngProofreadingPrompt
 
@@ -26,6 +30,14 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_ENG_PROOFREADING_JSON_PATHS = [
+    Path("kob/lang/eng/proofreading/eng_ocr.json"),
+    Path("kob/lang/eng/proofreading/eng_srt.json"),
+    Path("mlamd/lang/eng/proofreading.json"),
+    Path("mnt/lang/eng/proofreading.json"),
+    Path("t/lang/eng/proofreading.json"),
+]
+
 
 class EngProofreadingProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
@@ -40,7 +52,6 @@ class EngProofreadingProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-# noinspection PyUnusedImports
 def get_default_eng_proofreading_test_cases(
     prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
 ) -> list[TestCase]:
@@ -51,23 +62,11 @@ def get_default_eng_proofreading_test_cases(
     Returns:
         default test cases
     """
-    try:
-        from test.data.kob import get_kob_eng_proofreading_test_cases  # noqa: PLC0415
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_eng_proofreading_test_cases,
-        )
-        from test.data.mnt import get_mnt_eng_proofreading_test_cases  # noqa: PLC0415
-        from test.data.t import get_t_eng_proofreading_test_cases  # noqa: PLC0415
-
-        return (
-            get_kob_eng_proofreading_test_cases(prompt_cls)
-            + get_mlamd_eng_proofreading_test_cases(prompt_cls)
-            + get_mnt_eng_proofreading_test_cases(prompt_cls)
-            + get_t_eng_proofreading_test_cases(prompt_cls)
-        )
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
+    return load_default_test_cases_from_repo_data(
+        MonoBlockManager,
+        prompt_cls,
+        _ENG_PROOFREADING_JSON_PATHS,
+    )
 
 
 def get_eng_proofread(

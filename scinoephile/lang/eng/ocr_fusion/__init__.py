@@ -10,7 +10,11 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.default_test_cases import (
+    load_default_test_cases_from_repo_data,
+)
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusionPrompt
+from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 
 from .prompts import EngOcrFusionPrompt
 
@@ -26,6 +30,13 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_ENG_OCR_FUSION_JSON_PATHS = [
+    Path("kob/lang/eng/ocr_fusion.json"),
+    Path("mlamd/lang/eng/ocr_fusion.json"),
+    Path("mnt/lang/eng/ocr_fusion.json"),
+    Path("t/lang/eng/ocr_fusion.json"),
+]
+
 
 class EngOcrFusionProcessKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor.process."""
@@ -40,7 +51,6 @@ class EngOcrFusionProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-# noinspection PyUnusedImports
 def get_default_eng_ocr_fusion_test_cases(
     prompt_cls: type[OcrFusionPrompt] = EngOcrFusionPrompt,
 ) -> list[TestCase]:
@@ -51,21 +61,11 @@ def get_default_eng_ocr_fusion_test_cases(
     Returns:
         default test cases
     """
-    try:
-        from test.data.kob import get_kob_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.t import get_t_eng_ocr_fusion_test_cases  # noqa: PLC0415
-
-        return (
-            get_kob_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_mlamd_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_mnt_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_t_eng_ocr_fusion_test_cases(prompt_cls)
-        )
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
+    return load_default_test_cases_from_repo_data(
+        OcrFusionManager,
+        prompt_cls,
+        _ENG_OCR_FUSION_JSON_PATHS,
+    )
 
 
 def get_eng_ocr_fused(

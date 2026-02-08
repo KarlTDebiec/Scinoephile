@@ -10,6 +10,9 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
+from scinoephile.llms.base.default_test_cases import (
+    load_default_test_cases_from_repo_data,
+)
 from scinoephile.llms.dual_single import DualSinglePrompt
 
 from .manager import YueZhoProofreadingManager
@@ -31,6 +34,10 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+_YUE_ZHO_PROOFREADING_JSON_PATHS = [
+    Path("mlamd/multilang/yue_zho/proofreading.json"),
+]
+
 
 class YueZhoProofreadingProcessKwargs(TypedDict, total=False):
     """Keyword arguments for YueZhoProofreadingProcessor.process."""
@@ -45,7 +52,6 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-# noinspection PyUnusedImports
 def get_default_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
 ) -> list[TestCase]:
@@ -56,15 +62,11 @@ def get_default_yue_vs_zho_proofreading_test_cases(
     Returns:
         default test cases
     """
-    try:
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_yue_vs_zho_proofreading_test_cases,
-        )
-
-        return get_mlamd_yue_vs_zho_proofreading_test_cases(prompt_cls)
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
+    return load_default_test_cases_from_repo_data(
+        YueZhoProofreadingManager,
+        prompt_cls,
+        _YUE_ZHO_PROOFREADING_JSON_PATHS,
+    )
 
 
 def get_yue_vs_zho_proofread(
