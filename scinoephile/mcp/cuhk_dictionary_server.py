@@ -6,7 +6,33 @@ from __future__ import annotations
 
 from typing import Literal
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.fastmcp import FastMCP
+except ModuleNotFoundError:
+    # In some test runners, the local `test/mcp` package name can shadow the
+    # third-party `mcp` dependency during import. Provide a minimal shim so
+    # module import and unit tests still work; real MCP serving requires the
+    # actual dependency.
+    class FastMCP:  # pragma: no cover - exercised only in import-fallback path
+        """Minimal fallback shim for test environments without importable MCP."""
+
+        def __init__(self, _name: str, instructions: str = ""):
+            self.instructions = instructions
+
+        def tool(self, **_kwargs):
+            """Return no-op decorator."""
+
+            def decorator(func):
+                return func
+
+            return decorator
+
+        def run(self, transport: str = "stdio"):
+            """Raise clear runtime error if MCP dependency is unavailable."""
+            raise ModuleNotFoundError(
+                "Unable to import mcp.server.fastmcp. "
+                "Install `mcp` and ensure it is not shadowed by local packages."
+            )
 
 from scinoephile.lang.yue.dictionaries import (
     CuhkDictionaryService,
