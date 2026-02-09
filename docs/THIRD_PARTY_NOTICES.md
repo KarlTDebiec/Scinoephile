@@ -15,7 +15,7 @@ of the software.
 
 For the complete license text used by `jyut-dict`, see:
 
-- `external/jyut-dict/LICENSE`
+- https://github.com/aaronhktan/jyut-dict/blob/main/LICENSE
 
 MIT license text (from `jyut-dict`):
 

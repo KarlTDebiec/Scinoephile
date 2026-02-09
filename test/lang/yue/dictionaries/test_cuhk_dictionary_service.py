@@ -264,6 +264,29 @@ def test_lookup_nonpositive_limit_is_sanitized(tmp_path: Path):
     assert results[0].traditional == "巴士"
 
 
+def test_lookup_escapes_like_wildcards(tmp_path: Path):
+    """Test lookup treats `%` and `_` literally rather than as wildcards."""
+    service = CuhkDictionaryService(
+        cache_dir_path=tmp_path / "cuhk",
+        auto_build_missing=False,
+    )
+    _seed_dictionary_database(service.database_path)
+
+    mandarin_results = service.lookup(
+        "%",
+        direction=LookupDirection.MANDARIN_TO_CANTONESE,
+        limit=10,
+    )
+    cantonese_results = service.lookup(
+        "_",
+        direction=LookupDirection.CANTONESE_TO_MANDARIN,
+        limit=10,
+    )
+
+    assert mandarin_results == []
+    assert cantonese_results == []
+
+
 def test_parse_word_file_applies_tone_mapping(tmp_path: Path):
     """Test parsing of CUHK page and 7/8/9 tone remapping."""
     builder = CuhkDictionaryBuilder(

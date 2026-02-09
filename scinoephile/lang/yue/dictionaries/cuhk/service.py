@@ -133,7 +133,7 @@ class CuhkDictionaryService:
         Returns:
             dictionary entries
         """
-        like_query = f"%{query}%"
+        like_query = self._build_like_query(query)
 
         sql = """
             SELECT
@@ -143,8 +143,8 @@ class CuhkDictionaryService:
                 ON d.fk_entry_id = e.entry_id
             WHERE e.simplified = ?
                OR e.traditional = ?
-               OR e.pinyin LIKE ?
-               OR d.definition LIKE ?
+               OR e.pinyin LIKE ? ESCAPE '\\'
+               OR d.definition LIKE ? ESCAPE '\\'
             GROUP BY e.entry_id
             ORDER BY
                 CASE
@@ -185,7 +185,7 @@ class CuhkDictionaryService:
         Returns:
             dictionary entries
         """
-        like_query = f"%{query}%"
+        like_query = self._build_like_query(query)
 
         sql = """
             SELECT
@@ -194,7 +194,7 @@ class CuhkDictionaryService:
             LEFT JOIN definitions AS d
                 ON d.fk_entry_id = e.entry_id
             WHERE e.jyutping = ?
-               OR e.jyutping LIKE ?
+               OR e.jyutping LIKE ? ESCAPE '\\'
                OR e.traditional = ?
                OR e.simplified = ?
             GROUP BY e.entry_id
@@ -338,3 +338,14 @@ class CuhkDictionaryService:
                 )
             )
         return output
+
+    def _build_like_query(self, query: str) -> str:
+        """Build escaped LIKE pattern for literal substring search.
+
+        Arguments:
+            query: raw query text
+        Returns:
+            escaped pattern wrapped for substring search
+        """
+        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        return f"%{escaped}%"

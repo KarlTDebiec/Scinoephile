@@ -143,7 +143,7 @@ def run_smoke(
 
     print("[3/5] Parsing scraped pages")
     entries = builder.parse_scraped_pages()
-    print(f"Parsed {len(entries)} entrie(s)")
+    print(f"Parsed {len(entries)} entry(ies)")
 
     print("[4/5] Writing sqlite database")
     builder.write_database(entries)
