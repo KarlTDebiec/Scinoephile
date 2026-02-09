@@ -16,7 +16,7 @@ import sqlite3
 from logging import getLogger
 from pathlib import Path
 from time import sleep
-from urllib.parse import urljoin
+from urllib.parse import parse_qs, urljoin, urlparse
 
 import opencc
 import requests
@@ -52,6 +52,8 @@ logger = getLogger(__name__)
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"
+CUHK_HOSTNAME = "apps.itsc.cuhk.edu.hk"
+CUHK_TERMS_PATH = "/hanyu/Page/Terms.aspx"
 
 PRIVATE_USE_AREA_REGEX = re.compile(r"[\ue000-\uf8ff]")
 PRIVATE_USE_AREA_REPLACEMENT_STRING = "☒"
@@ -170,10 +172,21 @@ class CuhkDictionaryBuilder:
         if not isinstance(main_panel, Tag):
             raise RuntimeError("Unable to find CUHK terms index panel")
 
-        category_links = [
-            urljoin(BASE_URL, str(anchor["href"]))
-            for anchor in main_panel.find_all("a", href=True)
-        ]
+        category_links: list[str] = []
+        for anchor in main_panel.find_all("a", href=True):
+            category_url = urljoin(BASE_URL, str(anchor["href"]).strip())
+            parsed_url = urlparse(category_url)
+            query_params = parse_qs(parsed_url.query)
+
+            # Keep only actual CUHK category links (Terms.aspx?target=...).
+            if parsed_url.netloc != CUHK_HOSTNAME:
+                continue
+            if parsed_url.path != CUHK_TERMS_PATH:
+                continue
+            if "target" not in query_params:
+                continue
+
+            category_links.append(category_url)
 
         seen_word_links: set[tuple[str, str]] = set()
         word_links: list[tuple[str, str]] = []

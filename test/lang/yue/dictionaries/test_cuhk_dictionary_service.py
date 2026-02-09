@@ -26,6 +26,51 @@ from scinoephile.lang.yue.dictionaries.cuhk.sqlite_schema import (
 )
 
 
+class _DiscoverOnlyBuilder(CuhkDictionaryBuilder):
+    """Builder test double that records fetched URLs."""
+
+    def __init__(self, cache_dir_path: Path):
+        """Initialize.
+
+        Arguments:
+            cache_dir_path: test cache directory path
+        """
+        super().__init__(
+            cache_dir_path=cache_dir_path,
+            min_delay_seconds=0.0,
+            max_delay_seconds=0.0,
+        )
+        self.fetched_urls: list[str] = []
+
+    def _fetch_text(self, url: str) -> str:  # noqa: PLR0911
+        """Return deterministic HTML for discovery flow.
+
+        Arguments:
+            url: URL requested by discovery logic
+        Returns:
+            mock HTML page content
+        """
+        self.fetched_urls.append(url)
+        if url.endswith("/Terms.aspx"):
+            return """
+                <html><body>
+                    <div id="MainContent_panelTermsIndex">
+                        <a href="Terms.aspx?target=名詞">valid category</a>
+                        <a href="https://www.qef.org.hk/chinese/index.htm">external</a>
+                    </div>
+                </body></html>
+            """
+        if "target=" in url:
+            return """
+                <html><body>
+                    <div id="MainContent_panelTermsQuery">
+                        <a href="Word.aspx?id=1">巴士</a>
+                    </div>
+                </body></html>
+            """
+        raise AssertionError(f"Unexpected URL fetched: {url}")
+
+
 def _seed_dictionary_database(database_path: Path):
     """Seed a minimal dictionary database for lookup tests.
 
@@ -150,3 +195,14 @@ def test_parse_word_file_applies_tone_mapping(tmp_path: Path):
     assert len(entry.definitions) == 2
     assert entry.definitions[0].label == "名詞"
     assert entry.definitions[1].label == "備註"
+
+
+def test_discover_word_links_filters_external_category_links(tmp_path: Path):
+    """Test discovery ignores non-CUHK category anchors."""
+    builder = _DiscoverOnlyBuilder(cache_dir_path=tmp_path / "cuhk")
+    links = builder.discover_word_links()
+
+    assert len(links) == 1
+    assert links[0][0] == "巴士"
+    assert builder.fetched_urls[0].endswith("/Terms.aspx")
+    assert all("qef.org.hk" not in url for url in builder.fetched_urls)
