@@ -21,7 +21,7 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
 )
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.base.default_test_cases import (
+from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
     ENG_PROOFREADING_JSON_PATHS,
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
