@@ -54,6 +54,7 @@ BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"
 CUHK_HOSTNAME = "apps.itsc.cuhk.edu.hk"
 CUHK_TERMS_PATH = "/hanyu/Page/Terms.aspx"
+CUHK_WORD_PATH = "/hanyu/Page/Word.aspx"
 
 PRIVATE_USE_AREA_REGEX = re.compile(r"[\ue000-\uf8ff]")
 PRIVATE_USE_AREA_REPLACEMENT_STRING = "☒"
@@ -213,6 +214,13 @@ class CuhkDictionaryBuilder:
                 if not item:
                     continue
                 url = urljoin(BASE_URL, str(anchor["href"]))
+                parsed_word_url = urlparse(url)
+                if parsed_word_url.netloc != CUHK_HOSTNAME:
+                    logger.warning("Skipping non-CUHK word URL: %s", url)
+                    continue
+                if parsed_word_url.path != CUHK_WORD_PATH:
+                    logger.warning("Skipping unexpected CUHK word URL path: %s", url)
+                    continue
                 pair = (item, url)
                 if pair in seen_word_links:
                     continue

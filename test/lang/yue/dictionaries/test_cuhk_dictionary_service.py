@@ -65,6 +65,8 @@ class _DiscoverOnlyBuilder(CuhkDictionaryBuilder):
                 <html><body>
                     <div id="MainContent_panelTermsQuery">
                         <a href="Word.aspx?id=1">巴士</a>
+                        <a href="https://example.com/outside">外部</a>
+                        <a href="Cover.aspx">封面</a>
                     </div>
                 </body></html>
             """
@@ -353,12 +355,13 @@ def test_parse_word_file_rejects_mismatched_jyutping(tmp_path: Path):
 
 
 def test_discover_word_links_filters_external_category_links(tmp_path: Path):
-    """Test discovery ignores non-CUHK category anchors."""
+    """Test discovery ignores non-CUHK/invalid category and word anchors."""
     builder = _DiscoverOnlyBuilder(cache_dir_path=tmp_path / "cuhk")
     links = builder.discover_word_links()
 
     assert len(links) == 1
     assert links[0][0] == "巴士"
+    assert links[0][1] == "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Word.aspx?id=1"
     assert builder.fetched_urls[0].endswith("/Terms.aspx")
     assert all("qef.org.hk" not in url for url in builder.fetched_urls)
 

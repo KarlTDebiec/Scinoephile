@@ -43,7 +43,15 @@ def create_tables(cursor: sqlite3.Cursor):
                     ON CONFLICT IGNORE
             )"""
     )
-    cursor.execute("CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)")
+    try:
+        cursor.execute("CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)")
+    except sqlite3.OperationalError as exc:
+        if "fts5" in str(exc).lower():
+            raise RuntimeError(
+                "SQLite FTS5 extension is required for CUHK dictionary tables. "
+                "Install/use a Python build with SQLite FTS5 enabled."
+            ) from exc
+        raise
 
     cursor.execute(
         """CREATE TABLE sources(
@@ -74,10 +82,18 @@ def create_tables(cursor: sqlite3.Cursor):
                     ON CONFLICT IGNORE
             )"""
     )
-    cursor.execute(
-        "CREATE VIRTUAL TABLE definitions_fts "
-        "USING fts5(fk_entry_id UNINDEXED, definition)"
-    )
+    try:
+        cursor.execute(
+            "CREATE VIRTUAL TABLE definitions_fts "
+            "USING fts5(fk_entry_id UNINDEXED, definition)"
+        )
+    except sqlite3.OperationalError as exc:
+        if "fts5" in str(exc).lower():
+            raise RuntimeError(
+                "SQLite FTS5 extension is required for CUHK dictionary tables. "
+                "Install/use a Python build with SQLite FTS5 enabled."
+            ) from exc
+        raise
 
     # The following tables are retained for schema-compatibility with jyut-dict.
     cursor.execute(

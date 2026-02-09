@@ -191,8 +191,6 @@ class CuhkDictionaryService:
             SELECT
                 e.entry_id
             FROM entries AS e
-            LEFT JOIN definitions AS d
-                ON d.fk_entry_id = e.entry_id
             WHERE e.jyutping = ?
                OR e.jyutping LIKE ? ESCAPE '\\'
                OR e.traditional = ?
