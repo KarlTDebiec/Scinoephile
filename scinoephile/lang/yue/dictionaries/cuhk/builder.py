@@ -14,6 +14,7 @@ import random
 import re
 import sqlite3
 from logging import getLogger
+from os.path import expandvars
 from pathlib import Path
 from time import sleep
 from urllib.parse import parse_qs, urljoin, urlparse
@@ -23,7 +24,6 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from pypinyin import Style, lazy_pinyin
 
-from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .models import DictionaryDefinition, DictionaryEntry, DictionarySource
@@ -31,7 +31,6 @@ from .sqlite_schema import (
     create_tables,
     drop_tables,
     generate_indices,
-    get_entry_id,
     insert_definition,
     insert_entry,
     insert_source,
@@ -42,6 +41,7 @@ hkscs_converter = None
 try:  # pragma: no cover - optional dependency
     hkscs_converter = importlib.import_module("hkscs_unicode_converter").converter
 except ImportError:
+    # Fallback to raw CUHK text when HK-SCS converter is unavailable.
     pass
 
 __all__ = [
@@ -111,8 +111,10 @@ class CuhkDictionaryBuilder:
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
 
-        self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.scraped_dir_path = val_output_dir_path(self.cache_dir_path / "scraped")
+        self.cache_dir_path = (
+            Path(expandvars(str(cache_dir_path))).expanduser().resolve()
+        )
+        self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
         self.database_path = self.cache_dir_path / "cuhk.db"
 
@@ -138,6 +140,10 @@ class CuhkDictionaryBuilder:
         if self.database_path.exists() and not force_rebuild:
             return self.database_path
 
+        self._ensure_cache_directories()
+        if force_rebuild:
+            self._clear_scraped_pages()
+
         word_links = self.load_word_links(force_refresh=force_rebuild)
         self.scrape_word_pages(word_links, skip_existing=not force_rebuild)
         entries = self.parse_scraped_pages()
@@ -155,6 +161,7 @@ class CuhkDictionaryBuilder:
         if self.word_links_path.exists() and not force_refresh:
             return self._read_word_links(self.word_links_path)
 
+        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         word_links = self.discover_word_links()
         self._write_word_links(self.word_links_path, word_links)
         return word_links
@@ -226,6 +233,7 @@ class CuhkDictionaryBuilder:
             word_links: list of (word, url)
             skip_existing: whether to skip files already present
         """
+        self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
         for index, (item, url) in enumerate(word_links, start=1):
             if url == "?":
                 logger.info("Skipping item %s (%s): invalid URL", index, item)
@@ -310,6 +318,15 @@ class CuhkDictionaryBuilder:
             JYUTPING_TONE_MAP.get(number, number)
             for number in JYUTPING_NUMBERS_REGEX.findall(raw_numbers)
         ]
+        if len(jyutping_letters) != len(jyutping_numbers):
+            logger.warning(
+                "Skipping CUHK page with mismatched jyutping letters (%s) "
+                "and tones (%s): %s",
+                len(jyutping_letters),
+                len(jyutping_numbers),
+                html_path,
+            )
+            return None
 
         jyutping = " ".join(
             f"{letter}{number}"
@@ -358,6 +375,7 @@ class CuhkDictionaryBuilder:
         Arguments:
             entries: normalized dictionary entries
         """
+        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         if self.database_path.exists():
             self.database_path.unlink()
 
@@ -371,7 +389,7 @@ class CuhkDictionaryBuilder:
             source_id = insert_source(cursor, CUHK_SOURCE)
 
             for entry in entries:
-                entry_id = get_entry_id(
+                entry_id = insert_entry(
                     cursor,
                     entry.traditional,
                     entry.simplified,
@@ -379,15 +397,6 @@ class CuhkDictionaryBuilder:
                     entry.jyutping,
                     entry.frequency,
                 )
-                if entry_id is None:
-                    entry_id = insert_entry(
-                        cursor,
-                        entry.traditional,
-                        entry.simplified,
-                        entry.pinyin,
-                        entry.jyutping,
-                        entry.frequency,
-                    )
 
                 for definition in entry.definitions:
                     insert_definition(
@@ -400,6 +409,18 @@ class CuhkDictionaryBuilder:
 
             generate_indices(cursor)
             connection.commit()
+
+    def _ensure_cache_directories(self):
+        """Ensure cache directories exist for scraping/build operations."""
+        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
+        self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
+
+    def _clear_scraped_pages(self):
+        """Delete cached scraped HTML pages."""
+        if not self.scraped_dir_path.exists():
+            return
+        for scraped_path in self.scraped_dir_path.glob("*.html"):
+            scraped_path.unlink()
 
     def _read_word_links(self, word_links_path: Path) -> list[tuple[str, str]]:
         """Read links from TSV.

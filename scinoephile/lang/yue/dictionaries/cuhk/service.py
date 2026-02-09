@@ -83,18 +83,19 @@ class CuhkDictionaryService:
         normalized_query = query.strip()
         if not normalized_query:
             return []
+        normalized_limit = max(1, int(limit))
 
         database_path = self._ensure_database_path()
         if direction == LookupDirection.MANDARIN_TO_CANTONESE:
             return self._lookup_mandarin_to_cantonese(
                 database_path,
                 normalized_query,
-                limit,
+                normalized_limit,
             )
         return self._lookup_cantonese_to_mandarin(
             database_path,
             normalized_query,
-            limit,
+            normalized_limit,
         )
 
     def _ensure_database_path(self) -> Path:
@@ -136,14 +137,7 @@ class CuhkDictionaryService:
 
         sql = """
             SELECT
-                e.entry_id,
-                e.traditional,
-                e.simplified,
-                e.pinyin,
-                e.jyutping,
-                e.frequency,
-                d.label,
-                d.definition
+                e.entry_id
             FROM entries AS e
             LEFT JOIN definitions AS d
                 ON d.fk_entry_id = e.entry_id
@@ -151,6 +145,7 @@ class CuhkDictionaryService:
                OR e.traditional = ?
                OR e.pinyin LIKE ?
                OR d.definition LIKE ?
+            GROUP BY e.entry_id
             ORDER BY
                 CASE
                     WHEN e.simplified = ? THEN 0
@@ -172,7 +167,8 @@ class CuhkDictionaryService:
             query,
             limit,
         )
-        return self._run_lookup_query(database_path, sql, params)
+        entry_ids = self._select_entry_ids(database_path, sql, params)
+        return self._fetch_entries(database_path, entry_ids)
 
     def _lookup_cantonese_to_mandarin(
         self,
@@ -193,14 +189,7 @@ class CuhkDictionaryService:
 
         sql = """
             SELECT
-                e.entry_id,
-                e.traditional,
-                e.simplified,
-                e.pinyin,
-                e.jyutping,
-                e.frequency,
-                d.label,
-                d.definition
+                e.entry_id
             FROM entries AS e
             LEFT JOIN definitions AS d
                 ON d.fk_entry_id = e.entry_id
@@ -208,6 +197,7 @@ class CuhkDictionaryService:
                OR e.jyutping LIKE ?
                OR e.traditional = ?
                OR e.simplified = ?
+            GROUP BY e.entry_id
             ORDER BY
                 CASE
                     WHEN e.jyutping = ? THEN 0
@@ -229,27 +219,86 @@ class CuhkDictionaryService:
             query,
             limit,
         )
-        return self._run_lookup_query(database_path, sql, params)
+        entry_ids = self._select_entry_ids(database_path, sql, params)
+        return self._fetch_entries(database_path, entry_ids)
 
-    def _run_lookup_query(
+    def _select_entry_ids(
         self,
         database_path: Path,
         sql: str,
         params: tuple[str | int, ...],
-    ) -> list[DictionaryEntry]:
-        """Run lookup query and aggregate definitions by entry.
+    ) -> list[int]:
+        """Run entry selection query.
 
         Arguments:
             database_path: sqlite database path
-            sql: SQL query
+            sql: SQL query that returns entry_id
             params: SQL parameters
         Returns:
+            ordered entry identifiers
+        """
+        with sqlite3.connect(database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(sql, params).fetchall()
+        return [int(row["entry_id"]) for row in rows]
+
+    def _fetch_entries(
+        self,
+        database_path: Path,
+        entry_ids: list[int],
+    ) -> list[DictionaryEntry]:
+        """Fetch entry rows and definitions for selected entry IDs.
+
+        Arguments:
+            database_path: sqlite database path
+            entry_ids: ordered entry identifiers
+        Returns:
             dictionary entries
+        """
+        if not entry_ids:
+            return []
+
+        in_placeholders = ", ".join("?" for _ in entry_ids)
+        case_clauses = " ".join(
+            f"WHEN ? THEN {rank}" for rank, _ in enumerate(entry_ids)
+        )
+        params = tuple([*entry_ids, *entry_ids])
+
+        sql = f"""
+            SELECT
+                e.entry_id,
+                e.traditional,
+                e.simplified,
+                e.pinyin,
+                e.jyutping,
+                e.frequency,
+                d.label,
+                d.definition
+            FROM entries AS e
+            LEFT JOIN definitions AS d
+                ON d.fk_entry_id = e.entry_id
+            WHERE e.entry_id IN ({in_placeholders})
+            ORDER BY
+                CASE e.entry_id
+                    {case_clauses}
+                    ELSE {len(entry_ids)}
+                END,
+                d.definition_id
         """
         with sqlite3.connect(database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
 
+        return self._aggregate_rows(rows)
+
+    def _aggregate_rows(self, rows: list[sqlite3.Row]) -> list[DictionaryEntry]:
+        """Aggregate joined rows into dictionary entries.
+
+        Arguments:
+            rows: joined entry/definition rows
+        Returns:
+            dictionary entries
+        """
         aggregated: dict[int, DictionaryEntry] = {}
         definitions_map: dict[int, list[DictionaryDefinition]] = {}
 

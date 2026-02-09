@@ -234,10 +234,21 @@ def insert_entry(
         "VALUES (?, ?, ?, ?, ?)",
         (traditional, simplified, pinyin, jyutping, frequency),
     )
-    entry_id = cursor.lastrowid
-    if entry_id is None:
-        raise RuntimeError("Failed to insert entry")
-    return entry_id
+    if cursor.rowcount == 1:
+        entry_id = cursor.lastrowid
+        if entry_id is None:
+            raise RuntimeError("Failed to insert entry")
+        return int(entry_id)
+
+    cursor.execute(
+        "SELECT entry_id FROM entries "
+        "WHERE traditional = ? AND simplified = ? AND pinyin = ? AND jyutping = ?",
+        (traditional, simplified, pinyin, jyutping),
+    )
+    row = cursor.fetchone()
+    if row is None:
+        raise RuntimeError("Failed to insert or load existing entry")
+    return int(row[0])
 
 
 def insert_definition(
@@ -263,10 +274,21 @@ def insert_definition(
         "VALUES (?, ?, ?, ?)",
         (definition, label, entry_id, source_id),
     )
-    definition_id = cursor.lastrowid
-    if definition_id is None:
-        raise RuntimeError("Failed to insert definition")
-    return definition_id
+    if cursor.rowcount == 1:
+        definition_id = cursor.lastrowid
+        if definition_id is None:
+            raise RuntimeError("Failed to insert definition")
+        return int(definition_id)
+
+    cursor.execute(
+        "SELECT definition_id FROM definitions "
+        "WHERE definition = ? AND label = ? AND fk_entry_id = ? AND fk_source_id = ?",
+        (definition, label, entry_id, source_id),
+    )
+    row = cursor.fetchone()
+    if row is None:
+        raise RuntimeError("Failed to insert or load existing definition")
+    return int(row[0])
 
 
 def get_entry_id(
@@ -285,15 +307,14 @@ def get_entry_id(
         simplified: simplified Chinese text
         pinyin: pinyin pronunciation
         jyutping: jyutping pronunciation
-        frequency: frequency score
+        frequency: frequency score (unused for identity; retained for compatibility)
     Returns:
         existing entry identifier if found
     """
     cursor.execute(
         "SELECT entry_id FROM entries "
-        "WHERE traditional = ? AND simplified = ? AND pinyin = ? "
-        "AND jyutping = ? AND frequency = ?",
-        (traditional, simplified, pinyin, jyutping, frequency),
+        "WHERE traditional = ? AND simplified = ? AND pinyin = ? AND jyutping = ?",
+        (traditional, simplified, pinyin, jyutping),
     )
     row = cursor.fetchone()
     return None if row is None else int(row[0])
