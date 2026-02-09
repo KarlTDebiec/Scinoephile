@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to testing."""
+"""Shared test utilities and pytest helper decorators."""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ def get_warning_messages(records: list[Any]) -> list[str]:
 
 
 def flaky(inner: partial | None = None) -> partial:
-    """Mark test as flaky (i.e., xfail but don’t fail suite on pass/fail).
+    """Mark test as flaky (i.e., xfail but don't fail suite on pass/fail).
 
     Arguments:
         inner: nascent partial function of pytest.param with additional marks

@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
-from scinoephile.core.testing import test_data_root
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
@@ -25,6 +24,7 @@ from test.data.mlamd import (
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
+from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"

@@ -4,13 +4,19 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_block_gapped import DualBlockGappedProcessor
+from scinoephile.llms.default_test_cases import (
+    YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
+from scinoephile.llms.dual_block_gapped import (
+    DualBlockGappedManager,
+    DualBlockGappedProcessor,
+)
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
@@ -19,13 +25,9 @@ __all__ = [
     "YueHantFromZhoTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
-    "get_default_yue_from_zho_translation_test_cases",
     "get_yue_from_zho_translated",
     "get_yue_from_zho_translator",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
@@ -39,28 +41,6 @@ class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-# noinspection PyUnusedImports
-def get_default_yue_from_zho_translation_test_cases(
-    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
-) -> list[TestCase]:
-    """Get default test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    try:
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_yue_from_zho_translation_test_cases,
-        )
-
-        return get_mlamd_yue_from_zho_translation_test_cases(prompt_cls)
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
 
 
 def get_yue_from_zho_translated(
@@ -99,7 +79,13 @@ def get_yue_from_zho_translator(
         DualBlockGappedProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_yue_from_zho_translation_test_cases(prompt_cls)
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                DualBlockGappedManager,
+                prompt_cls,
+                YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+            )
+        )
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

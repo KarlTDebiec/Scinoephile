@@ -8,9 +8,9 @@ import logging
 
 import pytest
 
-from scinoephile.core.testing import assert_expected_warnings, get_warning_messages
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import validate_eng_ocr
+from test.helpers import assert_expected_warnings, get_warning_messages
 
 
 def test_validate_eng_ocr_mlamd(

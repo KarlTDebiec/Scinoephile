@@ -4,13 +4,17 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.mono_block import MonoBlockProcessor, MonoBlockPrompt
+from scinoephile.llms.default_test_cases import (
+    ZHO_HANS_PROOFREADING_JSON_PATHS,
+    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
+from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
@@ -19,13 +23,9 @@ __all__ = [
     "ZhoHantProofreadingPrompt",
     "ZhoProofreadingProcessKwargs",
     "ZhoProofreadingProcessorKwargs",
-    "get_default_zho_proofreading_test_cases",
     "get_zho_proofread",
     "get_zho_proofreader",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class ZhoProofreadingProcessKwargs(TypedDict, total=False):
@@ -39,52 +39,6 @@ class ZhoProofreadingProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-# noinspection PyUnusedImports
-def get_default_zho_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
-) -> list[TestCase]:
-    """Get default test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    try:
-        from test.data.kob import (  # noqa: PLC0415
-            get_kob_zho_hant_proofreading_test_cases,
-        )
-        from test.data.mlamd import (  # noqa: PLC0415
-            get_mlamd_zho_hans_proofreading_test_cases,
-            get_mlamd_zho_hant_proofreading_test_cases,
-        )
-        from test.data.mnt import (  # noqa: PLC0415
-            get_mnt_zho_hans_proofreading_test_cases,
-            get_mnt_zho_hant_proofreading_test_cases,
-        )
-        from test.data.t import (  # noqa: PLC0415
-            get_t_zho_hans_proofreading_test_cases,
-            get_t_zho_hant_proofreading_test_cases,
-        )
-
-        if prompt_cls is ZhoHantProofreadingPrompt:
-            return (
-                get_kob_zho_hant_proofreading_test_cases(prompt_cls)
-                + get_mlamd_zho_hant_proofreading_test_cases(prompt_cls)
-                + get_mnt_zho_hant_proofreading_test_cases(prompt_cls)
-                + get_t_zho_hant_proofreading_test_cases(prompt_cls)
-            )
-
-        return (
-            get_mlamd_zho_hans_proofreading_test_cases(prompt_cls)
-            + get_mnt_zho_hans_proofreading_test_cases(prompt_cls)
-            + get_t_zho_hans_proofreading_test_cases(prompt_cls)
-        )
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
 
 
 def get_zho_proofread(
@@ -121,7 +75,22 @@ def get_zho_proofreader(
         MonoBlockProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_zho_proofreading_test_cases(prompt_cls)
+        if prompt_cls is ZhoHantProofreadingPrompt:
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    MonoBlockManager,
+                    prompt_cls,
+                    ZHO_HANT_PROOFREADING_JSON_PATHS,
+                )
+            )
+        else:
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    MonoBlockManager,
+                    prompt_cls,
+                    ZHO_HANS_PROOFREADING_JSON_PATHS,
+                )
+            )
     return MonoBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

@@ -4,13 +4,16 @@
 
 from __future__ import annotations
 
-from logging import getLogger
 from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.base import TestCase
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor, OcrFusionPrompt
+from scinoephile.llms.default_test_cases import (
+    ENG_OCR_FUSION_JSON_PATHS,
+    load_default_test_cases_from_repo_data,
+)
+from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 
 from .prompts import EngOcrFusionPrompt
 
@@ -18,13 +21,9 @@ __all__ = [
     "EngOcrFusionPrompt",
     "EngOcrFusionProcessKwargs",
     "EngOcrFusionProcessorKwargs",
-    "get_default_eng_ocr_fusion_test_cases",
     "get_eng_ocr_fuser",
     "get_eng_ocr_fused",
 ]
-
-
-logger = getLogger(__name__)
 
 
 class EngOcrFusionProcessKwargs(TypedDict, total=False):
@@ -38,34 +37,6 @@ class EngOcrFusionProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-
-
-# noinspection PyUnusedImports
-def get_default_eng_ocr_fusion_test_cases(
-    prompt_cls: type[OcrFusionPrompt] = EngOcrFusionPrompt,
-) -> list[TestCase]:
-    """Get default English OCR fusion test cases included with package.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-    Returns:
-        default test cases
-    """
-    try:
-        from test.data.kob import get_kob_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mlamd import get_mlamd_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.mnt import get_mnt_eng_ocr_fusion_test_cases  # noqa: PLC0415
-        from test.data.t import get_t_eng_ocr_fusion_test_cases  # noqa: PLC0415
-
-        return (
-            get_kob_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_mlamd_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_mnt_eng_ocr_fusion_test_cases(prompt_cls)
-            + get_t_eng_ocr_fusion_test_cases(prompt_cls)
-        )
-    except ImportError as exc:
-        logger.warning(f"Default test cases not available:\n{exc}")
-    return []
 
 
 def get_eng_ocr_fused(
@@ -104,7 +75,13 @@ def get_eng_ocr_fuser(
         OcrFusionProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = get_default_eng_ocr_fusion_test_cases(prompt_cls)
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                OcrFusionManager,
+                prompt_cls,
+                ENG_OCR_FUSION_JSON_PATHS,
+            )
+        )
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
