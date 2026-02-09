@@ -81,16 +81,20 @@ def get_zho_ocr_fuser(
     """
     if test_cases is None:
         if prompt_cls is ZhoHantOcrFusionPrompt:
-            test_cases = load_default_test_cases_from_repo_data(
-                OcrFusionManager,
-                prompt_cls,
-                ZHO_HANT_OCR_FUSION_JSON_PATHS,
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    OcrFusionManager,
+                    prompt_cls,
+                    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+                )
             )
         else:
-            test_cases = load_default_test_cases_from_repo_data(
-                OcrFusionManager,
-                prompt_cls,
-                ZHO_HANS_OCR_FUSION_JSON_PATHS,
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    OcrFusionManager,
+                    prompt_cls,
+                    ZHO_HANS_OCR_FUSION_JSON_PATHS,
+                )
             )
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,

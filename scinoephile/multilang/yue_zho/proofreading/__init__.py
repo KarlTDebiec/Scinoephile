@@ -79,10 +79,12 @@ def get_yue_vs_zho_proofreader(
         YueZhoProofreadingProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = load_default_test_cases_from_repo_data(
-            YueZhoProofreadingManager,
-            prompt_cls,
-            YUE_ZHO_PROOFREADING_JSON_PATHS,
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                YueZhoProofreadingManager,
+                prompt_cls,
+                YUE_ZHO_PROOFREADING_JSON_PATHS,
+            )
         )
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,

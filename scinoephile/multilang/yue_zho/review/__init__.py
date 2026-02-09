@@ -76,10 +76,12 @@ def get_yue_vs_zho_processor(
         DualBlockProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = load_default_test_cases_from_repo_data(
-            DualBlockManager,
-            prompt_cls,
-            YUE_ZHO_REVIEW_JSON_PATHS,
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                DualBlockManager,
+                prompt_cls,
+                YUE_ZHO_REVIEW_JSON_PATHS,
+            )
         )
     return DualBlockProcessor(
         prompt_cls=prompt_cls,

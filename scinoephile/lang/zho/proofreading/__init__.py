@@ -76,16 +76,20 @@ def get_zho_proofreader(
     """
     if test_cases is None:
         if prompt_cls is ZhoHantProofreadingPrompt:
-            test_cases = load_default_test_cases_from_repo_data(
-                MonoBlockManager,
-                prompt_cls,
-                ZHO_HANT_PROOFREADING_JSON_PATHS,
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    MonoBlockManager,
+                    prompt_cls,
+                    ZHO_HANT_PROOFREADING_JSON_PATHS,
+                )
             )
         else:
-            test_cases = load_default_test_cases_from_repo_data(
-                MonoBlockManager,
-                prompt_cls,
-                ZHO_HANS_PROOFREADING_JSON_PATHS,
+            test_cases = list(
+                load_default_test_cases_from_repo_data(
+                    MonoBlockManager,
+                    prompt_cls,
+                    ZHO_HANS_PROOFREADING_JSON_PATHS,
+                )
             )
     return MonoBlockProcessor(
         prompt_cls=prompt_cls,

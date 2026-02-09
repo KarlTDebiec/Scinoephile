@@ -27,7 +27,7 @@ from scinoephile.llms.base.manager import TestCaseClsKwargs
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
-from scinoephile.testing import test_data_root
+from test.helpers import test_data_root
 
 __all__ = [
     "t_eng",

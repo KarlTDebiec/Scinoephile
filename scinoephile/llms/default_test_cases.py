@@ -96,7 +96,7 @@ def get_repo_test_data_root() -> Path | None:
 
 
 @cache
-def _load_default_test_cases_from_repo_data_cached(
+def load_default_test_cases_from_repo_data(
     manager_cls: type[Manager],
     prompt_cls: type,
     relative_paths: tuple[Path, ...],
@@ -127,26 +127,3 @@ def _load_default_test_cases_from_repo_data_cached(
             load_test_cases_from_json(path, manager_cls, prompt_cls=prompt_cls)
         )
     return tuple(loaded_test_cases)
-
-
-def load_default_test_cases_from_repo_data(
-    manager_cls: type[Manager],
-    prompt_cls: type,
-    relative_paths: list[Path] | tuple[Path, ...],
-) -> list[TestCase]:
-    """Load default test cases from repository JSON files.
-
-    Arguments:
-        manager_cls: manager class used to construct test case models
-        prompt_cls: text for LLM correspondence
-        relative_paths: paths relative to repository test data root
-    Returns:
-        loaded test cases
-    """
-    return list(
-        _load_default_test_cases_from_repo_data_cached(
-            manager_cls,
-            prompt_cls,
-            tuple(relative_paths),
-        )
-    )

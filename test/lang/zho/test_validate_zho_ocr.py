@@ -12,7 +12,7 @@ import pytest
 
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho import validate_zho_ocr
-from scinoephile.testing import assert_expected_warnings, get_warning_messages
+from test.helpers import assert_expected_warnings, get_warning_messages
 
 
 def test_validate_zho_ocr_mlamd_hans(

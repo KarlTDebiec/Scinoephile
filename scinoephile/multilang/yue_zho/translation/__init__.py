@@ -79,10 +79,12 @@ def get_yue_from_zho_translator(
         DualBlockGappedProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = load_default_test_cases_from_repo_data(
-            DualBlockGappedManager,
-            prompt_cls,
-            YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                DualBlockGappedManager,
+                prompt_cls,
+                YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+            )
         )
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,

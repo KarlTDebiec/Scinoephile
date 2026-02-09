@@ -48,7 +48,7 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
-from scinoephile.testing import test_data_root
+from test.helpers import test_data_root
 
 __all__ = [
     "mlamd_eng_lens",

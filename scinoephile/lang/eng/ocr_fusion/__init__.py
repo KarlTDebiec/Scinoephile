@@ -75,10 +75,12 @@ def get_eng_ocr_fuser(
         OcrFusionProcessor with provided configuration
     """
     if test_cases is None:
-        test_cases = load_default_test_cases_from_repo_data(
-            OcrFusionManager,
-            prompt_cls,
-            ENG_OCR_FUSION_JSON_PATHS,
+        test_cases = list(
+            load_default_test_cases_from_repo_data(
+                OcrFusionManager,
+                prompt_cls,
+                ENG_OCR_FUSION_JSON_PATHS,
+            )
         )
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
