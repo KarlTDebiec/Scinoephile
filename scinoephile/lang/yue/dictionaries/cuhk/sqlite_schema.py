@@ -10,6 +10,7 @@ dictionary ports can reuse this storage layer with minimal translation.
 from __future__ import annotations
 
 import sqlite3
+from logging import getLogger
 
 from .models import DictionarySource
 
@@ -23,6 +24,14 @@ __all__ = [
     "insert_source",
     "write_database_version",
 ]
+
+logger = getLogger(__name__)
+
+
+def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
+    """Check whether an OperationalError indicates unavailable FTS5 support."""
+    message = str(exc).lower()
+    return "fts5" in message or "no such module" in message
 
 
 def create_tables(cursor: sqlite3.Cursor):
@@ -46,12 +55,13 @@ def create_tables(cursor: sqlite3.Cursor):
     try:
         cursor.execute("CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)")
     except sqlite3.OperationalError as exc:
-        if "fts5" in str(exc).lower():
-            raise RuntimeError(
-                "SQLite FTS5 extension is required for CUHK dictionary tables. "
-                "Install/use a Python build with SQLite FTS5 enabled."
-            ) from exc
-        raise
+        if _is_missing_fts5(exc):
+            logger.warning(
+                "SQLite FTS5 unavailable; continuing without entries_fts index: %s",
+                exc,
+            )
+        else:
+            raise
 
     cursor.execute(
         """CREATE TABLE sources(
@@ -88,12 +98,13 @@ def create_tables(cursor: sqlite3.Cursor):
             "USING fts5(fk_entry_id UNINDEXED, definition)"
         )
     except sqlite3.OperationalError as exc:
-        if "fts5" in str(exc).lower():
-            raise RuntimeError(
-                "SQLite FTS5 extension is required for CUHK dictionary tables. "
-                "Install/use a Python build with SQLite FTS5 enabled."
-            ) from exc
-        raise
+        if _is_missing_fts5(exc):
+            logger.warning(
+                "SQLite FTS5 unavailable; continuing without definitions_fts index: %s",
+                exc,
+            )
+        else:
+            raise
 
     # The following tables are retained for schema-compatibility with jyut-dict.
     cursor.execute(
@@ -183,14 +194,32 @@ def generate_indices(cursor: sqlite3.Cursor):
     Arguments:
         cursor: sqlite cursor
     """
-    cursor.execute(
-        "INSERT INTO entries_fts (rowid, pinyin, jyutping) "
-        "SELECT rowid, pinyin, jyutping FROM entries"
-    )
-    cursor.execute(
-        "INSERT INTO definitions_fts (rowid, fk_entry_id, definition) "
-        "SELECT rowid, fk_entry_id, definition FROM definitions"
-    )
+    try:
+        cursor.execute(
+            "INSERT INTO entries_fts (rowid, pinyin, jyutping) "
+            "SELECT rowid, pinyin, jyutping FROM entries"
+        )
+    except sqlite3.OperationalError as exc:
+        if _is_missing_fts5(exc):
+            logger.warning(
+                "Skipping entries_fts population because FTS5 is unavailable: %s",
+                exc,
+            )
+        else:
+            raise
+    try:
+        cursor.execute(
+            "INSERT INTO definitions_fts (rowid, fk_entry_id, definition) "
+            "SELECT rowid, fk_entry_id, definition FROM definitions"
+        )
+    except sqlite3.OperationalError as exc:
+        if _is_missing_fts5(exc):
+            logger.warning(
+                "Skipping definitions_fts population because FTS5 is unavailable: %s",
+                exc,
+            )
+        else:
+            raise
     cursor.execute("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
 
 

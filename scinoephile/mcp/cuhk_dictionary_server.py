@@ -8,7 +8,12 @@ from typing import Literal
 
 try:
     from mcp.server.fastmcp import FastMCP
-except ModuleNotFoundError:
+except ModuleNotFoundError as exc:
+    if exc.name is None or (
+        exc.name != "mcp" and not exc.name.startswith("mcp.")
+    ):
+        raise
+
     # In some test runners, the local `test/mcp` package name can shadow the
     # third-party `mcp` dependency during import. Provide a minimal shim so
     # module import and unit tests still work; real MCP serving requires the
