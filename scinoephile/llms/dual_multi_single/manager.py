@@ -123,12 +123,13 @@ class DualMultiSingleManager(Manager):
         Returns:
             validated query
         """
-        source_one = getattr(model, model.prompt_cls.src_1, None)
-        source_two = getattr(model, model.prompt_cls.src_2, None)
+        prompt_cls: type[DualMultiSinglePrompt] = getattr(model, "prompt_cls")
+        source_one = getattr(model, prompt_cls.src_1, None)
+        source_two = getattr(model, prompt_cls.src_2, None)
         if not source_one:
-            raise ValueError(model.prompt_cls.src_1_missing_err)
+            raise ValueError(prompt_cls.src_1_missing_err)
         if not source_two:
-            raise ValueError(model.prompt_cls.src_2_missing_err)
+            raise ValueError(prompt_cls.src_2_missing_err)
         return model
 
     @staticmethod
@@ -140,7 +141,8 @@ class DualMultiSingleManager(Manager):
         Returns:
             validated answer
         """
-        output = getattr(model, model.prompt_cls.output, None)
+        prompt_cls: type[DualMultiSinglePrompt] = getattr(model, "prompt_cls")
+        output = getattr(model, prompt_cls.output, None)
         if not output:
-            raise ValueError(model.prompt_cls.output_missing_err)
+            raise ValueError(prompt_cls.output_missing_err)
         return model

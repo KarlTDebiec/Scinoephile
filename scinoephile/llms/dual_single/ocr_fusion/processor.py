@@ -12,6 +12,7 @@ from scinoephile.core.synchronization import are_series_one_to_one
 from scinoephile.llms.base import Processor, save_test_cases_to_json
 
 from .manager import OcrFusionManager
+from .prompt import OcrFusionPrompt
 
 __all__ = ["OcrFusionProcessor"]
 
@@ -44,6 +45,8 @@ class OcrFusionProcessor(Processor):
                 f"subtitles; got {len(source_one)} and {len(source_two)}."
             )
 
+        prompt_cls: type[OcrFusionPrompt] = getattr(self, "prompt_cls")
+
         # Process subtitles
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(source_one)
@@ -70,14 +73,14 @@ class OcrFusionProcessor(Processor):
             if not text_two:
                 output_subtitles.append(sub_one)
                 logger.info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_1}: "
+                    f"Subtitle {sub_idx + 1} from {prompt_cls.src_1}: "
                     f"{sub_one.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
             if not text_one:
                 output_subtitles.append(sub_two)
                 logger.info(
-                    f"Subtitle {sub_idx + 1} from {self.prompt_cls.src_2}: "
+                    f"Subtitle {sub_idx + 1} from {prompt_cls.src_2}: "
                     f"{sub_two.text_with_newline.replace('\n', ' ')}"
                 )
                 continue
@@ -86,14 +89,14 @@ class OcrFusionProcessor(Processor):
             test_case_cls = OcrFusionManager.get_test_case_cls(self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
-                self.prompt_cls.src_1: sub_one.text_with_newline,
-                self.prompt_cls.src_2: sub_two.text_with_newline,
+                prompt_cls.src_1: sub_one.text_with_newline,
+                prompt_cls.src_2: sub_two.text_with_newline,
             }
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)
             test_case = self.queryer(test_case)
 
-            output_text = getattr(test_case.answer, self.prompt_cls.output)
+            output_text = getattr(test_case.answer, prompt_cls.output)
             sub = Subtitle(start=sub_one.start, end=sub_one.end, text=output_text)
             logger.info(
                 f"Subtitle {sub_idx + 1} processed:     {sub.text.replace('\n', '\\n')}"
