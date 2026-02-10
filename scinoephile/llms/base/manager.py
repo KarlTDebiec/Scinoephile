@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import Any, TypedDict, Unpack
+from typing import Any, TypedDict, Unpack, cast
 
 from pydantic import Field, create_model, model_validator
 
@@ -82,18 +82,21 @@ class Manager(ABC):
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
         validators = cls.get_test_case_validators()
 
-        model = create_model(
-            get_model_name(TestCase.__name__, prompt_cls.__name__),
-            __base__=TestCase,
-            __module__=TestCase.__module__,
-            __validators__=validators,
-            **fields,
+        model = cast(
+            type[TTestCase],
+            create_model(
+                get_model_name(TestCase.__name__, prompt_cls.__name__),
+                __base__=TestCase,
+                __module__=TestCase.__module__,
+                __validators__=validators,
+                **fields,
+            ),
         )
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.get_auto_verified = cls.get_auto_verified
-        model.get_min_difficulty = cls.get_min_difficulty
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod

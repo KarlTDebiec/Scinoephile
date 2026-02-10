@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, Protocol, Unpack, cast
 
 from pydantic import Field, create_model
 
@@ -16,6 +16,15 @@ from scinoephile.llms.base.models import get_model_name
 from .prompt import DualBlockPrompt
 
 __all__ = ["DualBlockManager"]
+
+
+class _DualBlockTestCase(Protocol):
+    """Typed view of dynamically generated dual-block test cases."""
+
+    prompt_cls: ClassVar[type[DualBlockPrompt]]
+    size: ClassVar[int]
+    query: Query
+    answer: Answer | None
 
 
 class DualBlockManager(Manager):
@@ -56,7 +65,7 @@ class DualBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -91,7 +100,7 @@ class DualBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -125,9 +134,9 @@ class DualBlockManager(Manager):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.get_auto_verified = cls.get_auto_verified
-        model.get_min_difficulty = cls.get_min_difficulty
+        setattr(model, "size", size)
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
@@ -158,24 +167,29 @@ class DualBlockManager(Manager):
         Returns:
             validated test case
         """
-        if model.answer is None:
+        typed_model = cast(_DualBlockTestCase, model)
+        if typed_model.answer is None:
             return model
 
-        for idx in range(model.size):
-            source_one = getattr(model.query, model.prompt_cls.src_1(idx + 1))
-            output = getattr(model.answer, model.prompt_cls.output(idx + 1))
-            note = getattr(model.answer, model.prompt_cls.note(idx + 1))
+        for idx in range(typed_model.size):
+            source_one = getattr(
+                typed_model.query, typed_model.prompt_cls.src_1(idx + 1)
+            )
+            output = getattr(typed_model.answer, typed_model.prompt_cls.output(idx + 1))
+            note = getattr(typed_model.answer, typed_model.prompt_cls.note(idx + 1))
             if output != "":
                 if output == source_one:
                     raise ValueError(
-                        model.prompt_cls.output_present_but_unmodified_err(idx + 1)
+                        typed_model.prompt_cls.output_present_but_unmodified_err(
+                            idx + 1
+                        )
                     )
                 if note == "":
                     raise ValueError(
-                        model.prompt_cls.output_present_note_missing_err(idx + 1)
+                        typed_model.prompt_cls.output_present_note_missing_err(idx + 1)
                     )
             elif note != "":
                 raise ValueError(
-                    model.prompt_cls.output_missing_note_present_err(idx + 1)
+                    typed_model.prompt_cls.output_missing_note_present_err(idx + 1)
                 )
         return model

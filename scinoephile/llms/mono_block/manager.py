@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, Protocol, Unpack, cast
 
 from pydantic import Field, create_model
 
@@ -17,6 +17,15 @@ from scinoephile.llms.base.models import get_model_name
 from .prompt import MonoBlockPrompt
 
 __all__ = ["MonoBlockManager"]
+
+
+class _MonoBlockTestCase(Protocol):
+    """Typed view of dynamically generated mono-block test cases."""
+
+    prompt_cls: ClassVar[type[MonoBlockPrompt]]
+    size: ClassVar[int]
+    query: Query
+    answer: Answer | None
 
 
 class MonoBlockManager(Manager):
@@ -54,7 +63,7 @@ class MonoBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -89,7 +98,7 @@ class MonoBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -123,9 +132,9 @@ class MonoBlockManager(Manager):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.get_auto_verified = cls.get_auto_verified
-        model.get_min_difficulty = cls.get_min_difficulty
+        setattr(model, "size", size)
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
@@ -157,13 +166,14 @@ class MonoBlockManager(Manager):
         Returns:
             minimum difficulty
         """
+        typed_model = cast(_MonoBlockTestCase, model)
         min_difficulty = 0
-        if model.answer is None:
+        if typed_model.answer is None:
             return min_difficulty
 
         if any(
-            getattr(model.answer, model.prompt_cls.output(idx)) != ""
-            for idx in range(1, model.size + 1)
+            getattr(typed_model.answer, typed_model.prompt_cls.output(idx)) != ""
+            for idx in range(1, typed_model.size + 1)
         ):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
@@ -177,18 +187,30 @@ class MonoBlockManager(Manager):
         Returns:
             validated test case
         """
-        if model.answer is None:
+        typed_model = cast(_MonoBlockTestCase, model)
+        if typed_model.answer is None:
             return model
 
-        for idx in range(model.size):
-            input_text = getattr(model.query, model.prompt_cls.input(idx + 1))
-            output_text = getattr(model.answer, model.prompt_cls.output(idx + 1))
-            note = getattr(model.answer, model.prompt_cls.note(idx + 1))
+        for idx in range(typed_model.size):
+            input_text = getattr(
+                typed_model.query,
+                typed_model.prompt_cls.input(idx + 1),
+            )
+            output_text = getattr(
+                typed_model.answer,
+                typed_model.prompt_cls.output(idx + 1),
+            )
+            note = getattr(
+                typed_model.answer,
+                typed_model.prompt_cls.note(idx + 1),
+            )
             if output_text != "":
                 if input_text == output_text:
-                    raise ValueError(model.prompt_cls.output_unmodified_err(idx + 1))
+                    raise ValueError(
+                        typed_model.prompt_cls.output_unmodified_err(idx + 1)
+                    )
                 if note == "":
-                    raise ValueError(model.prompt_cls.note_missing_err(idx + 1))
+                    raise ValueError(typed_model.prompt_cls.note_missing_err(idx + 1))
             elif note != "":
-                raise ValueError(model.prompt_cls.output_missing_err(idx + 1))
+                raise ValueError(typed_model.prompt_cls.output_missing_err(idx + 1))
         return model
