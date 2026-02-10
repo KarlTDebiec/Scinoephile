@@ -31,7 +31,9 @@ logger = getLogger(__name__)
 def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
     """Check whether an OperationalError indicates unavailable FTS5 support."""
     message = str(exc).lower()
-    return "fts5" in message or "no such module" in message
+    if "fts5" in message or "no such module" in message:
+        return True
+    return "no such table" in message and "_fts" in message
 
 
 def create_tables(cursor: sqlite3.Cursor):

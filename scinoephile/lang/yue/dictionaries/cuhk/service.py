@@ -16,6 +16,8 @@ __all__ = [
     "LookupDirection",
 ]
 
+MAX_LOOKUP_LIMIT = 400
+
 
 class LookupDirection(StrEnum):
     """Lookup direction for CUHK dictionary queries."""
@@ -83,7 +85,7 @@ class CuhkDictionaryService:
         normalized_query = query.strip()
         if not normalized_query:
             return []
-        normalized_limit = max(1, int(limit))
+        normalized_limit = min(MAX_LOOKUP_LIMIT, max(1, int(limit)))
 
         database_path = self._ensure_database_path()
         if direction == LookupDirection.MANDARIN_TO_CANTONESE:

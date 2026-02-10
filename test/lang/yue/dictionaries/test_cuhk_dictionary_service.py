@@ -266,6 +266,26 @@ def test_lookup_nonpositive_limit_is_sanitized(tmp_path: Path):
     assert results[0].traditional == "巴士"
 
 
+def test_lookup_limit_is_capped(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    """Test lookup limit is capped to avoid excessive SQLite query parameters."""
+    service = CuhkDictionaryService(
+        cache_dir_path=tmp_path / "cuhk",
+        auto_build_missing=False,
+    )
+    _seed_dictionary_database(service.database_path)
+
+    captured_limits: list[int] = []
+
+    def _capture_limits(_database_path: Path, _sql: str, params: tuple[str | int, ...]):
+        captured_limits.append(int(params[-1]))
+        return []
+
+    monkeypatch.setattr(service, "_select_entry_ids", _capture_limits)
+    service.lookup("巴士", limit=10_000)
+
+    assert captured_limits == [400]
+
+
 def test_lookup_escapes_like_wildcards(tmp_path: Path):
     """Test lookup treats `%` and `_` literally rather than as wildcards."""
     service = CuhkDictionaryService(
