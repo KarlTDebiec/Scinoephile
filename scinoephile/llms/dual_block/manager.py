@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Protocol, Unpack, cast
+from typing import Any, ClassVar, Unpack
 
 from pydantic import Field, create_model
 
@@ -16,15 +16,6 @@ from scinoephile.llms.base.models import get_model_name
 from .prompt import DualBlockPrompt
 
 __all__ = ["DualBlockManager"]
-
-
-class _DualBlockTestCase(Protocol):
-    """Typed view of dynamically generated dual-block test cases."""
-
-    prompt_cls: ClassVar[type[DualBlockPrompt]]
-    size: ClassVar[int]
-    query: Query
-    answer: Answer | None
 
 
 class DualBlockManager(Manager):
@@ -167,29 +158,24 @@ class DualBlockManager(Manager):
         Returns:
             validated test case
         """
-        typed_model = cast(_DualBlockTestCase, model)
-        if typed_model.answer is None:
+        prompt_cls: Any = getattr(model, "prompt_cls")
+        size: Any = getattr(model, "size")
+        if model.answer is None:
             return model
 
-        for idx in range(typed_model.size):
-            source_one = getattr(
-                typed_model.query, typed_model.prompt_cls.src_1(idx + 1)
-            )
-            output = getattr(typed_model.answer, typed_model.prompt_cls.output(idx + 1))
-            note = getattr(typed_model.answer, typed_model.prompt_cls.note(idx + 1))
+        for idx in range(size):
+            source_one = getattr(model.query, prompt_cls.src_1(idx + 1))
+            output = getattr(model.answer, prompt_cls.output(idx + 1))
+            note = getattr(model.answer, prompt_cls.note(idx + 1))
             if output != "":
                 if output == source_one:
                     raise ValueError(
-                        typed_model.prompt_cls.output_present_but_unmodified_err(
-                            idx + 1
-                        )
+                        prompt_cls.output_present_but_unmodified_err(idx + 1)
                     )
                 if note == "":
                     raise ValueError(
-                        typed_model.prompt_cls.output_present_note_missing_err(idx + 1)
+                        prompt_cls.output_present_note_missing_err(idx + 1)
                     )
             elif note != "":
-                raise ValueError(
-                    typed_model.prompt_cls.output_missing_note_present_err(idx + 1)
-                )
+                raise ValueError(prompt_cls.output_missing_note_present_err(idx + 1))
         return model

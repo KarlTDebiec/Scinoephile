@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Protocol, Unpack, cast
+from typing import Any, ClassVar, Unpack
 
 from pydantic import Field, create_model
 
@@ -17,15 +17,6 @@ from scinoephile.llms.base.models import get_model_name
 from .prompt import MonoBlockPrompt
 
 __all__ = ["MonoBlockManager"]
-
-
-class _MonoBlockTestCase(Protocol):
-    """Typed view of dynamically generated mono-block test cases."""
-
-    prompt_cls: ClassVar[type[MonoBlockPrompt]]
-    size: ClassVar[int]
-    query: Query
-    answer: Answer | None
 
 
 class MonoBlockManager(Manager):
@@ -166,14 +157,15 @@ class MonoBlockManager(Manager):
         Returns:
             minimum difficulty
         """
-        typed_model = cast(_MonoBlockTestCase, model)
+        prompt_cls: Any = getattr(model, "prompt_cls")
+        size: Any = getattr(model, "size")
         min_difficulty = 0
-        if typed_model.answer is None:
+        if model.answer is None:
             return min_difficulty
 
         if any(
-            getattr(typed_model.answer, typed_model.prompt_cls.output(idx)) != ""
-            for idx in range(1, typed_model.size + 1)
+            getattr(model.answer, prompt_cls.output(idx)) != ""
+            for idx in range(1, size + 1)
         ):
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
@@ -187,30 +179,29 @@ class MonoBlockManager(Manager):
         Returns:
             validated test case
         """
-        typed_model = cast(_MonoBlockTestCase, model)
-        if typed_model.answer is None:
+        prompt_cls: Any = getattr(model, "prompt_cls")
+        size: Any = getattr(model, "size")
+        if model.answer is None:
             return model
 
-        for idx in range(typed_model.size):
+        for idx in range(size):
             input_text = getattr(
-                typed_model.query,
-                typed_model.prompt_cls.input(idx + 1),
+                model.query,
+                prompt_cls.input(idx + 1),
             )
             output_text = getattr(
-                typed_model.answer,
-                typed_model.prompt_cls.output(idx + 1),
+                model.answer,
+                prompt_cls.output(idx + 1),
             )
             note = getattr(
-                typed_model.answer,
-                typed_model.prompt_cls.note(idx + 1),
+                model.answer,
+                prompt_cls.note(idx + 1),
             )
             if output_text != "":
                 if input_text == output_text:
-                    raise ValueError(
-                        typed_model.prompt_cls.output_unmodified_err(idx + 1)
-                    )
+                    raise ValueError(prompt_cls.output_unmodified_err(idx + 1))
                 if note == "":
-                    raise ValueError(typed_model.prompt_cls.note_missing_err(idx + 1))
+                    raise ValueError(prompt_cls.note_missing_err(idx + 1))
             elif note != "":
-                raise ValueError(typed_model.prompt_cls.output_missing_err(idx + 1))
+                raise ValueError(prompt_cls.output_missing_err(idx + 1))
         return model
