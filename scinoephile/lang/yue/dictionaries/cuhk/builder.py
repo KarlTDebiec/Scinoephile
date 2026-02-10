@@ -304,7 +304,7 @@ class CuhkDictionaryBuilder:
                 file_word,
                 html_path,
             )
-            return None
+            # Keep parsing: filename stems are cache keys and may be sanitized.
 
         label_span = soup.find("span", id=LABEL_ID_REGEX)
         label = label_span.get_text(strip=True) if isinstance(label_span, Tag) else ""

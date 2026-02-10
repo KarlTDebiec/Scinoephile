@@ -374,6 +374,38 @@ def test_parse_word_file_rejects_mismatched_jyutping(tmp_path: Path):
     assert builder.parse_word_file(html_path) is None
 
 
+def test_parse_word_file_keeps_entry_on_filename_mismatch(tmp_path: Path):
+    """Test parser keeps valid entries even when filename is sanitized."""
+    builder = CuhkDictionaryBuilder(
+        cache_dir_path=tmp_path / "cuhk",
+        min_delay_seconds=0.0,
+        max_delay_seconds=0.0,
+    )
+
+    html_path = builder.scraped_dir_path / "測_試.html"
+    html_path.parent.mkdir(parents=True, exist_ok=True)
+    html_path.write_text(
+        """
+        <html><body>
+            <span class="ChiCharFix">測 試</span>
+            <span id="MainContent_repeaterRecord_lbl詞彙類別_0">名詞</span>
+            <span id="MainContent_repeaterRecord_lbl粵語拼音_0">cak si</span>
+            <span id="MainContent_repeaterRecord_lbl聲調_0">1 3</span>
+            <span
+                id="MainContent_repeaterRecord_repeaterTranslation_0_lblTranslation_0"
+            >
+                test
+            </span>
+        </body></html>
+        """,
+        encoding="utf-8",
+    )
+
+    entry = builder.parse_word_file(html_path)
+    assert entry is not None
+    assert entry.traditional == "測 試"
+
+
 def test_discover_word_links_filters_external_category_links(tmp_path: Path):
     """Test discovery ignores non-CUHK/invalid category and word anchors."""
     builder = _DiscoverOnlyBuilder(cache_dir_path=tmp_path / "cuhk")
