@@ -56,7 +56,7 @@ class DualBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -91,7 +91,7 @@ class DualBlockManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
+        setattr(model, "size", size)
         return model
 
     @classmethod
@@ -125,9 +125,9 @@ class DualBlockManager(Manager):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.get_auto_verified = cls.get_auto_verified
-        model.get_min_difficulty = cls.get_min_difficulty
+        setattr(model, "size", size)
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
@@ -158,24 +158,24 @@ class DualBlockManager(Manager):
         Returns:
             validated test case
         """
+        prompt_cls: type[DualBlockPrompt] = getattr(model, "prompt_cls")
+        size: int = getattr(model, "size")
         if model.answer is None:
             return model
 
-        for idx in range(model.size):
-            source_one = getattr(model.query, model.prompt_cls.src_1(idx + 1))
-            output = getattr(model.answer, model.prompt_cls.output(idx + 1))
-            note = getattr(model.answer, model.prompt_cls.note(idx + 1))
+        for idx in range(size):
+            source_one = getattr(model.query, prompt_cls.src_1(idx + 1))
+            output = getattr(model.answer, prompt_cls.output(idx + 1))
+            note = getattr(model.answer, prompt_cls.note(idx + 1))
             if output != "":
                 if output == source_one:
                     raise ValueError(
-                        model.prompt_cls.output_present_but_unmodified_err(idx + 1)
+                        prompt_cls.output_present_but_unmodified_err(idx + 1)
                     )
                 if note == "":
                     raise ValueError(
-                        model.prompt_cls.output_present_note_missing_err(idx + 1)
+                        prompt_cls.output_present_note_missing_err(idx + 1)
                     )
             elif note != "":
-                raise ValueError(
-                    model.prompt_cls.output_missing_note_present_err(idx + 1)
-                )
+                raise ValueError(prompt_cls.output_missing_note_present_err(idx + 1))
         return model
