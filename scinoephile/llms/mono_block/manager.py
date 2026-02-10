@@ -157,8 +157,8 @@ class MonoBlockManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: Any = getattr(model, "prompt_cls")
-        size: Any = getattr(model, "size")
+        prompt_cls: type[MonoBlockPrompt] = getattr(model, "prompt_cls")
+        size: int = getattr(model, "size")
         min_difficulty = 0
         if model.answer is None:
             return min_difficulty
@@ -179,8 +179,8 @@ class MonoBlockManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: Any = getattr(model, "prompt_cls")
-        size: Any = getattr(model, "size")
+        prompt_cls: type[MonoBlockPrompt] = getattr(model, "prompt_cls")
+        size: int = getattr(model, "size")
         if model.answer is None:
             return model
 

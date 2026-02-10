@@ -158,8 +158,8 @@ class DualBlockManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: Any = getattr(model, "prompt_cls")
-        size: Any = getattr(model, "size")
+        prompt_cls: type[DualBlockPrompt] = getattr(model, "prompt_cls")
+        size: int = getattr(model, "size")
         if model.answer is None:
             return model
 
