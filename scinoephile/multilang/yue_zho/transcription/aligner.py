@@ -30,6 +30,8 @@ from scinoephile.llms.base import (
 )
 
 from .alignment import Alignment
+from .merging import YueZhoHansMergingPrompt
+from .shifting import YueZhoHansShiftingPrompt
 
 __all__ = ["Aligner"]
 
@@ -108,12 +110,11 @@ class Aligner:
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
-            yuewen_1_shifted = getattr(
-                answer, test_case.prompt_cls.src_2_sub_1_shifted, None
+            prompt_cls: type[YueZhoHansShiftingPrompt] = getattr(
+                test_case, "prompt_cls"
             )
-            yuewen_2_shifted = getattr(
-                answer, test_case.prompt_cls.src_2_sub_2_shifted, None
-            )
+            yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
+            yuewen_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, None)
             if yuewen_1_shifted == "" and yuewen_2_shifted == "":
                 continue
             if self._shift_one(alignment, sg_1_idx, query, answer):
@@ -145,12 +146,13 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get 粤文
+        prompt_cls: type[YueZhoHansShiftingPrompt] = getattr(query, "prompt_cls")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
-        yw_1 = getattr(query, query.prompt_cls.src_2_sub_1, "")
-        yw_2 = getattr(query, query.prompt_cls.src_2_sub_2, "")
-        yw_1_shifted = getattr(answer, query.prompt_cls.src_2_sub_1_shifted, "")
-        yw_2_shifted = getattr(answer, query.prompt_cls.src_2_sub_2_shifted, "")
+        yw_1 = getattr(query, prompt_cls.src_2_sub_1, "")
+        yw_2 = getattr(query, prompt_cls.src_2_sub_2, "")
+        yw_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, "")
+        yw_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, "")
 
         # Shift 粤文
         nascent_sg = deepcopy(alignment.sync_groups)
@@ -289,7 +291,8 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            yuewen_merged = getattr(test_case.answer, test_case.prompt_cls.output, None)
+            prompt_cls: type[YueZhoHansMergingPrompt] = getattr(test_case, "prompt_cls")
+            yuewen_merged = getattr(test_case.answer, prompt_cls.output, None)
             yw = get_sub_merged(yws, text=yuewen_merged)
             yw.start = zw.start
             yw.end = zw.end
