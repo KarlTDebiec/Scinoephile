@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from pydantic import BaseModel, Field
 
 if TYPE_CHECKING:
-    from scinoephile.audio.transcription.transcribed_word import TranscribedWord
+    from .transcribed_word import TranscribedWord
 
 
 class TranscribedSegment(BaseModel):
