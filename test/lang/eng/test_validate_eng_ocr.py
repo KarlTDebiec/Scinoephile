@@ -7,12 +7,12 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
-from pytest import LogCaptureFixture
-
 from scinoephile.lang.eng import validate_eng_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
 
 if TYPE_CHECKING:
+    from pytest import LogCaptureFixture
+
     from scinoephile.image.subtitles import ImageSeries
 
 
