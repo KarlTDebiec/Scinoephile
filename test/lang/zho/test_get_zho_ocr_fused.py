@@ -4,13 +4,17 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+
+if TYPE_CHECKING:
+    from scinoephile.core.subtitles import Series
+    from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 
 def _test_get_zho_ocr_fused(

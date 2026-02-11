@@ -15,11 +15,15 @@ with catch_warnings():
     simplefilter("ignore", UserWarning)
     import pycantonese
 
+from typing import TYPE_CHECKING
+
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
 from scinoephile.core.text import full_to_half_punc, get_char_type, re_western
 from scinoephile.lang.zho.conversion import get_zho_converter
+
+if TYPE_CHECKING:
+    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_yue_romanized",

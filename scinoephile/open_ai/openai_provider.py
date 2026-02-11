@@ -6,13 +6,15 @@ from __future__ import annotations
 
 import asyncio
 from time import sleep
-from typing import Any, Unpack, cast, override
+from typing import TYPE_CHECKING, Any, Unpack, cast, override
 
 from openai import AsyncOpenAI, OpenAI, OpenAIError
-from openai.types.chat import ChatCompletionMessageParam
 
 from scinoephile.core import ScinoephileError
 from scinoephile.llms.base import Answer, ChatCompletionKwargs, LLMProvider
+
+if TYPE_CHECKING:
+    from openai.types.chat import ChatCompletionMessageParam
 
 __all__ = ["OpenAIProvider"]
 
@@ -53,7 +55,7 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
-            typed_messages = cast(list[ChatCompletionMessageParam], messages)
+            typed_messages = cast("list[ChatCompletionMessageParam]", messages)
             if response_format:
                 completion = self.sync_client.beta.chat.completions.parse(
                     messages=typed_messages,
@@ -104,7 +106,7 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
-            typed_messages = cast(list[ChatCompletionMessageParam], messages)
+            typed_messages = cast("list[ChatCompletionMessageParam]", messages)
             if response_format:
                 completion = await self.async_client.beta.chat.completions.parse(
                     messages=typed_messages,

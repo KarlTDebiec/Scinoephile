@@ -5,12 +5,16 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
 from copy import deepcopy
 from logging import getLogger
+from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_eng_flattened",

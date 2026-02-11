@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
 from sys import stdin, stdout
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
@@ -22,6 +21,9 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofread,
     get_zho_proofreader,
 )
+
+if TYPE_CHECKING:
+    from argparse import ArgumentParser
 
 
 class ZhoCli(CommandLineInterface):

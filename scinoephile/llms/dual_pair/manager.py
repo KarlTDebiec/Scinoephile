@@ -132,16 +132,13 @@ class DualPairManager(Manager):
         Returns:
             minimum difficulty
         """
+        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
         min_difficulty = 0
         if model.answer is None:
             return min_difficulty
 
-        target_1_shifted = getattr(
-            model.answer, model.prompt_cls.src_2_sub_1_shifted, None
-        )
-        target_2_shifted = getattr(
-            model.answer, model.prompt_cls.src_2_sub_2_shifted, None
-        )
+        target_1_shifted = getattr(model.answer, prompt_cls.src_2_sub_1_shifted, None)
+        target_2_shifted = getattr(model.answer, prompt_cls.src_2_sub_2_shifted, None)
         if target_1_shifted != "" or target_2_shifted != "":
             min_difficulty = max(min_difficulty, 1)
         return min_difficulty
@@ -155,10 +152,11 @@ class DualPairManager(Manager):
         Returns:
             validated query
         """
-        src_2_sub_1 = getattr(model, model.prompt_cls.src_2_sub_1, None)
-        src_2_sub_2 = getattr(model, model.prompt_cls.src_2_sub_2, None)
+        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
+        src_2_sub_1 = getattr(model, prompt_cls.src_2_sub_1, None)
+        src_2_sub_2 = getattr(model, prompt_cls.src_2_sub_2, None)
         if not src_2_sub_1 and not src_2_sub_2:
-            raise ValueError(model.prompt_cls.src_2_sub_1_sub_2_missing_err)
+            raise ValueError(prompt_cls.src_2_sub_1_sub_2_missing_err)
         return model
 
     @staticmethod
@@ -170,24 +168,19 @@ class DualPairManager(Manager):
         Returns:
             validated test case
         """
+        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
-        target_1 = getattr(model.query, model.prompt_cls.src_2_sub_1, "")
-        target_2 = getattr(model.query, model.prompt_cls.src_2_sub_2, "")
-        target_1_shifted = getattr(
-            model.answer, model.prompt_cls.src_2_sub_1_shifted, ""
-        )
-        target_2_shifted = getattr(
-            model.answer, model.prompt_cls.src_2_sub_2_shifted, ""
-        )
+        target_1 = getattr(model.query, prompt_cls.src_2_sub_1, "")
+        target_2 = getattr(model.query, prompt_cls.src_2_sub_2, "")
+        target_1_shifted = getattr(model.answer, prompt_cls.src_2_sub_1_shifted, "")
+        target_2_shifted = getattr(model.answer, prompt_cls.src_2_sub_2_shifted, "")
         if target_1 == target_1_shifted and target_2 == target_2_shifted:
-            raise ValueError(model.prompt_cls.src_2_sub_1_sub_2_unchanged_err)
+            raise ValueError(prompt_cls.src_2_sub_1_sub_2_unchanged_err)
         if target_1_shifted != "" or target_2_shifted != "":
             expected = target_1 + target_2
             received = target_1_shifted + target_2_shifted
             if expected != received:
-                raise ValueError(
-                    model.prompt_cls.src_2_chars_changed_err(expected, received)
-                )
+                raise ValueError(prompt_cls.src_2_chars_changed_err(expected, received))
         return model

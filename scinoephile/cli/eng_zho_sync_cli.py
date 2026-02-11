@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -15,6 +14,9 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
+
+if TYPE_CHECKING:
+    from argparse import ArgumentParser
 
 
 class EngZhoSyncCli(CommandLineInterface):

@@ -4,11 +4,8 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import TYPE_CHECKING, TypedDict, Unpack
 
-from scinoephile.core.subtitles import Series
-from scinoephile.llms.base import TestCase
 from scinoephile.llms.default_test_cases import (
     ENG_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
@@ -16,6 +13,12 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
 from .prompts import EngProofreadingPrompt
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from scinoephile.core.subtitles import Series
+    from scinoephile.llms.base import TestCase
 
 __all__ = [
     "EngProofreadingPrompt",

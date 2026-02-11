@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
-from scinoephile.llms.base import Answer, TestCase
 from scinoephile.llms.dual_single import DualSingleManager
 
 from .prompts import YueZhoHansProofreadingPrompt
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base import Answer, TestCase
 
 __all__ = ["YueZhoProofreadingManager"]
 
@@ -31,10 +33,11 @@ class YueZhoProofreadingManager(DualSingleManager):
         Returns:
             validated answer
         """
-        output = getattr(model, model.prompt_cls.output, None)
-        note = getattr(model, model.prompt_cls.note, None)
+        prompt_cls: type[YueZhoHansProofreadingPrompt] = getattr(model, "prompt_cls")
+        output = getattr(model, prompt_cls.output, None)
+        note = getattr(model, prompt_cls.note, None)
         if not output and not note:
-            raise ValueError(model.prompt_cls.output_missing_note_missing_err)
+            raise ValueError(prompt_cls.output_missing_note_missing_err)
         return model
 
     @staticmethod
@@ -46,11 +49,12 @@ class YueZhoProofreadingManager(DualSingleManager):
         Returns:
             validated test case
         """
+        prompt_cls: type[YueZhoHansProofreadingPrompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
-        yuewen = getattr(model.query, model.prompt_cls.src_1, None)
-        yuewen_proofread = getattr(model.answer, model.prompt_cls.output, None)
+        yuewen = getattr(model.query, prompt_cls.src_1, None)
+        yuewen_proofread = getattr(model.answer, prompt_cls.output, None)
         if yuewen != yuewen_proofread:
             model.difficulty = max(model.difficulty, 1)
         return model

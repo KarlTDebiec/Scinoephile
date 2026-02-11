@@ -4,16 +4,18 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
 from .prompt import YueZhoHansMergingPrompt
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base import TestCase
 
 __all__ = ["YueZhoMergingManager"]
 
@@ -33,12 +35,13 @@ class YueZhoMergingManager(DualMultiSingleManager):
         Returns:
             minimum difficulty
         """
+        prompt_cls: type[YueZhoHansMergingPrompt] = getattr(model, "prompt_cls")
         min_difficulty = DualMultiSingleManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
 
-        zhongwen = getattr(model.query, model.prompt_cls.src_2, "")
-        yuewen_merged = getattr(model.answer, model.prompt_cls.output, "")
+        zhongwen = getattr(model.query, prompt_cls.src_2, "")
+        yuewen_merged = getattr(model.answer, prompt_cls.output, "")
         if remove_non_punc_and_whitespace(yuewen_merged):
             min_difficulty = max(min_difficulty, 1)
         if remove_non_punc_and_whitespace(zhongwen) != remove_non_punc_and_whitespace(
@@ -56,16 +59,15 @@ class YueZhoMergingManager(DualMultiSingleManager):
         Returns:
             validated test case
         """
+        prompt_cls: type[YueZhoHansMergingPrompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
-        yuewen_to_merge = getattr(model.query, model.prompt_cls.src_1, None) or []
-        yuewen_merged = getattr(model.answer, model.prompt_cls.output, None) or ""
+        yuewen_to_merge = getattr(model.query, prompt_cls.src_1, None) or []
+        yuewen_merged = getattr(model.answer, prompt_cls.output, None) or ""
 
         expected = "".join(remove_punc_and_whitespace(s) for s in yuewen_to_merge)
         received = remove_punc_and_whitespace(yuewen_merged)
         if expected != received:
-            raise ValueError(
-                model.prompt_cls.yuewen_chars_changed_err(expected, received)
-            )
+            raise ValueError(prompt_cls.yuewen_chars_changed_err(expected, received))
         return model

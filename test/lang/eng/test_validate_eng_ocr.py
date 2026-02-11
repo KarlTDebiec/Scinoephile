@@ -5,16 +5,19 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
-import pytest
-
-from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import validate_eng_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
 
+if TYPE_CHECKING:
+    from pytest import LogCaptureFixture
+
+    from scinoephile.image.subtitles import ImageSeries
+
 
 def test_validate_eng_ocr_mlamd(
-    mlamd_eng_image: ImageSeries, caplog: pytest.LogCaptureFixture
+    mlamd_eng_image: ImageSeries, caplog: LogCaptureFixture
 ):
     """Test validate_eng_ocr with MLAMD English image subtitles.
 

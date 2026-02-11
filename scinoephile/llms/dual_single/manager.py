@@ -5,14 +5,15 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.llms.base import Answer, Manager, Query
 from scinoephile.llms.base.models import get_model_name
 
-from .prompt import DualSinglePrompt
+if TYPE_CHECKING:
+    from .prompt import DualSinglePrompt
 
 __all__ = ["DualSingleManager"]
 
@@ -43,12 +44,15 @@ class DualSingleManager(Manager):
             "validate_query": model_validator(mode="after")(cls.validate_query),
         }
 
-        model = create_model(
-            name,
-            __base__=Query,
-            __module__=Query.__module__,
-            __validators__=validators,
-            **fields,
+        model = cast(
+            "type[TQuery]",
+            create_model(
+                name,
+                __base__=Query,
+                __module__=Query.__module__,
+                __validators__=validators,
+                **fields,
+            ),
         )
         model.prompt_cls = prompt_cls
         return model
@@ -76,12 +80,15 @@ class DualSingleManager(Manager):
             "validate_answer": model_validator(mode="after")(cls.validate_answer),
         }
 
-        model = create_model(
-            name,
-            __base__=Answer,
-            __module__=Answer.__module__,
-            __validators__=validators,
-            **fields,
+        model = cast(
+            "type[TAnswer]",
+            create_model(
+                name,
+                __base__=Answer,
+                __module__=Answer.__module__,
+                __validators__=validators,
+                **fields,
+            ),
         )
         model.prompt_cls = prompt_cls
         return model
@@ -95,14 +102,15 @@ class DualSingleManager(Manager):
         Returns:
             validated query
         """
-        source_one = getattr(model, model.prompt_cls.src_1, None)
-        source_two = getattr(model, model.prompt_cls.src_2, None)
+        prompt_cls: type[DualSinglePrompt] = getattr(model, "prompt_cls")
+        source_one = getattr(model, prompt_cls.src_1, None)
+        source_two = getattr(model, prompt_cls.src_2, None)
         if not source_one:
-            raise ValueError(model.prompt_cls.src_1_missing_err)
+            raise ValueError(prompt_cls.src_1_missing_err)
         if not source_two:
-            raise ValueError(model.prompt_cls.src_2_missing_err)
+            raise ValueError(prompt_cls.src_2_missing_err)
         if source_one == source_two:
-            raise ValueError(model.prompt_cls.src_1_src_2_equal_err)
+            raise ValueError(prompt_cls.src_1_src_2_equal_err)
         return model
 
     @staticmethod
@@ -114,10 +122,11 @@ class DualSingleManager(Manager):
         Returns:
             validated answer
         """
-        output = getattr(model, model.prompt_cls.output, None)
-        note = getattr(model, model.prompt_cls.note, None)
-        output_err = getattr(model.prompt_cls, "output_missing_err", None)
-        note_err = getattr(model.prompt_cls, "note_missing_err", None)
+        prompt_cls: type[DualSinglePrompt] = getattr(model, "prompt_cls")
+        output = getattr(model, prompt_cls.output, None)
+        note = getattr(model, prompt_cls.note, None)
+        output_err = getattr(prompt_cls, "output_missing_err", None)
+        note_err = getattr(prompt_cls, "note_missing_err", None)
         if output_err and not output:
             raise ValueError(output_err)
         if note_err and not note:

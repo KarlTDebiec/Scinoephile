@@ -6,7 +6,10 @@ from __future__ import annotations
 
 import csv
 from logging import getLogger
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 __all__ = [
     "load_char_grp_dims",

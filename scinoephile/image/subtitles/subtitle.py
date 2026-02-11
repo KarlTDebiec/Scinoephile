@@ -5,13 +5,16 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Unpack, override
+from typing import TYPE_CHECKING, Unpack, override
 
 import numpy as np
-from PIL import Image
 
 from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
-from scinoephile.image.bbox import Bbox
+
+if TYPE_CHECKING:
+    from PIL import Image
+
+    from scinoephile.image.bbox import Bbox
 
 __all__ = ["ImageSubtitle"]
 

@@ -4,12 +4,8 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from warnings import catch_warnings, filterwarnings
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
     TranscribedSegment,
@@ -19,6 +15,12 @@ from scinoephile.audio.transcription import (
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
+
+if TYPE_CHECKING:
+    with catch_warnings():
+        filterwarnings("ignore", category=SyntaxWarning)
+        filterwarnings("ignore", category=RuntimeWarning)
+        from pydub import AudioSegment
 
 __all__ = [
     "AudioSeries",

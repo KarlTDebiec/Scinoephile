@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, TypedDict, Unpack
+from typing import TYPE_CHECKING, Any, TypedDict, Unpack
 
-from .answer import Answer
+if TYPE_CHECKING:
+    from .answer import Answer
 
 __all__ = [
     "ChatCompletionKwargs",

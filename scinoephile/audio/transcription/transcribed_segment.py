@@ -4,9 +4,12 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pydantic import BaseModel, Field
 
-from scinoephile.audio.transcription.transcribed_word import TranscribedWord
+if TYPE_CHECKING:
+    from .transcribed_word import TranscribedWord
 
 
 class TranscribedSegment(BaseModel):

@@ -6,14 +6,16 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import TYPE_CHECKING, TypedDict, Unpack
 from unittest.mock import patch
 
 import pytest
 from common.command_line_interface import (  # ty:ignore[unresolved-import]
     CommandLineInterface,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class CliTestKwargs(TypedDict, total=False):
@@ -80,6 +82,10 @@ def test_description_no_docstring():
     """Test description() with no docstring."""
 
     class NoDocCli(CommandLineInterface):
+        """Placeholder class for testing behavior when `__doc__` is unset."""
+
+        __doc__ = None
+
         @classmethod
         def _main(cls, **kwargs: Unpack[CliTestKwargs]):
             """Execute test CLI."""

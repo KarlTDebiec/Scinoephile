@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
-from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_single import DualSingleManager
 
 from .prompt import OcrFusionPrompt
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base import TestCase
 
 __all__ = ["OcrFusionManager"]
 
@@ -35,9 +37,10 @@ class OcrFusionManager(DualSingleManager):
         if model.get_min_difficulty() > 1:
             return False
 
-        source_one = getattr(model.query, model.prompt_cls.src_1, None)
-        source_two = getattr(model.query, model.prompt_cls.src_2, None)
-        output_text = getattr(model.answer, model.prompt_cls.output, None)
+        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
+        source_one = getattr(model.query, prompt_cls.src_1, None)
+        source_two = getattr(model.query, prompt_cls.src_2, None)
+        output_text = getattr(model.answer, prompt_cls.output, None)
         if (
             source_one is not None
             and source_two is not None
@@ -58,12 +61,13 @@ class OcrFusionManager(DualSingleManager):
         Returns:
             minimum difficulty
         """
+        prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
         min_difficulty = DualSingleManager.get_min_difficulty(model)
         min_difficulty = max(min_difficulty, 1)
         if model.answer is None:
             return min_difficulty
 
-        if output_text := getattr(model.answer, model.prompt_cls.output):
+        if output_text := getattr(model.answer, prompt_cls.output):
             if any(char in output_text for char in ("-", '"', "“", "”")):
                 min_difficulty = max(min_difficulty, 2)
         return min_difficulty

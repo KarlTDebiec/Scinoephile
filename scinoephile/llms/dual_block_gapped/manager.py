@@ -69,8 +69,8 @@ class DualBlockGappedManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.gaps = gaps
+        setattr(model, "size", size)
+        setattr(model, "gaps", gaps)
         return model
 
     @classmethod
@@ -114,8 +114,8 @@ class DualBlockGappedManager(Manager):
             **fields,
         )
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.gaps = gaps
+        setattr(model, "size", size)
+        setattr(model, "gaps", gaps)
         return model
 
     @classmethod
@@ -161,10 +161,10 @@ class DualBlockGappedManager(Manager):
         model.query_cls = query_cls
         model.answer_cls = answer_cls
         model.prompt_cls = prompt_cls
-        model.size = size
-        model.gaps = gaps
-        model.get_auto_verified = cls.get_auto_verified
-        model.get_min_difficulty = cls.get_min_difficulty
+        setattr(model, "size", size)
+        setattr(model, "gaps", gaps)
+        setattr(model, "get_auto_verified", cls.get_auto_verified)
+        setattr(model, "get_min_difficulty", cls.get_min_difficulty)
         return model
 
     @classmethod
