@@ -10,8 +10,7 @@ from abc import ABC
 from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
-from pathlib import Path
-from typing import ClassVar, Self, cast
+from typing import TYPE_CHECKING, ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -20,10 +19,14 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.open_ai import OpenAIProvider
 
 from .answer import Answer
-from .llm_provider import LLMProvider
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from .llm_provider import LLMProvider
 
 __all__ = ["Queryer"]
 
@@ -365,4 +368,4 @@ class Queryer[
             "prompt_cls": prompt_cls,
         }
         queryer_cls = type(name, (cls,), attrs)
-        return cast(type[Self], queryer_cls)
+        return cast("type[Self]", queryer_cls)

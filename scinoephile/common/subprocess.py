@@ -4,10 +4,13 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 logger = getLogger(__name__)
 

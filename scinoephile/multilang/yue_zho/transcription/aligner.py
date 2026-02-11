@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
@@ -19,7 +18,6 @@ from scinoephile.audio.subtitles import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 from scinoephile.llms.base import (
@@ -33,6 +31,10 @@ from scinoephile.llms.base import (
 from .alignment import Alignment
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
+    from scinoephile.core.subtitles import Series
+
     from .merging import YueZhoHansMergingPrompt
     from .shifting import YueZhoHansShiftingPrompt
 

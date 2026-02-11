@@ -4,13 +4,17 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.yue import get_yue_romanized
 
 # noinspection PyProtectedMember
 from scinoephile.lang.yue.romanization import _get_yue_text_romanized
+
+if TYPE_CHECKING:
+    from scinoephile.core.subtitles import Series
 
 
 def _test_get_yue_romanized(series: Series, expected: Series):

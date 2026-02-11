@@ -5,9 +5,12 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+
+if TYPE_CHECKING:
+    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_block_pairs_by_pause",

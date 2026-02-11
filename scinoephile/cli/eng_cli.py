@@ -4,9 +4,8 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
 from sys import stdin, stdout
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -15,6 +14,9 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
+
+if TYPE_CHECKING:
+    from argparse import ArgumentParser
 
 
 class EngCli(CommandLineInterface):

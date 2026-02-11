@@ -6,11 +6,12 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from pydantic import BaseModel
 
-from .prompt import Prompt
+if TYPE_CHECKING:
+    from .prompt import Prompt
 
 __all__ = ["Answer"]
 

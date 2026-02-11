@@ -5,20 +5,18 @@
 from __future__ import annotations
 
 from pprint import pformat
+from typing import TYPE_CHECKING
 
 import numpy as np
 
-from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
 from scinoephile.core.pairs import get_pair_strings
-from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import (
     SyncGroup,
     get_overlap_string,
     get_sync_groups_string,
     get_sync_overlap_matrix,
 )
-from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.multilang.yue_zho.transcription.merging import (
     YueZhoHansMergingPrompt,
@@ -27,6 +25,11 @@ from scinoephile.multilang.yue_zho.transcription.merging import (
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
+
+if TYPE_CHECKING:
+    from scinoephile.audio.subtitles import AudioSeries
+    from scinoephile.core.subtitles import Series
+    from scinoephile.llms.base import TestCase
 
 __all__ = ["Alignment"]
 

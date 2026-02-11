@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
-from PIL import Image
 
 from .bbox import Bbox
 from .colors import (
@@ -13,6 +14,9 @@ from .colors import (
     get_fill_color_mask_arr,
     get_grayscale_and_alpha_arrs,
 )
+
+if TYPE_CHECKING:
+    from PIL import Image
 
 __all__ = [
     "get_bboxes",

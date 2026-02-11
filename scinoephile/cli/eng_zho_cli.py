@@ -4,11 +4,13 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+if TYPE_CHECKING:
+    from argparse import ArgumentParser
 
 
 class EngZhoCli(CommandLineInterface):

@@ -6,15 +6,18 @@ from __future__ import annotations
 
 import difflib
 import re
-from collections.abc import Callable
-from typing import TypedDict
+from typing import TYPE_CHECKING, TypedDict
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
 
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .replace_cursor import ReplaceCursor
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from scinoephile.core.subtitles import Series
 
 __all__ = ["SeriesDiff", "SeriesDiffKwargs"]
 

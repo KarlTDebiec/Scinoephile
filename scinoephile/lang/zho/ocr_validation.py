@@ -4,10 +4,14 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from scinoephile.image.ocr import ValidationManager
-from scinoephile.image.subtitles import ImageSeries
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["validate_zho_ocr"]
 

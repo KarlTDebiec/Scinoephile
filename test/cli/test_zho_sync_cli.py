@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
 from scinoephile.cli import EngZhoCli, EngZhoSyncCli, ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import (
     assert_cli_help,
@@ -16,6 +17,9 @@ from scinoephile.common.testing import (
 )
 from scinoephile.core.subtitles import Series
 from test.helpers import test_data_root
+
+if TYPE_CHECKING:
+    from scinoephile.common import CommandLineInterface
 
 
 @pytest.mark.parametrize(
