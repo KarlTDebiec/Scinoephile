@@ -82,6 +82,7 @@ def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
     """
 
     def get_name(args):
+        """Build pytest parameter id for fixture output."""
         return f"{cls.__name__}({','.join(map(str, args.values()))})"
 
     return partial(fixture, params=params, ids=get_name)

@@ -122,6 +122,7 @@ def test_val_output_dir_path_expands_user(
 
     # Mock expanduser to return our test path
     def mock_expanduser(path: str) -> str:
+        """Map `~` paths to the temporary output directory."""
         if path.startswith("~"):
             return str(tmp_path / "outputdir")
         return path

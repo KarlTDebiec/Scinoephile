@@ -137,6 +137,7 @@ def test_val_input_dir_path_expands_user(
 
     # Mock expanduser to return our test path
     def mock_expanduser(path: str) -> str:
+        """Map `~` paths to the temporary test directory."""
         if path.startswith("~"):
             return str(test_dir)
         return path

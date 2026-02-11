@@ -73,6 +73,8 @@ def val_float(
     min_value: float | None = None,
     max_value: float | None = None,
 ) -> float: ...
+
+
 @overload
 def val_float(
     value: Iterable[Any],
@@ -81,6 +83,8 @@ def val_float(
     min_value: float | None = None,
     max_value: float | None = None,
 ) -> list[float]: ...
+
+
 def val_float(
     value: float | Iterable[Any],
     *,
@@ -106,6 +110,13 @@ def val_float(
         raise ArgumentConflictError("min_value must be less than max_value")
 
     def _val_float(value_to_validate: Any) -> float:
+        """Validate a single value as a float.
+
+        Arguments:
+            value_to_validate: value to validate
+        Returns:
+            value as a float
+        """
         try:
             validated_value = float(value_to_validate)
         except ValueError as exc:
@@ -139,8 +150,12 @@ def val_float(
 
 @overload
 def val_input_dir_path(value: Path | str) -> Path: ...
+
+
 @overload
 def val_input_dir_path(value: Iterable[Path | str]) -> list[Path]: ...
+
+
 def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
     """Validate input directory path(s) and make them absolute.
 
@@ -195,8 +210,12 @@ def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[
 
 @overload
 def val_input_path(value: Path | str) -> Path: ...
+
+
 @overload
 def val_input_path(value: Iterable[Path | str]) -> list[Path]: ...
+
+
 def val_input_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
     """Validate input file path(s) and make them absolute.
 
@@ -254,6 +273,8 @@ def val_int(
     max_value: int | None = None,
     acceptable_values: Collection[int] | None = None,
 ) -> int: ...
+
+
 @overload
 def val_int(
     value: Iterable[Any],
@@ -263,6 +284,8 @@ def val_int(
     max_value: int | None = None,
     acceptable_values: Collection[int] | None = None,
 ) -> list[int]: ...
+
+
 def val_int(
     value: int | Iterable[Any],
     *,
@@ -332,8 +355,12 @@ def val_int(
 
 @overload
 def val_output_dir_path(value: Path | str) -> Path: ...
+
+
 @overload
 def val_output_dir_path(value: Iterable[Path | str]) -> list[Path]: ...
+
+
 def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
     """Validate output directory path(s), make them absolute, and create them if needed.
 
@@ -385,10 +412,14 @@ def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list
 
 @overload
 def val_output_path(value: Path | str, exist_ok: bool = False) -> Path: ...
+
+
 @overload
 def val_output_path(
     value: Iterable[Path | str], exist_ok: bool = False
 ) -> list[Path]: ...
+
+
 def val_output_path(
     value: Path | str | Iterable[Path | str], exist_ok: bool = False
 ) -> Path | list[Path]:

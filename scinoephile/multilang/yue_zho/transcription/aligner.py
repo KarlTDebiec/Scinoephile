@@ -133,6 +133,16 @@ class Aligner:
         query: Query,
         answer: Answer,
     ) -> bool:
+        """Shift text between one sync-group pair when LLM output requires it.
+
+        Arguments:
+            alignment: current alignment being updated
+            sg_1_idx: index of the first sync group in the pair
+            query: LLM query payload for the pair
+            answer: LLM answer payload for the pair
+        Returns:
+            whether shifting requires restarting group traversal
+        """
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
             raise ScinoephileError(
