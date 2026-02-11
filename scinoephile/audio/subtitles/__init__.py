@@ -4,12 +4,6 @@
 
 from __future__ import annotations
 
-from warnings import catch_warnings, filterwarnings
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-
 from typing import TYPE_CHECKING
 
 from scinoephile.audio.transcription import (

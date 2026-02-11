@@ -7,16 +7,10 @@ from __future__ import annotations
 import hashlib
 import json
 from logging import getLogger
-from warnings import catch_warnings, filterwarnings
+from typing import TYPE_CHECKING
 
 import torch
 import whisper_timestamped as whisper
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-
-from typing import TYPE_CHECKING
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path

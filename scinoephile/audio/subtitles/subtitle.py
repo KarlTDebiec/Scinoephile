@@ -6,11 +6,6 @@ from __future__ import annotations
 
 from dataclasses import fields
 from typing import TYPE_CHECKING, Unpack, override
-from warnings import catch_warnings, filterwarnings
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
 
 from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
 
