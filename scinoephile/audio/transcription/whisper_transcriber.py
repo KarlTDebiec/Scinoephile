@@ -8,6 +8,7 @@ import hashlib
 import json
 from logging import getLogger
 from typing import TYPE_CHECKING
+from warnings import catch_warnings, filterwarnings
 
 import torch
 import whisper_timestamped as whisper
@@ -19,7 +20,10 @@ from scinoephile.common.validation import val_output_dir_path
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from pydub import AudioSegment
+    with catch_warnings():
+        filterwarnings("ignore", category=SyntaxWarning)
+        filterwarnings("ignore", category=RuntimeWarning)
+        from pydub import AudioSegment
 
 logger = getLogger(__name__)
 

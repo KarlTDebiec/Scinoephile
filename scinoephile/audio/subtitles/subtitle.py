@@ -6,11 +6,15 @@ from __future__ import annotations
 
 from dataclasses import fields
 from typing import TYPE_CHECKING, Unpack, override
+from warnings import catch_warnings, filterwarnings
 
 from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
 
 if TYPE_CHECKING:
-    from pydub import AudioSegment
+    with catch_warnings():
+        filterwarnings("ignore", category=SyntaxWarning)
+        filterwarnings("ignore", category=RuntimeWarning)
+        from pydub import AudioSegment
 
     from scinoephile.audio.transcription import TranscribedSegment
 
