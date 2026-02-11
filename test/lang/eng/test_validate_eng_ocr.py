@@ -5,12 +5,15 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
-import pytest
-
-from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import validate_eng_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
+
+if TYPE_CHECKING:
+    import pytest
+
+    from scinoephile.image.subtitles import ImageSeries
 
 
 def test_validate_eng_ocr_mlamd(

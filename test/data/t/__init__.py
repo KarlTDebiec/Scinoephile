@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 import pytest
 
@@ -23,11 +23,13 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
 )
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
-from scinoephile.llms.base.manager import TestCaseClsKwargs
-from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from test.helpers import test_data_root
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base.manager import TestCaseClsKwargs
+    from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "t_eng",

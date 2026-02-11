@@ -4,10 +4,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
 from logging import getLogger
-from pathlib import Path
-from typing import Self, TypedDict, Unpack, cast, override
+from typing import TYPE_CHECKING, Self, TypedDict, Unpack, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -15,6 +13,10 @@ from pysubs2.time import ms_to_str
 from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from pathlib import Path
 
 __all__ = [
     "Series",
@@ -223,7 +225,7 @@ class Series(SSAFile):
             parsed series
         """
         series = cast(
-            Self,
+            "Self",
             super().from_string(string, format_=format_, fps=fps, **kwargs),
         )
         series.events = [cls.event_class(**ssaevent.as_dict()) for ssaevent in series]
@@ -257,7 +259,7 @@ class Series(SSAFile):
 
         with open(str(validated_path), encoding=encoding, errors=errors) as input_file:
             series = cast(
-                Self,
+                "Self",
                 cls.from_file(input_file, format_=format_, fps=fps, **kwargs),
             )
             series.events = [

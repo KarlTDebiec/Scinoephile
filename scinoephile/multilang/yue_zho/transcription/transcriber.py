@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import asyncio
 from logging import getLogger
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from scinoephile.audio.subtitles import (
     AudioSeries,
@@ -28,6 +28,9 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 )
 
 from .aligner import Aligner
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = getLogger(__name__)
 

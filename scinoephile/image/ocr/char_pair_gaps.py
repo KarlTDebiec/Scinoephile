@@ -6,9 +6,12 @@ from __future__ import annotations
 
 import csv
 from logging import getLogger
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from scinoephile.core.text import full_punc, get_char_type
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 __all__ = [
     "get_default_char_pair_cutoffs",

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import TYPE_CHECKING, Unpack
 
 import pytest
 
@@ -24,15 +24,12 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
 )
 from scinoephile.llms.base import TestCase, load_test_cases_from_json
-from scinoephile.llms.base.manager import TestCaseClsKwargs
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedPrompt,
 )
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.proofreading import (
@@ -49,6 +46,11 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from test.helpers import test_data_root
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base.manager import TestCaseClsKwargs
+    from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
+    from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "mlamd_eng_lens",

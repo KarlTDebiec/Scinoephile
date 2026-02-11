@@ -9,7 +9,8 @@ from warnings import catch_warnings, filterwarnings
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
+
+from typing import TYPE_CHECKING
 
 from scinoephile.audio.transcription import (
     TranscribedSegment,
@@ -19,6 +20,9 @@ from scinoephile.audio.transcription import (
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
+
+if TYPE_CHECKING:
+    from pydub import AudioSegment
 
 __all__ = [
     "AudioSeries",

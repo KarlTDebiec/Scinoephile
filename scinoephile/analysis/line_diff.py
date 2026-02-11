@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from .line_diff_kind import LineDiffKind
+if TYPE_CHECKING:
+    from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]
 

@@ -4,16 +4,18 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.llms.base import TestCase
 from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
 from .prompt import YueZhoHansMergingPrompt
+
+if TYPE_CHECKING:
+    from scinoephile.llms.base import TestCase
 
 __all__ = ["YueZhoMergingManager"]
 

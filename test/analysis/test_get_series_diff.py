@@ -6,9 +6,13 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from scinoephile.analysis import get_series_diff
-from scinoephile.analysis.line_diff import LineDiff
-from scinoephile.core.subtitles import Series
+
+if TYPE_CHECKING:
+    from scinoephile.analysis.line_diff import LineDiff
+    from scinoephile.core.subtitles import Series
 
 
 def _assert_expected_differences(
