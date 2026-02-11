@@ -135,6 +135,7 @@ def test_val_input_path_expands_user(tmp_path: Path, monkeypatch: pytest.MonkeyP
 
     # Mock expanduser to return our test path
     def mock_expanduser(path: str) -> str:
+        """Map `~` paths to the temporary test file."""
         if path.startswith("~"):
             return str(test_file)
         return path

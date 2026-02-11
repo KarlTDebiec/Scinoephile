@@ -82,6 +82,10 @@ def test_description_no_docstring():
     """Test description() with no docstring."""
 
     class NoDocCli(CommandLineInterface):
+        """Placeholder class for testing behavior when `__doc__` is unset."""
+
+        __doc__ = None
+
         @classmethod
         def _main(cls, **kwargs: Unpack[CliTestKwargs]):
             """Execute test CLI."""

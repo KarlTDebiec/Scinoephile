@@ -331,7 +331,9 @@ def get_synced_series_from_groups(
     return synced
 
 
-def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
+def _compare_sync_groups(  # noqa: PLR0912
+    first: SyncGroup, second: SyncGroup
+) -> int | None:
     """Compare two sync groups.
 
     Arguments:
@@ -378,9 +380,19 @@ def _compare_sync_groups(first: SyncGroup, second: SyncGroup) -> int | None:
             raise ScinoephileError("Unexpected comparison result between sync groups")
 
 
-def _get_sync_groups(
+def _get_sync_groups(  # noqa: PLR0912, PLR0915
     one: Series, two: Series, overlap: np.ndarray, cutoff: float
 ) -> list[SyncGroup]:
+    """Build sync groups from a filtered overlap matrix.
+
+    Arguments:
+        one: first subtitle series
+        two: second subtitle series
+        overlap: overlap matrix between series
+        cutoff: overlap cutoff used when pruning matrix values
+    Returns:
+        list of sync groups derived from the overlap matrix
+    """
     sync_groups = []
 
     for i in range(len(one)):

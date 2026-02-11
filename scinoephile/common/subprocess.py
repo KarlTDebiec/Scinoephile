@@ -7,7 +7,7 @@ from __future__ import annotations
 from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
-from typing import TYPE_CHECKING
+from typing import IO, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -90,7 +90,13 @@ def run_command_live(
     stdout_lines = []
     stderr_lines = []
 
-    def read_stream(stream, lines):
+    def read_stream(stream: IO[str], lines: list[str]):
+        """Read subprocess stream line-by-line and mirror to logs.
+
+        Arguments:
+            stream: stream to read from
+            lines: list that collects the stream content
+        """
         for line in iter(stream.readline, ""):
             logger.info(line.rstrip())
             lines.append(line)
