@@ -7,6 +7,7 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
 
@@ -30,8 +31,10 @@ from scinoephile.llms.base import (
 )
 
 from .alignment import Alignment
-from .merging import YueZhoHansMergingPrompt
-from .shifting import YueZhoHansShiftingPrompt
+
+if TYPE_CHECKING:
+    from .merging import YueZhoHansMergingPrompt
+    from .shifting import YueZhoHansShiftingPrompt
 
 __all__ = ["Aligner"]
 
