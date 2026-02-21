@@ -11,6 +11,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases_from_repo_data,
 )
 
+from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
@@ -44,6 +45,7 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
+    use_dictionary_tool: bool
 
 
 def get_yue_vs_zho_proofread(
@@ -89,8 +91,15 @@ def get_yue_vs_zho_proofreader(
                 YUE_ZHO_PROOFREADING_JSON_PATHS,
             )
         )
+    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
+    tools = None
+    tool_handlers = None
+    if use_dictionary_tool:
+        tools, tool_handlers = get_cuhk_dictionary_tooling()
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        tools=tools,
+        tool_handlers=tool_handlers,
         **kwargs,
     )

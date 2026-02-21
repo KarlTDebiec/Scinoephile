@@ -12,6 +12,7 @@ from scinoephile.llms.default_test_cases import (
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
 
+from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
 if TYPE_CHECKING:
@@ -41,6 +42,7 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
+    use_dictionary_tool: bool
 
 
 def get_yue_vs_zho_reviewed(
@@ -86,8 +88,15 @@ def get_yue_vs_zho_processor(
                 YUE_ZHO_REVIEW_JSON_PATHS,
             )
         )
+    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
+    tools = None
+    tool_handlers = None
+    if use_dictionary_tool:
+        tools, tool_handlers = get_cuhk_dictionary_tooling()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        tools=tools,
+        tool_handlers=tool_handlers,
         **kwargs,
     )

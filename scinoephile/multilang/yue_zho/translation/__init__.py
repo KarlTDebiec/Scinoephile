@@ -15,6 +15,7 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedProcessor,
 )
 
+from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
 if TYPE_CHECKING:
@@ -44,6 +45,7 @@ class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
+    use_dictionary_tool: bool
 
 
 def get_yue_from_zho_translated(
@@ -89,8 +91,15 @@ def get_yue_from_zho_translator(
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             )
         )
+    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
+    tools = None
+    tool_handlers = None
+    if use_dictionary_tool:
+        tools, tool_handlers = get_cuhk_dictionary_tooling()
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        tools=tools,
+        tool_handlers=tool_handlers,
         **kwargs,
     )
