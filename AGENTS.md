@@ -9,6 +9,7 @@
 
 * Branches should be named in the format `feature/brief-description`.
 * Interact with GitHub using the GitHub MCP; do not use the `gh` CLI.
+* Remote is named `github`, not `origin`
 
 ### Linting
 
