@@ -11,8 +11,8 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases_from_repo_data,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
 
-from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
 if TYPE_CHECKING:

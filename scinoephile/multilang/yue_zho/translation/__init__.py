@@ -14,8 +14,8 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedProcessor,
 )
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
 
-from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
 if TYPE_CHECKING:

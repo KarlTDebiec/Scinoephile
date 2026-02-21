@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Compatibility exports for Cantonese<->Mandarin dictionary services."""
+"""Dictionary services shared across 中文/粤文 workflows."""
 
 from __future__ import annotations
 
-from scinoephile.multilang.cmn_yue.dictionaries import (
+from .cuhk import (
     CuhkDictionaryBuilder,
     CuhkDictionaryService,
     DictionaryDefinition,

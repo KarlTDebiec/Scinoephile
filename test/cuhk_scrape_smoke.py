@@ -22,7 +22,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.lang.yue.dictionaries.cuhk import (
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk import (
     CuhkDictionaryBuilder,
     CuhkDictionaryService,
     LookupDirection,

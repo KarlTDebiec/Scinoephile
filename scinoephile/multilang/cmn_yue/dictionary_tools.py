@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
-from scinoephile.lang.yue.dictionaries import CuhkDictionaryService, DictionaryEntry
-from scinoephile.lang.yue.dictionaries.cuhk import LookupDirection
 from scinoephile.llms.base import LLMToolSpec, ToolHandler
+
+from .dictionaries import CuhkDictionaryService, DictionaryEntry, LookupDirection
 
 __all__ = [
     "CUHK_LOOKUP_TOOL_NAME",

@@ -7,8 +7,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import cast
 
-from scinoephile.lang.yue.dictionaries import DictionaryDefinition, DictionaryEntry
-from scinoephile.multilang.yue_zho import dictionary_tools
+from scinoephile.multilang.cmn_yue import dictionary_tools
+from scinoephile.multilang.cmn_yue.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+)
 
 
 class _FakeService:

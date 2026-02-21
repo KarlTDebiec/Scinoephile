@@ -10,8 +10,8 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
 )
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
 
-from ..dictionary_tools import get_cuhk_dictionary_tooling
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt

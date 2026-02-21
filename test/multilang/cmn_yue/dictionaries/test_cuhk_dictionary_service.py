@@ -9,13 +9,13 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.lang.yue.dictionaries.cuhk import (
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk import (
     CuhkDictionaryBuilder,
     CuhkDictionaryService,
     LookupDirection,
 )
-from scinoephile.lang.yue.dictionaries.cuhk.models import DictionarySource
-from scinoephile.lang.yue.dictionaries.cuhk.sqlite_schema import (
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk.models import DictionarySource
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema import (
     create_tables,
     drop_tables,
     generate_indices,
