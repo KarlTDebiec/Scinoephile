@@ -7,7 +7,7 @@ from __future__ import annotations
 import importlib
 import re
 
-from .dictionary_source import DictionarySource
+from ..dictionary_source import DictionarySource
 
 hkscs_converter = None
 try:  # pragma: no cover - optional dependency

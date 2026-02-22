@@ -5,17 +5,9 @@
 from __future__ import annotations
 
 from .builder import CuhkDictionaryBuilder
-from .dictionary_definition import DictionaryDefinition
-from .dictionary_entry import DictionaryEntry
-from .dictionary_source import DictionarySource
-from .lookup_direction import LookupDirection
 from .service import CuhkDictionaryService
 
 __all__ = [
     "CuhkDictionaryBuilder",
     "CuhkDictionaryService",
-    "DictionaryDefinition",
-    "DictionaryEntry",
-    "DictionarySource",
-    "LookupDirection",
 ]

@@ -9,11 +9,13 @@ from pathlib import Path
 
 import pytest
 
+from scinoephile.multilang.cmn_yue.dictionaries import (
+    DictionarySource,
+    LookupDirection,
+)
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import (
     CuhkDictionaryBuilder,
     CuhkDictionaryService,
-    DictionarySource,
-    LookupDirection,
 )
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema_manager import (
     CuhkSQLiteSchemaManager,

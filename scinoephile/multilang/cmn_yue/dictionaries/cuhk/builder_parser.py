@@ -11,6 +11,8 @@ from typing import Any
 from bs4 import BeautifulSoup, Tag
 from pypinyin import Style, lazy_pinyin
 
+from ..dictionary_definition import DictionaryDefinition
+from ..dictionary_entry import DictionaryEntry
 from .builder_constants import (
     JYUTPING_LETTERS_ID_REGEX,
     JYUTPING_NUMBERS_ID_REGEX,
@@ -23,8 +25,6 @@ from .builder_constants import (
     REMARK_ID_REGEX,
     hkscs_converter,
 )
-from .dictionary_definition import DictionaryDefinition
-from .dictionary_entry import DictionaryEntry
 
 logger = getLogger(__name__)
 

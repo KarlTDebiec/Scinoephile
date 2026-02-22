@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ..dictionary_entry import DictionaryEntry
+from ..lookup_direction import LookupDirection
 from .builder import CuhkDictionaryBuilder
-from .dictionary_entry import DictionaryEntry
-from .lookup_direction import LookupDirection
 from .service_lookup import CuhkDictionaryLookupMixin
 
 __all__ = [

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import sqlite3
 
-from .dictionary_source import DictionarySource
+from ..dictionary_source import DictionarySource
 
 __all__ = [
     "CuhkSQLiteSchemaRecords",
