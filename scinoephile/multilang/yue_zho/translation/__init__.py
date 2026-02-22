@@ -45,7 +45,6 @@ class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-    use_dictionary_tool: bool
 
 
 def get_yue_from_zho_translated(
@@ -72,6 +71,7 @@ def get_yue_from_zho_translated(
 def get_yue_from_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
     test_cases: list[TestCase] | None = None,
+    use_dictionary_tool: bool = True,
     **kwargs: Unpack[YueFromZhoTranslationProcessorKwargs],
 ) -> DualBlockGappedProcessor:
     """Get DualBlockGappedProcessor with provided configuration.
@@ -79,6 +79,7 @@ def get_yue_from_zho_translator(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        use_dictionary_tool: whether to wire the CUHK dictionary tool
         **kwargs: additional arguments for DualBlockGappedProcessor
     Returns:
         DualBlockGappedProcessor with provided configuration
@@ -91,7 +92,6 @@ def get_yue_from_zho_translator(
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             )
         )
-    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
     tools = None
     tool_handlers = None
     if use_dictionary_tool:

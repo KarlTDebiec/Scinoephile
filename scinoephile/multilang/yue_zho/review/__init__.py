@@ -42,7 +42,6 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-    use_dictionary_tool: bool
 
 
 def get_yue_vs_zho_reviewed(
@@ -69,6 +68,7 @@ def get_yue_vs_zho_reviewed(
 def get_yue_vs_zho_processor(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
+    use_dictionary_tool: bool = True,
     **kwargs: Unpack[YueZhoReviewProcessorKwargs],
 ) -> DualBlockProcessor:
     """Get DualBlockProcessor with provided configuration.
@@ -76,6 +76,7 @@ def get_yue_vs_zho_processor(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        use_dictionary_tool: whether to wire the CUHK dictionary tool
         **kwargs: additional arguments for DualBlockProcessor
     Returns:
         DualBlockProcessor with provided configuration
@@ -88,7 +89,6 @@ def get_yue_vs_zho_processor(
                 YUE_ZHO_REVIEW_JSON_PATHS,
             )
         )
-    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
     tools = None
     tool_handlers = None
     if use_dictionary_tool:

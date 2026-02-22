@@ -45,7 +45,6 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     auto_verify: bool
-    use_dictionary_tool: bool
 
 
 def get_yue_vs_zho_proofread(
@@ -72,6 +71,7 @@ def get_yue_vs_zho_proofread(
 def get_yue_vs_zho_proofreader(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
+    use_dictionary_tool: bool = True,
     **kwargs: Unpack[YueZhoProofreadingProcessorKwargs],
 ) -> YueZhoProofreadingProcessor:
     """Get YueZhoProofreadingProcessor with provided configuration.
@@ -79,6 +79,7 @@ def get_yue_vs_zho_proofreader(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        use_dictionary_tool: whether to wire the CUHK dictionary tool
         **kwargs: additional keyword arguments for YueZhoProofreadingProcessor
     Returns:
         YueZhoProofreadingProcessor with provided configuration
@@ -91,7 +92,6 @@ def get_yue_vs_zho_proofreader(
                 YUE_ZHO_PROOFREADING_JSON_PATHS,
             )
         )
-    use_dictionary_tool = kwargs.pop("use_dictionary_tool", True)
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
