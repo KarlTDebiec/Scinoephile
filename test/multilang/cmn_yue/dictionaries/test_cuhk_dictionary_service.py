@@ -12,17 +12,14 @@ import pytest
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import (
     CuhkDictionaryBuilder,
     CuhkDictionaryService,
+    DictionarySource,
     LookupDirection,
 )
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk.models import DictionarySource
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema import (
-    create_tables,
-    drop_tables,
-    generate_indices,
-    insert_definition,
-    insert_entry,
-    insert_source,
-    write_database_version,
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema_manager import (
+    CuhkSQLiteSchemaManager,
+)
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema_records import (
+    CuhkSQLiteSchemaRecords,
 )
 
 
@@ -121,11 +118,11 @@ def _seed_dictionary_database(database_path: Path):
     database_path.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(database_path) as connection:
         cursor = connection.cursor()
-        write_database_version(cursor)
-        drop_tables(cursor)
-        create_tables(cursor)
+        CuhkSQLiteSchemaManager.write_database_version(cursor)
+        CuhkSQLiteSchemaManager.drop_tables(cursor)
+        CuhkSQLiteSchemaManager.create_tables(cursor)
 
-        source_id = insert_source(
+        source_id = CuhkSQLiteSchemaRecords.insert_source(
             cursor,
             DictionarySource(
                 name="Test Source",
@@ -138,7 +135,7 @@ def _seed_dictionary_database(database_path: Path):
                 other="",
             ),
         )
-        bus_entry_id = insert_entry(
+        bus_entry_id = CuhkSQLiteSchemaRecords.insert_entry(
             cursor,
             traditional="巴士",
             simplified="巴士",
@@ -146,14 +143,14 @@ def _seed_dictionary_database(database_path: Path):
             jyutping="baa1 si6",
             frequency=0.0,
         )
-        insert_definition(
+        CuhkSQLiteSchemaRecords.insert_definition(
             cursor,
             definition="bus",
             label="名詞",
             entry_id=bus_entry_id,
             source_id=source_id,
         )
-        insert_definition(
+        CuhkSQLiteSchemaRecords.insert_definition(
             cursor,
             definition="motor bus",
             label="名詞",
@@ -161,7 +158,7 @@ def _seed_dictionary_database(database_path: Path):
             source_id=source_id,
         )
 
-        stop_entry_id = insert_entry(
+        stop_entry_id = CuhkSQLiteSchemaRecords.insert_entry(
             cursor,
             traditional="巴士站",
             simplified="巴士站",
@@ -169,14 +166,14 @@ def _seed_dictionary_database(database_path: Path):
             jyutping="baa1 si6 zaam6",
             frequency=0.0,
         )
-        insert_definition(
+        CuhkSQLiteSchemaRecords.insert_definition(
             cursor,
             definition="bus stop",
             label="名詞",
             entry_id=stop_entry_id,
             source_id=source_id,
         )
-        generate_indices(cursor)
+        CuhkSQLiteSchemaManager.generate_indices(cursor)
         connection.commit()
 
 
@@ -450,10 +447,10 @@ def test_insert_entry_returns_existing_id_for_duplicate():
     """Test duplicate entry insert returns stable existing entry ID."""
     with sqlite3.connect(":memory:") as connection:
         cursor = connection.cursor()
-        write_database_version(cursor)
-        create_tables(cursor)
+        CuhkSQLiteSchemaManager.write_database_version(cursor)
+        CuhkSQLiteSchemaManager.create_tables(cursor)
 
-        first_id = insert_entry(
+        first_id = CuhkSQLiteSchemaRecords.insert_entry(
             cursor,
             traditional="巴士",
             simplified="巴士",
@@ -461,7 +458,7 @@ def test_insert_entry_returns_existing_id_for_duplicate():
             jyutping="baa1 si6",
             frequency=0.0,
         )
-        duplicate_id = insert_entry(
+        duplicate_id = CuhkSQLiteSchemaRecords.insert_entry(
             cursor,
             traditional="巴士",
             simplified="巴士",
@@ -476,9 +473,9 @@ def test_insert_definition_returns_existing_id_for_duplicate():
     """Test duplicate definition insert returns stable existing definition ID."""
     with sqlite3.connect(":memory:") as connection:
         cursor = connection.cursor()
-        write_database_version(cursor)
-        create_tables(cursor)
-        source_id = insert_source(
+        CuhkSQLiteSchemaManager.write_database_version(cursor)
+        CuhkSQLiteSchemaManager.create_tables(cursor)
+        source_id = CuhkSQLiteSchemaRecords.insert_source(
             cursor,
             DictionarySource(
                 name="Test Source",
@@ -491,7 +488,7 @@ def test_insert_definition_returns_existing_id_for_duplicate():
                 other="",
             ),
         )
-        entry_id = insert_entry(
+        entry_id = CuhkSQLiteSchemaRecords.insert_entry(
             cursor,
             traditional="巴士",
             simplified="巴士",
@@ -500,14 +497,14 @@ def test_insert_definition_returns_existing_id_for_duplicate():
             frequency=0.0,
         )
 
-        first_id = insert_definition(
+        first_id = CuhkSQLiteSchemaRecords.insert_definition(
             cursor,
             definition="bus",
             label="名詞",
             entry_id=entry_id,
             source_id=source_id,
         )
-        duplicate_id = insert_definition(
+        duplicate_id = CuhkSQLiteSchemaRecords.insert_definition(
             cursor,
             definition="bus",
             label="名詞",
