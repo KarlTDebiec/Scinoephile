@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, TypedDict, Unpack
 
 if TYPE_CHECKING:
@@ -12,7 +13,9 @@ if TYPE_CHECKING:
 
 __all__ = [
     "ChatCompletionKwargs",
+    "LLMToolSpec",
     "LLMProvider",
+    "ToolHandler",
 ]
 
 
@@ -31,6 +34,18 @@ class ChatCompletionKwargs(TypedDict, total=False):
     seed: int
 
 
+class LLMToolSpec(TypedDict):
+    """Specification for one LLM-callable function tool."""
+
+    name: str
+    description: str
+    parameters: dict[str, object]
+
+
+type ToolHandler = Callable[[dict[str, Any]], object]
+"""Function that executes one tool call from parsed JSON arguments."""
+
+
 class LLMProvider(ABC):
     """ABC for LLM providers."""
 
@@ -39,6 +54,8 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        tools: list[LLMToolSpec] | None = None,
+        tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -46,6 +63,8 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
+            tools: available function-tool definitions
+            tool_handlers: handlers for available function tools
             **kwargs: additional keyword arguments
         Returns:
             completion text from the model
@@ -59,6 +78,8 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        tools: list[LLMToolSpec] | None = None,
+        tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text asynchronously.
@@ -66,6 +87,8 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
+            tools: available function-tool definitions
+            tool_handlers: handlers for available function tools
             **kwargs: additional keyword arguments
         Returns:
             completion text from the model

@@ -10,7 +10,7 @@ from abc import ABC
 from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
-from typing import TYPE_CHECKING, ClassVar, Self, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -26,7 +26,7 @@ from .test_case import TestCase
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from .llm_provider import LLMProvider
+    from .llm_provider import LLMProvider, LLMToolSpec, ToolHandler
 
 __all__ = ["Queryer"]
 
@@ -53,6 +53,8 @@ class Queryer[
         cache_dir_path: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
+        tools: list[LLMToolSpec] | None = None,
+        tool_handlers: dict[str, ToolHandler] | None = None,
     ):
         """Initialize.
 
@@ -64,6 +66,8 @@ class Queryer[
             cache_dir_path: directory in which to cache
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
+            tools: available function-tool definitions
+            tool_handlers: handlers for available function tools
         """
         self._provider = provider
 
@@ -85,6 +89,10 @@ class Queryer[
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
         """Automatically verify test cases if they meet selected criteria."""
+        self.tools = tools or []
+        """Available function-tool definitions."""
+        self.tool_handlers = tool_handlers or {}
+        """Handlers for available function tools."""
 
     def __call__(self, test_case: TTestCase) -> TTestCase:
         """Query LLM.
@@ -122,7 +130,10 @@ class Queryer[
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
-        if cached_test_case := self._get_cached_test_case(system_prompt, test_case):
+        tools_cache_key = self._get_tools_cache_key()
+        if cached_test_case := self._get_cached_test_case(
+            system_prompt, test_case, tools_cache_key
+        ):
             return cached_test_case
 
         # Query provider
@@ -136,7 +147,12 @@ class Queryer[
         for attempt in range(1, self.max_attempts + 1):
             # Get answer from provider
             try:
-                content = self.provider.chat_completion(messages, test_case.answer_cls)
+                content = self.provider.chat_completion(
+                    messages,
+                    test_case.answer_cls,
+                    tools=self.tools,
+                    tool_handlers=self.tool_handlers,
+                )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
                 if attempt == self.max_attempts:
@@ -202,7 +218,11 @@ class Queryer[
         self.log_encountered_test_case(test_case)
 
         # Update cache
-        if cache_path := self._get_cache_path(system_prompt, query_prompt):
+        if cache_path := self._get_cache_path(
+            system_prompt,
+            query_prompt,
+            tools_cache_key,
+        ):
             contents = json.dumps(
                 test_case.model_dump(exclude_defaults=True),
                 ensure_ascii=False,
@@ -249,19 +269,25 @@ class Queryer[
         logger.debug(f"Logged test case: {test_case.query.key_str}")
 
     @cache
-    def _get_cache_path(self, system_prompt: str, query_prompt: str) -> Path | None:
+    def _get_cache_path(
+        self,
+        system_prompt: str,
+        query_prompt: str,
+        tools_cache_key: str = "",
+    ) -> Path | None:
         """Get cache path based on hash of prompts.
 
         Arguments:
             system_prompt: system prompt used for the query
             query_prompt: query prompt used for the query
+            tools_cache_key: cache-key fragment for configured tools
         Returns:
             Path to cache file
         """
         if self.cache_dir_path is None:
             return None
 
-        prompt_str = system_prompt + query_prompt
+        prompt_str = system_prompt + query_prompt + tools_cache_key
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
@@ -269,19 +295,25 @@ class Queryer[
         self,
         system_prompt: str,
         test_case: TTestCase,
+        tools_cache_key: str = "",
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             system_prompt: system prompt used for the query
             test_case: test case containing query for which to get cached version
+            tools_cache_key: cache-key fragment for configured tools
         Returns:
             cached test case if available, else None
         """
         query_prompt = json.dumps(
             test_case.query.model_dump(), indent=4, ensure_ascii=False
         )
-        cache_path = self._get_cache_path(system_prompt, query_prompt)
+        cache_path = self._get_cache_path(
+            system_prompt,
+            query_prompt,
+            tools_cache_key,
+        )
         if cache_path is None:
             return None
         if not cache_path.exists():
@@ -304,6 +336,21 @@ class Queryer[
             cache_path.unlink()
             logger.info(f"Deleted invalid cache file: {cache_path}")
         return None
+
+    def _get_tools_cache_key(self) -> str:
+        """Get a deterministic cache-key fragment for configured tools.
+
+        Returns:
+            serialized key fragment for tools and handlers
+        """
+        if not self.tools and not self.tool_handlers:
+            return ""
+
+        tools_payload: dict[str, Any] = {
+            "tools": self.tools,
+            "handler_names": sorted(self.tool_handlers),
+        }
+        return json.dumps(tools_payload, ensure_ascii=False, sort_keys=True)
 
     def _get_system_prompt(self, answer_cls: type[Answer]) -> str:
         """Get system prompt for the given answer class.
