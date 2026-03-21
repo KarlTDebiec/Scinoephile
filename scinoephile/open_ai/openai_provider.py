@@ -151,9 +151,16 @@ class OpenAIProvider(LLMProvider):
                 request_kwargs: dict[str, Any] = dict(kwargs)
                 request_kwargs.setdefault("tool_choice", "auto")
                 request_kwargs.setdefault("parallel_tool_calls", False)
-                create_completion = cast(
-                    "Any", self.sync_client.chat.completions.create
-                )
+                if response_format:
+                    create_completion = cast(
+                        "Any",
+                        self.sync_client.beta.chat.completions.parse,
+                    )
+                    request_kwargs["response_format"] = response_format
+                else:
+                    create_completion = cast(
+                        "Any", self.sync_client.chat.completions.create
+                    )
 
                 max_tool_rounds = 8
                 for _round_idx in range(max_tool_rounds):
@@ -277,10 +284,17 @@ class OpenAIProvider(LLMProvider):
                 request_kwargs: dict[str, Any] = dict(kwargs)
                 request_kwargs.setdefault("tool_choice", "auto")
                 request_kwargs.setdefault("parallel_tool_calls", False)
-                create_completion = cast(
-                    "Any",
-                    self.async_client.chat.completions.create,
-                )
+                if response_format:
+                    create_completion = cast(
+                        "Any",
+                        self.async_client.beta.chat.completions.parse,
+                    )
+                    request_kwargs["response_format"] = response_format
+                else:
+                    create_completion = cast(
+                        "Any",
+                        self.async_client.chat.completions.create,
+                    )
 
                 max_tool_rounds = 8
                 for _round_idx in range(max_tool_rounds):
