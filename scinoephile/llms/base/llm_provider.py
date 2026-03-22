@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from typing import TYPE_CHECKING, Any, TypedDict, Unpack
 
 if TYPE_CHECKING:
@@ -42,7 +42,7 @@ class LLMToolSpec(TypedDict):
     parameters: dict[str, object]
 
 
-type ToolHandler = Callable[[dict[str, Any]], object]
+type ToolHandler = Callable[[dict[str, Any]], object | Awaitable[object]]
 """Function that executes one tool call from parsed JSON arguments."""
 
 
@@ -54,6 +54,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        model: str | None = None,
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -63,6 +64,7 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
+            model: model to use
             tools: available function-tool definitions
             tool_handlers: handlers for available function tools
             **kwargs: additional keyword arguments
@@ -78,6 +80,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        model: str | None = None,
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -87,6 +90,7 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
+            model: model to use
             tools: available function-tool definitions
             tool_handlers: handlers for available function tools
             **kwargs: additional keyword arguments

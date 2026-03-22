@@ -5,7 +5,10 @@
 from __future__ import annotations
 
 import asyncio
+import inspect
 import json
+from collections.abc import Awaitable
+from logging import getLogger
 from time import sleep
 from typing import TYPE_CHECKING, Any, Unpack, cast, override
 
@@ -24,6 +27,8 @@ if TYPE_CHECKING:
     from openai.types.chat import ChatCompletionMessageParam
 
 __all__ = ["OpenAIProvider"]
+
+logger = getLogger(__name__)
 
 
 class OpenAIProvider(LLMProvider):
@@ -81,7 +86,7 @@ class OpenAIProvider(LLMProvider):
         tool_name: str,
         raw_arguments: str,
         tool_handlers: dict[str, ToolHandler],
-    ) -> object:
+    ) -> object | Awaitable[object]:
         """Execute one local tool handler with parsed arguments.
 
         Arguments:
@@ -107,17 +112,42 @@ class OpenAIProvider(LLMProvider):
 
         try:
             return handler(cast("dict[str, Any]", parsed_arguments))
-        except Exception as exc:
-            return {"error": f"Tool '{tool_name}' failed: {type(exc).__name__}: {exc}"}
+        except Exception:
+            logger.exception("Tool '%s' failed during execution.", tool_name)
+            return {"error": f"Tool '{tool_name}' failed."}
+
+    @staticmethod
+    async def _run_tool_handler_async(
+        tool_name: str,
+        raw_arguments: str,
+        tool_handlers: dict[str, ToolHandler],
+    ) -> object:
+        """Execute one local tool handler and await async results if needed.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+            tool_handlers: registered tool handlers
+        Returns:
+            tool result payload
+        """
+        result = OpenAIProvider._run_tool_handler(
+            tool_name=tool_name,
+            raw_arguments=raw_arguments,
+            tool_handlers=tool_handlers,
+        )
+        if inspect.isawaitable(result):
+            return await result
+        return result
 
     @override
-    def chat_completion(
+    def chat_completion(  # noqa: PLR0912
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        model: str | None = "gpt-5.1",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
-        model: str = "gpt-5.1",
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -135,6 +165,7 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
+            selected_model = model or "gpt-5.1"
             typed_messages = cast(
                 "list[ChatCompletionMessageParam]",
                 [dict(message) for message in messages],
@@ -160,7 +191,7 @@ class OpenAIProvider(LLMProvider):
                 for _round_idx in range(max_tool_rounds):
                     completion = create_completion(
                         messages=typed_messages,
-                        model=model,
+                        model=selected_model,
                         tools=openai_tools,
                         **request_kwargs,
                     )
@@ -216,13 +247,13 @@ class OpenAIProvider(LLMProvider):
                 completion = self.sync_client.beta.chat.completions.parse(
                     messages=typed_messages,
                     response_format=response_format,
-                    model=model,
+                    model=selected_model,
                     **kwargs,
                 )
             else:
                 completion = self.sync_client.chat.completions.create(
                     messages=typed_messages,
-                    model=model,
+                    model=selected_model,
                     **kwargs,
                 )
             content = completion.choices[0].message.content
@@ -242,13 +273,13 @@ class OpenAIProvider(LLMProvider):
             ) from exc
 
     @override
-    async def chat_completion_async(
+    async def chat_completion_async(  # noqa: PLR0912
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
+        model: str | None = "gpt-5.1",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
-        model: str = "gpt-5.1",
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text asynchronously.
@@ -266,6 +297,7 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
+            selected_model = model or "gpt-5.1"
             typed_messages = cast(
                 "list[ChatCompletionMessageParam]",
                 [dict(message) for message in messages],
@@ -292,7 +324,7 @@ class OpenAIProvider(LLMProvider):
                 for _round_idx in range(max_tool_rounds):
                     completion = await create_completion(
                         messages=typed_messages,
-                        model=model,
+                        model=selected_model,
                         tools=openai_tools,
                         **request_kwargs,
                     )
@@ -326,7 +358,7 @@ class OpenAIProvider(LLMProvider):
                     for tool_call in tool_calls:
                         tool_name = tool_call.function.name
                         raw_arguments = tool_call.function.arguments
-                        tool_result = self._run_tool_handler(
+                        tool_result = await self._run_tool_handler_async(
                             tool_name=tool_name,
                             raw_arguments=raw_arguments,
                             tool_handlers=handlers,
@@ -348,13 +380,13 @@ class OpenAIProvider(LLMProvider):
                 completion = await self.async_client.beta.chat.completions.parse(
                     messages=typed_messages,
                     response_format=response_format,
-                    model=model,
+                    model=selected_model,
                     **kwargs,
                 )
             else:
                 completion = await self.async_client.chat.completions.create(
                     messages=typed_messages,
-                    model=model,
+                    model=selected_model,
                     **kwargs,
                 )
             content = completion.choices[0].message.content

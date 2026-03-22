@@ -346,8 +346,12 @@ class Queryer[
         if not self.tools and not self.tool_handlers:
             return ""
 
+        sorted_tools = sorted(
+            self.tools,
+            key=lambda tool: json.dumps(tool, ensure_ascii=False, sort_keys=True),
+        )
         tools_payload: dict[str, Any] = {
-            "tools": self.tools,
+            "tools": sorted_tools,
             "handler_names": sorted(self.tool_handlers),
         }
         return json.dumps(tools_payload, ensure_ascii=False, sort_keys=True)

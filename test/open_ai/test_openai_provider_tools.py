@@ -9,7 +9,7 @@ from typing import Any, cast
 
 import pytest
 
-from scinoephile.llms.base import LLMToolSpec
+from scinoephile.llms.base import Answer, LLMToolSpec
 from scinoephile.open_ai import OpenAIProvider
 
 
@@ -104,6 +104,17 @@ class _FakeChatCompletionsApi:
         self.calls.append(kwargs)
         return self._responses.pop(0)
 
+    def parse(self, **kwargs) -> _FakeCompletion:
+        """Return next fake parsed completion.
+
+        Arguments:
+            **kwargs: request arguments from provider
+        Returns:
+            next configured completion
+        """
+        self.calls.append(kwargs)
+        return self._responses.pop(0)
+
 
 class _FakeAsyncChatCompletionsApi:
     """Fake async chat.completions API surface."""
@@ -119,6 +130,17 @@ class _FakeAsyncChatCompletionsApi:
 
     async def create(self, **kwargs) -> _FakeCompletion:
         """Return next fake completion asynchronously.
+
+        Arguments:
+            **kwargs: request arguments from provider
+        Returns:
+            next configured completion
+        """
+        self.calls.append(kwargs)
+        return self._responses.pop(0)
+
+    async def parse(self, **kwargs) -> _FakeCompletion:
+        """Return next fake parsed completion asynchronously.
 
         Arguments:
             **kwargs: request arguments from provider
@@ -153,6 +175,30 @@ class _FakeAsyncChatApi:
         self.completions = _FakeAsyncChatCompletionsApi(responses)
 
 
+class _FakeBetaApi:
+    """Fake beta API root with nested chat.completions surface."""
+
+    def __init__(self, responses: list[_FakeCompletion]):
+        """Initialize.
+
+        Arguments:
+            responses: ordered responses returned by parse calls
+        """
+        self.chat = _FakeChatApi(responses)
+
+
+class _FakeAsyncBetaApi:
+    """Fake async beta API root with nested chat.completions surface."""
+
+    def __init__(self, responses: list[_FakeCompletion]):
+        """Initialize.
+
+        Arguments:
+            responses: ordered responses returned by parse calls
+        """
+        self.chat = _FakeAsyncChatApi(responses)
+
+
 class _FakeSyncClient:
     """Fake sync OpenAI client with chat API."""
 
@@ -163,6 +209,7 @@ class _FakeSyncClient:
             responses: ordered responses returned by create calls
         """
         self.chat = _FakeChatApi(responses)
+        self.beta = _FakeBetaApi(responses)
 
 
 class _FakeAsyncClient:
@@ -175,6 +222,13 @@ class _FakeAsyncClient:
             responses: ordered responses returned by create calls
         """
         self.chat = _FakeAsyncChatApi(responses)
+        self.beta = _FakeAsyncBetaApi(responses)
+
+
+class _FakeAnswer(Answer):
+    """Minimal answer model for response_format tests."""
+
+    output: str
 
 
 def _get_tool_spec() -> LLMToolSpec:
@@ -307,6 +361,72 @@ def test_chat_completion_handles_unknown_tool_with_error_payload():
     assert "Unsupported tool" in tool_payload["error"]
 
 
+def test_chat_completion_preserves_positional_model_argument():
+    """Test positional model argument remains compatible with tool support."""
+    sync_client = _FakeSyncClient(
+        [
+            _FakeCompletion(
+                _FakeMessage(
+                    content='{"xiugai": "巴士", "beizhu": ""}', tool_calls=None
+                )
+            )
+        ]
+    )
+
+    provider = OpenAIProvider(
+        client=cast("Any", sync_client),
+        aclient=cast("Any", _FakeAsyncClient([])),
+    )
+    content = provider.chat_completion(
+        [
+            {"role": "system", "content": "system"},
+            {"role": "user", "content": "user"},
+        ],
+        None,
+        "gpt-test",
+    )
+
+    assert content == '{"xiugai": "巴士", "beizhu": ""}'
+    assert sync_client.chat.completions.calls[0]["model"] == "gpt-test"
+
+
+def test_chat_completion_runs_tools_with_response_format():
+    """Test tool-calling works on the parsed response-format code path."""
+    first = _FakeCompletion(
+        _FakeMessage(
+            content=None,
+            tool_calls=[
+                _FakeToolCall(
+                    tool_call_id="tool_1",
+                    name="lookup_dictionary",
+                    arguments='{"query": "巴士"}',
+                )
+            ],
+        )
+    )
+    second = _FakeCompletion(
+        _FakeMessage(content='{"output": "巴士"}', tool_calls=None)
+    )
+    sync_client = _FakeSyncClient([first, second])
+
+    provider = OpenAIProvider(
+        client=cast("Any", sync_client),
+        aclient=cast("Any", _FakeAsyncClient([])),
+    )
+    content = provider.chat_completion(
+        messages=[
+            {"role": "system", "content": "system"},
+            {"role": "user", "content": "user"},
+        ],
+        response_format=_FakeAnswer,
+        tools=[_get_tool_spec()],
+        tool_handlers={"lookup_dictionary": lambda arguments: arguments},
+    )
+
+    assert content == '{"output": "巴士"}'
+    assert sync_client.beta.chat.completions.calls[0]["response_format"] is _FakeAnswer
+
+
 @pytest.mark.asyncio
 async def test_chat_completion_async_runs_tool_and_returns_final_content():
     """Test async provider executes tool call and returns follow-up content."""
@@ -342,3 +462,57 @@ async def test_chat_completion_async_runs_tool_and_returns_final_content():
 
     assert content == '{"xiugai": "巴士", "beizhu": ""}'
     assert len(async_client.chat.completions.calls) == 2
+
+
+@pytest.mark.asyncio
+async def test_chat_completion_async_awaits_async_tool_handlers():
+    """Test async provider awaits async tool handlers before serializing results."""
+    first = _FakeCompletion(
+        _FakeMessage(
+            content=None,
+            tool_calls=[
+                _FakeToolCall(
+                    tool_call_id="tool_1",
+                    name="lookup_dictionary",
+                    arguments='{"query": "巴士"}',
+                )
+            ],
+        )
+    )
+    second = _FakeCompletion(
+        _FakeMessage(content='{"xiugai": "巴士", "beizhu": ""}', tool_calls=None)
+    )
+    async_client = _FakeAsyncClient([first, second])
+
+    async def _handler(arguments: dict[str, object]) -> dict[str, object]:
+        """Return tool payload asynchronously.
+
+        Arguments:
+            arguments: parsed JSON arguments
+        Returns:
+            tool payload
+        """
+        return {"query": arguments["query"], "awaited": True}
+
+    provider = OpenAIProvider(
+        client=cast("Any", _FakeSyncClient([])),
+        aclient=cast("Any", async_client),
+    )
+    await provider.chat_completion_async(
+        messages=[
+            {"role": "system", "content": "system"},
+            {"role": "user", "content": "user"},
+        ],
+        tools=[_get_tool_spec()],
+        tool_handlers={"lookup_dictionary": _handler},
+    )
+
+    second_call_messages = cast(
+        "list[dict[str, object]]",
+        async_client.chat.completions.calls[1]["messages"],
+    )
+    tool_messages = [
+        message for message in second_call_messages if message["role"] == "tool"
+    ]
+    tool_payload = json.loads(cast("str", tool_messages[0]["content"]))
+    assert tool_payload["awaited"] is True
