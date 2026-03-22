@@ -16,6 +16,7 @@ from .utils import load_test_cases_from_json
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from .llm_provider import LLMToolSpec, ToolHandler
     from .manager import Manager
     from .prompt import Prompt
     from .test_case import TestCase
@@ -38,6 +39,8 @@ class Processor(ABC):
         test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
         auto_verify: bool = False,
+        tools: list[LLMToolSpec] | None = None,
+        tool_handlers: dict[str, ToolHandler] | None = None,
     ):
         """Initialize.
 
@@ -46,6 +49,8 @@ class Processor(ABC):
             test_cases: test cases
             test_case_path: path to file containing test cases
             auto_verify: automatically verify test cases if they meet selected criteria
+            tools: available function-tool definitions
+            tool_handlers: handlers for available function tools
         """
         self.prompt_cls = prompt_cls
         if self.manager_cls is None:
@@ -73,5 +78,7 @@ class Processor(ABC):
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             auto_verify=auto_verify,
+            tools=tools,
+            tool_handlers=tool_handlers,
         )
         """LLM queryer."""
