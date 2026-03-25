@@ -131,9 +131,9 @@ class Queryer[
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
-        tools_cache_key = self._get_tools_cache_key()
+        tools_json = self._get_tools_json()
         if cached_test_case := self._get_cached_test_case(
-            system_prompt, test_case, tools_cache_key
+            system_prompt, tools_json, test_case
         ):
             return cached_test_case
 
@@ -221,8 +221,8 @@ class Queryer[
         # Update cache
         if cache_path := self._get_cache_path(
             system_prompt,
+            tools_json,
             query_prompt,
-            tools_cache_key,
         ):
             contents = json.dumps(
                 test_case.model_dump(exclude_defaults=True),
@@ -273,37 +273,37 @@ class Queryer[
     def _get_cache_path(
         self,
         system_prompt: str,
+        tools_json: str,
         query_prompt: str,
-        tools_cache_key: str = "",
     ) -> Path | None:
         """Get cache path based on hash of prompts.
 
         Arguments:
             system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
             query_prompt: query prompt used for the query
-            tools_cache_key: cache-key fragment for configured tools
         Returns:
             Path to cache file
         """
         if self.cache_dir_path is None:
             return None
 
-        prompt_str = system_prompt + query_prompt + tools_cache_key
+        prompt_str = system_prompt + tools_json + query_prompt
         sha256 = hashlib.sha256(prompt_str.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{sha256}.json"
 
     def _get_cached_test_case(
         self,
         system_prompt: str,
+        tools_json: str,
         test_case: TTestCase,
-        tools_cache_key: str = "",
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
         Arguments:
             system_prompt: system prompt used for the query
+            tools_json: JSON representation of configured tools
             test_case: test case containing query for which to get cached version
-            tools_cache_key: cache-key fragment for configured tools
         Returns:
             cached test case if available, else None
         """
@@ -312,8 +312,8 @@ class Queryer[
         )
         cache_path = self._get_cache_path(
             system_prompt,
+            tools_json,
             query_prompt,
-            tools_cache_key,
         )
         if cache_path is None:
             return None
@@ -338,25 +338,6 @@ class Queryer[
             logger.info(f"Deleted invalid cache file: {cache_path}")
         return None
 
-    def _get_tools_cache_key(self) -> str:
-        """Get a deterministic cache-key fragment for configured tools.
-
-        Returns:
-            serialized key fragment for tools and handlers
-        """
-        if not self.tools and not self.tool_handlers:
-            return ""
-
-        sorted_tools = sorted(
-            self.tools,
-            key=lambda tool: json.dumps(tool, ensure_ascii=False, sort_keys=True),
-        )
-        tools_payload: dict[str, Any] = {
-            "tools": sorted_tools,
-            "handler_names": sorted(self.tool_handlers),
-        }
-        return json.dumps(tools_payload, ensure_ascii=False, sort_keys=True)
-
     def _get_system_prompt(self, answer_cls: type[Answer]) -> str:
         """Get system prompt for the given answer class.
 
@@ -373,6 +354,25 @@ class Queryer[
         system_prompt += f"\n\n{self.prompt_cls.schema_intro}\n{schema_json}\n"
 
         return system_prompt
+
+    def _get_tools_json(self) -> str:
+        """Get a deterministic JSON representation of configured tools.
+
+        Returns:
+            serialized JSON for tools and handlers
+        """
+        if not self.tools and not self.tool_handlers:
+            return ""
+
+        sorted_tools = sorted(
+            self.tools,
+            key=lambda tool: json.dumps(tool, ensure_ascii=False, sort_keys=True),
+        )
+        tools_payload: dict[str, Any] = {
+            "handler_names": sorted(self.tool_handlers),
+            "tools": sorted_tools,
+        }
+        return json.dumps(tools_payload, ensure_ascii=False, sort_keys=True)
 
     def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
         """Get verified test case for the given query if available.
