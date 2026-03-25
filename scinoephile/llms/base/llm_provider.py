@@ -61,29 +61,3 @@ class LLMProvider(ABC):
             ScinoephileError: Error during chat completion
         """
         raise NotImplementedError()
-
-    @abstractmethod
-    async def chat_completion_async(
-        self,
-        messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
-        model: str = "gpt-5.1",
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
-        **kwargs: Unpack[ChatCompletionKwargs],
-    ) -> str:
-        """Return chat completion text asynchronously.
-
-        Arguments:
-            messages: messages to send
-            response_format: response format
-            model: model to use
-            tools: available function-tool definitions
-            tool_handlers: handlers for available function tools
-            **kwargs: additional keyword arguments
-        Returns:
-            completion text from the model
-        Raises:
-            ScinoephileError: Error during chat completion
-        """
-        raise NotImplementedError()
