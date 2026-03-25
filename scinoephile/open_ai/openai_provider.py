@@ -46,7 +46,7 @@ class OpenAIProvider(LLMProvider):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str | None = "gpt-5.1",
+        model: str = "gpt-5.1",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -66,7 +66,6 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
-            selected_model = model or "gpt-5.1"
             typed_messages = cast(
                 "list[ChatCompletionMessageParam]",
                 [dict(message) for message in messages],
@@ -92,7 +91,7 @@ class OpenAIProvider(LLMProvider):
                 for _round_idx in range(max_tool_rounds):
                     completion = create_completion(
                         messages=typed_messages,
-                        model=selected_model,
+                        model=model,
                         tools=openai_tools,
                         **request_kwargs,
                     )
@@ -148,13 +147,13 @@ class OpenAIProvider(LLMProvider):
                 completion = self.sync_client.beta.chat.completions.parse(
                     messages=typed_messages,
                     response_format=response_format,
-                    model=selected_model,
+                    model=model,
                     **kwargs,
                 )
             else:
                 completion = self.sync_client.chat.completions.create(
                     messages=typed_messages,
-                    model=selected_model,
+                    model=model,
                     **kwargs,
                 )
             content = completion.choices[0].message.content
@@ -272,7 +271,7 @@ class OpenAIProvider(LLMProvider):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str | None = "gpt-5.1",
+        model: str = "gpt-5.1",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -292,7 +291,6 @@ class OpenAIProvider(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
-            selected_model = model or "gpt-5.1"
             typed_messages = cast(
                 "list[ChatCompletionMessageParam]",
                 [dict(message) for message in messages],
@@ -319,7 +317,7 @@ class OpenAIProvider(LLMProvider):
                 for _round_idx in range(max_tool_rounds):
                     completion = await create_completion(
                         messages=typed_messages,
-                        model=selected_model,
+                        model=model,
                         tools=openai_tools,
                         **request_kwargs,
                     )
@@ -375,13 +373,13 @@ class OpenAIProvider(LLMProvider):
                 completion = await self.async_client.beta.chat.completions.parse(
                     messages=typed_messages,
                     response_format=response_format,
-                    model=selected_model,
+                    model=model,
                     **kwargs,
                 )
             else:
                 completion = await self.async_client.chat.completions.create(
                     messages=typed_messages,
-                    model=selected_model,
+                    model=model,
                     **kwargs,
                 )
             content = completion.choices[0].message.content
