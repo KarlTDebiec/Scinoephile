@@ -7,7 +7,10 @@ from __future__ import annotations
 from collections.abc import Awaitable, Callable
 from typing import Any, TypedDict
 
-__all__ = ["LLMToolSpec", "ToolHandler"]
+__all__ = [
+    "LLMToolSpec",
+    "ToolHandler",
+]
 
 
 class LLMToolSpec(TypedDict):
