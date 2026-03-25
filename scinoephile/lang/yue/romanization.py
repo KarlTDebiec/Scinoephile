@@ -46,11 +46,6 @@ def _build_corpus():
         with open(temp_corpus_file_path, "wb") as outfile:
             pickle.dump(built_corpus, outfile, pickle.HIGHEST_PROTOCOL)
     except (TypeError, pickle.PickleError):
-        logger.warning(
-            "Installed pycantonese corpus objects are not pickleable; using an "
-            "in-memory corpus without updating %s.",
-            corpus_file_path,
-        )
         temp_corpus_file_path.unlink(missing_ok=True)
     else:
         temp_corpus_file_path.replace(corpus_file_path)
@@ -70,11 +65,6 @@ if corpus_file_path.exists():
         ModuleNotFoundError,
         pickle.PickleError,
     ):
-        logger.warning(
-            "Cached Cantonese corpus at %s is incompatible with the installed "
-            "pycantonese version; rebuilding it.",
-            corpus_file_path,
-        )
         corpus_file_path.unlink(missing_ok=True)
         corpus = _build_corpus()
 else:

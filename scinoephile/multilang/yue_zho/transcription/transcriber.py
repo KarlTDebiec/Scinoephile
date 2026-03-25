@@ -92,13 +92,9 @@ class YueTranscriber:
         if stop_at_idx is None:
             stop_at_idx = len(yuewen.blocks) - 1
         for block_idx in range(stop_at_idx + 1):
-            # if block_idx > 50:
-            #     continue
             yuewen_block = yuewen.blocks[block_idx]
             zhongwen_block = zhongwen.blocks[block_idx]
-            yuewen_block_series = self.process_block(
-                block_idx, yuewen_block, zhongwen_block
-            )
+            yuewen_block_series = self.process_block(yuewen_block, zhongwen_block)
             logger.info("BLOCK %s:", block_idx)
             logger.info("中文:\n%s", zhongwen_block.to_simple_string())
             logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
@@ -113,14 +109,12 @@ class YueTranscriber:
 
     def process_block(
         self,
-        idx: int,
         yuewen_block: AudioSeries,
         zhongwen_block: Series,
     ) -> AudioSeries:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
         Arguments:
-            idx: Index of block being processed
             yuewen_block: Nascent 粤文 block
             zhongwen_block: Corresponding 中文 block
         """
