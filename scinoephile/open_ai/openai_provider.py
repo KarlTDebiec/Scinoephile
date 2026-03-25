@@ -15,11 +15,7 @@ from typing import TYPE_CHECKING, Any, Unpack, cast, override
 from openai import AsyncOpenAI, OpenAI, OpenAIError
 
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.base import (
-    Answer,
-    ChatCompletionKwargs,
-    LLMProvider,
-)
+from scinoephile.llms.base import Answer, ChatCompletionKwargs, LLMProvider
 from scinoephile.llms.base.tools import LLMToolSpec, ToolHandler
 
 if TYPE_CHECKING:
@@ -44,100 +40,6 @@ class OpenAIProvider(LLMProvider):
         """
         self.sync_client = client or OpenAI()
         self.async_client = aclient or AsyncOpenAI()
-
-    @staticmethod
-    def _build_openai_tools(tools: list[LLMToolSpec]) -> list[dict[str, object]]:
-        """Build OpenAI tool payload from local tool specs.
-
-        Arguments:
-            tools: local tool specifications
-        Returns:
-            OpenAI-compatible function-tool payloads
-        """
-        return [
-            {
-                "type": "function",
-                "function": {
-                    "name": tool["name"],
-                    "description": tool["description"],
-                    "parameters": tool["parameters"],
-                },
-            }
-            for tool in tools
-        ]
-
-    @staticmethod
-    def _serialize_tool_result(result: object) -> str:
-        """Serialize tool-call result for tool response message content.
-
-        Arguments:
-            result: tool execution result
-        Returns:
-            serialized JSON content
-        """
-        try:
-            return json.dumps(result, ensure_ascii=False)
-        except TypeError:
-            return json.dumps({"result": str(result)}, ensure_ascii=False)
-
-    @staticmethod
-    def _run_tool_handler(
-        tool_name: str,
-        raw_arguments: str,
-        tool_handlers: dict[str, ToolHandler],
-    ) -> object | Awaitable[object]:
-        """Execute one local tool handler with parsed arguments.
-
-        Arguments:
-            tool_name: requested tool name
-            raw_arguments: JSON argument payload from model tool call
-            tool_handlers: registered tool handlers
-        Returns:
-            tool result payload
-        """
-        handler = tool_handlers.get(tool_name)
-        if handler is None:
-            return {"error": f"Unsupported tool '{tool_name}'."}
-
-        try:
-            parsed_arguments = json.loads(raw_arguments or "{}")
-        except json.JSONDecodeError:
-            return {"error": f"Tool '{tool_name}' arguments are not valid JSON."}
-
-        if not isinstance(parsed_arguments, dict):
-            return {
-                "error": f"Tool '{tool_name}' arguments must decode to a JSON object."
-            }
-
-        try:
-            return handler(cast("dict[str, Any]", parsed_arguments))
-        except Exception:
-            logger.exception("Tool '%s' failed during execution.", tool_name)
-            return {"error": f"Tool '{tool_name}' failed."}
-
-    @staticmethod
-    async def _run_tool_handler_async(
-        tool_name: str,
-        raw_arguments: str,
-        tool_handlers: dict[str, ToolHandler],
-    ) -> object:
-        """Execute one local tool handler and await async results if needed.
-
-        Arguments:
-            tool_name: requested tool name
-            raw_arguments: JSON argument payload from model tool call
-            tool_handlers: registered tool handlers
-        Returns:
-            tool result payload
-        """
-        result = OpenAIProvider._run_tool_handler(
-            tool_name=tool_name,
-            raw_arguments=raw_arguments,
-            tool_handlers=tool_handlers,
-        )
-        if inspect.isawaitable(result):
-            return await result
-        return result
 
     @override
     def chat_completion(  # noqa: PLR0912
@@ -270,6 +172,100 @@ class OpenAIProvider(LLMProvider):
             raise ScinoephileError(
                 f"OpenAI API error ({exc_code=}, {exc_type=} {exc_param=}): {exc}"
             ) from exc
+
+    @staticmethod
+    def _build_openai_tools(tools: list[LLMToolSpec]) -> list[dict[str, object]]:
+        """Build OpenAI tool payload from local tool specs.
+
+        Arguments:
+            tools: local tool specifications
+        Returns:
+            OpenAI-compatible function-tool payloads
+        """
+        return [
+            {
+                "type": "function",
+                "function": {
+                    "name": tool["name"],
+                    "description": tool["description"],
+                    "parameters": tool["parameters"],
+                },
+            }
+            for tool in tools
+        ]
+
+    @staticmethod
+    def _run_tool_handler(
+        tool_name: str,
+        raw_arguments: str,
+        tool_handlers: dict[str, ToolHandler],
+    ) -> object | Awaitable[object]:
+        """Execute one local tool handler with parsed arguments.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+            tool_handlers: registered tool handlers
+        Returns:
+            tool result payload
+        """
+        handler = tool_handlers.get(tool_name)
+        if handler is None:
+            return {"error": f"Unsupported tool '{tool_name}'."}
+
+        try:
+            parsed_arguments = json.loads(raw_arguments or "{}")
+        except json.JSONDecodeError:
+            return {"error": f"Tool '{tool_name}' arguments are not valid JSON."}
+
+        if not isinstance(parsed_arguments, dict):
+            return {
+                "error": f"Tool '{tool_name}' arguments must decode to a JSON object."
+            }
+
+        try:
+            return handler(cast("dict[str, Any]", parsed_arguments))
+        except Exception:
+            logger.exception("Tool '%s' failed during execution.", tool_name)
+            return {"error": f"Tool '{tool_name}' failed."}
+
+    @staticmethod
+    async def _run_tool_handler_async(
+        tool_name: str,
+        raw_arguments: str,
+        tool_handlers: dict[str, ToolHandler],
+    ) -> object:
+        """Execute one local tool handler and await async results if needed.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+            tool_handlers: registered tool handlers
+        Returns:
+            tool result payload
+        """
+        result = OpenAIProvider._run_tool_handler(
+            tool_name=tool_name,
+            raw_arguments=raw_arguments,
+            tool_handlers=tool_handlers,
+        )
+        if inspect.isawaitable(result):
+            return await result
+        return result
+
+    @staticmethod
+    def _serialize_tool_result(result: object) -> str:
+        """Serialize tool-call result for tool response message content.
+
+        Arguments:
+            result: tool execution result
+        Returns:
+            serialized JSON content
+        """
+        try:
+            return json.dumps(result, ensure_ascii=False)
+        except TypeError:
+            return json.dumps({"result": str(result)}, ensure_ascii=False)
 
     @override
     async def chat_completion_async(  # noqa: PLR0912

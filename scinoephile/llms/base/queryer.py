@@ -219,11 +219,7 @@ class Queryer[
         self.log_encountered_test_case(test_case)
 
         # Update cache
-        if cache_path := self._get_cache_path(
-            system_prompt,
-            tools_json,
-            query_prompt,
-        ):
+        if cache_path := self._get_cache_path(system_prompt, tools_json, query_prompt):
             contents = json.dumps(
                 test_case.model_dump(exclude_defaults=True),
                 ensure_ascii=False,
