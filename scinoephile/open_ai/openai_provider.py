@@ -19,9 +19,8 @@ from scinoephile.llms.base import (
     Answer,
     ChatCompletionKwargs,
     LLMProvider,
-    LLMToolSpec,
-    ToolHandler,
 )
+from scinoephile.llms.base.tools import LLMToolSpec, ToolHandler
 
 if TYPE_CHECKING:
     from openai.types.chat import ChatCompletionMessageParam

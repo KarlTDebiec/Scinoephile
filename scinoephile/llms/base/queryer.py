@@ -26,7 +26,8 @@ from .test_case import TestCase
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from .llm_provider import LLMProvider, LLMToolSpec, ToolHandler
+    from .llm_provider import LLMProvider
+    from .tools import LLMToolSpec, ToolHandler
 
 __all__ = ["Queryer"]
 

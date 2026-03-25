@@ -5,17 +5,16 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Awaitable, Callable
 from typing import TYPE_CHECKING, Any, TypedDict, Unpack
+
+from .tools import LLMToolSpec, ToolHandler
 
 if TYPE_CHECKING:
     from .answer import Answer
 
 __all__ = [
     "ChatCompletionKwargs",
-    "LLMToolSpec",
     "LLMProvider",
-    "ToolHandler",
 ]
 
 
@@ -32,18 +31,6 @@ class ChatCompletionKwargs(TypedDict, total=False):
     presence_penalty: float
     stop: str | list[str]
     seed: int
-
-
-class LLMToolSpec(TypedDict):
-    """Specification for one LLM-callable function tool."""
-
-    name: str
-    description: str
-    parameters: dict[str, object]
-
-
-type ToolHandler = Callable[[dict[str, Any]], object | Awaitable[object]]
-"""Function that executes one tool call from parsed JSON arguments."""
 
 
 class LLMProvider(ABC):

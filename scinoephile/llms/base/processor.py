@@ -16,10 +16,10 @@ from .utils import load_test_cases_from_json
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from .llm_provider import LLMToolSpec, ToolHandler
     from .manager import Manager
     from .prompt import Prompt
     from .test_case import TestCase
+    from .tools import LLMToolSpec, ToolHandler
 
 __all__ = ["Processor"]
 
