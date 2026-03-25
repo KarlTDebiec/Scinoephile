@@ -18,7 +18,7 @@ from scinoephile.audio.transcription import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.core.subtitles import Series, get_concatenated_series
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.base import Queryer, TestCase
 from scinoephile.multilang.yue_zho.transcription.merging import YueZhoHansMergingPrompt
@@ -101,9 +101,12 @@ class YueTranscriber:
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Concatenate and return
-        yuewen_series = get_concatenated_series(
-            [s for s in all_yuewen_block_series if s is not None]
-        )
+        all_events = []
+        for block_series in all_yuewen_block_series:
+            if block_series is not None:
+                all_events.extend(block_series.events)
+        all_events.sort(key=lambda event: event.start)
+        yuewen_series = AudioSeries(audio=yuewen.audio, events=all_events)
         logger.info("Concatenated Series:\n%s", yuewen_series.to_simple_string())
         return yuewen_series
 
