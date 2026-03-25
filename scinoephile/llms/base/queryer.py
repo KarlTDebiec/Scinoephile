@@ -267,10 +267,7 @@ class Queryer[
 
     @cache
     def _get_cache_path(
-        self,
-        system_prompt: str,
-        tools_json: str,
-        query_prompt: str,
+        self, system_prompt: str, tools_json: str, query_prompt: str
     ) -> Path | None:
         """Get cache path based on hash of prompts.
 
@@ -289,10 +286,7 @@ class Queryer[
         return self.cache_dir_path / f"{sha256}.json"
 
     def _get_cached_test_case(
-        self,
-        system_prompt: str,
-        tools_json: str,
-        test_case: TTestCase,
+        self, system_prompt: str, tools_json: str, test_case: TTestCase
     ) -> TTestCase | None:
         """Get cached test case for the given query if available.
 
