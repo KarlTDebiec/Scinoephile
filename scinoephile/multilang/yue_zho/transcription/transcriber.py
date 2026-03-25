@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -74,7 +73,7 @@ class YueTranscriber:
             merging_queryer=self.merging_queryer,
         )
 
-    async def process_all_blocks(
+    def process_all_blocks(
         self,
         yuewen: AudioSeries,
         zhongwen: Series,
@@ -87,34 +86,23 @@ class YueTranscriber:
             zhongwen: Corresponding 中文 subtitles
             stop_at_idx: Stop after processing this block index
         """
-        semaphore = asyncio.Semaphore(1)
         all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
-
-        async def run_block(block_idx: int):
-            """Run processing for a single block of audio.
-
-            Arguments:
-                block_idx: Index of the block to process
-            """
-            # if block_idx > 50:
-            #     return
-            yuewen_block = yuewen.blocks[block_idx]
-            zhongwen_block = zhongwen.blocks[block_idx]
-            async with semaphore:
-                yuewen_block_series = await self.process_block(
-                    block_idx, yuewen_block, zhongwen_block
-                )
-            logger.info("BLOCK %s:", block_idx)
-            logger.info("中文:\n%s", zhongwen_block.to_simple_string())
-            logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
-            all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Run all blocks
         if stop_at_idx is None:
             stop_at_idx = len(yuewen.blocks) - 1
-        async with asyncio.TaskGroup() as task_group:
-            for block_idx in range(stop_at_idx + 1):
-                task_group.create_task(run_block(block_idx))
+        for block_idx in range(stop_at_idx + 1):
+            # if block_idx > 50:
+            #     continue
+            yuewen_block = yuewen.blocks[block_idx]
+            zhongwen_block = zhongwen.blocks[block_idx]
+            yuewen_block_series = self.process_block(
+                block_idx, yuewen_block, zhongwen_block
+            )
+            logger.info("BLOCK %s:", block_idx)
+            logger.info("中文:\n%s", zhongwen_block.to_simple_string())
+            logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
+            all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Concatenate and return
         yuewen_series = get_concatenated_series(
@@ -123,7 +111,7 @@ class YueTranscriber:
         logger.info("Concatenated Series:\n%s", yuewen_series.to_simple_string())
         return yuewen_series
 
-    async def process_block(
+    def process_block(
         self,
         idx: int,
         yuewen_block: AudioSeries,
@@ -158,7 +146,7 @@ class YueTranscriber:
         )
 
         # Sync segments with the corresponding 中文 subtitles
-        alignment = await self.aligner.align(zhongwen_block, yuewen_block_series)
+        alignment = self.aligner.align(zhongwen_block, yuewen_block_series)
         yuewen_block_series = alignment.yuewen
 
         self.aligner.update_all_test_cases(self.test_case_directory_path)
