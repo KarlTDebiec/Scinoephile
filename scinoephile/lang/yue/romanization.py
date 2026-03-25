@@ -33,19 +33,52 @@ logger = getLogger(__name__)
 
 data_root = package_root / "data/cantonese/"
 
+
+def _build_corpus():
+    """Build the Cantonese corpus and persist it to disk."""
+    with catch_warnings():
+        filterwarnings("ignore", category=DeprecationWarning)
+        built_corpus = pycantonese.hkcancor()
+    # TODO: Load additional characters to corpus
+    # built_corpus.add(data_root / "hanzi_to_jyutping.cha")
+    temp_corpus_file_path = corpus_file_path.with_suffix(".tmp")
+    try:
+        with open(temp_corpus_file_path, "wb") as outfile:
+            pickle.dump(built_corpus, outfile, pickle.HIGHEST_PROTOCOL)
+    except (TypeError, pickle.PickleError):
+        logger.warning(
+            "Installed pycantonese corpus objects are not pickleable; using an "
+            "in-memory corpus without updating %s.",
+            corpus_file_path,
+        )
+        temp_corpus_file_path.unlink(missing_ok=True)
+    else:
+        temp_corpus_file_path.replace(corpus_file_path)
+    return built_corpus
+
+
 # Load corpus
 corpus_file_path = data_root / "corpus.pkl"
 if corpus_file_path.exists():
-    with open(corpus_file_path, "rb") as infile:
-        corpus = pickle.load(infile)
+    try:
+        with open(corpus_file_path, "rb") as infile:
+            corpus = pickle.load(infile)
+    except (
+        AttributeError,
+        EOFError,
+        ImportError,
+        ModuleNotFoundError,
+        pickle.PickleError,
+    ):
+        logger.warning(
+            "Cached Cantonese corpus at %s is incompatible with the installed "
+            "pycantonese version; rebuilding it.",
+            corpus_file_path,
+        )
+        corpus_file_path.unlink(missing_ok=True)
+        corpus = _build_corpus()
 else:
-    with catch_warnings():
-        filterwarnings("ignore", category=DeprecationWarning)
-        corpus = pycantonese.hkcancor()
-        # TODO: Load additional characters to corpus
-        # corpus.add(data_root / "hanzi_to_jyutping.cha")
-        with open(corpus_file_path, "wb") as outfile:
-            pickle.dump(corpus, outfile, pickle.HIGHEST_PROTOCOL)
+    corpus = _build_corpus()
 
 # Load Hanzi to Yale mapping
 hanzi_to_romanization = {}
