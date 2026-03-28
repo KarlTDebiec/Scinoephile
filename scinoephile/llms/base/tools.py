@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable
+from collections.abc import Callable
 from typing import Any, TypedDict
 
 __all__ = [
@@ -21,5 +21,5 @@ class LLMToolSpec(TypedDict):
     parameters: dict[str, object]
 
 
-type ToolHandler = Callable[[dict[str, Any]], object | Awaitable[object]]
+type ToolHandler = Callable[[dict[str, Any]], object]
 """Function that executes one tool call from parsed JSON arguments."""

@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Awaitable
 from logging import getLogger
 from time import sleep
 from typing import Any, Unpack, override
@@ -197,7 +196,7 @@ class OpenAIProvider(LLMProvider):
         tool_name: str,
         raw_arguments: str,
         tool_handlers: dict[str, ToolHandler],
-    ) -> object | Awaitable[object]:
+    ) -> object:
         """Execute one local tool handler with parsed arguments.
 
         Arguments:
