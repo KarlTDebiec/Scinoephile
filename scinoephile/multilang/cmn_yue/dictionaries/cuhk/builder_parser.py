@@ -11,8 +11,13 @@ from typing import Any
 from bs4 import BeautifulSoup, Tag
 from pypinyin import Style, lazy_pinyin
 
-from ..dictionary_definition import DictionaryDefinition
-from ..dictionary_entry import DictionaryEntry
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_definition import (
+    DictionaryDefinition,
+)
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
+    DictionaryEntry,
+)
+
 from .builder_constants import (
     JYUTPING_LETTERS_ID_REGEX,
     JYUTPING_NUMBERS_ID_REGEX,

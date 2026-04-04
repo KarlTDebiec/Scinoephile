@@ -6,8 +6,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ..dictionary_entry import DictionaryEntry
-from ..lookup_direction import LookupDirection
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
+    DictionaryEntry,
+)
+from scinoephile.multilang.cmn_yue.dictionaries.lookup_direction import (
+    LookupDirection,
+)
+
 from .builder import CuhkDictionaryBuilder
 from .service_lookup import CuhkDictionaryLookupMixin
 

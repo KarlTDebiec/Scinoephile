@@ -6,7 +6,9 @@ from __future__ import annotations
 
 import sqlite3
 
-from ..dictionary_source import DictionarySource
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_source import (
+    DictionarySource,
+)
 
 __all__ = [
     "CuhkSQLiteSchemaRecords",

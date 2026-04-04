@@ -7,8 +7,12 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from ..dictionary_definition import DictionaryDefinition
-from ..dictionary_entry import DictionaryEntry
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_definition import (
+    DictionaryDefinition,
+)
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
+    DictionaryEntry,
+)
 
 __all__ = [
     "CuhkDictionaryLookupMixin",

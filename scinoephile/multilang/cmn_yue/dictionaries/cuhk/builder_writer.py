@@ -7,7 +7,10 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from ..dictionary_entry import DictionaryEntry
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
+    DictionaryEntry,
+)
+
 from .builder_constants import CUHK_SOURCE
 from .sqlite_schema_manager import CuhkSQLiteSchemaManager
 from .sqlite_schema_records import CuhkSQLiteSchemaRecords
