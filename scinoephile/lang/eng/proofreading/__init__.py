@@ -17,8 +17,8 @@ from .prompts import EngProofreadingPrompt
 if TYPE_CHECKING:
     from pathlib import Path
 
+    from scinoephile.core.llms import TestCase
     from scinoephile.core.subtitles import Series
-    from scinoephile.llms.base import TestCase
 
 __all__ = [
     "EngProofreadingPrompt",

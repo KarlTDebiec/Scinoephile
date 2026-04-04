@@ -8,7 +8,7 @@ from abc import ABC
 from inspect import isroutine
 from typing import Any, ClassVar
 
-from scinoephile.llms.base import Prompt
+from scinoephile.core.llms import Prompt
 
 from .conversion import OpenCCConfig, get_zho_text_converted
 

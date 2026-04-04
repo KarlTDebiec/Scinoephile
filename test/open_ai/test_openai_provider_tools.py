@@ -126,10 +126,6 @@ class _FakeSyncClient:
         self.chat = _FakeChatApi(responses)
 
 
-class _UnusedAsyncClient:
-    """Placeholder async client for tests that only use sync provider calls."""
-
-
 def test_chat_completion_runs_tool_and_returns_final_content():
     """Test provider executes tool call and returns follow-up assistant content."""
     first = _FakeCompletion(
@@ -166,10 +162,7 @@ def test_chat_completion_runs_tool_and_returns_final_content():
             "entries": [{"traditional": "巴士"}],
         }
 
-    provider = OpenAIProvider(
-        client=cast("Any", sync_client),
-        aclient=cast("Any", _UnusedAsyncClient()),
-    )
+    provider = OpenAIProvider(client=cast("Any", sync_client))
     content = provider.chat_completion(
         messages=[
             {"role": "system", "content": "system"},
@@ -226,10 +219,7 @@ def test_chat_completion_handles_unknown_tool_with_error_payload():
     )
     sync_client = _FakeSyncClient([first, second])
 
-    provider = OpenAIProvider(
-        client=cast("Any", sync_client),
-        aclient=cast("Any", _UnusedAsyncClient()),
-    )
+    provider = OpenAIProvider(client=cast("Any", sync_client))
     content = provider.chat_completion(
         messages=[
             {"role": "system", "content": "system"},

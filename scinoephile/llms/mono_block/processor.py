@@ -7,8 +7,8 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+from scinoephile.core.llms import Processor, save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
-from scinoephile.llms.base import Processor, save_test_cases_to_json
 
 from .manager import MonoBlockManager
 

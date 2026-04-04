@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.llms.base import LLMToolSpec, ToolHandler
+from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
 from .dictionaries import CuhkDictionaryService, DictionaryEntry, LookupDirection
 

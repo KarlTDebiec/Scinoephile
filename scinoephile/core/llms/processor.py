@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from .manager import Manager
     from .prompt import Prompt
     from .test_case import TestCase
+    from .tools import LLMToolSpec, ToolHandler
 
 __all__ = ["Processor"]
 
