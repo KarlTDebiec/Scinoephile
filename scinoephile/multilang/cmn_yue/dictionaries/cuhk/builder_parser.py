@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import re
 from logging import getLogger
 from pathlib import Path
 from typing import Any
@@ -19,19 +20,19 @@ from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
     DictionaryEntry,
 )
 
-from .builder_constants import (
-    JYUTPING_LETTERS_ID_REGEX,
-    JYUTPING_NUMBERS_ID_REGEX,
-    JYUTPING_NUMBERS_REGEX,
-    JYUTPING_TONE_MAP,
-    LABEL_ID_REGEX,
-    MEANING_ID_REGEX,
-    PRIVATE_USE_AREA_REGEX,
-    PRIVATE_USE_AREA_REPLACEMENT_STRING,
-    REMARK_ID_REGEX,
-)
-
 logger = getLogger(__name__)
+
+PRIVATE_USE_AREA_REGEX = re.compile(r"[\ue000-\uf8ff]")
+PRIVATE_USE_AREA_REPLACEMENT_STRING = "☒"
+LABEL_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl詞彙類別_.*")
+JYUTPING_LETTERS_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl粵語拼音_.*")
+JYUTPING_NUMBERS_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl聲調_.*")
+JYUTPING_NUMBERS_REGEX = re.compile(r"(?:\d\*)*(\d+)")
+MEANING_ID_REGEX = re.compile(
+    r"MainContent_repeaterRecord_repeaterTranslation_\d+_lblTranslation_.*"
+)
+REMARK_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lblRemark_.*")
+JYUTPING_TONE_MAP = {"7": "1", "8": "3", "9": "6"}
 
 __all__ = [
     "CuhkDictionaryBuilderParser",
