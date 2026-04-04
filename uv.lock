@@ -840,18 +840,18 @@ wheels = [
 
 [[package]]
 name = "pycantonese"
-version = "4.1.0"
+version = "4.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rustling" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/4f/81d3cde8479f567234b7a8d8e81896e089232fe1b2faad465ab151b04b90/pycantonese-4.1.0.tar.gz", hash = "sha256:f56cab5ac0b001ce95b614a9a5b6de75c35a1b625959c79195f64e257457e482", size = 39042587, upload-time = "2026-03-15T02:56:02.67Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0a/0a/de68c2fe8c952e9f57ab0237e1dcc834f9bd95602121330900cdeb1d6f10/pycantonese-4.2.0.tar.gz", hash = "sha256:5a9ec7a8a10b08ef0ff12772b51c6f7a22727503bfbeb9edfea4eb90fc77d68c", size = 39567587, upload-time = "2026-03-27T15:37:23.221Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/5e/d674817c9fd1a098683a2ca1b57255f9ca205b49c5b81619979602121f3a/pycantonese-4.1.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:af3cc2cb78134eee14fbc5d0a58404fd04f8e79a7f8ca290eb83a36812bf3e02", size = 41387625, upload-time = "2026-03-15T02:55:42.745Z" },
-    { url = "https://files.pythonhosted.org/packages/8e/02/ef4cb6b8a26ea391a261f3406a42c568680036e557b570492bc5496d43df/pycantonese-4.1.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:2d061bdbee4b5748ff4caf8be1e72cd7e8bd720026c01ef1e7a609d158095d73", size = 41209623, upload-time = "2026-03-15T02:55:46.712Z" },
-    { url = "https://files.pythonhosted.org/packages/6f/3c/40e9b20ed47cf20a458ed9f0d3cc75dddb30ab1dde7cde202d68b2ba314b/pycantonese-4.1.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2d1f8c0eb8c3f1017678529ef226ba3e8982c96701670705b800dcc60f81bf94", size = 41495483, upload-time = "2026-03-15T02:55:50.757Z" },
-    { url = "https://files.pythonhosted.org/packages/4b/01/ceba3e6dfd05db0ec4333b076dff51ef7fca7efe4e96789cfc1df5a68742/pycantonese-4.1.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3c6a14a7407aa80fb6781eb08fcf7f1bb133227d83a31a7bc8b8be350cd8e9c8", size = 41598840, upload-time = "2026-03-15T02:55:54.183Z" },
-    { url = "https://files.pythonhosted.org/packages/58/13/eafac15da6368654633644a7e70ab756226e8b531303bea4ef51423685d6/pycantonese-4.1.0-cp310-abi3-win_amd64.whl", hash = "sha256:fa81d78e9242bec194fb1bf3febe6fd631b96fb26d1cd932031beab40d925034", size = 41035788, upload-time = "2026-03-15T02:55:57.901Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/81/78b726265e29588008e70ac54235275e90d9ff7f77a3a809e38a4b03b5b4/pycantonese-4.2.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:1380081aedbf0a776be4ad5d6a74fcbf0427e0c5fad5b7676dc93979f623035e", size = 42485870, upload-time = "2026-03-27T15:37:07.822Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/27/be172065ab4381d0e4afa400f8bb3221e74eee3c873aa3ccdfe887139a40/pycantonese-4.2.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:5170664f5159228eda3f8246e63fe02ea69fa2caae252e590c9fa955f67ee9b6", size = 42270286, upload-time = "2026-03-27T15:37:10.836Z" },
+    { url = "https://files.pythonhosted.org/packages/10/d8/8f7c9b1c0574c0bf5e3a0c9321920a51745e388b52563a6be2eb41cdc2f6/pycantonese-4.2.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bd556cfd75dc73d5a6f2258bbb5c51f043a155d2a52bffaacaf3702f6923831d", size = 42564950, upload-time = "2026-03-27T15:37:14.13Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/d8/28cc1517cd2e76129ccae79b7b11c2af323d7a64ad3ee42d8837a76fd784/pycantonese-4.2.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c203c263dbf312626100a371f9acfb62ef937d31f3541e3798ca0f64bdd2a062", size = 42678144, upload-time = "2026-03-27T15:37:17.13Z" },
+    { url = "https://files.pythonhosted.org/packages/3f/73/e3c061d1ec2439cbc844b9718c6aa2a7866a91e6eeaeb13f3c9ae3af64db/pycantonese-4.2.0-cp310-abi3-win_amd64.whl", hash = "sha256:0a75f2f3ea7c2ec7ef1ab0929d4ee2a436cdb9e4e7de2acedaa012d2b024e725", size = 42109540, upload-time = "2026-03-27T15:37:20.354Z" },
 ]
 
 [[package]]
