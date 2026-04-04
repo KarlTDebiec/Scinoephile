@@ -15,7 +15,7 @@ from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 from .prompt import YueZhoHansMergingPrompt
 
 if TYPE_CHECKING:
-    from scinoephile.llms.base import TestCase
+    from scinoephile.core.llms import TestCase
 
 __all__ = ["YueZhoMergingManager"]
 

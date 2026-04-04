@@ -11,7 +11,7 @@ from scinoephile.llms.dual_single import DualSingleManager
 from .prompt import OcrFusionPrompt
 
 if TYPE_CHECKING:
-    from scinoephile.llms.base import TestCase
+    from scinoephile.core.llms import TestCase
 
 __all__ = ["OcrFusionManager"]
 

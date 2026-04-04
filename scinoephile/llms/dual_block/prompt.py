@@ -7,7 +7,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.llms.base import Prompt
+from scinoephile.core.llms import Prompt
 
 __all__ = ["DualBlockPrompt"]
 

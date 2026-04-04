@@ -1,23 +1,21 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Compatibility re-exports for shared LLM core code."""
+"""Core code related to interactions with LLMs."""
 
 from __future__ import annotations
 
-from scinoephile.core.llms import (
-    Answer,
-    LLMProvider,
-    Manager,
-    Processor,
-    Prompt,
-    Query,
-    Queryer,
-    TestCase,
-)
-from scinoephile.core.llms import llm_provider as _llm_provider
-from scinoephile.core.llms import manager as _manager
-from scinoephile.core.llms import tools as _tools
-from scinoephile.core.llms import utils as _utils
+from . import llm_provider as _llm_provider
+from . import manager as _manager
+from . import tools as _tools
+from . import utils as _utils
+from .answer import Answer
+from .llm_provider import LLMProvider
+from .manager import Manager
+from .processor import Processor
+from .prompt import Prompt
+from .query import Query
+from .queryer import Queryer
+from .test_case import TestCase
 
 ChatCompletionKwargs = _llm_provider.ChatCompletionKwargs
 LLMToolSpec = _tools.LLMToolSpec

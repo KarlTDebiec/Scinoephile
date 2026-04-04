@@ -1,25 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tool-related types for LLM interactions."""
+"""Compatibility wrapper for LLM tool types."""
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any, TypedDict
+from scinoephile.core.llms import tools as _tools
 
-__all__ = [
-    "LLMToolSpec",
-    "ToolHandler",
-]
+LLMToolSpec = _tools.LLMToolSpec
+ToolHandler = _tools.ToolHandler
 
-
-class LLMToolSpec(TypedDict):
-    """Specification for one LLM-callable function tool."""
-
-    name: str
-    description: str
-    parameters: dict[str, object]
-
-
-type ToolHandler = Callable[[dict[str, Any]], object]
-"""Function that executes one tool call from parsed JSON arguments."""
+__all__ = ["LLMToolSpec", "ToolHandler"]

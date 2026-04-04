@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Any, cast
 
 from pydantic import Field, create_model, model_validator
 
-from scinoephile.llms.base import Answer, Manager, Query
-from scinoephile.llms.base.models import get_model_name
+from scinoephile.core.llms import Answer, Manager, Query
+from scinoephile.core.llms.models import get_model_name
 
 if TYPE_CHECKING:
     from .prompt import DualSinglePrompt

@@ -28,8 +28,8 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 
 if TYPE_CHECKING:
     from scinoephile.audio.subtitles import AudioSeries
+    from scinoephile.core.llms import TestCase
     from scinoephile.core.subtitles import Series
-    from scinoephile.llms.base import TestCase
 
 __all__ = ["Alignment"]
 

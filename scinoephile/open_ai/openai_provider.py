@@ -7,13 +7,14 @@ from __future__ import annotations
 import json
 from logging import getLogger
 from time import sleep
-from typing import Any, Unpack, override
+from typing import Any, Unpack, cast, override
 
 from openai import OpenAI, OpenAIError
 
 from scinoephile.core import ScinoephileError
-from scinoephile.llms.base import Answer, ChatCompletionKwargs, LLMProvider
-from scinoephile.llms.base.tools import LLMToolSpec, ToolHandler
+from scinoephile.core.llms.answer import Answer
+from scinoephile.core.llms.llm_provider import ChatCompletionKwargs, LLMProvider
+from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
 __all__ = ["OpenAIProvider"]
 
@@ -70,13 +71,15 @@ class OpenAIProvider(LLMProvider):
             max_tool_rounds = 8
             for round_idx in range(max_tool_rounds):
                 if response_format:
-                    completion = self.sync_client.beta.chat.completions.parse(
+                    completion = cast(
+                        Any, self.sync_client.beta.chat.completions
+                    ).parse(
                         messages=messages,
                         model=model,
                         **request_kwargs,
                     )
                 else:
-                    completion = self.sync_client.chat.completions.create(
+                    completion = cast(Any, self.sync_client.chat.completions).create(
                         messages=messages,
                         model=model,
                         **request_kwargs,

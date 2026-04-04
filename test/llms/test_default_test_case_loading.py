@@ -44,7 +44,7 @@ from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationP
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from scinoephile.llms.base import TestCase
+    from scinoephile.core.llms import TestCase
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:

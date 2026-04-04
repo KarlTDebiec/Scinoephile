@@ -17,10 +17,10 @@ from scinoephile.audio.transcription import (
     get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
+from scinoephile.core.llms import Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.base import Queryer, TestCase
 from scinoephile.multilang.yue_zho.transcription.merging import YueZhoHansMergingPrompt
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
