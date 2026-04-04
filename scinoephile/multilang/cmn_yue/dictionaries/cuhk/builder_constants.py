@@ -4,19 +4,11 @@
 
 from __future__ import annotations
 
-import importlib
 import re
 
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_source import (
     DictionarySource,
 )
-
-hkscs_converter = None
-try:  # pragma: no cover - optional dependency
-    hkscs_converter = importlib.import_module("hkscs_unicode_converter").converter
-except ImportError:
-    # Fallback to raw CUHK text when HK-SCS converter is unavailable.
-    pass
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from bs4 import BeautifulSoup, Tag
+from hkscs_unicode_converter import converter as hkscs_converter
 from pypinyin import Style, lazy_pinyin
 
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_definition import (
@@ -28,7 +29,6 @@ from .builder_constants import (
     PRIVATE_USE_AREA_REGEX,
     PRIVATE_USE_AREA_REPLACEMENT_STRING,
     REMARK_ID_REGEX,
-    hkscs_converter,
 )
 
 logger = getLogger(__name__)
@@ -178,8 +178,7 @@ class CuhkDictionaryBuilderParser:
             normalized text
         """
         normalized = text
-        if hkscs_converter is not None:
-            normalized = hkscs_converter.convert_string(normalized)
+        normalized = hkscs_converter.convert_string(normalized)
 
         if PRIVATE_USE_AREA_REGEX.search(normalized):
             logger.warning("Replacing private-use character(s) in %s", normalized)
