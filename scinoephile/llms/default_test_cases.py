@@ -9,7 +9,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
-from scinoephile.llms.base import Manager, TestCase, load_test_cases_from_json
+from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
 
 __all__ = [
     "ENG_OCR_FUSION_JSON_PATHS",
