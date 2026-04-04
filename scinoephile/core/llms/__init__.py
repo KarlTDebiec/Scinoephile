@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from .answer import Answer
-from .llm_provider import ChatCompletionKwargs, LLMProvider, LLMToolSpec, ToolHandler
+from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, TestCaseClsKwargs
 from .processor import Processor
 from .prompt import Prompt

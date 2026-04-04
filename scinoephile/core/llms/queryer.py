@@ -125,9 +125,11 @@ class Queryer[
         Returns:
             test case including LLM's answer
         """
+        # Load from verified if available
         if verified_test_case := self._get_verified_test_case(test_case.query):
             return verified_test_case
 
+        # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
         tools_json = self._get_tools_json()
         if cached_test_case := self._get_cached_test_case(
@@ -135,6 +137,7 @@ class Queryer[
         ):
             return cached_test_case
 
+        # Query provider
         query_prompt = json.dumps(
             test_case.query.model_dump(), indent=4, ensure_ascii=False
         )
@@ -143,6 +146,7 @@ class Queryer[
             {"role": "user", "content": query_prompt},
         ]
         for attempt in range(1, self.max_attempts + 1):
+            # Get answer from provider
             try:
                 content = self.provider.chat_completion(
                     messages,
@@ -156,6 +160,7 @@ class Queryer[
                     raise
                 continue
 
+            # Validate answer
             try:
                 answer = test_case.answer_cls.model_validate_json(content)
             except ValidationError as exc:
@@ -179,6 +184,7 @@ class Queryer[
                 )
                 continue
 
+            # Validate test case
             try:
                 test_case = type(test_case).model_validate(
                     {**test_case.model_dump(), "answer": answer}
@@ -209,8 +215,10 @@ class Queryer[
         if test_case.answer is None:
             raise ScinoephileError("Unable to obtain valid answer")
 
+        # Log encountered test case
         self.log_encountered_test_case(test_case)
 
+        # Update cache
         if cache_path := self._get_cache_path(system_prompt, tools_json, query_prompt):
             contents = json.dumps(
                 test_case.model_dump(exclude_defaults=True),
