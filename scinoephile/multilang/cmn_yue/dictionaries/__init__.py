@@ -4,18 +4,12 @@
 
 from __future__ import annotations
 
-from .cuhk import (
-    CuhkDictionaryBuilder,
-    CuhkDictionaryService,
-)
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 from .dictionary_source import DictionarySource
 from .lookup_direction import LookupDirection
 
 __all__ = [
-    "CuhkDictionaryBuilder",
-    "CuhkDictionaryService",
     "DictionaryDefinition",
     "DictionaryEntry",
     "DictionarySource",
