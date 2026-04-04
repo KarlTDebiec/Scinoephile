@@ -25,92 +25,6 @@ from scinoephile.multilang.cmn_yue.dictionaries.cuhk.sqlite_schema_records impor
 )
 
 
-class _DiscoverOnlyBuilder(CuhkDictionaryBuilder):
-    """Builder test double that records fetched URLs."""
-
-    def __init__(self, cache_dir_path: Path):
-        """Initialize.
-
-        Arguments:
-            cache_dir_path: test cache directory path
-        """
-        super().__init__(
-            cache_dir_path=cache_dir_path,
-            min_delay_seconds=0.0,
-            max_delay_seconds=0.0,
-        )
-        self.fetched_urls: list[str] = []
-
-    def _fetch_text(self, url: str) -> str:  # noqa: PLR0911
-        """Return deterministic HTML for discovery flow.
-
-        Arguments:
-            url: URL requested by discovery logic
-        Returns:
-            mock HTML page content
-        """
-        self.fetched_urls.append(url)
-        if url.endswith("/Terms.aspx"):
-            return """
-                <html><body>
-                    <div id="MainContent_panelTermsIndex">
-                        <a href="Terms.aspx?target=名詞">valid category</a>
-                        <a href="https://www.qef.org.hk/chinese/index.htm">external</a>
-                    </div>
-                </body></html>
-            """
-        if "target=" in url:
-            return """
-                <html><body>
-                    <div id="MainContent_panelTermsQuery">
-                        <a href="Word.aspx?id=1">巴士</a>
-                        <a href="Search.aspx?id=2">火車</a>
-                        <a href="https://example.com/outside">外部</a>
-                        <a href="Cover.aspx">封面</a>
-                    </div>
-                </body></html>
-            """
-        raise AssertionError(f"Unexpected URL fetched: {url}")
-
-
-class _ForceRebuildBuilder(CuhkDictionaryBuilder):
-    """Builder test double used to verify force-rebuild behavior."""
-
-    def __init__(self, cache_dir_path: Path):
-        """Initialize.
-
-        Arguments:
-            cache_dir_path: test cache directory path
-        """
-        super().__init__(
-            cache_dir_path=cache_dir_path,
-            min_delay_seconds=0.0,
-            max_delay_seconds=0.0,
-        )
-
-    def discover_word_links(self) -> list[tuple[str, str]]:
-        """Return deterministic word links."""
-        return [("新詞", "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Word.aspx?id=1")]
-
-    def _fetch_text(self, url: str) -> str:
-        """Return deterministic word HTML."""
-        if "Word.aspx?id=1" not in url:
-            raise AssertionError(f"Unexpected URL fetched: {url}")
-        return """
-            <html><body>
-                <span class="ChiCharFix">新詞</span>
-                <span id="MainContent_repeaterRecord_lbl詞彙類別_0">名詞</span>
-                <span id="MainContent_repeaterRecord_lbl粵語拼音_0">san ci</span>
-                <span id="MainContent_repeaterRecord_lbl聲調_0">1 4</span>
-                <span
-                    id="MainContent_repeaterRecord_repeaterTranslation_0_lblTranslation_0"
-                >
-                    new term
-                </span>
-            </body></html>
-        """
-
-
 def _seed_dictionary_database(database_path: Path):
     """Seed a minimal dictionary database for lookup tests.
 
@@ -280,7 +194,7 @@ def test_lookup_limit_is_capped(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
         captured_limits.append(int(params[-1]))
         return []
 
-    monkeypatch.setattr(service, "_select_entry_ids", _capture_limits)
+    monkeypatch.setattr(service.lookup_store, "_select_entry_ids", _capture_limits)
     service.lookup("巴士", limit=10_000)
 
     assert captured_limits == [400]
@@ -406,22 +320,63 @@ def test_parse_word_file_keeps_entry_on_filename_mismatch(tmp_path: Path):
     assert entry.traditional == "測 試"
 
 
-def test_discover_word_links_filters_external_category_links(tmp_path: Path):
+def test_discover_word_links_filters_external_category_links(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test discovery keeps expected CUHK word links and skips invalid anchors."""
-    builder = _DiscoverOnlyBuilder(cache_dir_path=tmp_path / "cuhk")
+    builder = CuhkDictionaryBuilder(
+        cache_dir_path=tmp_path / "cuhk",
+        min_delay_seconds=0.0,
+        max_delay_seconds=0.0,
+    )
+    fetched_urls: list[str] = []
+
+    def _fetch_text(url: str) -> str:  # noqa: PLR0911
+        fetched_urls.append(url)
+        if url.endswith("/Terms.aspx"):
+            return """
+                <html><body>
+                    <div id="MainContent_panelTermsIndex">
+                        <a href="Terms.aspx?target=名詞">valid category</a>
+                        <a href="https://www.qef.org.hk/chinese/index.htm">external</a>
+                    </div>
+                </body></html>
+            """
+        if "target=" in url:
+            return """
+                <html><body>
+                    <div id="MainContent_panelTermsQuery">
+                        <a href="Word.aspx?id=1">巴士</a>
+                        <a href="Search.aspx?id=2">火車</a>
+                        <a href="https://example.com/outside">外部</a>
+                        <a href="Cover.aspx">封面</a>
+                    </div>
+                </body></html>
+            """
+        raise AssertionError(f"Unexpected URL fetched: {url}")
+
+    monkeypatch.setattr(builder.links, "_fetch_text", _fetch_text)
     links = builder.discover_word_links()
 
     assert links == [
         ("巴士", "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Word.aspx?id=1"),
         ("火車", "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Search.aspx?id=2"),
     ]
-    assert builder.fetched_urls[0].endswith("/Terms.aspx")
-    assert all("qef.org.hk" not in url for url in builder.fetched_urls)
+    assert fetched_urls[0].endswith("/Terms.aspx")
+    assert all("qef.org.hk" not in url for url in fetched_urls)
 
 
-def test_build_force_rebuild_clears_stale_scraped_pages(tmp_path: Path):
+def test_build_force_rebuild_clears_stale_scraped_pages(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test force rebuild removes stale HTML files before parsing."""
-    builder = _ForceRebuildBuilder(cache_dir_path=tmp_path / "cuhk")
+    builder = CuhkDictionaryBuilder(
+        cache_dir_path=tmp_path / "cuhk",
+        min_delay_seconds=0.0,
+        max_delay_seconds=0.0,
+    )
     stale_path = builder.scraped_dir_path / "舊詞.html"
     stale_path.parent.mkdir(parents=True, exist_ok=True)
     stale_path.write_text(
@@ -435,6 +390,30 @@ def test_build_force_rebuild_clears_stale_scraped_pages(tmp_path: Path):
         """,
         encoding="utf-8",
     )
+    monkeypatch.setattr(
+        builder.links,
+        "discover_word_links",
+        lambda: [("新詞", "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Word.aspx?id=1")],
+    )
+
+    def _fetch_text(url: str) -> str:
+        if "Word.aspx?id=1" not in url:
+            raise AssertionError(f"Unexpected URL fetched: {url}")
+        return """
+            <html><body>
+                <span class="ChiCharFix">新詞</span>
+                <span id="MainContent_repeaterRecord_lbl詞彙類別_0">名詞</span>
+                <span id="MainContent_repeaterRecord_lbl粵語拼音_0">san ci</span>
+                <span id="MainContent_repeaterRecord_lbl聲調_0">1 4</span>
+                <span
+                    id="MainContent_repeaterRecord_repeaterTranslation_0_lblTranslation_0"
+                >
+                    new term
+                </span>
+            </body></html>
+        """
+
+    monkeypatch.setattr(builder.links, "_fetch_text", _fetch_text)
 
     database_path = builder.build(force_rebuild=True)
 

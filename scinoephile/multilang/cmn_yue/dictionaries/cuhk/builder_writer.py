@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Database-writing mixin for CUHK dictionary builder."""
+"""Database-writing helpers for CUHK dictionary builder."""
 
 from __future__ import annotations
 
@@ -16,15 +16,22 @@ from .sqlite_schema_manager import CuhkSQLiteSchemaManager
 from .sqlite_schema_records import CuhkSQLiteSchemaRecords
 
 __all__ = [
-    "CuhkDictionaryBuilderWriterMixin",
+    "CuhkDictionaryBuilderWriter",
 ]
 
 
-class CuhkDictionaryBuilderWriterMixin:
-    """Mixin containing SQLite persistence behavior."""
+class CuhkDictionaryBuilderWriter:
+    """Helper object for SQLite persistence behavior."""
 
-    cache_dir_path: Path
-    database_path: Path
+    def __init__(self, cache_dir_path: Path, database_path: Path):
+        """Initialize.
+
+        Arguments:
+            cache_dir_path: cache directory path
+            database_path: SQLite database path
+        """
+        self.cache_dir_path = cache_dir_path
+        self.database_path = database_path
 
     def write_database(self, entries: list[DictionaryEntry]):
         """Write entries to SQLite.

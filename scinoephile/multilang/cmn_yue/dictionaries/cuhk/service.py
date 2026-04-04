@@ -14,7 +14,7 @@ from scinoephile.multilang.cmn_yue.dictionaries.lookup_direction import (
 )
 
 from .builder import CuhkDictionaryBuilder
-from .service_lookup import CuhkDictionaryLookupMixin
+from .service_lookup import CuhkDictionaryLookupStore
 
 __all__ = [
     "CuhkDictionaryService",
@@ -23,7 +23,7 @@ __all__ = [
 MAX_LOOKUP_LIMIT = 400
 
 
-class CuhkDictionaryService(CuhkDictionaryLookupMixin):
+class CuhkDictionaryService:
     """Runtime service for querying locally cached CUHK dictionary data."""
 
     def __init__(
@@ -48,6 +48,7 @@ class CuhkDictionaryService(CuhkDictionaryLookupMixin):
             min_delay_seconds=min_delay_seconds,
             max_delay_seconds=max_delay_seconds,
         )
+        self.lookup_store = CuhkDictionaryLookupStore()
 
     @property
     def database_path(self) -> Path:
@@ -116,3 +117,62 @@ class CuhkDictionaryService(CuhkDictionaryLookupMixin):
             )
 
         return self.build(force_rebuild=False)
+
+    def _lookup_mandarin_to_cantonese(
+        self,
+        database_path: Path,
+        query: str,
+        limit: int,
+    ) -> list[DictionaryEntry]:
+        """Lookup Mandarin query terms in CUHK data.
+
+        Arguments:
+            database_path: sqlite database path
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        return self.lookup_store._lookup_mandarin_to_cantonese(
+            database_path,
+            query,
+            limit,
+        )
+
+    def _lookup_cantonese_to_mandarin(
+        self,
+        database_path: Path,
+        query: str,
+        limit: int,
+    ) -> list[DictionaryEntry]:
+        """Lookup Cantonese query terms in CUHK data.
+
+        Arguments:
+            database_path: sqlite database path
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        return self.lookup_store._lookup_cantonese_to_mandarin(
+            database_path,
+            query,
+            limit,
+        )
+
+    def _select_entry_ids(
+        self,
+        database_path: Path,
+        sql: str,
+        params: tuple[str | int, ...],
+    ) -> list[int]:
+        """Run entry selection query.
+
+        Arguments:
+            database_path: sqlite database path
+            sql: SQL query that returns entry IDs
+            params: SQL parameters
+        Returns:
+            ordered entry identifiers
+        """
+        return self.lookup_store._select_entry_ids(database_path, sql, params)

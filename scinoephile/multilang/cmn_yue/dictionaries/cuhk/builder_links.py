@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Link-discovery and scraping mixin for CUHK dictionary builder."""
+"""Link-discovery and scraping helpers for CUHK dictionary builder."""
 
 from __future__ import annotations
 
@@ -26,21 +26,45 @@ from .builder_constants import (
 logger = getLogger(__name__)
 
 __all__ = [
-    "CuhkDictionaryBuilderLinksMixin",
+    "CuhkDictionaryBuilderLinks",
 ]
 
 
-class CuhkDictionaryBuilderLinksMixin:
-    """Mixin containing link caching, discovery, and scraping behavior."""
+class CuhkDictionaryBuilderLinks:
+    """Helper object for link caching, discovery, and scraping behavior."""
 
-    cache_dir_path: Path
-    scraped_dir_path: Path
-    word_links_path: Path
-    max_delay_seconds: float
-    min_delay_seconds: float
-    max_retries: int
-    request_timeout_seconds: float
-    session: requests.Session
+    def __init__(
+        self,
+        cache_dir_path: Path,
+        scraped_dir_path: Path,
+        word_links_path: Path,
+        *,
+        min_delay_seconds: float,
+        max_delay_seconds: float,
+        max_retries: int,
+        request_timeout_seconds: float,
+        session: requests.Session,
+    ):
+        """Initialize.
+
+        Arguments:
+            cache_dir_path: cache directory path
+            scraped_dir_path: directory path for scraped HTML pages
+            word_links_path: TSV cache path for discovered word links
+            min_delay_seconds: minimum delay between HTTP requests
+            max_delay_seconds: maximum delay between HTTP requests
+            max_retries: max attempts for failed requests
+            request_timeout_seconds: per-request timeout
+            session: requests session used for HTTP requests
+        """
+        self.cache_dir_path = cache_dir_path
+        self.scraped_dir_path = scraped_dir_path
+        self.word_links_path = word_links_path
+        self.min_delay_seconds = min_delay_seconds
+        self.max_delay_seconds = max_delay_seconds
+        self.max_retries = max_retries
+        self.request_timeout_seconds = request_timeout_seconds
+        self.session = session
 
     def load_word_links(self, force_refresh: bool = False) -> list[tuple[str, str]]:
         """Load or fetch CUHK word links.

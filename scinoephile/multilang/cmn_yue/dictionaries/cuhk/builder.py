@@ -11,21 +11,20 @@ import opencc
 import requests
 
 from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
+    DictionaryEntry,
+)
 
-from .builder_links import CuhkDictionaryBuilderLinksMixin
-from .builder_parser import CuhkDictionaryBuilderParserMixin
-from .builder_writer import CuhkDictionaryBuilderWriterMixin
+from .builder_links import CuhkDictionaryBuilderLinks
+from .builder_parser import CuhkDictionaryBuilderParser
+from .builder_writer import CuhkDictionaryBuilderWriter
 
 __all__ = [
     "CuhkDictionaryBuilder",
 ]
 
 
-class CuhkDictionaryBuilder(
-    CuhkDictionaryBuilderLinksMixin,
-    CuhkDictionaryBuilderParserMixin,
-    CuhkDictionaryBuilderWriterMixin,
-):
+class CuhkDictionaryBuilder:
     """Builder for CUHK dictionary cache and SQLite data."""
 
     def __init__(
@@ -68,6 +67,24 @@ class CuhkDictionaryBuilder(
 
         self.session = session or requests.Session()
         self.opencc_converter = opencc.OpenCC("hk2s")
+        self.links = CuhkDictionaryBuilderLinks(
+            cache_dir_path=self.cache_dir_path,
+            scraped_dir_path=self.scraped_dir_path,
+            word_links_path=self.word_links_path,
+            min_delay_seconds=self.min_delay_seconds,
+            max_delay_seconds=self.max_delay_seconds,
+            max_retries=self.max_retries,
+            request_timeout_seconds=self.request_timeout_seconds,
+            session=self.session,
+        )
+        self.parser = CuhkDictionaryBuilderParser(
+            scraped_dir_path=self.scraped_dir_path,
+            opencc_converter=self.opencc_converter,
+        )
+        self.writer = CuhkDictionaryBuilderWriter(
+            cache_dir_path=self.cache_dir_path,
+            database_path=self.database_path,
+        )
 
     def build(self, force_rebuild: bool = False) -> Path:
         """Build the local CUHK SQLite dictionary.
@@ -101,3 +118,61 @@ class CuhkDictionaryBuilder(
             return
         for scraped_path in self.scraped_dir_path.glob("*.html"):
             scraped_path.unlink()
+
+    def load_word_links(self, force_refresh: bool = False) -> list[tuple[str, str]]:
+        """Load or fetch CUHK word links.
+
+        Arguments:
+            force_refresh: whether to ignore cached link file
+        Returns:
+            list of (word, url)
+        """
+        return self.links.load_word_links(force_refresh=force_refresh)
+
+    def discover_word_links(self) -> list[tuple[str, str]]:
+        """Discover all CUHK word pages.
+
+        Returns:
+            list of (word, url)
+        """
+        return self.links.discover_word_links()
+
+    def scrape_word_pages(
+        self,
+        word_links: list[tuple[str, str]],
+        *,
+        skip_existing: bool = True,
+    ):
+        """Scrape CUHK word pages into cached HTML files.
+
+        Arguments:
+            word_links: list of (word, url)
+            skip_existing: whether to skip files already present
+        """
+        self.links.scrape_word_pages(word_links, skip_existing=skip_existing)
+
+    def parse_scraped_pages(self) -> list[DictionaryEntry]:
+        """Parse scraped CUHK pages into normalized entries.
+
+        Returns:
+            parsed dictionary entries
+        """
+        return self.parser.parse_scraped_pages()
+
+    def parse_word_file(self, html_path: Path):
+        """Parse one scraped CUHK word page.
+
+        Arguments:
+            html_path: path to scraped HTML page
+        Returns:
+            parsed entry, if valid
+        """
+        return self.parser.parse_word_file(html_path)
+
+    def write_database(self, entries: list[DictionaryEntry]) -> None:
+        """Write parsed entries to the SQLite cache.
+
+        Arguments:
+            entries: normalized dictionary entries
+        """
+        self.writer.write_database(entries)

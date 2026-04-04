@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Lookup-query mixin for CUHK dictionary service."""
+"""Lookup-query helpers for CUHK dictionary service."""
 
 from __future__ import annotations
 
@@ -15,12 +15,12 @@ from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
 )
 
 __all__ = [
-    "CuhkDictionaryLookupMixin",
+    "CuhkDictionaryLookupStore",
 ]
 
 
-class CuhkDictionaryLookupMixin:
-    """Mixin containing SQLite query and aggregation behavior."""
+class CuhkDictionaryLookupStore:
+    """Helper object for SQLite query and aggregation behavior."""
 
     def _lookup_mandarin_to_cantonese(
         self,

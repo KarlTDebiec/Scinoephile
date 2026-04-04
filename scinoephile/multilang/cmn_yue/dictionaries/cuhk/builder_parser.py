@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Parsing mixin for CUHK dictionary builder."""
+"""Parsing helpers for CUHK dictionary builder."""
 
 from __future__ import annotations
 
@@ -34,15 +34,22 @@ from .builder_constants import (
 logger = getLogger(__name__)
 
 __all__ = [
-    "CuhkDictionaryBuilderParserMixin",
+    "CuhkDictionaryBuilderParser",
 ]
 
 
-class CuhkDictionaryBuilderParserMixin:
-    """Mixin containing page-parsing and text-normalization behavior."""
+class CuhkDictionaryBuilderParser:
+    """Helper object for page-parsing and text-normalization behavior."""
 
-    scraped_dir_path: Path
-    opencc_converter: Any
+    def __init__(self, scraped_dir_path: Path, opencc_converter: Any):
+        """Initialize.
+
+        Arguments:
+            scraped_dir_path: directory path for scraped HTML pages
+            opencc_converter: OpenCC converter used for traditional->simplified text
+        """
+        self.scraped_dir_path = scraped_dir_path
+        self.opencc_converter = opencc_converter
 
     def parse_scraped_pages(self) -> list[DictionaryEntry]:
         """Parse scraped CUHK pages into normalized entries.
