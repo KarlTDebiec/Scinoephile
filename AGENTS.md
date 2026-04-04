@@ -45,6 +45,7 @@
 * Use Markdown for formatting.
 * Do **not** include any reStructuredText markup such as double backticks.
 * Provide docstrings for all classes and functions, including internal helpers prefixed with an underscore.
+* Document class attributes using triple-quoted strings immediately below each instead of relying only on an `Attributes` section in the class docstring.
 * Format docstrings using Google style, with the following tweaks:
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank line between the "Arguments:" and "Returns:" sections.

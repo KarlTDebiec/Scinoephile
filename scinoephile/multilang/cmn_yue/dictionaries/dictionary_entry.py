@@ -18,8 +18,19 @@ class DictionaryEntry:
     """Normalized dictionary entry."""
 
     traditional: str
+    """Traditional Chinese headword text."""
+
     simplified: str
+    """Simplified Chinese headword text."""
+
     pinyin: str
+    """Mandarin pronunciation written in pinyin."""
+
     jyutping: str
+    """Cantonese pronunciation written in Jyutping."""
+
     frequency: float = 0.0
+    """Frequency score used to rank or compare entries."""
+
     definitions: list[DictionaryDefinition] = field(default_factory=list)
+    """Definitions associated with this entry."""
