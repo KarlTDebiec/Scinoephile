@@ -131,7 +131,7 @@ def run_smoke(
     )
 
     print(f"[1/5] Discovering links from {builder.cache_dir_path}")
-    links = builder.discover_word_links()
+    links = builder.links.discover_word_links()
     print(f"Discovered {len(links)} link(s)")
     if links:
         print(f"First link: {links[0]}")
@@ -139,14 +139,14 @@ def run_smoke(
     subset_count = max(1, sample_size)
     subset = links[:subset_count]
     print(f"[2/5] Scraping {len(subset)} page(s)")
-    builder.scrape_word_pages(subset, skip_existing=False)
+    builder.links.scrape_word_pages(subset, skip_existing=False)
 
     print("[3/5] Parsing scraped pages")
-    entries = builder.parse_scraped_pages()
+    entries = builder.parser.parse_scraped_pages()
     print(f"Parsed {len(entries)} entry(ies)")
 
     print("[4/5] Writing sqlite database")
-    builder.write_database(entries)
+    builder.writer.write_database(entries)
     print(f"Database path: {builder.database_path}")
 
     print("[5/5] Running lookup")

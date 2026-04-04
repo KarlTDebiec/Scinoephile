@@ -87,12 +87,12 @@ class CuhkDictionaryService:
 
         database_path = self._ensure_database_path()
         if direction == LookupDirection.MANDARIN_TO_CANTONESE:
-            return self._lookup_mandarin_to_cantonese(
+            return self.lookup_store._lookup_mandarin_to_cantonese(
                 database_path,
                 normalized_query,
                 normalized_limit,
             )
-        return self._lookup_cantonese_to_mandarin(
+        return self.lookup_store._lookup_cantonese_to_mandarin(
             database_path,
             normalized_query,
             normalized_limit,
@@ -117,62 +117,3 @@ class CuhkDictionaryService:
             )
 
         return self.build(force_rebuild=False)
-
-    def _lookup_mandarin_to_cantonese(
-        self,
-        database_path: Path,
-        query: str,
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Lookup Mandarin query terms in CUHK data.
-
-        Arguments:
-            database_path: sqlite database path
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        return self.lookup_store._lookup_mandarin_to_cantonese(
-            database_path,
-            query,
-            limit,
-        )
-
-    def _lookup_cantonese_to_mandarin(
-        self,
-        database_path: Path,
-        query: str,
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Lookup Cantonese query terms in CUHK data.
-
-        Arguments:
-            database_path: sqlite database path
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        return self.lookup_store._lookup_cantonese_to_mandarin(
-            database_path,
-            query,
-            limit,
-        )
-
-    def _select_entry_ids(
-        self,
-        database_path: Path,
-        sql: str,
-        params: tuple[str | int, ...],
-    ) -> list[int]:
-        """Run entry selection query.
-
-        Arguments:
-            database_path: sqlite database path
-            sql: SQL query that returns entry IDs
-            params: SQL parameters
-        Returns:
-            ordered entry identifiers
-        """
-        return self.lookup_store._select_entry_ids(database_path, sql, params)

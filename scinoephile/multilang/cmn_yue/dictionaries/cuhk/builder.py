@@ -4,16 +4,14 @@
 
 from __future__ import annotations
 
-from os.path import expandvars
+from logging import getLogger
 from pathlib import Path
 
 import opencc
 import requests
 
+from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
-    DictionaryEntry,
-)
 
 from .builder_links import CuhkDictionaryBuilderLinks
 from .builder_parser import CuhkDictionaryBuilderParser
@@ -22,6 +20,8 @@ from .builder_writer import CuhkDictionaryBuilderWriter
 __all__ = [
     "CuhkDictionaryBuilder",
 ]
+
+logger = getLogger(__name__)
 
 
 class CuhkDictionaryBuilder:
@@ -50,9 +50,7 @@ class CuhkDictionaryBuilder:
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
 
-        self.cache_dir_path = (
-            Path(expandvars(str(cache_dir_path))).expanduser().resolve()
-        )
+        self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
         self.database_path = self.cache_dir_path / "cuhk.db"
@@ -97,82 +95,18 @@ class CuhkDictionaryBuilder:
         if self.database_path.exists() and not force_rebuild:
             return self.database_path
 
-        self._ensure_cache_directories()
-        if force_rebuild:
-            self._clear_scraped_pages()
-
-        word_links = self.load_word_links(force_refresh=force_rebuild)
-        self.scrape_word_pages(word_links, skip_existing=not force_rebuild)
-        entries = self.parse_scraped_pages()
-        self.write_database(entries)
-        return self.database_path
-
-    def _ensure_cache_directories(self):
-        """Ensure cache directories exist for scraping/build operations."""
+        # Ensure cache directories exist before downloading or parsing artifacts.
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
 
-    def _clear_scraped_pages(self):
-        """Delete cached scraped HTML pages."""
-        if not self.scraped_dir_path.exists():
-            return
-        for scraped_path in self.scraped_dir_path.glob("*.html"):
-            scraped_path.unlink()
+        # When force rebuilding, remove stale scraped pages before fetching again.
+        if force_rebuild:
+            for scraped_path in self.scraped_dir_path.glob("*.html"):
+                logger.info(f"Deleting stale scraped CUHK page: {scraped_path}")
+                scraped_path.unlink()
 
-    def load_word_links(self, force_refresh: bool = False) -> list[tuple[str, str]]:
-        """Load or fetch CUHK word links.
-
-        Arguments:
-            force_refresh: whether to ignore cached link file
-        Returns:
-            list of (word, url)
-        """
-        return self.links.load_word_links(force_refresh=force_refresh)
-
-    def discover_word_links(self) -> list[tuple[str, str]]:
-        """Discover all CUHK word pages.
-
-        Returns:
-            list of (word, url)
-        """
-        return self.links.discover_word_links()
-
-    def scrape_word_pages(
-        self,
-        word_links: list[tuple[str, str]],
-        *,
-        skip_existing: bool = True,
-    ):
-        """Scrape CUHK word pages into cached HTML files.
-
-        Arguments:
-            word_links: list of (word, url)
-            skip_existing: whether to skip files already present
-        """
-        self.links.scrape_word_pages(word_links, skip_existing=skip_existing)
-
-    def parse_scraped_pages(self) -> list[DictionaryEntry]:
-        """Parse scraped CUHK pages into normalized entries.
-
-        Returns:
-            parsed dictionary entries
-        """
-        return self.parser.parse_scraped_pages()
-
-    def parse_word_file(self, html_path: Path):
-        """Parse one scraped CUHK word page.
-
-        Arguments:
-            html_path: path to scraped HTML page
-        Returns:
-            parsed entry, if valid
-        """
-        return self.parser.parse_word_file(html_path)
-
-    def write_database(self, entries: list[DictionaryEntry]) -> None:
-        """Write parsed entries to the SQLite cache.
-
-        Arguments:
-            entries: normalized dictionary entries
-        """
+        word_links = self.links.load_word_links(force_refresh=force_rebuild)
+        self.links.scrape_word_pages(word_links, skip_existing=not force_rebuild)
+        entries = self.parser.parse_scraped_pages()
         self.writer.write_database(entries)
+        return self.database_path

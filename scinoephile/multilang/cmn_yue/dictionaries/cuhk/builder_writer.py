@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import sqlite3
+from logging import getLogger
 from pathlib import Path
 
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
@@ -18,6 +19,8 @@ from .sqlite_schema_records import CuhkSQLiteSchemaRecords
 __all__ = [
     "CuhkDictionaryBuilderWriter",
 ]
+
+logger = getLogger(__name__)
 
 
 class CuhkDictionaryBuilderWriter:
@@ -41,6 +44,7 @@ class CuhkDictionaryBuilderWriter:
         """
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         if self.database_path.exists():
+            logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
             self.database_path.unlink()
 
         with sqlite3.connect(self.database_path) as connection:

@@ -249,7 +249,7 @@ def test_parse_word_file_applies_tone_mapping(tmp_path: Path):
         encoding="utf-8",
     )
 
-    entry = builder.parse_word_file(html_path)
+    entry = builder.parser.parse_word_file(html_path)
     assert entry is not None
     assert entry.traditional == "測試"
     assert entry.jyutping == "cak1 ce3"
@@ -285,7 +285,7 @@ def test_parse_word_file_rejects_mismatched_jyutping(tmp_path: Path):
         encoding="utf-8",
     )
 
-    assert builder.parse_word_file(html_path) is None
+    assert builder.parser.parse_word_file(html_path) is None
 
 
 def test_parse_word_file_keeps_entry_on_filename_mismatch(tmp_path: Path):
@@ -315,7 +315,7 @@ def test_parse_word_file_keeps_entry_on_filename_mismatch(tmp_path: Path):
         encoding="utf-8",
     )
 
-    entry = builder.parse_word_file(html_path)
+    entry = builder.parser.parse_word_file(html_path)
     assert entry is not None
     assert entry.traditional == "測 試"
 
@@ -357,7 +357,7 @@ def test_discover_word_links_filters_external_category_links(
         raise AssertionError(f"Unexpected URL fetched: {url}")
 
     monkeypatch.setattr(builder.links, "_fetch_text", _fetch_text)
-    links = builder.discover_word_links()
+    links = builder.links.discover_word_links()
 
     assert links == [
         ("巴士", "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Word.aspx?id=1"),
@@ -419,7 +419,7 @@ def test_build_force_rebuild_clears_stale_scraped_pages(
 
     assert database_path.exists()
     assert not stale_path.exists()
-    entries = builder.parse_scraped_pages()
+    entries = builder.parser.parse_scraped_pages()
     assert len(entries) == 1
     assert entries[0].traditional == "新詞"
 

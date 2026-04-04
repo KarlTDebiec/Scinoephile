@@ -29,6 +29,7 @@
 * Include the standard copyright header at the top of the file.
 * Include a module docstring at the top of each file.
 * Include `from __future__ import annotations`, unless the file is empty.
+* Prefer f-strings for string interpolation.
 * Include type annotations for all function and method signatures, with the following exception:
     * If a function always returns `None`, omit the return type annotation.
 * In `__init__.py` files, only import classes from the module, not functions or variables.
