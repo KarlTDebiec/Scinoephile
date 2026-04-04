@@ -4,12 +4,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from pydantic import BaseModel, Field
 
-if TYPE_CHECKING:
-    from .transcribed_word import TranscribedWord
+from .transcribed_word import TranscribedWord
 
 
 class TranscribedSegment(BaseModel):
@@ -26,3 +23,6 @@ class TranscribedSegment(BaseModel):
     compression_ratio: float | None = Field(None, description="Compression ratio.")
     no_speech_prob: float | None = Field(None, description="Probability of no speech.")
     words: list[TranscribedWord] | None = Field(None, description="Words in segments.")
+
+
+TranscribedSegment.model_rebuild()

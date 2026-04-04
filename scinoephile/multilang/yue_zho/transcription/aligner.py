@@ -63,7 +63,7 @@ class Aligner:
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
-    async def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
+    def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
 
         Presently, this does the following:
@@ -87,15 +87,15 @@ class Aligner:
         # restarted by clearing the sync group override.
         shifting_in_progress = True
         while shifting_in_progress:
-            shifting_in_progress = await self._shift(alignment)
+            shifting_in_progress = self._shift(alignment)
 
         # Merge 粤文 subtitles to match 中文 punctuation and spacing
-        await self._merge(alignment)
+        self._merge(alignment)
 
         # Return final alignment
         return alignment
 
-    async def _shift(self, alignment) -> bool:
+    def _shift(self, alignment) -> bool:
         """Shift 粤文 text.
 
         Arguments:
@@ -245,7 +245,7 @@ class Aligner:
             f"Unexpected case:\nQuery:\n{query}\n with Answer:\n{answer}\n"
         )
 
-    async def _merge(self, alignment: Alignment):
+    def _merge(self, alignment: Alignment):
         """Merge 粤文 subs.
 
         Arguments:

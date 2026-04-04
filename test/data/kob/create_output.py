@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
@@ -120,7 +119,7 @@ if "简体粤文 (Transcription)" in actions:
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
-    yue_hans = asyncio.run(transcriber.process_all_blocks(yue_hans, zho_hans))
+    yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
     outfile_path = output_dir / "yue-Hans_transcribed.srt"
     yue_hans.save(outfile_path)
 

@@ -3,7 +3,7 @@
 ## Tools
 
 * This repository uses a virtual environment. To activate the venv in your shell: `source .venv/bin/activate`.
-* This repository uses `uv`. Use `uv run` when executing tools.
+* This repository uses `uv`. Use `UV_CACHE_DIR=/tmp/uv-cache uv run` when executing tools.
 
 ### Version Control
 

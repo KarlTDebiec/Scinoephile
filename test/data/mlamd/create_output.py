@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from logging import info
 from pathlib import Path
 
@@ -36,11 +35,12 @@ output_dir = title_root / "output"
 set_logging_verbosity(2)
 
 actions = {
-    "繁體中文 (OCR)",
-    "简体中文 (OCR)",
-    "English (OCR)",
-    "Bilingual 简体中文 and English",
-    "Bilingual 简体粤文 and English",
+    # "繁體中文 (OCR)",
+    # "简体中文 (OCR)",
+    # "English (OCR)",
+    # "Bilingual 简体中文 and English",
+    # "Bilingual 简体粤文 and English",
+    "简体粤文 (Transcription)"
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -91,7 +91,7 @@ if "简体粤文 (Transcription)" in actions:
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
-    yue_hans = asyncio.run(transcriber.process_all_blocks(yue_hans, zho_hans))
+    yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
