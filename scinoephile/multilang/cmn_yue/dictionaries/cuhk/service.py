@@ -55,15 +55,20 @@ class CuhkDictionaryService:
         """Path to local SQLite database."""
         return self.builder.database_path
 
-    def build(self, force_rebuild: bool = False) -> Path:
+    def build(
+        self,
+        force_rebuild: bool = False,
+        max_words: int | None = None,
+    ) -> Path:
         """Build CUHK data cache.
 
         Arguments:
             force_rebuild: whether to force rebuild from source
+            max_words: optional max number of discovered words to build
         Returns:
             path to built SQLite database
         """
-        return self.builder.build(force_rebuild=force_rebuild)
+        return self.builder.build(force_rebuild=force_rebuild, max_words=max_words)
 
     def lookup(
         self,

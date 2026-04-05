@@ -84,29 +84,47 @@ class CuhkDictionaryBuilder:
             database_path=self.database_path,
         )
 
-    def build(self, force_rebuild: bool = False) -> Path:
+    def build(
+        self,
+        force_rebuild: bool = False,
+        max_words: int | None = None,
+    ) -> Path:
         """Build the local CUHK SQLite dictionary.
 
         Arguments:
             force_rebuild: whether to ignore existing artifacts and rebuild
+            max_words: optional max number of discovered words to build
         Returns:
             path to built SQLite database
         """
-        if self.database_path.exists() and not force_rebuild:
+        if self.database_path.exists() and not force_rebuild and max_words is None:
             return self.database_path
 
         # Ensure cache directories exist before downloading or parsing artifacts.
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
 
-        # When force rebuilding, remove stale scraped pages before fetching again.
-        if force_rebuild:
+        # When rebuilding or limiting the build scope, remove stale scraped pages first.
+        if force_rebuild or max_words is not None:
             for scraped_path in self.scraped_dir_path.glob("*.html"):
                 logger.info(f"Deleting stale scraped CUHK page: {scraped_path}")
                 scraped_path.unlink()
 
+        logger.info("Discovering CUHK word links")
         word_links = self.links.load_word_links(force_refresh=force_rebuild)
-        self.links.scrape_word_pages(word_links, skip_existing=not force_rebuild)
+        logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
+        if max_words is not None:
+            word_links = word_links[:max_words]
+            logger.info(f"Limiting CUHK build to {len(word_links)} word(s)")
+
+        logger.info("Scraping CUHK word pages")
+        self.links.scrape_word_pages(
+            word_links,
+            skip_existing=not force_rebuild and max_words is None,
+        )
+        logger.info("Parsing scraped CUHK word pages")
         entries = self.parser.parse_scraped_pages()
+        logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
+        logger.info("Writing CUHK SQLite database")
         self.writer.write_database(entries)
         return self.database_path
