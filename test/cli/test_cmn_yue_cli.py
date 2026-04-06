@@ -21,10 +21,7 @@ from scinoephile.common.testing import (
     assert_cli_usage,
     run_cli_with_args,
 )
-from scinoephile.multilang.cmn_yue.dictionaries import (
-    DictionaryDefinition,
-    DictionaryEntry,
-)
+from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
 
 
 @pytest.mark.parametrize(

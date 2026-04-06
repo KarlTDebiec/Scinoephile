@@ -7,9 +7,7 @@ from __future__ import annotations
 import re
 
 from scinoephile.common import package_root
-from scinoephile.multilang.cmn_yue.dictionaries.dictionary_source import (
-    DictionarySource,
-)
+from scinoephile.core.dictionaries import DictionarySource
 
 DEFAULT_DATABASE_PATH = package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db"
 MAX_LOOKUP_LIMIT = 400

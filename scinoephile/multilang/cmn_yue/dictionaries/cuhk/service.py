@@ -7,18 +7,14 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from scinoephile.common.validation import val_int
-from scinoephile.multilang.cmn_yue.dictionaries.dictionary_definition import (
+from scinoephile.common.validation import val_input_path, val_int
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
-)
-from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
     DictionaryEntry,
-)
-from scinoephile.multilang.cmn_yue.dictionaries.lookup_direction import (
     LookupDirection,
 )
 
-from .constants import MAX_LOOKUP_LIMIT
+from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
 from .scraper import CuhkDictionaryScraper
 
 __all__ = [
@@ -32,6 +28,7 @@ class CuhkDictionaryService:
     def __init__(
         self,
         cache_dir_path: Path | None = None,
+        database_path: Path | None = None,
         *,
         auto_build_missing: bool = False,
         min_delay_seconds: float = 5.0,
@@ -41,13 +38,21 @@ class CuhkDictionaryService:
 
         Arguments:
             cache_dir_path: cache directory path for CUHK artifacts
+            database_path: SQLite database path
             auto_build_missing: build CUHK data automatically if missing
             min_delay_seconds: minimum delay used if build is triggered
             max_delay_seconds: maximum delay used if build is triggered
         """
+        if database_path is None:
+            database_path = DEFAULT_DATABASE_PATH
+        database_path = Path(database_path).expanduser().resolve()
+        if database_path.exists():
+            database_path = val_input_path(database_path)
+        self.database_path = database_path
         self.auto_build_missing = auto_build_missing
         self.scraper = CuhkDictionaryScraper(
             cache_dir_path=cache_dir_path,
+            database_path=self.database_path,
             min_delay_seconds=min_delay_seconds,
             max_delay_seconds=max_delay_seconds,
         )
@@ -72,7 +77,7 @@ class CuhkDictionaryService:
             return []
         limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        if not self.scraper.database_path.exists():
+        if not self.database_path.exists():
             if not self.auto_build_missing:
                 raise FileNotFoundError(
                     "CUHK dictionary database not found. "
@@ -187,7 +192,7 @@ class CuhkDictionaryService:
                 END,
                 d.definition_id
         """
-        with sqlite3.connect(self.scraper.database_path) as connection:
+        with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
 
@@ -300,7 +305,7 @@ class CuhkDictionaryService:
         Returns:
             ordered entry identifiers
         """
-        with sqlite3.connect(self.scraper.database_path) as connection:
+        with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
         return [int(row["entry_id"]) for row in rows]
