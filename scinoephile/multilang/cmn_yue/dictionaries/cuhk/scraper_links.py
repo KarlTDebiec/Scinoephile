@@ -66,22 +66,6 @@ class CuhkDictionaryScraperLinks:
         self.request_timeout_seconds = request_timeout_seconds
         self.session = session
 
-    def load_word_links(self, force: bool = False) -> list[tuple[str, str]]:
-        """Load or fetch CUHK word links.
-
-        Arguments:
-            force: whether to ignore cached link file
-        Returns:
-            list of (word, url)
-        """
-        if self.word_links_path.exists() and not force:
-            return self._read_word_links(self.word_links_path)
-
-        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
-        word_links = self.discover_word_links()
-        self._write_word_links(self.word_links_path, word_links)
-        return word_links
-
     def discover_word_links(self) -> list[tuple[str, str]]:
         """Discover all CUHK word pages.
 
@@ -95,6 +79,7 @@ class CuhkDictionaryScraperLinks:
         if not isinstance(main_panel, Tag):
             raise RuntimeError("Unable to find CUHK terms index panel")
 
+        # Category links
         category_links: list[str] = []
         for anchor in main_panel.find_all("a", href=True):
             category_url = urljoin(BASE_URL, str(anchor["href"]).strip())
@@ -111,16 +96,17 @@ class CuhkDictionaryScraperLinks:
 
             category_links.append(category_url)
 
+        # Word links
         seen_word_links: set[tuple[str, str]] = set()
         word_links: list[tuple[str, str]] = []
         for category_link in category_links:
-            logger.info("Discovering words from category: %s", category_link)
+            logger.info(f"Discovering words from category: {category_link}")
             category_html = self._fetch_text(category_link)
             category_soup = BeautifulSoup(category_html, "html.parser")
             query_panel = category_soup.find("div", id="MainContent_panelTermsQuery")
             if not isinstance(query_panel, Tag):
                 logger.warning(
-                    "Skipping category with missing query panel: %s", category_link
+                    f"Skipping category with missing query panel: {category_link}"
                 )
                 continue
 
@@ -131,10 +117,10 @@ class CuhkDictionaryScraperLinks:
                 url = urljoin(BASE_URL, str(anchor["href"]))
                 parsed_word_url = urlparse(url)
                 if parsed_word_url.netloc != CUHK_HOSTNAME:
-                    logger.warning("Skipping non-CUHK word URL: %s", url)
+                    logger.warning(f"Skipping non-CUHK word URL: {url}")
                     continue
                 if parsed_word_url.path not in CUHK_WORD_RESULT_PATHS:
-                    logger.warning("Skipping unexpected CUHK word URL path: %s", url)
+                    logger.warning(f"Skipping unexpected CUHK word URL path: {url}")
                     continue
                 pair = (item, url)
                 if pair in seen_word_links:
@@ -142,6 +128,23 @@ class CuhkDictionaryScraperLinks:
                 seen_word_links.add(pair)
                 word_links.append(pair)
 
+        return word_links
+
+    def load_word_links(self, force: bool = False) -> list[tuple[str, str]]:
+        """Load or fetch CUHK word links.
+
+        Arguments:
+            force: whether to ignore cached link file
+        Returns:
+            list of (word, url)
+        """
+        # Cached links
+        if self.word_links_path.exists() and not force:
+            return self._read_word_links(self.word_links_path)
+
+        # Fresh discovery
+        word_links = self.discover_word_links()
+        self._write_word_links(self.word_links_path, word_links)
         return word_links
 
     def scrape_word_pages(
@@ -158,21 +161,82 @@ class CuhkDictionaryScraperLinks:
         """
         self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
         for index, (item, url) in enumerate(word_links, start=1):
+            # Invalid items
             if url == "?":
-                logger.info("Skipping item %s (%s): invalid URL", index, item)
+                logger.info(f"Skipping item {index} ({item}): invalid URL")
                 continue
 
+            # Existing files
             variant_file_paths = self._get_variant_file_paths(item)
             if skip_existing and all(path.exists() for path in variant_file_paths):
                 continue
 
+            # Network fetch
             html = self._fetch_text(url)
             for variant_file_path in variant_file_paths:
                 variant_file_path.write_text(html, encoding="utf-8")
-            logger.info("Scraped #%s: %s", index, item)
+            logger.info(f"Scraped #{index}: {item}")
 
+            # Request pacing
             if self.max_delay_seconds > 0:
                 sleep(random.uniform(self.min_delay_seconds, self.max_delay_seconds))
+
+    def _fetch_text(self, url: str) -> str:
+        """Fetch text with retry and timeout.
+
+        Arguments:
+            url: URL to fetch
+        Returns:
+            fetched text content
+        Raises:
+            requests.RequestException: if all retry attempts fail
+        """
+        last_exception: requests.RequestException | None = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                response = self.session.get(url, timeout=self.request_timeout_seconds)
+                response.raise_for_status()
+                response.encoding = "utf-8"
+                return response.text
+            except requests.RequestException as exc:
+                last_exception = exc
+                logger.warning(
+                    f"CUHK request failed (attempt {attempt}/{self.max_retries}): {exc}"
+                )
+                if attempt < self.max_retries:
+                    sleep(1.5)
+
+        if last_exception is None:
+            raise RuntimeError("Request failed without an exception")
+        raise last_exception
+
+    def _get_safe_filename_stem(self, value: str) -> str:
+        """Get a safe filename stem for a dictionary key.
+
+        Arguments:
+            value: raw value to encode in path
+        Returns:
+            safe filename stem
+        """
+        cleaned = value.strip().replace(" ", "_")
+        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
+        return cleaned
+
+    def _get_variant_file_paths(self, item: str) -> list[Path]:
+        """Get output file paths for one CUHK word item.
+
+        Arguments:
+            item: item string, potentially with slash-separated variants
+        Returns:
+            variant file paths
+        """
+        stems: set[str] = set()
+        for variant in item.split("/"):
+            stem = self._get_safe_filename_stem(variant.strip())
+            if stem:
+                stems.add(stem)
+
+        return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
     def _read_word_links(self, word_links_path: Path) -> list[tuple[str, str]]:
         """Read links from TSV.
@@ -206,63 +270,3 @@ class CuhkDictionaryScraperLinks:
             writer = csv.writer(outfile, delimiter="\t")
             for item, url in word_links:
                 writer.writerow((item, url))
-
-    def _get_variant_file_paths(self, item: str) -> list[Path]:
-        """Get output file paths for one CUHK word item.
-
-        Arguments:
-            item: item string, potentially with slash-separated variants
-        Returns:
-            variant file paths
-        """
-        stems: set[str] = set()
-        for variant in item.split("/"):
-            stem = self._get_safe_filename_stem(variant.strip())
-            if stem:
-                stems.add(stem)
-
-        return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
-
-    def _get_safe_filename_stem(self, value: str) -> str:
-        """Get a safe filename stem for a dictionary key.
-
-        Arguments:
-            value: raw value to encode in path
-        Returns:
-            safe filename stem
-        """
-        cleaned = value.strip().replace(" ", "_")
-        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
-        return cleaned
-
-    def _fetch_text(self, url: str) -> str:
-        """Fetch text with retry and timeout.
-
-        Arguments:
-            url: URL to fetch
-        Returns:
-            fetched text content
-        Raises:
-            requests.RequestException: if all retry attempts fail
-        """
-        last_exception: requests.RequestException | None = None
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                response = self.session.get(url, timeout=self.request_timeout_seconds)
-                response.raise_for_status()
-                response.encoding = "utf-8"
-                return response.text
-            except requests.RequestException as exc:
-                last_exception = exc
-                logger.warning(
-                    "CUHK request failed (attempt %s/%s): %s",
-                    attempt,
-                    self.max_retries,
-                    exc,
-                )
-                if attempt < self.max_retries:
-                    sleep(1.5)
-
-        if last_exception is None:
-            raise RuntimeError("Request failed without an exception")
-        raise last_exception

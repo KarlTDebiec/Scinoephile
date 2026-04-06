@@ -57,8 +57,8 @@ class CuhkSQLiteSchemaManager:
         except sqlite3.OperationalError as exc:
             if cls._is_missing_fts5(exc):
                 logger.warning(
-                    "SQLite FTS5 unavailable; continuing without entries_fts index: %s",
-                    exc,
+                    "SQLite FTS5 unavailable; continuing without "
+                    f"entries_fts index: {exc}"
                 )
             else:
                 raise
@@ -101,8 +101,7 @@ class CuhkSQLiteSchemaManager:
             if cls._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; "
-                    "continuing without definitions_fts index: %s",
-                    exc,
+                    f"continuing without definitions_fts index: {exc}"
                 )
             else:
                 raise
@@ -203,8 +202,8 @@ class CuhkSQLiteSchemaManager:
         except sqlite3.OperationalError as exc:
             if cls._is_missing_fts5(exc):
                 logger.warning(
-                    "Skipping entries_fts population because FTS5 is unavailable: %s",
-                    exc,
+                    "Skipping entries_fts population because FTS5 is "
+                    f"unavailable: {exc}"
                 )
             else:
                 raise
@@ -217,8 +216,7 @@ class CuhkSQLiteSchemaManager:
             if cls._is_missing_fts5(exc):
                 logger.warning(
                     "Skipping definitions_fts population because "
-                    "FTS5 is unavailable: %s",
-                    exc,
+                    f"FTS5 is unavailable: {exc}"
                 )
             else:
                 raise

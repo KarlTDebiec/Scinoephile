@@ -60,7 +60,7 @@ class CuhkDictionaryScraperParser:
         entries: list[DictionaryEntry] = []
         for index, html_path in enumerate(sorted(self.scraped_dir_path.glob("*.html"))):
             if index and index % 100 == 0:
-                logger.info("Parsed %s CUHK entries", index)
+                logger.info(f"Parsed {index} CUHK entries")
 
             entry = self.parse_word_file(html_path)
             if entry is not None:
@@ -81,7 +81,7 @@ class CuhkDictionaryScraperParser:
         text_span = soup.find("span", class_="ChiCharFix")
         if not isinstance(text_span, Tag):
             logger.warning(
-                "Skipping malformed CUHK page without ChiCharFix: %s", html_path
+                f"Skipping malformed CUHK page without ChiCharFix: {html_path}"
             )
             return None
 
@@ -91,10 +91,8 @@ class CuhkDictionaryScraperParser:
         file_word = self._normalize_hanzi(html_path.stem)
         if file_word != traditional:
             logger.warning(
-                "Parsed word '%s' does not match filename '%s' (%s)",
-                traditional,
-                file_word,
-                html_path,
+                f"Parsed word '{traditional}' does not match filename "
+                f"'{file_word}' ({html_path})"
             )
             # Keep parsing: filename stems are cache keys and may be sanitized.
 
@@ -120,11 +118,9 @@ class CuhkDictionaryScraperParser:
         ]
         if len(jyutping_letters) != len(jyutping_numbers):
             logger.warning(
-                "Skipping CUHK page with mismatched jyutping letters (%s) "
-                "and tones (%s): %s",
-                len(jyutping_letters),
-                len(jyutping_numbers),
-                html_path,
+                "Skipping CUHK page with mismatched jyutping letters "
+                f"({len(jyutping_letters)}) and tones "
+                f"({len(jyutping_numbers)}): {html_path}"
             )
             return None
 
@@ -181,7 +177,7 @@ class CuhkDictionaryScraperParser:
         normalized = hkscs_converter.convert_string(normalized)
 
         if PRIVATE_USE_AREA_REGEX.search(normalized):
-            logger.warning("Replacing private-use character(s) in %s", normalized)
+            logger.warning(f"Replacing private-use character(s) in {normalized}")
             normalized = PRIVATE_USE_AREA_REGEX.sub(
                 PRIVATE_USE_AREA_REPLACEMENT_STRING,
                 normalized,
