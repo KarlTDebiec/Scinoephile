@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from logging import getLogger
-from typing import TYPE_CHECKING, Unpack
+from pathlib import Path
+from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -16,10 +18,6 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryBuilder
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
-    from pathlib import Path
 
 logger = getLogger(__name__)
 
@@ -32,7 +30,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -88,7 +86,11 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
         cache_dir_path = kwargs.pop("cache_dir")
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
@@ -115,7 +117,11 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "build"
 
     @classmethod

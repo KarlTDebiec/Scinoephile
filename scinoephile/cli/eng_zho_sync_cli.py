@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from argparse import ArgumentParser
+from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -15,9 +16,6 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
 
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
-
 
 class EngZhoSyncCli(CommandLineInterface):
     """Command-line interface for synchronizing English and 中文 subtitles."""
@@ -27,7 +25,7 @@ class EngZhoSyncCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -72,7 +70,7 @@ class EngZhoSyncCli(CommandLineInterface):
         """Execute with provided keyword arguments.
 
         Arguments:
-            **kwargs: Keyword arguments
+            **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
         eng_infile = kwargs.pop("eng_infile")
@@ -91,7 +89,11 @@ class EngZhoSyncCli(CommandLineInterface):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "sync"
 
 

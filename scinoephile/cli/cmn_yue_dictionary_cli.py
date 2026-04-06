@@ -4,14 +4,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from argparse import ArgumentParser
+from typing import Unpack
 
 from scinoephile.cli.cmn_yue_dictionary_build_cli import CmnYueDictionaryBuildCli
 from scinoephile.cli.cmn_yue_dictionary_search_cli import CmnYueDictionarySearchCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
 
 
 class CmnYueDictionaryCli(CommandLineInterface):
@@ -22,7 +20,7 @@ class CmnYueDictionaryCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
 
@@ -37,19 +35,31 @@ class CmnYueDictionaryCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
         subcommand_name = kwargs.pop("cmn_yue_dictionary_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "dictionary"
 
     @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
-        """Names and types of tools wrapped by command-line interface."""
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
         return {
             CmnYueDictionaryBuildCli.name(): CmnYueDictionaryBuildCli,
             CmnYueDictionarySearchCli.name(): CmnYueDictionarySearchCli,

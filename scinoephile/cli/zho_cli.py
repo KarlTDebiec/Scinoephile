@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from sys import stdin, stdout
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
@@ -21,9 +22,6 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofread,
     get_zho_proofreader,
 )
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
 
 
 class ZhoCli(CommandLineInterface):
@@ -53,7 +51,7 @@ class ZhoCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -132,7 +130,7 @@ class ZhoCli(CommandLineInterface):
         """Execute with provided keyword arguments.
 
         Arguments:
-            **kwargs: Keyword arguments
+            **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
@@ -172,9 +170,9 @@ class ZhoCli(CommandLineInterface):
         """Get the proofreading prompt class for the selected script.
 
         Arguments:
-            proofread_script: Script identifier
+            proofread_script: script identifier
         Returns:
-            Proofreading prompt class
+            proofreading prompt class
         """
         if proofread_script == "traditional":
             return ZhoHantProofreadingPrompt
@@ -205,9 +203,9 @@ class ZhoCli(CommandLineInterface):
         """Validate that proofread script matches conversion output.
 
         Arguments:
-            parser: Argument parser for error reporting
+            parser: argument parser for error reporting
             convert: OpenCC configuration
-            proofread_script: Script identifier for proofreading
+            proofread_script: script identifier for proofreading
         """
         if proofread_script is None or convert is None:
             return
@@ -225,7 +223,7 @@ class ZhoCli(CommandLineInterface):
         """Load a Series from a file path or stdin.
 
         Arguments:
-            infile: Input file path or "-" for stdin
+            infile: input file path or "-" for stdin
         Returns:
             loaded Series
         """
@@ -245,10 +243,10 @@ class ZhoCli(CommandLineInterface):
         """Write a Series to a file path or stdout.
 
         Arguments:
-            parser: Argument parser for error reporting
-            series: Series to write
-            outfile: Output file path or "-" for stdout
-            overwrite: Whether to overwrite an existing file
+            parser: argument parser for error reporting
+            series: series to write
+            outfile: output file path or "-" for stdout
+            overwrite: whether to overwrite an existing file
         """
         if outfile == "-":
             stdout.write(series.to_string(format_="srt"))
@@ -257,6 +255,15 @@ class ZhoCli(CommandLineInterface):
         if output_path.exists() and not overwrite:
             parser.error(f"{output_path} already exists")
         series.save(output_path)
+
+    @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "zho"
 
 
 if __name__ == "__main__":

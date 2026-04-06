@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from logging import getLogger
 from typing import TYPE_CHECKING, Unpack
 
@@ -18,8 +19,6 @@ from scinoephile.multilang.cmn_yue.dictionaries import LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
 if TYPE_CHECKING:
-    from argparse import ArgumentParser
-
     from scinoephile.multilang.cmn_yue.dictionaries import DictionaryEntry
 
 logger = getLogger(__name__)
@@ -33,7 +32,7 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -73,7 +72,11 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
         cache_dir_path = kwargs.pop("cache_dir")
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
@@ -90,7 +93,11 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "search"
 
     @classmethod

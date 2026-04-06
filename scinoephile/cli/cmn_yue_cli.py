@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from argparse import ArgumentParser
+from typing import Unpack
 
 from scinoephile.cli.cmn_yue_dictionary_cli import CmnYueDictionaryCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
 
 
 class CmnYueCli(CommandLineInterface):
@@ -21,7 +19,7 @@ class CmnYueCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
 
@@ -36,19 +34,31 @@ class CmnYueCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
         subcommand_name = kwargs.pop("cmn_yue_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "cmn_yue"
 
     @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
-        """Names and types of tools wrapped by command-line interface."""
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
         return {
             CmnYueDictionaryCli.name(): CmnYueDictionaryCli,
         }
