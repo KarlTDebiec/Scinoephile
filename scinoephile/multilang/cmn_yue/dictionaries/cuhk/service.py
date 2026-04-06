@@ -8,6 +8,8 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.lang.cmn.romanization import get_cmn_pinyin_variants
+from scinoephile.lang.yue.romanization import get_yue_jyutping_variants
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
 from .database import CuhkDictionaryDatabase
@@ -89,4 +91,30 @@ class CuhkDictionaryService:
                 )
             self.build(force=False)
 
-        return self.database.lookup(query, direction, limit)
+        for lookup_query in self._get_lookup_queries(query, direction):
+            if entries := self.database.lookup(lookup_query, direction, limit):
+                return entries
+        return []
+
+    @staticmethod
+    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
+        """Get ordered query variants for dictionary lookup.
+
+        Arguments:
+            query: raw query text
+            direction: lookup direction
+        Returns:
+            ordered query variants
+        """
+        if direction == LookupDirection.CMN_TO_YUE:
+            query_variants = get_cmn_pinyin_variants(query)
+        else:
+            query_variants = get_yue_jyutping_variants(query)
+
+        ordered_queries: list[str] = []
+        seen_queries: set[str] = set()
+        for one_query in [*query_variants, query]:
+            if one_query and one_query not in seen_queries:
+                seen_queries.add(one_query)
+                ordered_queries.append(one_query)
+        return ordered_queries

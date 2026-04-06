@@ -6,9 +6,12 @@ from __future__ import annotations
 
 import pickle
 import re
+import unicodedata
 from collections import Counter
 from copy import deepcopy
+from functools import cache, lru_cache
 from logging import getLogger
+from typing import cast
 from warnings import catch_warnings, filterwarnings, simplefilter
 
 with catch_warnings():
@@ -23,12 +26,63 @@ from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
 from scinoephile.lang.zho.conversion import get_zho_converter
 
 __all__ = [
+    "get_yue_jyutping_variants",
     "get_yue_romanized",
 ]
 
 logger = getLogger(__name__)
 
 data_root = package_root / "data/yue/"
+MAX_YUE_JYUTPING_VARIANTS = 16
+RE_YALE_SEPARATOR = re.compile(r"[\s'’]+")
+RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
+YUE_JYUTPING_ONSETS = (
+    "b",
+    "d",
+    "g",
+    "gw",
+    "z",
+    "p",
+    "t",
+    "k",
+    "kw",
+    "c",
+    "m",
+    "n",
+    "ng",
+    "f",
+    "h",
+    "s",
+    "l",
+    "w",
+    "j",
+    "",
+)
+YUE_JYUTPING_NUCLEI = (
+    "aa",
+    "a",
+    "i",
+    "yu",
+    "u",
+    "oe",
+    "e",
+    "eo",
+    "o",
+    "m",
+    "ng",
+)
+YUE_JYUTPING_CODAS = (
+    "p",
+    "t",
+    "k",
+    "m",
+    "n",
+    "ng",
+    "i",
+    "u",
+    "",
+)
+YUE_JYUTPING_TONES = ("1", "2", "3", "4", "5", "6")
 
 
 def _build_corpus():
@@ -101,6 +155,37 @@ if hanzi_to_jyutping_path.exists():
 re_jyutping = re.compile(r"[a-z]+\\d")
 
 
+def get_yue_jyutping_variants(text: str) -> list[str]:
+    """Get normalized Jyutping search variants for text.
+
+    Arguments:
+        text: raw query text
+    Returns:
+        normalized Jyutping search variants
+    """
+    text = unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
+    if not text:
+        return []
+
+    condensed = text.replace(" ", "")
+    if "'" not in condensed:
+        try:
+            parsed = pycantonese.parse_jyutping(condensed)
+        except ValueError:
+            parsed = []
+        if parsed:
+            return [
+                " ".join(
+                    f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
+                    for syllable in parsed
+                )
+            ]
+
+    if not _is_yale_query(text):
+        return []
+    return _get_yale_query_variants(text)
+
+
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
     """Get the Yale Cantonese romanization of a Chinese series.
 
@@ -119,6 +204,132 @@ def get_yue_romanized(series: Series, append: bool = True) -> Series:
         else:
             event.text = romanized
     return series
+
+
+def _get_yale_chunk_variants(chunk: str) -> list[tuple[str, ...]]:
+    """Get candidate Jyutping syllable tuples for one Yale chunk.
+
+    Arguments:
+        chunk: Yale query chunk without spaces or apostrophes
+    Returns:
+        candidate Jyutping syllable tuples
+    """
+    yale_syllables, yale_to_jyutping = _get_yale_jyutping_syllables()
+
+    @cache
+    def _parse_chunk(remaining: str) -> tuple[tuple[str, ...], ...]:
+        if not remaining:
+            return ((),)
+
+        variants: list[tuple[str, ...]] = []
+        best_len: int | None = None
+        for yale_syllable in yale_syllables:
+            if not remaining.startswith(yale_syllable):
+                continue
+
+            for remainder_variant in _parse_chunk(remaining[len(yale_syllable) :]):
+                candidate_len = 1 + len(remainder_variant)
+                if best_len is not None and candidate_len > best_len:
+                    continue
+
+                for jyutping_syllable in yale_to_jyutping[yale_syllable]:
+                    if best_len is None or candidate_len < best_len:
+                        variants = []
+                        best_len = candidate_len
+
+                    candidate = (jyutping_syllable, *remainder_variant)
+                    if candidate not in variants:
+                        variants.append(candidate)
+                        if len(variants) >= MAX_YUE_JYUTPING_VARIANTS:
+                            return tuple(variants)
+
+        return tuple(variants)
+
+    return list(_parse_chunk(chunk))
+
+
+@lru_cache(maxsize=1)
+def _get_yale_jyutping_syllables() -> tuple[
+    tuple[str, ...], dict[str, tuple[str, ...]]
+]:
+    """Get Yale-to-Jyutping single-syllable mappings.
+
+    Returns:
+        Yale syllables in descending-length order and Jyutping mapping
+    """
+    yale_to_jyutping: dict[str, set[str]] = {}
+    for onset in YUE_JYUTPING_ONSETS:
+        for nucleus in YUE_JYUTPING_NUCLEI:
+            for coda in YUE_JYUTPING_CODAS:
+                for tone in YUE_JYUTPING_TONES:
+                    jyutping = f"{onset}{nucleus}{coda}{tone}"
+                    try:
+                        parsed = pycantonese.parse_jyutping(jyutping)
+                    except ValueError:
+                        continue
+                    if len(parsed) != 1:
+                        continue
+
+                    try:
+                        yale = pycantonese.jyutping_to_yale(
+                            jyutping, return_as="string"
+                        )
+                    except (KeyError, ValueError):
+                        continue
+                    yale_to_jyutping.setdefault(yale, set()).add(jyutping)
+
+    sorted_mapping: dict[str, tuple[str, ...]] = {
+        yale: tuple(sorted(variants, key=lambda value: (-len(value), value)))
+        for yale, variants in yale_to_jyutping.items()
+    }
+    sorted_yale_syllables = cast(
+        tuple[str, ...],
+        tuple(sorted(sorted_mapping, key=len, reverse=True)),
+    )
+    return sorted_yale_syllables, sorted_mapping
+
+
+def _get_yale_query_variants(text: str) -> list[str]:
+    """Get candidate Jyutping query variants from Yale text.
+
+    Arguments:
+        text: raw Yale query text
+    Returns:
+        candidate Jyutping query variants
+    """
+    chunks = [chunk for chunk in RE_YALE_SEPARATOR.split(text) if chunk]
+    variants: list[tuple[str, ...]] = [()]
+    for chunk in chunks:
+        chunk_variants = _get_yale_chunk_variants(chunk)
+        if not chunk_variants:
+            return []
+
+        new_variants: list[tuple[str, ...]] = []
+        for prefix in variants:
+            for suffix in chunk_variants:
+                candidate = prefix + suffix
+                if candidate not in new_variants:
+                    new_variants.append(candidate)
+                    if len(new_variants) >= MAX_YUE_JYUTPING_VARIANTS:
+                        break
+            if len(new_variants) >= MAX_YUE_JYUTPING_VARIANTS:
+                break
+        variants = new_variants
+
+    return [" ".join(variant) for variant in variants]
+
+
+def _is_yale_query(text: str) -> bool:
+    """Check whether text appears to be Yale romanization.
+
+    Arguments:
+        text: raw query text
+    Returns:
+        whether text appears to be Yale romanization
+    """
+    if "'" in text:
+        return True
+    return RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", text)) is not None
 
 
 def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PLR0915

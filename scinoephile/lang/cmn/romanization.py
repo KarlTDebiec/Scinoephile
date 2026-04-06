@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import re
+import unicodedata
 from copy import deepcopy
 from warnings import catch_warnings, simplefilter
 
@@ -13,6 +15,7 @@ with catch_warnings():
 from typing import TYPE_CHECKING
 
 from pypinyin import pinyin
+from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.text import full_to_half_punc
 
@@ -20,8 +23,40 @@ if TYPE_CHECKING:
     from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "get_cmn_pinyin_variants",
     "get_cmn_romanized",
 ]
+
+RE_CMN_PINYIN_TOKEN = re.compile(
+    r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
+    r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]?$"
+)
+
+
+def get_cmn_pinyin_variants(text: str) -> list[str]:
+    """Get normalized pinyin search variants for text.
+
+    Arguments:
+        text: raw query text
+    Returns:
+        normalized pinyin search variants
+    """
+    text = (
+        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
+    )
+    if not text:
+        return []
+
+    tokens = text.split()
+    if not all(RE_CMN_PINYIN_TOKEN.fullmatch(token) for token in tokens):
+        return []
+
+    return [
+        " ".join(
+            tone_to_tone3(token.lower(), v_to_u=True).lower().replace("ü", "u:")
+            for token in tokens
+        )
+    ]
 
 
 def get_cmn_romanized(series: Series, append: bool = True) -> Series:
