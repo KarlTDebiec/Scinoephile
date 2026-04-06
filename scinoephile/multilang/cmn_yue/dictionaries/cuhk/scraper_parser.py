@@ -58,6 +58,8 @@ class CuhkDictionaryScraperParser:
             parsed dictionary entries
         """
         entries: list[DictionaryEntry] = []
+
+        # Scraped HTML files
         for index, html_path in enumerate(sorted(self.scraped_dir_path.glob("*.html"))):
             if index and index % 100 == 0:
                 logger.info(f"Parsed {index} CUHK entries")
@@ -76,8 +78,10 @@ class CuhkDictionaryScraperParser:
         Returns:
             parsed entry, if valid
         """
+        # Parsed HTML
         soup = BeautifulSoup(html_path.read_text(encoding="utf-8"), "html.parser")
 
+        # Headword text
         text_span = soup.find("span", class_="ChiCharFix")
         if not isinstance(text_span, Tag):
             logger.warning(
@@ -96,16 +100,17 @@ class CuhkDictionaryScraperParser:
             )
             # Keep parsing: filename stems are cache keys and may be sanitized.
 
+        # Labels and pronunciations
         label_span = soup.find("span", id=LABEL_ID_REGEX)
         label = label_span.get_text(strip=True) if isinstance(label_span, Tag) else ""
 
+        # Jyutping romanization
         jyutping_letters_span = soup.find("span", id=JYUTPING_LETTERS_ID_REGEX)
         jyutping_letters = (
             jyutping_letters_span.get_text(strip=True).split()
             if isinstance(jyutping_letters_span, Tag)
             else []
         )
-
         jyutping_numbers_span = soup.find("span", id=JYUTPING_NUMBERS_ID_REGEX)
         raw_numbers = (
             jyutping_numbers_span.get_text(" ", strip=True)
@@ -123,12 +128,12 @@ class CuhkDictionaryScraperParser:
                 f"({len(jyutping_numbers)}): {html_path}"
             )
             return None
-
         jyutping = " ".join(
             f"{letter}{number}"
             for letter, number in zip(jyutping_letters, jyutping_numbers, strict=False)
         )
 
+        # Hanyu pinyin romanization
         pinyin = (
             " ".join(
                 lazy_pinyin(
@@ -142,6 +147,7 @@ class CuhkDictionaryScraperParser:
             .replace("ü", "u:")
         )
 
+        # Definitions
         definitions: list[DictionaryDefinition] = []
         for meaning_span in soup.find_all("span", id=MEANING_ID_REGEX):
             if not isinstance(meaning_span, Tag):
@@ -150,12 +156,14 @@ class CuhkDictionaryScraperParser:
             if meaning:
                 definitions.append(DictionaryDefinition(text=meaning, label=label))
 
+        # Remark
         remark_span = soup.find("span", id=REMARK_ID_REGEX)
         if isinstance(remark_span, Tag):
             remark = remark_span.get_text(strip=True)
             if remark:
                 definitions.append(DictionaryDefinition(text=remark, label="備註"))
 
+        # Organize and return
         return DictionaryEntry(
             traditional=traditional,
             simplified=simplified,
@@ -165,7 +173,8 @@ class CuhkDictionaryScraperParser:
             definitions=definitions,
         )
 
-    def _normalize_hanzi(self, text: str) -> str:
+    @staticmethod
+    def _normalize_hanzi(text: str) -> str:
         """Normalize characters and replace private-use area code points.
 
         Arguments:
@@ -173,9 +182,10 @@ class CuhkDictionaryScraperParser:
         Returns:
             normalized text
         """
-        normalized = text
-        normalized = hkscs_converter.convert_string(normalized)
+        # HK-SCS normalization
+        normalized = hkscs_converter.convert_string(text)
 
+        # Private-use fallback
         if PRIVATE_USE_AREA_REGEX.search(normalized):
             logger.warning(f"Replacing private-use character(s) in {normalized}")
             normalized = PRIVATE_USE_AREA_REGEX.sub(
