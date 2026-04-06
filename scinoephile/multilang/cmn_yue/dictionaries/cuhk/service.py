@@ -72,19 +72,18 @@ class CuhkDictionaryService:
             return []
         limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        database_path = self.scraper.database_path
-        if not database_path.exists():
+        if not self.scraper.database_path.exists():
             if not self.auto_build_missing:
                 raise FileNotFoundError(
                     "CUHK dictionary database not found. "
                     "Set auto_build_missing=True to build automatically, "
                     "or scrape explicitly with CuhkDictionaryScraper.scrape()."
                 )
-            database_path = self.scraper.scrape(force=False)
+            self.scraper.scrape(force=False)
 
         if direction == LookupDirection.CMN_TO_YUE:
-            return self._lookup_cmn_to_yue(database_path, query, limit)
-        return self._lookup_yue_to_cmn(database_path, query, limit)
+            return self._lookup_cmn_to_yue(query, limit)
+        return self._lookup_yue_to_cmn(query, limit)
 
     @staticmethod
     def _aggregate_rows(rows: list[sqlite3.Row]) -> list[DictionaryEntry]:
@@ -147,15 +146,13 @@ class CuhkDictionaryService:
         escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         return f"%{escaped}%"
 
-    @staticmethod
     def _fetch_entries(
-        database_path: Path,
+        self,
         entry_ids: list[int],
     ) -> list[DictionaryEntry]:
         """Fetch entry rows and definitions for selected entry IDs.
 
         Arguments:
-            database_path: sqlite database path
             entry_ids: ordered entry identifiers
         Returns:
             dictionary entries
@@ -190,20 +187,16 @@ class CuhkDictionaryService:
                 END,
                 d.definition_id
         """
-        with sqlite3.connect(database_path) as connection:
+        with sqlite3.connect(self.scraper.database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
 
         return CuhkDictionaryService._aggregate_rows(rows)
 
-    @staticmethod
-    def _lookup_cmn_to_yue(
-        database_path: Path, query: str, limit: int
-    ) -> list[DictionaryEntry]:
+    def _lookup_cmn_to_yue(self, query: str, limit: int) -> list[DictionaryEntry]:
         """Lookup Mandarin query terms in CUHK data.
 
         Arguments:
-            database_path: sqlite database path
             query: query string
             limit: max results
         Returns:
@@ -243,23 +236,17 @@ class CuhkDictionaryService:
             query,
             limit,
         )
-        entry_ids = CuhkDictionaryService._select_entry_ids(
-            database_path,
-            sql,
-            params,
-        )
-        return CuhkDictionaryService._fetch_entries(database_path, entry_ids)
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
 
-    @staticmethod
     def _lookup_yue_to_cmn(
-        database_path: Path,
+        self,
         query: str,
         limit: int,
     ) -> list[DictionaryEntry]:
         """Lookup Cantonese query terms in CUHK data.
 
         Arguments:
-            database_path: sqlite database path
             query: query string
             limit: max results
         Returns:
@@ -297,29 +284,23 @@ class CuhkDictionaryService:
             query,
             limit,
         )
-        entry_ids = CuhkDictionaryService._select_entry_ids(
-            database_path,
-            sql,
-            params,
-        )
-        return CuhkDictionaryService._fetch_entries(database_path, entry_ids)
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
 
-    @staticmethod
     def _select_entry_ids(
-        database_path: Path,
+        self,
         sql: str,
         params: tuple[str | int, ...],
     ) -> list[int]:
         """Run entry selection query.
 
         Arguments:
-            database_path: sqlite database path
             sql: SQL query that returns entry_id
             params: SQL parameters
         Returns:
             ordered entry identifiers
         """
-        with sqlite3.connect(database_path) as connection:
+        with sqlite3.connect(self.scraper.database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
         return [int(row["entry_id"]) for row in rows]
