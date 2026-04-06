@@ -57,7 +57,7 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             "--direction",
             type=LookupDirection,
             choices=list(LookupDirection),
-            default=LookupDirection.MANDARIN_TO_CANTONESE,
+            default=LookupDirection.CMN_TO_YUE,
             help="lookup direction",
         )
         arg_groups["operation arguments"].add_argument(

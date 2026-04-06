@@ -72,7 +72,7 @@ class CuhkDictionaryService:
     def lookup(
         self,
         query: str,
-        direction: LookupDirection = LookupDirection.MANDARIN_TO_CANTONESE,
+        direction: LookupDirection = LookupDirection.CMN_TO_YUE,
         limit: int = 10,
     ) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data.
@@ -90,7 +90,7 @@ class CuhkDictionaryService:
         normalized_limit = min(MAX_LOOKUP_LIMIT, max(1, int(limit)))
 
         database_path = self._ensure_database_path()
-        if direction == LookupDirection.MANDARIN_TO_CANTONESE:
+        if direction == LookupDirection.CMN_TO_YUE:
             return self.lookup_store._lookup_mandarin_to_cantonese(
                 database_path,
                 normalized_query,

@@ -14,5 +14,5 @@ __all__ = [
 class LookupDirection(StrEnum):
     """Lookup direction for 中文/粤文 dictionary queries."""
 
-    MANDARIN_TO_CANTONESE = "mandarin_to_cantonese"
-    CANTONESE_TO_MANDARIN = "cantonese_to_mandarin"
+    CMN_TO_YUE = "cmn_to_yue"
+    YUE_TO_CMN = "yue_to_cmn"
