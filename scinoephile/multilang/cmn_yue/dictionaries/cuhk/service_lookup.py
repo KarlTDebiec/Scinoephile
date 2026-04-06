@@ -22,7 +22,7 @@ __all__ = [
 class CuhkDictionaryLookupStore:
     """Helper object for SQLite query and aggregation behavior."""
 
-    def _lookup_mandarin_to_cantonese(
+    def lookup_cmn_to_yue(
         self,
         database_path: Path,
         query: str,
@@ -74,7 +74,7 @@ class CuhkDictionaryLookupStore:
         entry_ids = self._select_entry_ids(database_path, sql, params)
         return self._fetch_entries(database_path, entry_ids)
 
-    def _lookup_cantonese_to_mandarin(
+    def lookup_yue_to_cmn(
         self,
         database_path: Path,
         query: str,

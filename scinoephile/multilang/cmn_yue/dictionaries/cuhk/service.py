@@ -91,12 +91,12 @@ class CuhkDictionaryService:
 
         database_path = self._ensure_database_path()
         if direction == LookupDirection.CMN_TO_YUE:
-            return self.lookup_store._lookup_mandarin_to_cantonese(
+            return self.lookup_store.lookup_cmn_to_yue(
                 database_path,
                 normalized_query,
                 normalized_limit,
             )
-        return self.lookup_store._lookup_cantonese_to_mandarin(
+        return self.lookup_store.lookup_yue_to_cmn(
             database_path,
             normalized_query,
             normalized_limit,
