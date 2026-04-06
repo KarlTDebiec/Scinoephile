@@ -9,7 +9,7 @@ from pathlib import Path
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
-from scinoephile.lang.yue.romanization import get_yue_jyutping_variants
+from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
 from .database import CuhkDictionaryDatabase
@@ -47,19 +47,19 @@ class CuhkDictionaryService:
         self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
         self.cache_dir_path = self.scraper.cache_dir_path
 
-    def build(self, force: bool = False, max_words: int | None = None) -> Path:
+    def build(self, overwrite: bool = False, max_words: int | None = None) -> Path:
         """Build or rebuild the local CUHK SQLite dictionary.
 
         Arguments:
-            force: whether to ignore existing artifacts and rebuild
+            overwrite: whether to overwrite an existing SQLite database
             max_words: optional max number of discovered words to scrape
         Returns:
             SQLite database path
         """
-        if self.database_path.exists() and not force and max_words is None:
+        if self.database_path.exists() and not overwrite and max_words is None:
             return self.database_path
 
-        scrape_data = self.scraper.scrape(force=force, max_words=max_words)
+        scrape_data = self.scraper.scrape(max_words=max_words)
         return self.database.persist(scrape_data)
 
     def lookup(
@@ -89,7 +89,7 @@ class CuhkDictionaryService:
                     "Set auto_build_missing=True to build automatically, "
                     "or build explicitly with CuhkDictionaryService.build()."
                 )
-            self.build(force=False)
+            self.build(overwrite=False)
 
         for lookup_query in self._get_lookup_queries(query, direction):
             if entries := self.database.lookup(lookup_query, direction, limit):
@@ -109,7 +109,7 @@ class CuhkDictionaryService:
         if direction == LookupDirection.CMN_TO_YUE:
             query_variants = get_cmn_pinyin_query_strings(query)
         else:
-            query_variants = get_yue_jyutping_variants(query)
+            query_variants = get_yue_jyutping_query_strings(query)
 
         ordered_queries: list[str] = []
         seen_queries: set[str] = set()

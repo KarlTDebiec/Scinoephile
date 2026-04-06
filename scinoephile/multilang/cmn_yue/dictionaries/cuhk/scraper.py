@@ -88,6 +88,7 @@ class CuhkDictionaryScraper:
         if cache_dir_path is None:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
         self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self.discovery_dir_path = self.cache_dir_path / "discovery"
         self.scraped_dir_path = self.cache_dir_path / "scraped"
 
         if max_delay_seconds < min_delay_seconds:
@@ -113,7 +114,12 @@ class CuhkDictionaryScraper:
         if max_words is not None and max_words <= 0:
             return []
 
-        html = self._fetch_text(TERMS_URL)
+        html = self._fetch_text(
+            TERMS_URL,
+            cache_path=self.discovery_dir_path / "terms.html",
+            use_cache=True,
+            cache_label="CUHK terms index",
+        )
         soup = BeautifulSoup(html, "html.parser")
         main_panel = soup.find("div", id="MainContent_panelTermsIndex")
         if not isinstance(main_panel, Tag):
@@ -135,8 +141,13 @@ class CuhkDictionaryScraper:
         seen_word_links: set[tuple[str, str]] = set()
         word_links: list[tuple[str, str]] = []
         for category_link in category_links:
-            logger.info(f"Discovering words from category: {category_link}")
-            category_html = self._fetch_text(category_link)
+            category_cache_path = self._get_category_cache_path(category_link)
+            category_html = self._fetch_text(
+                category_link,
+                cache_path=category_cache_path,
+                use_cache=True,
+                cache_label="CUHK category",
+            )
             category_soup = BeautifulSoup(category_html, "html.parser")
             query_panel = category_soup.find("div", id="MainContent_panelTermsQuery")
             if not isinstance(query_panel, Tag):
@@ -151,11 +162,9 @@ class CuhkDictionaryScraper:
                     continue
                 url = urljoin(BASE_URL, str(anchor["href"]))
                 parsed_word_url = urlparse(url)
-                if (
-                    parsed_word_url.netloc != CUHK_HOSTNAME
-                    or parsed_word_url.path not in CUHK_WORD_RESULT_PATHS
-                ):
-                    logger.warning(f"Skipping unexpected CUHK word URL: {url}")
+                if parsed_word_url.netloc != CUHK_HOSTNAME:
+                    continue
+                if parsed_word_url.path not in CUHK_WORD_RESULT_PATHS:
                     continue
                 pair = (item, url)
                 if pair in seen_word_links:
@@ -181,6 +190,22 @@ class CuhkDictionaryScraper:
             if index and index % 100 == 0:
                 logger.info(f"Parsed {index} CUHK entries")
 
+            entry = self.parse_word_file(html_path)
+            if entry is not None:
+                entries.append(entry)
+
+        return entries
+
+    def parse_word_files(self, html_paths: list[Path]) -> list[DictionaryEntry]:
+        """Parse selected scraped CUHK pages into normalized entries.
+
+        Arguments:
+            html_paths: scraped HTML paths to parse
+        Returns:
+            parsed dictionary entries
+        """
+        entries: list[DictionaryEntry] = []
+        for html_path in html_paths:
             entry = self.parse_word_file(html_path)
             if entry is not None:
                 entries.append(entry)
@@ -283,32 +308,31 @@ class CuhkDictionaryScraper:
 
     def scrape(
         self,
-        force: bool = False,
         max_words: int | None = None,
     ) -> tuple[DictionarySource, list[DictionaryEntry]]:
         """Scrape CUHK data into source metadata and dictionary entries.
 
         Arguments:
-            force: whether to ignore existing artifacts and rebuild
             max_words: optional max number of discovered words to scrape
         Returns:
             source metadata and scraped dictionary entries
         """
-        if force or max_words is not None:
-            for scraped_path in self.scraped_dir_path.glob("*.html"):
-                scraped_path.unlink()
-                logger.info(f"Removed stale scraped page: {scraped_path}")
-
         logger.info("Discovering CUHK word links")
         word_links = self.discover_word_links(max_words=max_words)
         logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
 
         logger.info("Scraping CUHK word pages")
-        self.scrape_word_pages(
-            word_links, skip_existing=not force and max_words is None
-        )
+        self.scrape_word_pages(word_links, skip_existing=True)
         logger.info("Parsing scraped CUHK word pages")
-        entries = self.parse_scraped_pages()
+        if max_words is None:
+            entries = self.parse_scraped_pages()
+        else:
+            html_paths: list[Path] = []
+            for item, _ in word_links:
+                for html_path in self._get_variant_file_paths(item):
+                    if html_path.exists() and html_path not in html_paths:
+                        html_paths.append(html_path)
+            entries = self.parse_word_files(html_paths)
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
         return CUHK_SOURCE, entries
 
@@ -332,6 +356,7 @@ class CuhkDictionaryScraper:
 
             variant_file_paths = self._get_variant_file_paths(item)
             if skip_existing and all(path.exists() for path in variant_file_paths):
+                logger.info(f"Loaded word page from cache #{index}: {item}")
                 continue
 
             html = self._fetch_text(url)
@@ -342,23 +367,43 @@ class CuhkDictionaryScraper:
             if self.max_delay_seconds > 0:
                 sleep(random.uniform(self.min_delay_seconds, self.max_delay_seconds))
 
-    def _fetch_text(self, url: str) -> str:
+    def _fetch_text(
+        self,
+        url: str,
+        *,
+        cache_path: Path | None = None,
+        use_cache: bool = False,
+        cache_label: str | None = None,
+    ) -> str:
         """Fetch text with retry and timeout.
 
         Arguments:
             url: URL to fetch
+            cache_path: optional cache path for response body
+            use_cache: whether to reuse an existing cached response
+            cache_label: optional label to include in cache logs
         Returns:
             fetched text content
         Raises:
             requests.RequestException: if all retry attempts fail
         """
+        cache_description = url if cache_label is None else f"{cache_label}: {url}"
+        if use_cache and cache_path is not None and cache_path.exists():
+            logger.info(f"Loaded from cache: {cache_description}")
+            return cache_path.read_text(encoding="utf-8")
+
         last_exception: requests.RequestException | None = None
         for attempt in range(1, self.max_retries + 1):
             try:
+                logger.info(f"Fetching: {cache_description}")
                 response = self.session.get(url, timeout=self.request_timeout_seconds)
                 response.raise_for_status()
                 response.encoding = "utf-8"
-                return response.text
+                text = response.text
+                if cache_path is not None:
+                    cache_path.parent.mkdir(parents=True, exist_ok=True)
+                    cache_path.write_text(text, encoding="utf-8")
+                return text
             except requests.RequestException as exc:
                 last_exception = exc
                 logger.warning(
@@ -370,6 +415,19 @@ class CuhkDictionaryScraper:
         if last_exception is None:
             raise RuntimeError("Request failed without an exception")
         raise last_exception
+
+    def _get_category_cache_path(self, category_url: str) -> Path:
+        """Get cache path for one CUHK category page.
+
+        Arguments:
+            category_url: CUHK category URL
+        Returns:
+            discovery cache path
+        """
+        parsed_url = urlparse(category_url)
+        target_name = parse_qs(parsed_url.query).get("target", [""])[0]
+        stem = self._get_safe_filename_stem(target_name or "terms")
+        return self.discovery_dir_path / f"{stem}.html"
 
     @staticmethod
     def _get_safe_filename_stem(value: str) -> str:

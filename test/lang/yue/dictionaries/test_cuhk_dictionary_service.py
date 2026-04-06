@@ -65,7 +65,7 @@ def test_cuhk_dictionary_service_lookup_tries_yale_variants(tmp_path: Path):
     expected = [_make_entry()]
 
     with patch(
-        "scinoephile.multilang.cmn_yue.dictionaries.cuhk.service.get_yue_jyutping_variants",
+        "scinoephile.multilang.cmn_yue.dictionaries.cuhk.service.get_yue_jyutping_query_strings",
         return_value=["soeng6 ban6", "soeng6 bin6"],
     ):
         with patch.object(

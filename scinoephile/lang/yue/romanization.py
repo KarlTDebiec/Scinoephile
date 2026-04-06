@@ -26,7 +26,7 @@ from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
 from scinoephile.lang.zho.conversion import get_zho_converter
 
 __all__ = [
-    "get_yue_jyutping_variants",
+    "get_yue_jyutping_query_strings",
     "get_yue_romanized",
 ]
 
@@ -155,13 +155,13 @@ if hanzi_to_jyutping_path.exists():
 re_jyutping = re.compile(r"[a-z]+\\d")
 
 
-def get_yue_jyutping_variants(text: str) -> list[str]:
-    """Get normalized Jyutping search variants for text.
+def get_yue_jyutping_query_strings(text: str) -> list[str]:
+    """Get normalized Jyutping query strings for text.
 
     Arguments:
         text: raw query text
     Returns:
-        normalized Jyutping search variants
+        normalized Jyutping query strings
     """
     text = unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
     if not text:
@@ -183,7 +183,7 @@ def get_yue_jyutping_variants(text: str) -> list[str]:
 
     if not _is_yale_query(text):
         return []
-    return _get_yale_query_variants(text)
+    return _get_yale_query_strings(text)
 
 
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
@@ -289,13 +289,13 @@ def _get_yale_jyutping_syllables() -> tuple[
     return sorted_yale_syllables, sorted_mapping
 
 
-def _get_yale_query_variants(text: str) -> list[str]:
-    """Get candidate Jyutping query variants from Yale text.
+def _get_yale_query_strings(text: str) -> list[str]:
+    """Get candidate Jyutping query strings from Yale text.
 
     Arguments:
         text: raw Yale query text
     Returns:
-        candidate Jyutping query variants
+        candidate Jyutping query strings
     """
     chunks = [chunk for chunk in RE_YALE_SEPARATOR.split(text) if chunk]
     variants: list[tuple[str, ...]] = [()]

@@ -56,9 +56,9 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             help="stop after building the first N discovered words",
         )
         arg_groups["operation arguments"].add_argument(
-            "--force",
+            "--overwrite",
             action="store_true",
-            help="rescrape even if local CUHK artifacts already exist",
+            help="overwrite the existing SQLite database if it already exists",
         )
         arg_groups["operation arguments"].add_argument(
             "--min-delay-seconds",
@@ -94,7 +94,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         """
         cache_dir_path = kwargs.pop("cache_dir")
         max_words = kwargs.pop("max_words", None)
-        force = kwargs.pop("force")
+        overwrite = kwargs.pop("overwrite")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
         max_delay_seconds = kwargs.pop("max_delay_seconds")
         max_retries = kwargs.pop("max_retries")
@@ -113,10 +113,10 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             service.cache_dir_path,
             service.database_path,
             max_words,
-            force,
+            overwrite,
         )
         database_path = service.build(
-            force=force,
+            overwrite=overwrite,
             max_words=max_words,
         )
         logger.info(f"CUHK dictionary build complete: {database_path}")
@@ -136,7 +136,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         cache_dir_path: Path,
         database_path: Path,
         max_words: int | None,
-        force: bool,
+        overwrite: bool,
     ):
         """Log the effective build configuration.
 
@@ -144,7 +144,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             cache_dir_path: cache directory path
             database_path: SQLite database path
             max_words: optional max words cap
-            force: whether forced scraping is enabled
+            overwrite: whether database overwrite is enabled
         """
         logger.info(f"Using cache directory: {cache_dir_path}")
         logger.info(f"Using SQLite database: {database_path}")
@@ -152,8 +152,8 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             logger.info("Building all discovered CUHK words")
         else:
             logger.info(f"Building at most {max_words} discovered CUHK words")
-        if force:
-            logger.info("Force enabled")
+        if overwrite:
+            logger.info("Overwrite enabled")
 
 
 if __name__ == "__main__":

@@ -70,14 +70,14 @@ def test_cmn_yue_dictionary_build_cli(tmp_path: Path):
             "cmn_yue dictionary build "
             f"--cache-dir {tmp_path / 'cache'} "
             "--max-words 7 "
-            "--force "
+            "--overwrite "
             "--min-delay-seconds 0 "
             "--max-delay-seconds 0 "
             "--max-retries 2 "
             "--request-timeout-seconds 10",
         )
 
-    mock_build.assert_called_once_with(force=True, max_words=7)
+    mock_build.assert_called_once_with(overwrite=True, max_words=7)
     assert database_path == tmp_path / "cache" / "cuhk.db"
 
 
