@@ -18,21 +18,7 @@ class CuhkSQLiteSchemaManager:
     """Schema manager for CUHK dictionary SQLite tables."""
 
     @staticmethod
-    def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
-        """Check whether an OperationalError indicates unavailable FTS5 support.
-
-        Arguments:
-            exc: sqlite operational error
-        Returns:
-            whether error indicates missing FTS5 support
-        """
-        message = str(exc).lower()
-        if "fts5" in message or "no such module" in message:
-            return True
-        return "no such table" in message and "_fts" in message
-
-    @classmethod
-    def create_tables(cls, cursor: sqlite3.Cursor):
+    def create_tables(cursor: sqlite3.Cursor):
         """Create dictionary tables.
 
         Arguments:
@@ -55,7 +41,7 @@ class CuhkSQLiteSchemaManager:
                 "CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)"
             )
         except sqlite3.OperationalError as exc:
-            if cls._is_missing_fts5(exc):
+            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; continuing without "
                     f"entries_fts index: {exc}"
@@ -94,11 +80,11 @@ class CuhkSQLiteSchemaManager:
         )
         try:
             cursor.execute(
-                "CREATE VIRTUAL TABLE definitions_fts "
-                "USING fts5(fk_entry_id UNINDEXED, definition)"
+                """CREATE VIRTUAL TABLE definitions_fts
+                   USING fts5(fk_entry_id UNINDEXED, definition)"""
             )
         except sqlite3.OperationalError as exc:
-            if cls._is_missing_fts5(exc):
+            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; "
                     f"continuing without definitions_fts index: {exc}"
@@ -178,6 +164,41 @@ class CuhkSQLiteSchemaManager:
         cursor.execute("DROP TABLE IF EXISTS definitions_chinese_sentences_links")
 
     @staticmethod
+    def generate_indices(cursor: sqlite3.Cursor):
+        """Generate search indices for dictionary tables.
+
+        Arguments:
+            cursor: sqlite cursor
+        """
+        try:
+            cursor.execute(
+                """INSERT INTO entries_fts (rowid, pinyin, jyutping)
+                   SELECT rowid, pinyin, jyutping FROM entries"""
+            )
+        except sqlite3.OperationalError as exc:
+            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+                logger.warning(
+                    "Skipping entries_fts population because FTS5 is "
+                    f"unavailable: {exc}"
+                )
+            else:
+                raise
+        try:
+            cursor.execute(
+                """INSERT INTO definitions_fts (rowid, fk_entry_id, definition)
+                   SELECT rowid, fk_entry_id, definition FROM definitions"""
+            )
+        except sqlite3.OperationalError as exc:
+            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+                logger.warning(
+                    "Skipping definitions_fts population because "
+                    f"FTS5 is unavailable: {exc}"
+                )
+            else:
+                raise
+        cursor.execute("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
+
+    @staticmethod
     def write_database_version(cursor: sqlite3.Cursor, version: int = 3):
         """Write schema version.
 
@@ -187,37 +208,16 @@ class CuhkSQLiteSchemaManager:
         """
         cursor.execute(f"PRAGMA user_version={version}")
 
-    @classmethod
-    def generate_indices(cls, cursor: sqlite3.Cursor):
-        """Generate search indices for dictionary tables.
+    @staticmethod
+    def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
+        """Check whether an OperationalError indicates unavailable FTS5 support.
 
         Arguments:
-            cursor: sqlite cursor
+            exc: sqlite operational error
+        Returns:
+            whether error indicates missing FTS5 support
         """
-        try:
-            cursor.execute(
-                "INSERT INTO entries_fts (rowid, pinyin, jyutping) "
-                "SELECT rowid, pinyin, jyutping FROM entries"
-            )
-        except sqlite3.OperationalError as exc:
-            if cls._is_missing_fts5(exc):
-                logger.warning(
-                    "Skipping entries_fts population because FTS5 is "
-                    f"unavailable: {exc}"
-                )
-            else:
-                raise
-        try:
-            cursor.execute(
-                "INSERT INTO definitions_fts (rowid, fk_entry_id, definition) "
-                "SELECT rowid, fk_entry_id, definition FROM definitions"
-            )
-        except sqlite3.OperationalError as exc:
-            if cls._is_missing_fts5(exc):
-                logger.warning(
-                    "Skipping definitions_fts population because "
-                    f"FTS5 is unavailable: {exc}"
-                )
-            else:
-                raise
-        cursor.execute("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
+        message = str(exc).lower()
+        if "fts5" in message or "no such module" in message:
+            return True
+        return "no such table" in message and "_fts" in message

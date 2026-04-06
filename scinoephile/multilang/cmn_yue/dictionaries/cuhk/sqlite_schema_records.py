@@ -29,10 +29,16 @@ class CuhkSQLiteSchemaRecords:
             source identifier
         """
         cursor.execute(
-            "INSERT INTO sources ("
-            "sourcename, sourceshortname, version, description, legal, link, "
-            "update_url, other"
-            ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            """INSERT INTO sources (
+                   sourcename,
+                   sourceshortname,
+                   version,
+                   description,
+                   legal,
+                   link,
+                   update_url,
+                   other
+               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 source.name,
                 source.shortname,
@@ -71,9 +77,13 @@ class CuhkSQLiteSchemaRecords:
             entry identifier
         """
         cursor.execute(
-            "INSERT INTO entries "
-            "(traditional, simplified, pinyin, jyutping, frequency) "
-            "VALUES (?, ?, ?, ?, ?)",
+            """INSERT INTO entries (
+                   traditional,
+                   simplified,
+                   pinyin,
+                   jyutping,
+                   frequency
+               ) VALUES (?, ?, ?, ?, ?)""",
             (traditional, simplified, pinyin, jyutping, frequency),
         )
         if cursor.rowcount == 1:
@@ -83,8 +93,11 @@ class CuhkSQLiteSchemaRecords:
             return int(entry_id)
 
         cursor.execute(
-            "SELECT entry_id FROM entries "
-            "WHERE traditional = ? AND simplified = ? AND pinyin = ? AND jyutping = ?",
+            """SELECT entry_id FROM entries
+               WHERE traditional = ?
+                 AND simplified = ?
+                 AND pinyin = ?
+                 AND jyutping = ?""",
             (traditional, simplified, pinyin, jyutping),
         )
         row = cursor.fetchone()
@@ -112,8 +125,12 @@ class CuhkSQLiteSchemaRecords:
             definition identifier
         """
         cursor.execute(
-            "INSERT INTO definitions (definition, label, fk_entry_id, fk_source_id) "
-            "VALUES (?, ?, ?, ?)",
+            """INSERT INTO definitions (
+                   definition,
+                   label,
+                   fk_entry_id,
+                   fk_source_id
+               ) VALUES (?, ?, ?, ?)""",
             (definition, label, entry_id, source_id),
         )
         if cursor.rowcount == 1:
@@ -123,9 +140,11 @@ class CuhkSQLiteSchemaRecords:
             return int(definition_id)
 
         cursor.execute(
-            "SELECT definition_id FROM definitions "
-            "WHERE definition = ? AND label = ? "
-            "AND fk_entry_id = ? AND fk_source_id = ?",
+            """SELECT definition_id FROM definitions
+               WHERE definition = ?
+                 AND label = ?
+                 AND fk_entry_id = ?
+                 AND fk_source_id = ?""",
             (definition, label, entry_id, source_id),
         )
         row = cursor.fetchone()
@@ -156,8 +175,11 @@ class CuhkSQLiteSchemaRecords:
         """
         _ = frequency
         cursor.execute(
-            "SELECT entry_id FROM entries "
-            "WHERE traditional = ? AND simplified = ? AND pinyin = ? AND jyutping = ?",
+            """SELECT entry_id FROM entries
+               WHERE traditional = ?
+                 AND simplified = ?
+                 AND pinyin = ?
+                 AND jyutping = ?""",
             (traditional, simplified, pinyin, jyutping),
         )
         row = cursor.fetchone()

@@ -40,6 +40,18 @@
     * variables or parameters holding `Path` objects should end in `_path` (e.g., `file_path`, `dir_path`, `cache_dir_path`)
     * use `*_name` for bare names and `*_stem` for stems, not for full paths
     * prefer `*_dir_path` over `*_directory` when the value is a path
+* Within classes, sort methods in the following heirarchy:
+  * Level 1
+    * `__init__`
+    * Other builtins
+    * Public methods
+    * Private methods
+  * Level 2
+    * Standard methods
+    * Class methods
+    * Static methods
+  * Level 3
+    * Alphabetical order
 
 ## Documentation
 
