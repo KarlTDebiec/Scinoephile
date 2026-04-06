@@ -74,7 +74,6 @@ class CuhkDictionaryScraperLinks:
         """
         html = self._fetch_text(TERMS_URL)
         soup = BeautifulSoup(html, "html.parser")
-
         main_panel = soup.find("div", id="MainContent_panelTermsIndex")
         if not isinstance(main_panel, Tag):
             raise RuntimeError("Unable to find CUHK terms index panel")
@@ -210,18 +209,6 @@ class CuhkDictionaryScraperLinks:
             raise RuntimeError("Request failed without an exception")
         raise last_exception
 
-    def _get_safe_filename_stem(self, value: str) -> str:
-        """Get a safe filename stem for a dictionary key.
-
-        Arguments:
-            value: raw value to encode in path
-        Returns:
-            safe filename stem
-        """
-        cleaned = value.strip().replace(" ", "_")
-        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
-        return cleaned
-
     def _get_variant_file_paths(self, item: str) -> list[Path]:
         """Get output file paths for one CUHK word item.
 
@@ -238,7 +225,21 @@ class CuhkDictionaryScraperLinks:
 
         return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
-    def _read_word_links(self, word_links_path: Path) -> list[tuple[str, str]]:
+    @staticmethod
+    def _get_safe_filename_stem(value: str) -> str:
+        """Get a safe filename stem for a dictionary key.
+
+        Arguments:
+            value: raw value to encode in path
+        Returns:
+            safe filename stem
+        """
+        cleaned = value.strip().replace(" ", "_")
+        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
+        return cleaned
+
+    @staticmethod
+    def _read_word_links(word_links_path: Path) -> list[tuple[str, str]]:
         """Read links from TSV.
 
         Arguments:
@@ -255,11 +256,8 @@ class CuhkDictionaryScraperLinks:
                 pairs.append((row[0], row[1]))
         return pairs
 
-    def _write_word_links(
-        self,
-        word_links_path: Path,
-        word_links: list[tuple[str, str]],
-    ):
+    @staticmethod
+    def _write_word_links(word_links_path: Path, word_links: list[tuple[str, str]]):
         """Write links to TSV.
 
         Arguments:

@@ -50,21 +50,14 @@ class CuhkDictionaryScraper:
             max_retries: max attempts for failed requests
             session: requests session for dependency injection
         """
-        configured_cache_dir_path = cache_dir_path
-        if configured_cache_dir_path is None:
-            configured_cache_dir_path = get_runtime_cache_dir_path(
-                "dictionaries", "cuhk"
-            )
-
-        self.cache_dir_path = val_output_dir_path(configured_cache_dir_path)
+        # Configure paths
+        if cache_dir_path is None:
+            cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
+        self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
-
         if database_path is None:
-            if cache_dir_path is None:
-                database_path = DEFAULT_DATABASE_PATH
-            else:
-                database_path = self.cache_dir_path / "cuhk.db"
+            database_path = DEFAULT_DATABASE_PATH
         self.database_path = database_path.expanduser().resolve()
 
         # Configure requests
@@ -97,11 +90,7 @@ class CuhkDictionaryScraper:
             database_path=self.database_path,
         )
 
-    def scrape(
-        self,
-        force: bool = False,
-        max_words: int | None = None,
-    ) -> Path:
+    def scrape(self, force: bool = False, max_words: int | None = None) -> Path:
         """Scrape CUHK data into a local SQLite dictionary.
 
         Arguments:
@@ -113,7 +102,7 @@ class CuhkDictionaryScraper:
         if self.database_path.exists() and not force and max_words is None:
             return self.database_path
 
-        # Clear cache if applicable
+        # Clear cache, if applicable
         if force or max_words is not None:
             for scraped_path in self.scraped_dir_path.glob("*.html"):
                 scraped_path.unlink()
