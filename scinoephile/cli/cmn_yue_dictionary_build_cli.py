@@ -63,13 +63,13 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         arg_groups["operation arguments"].add_argument(
             "--min-delay-seconds",
             type=float_arg(min_value=0.0),
-            default=5.0,
+            default=1.0,
             help="minimum delay between HTTP requests",
         )
         arg_groups["operation arguments"].add_argument(
             "--max-delay-seconds",
             type=float_arg(min_value=0.0),
-            default=10.0,
+            default=5.0,
             help="maximum delay between HTTP requests",
         )
         arg_groups["operation arguments"].add_argument(
@@ -146,8 +146,8 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             max_words: optional max words cap
             force: whether forced scraping is enabled
         """
-        logger.info(f"Using CUHK scrape cache directory: {cache_dir_path}")
-        logger.info(f"Writing CUHK SQLite database to: {database_path}")
+        logger.info(f"Using cache directory: {cache_dir_path}")
+        logger.info(f"Using SQLite database: {database_path}")
         if max_words is None:
             logger.info("Building all discovered CUHK words")
         else:
