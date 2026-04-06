@@ -1,12 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""CUHK dictionary scraping, parsing, and SQLite storage."""
+"""CUHK dictionary scraping and parsing."""
 
 from __future__ import annotations
 
 import csv
 import random
-import sqlite3
+from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 from time import sleep
@@ -19,7 +19,11 @@ from hkscs_unicode_converter import converter as hkscs_converter
 from pypinyin import Style, lazy_pinyin
 
 from scinoephile.common.validation import val_output_dir_path
-from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
+from scinoephile.core.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+    DictionarySource,
+)
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .constants import (
@@ -28,7 +32,6 @@ from .constants import (
     CUHK_SOURCE,
     CUHK_TERMS_PATH,
     CUHK_WORD_RESULT_PATHS,
-    DEFAULT_DATABASE_PATH,
     INVALID_FILENAME_CHARS_REGEX,
     JYUTPING_LETTERS_ID_REGEX,
     JYUTPING_NUMBERS_ID_REGEX,
@@ -41,7 +44,6 @@ from .constants import (
     REMARK_ID_REGEX,
     TERMS_URL,
 )
-from .sqlite_schema_manager import CuhkSQLiteSchemaManager
 
 __all__ = [
     "CuhkDictionaryScraper",
@@ -50,13 +52,23 @@ __all__ = [
 logger = getLogger(__name__)
 
 
+@dataclass(frozen=True)
+class CuhkDictionaryScrapeData:
+    """Scraped CUHK dictionary source metadata and entries."""
+
+    source: DictionarySource
+    """Source metadata associated with the scraped dictionary data."""
+
+    entries: list[DictionaryEntry]
+    """Dictionary entries parsed from scraped CUHK pages."""
+
+
 class CuhkDictionaryScraper:
-    """Scraper for CUHK dictionary cache, parsing, and SQLite data."""
+    """Scraper for CUHK dictionary cache and parsed entry data."""
 
     def __init__(
         self,
         cache_dir_path: Path | None = None,
-        database_path: Path | None = None,
         *,
         min_delay_seconds: float = 5.0,
         max_delay_seconds: float = 10.0,
@@ -68,7 +80,6 @@ class CuhkDictionaryScraper:
 
         Arguments:
             cache_dir_path: cache directory path for CUHK scrape artifacts
-            database_path: SQLite database path
             min_delay_seconds: minimum delay between HTTP requests
             max_delay_seconds: maximum delay between HTTP requests
             request_timeout_seconds: per-request timeout
@@ -80,9 +91,6 @@ class CuhkDictionaryScraper:
         self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
-        if database_path is None:
-            database_path = DEFAULT_DATABASE_PATH
-        self.database_path = database_path.expanduser().resolve()
 
         if max_delay_seconds < min_delay_seconds:
             raise ValueError("max_delay_seconds must be >= min_delay_seconds")
@@ -278,18 +286,19 @@ class CuhkDictionaryScraper:
             definitions=definitions,
         )
 
-    def scrape(self, force: bool = False, max_words: int | None = None) -> Path:
-        """Scrape CUHK data into a local SQLite dictionary.
+    def scrape(
+        self,
+        force: bool = False,
+        max_words: int | None = None,
+    ) -> CuhkDictionaryScrapeData:
+        """Scrape CUHK data into source metadata and dictionary entries.
 
         Arguments:
             force: whether to ignore existing artifacts and rebuild
             max_words: optional max number of discovered words to scrape
         Returns:
-            path to scraped SQLite database
+            scraped CUHK dictionary data
         """
-        if self.database_path.exists() and not force and max_words is None:
-            return self.database_path
-
         if force or max_words is not None:
             for scraped_path in self.scraped_dir_path.glob("*.html"):
                 scraped_path.unlink()
@@ -309,9 +318,7 @@ class CuhkDictionaryScraper:
         logger.info("Parsing scraped CUHK word pages")
         entries = self.parse_scraped_pages()
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
-        logger.info("Writing CUHK SQLite database")
-        self.write_database(entries)
-        return self.database_path
+        return CuhkDictionaryScrapeData(source=CUHK_SOURCE, entries=entries)
 
     def scrape_word_pages(
         self,
@@ -342,47 +349,6 @@ class CuhkDictionaryScraper:
 
             if self.max_delay_seconds > 0:
                 sleep(random.uniform(self.min_delay_seconds, self.max_delay_seconds))
-
-    def write_database(self, entries: list[DictionaryEntry]):
-        """Write entries to SQLite.
-
-        Arguments:
-            entries: normalized dictionary entries
-        """
-        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
-        self.database_path.parent.mkdir(parents=True, exist_ok=True)
-        if self.database_path.exists():
-            logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
-            self.database_path.unlink()
-
-        with sqlite3.connect(self.database_path) as connection:
-            cursor = connection.cursor()
-
-            CuhkSQLiteSchemaManager.write_database_version(cursor)
-            CuhkSQLiteSchemaManager.drop_tables(cursor)
-            CuhkSQLiteSchemaManager.create_tables(cursor)
-
-            source_id = CuhkSQLiteSchemaManager.insert_source(cursor, CUHK_SOURCE)
-            for entry in entries:
-                entry_id = CuhkSQLiteSchemaManager.insert_entry(
-                    cursor,
-                    entry.traditional,
-                    entry.simplified,
-                    entry.pinyin,
-                    entry.jyutping,
-                    entry.frequency,
-                )
-                for definition in entry.definitions:
-                    CuhkSQLiteSchemaManager.insert_definition(
-                        cursor,
-                        definition.text,
-                        definition.label,
-                        entry_id,
-                        source_id,
-                    )
-
-            CuhkSQLiteSchemaManager.generate_indices(cursor)
-            connection.commit()
 
     def _fetch_text(self, url: str) -> str:
         """Fetch text with retry and timeout.

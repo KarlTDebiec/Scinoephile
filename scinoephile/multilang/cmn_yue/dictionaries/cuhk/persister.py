@@ -1,26 +1,167 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Schema-management class for CUHK dictionary SQLite data."""
+"""SQLite persistence for the CUHK dictionary cache."""
 
 from __future__ import annotations
 
 import sqlite3
 from logging import getLogger
+from pathlib import Path
+from typing import TYPE_CHECKING
 
-from scinoephile.core.dictionaries import DictionarySource
+from scinoephile.core.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+    DictionarySource,
+    LookupDirection,
+)
 
 __all__ = [
-    "CuhkSQLiteSchemaManager",
+    "CuhkDictionaryPersister",
 ]
+
+if TYPE_CHECKING:
+    from .scraper import CuhkDictionaryScrapeData
 
 logger = getLogger(__name__)
 
 
-class CuhkSQLiteSchemaManager:
-    """Schema manager for CUHK dictionary SQLite tables."""
+class CuhkDictionaryPersister:
+    """SQLite schema and CRUD operations for CUHK dictionary data."""
+
+    def __init__(self, database_path: Path):
+        """Initialize.
+
+        Arguments:
+            database_path: SQLite database path
+        """
+        self.database_path = database_path
+
+    def lookup(
+        self,
+        query: str,
+        direction: LookupDirection,
+        limit: int,
+    ) -> list[DictionaryEntry]:
+        """Lookup entries from the persisted CUHK dictionary.
+
+        Arguments:
+            query: query string
+            direction: lookup direction
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        if direction == LookupDirection.CMN_TO_YUE:
+            return self._lookup_cmn_to_yue(query, limit)
+        return self._lookup_yue_to_cmn(query, limit)
+
+    def persist(self, scrape_data: CuhkDictionaryScrapeData) -> Path:
+        """Persist scraped CUHK dictionary data to SQLite.
+
+        Arguments:
+            scrape_data: scraped source metadata and entries
+        Returns:
+            SQLite database path
+        """
+        self.database_path.parent.mkdir(parents=True, exist_ok=True)
+        if self.database_path.exists():
+            logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
+            self.database_path.unlink()
+
+        with sqlite3.connect(self.database_path) as connection:
+            cursor = connection.cursor()
+
+            self._write_database_version(cursor)
+            self._drop_tables(cursor)
+            self._create_tables(cursor)
+
+            source_id = self._insert_source(cursor, scrape_data.source)
+            for entry in scrape_data.entries:
+                entry_id = self._insert_entry(
+                    cursor,
+                    entry.traditional,
+                    entry.simplified,
+                    entry.pinyin,
+                    entry.jyutping,
+                    entry.frequency,
+                )
+                for definition in entry.definitions:
+                    self._insert_definition(
+                        cursor,
+                        definition.text,
+                        definition.label,
+                        entry_id,
+                        source_id,
+                    )
+
+            self._generate_indices(cursor)
+            connection.commit()
+
+        return self.database_path
 
     @staticmethod
-    def create_tables(cursor: sqlite3.Cursor):
+    def _aggregate_rows(rows: list[sqlite3.Row]) -> list[DictionaryEntry]:
+        """Aggregate joined rows into dictionary entries.
+
+        Arguments:
+            rows: joined entry/definition rows
+        Returns:
+            dictionary entries
+        """
+        aggregated: dict[int, DictionaryEntry] = {}
+        definitions_map: dict[int, list[DictionaryDefinition]] = {}
+
+        for row in rows:
+            entry_id = int(row["entry_id"])
+            if entry_id not in aggregated:
+                aggregated[entry_id] = DictionaryEntry(
+                    traditional=str(row["traditional"]),
+                    simplified=str(row["simplified"]),
+                    pinyin=str(row["pinyin"]),
+                    jyutping=str(row["jyutping"]),
+                    frequency=float(row["frequency"] or 0.0),
+                    definitions=[],
+                )
+                definitions_map[entry_id] = []
+
+            definition = row["definition"]
+            label = row["label"]
+            if definition is not None:
+                definitions_map[entry_id].append(
+                    DictionaryDefinition(
+                        text=str(definition),
+                        label="" if label is None else str(label),
+                    )
+                )
+
+        output: list[DictionaryEntry] = []
+        for entry_id, entry in aggregated.items():
+            output.append(
+                DictionaryEntry(
+                    traditional=entry.traditional,
+                    simplified=entry.simplified,
+                    pinyin=entry.pinyin,
+                    jyutping=entry.jyutping,
+                    frequency=entry.frequency,
+                    definitions=definitions_map[entry_id],
+                )
+            )
+        return output
+
+    @staticmethod
+    def _build_like_query(query: str) -> str:
+        """Build escaped LIKE pattern for literal substring search.
+
+        Arguments:
+            query: raw query text
+        Returns:
+            escaped pattern wrapped for substring search
+        """
+        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        return f"%{escaped}%"
+
+    def _create_tables(self, cursor: sqlite3.Cursor):
         """Create dictionary tables.
 
         Arguments:
@@ -43,7 +184,7 @@ class CuhkSQLiteSchemaManager:
                 "CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)"
             )
         except sqlite3.OperationalError as exc:
-            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+            if self._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; continuing without "
                     f"entries_fts index: {exc}"
@@ -86,7 +227,7 @@ class CuhkSQLiteSchemaManager:
                    USING fts5(fk_entry_id UNINDEXED, definition)"""
             )
         except sqlite3.OperationalError as exc:
-            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+            if self._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; "
                     f"continuing without definitions_fts index: {exc}"
@@ -145,8 +286,7 @@ class CuhkSQLiteSchemaManager:
                 )"""
         )
 
-    @staticmethod
-    def drop_tables(cursor: sqlite3.Cursor):
+    def _drop_tables(self, cursor: sqlite3.Cursor):
         """Drop dictionary tables.
 
         Arguments:
@@ -165,8 +305,54 @@ class CuhkSQLiteSchemaManager:
 
         cursor.execute("DROP TABLE IF EXISTS definitions_chinese_sentences_links")
 
-    @staticmethod
-    def generate_indices(cursor: sqlite3.Cursor):
+    def _fetch_entries(
+        self,
+        entry_ids: list[int],
+    ) -> list[DictionaryEntry]:
+        """Fetch entry rows and definitions for selected entry IDs.
+
+        Arguments:
+            entry_ids: ordered entry identifiers
+        Returns:
+            dictionary entries
+        """
+        if not entry_ids:
+            return []
+
+        in_placeholders = ", ".join("?" for _ in entry_ids)
+        case_clauses = " ".join(
+            f"WHEN ? THEN {rank}" for rank, _ in enumerate(entry_ids)
+        )
+        params = tuple([*entry_ids, *entry_ids])
+
+        sql = f"""
+            SELECT
+                e.entry_id,
+                e.traditional,
+                e.simplified,
+                e.pinyin,
+                e.jyutping,
+                e.frequency,
+                d.label,
+                d.definition
+            FROM entries AS e
+            LEFT JOIN definitions AS d
+                ON d.fk_entry_id = e.entry_id
+            WHERE e.entry_id IN ({in_placeholders})
+            ORDER BY
+                CASE e.entry_id
+                    {case_clauses}
+                    ELSE {len(entry_ids)}
+                END,
+                d.definition_id
+        """
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(sql, params).fetchall()
+
+        return self._aggregate_rows(rows)
+
+    def _generate_indices(self, cursor: sqlite3.Cursor):
         """Generate search indices for dictionary tables.
 
         Arguments:
@@ -178,7 +364,7 @@ class CuhkSQLiteSchemaManager:
                    SELECT rowid, pinyin, jyutping FROM entries"""
             )
         except sqlite3.OperationalError as exc:
-            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+            if self._is_missing_fts5(exc):
                 logger.warning(
                     "Skipping entries_fts population because FTS5 is "
                     f"unavailable: {exc}"
@@ -191,7 +377,7 @@ class CuhkSQLiteSchemaManager:
                    SELECT rowid, fk_entry_id, definition FROM definitions"""
             )
         except sqlite3.OperationalError as exc:
-            if CuhkSQLiteSchemaManager._is_missing_fts5(exc):
+            if self._is_missing_fts5(exc):
                 logger.warning(
                     "Skipping definitions_fts population because "
                     f"FTS5 is unavailable: {exc}"
@@ -201,7 +387,7 @@ class CuhkSQLiteSchemaManager:
         cursor.execute("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
 
     @staticmethod
-    def insert_definition(
+    def _insert_definition(
         cursor: sqlite3.Cursor,
         definition: str,
         label: str,
@@ -248,7 +434,7 @@ class CuhkSQLiteSchemaManager:
         return int(row[0])
 
     @staticmethod
-    def insert_entry(
+    def _insert_entry(
         cursor: sqlite3.Cursor,
         traditional: str,
         simplified: str,
@@ -298,7 +484,7 @@ class CuhkSQLiteSchemaManager:
         return int(row[0])
 
     @staticmethod
-    def insert_source(cursor: sqlite3.Cursor, source: DictionarySource) -> int:
+    def _insert_source(cursor: sqlite3.Cursor, source: DictionarySource) -> int:
         """Insert a source and return its identifier.
 
         Arguments:
@@ -335,49 +521,6 @@ class CuhkSQLiteSchemaManager:
         return source_id
 
     @staticmethod
-    def get_entry_id(
-        cursor: sqlite3.Cursor,
-        traditional: str,
-        simplified: str,
-        pinyin: str,
-        jyutping: str,
-        frequency: float,
-    ) -> int | None:
-        """Get an existing entry identifier if present.
-
-        Arguments:
-            cursor: sqlite cursor
-            traditional: traditional Chinese text
-            simplified: simplified Chinese text
-            pinyin: pinyin pronunciation
-            jyutping: jyutping pronunciation
-            frequency: frequency score (unused for identity; retained for compatibility)
-        Returns:
-            existing entry identifier if found
-        """
-        _ = frequency
-        cursor.execute(
-            """SELECT entry_id FROM entries
-               WHERE traditional = ?
-                 AND simplified = ?
-                 AND pinyin = ?
-                 AND jyutping = ?""",
-            (traditional, simplified, pinyin, jyutping),
-        )
-        row = cursor.fetchone()
-        return None if row is None else int(row[0])
-
-    @staticmethod
-    def write_database_version(cursor: sqlite3.Cursor, version: int = 3):
-        """Write schema version.
-
-        Arguments:
-            cursor: sqlite cursor
-            version: schema version integer
-        """
-        cursor.execute(f"PRAGMA user_version={version}")
-
-    @staticmethod
     def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
         """Check whether an OperationalError indicates unavailable FTS5 support.
 
@@ -390,3 +533,125 @@ class CuhkSQLiteSchemaManager:
         if "fts5" in message or "no such module" in message:
             return True
         return "no such table" in message and "_fts" in message
+
+    def _lookup_cmn_to_yue(self, query: str, limit: int) -> list[DictionaryEntry]:
+        """Lookup Mandarin query terms in CUHK data.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        like_query = self._build_like_query(query)
+
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            LEFT JOIN definitions AS d
+                ON d.fk_entry_id = e.entry_id
+            WHERE e.simplified = ?
+               OR e.traditional = ?
+               OR e.pinyin LIKE ? ESCAPE '\\'
+               OR d.definition LIKE ? ESCAPE '\\'
+            GROUP BY e.entry_id
+            ORDER BY
+                CASE
+                    WHEN e.simplified = ? THEN 0
+                    WHEN e.traditional = ? THEN 1
+                    WHEN e.pinyin = ? THEN 2
+                    ELSE 3
+                END,
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            query,
+            like_query,
+            like_query,
+            query,
+            query,
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
+    def _lookup_yue_to_cmn(
+        self,
+        query: str,
+        limit: int,
+    ) -> list[DictionaryEntry]:
+        """Lookup Cantonese query terms in CUHK data.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        like_query = self._build_like_query(query)
+
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            WHERE e.jyutping = ?
+               OR e.jyutping LIKE ? ESCAPE '\\'
+               OR e.traditional = ?
+               OR e.simplified = ?
+            GROUP BY e.entry_id
+            ORDER BY
+                CASE
+                    WHEN e.jyutping = ? THEN 0
+                    WHEN e.traditional = ? THEN 1
+                    WHEN e.simplified = ? THEN 2
+                    ELSE 3
+                END,
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            like_query,
+            query,
+            query,
+            query,
+            query,
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
+    def _select_entry_ids(
+        self,
+        sql: str,
+        params: tuple[str | int, ...],
+    ) -> list[int]:
+        """Run entry selection query.
+
+        Arguments:
+            sql: SQL query that returns entry_id
+            params: SQL parameters
+        Returns:
+            ordered entry identifiers
+        """
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(sql, params).fetchall()
+        return [int(row["entry_id"]) for row in rows]
+
+    @staticmethod
+    def _write_database_version(cursor: sqlite3.Cursor, version: int = 3):
+        """Write schema version.
+
+        Arguments:
+            cursor: sqlite cursor
+            version: schema version integer
+        """
+        cursor.execute(f"PRAGMA user_version={version}")

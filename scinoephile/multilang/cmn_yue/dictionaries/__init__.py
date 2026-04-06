@@ -3,10 +3,3 @@
 """Dictionary packages for 中文/粤文 workflows."""
 
 from __future__ import annotations
-
-from .cuhk import CuhkDictionaryScraper, CuhkDictionaryService
-
-__all__ = [
-    "CuhkDictionaryScraper",
-    "CuhkDictionaryService",
-]

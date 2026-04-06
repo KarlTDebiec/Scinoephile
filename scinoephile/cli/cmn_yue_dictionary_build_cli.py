@@ -16,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryScraper
+from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
 logger = getLogger(__name__)
 
@@ -100,7 +100,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         max_retries = kwargs.pop("max_retries")
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
-        scraper = CuhkDictionaryScraper(
+        service = CuhkDictionaryService(
             cache_dir_path=cache_dir_path,
             min_delay_seconds=min_delay_seconds,
             max_delay_seconds=max_delay_seconds,
@@ -108,12 +108,12 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             request_timeout_seconds=request_timeout_seconds,
         )
         cls._log_config(
-            scraper.cache_dir_path,
-            scraper.database_path,
+            service.cache_dir_path,
+            service.database_path,
             max_words,
             force,
         )
-        database_path = scraper.scrape(
+        database_path = service.build(
             force=force,
             max_words=max_words,
         )

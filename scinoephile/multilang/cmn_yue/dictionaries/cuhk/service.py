@@ -1,20 +1,18 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""CUHK dictionary lookup service."""
+"""CUHK dictionary service."""
 
 from __future__ import annotations
 
-import sqlite3
 from pathlib import Path
 
+import requests
+
 from scinoephile.common.validation import val_input_path, val_int
-from scinoephile.core.dictionaries import (
-    DictionaryDefinition,
-    DictionaryEntry,
-    LookupDirection,
-)
+from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
+from .persister import CuhkDictionaryPersister
 from .scraper import CuhkDictionaryScraper
 
 __all__ = [
@@ -33,6 +31,9 @@ class CuhkDictionaryService:
         auto_build_missing: bool = False,
         min_delay_seconds: float = 5.0,
         max_delay_seconds: float = 10.0,
+        request_timeout_seconds: float = 30.0,
+        max_retries: int = 5,
+        session: requests.Session | None = None,
     ):
         """Initialize.
 
@@ -42,6 +43,9 @@ class CuhkDictionaryService:
             auto_build_missing: build CUHK data automatically if missing
             min_delay_seconds: minimum delay used if build is triggered
             max_delay_seconds: maximum delay used if build is triggered
+            request_timeout_seconds: per-request timeout
+            max_retries: max attempts for failed requests
+            session: requests session for dependency injection
         """
         if database_path is None:
             database_path = DEFAULT_DATABASE_PATH
@@ -50,12 +54,35 @@ class CuhkDictionaryService:
             database_path = val_input_path(database_path)
         self.database_path = database_path
         self.auto_build_missing = auto_build_missing
+        self.persister = CuhkDictionaryPersister(database_path=self.database_path)
         self.scraper = CuhkDictionaryScraper(
             cache_dir_path=cache_dir_path,
-            database_path=self.database_path,
             min_delay_seconds=min_delay_seconds,
             max_delay_seconds=max_delay_seconds,
+            request_timeout_seconds=request_timeout_seconds,
+            max_retries=max_retries,
+            session=session,
         )
+        self.cache_dir_path = self.scraper.cache_dir_path
+
+    def build(
+        self,
+        force: bool = False,
+        max_words: int | None = None,
+    ) -> Path:
+        """Build or rebuild the local CUHK SQLite dictionary.
+
+        Arguments:
+            force: whether to ignore existing artifacts and rebuild
+            max_words: optional max number of discovered words to scrape
+        Returns:
+            SQLite database path
+        """
+        if self.database_path.exists() and not force and max_words is None:
+            return self.database_path
+
+        scrape_data = self.scraper.scrape(force=force, max_words=max_words)
+        return self.persister.persist(scrape_data)
 
     def lookup(
         self,
@@ -82,230 +109,8 @@ class CuhkDictionaryService:
                 raise FileNotFoundError(
                     "CUHK dictionary database not found. "
                     "Set auto_build_missing=True to build automatically, "
-                    "or scrape explicitly with CuhkDictionaryScraper.scrape()."
+                    "or build explicitly with CuhkDictionaryService.build()."
                 )
-            self.scraper.scrape(force=False)
+            self.build(force=False)
 
-        if direction == LookupDirection.CMN_TO_YUE:
-            return self._lookup_cmn_to_yue(query, limit)
-        return self._lookup_yue_to_cmn(query, limit)
-
-    @staticmethod
-    def _aggregate_rows(rows: list[sqlite3.Row]) -> list[DictionaryEntry]:
-        """Aggregate joined rows into dictionary entries.
-
-        Arguments:
-            rows: joined entry/definition rows
-        Returns:
-            dictionary entries
-        """
-        aggregated: dict[int, DictionaryEntry] = {}
-        definitions_map: dict[int, list[DictionaryDefinition]] = {}
-
-        for row in rows:
-            entry_id = int(row["entry_id"])
-            if entry_id not in aggregated:
-                aggregated[entry_id] = DictionaryEntry(
-                    traditional=str(row["traditional"]),
-                    simplified=str(row["simplified"]),
-                    pinyin=str(row["pinyin"]),
-                    jyutping=str(row["jyutping"]),
-                    frequency=float(row["frequency"] or 0.0),
-                    definitions=[],
-                )
-                definitions_map[entry_id] = []
-
-            definition = row["definition"]
-            label = row["label"]
-            if definition is not None:
-                definitions_map[entry_id].append(
-                    DictionaryDefinition(
-                        text=str(definition),
-                        label="" if label is None else str(label),
-                    )
-                )
-
-        output: list[DictionaryEntry] = []
-        for entry_id, entry in aggregated.items():
-            output.append(
-                DictionaryEntry(
-                    traditional=entry.traditional,
-                    simplified=entry.simplified,
-                    pinyin=entry.pinyin,
-                    jyutping=entry.jyutping,
-                    frequency=entry.frequency,
-                    definitions=definitions_map[entry_id],
-                )
-            )
-        return output
-
-    @staticmethod
-    def _build_like_query(query: str) -> str:
-        """Build escaped LIKE pattern for literal substring search.
-
-        Arguments:
-            query: raw query text
-        Returns:
-            escaped pattern wrapped for substring search
-        """
-        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
-        return f"%{escaped}%"
-
-    def _fetch_entries(
-        self,
-        entry_ids: list[int],
-    ) -> list[DictionaryEntry]:
-        """Fetch entry rows and definitions for selected entry IDs.
-
-        Arguments:
-            entry_ids: ordered entry identifiers
-        Returns:
-            dictionary entries
-        """
-        if not entry_ids:
-            return []
-
-        in_placeholders = ", ".join("?" for _ in entry_ids)
-        case_clauses = " ".join(
-            f"WHEN ? THEN {rank}" for rank, _ in enumerate(entry_ids)
-        )
-        params = tuple([*entry_ids, *entry_ids])
-
-        sql = f"""
-            SELECT
-                e.entry_id,
-                e.traditional,
-                e.simplified,
-                e.pinyin,
-                e.jyutping,
-                e.frequency,
-                d.label,
-                d.definition
-            FROM entries AS e
-            LEFT JOIN definitions AS d
-                ON d.fk_entry_id = e.entry_id
-            WHERE e.entry_id IN ({in_placeholders})
-            ORDER BY
-                CASE e.entry_id
-                    {case_clauses}
-                    ELSE {len(entry_ids)}
-                END,
-                d.definition_id
-        """
-        with sqlite3.connect(self.database_path) as connection:
-            connection.row_factory = sqlite3.Row
-            rows = connection.execute(sql, params).fetchall()
-
-        return CuhkDictionaryService._aggregate_rows(rows)
-
-    def _lookup_cmn_to_yue(self, query: str, limit: int) -> list[DictionaryEntry]:
-        """Lookup Mandarin query terms in CUHK data.
-
-        Arguments:
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        like_query = CuhkDictionaryService._build_like_query(query)
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            LEFT JOIN definitions AS d
-                ON d.fk_entry_id = e.entry_id
-            WHERE e.simplified = ?
-               OR e.traditional = ?
-               OR e.pinyin LIKE ? ESCAPE '\\'
-               OR d.definition LIKE ? ESCAPE '\\'
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.simplified = ? THEN 0
-                    WHEN e.traditional = ? THEN 1
-                    WHEN e.pinyin = ? THEN 2
-                    ELSE 3
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            query,
-            like_query,
-            like_query,
-            query,
-            query,
-            query,
-            limit,
-        )
-        entry_ids = self._select_entry_ids(sql, params)
-        return self._fetch_entries(entry_ids)
-
-    def _lookup_yue_to_cmn(
-        self,
-        query: str,
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Lookup Cantonese query terms in CUHK data.
-
-        Arguments:
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        like_query = CuhkDictionaryService._build_like_query(query)
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.jyutping = ?
-               OR e.jyutping LIKE ? ESCAPE '\\'
-               OR e.traditional = ?
-               OR e.simplified = ?
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.jyutping = ? THEN 0
-                    WHEN e.traditional = ? THEN 1
-                    WHEN e.simplified = ? THEN 2
-                    ELSE 3
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            like_query,
-            query,
-            query,
-            query,
-            query,
-            query,
-            limit,
-        )
-        entry_ids = self._select_entry_ids(sql, params)
-        return self._fetch_entries(entry_ids)
-
-    def _select_entry_ids(
-        self,
-        sql: str,
-        params: tuple[str | int, ...],
-    ) -> list[int]:
-        """Run entry selection query.
-
-        Arguments:
-            sql: SQL query that returns entry_id
-            params: SQL parameters
-        Returns:
-            ordered entry identifiers
-        """
-        with sqlite3.connect(self.database_path) as connection:
-            connection.row_factory = sqlite3.Row
-            rows = connection.execute(sql, params).fetchall()
-        return [int(row["entry_id"]) for row in rows]
+        return self.persister.lookup(query, direction, limit)

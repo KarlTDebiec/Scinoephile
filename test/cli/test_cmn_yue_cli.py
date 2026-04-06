@@ -21,7 +21,11 @@ from scinoephile.common.testing import (
     assert_cli_usage,
     run_cli_with_args,
 )
-from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
+from scinoephile.core.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+    LookupDirection,
+)
 
 
 @pytest.mark.parametrize(
@@ -58,9 +62,9 @@ def test_cmn_yue_dictionary_build_cli(tmp_path: Path):
     database_path = tmp_path / "cache" / "cuhk.db"
 
     with patch(
-        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryScraper.scrape",
+        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryService.build",
         return_value=database_path,
-    ) as mock_scrape:
+    ) as mock_build:
         run_cli_with_args(
             ScinoephileCli,
             "cmn_yue dictionary build "
@@ -73,7 +77,7 @@ def test_cmn_yue_dictionary_build_cli(tmp_path: Path):
             "--request-timeout-seconds 10",
         )
 
-    mock_scrape.assert_called_once_with(force=True, max_words=7)
+    mock_build.assert_called_once_with(force=True, max_words=7)
     assert database_path == tmp_path / "cache" / "cuhk.db"
 
 
@@ -102,13 +106,13 @@ def test_cmn_yue_dictionary_search_cli(
             ScinoephileCli,
             "cmn_yue dictionary search "
             f"--cache-dir {tmp_path / 'cache'} "
-            "--direction cantonese_to_mandarin "
+            "--direction yue_to_cmn "
             "--limit 3 "
             "baa1",
         )
 
     mock_lookup.assert_called_once_with(
         query="baa1",
-        direction="cantonese_to_mandarin",
+        direction=LookupDirection.YUE_TO_CMN,
         limit=3,
     )
