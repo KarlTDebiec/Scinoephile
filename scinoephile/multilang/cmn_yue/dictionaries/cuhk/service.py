@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.common.validation import val_int
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
     DictionaryEntry,
 )
@@ -49,26 +50,6 @@ class CuhkDictionaryService:
         )
         self.lookup_store = CuhkDictionaryLookupStore()
 
-    @property
-    def database_path(self) -> Path:
-        """Path to local SQLite database."""
-        return self.scraper.database_path
-
-    def scrape(
-        self,
-        force: bool = False,
-        max_words: int | None = None,
-    ) -> Path:
-        """Scrape CUHK data cache.
-
-        Arguments:
-            force: whether to force a fresh scrape from source
-            max_words: optional max number of discovered words to scrape
-        Returns:
-            path to scraped SQLite database
-        """
-        return self.scraper.scrape(force=force, max_words=max_words)
-
     def lookup(
         self,
         query: str,
@@ -84,40 +65,21 @@ class CuhkDictionaryService:
         Returns:
             dictionary entries
         """
-        normalized_query = query.strip()
-        if not normalized_query:
+        query = query.strip()
+        if not query:
             return []
-        normalized_limit = min(MAX_LOOKUP_LIMIT, max(1, int(limit)))
+        limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        database_path = self._ensure_database_path()
+        database_path = self.scraper.database_path
+        if not database_path.exists():
+            if not self.auto_build_missing:
+                raise FileNotFoundError(
+                    "CUHK dictionary database not found. "
+                    "Set auto_build_missing=True to build automatically, "
+                    "or scrape explicitly with CuhkDictionaryScraper.scrape()."
+                )
+            database_path = self.scraper.scrape(force=False)
+
         if direction == LookupDirection.CMN_TO_YUE:
-            return self.lookup_store.lookup_cmn_to_yue(
-                database_path,
-                normalized_query,
-                normalized_limit,
-            )
-        return self.lookup_store.lookup_yue_to_cmn(
-            database_path,
-            normalized_query,
-            normalized_limit,
-        )
-
-    def _ensure_database_path(self) -> Path:
-        """Ensure local database exists.
-
-        Returns:
-            database path
-        Raises:
-            FileNotFoundError: if database is missing and auto-build is disabled
-        """
-        if self.database_path.exists():
-            return self.database_path
-
-        if not self.auto_build_missing:
-            raise FileNotFoundError(
-                "CUHK dictionary database not found. "
-                "Set auto_build_missing=True to build automatically, "
-                "or scrape explicitly with CuhkDictionaryService.scrape()."
-            )
-
-        return self.scrape(force=False)
+            return self.lookup_store.lookup_cmn_to_yue(database_path, query, limit)
+        return self.lookup_store.lookup_yue_to_cmn(database_path, query, limit)
