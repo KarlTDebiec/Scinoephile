@@ -61,22 +61,22 @@ def test_cmn_yue_dictionary_build_cli(tmp_path: Path):
     database_path = tmp_path / "cache" / "cuhk.db"
 
     with patch(
-        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryScraper.build",
+        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryScraper.scrape",
         return_value=database_path,
-    ) as mock_build:
+    ) as mock_scrape:
         run_cli_with_args(
             ScinoephileCli,
             "cmn_yue dictionary build "
             f"--cache-dir {tmp_path / 'cache'} "
             "--max-words 7 "
-            "--force-rebuild "
+            "--force "
             "--min-delay-seconds 0 "
             "--max-delay-seconds 0 "
             "--max-retries 2 "
             "--request-timeout-seconds 10",
         )
 
-    mock_build.assert_called_once_with(force_rebuild=True, max_words=7)
+    mock_scrape.assert_called_once_with(force=True, max_words=7)
     assert database_path == tmp_path / "cache" / "cuhk.db"
 
 

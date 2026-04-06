@@ -66,15 +66,15 @@ class CuhkDictionaryScraperLinks:
         self.request_timeout_seconds = request_timeout_seconds
         self.session = session
 
-    def load_word_links(self, force_refresh: bool = False) -> list[tuple[str, str]]:
+    def load_word_links(self, force: bool = False) -> list[tuple[str, str]]:
         """Load or fetch CUHK word links.
 
         Arguments:
-            force_refresh: whether to ignore cached link file
+            force: whether to ignore cached link file
         Returns:
             list of (word, url)
         """
-        if self.word_links_path.exists() and not force_refresh:
+        if self.word_links_path.exists() and not force:
             return self._read_word_links(self.word_links_path)
 
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)

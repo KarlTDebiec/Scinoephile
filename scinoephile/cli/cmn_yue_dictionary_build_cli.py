@@ -56,9 +56,9 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             help="stop after building the first N discovered words",
         )
         arg_groups["operation arguments"].add_argument(
-            "--force-rebuild",
+            "--force",
             action="store_true",
-            help="rebuild even if a local CUHK database already exists",
+            help="rescrape even if local CUHK artifacts already exist",
         )
         arg_groups["operation arguments"].add_argument(
             "--min-delay-seconds",
@@ -94,7 +94,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         """
         cache_dir_path = kwargs.pop("cache_dir")
         max_words = kwargs.pop("max_words", None)
-        force_rebuild = kwargs.pop("force_rebuild")
+        force = kwargs.pop("force")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
         max_delay_seconds = kwargs.pop("max_delay_seconds")
         max_retries = kwargs.pop("max_retries")
@@ -111,9 +111,12 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             scraper.cache_dir_path,
             scraper.database_path,
             max_words,
-            force_rebuild,
+            force,
         )
-        database_path = scraper.build(force_rebuild=force_rebuild, max_words=max_words)
+        database_path = scraper.scrape(
+            force=force,
+            max_words=max_words,
+        )
         logger.info(f"CUHK dictionary build complete: {database_path}")
 
     @classmethod
@@ -131,7 +134,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         cache_dir_path: Path,
         database_path: Path,
         max_words: int | None,
-        force_rebuild: bool,
+        force: bool,
     ):
         """Log the effective build configuration.
 
@@ -139,7 +142,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             cache_dir_path: cache directory path
             database_path: SQLite database path
             max_words: optional max words cap
-            force_rebuild: whether rebuild is forced
+            force: whether forced scraping is enabled
         """
         logger.info(f"Using CUHK scrape cache directory: {cache_dir_path}")
         logger.info(f"Writing CUHK SQLite database to: {database_path}")
@@ -147,8 +150,8 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             logger.info("Building all discovered CUHK words")
         else:
             logger.info(f"Building at most {max_words} discovered CUHK words")
-        if force_rebuild:
-            logger.info("Force rebuild enabled")
+        if force:
+            logger.info("Force enabled")
 
 
 if __name__ == "__main__":

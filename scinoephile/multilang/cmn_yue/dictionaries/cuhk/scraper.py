@@ -59,6 +59,7 @@ class CuhkDictionaryScraper:
         self.cache_dir_path = val_output_dir_path(configured_cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
+
         if database_path is None:
             if cache_dir_path is None:
                 database_path = DEFAULT_DATABASE_PATH
@@ -66,14 +67,15 @@ class CuhkDictionaryScraper:
                 database_path = self.cache_dir_path / "cuhk.db"
         self.database_path = database_path.expanduser().resolve()
 
+        # Configure requests
         if max_delay_seconds < min_delay_seconds:
             raise ValueError("max_delay_seconds must be >= min_delay_seconds")
-
         self.min_delay_seconds = min_delay_seconds
         self.max_delay_seconds = max_delay_seconds
         self.request_timeout_seconds = request_timeout_seconds
         self.max_retries = max_retries
 
+        # Initialize tools
         self.session = session or requests.Session()
         self.opencc_converter = opencc.OpenCC("hk2s")
         self.links = CuhkDictionaryScraperLinks(
@@ -95,47 +97,46 @@ class CuhkDictionaryScraper:
             database_path=self.database_path,
         )
 
-    def build(
+    def scrape(
         self,
-        force_rebuild: bool = False,
+        force: bool = False,
         max_words: int | None = None,
     ) -> Path:
-        """Build the local CUHK SQLite dictionary.
+        """Scrape CUHK data into a local SQLite dictionary.
 
         Arguments:
-            force_rebuild: whether to ignore existing artifacts and rebuild
-            max_words: optional max number of discovered words to build
+            force: whether to ignore existing artifacts and rebuild
+            max_words: optional max number of discovered words to scrape
         Returns:
-            path to built SQLite database
+            path to scraped SQLite database
         """
-        if self.database_path.exists() and not force_rebuild and max_words is None:
+        if self.database_path.exists() and not force and max_words is None:
             return self.database_path
 
-        # Ensure cache directories exist before downloading or parsing artifacts.
-        self.cache_dir_path.mkdir(parents=True, exist_ok=True)
-        self.scraped_dir_path.mkdir(parents=True, exist_ok=True)
-
-        # When rebuilding or limiting the build scope, remove stale scraped pages first.
-        if force_rebuild or max_words is not None:
+        # Clear cache if applicable
+        if force or max_words is not None:
             for scraped_path in self.scraped_dir_path.glob("*.html"):
-                logger.info(f"Deleting stale scraped CUHK page: {scraped_path}")
                 scraped_path.unlink()
+                logger.info(f"Removed stale scraped page: {scraped_path}")
 
+        # Scrape word links
         logger.info("Discovering CUHK word links")
-        word_links = self.links.load_word_links(force_refresh=force_rebuild)
+        word_links = self.links.load_word_links(force=force)
         logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
         if max_words is not None:
             word_links = word_links[:max_words]
-            logger.info(f"Limiting CUHK build to {len(word_links)} word(s)")
+            logger.info(f"Limiting CUHK scrape to {len(word_links)} word(s)")
 
+        # Scrape words
         logger.info("Scraping CUHK word pages")
         self.links.scrape_word_pages(
-            word_links,
-            skip_existing=not force_rebuild and max_words is None,
+            word_links, skip_existing=not force and max_words is None
         )
         logger.info("Parsing scraped CUHK word pages")
         entries = self.parser.parse_scraped_pages()
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
         logger.info("Writing CUHK SQLite database")
+
+        # Write database
         self.writer.write_database(entries)
         return self.database_path

@@ -108,7 +108,7 @@ def test_scraper_default_paths_split_cache_and_database(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test default build paths use runtime cache and repo data separately."""
+    """Test default scraper paths use runtime cache and repo data separately."""
     monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(tmp_path / "runtime-cache"))
 
     scraper = CuhkDictionaryScraper(
@@ -389,11 +389,11 @@ def test_discover_word_links_filters_external_category_links(
     assert all("qef.org.hk" not in url for url in fetched_urls)
 
 
-def test_build_force_rebuild_clears_stale_scraped_pages(
+def test_scrape_force_clears_stale_scraped_pages(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test force rebuild removes stale HTML files before parsing."""
+    """Test force removes stale HTML files before scraping."""
     scraper = CuhkDictionaryScraper(
         cache_dir_path=tmp_path / "cuhk",
         min_delay_seconds=0.0,
@@ -437,7 +437,7 @@ def test_build_force_rebuild_clears_stale_scraped_pages(
 
     monkeypatch.setattr(scraper.links, "_fetch_text", _fetch_text)
 
-    database_path = scraper.build(force_rebuild=True)
+    database_path = scraper.scrape(force=True)
 
     assert database_path.exists()
     assert not stale_path.exists()

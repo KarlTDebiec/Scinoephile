@@ -54,20 +54,20 @@ class CuhkDictionaryService:
         """Path to local SQLite database."""
         return self.scraper.database_path
 
-    def build(
+    def scrape(
         self,
-        force_rebuild: bool = False,
+        force: bool = False,
         max_words: int | None = None,
     ) -> Path:
-        """Build CUHK data cache.
+        """Scrape CUHK data cache.
 
         Arguments:
-            force_rebuild: whether to force rebuild from source
-            max_words: optional max number of discovered words to build
+            force: whether to force a fresh scrape from source
+            max_words: optional max number of discovered words to scrape
         Returns:
-            path to built SQLite database
+            path to scraped SQLite database
         """
-        return self.scraper.build(force_rebuild=force_rebuild, max_words=max_words)
+        return self.scraper.scrape(force=force, max_words=max_words)
 
     def lookup(
         self,
@@ -117,7 +117,7 @@ class CuhkDictionaryService:
             raise FileNotFoundError(
                 "CUHK dictionary database not found. "
                 "Set auto_build_missing=True to build automatically, "
-                "or build explicitly with CuhkDictionaryService.build()."
+                "or scrape explicitly with CuhkDictionaryService.scrape()."
             )
 
-        return self.build(force_rebuild=False)
+        return self.scrape(force=False)
