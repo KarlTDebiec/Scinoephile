@@ -21,7 +21,6 @@ CUHK_SEARCH_PATH = "/hanyu/Page/Search.aspx"
 CUHK_WORD_RESULT_PATHS = {CUHK_WORD_PATH, CUHK_SEARCH_PATH}
 INVALID_FILENAME_CHARS_REGEX = re.compile(r"[\\/:*?\"<>|]")
 
-PRIVATE_USE_AREA_REGEX = re.compile(r"[\ue000-\uf8ff]")
 PRIVATE_USE_AREA_REPLACEMENT_STRING = "☒"
 LABEL_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl詞彙類別_.*")
 JYUTPING_LETTERS_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl粵語拼音_.*")
@@ -64,7 +63,6 @@ __all__ = [
     "LABEL_ID_REGEX",
     "MAX_LOOKUP_LIMIT",
     "MEANING_ID_REGEX",
-    "PRIVATE_USE_AREA_REGEX",
     "PRIVATE_USE_AREA_REPLACEMENT_STRING",
     "REMARK_ID_REGEX",
     "TERMS_URL",

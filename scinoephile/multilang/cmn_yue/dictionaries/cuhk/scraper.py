@@ -24,6 +24,7 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
 )
 from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.text import RE_PRIVATE_USE_AREA_BMP
 
 from .constants import (
     BASE_URL,
@@ -38,7 +39,6 @@ from .constants import (
     JYUTPING_TONE_MAP,
     LABEL_ID_REGEX,
     MEANING_ID_REGEX,
-    PRIVATE_USE_AREA_REGEX,
     PRIVATE_USE_AREA_REPLACEMENT_STRING,
     REMARK_ID_REGEX,
     TERMS_URL,
@@ -405,9 +405,9 @@ class CuhkDictionaryScraper:
             normalized text
         """
         normalized = hkscs_converter.convert_string(text)
-        if PRIVATE_USE_AREA_REGEX.search(normalized):
+        if RE_PRIVATE_USE_AREA_BMP.search(normalized):
             logger.warning(f"Replacing private-use character(s) in {normalized}")
-            normalized = PRIVATE_USE_AREA_REGEX.sub(
+            normalized = RE_PRIVATE_USE_AREA_BMP.sub(
                 PRIVATE_USE_AREA_REPLACEMENT_STRING,
                 normalized,
             )
