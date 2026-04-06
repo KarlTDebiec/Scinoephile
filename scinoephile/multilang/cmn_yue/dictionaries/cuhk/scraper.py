@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import csv
 import random
 from logging import getLogger
 from pathlib import Path
@@ -90,7 +89,6 @@ class CuhkDictionaryScraper:
             cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
         self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
-        self.word_links_path = self.cache_dir_path / "word_links.tsv"
 
         if max_delay_seconds < min_delay_seconds:
             raise ValueError("max_delay_seconds must be >= min_delay_seconds")
@@ -158,21 +156,6 @@ class CuhkDictionaryScraper:
                 seen_word_links.add(pair)
                 word_links.append(pair)
 
-        return word_links
-
-    def load_word_links(self, force: bool = False) -> list[tuple[str, str]]:
-        """Load or fetch CUHK word links.
-
-        Arguments:
-            force: whether to ignore cached link file
-        Returns:
-            list of (word, url)
-        """
-        if self.word_links_path.exists() and not force:
-            return self._read_word_links(self.word_links_path)
-
-        word_links = self.discover_word_links()
-        self._write_word_links(self.word_links_path, word_links)
         return word_links
 
     def parse_scraped_pages(self) -> list[DictionaryEntry]:
@@ -305,7 +288,7 @@ class CuhkDictionaryScraper:
                 logger.info(f"Removed stale scraped page: {scraped_path}")
 
         logger.info("Discovering CUHK word links")
-        word_links = self.load_word_links(force=force)
+        word_links = self.discover_word_links()
         logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
         if max_words is not None:
             word_links = word_links[:max_words]
@@ -424,34 +407,3 @@ class CuhkDictionaryScraper:
                 normalized,
             )
         return normalized
-
-    @staticmethod
-    def _read_word_links(word_links_path: Path) -> list[tuple[str, str]]:
-        """Read links from TSV.
-
-        Arguments:
-            word_links_path: TSV path
-        Returns:
-            list of (word, url)
-        """
-        pairs: list[tuple[str, str]] = []
-        with open(word_links_path, encoding="utf-8") as infile:
-            reader = csv.reader(infile, delimiter="\t")
-            for row in reader:
-                if len(row) != 2:
-                    continue
-                pairs.append((row[0], row[1]))
-        return pairs
-
-    @staticmethod
-    def _write_word_links(word_links_path: Path, word_links: list[tuple[str, str]]):
-        """Write links to TSV.
-
-        Arguments:
-            word_links_path: TSV path
-            word_links: links to write
-        """
-        with open(word_links_path, "w", encoding="utf-8", newline="") as outfile:
-            writer = csv.writer(outfile, delimiter="\t")
-            for item, url in word_links:
-                writer.writerow((item, url))
