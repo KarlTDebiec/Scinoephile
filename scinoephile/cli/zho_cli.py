@@ -62,6 +62,7 @@ class ZhoCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -70,6 +71,8 @@ class ZhoCli(CommandLineInterface):
             type=str,
             help="中文 subtitle infile (default: stdin)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--clean",
             action="store_true",
@@ -110,6 +113,8 @@ class ZhoCli(CommandLineInterface):
             type=str_arg(options=("mandarin", "cantonese")),
             help="append romanization to subtitles (default: mandarin)",
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",

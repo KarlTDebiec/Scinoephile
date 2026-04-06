@@ -39,6 +39,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             metavar="DIR",
@@ -46,6 +47,8 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             type=output_dir_arg(),
             help="cache directory for scraped HTML and link data",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--max-words",
             metavar="N",
@@ -81,7 +84,6 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             default=30.0,
             help="per-request timeout in seconds",
         )
-        parser.set_defaults(verbosity=2)
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -105,7 +107,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             max_retries=max_retries,
             request_timeout_seconds=request_timeout_seconds,
         )
-        cls._log_build_configuration(
+        cls._log_config(
             builder.cache_dir_path,
             builder.database_path,
             max_words,
@@ -127,7 +129,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         return "build"
 
     @classmethod
-    def _log_build_configuration(
+    def _log_config(
         cls,
         cache_dir_path: Path,
         database_path: Path,

@@ -36,6 +36,7 @@ class EngZhoSyncCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--eng-infile",
             metavar="FILE",
@@ -50,6 +51,8 @@ class EngZhoSyncCli(CommandLineInterface):
             type=input_file_arg(),
             help="中文 subtitle infile",
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",

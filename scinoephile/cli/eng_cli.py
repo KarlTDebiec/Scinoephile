@@ -36,6 +36,7 @@ class EngCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -44,6 +45,8 @@ class EngCli(CommandLineInterface):
             type=str,
             help="English subtitle infile (default: stdin)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--clean",
             action="store_true",
@@ -59,6 +62,8 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="proofread subtitles using configured LLM workflow",
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",

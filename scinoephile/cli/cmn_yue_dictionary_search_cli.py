@@ -41,6 +41,7 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             metavar="DIR",
@@ -48,6 +49,8 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             type=output_dir_arg(),
             help="cache directory to use instead of the default CUHK data location",
         )
+
+        # Operation arguments
         arg_groups["search arguments"].add_argument(
             "query",
             type=str,
@@ -67,7 +70,6 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             default=10,
             help="maximum number of matches to show",
         )
-        parser.set_defaults(verbosity=2)
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
