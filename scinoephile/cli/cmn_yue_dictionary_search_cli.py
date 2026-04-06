@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -14,11 +14,8 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.multilang.cmn_yue.dictionaries import LookupDirection
+from scinoephile.multilang.cmn_yue.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
-
-if TYPE_CHECKING:
-    from scinoephile.multilang.cmn_yue.dictionaries import DictionaryEntry
 
 logger = getLogger(__name__)
 
@@ -37,7 +34,7 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
-            "search arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -51,19 +48,19 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         )
 
         # Operation arguments
-        arg_groups["search arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "query",
             type=str,
             help="Mandarin or Cantonese query text",
         )
-        arg_groups["search arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--direction",
             type=LookupDirection,
             choices=list(LookupDirection),
             default=LookupDirection.MANDARIN_TO_CANTONESE,
             help="lookup direction",
         )
-        arg_groups["search arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--limit",
             metavar="N",
             type=int_arg(min_value=1),

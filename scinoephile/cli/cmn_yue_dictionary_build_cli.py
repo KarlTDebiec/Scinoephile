@@ -113,10 +113,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             max_words,
             force_rebuild,
         )
-        database_path = builder.build(
-            force_rebuild=force_rebuild,
-            max_words=max_words,
-        )
+        database_path = builder.build(force_rebuild=force_rebuild, max_words=max_words)
         logger.info(f"CUHK dictionary build complete: {database_path}")
 
     @classmethod
