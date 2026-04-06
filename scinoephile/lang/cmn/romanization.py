@@ -23,23 +23,23 @@ if TYPE_CHECKING:
     from scinoephile.core.subtitles import Series
 
 __all__ = [
-    "get_cmn_pinyin_variants",
+    "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
 ]
 
-RE_CMN_PINYIN_TOKEN = re.compile(
+RE_CMN_PINYIN = re.compile(
     r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
     r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]?$"
 )
 
 
-def get_cmn_pinyin_variants(text: str) -> list[str]:
-    """Get normalized pinyin search variants for text.
+def get_cmn_pinyin_query_strings(text: str) -> list[str]:
+    """Get normalized pinyin query strings for text.
 
     Arguments:
         text: raw query text
     Returns:
-        normalized pinyin search variants
+        normalized pinyin query strings
     """
     text = (
         unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
@@ -48,15 +48,24 @@ def get_cmn_pinyin_variants(text: str) -> list[str]:
         return []
 
     tokens = text.split()
-    if not all(RE_CMN_PINYIN_TOKEN.fullmatch(token) for token in tokens):
+    if not all(RE_CMN_PINYIN.fullmatch(token) for token in tokens):
         return []
 
-    return [
-        " ".join(
-            tone_to_tone3(token.lower(), v_to_u=True).lower().replace("ü", "u:")
-            for token in tokens
-        )
-    ]
+    tokens = [tone_to_tone3(token.lower()).lower() for token in tokens]
+    query_strings = {" ".join(tokens)}
+
+    for query_string in tuple(query_strings):
+        if "ü" in query_string:
+            query_strings.add(query_string.replace("ü", "u:"))
+            query_strings.add(query_string.replace("ü", "v"))
+        if "u:" in query_string:
+            query_strings.add(query_string.replace("u:", "ü"))
+            query_strings.add(query_string.replace("u:", "v"))
+        if "v" in query_string:
+            query_strings.add(query_string.replace("v", "ü"))
+            query_strings.add(query_string.replace("v", "u:"))
+
+    return sorted(query_strings)
 
 
 def get_cmn_romanized(series: Series, append: bool = True) -> Series:

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
-from scinoephile.lang.cmn.romanization import get_cmn_pinyin_variants
+from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.yue.romanization import get_yue_jyutping_variants
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
@@ -107,7 +107,7 @@ class CuhkDictionaryService:
             ordered query variants
         """
         if direction == LookupDirection.CMN_TO_YUE:
-            query_variants = get_cmn_pinyin_variants(query)
+            query_variants = get_cmn_pinyin_query_strings(query)
         else:
             query_variants = get_yue_jyutping_variants(query)
 
