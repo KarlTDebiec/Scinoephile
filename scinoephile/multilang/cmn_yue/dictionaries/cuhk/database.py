@@ -1,13 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""SQLite persistence for the CUHK dictionary cache."""
+"""SQLite database operations for the CUHK dictionary cache."""
 
 from __future__ import annotations
 
 import sqlite3
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
@@ -17,16 +16,13 @@ from scinoephile.core.dictionaries import (
 )
 
 __all__ = [
-    "CuhkDictionaryPersister",
+    "CuhkDictionaryDatabase",
 ]
-
-if TYPE_CHECKING:
-    from .scraper import CuhkDictionaryScrapeData
 
 logger = getLogger(__name__)
 
 
-class CuhkDictionaryPersister:
+class CuhkDictionaryDatabase:
     """SQLite schema and CRUD operations for CUHK dictionary data."""
 
     def __init__(self, database_path: Path):
@@ -56,14 +52,18 @@ class CuhkDictionaryPersister:
             return self._lookup_cmn_to_yue(query, limit)
         return self._lookup_yue_to_cmn(query, limit)
 
-    def persist(self, scrape_data: CuhkDictionaryScrapeData) -> Path:
+    def persist(
+        self,
+        scrape_data: tuple[DictionarySource, list[DictionaryEntry]],
+    ) -> Path:
         """Persist scraped CUHK dictionary data to SQLite.
 
         Arguments:
-            scrape_data: scraped source metadata and entries
+            scrape_data: source metadata and scraped dictionary entries
         Returns:
             SQLite database path
         """
+        source, entries = scrape_data
         self.database_path.parent.mkdir(parents=True, exist_ok=True)
         if self.database_path.exists():
             logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
@@ -76,8 +76,8 @@ class CuhkDictionaryPersister:
             self._drop_tables(cursor)
             self._create_tables(cursor)
 
-            source_id = self._insert_source(cursor, scrape_data.source)
-            for entry in scrape_data.entries:
+            source_id = self._insert_source(cursor, source)
+            for entry in entries:
                 entry_id = self._insert_entry(
                     cursor,
                     entry.traditional,

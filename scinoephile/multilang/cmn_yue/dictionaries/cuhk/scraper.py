@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import csv
 import random
-from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 from time import sleep
@@ -50,17 +49,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class CuhkDictionaryScrapeData:
-    """Scraped CUHK dictionary source metadata and entries."""
-
-    source: DictionarySource
-    """Source metadata associated with the scraped dictionary data."""
-
-    entries: list[DictionaryEntry]
-    """Dictionary entries parsed from scraped CUHK pages."""
 
 
 class CuhkDictionaryScraper:
@@ -290,14 +278,14 @@ class CuhkDictionaryScraper:
         self,
         force: bool = False,
         max_words: int | None = None,
-    ) -> CuhkDictionaryScrapeData:
+    ) -> tuple[DictionarySource, list[DictionaryEntry]]:
         """Scrape CUHK data into source metadata and dictionary entries.
 
         Arguments:
             force: whether to ignore existing artifacts and rebuild
             max_words: optional max number of discovered words to scrape
         Returns:
-            scraped CUHK dictionary data
+            source metadata and scraped dictionary entries
         """
         if force or max_words is not None:
             for scraped_path in self.scraped_dir_path.glob("*.html"):
@@ -318,7 +306,7 @@ class CuhkDictionaryScraper:
         logger.info("Parsing scraped CUHK word pages")
         entries = self.parse_scraped_pages()
         logger.info(f"Parsed {len(entries)} CUHK entry(ies)")
-        return CuhkDictionaryScrapeData(source=CUHK_SOURCE, entries=entries)
+        return CUHK_SOURCE, entries
 
     def scrape_word_pages(
         self,

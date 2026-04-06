@@ -12,7 +12,7 @@ from scinoephile.common.validation import val_input_path, val_int
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
-from .persister import CuhkDictionaryPersister
+from .database import CuhkDictionaryDatabase
 from .scraper import CuhkDictionaryScraper
 
 __all__ = [
@@ -54,7 +54,7 @@ class CuhkDictionaryService:
             database_path = val_input_path(database_path)
         self.database_path = database_path
         self.auto_build_missing = auto_build_missing
-        self.persister = CuhkDictionaryPersister(database_path=self.database_path)
+        self.database = CuhkDictionaryDatabase(database_path=self.database_path)
         self.scraper = CuhkDictionaryScraper(
             cache_dir_path=cache_dir_path,
             min_delay_seconds=min_delay_seconds,
@@ -82,7 +82,7 @@ class CuhkDictionaryService:
             return self.database_path
 
         scrape_data = self.scraper.scrape(force=force, max_words=max_words)
-        return self.persister.persist(scrape_data)
+        return self.database.persist(scrape_data)
 
     def lookup(
         self,
@@ -113,4 +113,4 @@ class CuhkDictionaryService:
                 )
             self.build(force=False)
 
-        return self.persister.lookup(query, direction, limit)
+        return self.database.lookup(query, direction, limit)
