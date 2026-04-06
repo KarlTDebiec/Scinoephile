@@ -6,10 +6,10 @@ from __future__ import annotations
 
 import re
 
-from scinoephile.common import package_root
 from scinoephile.core.dictionaries import DictionarySource
+from scinoephile.core.paths import get_runtime_cache_dir_path
 
-DEFAULT_DATABASE_PATH = package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db"
+DEFAULT_DATABASE_PATH = get_runtime_cache_dir_path("dictionaries", "cuhk") / "cuhk.db"
 MAX_LOOKUP_LIMIT = 400
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
