@@ -5,14 +5,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, cast
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
 from .database import CuhkDictionaryDatabase
-from .scraper import CuhkDictionaryScraper
+from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
 __all__ = [
     "CuhkDictionaryService",
@@ -27,7 +26,7 @@ class CuhkDictionaryService:
         database_path: Path | None = None,
         *,
         auto_build_missing: bool = False,
-        scraper_kwargs: dict[str, object] | None = None,
+        scraper_kwargs: CuhkDictionaryScraperKwargs | None = None,
     ):
         """Initialize.
 
@@ -40,10 +39,8 @@ class CuhkDictionaryService:
             database_path = DEFAULT_DATABASE_PATH
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
-        scraper_kwargs = cast(
-            dict[str, Any],
-            {} if scraper_kwargs is None else dict(scraper_kwargs),
-        )
+        if scraper_kwargs is None:
+            scraper_kwargs = {}
         self.database = CuhkDictionaryDatabase(database_path=self.database_path)
         self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
         self.cache_dir_path = self.scraper.cache_dir_path

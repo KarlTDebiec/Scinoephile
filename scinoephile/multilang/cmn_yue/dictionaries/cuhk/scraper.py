@@ -9,6 +9,7 @@ import random
 from logging import getLogger
 from pathlib import Path
 from time import sleep
+from typing import TypedDict
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import opencc
@@ -49,6 +50,17 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+class CuhkDictionaryScraperKwargs(TypedDict, total=False):
+    """Keyword arguments for CuhkDictionaryScraper initialization."""
+
+    cache_dir_path: Path | None
+    min_delay_seconds: float
+    max_delay_seconds: float
+    request_timeout_seconds: float
+    max_retries: int
+    session: requests.Session | None
 
 
 class CuhkDictionaryScraper:
