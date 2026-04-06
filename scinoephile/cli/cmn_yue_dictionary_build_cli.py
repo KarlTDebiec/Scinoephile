@@ -101,11 +101,13 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
         service = CuhkDictionaryService(
-            cache_dir_path=cache_dir_path,
-            min_delay_seconds=min_delay_seconds,
-            max_delay_seconds=max_delay_seconds,
-            max_retries=max_retries,
-            request_timeout_seconds=request_timeout_seconds,
+            scraper_kwargs={
+                "cache_dir_path": cache_dir_path,
+                "min_delay_seconds": min_delay_seconds,
+                "max_delay_seconds": max_delay_seconds,
+                "max_retries": max_retries,
+                "request_timeout_seconds": request_timeout_seconds,
+            },
         )
         cls._log_config(
             service.cache_dir_path,

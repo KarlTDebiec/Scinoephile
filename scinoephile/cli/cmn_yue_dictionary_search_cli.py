@@ -81,8 +81,8 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         limit = kwargs.pop("limit")
 
         service = CuhkDictionaryService(
-            cache_dir_path=cache_dir_path,
             auto_build_missing=False,
+            scraper_kwargs={"cache_dir_path": cache_dir_path},
         )
         entries = service.lookup(query=query, direction=direction, limit=limit)
         cls._log_search_results(query, direction, entries)

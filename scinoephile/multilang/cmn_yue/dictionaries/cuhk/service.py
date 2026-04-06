@@ -5,8 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-
-import requests
+from typing import Any, cast
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
@@ -25,41 +24,28 @@ class CuhkDictionaryService:
 
     def __init__(
         self,
-        cache_dir_path: Path | None = None,
         database_path: Path | None = None,
         *,
         auto_build_missing: bool = False,
-        min_delay_seconds: float = 5.0,
-        max_delay_seconds: float = 10.0,
-        request_timeout_seconds: float = 30.0,
-        max_retries: int = 5,
-        session: requests.Session | None = None,
+        scraper_kwargs: dict[str, object] | None = None,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: cache directory path for CUHK artifacts
             database_path: SQLite database path
             auto_build_missing: build CUHK data automatically if missing
-            min_delay_seconds: minimum delay used if build is triggered
-            max_delay_seconds: maximum delay used if build is triggered
-            request_timeout_seconds: per-request timeout
-            max_retries: max attempts for failed requests
-            session: requests session for dependency injection
+            scraper_kwargs: keyword arguments forwarded to CuhkDictionaryScraper
         """
         if database_path is None:
             database_path = DEFAULT_DATABASE_PATH
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
-        self.database = CuhkDictionaryDatabase(database_path=self.database_path)
-        self.scraper = CuhkDictionaryScraper(
-            cache_dir_path=cache_dir_path,
-            min_delay_seconds=min_delay_seconds,
-            max_delay_seconds=max_delay_seconds,
-            request_timeout_seconds=request_timeout_seconds,
-            max_retries=max_retries,
-            session=session,
+        scraper_kwargs = cast(
+            dict[str, Any],
+            {} if scraper_kwargs is None else dict(scraper_kwargs),
         )
+        self.database = CuhkDictionaryDatabase(database_path=self.database_path)
+        self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
         self.cache_dir_path = self.scraper.cache_dir_path
 
     def build(self, force: bool = False, max_words: int | None = None) -> Path:
