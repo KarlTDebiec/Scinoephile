@@ -13,8 +13,8 @@ from scinoephile.multilang.cmn_yue.dictionaries.lookup_direction import (
     LookupDirection,
 )
 
-from .builder import CuhkDictionaryBuilder
 from .constants import MAX_LOOKUP_LIMIT
+from .scraper import CuhkDictionaryScraper
 from .service_lookup import CuhkDictionaryLookupStore
 
 __all__ = [
@@ -42,7 +42,7 @@ class CuhkDictionaryService:
             max_delay_seconds: maximum delay used if build is triggered
         """
         self.auto_build_missing = auto_build_missing
-        self.builder = CuhkDictionaryBuilder(
+        self.scraper = CuhkDictionaryScraper(
             cache_dir_path=cache_dir_path,
             min_delay_seconds=min_delay_seconds,
             max_delay_seconds=max_delay_seconds,
@@ -52,7 +52,7 @@ class CuhkDictionaryService:
     @property
     def database_path(self) -> Path:
         """Path to local SQLite database."""
-        return self.builder.database_path
+        return self.scraper.database_path
 
     def build(
         self,
@@ -67,7 +67,7 @@ class CuhkDictionaryService:
         Returns:
             path to built SQLite database
         """
-        return self.builder.build(force_rebuild=force_rebuild, max_words=max_words)
+        return self.scraper.build(force_rebuild=force_rebuild, max_words=max_words)
 
     def lookup(
         self,

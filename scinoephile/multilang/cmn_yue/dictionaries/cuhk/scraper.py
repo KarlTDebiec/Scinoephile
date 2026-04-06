@@ -13,20 +13,20 @@ import requests
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .builder_links import CuhkDictionaryBuilderLinks
-from .builder_parser import CuhkDictionaryBuilderParser
-from .builder_writer import CuhkDictionaryBuilderWriter
 from .constants import DEFAULT_DATABASE_PATH
+from .scraper_links import CuhkDictionaryScraperLinks
+from .scraper_parser import CuhkDictionaryScraperParser
+from .scraper_writer import CuhkDictionaryScraperWriter
 
 __all__ = [
-    "CuhkDictionaryBuilder",
+    "CuhkDictionaryScraper",
 ]
 
 logger = getLogger(__name__)
 
 
-class CuhkDictionaryBuilder:
-    """Builder for CUHK dictionary cache and SQLite data."""
+class CuhkDictionaryScraper:
+    """Scraper for CUHK dictionary cache and SQLite data."""
 
     def __init__(
         self,
@@ -76,7 +76,7 @@ class CuhkDictionaryBuilder:
 
         self.session = session or requests.Session()
         self.opencc_converter = opencc.OpenCC("hk2s")
-        self.links = CuhkDictionaryBuilderLinks(
+        self.links = CuhkDictionaryScraperLinks(
             cache_dir_path=self.cache_dir_path,
             scraped_dir_path=self.scraped_dir_path,
             word_links_path=self.word_links_path,
@@ -86,11 +86,11 @@ class CuhkDictionaryBuilder:
             request_timeout_seconds=self.request_timeout_seconds,
             session=self.session,
         )
-        self.parser = CuhkDictionaryBuilderParser(
+        self.parser = CuhkDictionaryScraperParser(
             scraped_dir_path=self.scraped_dir_path,
             opencc_converter=self.opencc_converter,
         )
-        self.writer = CuhkDictionaryBuilderWriter(
+        self.writer = CuhkDictionaryScraperWriter(
             cache_dir_path=self.cache_dir_path,
             database_path=self.database_path,
         )

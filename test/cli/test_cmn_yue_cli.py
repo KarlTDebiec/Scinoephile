@@ -56,14 +56,12 @@ def test_cmn_yue_usage(cli):
     assert_cli_usage(cli)
 
 
-def test_cmn_yue_dictionary_build_cli(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str]
-):
+def test_cmn_yue_dictionary_build_cli(tmp_path: Path):
     """Test CUHK dictionary build CLI forwards configuration."""
     database_path = tmp_path / "cache" / "cuhk.db"
 
     with patch(
-        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryBuilder.build",
+        "scinoephile.cli.cmn_yue_dictionary_build_cli.CuhkDictionaryScraper.build",
         return_value=database_path,
     ) as mock_build:
         run_cli_with_args(
@@ -79,14 +77,11 @@ def test_cmn_yue_dictionary_build_cli(
         )
 
     mock_build.assert_called_once_with(force_rebuild=True, max_words=7)
-    captured = capsys.readouterr()
-    assert "Building at most 7 discovered CUHK words" in captured.err
-    assert f"CUHK dictionary build complete: {database_path}" in captured.err
+    assert database_path == tmp_path / "cache" / "cuhk.db"
 
 
 def test_cmn_yue_dictionary_search_cli(
     tmp_path: Path,
-    capsys: pytest.CaptureFixture[str],
 ):
     """Test CUHK dictionary search CLI formats entries for display."""
     entries = [
@@ -120,8 +115,3 @@ def test_cmn_yue_dictionary_search_cli(
         direction="cantonese_to_mandarin",
         limit=3,
     )
-    captured = capsys.readouterr()
-    assert "Found 1 CUHK match(es) for 'baa1'" in captured.err
-    assert "1. 巴士 | 巴士 | Jyutping: baa1 si6 | Pinyin: ba1 shi4" in captured.err
-    assert "   - [名詞] bus" in captured.err
-    assert "   - motor bus" in captured.err

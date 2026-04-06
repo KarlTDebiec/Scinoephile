@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Database-writing helpers for CUHK dictionary builder."""
+"""Database-writing helpers for the CUHK dictionary scraper."""
 
 from __future__ import annotations
 
@@ -17,13 +17,13 @@ from .sqlite_schema_manager import CuhkSQLiteSchemaManager
 from .sqlite_schema_records import CuhkSQLiteSchemaRecords
 
 __all__ = [
-    "CuhkDictionaryBuilderWriter",
+    "CuhkDictionaryScraperWriter",
 ]
 
 logger = getLogger(__name__)
 
 
-class CuhkDictionaryBuilderWriter:
+class CuhkDictionaryScraperWriter:
     """Helper object for SQLite persistence behavior."""
 
     def __init__(self, cache_dir_path: Path, database_path: Path):

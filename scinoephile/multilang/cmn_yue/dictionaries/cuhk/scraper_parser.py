@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Parsing helpers for CUHK dictionary builder."""
+"""Parsing helpers for the CUHK dictionary scraper."""
 
 from __future__ import annotations
 
@@ -34,11 +34,11 @@ from .constants import (
 logger = getLogger(__name__)
 
 __all__ = [
-    "CuhkDictionaryBuilderParser",
+    "CuhkDictionaryScraperParser",
 ]
 
 
-class CuhkDictionaryBuilderParser:
+class CuhkDictionaryScraperParser:
     """Helper object for page-parsing and text-normalization behavior."""
 
     def __init__(self, scraped_dir_path: Path, opencc_converter: Any):
