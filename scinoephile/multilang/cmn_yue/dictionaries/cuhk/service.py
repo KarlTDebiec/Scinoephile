@@ -8,7 +8,7 @@ from pathlib import Path
 
 import requests
 
-from scinoephile.common.validation import val_input_path, val_int
+from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 
 from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
@@ -49,10 +49,7 @@ class CuhkDictionaryService:
         """
         if database_path is None:
             database_path = DEFAULT_DATABASE_PATH
-        database_path = Path(database_path).expanduser().resolve()
-        if database_path.exists():
-            database_path = val_input_path(database_path)
-        self.database_path = database_path
+        self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
         self.database = CuhkDictionaryDatabase(database_path=self.database_path)
         self.scraper = CuhkDictionaryScraper(
@@ -65,11 +62,7 @@ class CuhkDictionaryService:
         )
         self.cache_dir_path = self.scraper.cache_dir_path
 
-    def build(
-        self,
-        force: bool = False,
-        max_words: int | None = None,
-    ) -> Path:
+    def build(self, force: bool = False, max_words: int | None = None) -> Path:
         """Build or rebuild the local CUHK SQLite dictionary.
 
         Arguments:

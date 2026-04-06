@@ -8,6 +8,7 @@ import sqlite3
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.common.validation import val_output_path
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -31,7 +32,7 @@ class CuhkDictionaryDatabase:
         Arguments:
             database_path: SQLite database path
         """
-        self.database_path = database_path
+        self.database_path = val_output_path(database_path, exist_ok=True)
 
     def lookup(
         self,
