@@ -45,17 +45,6 @@ class ScinoephileCli(CommandLineInterface):
         return "scinoephile"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 
@@ -68,6 +57,17 @@ class ScinoephileCli(CommandLineInterface):
             ZhoCli.name(): ZhoCli,
             EngZhoCli.name(): EngZhoCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        subcommand_name = kwargs.pop("subcommand")
+        subcommand_cli_class = cls.subcommands()[subcommand_name]
+        subcommand_cli_class._main(**kwargs)
 
 
 if __name__ == "__main__":

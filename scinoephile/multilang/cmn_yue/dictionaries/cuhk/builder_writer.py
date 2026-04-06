@@ -11,10 +11,8 @@ from pathlib import Path
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_entry import (
     DictionaryEntry,
 )
-from scinoephile.multilang.cmn_yue.dictionaries.dictionary_source import (
-    DictionarySource,
-)
 
+from .constants import CUHK_SOURCE
 from .sqlite_schema_manager import CuhkSQLiteSchemaManager
 from .sqlite_schema_records import CuhkSQLiteSchemaRecords
 
@@ -23,20 +21,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-CUHK_SOURCE = DictionarySource(
-    name="現代標準漢語與粵語對照資料庫",
-    shortname="CUHK",
-    version="2014",
-    description=(
-        "Comparative Database of Modern Standard Chinese and Cantonese "
-        "(Chinese University of Hong Kong)."
-    ),
-    legal="(c) 2014 保留版權 香港中文大學 中國語言及文學系",
-    link="https://apps.itsc.cuhk.edu.hk/hanyu/Page/Cover.aspx",
-    update_url="",
-    other="words",
-)
 
 
 class CuhkDictionaryBuilderWriter:

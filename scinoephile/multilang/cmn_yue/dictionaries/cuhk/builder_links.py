@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import csv
 import random
-import re
 from logging import getLogger
 from pathlib import Path
 from time import sleep
@@ -15,16 +14,16 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup, Tag
 
-logger = getLogger(__name__)
+from .constants import (
+    BASE_URL,
+    CUHK_HOSTNAME,
+    CUHK_TERMS_PATH,
+    CUHK_WORD_RESULT_PATHS,
+    INVALID_FILENAME_CHARS_REGEX,
+    TERMS_URL,
+)
 
-BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
-TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"
-CUHK_HOSTNAME = "apps.itsc.cuhk.edu.hk"
-CUHK_TERMS_PATH = "/hanyu/Page/Terms.aspx"
-CUHK_WORD_PATH = "/hanyu/Page/Word.aspx"
-CUHK_SEARCH_PATH = "/hanyu/Page/Search.aspx"
-CUHK_WORD_RESULT_PATHS = {CUHK_WORD_PATH, CUHK_SEARCH_PATH}
-INVALID_FILENAME_CHARS_REGEX = re.compile(r"[\\/:*?\"<>|]")
+logger = getLogger(__name__)
 
 __all__ = [
     "CuhkDictionaryBuilderLinks",
