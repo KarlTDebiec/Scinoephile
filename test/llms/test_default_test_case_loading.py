@@ -5,11 +5,12 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
+from collections.abc import Callable
 
 import pytest
 
 from scinoephile.common import package_root
+from scinoephile.core.llms import TestCase
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
 from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import (
@@ -40,11 +41,6 @@ from scinoephile.multilang.yue_zho.proofreading import YueZhoHansProofreadingPro
 from scinoephile.multilang.yue_zho.proofreading.manager import YueZhoProofreadingManager
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
-
-    from scinoephile.core.llms import TestCase
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:

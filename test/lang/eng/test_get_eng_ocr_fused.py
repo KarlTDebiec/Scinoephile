@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
 
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
 
 
 def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):

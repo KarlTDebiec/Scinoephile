@@ -4,12 +4,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from scinoephile.core.pairs import get_block_pairs_by_pause
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 
 def _test_get_block_pairs_by_pause(

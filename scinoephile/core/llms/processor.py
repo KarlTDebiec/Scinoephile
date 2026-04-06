@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from scinoephile.common.validation import val_output_path
@@ -14,8 +15,6 @@ from .queryer import Queryer
 from .utils import load_test_cases_from_json
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from .manager import Manager
     from .prompt import Prompt
     from .test_case import TestCase

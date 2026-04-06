@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import numpy as np
+from PIL import Image
 
 from scinoephile.core import ScinoephileError
-
-if TYPE_CHECKING:
-    from PIL import Image
 
 __all__ = [
     "get_fill_and_outline_colors",
