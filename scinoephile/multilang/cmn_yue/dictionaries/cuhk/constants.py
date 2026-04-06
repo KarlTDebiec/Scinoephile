@@ -6,9 +6,13 @@ from __future__ import annotations
 
 import re
 
+from scinoephile.common import package_root
 from scinoephile.multilang.cmn_yue.dictionaries.dictionary_source import (
     DictionarySource,
 )
+
+DEFAULT_DATABASE_PATH = package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db"
+MAX_LOOKUP_LIMIT = 400
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"
@@ -53,12 +57,14 @@ __all__ = [
     "CUHK_TERMS_PATH",
     "CUHK_WORD_PATH",
     "CUHK_WORD_RESULT_PATHS",
+    "DEFAULT_DATABASE_PATH",
     "INVALID_FILENAME_CHARS_REGEX",
     "JYUTPING_LETTERS_ID_REGEX",
     "JYUTPING_NUMBERS_ID_REGEX",
     "JYUTPING_NUMBERS_REGEX",
     "JYUTPING_TONE_MAP",
     "LABEL_ID_REGEX",
+    "MAX_LOOKUP_LIMIT",
     "MEANING_ID_REGEX",
     "PRIVATE_USE_AREA_REGEX",
     "PRIVATE_USE_AREA_REPLACEMENT_STRING",

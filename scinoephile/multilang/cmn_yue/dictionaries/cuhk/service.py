@@ -14,13 +14,12 @@ from scinoephile.multilang.cmn_yue.dictionaries.lookup_direction import (
 )
 
 from .builder import CuhkDictionaryBuilder
+from .constants import MAX_LOOKUP_LIMIT
 from .service_lookup import CuhkDictionaryLookupStore
 
 __all__ = [
     "CuhkDictionaryService",
 ]
-
-MAX_LOOKUP_LIMIT = 400
 
 
 class CuhkDictionaryService:

@@ -10,21 +10,19 @@ from pathlib import Path
 import opencc
 import requests
 
-from scinoephile.common import package_root
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .builder_links import CuhkDictionaryBuilderLinks
 from .builder_parser import CuhkDictionaryBuilderParser
 from .builder_writer import CuhkDictionaryBuilderWriter
+from .constants import DEFAULT_DATABASE_PATH
 
 __all__ = [
     "CuhkDictionaryBuilder",
 ]
 
 logger = getLogger(__name__)
-
-DEFAULT_DATABASE_PATH = package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db"
 
 
 class CuhkDictionaryBuilder:
