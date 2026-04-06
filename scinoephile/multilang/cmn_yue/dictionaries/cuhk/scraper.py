@@ -69,8 +69,8 @@ class CuhkDictionaryScraper:
         self,
         cache_dir_path: Path | None = None,
         *,
-        min_delay_seconds: float = 5.0,
-        max_delay_seconds: float = 10.0,
+        min_delay_seconds: float = 1.0,
+        max_delay_seconds: float = 5.0,
         request_timeout_seconds: float = 30.0,
         max_retries: int = 5,
         session: requests.Session | None = None,
@@ -100,12 +100,19 @@ class CuhkDictionaryScraper:
         self.session = session or requests.Session()
         self.opencc_converter = opencc.OpenCC("hk2s")
 
-    def discover_word_links(self) -> list[tuple[str, str]]:
-        """Discover all CUHK word pages.
+    def discover_word_links(
+        self, max_words: int | None = None
+    ) -> list[tuple[str, str]]:
+        """Discover CUHK word pages.
 
+        Arguments:
+            max_words: optional max number of words to discover
         Returns:
             list of (word, url)
         """
+        if max_words is not None and max_words <= 0:
+            return []
+
         html = self._fetch_text(TERMS_URL)
         soup = BeautifulSoup(html, "html.parser")
         main_panel = soup.find("div", id="MainContent_panelTermsIndex")
@@ -117,11 +124,11 @@ class CuhkDictionaryScraper:
             category_url = urljoin(BASE_URL, str(anchor["href"]).strip())
             parsed_url = urlparse(category_url)
             query_params = parse_qs(parsed_url.query)
-            if parsed_url.netloc != CUHK_HOSTNAME:
-                continue
-            if parsed_url.path != CUHK_TERMS_PATH:
-                continue
-            if "target" not in query_params:
+            if (
+                parsed_url.netloc != CUHK_HOSTNAME
+                or parsed_url.path != CUHK_TERMS_PATH
+                or "target" not in query_params
+            ):
                 continue
             category_links.append(category_url)
 
@@ -144,17 +151,22 @@ class CuhkDictionaryScraper:
                     continue
                 url = urljoin(BASE_URL, str(anchor["href"]))
                 parsed_word_url = urlparse(url)
-                if parsed_word_url.netloc != CUHK_HOSTNAME:
-                    logger.warning(f"Skipping non-CUHK word URL: {url}")
-                    continue
-                if parsed_word_url.path not in CUHK_WORD_RESULT_PATHS:
-                    logger.warning(f"Skipping unexpected CUHK word URL path: {url}")
+                if (
+                    parsed_word_url.netloc != CUHK_HOSTNAME
+                    or parsed_word_url.path not in CUHK_WORD_RESULT_PATHS
+                ):
+                    logger.warning(f"Skipping unexpected CUHK word URL: {url}")
                     continue
                 pair = (item, url)
                 if pair in seen_word_links:
                     continue
                 seen_word_links.add(pair)
                 word_links.append(pair)
+                if max_words is not None and len(word_links) >= max_words:
+                    logger.info(
+                        f"Stopping CUHK discovery after {len(word_links)} word(s)"
+                    )
+                    return word_links
 
         return word_links
 
@@ -288,11 +300,8 @@ class CuhkDictionaryScraper:
                 logger.info(f"Removed stale scraped page: {scraped_path}")
 
         logger.info("Discovering CUHK word links")
-        word_links = self.discover_word_links()
+        word_links = self.discover_word_links(max_words=max_words)
         logger.info(f"Discovered {len(word_links)} CUHK word link(s)")
-        if max_words is not None:
-            word_links = word_links[:max_words]
-            logger.info(f"Limiting CUHK scrape to {len(word_links)} word(s)")
 
         logger.info("Scraping CUHK word pages")
         self.scrape_word_pages(
