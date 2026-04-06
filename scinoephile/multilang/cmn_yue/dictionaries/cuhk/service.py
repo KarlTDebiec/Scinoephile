@@ -56,7 +56,7 @@ class CuhkDictionaryService:
         Returns:
             SQLite database path
         """
-        if self.database_path.exists() and not overwrite and max_words is None:
+        if self.database_path.exists() and not overwrite:
             return self.database_path
 
         scrape_data = self.scraper.scrape(max_words=max_words)

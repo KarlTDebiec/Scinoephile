@@ -84,3 +84,27 @@ def test_cuhk_dictionary_service_lookup_tries_yale_variants(tmp_path: Path):
         call("soeng6 ban6", LookupDirection.YUE_TO_CMN, 2),
         call("soeng6 bin6", LookupDirection.YUE_TO_CMN, 2),
     ]
+
+
+def test_cuhk_dictionary_service_build_skips_existing_database_when_not_overwriting(
+    tmp_path: Path,
+):
+    """Test CUHK service preserves an existing database during limited builds.
+
+    Arguments:
+        tmp_path: temporary test directory
+    """
+    database_path = tmp_path / "cuhk.db"
+    database_path.touch()
+    service = CuhkDictionaryService(
+        database_path=database_path,
+        scraper_kwargs={"cache_dir_path": tmp_path / "cache"},
+    )
+
+    with patch.object(service.scraper, "scrape") as mock_scrape:
+        with patch.object(service.database, "persist") as mock_persist:
+            output = service.build(overwrite=False, max_words=7)
+
+    assert output == database_path
+    mock_scrape.assert_not_called()
+    mock_persist.assert_not_called()

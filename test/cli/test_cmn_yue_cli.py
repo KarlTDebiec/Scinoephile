@@ -104,11 +104,7 @@ def test_cmn_yue_dictionary_search_cli(
     ) as mock_lookup:
         run_cli_with_args(
             ScinoephileCli,
-            "cmn_yue dictionary search "
-            f"--cache-dir {tmp_path / 'cache'} "
-            "--direction yue_to_cmn "
-            "--limit 3 "
-            "baa1",
+            "cmn_yue dictionary search --direction yue_to_cmn --limit 3 baa1",
         )
 
     mock_lookup.assert_called_once_with(

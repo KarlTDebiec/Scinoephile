@@ -12,7 +12,6 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     int_arg,
-    output_dir_arg,
 )
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
@@ -33,18 +32,8 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
-            "input arguments",
             "operation arguments",
             optional_arguments_name="additional arguments",
-        )
-
-        # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            metavar="DIR",
-            default=None,
-            type=output_dir_arg(),
-            help="cache directory to use instead of the default CUHK data location",
         )
 
         # Operation arguments
@@ -75,14 +64,12 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        cache_dir_path = kwargs.pop("cache_dir")
         query = kwargs.pop("query")
         direction = kwargs.pop("direction")
         limit = kwargs.pop("limit")
 
         service = CuhkDictionaryService(
             auto_build_missing=False,
-            scraper_kwargs={"cache_dir_path": cache_dir_path},
         )
         entries = service.lookup(query=query, direction=direction, limit=limit)
         cls._log_search_results(query, direction, entries)
