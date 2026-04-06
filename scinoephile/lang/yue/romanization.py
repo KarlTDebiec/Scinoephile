@@ -31,7 +31,7 @@ __all__ = [
 
 logger = getLogger(__name__)
 
-data_root = package_root / "data/cantonese/"
+data_root = package_root / "data/yue/"
 
 
 def _build_corpus():

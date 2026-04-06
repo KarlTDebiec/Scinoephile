@@ -36,7 +36,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
-            "build arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -47,36 +47,36 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             type=output_dir_arg(),
             help="cache directory for scraped HTML and SQLite database",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--max-words",
             metavar="N",
             type=int_arg(min_value=1),
             help="stop after building the first N discovered words",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--force-rebuild",
             action="store_true",
             help="rebuild even if a local CUHK database already exists",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--min-delay-seconds",
             type=float_arg(min_value=0.0),
             default=5.0,
             help="minimum delay between HTTP requests",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--max-delay-seconds",
             type=float_arg(min_value=0.0),
             default=10.0,
             help="maximum delay between HTTP requests",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--max-retries",
             type=int_arg(min_value=1),
             default=5,
             help="maximum retries per HTTP request",
         )
-        arg_groups["build arguments"].add_argument(
+        arg_groups["operation arguments"].add_argument(
             "--request-timeout-seconds",
             type=float_arg(min_value=0.1),
             default=30.0,

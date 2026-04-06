@@ -12,7 +12,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
 class EngZhoCli(CommandLineInterface):
-    """Command-line interface for English/中文 bilingual operations."""
+    """Command-line interface for English/中文 operations."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

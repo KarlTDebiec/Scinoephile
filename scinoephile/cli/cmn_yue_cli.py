@@ -12,7 +12,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
 class CmnYueCli(CommandLineInterface):
-    """Command-line interface for 中文/粤文 shared operations."""
+    """Command-line interface for 中文/粤文 operations."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
