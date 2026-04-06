@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from scinoephile.common import package_root
 from scinoephile.multilang.cmn_yue.dictionaries import (
     DictionarySource,
     LookupDirection,
@@ -101,6 +102,27 @@ def test_lookup_missing_database_raises(tmp_path: Path):
     )
     with pytest.raises(FileNotFoundError):
         service.lookup("巴士")
+
+
+def test_builder_default_paths_split_cache_and_database(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test default build paths use runtime cache and repo data separately."""
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(tmp_path / "runtime-cache"))
+
+    builder = CuhkDictionaryBuilder(
+        min_delay_seconds=0.0,
+        max_delay_seconds=0.0,
+    )
+
+    assert builder.cache_dir_path == (
+        tmp_path / "runtime-cache" / "scinoephile" / "dictionaries" / "cuhk"
+    )
+    assert (
+        builder.database_path
+        == (package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db").resolve()
+    )
 
 
 def test_lookup_mandarin_to_cantonese(tmp_path: Path):

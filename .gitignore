@@ -12,6 +12,7 @@ scinoephile.egg-info
 test/.coverage
 test/htmlcov
 /scinoephile/data/yue/*.pkl
+/scinoephile/data/cmn_yue/dictionaries/cuhk.db
 /test/data/*/output/**/*.html
 /test/data/*/output/**/*.json
 /test/data/*/output/**/*.png

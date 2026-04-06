@@ -16,7 +16,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryBuilder
 
 logger = getLogger(__name__)
@@ -45,7 +44,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             metavar="DIR",
             default=None,
             type=output_dir_arg(),
-            help="cache directory for scraped HTML and SQLite database",
+            help="cache directory for scraped HTML and link data",
         )
         arg_groups["operation arguments"].add_argument(
             "--max-words",
@@ -92,8 +91,6 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         cache_dir_path = kwargs.pop("cache_dir")
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
         max_words = kwargs.pop("max_words", None)
         force_rebuild = kwargs.pop("force_rebuild")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
@@ -108,7 +105,12 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             max_retries=max_retries,
             request_timeout_seconds=request_timeout_seconds,
         )
-        cls._log_build_configuration(cache_dir_path, max_words, force_rebuild)
+        cls._log_build_configuration(
+            builder.cache_dir_path,
+            builder.database_path,
+            max_words,
+            force_rebuild,
+        )
         database_path = builder.build(
             force_rebuild=force_rebuild,
             max_words=max_words,
@@ -128,6 +130,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
     def _log_build_configuration(
         cls,
         cache_dir_path: Path,
+        database_path: Path,
         max_words: int | None,
         force_rebuild: bool,
     ):
@@ -135,10 +138,12 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
 
         Arguments:
             cache_dir_path: cache directory path
+            database_path: SQLite database path
             max_words: optional max words cap
             force_rebuild: whether rebuild is forced
         """
-        logger.info(f"Building CUHK dictionary cache in {cache_dir_path}")
+        logger.info(f"Using CUHK scrape cache directory: {cache_dir_path}")
+        logger.info(f"Writing CUHK SQLite database to: {database_path}")
         if max_words is None:
             logger.info("Building all discovered CUHK words")
         else:

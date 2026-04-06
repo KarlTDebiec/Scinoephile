@@ -14,7 +14,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.multilang.cmn_yue.dictionaries import LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
@@ -47,7 +46,7 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             metavar="DIR",
             default=None,
             type=output_dir_arg(),
-            help="cache directory containing the CUHK SQLite database",
+            help="cache directory to use instead of the default CUHK data location",
         )
         arg_groups["search arguments"].add_argument(
             "query",
@@ -78,8 +77,6 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         cache_dir_path = kwargs.pop("cache_dir")
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
         query = kwargs.pop("query")
         direction = kwargs.pop("direction")
         limit = kwargs.pop("limit")

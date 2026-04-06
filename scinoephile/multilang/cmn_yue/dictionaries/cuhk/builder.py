@@ -10,6 +10,7 @@ from pathlib import Path
 import opencc
 import requests
 
+from scinoephile.common import package_root
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
@@ -23,6 +24,8 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+DEFAULT_DATABASE_PATH = package_root / "data" / "cmn_yue" / "dictionaries" / "cuhk.db"
+
 
 class CuhkDictionaryBuilder:
     """Builder for CUHK dictionary cache and SQLite data."""
@@ -30,6 +33,7 @@ class CuhkDictionaryBuilder:
     def __init__(
         self,
         cache_dir_path: Path | None = None,
+        database_path: Path | None = None,
         *,
         min_delay_seconds: float = 5.0,
         max_delay_seconds: float = 10.0,
@@ -40,20 +44,29 @@ class CuhkDictionaryBuilder:
         """Initialize.
 
         Arguments:
-            cache_dir_path: cache directory path for CUHK artifacts
+            cache_dir_path: cache directory path for CUHK scrape artifacts
+            database_path: SQLite database path
             min_delay_seconds: minimum delay between HTTP requests
             max_delay_seconds: maximum delay between HTTP requests
             request_timeout_seconds: per-request timeout
             max_retries: max attempts for failed requests
             session: requests session for dependency injection
         """
-        if cache_dir_path is None:
-            cache_dir_path = get_runtime_cache_dir_path("dictionaries", "cuhk")
+        configured_cache_dir_path = cache_dir_path
+        if configured_cache_dir_path is None:
+            configured_cache_dir_path = get_runtime_cache_dir_path(
+                "dictionaries", "cuhk"
+            )
 
-        self.cache_dir_path = val_output_dir_path(cache_dir_path)
+        self.cache_dir_path = val_output_dir_path(configured_cache_dir_path)
         self.scraped_dir_path = self.cache_dir_path / "scraped"
         self.word_links_path = self.cache_dir_path / "word_links.tsv"
-        self.database_path = self.cache_dir_path / "cuhk.db"
+        if database_path is None:
+            if cache_dir_path is None:
+                database_path = DEFAULT_DATABASE_PATH
+            else:
+                database_path = self.cache_dir_path / "cuhk.db"
+        self.database_path = database_path.expanduser().resolve()
 
         if max_delay_seconds < min_delay_seconds:
             raise ValueError("max_delay_seconds must be >= min_delay_seconds")

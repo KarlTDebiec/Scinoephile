@@ -59,6 +59,7 @@ class CuhkDictionaryBuilderWriter:
             entries: normalized dictionary entries
         """
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
+        self.database_path.parent.mkdir(parents=True, exist_ok=True)
         if self.database_path.exists():
             logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
             self.database_path.unlink()
