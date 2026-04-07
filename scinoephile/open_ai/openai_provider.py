@@ -164,6 +164,7 @@ class OpenAIProvider(LLMProvider):
                     "name": tool["name"],
                     "description": tool["description"],
                     "parameters": tool["parameters"],
+                    "strict": True,
                 },
             }
             for tool in tools
