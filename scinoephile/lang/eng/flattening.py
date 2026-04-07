@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to English text."""
+"""Code related to flattening English text."""
 
 from __future__ import annotations
 
@@ -8,12 +8,9 @@ import re
 from collections.abc import Iterable
 from copy import deepcopy
 from logging import getLogger
-from typing import TYPE_CHECKING
 
 from scinoephile.core import ScinoephileError
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_eng_flattened",

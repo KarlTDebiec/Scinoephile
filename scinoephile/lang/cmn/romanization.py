@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to Mandarin Chinese text."""
+"""Code related to 普通话 text romanization."""
 
 from __future__ import annotations
 
