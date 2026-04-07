@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from logging import info
-from typing import TYPE_CHECKING, Any
+from pathlib import Path
+from typing import Any
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -33,9 +34,6 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofread,
     get_zho_proofreader,
 )
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 __all__ = [
     "process_eng_ocr",

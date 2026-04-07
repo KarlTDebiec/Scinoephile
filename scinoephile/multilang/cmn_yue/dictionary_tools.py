@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
+from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
-from .dictionaries import CuhkDictionaryService, DictionaryEntry, LookupDirection
+from .dictionaries.cuhk import CuhkDictionaryService
 
 __all__ = [
     "CUHK_LOOKUP_TOOL_NAME",
@@ -44,7 +45,7 @@ def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
 
 def lookup_cuhk_dictionary(
     query: str,
-    direction: str = "mandarin_to_cantonese",
+    direction: str = LookupDirection.CMN_TO_YUE.value,
     limit: int = 10,
     *,
     auto_build_missing: bool = True,
@@ -70,16 +71,14 @@ def lookup_cuhk_dictionary(
         }
 
     try:
-        direction_enum = LookupDirection(direction)
+        direction_enum = LookupDirection(direction.strip())
     except ValueError:
         return {
             "query": normalized_query,
             "direction": direction,
             "result_count": 0,
             "entries": [],
-            "error": (
-                "direction must be 'mandarin_to_cantonese' or 'cantonese_to_mandarin'"
-            ),
+            "error": "direction must be 'cmn_to_yue' or 'yue_to_cmn'",
         }
 
     service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
@@ -110,7 +109,7 @@ def _lookup_cuhk_dictionary_from_args(
     direction = str(
         arguments.get(
             "direction",
-            LookupDirection.MANDARIN_TO_CANTONESE.value,
+            LookupDirection.CMN_TO_YUE.value,
         )
     )
 
@@ -159,10 +158,10 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
                         "type": "string",
                         "description": "Lookup direction.",
                         "enum": [
-                            LookupDirection.MANDARIN_TO_CANTONESE.value,
-                            LookupDirection.CANTONESE_TO_MANDARIN.value,
+                            LookupDirection.CMN_TO_YUE.value,
+                            LookupDirection.YUE_TO_CMN.value,
                         ],
-                        "default": LookupDirection.MANDARIN_TO_CANTONESE.value,
+                        "default": LookupDirection.CMN_TO_YUE.value,
                     },
                     "limit": {
                         "type": "integer",

@@ -16,4 +16,7 @@ class DictionaryDefinition:
     """Definition metadata tied to a dictionary entry."""
 
     text: str
+    """Definition text associated with the dictionary entry."""
+
     label: str = ""
+    """Optional part-of-speech or usage label for the definition."""

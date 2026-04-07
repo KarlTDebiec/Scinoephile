@@ -13,6 +13,7 @@ dependencies = [
     "audioop-lts>=0.2.2",
     "beautifulsoup4>=4.14.3",
     "ffmpeg-python>=0.2.0",
+    "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
     "numba>=0.64.0",
     "numpy>=2.4.3",

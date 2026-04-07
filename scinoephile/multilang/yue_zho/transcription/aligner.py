@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
@@ -31,8 +32,6 @@ from scinoephile.core.text import remove_punc_and_whitespace
 from .alignment import Alignment
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from scinoephile.core.subtitles import Series
 
     from .merging import YueZhoHansMergingPrompt

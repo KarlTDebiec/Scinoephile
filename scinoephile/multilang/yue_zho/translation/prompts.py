@@ -27,7 +27,6 @@ class YueHansFromZhoTranslationPrompt(DualBlockGappedPrompt, YueHansPrompt):
         每当某行粤文字幕系空嘅，就用对应嗰行中文，翻译成书面粤语，语气同用词要贴近周边现有嘅粤文字幕嘅口
         语风格。
         如果嗰行粤文字幕已经有内容，唔好改，嗰行请输出空字串。
-        如果词汇嘅粤语写法唔确定，可以调用 lookup_cuhk_dictionary 工具先查询。
         只要你有提供翻译，就再加一段简短英文备注，简述你改动嘅重点。
         如果唔需要翻译，译文同备注都必须系空字串。
         """

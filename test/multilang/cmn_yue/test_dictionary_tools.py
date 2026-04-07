@@ -7,11 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import cast
 
+from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
 from scinoephile.multilang.cmn_yue import dictionary_tools
-from scinoephile.multilang.cmn_yue.dictionaries import (
-    DictionaryDefinition,
-    DictionaryEntry,
-)
 
 
 class _FakeService:
@@ -67,13 +64,11 @@ def test_lookup_cuhk_dictionary_auto_builds_when_missing(monkeypatch):
     monkeypatch.setattr(dictionary_tools, "CuhkDictionaryService", _FakeService)
 
     response = dictionary_tools.lookup_cuhk_dictionary(
-        query="巴士",
-        direction="mandarin_to_cantonese",
-        limit=5,
+        query="巴士", direction="cmn_to_yue", limit=5
     )
 
     assert _FakeService.init_calls == [True]
-    assert _FakeService.lookup_calls == [("巴士", "mandarin_to_cantonese", 5)]
+    assert _FakeService.lookup_calls == [("巴士", "cmn_to_yue", 5)]
     assert response["result_count"] == 1
     entries = response["entries"]
     assert isinstance(entries, list)
@@ -110,13 +105,13 @@ def test_get_cuhk_dictionary_tooling_exposes_handler(monkeypatch):
     response = handler(
         {
             "query": "baa1 si6",
-            "direction": "cantonese_to_mandarin",
+            "direction": "yue_to_cmn",
             "limit": "3",
         }
     )
     typed_response = cast("dict[str, object]", response)
     assert isinstance(typed_response, dict)
 
-    assert _FakeService.lookup_calls == [("baa1 si6", "cantonese_to_mandarin", 3)]
-    assert typed_response["direction"] == "cantonese_to_mandarin"
+    assert _FakeService.lookup_calls == [("baa1 si6", "yue_to_cmn", 3)]
+    assert typed_response["direction"] == "yue_to_cmn"
     assert typed_response["result_count"] == 1

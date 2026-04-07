@@ -4,14 +4,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
 
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_cleaned
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
 
 
 def _test_get_zho_cleaned(series: Series, expected: Series):

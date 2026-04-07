@@ -1,9 +1,11 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to Mandarin Chinese text."""
+"""Code related to 普通话 text romanization."""
 
 from __future__ import annotations
 
+import re
+import unicodedata
 from copy import deepcopy
 from warnings import catch_warnings, simplefilter
 
@@ -13,6 +15,7 @@ with catch_warnings():
 from typing import TYPE_CHECKING
 
 from pypinyin import pinyin
+from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.text import full_to_half_punc
 
@@ -20,8 +23,49 @@ if TYPE_CHECKING:
     from scinoephile.core.subtitles import Series
 
 __all__ = [
+    "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
 ]
+
+RE_CMN_PINYIN = re.compile(
+    r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
+    r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]?$"
+)
+
+
+def get_cmn_pinyin_query_strings(text: str) -> list[str]:
+    """Get normalized pinyin query strings for text.
+
+    Arguments:
+        text: raw query text
+    Returns:
+        normalized pinyin query strings
+    """
+    text = (
+        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
+    )
+    if not text:
+        return []
+
+    tokens = text.split()
+    if not all(RE_CMN_PINYIN.fullmatch(token) for token in tokens):
+        return []
+
+    tokens = [tone_to_tone3(token.lower()).lower() for token in tokens]
+    query_strings = {" ".join(tokens)}
+
+    for query_string in tuple(query_strings):
+        if "ü" in query_string:
+            query_strings.add(query_string.replace("ü", "u:"))
+            query_strings.add(query_string.replace("ü", "v"))
+        if "u:" in query_string:
+            query_strings.add(query_string.replace("u:", "ü"))
+            query_strings.add(query_string.replace("u:", "v"))
+        if "v" in query_string:
+            query_strings.add(query_string.replace("v", "ü"))
+            query_strings.add(query_string.replace("v", "u:"))
+
+    return sorted(query_strings)
 
 
 def get_cmn_romanized(series: Series, append: bool = True) -> Series:

@@ -4,10 +4,8 @@
 
 from __future__ import annotations
 
-from .builder import CuhkDictionaryBuilder
 from .service import CuhkDictionaryService
 
 __all__ = [
-    "CuhkDictionaryBuilder",
     "CuhkDictionaryService",
 ]

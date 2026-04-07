@@ -3,14 +3,17 @@
 """Code related to Cantonese (yue) text.
 
 Package hierarchy (modules may import from any above):
+* conversion
 * prompts
 * romanization
 """
 
 from __future__ import annotations
 
+from .conversion import get_yue_converted
 from .romanization import get_yue_romanized
 
 __all__ = [
+    "get_yue_converted",
     "get_yue_romanized",
 ]

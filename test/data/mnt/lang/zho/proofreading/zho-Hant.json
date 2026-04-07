@@ -3,7 +3,8 @@
     "query": {
       "zimu_1": "龍貓"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -12,19 +13,22 @@
       "zimu_3": "妳們兩個累不累啊",
       "zimu_4": "就快到了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，快躲起來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "還以為是警察呢！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -34,27 +38,31 @@
       "zimu_4": "請多關照",
       "zimu_5": "搬家辛苦了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "謝謝你"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好，到了",
       "zimu_2": "等等我吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，有座橋啊",
       "zimu_2": "有橋？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -63,19 +71,22 @@
       "zimu_3": "爸爸，這裡太好了",
       "zimu_4": "樹林中還有隧道啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "那就是新家嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "跑快一點！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -84,33 +95,38 @@
       "zimu_3": "好像一間鬼屋",
       "zimu_4": "鬼屋"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "柱子爛掉了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "要倒了！",
       "zimu_2": "要倒了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，妳看",
       "zimu_2": "妳看"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好大啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -119,7 +135,8 @@
       "zimu_3": "樟樹呢",
       "zimu_4": "樟樹"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -127,13 +144,15 @@
       "zimu_2": "我看一下",
       "zimu_3": "那裡也有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "撿到了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -142,7 +161,8 @@
       "zimu_3": "有很多橡果子掉到屋裡",
       "zimu_4": "從上面掉下來的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -163,19 +183,22 @@
       "xiugai_3": "還是吃橡果子的老鼠呢？",
       "beizhu_3": "刪除不必要的換行符，統一成一行字幕。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "進去囉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "浴室"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -187,7 +210,8 @@
       "zimu_6": "不像蟑螂也不像老鼠",
       "zimu_7": "只知道是一堆黑色的東西"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -202,7 +226,8 @@
       "xiugai_2": "那一定是「灰塵精靈」",
       "beizhu_2": "將直角引號〝〞改為標準全形書名號/引號「」以統一標點格式。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -212,7 +237,8 @@
       "zimu_4": "灰塵精靈快點滾出來",
       "zimu_5": "你要躲著不出來\n我就把你眼睛挖出來！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -223,7 +249,8 @@
       "zimu_5": "好",
       "zimu_6": "小美也要"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -233,7 +260,8 @@
       "zimu_4": "咦？",
       "zimu_5": "咦？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -241,39 +269,45 @@
       "zimu_2": "沒有",
       "zimu_3": "沒有"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，找到了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "烏漆抹黑的",
       "zimu_2": "灰塵精靈呢？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "橡果子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "灰塵精靈快點滾出來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "灰塵精靈",
       "zimu_2": "你在不在？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -281,25 +315,29 @@
       "zimu_2": "那真是太好了",
       "zimu_3": "爸爸從小就夢想\n能夠住在鬼屋裡面"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "糟了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "抓到了！姐姐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -321,7 +359,8 @@
       "zimu_16": "灰塵精靈跑掉了",
       "zimu_17": "妳看妳的腳"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -346,7 +385,8 @@
       "xiugai_6": "「哇啦哇啦」的亂跑啊",
       "beizhu_6": "將直角引號〝〞改為中文全形書名號式引號「」，屬標點樣式統一，未改動用詞與語氣。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -367,19 +407,22 @@
       "xiugai_6": "那以後晚上，\n姐姐就不陪妳上廁所",
       "beizhu_6": "在「那以後晚上」之後補上逗號，改善標點斷句。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，妳在一邊等著"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "有沒有抓到魚？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -388,7 +431,8 @@
       "zimu_3": "打到水變涼為止",
       "zimu_4": "好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -396,7 +440,8 @@
       "zimu_2": "我媽媽要給婆婆的",
       "zimu_3": "是什麼？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -405,7 +450,8 @@
       "zimu_3": "你們家是可怕的大鬼屋",
       "zimu_4": "勘太！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -417,14 +463,16 @@
       "zimu_6": "真是太謝謝您了",
       "zimu_7": "婆婆再見"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸，我們家\n破破爛爛的會否倒下來",
       "zimu_2": "要是才剛搬來就倒塌\n那可怎麼得了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -433,7 +481,8 @@
       "zimu_3": "小美才不怕呢！",
       "zimu_4": "小美才不怕呢！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -441,19 +490,22 @@
       "zimu_2": "很好，加油",
       "zimu_3": "用力，加把勁"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "好了\n衣服都洗好了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "出發了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -472,13 +524,15 @@
       "xiugai_7": "替我幫你們媽媽問好",
       "beizhu_7": "將「妳們」改為「你們」，統一第二人稱複數用字，屬常見輸入錯誤修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走這邊！走這邊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -500,7 +554,8 @@
       "xiugai_4": "小美妳也來啦！",
       "beizhu_4": "補上句末感嘆號，使與第 3 句「媽媽！」等口語感嘆句式一致。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -531,7 +586,8 @@
       "zimu_25": "應該會吧",
       "zimu_26": "因為妳跟媽媽最像了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -545,20 +601,23 @@
       "zimu_8": "妳不是說妳已經長大\n要自己一個人睡的嗎？",
       "zimu_9": "跟媽媽睡沒關係"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸",
       "zimu_2": "天亮了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "起床！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -574,7 +633,8 @@
       "zimu_10": "來",
       "zimu_11": "便當自己包好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -589,7 +649,8 @@
       "zimu_9": "早",
       "zimu_10": "－早，趕快走吧\n－好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -598,58 +659,67 @@
       "zimu_3": "妳拿著便當要上哪兒去？",
       "zimu_4": "就在附近走走"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸，可以吃便當了嗎？",
       "zimu_2": "一早就想吃呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸你開花店了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小蝌蚪！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "破了一個大洞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "發現了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你是誰？",
       "zimu_2": "灰塵精靈嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "龍貓！你叫做龍貓呀？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你一定就叫做大龍貓",
       "zimu_2": "大龍貓"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -665,19 +735,22 @@
       "zimu_10": "小美",
       "zimu_11": "小美"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸！\n小美的帽子掉在這裡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美！小美！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -697,7 +770,8 @@
       "zimu_14": "還有這麼大的",
       "zimu_15": "還有一隻這麼大的在睡覺"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -713,13 +787,15 @@
       "xiugai_3": "簡直像是個秘密基地一樣",
       "beizhu_3": "將「祕密」改為「秘密」，統一常用字寫法。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "妳們兩個等等我"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -733,7 +809,8 @@
       "xiugai_2": "牠剛才\n睡在一棵很大的樹下面",
       "beizhu_2": "將「樹裡面」改為「樹下面」，配合常見表達與畫面情境，屬於明顯口誤型輸入錯誤修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -741,7 +818,8 @@
       "zimu_2": "剛才真的有大龍貓",
       "zimu_3": "我沒有騙你們"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -756,7 +834,8 @@
       "zimu_9": "打招呼？",
       "zimu_10": "現在向大樹出發了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -764,7 +843,8 @@
       "zimu_2": "爸爸，你看那樟樹",
       "zimu_3": "好大啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -772,7 +852,8 @@
       "zimu_2": "是這棵嗎？",
       "zimu_3": "爸爸，快來啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -808,20 +889,23 @@
       "zimu_30": "媽媽，今天出了一件大新聞",
       "zimu_31": "因為小美說她看到了\n一隻很大的龍貓精靈"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我好希望我也能夠見牠一面"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "勘太",
       "zimu_2": "－再不快點就要遲到了\n－嗯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -830,7 +914,8 @@
       "zimu_3": "什麼事？小月",
       "zimu_4": "我妹妹⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -846,13 +931,15 @@
       "zimu_10": "婆婆的田裡又那麼忙",
       "zimu_11": "小美在婆婆的家裡一直都很乖的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆，那我去跟老師說說看"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -861,7 +948,8 @@
       "zimu_3": "同學們要好好跟她相處啊",
       "zimu_4": "是的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -869,7 +957,8 @@
       "zimu_2": "大龍貓呀",
       "zimu_3": "不要吵"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -881,13 +970,15 @@
       "zimu_6": "拜拜，再見",
       "zimu_7": "小美，快點，要下雨了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "下雨了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -899,27 +990,31 @@
       "xiugai_1": "－小美都沒有哭，了不起。\n－嗯",
       "beizhu_1": "將結尾的問號「？」改為句號「。」以符合陳述語氣，屬標點用法修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "可是⋯"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "姐姐，有傘子真好啊",
       "zimu_2": "傘子破了好多洞洞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸今天好像沒帶傘",
       "zimu_2": "小美也要去接爸爸"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -934,7 +1029,8 @@
       "xiugai_5": "我看啊\n你八成是把傘弄壞了",
       "beizhu_5": "刪去「傘子」中的「子」，口語中字多餘，屬細微用字調整。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -961,27 +1057,31 @@
       "xiugai_6": "對了，這是勘太今天借我們的傘",
       "beizhu_6": "第 6 條將原本的換行符改為逗號，使句子排版為同一行。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "剛才是誰來了呀",
       "zimu_2": "才懶得理呢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "剛好趕上"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "你們要坐車嗎？",
       "zimu_2": "開車"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -989,13 +1089,15 @@
       "zimu_2": "一定是搭下一班啦",
       "zimu_3": "小美，妳到婆婆家等好不好？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "怎麼啦？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1005,31 +1107,36 @@
       "zimu_4": "要不要先到婆婆家去睡一下？",
       "zimu_5": "爸爸就快到了\n撐著點啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "巴士怎麼這麼慢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "來"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大龍貓？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "等我一下"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1040,25 +1147,29 @@
       "xiugai_2": "快點啊，小美快要掉下來了啦",
       "beizhu_2": "將原本同一條字幕中的分行符號「\\n」改為逗號，使一句話在同一行顯示，屬於排版調整，未改動原意與語氣。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "要這樣子用"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "巴士來了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大龍貓\n把爸爸的傘給帶走了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1076,7 +1187,8 @@
       "zimu_12": "太好了！",
       "zimu_13": "好嚇人啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1089,7 +1201,8 @@
       "zimu_7": "我跟小美回家以後打開一看",
       "zimu_8": "發現裡面都是橡果子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1105,7 +1218,8 @@
       "xiugai_7": "就好像猴子蟹大戰\n裡面那個螃蟹一樣啊",
       "beizhu_7": "將「猴子螃蟹大戰」修正為較常見的作品名稱「猴子蟹大戰」，屬於固定名稱的錯別字修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1113,7 +1227,8 @@
       "zimu_2": "希望媽媽的病\n能夠快點好起來好嗎？",
       "zimu_3": "小月"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1124,37 +1239,43 @@
       "zimu_5": "我看要問大龍貓才會知道",
       "zimu_6": "晚安"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "那是我們種橡果子的地方"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "太好了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美，我們都變成風了啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大樹不見了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "成功了！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1165,7 +1286,8 @@
       "zimu_5": "萬歲！",
       "zimu_6": "好啊！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1174,41 +1296,47 @@
       "zimu_3": "有您的電報",
       "zimu_4": "沒人在家啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我在這兒",
       "zimu_2": "長成這個樣就能吃了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆，那這個呢？",
       "zimu_2": "可以"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆你的這塊田\n好像是一座寶山啊",
       "zimu_2": "來，休息一下喘口氣"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "已經冰透了",
       "zimu_2": "那我要吃了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1241,7 +1369,8 @@
       "xiugai_17": "我要把我自己摘的粟米給媽媽吃",
       "beizhu_17": "刪除不必要的換行，保持同一句話在同一行。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1249,14 +1378,16 @@
       "zimu_2": "你們不在\n所以郵差送去我家",
       "zimu_3": "給我們的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆\n我爸爸不到傍晚不回來",
       "zimu_2": "快打開看吧\n要是急事耽擱就不好了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1275,19 +1406,22 @@
       "xiugai_1": "發電出七國山醫院",
       "beizhu_1": "「處」應為「出」，此處為電話顯示來源「發電出××」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美妳留下來陪婆婆"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美妳回去婆婆那裡"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1304,14 +1438,16 @@
       "xiugai_7": "我爸爸⋯\n麻煩請找草壁先生聽電話",
       "beizhu_7": "將「請草壁先生聽電話」改為「請找草壁先生聽電話」，補上漏字「找」，使句子結構完整，屬輸入性疏漏修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "爸爸，是我，小月",
       "zimu_2": "怎麼了？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1331,13 +1467,15 @@
       "xiugai_6": "爸爸給醫院打過電話\n就馬上回妳電話",
       "beizhu_6": "刪除重複的「就」，屬於輸入性重複錯誤。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "姐姐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1346,7 +1484,8 @@
       "zimu_3": "不可以！",
       "zimu_4": "這個是要給媽媽的啦"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1368,19 +1507,22 @@
       "xiugai_6": "媽媽要是勉強出院\n反而更嚴重了，那怎麼辦",
       "beizhu_6": "在第二行「更嚴重了」與「那怎麼辦」之間補上一個頓號，以符合中文標點習慣。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "走吧"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "姐姐是大壞蛋！"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1389,7 +1531,8 @@
       "zimu_3": "婆婆不是過來幫忙了嗎",
       "zimu_4": "打起精神"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1397,7 +1540,8 @@
       "zimu_2": "妳媽媽不過是感冒而已",
       "zimu_3": "下個星期六一定會回來的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1414,7 +1558,8 @@
       "xiugai_6": "我媽媽要是死了，那我們⋯",
       "beizhu_6": "補上逗號，以符合中文標點習慣。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1424,13 +1569,15 @@
       "zimu_4": "在妳爸爸回來之前",
       "zimu_5": "婆婆都會陪著妳的\n好不好呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美呀"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1455,13 +1602,15 @@
       "xiugai_11": "勘太 快點去叫你爸爸回來",
       "beizhu_11": "刪除多餘換行，將人名與後句放在同一行。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美真是笨蛋\n不知道路又愛亂跑"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1476,14 +1625,16 @@
       "xiugai_2": "您有沒有看見束辮子的小女孩，\n從這條路經過",
       "beizhu_2": "在「小女孩」後面增加逗號，用於分隔句子成分，使標點更符合常規用法。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "妳確定她是往這邊來的？",
       "zimu_2": "我也不知道"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1504,7 +1655,8 @@
       "zimu_15": "會不會搞錯了呀",
       "zimu_16": "再見囉"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1520,19 +1672,22 @@
       "zimu_10": "一定是",
       "zimu_11": "剛才有人在神池\n發現一隻小孩的涼鞋"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不過還不確定\n那就是小美的鞋子"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "找到了嗎？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1544,26 +1699,30 @@
       "xiugai_1": "南無阿彌陀佛",
       "beizhu_1": "「喃嘸」為口語諧音，正式佛教用語常作「南無」，此處視為常見輸入錯別字，予以更正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆，小月來了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "婆婆",
       "zimu_2": "妳看看這個"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "不是小美的"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1581,7 +1740,8 @@
       "xiugai_2": "我還以為這是小美的",
       "beizhu_2": "刪除錯誤換行，將「以\\n為」合併為「以為」。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1591,7 +1751,8 @@
       "zimu_4": "不久天就要黑了",
       "zimu_5": "她一定在哪裡迷了路"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1603,13 +1764,15 @@
       "zimu_6": "她一定已經嚇哭了",
       "zimu_7": "我現在不知道該怎麼辦好"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "大家都看不到牠"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1619,13 +1782,15 @@
       "xiugai_1": "「小美」",
       "beizhu_1": "將直角雙引號及全形〝〞更正為標準中文書名號式引號「」，屬於標點與字形規範上的排版修正。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "樹林開出了一條路了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1633,14 +1798,16 @@
       "zimu_2": "姐姐",
       "zimu_3": "小美"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "小美",
       "zimu_2": "姐姐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1648,7 +1815,8 @@
       "zimu_2": "對不起",
       "zimu_3": "妳是不是想要把粟米\n送去醫院給媽媽？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1660,7 +1828,8 @@
       "xiugai_1": "「七國山醫院」",
       "beizhu_1": "將全形直角引號 〝〞 改為中文標點常用的直引號「」；刪除兩側多餘空格。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1684,21 +1853,24 @@
       "xiugai_12": "出院以後我要好好疼疼她們，\n讓她們盡情耍耍小脾氣",
       "beizhu_12": "補上缺失的「讓」字，並將「們盡情」中的多餘「們」移到「她們」後，改為「讓她們盡情」，以修正明顯輸入錯誤；在前半句與後半句之間加逗號。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "媽媽在笑",
       "zimu_2": "看樣子是沒事了"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "我得趕快把身體養好才行",
       "zimu_2": "是啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1719,12 +1891,14 @@
       "xiugai_8": "「送給媽媽」",
       "beizhu_8": "同第 6 條，統一標點符號樣式。"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "zimu_1": "完"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   }
 ]

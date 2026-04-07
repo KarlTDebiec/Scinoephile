@@ -5,23 +5,16 @@
 from __future__ import annotations
 
 from io import StringIO
-from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
 
 from scinoephile.cli import EngCli, ScinoephileCli
+from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.common.testing import (
-    assert_cli_help,
-    assert_cli_usage,
-    run_cli_with_args,
-)
+from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import test_data_root
-
-if TYPE_CHECKING:
-    from scinoephile.common import CommandLineInterface
+from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
 @pytest.mark.parametrize(
@@ -63,9 +56,15 @@ def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
             "--flatten",
             "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
         ),
+        (
+            (ScinoephileCli, EngCli),
+            "mnt/output/eng_fuse_clean_validate.srt",
+            "--proofread",
+            "mnt/output/eng_fuse_clean_validate_proofread.srt",
+        ),
     ],
 )
-def test_eng_file_processing(
+def test_eng_cli(
     cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
@@ -87,23 +86,7 @@ def test_eng_file_processing(
     assert output == expected
 
 
-def test_eng_proofread_file_processing():
-    """Test English proofreading with file arguments."""
-    input_path = test_data_root / "mnt/output/eng_fuse_clean_validate.srt"
-    expected_path = test_data_root / "mnt/output/eng_fuse_clean_validate_proofread.srt"
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            EngCli,
-            f"--infile {input_path} --proofread --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-        expected = Series.load(expected_path)
-
-    assert output == expected
-
-
-def test_eng_pipe_processing():
+def test_eng_cli_pipe():
     """Test English CLI processing via stdin/stdout."""
     input_path = test_data_root / "mnt/output/eng_fuse.srt"
     expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"

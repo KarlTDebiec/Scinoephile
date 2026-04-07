@@ -4,8 +4,12 @@
 
 from __future__ import annotations
 
-__all__ = ["ScinoephileError"]
+__all__ = ["ScinoephileError", "UnsupportedCharacterError"]
 
 
 class ScinoephileError(Exception):
     """Scinoephile error."""
+
+
+class UnsupportedCharacterError(ScinoephileError):
+    """Text contains unsupported character(s)."""

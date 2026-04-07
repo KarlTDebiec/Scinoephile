@@ -1,68 +1,74 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""CUHK dictionary lookup service."""
+"""CUHK dictionary service."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from ..dictionary_entry import DictionaryEntry
-from ..lookup_direction import LookupDirection
-from .builder import CuhkDictionaryBuilder
-from .service_lookup import CuhkDictionaryLookupMixin
+from scinoephile.common.validation import val_int, val_output_path
+from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
+from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
+
+from .constants import MAX_LOOKUP_LIMIT
+from .database import CuhkDictionaryDatabase
+from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
 __all__ = [
     "CuhkDictionaryService",
 ]
 
-MAX_LOOKUP_LIMIT = 400
 
-
-class CuhkDictionaryService(CuhkDictionaryLookupMixin):
+class CuhkDictionaryService:
     """Runtime service for querying locally cached CUHK dictionary data."""
 
     def __init__(
         self,
-        cache_dir_path: Path | None = None,
+        database_path: Path | None = None,
         *,
         auto_build_missing: bool = False,
-        min_delay_seconds: float = 5.0,
-        max_delay_seconds: float = 10.0,
+        scraper_kwargs: CuhkDictionaryScraperKwargs | None = None,
     ):
         """Initialize.
 
         Arguments:
-            cache_dir_path: cache directory path for CUHK artifacts
+            database_path: SQLite database path
             auto_build_missing: build CUHK data automatically if missing
-            min_delay_seconds: minimum delay used if build is triggered
-            max_delay_seconds: maximum delay used if build is triggered
+            scraper_kwargs: keyword arguments forwarded to CuhkDictionaryScraper
         """
+        if database_path is None:
+            database_path = (
+                get_runtime_cache_dir_path("dictionaries", "cuhk") / "cuhk.db"
+            )
+        self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
-        self.builder = CuhkDictionaryBuilder(
-            cache_dir_path=cache_dir_path,
-            min_delay_seconds=min_delay_seconds,
-            max_delay_seconds=max_delay_seconds,
-        )
+        if scraper_kwargs is None:
+            scraper_kwargs = {}
+        self.database = CuhkDictionaryDatabase(database_path=self.database_path)
+        self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
+        self.cache_dir_path = self.scraper.cache_dir_path
 
-    @property
-    def database_path(self) -> Path:
-        """Path to local SQLite database."""
-        return self.builder.database_path
-
-    def build(self, force_rebuild: bool = False) -> Path:
-        """Build CUHK data cache.
+    def build(self, overwrite: bool = False, max_words: int | None = None) -> Path:
+        """Build or rebuild the local CUHK SQLite dictionary.
 
         Arguments:
-            force_rebuild: whether to force rebuild from source
+            overwrite: whether to overwrite an existing SQLite database
+            max_words: optional max number of discovered words to scrape
         Returns:
-            path to built SQLite database
+            SQLite database path
         """
-        return self.builder.build(force_rebuild=force_rebuild)
+        if self.database_path.exists() and not overwrite:
+            return self.database_path
+
+        scrape_data = self.scraper.scrape(max_words=max_words)
+        return self.database.persist(scrape_data)
 
     def lookup(
         self,
         query: str,
-        direction: LookupDirection = LookupDirection.MANDARIN_TO_CANTONESE,
+        direction: LookupDirection = LookupDirection.CMN_TO_YUE,
         limit: int = 10,
     ) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data.
@@ -74,40 +80,44 @@ class CuhkDictionaryService(CuhkDictionaryLookupMixin):
         Returns:
             dictionary entries
         """
-        normalized_query = query.strip()
-        if not normalized_query:
+        query = query.strip()
+        if not query:
             return []
-        normalized_limit = min(MAX_LOOKUP_LIMIT, max(1, int(limit)))
+        limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        database_path = self._ensure_database_path()
-        if direction == LookupDirection.MANDARIN_TO_CANTONESE:
-            return self._lookup_mandarin_to_cantonese(
-                database_path,
-                normalized_query,
-                normalized_limit,
-            )
-        return self._lookup_cantonese_to_mandarin(
-            database_path,
-            normalized_query,
-            normalized_limit,
-        )
+        if not self.database_path.exists():
+            if not self.auto_build_missing:
+                raise FileNotFoundError(
+                    "CUHK dictionary database not found. "
+                    "Set auto_build_missing=True to build automatically, "
+                    "or build explicitly with CuhkDictionaryService.build()."
+                )
+            self.build(overwrite=False)
 
-    def _ensure_database_path(self) -> Path:
-        """Ensure local database exists.
+        for lookup_query in self._get_lookup_queries(query, direction):
+            if entries := self.database.lookup(lookup_query, direction, limit):
+                return entries
+        return []
 
+    @staticmethod
+    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
+        """Get ordered query variants for dictionary lookup.
+
+        Arguments:
+            query: raw query text
+            direction: lookup direction
         Returns:
-            database path
-        Raises:
-            FileNotFoundError: if database is missing and auto-build is disabled
+            ordered query variants
         """
-        if self.database_path.exists():
-            return self.database_path
+        if direction == LookupDirection.CMN_TO_YUE:
+            query_variants = get_cmn_pinyin_query_strings(query)
+        else:
+            query_variants = get_yue_jyutping_query_strings(query)
 
-        if not self.auto_build_missing:
-            raise FileNotFoundError(
-                "CUHK dictionary database not found. "
-                "Set auto_build_missing=True to build automatically, "
-                "or build explicitly with CuhkDictionaryService.build()."
-            )
-
-        return self.build(force_rebuild=False)
+        ordered_queries: list[str] = []
+        seen_queries: set[str] = set()
+        for one_query in [*query_variants, query]:
+            if one_query and one_query not in seen_queries:
+                seen_queries.add(one_query)
+                ordered_queries.append(one_query)
+        return ordered_queries

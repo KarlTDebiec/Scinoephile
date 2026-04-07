@@ -1,20 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Constants shared by CUHK dictionary builder classes."""
+"""Constants used by the CUHK dictionary."""
 
 from __future__ import annotations
 
-import importlib
 import re
 
-from ..dictionary_source import DictionarySource
+from scinoephile.core.dictionaries import DictionarySource
 
-hkscs_converter = None
-try:  # pragma: no cover - optional dependency
-    hkscs_converter = importlib.import_module("hkscs_unicode_converter").converter
-except ImportError:
-    # Fallback to raw CUHK text when HK-SCS converter is unavailable.
-    pass
+MAX_LOOKUP_LIMIT = 400
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"
@@ -23,10 +17,9 @@ CUHK_TERMS_PATH = "/hanyu/Page/Terms.aspx"
 CUHK_WORD_PATH = "/hanyu/Page/Word.aspx"
 CUHK_SEARCH_PATH = "/hanyu/Page/Search.aspx"
 CUHK_WORD_RESULT_PATHS = {CUHK_WORD_PATH, CUHK_SEARCH_PATH}
+INVALID_FILENAME_CHARS_REGEX = re.compile(r"[\\/:*?\"<>|]")
 
-PRIVATE_USE_AREA_REGEX = re.compile(r"[\ue000-\uf8ff]")
 PRIVATE_USE_AREA_REPLACEMENT_STRING = "☒"
-
 LABEL_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl詞彙類別_.*")
 JYUTPING_LETTERS_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl粵語拼音_.*")
 JYUTPING_NUMBERS_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lbl聲調_.*")
@@ -35,9 +28,7 @@ MEANING_ID_REGEX = re.compile(
     r"MainContent_repeaterRecord_repeaterTranslation_\d+_lblTranslation_.*"
 )
 REMARK_ID_REGEX = re.compile(r"MainContent_repeaterRecord_lblRemark_.*")
-
 JYUTPING_TONE_MAP = {"7": "1", "8": "3", "9": "6"}
-INVALID_FILENAME_CHARS_REGEX = re.compile(r"[\\/:*?\"<>|]")
 
 CUHK_SOURCE = DictionarySource(
     name="現代標準漢語與粵語對照資料庫",
@@ -52,3 +43,24 @@ CUHK_SOURCE = DictionarySource(
     update_url="",
     other="words",
 )
+
+__all__ = [
+    "BASE_URL",
+    "CUHK_HOSTNAME",
+    "CUHK_SEARCH_PATH",
+    "CUHK_SOURCE",
+    "CUHK_TERMS_PATH",
+    "CUHK_WORD_PATH",
+    "CUHK_WORD_RESULT_PATHS",
+    "INVALID_FILENAME_CHARS_REGEX",
+    "JYUTPING_LETTERS_ID_REGEX",
+    "JYUTPING_NUMBERS_ID_REGEX",
+    "JYUTPING_NUMBERS_REGEX",
+    "JYUTPING_TONE_MAP",
+    "LABEL_ID_REGEX",
+    "MAX_LOOKUP_LIMIT",
+    "MEANING_ID_REGEX",
+    "PRIVATE_USE_AREA_REPLACEMENT_STRING",
+    "REMARK_ID_REGEX",
+    "TERMS_URL",
+]

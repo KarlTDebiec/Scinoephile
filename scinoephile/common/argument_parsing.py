@@ -9,7 +9,9 @@ from argparse import (
     ArgumentTypeError,
     _ArgumentGroup,  # noqa pylint
 )
-from typing import TYPE_CHECKING, Any, TypedDict, Unpack
+from collections.abc import Callable, Collection
+from pathlib import Path
+from typing import Any, TypedDict, Unpack
 
 from .validation import (
     val_float,
@@ -20,10 +22,6 @@ from .validation import (
     val_output_path,
     val_str,
 )
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Collection
-    from pathlib import Path
 
 __all__ = [
     "FloatValidatorKwargs",

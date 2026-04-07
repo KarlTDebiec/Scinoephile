@@ -4,12 +4,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
+from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
 
 
 def _test_get_series_timewarped(anchor: Series, source: Series, expected: Series):

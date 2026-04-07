@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Lookup-direction enum for 中文/粤文 dictionary queries."""
+"""Lookup-direction enum for dictionary queries."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ __all__ = [
 
 
 class LookupDirection(StrEnum):
-    """Lookup direction for 中文/粤文 dictionary queries."""
+    """Lookup direction for dictionary queries."""
 
-    MANDARIN_TO_CANTONESE = "mandarin_to_cantonese"
-    CANTONESE_TO_MANDARIN = "cantonese_to_mandarin"
+    CMN_TO_YUE = "cmn_to_yue"
+    YUE_TO_CMN = "yue_to_cmn"
