@@ -7,7 +7,6 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from pydantic import ValidationError
 
@@ -26,16 +25,14 @@ from scinoephile.core.llms import (
     TestCase,
     save_test_cases_to_json,
 )
+from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
+from scinoephile.llms.default_test_cases import get_whisper_backend
 
 from .alignment import Alignment
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
-
-    from .merging import YueZhoHansMergingPrompt
-    from .shifting import YueZhoHansShiftingPrompt
+from .merging import YueZhoHansMergingPrompt
+from .shifting import YueZhoHansShiftingPrompt
 
 __all__ = ["Aligner"]
 
@@ -326,12 +323,23 @@ class Aligner:
             test_root: Path to root directory of test cases
         """
         test_root = val_input_dir_path(test_root)
+        backend = get_whisper_backend()
 
         save_test_cases_to_json(
-            test_root / "multilang" / "yue_zho" / "transcription" / "shifting.json",
+            test_root
+            / "multilang"
+            / "yue_zho"
+            / "transcription"
+            / "shifting"
+            / f"{backend}.json",
             list(self.shifting_queryer.encountered_test_cases.values()),
         )
         save_test_cases_to_json(
-            test_root / "multilang" / "yue_zho" / "transcription" / "merging.json",
+            test_root
+            / "multilang"
+            / "yue_zho"
+            / "transcription"
+            / "merging"
+            / f"{backend}.json",
             list(self.merging_queryer.encountered_test_cases.values()),
         )

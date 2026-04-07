@@ -7,6 +7,7 @@ from __future__ import annotations
 from functools import cache
 from logging import getLogger
 from pathlib import Path
+from platform import system
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
@@ -22,6 +23,7 @@ __all__ = [
     "ZHO_HANT_OCR_FUSION_JSON_PATHS",
     "ZHO_HANT_PROOFREADING_JSON_PATHS",
     "get_repo_test_data_root",
+    "get_whisper_backend",
     "load_default_test_cases_from_repo_data",
 ]
 
@@ -68,12 +70,19 @@ ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
 )
 
-YUE_ZHO_PROOFREADING_JSON_PATHS = (Path("mlamd/multilang/yue_zho/proofreading.json"),)
+YUE_ZHO_PROOFREADING_JSON_PATHS = (
+    Path("mlamd/multilang/yue_zho/proofreading/gpu.json"),
+    Path("mlamd/multilang/yue_zho/proofreading/mps.json"),
+)
 
-YUE_ZHO_REVIEW_JSON_PATHS = (Path("mlamd/multilang/yue_zho/review.json"),)
+YUE_ZHO_REVIEW_JSON_PATHS = (
+    Path("mlamd/multilang/yue_zho/review/gpu.json"),
+    Path("mlamd/multilang/yue_zho/review/mps.json"),
+)
 
 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/translation.json"),
+    Path("mlamd/multilang/yue_zho/translation/gpu.json"),
+    Path("mlamd/multilang/yue_zho/translation/mps.json"),
 )
 
 
@@ -93,6 +102,16 @@ def get_repo_test_data_root() -> Path | None:
         )
         return None
     return test_data_root
+
+
+@cache
+def get_whisper_backend() -> str:
+    """Get Whisper backend name.
+
+    Returns:
+        backend name
+    """
+    return "mps" if system() == "Darwin" else "gpu"
 
 
 @cache
