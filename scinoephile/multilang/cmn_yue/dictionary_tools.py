@@ -8,6 +8,7 @@ from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
 from .dictionaries.cuhk import CuhkDictionaryService
+from .dictionaries.cuhk.constants import MAX_LOOKUP_LIMIT
 
 __all__ = [
     "CUHK_LOOKUP_TOOL_NAME",
@@ -85,7 +86,7 @@ def lookup_cuhk_dictionary(
     entries = service.lookup(
         query=normalized_query,
         direction=direction_enum,
-        limit=max(1, int(limit)),
+        limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
     )
     return {
         "query": normalized_query,
