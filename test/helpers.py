@@ -4,18 +4,28 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
 from functools import partial
+from inspect import getfile
+from io import StringIO
 from os import getenv
+from pathlib import Path
 from typing import Any
 
+import pytest
 from pytest import fixture, mark, param
 
 from scinoephile.common import package_root
+from scinoephile.common.testing import run_cli_with_args
 
 __all__ = [
+    "assert_cli_help",
+    "assert_cli_usage",
     "assert_expected_warnings",
+    "build_subcommands",
     "flaky",
     "get_warning_messages",
+    "get_usage_prefix",
     "parametrized_fixture",
     "skip_if_ci",
     "skip_if_codex",
@@ -24,6 +34,42 @@ __all__ = [
 
 
 test_data_root = package_root.parent / "test" / "data"
+
+
+def assert_cli_help(cli: tuple[type, ...]) -> None:
+    """Assert that a CLI tuple shows help text.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
+    subcommands = build_subcommands(cli)
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(cli[0], f"{subcommands} -h".strip())
+    assert excinfo.value.code == 0
+    assert stdout.getvalue().startswith(get_usage_prefix(cli))
+    assert stderr.getvalue() == ""
+
+
+def assert_cli_usage(cli: tuple[type, ...]) -> None:
+    """Assert that a CLI tuple shows usage on missing args.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
+    subcommands = build_subcommands(cli)
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(cli[0], subcommands)
+    assert excinfo.value.code == 2
+    assert stdout.getvalue() == ""
+    assert stderr.getvalue().startswith(get_usage_prefix(cli))
 
 
 def assert_expected_warnings(
@@ -46,15 +92,15 @@ def assert_expected_warnings(
         )
 
 
-def get_warning_messages(records: list[Any]) -> list[str]:
-    """Collect warning messages from captured log records.
+def build_subcommands(cli: tuple[type, ...]) -> str:
+    """Build subcommand string for a CLI tuple.
 
     Arguments:
-        records: log records captured during validation
+        cli: CLI class tuple with optional subcommands
     Returns:
-        list of warning messages
+        subcommand string to append to the base CLI
     """
-    return [record.getMessage() for record in records]
+    return " ".join(f"{command.name()}" for command in cli[1:])
 
 
 def flaky(inner: partial | None = None) -> partial:
@@ -69,6 +115,32 @@ def flaky(inner: partial | None = None) -> partial:
     if inner:
         marks.extend(inner.keywords["marks"])
     return partial(param, marks=marks)
+
+
+def get_usage_prefix(cli: tuple[type, ...]) -> str:
+    """Get expected usage prefix for a CLI tuple.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    Returns:
+        expected usage prefix
+    """
+    subcommands = build_subcommands(cli)
+    prefix = f"usage: {Path(getfile(cli[0])).name}"
+    if subcommands:
+        return f"{prefix} {subcommands}"
+    return prefix
+
+
+def get_warning_messages(records: list[Any]) -> list[str]:
+    """Collect warning messages from captured log records.
+
+    Arguments:
+        records: log records captured during validation
+    Returns:
+        list of warning messages
+    """
+    return [record.getMessage() for record in records]
 
 
 def parametrized_fixture(cls: type, params: list[dict[str, Any]]):

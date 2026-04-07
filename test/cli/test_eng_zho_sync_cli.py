@@ -9,13 +9,9 @@ import pytest
 from scinoephile.cli import EngZhoCli, EngZhoSyncCli, ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.common.testing import (
-    assert_cli_help,
-    assert_cli_usage,
-    run_cli_with_args,
-)
+from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import test_data_root
+from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
 @pytest.mark.parametrize(

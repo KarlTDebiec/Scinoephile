@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.cli import ScinoephileCli
-from scinoephile.common.testing import assert_cli_help, assert_cli_usage
+from test.helpers import assert_cli_help, assert_cli_usage
 
 
 def test_scinoephile_help():
