@@ -420,6 +420,44 @@
   },
   {
     "query": {
+      "yuewen_1": "奥运金牌⋯我谂呢一世都唔会攞到",
+      "zhongwen_1": "奥运金牌⋯这一世是没有机会的了",
+      "yuewen_2": "每个礼拜六我都会搭船过长洲",
+      "zhongwen_2": "每个星期六我都搭船过长洲",
+      "yuewen_3": "去学抢包山⋯",
+      "zhongwen_3": "去学抢包山⋯",
+      "yuewen_4": "一项冇奖牌，冇对手，冇比赛，甚至乎冇人知对佢系运动嘅运动⋯",
+      "zhongwen_4": "一项没有奖牌，没有对手，没有比赛⋯",
+      "zhongwen_5": "什至没有人知道是运动的运动",
+      "yuewen_6": "更衰嘅系，连包山都冇！",
+      "zhongwen_6": "更坏的是，连包山也没有！",
+      "yuewen_7": "师傅净系叫我去佢屋企⋯",
+      "zhongwen_7": "师傅只是叫我去他的家⋯",
+      "yuewen_8": "喺个组合柜度爬嚟爬去",
+      "zhongwen_8": "在组合柜爬来爬去",
+      "yuewen_9": "碰！三番！",
+      "zhongwen_9": "碰！三番！",
+      "yuewen_10": "冇偷懒！继续练！",
+      "zhongwen_10": "别躲懒！继续练！",
+      "yuewen_11": "有一日，珊珊嚟咗师傅屋企！",
+      "zhongwen_11": "一天，珊珊到了师传家！",
+      "yuewen_12": "珊珊！我个师姐珊珊啊！",
+      "zhongwen_12": "珊珊！我的师姐珊珊！",
+      "yuewen_13": "可以见到珊珊⋯",
+      "zhongwen_13": "可以看见珊珊⋯",
+      "yuewen_14": "爬得咁辛苦都系值得㗎！",
+      "zhongwen_14": "这几个星期爬得再辛苦也是值得的！",
+      "yuewen_15": "珊珊！",
+      "zhongwen_15": "珊珊！",
+      "yuewen_16": "珊你个头啊！继续练习！",
+      "zhongwen_16": "珊你个头！继续练习！"
+    },
+    "answer": {
+      "yuewen_5": "甚至乎冇乜人知呢个系运动"
+    }
+  },
+  {
+    "query": {
       "yuewen_1": "喂，我系麦兜啊",
       "zhongwen_1": "喂，我是麦兜",
       "yuewen_2": "正话嗰个系细路仔麦兜，我系大个佬麦兜",
@@ -533,11 +571,11 @@
       "zhongwen_2": "听说张保仔在洞内藏了很多宝藏",
       "yuewen_3": "因为我练过抢包手，身手比较灵活⋯",
       "zhongwen_3": "因为我练过抢包手，身手比较灵活⋯",
-      "yuewen_4": "同学叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞",
+      "yuewen_4": "班同学叫我爬去睇下，话唔定会发达",
       "zhongwen_4": "同学们叫我爬进去看看，说不定会发达",
-      "yuewen_5": "系噉⋯",
+      "yuewen_5": "于是我就向住呢一个又黑又窄嘅洞⋯",
       "zhongwen_5": "于是我就向着这个又黑又窄的洞⋯",
-      "yuewen_6": "爬，爬",
+      "yuewen_6": "系噉爬，爬",
       "zhongwen_6": "一直爬",
       "yuewen_7": "洞里面乜都冇，净系有一个盒",
       "zhongwen_7": "洞里面什么也没有，只有一个盒子",
@@ -590,13 +628,13 @@
       "zhongwen_34": "世界的时候，我会怎么样？"
     },
     "answer": {
-      "yuewen_11": "尋晚，食咗六個餐包\nEN: Filled the missing line in colloquial written Cantonese, using 食咗 and keeping the lyric-like tone.",
-      "yuewen_12": "可惜我依然係覺得仲未十分飽\nEN: Rendered the line into natural Cantonese with 依然係 and 仲未 to match surrounding style.",
-      "yuewen_13": "尋晚，食咗磅半方包\nEN: Translated directly into Cantonese, preserving the simple rhythmic phrasing.",
-      "yuewen_14": "可嘆係我依然覺餓，唔夠頂肚\nEN: Kept the lamenting tone and used 唔夠頂肚 for a natural Cantonese expression.",
-      "yuewen_15": "年少，練咗六套腳法。\nEN: Converted to Cantonese with 練咗 while preserving the original parallel structure.",
-      "yuewen_16": "可惜我依然未覺夠用。\nEN: Kept the sentence concise and parallel to the previous lines in Cantonese style.",
-      "yuewen_17": "年晚，又培育咗珊珊！可惜⋯\nEN: Filled the missing line with 又…咗 structure to match the surrounding colloquial Cantonese wording."
+      "yuewen_11": "「尋晚，食咗六個餐包」",
+      "yuewen_12": "「可惜我仲係覺得未夠飽」",
+      "yuewen_13": "「尋晚，食咗磅半方包」",
+      "yuewen_14": "「可嘆我仲係覺得肚餓，未夠頂肚」",
+      "yuewen_15": "「年少，練咗六套腳法。」",
+      "yuewen_16": "「可惜我仲係覺得未夠用。」",
+      "yuewen_17": "「年晚，又培育咗珊珊！可惜⋯」"
     }
   },
   {

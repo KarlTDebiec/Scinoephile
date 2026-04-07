@@ -35,8 +35,11 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
         - 粤文转写唔需要同中文字幕逐字对应。
         - 讲者可能会用唔同嘅粤语讲法。
         - 如果唔系转写错误，意义、语气同文法嘅差异都可以接受。
-        - 如果你唔确定某个词嘅普通话/粤语对应、读音或者用字，请调用
-          `lookup_cuhk_dictionary`，唔好靠估。
+        - 喺你输出答案之前，必须调用 `lookup_cuhk_dictionary`
+          为粤文入面每一个词逐个查定义，唔可以跳过任何词。
+        - 如果中文字幕入面有对应词语会影响判断，亦都要调用
+          `lookup_cuhk_dictionary` 去查。
+        - 即使你觉得个词好常见、好明显，仍然要查，唔好靠估。
 
         如果你有修改，请用英文一句话说明改动。
         如果冇修改，备注请回传空字串。""")

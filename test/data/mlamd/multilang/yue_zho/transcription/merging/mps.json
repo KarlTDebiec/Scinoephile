@@ -3736,9 +3736,9 @@
       "zhongwen": "太好了！吓得我！"
     },
     "answer": {
-      "yuewen_merged": "好嘢！嚇得我啊，咁都好啲"
+      "yuewen_merged": "好嘢！嚇得我啊！咁都好啲"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -3814,9 +3814,9 @@
       "zhongwen": "依你说，纸是否可以包着鸡呢？"
     },
     "answer": {
-      "yuewen_merged": "噉你话，纸包唔包得绝鸡呢？"
+      "yuewen_merged": "噉你话纸包唔包得绝鸡呢？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -4564,9 +4564,8 @@
       "zhongwen": "妈妈跟着又念念有词的"
     },
     "answer": {
-      "yuewen_merged": "跟住，妈妈口噏噏噉讲咗一啲嘢"
-    },
-    "difficulty": 2
+      "yuewen_merged": "跟住妈妈口噏噏噉讲咗一啲嘢"
+    }
   },
   {
     "query": {
@@ -4646,9 +4645,9 @@
       "zhongwen": "还带着成绩表，奖牌和大包"
     },
     "answer": {
-      "yuewen_merged": "仲带埋成绩表，奖牌，同大包嚟添"
+      "yuewen_merged": "仲带埋成绩表，奖牌同大包嚟添"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -5054,8 +5053,7 @@
     "answer": {
       "yuewen_merged": "一日冇奖牌，冇对手，冇比赛⋯"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5571,9 +5569,9 @@
       "zhongwen": "难道⋯　不会吧？"
     },
     "answer": {
-      "yuewen_merged": "唔通⋯冇理由㗎？"
+      "yuewen_merged": "唔通⋯　冇理由㗎？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -5585,7 +5583,7 @@
       "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "yuewen_merged": "咦，估唔到真系妈妈攞咗㖞，嚇得我啊！"
+      "yuewen_merged": "咦，估唔到真系妈妈攞咗㖞．嚇得我啊！"
     },
     "difficulty": 2
   },
@@ -6637,9 +6635,9 @@
       "zhongwen": "什至杯面，烧鸭的味道也没有这么浓"
     },
     "answer": {
-      "yuewen_merged": "连烧鸭，连杯面都冇咁浓嘅味道"
+      "yuewen_merged": "连烧鸭连杯面都冇咁浓嘅味道"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7115,27 +7113,15 @@
   {
     "query": {
       "yuewen_to_merge": [
-        "喺我妈妈火化嗰日",
-        "嗰日"
-      ],
-      "zhongwen": "是在我妈妈火化那天"
-    },
-    "answer": {
-      "yuewen_merged": "喺我妈妈火化嗰日，嗰日"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_merge": [
+        "嗰日",
         "我望住天东几条灰色嘅烟"
       ],
       "zhongwen": "那天，我看着天空几缕灰色的烟"
     },
     "answer": {
-      "yuewen_merged": "我望住天东几条灰色嘅烟"
+      "yuewen_merged": "嗰日，我望住天东几条灰色嘅烟"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -7550,40 +7536,38 @@
     "query": {
       "yuewen_to_merge": [
         "班同我叫我爬佢睇下",
-        "话唔定会发达",
-        "于是我就向住呢一个又黑又窄嘅洞"
+        "话唔定会发达"
       ],
       "zhongwen": "同学们叫我爬进去看看，说不定会发达"
     },
     "answer": {
-      "yuewen_merged": "班同我叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_merge": [
-        "系噉"
-      ],
-      "zhongwen": "于是我就向着这个又黑又窄的洞⋯"
-    },
-    "answer": {
-      "yuewen_merged": "系噉⋯"
+      "yuewen_merged": "班同我叫我爬佢睇下，话唔定会发达"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_merge": [
-        "爬",
+        "于是我就向住呢一个又黑又窄嘅洞"
+      ],
+      "zhongwen": "于是我就向着这个又黑又窄的洞⋯"
+    },
+    "answer": {
+      "yuewen_merged": "于是我就向住呢一个又黑又窄嘅洞⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系噉爬",
         "爬"
       ],
       "zhongwen": "一直爬"
     },
     "answer": {
-      "yuewen_merged": "爬，爬"
-    },
-    "difficulty": 2
+      "yuewen_merged": "系噉爬爬"
+    }
   },
   {
     "query": {
@@ -7839,9 +7823,9 @@
       "zhongwen": "「⋯无力挽回！」"
     },
     "answer": {
-      "yuewen_merged": "「无泪弯！」"
+      "yuewen_merged": "「⋯无泪弯！」"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {

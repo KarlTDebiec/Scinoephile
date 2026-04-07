@@ -85,6 +85,7 @@ class OpenAIProvider(LLMProvider):
 
                 message = completion.choices[0].message
                 tool_calls = message.tool_calls or []
+
                 if not tool_calls:
                     content = message.content
                     if content is None:

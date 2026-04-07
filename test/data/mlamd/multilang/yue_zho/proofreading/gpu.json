@@ -9,8 +9,7 @@
       "beizhu": "Corrected '临盘' to '临盆' as '临盆' is the correct term for childbirth."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -20,8 +19,7 @@
     "answer": {
       "xiugai": "有一个胶兜喺九龙上空飞过",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -33,8 +31,7 @@
       "beizhu": "Corrected '荔枝角度' to '荔枝角道' and '大角咀度' to '大角咀道' as '道' is the correct word for 'road' in both cases."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -45,8 +42,7 @@
       "xiugai": "经过好彩酒家再左转返出花园街乐园牛丸王对上⋯",
       "beizhu": "Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely mishearings of the restaurant name '好彩酒家' and '乐园牛丸王'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -57,8 +53,7 @@
       "xiugai": "都系唔好：",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -68,8 +63,7 @@
     "answer": {
       "xiugai": "先去街市大楼嗰间妹记鱼腩粥嗰度",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -80,8 +74,7 @@
       "xiugai": "转下，转下⋯都系唔好：",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -93,8 +86,7 @@
       "beizhu": "Corrected '阿街路街' to '亚皆老街' as it is a mishearing of the street name '亚皆老街'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -105,8 +97,7 @@
       "xiugai": "再右转抹返出去窝打老道向女人街方向飞下下⋯",
       "beizhu": "Corrected '窝打炉道' to '窝打老道' as '窝打老道' is the correct street name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -117,8 +108,7 @@
       "xiugai": "飞下，飞下⋯",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -129,8 +119,7 @@
       "xiugai": "最后胶兜飞咗入广华医院嘅候产房",
       "beizhu": "Corrected '后产房' to '候产房' as '候产房' (waiting room for delivery) matches the meaning in the 中文, while '后产房' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -142,8 +131,7 @@
       "beizhu": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -154,8 +142,7 @@
       "xiugai": "都系唔好：左边魂精对上⋯",
       "beizhu": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' and matches the meaning of '额角' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -165,8 +152,7 @@
     "answer": {
       "xiugai": "转下，转下，转下噉⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -178,8 +164,7 @@
       "beizhu": "Corrected '异象' to '异像' as '异像' is the correct term in this context."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -190,8 +175,7 @@
       "xiugai": "于是向魂精对上嘅胶兜许愿",
       "beizhu": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for 'temple' (额角), matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -201,8 +185,7 @@
     "answer": {
       "xiugai": "而脑入面亦即时出现咗快要出世个仔嘅样⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -212,8 +195,7 @@
     "answer": {
       "xiugai": "希望佢好聪明，读书好叻！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -223,8 +205,7 @@
     "answer": {
       "xiugai": "胶兜对麦太嘅愿望似乎冇咩表示",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -234,8 +215,7 @@
     "answer": {
       "xiugai": "于是佢对住胶兜补充噉话：",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -245,8 +225,7 @@
     "answer": {
       "xiugai": "或者读书唔叻，出嚟做嘢叻啦？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -256,8 +235,7 @@
     "answer": {
       "xiugai": "又或者呢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -267,8 +245,7 @@
     "answer": {
       "xiugai": "又或者系好靓仔，好靓仔",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -278,8 +255,7 @@
     "answer": {
       "xiugai": "好似周润发，同埋梁朝伟咁靓仔！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -289,8 +265,7 @@
     "answer": {
       "xiugai": "胶兜依然系噉喺度转，好似一啲应承嘅迹象都冇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -301,8 +276,7 @@
       "xiugai": "嗱嗱嗱喺胶兜未落地之前起过另外一个愿望：",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -313,8 +287,7 @@
       "xiugai": "就算唔系咁聪明同咁靓仔，只要福星高照",
       "beizhu": "Corrected '复星高照' to '福星高照' as '福星高照' is the correct idiom meaning 'blessed with good fortune', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -326,8 +299,7 @@
       "beizhu": "Corrected '救运' to '够运' as '够运' is the correct term for being lucky, matching the original meaning."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -337,8 +309,7 @@
     "answer": {
       "xiugai": "佢靠自己有料解决啲嘢就梗系好啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -348,8 +319,7 @@
     "answer": {
       "xiugai": "不过运气都好紧要㖞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -361,8 +331,7 @@
       "beizhu": "Corrected '唔返去冒运行' to '都行运定咗' as the original phrase was a mishearing; '行运定咗' matches the meaning of '行运定了'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -372,8 +341,7 @@
     "answer": {
       "xiugai": "但系都要叻仔先得㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -384,8 +352,7 @@
       "xiugai": "最后，胶兜「嘀督」一声咁落地",
       "beizhu": "Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of the sound effect in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -397,8 +364,7 @@
       "beizhu": "Corrected '滴嘟' to '嘀督' to match the intended sound and meaning of '嘀督' as a phonetic rendering of '嘀督' (答应了)."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -408,8 +374,7 @@
     "answer": {
       "xiugai": "麦太心谂，今次冇死喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -419,8 +384,7 @@
     "answer": {
       "xiugai": "但你应承咗啲咩呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -432,8 +396,7 @@
       "beizhu": "Corrected '话自周人烦' to '话似周润发' as it is a mishearing of the actor's name, matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -444,8 +407,7 @@
       "xiugai": "为咗纪念呢个赐福嘅胶兜",
       "beizhu": "Corrected '赤幅' to '赐福' as '赐福' (bestowing blessing) matches the meaning in the 中文, while '赤幅' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -455,8 +417,7 @@
     "answer": {
       "xiugai": "麦太决定将个仔嘅名叫做麦胶",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -466,8 +427,7 @@
     "answer": {
       "xiugai": "都系唔好，胶胶声，咁难听！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -477,8 +437,7 @@
     "answer": {
       "xiugai": "不如叫麦兜啦！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -488,8 +447,7 @@
     "answer": {
       "xiugai": "我就系呢个差少少就叫做麦胶嘅小朋友⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -500,8 +458,7 @@
       "xiugai": "咦，麦太，咩唔见你一排",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -513,8 +470,7 @@
       "beizhu": "Corrected '脚刮囊' to '脚瓜囊' as '脚瓜囊' is the correct Cantonese term for 'calf', matching the meaning of '小腿'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -524,8 +480,7 @@
     "answer": {
       "xiugai": "鬼咩，日日扑嚟扑去⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -535,8 +490,7 @@
     "answer": {
       "xiugai": "同我仔揾幼稚园吖嘛！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -547,8 +501,7 @@
       "xiugai": "点解唔试下好彩酒楼斜对面",
       "beizhu": "Corrected '走楼' to '酒楼' as '酒楼' is the correct term for 'restaurant' and matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -559,8 +512,7 @@
       "xiugai": "旧中侨百货公司楼上嗰间⋯",
       "beizhu": "Corrected '中桥' to '中侨' as '中侨' matches the original name in the 中文, and '中桥' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -570,8 +522,7 @@
     "answer": {
       "xiugai": "春田花花幼稚园呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -581,8 +532,7 @@
     "answer": {
       "xiugai": "就系坐落喺界限街同南昌街交界⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -592,8 +542,7 @@
     "answer": {
       "xiugai": "银城美食广场附近嗰间⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -603,8 +552,7 @@
     "answer": {
       "xiugai": "春田花花幼稚园呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -614,8 +562,7 @@
     "answer": {
       "xiugai": "系呀！深水埗地铁站口行过去唔使十分钟呀！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -626,8 +573,7 @@
       "xiugai": "春田花花幼稚园，师资优良⋯",
       "beizhu": "Corrected '诗诗优良' to '师资优良' as '师资' (teaching staff) matches the meaning in the 中文, while '诗诗' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -637,8 +583,7 @@
     "answer": {
       "xiugai": "仲系西人教英文添㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -648,8 +593,7 @@
     "answer": {
       "xiugai": "咦，西人教英文？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -659,8 +603,7 @@
     "answer": {
       "xiugai": "系呀！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -670,8 +613,7 @@
     "answer": {
       "xiugai": "春田花花，真系好多西人㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -681,8 +623,7 @@
     "answer": {
       "xiugai": "呢个扮紧白兔猪样嘅小朋友⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -693,8 +634,7 @@
       "xiugai": "即系横睇掂睇都唔似发哥或者伟仔嗰个呢⋯",
       "beizhu": "Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname for 梁朝伟, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -704,8 +644,7 @@
     "answer": {
       "xiugai": "就系我，麦兜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -715,8 +654,7 @@
     "answer": {
       "xiugai": "呢间就系我读嘅幼稚园",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -726,8 +664,7 @@
     "answer": {
       "xiugai": "校长系潮州人",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -737,8 +674,7 @@
     "answer": {
       "xiugai": "可能仲系讲紧潮州话嘅",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -748,8 +684,7 @@
     "answer": {
       "xiugai": "所以咁多年嚟⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -761,8 +696,7 @@
       "beizhu": "Corrected '噏文' to '噏乜' as '噏乜' (what he's saying) matches the meaning of '他的说话', while '噏文' is likely a mishearing."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -773,8 +707,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '大湖荒岩宅' bears no resemblance to the original phrase '蛋挞！　　蛋挞！' and is clearly a complete transcription failure."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -785,8 +718,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '湾吉校坟交涉设' bears no resemblance to the original phrase '荔芋火鸭札！' and is clearly a complete mismatch."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -798,8 +730,7 @@
       "beizhu": "Cleared as '都唔好湾吉校坟交涉白！' bears no resemblance to the original phrase '也不能忘记校训九十八！' and is clearly a pure artifact."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -811,8 +742,7 @@
       "beizhu": "Corrected '嗰个位同学' to '各位同学' as '嗰个位' is a mishearing of '各位', which is the correct address for a group."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -823,8 +753,7 @@
       "xiugai": "今次早会系要同大家分享",
       "beizhu": "Corrected '座会' to '早会' as '早会' is the correct term for 'morning assembly', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -834,8 +763,7 @@
     "answer": {
       "xiugai": "一个可重要嘅主题：",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -845,8 +773,7 @@
     "answer": {
       "xiugai": "小朋友，你哋今个月交咗学费咩呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -857,8 +784,7 @@
       "xiugai": "交！",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -868,8 +794,7 @@
     "answer": {
       "xiugai": "哎，好在！噉大家可以返去上堂喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -880,8 +805,7 @@
       "xiugai": "你哋可能觉得呢间幼稚园好烂",
       "beizhu": "Corrected '好逗利' to '好烂' as '逗利' is a likely mishearing of '烂', which matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -891,8 +815,7 @@
     "answer": {
       "xiugai": "但系，对于我同埋我班同学仔嚟讲",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -902,8 +825,7 @@
     "answer": {
       "xiugai": "呢度系我哋最快乐，最美丽嘅乐园⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -913,8 +835,7 @@
     "answer": {
       "xiugai": "⋯仲有一个好疼我哋",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -926,8 +847,7 @@
       "beizhu": "Corrected '失魂' to '游魂' as '游魂' matches the meaning of '游魂' in the 中文, while '失魂' is a likely mishearing; Corrected '班主有Miss Chan' to '班主任Miss Chan' for proper transcription of 'class teacher'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -938,8 +858,7 @@
       "xiugai": "佢嘅志愿系做下一个王菲",
       "beizhu": "Corrected '王妃' of '王菲'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -950,8 +869,7 @@
       "xiugai": "或者系做下一个陈慧琳都得",
       "beizhu": "Corrected '陈维林' to '陈慧琳' as '陈慧琳' is the correct name matching the original meaning."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -961,8 +879,7 @@
     "answer": {
       "xiugai": "好喇，我哋而家开始点名",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -973,8 +890,7 @@
       "xiugai": "麦唛同学！　　到！",
       "beizhu": "Corrected '麦麦' to '麦唛' as '麦唛' is the correct name, matching the original 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -985,8 +901,7 @@
       "xiugai": "亚辉同学！　　到！",
       "beizhu": "Corrected '阿辉' to '亚辉' as '亚辉' is the correct name, matching the original 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -997,8 +912,7 @@
       "xiugai": "菇时同学！　　到！",
       "beizhu": "Corrected 'Boosie' to '菇时' as 'Boosie' is a mishearing of the name '菇时'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1009,8 +923,7 @@
       "xiugai": "得巴同学！　　到！",
       "beizhu": "Corrected '德巴' to '得巴' as it matches the original name in the 中文 and is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1020,8 +933,7 @@
     "answer": {
       "xiugai": "Miss Chan，你点咗我两次喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1031,8 +943,7 @@
     "answer": {
       "xiugai": "啊，系咩？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1042,8 +953,7 @@
     "answer": {
       "xiugai": "好，我哋而家继续点名",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1054,8 +964,7 @@
       "xiugai": "菇时同学！　　到！",
       "beizhu": "Corrected '川明' to '菇时' as it is a mishearing of the name in the original text."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1065,8 +974,7 @@
     "answer": {
       "xiugai": "好，仲有边个未点？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1077,8 +985,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '猫噢！' bears no resemblance to the original phrase '麦兜！' and is clearly a complete transcription failure."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1089,8 +996,7 @@
       "xiugai": "�",
       "beizhu": "Cleared, as multiple characters are speaking over one another"
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -1101,8 +1007,7 @@
       "xiugai": "妈妈啊，我个心总系印住印住⋯",
       "beizhu": "Corrected '仁住仁住' to '印住印住' as '印住' is a common Cantonese expression for a lingering or pressing feeling, matching the context of '觉得'. Added missing '妈妈啊，'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -1112,8 +1017,7 @@
     "answer": {
       "xiugai": "好似有人嗌紧我个名噉嘅",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1123,8 +1027,7 @@
     "answer": {
       "xiugai": "你哋唔好以为我心散啊",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1134,8 +1037,7 @@
     "answer": {
       "xiugai": "其实我系喺度思考紧一啲学术性嘅问题：",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1147,8 +1049,7 @@
       "beizhu": "Corrected 'Orange' to '疴－烂－煮' as '疴－烂－煮' appears to be an indentional transliteration of 'orange' into Chinese characters, matching the styling in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -1159,8 +1060,7 @@
       "xiugai": "妈妈话食橙会通大便",
       "beizhu": "Corrected '大变' to '大便' as '大便' is the correct term for 'bowel movement', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1171,8 +1071,7 @@
       "xiugai": "「疴」呢个我明白，但系「烂－煮」呢？",
       "beizhu": "Corrected '噢' to '疴' and '橙' to '烂－煮' as these are likely mishearings of the intended words in the context of the question."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1183,8 +1082,7 @@
       "xiugai": "仲有呢个「芭－娜－哪」香蕉啊",
       "beizhu": "Corrected '芭－拉－娜' to '芭－娜－哪' to match the intended playful pronunciation of 'banana' as in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1195,8 +1093,7 @@
       "xiugai": "点解雨伞会叫做「暗－芭－娜－哪」呢？",
       "beizhu": "Corrected '雨姐' to '雨伞' as '雨姐' is a mishearing of '雨伞', and '芭－拉－娜' to '芭－娜－哪' to match the intended phonetic play in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1207,8 +1104,7 @@
       "xiugai": "嗱，我「暗」啦，噉我「暗」嗰条蕉",
       "beizhu": "Replaced '嗰条香蕉' with '嗰条蕉' as '蕉' is the more natural and concise way to refer to 'banana' in Cantonese, matching the original phrase '掉一条蕉'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1219,8 +1115,7 @@
       "xiugai": "至多会疴烂煮啫，点解会搞到落雨呢？",
       "beizhu": "Corrected 'Orange' to '疴烂煮' as '疴烂煮' is a transliteration of 'orange' matching the style and meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1230,8 +1125,7 @@
     "answer": {
       "xiugai": "呢个世界仲有好多嘢我谂唔明",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1241,8 +1135,7 @@
     "answer": {
       "xiugai": "不过我唔怕",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1252,8 +1145,7 @@
     "answer": {
       "xiugai": "我谂，到我读完幼稚园",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1264,8 +1156,7 @@
       "xiugai": "升埋小学，上到中学",
       "beizhu": "Corrected '识埋小学' to '升埋小学' as '升' (move up/advance) matches the meaning of '升小学' in the 中文, while '识' (know) is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1275,8 +1166,7 @@
     "answer": {
       "xiugai": "再入埋大学⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1286,8 +1176,7 @@
     "answer": {
       "xiugai": "等我大学毕业嗰阵",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1297,8 +1186,7 @@
     "answer": {
       "xiugai": "我谂我乜都会明白晒！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1308,8 +1196,7 @@
     "answer": {
       "xiugai": "到嗰阵⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1319,8 +1206,7 @@
     "answer": {
       "xiugai": "我买层楼畀我妈妈！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1330,8 +1216,7 @@
     "answer": {
       "xiugai": "喺幼稚园楼下，校长兼营嘅间茶餐厅",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1342,8 +1227,7 @@
       "xiugai": "我哋一班同学仔放咗学都经常去傍衬",
       "beizhu": "Corrected '系傍陈' to '去傍衬' as '去傍衬' (go to patronize) matches the meaning of '光顾' in the 中文, while '系傍陈' is likely a mishearing."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -1354,8 +1238,7 @@
       "xiugai": "唔该，鱼蛋粗面啊　　冇粗面噃",
       "beizhu": "Corrected '鱼蛋粗啊' to '鱼蛋粗面啊' as '鱼蛋粗面' is the correct dish name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1367,8 +1250,7 @@
       "beizhu": "Added '河粉' after '鱼蛋' to match the intended meaning of '鱼蛋河粉' in the 中文, as '好' is likely a mishearing of '河粉'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -1379,8 +1261,7 @@
       "xiugai": "噉啊⋯要金钱肚粗面啊　　冇粗面噃",
       "beizhu": "Corrected '金钱透粗啊' to '金钱肚粗面啊' as '金钱肚粗面' is the correct dish name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1390,8 +1271,7 @@
     "answer": {
       "xiugai": "噉啊咁要鱼蛋油面啊　　冇鱼蛋噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1401,8 +1281,7 @@
     "answer": {
       "xiugai": "乜样样都冇嘅？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1414,8 +1293,7 @@
       "beizhu": "Corrected '蜜丸粗啊' to '墨鱼丸粗面啊' as '蜜丸' is a mishearing of '墨鱼丸', and added '面' to match the intended dish."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -1425,8 +1303,7 @@
     "answer": {
       "xiugai": "又冇啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1437,8 +1314,7 @@
       "xiugai": "噉唔该畀碗鱼蛋濑啊　　冇鱼蛋噃",
       "beizhu": "Corrected '鱼蛋奶' to '鱼蛋濑' as '奶' is a mishearing of '濑', which refers to '濑粉' (lai fun noodles) in the context of the dish."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1448,8 +1324,7 @@
     "answer": {
       "xiugai": "麦兜啊，佢哋啲鱼蛋同粗面卖晒㗎啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1459,8 +1334,7 @@
     "answer": {
       "xiugai": "即系所有要鱼蛋或者粗面嘅配搭都冇㗎啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1470,8 +1344,7 @@
     "answer": {
       "xiugai": "噢，冇嗰啲配搭啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1481,8 +1354,7 @@
     "answer": {
       "xiugai": "噉唔该，净鱼蛋啊　　冇鱼蛋噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1492,8 +1364,7 @@
     "answer": {
       "xiugai": "净粗面呢？　　冇粗面噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1503,8 +1374,7 @@
     "answer": {
       "xiugai": "睇到呢度⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1514,8 +1384,7 @@
     "answer": {
       "xiugai": "大家大概都知道我有几叻仔嘞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1526,8 +1395,7 @@
       "xiugai": "嗰阵我无忧无虑，冇乜所谓－－",
       "beizhu": "Corrected '果只' to '嗰阵' as '嗰阵' (that time) is the correct term matching the meaning of '那时候' in the 中文, while '果只' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1537,8 +1405,7 @@
     "answer": {
       "xiugai": "冇鱼蛋咩？粗面都好啊",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1549,8 +1416,7 @@
       "xiugai": "麦兜，转身食啊！",
       "beizhu": "No changes needed."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -1561,8 +1427,7 @@
       "xiugai": "睇住自己日日疴烂煮⋯",
       "beizhu": "Corrected '柯能处' to '疴烂煮' as '疴烂煮' is a phonetic match and matches the meaning of the 中文, while '柯能处' is a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1573,8 +1438,7 @@
       "xiugai": "日日长肉⋯",
       "beizhu": "Corrected '掌肉' to '长肉' as '长肉' (gaining weight) matches the meaning of '长肉' in the 中文, while '掌肉' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1584,8 +1448,7 @@
     "answer": {
       "xiugai": "感到充满力量！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1596,8 +1459,7 @@
       "xiugai": "有一首歌，Miss Chan唱得好好听呀",
       "beizhu": "Corrected '麦词春' to 'Miss Chan' as '麦词春' is a mishearing of 'Miss Chan', matching the name in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1607,8 +1469,7 @@
     "answer": {
       "xiugai": "我成日想学习",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1620,8 +1481,7 @@
       "beizhu": "Corrected '阿伦厨' to '疴兰煮' as it is a likely mishearing and matches the intended pun on 'orange' ('疴﹣兰﹣煮') in the context; Also corrected 'Ballana' to '芭﹣娜﹣娜' as it is a mishearing of 'Banana', and is meant to be styled in the same phonetic manner as '疴﹣兰﹣煮'."
     },
     "difficulty": 3,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -1631,8 +1491,7 @@
     "answer": {
       "xiugai": "系唔系All Things Bright and Beautiful呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1642,8 +1501,7 @@
     "answer": {
       "xiugai": "系呀，所有嘢都几好喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1653,8 +1511,7 @@
     "answer": {
       "xiugai": "世上一切⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1665,8 +1522,7 @@
       "xiugai": "所有嗰啲嘢，都几好！",
       "beizhu": "Manually overridden to remove English text not subtitled in the 中文"
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -1676,8 +1532,7 @@
     "answer": {
       "xiugai": "1, 2, 3, 4, 5, 6, 7⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1688,8 +1543,7 @@
       "xiugai": "多劳多得！",
       "beizhu": "Corrected '多喽' to '多劳' as '多劳多得' is the correct phrase meaning 'more work, more gain', and '多喽' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1700,8 +1554,7 @@
       "xiugai": "星期一至星期七⋯多劳多得！",
       "beizhu": "Corrected '多喽多得' to '多劳多得' as '多劳多得' is the correct phrase meaning 'the more you work, the more you gain', and '喽' is a mishearing of '劳'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1711,8 +1564,7 @@
     "answer": {
       "xiugai": "呢个嗌得特别劲嘅中年母猪",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1722,8 +1574,7 @@
     "answer": {
       "xiugai": "就系我妈妈麦太",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1733,8 +1584,7 @@
     "answer": {
       "xiugai": "我妈妈真系好劲呀",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1744,8 +1594,7 @@
     "answer": {
       "xiugai": "一个女人揹起成个世界！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1755,8 +1604,7 @@
     "answer": {
       "xiugai": "系呀，我妈妈真系好犀利㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1766,8 +1614,7 @@
     "answer": {
       "xiugai": "除咗做保险，地产经纪同埋trading之外⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1777,8 +1624,7 @@
     "answer": {
       "xiugai": "佢仲趁住高科技热潮搞咗个煮𩠌嘅网站⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1790,8 +1636,7 @@
       "beizhu": "Corrected 'mcticege' to '麦太世界' to match the style of the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -1801,8 +1646,7 @@
     "answer": {
       "xiugai": "佢煮嘅𩠌，一样咁犀利",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1812,8 +1656,7 @@
     "answer": {
       "xiugai": "欢迎大家收睇＜麦太世界＞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1823,8 +1666,7 @@
     "answer": {
       "xiugai": "今日我为大家介绍个⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1835,8 +1677,7 @@
       "xiugai": "简单又别致嘅小菜纸包鸡",
       "beizhu": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1846,8 +1687,7 @@
     "answer": {
       "xiugai": "家里头嘅小朋友一定好喜欢㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1857,8 +1697,7 @@
     "answer": {
       "xiugai": "材料系好简单：我哋只需要一个鸡包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1868,8 +1707,7 @@
     "answer": {
       "xiugai": "我哋将黐喺鸡包底嘅纸撕出嚟⋯慢慢撕",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1879,8 +1717,7 @@
     "answer": {
       "xiugai": "咁就会得到一张鸡包纸喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1890,8 +1727,7 @@
     "answer": {
       "xiugai": "然后将鸡包纸一反反转",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1902,8 +1738,7 @@
       "xiugai": "呢味纸包鸡就完成喇，系咪好易整啦？",
       "beizhu": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -1913,8 +1748,7 @@
     "answer": {
       "xiugai": "多谢大家收睇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1924,8 +1758,7 @@
     "answer": {
       "xiugai": "好高兴咁快又同大家见面",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1935,8 +1768,7 @@
     "answer": {
       "xiugai": "跟住落嚟我会教大家整一味纸鸡包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1946,8 +1778,7 @@
     "answer": {
       "xiugai": "材料都好简单，只需要白纸一张",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1957,8 +1788,7 @@
     "answer": {
       "xiugai": "我哋只需要张张纸咁样⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1968,8 +1798,7 @@
     "answer": {
       "xiugai": "一个纸鸡包就咁完成咗喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1979,8 +1808,7 @@
     "answer": {
       "xiugai": "各位小朋友，你哋话似唔似鸡包啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -1992,8 +1820,7 @@
       "beizhu": "Corrected '别节' to '别致' as '别致' is the correct term for 'unique' or 'special', matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2004,8 +1831,7 @@
       "xiugai": "包鸡纸包鸡包纸包鸡",
       "beizhu": "Corrected '鸡子' and '包子' to '鸡纸' and '包纸' respectively, as these are likely mishearings of '纸' in the repeated phrase '纸包鸡'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2016,8 +1842,7 @@
       "xiugai": "首先将纸包鸡小心噉撕开",
       "beizhu": "Corrected '子包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name and matches the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2028,8 +1853,7 @@
       "xiugai": "大家就会有一张纸包鸡同埋一嚿鸡啦",
       "beizhu": "Corrected '包鸡子' to '纸包鸡' as '纸包鸡' is the correct term for the dish, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2040,8 +1864,7 @@
       "xiugai": "跟住将鸡包纸好似我噉包住块鸡",
       "beizhu": "Corrected '鸡包子' to '鸡包纸' as '鸡包纸' matches the meaning of '鸡包纸' (the paper used to wrap the chicken), and '牛鸡' to '块鸡' as '牛鸡' is likely a mishearing of '块鸡'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2052,8 +1875,7 @@
       "xiugai": "然后再好似噉样将包鸡纸包住佢",
       "beizhu": "Corrected '包鸡子' to '包鸡纸' as '包鸡纸' (greaseproof paper) matches the meaning in the 中文 and '包鸡子' is likely a mishearing."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2064,8 +1886,7 @@
       "xiugai": "咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
       "beizhu": "Corrected '子包鸡包子包鸡' to '纸包鸡包纸包鸡' as '纸' is the correct character for '纸包鸡', matching the intended dish name in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2075,8 +1896,7 @@
     "answer": {
       "xiugai": "系咪好简单呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2086,8 +1906,7 @@
     "answer": {
       "xiugai": "仲真系有嚿鸡食添！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2097,8 +1916,7 @@
     "answer": {
       "xiugai": "今日要同大家介绍一味⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2108,8 +1926,7 @@
     "answer": {
       "xiugai": "小朋友一定喜欢嘅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2120,8 +1937,7 @@
       "xiugai": "�",
       "beizhu": "Cleared; 中文 more likely to be accurate that 粤文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2132,8 +1948,7 @@
       "xiugai": "�",
       "beizhu": "Cleared; 中文 more likely to be accurate that 粤文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2143,8 +1958,7 @@
     "answer": {
       "xiugai": "做法都好简单",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2154,8 +1968,7 @@
     "answer": {
       "xiugai": "我哋先将鸡包包住个鸡包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2167,8 +1980,7 @@
       "beizhu": "Corrected '纸包鸡' to '纸鸡包'"
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2179,8 +1991,7 @@
       "xiugai": "�",
       "beizhu": "Cleared; 中文 more likely to be accurate that 粤文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2191,8 +2002,7 @@
       "xiugai": "�",
       "beizhu": "Cleared; 中文 more likely to be accurate that 粤文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2202,8 +2012,7 @@
     "answer": {
       "xiugai": "不过我妈妈都有佢温柔嘅一面",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2213,8 +2022,7 @@
     "answer": {
       "xiugai": "例如每晚临睡前，佢都会讲故事畀我听",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2224,8 +2032,7 @@
     "answer": {
       "xiugai": "从前，有个小朋友讲大话；有一日⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2235,8 +2042,7 @@
     "answer": {
       "xiugai": "佢死咗！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2246,8 +2052,7 @@
     "answer": {
       "xiugai": "从前，有个小朋友好勤力读书⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2257,8 +2062,7 @@
     "answer": {
       "xiugai": "佢长大，发咗！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2268,8 +2072,7 @@
     "answer": {
       "xiugai": "从前，有个小朋友唔孝顺，有一日⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2280,8 +2083,7 @@
       "xiugai": "佢屈亲个脚脚！",
       "beizhu": "No changes needed."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2291,8 +2093,7 @@
     "answer": {
       "xiugai": "妈，我想瞓啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2303,8 +2104,7 @@
       "xiugai": "从前，有个小朋友早睡晚起；第二朝⋯",
       "beizhu": "Removed '社群提供' as it is a non-spoken subtitle credit artifact, not part of the Cantonese dialogue."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2314,8 +2114,7 @@
     "answer": {
       "xiugai": "我妈妈就系噉，一切都咁直接",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2325,8 +2124,7 @@
     "answer": {
       "xiugai": "佢爱得我直接⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2336,8 +2134,7 @@
     "answer": {
       "xiugai": "对我嘅期望直接",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2348,8 +2145,7 @@
       "xiugai": "佢，一、二、三、四、五、六、七",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2361,8 +2157,7 @@
       "beizhu": "Removed '字幕由Amara.org' as it is not part of the spoken content and is an artifact from subtitle credits in the training set."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2372,8 +2167,7 @@
     "answer": {
       "xiugai": "但系如果有啲嘢，真系真系唔得呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2383,8 +2177,7 @@
     "answer": {
       "xiugai": "日子一日一日咁过",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2394,8 +2187,7 @@
     "answer": {
       "xiugai": "首先周润发嗰单嘢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2405,8 +2197,7 @@
     "answer": {
       "xiugai": "大家都唔好再提！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2417,8 +2208,7 @@
       "xiugai": "我用我嘅童子手帮妈妈抽嘅六合彩number",
       "beizhu": "Corrected '同事手' to '童子手' as '童子手' (child's hand) matches the meaning in the 中文, while '同事手' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2428,8 +2218,7 @@
     "answer": {
       "xiugai": "竟然奇迹一样一个都未中过！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2439,8 +2228,7 @@
     "answer": {
       "xiugai": "我试过好努力咁读书，但系⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2450,8 +2238,7 @@
     "answer": {
       "xiugai": "但系⋯我仲可以发梦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2461,8 +2248,7 @@
     "answer": {
       "xiugai": "马尔代夫，坐落于印度洋嘅世外桃源",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2473,8 +2259,7 @@
       "xiugai": "蓝天白云，椰林树影，水清沙幼",
       "beizhu": "Corrected '沙游' to '沙幼' as '沙幼' (fine sand) is the correct phrase matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2485,8 +2270,7 @@
       "xiugai": "七彩缤纷嘅珊瑚，目不暇给嘅热带鱼群",
       "beizhu": "Corrected '目不下级' to '目不暇给' as '目不暇给' is the correct idiom meaning 'too many to take in', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2497,8 +2281,7 @@
       "xiugai": "充满住赤道热力嘅原始海洋，远离繁嚣",
       "beizhu": "Corrected '凡嚣' to '繁嚣' as '繁嚣' is the correct term for 'hustle and bustle', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2508,8 +2291,7 @@
     "answer": {
       "xiugai": "体验热情如火嘅风土人情",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2520,8 +2302,7 @@
       "xiugai": "享受一个脱俗出尘嘅梦幻之旅",
       "beizhu": "Corrected '脱轴' to '脱俗' as '脱俗' is the correct term for 'out of the ordinary', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2531,8 +2312,7 @@
     "answer": {
       "xiugai": "妈妈你知唔知到马尔代夫系边㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2542,8 +2322,7 @@
     "answer": {
       "xiugai": "啊好远㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2554,8 +2333,7 @@
       "xiugai": "有几远呀？",
       "beizhu": "Corrected '点远发呀' to '有几远呀' as '点远发' is likely a mishearing of '有几远', which matches the meaning of '有多远'. The word '发' is not appropriate here."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2565,8 +2343,7 @@
     "answer": {
       "xiugai": "搭飞机至到啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2577,8 +2354,7 @@
       "xiugai": "咁妈妈你会唔会走我去㗎？",
       "beizhu": "Corrected '走落去' to '走我去'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2589,8 +2365,7 @@
       "xiugai": "会！得发咗先啦",
       "beizhu": "Removed '学' from '得学发咗先啦' as it is likely a mishearing; '得发咗先啦' matches the meaning of '发财了再说吧'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -2600,8 +2375,7 @@
     "answer": {
       "xiugai": "咁妈妈你几时发得呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2611,8 +2385,7 @@
     "answer": {
       "xiugai": "呃，就快啦⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2622,8 +2395,7 @@
     "answer": {
       "xiugai": "发梦吖嘛！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2635,8 +2407,7 @@
       "beizhu": "Cleared as '嗨！' bears no resemblance to the original phrase '校长早晨！' and is clearly a complete mismatch."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2646,8 +2417,7 @@
     "answer": {
       "xiugai": "你最喜爱嘅地方喺边度呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2657,8 +2427,7 @@
     "answer": {
       "xiugai": "我最喜爱嘅地方呢，就系日本喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2670,8 +2439,7 @@
       "beizhu": "Corrected '好迪士尼呢同埋HelloTT呢' to '嗰度有 Disney 同埋 Hello Kitty'."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2682,8 +2450,7 @@
       "xiugai": "我而家戴紧个发夹都系嗰边买嘅",
       "beizhu": "Corrected '打紧个发卷' to '戴紧个发夹' as '发夹' matches the meaning of '发夹' in the 中文, and '打紧' is a mishearing of '戴紧' (wearing)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2693,8 +2460,7 @@
     "answer": {
       "xiugai": "我最钟意嘅地方就系加拿大",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2704,8 +2470,7 @@
     "answer": {
       "xiugai": "婆婆同埋舅父呀，佢哋都系加拿大㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2715,8 +2480,7 @@
     "answer": {
       "xiugai": "我最钟意去嘅地方就系泰国喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2727,8 +2491,7 @@
       "xiugai": "嗰度有好多水上活动㗎，仲有鱼翅食添㖞",
       "beizhu": "Corrected '水晶活动' to '水上活动' as '水上活动' matches the meaning of '水上活动' in the 中文, and '一次食' to '鱼翅食' as '鱼翅' is the correct term for 'shark fin' mentioned in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2738,8 +2501,7 @@
     "answer": {
       "xiugai": "呃，我最喜爱嘅地方呢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2749,8 +2511,7 @@
     "answer": {
       "xiugai": "就系嗰间咩嚟啰！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2761,8 +2522,7 @@
       "xiugai": "嗰度有欢乐天地啦，仲有美食广场啦",
       "beizhu": "Corrected '米食广场' to '美食广场' as '美食广场' is the correct term for 'food court', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2773,8 +2533,7 @@
       "xiugai": "嗰度啲海南鸡饭好大碟㗎",
       "beizhu": "Corrected '可能几份' to '海南鸡饭' as '可能几份' is a mishearing of '海南鸡饭', which matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2784,8 +2543,7 @@
     "answer": {
       "xiugai": "系喇系喇，嗰间叫做银城中心",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2796,8 +2554,7 @@
       "xiugai": "嗰间嘢啲饭好多，好大碟㗎！",
       "beizhu": "Corrected '好多人' to '好多' as '好多人' means 'many people', which is a mishearing of '好多' (a lot of [rice]), matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2808,8 +2565,7 @@
       "xiugai": "不过讲到我最想去嘅地方呢，嗰度犀利啰",
       "beizhu": "Corrected '细嚟啰' to '犀利啰' as '犀利' (sai3 lei6) means '厉害', matching the meaning in the 中文, while '细嚟' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2820,8 +2576,7 @@
       "xiugai": "嗰度蓝天白云，椰林树影，水清沙幼",
       "beizhu": "Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as these are likely mishearings of the correct descriptive terms for the scenery."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2832,8 +2587,7 @@
       "xiugai": "座落于印度洋嘅世外桃源",
       "beizhu": "Corrected '独来鱼' to '座落于' as '独来鱼' is a mishearing of '座落于', which means 'located at' and matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2843,8 +2597,7 @@
     "answer": {
       "xiugai": "喂，衰仔啊，快啲起身返学喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2854,8 +2607,7 @@
     "answer": {
       "xiugai": "开啲药过佢食就冇事㗎喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2865,8 +2617,7 @@
     "answer": {
       "xiugai": "医生啊，啲药食咗会唔会有嗰啲咩㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2876,8 +2627,7 @@
     "answer": {
       "xiugai": "唔会！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2887,8 +2637,7 @@
     "answer": {
       "xiugai": "噉佢食药使唔使咩啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2899,8 +2648,7 @@
       "xiugai": "唔使！同佢打多支针添呢！",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2910,8 +2658,7 @@
     "answer": {
       "xiugai": "吓？要打针啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2921,8 +2668,7 @@
     "answer": {
       "xiugai": "佢好怕打针㗎㖞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2932,8 +2678,7 @@
     "answer": {
       "xiugai": "噉佢怕唔怕死呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2943,8 +2688,7 @@
     "answer": {
       "xiugai": "冇嘢吖嘛？快啲食埋啲药水佢先啦！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -2955,8 +2699,7 @@
       "xiugai": "妈妈我唔想食药水呀",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2967,8 +2710,7 @@
       "xiugai": "唔好呀妈妈，我唔食呀",
       "beizhu": "Corrected '唔好捞' to '唔好呀' as '唔好捞' is likely a mishearing; '唔好呀' matches the meaning of '不要呀' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -2979,8 +2721,7 @@
       "xiugai": "我唔食士多啤梨药水呀！",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -2990,8 +2731,7 @@
     "answer": {
       "xiugai": "唔好喊啦，唔食药唔会好㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3002,8 +2742,7 @@
       "xiugai": "乖乖啲，病好咗妈妈带你去马尔代夫",
       "beizhu": "Corrected '大理' to '带你' as '带你' matches the meaning of '带你去' in the 中文, while '大理' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3013,8 +2752,7 @@
     "answer": {
       "xiugai": "真嘅？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3024,8 +2762,7 @@
     "answer": {
       "xiugai": "妈妈几时呃过你呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3035,8 +2772,7 @@
     "answer": {
       "xiugai": "乖，食埋啲药水先啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3047,8 +2783,7 @@
       "xiugai": "嘻嘻，好嘢，马尔代夫！",
       "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3059,8 +2794,7 @@
       "xiugai": "马尔代夫！",
       "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3070,8 +2804,7 @@
     "answer": {
       "xiugai": "妈妈，咁我哋几时去呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3081,8 +2814,7 @@
     "answer": {
       "xiugai": "嗯，你乖乖哋食埋啲药，好返晒啦我即刻订机票",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3093,8 +2825,7 @@
       "xiugai": "嚟啦，食多更！",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3104,8 +2835,7 @@
     "answer": {
       "xiugai": "妈妈你睇，我好返喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3116,8 +2846,7 @@
       "xiugai": "啲药所以我全部食晒喇",
       "beizhu": "Corrected '啲嘢' to '啲药' as '药' matches the meaning of '药' in the 中文, while '嘢' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3127,8 +2856,7 @@
     "answer": {
       "xiugai": "即系间屋有乜嘢唔系畀你食晒㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3138,8 +2866,7 @@
     "answer": {
       "xiugai": "妈妈，呢次唔同㗎，本来咁大樽嘅",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3150,8 +2877,7 @@
       "xiugai": "我饮下一格，又一格，又一格⋯",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3161,8 +2887,7 @@
     "answer": {
       "xiugai": "吓，咪我饮晒㖞！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3173,8 +2898,7 @@
       "xiugai": "饮晒就叻仔啦！",
       "beizhu": "Corrected '饮实' to '饮晒' as '饮晒' means 'finished drinking', matching the meaning of '喝光了' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3186,8 +2910,7 @@
       "beizhu": "Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', matching the meaning of '喝光了' in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3197,8 +2920,7 @@
     "answer": {
       "xiugai": "妈妈⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3208,8 +2930,7 @@
     "answer": {
       "xiugai": "乜嘢啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3221,8 +2942,7 @@
       "beizhu": "Corrected '阿哋' to '我哋' as '我哋' is the correct Cantonese pronoun for 'we', while '阿哋' is likely a mishearing."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3232,8 +2952,7 @@
     "answer": {
       "xiugai": "乜嘢马尔代夫啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3244,8 +2963,7 @@
       "xiugai": "呢，你话我返就同我去马尔代夫㗎嘛！",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3256,8 +2974,7 @@
       "xiugai": "马尔代夫呢，椰林树影，水清沙幼⋯",
       "beizhu": "Corrected '耶南树影' to '椰林树影' and '水清沙游' to '水清沙幼' as both are likely mishearings of the standard descriptive phrase for the Maldives."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3268,8 +2985,7 @@
       "xiugai": "座落于印度洋嘅世外桃源啦！",
       "beizhu": "Corrected '助流于印度园嘅世外导演' to '座落于印度洋嘅世外桃源' as the original was a mishearing of the place and descriptive terms."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3279,8 +2995,7 @@
     "answer": {
       "xiugai": "啊，估唔到你几好文采㗎噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3290,8 +3005,7 @@
     "answer": {
       "xiugai": "讲得几好听啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3302,8 +3016,7 @@
       "xiugai": "妈妈我唔系讲喇㗎，又系你话嘅⋯",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3313,8 +3026,7 @@
     "answer": {
       "xiugai": "你话我病好咗之日就同我去马尔代夫㗎！你讲过㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3324,8 +3036,7 @@
     "answer": {
       "xiugai": "我话发咗先至同你去㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3336,8 +3047,7 @@
       "xiugai": "唔系㖞，妈妈你话好咗就同我去㗎㖞",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3347,8 +3057,7 @@
     "answer": {
       "xiugai": "你明明讲过好返就同你去马尔代夫㗎㖞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3358,8 +3067,7 @@
     "answer": {
       "xiugai": "你讲过㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3369,8 +3077,7 @@
     "answer": {
       "xiugai": "得啦得啦，唔好喊啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3380,8 +3087,7 @@
     "answer": {
       "xiugai": "同你去马尔代夫啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3391,8 +3097,7 @@
     "answer": {
       "xiugai": "真嘅？　　系啊",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3402,8 +3107,7 @@
     "answer": {
       "xiugai": "咁几时去啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3413,8 +3117,7 @@
     "answer": {
       "xiugai": "等我发咗先啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3424,8 +3127,7 @@
     "answer": {
       "xiugai": "你发咗㗎喇，你发咗㗎喇⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3436,8 +3138,7 @@
       "xiugai": "系喇系喇系喇，发咗喇",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -3447,8 +3148,7 @@
     "answer": {
       "xiugai": "下个礼拜同你去啦，得未啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3458,8 +3158,7 @@
     "answer": {
       "xiugai": "好嘢！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3470,8 +3169,7 @@
       "xiugai": "喂，麦唛啊，我系麦兜啊",
       "beizhu": "Corrected '麦麦' to '麦唛' and '麦豆啊我系' to '我系麦兜啊' as these are likely mishearings of the character names and the intended self-introduction."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3481,8 +3179,7 @@
     "answer": {
       "xiugai": "即系呢，我明日就要飞喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3492,8 +3189,7 @@
     "answer": {
       "xiugai": "系啊　　⋯系咩？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3504,8 +3200,7 @@
       "xiugai": "飞机餐好难食㗎？",
       "beizhu": "Corrected '飞机真好难食' to '飞机餐好难食' as '飞机餐' is the correct term for 'airplane meal', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3515,8 +3210,7 @@
     "answer": {
       "xiugai": "但点都要食㗎啦！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3526,8 +3220,7 @@
     "answer": {
       "xiugai": "唔通自己带嘢上去食咩？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3537,8 +3230,7 @@
     "answer": {
       "xiugai": "仲讲哦？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3548,8 +3240,7 @@
     "answer": {
       "xiugai": "快啲嚟执埋啲行李先啦哦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3560,8 +3251,7 @@
       "xiugai": "你帮我话畀佢哋知，我明日去马尔代夫喇",
       "beizhu": "Corrected '买热带裤薄' to '马尔代夫喇' as '买热带裤薄' is a mishearing of '马尔代夫', matching the intended meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3572,8 +3262,7 @@
       "xiugai": "嗰度蓝天白云，椰林树⋯",
       "beizhu": "Corrected '五百云' to '白云' as it is a mishearing of '白云', and '夜临雪' to '椰林树' as it is a mishearing of '椰林树', both matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3584,8 +3273,7 @@
       "xiugai": "水清净沙有！",
       "beizhu": "No changes needed."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -3595,8 +3283,7 @@
     "answer": {
       "xiugai": "我嚟紧㗎喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3607,8 +3294,7 @@
       "xiugai": "我要执行李喇，返嚟先再同你倾过啦",
       "beizhu": "Corrected '执行你' to '执行李' as '执行李' (to pack luggage) matches the meaning in the 中文, while '执行你' is a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3618,8 +3304,7 @@
     "answer": {
       "xiugai": "拜拜！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3629,8 +3314,7 @@
     "answer": {
       "xiugai": "哎哟，妈妈，我系咪要带埋出世纸去㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3640,8 +3324,7 @@
     "answer": {
       "xiugai": "都要㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3651,8 +3334,7 @@
     "answer": {
       "xiugai": "咁成绩表呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3662,8 +3344,7 @@
     "answer": {
       "xiugai": "成绩表又唔使",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3673,8 +3354,7 @@
     "answer": {
       "xiugai": "好嘢！吓得我啊！咁都好啲",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3684,8 +3364,7 @@
     "answer": {
       "xiugai": "揾到喇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3696,8 +3375,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as the 粤文 is just a repeated string of '竟然' and bears no resemblance to the original phrase '出世纸给我找到了！', indicating a complete mismatch."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3707,8 +3385,7 @@
     "answer": {
       "xiugai": "妈妈话噉先最著数",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3718,8 +3395,7 @@
     "answer": {
       "xiugai": "就系噉样⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3729,8 +3405,7 @@
     "answer": {
       "xiugai": "我过咗我小时候最著数⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3740,8 +3415,7 @@
     "answer": {
       "xiugai": "最完美嘅一日",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3752,8 +3426,7 @@
       "xiugai": "噉你话，纸包唔包得住鸡呢？",
       "beizhu": "Corrected '绝鸡' to '住鸡' as '住' is the correct word for 'wrap' or 'cover' in this context, matching the meaning of '包着鸡' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3763,8 +3436,7 @@
     "answer": {
       "xiugai": "都得嘅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3774,8 +3446,7 @@
     "answer": {
       "xiugai": "尤其系细细旧嗰啲",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3786,8 +3457,7 @@
       "xiugai": "妈妈早唞！",
       "beizhu": "Corrected '妈妈做头' to '妈妈早唞' as '早唞' is the correct phrase for 'good night' in Cantonese, while '做头' is a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3797,8 +3467,7 @@
     "answer": {
       "xiugai": "啱啱收到消息",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3808,8 +3477,7 @@
     "answer": {
       "xiugai": "奥运滑浪风帆选手李丽珊以五场四胜嘅结果",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3819,8 +3487,7 @@
     "answer": {
       "xiugai": "夺取香港历史上第一面奥运金牌！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3830,8 +3497,7 @@
     "answer": {
       "xiugai": "消息话李丽珊喺知道自己稳夺奥运金牌之后",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3841,8 +3507,7 @@
     "answer": {
       "xiugai": "好激动噉同在场嘅记者讲今次佢嘅成绩⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3853,8 +3518,7 @@
       "xiugai": "可以证明到香港嘅运动员唔系腊鸭！",
       "beizhu": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term, matching the meaning in the 中文, and '𫚭' is a likely mishearing or character error."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3865,8 +3529,7 @@
       "xiugai": "各位对唔住，应该　　系垃圾，唔系腊鸭！",
       "beizhu": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and matches the meaning in the 中文, while '𫚭鸭' is a likely mishearing or character error."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3877,8 +3540,7 @@
       "xiugai": "对唔住，应该系　　唔系垃圾，亦都唔系腊鸭！",
       "beizhu": "Corrected '𫚭鸭' to '腊鸭' as '腊鸭' is the correct term and matches the meaning in the 中文, while '𫚭鸭' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3889,8 +3551,7 @@
       "xiugai": "特别报告完毕",
       "beizhu": "Corrected '报个原不' to '报告完毕' as '原不' is a mishearing of '完毕', matching the meaning of the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -3900,8 +3561,7 @@
     "answer": {
       "xiugai": "咦，妈妈好似又有计噉噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3911,8 +3571,7 @@
     "answer": {
       "xiugai": "靓仔，好运，叻仔呀⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3922,8 +3581,7 @@
     "answer": {
       "xiugai": "睇嚟都唔多靠得住",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3933,8 +3591,7 @@
     "answer": {
       "xiugai": "哗，好唔好靠下个手瓜噉呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3944,8 +3601,7 @@
     "answer": {
       "xiugai": "于是，一个梦都未醒⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3955,8 +3611,7 @@
     "answer": {
       "xiugai": "我又得到另外一个梦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3966,8 +3621,7 @@
     "answer": {
       "xiugai": "系咪应该系脚瓜之争",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3977,8 +3631,7 @@
     "answer": {
       "xiugai": "我知道一啲都唔容易",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -3989,8 +3642,7 @@
       "xiugai": "我知道要揾到黎根绝对唔容易",
       "beizhu": "Corrected '励根' to '黎根' as '黎根' is the correct name, matching the 中文 and is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4000,8 +3652,7 @@
     "answer": {
       "xiugai": "我知道要佢收我做徒弟更加唔容易",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4011,8 +3662,7 @@
     "answer": {
       "xiugai": "但无论几唔容易，我都要试一试",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4023,8 +3673,7 @@
       "xiugai": "我要黎根收我做徒弟！",
       "beizhu": "Corrected '来紧收我度徒弟' to '黎根收我做徒弟' as '黎根' is a mishearing of '来紧', and '做徒弟' is the correct phrase for 'become apprentice', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4035,8 +3684,7 @@
       "xiugai": "无论几辛苦，我一定要攞到奥运金牌！",
       "beizhu": "Corrected '捞到' to '攞到' as '攞到' is the correct Cantonese verb for 'get/obtain', while '捞到' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4047,8 +3695,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '三张堂上面' bears no resemblance to the original phrase '当我站在奥运会颁奖台上' and is clearly a complete mismatch."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4059,8 +3706,7 @@
       "xiugai": "我会举起金牌同全世界讲：",
       "beizhu": "Added '我会举起金牌' to correct the omission and mishearing of '举起金牌' as '今排', which is a phonetic confusion; this restores the intended meaning of the sentence."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4070,8 +3716,7 @@
     "answer": {
       "xiugai": "长洲，我终于嚟到长洲嘞！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4082,8 +3727,7 @@
       "xiugai": "长洲，我要亲吻呢片圣洁嘅土地！",
       "beizhu": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'holy' or 'sacred', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4093,8 +3737,7 @@
     "answer": {
       "xiugai": "小朋友呀，呢度系南丫岛噃！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4105,8 +3748,7 @@
       "xiugai": "南丫岛？都孕育咗周润发噃！",
       "beizhu": "Corrected '引用' to '孕育' as '孕育' is the correct term for 'nurtured' or 'gave rise to', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4117,8 +3759,7 @@
       "xiugai": "真估唔到我黎根避入嚟南丫岛都畀你揾到",
       "beizhu": "Corrected '制估' to '真估' as '真估唔到' is the correct phrase for '想不到'; corrected the name '嚟跟' to '黎根' as '黎根' is the correct name; corrected '你入' to '避入' as '避入' is the correct term for '避进', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4128,8 +3769,7 @@
     "answer": {
       "xiugai": "小朋友，我谂你都知道乜嘢叫做狗仔队嘞？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4139,8 +3779,7 @@
     "answer": {
       "xiugai": "再加上不时有啲小朋友同埋家长嚟揾我话要拜我为师",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4150,8 +3789,7 @@
     "answer": {
       "xiugai": "所以我咪过嚟南丫岛避一避",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4161,8 +3799,7 @@
     "answer": {
       "xiugai": "至于拜师嘅嘢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4172,8 +3809,7 @@
     "answer": {
       "xiugai": "拜你个头嘅！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4184,8 +3820,7 @@
       "xiugai": "你哋呢班住喺香港岛嘅小朋友骄生惯养",
       "beizhu": "Corrected '娇生惯养' to '骄生惯养' to match the correct Cantonese term for 'spoiled'"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4195,8 +3830,7 @@
     "answer": {
       "xiugai": "边挨得苦㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4207,8 +3841,7 @@
       "xiugai": "想学珊珊攞奥运金牌？",
       "beizhu": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4219,8 +3852,7 @@
       "xiugai": "醒梦你！",
       "beizhu": "Corrected '食母你嘢' to '醒梦你' as '醒梦你' is the correct phrase for 'wake up from your dream', while '食母你嘢' is a vulgar phrase that does not match the meaning in the 中文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -4230,8 +3862,7 @@
     "answer": {
       "xiugai": "小朋友，你睇下！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4241,8 +3872,7 @@
     "answer": {
       "xiugai": "哗，呢只⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4253,8 +3883,7 @@
       "xiugai": "呢只脚瓜⋯好粗好大呀！仲大个节瓜呀！",
       "beizhu": "Corrected '只瓜' to '节瓜' as '节瓜' is the correct term for 'zucchini' or 'squash', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4264,8 +3893,7 @@
     "answer": {
       "xiugai": "脚瓜啲肌肉非常结实⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4275,8 +3903,7 @@
     "answer": {
       "xiugai": "啲青筋凸晒出嚟，好似钢线噉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4286,8 +3913,7 @@
     "answer": {
       "xiugai": "啲脚毛，每一条好似铁钉噉硬",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4298,8 +3924,7 @@
       "xiugai": "脚趾公啲脚甲成吋噉厚，究竟⋯",
       "beizhu": "Corrected '脚趾弓' to '脚趾公'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4310,8 +3935,7 @@
       "xiugai": "要行过几多座山⋯",
       "beizhu": "Corrected '行我' to '行过' as '行过' (walk across) matches the meaning of the 中文, while '行我' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4322,8 +3946,7 @@
       "xiugai": "跨过几多个海⋯",
       "beizhu": "Corrected '跨我' to '跨过' as '跨过' is the correct verb for 'cross over', matching the meaning in the 中文, while '跨我' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4333,8 +3956,7 @@
     "answer": {
       "xiugai": "挨过几多苦头⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4344,8 +3966,7 @@
     "answer": {
       "xiugai": "先至可以练成呢只举世无双嘅脚瓜？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4356,8 +3977,7 @@
       "xiugai": "我⋯我一定要练成呢只脚瓜！",
       "beizhu": "Corrected '脚挂' to '脚瓜' as '脚瓜' is the correct Cantonese term for 'calf', matching the meaning of '脚瓜' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4367,8 +3987,7 @@
     "answer": {
       "xiugai": "师父！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4378,8 +3997,7 @@
     "answer": {
       "xiugai": "我可唔可以去个小便呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4390,8 +4008,7 @@
       "xiugai": "唔知点解每一次唱呢首歌都会急小便",
       "beizhu": "Corrected '而知' to '唔知' as '唔知' (don't know) is a likely mishearing and matches the meaning of the sentence; corrected '每一字' to '每一次' as '每一字' is a mishearing of '每一次' (every time)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4402,8 +4019,7 @@
       "xiugai": "今次去定先，都怕一阵会再急过",
       "beizhu": "Corrected '仅次去定先' to '今次去定先' as '今次' (this time) is a likely mishearing of '仅次' (next time), and '今次' better matches the 中文"
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4413,8 +4029,7 @@
     "answer": {
       "xiugai": "但系我而家一定要唱呢首歌",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4424,8 +4039,7 @@
     "answer": {
       "xiugai": "希望可以改变黎根对我嘅睇法",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4435,8 +4049,7 @@
     "answer": {
       "xiugai": "我要用呢首歌打动黎根",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4446,8 +4059,7 @@
     "answer": {
       "xiugai": "嗰首歌，系噉唱嘅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4458,8 +4070,7 @@
       "xiugai": "黎根听完首歌之后，啲表情有啲古怪⋯",
       "beizhu": "Corrected '黎今' to '黎根' as '黎今' is a mishearing of the name '黎根' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4470,8 +4081,7 @@
       "xiugai": "我一定要好好把握呢个机会",
       "beizhu": "Removed '唔' as it is not present in the 中文 and it confuses the meaning of the sentence."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4481,8 +4091,7 @@
     "answer": {
       "xiugai": "师父！你收我做徒弟啦！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4493,8 +4102,7 @@
       "xiugai": "你唔收我做徒弟，我呢一世都跪喺度！",
       "beizhu": "Added '唔' before '收我做徒弟' to match the intended meaning of '你唔收我做徒弟' in the 中文, as the original 粤文 omitted the negation and reversed the meaning."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4504,8 +4112,7 @@
     "answer": {
       "xiugai": "起身啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4515,8 +4122,7 @@
     "answer": {
       "xiugai": "多谢师父！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4526,8 +4132,7 @@
     "answer": {
       "xiugai": "唔系啊⋯我系叫你扶我起身啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4538,8 +4143,7 @@
       "xiugai": "顶唔顺啊！我个脚瓜太痹啊！",
       "beizhu": "Corrected '腿挂好鼻' to '脚瓜太痹' as '脚瓜' is the correct Cantonese term for 'calf' and '太痹' matches the meaning of '太痹了'; also removed '字幕由Amara.org社群提供' as it is a transcription artifact."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4549,8 +4153,7 @@
     "answer": {
       "xiugai": "我将今日发生嘅嘢话晒畀妈妈听",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4560,8 +4163,7 @@
     "answer": {
       "xiugai": "妈妈佢乜嘢都冇讲到",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4572,8 +4174,7 @@
       "xiugai": "喺冰箱度攞咗只雪鸡出嚟解冻",
       "beizhu": "Removed '净系', which does not make grammatical sense and for which there is no known phoenetically similar phrase which would make sense."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4583,8 +4184,7 @@
     "answer": {
       "xiugai": "晚饭时候，妈妈倒咗三杯米酒",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4595,8 +4195,7 @@
       "xiugai": "再将几只橙同埋蒸熟咗嘅鸡放喺祖先前面",
       "beizhu": "Corrected '铲' to '橙' as '橙' (oranges) matches the meaning in the 中文, while '铲' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4607,8 +4206,7 @@
       "xiugai": "妈妈叫我跪低，向祖先请请",
       "beizhu": "Corrected '同祖先请请' to '向祖先请请' as '向' is the correct preposition for 'to' in this context, matching the meaning in the 中文, while '同' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4618,8 +4216,7 @@
     "answer": {
       "xiugai": "跟住，妈妈口噏噏噉讲咗一啲嘢",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4629,8 +4226,7 @@
     "answer": {
       "xiugai": "然之后我哋又一齐对住祖先拜多几拜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4641,8 +4237,7 @@
       "xiugai": "妈妈蹲低身将啲酒倒喺地上面",
       "beizhu": "Corrected '虎低身' to '蹲低身' as '蹲低' is the correct term for 'squat down', matching the meaning in the 中文, while '虎低' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4652,8 +4247,7 @@
     "answer": {
       "xiugai": "庄重又温柔紧同我讲：",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4663,8 +4257,7 @@
     "answer": {
       "xiugai": "以后要生生性性",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4675,8 +4268,7 @@
       "xiugai": "跟师父学嘢，光宗耀祖！",
       "beizhu": "Corrected '当中要祖' to '光宗耀祖' as it is a mishearing of the idiom '光宗耀祖', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4687,8 +4279,7 @@
       "xiugai": "妈妈喺长洲揾咗间酒楼摆咗几回拜师宴",
       "beizhu": "Corrected '白丝宴' to '拜师宴' as '白丝宴' is a mishearing of '拜师宴', which matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4698,8 +4289,7 @@
     "answer": {
       "xiugai": "因为我系师父最后一个入室弟子",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4710,8 +4300,7 @@
       "xiugai": "所以到贺嘅乡绅父老特别多",
       "beizhu": "Corrected '到学' to '到贺'; corrected '乡亲父老' to '乡绅父老'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4721,8 +4310,7 @@
     "answer": {
       "xiugai": "估唔到黄德森都有嚟饮",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4733,8 +4321,7 @@
       "xiugai": "仲赞我背脊啲肉厚添",
       "beizhu": "Corrected '背著' to '背脊' as '背脊' is the correct term for 'back' in Cantonese, and '肉口' to '肉厚' as '肉厚' means 'thick flesh', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4745,8 +4332,7 @@
       "xiugai": "但系珊珊就去咗集训，冇嚟到",
       "beizhu": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4757,8 +4343,7 @@
       "xiugai": "麦唛，菇时同得巴都嚟咗",
       "beizhu": "Corrected the names '默默' to '麦唛' and '姑侍' to '菇时'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4768,8 +4353,7 @@
     "answer": {
       "xiugai": "仲带埋成绩表，奖牌同大包嚟添",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4780,8 +4364,7 @@
       "xiugai": "佢哋都希望黎根可以收埋佢哋做徒弟",
       "beizhu": "Corrected '嚟今' to '黎根' as '黎根' is the correct name matching the 中文, while '嚟今' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4791,8 +4374,7 @@
     "answer": {
       "xiugai": "食完鸡丝翅，就到咗拜师仪式",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4803,8 +4385,7 @@
       "xiugai": "妈妈斟咗杯热茶畀我，叫我畀师傅饮",
       "beizhu": "Corrected '针咗' to '斟咗' as '斟' is the correct verb for pouring tea, and removed '弟' as it is a mishearing; the sentence should be '叫我畀师傅饮' to match the meaning of the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4815,8 +4396,7 @@
       "xiugai": "哦，我千辛万苦嚟到长洲揾黎根⋯",
       "beizhu": "Corrected '前三万苦' to '千辛万苦' as it is a mishearing of the idiom meaning 'to go through a lot of hardship', and '嚟近' to '黎根' as it is a mishearing of the person's name '黎根'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4827,8 +4407,7 @@
       "xiugai": "哦，我终于可以同珊珊一齐练习滑浪风帆啊！",
       "beizhu": "Corrected '山神' to '珊珊' as it is a mishearing of the name, and '玩弄风范' to '滑浪风帆' as it is a mishearing of the sport '滑浪风帆' (windsurfing)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4839,8 +4418,7 @@
       "xiugai": "我将杯茶递咗畀黎根，黎根佢⋯",
       "beizhu": "Corrected '嚟跟' to '黎根' as it is a mishearing of the name '黎根'; removed '亦唔系' as it seems to be a transcription error."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4850,8 +4428,7 @@
     "answer": {
       "xiugai": "师父佢饮咗杯茶，正式收咗我做徒弟嘞",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4862,8 +4439,7 @@
       "xiugai": "啲来宾睇嚟好高兴",
       "beizhu": "Corrected '高气' to '高兴' as '高兴' is the correct term for 'happy', matching the meaning in the 中文, while '高气' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4874,8 +4450,7 @@
       "xiugai": "特别系长洲啲乡绅父老拍掌拍得特别落力",
       "beizhu": "Corrected '乡亲' to '乡绅' and '拍奖' to '拍掌' as both are likely mishearings; '乡绅' matches '乡绅' (gentry) and '拍掌' means 'clap hands', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4886,8 +4461,7 @@
       "xiugai": "多谢各位赏面！多谢各位！",
       "beizhu": "Corrected '上面' to '赏面' as '赏面' is the correct phrase for 'giving face' or 'honoring with your presence', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4898,8 +4472,7 @@
       "xiugai": "在下平生有两项称得上得意嘅绝技",
       "beizhu": "Corrected '评生' to '平生' as '平生' is the correct term for 'in my life', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4910,8 +4483,7 @@
       "xiugai": "第一样，系滑浪风帆！呢样早已",
       "beizhu": "Corrected '滑浪风范' to '滑浪风帆' as '风帆' is the correct term for windsurfing, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4922,8 +4494,7 @@
       "xiugai": "传咗畀我外甥女珊珊啊",
       "beizhu": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4933,8 +4504,7 @@
     "answer": {
       "xiugai": "另一项绝技，我打算传畀呢个新修嘅徒弟⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4944,8 +4514,7 @@
     "answer": {
       "xiugai": "希望我可以将我哋长洲人世世代代嘅传统",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4955,8 +4524,7 @@
     "answer": {
       "xiugai": "噉请问嗰样绝技系乜嘢啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4966,8 +4534,7 @@
     "answer": {
       "xiugai": "第二样绝技，就系⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -4978,8 +4545,7 @@
       "xiugai": "抢包山！",
       "beizhu": "Corrected '抢爆山' to '抢包山' as '抢包山' is the correct term for the traditional event, while '爆' is a likely mishearing of '包'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4989,8 +4555,7 @@
     "answer": {
       "xiugai": "年轻嘅观众可能唔知乜嘢系「抢包山」呀",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5000,8 +4565,7 @@
     "answer": {
       "xiugai": "抢包山系长洲独有嘅传统节日",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5012,8 +4576,7 @@
       "xiugai": "长洲嘅居民都会举办太平清醮",
       "beizhu": "Corrected '太平清朝' to '太平清醮' as '清醮' is the correct term for the festival, while '清朝' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5023,8 +4586,7 @@
     "answer": {
       "xiugai": "喺北帝庙前搭起三座包山",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5034,8 +4596,7 @@
     "answer": {
       "xiugai": "噉乜嘢系包山呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5045,8 +4606,7 @@
     "answer": {
       "xiugai": "包山就系一座由好多好多好多包砌起嘅山！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5056,8 +4616,7 @@
     "answer": {
       "xiugai": "噉你可以想像一下嗰度有几多包喇？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5067,8 +4626,7 @@
     "answer": {
       "xiugai": "噉抢包山，自然就系要将包山嘅包抢到手！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5079,8 +4637,7 @@
       "xiugai": "锣鼓响起",
       "beizhu": "Corrected '罗古' to '锣鼓' as '锣鼓' is the correct term for 'gong and drum', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5090,8 +4647,7 @@
     "answer": {
       "xiugai": "数以百计嘅青年就会一涌而上去抢包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5101,8 +4657,7 @@
     "answer": {
       "xiugai": "抢到位置越高嘅包，就代表越大嘅祝福",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5112,8 +4667,7 @@
     "answer": {
       "xiugai": "更加可以表现自己不凡嘅身手",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5124,8 +4678,7 @@
       "xiugai": "但喺1978年两座包山突然塌咗，多人重伤",
       "beizhu": "Replaced '都去抢包山' with '多人重伤' as '都去抢包山' is a mishearing and does not match the meaning of '多人重伤' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5136,8 +4689,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '而长洲特有嘅传统亦占备为榜！' bears no resemblance to the original phrase '「抢包山」从此被禁！' and is clearly a complete mismatch."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5148,8 +4700,7 @@
       "xiugai": "长洲特有嘅传统，亦渐被遗忘",
       "beizhu": "Corrected '占备为榜' to '渐被遗忘' as it is a mishearing of '渐被遗忘', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5159,8 +4710,7 @@
     "answer": {
       "xiugai": "奥运金牌⋯我谂呢一世都唔会攞到",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5170,8 +4720,7 @@
     "answer": {
       "xiugai": "每个礼拜六我都会搭船过长洲",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5182,8 +4731,7 @@
       "xiugai": "一项冇奖牌，冇对手，冇比赛⋯",
       "beizhu": "Corrected '一日' to '一项' as '一项' matches the meaning of '一项' (an event) in the 中文, while '一日' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5194,8 +4742,7 @@
       "xiugai": "甚至乎冇人知道佢系运动嘅运动",
       "beizhu": "Corrected '知对' to '知道'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5205,8 +4752,7 @@
     "answer": {
       "xiugai": "更衰嘅系，连包山都冇！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5216,8 +4762,7 @@
     "answer": {
       "xiugai": "师傅净系叫我去佢屋企⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5227,8 +4772,7 @@
     "answer": {
       "xiugai": "喺个组合柜度爬嚟爬去",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5239,8 +4783,7 @@
       "xiugai": "碰！三番！",
       "beizhu": "Corrected '通' to '碰' as '碰' is the correct mahjong term matching the meaning in the 中文, and '通' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5250,8 +4793,7 @@
     "answer": {
       "xiugai": "冇偷懒！继续练！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5262,8 +4804,7 @@
       "xiugai": "有一日，珊珊嚟咗师傅屋企！",
       "beizhu": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5274,8 +4815,7 @@
       "xiugai": "珊珊！我个师姐珊珊啊！",
       "beizhu": "Corrected '山伞' to '珊珊' as it is a mishearing of the name, and '师仔' to '师姐' to match the intended meaning of '师姐' (senior female schoolmate)."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5286,8 +4826,7 @@
       "xiugai": "可以见到珊珊⋯",
       "beizhu": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5297,8 +4836,7 @@
     "answer": {
       "xiugai": "爬得咁辛苦都系值得㗎！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5309,8 +4847,7 @@
       "xiugai": "珊珊！",
       "beizhu": "Corrected '山伞' to '珊珊' as '山伞' is a mishearing of the name '珊珊'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5321,8 +4858,7 @@
       "xiugai": "珊你个头啊！继续练习！",
       "beizhu": "Corrected '伞' to '珊' as '珊你个头' is a common Cantonese phrase, and '伞' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5333,8 +4869,7 @@
       "xiugai": "仲唔去？",
       "beizhu": "Corrected '仲唔系？' to '仲唔去？' as '仲唔系' is a mishearing of '仲唔去', which matches the meaning of '还不去？' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5345,8 +4880,7 @@
       "xiugai": "珊珊佢见唔到我呢个师弟",
       "beizhu": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5356,8 +4890,7 @@
     "answer": {
       "xiugai": "我唯有死死气爬返上个组合柜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5367,8 +4900,7 @@
     "answer": {
       "xiugai": "我咁大个仔，乜嘢「头」都畀人闹过⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5379,8 +4911,7 @@
       "xiugai": "但系「珊你个头」唔知点解特别刺耳",
       "beizhu": "Corrected 「山呢个头」 to 「珊你个头」; changed 「特别瘾」 to 「特别刺耳」."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5391,8 +4922,7 @@
       "xiugai": "我唔学抢包山嘞！",
       "beizhu": "Corrected '抢包纱' to '抢包山' as '抢包山' is the correct term for the bun-snatching event, and removed '字幕由纱友提供' as it is a subtitle credit artifact."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5402,8 +4932,7 @@
     "answer": {
       "xiugai": "其实今日系我第一次咁近距离同丽根见面",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5413,8 +4942,7 @@
     "answer": {
       "xiugai": "睇怕佢都有五十岁啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5425,8 +4953,7 @@
       "xiugai": "但系仲有副孩子脸",
       "beizhu": "Manually overridden, '一' is not present in the audio but is present in the transcript."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5436,8 +4963,7 @@
     "answer": {
       "xiugai": "鸡尾包！啱啱出炉嘅！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5448,8 +4974,7 @@
       "xiugai": "其实鸡尾包呢⋯",
       "beizhu": "Corrected '鸡尾爆' to '鸡尾包' as '鸡尾包' is the correct term for the bun, and '爆' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5459,8 +4984,7 @@
     "answer": {
       "xiugai": "吓，你话噉样似唔似鸡尾呀？哈哈哈哈",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5470,8 +4994,7 @@
     "answer": {
       "xiugai": "麦兜嘅学嘢呢⋯都仲可以",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5481,8 +5004,7 @@
     "answer": {
       "xiugai": "跟住黎根讲咗一大堆说话⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5492,8 +5014,7 @@
     "answer": {
       "xiugai": "讲下佢嘅抱负，佢对麦兜嘅期望",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5503,8 +5024,7 @@
     "answer": {
       "xiugai": "佢话会将佢识嘅嘢毫无保留噉教晒畀麦兜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5514,8 +5034,7 @@
     "answer": {
       "xiugai": "黎根越讲越兴奋",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5525,8 +5044,7 @@
     "answer": {
       "xiugai": "佢话滑浪风帆都唔系佢最犀利嗰样",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5536,8 +5054,7 @@
     "answer": {
       "xiugai": "佢最劲嘅就系抢包山",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5547,8 +5064,7 @@
     "answer": {
       "xiugai": "佢话抢包山结合咗南拳",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5559,8 +5075,7 @@
       "xiugai": "神功戏同现代器械操",
       "beizhu": "Corrected '气' to '戏' and '气蟹粗' to '器械操' as these are likely mishearings of the correct terms for '神功戏' and '器械操'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5570,8 +5085,7 @@
     "answer": {
       "xiugai": "佢话抢包山先至系佢呢世人最大嘅成就",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5581,8 +5095,7 @@
     "answer": {
       "xiugai": "缩嗰只脚，唔该！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5592,8 +5105,7 @@
     "answer": {
       "xiugai": "你睇下！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5603,8 +5115,7 @@
     "answer": {
       "xiugai": "哗，呢节⋯呢节脚瓜好粗好大呀！仲大过节瓜！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5614,8 +5125,7 @@
     "answer": {
       "xiugai": "脚瓜嘅肌肉非常结实⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5625,8 +5135,7 @@
     "answer": {
       "xiugai": "啲脚毛每一条都好似铁钉咁硬",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5637,8 +5146,7 @@
       "xiugai": "脚趾公啲脚甲成寸咁厚，究竟⋯",
       "beizhu": "Corrected '脚趾弓' to '脚趾公'; corrected '脚夹成串' to '脚甲成寸'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5649,8 +5157,7 @@
       "xiugai": "要行过几多座山?",
       "beizhu": "Corrected '行个几度呢' to '行过'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5661,8 +5168,7 @@
       "xiugai": "跨过几多个海",
       "beizhu": "Corrected '挂过' to '跨过' as '跨过' (to cross over) matches the meaning in the 中文, while '挂过' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5673,8 +5179,7 @@
       "xiugai": "挨过几多苦头",
       "beizhu": "Corrected '斧头' to '苦头' as '苦头' is the correct term for 'hardship', matching the meaning in the 中文, while '斧头' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5685,8 +5190,7 @@
       "xiugai": "先至可以练成呢一只举世无双嘅脚瓜？",
       "beizhu": "Corrected '举细无伤' to '举世无双' as it is a mishearing of the correct phrase meaning 'peerless' or 'unparalleled', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5697,8 +5201,7 @@
       "xiugai": "你个仔，第时都会有咁大只脚瓜",
       "beizhu": "Removed '我' from '有我咁大只脚瓜' as it is a likely mishearing; the intended meaning is 'will have such big calves', matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5708,8 +5211,7 @@
     "answer": {
       "xiugai": "其实我都唔知我仔要咁粗嘅脚瓜⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5719,8 +5221,7 @@
     "answer": {
       "xiugai": "有咩用",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5730,8 +5231,7 @@
     "answer": {
       "xiugai": "但系见到佢一条条凸起嘅青筋，唔知点解⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5741,8 +5241,7 @@
     "answer": {
       "xiugai": "我⋯我谂起麦兜嘅爸爸，阿炳",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5752,8 +5251,7 @@
     "answer": {
       "xiugai": "我揾完成间屋都揾唔到部电子英文词典",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5763,8 +5261,7 @@
     "answer": {
       "xiugai": "去咗边呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5774,8 +5271,7 @@
     "answer": {
       "xiugai": "唔通⋯冇理由㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5785,8 +5281,7 @@
     "answer": {
       "xiugai": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5796,8 +5291,7 @@
     "answer": {
       "xiugai": "点解妈妈会用英文写信嘅？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5807,8 +5301,7 @@
     "answer": {
       "xiugai": "封信好短",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5818,8 +5311,7 @@
     "answer": {
       "xiugai": "我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5830,8 +5322,7 @@
       "xiugai": "于是我用返电子词典将封信译返做中文",
       "beizhu": "Corrected '我让返电子词典' to '我用返电子词典' as '让返' is a mishearing of '用返', which matches the meaning of '用' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5841,8 +5332,7 @@
     "answer": {
       "xiugai": "封信，原来系妈妈写畀奥委会主席㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5853,8 +5343,7 @@
       "xiugai": "「我们居住在香港这里的人，很爱吃包」",
       "beizhu": "Corrected '我门' to '我们', '这类' to '这里', and '肯爱' to '很爱'; thepassage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5865,8 +5354,7 @@
       "xiugai": "「小笼包，上海包，广东包，莲蓉包」",
       "beizhu": "Corrected '联融包' to '莲蓉包' as '莲蓉包' is the correct type of bun, matching the meaning in the 中文, and '联融' is a likely mishearing of '莲蓉'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5877,8 +5365,7 @@
       "xiugai": "抢劫那些包，十分重要」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5889,8 +5376,7 @@
       "xiugai": "「要大力！大吃晚上的粥，和大节瓜！」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5900,8 +5386,7 @@
     "answer": {
       "xiugai": "「抢劫嗰些包，系奥运会比赛」",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5911,8 +5396,7 @@
     "answer": {
       "xiugai": "「让全世界嘅体育家，抢过！」",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5923,8 +5407,7 @@
       "xiugai": "「世界便和平！」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5934,8 +5417,7 @@
     "answer": {
       "xiugai": "终于讲到我啦！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5946,8 +5428,7 @@
       "xiugai": "「他是一个好男孩」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5958,8 +5439,7 @@
       "xiugai": "「他非常懂得抢劫那些包」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5970,8 +5450,7 @@
       "xiugai": "「有一天，我看见他，抢劫包⋯」",
       "beizhu": "Reverted to 中文 since this passage is a Cantonese reading of standard written Chinese."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -5981,8 +5460,7 @@
     "answer": {
       "xiugai": "「哪便是一个母亲能够有的最好的最大的安慰」",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -5992,8 +5470,7 @@
     "answer": {
       "xiugai": "睇完妈妈封信后",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6004,8 +5481,7 @@
       "xiugai": "我决定返长洲继续捡包山",
       "beizhu": "Corrected '抢包生' to '捡包山' as '捡包山' is the correct term for the Cheung Chau Bun Festival activity, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6016,8 +5492,7 @@
       "xiugai": "我唔系为咗见珊珊",
       "beizhu": "Corrected '山神' to '珊珊' as '山神' is a mishearing of the name '珊珊'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6027,8 +5502,7 @@
     "answer": {
       "xiugai": "我唔知点解要抢嗰啲包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6039,8 +5513,7 @@
       "xiugai": "我亦唔信抢包山会成为奥运项目",
       "beizhu": "Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for the traditional event, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6051,8 +5524,7 @@
       "xiugai": "但系，我依然努力练习抢包山",
       "beizhu": "Corrected '抢包生' to '抢包山' as '抢包山' is the correct term for the traditional activity, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6062,8 +5534,7 @@
     "answer": {
       "xiugai": "师傅话我嘅攀爬功夫已经唔错",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6074,8 +5545,7 @@
       "xiugai": "师傅话当年师祖要出呢套",
       "beizhu": "Corrected '使出' to '要出' as '要出' (to want to show) matches the meaning in the 中文, while '使出' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6086,8 +5556,7 @@
       "xiugai": "连林世荣睇见都大赞好",
       "beizhu": "Corrected '大赞老爷' to '大赞好' as '大赞好' matches the meaning of '大大赞好' in the 中文, while '老爷' is likely a mishearing of '好'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6098,8 +5567,7 @@
       "xiugai": "后来麦唛话我知⋯",
       "beizhu": "Corrected '默默' to '麦唛' as '麦唛' is the correct name matching the 中文, while '默默' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6109,8 +5577,7 @@
     "answer": {
       "xiugai": "林世荣即系猪肉荣，系黄飞鸿嘅徒弟",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6120,8 +5587,7 @@
     "answer": {
       "xiugai": "我唔知到师傅似唔似黄飞鸿",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6131,8 +5597,7 @@
     "answer": {
       "xiugai": "但系我就肯定似旧猪肉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6142,8 +5607,7 @@
     "answer": {
       "xiugai": "我就系一个揸住两个包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6153,8 +5617,7 @@
     "answer": {
       "xiugai": "喺长洲转嚟转去嘅猪肉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6164,8 +5627,7 @@
     "answer": {
       "xiugai": "我一边练习，一边乱练，一边谂嘢；始终⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6175,8 +5637,7 @@
     "answer": {
       "xiugai": "我都唔系咁钟意抢包",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6186,8 +5647,7 @@
     "answer": {
       "xiugai": "我净系爱我妈妈",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6198,8 +5658,7 @@
       "xiugai": "于是我咬实牙根⋯",
       "beizhu": "Corrected '咬细牙根' to '咬实牙根' as '咬实' is the correct phrase meaning 'clench (one's) teeth', while '咬细' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6209,8 +5668,7 @@
     "answer": {
       "xiugai": "最后我终于练成「十二路抢包手」啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6220,8 +5678,7 @@
     "answer": {
       "xiugai": "喂，我系麦兜啊",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6231,8 +5688,7 @@
     "answer": {
       "xiugai": "正话嗰个系细路仔麦兜，我系大个佬麦兜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6242,8 +5698,7 @@
     "answer": {
       "xiugai": "细路仔麦兜同大个佬麦兜除咗把声唔同之外⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6253,8 +5708,7 @@
     "answer": {
       "xiugai": "细路仔麦兜嘅世界仲有好多幻想",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6264,8 +5718,7 @@
     "answer": {
       "xiugai": "仲有好多希望",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6275,8 +5728,7 @@
     "answer": {
       "xiugai": "搞咗一轮，就变咗大个佬麦兜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6286,8 +5738,7 @@
     "answer": {
       "xiugai": "不过，而家我都系想讲返细路仔麦兜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6297,8 +5748,7 @@
     "answer": {
       "xiugai": "细路仔麦兜仲系希望希望⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6308,8 +5758,7 @@
     "answer": {
       "xiugai": "希望真系有圣诞老人",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6319,8 +5768,7 @@
     "answer": {
       "xiugai": "仲系好想好想试下圣诞火鸡嘅滋味",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6330,8 +5778,7 @@
     "answer": {
       "xiugai": "系啊，我嗰阵我真系仲未食过火鸡",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6341,8 +5788,7 @@
     "answer": {
       "xiugai": "所有关于火鸡嘅嘢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6352,8 +5798,7 @@
     "answer": {
       "xiugai": "圣诞树一闪一闪嘅灯饰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6363,8 +5808,7 @@
     "answer": {
       "xiugai": "就好似喺天上面落嚟嘅星星噉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6374,8 +5818,7 @@
     "answer": {
       "xiugai": "落喺火炉旁边",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6385,8 +5828,7 @@
     "answer": {
       "xiugai": "一片一片比窗外面嘅雪仲要白嘅鸡胸肉⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6396,8 +5838,7 @@
     "answer": {
       "xiugai": "就喺我哋面前啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6407,8 +5848,7 @@
     "answer": {
       "xiugai": "就连守喺灵魂旁边嘅天使都醒咗起嚟",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6419,8 +5859,7 @@
       "xiugai": "围住呢一嚿好香好香又好圣洁嘅肉⋯",
       "beizhu": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct term for 'holy' or 'sacred', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6430,8 +5869,7 @@
     "answer": {
       "xiugai": "喺圣诞夜里面飞呀，飞呀⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6441,8 +5879,7 @@
     "answer": {
       "xiugai": "但系呢一切一切关于火鸡嘅嘢，都不过系我嘅想像",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6452,8 +5889,7 @@
     "answer": {
       "xiugai": "因为我从来都未食过火鸡⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6463,8 +5899,7 @@
     "answer": {
       "xiugai": "就连嗰阵味都未闻过",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6474,8 +5909,7 @@
     "answer": {
       "xiugai": "妈妈话火鸡太大",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6485,8 +5919,7 @@
     "answer": {
       "xiugai": "我哋一家两口，点食都食唔晒",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6496,8 +5929,7 @@
     "answer": {
       "xiugai": "有一年圣诞节妈妈买咗半边烧鸭庆祝",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6507,8 +5939,7 @@
     "answer": {
       "xiugai": "当时我，真系十分十分之失望",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6519,8 +5950,7 @@
       "xiugai": "又有一年，有间大百货公司倒闭",
       "beizhu": "Corrected '薄货公司' to '百货公司' as '薄货' is a mishearing of '百货', which is the correct term for 'department store'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6530,8 +5960,7 @@
     "answer": {
       "xiugai": "妈妈用四折买咗个焗炉仔返屋企",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6542,8 +5971,7 @@
       "xiugai": "可能系因为买咗焗炉而技痒",
       "beizhu": "Corrected '焗炉嘅样' to '焗炉而技痒'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6553,8 +5981,7 @@
     "answer": {
       "xiugai": "嗰日妈妈竟然同我讲⋯佢话⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6565,8 +5992,7 @@
       "xiugai": "明日我哋要超级市场揪火鸡",
       "beizhu": "Corrected '抽火鸡' to '揪火鸡' as '揪' matches the meaning of '揪' (to grab/catch) in the 中文, while '抽' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6577,8 +6003,7 @@
       "xiugai": "我同妈妈揪住只火鸡行返屋企嗰阵，喺嗰阵时⋯",
       "beizhu": "Corrected '抽住' to '揪住' as '揪住' (pull/drag) matches the meaning of '揪回家' in the 中文, while '抽住' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6588,8 +6013,7 @@
     "answer": {
       "xiugai": "我谂系我生命里面最开心嘅一刻",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6599,8 +6023,7 @@
     "answer": {
       "xiugai": "火鸡终于解冻啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6611,8 +6034,7 @@
       "xiugai": "我同妈妈，噉双手搽满盐⋯",
       "beizhu": "Corrected '查满盐' to '搽满盐' as '搽' is the correct Cantonese verb for applying/rubbing something on the hands, matching the meaning of '涂满盐'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6623,8 +6045,7 @@
       "xiugai": "喺火鸡丰厚嘅鸡胸度，起细噉擦擦",
       "beizhu": "Corrected '封口' to '丰厚' to match '丰厚的鸡胸' in the 中文, and '啫啫' to '擦擦' to reflect the action '擦呀，擦' rather than a cooking sound term."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6635,8 +6056,7 @@
       "xiugai": "妈妈一个唔觉意畀酿喺火鸡里面嘅洋葱粒漏咗出嚟",
       "beizhu": "Removed '火鸡内脏' as it is a mishearing; the correct phrase should focus on '洋葱粒' inside the turkey, matching the meaning of the 中文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -6647,8 +6067,7 @@
       "xiugai": "�",
       "beizhu": "Cleared as '红萝虾粒流嘅出嚟' bears no resemblance to the original phrase '红萝卜粒' and is clearly a complete mismatch."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -6659,8 +6078,7 @@
       "xiugai": "我话：火鸡「疴烂煮」呀！",
       "beizhu": "Corrected '我能住' to '疴烂煮' as it is a mishearing and '疴烂煮' is a phonetic play on 'orange', matching the style and pun in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6671,8 +6089,7 @@
       "xiugai": "火鸡好勉强塞咗入焗炉度",
       "beizhu": "Corrected '噏咗' to '塞咗' as '塞' (to stuff) matches the meaning of '塞进' in the 中文, while '噏' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6683,8 +6100,7 @@
       "xiugai": "12月24日",
       "beizhu": "Corrected '10月24日' to '12月24日' as '10' is a likely mishearing of '12', matching the date in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6695,8 +6111,7 @@
       "xiugai": "上升嘅白烟同奇异嘅焦味拨动星星",
       "beizhu": "Corrected '㶶味' to '焦味' as '焦味' matches the meaning of '焦味' (burnt smell) in the 中文, and '拨动声声' to '拨动星星' as '声声' is a likely mishearing of '星星'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6707,8 +6122,7 @@
       "xiugai": "个焗炉戚戚恻恻，戚戚恻恻⋯",
       "beizhu": "Corrected '叱叱叱叱' to '戚戚恻恻' as '戚戚恻恻' matches the intended onomatopoeic phrase in the 中文, while '叱叱叱叱' is a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6719,8 +6133,7 @@
       "xiugai": "就好似天使预早畀我哋嘅福音",
       "beizhu": "Corrected '天赐预祖' to '天使预早' as '天赐预祖' is a mishearing of '天使预早', matching the meaning of '天使预早送来的福音' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6730,8 +6143,7 @@
     "answer": {
       "xiugai": "好靓嘅夜晚呀！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6741,8 +6153,7 @@
     "answer": {
       "xiugai": "我同妈妈坐喺尖东海旁",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6752,8 +6163,7 @@
     "answer": {
       "xiugai": "点点点点嘅灯光喺海上面走来走去⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6763,8 +6173,7 @@
     "answer": {
       "xiugai": "又靓又温柔",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6774,8 +6183,7 @@
     "answer": {
       "xiugai": "真系好靓！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6785,8 +6193,7 @@
     "answer": {
       "xiugai": "我从未食过咁浓味嘅嘢",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6796,8 +6203,7 @@
     "answer": {
       "xiugai": "连烧鸭连杯面都冇咁浓嘅味道",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6807,8 +6213,7 @@
     "answer": {
       "xiugai": "火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6818,8 +6223,7 @@
     "answer": {
       "xiugai": "就好似今晚嘅嘢噉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6829,8 +6233,7 @@
     "answer": {
       "xiugai": "最靓最靓，最犀利，亦都系最温柔",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6841,8 +6244,7 @@
       "xiugai": "第二日我瞓到好晏⋯",
       "beizhu": "Corrected '好硬' to '好晏' as '好晏' means 'very late', matching the meaning of '很晏' in the 中文, while '好硬' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6853,8 +6255,7 @@
       "xiugai": "刷完牙我仲感觉到火鸡嘅美味",
       "beizhu": "Corrected '测完牙' to '刷完牙' as '刷牙' is the correct term for brushing teeth, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6865,8 +6266,7 @@
       "xiugai": "因为早餐食得晏⋯",
       "beizhu": "Corrected '食得硬' to '食得晏' as '晏' (late) matches the meaning of '吃得晚' in the 中文, while '硬' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6877,8 +6277,7 @@
       "xiugai": "午餐妈妈净系整咗罐粟米汤畀我",
       "beizhu": "Corrected '唔餐' to '午餐' as '唔餐' is a mishearing of '午餐', which matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6888,8 +6287,7 @@
     "answer": {
       "xiugai": "我系噉用匙羹撩下撩下",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6899,8 +6297,7 @@
     "answer": {
       "xiugai": "我竟然撩到一粒美味嘅火鸡肉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6911,8 +6308,7 @@
       "xiugai": "嗰晚唔使讲，当然系我渴望咗⋯",
       "beizhu": "Corrected '食我限咗' to '我渴望咗' as '食我限咗' is a mishearing of '我渴望咗', matching the meaning of '我渴望了' in the 中文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -6922,8 +6318,7 @@
     "answer": {
       "xiugai": "好耐好耐好耐好耐嘅⋯圣诞火鸡大餐！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6934,8 +6329,7 @@
       "xiugai": "一片一片嘅火鸡肉伴碟嘅有薯仔同节瓜⋯",
       "beizhu": "Corrected '半碟' to '伴碟' as '伴碟' (garnish/accompaniment) matches the meaning in the 中文, while '半碟' (half a plate) is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6946,8 +6340,7 @@
       "xiugai": "上面淋咗一层老抽生粉献",
       "beizhu": "Corrected '馅' to '献' as '献' (sauce) matches the meaning of the 中文, while '馅' (filling) is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6957,8 +6350,7 @@
     "answer": {
       "xiugai": "我哋真系好兴奋，好满足",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6968,8 +6360,7 @@
     "answer": {
       "xiugai": "之后，我哋仲食咗一个礼拜嘅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6979,8 +6370,7 @@
     "answer": {
       "xiugai": "火鸡三文治做早餐",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -6990,8 +6380,7 @@
     "answer": {
       "xiugai": "星期日",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7002,8 +6391,7 @@
       "xiugai": "我大着胆同妈妈讲：不如饮茶",
       "beizhu": "Corrected '我嘅记心肝' to '我大着胆' as '记心肝' is a mishearing of '大着胆', which matches the meaning of '我大着胆' in the 中文."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -7014,8 +6402,7 @@
       "xiugai": "妈妈闹我「冇衣食」⋯",
       "beizhu": "Corrected '冇意食' to '冇衣食' as '冇衣食' (no food or clothing) matches the meaning in the 中文, while '冇意食' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7025,8 +6412,7 @@
     "answer": {
       "xiugai": "但系都带咗我去饮茶",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7036,8 +6422,7 @@
     "answer": {
       "xiugai": "佢将雪柜净返嘅火鸡肉系噉撕系噉撕",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7047,8 +6432,7 @@
     "answer": {
       "xiugai": "有时都叫我帮手撕",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7058,8 +6442,7 @@
     "answer": {
       "xiugai": "火鸡留喺指甲嗰阵味",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7069,8 +6452,7 @@
     "answer": {
       "xiugai": "原来洗好多次都仲喺度㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7081,8 +6463,7 @@
       "xiugai": "银芽火鸡丝炒米，好味道噉",
       "beizhu": "Corrected '银牙' to '银芽' as '银芽' (bean sprouts) is the correct term, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7093,8 +6474,7 @@
       "xiugai": "栗子焖火鸡丝煲",
       "beizhu": "Removed the duplicated '焯焯' at the beginning as it is likely a mishearing or extraneous, and reordered to match the intended dish name; '栗子焖火鸡丝煲' accurately reflects the meaning of the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7105,8 +6485,7 @@
       "xiugai": "酿火鸡馅搽面包",
       "beizhu": "Corrected '让' to '酿' and '茶' to '搽' as both are likely mishearings; '酿火鸡馅搽面包' matches the intended meaning of spreading turkey stuffing on bread."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7117,8 +6496,7 @@
       "xiugai": "唉，我后悔讲过「火鸡疴烂煮」呢句嘢",
       "beizhu": "Corrected '阿宁处' to '疴烂煮' as it is a mishearing and '疴烂煮' matches the pun intended in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7129,8 +6507,7 @@
       "xiugai": "到端午节，当我督开我最钟意食嘅裹蒸粽嘅时候⋯",
       "beizhu": "Corrected '果精粽' to '裹蒸粽' as '裹蒸粽' is the correct term for the type of rice dumpling, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7140,8 +6517,7 @@
     "answer": {
       "xiugai": "发现宿喺咸蛋旁边嘅系一件火鸡背脊⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7151,8 +6527,7 @@
     "answer": {
       "xiugai": "我脑部一时想唔通，喊咗起上嚟",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7162,8 +6537,7 @@
     "answer": {
       "xiugai": "救命啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7174,8 +6548,7 @@
       "xiugai": "妈妈静鸡鸡将净低嘅火鸡撇咗",
       "beizhu": "Corrected '净计计' to '静鸡鸡' as '静鸡鸡' is a common Cantonese phrase meaning 'quietly' or 'secretly', matching the meaning of '悄悄' in the 中文, while '净计计' is a likely mishearing; replaced '劈咗' with '撇咗'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -7185,8 +6558,7 @@
     "answer": {
       "xiugai": "原来嗰阵已经系只火鸡解冻咗差唔多半年后嘅事",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7196,8 +6568,7 @@
     "answer": {
       "xiugai": "我嘅美梦同噩梦都同时完结",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7207,8 +6578,7 @@
     "answer": {
       "xiugai": "后来我先知道⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7218,8 +6588,7 @@
     "answer": {
       "xiugai": "一只火鸡由出世到畀人㓥",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7229,8 +6598,7 @@
     "answer": {
       "xiugai": "都不过系几个月之间嘅事",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7240,8 +6608,7 @@
     "answer": {
       "xiugai": "即系话，只火鸡死咗之后同我哋一齐嘅日子",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7251,8 +6618,7 @@
     "answer": {
       "xiugai": "仲长过佢自己本身条命",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7262,8 +6628,7 @@
     "answer": {
       "xiugai": "我仲发觉到，火鸡嘅味道⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7274,8 +6639,7 @@
       "xiugai": "未食同食第一啖之间已经系佢嘅最高峰",
       "beizhu": "Corrected '味食' to '未食' as '未食' (not yet eaten) matches the meaning of '将吃未吃' in the 中文, while '味食' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7285,8 +6649,7 @@
     "answer": {
       "xiugai": "之后，不过都系食开就食埋落去噉解",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7297,8 +6660,7 @@
       "xiugai": "我冇哲学家嘅头脑⋯",
       "beizhu": "Corrected '知学家' to '哲学家' as '哲学家' is the correct term for 'philosopher', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7309,8 +6671,7 @@
       "xiugai": "唔知呢两样嘢要得出啲咩道理",
       "beizhu": "Removed '得起嘅呢个' as it is likely a mishearing and not present in the intended meaning, which is about '得出啲咩道理' (what lesson to draw from these two things)."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -7320,8 +6681,7 @@
     "answer": {
       "xiugai": "但系呢啲谂法⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7331,8 +6691,7 @@
     "answer": {
       "xiugai": "喺我长大之后⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7342,8 +6701,7 @@
     "answer": {
       "xiugai": "系一啲同圣诞节无关嘅日子⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7353,8 +6711,7 @@
     "answer": {
       "xiugai": "无端端噉喺我脑部出现过两三次",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7364,8 +6721,7 @@
     "answer": {
       "xiugai": "一次，喺我自己嘅婚宴上",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7375,8 +6731,7 @@
     "answer": {
       "xiugai": "喺我妈妈火化嗰日",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7387,8 +6742,7 @@
       "xiugai": "嗰日，我望住天空几条灰色嘅烟",
       "beizhu": "Corrected '天东' to '天空' as '天东' is a likely mishearing of '天空', which matches the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7398,8 +6752,7 @@
     "answer": {
       "xiugai": "忽然闻到火鸡又浓又淡嘅气味",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7410,8 +6763,7 @@
       "xiugai": "我后悔要妈妈撇咗几件火鸡",
       "beizhu": "Corrected '劈咗' to '撇咗' and '个忌廉火鸡' to '几件火鸡'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -7421,8 +6773,7 @@
     "answer": {
       "xiugai": "特别报道",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7432,8 +6783,7 @@
     "answer": {
       "xiugai": "奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7443,8 +6793,7 @@
     "answer": {
       "xiugai": "香港嘅运动员唔系腊鸭",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7454,8 +6803,7 @@
     "answer": {
       "xiugai": "另一方面⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7466,8 +6814,7 @@
       "xiugai": "中国香港体育协会暨奥委会会长霍震霆⋯",
       "beizhu": "Corrected '企奥委会' to '暨奥委会' as '暨' is the correct conjunction, and '霍振庭' to '霍震霆' as it is the correct name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7477,8 +6824,7 @@
     "answer": {
       "xiugai": "香港将要争夺下届亚运会嘅主办权",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7489,8 +6835,7 @@
       "xiugai": "其中港九新界竹战联谊会⋯",
       "beizhu": "Corrected '港狗' to '港九' and '足战' to '竹战' as both are likely mishearings; '港九' refers to '香港九龙', and '竹战' matches the intended meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7500,8 +6845,7 @@
     "answer": {
       "xiugai": "更希望打麻雀可以成为亚运项目",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7512,8 +6856,7 @@
       "xiugai": "另外，全港茶餐厅员工协会⋯",
       "beizhu": "Corrected '联工协会' to '员工协会' as '员工协会' is the correct term for 'staff association', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7524,8 +6867,7 @@
       "xiugai": "经已发动所有会员⋯",
       "beizhu": "Corrected '经热' to '经已' as '经已' is the correct term for 'already', matching the meaning in the 中文, while '经热' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7535,8 +6877,7 @@
     "answer": {
       "xiugai": "争取「掟蛋挞」成为亚运会比赛项目",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7547,8 +6888,7 @@
       "xiugai": "港九烧味卤味腊味同业会",
       "beizhu": "Corrected '港狗烧尾掳尾立尾' to '港九烧味卤味腊味' as these are mishearings of the correct terms for '港九' (Hong Kong and Kowloon), '烧味' (roast meat), '卤味' (marinated meat), and '腊味' (preserved meat), matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7558,8 +6898,7 @@
     "answer": {
       "xiugai": "亦都向霍主席当面提出⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7570,8 +6909,7 @@
       "xiugai": "「挂腊鸭」可以成为亚运比赛项目",
       "beizhu": "Corrected '挂立鸭' to '挂腊鸭' as '腊鸭' is the correct term for the preserved duck, matching the meaning in the 中文, while '立鸭' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7581,8 +6919,7 @@
     "answer": {
       "xiugai": "较为特别嘅系，CIC保险营业员联同⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7593,8 +6930,7 @@
       "xiugai": "大角咀春田花花幼稚园⋯",
       "beizhu": "Corrected '大角嘴' to '大角咀' as '大角咀' is the correct place name, matching the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7604,8 +6940,7 @@
     "answer": {
       "xiugai": "附属小学嘅一班小朋友⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7615,8 +6950,7 @@
     "answer": {
       "xiugai": "一项几乎绝迹嘅运动⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7626,8 +6960,7 @@
     "answer": {
       "xiugai": "成为本港举办亚运重点推介嘅比赛项目",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7638,8 +6971,7 @@
       "xiugai": "最后，全部都系「芭﹣娜﹣娜」",
       "beizhu": "Manually overridden because it depends on distant information."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -7650,8 +6982,7 @@
       "xiugai": "最后，佢哋选咗「掟蛋挞」做推介项目",
       "beizhu": "Corrected '定蛋挞' to '掟蛋挞' as '掟' (to throw) matches the meaning in the 中文, while '定' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7661,8 +6992,7 @@
     "answer": {
       "xiugai": "至于香港争取申办亚运嘅口号⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7672,8 +7002,7 @@
     "answer": {
       "xiugai": "亦都顺理成章噉叫做「香港一蛋挞」",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7684,8 +7013,7 @@
       "xiugai": "之后李丽珊蝉联失败⋯",
       "beizhu": "Corrected '李利山' to '李丽珊' as it is a mishearing of the name, and '丧乱' to '蝉联' as '蝉联' is the correct term for 'to defend a title', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7695,8 +7023,7 @@
     "answer": {
       "xiugai": "亦都由一个香港人从未听过嘅地方夺得",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7706,8 +7033,7 @@
     "answer": {
       "xiugai": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7718,8 +7044,7 @@
       "xiugai": "都返返去茶餐厅继续掟佢哋嘅蛋挞",
       "beizhu": "Corrected '钉' to '掟' as '掟' (to throw) matches the meaning of '掷' in the 中文, while '钉' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7729,8 +7054,7 @@
     "answer": {
       "xiugai": "上个中学，我已经再冇练习抢包手",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7740,8 +7064,7 @@
     "answer": {
       "xiugai": "间中同妈妈饮茶⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7752,8 +7075,7 @@
       "xiugai": "我都会手快快噉帮佢抢个笼大包",
       "beizhu": "Replaced '龙大包' with '个笼大包', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7764,8 +7086,7 @@
       "xiugai": "之后，茶楼都冇卖大包",
       "beizhu": "Corrected '埋' to '卖'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7776,8 +7097,7 @@
       "xiugai": "推车仔都转咗用点心纸",
       "beizhu": "Corrected '退车仔' to '推车仔' as '退车仔' is a mishearing of '推车仔', which matches the meaning of '点心车' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7787,8 +7107,7 @@
     "answer": {
       "xiugai": "一切都落空",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7799,8 +7118,7 @@
       "xiugai": "有时我都会同班同学仔返长洲烧嘢食",
       "beizhu": "Corrected '宵夜' to '烧嘢' as '烧嘢' matches the activity described in the 中文, while '宵夜' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7810,8 +7128,7 @@
     "answer": {
       "xiugai": "每次见到师傅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7821,8 +7138,7 @@
     "answer": {
       "xiugai": "佢都好似老咗啲噉",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7833,8 +7149,7 @@
       "xiugai": "长洲嘅抢包经已转咗用塑胶",
       "beizhu": "Corrected '厂包' to '抢包' as '抢包' is the correct term for the bun-snatching event, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7845,8 +7160,7 @@
       "xiugai": "师傅话，嗰阵胶气，都几臭下",
       "beizhu": "Corrected '丑' to '臭' as '臭' (smelly) matches the meaning of '相当臭' in the 中文, while '丑' (ugly) is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7857,8 +7171,7 @@
       "xiugai": "长洲有个张保仔洞",
       "beizhu": "Corrected '墙后' to '长洲' as it is a mishearing of the place name, and '张宝仔洞' to '张保仔洞' to match the correct name of the cave."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7869,8 +7182,7 @@
       "xiugai": "听讲海盗张保仔喺里面收埋咗好多宝藏",
       "beizhu": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical figure, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7881,8 +7193,7 @@
       "xiugai": "班同学叫我爬去睇下，话唔定会发达",
       "beizhu": "Corrected '班同我' to '班同学'; corrected '爬佢' to '爬去'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7892,8 +7203,7 @@
     "answer": {
       "xiugai": "于是我就向住呢一个又黑又窄嘅洞⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7903,8 +7213,7 @@
     "answer": {
       "xiugai": "系噉爬爬",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7914,8 +7223,7 @@
     "answer": {
       "xiugai": "洞里面乜都冇，净系有一个盒",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7925,8 +7233,7 @@
     "answer": {
       "xiugai": "我好小心揭开呢个盒⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7937,8 +7244,7 @@
       "xiugai": "发现入面系一个食剩咗嘅大包",
       "beizhu": "Corrected '食净咗' to '食剩咗' as '食剩' is the correct term for 'leftover' or 'not finished', matching the meaning of '没吃完' in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7949,8 +7255,7 @@
       "xiugai": "唔知系咪张保仔食净㗎啦？",
       "beizhu": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical figure referenced in the 中文, and '宝' is a likely mishearing of '保'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7960,8 +7265,7 @@
     "answer": {
       "xiugai": "原来有啲嘢，冇就真系冇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7971,8 +7275,7 @@
     "answer": {
       "xiugai": "唔得，就真系唔得",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -7983,8 +7286,7 @@
       "xiugai": "冇鱼蛋冇粗面冇去马尔代夫⋯",
       "beizhu": "Corrected '买义大夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫' (Maldives), matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7995,8 +7297,7 @@
       "xiugai": "冇奖牌冇张保仔宝藏",
       "beizhu": "Corrected '宝仔' to '保仔' as '张保仔' is the correct historical figure, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8007,8 +7308,7 @@
       "xiugai": "而张保仔，亦都冇咬过个包",
       "beizhu": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct historical name, matching the 中文 and likely misheard."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8019,8 +7319,7 @@
       "xiugai": "原来蠢，唔系咁好笑",
       "beizhu": "Added '蠢'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8031,8 +7330,7 @@
       "xiugai": "蠢会失败⋯",
       "beizhu": "Added '蠢'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8042,8 +7340,7 @@
     "answer": {
       "xiugai": "失望，唔系咁好笑",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8053,8 +7350,7 @@
     "answer": {
       "xiugai": "肥，都未必好笑",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8064,8 +7360,7 @@
     "answer": {
       "xiugai": "肥，唔一定大力",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8075,8 +7370,7 @@
     "answer": {
       "xiugai": "大力，亦都唔一定得",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8086,8 +7380,7 @@
     "answer": {
       "xiugai": "揸住个包，我忽然喺度谂⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8098,8 +7391,7 @@
       "xiugai": "大个咗，到我要面对呢一个实掘掘⋯",
       "beizhu": "Corrected '实角局' to '实掘掘' as '实掘掘' matches the meaning and sound of the 中文, while '实角局' is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8109,8 +7401,7 @@
     "answer": {
       "xiugai": "未必到你发梦，又未必咁好笑嘅⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8120,8 +7411,7 @@
     "answer": {
       "xiugai": "世界嘅时候，我会系点㗎呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8132,8 +7422,7 @@
       "xiugai": "「⋯无力挽！」",
       "beizhu": "Corrected '无泪弯' to '无力挽' as it is a mishearing; '无力挽' matches the intended meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8144,8 +7433,7 @@
       "xiugai": "系呀，我就系大个佬麦兜喇",
       "beizhu": "Corrected '麦豆' to '麦兜' as '麦兜' is the correct name, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8155,8 +7443,7 @@
     "answer": {
       "xiugai": "肥啰，算大力啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8166,8 +7453,7 @@
     "answer": {
       "xiugai": "麻麻地得咁啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8178,8 +7464,7 @@
       "xiugai": "负家产啰",
       "beizhu": "Corrected '富家产' to '负家产' as '负家产' (negative assets) matches the meaning in the 中文, while '富家产' (rich assets) is a likely mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8190,8 +7475,7 @@
       "xiugai": "脚瓜真系几大，仲大过个节瓜",
       "beizhu": "Corrected '折瓜' to '节瓜' as '节瓜' is the correct term for the vegetable, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8201,8 +7485,7 @@
     "answer": {
       "xiugai": "脚瓜上面个肌肉非常结实⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8212,8 +7495,7 @@
     "answer": {
       "xiugai": "啲青筋一条一条凸下凸下，好似钢筋",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8224,8 +7506,7 @@
       "xiugai": "至于脚趾公啲脚甲⋯",
       "beizhu": "Corrected '脚趾弓' to '脚趾公'."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8235,8 +7516,7 @@
     "answer": {
       "xiugai": "有次我无无聊聊真系走去卡下佢⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8247,8 +7527,7 @@
       "xiugai": "哗，足足成寸咁厚",
       "beizhu": "Corrected '粥粥成串' to '足足成寸' as '足足' (exactly/fully) and '寸' (inch) are the correct words matching the meaning of '足有一寸厚', while '粥粥成串' is a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8258,8 +7537,7 @@
     "answer": {
       "xiugai": "系呀，故事讲完喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8269,8 +7547,7 @@
     "answer": {
       "xiugai": "呢个系一个尝试",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8281,8 +7558,7 @@
       "xiugai": "好多包⋯但系冇包保成功嘅故事",
       "beizhu": "Corrected '包补' to '包保' as '包保' (guarantee) matches the meaning of '包保成功' in the 中文, while '包补' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8292,8 +7568,7 @@
     "answer": {
       "xiugai": "故事讲咗一轮⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8303,8 +7578,7 @@
     "answer": {
       "xiugai": "乜都冇？又唔系噃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8314,8 +7588,7 @@
     "answer": {
       "xiugai": "就系大咗两个脚瓜",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8325,8 +7598,7 @@
     "answer": {
       "xiugai": "但系冻住两个脚瓜企喺度⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8336,8 +7608,7 @@
     "answer": {
       "xiugai": "当啲浪打埋嚟⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8348,8 +7619,7 @@
       "xiugai": "嗰种感觉真系好好",
       "beizhu": "Corrected '嗰张感觉' to '嗰种感觉' as '种' is the correct classifier for '感觉', while '张' is likely a mishearing."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8359,8 +7629,7 @@
     "answer": {
       "xiugai": "你知我麻麻地叻佬，唔识得⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8370,8 +7639,7 @@
     "answer": {
       "xiugai": "帮自己嘅故事加啲教训呀锦囊呀嗰啲嘢",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8381,8 +7649,7 @@
     "answer": {
       "xiugai": "但系，冻住两个脚瓜企喺水嗰度⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8392,8 +7659,7 @@
     "answer": {
       "xiugai": "当风吹喺我个脑部，我会谂⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8403,8 +7669,7 @@
     "answer": {
       "xiugai": "如果妈妈见到我呢个大脚瓜⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8414,8 +7679,7 @@
     "answer": {
       "xiugai": "我谂，佢会好开心",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8425,8 +7689,7 @@
     "answer": {
       "xiugai": "都系唔好呀，都系出返个锦囊先得！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8437,8 +7700,7 @@
       "xiugai": "妈妈嘅 dot com 散咗之后，佢又有计喇",
       "beizhu": "Corrected '个' to '嘅' as it is a mishearing, matching the meaning in the 中文; corrected 'Doccom' to 'dot com' as it is a mishearing of the English term 'dot com', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8449,8 +7711,7 @@
       "xiugai": "佢出咗本教煮餸嘅食谱，咁煮喇饭咋晒",
       "beizhu": "Corrected '半教主送' to '本教煮餸' corrected '谂住捞返扎沙' to '咁煮喇饭咋晒'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -8460,8 +7721,7 @@
     "answer": {
       "xiugai": "食谱最后一页系教人整烧鸡嘅",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8471,8 +7731,7 @@
     "answer": {
       "xiugai": "方法简单，人人都学得识",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8482,8 +7741,7 @@
     "answer": {
       "xiugai": "材料系⋯鸡",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8493,8 +7751,7 @@
     "answer": {
       "xiugai": "方法：攞只鸡去烧佢几烧",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8504,8 +7761,7 @@
     "answer": {
       "xiugai": "就噉，一味「烧鸡」就大功告成喇",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8515,8 +7771,7 @@
     "answer": {
       "xiugai": "食谱度又补充噉话：",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8526,8 +7781,7 @@
     "answer": {
       "xiugai": "如果想你个鸡烧得美味可口⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8537,8 +7791,7 @@
     "answer": {
       "xiugai": "冇话食完腰心腰肺顶住个胃",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8548,8 +7801,7 @@
     "answer": {
       "xiugai": "个秘诀系：唔该，烧得佢好啲啰⋯",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8559,8 +7811,7 @@
     "answer": {
       "xiugai": "唔该，我要一个常餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8570,8 +7821,7 @@
     "answer": {
       "xiugai": "常餐？常餐有咩食㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8581,8 +7831,7 @@
     "answer": {
       "xiugai": "同特餐一样啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8592,8 +7841,7 @@
     "answer": {
       "xiugai": "噉特餐系咩嚟㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8603,8 +7851,7 @@
     "answer": {
       "xiugai": "同快餐咁上下啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8614,8 +7861,7 @@
     "answer": {
       "xiugai": "噉快餐又系咩嚟㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8626,8 +7872,7 @@
       "xiugai": "啫快餐咪就係午餐",
       "beizhu": "Corrected '即系' to '啫'; corrected '咪真系' to '咪就係'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -8637,8 +7882,7 @@
     "answer": {
       "xiugai": "午餐食咩㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8648,8 +7892,7 @@
     "answer": {
       "xiugai": "午餐同晚餐一样㗎",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8659,8 +7902,7 @@
     "answer": {
       "xiugai": "噉晚餐又食啲咩呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8670,8 +7912,7 @@
     "answer": {
       "xiugai": "晚餐咪真系常餐啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8681,8 +7922,7 @@
     "answer": {
       "xiugai": "噉呀，我要两个常餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8692,8 +7932,7 @@
     "answer": {
       "xiugai": "好嘢呀，我哋今日啲常餐！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8704,8 +7943,7 @@
       "xiugai": "唔好意思，常餐卖晒",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8715,8 +7953,7 @@
     "answer": {
       "xiugai": "咁改要特餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8726,8 +7963,7 @@
     "answer": {
       "xiugai": "特餐？特餐有咩食㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8737,8 +7973,7 @@
     "answer": {
       "xiugai": "特餐就即系午餐啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8748,8 +7983,7 @@
     "answer": {
       "xiugai": "午餐食乜嘢㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8759,8 +7993,7 @@
     "answer": {
       "xiugai": "都系晚餐嗰啲嘢啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8770,8 +8003,7 @@
     "answer": {
       "xiugai": "咁乜嘢系晚餐呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8781,8 +8013,7 @@
     "answer": {
       "xiugai": "同快餐一样啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8792,8 +8023,7 @@
     "answer": {
       "xiugai": "咁快餐食咩㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8804,8 +8034,7 @@
       "xiugai": "系，快餐就即系常餐啰",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8816,8 +8045,7 @@
       "xiugai": "咁你头先又话冇常餐？",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8828,8 +8056,7 @@
       "xiugai": "系呀，常餐就系卖晒呀，咁你试唔试下特餐啦？",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8839,8 +8066,7 @@
     "answer": {
       "xiugai": "两份特餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8851,8 +8077,7 @@
       "xiugai": "唔好意思，特餐卖晒嘅",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -8862,8 +8087,7 @@
     "answer": {
       "xiugai": "妈妈，不如改快餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8873,8 +8097,7 @@
     "answer": {
       "xiugai": "快餐有咩㗎？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8885,8 +8108,7 @@
       "xiugai": "快餐即系常餐",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for 'set meal', matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8898,8 +8120,7 @@
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
     "difficulty": 1,
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -8910,8 +8131,7 @@
       "xiugai": "常餐就即系午餐啰",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8921,8 +8141,7 @@
     "answer": {
       "xiugai": "哎呀，咁午餐有咩食呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8932,8 +8151,7 @@
     "answer": {
       "xiugai": "咁晚餐呢？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8943,8 +8161,7 @@
     "answer": {
       "xiugai": "晚餐就即系特餐啰",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8954,8 +8171,7 @@
     "answer": {
       "xiugai": "咁你头先又话冇特餐？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8965,8 +8181,7 @@
     "answer": {
       "xiugai": "系呀，特餐系卖晒呀，咁你试唔试下个快餐啦？一样嘅啫",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8976,8 +8191,7 @@
     "answer": {
       "xiugai": "咁两份快餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8987,8 +8201,7 @@
     "answer": {
       "xiugai": "唔好意思，冇快餐呀",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -8998,8 +8211,7 @@
     "answer": {
       "xiugai": "嚟唔嚟普啲呀？噉你哋究竟有啲咩餐呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9009,8 +8221,7 @@
     "answer": {
       "xiugai": "午餐啦，午餐好嘢呀",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9020,8 +8231,7 @@
     "answer": {
       "xiugai": "点好嘢法呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9031,8 +8241,7 @@
     "answer": {
       "xiugai": "同晚餐一样咁好嘢",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9042,8 +8251,7 @@
     "answer": {
       "xiugai": "噉晚餐又点好嘢法呀？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9054,8 +8262,7 @@
       "xiugai": "同常餐一样咁好嘢啰",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -9066,8 +8273,7 @@
       "xiugai": "噉常餐又点好嘢法呀？",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -9078,8 +8284,7 @@
       "xiugai": "常餐，常餐一早卖晒啦，你话好唔好嘢？",
       "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -9089,8 +8294,7 @@
     "answer": {
       "xiugai": "好啦好啦！要两份午餐啦",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9101,8 +8305,7 @@
       "xiugai": "唔好意思，午餐卖晒",
       "beizhu": "No changes needed."
     },
-    "prompt": true,
-    "verified": true
+    "prompt": true
   },
   {
     "query": {
@@ -9112,8 +8315,7 @@
     "answer": {
       "xiugai": "试唔试下我哋嘅晚餐啦？一样嘅啫",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9123,8 +8325,7 @@
     "answer": {
       "xiugai": "日光日白，食乜鬼嘢晚餐啊？",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9135,8 +8336,7 @@
       "xiugai": "系，个名叫晚餐啫，其实咪就係午餐？",
       "beizhu": "Corrected '唔系真系' to '咪就係'."
     },
-    "difficulty": 3,
-    "verified": true
+    "difficulty": 3
   },
   {
     "query": {
@@ -9146,8 +8346,7 @@
     "answer": {
       "xiugai": "好啦好啦，怕咗你啦！要两份晚餐啦！快啲手啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   },
   {
     "query": {
@@ -9157,7 +8356,6 @@
     "answer": {
       "xiugai": "想快？想快就要快餐啊！",
       "beizhu": "No changes needed."
-    },
-    "verified": true
+    }
   }
 ]

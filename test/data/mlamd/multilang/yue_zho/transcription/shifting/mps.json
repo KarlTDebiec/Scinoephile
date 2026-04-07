@@ -7226,17 +7226,13 @@
       "yuewen_1": "喺我妈妈火化嗰日",
       "yuewen_2": "嗰日我望住天东几条灰色嘅烟"
     },
-    "answer": {
-      "yuewen_1_yidong": "喺我妈妈火化嗰日嗰日",
-      "yuewen_2_yidong": "我望住天东几条灰色嘅烟"
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "zhongwen_1": "那天，我看着天空几缕灰色的烟",
       "zhongwen_2": "忽然间嗅到火鸡又浓又淡的气味",
-      "yuewen_1": "我望住天东几条灰色嘅烟",
+      "yuewen_1": "嗰日我望住天东几条灰色嘅烟",
       "yuewen_2": "忽然闻到火鸡又浓又淡嘅气味"
     },
     "answer": {}
@@ -7908,28 +7904,22 @@
       "yuewen_1": "班同我叫我爬佢睇下话唔定会发达",
       "yuewen_2": "于是我就向住呢一个又黑又窄嘅洞"
     },
-    "answer": {
-      "yuewen_1_yidong": "班同我叫我爬佢睇下话唔定会发达于是我就向住呢一个又黑又窄嘅洞"
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "zhongwen_1": "于是我就向着这个又黑又窄的洞⋯",
       "zhongwen_2": "一直爬",
+      "yuewen_1": "于是我就向住呢一个又黑又窄嘅洞",
       "yuewen_2": "系噉爬爬"
     },
-    "answer": {
-      "yuewen_1_yidong": "系噉",
-      "yuewen_2_yidong": "爬爬"
-    },
-    "difficulty": 1
+    "answer": {}
   },
   {
     "query": {
       "zhongwen_1": "一直爬",
       "zhongwen_2": "洞里面什么也没有，只有一个盒子",
-      "yuewen_1": "爬爬",
+      "yuewen_1": "系噉爬爬",
       "yuewen_2": "洞里面乜都冇净系有一个盒"
     },
     "answer": {}
