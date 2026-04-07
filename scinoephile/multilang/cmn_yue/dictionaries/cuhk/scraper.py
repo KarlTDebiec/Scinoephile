@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import random
+import re
 from logging import getLogger
 from pathlib import Path
 from time import sleep
@@ -18,6 +19,7 @@ from hkscs_unicode_converter import converter as hkscs_converter
 from pypinyin import Style, lazy_pinyin
 
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core import UnsupportedCharacterError
 from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
@@ -35,7 +37,6 @@ from .constants import (
     INVALID_FILENAME_CHARS_REGEX,
     JYUTPING_LETTERS_ID_REGEX,
     JYUTPING_NUMBERS_ID_REGEX,
-    JYUTPING_NUMBERS_REGEX,
     JYUTPING_TONE_MAP,
     LABEL_ID_REGEX,
     MEANING_ID_REGEX,
@@ -49,6 +50,14 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+CUHK_HEADWORD_ALTERNATE_REGEX = re.compile(r"\([^()]+\)")
+CUHK_TONE_TOKEN_REGEX = re.compile(r"\d(?:\(\d(?:\*\d)?\)|\*\d)?")
+CUHK_TONE_ALTERNATE_REGEX = re.compile(r"^(?P<primary>\d)\((?P<alternate>\d)\)$")
+CUHK_TONE_SANDHI_REGEX = re.compile(r"^(?P<original>\d)\*(?P<changed>\d)$")
+CUHK_TONE_SANDHI_ALTERNATE_REGEX = re.compile(
+    r"^(?P<primary>\d)\((?P<original>\d)\*(?P<changed>\d)\)$"
+)
 
 
 class CuhkDictionaryScraperKwargs(TypedDict, total=False):
@@ -229,10 +238,15 @@ class CuhkDictionaryScraper:
             )
             return None
 
-        traditional = self._normalize_hanzi(text_span.get_text(strip=True))
+        try:
+            traditional = self._normalize_hanzi(text_span.get_text(strip=True))
+            file_word = self._normalize_hanzi(html_path.stem)
+        except UnsupportedCharacterError as exc:
+            logger.warning(f"Skipping CUHK page {html_path}: {exc}")
+            return None
+
         simplified = self.opencc_converter.convert(traditional)
 
-        file_word = self._normalize_hanzi(html_path.stem)
         if file_word != traditional:
             logger.warning(
                 f"Parsed word '{traditional}' does not match filename "
@@ -242,10 +256,10 @@ class CuhkDictionaryScraper:
         label_span = soup.find("span", id=LABEL_ID_REGEX)
         label = label_span.get_text(strip=True) if isinstance(label_span, Tag) else ""
 
-        jyutping_letters_span = soup.find("span", id=JYUTPING_LETTERS_ID_REGEX)
-        jyutping_letters = (
-            jyutping_letters_span.get_text(strip=True).split()
-            if isinstance(jyutping_letters_span, Tag)
+        jyutping_syllables_span = soup.find("span", id=JYUTPING_LETTERS_ID_REGEX)
+        jyutping_syllables = (
+            jyutping_syllables_span.get_text(strip=True).split()
+            if isinstance(jyutping_syllables_span, Tag)
             else []
         )
         jyutping_numbers_span = soup.find("span", id=JYUTPING_NUMBERS_ID_REGEX)
@@ -254,20 +268,21 @@ class CuhkDictionaryScraper:
             if isinstance(jyutping_numbers_span, Tag)
             else ""
         )
-        jyutping_numbers = [
-            JYUTPING_TONE_MAP.get(number, number)
-            for number in JYUTPING_NUMBERS_REGEX.findall(raw_numbers)
-        ]
-        if len(jyutping_letters) != len(jyutping_numbers):
+        jyutping_numbers = self._parse_jyutping_numbers(raw_numbers)
+        if len(jyutping_syllables) != len(jyutping_numbers):
             logger.warning(
-                "Skipping CUHK page with mismatched jyutping letters "
-                f"({len(jyutping_letters)}) and tones "
-                f"({len(jyutping_numbers)}): {html_path}"
+                "Skipping CUHK page with mismatched jyutping syllables "
+                f"({len(jyutping_syllables)}) and tones "
+                f"({len(jyutping_numbers)}): {html_path}; "
+                f"syllables={jyutping_syllables!r}; raw_tones={raw_numbers!r}; "
+                f"parsed_tones={jyutping_numbers!r}"
             )
             return None
         jyutping = " ".join(
-            f"{letter}{number}"
-            for letter, number in zip(jyutping_letters, jyutping_numbers, strict=False)
+            f"{syllable}{number}"
+            for syllable, number in zip(
+                jyutping_syllables, jyutping_numbers, strict=False
+            )
         )
 
         pinyin = (
@@ -458,19 +473,82 @@ class CuhkDictionaryScraper:
         return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
     @staticmethod
+    def _normalize_jyutping_tone_token(token: str) -> str:
+        """Normalize one CUHK tone token to a single output tone.
+
+        Arguments:
+            token: raw CUHK tone token
+        Returns:
+            normalized tone number
+        """
+        sandhi_alternate_match = CUHK_TONE_SANDHI_ALTERNATE_REGEX.fullmatch(token)
+        if sandhi_alternate_match is not None:
+            changed = sandhi_alternate_match.group("changed")
+            logger.info(
+                "Observed CUHK sandhi alternate tone token "
+                f"{token!r}; using changed tone {changed!r}"
+            )
+            return JYUTPING_TONE_MAP.get(changed, changed)
+
+        alternate_match = CUHK_TONE_ALTERNATE_REGEX.fullmatch(token)
+        if alternate_match is not None:
+            primary = alternate_match.group("primary")
+            logger.info(
+                "Observed CUHK alternate tone token "
+                f"{token!r}; using primary tone {primary!r}"
+            )
+            return JYUTPING_TONE_MAP.get(primary, primary)
+
+        sandhi_match = CUHK_TONE_SANDHI_REGEX.fullmatch(token)
+        if sandhi_match is not None:
+            changed = sandhi_match.group("changed")
+            logger.info(
+                "Observed CUHK sandhi tone token "
+                f"{token!r}; using changed tone {changed!r}"
+            )
+            return JYUTPING_TONE_MAP.get(changed, changed)
+
+        return JYUTPING_TONE_MAP.get(token, token)
+
+    @classmethod
+    def _parse_jyutping_numbers(cls, raw_numbers: str) -> list[str]:
+        """Parse CUHK tone text into one normalized tone per syllable.
+
+        Arguments:
+            raw_numbers: raw CUHK tone text
+        Returns:
+            normalized tone numbers
+        """
+        condensed = raw_numbers.replace(" ", "")
+        tokens = CUHK_TONE_TOKEN_REGEX.findall(condensed)
+        return [cls._normalize_jyutping_tone_token(token) for token in tokens]
+
+    @staticmethod
     def _normalize_hanzi(text: str) -> str:
-        """Normalize characters and replace private-use area code points.
+        """Normalize characters and reject private-use area code points.
 
         Arguments:
             text: text to normalize
         Returns:
             normalized text
+        Raises:
+            UnsupportedCharacterError: if private-use area characters remain
         """
         normalized = hkscs_converter.convert_string(text)
+        if normalized != text:
+            logger.info(f"HKSCS normalization changed text: {text!r} -> {normalized!r}")
+        collapsed = CUHK_HEADWORD_ALTERNATE_REGEX.sub("", normalized)
+        if collapsed != normalized:
+            logger.info(
+                "Removed CUHK parenthesized alternate spelling(s): "
+                f"{normalized!r} -> {collapsed!r}"
+            )
+            normalized = collapsed
         if RE_PRIVATE_USE_AREA_BMP.search(normalized):
-            logger.warning(f"Replacing private-use character(s) in {normalized}")
-            normalized = RE_PRIVATE_USE_AREA_BMP.sub(
-                PRIVATE_USE_AREA_REPLACEMENT_STRING,
-                normalized,
+            raise UnsupportedCharacterError(
+                "Unsupported Hanzi after HKSCS normalization: "
+                f"{text!r} -> {normalized!r}; "
+                f"contains private-use character(s) matching "
+                f"{PRIVATE_USE_AREA_REPLACEMENT_STRING!r}"
             )
         return normalized
