@@ -160,34 +160,25 @@ def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
     return partial(fixture, params=params, ids=get_name)
 
 
-def skip_if_ci(inner: partial | None = None) -> partial:
-    """Mark test to skip if running within continuous integration pipeline.
+def skip_if_ci() -> Any:
+    """Build a decorator that skips tests in continuous integration.
 
-    Arguments:
-        inner: nascent partial function of pytest.param with additional marks
     Returns:
-        partial function of pytest.param with marks
+        pytest mark decorator
     """
-    marks = [mark.skipif(getenv("CI") is not None, reason="Skip when running in CI")]
-    if inner:
-        marks.extend(inner.keywords["marks"])
-    return partial(param, marks=marks)
+    return mark.skipif(
+        bool(getenv("CI")),
+        reason="Skip when running in CI",
+    )
 
 
-def skip_if_codex(inner: partial | None = None) -> partial:
-    """Mark test to skip if running within Codex environment.
+def skip_if_codex() -> Any:
+    """Build a decorator that skips tests in Codex.
 
-    Arguments:
-        inner: nascent partial function of pytest.param with additional marks
     Returns:
-        partial function of pytest.param with marks
+        pytest mark decorator
     """
-    marks = [
-        mark.skipif(
-            getenv("CODEX_ENV_PYTHON_VERSION") is not None,
-            reason="Skip when running in Codex environment",
-        )
-    ]
-    if inner:
-        marks.extend(inner.keywords["marks"])
-    return partial(param, marks=marks)
+    return mark.skipif(
+        bool(getenv("CODEX_ENV_PYTHON_VERSION")),
+        reason="Skip when running in Codex environment",
+    )
