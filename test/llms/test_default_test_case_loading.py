@@ -148,7 +148,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YueZhoHansProofreadingPrompt,
                 YUE_ZHO_PROOFREADING_JSON_PATHS,
             ),
-            ["mlamd/multilang/yue_zho/proofreading.json"],
+            [
+                "mlamd/multilang/yue_zho/proofreading/gpu.json",
+                "mlamd/multilang/yue_zho/proofreading/mps.json",
+            ],
         ),
         (
             "yue_zho_review",
@@ -157,7 +160,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YueHansReviewPrompt,
                 YUE_ZHO_REVIEW_JSON_PATHS,
             ),
-            ["mlamd/multilang/yue_zho/review.json"],
+            [
+                "mlamd/multilang/yue_zho/review/gpu.json",
+                "mlamd/multilang/yue_zho/review/mps.json",
+            ],
         ),
         (
             "yue_from_zho_translation",
@@ -166,7 +172,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YueHansFromZhoTranslationPrompt,
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
-            ["mlamd/multilang/yue_zho/translation.json"],
+            [
+                "mlamd/multilang/yue_zho/translation/gpu.json",
+                "mlamd/multilang/yue_zho/translation/mps.json",
+            ],
         ),
     ],
 )
