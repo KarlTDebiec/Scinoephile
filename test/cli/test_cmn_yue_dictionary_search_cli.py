@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from contextlib import ExitStack, redirect_stderr
-from io import StringIO
+from collections.abc import Generator
+from contextlib import ExitStack
 from pathlib import Path
 
 import pytest
@@ -51,7 +51,7 @@ def test_cmn_yue_dictionary_search_usage(cli: tuple[type[CommandLineInterface], 
 
 
 @pytest.fixture(scope="module")
-def cuhk_database_path() -> Path:
+def cuhk_database_path() -> Generator[Path]:
     """Build a temporary CUHK database for end-to-end search tests."""
     with ExitStack() as stack:
         cache_dir_path = stack.enter_context(get_temp_directory_path())
@@ -89,16 +89,17 @@ def cuhk_database_path() -> Path:
 @skip_if_ci()
 def test_cmn_yue_dictionary_search_cli(cuhk_database_path: Path, query: str):
     """Test CUHK dictionary search CLI against a freshly built database."""
-    stderr = StringIO()
-    with redirect_stderr(stderr):
+    with get_temp_file_path(".log") as log_file_path:
         run_cli_with_args(
             ScinoephileCli,
-            "-v cmn_yue dictionary search "
+            "cmn_yue dictionary search "
+            "-v "
+            f"--log-file {log_file_path} "
             f"--database-path {cuhk_database_path} "
             f"--direction yue_to_cmn --limit 3 {query}",
         )
+        output = log_file_path.read_text(encoding="utf-8")
 
-    output = stderr.getvalue()
-    assert "Found " in output
-    assert "Found 0 " not in output
-    assert query in output
+    assert "Found " in output, output
+    assert "Found 0 " not in output, output
+    assert query in output, output
