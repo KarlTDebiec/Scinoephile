@@ -149,7 +149,7 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
             "parameters": {
                 "type": "object",
                 "additionalProperties": False,
-                "required": ["query"],
+                "required": ["query", "direction", "limit"],
                 "properties": {
                     "query": {
                         "type": "string",
