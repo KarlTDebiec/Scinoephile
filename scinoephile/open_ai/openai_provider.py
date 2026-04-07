@@ -37,7 +37,7 @@ class OpenAIProvider(LLMProvider):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str = "gpt-5.1",
+        model: str = "gpt-5.4",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
