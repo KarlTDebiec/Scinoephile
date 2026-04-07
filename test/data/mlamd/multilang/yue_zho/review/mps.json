@@ -1557,12 +1557,8 @@
       "yuewen_35": "「你忠实的，麦太」",
       "zhongwen_35": "「你忠实的，麦太」"
     },
-    "answer": {
-      "xiugai_yuewen_4": "我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文㗎",
-      "beizhu_4": "Added the sentence-final particle \"㗎\" to match the established spoken Cantonese narration pattern in the surrounding lines.",
-      "xiugai_yuewen_27": "「嗰便系一个母亲能够有的最好的最大的安慰」",
-      "beizhu_27": "Changed \"哪便\" to the Cantonese demonstrative \"嗰便\" for consistency with Cantonese transcription; kept the rest unchanged."
-    }
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -2208,10 +2204,8 @@
       "yuewen_13": "好嘢呀，我哋今日啲常餐！",
       "zhongwen_13": "今天常餐精采呀！"
     },
-    "answer": {
-      "xiugai_yuewen_7": "即快餐咪就係午餐",
-      "beizhu_7": "Corrected the sentence-initial discourse marker from an incorrect character form 「啫」 to the proper colloquial Cantonese written form 「即」."
-    }
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
