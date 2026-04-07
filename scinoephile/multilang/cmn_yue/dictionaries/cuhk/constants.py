@@ -7,9 +7,7 @@ from __future__ import annotations
 import re
 
 from scinoephile.core.dictionaries import DictionarySource
-from scinoephile.core.paths import get_runtime_cache_dir_path
 
-DEFAULT_DATABASE_PATH = get_runtime_cache_dir_path("dictionaries", "cuhk") / "cuhk.db"
 MAX_LOOKUP_LIMIT = 400
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
@@ -54,7 +52,6 @@ __all__ = [
     "CUHK_TERMS_PATH",
     "CUHK_WORD_PATH",
     "CUHK_WORD_RESULT_PATHS",
-    "DEFAULT_DATABASE_PATH",
     "INVALID_FILENAME_CHARS_REGEX",
     "JYUTPING_LETTERS_ID_REGEX",
     "JYUTPING_NUMBERS_ID_REGEX",

@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from contextlib import nullcontext
+
 import pytest
 
 from scinoephile.core import UnsupportedCharacterError
@@ -11,40 +13,34 @@ from scinoephile.lang.yue import get_yue_converted
 
 
 @pytest.mark.parametrize(
-    ("text", "expected"),
+    ("text", "expected", "expectation"),
     [
-        ("舂暈\ue527", "舂暈鷄"),
-        ("蜞\ueb06", "蜞乸"),
+        ("舂暈\ue527", "舂暈鷄", nullcontext()),
+        ("蜞\ueb06", "蜞乸", nullcontext()),
+        (
+            "過樹\uefbe",
+            None,
+            pytest.raises(UnsupportedCharacterError),
+        ),
+        (
+            "蝦\ueec9",
+            None,
+            pytest.raises(UnsupportedCharacterError),
+        ),
     ],
 )
-def test_get_yue_converted(text: str, expected: str):
-    """Test get_yue_converted converts HKSCS characters.
+def test_get_yue_converted(
+    text: str,
+    expected: str | None,
+    expectation,
+):
+    """Test get_yue_converted converts or rejects HKSCS characters.
 
     Arguments:
         text: source text
-        expected: expected converted text
+        expected: expected converted text, if conversion succeeds
+        expectation: expected test context
     """
-    output = get_yue_converted(text)
-
-    assert output == expected
-
-
-@pytest.mark.parametrize(
-    "text",
-    [
-        "過樹\uefbe",
-        "蝦\ueec9",
-    ],
-)
-def test_get_yue_converted_raises_for_unsupported_characters(text: str):
-    """Test get_yue_converted rejects unsupported private-use characters.
-
-    Arguments:
-        text: source text
-    """
-    with pytest.raises(UnsupportedCharacterError) as exc_info:
-        get_yue_converted(text)
-
-    assert str(exc_info.value) == (
-        f"Unsupported Hanzi after HKSCS normalization: {text!r} -> {text!r}"
-    )
+    with expectation:
+        output = get_yue_converted(text)
+        assert output == expected

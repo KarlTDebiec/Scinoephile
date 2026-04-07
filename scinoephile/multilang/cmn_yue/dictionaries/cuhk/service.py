@@ -8,10 +8,11 @@ from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
-from .constants import DEFAULT_DATABASE_PATH, MAX_LOOKUP_LIMIT
+from .constants import MAX_LOOKUP_LIMIT
 from .database import CuhkDictionaryDatabase
 from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
@@ -38,7 +39,9 @@ class CuhkDictionaryService:
             scraper_kwargs: keyword arguments forwarded to CuhkDictionaryScraper
         """
         if database_path is None:
-            database_path = DEFAULT_DATABASE_PATH
+            database_path = (
+                get_runtime_cache_dir_path("dictionaries", "cuhk") / "cuhk.db"
+            )
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
         if scraper_kwargs is None:

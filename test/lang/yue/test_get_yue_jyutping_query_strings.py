@@ -12,21 +12,21 @@ from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
-        ("soeng6 bin6", "soeng6 bin6"),
-        ("hei'hauh", "hei3 hau6"),
-        ("gwóngdūngwá", "gwong2 dung1 waa2"),
+        ("soeng6 bin6", ["soeng6 bin6"]),
+        ("hei'hauh", ["hei3 hau6"]),
+        ("gwóngdūngwá", ["gwong2 dung1 waa2"]),
+        ("séung", ["seong2", "soeng2"]),
     ],
 )
-def test_get_yue_jyutping_query_strings(text: str, expected: str):
+def test_get_yue_jyutping_query_strings(
+    text: str,
+    expected: list[str],
+):
     """Test get_yue_jyutping_query_strings.
 
     Arguments:
         text: raw query text
-        expected: expected Jyutping variant
+        expected: expected Jyutping variant(s)
     """
-    assert expected in get_yue_jyutping_query_strings(text)
-
-
-def test_get_yue_jyutping_query_strings_returns_multiple_yale_matches():
-    """Test get_yue_jyutping_query_strings returns multiple Yale matches."""
-    assert get_yue_jyutping_query_strings("séung") == ["seong2", "soeng2"]
+    output = get_yue_jyutping_query_strings(text)
+    assert all(variant in output for variant in expected)

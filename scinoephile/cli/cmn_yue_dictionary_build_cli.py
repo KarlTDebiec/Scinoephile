@@ -15,6 +15,7 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     int_arg,
     output_dir_arg,
+    output_file_arg,
 )
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
@@ -36,6 +37,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             parser,
             "input arguments",
             "operation arguments",
+            "output arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -54,11 +56,6 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             metavar="N",
             type=int_arg(min_value=1),
             help="stop after building the first N discovered words",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite the existing SQLite database if it already exists",
         )
         arg_groups["operation arguments"].add_argument(
             "--min-delay-seconds",
@@ -85,6 +82,20 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             help="per-request timeout in seconds",
         )
 
+        # Output arguments
+        arg_groups["output arguments"].add_argument(
+            "--database-path",
+            metavar="FILE",
+            default=None,
+            type=output_file_arg(exist_ok=True),
+            help="SQLite database output path",
+        )
+        arg_groups["output arguments"].add_argument(
+            "--overwrite",
+            action="store_true",
+            help="overwrite the existing SQLite database if it already exists",
+        )
+
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
@@ -93,6 +104,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         cache_dir_path = kwargs.pop("cache_dir")
+        database_path = kwargs.pop("database_path")
         max_words = kwargs.pop("max_words", None)
         overwrite = kwargs.pop("overwrite")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
@@ -101,6 +113,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
         service = CuhkDictionaryService(
+            database_path=database_path,
             scraper_kwargs={
                 "cache_dir_path": cache_dir_path,
                 "min_delay_seconds": min_delay_seconds,
