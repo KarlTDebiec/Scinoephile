@@ -30,7 +30,7 @@ class OpenAIProvider(LLMProvider):
         Arguments:
             client: synchronous OpenAI client
         """
-        self.sync_client: Any = client or OpenAI()
+        self.sync_client: OpenAI = client or OpenAI()
 
     @override
     def chat_completion(  # noqa: PLR0912
@@ -72,7 +72,7 @@ class OpenAIProvider(LLMProvider):
             for round_idx in range(max_tool_rounds):
                 if response_format:
                     completion = self.sync_client.beta.chat.completions.parse(
-                        messages=messages,
+                        messages=messages,  # ty:ignore[invalid-argument-type]
                         model=model,
                         **request_kwargs,
                     )
@@ -81,7 +81,7 @@ class OpenAIProvider(LLMProvider):
                         messages=messages,
                         model=model,
                         **request_kwargs,
-                    )
+                    )  # ty:ignore[no-matching-overload]
 
                 message = completion.choices[0].message
                 tool_calls = message.tool_calls or []
