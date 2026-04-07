@@ -4,24 +4,22 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from argparse import ArgumentParser
+from typing import Unpack
 
 from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
-
 
 class EngZhoCli(CommandLineInterface):
-    """Command-line interface for English/中文 bilingual operations."""
+    """Command-line interface for English/中文 operations."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
 
@@ -36,19 +34,31 @@ class EngZhoCli(CommandLineInterface):
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
         subcommand_name = kwargs.pop("eng_zho_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 
     @classmethod
     def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "eng_zho"
 
     @classmethod
     def subcommands(cls) -> dict[str, type[EngZhoSyncCli]]:
-        """Names and types of tools wrapped by command-line interface."""
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
         return {
             EngZhoSyncCli.name(): EngZhoSyncCli,
         }

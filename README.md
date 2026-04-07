@@ -8,3 +8,8 @@
 Scinoephile is a package for working with Chinese/English bilingual subtitles, with a 
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
+
+## Notices
+
+Third-party license and data-source acknowledgements are listed in
+`docs/THIRD_PARTY_NOTICES.md`.

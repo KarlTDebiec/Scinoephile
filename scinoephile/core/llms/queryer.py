@@ -10,6 +10,7 @@ from abc import ABC
 from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar, Self, cast
 
 from pydantic import ValidationError
@@ -24,8 +25,6 @@ from .query import Query
 from .test_case import TestCase
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from .llm_provider import LLMProvider
     from .tools import LLMToolSpec, ToolHandler
 

@@ -5,23 +5,16 @@
 from __future__ import annotations
 
 from io import StringIO
-from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
 
 from scinoephile.cli import ScinoephileCli, ZhoCli
+from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.common.testing import (
-    assert_cli_help,
-    assert_cli_usage,
-    run_cli_with_args,
-)
+from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import skip_if_ci, test_data_root
-
-if TYPE_CHECKING:
-    from scinoephile.common import CommandLineInterface
+from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
 @pytest.mark.parametrize(
@@ -52,13 +45,13 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("cli", "input_path", "args", "expected_path"),
     [
         (
-            (ScinoephileCli, ZhoCli),
+            (ZhoCli,),
             "mnt/output/zho-Hans_fuse.srt",
             "--clean",
             "mnt/output/zho-Hans_fuse_clean.srt",
         ),
         (
-            (ZhoCli,),
+            (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
@@ -75,9 +68,15 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
         ),
+        (
+            (ZhoCli,),
+            "mnt/output/zho-Hant_fuse_clean_validate.srt",
+            "--proofread traditional",
+            "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
+        ),
     ],
 )
-def test_zho_file_processing(
+def test_zho_cli(
     cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
@@ -99,26 +98,7 @@ def test_zho_file_processing(
     assert output == expected
 
 
-@skip_if_ci()
-def test_zho_proofread_file_processing():
-    """Test 中文 proofreading with file arguments."""
-    input_path = test_data_root / "mnt/output/zho-Hant_fuse_clean_validate.srt"
-    expected_path = (
-        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt"
-    )
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            ZhoCli,
-            f"--proofread traditional --infile {input_path} --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-        expected = Series.load(expected_path)
-
-    assert output == expected
-
-
-def test_zho_pipe_processing():
+def test_zho_cli_pipe():
     """Test 中文 CLI processing via stdin/stdout."""
     input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
     expected_path = test_data_root / "mnt/output/zho-Hans_fuse_clean.srt"

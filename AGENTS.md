@@ -15,7 +15,7 @@
 * Run the following checks on **only the Python files you have changed or been asked to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
-  3. `uv run ty`
+  3. `uv run ty check`
 * If `ruff` or `ty` suggest changes that would require major refactoring, confirm with the user before proceeding.
 
 ### Testing
@@ -29,6 +29,7 @@
 * Include the standard copyright header at the top of the file.
 * Include a module docstring at the top of each file.
 * Include `from __future__ import annotations`, unless the file is empty.
+* Prefer f-strings for string interpolation.
 * Include type annotations for all function and method signatures, with the following exception:
     * If a function always returns `None`, omit the return type annotation.
 * In `__init__.py` files, only import classes from the module, not functions or variables.
@@ -39,12 +40,25 @@
     * variables or parameters holding `Path` objects should end in `_path` (e.g., `file_path`, `dir_path`, `cache_dir_path`)
     * use `*_name` for bare names and `*_stem` for stems, not for full paths
     * prefer `*_dir_path` over `*_directory` when the value is a path
+* Within classes, sort methods in the following heirarchy:
+  * Level 1
+    * `__init__`
+    * Other builtins
+    * Public methods
+    * Private methods
+  * Level 2
+    * Standard methods
+    * Class methods
+    * Static methods
+  * Level 3
+    * Alphabetical order
 
 ## Documentation
 
 * Use Markdown for formatting.
 * Do **not** include any reStructuredText markup such as double backticks.
 * Provide docstrings for all classes and functions, including internal helpers prefixed with an underscore.
+* Document class attributes using triple-quoted strings immediately below each instead of relying only on an `Attributes` section in the class docstring.
 * Format docstrings using Google style, with the following tweaks:
     * Use "Arguments:" instead of "Args:".
     * Do not include a blank line between the "Arguments:" and "Returns:" sections.

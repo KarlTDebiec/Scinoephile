@@ -20,9 +20,10 @@ __all__ = [
     "whitespace_chars",
     "half_to_full_punc",
     "full_to_half_punc",
-    "re_hanzi",
-    "re_hanzi_rare",
-    "re_western",
+    "RE_HANZI",
+    "RE_HANZI_RARE",
+    "RE_PRIVATE_USE_AREA_BMP",
+    "RE_WESTERN",
     "get_char_type",
     "get_dedented_and_compacted_multiline_text",
     "remove_non_punc_and_whitespace",
@@ -153,13 +154,16 @@ half_to_full_punc = {
 full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
 """Mapping from full-width to half-width punctuation characters."""
 
-re_hanzi = re.compile(r"[\u4e00-\u9fff]")
+RE_HANZI = re.compile(r"[\u4e00-\u9fff]")
 """Regular expression for Hanzi characters."""
 
-re_hanzi_rare = re.compile(r"[\u3400-\u4DBF]")
+RE_HANZI_RARE = re.compile(r"[\u3400-\u4DBF]")
 """Regular expression for rare Hanzi characters."""
 
-re_western = re.compile(r"[a-zA-Z0-9]")
+RE_PRIVATE_USE_AREA_BMP = re.compile(r"[\ue000-\uf8ff]")
+"""Regular expression for BMP private-use area code points."""
+
+RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
 
 

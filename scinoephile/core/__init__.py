@@ -14,8 +14,9 @@ Hierarchy within module:
 
 from __future__ import annotations
 
-from .exceptions import ScinoephileError
+from .exceptions import ScinoephileError, UnsupportedCharacterError
 
 __all__ = [
     "ScinoephileError",
+    "UnsupportedCharacterError",
 ]

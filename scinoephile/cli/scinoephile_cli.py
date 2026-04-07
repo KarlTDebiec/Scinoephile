@@ -4,15 +4,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from argparse import ArgumentParser
+from typing import Unpack
 
+from scinoephile.cli.cmn_yue_cli import CmnYueCli
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.eng_zho_cli import EngZhoCli
 from scinoephile.cli.zho_cli import ZhoCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
 
 
 class ScinoephileCli(CommandLineInterface):
@@ -23,7 +22,7 @@ class ScinoephileCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
 
@@ -37,20 +36,38 @@ class ScinoephileCli(CommandLineInterface):
             subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments."""
-        subcommand_name = kwargs.pop("subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "scinoephile"
 
     @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
-        """Names and types of tools wrapped by command-line interface."""
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
         return {
+            CmnYueCli.name(): CmnYueCli,
             EngCli.name(): EngCli,
             ZhoCli.name(): ZhoCli,
             EngZhoCli.name(): EngZhoCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        subcommand_name = kwargs.pop("subcommand")
+        subcommand_cli_class = cls.subcommands()[subcommand_name]
+        subcommand_cli_class._main(**kwargs)
 
 
 if __name__ == "__main__":

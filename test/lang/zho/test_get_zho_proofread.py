@@ -4,19 +4,15 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pytest
 
+from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_proofread
 from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
     get_zho_proofreader,
 )
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
-    from scinoephile.llms.mono_block import MonoBlockProcessor
+from scinoephile.llms.mono_block import MonoBlockProcessor
 
 
 def _test_get_zho_proofread(

@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from sys import stdin, stdout
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
@@ -14,9 +15,6 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
-
-if TYPE_CHECKING:
-    from argparse import ArgumentParser
 
 
 class EngCli(CommandLineInterface):
@@ -27,7 +25,7 @@ class EngCli(CommandLineInterface):
         """Add arguments to a nascent argument parser.
 
         Arguments:
-            parser: Nascent argument parser
+            parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
@@ -38,6 +36,7 @@ class EngCli(CommandLineInterface):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
@@ -46,6 +45,8 @@ class EngCli(CommandLineInterface):
             type=str,
             help="English subtitle infile (default: stdin)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--clean",
             action="store_true",
@@ -61,6 +62,8 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="proofread subtitles using configured LLM workflow",
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -81,7 +84,7 @@ class EngCli(CommandLineInterface):
         """Execute with provided keyword arguments.
 
         Arguments:
-            **kwargs: Keyword arguments
+            **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
@@ -107,7 +110,7 @@ class EngCli(CommandLineInterface):
         """Load a Series from a file path or stdin.
 
         Arguments:
-            infile: Input file path or "-" for stdin
+            infile: input file path or "-" for stdin
         Returns:
             loaded Series
         """
@@ -127,10 +130,10 @@ class EngCli(CommandLineInterface):
         """Write a Series to a file path or stdout.
 
         Arguments:
-            parser: Argument parser for error reporting
-            series: Series to write
-            outfile: Output file path or "-" for stdout
-            overwrite: Whether to overwrite an existing file
+            parser: argument parser for error reporting
+            series: series to write
+            outfile: output file path or "-" for stdout
+            overwrite: whether to overwrite an existing file
         """
         if outfile == "-":
             stdout.write(series.to_string(format_="srt"))
@@ -139,6 +142,15 @@ class EngCli(CommandLineInterface):
         if output_path.exists() and not overwrite:
             parser.error(f"{output_path} already exists")
         series.save(output_path)
+
+    @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "eng"
 
 
 if __name__ == "__main__":

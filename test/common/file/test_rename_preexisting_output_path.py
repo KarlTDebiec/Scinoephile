@@ -4,12 +4,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 from common.file import rename_preexisting_output_path  # ty:ignore[unresolved-import]
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 def test_rename_preexisting_output_path_no_existing_file(tmp_path: Path):

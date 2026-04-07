@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING, TypedDict, Unpack
 
 from scinoephile.llms.default_test_cases import (
@@ -16,8 +17,6 @@ from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from scinoephile.core.llms import TestCase
     from scinoephile.core.subtitles import Series
 

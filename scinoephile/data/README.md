@@ -1,6 +1,6 @@
 # Scinoephile Data
 
-## Cantonese
+## Yue
 
 `hanzi_to_jyutping.cha` contains Jyutping Cantonese romanization of selected characters
 not included in the

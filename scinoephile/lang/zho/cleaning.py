@@ -1,17 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to 中文 text."""
+"""Code related to cleaning 中文 text."""
 
 from __future__ import annotations
 
 import re
 from copy import deepcopy
-from typing import TYPE_CHECKING
 
+from scinoephile.core.subtitles import Series
 from scinoephile.core.text import half_to_full_punc
-
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_zho_cleaned",
