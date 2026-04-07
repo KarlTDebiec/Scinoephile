@@ -15,7 +15,6 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import opencc
 import requests
 from bs4 import BeautifulSoup, Tag
-from hkscs_unicode_converter import converter as hkscs_converter
 from pypinyin import Style, lazy_pinyin
 
 from scinoephile.common.validation import val_output_dir_path
@@ -26,7 +25,7 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
 )
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.core.text import RE_PRIVATE_USE_AREA_BMP
+from scinoephile.lang.yue import get_yue_converted
 
 from .constants import (
     BASE_URL,
@@ -40,7 +39,6 @@ from .constants import (
     JYUTPING_TONE_MAP,
     LABEL_ID_REGEX,
     MEANING_ID_REGEX,
-    PRIVATE_USE_AREA_REPLACEMENT_STRING,
     REMARK_ID_REGEX,
     TERMS_URL,
 )
@@ -238,12 +236,25 @@ class CuhkDictionaryScraper:
             )
             return None
 
+        raw_traditional = self._strip_cuhk_headword_alternates(
+            text_span.get_text(strip=True)
+        )
+        raw_file_word = self._strip_cuhk_headword_alternates(html_path.stem)
         try:
-            traditional = self._normalize_hanzi(text_span.get_text(strip=True))
-            file_word = self._normalize_hanzi(html_path.stem)
+            traditional = get_yue_converted(raw_traditional)
+            file_word = get_yue_converted(raw_file_word)
         except UnsupportedCharacterError as exc:
             logger.warning(f"Skipping CUHK page {html_path}: {exc}")
             return None
+        if traditional != raw_traditional:
+            logger.info(
+                "HKSCS normalization changed text: "
+                f"{raw_traditional!r} -> {traditional!r}"
+            )
+        if file_word != raw_file_word:
+            logger.info(
+                f"HKSCS normalization changed text: {raw_file_word!r} -> {file_word!r}"
+            )
 
         simplified = self.opencc_converter.convert(traditional)
 
@@ -473,6 +484,23 @@ class CuhkDictionaryScraper:
         return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
     @staticmethod
+    def _strip_cuhk_headword_alternates(text: str) -> str:
+        """Remove CUHK parenthesized alternate spellings from a headword.
+
+        Arguments:
+            text: raw CUHK headword text
+        Returns:
+            headword text without parenthesized alternates
+        """
+        collapsed = CUHK_HEADWORD_ALTERNATE_REGEX.sub("", text)
+        if collapsed != text:
+            logger.info(
+                "Removed CUHK parenthesized alternate spelling(s): "
+                f"{text!r} -> {collapsed!r}"
+            )
+        return collapsed
+
+    @staticmethod
     def _normalize_jyutping_tone_token(token: str) -> str:
         """Normalize one CUHK tone token to a single output tone.
 
@@ -522,33 +550,3 @@ class CuhkDictionaryScraper:
         condensed = raw_numbers.replace(" ", "")
         tokens = CUHK_TONE_TOKEN_REGEX.findall(condensed)
         return [cls._normalize_jyutping_tone_token(token) for token in tokens]
-
-    @staticmethod
-    def _normalize_hanzi(text: str) -> str:
-        """Normalize characters and reject private-use area code points.
-
-        Arguments:
-            text: text to normalize
-        Returns:
-            normalized text
-        Raises:
-            UnsupportedCharacterError: if private-use area characters remain
-        """
-        normalized = hkscs_converter.convert_string(text)
-        if normalized != text:
-            logger.info(f"HKSCS normalization changed text: {text!r} -> {normalized!r}")
-        collapsed = CUHK_HEADWORD_ALTERNATE_REGEX.sub("", normalized)
-        if collapsed != normalized:
-            logger.info(
-                "Removed CUHK parenthesized alternate spelling(s): "
-                f"{normalized!r} -> {collapsed!r}"
-            )
-            normalized = collapsed
-        if RE_PRIVATE_USE_AREA_BMP.search(normalized):
-            raise UnsupportedCharacterError(
-                "Unsupported Hanzi after HKSCS normalization: "
-                f"{text!r} -> {normalized!r}; "
-                f"contains private-use character(s) matching "
-                f"{PRIVATE_USE_AREA_REPLACEMENT_STRING!r}"
-            )
-        return normalized
