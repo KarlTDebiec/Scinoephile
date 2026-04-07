@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from logging import getLogger
+
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
@@ -18,6 +20,9 @@ __all__ = [
 
 CUHK_LOOKUP_TOOL_NAME = "lookup_cuhk_dictionary"
 """Tool name for CUHK dictionary lookups."""
+
+logger = getLogger(__name__)
+"""Module logger."""
 
 
 def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
@@ -87,6 +92,12 @@ def lookup_cuhk_dictionary(
         query=normalized_query,
         direction=direction_enum,
         limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
+    )
+    logger.info(
+        "CUHK dictionary lookup: query=%r direction=%s result_count=%d",
+        normalized_query,
+        direction_enum.value,
+        len(entries),
     )
     return {
         "query": normalized_query,
