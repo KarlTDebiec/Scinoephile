@@ -2696,12 +2696,14 @@
         "嗰度有好多水晶活动㗎",
         "仲有一次食添㖞"
       ],
-      "zhongwen": "那儿有很多水上活动，还有鱼翅吃"
+      "zhongwen": "那儿有很好多水上活动，还有鱼翅吃"
     },
     "answer": {
       "yuewen_merged": "嗰度有好多水晶活动㗎，仲有一次食添㖞"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
   },
   {
     "query": {
@@ -3706,12 +3708,13 @@
         "妈妈",
         "我系咪要带埋出世纸去㗎"
       ],
-      "zhongwen": "妈妈，我得把出世纸带着吗？"
+      "zhongwen": "妈妈，我得把出世纸带著吗？"
     },
     "answer": {
       "yuewen_merged": "哎哟，妈妈，我系咪要带埋出世纸去㗎？"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -3730,15 +3733,16 @@
     "query": {
       "yuewen_to_merge": [
         "好嘢",
-        "嚇得我啊",
+        "吓得我啊",
         "咁都好啲"
       ],
       "zhongwen": "太好了！吓得我！"
     },
     "answer": {
-      "yuewen_merged": "好嘢！嚇得我啊！咁都好啲"
+      "yuewen_merged": "好嘢！吓得我啊！咁都好啲"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -3811,12 +3815,13 @@
       "yuewen_to_merge": [
         "噉你话纸包唔包得绝鸡呢"
       ],
-      "zhongwen": "依你说，纸是否可以包着鸡呢？"
+      "zhongwen": "依你说，纸是否可以包著鸡呢？"
     },
     "answer": {
-      "yuewen_merged": "噉你话纸包唔包得绝鸡呢？"
+      "yuewen_merged": "噉你话，纸包唔包得绝鸡呢？"
     },
-    "difficulty": 2
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4450,12 +4455,13 @@
         "你收我做徒弟",
         "我呢一世都跪喺度"
       ],
-      "zhongwen": "你唔收我做徒弟，我一世都这么跪着！"
+      "zhongwen": "你唔收我做徒弟，我一世都这么跪著！"
     },
     "answer": {
       "yuewen_merged": "你收我做徒弟，我呢一世都跪喺度！"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -4561,11 +4567,13 @@
         "跟住",
         "妈妈口噏噏噉讲咗一啲嘢"
       ],
-      "zhongwen": "妈妈跟着又念念有词的"
+      "zhongwen": "妈妈跟著又念念有词的"
     },
     "answer": {
-      "yuewen_merged": "跟住妈妈口噏噏噉讲咗一啲嘢"
-    }
+      "yuewen_merged": "跟住，妈妈口噏噏噉讲咗一啲嘢"
+    },
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -4642,12 +4650,13 @@
         "奖牌",
         "同大包嚟添"
       ],
-      "zhongwen": "还带着成绩表，奖牌和大包"
+      "zhongwen": "还带著成绩表，奖牌和大包"
     },
     "answer": {
       "yuewen_merged": "仲带埋成绩表，奖牌同大包嚟添"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5053,7 +5062,8 @@
     "answer": {
       "yuewen_merged": "一日冇奖牌，冇对手，冇比赛⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -5566,26 +5576,28 @@
         "唔通",
         "冇理由㗎"
       ],
-      "zhongwen": "难道⋯　不会吧？"
+      "zhongwen": "难道⋯不会吧？"
     },
     "answer": {
-      "yuewen_merged": "唔通⋯　冇理由㗎？"
+      "yuewen_merged": "唔通⋯冇理由㗎？"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "yuewen_to_merge": [
         "咦",
         "估唔到真系妈妈攞咗㖞",
-        "嚇得我啊"
+        "吓得我啊"
       ],
       "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "yuewen_merged": "咦，估唔到真系妈妈攞咗㖞．嚇得我啊！"
+      "yuewen_merged": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -6632,12 +6644,13 @@
       "yuewen_to_merge": [
         "连烧鸭连杯面都冇咁浓嘅味道"
       ],
-      "zhongwen": "什至杯面，烧鸭的味道也没有这么浓"
+      "zhongwen": "甚至杯面，烧鸭的味道也没有这么浓"
     },
     "answer": {
       "yuewen_merged": "连烧鸭连杯面都冇咁浓嘅味道"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -6796,12 +6809,13 @@
         "我嘅记心肝同妈妈讲",
         "不如饮茶"
       ],
-      "zhongwen": "我大着胆跟妈妈说：不如去饮茶吖"
+      "zhongwen": "我大著胆跟妈妈说：不如去饮茶吖"
     },
     "answer": {
       "yuewen_merged": "我嘅记心肝同妈妈讲：不如饮茶"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7116,12 +7130,13 @@
         "嗰日",
         "我望住天东几条灰色嘅烟"
       ],
-      "zhongwen": "那天，我看着天空几缕灰色的烟"
+      "zhongwen": "那天，我看著天空几缕灰色的烟"
     },
     "answer": {
       "yuewen_merged": "嗰日，我望住天东几条灰色嘅烟"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7430,14 +7445,15 @@
   {
     "query": {
       "yuewen_to_merge": [
-        "谂住可以转行做运动员嘅茶餐厅夥计"
+        "谂住可以转行做运动员嘅茶餐厅伙计"
       ],
-      "zhongwen": "想着转行当运动员的茶餐厅伙记⋯"
+      "zhongwen": "想著转行当运动员的茶餐厅伙记⋯"
     },
     "answer": {
-      "yuewen_merged": "谂住可以转行做运动员嘅茶餐厅夥计⋯"
+      "yuewen_merged": "谂住可以转行做运动员嘅茶餐厅伙计⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7543,19 +7559,21 @@
     "answer": {
       "yuewen_merged": "班同我叫我爬佢睇下，话唔定会发达"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "yuewen_to_merge": [
         "于是我就向住呢一个又黑又窄嘅洞"
       ],
-      "zhongwen": "于是我就向着这个又黑又窄的洞⋯"
+      "zhongwen": "于是我就向著这个又黑又窄的洞⋯"
     },
     "answer": {
       "yuewen_merged": "于是我就向住呢一个又黑又窄嘅洞⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7567,7 +7585,8 @@
     },
     "answer": {
       "yuewen_merged": "系噉爬爬"
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -7575,24 +7594,26 @@
         "洞里面乜都冇",
         "净系有一个盒"
       ],
-      "zhongwen": "洞里面什么也没有，只有一个盒子"
+      "zhongwen": "洞里面什么也没有，只有一个盒"
     },
     "answer": {
       "yuewen_merged": "洞里面乜都冇，净系有一个盒"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
       "yuewen_to_merge": [
         "我好小心揭开呢个盒"
       ],
-      "zhongwen": "我小心揭开盒子⋯"
+      "zhongwen": "我小心揭开盒⋯"
     },
     "answer": {
       "yuewen_merged": "我好小心揭开呢个盒⋯"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7820,12 +7841,13 @@
       "yuewen_to_merge": [
         "无泪弯"
       ],
-      "zhongwen": "「⋯无力挽回！」"
+      "zhongwen": "「⋯无力挽！」"
     },
     "answer": {
       "yuewen_merged": "「⋯无泪弯！」"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -8132,12 +8154,13 @@
         "妈妈个Doccom散咗之后",
         "佢又有计喇"
       ],
-      "zhongwen": "妈妈的 dot com 散掉后，她又有计"
+      "zhongwen": "妈妈的dot com散掉后，她又有计"
     },
     "answer": {
       "yuewen_merged": "妈妈个Doccom散咗之后，佢又有计喇"
     },
-    "difficulty": 2
+    "difficulty": 2,
+    "verified": true
   },
   {
     "query": {
@@ -8297,12 +8320,13 @@
         "常餐",
         "常餐有咩食㗎"
       ],
-      "zhongwen": "常餐？　常餐有什么吃？"
+      "zhongwen": "常餐？常餐有什么吃？"
     },
     "answer": {
-      "yuewen_merged": "常餐？　常餐有咩食㗎？"
+      "yuewen_merged": "常餐？常餐有咩食㗎？"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {

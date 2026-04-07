@@ -1763,19 +1763,27 @@
     "query": {
       "zhongwen_1": "一、二、三、四、五、六、七⋯",
       "zhongwen_2": "多劳多得！",
-      "yuewen_1": "1234567",
-      "yuewen_2": "多喽多得"
+      "yuewen_2": "1234567"
     },
-    "answer": {}
+    "answer": {
+      "yuewen_1_yidong": "1234567"
+    },
+    "difficulty": 1,
+    "prompt": true,
+    "verified": true
   },
   {
     "query": {
       "zhongwen_1": "多劳多得！",
       "zhongwen_2": "星期一至星期七⋯多劳多得！",
-      "yuewen_1": "多喽多得",
-      "yuewen_2": "星期一至星期七多喽多得"
+      "yuewen_2": "多喽多得星期一至星期七多喽多得"
     },
-    "answer": {}
+    "answer": {
+      "yuewen_1_yidong": "多喽多得",
+      "yuewen_2_yidong": "星期一至星期七多喽多得"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -1910,24 +1918,6 @@
     },
     "difficulty": 1,
     "verified": true
-  },
-  {
-    "query": {
-      "zhongwen_1": "欢迎大家收看＜麦太世界＞",
-      "zhongwen_2": "今日为大家介绍一个⋯",
-      "yuewen_1": "欢迎大家收睇麦太世界",
-      "yuewen_2": "今日我为大家介绍个"
-    },
-    "answer": {}
-  },
-  {
-    "query": {
-      "zhongwen_1": "今日为大家介绍一个⋯",
-      "zhongwen_2": "简单别致的小菜纸包鸡",
-      "yuewen_1": "今日我为大家介绍个",
-      "yuewen_2": "简单又别致嘅小菜自包鸡"
-    },
-    "answer": {}
   },
   {
     "query": {
@@ -2745,20 +2735,22 @@
   {
     "query": {
       "zhongwen_1": "我最喜爱的地方是泰国",
-      "zhongwen_2": "那儿有很多水上活动，还有鱼翅吃",
+      "zhongwen_2": "那儿有很好多水上活动，还有鱼翅吃",
       "yuewen_1": "我最钟意去嘅地方就系泰国喇",
       "yuewen_2": "嗰度有好多水晶活动㗎仲有一次食添㖞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "那儿有很多水上活动，还有鱼翅吃",
+      "zhongwen_1": "那儿有很好多水上活动，还有鱼翅吃",
       "zhongwen_2": "我最喜爱的地方⋯",
       "yuewen_1": "嗰度有好多水晶活动㗎仲有一次食添㖞",
       "yuewen_2": "呃我最喜爱嘅地方呢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3547,11 +3539,12 @@
   },
   {
     "query": {
-      "zhongwen_1": "妈妈，我得把出世纸带着吗？",
+      "zhongwen_1": "妈妈，我得把出世纸带著吗？",
       "zhongwen_2": "也要的",
       "yuewen_1": "哎哟妈妈我系咪要带埋出世纸去㗎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3583,9 +3576,10 @@
       "zhongwen_1": "成绩表就不用了",
       "zhongwen_2": "太好了！吓得我！",
       "yuewen_1": "成绩表又唔使",
-      "yuewen_2": "好嘢嚇得我啊咁都好啲"
+      "yuewen_2": "好嘢吓得我啊咁都好啲"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -3651,20 +3645,22 @@
   {
     "query": {
       "zhongwen_1": "最美丽的一天",
-      "zhongwen_2": "依你说，纸是否可以包着鸡呢？",
+      "zhongwen_2": "依你说，纸是否可以包著鸡呢？",
       "yuewen_1": "最完美嘅一日",
       "yuewen_2": "噉你话纸包唔包得绝鸡呢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "依你说，纸是否可以包着鸡呢？",
+      "zhongwen_1": "依你说，纸是否可以包著鸡呢？",
       "zhongwen_2": "也可以的⋯",
       "yuewen_1": "噉你话纸包唔包得绝鸡呢",
       "yuewen_2": "都得嘅"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4293,20 +4289,22 @@
   {
     "query": {
       "zhongwen_1": "师傅！你收我做徒弟吧！",
-      "zhongwen_2": "你唔收我做徒弟，我一世都这么跪着！",
+      "zhongwen_2": "你唔收我做徒弟，我一世都这么跪著！",
       "yuewen_1": "师父你收我做徒弟啦",
       "yuewen_2": "你收我做徒弟我呢一世都跪喺度"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "你唔收我做徒弟，我一世都这么跪着！",
+      "zhongwen_1": "你唔收我做徒弟，我一世都这么跪著！",
       "zhongwen_2": "起来呀！",
       "yuewen_1": "你收我做徒弟我呢一世都跪喺度",
       "yuewen_2": "起身啊"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4391,20 +4389,22 @@
   {
     "query": {
       "zhongwen_1": "妈妈叫我跪低，向祖先请请",
-      "zhongwen_2": "妈妈跟着又念念有词的",
+      "zhongwen_2": "妈妈跟著又念念有词的",
       "yuewen_1": "妈妈叫我跪低同祖先请请",
       "yuewen_2": "跟住妈妈口噏噏噉讲咗一啲嘢"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "妈妈跟着又念念有词的",
+      "zhongwen_1": "妈妈跟著又念念有词的",
       "zhongwen_2": "然后我们一起向祖先再拜了几拜",
       "yuewen_1": "跟住妈妈口噏噏噉讲咗一啲嘢",
       "yuewen_2": "然之后我哋又一齐对住祖先拜多几拜"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4509,20 +4509,22 @@
   {
     "query": {
       "zhongwen_1": "麦唛，菇时跟得巴都来了",
-      "zhongwen_2": "还带着成绩表，奖牌和大包",
+      "zhongwen_2": "还带著成绩表，奖牌和大包",
       "yuewen_1": "默默姑侍同德巴都嚟咗",
       "yuewen_2": "仲带埋成绩表奖牌同大包嚟添"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "还带着成绩表，奖牌和大包",
+      "zhongwen_1": "还带著成绩表，奖牌和大包",
       "zhongwen_2": "他们都希望黎根也可以收他们做徒弟",
       "yuewen_1": "仲带埋成绩表奖牌同大包嚟添",
       "yuewen_2": "佢哋都希望嚟今可以收埋佢哋做徒弟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -4951,20 +4953,22 @@
   {
     "query": {
       "zhongwen_1": "一项没有奖牌，没有对手，没有比赛⋯",
-      "zhongwen_2": "什至没有人知道是运动的运动",
+      "zhongwen_2": "甚至没有人知道是运动的运动",
       "yuewen_1": "一日冇奖牌冇对手冇比赛",
       "yuewen_2": "甚至乎冇人知对佢系运动嘅运动"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "什至没有人知道是运动的运动",
+      "zhongwen_1": "甚至没有人知道是运动的运动",
       "zhongwen_2": "更坏的是，连包山也没有！",
       "yuewen_1": "甚至乎冇人知对佢系运动嘅运动",
       "yuewen_2": "更衰嘅系连包山都冇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -5460,20 +5464,22 @@
   {
     "query": {
       "zhongwen_1": "跑哪去了？",
-      "zhongwen_2": "难道⋯　不会吧？",
+      "zhongwen_2": "难道⋯不会吧？",
       "yuewen_1": "去咗边呢",
       "yuewen_2": "唔通冇理由㗎"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "想不到真的让妈妈拿去了．吓得我！",
+      "zhongwen_1": "想不到真的让妈妈拿去了。吓得我！",
       "zhongwen_2": "妈妈怎么会写起英文信？",
-      "yuewen_1": "咦估唔到真系妈妈攞咗㖞嚇得我啊",
+      "yuewen_1": "咦估唔到真系妈妈攞咗㖞吓得我啊",
       "yuewen_2": "点解妈妈会用英文写信嘅"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6606,20 +6612,22 @@
   {
     "query": {
       "zhongwen_1": "我从没吃过这么浓味的东西",
-      "zhongwen_2": "什至杯面，烧鸭的味道也没有这么浓",
+      "zhongwen_2": "甚至杯面，烧鸭的味道也没有这么浓",
       "yuewen_1": "我从未食过咁浓味嘅嘢",
       "yuewen_2": "连烧鸭连杯面都冇咁浓嘅味道"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "什至杯面，烧鸭的味道也没有这么浓",
+      "zhongwen_1": "甚至杯面，烧鸭的味道也没有这么浓",
       "zhongwen_2": "火鸡的味道把我每一个味蕾缠住⋯",
       "yuewen_1": "连烧鸭连杯面都冇咁浓嘅味道",
       "yuewen_2": "火鸡嘅味道喺我嘅每一个味蕾度缠住"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -6830,20 +6838,22 @@
   {
     "query": {
       "zhongwen_1": "星期天",
-      "zhongwen_2": "我大着胆跟妈妈说：不如去饮茶吖",
+      "zhongwen_2": "我大著胆跟妈妈说：不如去饮茶吖",
       "yuewen_1": "星期日",
       "yuewen_2": "我嘅记心肝同妈妈讲不如饮茶"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "我大着胆跟妈妈说：不如去饮茶吖",
+      "zhongwen_1": "我大著胆跟妈妈说：不如去饮茶吖",
       "zhongwen_2": "妈妈骂我「冇衣食」⋯",
       "yuewen_1": "我嘅记心肝同妈妈讲不如饮茶",
       "yuewen_2": "妈妈闹我冇意食"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7222,20 +7232,22 @@
   {
     "query": {
       "zhongwen_1": "是在我妈妈火化那天",
-      "zhongwen_2": "那天，我看着天空几缕灰色的烟",
+      "zhongwen_2": "那天，我看著天空几缕灰色的烟",
       "yuewen_1": "喺我妈妈火化嗰日",
       "yuewen_2": "嗰日我望住天东几条灰色嘅烟"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "那天，我看着天空几缕灰色的烟",
+      "zhongwen_1": "那天，我看著天空几缕灰色的烟",
       "zhongwen_2": "忽然间嗅到火鸡又浓又淡的气味",
       "yuewen_1": "嗰日我望住天东几条灰色嘅烟",
       "yuewen_2": "忽然闻到火鸡又浓又淡嘅气味"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7250,19 +7262,21 @@
   {
     "query": {
       "zhongwen_1": "特别报告",
-      "zhongwen_2": "奥运金牌得主李丽珊决定参加今届奥运会",
+      "zhongwen_2": "奥运金牌得主李丽珊决定参加今届奥运",
       "yuewen_1": "特别报道",
       "yuewen_2": "奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "奥运金牌得主李丽珊决定参加今届奥运会",
+      "zhongwen_1": "奥运金牌得主李丽珊决定参加今届奥运",
       "zhongwen_2": "向全世界人再次证明⋯",
       "yuewen_1": "奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7279,12 +7293,13 @@
   },
   {
     "query": {
-      "zhongwen_1": "奥运金牌得主李丽珊决定参加今届奥运会",
+      "zhongwen_1": "奥运金牌得主李丽珊决定参加今届奥运",
       "zhongwen_2": "向全世界人再次证明⋯",
       "yuewen_1": "奥运滑浪风帆金牌得主李丽珊决定参加今届嘅奥运",
       "yuewen_2": "向全世界人再次证明"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7475,19 +7490,23 @@
     "query": {
       "zhongwen_1": "另外，全港茶餐厅员工协会⋯",
       "zhongwen_2": "经已发动所有会员⋯",
-      "yuewen_1": "另外全港茶餐厅联工协会",
-      "yuewen_2": "经热发动所有会员"
+      "yuewen_1": "另外全港茶餐厅联工协会"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zhongwen_1": "经已发动所有会员⋯",
       "zhongwen_2": "争取「掷蛋挞」成为亚运比赛项目",
-      "yuewen_1": "经热发动所有会员",
-      "yuewen_2": "争取掟蛋挞成为亚运会比赛项目"
+      "yuewen_2": "经热发动所有会员争取掟蛋挞成为亚运会比赛项目"
     },
-    "answer": {}
+    "answer": {
+      "yuewen_1_yidong": "经热发动所有会员",
+      "yuewen_2_yidong": "争取掟蛋挞成为亚运会比赛项目"
+    },
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
@@ -7752,20 +7771,22 @@
   {
     "query": {
       "zhongwen_1": "亦由一个香港人从未听过的地方夺得",
-      "zhongwen_2": "想着转行当运动员的茶餐厅伙记⋯",
+      "zhongwen_2": "想著转行当运动员的茶餐厅伙记⋯",
       "yuewen_1": "亦都由一个香港人从未听过嘅地方夺得",
-      "yuewen_2": "谂住可以转行做运动员嘅茶餐厅夥计"
+      "yuewen_2": "谂住可以转行做运动员嘅茶餐厅伙计"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "想着转行当运动员的茶餐厅伙记⋯",
+      "zhongwen_1": "想著转行当运动员的茶餐厅伙记⋯",
       "zhongwen_2": "都回到茶餐厅继续掷他们的蛋挞",
-      "yuewen_1": "谂住可以转行做运动员嘅茶餐厅夥计",
+      "yuewen_1": "谂住可以转行做运动员嘅茶餐厅伙计",
       "yuewen_2": "都返返去茶餐厅继续钉佢哋嘅蛋挞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -7900,47 +7921,52 @@
   {
     "query": {
       "zhongwen_1": "同学们叫我爬进去看看，说不定会发达",
-      "zhongwen_2": "于是我就向着这个又黑又窄的洞⋯",
+      "zhongwen_2": "于是我就向著这个又黑又窄的洞⋯",
       "yuewen_1": "班同我叫我爬佢睇下话唔定会发达",
       "yuewen_2": "于是我就向住呢一个又黑又窄嘅洞"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "于是我就向着这个又黑又窄的洞⋯",
+      "zhongwen_1": "于是我就向著这个又黑又窄的洞⋯",
       "zhongwen_2": "一直爬",
       "yuewen_1": "于是我就向住呢一个又黑又窄嘅洞",
       "yuewen_2": "系噉爬爬"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
       "zhongwen_1": "一直爬",
-      "zhongwen_2": "洞里面什么也没有，只有一个盒子",
+      "zhongwen_2": "洞里面什么也没有，只有一个盒",
       "yuewen_1": "系噉爬爬",
       "yuewen_2": "洞里面乜都冇净系有一个盒"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "洞里面什么也没有，只有一个盒子",
-      "zhongwen_2": "我小心揭开盒子⋯",
+      "zhongwen_1": "洞里面什么也没有，只有一个盒",
+      "zhongwen_2": "我小心揭开盒⋯",
       "yuewen_1": "洞里面乜都冇净系有一个盒",
       "yuewen_2": "我好小心揭开呢个盒"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "我小心揭开盒子⋯",
+      "zhongwen_1": "我小心揭开盒⋯",
       "zhongwen_2": "发现里面一个没吃完的大包",
       "yuewen_1": "我好小心揭开呢个盒",
       "yuewen_2": "发现入面系一个食净咗嘅大包"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -8415,20 +8441,22 @@
   {
     "query": {
       "zhongwen_1": "不成，还是出个锦囊！",
-      "zhongwen_2": "妈妈的 dot com 散掉后，她又有计",
+      "zhongwen_2": "妈妈的dot com散掉后，她又有计",
       "yuewen_1": "都系唔好呀都系出返个锦囊先得",
       "yuewen_2": "妈妈个Doccom散咗之后佢又有计喇"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "妈妈的 dot com 散掉后，她又有计",
+      "zhongwen_1": "妈妈的dot com散掉后，她又有计",
       "zhongwen_2": "她出版了一本教烹饪的食谱",
       "yuewen_1": "妈妈个Doccom散咗之后佢又有计喇",
       "yuewen_2": "佢出咗半教主送嘅食谱谂住捞返扎沙"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -8547,15 +8575,16 @@
   {
     "query": {
       "zhongwen_1": "麻烦你，一客常餐",
-      "zhongwen_2": "常餐？　常餐有什么吃？",
+      "zhongwen_2": "常餐？常餐有什么吃？",
       "yuewen_1": "唔该我要一个常餐啦",
       "yuewen_2": "常餐"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
-      "zhongwen_1": "常餐？　常餐有什么吃？",
+      "zhongwen_1": "常餐？常餐有什么吃？",
       "zhongwen_2": "跟特餐一样吧",
       "yuewen_1": "常餐",
       "yuewen_2": "常餐有咩食㗎"
@@ -8563,7 +8592,8 @@
     "answer": {
       "yuewen_1_yidong": "常餐常餐有咩食㗎"
     },
-    "difficulty": 1
+    "difficulty": 1,
+    "verified": true
   },
   {
     "query": {
