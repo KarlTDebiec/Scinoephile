@@ -871,7 +871,8 @@
     "answer": {
       "xiugai_yuewen_5": "好嘢！嚇得我吖！咁都好啲",
       "beizhu_5": "Changed the sentence-final particle from \"啊\" to the Cantonese colloquial character \"吖\" for a more accurate Cantonese transcription."
-    }
+    },
+    "verified": true
   },
   {
     "query": {
@@ -1482,7 +1483,8 @@
       "yuewen_3": "唔通⋯　冇理由㗎？",
       "zhongwen_3": "难道⋯　不会吧？"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
@@ -1949,7 +1951,8 @@
       "yuewen_11": "一切回复正常",
       "zhongwen_11": "一切回复正常"
     },
-    "answer": {}
+    "answer": {},
+    "verified": true
   },
   {
     "query": {
