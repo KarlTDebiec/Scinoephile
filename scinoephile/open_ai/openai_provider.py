@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from logging import getLogger
 from time import sleep
-from typing import Any, Unpack, cast, override
+from typing import Any, Unpack, override
 
 from openai import OpenAI, OpenAIError
 
@@ -30,7 +30,7 @@ class OpenAIProvider(LLMProvider):
         Arguments:
             client: synchronous OpenAI client
         """
-        self.sync_client = client or OpenAI()
+        self.sync_client: Any = client or OpenAI()
 
     @override
     def chat_completion(  # noqa: PLR0912
@@ -71,15 +71,13 @@ class OpenAIProvider(LLMProvider):
             max_tool_rounds = 8
             for round_idx in range(max_tool_rounds):
                 if response_format:
-                    completion = cast(
-                        Any, self.sync_client.beta.chat.completions
-                    ).parse(
+                    completion = self.sync_client.beta.chat.completions.parse(
                         messages=messages,
                         model=model,
                         **request_kwargs,
                     )
                 else:
-                    completion = cast(Any, self.sync_client.chat.completions).create(
+                    completion = self.sync_client.chat.completions.create(
                         messages=messages,
                         model=model,
                         **request_kwargs,
