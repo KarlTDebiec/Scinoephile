@@ -4,8 +4,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypedDict, Unpack
+from pathlib import Path
+from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases_from_repo_data,
@@ -16,21 +19,15 @@ from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
 from .prompts import YueZhoHansProofreadingPrompt, YueZhoHantProofreadingPrompt
 
-if TYPE_CHECKING:
-    from pathlib import Path
-
-    from scinoephile.core.llms import TestCase
-    from scinoephile.core.subtitles import Series
-
 __all__ = [
     "YueZhoHansProofreadingPrompt",
     "YueZhoHantProofreadingPrompt",
     "YueZhoProofreadingManager",
     "YueZhoProofreadingProcessKwargs",
+    "YueZhoProofreadingProcessor",
     "YueZhoProofreadingProcessorKwargs",
     "get_yue_vs_zho_proofread",
     "get_yue_vs_zho_proofreader",
-    "YueZhoProofreadingProcessor",
 ]
 
 
