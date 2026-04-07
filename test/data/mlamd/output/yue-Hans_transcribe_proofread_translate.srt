@@ -224,7 +224,7 @@
 
 57
 00:05:04,000 --> 00:05:08,208
-系呀！深水埗地铁站口行过去唔使十分钟呀！
+系呀！深水埗地铁站行过去唔使十分钟呀！
 
 58
 00:05:08,333 --> 00:05:11,625
@@ -248,19 +248,23 @@
 
 63
 00:05:31,292 --> 00:05:35,958
-〝鹅满是快烙滴好耳痛⋯〞
+我哋系快乐的好儿童⋯
+EN: Reconstructed the slogan into natural written Cantonese, matching the childlike recital style.
 
 64
 00:05:36,042 --> 00:05:40,917
-〝鹅闷天天一戏个窗！〞
+我哋天天一齐个个窗！
+EN: Filled the missing line with a chant-like Cantonese rendering, preserving the playful, mispronounced tone.
 
 65
 00:05:41,042 --> 00:05:45,625
-〝鹅们在壳习，鹅闷载升胀⋯〞
+我哋喺学习，我哋在成长⋯
+EN: Restored the line in simple Cantonese while keeping the parallel school-recital rhythm.
 
 66
 00:05:45,750 --> 00:05:50,792
-〝鹅闷是春天滴化！〞
+我哋系春天嘅花！
+EN: Translated directly into natural Cantonese, keeping the short slogan style.
 
 67
 00:05:51,833 --> 00:05:54,083
@@ -300,19 +304,23 @@
 
 76
 00:06:18,000 --> 00:06:23,583
-荔芋火鸭扎！　　荔芋火鸭扎！
+荔芋火鸭札！　　荔芋火鸭札！
+EN: Kept the food-item chant unchanged in Cantonese, matching the repeated call format.
 
 77
 00:06:23,750 --> 00:06:29,792
-唔好忘记校训九十七⋯　　唔好忘记校训九十七⋯
+唔记得校训九十七⋯　　唔记得校训九十七⋯
+EN: Rendered “忘记” as colloquial Cantonese “唔记得,” preserving the repeated chant rhythm.
 
 78
 00:06:29,958 --> 00:06:33,083
-都唔可以忘记校训九十八！
+都唔可以唔记得校训九十八！
+EN: Translated into colloquial Cantonese with emphatic spoken phrasing.
 
 79
 00:06:33,250 --> 00:06:38,792
-都唔可以忘记校训九十八！
+都唔可以唔记得校训九十八！
+EN: Same Cantonese rendering repeated to match the duplicated subtitle line.
 
 80
 00:06:39,167 --> 00:06:40,667
@@ -340,7 +348,7 @@
 
 86
 00:06:57,875 --> 00:07:00,417
-你哋可能觉得呢间幼稚园好窦泥
+你哋可能觉得呢间幼稚园好流利
 
 87
 00:07:00,583 --> 00:07:03,125
@@ -380,7 +388,7 @@
 
 96
 00:07:24,500 --> 00:07:26,667
-Boosie同学！　　到！
+菇时同学！　　到！
 
 97
 00:07:26,833 --> 00:07:28,750
@@ -417,12 +425,12 @@ Miss Chan，你点咗我两次喇！
 105
 00:07:45,917 --> 00:07:48,417
 校长早晨！
-EN: Filled the missing Cantonese line directly from the Chinese, matching the simple school-greeting tone.
+Note: Filled the missing Cantonese subtitle directly from the Chinese line, matching the simple school greeting style.
 
 106
 00:07:49,292 --> 00:07:52,250
 校长再见！
-EN: Filled the missing Cantonese farewell directly from the Chinese, keeping the same brief spoken style.
+Note: Filled the missing Cantonese subtitle directly from the Chinese line, keeping the same brief spoken farewell style.
 
 107
 00:07:53,250 --> 00:07:55,250
@@ -450,12 +458,12 @@ EN: Filled the missing Cantonese farewell directly from the Chinese, keeping the
 
 113
 00:08:05,750 --> 00:08:07,875
-Boosie同学！　　到！
+菇时同学！　　到！
 
 114
 00:08:08,125 --> 00:08:09,458
-Boosie同学！　　到！
-EN: Restored the missing Cantonese roll-call line to match the surrounding repeated name-call format and existing romanized name style.
+菇时同学！　　到！
+Note: Restored the missing roll-call line in Cantonese, preserving the existing naming and response format.
 
 115
 00:08:09,625 --> 00:08:11,375
@@ -479,11 +487,11 @@ EN: Restored the missing Cantonese roll-call line to match the surrounding repea
 
 120
 00:08:20,167 --> 00:08:22,167
-妈妈啊，麦兜同学，即系呢⋯
+麦唛啊，麦兜同学，即系呢⋯
 
 121
 00:08:22,333 --> 00:08:23,625
-我个心总系戇住戇住⋯
+我个心总系隐住隐住⋯
 
 122
 00:08:23,792 --> 00:08:27,625
@@ -631,7 +639,7 @@ EN: Restored the missing Cantonese roll-call line to match the surrounding repea
 
 158
 00:10:11,583 --> 00:10:13,958
-嗰时我无忧无虑，冇乜所谓－－
+嗰阵我无忧无虑，冇乜所谓－－
 
 159
 00:10:14,292 --> 00:10:17,000
@@ -683,7 +691,7 @@ EN: Restored the missing Cantonese roll-call line to match the surrounding repea
 
 171
 00:10:47,833 --> 00:10:50,375
-所有嗰啲嘢，都几好！
+所有嗰啲嘢，都几好！All Things Bright and Beautiful
 
 172
 00:11:54,708 --> 00:11:56,500
@@ -963,7 +971,7 @@ www．麦太世界．com
 
 241
 00:17:21,042 --> 00:17:23,750
-我用我嘅童子手帮妈妈抽嘅六合彩number
+我用我嘅同事手帮妈妈抽嘅六合彩number
 
 242
 00:17:24,250 --> 00:17:27,875
@@ -1011,7 +1019,7 @@ www．麦太世界．com
 
 253
 00:18:22,792 --> 00:18:25,625
-妈妈你知唔知到马尔代夫系边㗎？
+妈妈你知唔知道马尔代夫系边㗎？
 
 254
 00:18:25,958 --> 00:18:27,417
@@ -1031,7 +1039,7 @@ www．麦太世界．com
 
 258
 00:18:34,458 --> 00:18:37,500
-会！得发咗先啦
+会！得发咗财先啦
 
 259
 00:18:37,625 --> 00:18:40,125
@@ -1048,12 +1056,12 @@ www．麦太世界．com
 262
 00:19:21,167 --> 00:19:23,833
 校长早晨！
-EN: Filled missing Cantonese subtitle directly from the Chinese greeting, matching the simple school-context spoken style.
+[EN note: Filled the missing Cantonese line using a natural spoken school greeting matching the surrounding subtitle style.]
 
 263
 00:19:24,667 --> 00:19:28,000
 校长再见！
-EN: Filled missing Cantonese subtitle directly from the Chinese farewell, keeping the same brief spoken tone as nearby lines.
+[EN note: Filled the missing Cantonese line with a simple spoken farewell consistent with the nearby subtitle tone.]
 
 264
 00:19:29,333 --> 00:19:32,083
@@ -1069,7 +1077,7 @@ EN: Filled missing Cantonese subtitle directly from the Chinese farewell, keepin
 
 267
 00:19:39,333 --> 00:19:43,583
-我而家戴紧个发夹都系嗰边买嘅
+我而家打紧个发夹都系嗰边买嘅
 
 268
 00:19:44,167 --> 00:19:47,083
@@ -1109,7 +1117,7 @@ EN: Filled missing Cantonese subtitle directly from the Chinese farewell, keepin
 
 277
 00:20:13,417 --> 00:20:17,250
-嗰间嘢啲饭好多人，好大碟㗎！
+嗰间嘢啲饭好多，好大碟㗎！
 
 278
 00:20:18,458 --> 00:20:22,875
@@ -1122,7 +1130,6 @@ EN: Filled missing Cantonese subtitle directly from the Chinese farewell, keepin
 280
 00:20:28,042 --> 00:20:32,292
 座落于印度洋嘅世外桃源
-EN: Translated the missing line into written Cantonese by adding the possessive particle 嘅, while keeping the poetic phrasing consistent with the surrounding subtitles.
 
 281
 00:22:10,583 --> 00:22:13,458
@@ -1178,7 +1185,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 294
 00:23:45,292 --> 00:23:47,917
-唔好啦妈妈，我唔食呀
+唔好啊妈妈，我唔食呀
 
 295
 00:23:48,042 --> 00:23:50,458
@@ -1258,7 +1265,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 314
 00:25:06,042 --> 00:25:08,333
-吓，俾我饮晒㖞！
+吓，畀我饮晒㖞！
 
 315
 00:25:14,083 --> 00:25:15,667
@@ -1294,7 +1301,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 323
 00:25:32,083 --> 00:25:35,167
-坐落于印度洋嘅世外桃源啦！
+坐落于印度洋嘅世外桃源呀！
 
 324
 00:25:36,250 --> 00:25:38,667
@@ -1414,7 +1421,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 353
 00:27:30,125 --> 00:27:33,417
-我要执行咗喇，返嚟先再同你倾过啦
+我要执行李喇，返嚟先再同你倾过啦
 
 354
 00:27:33,583 --> 00:27:35,125
@@ -1470,7 +1477,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 367
 00:32:28,917 --> 00:32:30,875
-我过咗我小时候最着数⋯
+我过咗我小时候最著数⋯
 
 368
 00:32:31,000 --> 00:32:32,875
@@ -1490,7 +1497,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 372
 00:33:06,042 --> 00:33:08,250
-妈妈早抖！
+妈妈早唞！
 
 373
 00:33:46,542 --> 00:33:48,000
@@ -1506,7 +1513,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 376
 00:33:55,833 --> 00:33:59,708
-消息话李丽珊喺知道自己稳夺金牌之后
+消息话李丽珊喺知道自己稳夺奥运金牌之后
 
 377
 00:33:59,833 --> 00:34:03,875
@@ -1542,7 +1549,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 385
 00:34:32,958 --> 00:34:35,458
-哗，好唔好靠下个手瓜噉呢？
+哗，可唔可以靠下个手瓜噉呢？
 
 386
 00:34:36,958 --> 00:34:38,333
@@ -1574,7 +1581,7 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 
 393
 00:35:03,417 --> 00:35:05,500
-我要嚟緊收我做徒弟！
+我要黎根收我做徒弟！
 
 394
 00:35:05,833 --> 00:35:09,875
@@ -1583,26 +1590,26 @@ EN: Translated the missing line into written Cantonese by adding the possessive 
 395
 00:35:14,250 --> 00:35:26,250
 長洲！長洲！
-[EN note] Filled missing Cantonese by preserving the chant-like repetition and place name in written Cantonese.
+[EN note] Filled missing Cantonese subtitle by directly rendering the chant in traditional written Cantonese style.
 
 396
 00:35:26,792 --> 00:35:31,250
 你孕育咗珊珊！你都會孕育我！
-[EN note] Rendered into colloquial written Cantonese with 「咗」 and 「都會」 to match the surrounding spoken style.
+[EN note] Translated into colloquial written Cantonese, using 咗 and 都會 to match the surrounding spoken tone.
 
 397
 00:35:31,542 --> 00:35:34,542
 當我企喺奧運會頒獎台上
-[EN note] Translated into natural Cantonese, using 「企喺」 for a spoken-style phrasing that fits the next subtitle.
+[EN note] Rendered 站在 as 企喺 for a more natural Cantonese spoken subtitle style.
 
 398
 00:35:34,792 --> 00:35:38,375
-系举牌同全世界讲：
+系金牌同全世界讲：
 
 399
 00:35:38,542 --> 00:35:42,083
 香港運動員唔係垃圾！
-[EN note] Translated directly into forceful written Cantonese, keeping the slogan-like tone.
+[EN note] Translated into natural Cantonese with 唔係, matching the emphatic tone of the line.
 
 400
 00:35:49,792 --> 00:35:53,417
@@ -1862,7 +1869,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 459
 00:39:46,167 --> 00:39:47,250
-多谢师父！
+多谢师傅！
 
 460
 00:39:47,417 --> 00:39:50,167
@@ -1906,7 +1913,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 470
 00:40:45,708 --> 00:40:49,875
-妈妈府低身将啲酒倒喺地上面
+妈妈虎低身将啲酒倒喺地上面
 
 471
 00:40:50,000 --> 00:40:52,750
@@ -1934,11 +1941,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 477
 00:41:18,792 --> 00:41:21,333
-估唔到黄德森都有嚟饮
+估唔到黄德森都有嚟
 
 478
 00:41:21,542 --> 00:41:24,083
-仲赞我背脊啲肉厚添
+仲赞我背脊啲肉厚口添
 
 479
 00:41:24,250 --> 00:41:28,292
@@ -1946,7 +1953,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 480
 00:41:28,458 --> 00:41:31,333
-麦唛，菇时同得巴都嚟咗
+默默，菇时同得巴都嚟咗
 
 481
 00:41:31,500 --> 00:41:35,292
@@ -1970,11 +1977,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 486
 00:41:53,250 --> 00:41:58,208
-哦，我终于可以同珊珊一齐练习滑浪风帆啊！
+哦，我终于可以同珊珊一齐练习玩滑浪风帆啊！
 
 487
 00:42:00,958 --> 00:42:04,458
-我将杯茶递咗畀嚟根，嚟根佢⋯亦唔系
+我将杯茶递咗畀黎根，黎根佢⋯亦唔系
 
 488
 00:42:05,167 --> 00:42:10,292
@@ -1986,7 +1993,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 490
 00:42:13,042 --> 00:42:17,833
-特别系长洲啲乡亲父老拍掌拍得特别落力
+特别系长洲啲乡绅父老拍掌拍得特别落力
 
 491
 00:42:18,500 --> 00:42:21,833
@@ -2094,11 +2101,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 517
 00:44:07,000 --> 00:44:11,792
-但喺1978年两座包山突然塌咗，好多人重伤
+但喺1978年两座包山突然塌咗，多人重伤
 
 518
 00:44:11,958 --> 00:44:14,417
-「抢包山」从此就畀人禁咗！
+「抢包山」从此就俾人禁咗！
 
 519
 00:44:14,583 --> 00:44:18,583
@@ -2118,7 +2125,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 523
 00:44:32,583 --> 00:44:36,125
-一项冇奖牌，冇对手，冇比赛⋯
+一日冇奖牌，冇对手，冇比赛⋯
 
 524
 00:44:36,542 --> 00:44:39,958
@@ -2166,7 +2173,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 535
 00:45:13,958 --> 00:45:16,125
-珊你个头啊！继续练习！
+伞你个头啊！继续练习！
 
 536
 00:45:24,083 --> 00:45:25,375
@@ -2186,7 +2193,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 540
 00:45:39,708 --> 00:45:43,833
-但系「珊你个头」唔知点解特别瘾
+但系「珊呢个头」唔知点解特别瘾
 
 541
 00:45:43,958 --> 00:45:45,333
@@ -2286,7 +2293,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 565
 00:47:34,042 --> 00:47:37,875
-脚趾甲啲脚甲成吋咁厚，究竟⋯
+脚趾甲啲脚甲成寸咁厚，究竟⋯
 
 566
 00:47:38,000 --> 00:47:39,667
@@ -2298,7 +2305,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 568
 00:47:41,750 --> 00:47:43,125
-捱过几多苦头
+挨过几多苦头
 
 569
 00:47:43,208 --> 00:47:47,500
@@ -2342,7 +2349,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 579
 00:48:36,750 --> 00:48:40,875
-咦，估唔到真系畀妈妈攞咗㖞．嚇得我啊！
+咦，估唔到真系妈妈攞咗㖞．嚇得我啊！
 
 580
 00:48:41,000 --> 00:48:43,958
@@ -2446,7 +2453,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 605
 00:50:02,583 --> 00:50:06,792
-「哪便是一个母亲能够有的最好的最大的安慰」
+「嗱便是一个母亲能够有嘅最好嘅最大嘅安慰」
 
 606
 00:50:07,292 --> 00:50:11,167
@@ -2490,7 +2497,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 616
 00:50:48,417 --> 00:50:50,458
-我唔系为咗见珊珊
+我唔系为咗见到珊珊
 
 617
 00:50:50,958 --> 00:50:53,042
@@ -2530,7 +2537,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 626
 00:51:22,167 --> 00:51:24,000
-后来麦麦话我知⋯
+后来麦唛话我知⋯
 
 627
 00:51:24,167 --> 00:51:28,375
@@ -2542,7 +2549,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 629
 00:51:32,833 --> 00:51:35,542
-但系我就肯定似嚿猪肉
+但系我就肯定似旧猪肉
 
 630
 00:51:35,708 --> 00:51:37,708
@@ -2646,7 +2653,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 655
 00:53:11,250 --> 00:53:13,208
-落喺火炉旁边
+落到火炉旁边
 
 656
 00:53:14,208 --> 00:53:17,667
@@ -2734,11 +2741,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 677
 00:54:22,208 --> 00:54:24,542
-我同妈妈，噉双手搽满盐⋯
+我学住妈妈，噉双手搽满盐⋯
 
 678
 00:54:25,083 --> 00:54:28,292
-喺火鸡丰满嘅鸡胸度，起势噉唧唧
+喺火鸡丰满嘅鸡胸度，喺细噉唧唧
 
 679
 00:54:29,125 --> 00:54:30,000
@@ -2746,11 +2753,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 680
 00:54:30,042 --> 00:54:33,750
-妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒
+妈妈一个唔觉意漏咗喺火鸡里面嘅火鸡内脏洋葱粒
 
 681
 00:54:33,875 --> 00:54:35,333
-红萝卜粒流嘅出嚟
+红萝卜粒流咗出嚟
 
 682
 00:54:35,708 --> 00:54:37,333
@@ -2826,7 +2833,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 700
 00:56:18,417 --> 00:56:21,667
-擦完牙我仲感觉到火鸡嘅美味
+刷完牙我仲感觉到火鸡嘅美味
 
 701
 00:56:22,333 --> 00:56:23,625
@@ -2842,11 +2849,11 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 704
 00:56:30,625 --> 00:56:33,000
-我竟然撩到一粒美味嘅火鸡粒
+我竟然搣到一粒美味嘅火鸡肉
 
 705
 00:56:34,167 --> 00:56:37,083
-嗰晚唔使讲，当然系食我恨咗⋯
+嗰晚唔使讲，当然系我恨咗⋯
 
 706
 00:56:37,208 --> 00:56:40,708
@@ -2878,7 +2885,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 713
 00:56:58,208 --> 00:57:01,542
-我嘅记心肝同妈妈讲：不如饮茶
+我嘅忌心肝同妈妈讲：不如饮茶
 
 714
 00:57:01,792 --> 00:57:03,583
@@ -3002,7 +3009,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 744
 00:58:43,500 --> 00:58:46,542
-唔知呢两样嘢要得出啲咩道理
+唔知呢两样嘢要得起嘅呢个得出啲咩道理
 
 745
 00:58:47,542 --> 00:58:49,208
@@ -3142,8 +3149,7 @@ EN: Filled missing Cantonese lyric, maintaining repetition and colloquial flavor
 
 779
 01:02:32,500 --> 01:02:34,875
-最后，一切成烟
-Note: Filled the missing Cantonese line using a colloquial written Cantonese phrasing that matches the surrounding subtitle style.
+最后，全部都系banana
 
 780
 01:02:35,375 --> 01:02:38,875
@@ -3191,7 +3197,7 @@ Note: Filled the missing Cantonese line using a colloquial written Cantonese phr
 
 791
 01:03:18,667 --> 01:03:21,542
-我都会手快快噉帮佢抢笼大包
+我都会手快快噉帮佢抢一笼大包
 
 792
 01:03:22,875 --> 01:03:25,250
@@ -3271,38 +3277,38 @@ Note: Filled the missing Cantonese line using a colloquial written Cantonese phr
 
 811
 01:04:46,958 --> 01:04:55,542
-「寻晚，食咗六个餐包」
-EN: Filled the missing Cantonese line with colloquial written Cantonese, using 咗 to match nearby subtitle style.
+寻晚，食咗六个餐包
+EN: Filled missing Cantonese line in colloquial written style; used 食咗 to match surrounding tone.
 
 812
 01:04:55,667 --> 01:05:04,500
-「可惜我依然系觉得仲未十分饱」
-EN: Rendered the line in natural Cantonese with 依然系 and 仲未 to fit the surrounding spoken tone.
+可惜我依然系觉得仲未十分饱
+EN: Rendered into natural Cantonese with 依然系、仲未, keeping spoken-flow phrasing.
 
 813
 01:05:05,333 --> 01:05:13,250
-「寻晚，食咗磅半方包」
-EN: Kept the structure parallel to the previous line and converted 了 to 咗 in Cantonese style.
+寻晚，食咗磅半方包
+EN: Filled missing line directly in Cantonese, preserving the rhythmic wording.
 
 814
 01:05:13,417 --> 01:05:24,792
-「可叹系我依然觉得饿，唔够顶肚」
-EN: Used 唔够顶肚 for a more idiomatic Cantonese phrasing while preserving the lamenting tone.
+可叹系我依然觉得肚饿，唔够顶肚
+EN: Adapted wording to more idiomatic Cantonese, especially 肚饿 and 唔够顶肚.
 
 815
 01:05:26,750 --> 01:05:35,042
-「年少，练咗六套脚法。」
-EN: Converted the aspect marker to 咗 and kept the phrasing concise and parallel to the Chinese line.
+年少，练咗六套脚法。
+EN: Filled missing line with colloquial-perfective 咗 while keeping the original cadence.
 
 816
 01:05:35,208 --> 01:05:42,458
-「可惜我依然未觉得够用。」
-EN: Translated into smooth written Cantonese while keeping the original meaning and rhythm.
+可惜我依然未觉得够用。
+EN: Kept the sentence close to the Chinese while making it read naturally in Cantonese.
 
 817
 01:05:44,042 --> 01:05:57,375
-「年晚，又培育咗珊珊！可惜⋯」
-EN: Filled in the missing line with Cantonese wording parallel to the surrounding subtitles, using 咗 for completed action.
+年晚，又培育咗珊珊！可惜⋯
+EN: Filled missing line conservatively, using 咗 for aspect and preserving the original dramatic pause.
 
 818
 01:05:57,917 --> 01:06:01,292
@@ -3318,7 +3324,7 @@ EN: Filled in the missing line with Cantonese wording parallel to the surroundin
 
 821
 01:06:10,458 --> 01:06:14,083
-冇鱼蛋冇粗面冇去买马尔代夫⋯
+冇鱼蛋冇粗面冇去马尔代夫⋯
 
 822
 01:06:14,250 --> 01:06:16,500
@@ -3358,7 +3364,7 @@ EN: Filled in the missing line with Cantonese wording parallel to the surroundin
 
 831
 01:06:44,667 --> 01:06:47,208
-揸住个包，我忽然谂⋯
+揸住个包，我忽然喺度谂⋯
 
 832
 01:06:47,583 --> 01:06:50,042
@@ -3414,7 +3420,7 @@ EN: Filled in the missing line with Cantonese wording parallel to the surroundin
 
 845
 01:08:50,333 --> 01:08:53,417
-有次我无无聊聊真系卡下佢⋯
+有次我无无聊聊真系走去卡下佢⋯
 
 846
 01:08:53,833 --> 01:08:56,750
@@ -3458,7 +3464,7 @@ EN: Filled in the missing line with Cantonese wording parallel to the surroundin
 
 856
 01:09:29,000 --> 01:09:32,250
-嗰阵感觉真系好好
+嗰种感觉真系好好
 
 857
 01:09:34,167 --> 01:09:37,083

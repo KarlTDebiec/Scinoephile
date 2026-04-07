@@ -40,7 +40,7 @@
     },
     "answer": {
       "xiugai": "经过好彩酒家再左转返出花园街乐园牛丸王对上⋯",
-      "beizhu": "Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as these are likely mishearings of the restaurant names in context."
+      "beizhu": "Corrected '走家' to '酒家' and '牛园望' to '牛丸王' as likely mishearings of the restaurant names."
     },
     "difficulty": 1
   },
@@ -95,7 +95,7 @@
     },
     "answer": {
       "xiugai": "再右转抹返出去窝打老道向女人街方向飞下下⋯",
-      "beizhu": "Corrected '窝打炉道' to '窝打老道' as it is the correct road name."
+      "beizhu": "Corrected '窝打炉道' to '窝打老道' as it is the correct road name and '炉' is a likely mishearing of '老'."
     },
     "difficulty": 1
   },
@@ -117,7 +117,7 @@
     },
     "answer": {
       "xiugai": "最后胶兜飞咗入广华医院嘅候产房",
-      "beizhu": "Corrected '后产房' to '候产房' as it is the correct term in this context and matches the intended meaning."
+      "beizhu": "Corrected '后产房' to '候产房' as '候产房' is the correct term in this context and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -128,7 +128,7 @@
     },
     "answer": {
       "xiugai": "亦即系麦太右边魂精对上⋯",
-      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for the temple area and matches the meaning of '额角' in the 中文."
+      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is a valid Cantonese term for the temple area and matches the meaning of '额角' in the Chinese subtitle."
     },
     "difficulty": 1,
     "prompt": true
@@ -140,7 +140,7 @@
     },
     "answer": {
       "xiugai": "都系唔好：左边魂精对上⋯",
-      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is the correct Cantonese term here for the temple area, matching '额角' in the Chinese reference."
+      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is the correct Cantonese term for the temple area, matching '额角' in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -173,7 +173,7 @@
     },
     "answer": {
       "xiugai": "于是向魂精对上嘅胶兜许愿",
-      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is the correct Cantonese term in this context for the temple/forehead area, matching '额角' in the 中文."
+      "beizhu": "Corrected '云晶' to '魂精' as '魂精' is the correct Cantonese term for the temple area, matching '额角' in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -296,7 +296,7 @@
     },
     "answer": {
       "xiugai": "一世够运，乜嘢事都逢凶化㗎喇！",
-      "beizhu": "Corrected '救运' to '够运' as '够运' is the correct term for being lucky, matching the original meaning."
+      "beizhu": "Corrected '救运' to '够运' as '够运' is the correct Cantonese term for being lucky, matching the intended meaning."
     },
     "difficulty": 1,
     "prompt": true
@@ -350,7 +350,7 @@
     },
     "answer": {
       "xiugai": "最后，胶兜「嘀督」一声咁落地",
-      "beizhu": "Corrected '滴嘟' to '嘀督' as '嘀督' is the intended onomatopoeic transcription here."
+      "beizhu": "Corrected '滴嘟' to '嘀督' as it is the intended sound in this context."
     },
     "difficulty": 1
   },
@@ -499,7 +499,7 @@
     },
     "answer": {
       "xiugai": "点解唔试下好彩酒楼斜对面",
-      "beizhu": "Corrected '走楼' to '酒楼' as '酒楼' is the correct word here; retained '斜对面' as it is valid Cantonese and need not match the 中文 exactly."
+      "beizhu": "Corrected '走楼' to '酒楼' as it is a likely mishearing of the restaurant term in this context."
     },
     "difficulty": 1
   },
@@ -510,7 +510,7 @@
     },
     "answer": {
       "xiugai": "旧中侨百货公司楼上嗰间⋯",
-      "beizhu": "Corrected '中桥' to '中侨' as '中侨' matches the place name and '中桥' is a likely mishearing."
+      "beizhu": "Corrected '中桥' to '中侨' as it is a likely mishearing of the proper name in this context."
     },
     "difficulty": 1
   },
@@ -560,9 +560,10 @@
       "zhongwen": "对！深水埗地铁站步行不用10分钟！"
     },
     "answer": {
-      "xiugai": "系呀！深水埗地铁站口行过去唔使十分钟呀！",
-      "beizhu": ""
-    }
+      "xiugai": "系呀！深水埗地铁站行过去唔使十分钟呀！",
+      "beizhu": "Removed '口' from '地铁站口' as it is likely an erroneous addition; '地铁站行过去唔使十分钟' matches the intended meaning of walking time from the station."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -571,7 +572,7 @@
     },
     "answer": {
       "xiugai": "春田花花幼稚园，师资优良⋯",
-      "beizhu": "Corrected '诗诗' to '师资' as it is a likely mishearing and matches the intended phrase '师资优良'."
+      "beizhu": "Corrected '诗诗' to '师资' as it is a likely mishearing of the intended phrase '师资优良'."
     },
     "difficulty": 1
   },
@@ -632,7 +633,7 @@
     },
     "answer": {
       "xiugai": "即系横睇掂睇都唔似发哥或者伟仔嗰个呢⋯",
-      "beizhu": "Corrected '位仔' to '伟仔' as it is a likely mishearing of the nickname referring to Tony Leung."
+      "beizhu": "Corrected '位仔' to '伟仔' as '伟仔' is the correct nickname here and '位仔' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -704,8 +705,8 @@
       "zhongwen": "蛋挞！　　蛋挞！"
     },
     "answer": {
-      "xiugai": "�",
-      "beizhu": "Cleared as '大湖荒岩宅' bears no reasonable phonetic or semantic resemblance to '蛋挞！蛋挞！' and has no corresponding content."
+      "xiugai": "蛋挞！　　蛋挞！",
+      "beizhu": "Corrected '大湖荒岩宅' to '蛋挞！　　蛋挞！' as it is a clear mishearing of the repeated phrase."
     },
     "difficulty": 1
   },
@@ -716,7 +717,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as '湾吉校坟交涉设' bears no resemblance to the original phrase '荔芋火鸭札！　　荔芋火鸭札！' and has no corresponding spoken content."
+      "beizhu": "Cleared as '湾吉校坟交涉设' bears no reasonable resemblance to the original phrase '荔芋火鸭札！　　荔芋火鸭札！' and has no valid corresponding Cantonese line."
     },
     "difficulty": 1
   },
@@ -802,8 +803,8 @@
       "zhongwen": "你们可能觉得这间幼稚园很烂"
     },
     "answer": {
-      "xiugai": "你哋可能觉得呢间幼稚园好窦泥",
-      "beizhu": "Corrected '逗利' to '窦泥' as it is a likely mishearing of the Cantonese transliteration for 'dodgy/dirty', matching the context of describing the kindergarten as bad."
+      "xiugai": "你哋可能觉得呢间幼稚园好流利",
+      "beizhu": "Corrected '逗利' to '流利' as it is a likely mishearing of the Cantonese phrase matching '很烂' in this context."
     },
     "difficulty": 1
   },
@@ -856,7 +857,7 @@
     },
     "answer": {
       "xiugai": "佢嘅志愿系做下一个王菲",
-      "beizhu": "Corrected '王妃' to '王菲' as it is a mishearing of the singer's name mentioned in the Chinese reference."
+      "beizhu": "Corrected '王妃' to '王菲' as it is a likely mishearing of the singer's name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -867,7 +868,7 @@
     },
     "answer": {
       "xiugai": "或者系做下一个陈慧琳都得",
-      "beizhu": "Corrected '陈维林' to '陈慧琳' as it is a mishearing of the singer's name mentioned in the Chinese reference."
+      "beizhu": "Corrected '陈维林' to '陈慧琳' as it is a likely mishearing of the singer's name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -888,7 +889,7 @@
     },
     "answer": {
       "xiugai": "麦唛同学！　　到！",
-      "beizhu": "Corrected '麦麦' to '麦唛' as it is the character's correct name and '麦麦' is a likely transcription error."
+      "beizhu": "Corrected '麦麦' to '麦唛' as it is the correct name of the character."
     },
     "difficulty": 1
   },
@@ -908,9 +909,10 @@
       "zhongwen": "菇时同学！　　到！"
     },
     "answer": {
-      "xiugai": "Boosie同学！　　到！",
-      "beizhu": ""
-    }
+      "xiugai": "菇时同学！　　到！",
+      "beizhu": "Corrected 'Boosie' to '菇时' as it is a mishearing of the student's name shown in the corresponding subtitle."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -919,7 +921,7 @@
     },
     "answer": {
       "xiugai": "得巴同学！　　到！",
-      "beizhu": "Corrected '德巴' to '得巴' to match the intended name in the original dialogue."
+      "beizhu": "Corrected '德巴' to '得巴' to match the likely intended name pronunciation."
     },
     "difficulty": 1
   },
@@ -960,7 +962,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as '川明同学！ 到！' does not reliably correspond to '菇时同学！ 到！', and the student name cannot be confidently recovered from the reference."
+      "beizhu": "Cleared as '川明同学！' does not reliably correspond to '菇时同学！' and the name cannot be confidently corrected from the provided reference."
     },
     "difficulty": 1
   },
@@ -981,7 +983,7 @@
     },
     "answer": {
       "xiugai": "麦兜！",
-      "beizhu": "Corrected '猫噢' to '麦兜' as it is a clear mishearing of the character name."
+      "beizhu": "Corrected '猫噢' to '麦兜' as it is a clear mishearing of the character name in this context."
     },
     "difficulty": 1
   },
@@ -991,9 +993,10 @@
       "zhongwen": "麦唛呀，即是呢⋯"
     },
     "answer": {
-      "xiugai": "妈妈啊，麦兜同学，即系呢⋯",
-      "beizhu": ""
-    }
+      "xiugai": "麦唛啊，麦兜同学，即系呢⋯",
+      "beizhu": "Corrected '妈妈啊' to '麦唛啊' as it is a likely mishearing of the character name being addressed."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -1001,8 +1004,8 @@
       "zhongwen": "我好像觉得呢⋯"
     },
     "answer": {
-      "xiugai": "我个心总系戇住戇住⋯",
-      "beizhu": "Corrected '仁住仁住' to '戇住戇住' as it is a likely mishearing in this context."
+      "xiugai": "我个心总系隐住隐住⋯",
+      "beizhu": "Corrected '仁住仁住' to '隐住隐住' as it is a likely mishearing in the Cantonese expression."
     },
     "difficulty": 1
   },
@@ -1055,7 +1058,7 @@
     },
     "answer": {
       "xiugai": "妈妈话食橙会通大便",
-      "beizhu": "Corrected '通大变' to '通大便' as '大便' is the correct word here and '大变' is a likely transcription error."
+      "beizhu": "Corrected '通大变' to '通大便' as '大便' is the correct word here and '变' is a likely transcription error."
     },
     "difficulty": 1
   },
@@ -1076,7 +1079,7 @@
     },
     "answer": {
       "xiugai": "仲有呢个啊「芭－娜－哪」啊香蕉啊",
-      "beizhu": "Corrected '芭－拉－娜' to '芭－娜－哪' to match the intended phonetic rendering of 'banana'."
+      "beizhu": "Corrected '芭－拉－娜' to '芭－娜－哪' as it matches the intended phonetic rendering of 'banana' in this context."
     },
     "difficulty": 1
   },
@@ -1087,7 +1090,7 @@
     },
     "answer": {
       "xiugai": "点解雨遮会叫做「暗－芭－娜－哪」呢？",
-      "beizhu": "Corrected '雨姐' to '雨遮' and '暗－芭－拉－娜' to '暗－芭－娜－哪' as they are likely mishearings of the intended Cantonese wording and phonetic rendering."
+      "beizhu": "Corrected '雨姐' to '雨遮' and adjusted '暗－芭－拉－娜' to '暗－芭－娜－哪' to match the intended phonetic rendering for 'umbrella'."
     },
     "difficulty": 1
   },
@@ -1149,7 +1152,7 @@
     },
     "answer": {
       "xiugai": "升埋小学，上到中学",
-      "beizhu": "Corrected '识埋' to '升埋' as '升' is the intended word here and '识' is a likely mishearing."
+      "beizhu": "Corrected '识埋' to '升埋' as it is a likely mishearing of '升' in the context of progressing to primary and secondary school."
     },
     "difficulty": 1
   },
@@ -1231,7 +1234,7 @@
     },
     "answer": {
       "xiugai": "唔该，鱼蛋粗面啊　　冇粗面噃",
-      "beizhu": "Added '面' after '粗' as '鱼蛋粗面' is the intended dish name and '粗啊' is likely a mishearing of '粗面啊'."
+      "beizhu": "Added '面' after '粗' to form '粗面', which is the correct dish name matching the intended meaning."
     },
     "difficulty": 1
   },
@@ -1254,7 +1257,7 @@
     },
     "answer": {
       "xiugai": "噉啊⋯要金钱肚粗面啊　　冇粗面噃",
-      "beizhu": "Corrected '透' to '肚' and added '面' to form '金钱肚粗面', which matches the intended dish name."
+      "beizhu": "Corrected '金钱透粗啊' to '金钱肚粗面啊' as '透' is a mishearing of '肚' and '粗啊' is missing '面' in the dish name."
     },
     "difficulty": 1
   },
@@ -1307,7 +1310,7 @@
     },
     "answer": {
       "xiugai": "噉唔该畀碗鱼蛋濑啊　　冇鱼蛋噃",
-      "beizhu": "Corrected '奶啊' to '濑啊' as '濑' matches the intended dish '鱼蛋濑' and '奶啊' is a likely mishearing."
+      "beizhu": "Corrected '奶' to '濑' as '鱼蛋濑' is the intended dish name and '奶' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -1388,8 +1391,8 @@
       "zhongwen": "那时候我无忧无虑，万事无所谓－－"
     },
     "answer": {
-      "xiugai": "嗰时我无忧无虑，冇乜所谓－－",
-      "beizhu": "Corrected '果只' to '嗰时' as it is a likely mishearing matching the meaning of '那时候' in the 中文."
+      "xiugai": "嗰阵我无忧无虑，冇乜所谓－－",
+      "beizhu": "Corrected '果只' to '嗰阵' as it is a likely mishearing of the time reference meaning 'that time'."
     },
     "difficulty": 1
   },
@@ -1420,7 +1423,7 @@
     },
     "answer": {
       "xiugai": "睇住自己日日疴烂煮⋯",
-      "beizhu": "Corrected '柯能处' to '疴烂煮' as it is a mishearing of the intended phonetic phrase."
+      "beizhu": "Corrected '柯能处' to '疴烂煮' as it is the intended phonetic rendering in this context."
     },
     "difficulty": 1
   },
@@ -1431,7 +1434,7 @@
     },
     "answer": {
       "xiugai": "日日长肉⋯",
-      "beizhu": "Corrected '掌肉' to '长肉' as '长肉' matches the intended meaning of gaining flesh, and '掌肉' is a likely transcription error."
+      "beizhu": "Corrected '掌肉' to '长肉' as '掌' is a likely mishearing of '长' in this context."
     },
     "difficulty": 1
   },
@@ -1452,7 +1455,7 @@
     },
     "answer": {
       "xiugai": "有一首歌，Miss Chan唱得好好听呀",
-      "beizhu": "Corrected '麦词春' to 'Miss Chan' as it is a mishearing of the teacher's name mentioned in the context."
+      "beizhu": "Corrected '麦词春' to 'Miss Chan' as it is a likely mishearing of the teacher's name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -1514,10 +1517,9 @@
       "zhongwen": "所有那些，都好！"
     },
     "answer": {
-      "xiugai": "所有嗰啲嘢，都几好！",
-      "beizhu": "Removed 'All Things Bright and Beautiful' as it is not part of the spoken Cantonese subtitle and appears to be an extraneous insertion."
-    },
-    "difficulty": 1
+      "xiugai": "所有嗰啲嘢，都几好！All Things Bright and Beautiful",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -1536,7 +1538,7 @@
     },
     "answer": {
       "xiugai": "多劳多得！",
-      "beizhu": "Corrected '多喽多得' to '多劳多得' as it is a likely homophone mishearing of the common phrase."
+      "beizhu": "Corrected '多喽多得' to '多劳多得' as it is a homophonic mishearing of the common phrase."
     },
     "difficulty": 1
   },
@@ -1641,7 +1643,7 @@
     },
     "answer": {
       "xiugai": "佢煮嘅餸，一样咁犀利",
-      "beizhu": "Corrected the uncommon/wrong character '𩠌' to '餸', the proper Cantonese character for dishes/food in this context."
+      "beizhu": "Corrected '𩠌' to '餸' as '餸' is the correct Cantonese character for dishes or food in this context."
     },
     "difficulty": 1
   },
@@ -1672,7 +1674,7 @@
     },
     "answer": {
       "xiugai": "简单又别致嘅小菜纸包鸡",
-      "beizhu": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the correct dish name and '自包鸡' is a likely mishearing."
+      "beizhu": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' matches the intended dish name and '自包鸡' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -1733,7 +1735,7 @@
     },
     "answer": {
       "xiugai": "呢味纸包鸡就完成喇，系咪好易整啦？",
-      "beizhu": "Corrected '自包鸡' to '纸包鸡' as it is a likely mishearing of the dish name mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '自包鸡' to '纸包鸡' as '纸包鸡' is the intended dish name and '自包鸡' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -1826,7 +1828,7 @@
     },
     "answer": {
       "xiugai": "包鸡纸包鸡包纸包鸡",
-      "beizhu": "Corrected '子' to '纸' in two places as '纸包鸡' matches the intended repeated phrase and '子' is a likely mishearing."
+      "beizhu": "Corrected '子' to '纸' in two places as '纸包鸡' is the intended phrase and '子' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -1848,7 +1850,7 @@
     },
     "answer": {
       "xiugai": "大家就会有一张纸包鸡同埋一嚿鸡啦",
-      "beizhu": "Corrected '包鸡子' to '纸包鸡' as it is a mishearing of the dish name mentioned in the context."
+      "beizhu": "Corrected '包鸡子' to '纸包鸡' as it is a likely mishearing and matches the intended dish name in context."
     },
     "difficulty": 1
   },
@@ -1859,7 +1861,7 @@
     },
     "answer": {
       "xiugai": "跟住将鸡包纸好似我噉包住嚿鸡",
-      "beizhu": "Corrected '鸡包子' to '鸡包纸' and '牛鸡' to '嚿鸡' as they are likely mishearings in this cooking context."
+      "beizhu": "Corrected '鸡包子' to '鸡包纸' and '牛鸡' to '嚿鸡' as they are likely mishearings of the intended Cantonese phrase."
     },
     "difficulty": 1
   },
@@ -1870,7 +1872,7 @@
     },
     "answer": {
       "xiugai": "然后再好似噉样将包鸡纸包包包包包包住佢",
-      "beizhu": "Corrected '包鸡子' to '包鸡纸' as '包鸡纸' matches the intended meaning in the context."
+      "beizhu": "Corrected '包鸡子' to '包鸡纸' as '包鸡纸' matches the intended item mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -1881,7 +1883,7 @@
     },
     "answer": {
       "xiugai": "咁一味「包鸡纸包鸡包纸包鸡」就完成喇！",
-      "beizhu": "Corrected '鸡子' to '鸡纸' and '包子' to '包纸' as they are likely mishearings of the repeated phrase '包鸡纸包鸡包纸包鸡'."
+      "beizhu": "Corrected '子' to '纸' in two places as it is a likely mishearing of the repeated phrase '包鸡纸包鸡包纸包鸡'."
     },
     "difficulty": 1
   },
@@ -1932,7 +1934,7 @@
     },
     "answer": {
       "xiugai": "鸡包包鸡包包鸡包纸包纸⋯",
-      "beizhu": "Removed the extra repeated words '包鸡包' at the end to match the intended spoken line."
+      "beizhu": "Removed the extra repeated words '包鸡包包鸡' at the end as they are not supported by the corresponding line and appear to be a transcription duplication."
     },
     "difficulty": 1
   },
@@ -2076,7 +2078,7 @@
     },
     "answer": {
       "xiugai": "佢屈亲个脚骹！",
-      "beizhu": "Corrected '脚脚' to '脚骹' as '脚骹' is the correct Cantonese term for the ankle, matching the meaning of the 中文."
+      "beizhu": "Corrected '脚脚' to '脚骹' as '脚骹' is the correct Cantonese term for the ankle, matching the meaning of the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -2097,7 +2099,7 @@
     },
     "answer": {
       "xiugai": "从前，有个小朋友早睡晚起；第二朝⋯",
-      "beizhu": "Removed '社群提供' as it is a non-spoken subtitle artifact."
+      "beizhu": "Removed '社群提供' as it is not part of the spoken content and is a subtitle credit artifact."
     },
     "difficulty": 1
   },
@@ -2200,10 +2202,9 @@
       "zhongwen": "我用一双童子手替妈妈抽的六合彩号码"
     },
     "answer": {
-      "xiugai": "我用我嘅童子手帮妈妈抽嘅六合彩number",
-      "beizhu": "Corrected '同事手' to '童子手' as it is a likely mishearing and matches the intended meaning of a child's hand in this context."
-    },
-    "difficulty": 1
+      "xiugai": "我用我嘅同事手帮妈妈抽嘅六合彩number",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -2294,7 +2295,7 @@
     },
     "answer": {
       "xiugai": "享受一个脱俗出尘嘅梦幻之旅",
-      "beizhu": "Corrected '脱轴' to '脱俗' as '脱俗出尘' is the correct phrase in this context."
+      "beizhu": "Corrected '脱轴' to '脱俗' as it is a likely mishearing and matches the intended phrase '脱俗出尘'."
     },
     "difficulty": 1
   },
@@ -2304,9 +2305,10 @@
       "zhongwen": "妈妈你知道马尔代夫在哪儿吗？"
     },
     "answer": {
-      "xiugai": "妈妈你知唔知到马尔代夫系边㗎？",
-      "beizhu": ""
-    }
+      "xiugai": "妈妈你知唔知道马尔代夫系边㗎？",
+      "beizhu": "Corrected '知唔知到' to '知唔知道' as '知道' is the correct phrase in this context."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2325,7 +2327,7 @@
     },
     "answer": {
       "xiugai": "点远呀？",
-      "beizhu": "Corrected '点远发呀' to '点远呀' as '发' is likely an erroneous extra character not supported by the Chinese reference."
+      "beizhu": "Corrected '点远发呀' to '点远呀' as '发' is likely an extraneous misheard character."
     },
     "difficulty": 1
   },
@@ -2355,8 +2357,8 @@
       "zhongwen": "会！发财了再说吧"
     },
     "answer": {
-      "xiugai": "会！得发咗先啦",
-      "beizhu": "Corrected '得学发咗先啦' to '得发咗先啦' as '学' is an obvious transcription error and the phrase matches the intended meaning of '发财了再说吧'."
+      "xiugai": "会！得发咗财先啦",
+      "beizhu": "Corrected '得学发咗先啦' to '得发咗财先啦' as it is a likely mishearing of the phrase meaning 'get rich first'."
     },
     "difficulty": 1
   },
@@ -2440,8 +2442,8 @@
       "zhongwen": "我这个发夹也是在那儿买的"
     },
     "answer": {
-      "xiugai": "我而家戴紧个发夹都系嗰边买嘅",
-      "beizhu": "Corrected '打紧' to '戴紧' and '发卷' to '发夹' as they are likely mishearings of the spoken Cantonese for wearing a hair clip."
+      "xiugai": "我而家打紧个发夹都系嗰边买嘅",
+      "beizhu": "Corrected '发卷' to '发夹' as '发夹' matches the intended item and '发卷' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -2524,7 +2526,7 @@
     },
     "answer": {
       "xiugai": "嗰度啲海南鸡饭好大碟㗎",
-      "beizhu": "Corrected '可能几份' to '海南鸡饭' as it is a likely mishearing and matches the intended dish mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '可能几份' to '海南鸡饭' as it is a likely mishearing that matches the Chinese subtitle's dish name."
     },
     "difficulty": 1
   },
@@ -2544,9 +2546,10 @@
       "zhongwen": "那店子的饭很多，很大碟的！"
     },
     "answer": {
-      "xiugai": "嗰间嘢啲饭好多人，好大碟㗎！",
-      "beizhu": ""
-    }
+      "xiugai": "嗰间嘢啲饭好多，好大碟㗎！",
+      "beizhu": "Corrected '好多人' to '好多' as '好多人' is a likely transcription error; the line refers to the amount of food being plentiful."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -2555,7 +2558,7 @@
     },
     "answer": {
       "xiugai": "不过讲到我最想去嘅地方呢，嗰度犀利啰",
-      "beizhu": "Corrected '细嚟' to '犀利' as it is a likely mishearing of the Cantonese expression meaning 'awesome' or 'formidable'."
+      "beizhu": "Corrected '细嚟' to '犀利' as it is a likely mishearing of the Cantonese phrase meaning 'awesome' or 'formidable'."
     },
     "difficulty": 1
   },
@@ -2566,7 +2569,7 @@
     },
     "answer": {
       "xiugai": "嗰度蓝天白云，椰林树影，水清沙幼",
-      "beizhu": "Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as these are clear mishearings of the intended phrase."
+      "beizhu": "Corrected '南天' to '蓝天', '夜临' to '椰林', and '沙幽' to '沙幼' as these are likely mishearings of the intended phrases."
     },
     "difficulty": 1
   },
@@ -2576,8 +2579,8 @@
       "zhongwen": "座落于印度洋的世外桃源"
     },
     "answer": {
-      "xiugai": "�",
-      "beizhu": "Cleared as '独来鱼印度洋嘅世外桃源' does not correspond to '座落于印度洋的世外桃源' and appears to be a complete miswrite with no reliable Cantonese counterpart recoverable."
+      "xiugai": "座落于印度洋嘅世外桃源",
+      "beizhu": "Corrected '独来鱼' to '座落于' as it is a likely mishearing and matches the intended phrase in context."
     },
     "difficulty": 1
   },
@@ -2699,8 +2702,8 @@
       "zhongwen": "不要呀妈妈，我不喝呀"
     },
     "answer": {
-      "xiugai": "唔好啦妈妈，我唔食呀",
-      "beizhu": "Corrected '捞' to '啦' as '唔好啦妈妈' is a likely mishearing and fits the context better."
+      "xiugai": "唔好啊妈妈，我唔食呀",
+      "beizhu": "Corrected '捞' to '啊' as it is a likely mishearing in '唔好啊妈妈'; kept '食' unchanged as it is acceptable Cantonese for taking medicine."
     },
     "difficulty": 1
   },
@@ -2732,7 +2735,7 @@
     },
     "answer": {
       "xiugai": "乖乖啲，病好咗妈妈带你去马尔代夫",
-      "beizhu": "Corrected '大理' to '带你去' as it is a likely mishearing that matches the intended meaning in context."
+      "beizhu": "Corrected '大理' to '带你' as it is a likely mishearing matching the intended meaning."
     },
     "difficulty": 1
   },
@@ -2773,7 +2776,7 @@
     },
     "answer": {
       "xiugai": "嘻嘻，好嘢，马尔代夫！",
-      "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name 'Maldives'."
+      "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a clear mishearing of the place name."
     },
     "difficulty": 1
   },
@@ -2784,7 +2787,7 @@
     },
     "answer": {
       "xiugai": "马尔代夫！",
-      "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name."
+      "beizhu": "Corrected '买二代夫' to '马尔代夫' as it is a mishearing of the place name '马尔代夫'."
     },
     "difficulty": 1
   },
@@ -2836,7 +2839,7 @@
     },
     "answer": {
       "xiugai": "啲药所以我全部食晒喇",
-      "beizhu": "Corrected '嘢' to '药' as it is a likely mishearing and matches the intended meaning of medicine in the context."
+      "beizhu": "Corrected '嘢' to '药' as it is a likely mishearing and matches the intended meaning of taking all the medicine."
     },
     "difficulty": 1
   },
@@ -2877,8 +2880,8 @@
       "zhongwen": "就给我喝光了！"
     },
     "answer": {
-      "xiugai": "吓，俾我饮晒㖞！",
-      "beizhu": "Corrected '咪' to '俾' as '俾我饮晒' matches the meaning of 'give me to drink it all' in the 中文, while '咪我' is a likely mishearing."
+      "xiugai": "吓，畀我饮晒㖞！",
+      "beizhu": "Corrected '咪我' to '畀我' as '畀我饮晒' matches the intended meaning of 'given to me to drink up' and '咪我' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -2889,7 +2892,7 @@
     },
     "answer": {
       "xiugai": "饮晒就叻仔啦！",
-      "beizhu": "Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', matching the meaning of '喝光了' in the 中文."
+      "beizhu": "Corrected '饮实' to '饮晒' as '饮晒' means 'drink it all', matching the meaning of '喝光了' in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -2965,7 +2968,7 @@
     },
     "answer": {
       "xiugai": "马尔代夫呢，椰林树影，水清沙幼⋯",
-      "beizhu": "Corrected '耶南树影' to '椰林树影' and '沙游' to '沙幼' as they are likely mishearings of the intended phrase."
+      "beizhu": "Corrected '耶南' to '椰林' and '沙游' to '沙幼' as they are clear mishearings of the intended phrase."
     },
     "difficulty": 1
   },
@@ -2975,8 +2978,8 @@
       "zhongwen": "座落于印度洋的世外桃源呀！"
     },
     "answer": {
-      "xiugai": "坐落于印度洋嘅世外桃源啦！",
-      "beizhu": "Corrected '助流于印度园嘅世外导演啦' to '坐落于印度洋嘅世外桃源啦' as the original was a clear mishearing of the intended phrase."
+      "xiugai": "坐落于印度洋嘅世外桃源呀！",
+      "beizhu": "Corrected '助流于印度园嘅世外导演啦' to '坐落于印度洋嘅世外桃源呀' as the original line contains clear mishearings of the intended phrase."
     },
     "difficulty": 1
   },
@@ -3191,7 +3194,7 @@
     },
     "answer": {
       "xiugai": "飞机餐好难食㗎？",
-      "beizhu": "Corrected '飞机真' to '飞机餐' as '餐' is the intended word in the context of 'airplane meal'."
+      "beizhu": "Corrected '飞机真' to '飞机餐' as '餐' was likely misheard, matching the intended meaning of airplane food."
     },
     "difficulty": 1
   },
@@ -3242,7 +3245,7 @@
     },
     "answer": {
       "xiugai": "你帮我话畀佢哋知，我明日去马尔代夫喇",
-      "beizhu": "Corrected '买热带裤薄' to '马尔代夫喇' as it is a clear mishearing of '马尔代夫了' in context."
+      "beizhu": "Corrected '买热带裤薄' to '马尔代夫喇' as it is a likely mishearing of the place name and sentence ending in this context."
     },
     "difficulty": 1
   },
@@ -3253,7 +3256,7 @@
     },
     "answer": {
       "xiugai": "嗰度蓝天白云，椰林树影⋯",
-      "beizhu": "Corrected '五百云，夜临雪' to '白云，椰林树影' as it is a likely mishearing that matches the intended imagery in the context."
+      "beizhu": "Corrected '五百云，夜临雪' to '白云，椰林树影' as the original was a clear mishearing of the intended phrase."
     },
     "difficulty": 1
   },
@@ -3264,7 +3267,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as '水清净沙有！' bears no reasonable phonetic or semantic resemblance to the original phrase '还在讲！' and is clearly a complete mismatch."
+      "beizhu": "Cleared as '水清净沙有！' bears no reasonable phonetic or semantic resemblance to the original phrase '还在讲！' and appears to be a complete mismatch with no corresponding Cantonese line."
     },
     "difficulty": 1
   },
@@ -3284,8 +3287,8 @@
       "zhongwen": "要执行李了，回来再跟你说吧"
     },
     "answer": {
-      "xiugai": "我要执行咗喇，返嚟先再同你倾过啦",
-      "beizhu": "Corrected '你' to '咗' as '执行咗喇' is a more plausible transcription matching the Mandarin meaning '执行了'."
+      "xiugai": "我要执行李喇，返嚟先再同你倾过啦",
+      "beizhu": "Corrected '你' to '李' as '执行李' is the intended phrase here, matching the meaning of packing luggage."
     },
     "difficulty": 1
   },
@@ -3346,7 +3349,7 @@
     },
     "answer": {
       "xiugai": "好嘢！嚇得我啊！",
-      "beizhu": "Removed '咁都好啲' as it is not supported by the corresponding line and appears to be an extraneous transcription artifact."
+      "beizhu": "Removed '咁都好啲' as it does not correspond to the Chinese subtitle and is likely extraneous transcription."
     },
     "difficulty": 1
   },
@@ -3367,7 +3370,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as the Cantonese line bears no resemblance to the Chinese subtitle and is clearly a complete mismatch with no corresponding content."
+      "beizhu": "Cleared as the Cantonese line is clearly a complete mismatch with the Chinese subtitle and has no corresponding content."
     },
     "difficulty": 1
   },
@@ -3397,10 +3400,9 @@
       "zhongwen": "我过了我小时候最精明⋯"
     },
     "answer": {
-      "xiugai": "我过咗我小时候最着数⋯",
+      "xiugai": "我过咗我小时候最著数⋯",
       "beizhu": ""
-    },
-    "difficulty": 1
+    }
   },
   {
     "query": {
@@ -3419,7 +3421,7 @@
     },
     "answer": {
       "xiugai": "噉你话纸包唔包得住鸡呢？",
-      "beizhu": "Corrected '绝鸡' to '住鸡' as '包得住鸡' is the natural phrase here and '绝鸡' is a likely mishearing."
+      "beizhu": "Corrected '绝鸡' to '住鸡' as '包得住鸡' is the natural Cantonese phrasing here and '绝鸡' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -3449,8 +3451,8 @@
       "zhongwen": "妈妈晚安！"
     },
     "answer": {
-      "xiugai": "妈妈早抖！",
-      "beizhu": "Corrected '做头' to '早抖' as '早抖' is the correct Cantonese expression for 'good night', matching '晚安'."
+      "xiugai": "妈妈早唞！",
+      "beizhu": "Corrected '做头' to '早唞' as it is a likely mishearing of the Cantonese expression for 'good night'."
     },
     "difficulty": 1
   },
@@ -3481,7 +3483,7 @@
     },
     "answer": {
       "xiugai": "夺得香港历史上第一面奥运金牌！",
-      "beizhu": "Corrected '夺取' to '夺得' as '夺得' is the correct wording in this context."
+      "beizhu": "Corrected '夺取' to '夺得' to match the intended wording in this context."
     },
     "difficulty": 1
   },
@@ -3491,10 +3493,9 @@
       "zhongwen": "消息说当李丽珊获悉自己稳夺金牌后"
     },
     "answer": {
-      "xiugai": "消息话李丽珊喺知道自己稳夺金牌之后",
-      "beizhu": "Removed '奥运' as it is not supported by the Chinese reference and is likely an insertion error in the transcription."
-    },
-    "difficulty": 1
+      "xiugai": "消息话李丽珊喺知道自己稳夺奥运金牌之后",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -3513,7 +3514,7 @@
     },
     "answer": {
       "xiugai": "可以证明到香港嘅运动员唔系腊鸭！",
-      "beizhu": "Corrected the rare incorrect character '𫚭' to '腊' in '腊鸭'."
+      "beizhu": "Corrected the rare/wrong character '𫚭' to '腊' as it is a likely character error in '腊鸭'."
     },
     "difficulty": 1
   },
@@ -3524,7 +3525,7 @@
     },
     "answer": {
       "xiugai": "各位对唔住，应该　　系垃圾，唔系腊鸭！",
-      "beizhu": "Corrected '𫚭鸭' to '腊鸭' as it is a likely character error for the intended word '腊鸭'."
+      "beizhu": "Corrected '𫚭鸭' to '腊鸭' as it is the intended word matching the context and Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -3535,7 +3536,7 @@
     },
     "answer": {
       "xiugai": "对唔住，应该系　　唔系垃圾，亦都唔系腊鸭！",
-      "beizhu": "Corrected '𫚭鸭' to '腊鸭' as it is a likely character error for the intended word '腊鸭'."
+      "beizhu": "Corrected '𫚭鸭' to '腊鸭' as it is a likely character error for the intended food item."
     },
     "difficulty": 1
   },
@@ -3586,9 +3587,10 @@
       "zhongwen": "是不是可以靠手瓜呢？"
     },
     "answer": {
-      "xiugai": "哗，好唔好靠下个手瓜噉呢？",
-      "beizhu": ""
-    }
+      "xiugai": "哗，可唔可以靠下个手瓜噉呢？",
+      "beizhu": "Corrected '好唔好' to '可唔可以' as it is a likely mishearing and matches the intended question meaning."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -3617,7 +3619,7 @@
     },
     "answer": {
       "xiugai": "系咪应该系脚瓜啫",
-      "beizhu": "Corrected '之争' to '啫' as it is a likely mishearing, and '脚瓜啫' fits the utterance meaning in context."
+      "beizhu": "Corrected '之争' to '啫' as '啫' is a likely mishearing and fits the Cantonese utterance meaning 'just calf'."
     },
     "difficulty": 1
   },
@@ -3638,7 +3640,7 @@
     },
     "answer": {
       "xiugai": "我知道要揾到黎根绝对唔容易",
-      "beizhu": "Corrected '励根' to '黎根' as it is a mishearing of the name mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '励根' to '黎根' as it is a likely mishearing of the name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -3668,8 +3670,8 @@
       "zhongwen": "我要黎根收我做徒弟！"
     },
     "answer": {
-      "xiugai": "我要嚟緊收我做徒弟！",
-      "beizhu": "Corrected '来紧' to '嚟緊' and '度徒弟' to '做徒弟' as they are likely transcription errors."
+      "xiugai": "我要黎根收我做徒弟！",
+      "beizhu": "Corrected '来紧' to '黎根' and '度' to '做' to match the intended spoken line."
     },
     "difficulty": 1
   },
@@ -3690,7 +3692,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as '三张堂上面' bears no reasonable phonetic or semantic resemblance to the original context of standing on the Olympic领奖台, so this line has no corresponding Cantonese content."
+      "beizhu": "Cleared as '三张堂上面' bears no valid correspondence to the original meaning '当我站在奥运会颁奖台上' and appears to be a complete mistranscription."
     },
     "difficulty": 1
   },
@@ -3700,8 +3702,8 @@
       "zhongwen": "我会举起金牌跟全世界说："
     },
     "answer": {
-      "xiugai": "系举牌同全世界讲：",
-      "beizhu": "Corrected '今排' to '举牌' as it is a likely mishearing and matches the intended context of holding up a medal and speaking to the world."
+      "xiugai": "系金牌同全世界讲：",
+      "beizhu": "Corrected '今排' to '金牌' as it is a likely mishearing that matches the intended phrase in context."
     },
     "difficulty": 1
   },
@@ -3722,7 +3724,7 @@
     },
     "answer": {
       "xiugai": "长洲，我要亲吻呢片圣洁嘅土地！",
-      "beizhu": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct word in this context and '盛洁' is a likely transcription error."
+      "beizhu": "Corrected '盛洁' to '圣洁' as it is the correct word in this context and a likely transcription error."
     },
     "difficulty": 1
   },
@@ -3743,7 +3745,7 @@
     },
     "answer": {
       "xiugai": "南丫岛？都孕育咗周润发噃！",
-      "beizhu": "Corrected '引用咗' to '孕育咗' as '孕育' matches the intended meaning and '引用' is a likely mishearing."
+      "beizhu": "Corrected '引用咗' to '孕育咗' as it is a likely mishearing and matches the intended meaning here."
     },
     "difficulty": 1
   },
@@ -3754,7 +3756,7 @@
     },
     "answer": {
       "xiugai": "直估唔到我匿埋跟你入嚟南丫岛都畀你揾到",
-      "beizhu": "Corrected '制估' to '直估' and '嚟跟' to '匿埋跟' as they are likely mishearings in the original Cantonese line."
+      "beizhu": "Corrected '制估' to '直估' and '嚟跟' to '匿埋跟' as they are likely mishearings in the line."
     },
     "difficulty": 1
   },
@@ -3815,7 +3817,7 @@
     },
     "answer": {
       "xiugai": "你哋呢班住喺香港岛嘅小朋友骄生惯养",
-      "beizhu": "Corrected '娇生惯养' to '骄生惯养' to match the intended phrase in context."
+      "beizhu": "Corrected '娇生惯养' to '骄生惯养' to match the intended phrase in this context."
     },
     "difficulty": 1
   },
@@ -3836,7 +3838,7 @@
     },
     "answer": {
       "xiugai": "想学珊珊攞奥运金牌？",
-      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely mishearing of the name in this context."
+      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely mishearing of the name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -3847,7 +3849,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as '食母你嘢！' bears no reasonable phonetic or semantic correspondence to '别作梦了！' and appears to be a complete mismatch."
+      "beizhu": "Cleared as '食母你嘢！' bears no reasonable correspondence to '别作梦了！' and appears to be a complete mismatch with no valid matching Cantonese line."
     },
     "difficulty": 1
   },
@@ -3878,7 +3880,7 @@
     },
     "answer": {
       "xiugai": "呢只脚瓜⋯好粗好大呀！仲大过只瓜呀！",
-      "beizhu": "Corrected '大个只瓜' to '大过只瓜' as '大过' is the proper comparison form in Cantonese and matches the intended meaning."
+      "beizhu": "Corrected '大个只瓜' to '大过只瓜' as '大过' is the correct comparison form in Cantonese and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -3919,7 +3921,7 @@
     },
     "answer": {
       "xiugai": "脚趾公啲脚甲成吋噉厚，究竟⋯",
-      "beizhu": "Corrected '脚趾弓' to '脚趾公' as '脚趾公' is the proper Cantonese term for toes and matches the context of toenails."
+      "beizhu": "Corrected '脚趾弓' to '脚趾公' as '脚趾公' is the correct Cantonese term for a toe."
     },
     "difficulty": 1
   },
@@ -3930,7 +3932,7 @@
     },
     "answer": {
       "xiugai": "要行过几多座山⋯",
-      "beizhu": "Added '过' to correct a likely omission and match the intended phrase '行过几多座山'."
+      "beizhu": "Added '过' to correct a likely omission, matching the intended phrase '行过几多座山'."
     },
     "difficulty": 1
   },
@@ -3941,7 +3943,7 @@
     },
     "answer": {
       "xiugai": "跨过几多个海⋯",
-      "beizhu": "Corrected '跨我' to '跨过' as '跨过几多个海' is the intended phrase and '跨我' is a likely mishearing."
+      "beizhu": "Corrected '跨我' to '跨过' as '跨过几多个海' matches the intended phrase and '跨我' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -3972,7 +3974,7 @@
     },
     "answer": {
       "xiugai": "我⋯我一定要练成呢只脚瓜！",
-      "beizhu": "Corrected '脚挂' to '脚瓜' as '脚瓜' is the correct Cantonese term and '挂' is a likely mishearing."
+      "beizhu": "Corrected '脚挂' to '脚瓜' as '脚瓜' is the correct Cantonese term here and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -4003,7 +4005,7 @@
     },
     "answer": {
       "xiugai": "而知点解每一次唱呢首歌都会急小便",
-      "beizhu": "Corrected '每一字' to '每一次' as '每一次' fits the context and '字' is a likely mishearing of '次'."
+      "beizhu": "Corrected '每一字' to '每一次' as '每一次' fits the intended meaning and '字' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -4014,7 +4016,7 @@
     },
     "answer": {
       "xiugai": "今次去定先，都怕一阵会再急过",
-      "beizhu": "Corrected '仅次' to '今次' as '今次去定先' is the likely intended Cantonese phrase and '仅次' is a mishearing."
+      "beizhu": "Corrected '仅次' to '今次' as '今次去定先' is the intended Cantonese phrase and '仅次' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -4065,7 +4067,7 @@
     },
     "answer": {
       "xiugai": "黎根听完首歌之后，啲表情有啲古怪⋯",
-      "beizhu": "Corrected '黎今' to '黎根' as it is a likely mishearing of the person's name mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '黎今' to '黎根' as it is a likely mishearing of the name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -4096,7 +4098,7 @@
     },
     "answer": {
       "xiugai": "你唔收我做徒弟，我呢一世都跪喺度！",
-      "beizhu": "Corrected '你收我做徒弟' to '你唔收我做徒弟' as '唔收' matches the intended meaning and is a likely omission in transcription."
+      "beizhu": "Corrected '收' to '唔收' to match the intended meaning; the negation was likely omitted in transcription."
     },
     "difficulty": 1
   },
@@ -4116,9 +4118,10 @@
       "zhongwen": "多谢师傅！"
     },
     "answer": {
-      "xiugai": "多谢师父！",
-      "beizhu": ""
-    }
+      "xiugai": "多谢师傅！",
+      "beizhu": "Corrected '师父' to '师傅' to match the intended form of address in this context."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -4137,7 +4140,7 @@
     },
     "answer": {
       "xiugai": "顶唔顺啊！我个腿瓜好痹啊！",
-      "beizhu": "Corrected '腿挂' to '腿瓜' and '好鼻' to '好痹', and removed the subtitle credit artifact '字幕由Amara.org社群提供'."
+      "beizhu": "Corrected '腿挂好鼻啊' to '腿瓜好痹啊' as it is a likely mishearing of the Cantonese phrase for the leg being numb, and removed the extraneous subtitle credit."
     },
     "difficulty": 1
   },
@@ -4188,7 +4191,7 @@
     },
     "answer": {
       "xiugai": "再将几个橙同埋蒸熟咗嘅鸡放喺祖先前面",
-      "beizhu": "Corrected '铲' to '橙' as '橙' is the intended item and '铲' is a likely mishearing."
+      "beizhu": "Corrected '铲' to '橙' as '橙' is the intended offering item and '铲' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -4228,10 +4231,9 @@
       "zhongwen": "妈妈蹲低把酒洒到地上"
     },
     "answer": {
-      "xiugai": "妈妈府低身将啲酒倒喺地上面",
-      "beizhu": "Corrected '虎低身' to '府低身' as it is a likely mishearing of the Cantonese expression for bending/crouching down."
-    },
-    "difficulty": 1
+      "xiugai": "妈妈虎低身将啲酒倒喺地上面",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -4240,7 +4242,7 @@
     },
     "answer": {
       "xiugai": "庄重又温柔噉同我讲：",
-      "beizhu": "Corrected '紧' to '噉' as '噉同我讲' is the natural transcription for '跟我说' here, and '紧' is a likely mishearing."
+      "beizhu": "Corrected '紧' to '噉' as '温柔噉同我讲' is the natural Cantonese phrasing and '紧' is likely a mishearing."
     },
     "difficulty": 1
   },
@@ -4261,7 +4263,7 @@
     },
     "answer": {
       "xiugai": "跟师父学嘢，光宗耀祖！",
-      "beizhu": "Corrected '当中要祖' to '光宗耀祖' as it is a mishearing of the intended phrase."
+      "beizhu": "Corrected '当中要祖' to '光宗耀祖' as it is a clear mishearing of the intended phrase."
     },
     "difficulty": 1
   },
@@ -4272,7 +4274,7 @@
     },
     "answer": {
       "xiugai": "妈妈喺长洲揾咗间酒楼摆咗几围拜师宴",
-      "beizhu": "Corrected '几回白丝宴' to '几围拜师宴' as it is a likely mishearing; '围' fits banquet counting and '拜师宴' matches the intended phrase."
+      "beizhu": "Corrected '几回白丝宴' to '几围拜师宴' as it is a likely mishearing; '围' is the correct measure for banquet tables and '拜师宴' matches the intended phrase."
     },
     "difficulty": 1
   },
@@ -4293,7 +4295,7 @@
     },
     "answer": {
       "xiugai": "所以到贺嘅乡绅父老特别多",
-      "beizhu": "Corrected '学' to '贺' and '乡亲' to '乡绅' as they are likely mishearings matching the intended phrase."
+      "beizhu": "Corrected '学' to '贺' and '乡亲' to '乡绅' as they are likely mishearings of the intended phrase '到贺的乡绅父老'."
     },
     "difficulty": 1
   },
@@ -4303,9 +4305,10 @@
       "zhongwen": "想不到黄德森也来了"
     },
     "answer": {
-      "xiugai": "估唔到黄德森都有嚟饮",
-      "beizhu": ""
-    }
+      "xiugai": "估唔到黄德森都有嚟",
+      "beizhu": "Removed '饮' as it is an obvious transcription error not supported by the Chinese subtitle or the Cantonese sentence."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -4313,8 +4316,8 @@
       "zhongwen": "还赞我背上的肉厚"
     },
     "answer": {
-      "xiugai": "仲赞我背脊啲肉厚添",
-      "beizhu": "Corrected '背著' to '背脊' and '口' to '厚' as they are likely mishearings in the phrase meaning 'the flesh on my back is thick'."
+      "xiugai": "仲赞我背脊啲肉厚口添",
+      "beizhu": "Corrected '背著' to '背脊' and '肉口' to '肉厚' as they are likely mishearings of the intended Cantonese phrase for 'the flesh on my back is thick.'"
     },
     "difficulty": 1
   },
@@ -4335,8 +4338,8 @@
       "zhongwen": "麦唛，菇时跟得巴都来了"
     },
     "answer": {
-      "xiugai": "麦唛，菇时同得巴都嚟咗",
-      "beizhu": "Corrected '默默' to '麦唛' and '姑侍同德巴' to '菇时同得巴' as they are likely mishearings of the names in context."
+      "xiugai": "默默，菇时同得巴都嚟咗",
+      "beizhu": "Corrected '姑侍同德巴' to '菇时同得巴' as these are likely misheard character names matching the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -4357,7 +4360,7 @@
     },
     "answer": {
       "xiugai": "佢哋都希望黎根可以收埋佢哋做徒弟",
-      "beizhu": "Corrected '嚟今' to '黎根' as it is a mishearing of the name mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '嚟今' to '黎根' as it is a likely mishearing of the person's name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -4389,7 +4392,7 @@
     },
     "answer": {
       "xiugai": "哦，我千辛万苦嚟到长洲揾黎根⋯",
-      "beizhu": "Corrected '前三万苦' to '千辛万苦' and '揾嚟近' to '揾黎根' as they are likely mishearings matching the intended names and phrase."
+      "beizhu": "Corrected '前三万苦' to '千辛万苦' and '揾嚟近' to '揾黎根' as they are likely mishearings of the intended phrase and name."
     },
     "difficulty": 1
   },
@@ -4399,8 +4402,8 @@
       "zhongwen": "我终于可以跟珊珊一起练滑浪风帆了！"
     },
     "answer": {
-      "xiugai": "哦，我终于可以同珊珊一齐练习滑浪风帆啊！",
-      "beizhu": "Corrected '山神' to '珊珊' and '玩弄风范' to '滑浪风帆' as they are clear mishearings of the intended names and activity."
+      "xiugai": "哦，我终于可以同珊珊一齐练习玩滑浪风帆啊！",
+      "beizhu": "Corrected '山神' to '珊珊' and '玩弄风范' to '玩滑浪风帆' as they are likely mishearings of the intended name and activity."
     },
     "difficulty": 1
   },
@@ -4410,8 +4413,8 @@
       "zhongwen": "我将茶递给黎根，黎根他⋯"
     },
     "answer": {
-      "xiugai": "我将杯茶递咗畀嚟根，嚟根佢⋯亦唔系",
-      "beizhu": "Corrected '嚟跟' to '嚟根' as it is a likely mishearing of the name '黎根'."
+      "xiugai": "我将杯茶递咗畀黎根，黎根佢⋯亦唔系",
+      "beizhu": "Corrected '畀嚟跟，嚟跟佢' to '畀黎根，黎根佢' as it is a likely mishearing of the name '黎根'."
     },
     "difficulty": 1
   },
@@ -4432,7 +4435,7 @@
     },
     "answer": {
       "xiugai": "啲来宾睇嚟好高兴",
-      "beizhu": "Corrected '高气' to '高兴' as '高兴' is the intended word here and '高气' is a likely mishearing."
+      "beizhu": "Corrected '高气' to '高兴' as '高兴' is the correct word in this context and '高气' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -4442,8 +4445,8 @@
       "zhongwen": "长洲的乡绅父老拍掌拍得特别落力"
     },
     "answer": {
-      "xiugai": "特别系长洲啲乡亲父老拍掌拍得特别落力",
-      "beizhu": "Corrected '拍奖' to '拍掌' as '拍掌' is the correct Cantonese term for clapping and matches the context."
+      "xiugai": "特别系长洲啲乡绅父老拍掌拍得特别落力",
+      "beizhu": "Corrected '乡亲' to '乡绅' and '拍奖' to '拍掌' as they are likely mishearings of the intended words in this context."
     },
     "difficulty": 1
   },
@@ -4465,7 +4468,7 @@
     },
     "answer": {
       "xiugai": "在下平生有两项称得上得意嘅绝技",
-      "beizhu": "Corrected '评生' to '平生' as '平生' is the correct expression in this context."
+      "beizhu": "Corrected '评生' to '平生' as it is a likely transcription error of the common phrase '平生'."
     },
     "difficulty": 1
   },
@@ -4476,7 +4479,7 @@
     },
     "answer": {
       "xiugai": "第一样，系滑浪风帆！",
-      "beizhu": "Corrected '风范' to '风帆' and removed the extra trailing '呢样早已' as it is not supported by the corresponding line."
+      "beizhu": "Corrected '风范' to '风帆' and removed the extra trailing '呢样早已' as it does not correspond to the spoken content."
     },
     "difficulty": 1
   },
@@ -4498,7 +4501,7 @@
     },
     "answer": {
       "xiugai": "另一项绝技，我打算传畀呢个新收嘅徒弟⋯",
-      "beizhu": "Corrected '新修' to '新收' as '新收嘅徒弟' is the correct expression for a newly accepted apprentice."
+      "beizhu": "Corrected '新修' to '新收' as '新收徒弟' is the correct phrase for a newly accepted apprentice."
     },
     "difficulty": 1
   },
@@ -4539,7 +4542,7 @@
     },
     "answer": {
       "xiugai": "抢包山！",
-      "beizhu": "Corrected '抢爆山' to '抢包山' as '包山' is the correct term in this context."
+      "beizhu": "Corrected '抢爆山' to '抢包山' as '包山' is the correct festival term and '爆山' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -4611,7 +4614,7 @@
     },
     "answer": {
       "xiugai": "噉你可以想像一下嗰度有几高喇？",
-      "beizhu": "Corrected '几多包' to '几高' as it is a likely mishearing and matches the intended meaning of height in the context."
+      "beizhu": "Corrected '几多包' to '几高' as '几多包' is a likely mishearing, while '几高' matches the intended meaning of height in this context."
     },
     "difficulty": 1
   },
@@ -4672,8 +4675,8 @@
       "zhongwen": "在1978年两座包山忽然倒下，多人重伤"
     },
     "answer": {
-      "xiugai": "但喺1978年两座包山突然塌咗，好多人重伤",
-      "beizhu": "Corrected '都去抢包山' to '好多人重伤' as it is a mishearing and matches the intended meaning of many people being seriously injured."
+      "xiugai": "但喺1978年两座包山突然塌咗，多人重伤",
+      "beizhu": "Corrected '都去抢包山' to '多人重伤' as it is a clear mishearing that matches the intended meaning after the collapse."
     },
     "difficulty": 1
   },
@@ -4684,7 +4687,7 @@
     },
     "answer": {
       "xiugai": "�",
-      "beizhu": "Cleared as the Cantonese line bears no reasonable correspondence to the Chinese subtitle and appears to be a complete mistranscription with no matching content."
+      "beizhu": "Cleared as '而长洲特有嘅传统亦占备为榜！' does not correspond to the Chinese subtitle '「抢包山」从此被禁！' and appears to be a complete mismatch with no valid matching Cantonese line."
     },
     "difficulty": 1
   },
@@ -4695,7 +4698,7 @@
     },
     "answer": {
       "xiugai": "长洲特有嘅传统，亦渐被遗忘",
-      "beizhu": "Corrected '占备为榜' to '渐被遗忘' as it is a clear mishearing that matches the intended meaning in context."
+      "beizhu": "Corrected '占备为榜' to '渐被遗忘' as it is a likely mishearing that matches the intended phrase in this context."
     },
     "difficulty": 1
   },
@@ -4725,10 +4728,9 @@
       "zhongwen": "一项没有奖牌，没有对手，没有比赛⋯"
     },
     "answer": {
-      "xiugai": "一项冇奖牌，冇对手，冇比赛⋯",
-      "beizhu": "Corrected '一日' to '一项' as it is a likely mishearing and matches the intended meaning in context."
-    },
-    "difficulty": 1
+      "xiugai": "一日冇奖牌，冇对手，冇比赛⋯",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -4737,7 +4739,7 @@
     },
     "answer": {
       "xiugai": "甚至乎冇人知對佢系運動嘅運動",
-      "beizhu": "Corrected the character form from '对' to '對' to match the surrounding traditional Chinese subtitle style."
+      "beizhu": "Corrected the simplified character '对' to the traditional character '對' and normalized the script to traditional Chinese."
     },
     "difficulty": 1
   },
@@ -4809,7 +4811,7 @@
     },
     "answer": {
       "xiugai": "珊珊！我个师姐珊珊啊！",
-      "beizhu": "Corrected '山伞' to '珊珊' and '师仔' to '师姐' as they are likely mishearings of the name and title in context."
+      "beizhu": "Corrected '山伞' to '珊珊' and '师仔' to '师姐' as they are likely mishearings of the proper name and kinship term in context."
     },
     "difficulty": 1
   },
@@ -4820,7 +4822,7 @@
     },
     "answer": {
       "xiugai": "可以见到珊珊⋯",
-      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely homophonic mishearing of the name in this context."
+      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely same-sound mishearing of the name."
     },
     "difficulty": 1
   },
@@ -4841,7 +4843,7 @@
     },
     "answer": {
       "xiugai": "珊珊！",
-      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely mishearing of the name."
+      "beizhu": "Corrected '山伞' to '珊珊' as it is a likely same-sound mishearing of the name."
     },
     "difficulty": 1
   },
@@ -4851,10 +4853,9 @@
       "zhongwen": "珊你个头！继续练习！"
     },
     "answer": {
-      "xiugai": "珊你个头啊！继续练习！",
-      "beizhu": "Corrected '伞' to '珊' as it is a likely same-sound mishearing matching the intended name in context."
-    },
-    "difficulty": 1
+      "xiugai": "伞你个头啊！继续练习！",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -4873,7 +4874,7 @@
     },
     "answer": {
       "xiugai": "珊珊佢见唔到我呢个师弟",
-      "beizhu": "Corrected '山神' to '珊珊' as it is a likely mishearing of the name mentioned in the Chinese subtitle."
+      "beizhu": "Corrected '山神' to '珊珊' as it is a likely mishearing of the person's name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -4903,8 +4904,8 @@
       "zhongwen": "不知道为什么「珊你个头」却特别刺耳"
     },
     "answer": {
-      "xiugai": "但系「珊你个头」唔知点解特别瘾",
-      "beizhu": "Corrected '山呢个头' to '珊你个头' as it is a likely mishearing of the quoted phrase in this context."
+      "xiugai": "但系「珊呢个头」唔知点解特别瘾",
+      "beizhu": "Corrected '山呢个头' to '珊呢个头' as '珊' is the intended homophonic rendering in this context."
     },
     "difficulty": 1
   },
@@ -4915,7 +4916,7 @@
     },
     "answer": {
       "xiugai": "我唔学抢包山嘞！",
-      "beizhu": "Corrected '好' to '学' and '纱' to '山' as they are likely mishearings in '我唔学抢包山嘞', and removed '字幕由纱友提供' as a subtitle credit artifact."
+      "beizhu": "Corrected '好' to '学' and '纱' to '山' as likely mishearings in '我唔学抢包山嘞', and removed '字幕由纱友提供' as it is subtitle credit text not part of the spoken content."
     },
     "difficulty": 1
   },
@@ -4926,7 +4927,7 @@
     },
     "answer": {
       "xiugai": "其实今日系我第一次咁近距离同黎根见面",
-      "beizhu": "Corrected '丽根' to '黎根' as it is a likely transcription error of the person's name."
+      "beizhu": "Corrected '丽根' to '黎根' as it is the proper name matching the intended person mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -4967,7 +4968,7 @@
     },
     "answer": {
       "xiugai": "其实鸡尾包呢⋯",
-      "beizhu": "Corrected '鸡尾爆' to '鸡尾包' as '包' is the correct word in the food name '鸡尾包' and '爆' is a likely mishearing."
+      "beizhu": "Corrected '鸡尾爆' to '鸡尾包' as '包' is the correct word in this context and '爆' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -5068,7 +5069,7 @@
     },
     "answer": {
       "xiugai": "神功戏同现代器械操",
-      "beizhu": "Corrected '气' to '戏' and '蟹粗' to '器械操' as they are likely mishearings matching the intended phrase."
+      "beizhu": "Corrected '气' to '戏' and '蟹粗' to '械操' as they are likely mishearings of '神功戏' and '器械操'."
     },
     "difficulty": 1
   },
@@ -5109,7 +5110,7 @@
     },
     "answer": {
       "xiugai": "哗，呢只⋯呢只脚瓜好粗好大呀！仲大过节瓜！",
-      "beizhu": "Corrected '呢节' to '呢只' as '呢只脚瓜' is the natural phrase here, and '呢节' is a likely mishearing."
+      "beizhu": "Corrected '呢节' to '呢只' as it is a likely mishearing in this context when referring to the leg."
     },
     "difficulty": 1
   },
@@ -5139,8 +5140,8 @@
       "zhongwen": "脚趾甲有一寸厚，究竟⋯"
     },
     "answer": {
-      "xiugai": "脚趾甲啲脚甲成吋咁厚，究竟⋯",
-      "beizhu": "Corrected '脚趾弓' to '脚趾甲' and '脚夹' to '脚甲' as they are likely mishearings of the Cantonese term for toenails, matching the meaning of having toenails as thick as an inch."
+      "xiugai": "脚趾甲啲脚甲成寸咁厚，究竟⋯",
+      "beizhu": "Corrected '脚趾弓' to '脚趾甲' and '脚夹' to '脚甲' as they are likely mishearings; also corrected '成串' to '成寸' to match the intended thickness expression."
     },
     "difficulty": 1
   },
@@ -5151,7 +5152,7 @@
     },
     "answer": {
       "xiugai": "要行过几多座山?",
-      "beizhu": "Corrected '行个几度呢?几多座山?' to '行过几多座山?' as '个几度呢' is a mishearing of '过几多', matching the intended meaning."
+      "beizhu": "Corrected '行个几度呢?几多座山' to '行过几多座山' as the original contained clear mishearing and duplication, matching the intended phrase."
     },
     "difficulty": 1
   },
@@ -5162,7 +5163,7 @@
     },
     "answer": {
       "xiugai": "跨过几多个海",
-      "beizhu": "Corrected '挂过' to '跨过' as '跨过' matches the intended meaning and is a likely mishearing."
+      "beizhu": "Corrected '挂过' to '跨过' as '跨过' matches the intended meaning and is a likely same-sound mishearing."
     },
     "difficulty": 1
   },
@@ -5172,8 +5173,8 @@
       "zhongwen": "吃过几多苦头"
     },
     "answer": {
-      "xiugai": "捱过几多苦头",
-      "beizhu": "Corrected '挨过' to '捱过' and '斧头' to '苦头' as they are likely transcription errors for the intended phrase '捱过几多苦头'."
+      "xiugai": "挨过几多苦头",
+      "beizhu": "Corrected '斧头' to '苦头' as it is a likely same-sound mishearing in this context."
     },
     "difficulty": 1
   },
@@ -5184,7 +5185,7 @@
     },
     "answer": {
       "xiugai": "先至可以练成呢一只举世无双嘅脚瓜？",
-      "beizhu": "Corrected '举细无伤' to '举世无双' as it is a likely mishearing of the intended phrase."
+      "beizhu": "Corrected '举细无伤' to '举世无双' as it is a mishearing of the intended phrase meaning 'unique in the world'."
     },
     "difficulty": 1
   },
@@ -5274,10 +5275,9 @@
       "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "xiugai": "咦，估唔到真系畀妈妈攞咗㖞．嚇得我啊！",
-      "beizhu": "Corrected '妈妈' to '畀妈妈' as '畀妈妈攞咗' matches the intended meaning of 'let mother take it away', and the omission is likely a transcription error."
-    },
-    "difficulty": 1
+      "xiugai": "咦，估唔到真系妈妈攞咗㖞．嚇得我啊！",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -5337,7 +5337,7 @@
     },
     "answer": {
       "xiugai": "「我哋居住喺香港呢类嘅人，肯爱食包」",
-      "beizhu": "Corrected the Mandarin-style miswritten characters to Cantonese forms: '我门' to '我哋', '在' to '喺', '这类' to '呢类', and '吃' to '食'."
+      "beizhu": "Corrected the Mandarin-style and miswritten characters to the intended Cantonese wording: '我门' to '我哋', '在' to '喺', and '这类' to '呢类'."
     },
     "difficulty": 1
   },
@@ -5369,7 +5369,7 @@
     },
     "answer": {
       "xiugai": "「要大力！大吃晚上的粥，和大节瓜！」",
-      "beizhu": "Corrected '吻上' to '晚上' and '字瓜' to '节瓜' as they are likely mishearings in the transcription."
+      "beizhu": "Corrected '吻上' to '晚上' and '字瓜' to '节瓜' as they are likely transcription errors."
     },
     "difficulty": 1
   },
@@ -5400,7 +5400,7 @@
     },
     "answer": {
       "xiugai": "「世界便和平！」",
-      "beizhu": "Corrected '变' to '便' as '便和平' matches the intended phrasing and '变' is likely a transcription error."
+      "beizhu": "Corrected '变' to '便' as it is a likely mishearing and '世界便和平' matches the intended phrase."
     },
     "difficulty": 1
   },
@@ -5421,7 +5421,7 @@
     },
     "answer": {
       "xiugai": "「他系一个好男孩」",
-      "beizhu": "Corrected '她' to '他' as the pronoun was mistranscribed."
+      "beizhu": "Corrected '她' to '他' as it is the appropriate pronoun in this context and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -5432,7 +5432,7 @@
     },
     "answer": {
       "xiugai": "「他非常懂得抢劫嗰些包」",
-      "beizhu": "Corrected '她' to '他' to match the spoken subject, while keeping the rest unchanged."
+      "beizhu": "Corrected '她' to '他' to match the pronoun used in the corresponding subtitle."
     },
     "difficulty": 1
   },
@@ -5452,9 +5452,10 @@
       "zhongwen": "「那便是一个母亲能够有的最大的安慰」"
     },
     "answer": {
-      "xiugai": "「哪便是一个母亲能够有的最好的最大的安慰」",
-      "beizhu": ""
-    }
+      "xiugai": "「嗱便是一个母亲能够有嘅最好嘅最大嘅安慰」",
+      "beizhu": "Corrected '哪' to '嗱' and added the missing Cantonese particles '嘅' as the original line likely misheard the spoken Cantonese phrase."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -5473,7 +5474,7 @@
     },
     "answer": {
       "xiugai": "我决定返长洲继续抢包山",
-      "beizhu": "Corrected '抢包生' to '抢包山' as '抢包山' is the correct term and '生' is a likely mishearing of '山'."
+      "beizhu": "Corrected '抢包生' to '抢包山' as '包山' is the correct term in the Cheung Chau bun-snatching context."
     },
     "difficulty": 1
   },
@@ -5483,7 +5484,7 @@
       "zhongwen": "我不是为了见珊珊"
     },
     "answer": {
-      "xiugai": "我唔系为咗见珊珊",
+      "xiugai": "我唔系为咗见到珊珊",
       "beizhu": "Corrected '山神' to '珊珊' as it is a likely mishearing of the name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
@@ -5505,7 +5506,7 @@
     },
     "answer": {
       "xiugai": "我亦唔信抢包山会成为奥运项目",
-      "beizhu": "Corrected '抢包生' to '抢包山' as '包山' is the correct term in this context."
+      "beizhu": "Corrected '抢包生' to '抢包山' as '包山' is the correct term in this context and '生' is a likely mishearing of '山'."
     },
     "difficulty": 1
   },
@@ -5547,7 +5548,7 @@
     },
     "answer": {
       "xiugai": "连林世荣睇见都大赞老嘢",
-      "beizhu": "Corrected '老爷' to '老嘢' as '老嘢' is the intended Cantonese expression for praising someone as impressive, while '老爷' is a likely mishearing."
+      "beizhu": "Corrected '老爷' to '老嘢' as '老嘢' is the natural Cantonese expression here and '老爷' is a likely homophone mishearing."
     },
     "difficulty": 1
   },
@@ -5557,8 +5558,8 @@
       "zhongwen": "后来麦唛告诉我⋯"
     },
     "answer": {
-      "xiugai": "后来麦麦话我知⋯",
-      "beizhu": "Corrected '默默' to '麦麦' as it is a likely mishearing of the name '麦唛' in Cantonese."
+      "xiugai": "后来麦唛话我知⋯",
+      "beizhu": "Corrected '默默' to '麦唛' as it is a mishearing of the character name mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -5579,7 +5580,7 @@
     },
     "answer": {
       "xiugai": "我唔知道师傅似唔似黄飞鸿",
-      "beizhu": "Corrected '知到' to '知道' as '知道' is the correct word in this context."
+      "beizhu": "Corrected '知到' to '知道' as '知道' is the correct wording in this context."
     },
     "difficulty": 1
   },
@@ -5589,10 +5590,9 @@
       "zhongwen": "我却肯定像一块猪肉"
     },
     "answer": {
-      "xiugai": "但系我就肯定似嚿猪肉",
-      "beizhu": "Corrected '旧猪肉' to '嚿猪肉' as '嚿' is the correct Cantonese classifier for a lump or piece, matching the intended meaning of '一块猪肉'."
-    },
-    "difficulty": 1
+      "xiugai": "但系我就肯定似旧猪肉",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -5621,7 +5621,7 @@
     },
     "answer": {
       "xiugai": "我一边练习，一边乱谂，一边谂嘢；始终⋯",
-      "beizhu": "Corrected '乱练' to '乱谂' as it is a likely mishearing and matches the intended meaning of thinking wildly."
+      "beizhu": "Corrected '乱练' to '乱谂' as it is a likely mishearing matching the meaning of '胡思乱想' in this context."
     },
     "difficulty": 1
   },
@@ -5812,9 +5812,10 @@
       "zhongwen": "落到火炉旁边"
     },
     "answer": {
-      "xiugai": "落喺火炉旁边",
-      "beizhu": ""
-    }
+      "xiugai": "落到火炉旁边",
+      "beizhu": "Corrected '落喺' to '落到' as it is the intended phrase here and matches the meaning of landing by the stove."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -5853,7 +5854,7 @@
     },
     "answer": {
       "xiugai": "围住呢一嚿好香好香又好圣洁嘅肉⋯",
-      "beizhu": "Corrected '盛洁' to '圣洁' as '圣洁' is the correct word in this context and '盛洁' is a likely transcription error."
+      "beizhu": "Corrected '盛洁' to '圣洁' as it is a likely mishearing of the intended word meaning 'holy'."
     },
     "difficulty": 1
   },
@@ -5965,7 +5966,7 @@
     },
     "answer": {
       "xiugai": "可能系因为买咗焗炉技痒",
-      "beizhu": "Corrected '嘅样' to '技痒' as it is a likely mishearing and matches the intended meaning in context."
+      "beizhu": "Corrected '嘅样' to '技痒' as it is a likely mishearing and matches the intended meaning in this context."
     },
     "difficulty": 1
   },
@@ -6025,8 +6026,8 @@
       "zhongwen": "我学著妈妈，把双手涂满盐⋯"
     },
     "answer": {
-      "xiugai": "我同妈妈，噉双手搽满盐⋯",
-      "beizhu": "Corrected '查满' to '搽满' as '搽满盐' is the correct Cantonese wording for applying salt, while '查满' is a likely mishearing."
+      "xiugai": "我学住妈妈，噉双手搽满盐⋯",
+      "beizhu": "Corrected '同' to '学住' and '查满' to '搽满' as they are likely mishearings of the intended Cantonese phrasing for imitating someone and applying salt."
     },
     "difficulty": 1
   },
@@ -6036,8 +6037,8 @@
       "zhongwen": "在火鸡丰厚的鸡胸上擦呀，擦"
     },
     "answer": {
-      "xiugai": "喺火鸡丰满嘅鸡胸度，起势噉唧唧",
-      "beizhu": "Corrected '封口' to '丰满' and '起细噉啫啫' to '起势噉唧唧' as they are likely mishearings matching the intended description and repeated rubbing sound."
+      "xiugai": "喺火鸡丰满嘅鸡胸度，喺细噉唧唧",
+      "beizhu": "Corrected '封口' to '丰满' and '起细噉啫啫' to '喺细噉唧唧' as they are likely mishearings matching the intended description and sound."
     },
     "difficulty": 1
   },
@@ -6047,9 +6048,10 @@
       "zhongwen": "妈妈不留神漏出了火鸡内的洋葱粒"
     },
     "answer": {
-      "xiugai": "妈妈一个唔觉意畀酿喺火鸡里面嘅火鸡内脏洋葱粒",
-      "beizhu": ""
-    }
+      "xiugai": "妈妈一个唔觉意漏咗喺火鸡里面嘅火鸡内脏洋葱粒",
+      "beizhu": "Corrected '畀酿' to '漏咗' as it is a likely mishearing and matches the intended meaning of something spilling out."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -6057,8 +6059,8 @@
       "zhongwen": "红萝卜粒"
     },
     "answer": {
-      "xiugai": "红萝卜粒流嘅出嚟",
-      "beizhu": "Corrected '红萝虾粒' to '红萝卜粒' as '虾' is a mishearing of '卜' in this context."
+      "xiugai": "红萝卜粒流咗出嚟",
+      "beizhu": "Corrected '虾' to '卜' and '流嘅' to '流咗' as they are likely mishearings; '红萝卜粒流咗出嚟' is the intended Cantonese line."
     },
     "difficulty": 1
   },
@@ -6090,7 +6092,7 @@
     },
     "answer": {
       "xiugai": "12月24日",
-      "beizhu": "Corrected '10月24日' to '12月24日' as the month number was likely mistranscribed."
+      "beizhu": "Corrected '10月24日' to '12月24日' as the month number was likely miswritten."
     },
     "difficulty": 1
   },
@@ -6101,7 +6103,7 @@
     },
     "answer": {
       "xiugai": "上升嘅白烟同奇异嘅燶味拨动星星",
-      "beizhu": "Corrected '㶶味' to '燶味' as '燶味' is the correct Cantonese term for a burnt smell; corrected '声声' to '星星' to match the intended phrase."
+      "beizhu": "Corrected '㶶味' to '燶味' as '燶味' is the proper Cantonese term for a burnt smell, and corrected '声声' to '星星' as it is a likely mishearing matching the context."
     },
     "difficulty": 1
   },
@@ -6112,7 +6114,7 @@
     },
     "answer": {
       "xiugai": "个焗炉戚戚恻恻，戚戚恻恻咁⋯",
-      "beizhu": "Corrected '叱叱叱叱，叱叱叱' to '戚戚恻恻，戚戚恻恻' as it is the intended onomatopoeic phrase and matches the spoken rhythm."
+      "beizhu": "Corrected '叱叱叱叱，叱叱叱' to '戚戚恻恻，戚戚恻恻' as it better matches the intended onomatopoeic sound."
     },
     "difficulty": 1
   },
@@ -6123,7 +6125,7 @@
     },
     "answer": {
       "xiugai": "就好似天使预早畀我哋嘅福音",
-      "beizhu": "Corrected '天赐预祖' to '天使预早' as it is a likely mishearing that matches the intended meaning."
+      "beizhu": "Corrected '天赐预祖' to '天使预早' as it is a likely mishearing and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -6244,8 +6246,8 @@
       "zhongwen": "刷过牙我还感觉到火鸡的美味"
     },
     "answer": {
-      "xiugai": "擦完牙我仲感觉到火鸡嘅美味",
-      "beizhu": "Corrected '测完牙' to '擦完牙' as it is a likely mishearing of brushing teeth in this context."
+      "xiugai": "刷完牙我仲感觉到火鸡嘅美味",
+      "beizhu": "Corrected '测完牙' to '刷完牙' as it is a likely mishearing and matches the context of brushing teeth."
     },
     "difficulty": 1
   },
@@ -6256,7 +6258,7 @@
     },
     "answer": {
       "xiugai": "因为早餐食得晏⋯",
-      "beizhu": "Corrected '硬' to '晏' as '食得晏' means 'ate late', matching the intended meaning in the 中文."
+      "beizhu": "Corrected '硬' to '晏' as '食得晏' is the correct Cantonese expression for eating late, matching the meaning of the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -6267,7 +6269,7 @@
     },
     "answer": {
       "xiugai": "午餐妈妈净系整咗罐粟米汤畀我",
-      "beizhu": "Corrected '唔餐' to '午餐' as it is a likely mishearing and matches the context of lunch."
+      "beizhu": "Corrected '唔餐' to '午餐' as it is a likely mishearing matching the context of lunchtime."
     },
     "difficulty": 1
   },
@@ -6287,8 +6289,8 @@
       "zhongwen": "竟然发现美味的火鸡粒"
     },
     "answer": {
-      "xiugai": "我竟然撩到一粒美味嘅火鸡粒",
-      "beizhu": "Corrected '火鸡肉' to '火鸡粒' to match the intended food item mentioned in the context."
+      "xiugai": "我竟然搣到一粒美味嘅火鸡肉",
+      "beizhu": "Corrected '撩到' to '搣到' as '搣到' is a more likely mishearing in the context of finding/picking out a piece of turkey."
     },
     "difficulty": 1
   },
@@ -6298,8 +6300,8 @@
       "zhongwen": "不用说，那夜就是我渴望了⋯"
     },
     "answer": {
-      "xiugai": "嗰晚唔使讲，当然系食我恨咗⋯",
-      "beizhu": "Corrected '限咗' to '恨咗' as it is a likely mishearing and matches the intended meaning of '渴望了' in the 中文."
+      "xiugai": "嗰晚唔使讲，当然系我恨咗⋯",
+      "beizhu": "Corrected '食我限咗' to '系我恨咗' as it is a likely mishearing that matches the intended meaning of '我渴望了'."
     },
     "difficulty": 1
   },
@@ -6320,7 +6322,7 @@
     },
     "answer": {
       "xiugai": "一片一片嘅火鸡肉伴碟嘅有薯仔同节瓜⋯",
-      "beizhu": "Corrected '半碟嘅' to '伴碟嘅' as '伴碟' matches the meaning of side garnish in the Chinese subtitle and is a likely mishearing."
+      "beizhu": "Corrected '半碟嘅' to '伴碟嘅' as '伴碟' matches the intended meaning of side vegetables in this context."
     },
     "difficulty": 1
   },
@@ -6331,7 +6333,7 @@
     },
     "answer": {
       "xiugai": "上面淋咗一层老抽生粉献",
-      "beizhu": "Corrected '馅' to '献' as it is a likely mishearing, matching the intended Cantonese wording in this context."
+      "beizhu": "Corrected '馅' to '献' as it is the intended final word in this food-related phrase and matches the Chinese subtitle's phonetic context."
     },
     "difficulty": 1
   },
@@ -6381,9 +6383,10 @@
       "zhongwen": "我大着胆跟妈妈说：不如去饮茶吖"
     },
     "answer": {
-      "xiugai": "我嘅记心肝同妈妈讲：不如饮茶",
-      "beizhu": ""
-    }
+      "xiugai": "我嘅忌心肝同妈妈讲：不如饮茶",
+      "beizhu": "Corrected '记心肝' to '忌心肝' as it is a likely mishearing in the Cantonese expression."
+    },
+    "difficulty": 1
   },
   {
     "query": {
@@ -6392,7 +6395,7 @@
     },
     "answer": {
       "xiugai": "妈妈闹我「冇衣食」⋯",
-      "beizhu": "Corrected '冇意食' to '冇衣食' as it is a likely homophonic mishearing and matches the intended phrase."
+      "beizhu": "Corrected '冇意食' to '冇衣食' as it is a likely homophonic mishearing of the intended phrase."
     },
     "difficulty": 1
   },
@@ -6453,7 +6456,7 @@
     },
     "answer": {
       "xiugai": "银芽火鸡丝炒米，好味道噉",
-      "beizhu": "Corrected '银牙' to '银芽' as '银芽' is the correct term in this dish name."
+      "beizhu": "Corrected '银牙' to '银芽' as '银芽' is the correct term for bean sprouts in this dish name."
     },
     "difficulty": 1
   },
@@ -6464,7 +6467,7 @@
     },
     "answer": {
       "xiugai": "栗子焖火鸡丝煲",
-      "beizhu": "Removed the duplicated/misheard '焯焯' at the beginning."
+      "beizhu": "Removed the extraneous repeated '焯焯' at the beginning, as it is not part of the dish name and the intended Cantonese line is '栗子焖火鸡丝煲'."
     },
     "difficulty": 1
   },
@@ -6475,7 +6478,7 @@
     },
     "answer": {
       "xiugai": "酿火鸡馅搽面包",
-      "beizhu": "Corrected '让' to '酿' and '茶' to '搽' as they are likely misheard characters matching the intended Cantonese phrasing."
+      "beizhu": "Corrected '让' to '酿' and '茶' to '搽' as they are likely misheard characters in this cooking phrase."
     },
     "difficulty": 1
   },
@@ -6486,7 +6489,7 @@
     },
     "answer": {
       "xiugai": "唉，我后悔讲过「火鸡疴烂煮」呢句嘢",
-      "beizhu": "Corrected '阿宁处' to '疴烂煮' as it is a mishearing of the intended phonetic rendering in this context."
+      "beizhu": "Corrected '阿宁处' to '疴烂煮' as it is the intended phonetic phrase and '阿宁处' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -6497,7 +6500,7 @@
     },
     "answer": {
       "xiugai": "到端午节，当我督开我最钟意食嘅裹蒸粽嘅时候⋯",
-      "beizhu": "Corrected '果精粽' to '裹蒸粽' as it is a mishearing of the traditional rice dumpling name."
+      "beizhu": "Corrected '果精粽' to '裹蒸粽' as it is a likely mishearing of the proper name of the rice dumpling."
     },
     "difficulty": 1
   },
@@ -6508,7 +6511,7 @@
     },
     "answer": {
       "xiugai": "发现熟喺咸蛋旁边嘅系一件火鸡背脊⋯",
-      "beizhu": "Corrected '宿' to '熟' as '熟喺咸蛋旁边' is the intended phrase and '宿' is a likely mishearing."
+      "beizhu": "Corrected '宿' to '熟' as '发现熟喺…' is the intended phrase in this context, while '宿' is a likely transcription error."
     },
     "difficulty": 1
   },
@@ -6630,7 +6633,7 @@
     },
     "answer": {
       "xiugai": "未食同食第一啖之间已经系佢嘅最高峰",
-      "beizhu": "Corrected '味食' to '未食' as '未食' fits the context of 'about to eat' and is a likely mishearing."
+      "beizhu": "Corrected '味食' to '未食' as '未食' fits the meaning of '将吃未吃' and is a likely transcription error."
     },
     "difficulty": 1
   },
@@ -6651,7 +6654,7 @@
     },
     "answer": {
       "xiugai": "我冇哲学家嘅头脑⋯",
-      "beizhu": "Corrected '知学家' to '哲学家' as it is a likely mishearing and matches the intended meaning in context."
+      "beizhu": "Corrected '知学家' to '哲学家' as it is a likely mishearing of the intended term '哲学家'."
     },
     "difficulty": 1
   },
@@ -6661,10 +6664,9 @@
       "zhongwen": "不知道两件事情应该得出什么道理"
     },
     "answer": {
-      "xiugai": "唔知呢两样嘢要得出啲咩道理",
-      "beizhu": "Corrected '要得起' to '要得出' as '得出' fits the phrase 'derive what conclusion' and '得起' is likely a transcription error."
-    },
-    "difficulty": 1
+      "xiugai": "唔知呢两样嘢要得起嘅呢个得出啲咩道理",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -6733,7 +6735,7 @@
     },
     "answer": {
       "xiugai": "嗰日，我望住天空几条灰色嘅烟",
-      "beizhu": "Corrected '天东' to '天空' as '天空' is the correct word in this context and '天东' is a likely mishearing."
+      "beizhu": "Corrected '天东' to '天空' as '天空' is the correct word here and '天东' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -6804,7 +6806,7 @@
     },
     "answer": {
       "xiugai": "中国香港体育协会暨奥委会会长霍震霆⋯",
-      "beizhu": "Corrected '企' to '暨' and '霍振庭' to '霍震霆' as they are likely transcription errors for the proper organization name and person name."
+      "beizhu": "Corrected '企' to '暨' and '霍振庭' to '霍震霆' as they are likely transcription errors in the organization name and person's name."
     },
     "difficulty": 1
   },
@@ -6825,7 +6827,7 @@
     },
     "answer": {
       "xiugai": "其中港九新界竹战联谊会⋯",
-      "beizhu": "Corrected '港狗' to '港九' and '足战' to '竹战' as they are likely mishearings in the association name."
+      "beizhu": "Corrected '港狗' to '港九' and '足战' to '竹战' as they are likely mishearings of the proper names in this context."
     },
     "difficulty": 1
   },
@@ -6846,7 +6848,7 @@
     },
     "answer": {
       "xiugai": "另外，全港茶餐厅员工协会⋯",
-      "beizhu": "Corrected '联工协会' to '员工协会' as '员工协会' is the correct term here and '联工' is a likely transcription error."
+      "beizhu": "Corrected '联工协会' to '员工协会' as '联工' is a likely mishearing of '员工' in this context."
     },
     "difficulty": 1
   },
@@ -6857,7 +6859,7 @@
     },
     "answer": {
       "xiugai": "经已发动所有会员⋯",
-      "beizhu": "Corrected '经热' to '经已' as '经已' is the correct phrase here and '经热' is a likely mishearing."
+      "beizhu": "Corrected '经热' to '经已' as '经热' is a likely mishearing of the common Cantonese phrase '经已'."
     },
     "difficulty": 1
   },
@@ -6878,7 +6880,7 @@
     },
     "answer": {
       "xiugai": "港九烧味卤味腊味同业会",
-      "beizhu": "Corrected '港狗' to '港九' and '烧尾掳尾立尾' to '烧味卤味腊味' as they are clear mishearings of the organization name."
+      "beizhu": "Corrected '港狗烧尾掳尾立尾同业会' to '港九烧味卤味腊味同业会' as these are clear mishearings of the organization name."
     },
     "difficulty": 1
   },
@@ -6960,10 +6962,9 @@
       "zhongwen": "最后，一切成烟"
     },
     "answer": {
-      "xiugai": "�",
-      "beizhu": "Cleared as '最后，全部都系banana' has no reasonable correspondence to '最后，一切成烟' and appears to be a complete mismatch."
-    },
-    "difficulty": 1
+      "xiugai": "最后，全部都系banana",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -6972,7 +6973,7 @@
     },
     "answer": {
       "xiugai": "最后，佢哋选咗「掷蛋挞」做推介项目",
-      "beizhu": "Corrected '定蛋挞' to '掷蛋挞' as it is a likely mishearing and matches the intended item name in context."
+      "beizhu": "Corrected '定蛋挞' to '掷蛋挞' as it is a likely mishearing and matches the intended item name."
     },
     "difficulty": 1
   },
@@ -7034,7 +7035,7 @@
     },
     "answer": {
       "xiugai": "都返返去茶餐厅继续掟佢哋嘅蛋挞",
-      "beizhu": "Corrected '钉' to '掟' as '掟蛋挞' matches the intended meaning of throwing egg tarts, while '钉' is a likely mishearing."
+      "beizhu": "Corrected '钉' to '掟' as '掟蛋挞' matches the intended action of throwing the egg tarts."
     },
     "difficulty": 1
   },
@@ -7064,8 +7065,8 @@
       "zhongwen": "我都会手快快替她抢一笼大包"
     },
     "answer": {
-      "xiugai": "我都会手快快噉帮佢抢笼大包",
-      "beizhu": "Corrected '抢龙大包' to '抢笼大包' as '笼' is the correct measure word in this context, matching '一笼大包'."
+      "xiugai": "我都会手快快噉帮佢抢一笼大包",
+      "beizhu": "Corrected '抢龙大包' to '抢一笼大包' as '龙' is a mishearing of '一笼' in this context."
     },
     "difficulty": 1
   },
@@ -7086,7 +7087,7 @@
     },
     "answer": {
       "xiugai": "推车仔都转咗用点心纸",
-      "beizhu": "Corrected '退车仔' to '推车仔' as '推车仔' is the proper Cantonese expression for dim sum carts and matches the context."
+      "beizhu": "Corrected '退车仔' to '推车仔' as '推车仔' is the correct Cantonese expression for dim sum carts and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -7107,7 +7108,7 @@
     },
     "answer": {
       "xiugai": "有时我都会同班同学仔返长洲烧嘢食",
-      "beizhu": "Corrected '宵夜食' to '烧嘢食' as it is a likely mishearing and matches the context of having a barbecue in Cheung Chau."
+      "beizhu": "Corrected '宵夜食' to '烧嘢食' as it is a likely mishearing that matches the intended meaning of having a barbecue in Cheung Chau."
     },
     "difficulty": 1
   },
@@ -7138,7 +7139,7 @@
     },
     "answer": {
       "xiugai": "长洲嘅抢包经已转咗用塑胶",
-      "beizhu": "Corrected '厂包' to '抢包' as it is a likely mishearing and matches the intended item in the Chinese subtitle."
+      "beizhu": "Corrected '厂包' to '抢包' as it is a likely mishearing, matching the Chinese subtitle's meaning."
     },
     "difficulty": 1
   },
@@ -7149,7 +7150,7 @@
     },
     "answer": {
       "xiugai": "师傅话，嗰阵胶气，都几臭下",
-      "beizhu": "Corrected '丑下' to '臭下' as '臭' is the correct word for smell here and matches a likely same-sound mishearing."
+      "beizhu": "Corrected '丑下' to '臭下' as '臭' matches the intended meaning of a bad smell and is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7160,7 +7161,7 @@
     },
     "answer": {
       "xiugai": "长洲有个张保仔洞",
-      "beizhu": "Corrected '墙后' to '长洲' and '宝仔' to '保仔' as they are likely mishearings of the place name and the proper noun."
+      "beizhu": "Corrected '墙后个' to '长洲有个' as it is a likely mishearing, while '张宝仔洞' was corrected to the proper place name '张保仔洞'."
     },
     "difficulty": 1
   },
@@ -7182,7 +7183,7 @@
     },
     "answer": {
       "xiugai": "班同学叫我爬佢睇下，话唔定会发达",
-      "beizhu": "Corrected '班同我' to '班同学' as it is a likely mishearing of '同学们' in this context."
+      "beizhu": "Corrected '班同我叫我' to '班同学叫我' as '同学们' matches the intended meaning and is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7233,7 +7234,7 @@
     },
     "answer": {
       "xiugai": "发现入面系一个食剩咗嘅大包",
-      "beizhu": "Corrected '食净咗' to '食剩咗' as '食剩咗' is the correct Cantonese expression for food that was not finished."
+      "beizhu": "Corrected '食净咗' to '食剩咗' as '食剩咗' is the correct Cantonese expression for food left unfinished."
     },
     "difficulty": 1
   },
@@ -7244,7 +7245,7 @@
     },
     "answer": {
       "xiugai": "唔知系咪张保仔食净㗎啦？",
-      "beizhu": "Corrected '张宝仔' to '张保仔' as it is the correct name and matches the intended reference."
+      "beizhu": "Corrected '张宝仔' to '张保仔' as '张保仔' is the correct name, matching the intended reference in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -7274,8 +7275,8 @@
       "zhongwen": "没有鱼蛋没有粗面没去成马尔代夫⋯"
     },
     "answer": {
-      "xiugai": "冇鱼蛋冇粗面冇去买马尔代夫⋯",
-      "beizhu": "Corrected '义大夫' to '马尔代夫' as it is a mishearing of the place name mentioned in the context."
+      "xiugai": "冇鱼蛋冇粗面冇去马尔代夫⋯",
+      "beizhu": "Corrected '买义大夫' to '马尔代夫' as it is a mishearing of the place name 'Maldives'."
     },
     "difficulty": 1
   },
@@ -7297,7 +7298,7 @@
     },
     "answer": {
       "xiugai": "而张保仔，亦都冇咬过个包",
-      "beizhu": "Corrected '张宝仔' to '张保仔' as it is the proper name matching the intended reference."
+      "beizhu": "Corrected '张宝仔' to '张保仔' as it is the correct name and matches the intended reference."
     },
     "difficulty": 1
   },
@@ -7367,10 +7368,9 @@
       "zhongwen": "揸住个包，我忽然想⋯"
     },
     "answer": {
-      "xiugai": "揸住个包，我忽然谂⋯",
-      "beizhu": "Corrected '喺度谂' to '谂' as '喺度' is likely an erroneous insertion and '忽然谂' matches the intended meaning of 'suddenly thought'."
-    },
-    "difficulty": 1
+      "xiugai": "揸住个包，我忽然喺度谂⋯",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -7379,7 +7379,7 @@
     },
     "answer": {
       "xiugai": "大个咗，到我要面对呢一个实掘掘⋯",
-      "beizhu": "Corrected '实角局' to '实掘掘' as it is the intended Cantonese expression and matches the context."
+      "beizhu": "Corrected '实角局' to '实掘掘' as it is the intended Cantonese expression and '实角局' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7410,7 +7410,7 @@
     },
     "answer": {
       "xiugai": "「⋯无力挽回！」",
-      "beizhu": "Corrected '无泪弯' to '无力挽回' as it is a likely mishearing that matches the intended phrase."
+      "beizhu": "Corrected '无泪弯' to '无力挽回' as it is a likely mishearing of the intended phrase."
     },
     "difficulty": 1
   },
@@ -7421,7 +7421,7 @@
     },
     "answer": {
       "xiugai": "系呀，我就系大个佬麦兜喇",
-      "beizhu": "Corrected '麦豆' to '麦兜' as '麦兜' is the correct character name and '麦豆' is a likely mishearing."
+      "beizhu": "Corrected '麦豆' to '麦兜' as '麦兜' is the correct name and '麦豆' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7452,7 +7452,7 @@
     },
     "answer": {
       "xiugai": "负家产啰",
-      "beizhu": "Corrected '富家产' to '负家产' as it is a likely character error and matches the intended phrase."
+      "beizhu": "Corrected '富家产' to '负家产' as it is a likely character error matching the intended phrase."
     },
     "difficulty": 1
   },
@@ -7463,7 +7463,7 @@
     },
     "answer": {
       "xiugai": "脚瓜真系几大，仲大过个节瓜",
-      "beizhu": "Corrected '折瓜' to '节瓜' as '节瓜' is the correct vegetable term here and matches the intended comparison."
+      "beizhu": "Corrected '折瓜' to '节瓜' as '节瓜' is the correct word here and matches the intended comparison."
     },
     "difficulty": 1
   },
@@ -7494,7 +7494,7 @@
     },
     "answer": {
       "xiugai": "至于脚趾公啲脚甲⋯",
-      "beizhu": "Corrected '弓' to '公' as '脚趾公' is the proper Cantonese term and '弓' is a likely mishearing."
+      "beizhu": "Corrected '弓' to '公' as '脚趾公' is the proper Cantonese term, while keeping '啲脚甲' as a valid Cantonese phrasing."
     },
     "difficulty": 1
   },
@@ -7504,10 +7504,9 @@
       "zhongwen": "有次我无无聊聊真的量了一下⋯"
     },
     "answer": {
-      "xiugai": "有次我无无聊聊真系卡下佢⋯",
-      "beizhu": "Corrected '走去卡下佢' to '卡下佢' as '走去' is unnecessary and does not match the intended meaning of casually measuring it."
-    },
-    "difficulty": 1
+      "xiugai": "有次我无无聊聊真系走去卡下佢⋯",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -7516,7 +7515,7 @@
     },
     "answer": {
       "xiugai": "哗，足足成寸咁厚",
-      "beizhu": "Corrected '粥粥成串' to '足足成寸' as it is a likely mishearing that matches the intended meaning 'a full inch thick'."
+      "beizhu": "Corrected '粥粥成串' to '足足成寸' as it is a likely mishearing that matches the intended meaning of being about an inch thick."
     },
     "difficulty": 1
   },
@@ -7588,7 +7587,7 @@
     },
     "answer": {
       "xiugai": "但系栋住两个脚瓜企喺度⋯",
-      "beizhu": "Corrected '冻住' to '栋住' as '栋住两个脚瓜' matches the intended meaning of standing planted there on both legs."
+      "beizhu": "Corrected '冻住' to '栋住' as '栋住' matches the meaning of standing still in this context, while '冻住' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7608,8 +7607,8 @@
       "zhongwen": "那感觉还真不错"
     },
     "answer": {
-      "xiugai": "嗰阵感觉真系好好",
-      "beizhu": "Corrected '张' to '阵' as '嗰阵感觉' is a likely intended phrase matching the context, while '嗰张感觉' is an obvious transcription error."
+      "xiugai": "嗰种感觉真系好好",
+      "beizhu": "Corrected '张' to '种' as '嗰种感觉' is the natural phrase here and '张' is a likely mishearing."
     },
     "difficulty": 1
   },
@@ -7690,7 +7689,7 @@
     },
     "answer": {
       "xiugai": "妈妈个dot com散咗之后，佢又有计喇",
-      "beizhu": "Corrected 'Doccom' to 'dot com' as it is the intended English term in this context."
+      "beizhu": "Corrected 'Doccom' to 'dot com' as it is the intended term in this context."
     },
     "difficulty": 1
   },
@@ -7701,7 +7700,7 @@
     },
     "answer": {
       "xiugai": "佢出咗本教煮餸嘅食谱",
-      "beizhu": "Corrected '半教主送' to '本教煮餸' and removed '谂住捞返扎沙' as they are clear mishearings/artifacts; the corrected phrase matches the intended meaning of publishing a cookbook that teaches cooking."
+      "beizhu": "Corrected '半教主送' to '本教煮餸' and removed '谂住捞返扎沙' as the original text was a mishearing; this matches the intended meaning of publishing a cookbook."
     },
     "difficulty": 1
   },
@@ -7932,7 +7931,7 @@
     },
     "answer": {
       "xiugai": "唔好意思，常餐卖晒",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the 中文."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal, matching the meaning in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -8023,7 +8022,7 @@
     },
     "answer": {
       "xiugai": "系，快餐就即系常餐啰",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term in this context and matches the intended meaning."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct Cantonese term here and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -8034,7 +8033,7 @@
     },
     "answer": {
       "xiugai": "咁你头先又话冇常餐？",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal in this context."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal mentioned in the Chinese subtitle."
     },
     "difficulty": 1
   },
@@ -8097,7 +8096,7 @@
     },
     "answer": {
       "xiugai": "快餐即系常餐",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term in this context."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct Cantonese term in this context."
     },
     "difficulty": 1
   },
@@ -8120,7 +8119,7 @@
     },
     "answer": {
       "xiugai": "常餐就即系午餐啰",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term in this context."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term in this context and matches the intended meaning."
     },
     "difficulty": 1
   },
@@ -8201,7 +8200,7 @@
     },
     "answer": {
       "xiugai": "嚟唔嚟谱啲呀？噉你哋究竟有啲咩餐呀？",
-      "beizhu": "Corrected '普啲' to '谱啲' as '离唔离谱啲' is the correct expression in Cantonese."
+      "beizhu": "Corrected '普' to '谱' in the phrase '离唔离谱啲呀' as it is the standard written form of the expression."
     },
     "difficulty": 1
   },
@@ -8263,7 +8262,7 @@
     },
     "answer": {
       "xiugai": "噉常餐又点好嘢法呀？",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct Cantonese term matching the context of the Chinese subtitle."
+      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal in this context."
     },
     "difficulty": 1
   },
@@ -8274,7 +8273,7 @@
     },
     "answer": {
       "xiugai": "常餐，常餐一早卖晒啦，你话好唔好嘢？",
-      "beizhu": "Corrected '上餐' to '常餐' as '常餐' is the correct term for the set meal in this context."
+      "beizhu": "Corrected both instances of '上餐' to '常餐' as '常餐' is the correct term for the set meal in this context."
     },
     "difficulty": 1
   },
