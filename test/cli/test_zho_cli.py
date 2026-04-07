@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from io import StringIO
-from os import getenv
 from unittest.mock import patch
 
 import pytest
@@ -69,15 +68,11 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
         ),
-        pytest.param(
+        (
             (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate.srt",
             "--proofread traditional",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
-            marks=pytest.mark.skipif(
-                getenv("CODEX_SANDBOX_NETWORK_DISABLED") is not None,
-                reason="Skip when network access is disabled in Codex sandbox",
-            ),
         ),
     ],
 )
