@@ -865,11 +865,13 @@
       "zhongwen_3": "那么成绩表呢？",
       "yuewen_4": "成绩表又唔使",
       "zhongwen_4": "成绩表就不用了",
-      "yuewen_5": "好嘢！吓得我啊！咁都好啲",
+      "yuewen_5": "好嘢！嚇得我啊",
       "zhongwen_5": "太好了！吓得我！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_5": "好嘢！嚇得我吖",
+      "beizhu_5": "Replaced the final particle \"啊\" with the Cantonese colloquial particle \"吖\" to better reflect spoken Cantonese transcription."
+    }
   },
   {
     "query": {
@@ -1226,7 +1228,7 @@
       "zhongwen_6": "珊珊因为去了集训，没来",
       "yuewen_7": "麦唛，菇时同得巴都嚟咗",
       "zhongwen_7": "麦唛，菇时跟得巴都来了",
-      "yuewen_8": "仲带埋成绩表，奖牌同大包嚟添",
+      "yuewen_8": "仲带埋成绩表，奖牌，同大包嚟添",
       "zhongwen_8": "还带着成绩表，奖牌和大包",
       "yuewen_9": "佢哋都希望黎根可以收埋佢哋做徒弟",
       "zhongwen_9": "他们都希望黎根也可以收他们做徒弟",
@@ -1263,8 +1265,12 @@
       "yuewen_25": "噉请问嗰样绝技系乜嘢啊？",
       "zhongwen_25": "请问那是什么绝技呢？"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_22": "另一项绝技，我打算传畀呢个新收嘅徒弟⋯",
+      "beizhu_22": "Corrected the likely transcription error from 「新修嘅徒弟」 to 「新收嘅徒弟」, which fits the disciple-acceptance context.",
+      "xiugai_yuewen_23": "希望佢可以将我哋长洲人世世代代嘅传统",
+      "beizhu_23": "Changed 「我」 to 「佢」 so the pronoun consistently refers to the new disciple in third person."
+    }
   },
   {
     "query": {
@@ -1485,7 +1491,7 @@
   },
   {
     "query": {
-      "yuewen_1": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
+      "yuewen_1": "咦，估唔到真系妈妈攞咗㖞，吓得我啊！",
       "zhongwen_1": "想不到真的让妈妈拿去了．吓得我！",
       "yuewen_2": "点解妈妈会用英文写信嘅？",
       "zhongwen_2": "妈妈怎么会写起英文信？",
@@ -1556,8 +1562,12 @@
       "yuewen_35": "「你忠实的，麦太」",
       "zhongwen_35": "「你忠实的，麦太」"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_1": "咦，估唔到真系妈妈攞咗喇，吓死我啊！",
+      "beizhu_1": "Changed 「㖞」 to 「喇」 for the perfective/final particle, which is the standard character for laa3 in this context. Also changed 「吓得我啊」 to 「吓死我啊」 to better match the common Cantonese colloquial expression meaning “scared me to death”, which fits the Mandarin subtitle “吓得我！”.",
+      "xiugai_yuewen_4": "我谂妈妈佢系好辛苦用电子词典逐个逐个字译做英文噶",
+      "beizhu_4": "Added final particle 「噶」 (gaa3) at the end to sound natural and consistent with Cantonese colloquial speech pattern when stating an assumption/opinion (“I think mom probably...”)."
+    }
   },
   {
     "query": {
@@ -1739,7 +1749,7 @@
     "query": {
       "yuewen_1": "我从未食过咁浓味嘅嘢",
       "zhongwen_1": "我从没吃过这么浓味的东西",
-      "yuewen_2": "连烧鸭连杯面都冇咁浓嘅味道",
+      "yuewen_2": "连烧鸭，连杯面都冇咁浓嘅味道",
       "zhongwen_2": "什至杯面，烧鸭的味道也没有这么浓",
       "yuewen_3": "火鸡嘅味道喺我嘅每一个味蕾度缠住⋯",
       "zhongwen_3": "火鸡的味道把我每一个味蕾缠住⋯",
@@ -1750,8 +1760,16 @@
       "yuewen_6": "最靓最靓，最犀利，亦都系最温柔",
       "zhongwen_6": "最靓最靓，最犀利，而且最温柔"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_1": "我從未食過咁濃味嘅嘢",
+      "beizhu_1": "Standardized the script to Traditional Chinese characters used in Cantonese subtitles: 从→從 and 浓→濃. No wording change.",
+      "xiugai_yuewen_2": "連燒鴨，連杯麵都冇咁濃嘅味道",
+      "beizhu_2": "Standardized character forms for Cantonese subtitles: 连→連, 烧鸭→燒鴨, 杯面→杯麵, 冇咁浓→冇咁濃. No lexical change.",
+      "xiugai_yuewen_3": "火雞嘅味道喺我嘅每一個味蕾度纏住⋯",
+      "beizhu_3": "Standardized the subtitle into Traditional Chinese character forms: 鸡→雞, 一个→一個, 缠→纏. Kept the Cantonese wording unchanged.",
+      "xiugai_yuewen_6": "最靚最靚，最犀利，亦都係最溫柔",
+      "beizhu_6": "Standardized simplified characters to Traditional forms: 靓→靚, 系→係, 温→溫. No wording change."
+    }
   },
   {
     "query": {
@@ -1859,17 +1877,21 @@
       "zhongwen_51": "一次，是在我自己的婚宴上",
       "yuewen_52": "一次⋯",
       "zhongwen_52": "一次⋯",
-      "yuewen_53": "喺我妈妈火化嗰日",
+      "yuewen_53": "喺我妈妈火化嗰日，嗰日",
       "zhongwen_53": "是在我妈妈火化那天",
-      "yuewen_54": "嗰日，我望住天空几条灰色嘅烟",
+      "yuewen_54": "我望住天空几条灰色嘅烟",
       "zhongwen_54": "那天，我看着天空几缕灰色的烟",
       "yuewen_55": "忽然闻到火鸡又浓又淡嘅气味",
       "zhongwen_55": "忽然间嗅到火鸡又浓又淡的气味",
       "yuewen_56": "我后悔要妈妈撇咗几件火鸡",
       "zhongwen_56": "我好后悔要妈妈扔掉最后几件火鸡"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_10": "上面淋咗一层老抽生粉芡",
+      "beizhu_10": "Corrected the final character from the homophone error \"献\" to the proper Cantonese food term \"芡\" in \"生粉芡\".",
+      "xiugai_yuewen_31": "发现匿喺咸蛋旁边嘅系一件火鸡背脊⋯",
+      "beizhu_31": "Corrected \"宿喺\" to \"匿喺\" to match the intended Cantonese meaning of something tucked/hidden beside the salted egg."
+    }
   },
   {
     "query": {
@@ -2001,11 +2023,11 @@
       "zhongwen_2": "听说张保仔在洞内藏了很多宝藏",
       "yuewen_3": "因为我练过抢包手，身手比较灵活⋯",
       "zhongwen_3": "因为我练过抢包手，身手比较灵活⋯",
-      "yuewen_4": "班同学叫我爬去睇下，话唔定会发达",
+      "yuewen_4": "同学叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞",
       "zhongwen_4": "同学们叫我爬进去看看，说不定会发达",
-      "yuewen_5": "于是我就向住呢一个又黑又窄嘅洞⋯",
+      "yuewen_5": "系噉⋯",
       "zhongwen_5": "于是我就向着这个又黑又窄的洞⋯",
-      "yuewen_6": "系噉爬爬",
+      "yuewen_6": "爬，爬",
       "zhongwen_6": "一直爬",
       "yuewen_7": "洞里面乜都冇，净系有一个盒",
       "zhongwen_7": "洞里面什么也没有，只有一个盒子",
@@ -2015,19 +2037,19 @@
       "zhongwen_9": "发现里面一个没吃完的大包",
       "yuewen_10": "唔知系咪张保仔食净㗎啦？",
       "zhongwen_10": "是不是张保仔吃过的呢？",
-      "yuewen_11": "「寻晚，食了六个餐包」",
+      "yuewen_11": "尋晚，食咗六個餐包\nEN: Filled the missing line in colloquial written Cantonese, using 食咗 and keeping the lyric-like tone.",
       "zhongwen_11": "「寻晚，食了六个餐包」",
-      "yuewen_12": "「可惜我依然系觉得仍未十分饱」",
+      "yuewen_12": "可惜我依然係覺得仲未十分飽\nEN: Rendered the line into natural Cantonese with 依然係 and 仲未 to match surrounding style.",
       "zhongwen_12": "「可惜我依然系觉得仍未十分饱」",
-      "yuewen_13": "「寻晚，食了磅半方包」",
+      "yuewen_13": "尋晚，食咗磅半方包\nEN: Translated directly into Cantonese, preserving the simple rhythmic phrasing.",
       "zhongwen_13": "「寻晚，食了磅半方包」",
-      "yuewen_14": "「可叹是我依然觉得，不够顶肚」",
+      "yuewen_14": "可嘆係我依然覺餓，唔夠頂肚\nEN: Kept the lamenting tone and used 唔夠頂肚 for a natural Cantonese expression.",
       "zhongwen_14": "「可叹是我依然觉饿，不够顶肚」",
-      "yuewen_15": "「年少，练了六套脚法。」",
+      "yuewen_15": "年少，練咗六套腳法。\nEN: Converted to Cantonese with 練咗 while preserving the original parallel structure.",
       "zhongwen_15": "「年少，练了六套脚法。」",
-      "yuewen_16": "「可惜我依然未觉够用。」",
+      "yuewen_16": "可惜我依然未覺夠用。\nEN: Kept the sentence concise and parallel to the previous lines in Cantonese style.",
       "zhongwen_16": "「可惜我依然未觉够用。」",
-      "yuewen_17": "「年晚，又培育了珊珊！可惜⋯」",
+      "yuewen_17": "年晚，又培育咗珊珊！可惜⋯\nEN: Filled the missing line with 又…咗 structure to match the surrounding colloquial Cantonese wording.",
       "zhongwen_17": "「年晚，又培育了珊珊！可惜⋯」",
       "yuewen_18": "揸住个包，我忽然明白⋯",
       "zhongwen_18": "揸住个包，我忽然明白⋯",
@@ -2064,16 +2086,41 @@
       "yuewen_34": "世界嘅时候，我会系点㗎呢？",
       "zhongwen_34": "世界的时候，我会怎么样？"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_4": "同學叫我爬入去睇下，話唔定會發達，於是我就向住呢一個又黑又窄嘅洞",
+      "beizhu_4": "Corrected the transcription by restoring 入去, which is needed for the spoken Cantonese meaning ('crawl in and have a look'). Also normalized characters to match surrounding Cantonese subtitles.",
+      "xiugai_yuewen_11": "尋晚，食咗六個餐包",
+      "beizhu_11": "Removed the stray English note so that only the actual Cantonese subtitle remains.",
+      "xiugai_yuewen_12": "可惜我依然係覺得仲未十分飽",
+      "beizhu_12": "Removed the stray English note and kept only the Cantonese subtitle text.",
+      "xiugai_yuewen_13": "尋晚，食咗磅半方包",
+      "beizhu_13": "Removed the stray English note so the line contains only the subtitle content.",
+      "xiugai_yuewen_14": "可嘆係我依然覺餓，唔夠頂肚",
+      "beizhu_14": "Removed the stray English note and preserved the Cantonese subtitle itself.",
+      "xiugai_yuewen_15": "年少，練咗六套腳法。",
+      "beizhu_15": "Removed the stray English note so the subtitle is clean Cantonese text only.",
+      "xiugai_yuewen_16": "可惜我依然未覺夠用。",
+      "beizhu_16": "Removed the stray English note and retained only the subtitle line.",
+      "xiugai_yuewen_17": "年晚，又培育咗珊珊！可惜⋯",
+      "beizhu_17": "Removed the stray English note so that only the Cantonese subtitle remains.",
+      "xiugai_yuewen_19": "原來有啲嘢，冇就真係冇",
+      "beizhu_19": "Normalized the character form from 系 to 係 in 真係 for consistent Cantonese transcription.",
+      "xiugai_yuewen_20": "唔得，就真係唔得",
+      "beizhu_20": "Normalized 真系 to 真係 for correct written Cantonese.",
+      "xiugai_yuewen_31": "揸住個包，我忽然喺度諗⋯",
+      "beizhu_31": "Normalized written Cantonese characters: 个 → 個 and 谂 → 諗.",
+      "xiugai_yuewen_32": "大個咗，到我要面對呢一個實掘掘⋯",
+      "beizhu_32": "Normalized colloquial Cantonese character forms: 大个咗 → 大個咗 and 呢一个 → 呢一個.",
+      "xiugai_yuewen_34": "世界嘅時候，我會係點㗎呢？",
+      "beizhu_34": "Normalized 系 to 係 for correct written Cantonese usage."
+    }
   },
   {
     "query": {
-      "yuewen_1": "「⋯无力挽！」",
+      "yuewen_1": "「无力挽！」",
       "zhongwen_1": "「⋯无力挽回！」"
     },
-    "answer": {},
-    "verified": true
+    "answer": {}
   },
   {
     "query": {
@@ -2179,7 +2226,7 @@
     "query": {
       "yuewen_1": "唔该，我要一个常餐啦",
       "zhongwen_1": "麻烦你，一客常餐",
-      "yuewen_2": "常餐？常餐有咩食㗎？",
+      "yuewen_2": "常餐？　常餐有咩食㗎？",
       "zhongwen_2": "常餐？　常餐有什么吃？",
       "yuewen_3": "同特餐一样啰",
       "zhongwen_3": "跟特餐一样吧",
@@ -2204,8 +2251,10 @@
       "yuewen_13": "好嘢呀，我哋今日啲常餐！",
       "zhongwen_13": "今天常餐精采呀！"
     },
-    "answer": {},
-    "verified": true
+    "answer": {
+      "xiugai_yuewen_7": "啫快餐咪就系午餐",
+      "beizhu_7": "Standardize the character for the copula \"hai6\" to 「系」 to match the rest of the subtitles (e.g. lines 4, 6, 9, 11). 「係」/「系」 are both used in Cantonese, but consistency within the same set is preferable."
+    }
   },
   {
     "query": {

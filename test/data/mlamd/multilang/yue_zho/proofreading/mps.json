@@ -3667,14 +3667,14 @@
   },
   {
     "query": {
-      "yuewen": "好嘢！吓得我啊！咁都好啲",
+      "yuewen": "好嘢！嚇得我啊，咁都好啲",
       "zhongwen": "太好了！吓得我！"
     },
     "answer": {
-      "xiugai": "好嘢！吓得我啊！咁都好啲",
-      "beizhu": "No changes needed."
+      "xiugai": "好嘢！嚇得我啊",
+      "beizhu": "Removed '咁都好啲' as it is not supported by the corresponding line and appears to be an extraneous transcription artifact."
     },
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -4762,14 +4762,13 @@
   },
   {
     "query": {
-      "yuewen": "仲带埋成绩表，奖牌同大包嚟添",
+      "yuewen": "仲带埋成绩表，奖牌，同大包嚟添",
       "zhongwen": "还带着成绩表，奖牌和大包"
     },
     "answer": {
-      "xiugai": "仲带埋成绩表，奖牌同大包嚟添",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "仲带埋成绩表，奖牌，同大包嚟添",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -5779,14 +5778,14 @@
   },
   {
     "query": {
-      "yuewen": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
+      "yuewen": "咦，估唔到真系妈妈攞咗㖞，嚇得我啊！",
       "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "xiugai": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
-      "beizhu": "No changes needed."
+      "xiugai": "咦，估唔到真系妈妈攞咗㖞，吓得我啊！",
+      "beizhu": "Corrected '嚇得我啊' to '吓得我啊' to use the proper simplified form matching the same character in the 中文."
     },
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -6790,14 +6789,13 @@
   },
   {
     "query": {
-      "yuewen": "连烧鸭连杯面都冇咁浓嘅味道",
+      "yuewen": "连烧鸭，连杯面都冇咁浓嘅味道",
       "zhongwen": "什至杯面，烧鸭的味道也没有这么浓"
     },
     "answer": {
-      "xiugai": "连烧鸭连杯面都冇咁浓嘅味道",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "连烧鸭，连杯面都冇咁浓嘅味道",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -7369,26 +7367,24 @@
   },
   {
     "query": {
-      "yuewen": "喺我妈妈火化嗰日",
+      "yuewen": "喺我妈妈火化嗰日，嗰日",
       "zhongwen": "是在我妈妈火化那天"
     },
     "answer": {
-      "xiugai": "喺我妈妈火化嗰日",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "喺我妈妈火化嗰日，嗰日",
+      "beizhu": ""
+    }
   },
   {
     "query": {
-      "yuewen": "嗰日，我望住天东几条灰色嘅烟",
+      "yuewen": "我望住天东几条灰色嘅烟",
       "zhongwen": "那天，我看着天空几缕灰色的烟"
     },
     "answer": {
-      "xiugai": "嗰日，我望住天空几条灰色嘅烟",
-      "beizhu": "Corrected '天东' to '天空' as '天东' is a likely mishearing of '天空', which matches the meaning in the 中文."
+      "xiugai": "我望住天空几条灰色嘅烟",
+      "beizhu": "Corrected '天东' to '天空' as it is a likely mishearing and matches the intended meaning of looking at the sky."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7700,14 +7696,14 @@
   },
   {
     "query": {
-      "yuewen": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
+      "yuewen": "谂住可以转行做运动员嘅茶餐厅夥计⋯",
       "zhongwen": "想着转行当运动员的茶餐厅伙记⋯"
     },
     "answer": {
       "xiugai": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
       "beizhu": "No changes needed."
     },
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -7874,37 +7870,34 @@
   },
   {
     "query": {
-      "yuewen": "班同我叫我爬佢睇下，话唔定会发达",
+      "yuewen": "班同我叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞",
       "zhongwen": "同学们叫我爬进去看看，说不定会发达"
     },
     "answer": {
-      "xiugai": "班同学叫我爬去睇下，话唔定会发达",
-      "beizhu": "Corrected '班同我' to '班同学'; corrected '爬佢' to '爬去'."
+      "xiugai": "同学叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞",
+      "beizhu": "Corrected '班' to '同学' as it is a likely mishearing in this context."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
-      "yuewen": "于是我就向住呢一个又黑又窄嘅洞⋯",
+      "yuewen": "系噉⋯",
       "zhongwen": "于是我就向着这个又黑又窄的洞⋯"
     },
     "answer": {
-      "xiugai": "于是我就向住呢一个又黑又窄嘅洞⋯",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "系噉⋯",
+      "beizhu": ""
+    }
   },
   {
     "query": {
-      "yuewen": "系噉爬爬",
+      "yuewen": "爬，爬",
       "zhongwen": "一直爬"
     },
     "answer": {
-      "xiugai": "系噉爬爬",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "爬，爬",
+      "beizhu": ""
+    }
   },
   {
     "query": {
@@ -8125,15 +8118,14 @@
   },
   {
     "query": {
-      "yuewen": "「⋯无泪弯！」",
+      "yuewen": "「无泪弯！」",
       "zhongwen": "「⋯无力挽回！」"
     },
     "answer": {
-      "xiugai": "「⋯无力挽！」",
-      "beizhu": "Corrected '无泪弯' to '无力挽' as it is a mishearing; '无力挽' matches the intended meaning in the 中文."
+      "xiugai": "「无力挽！」",
+      "beizhu": "Corrected '无泪弯' to '无力挽' as a reasonable mishearing of '无力挽回', keeping only the part that seems actually spoken."
     },
-    "difficulty": 1,
-    "verified": true
+    "difficulty": 1
   },
   {
     "query": {
@@ -8564,14 +8556,13 @@
   },
   {
     "query": {
-      "yuewen": "常餐？常餐有咩食㗎？",
+      "yuewen": "常餐？　常餐有咩食㗎？",
       "zhongwen": "常餐？　常餐有什么吃？"
     },
     "answer": {
-      "xiugai": "常餐？常餐有咩食㗎？",
-      "beizhu": "No changes needed."
-    },
-    "verified": true
+      "xiugai": "常餐？　常餐有咩食㗎？",
+      "beizhu": ""
+    }
   },
   {
     "query": {

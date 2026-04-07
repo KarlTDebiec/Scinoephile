@@ -533,11 +533,11 @@
       "zhongwen_2": "听说张保仔在洞内藏了很多宝藏",
       "yuewen_3": "因为我练过抢包手，身手比较灵活⋯",
       "zhongwen_3": "因为我练过抢包手，身手比较灵活⋯",
-      "yuewen_4": "班同学叫我爬去睇下，话唔定会发达",
+      "yuewen_4": "同学叫我爬佢睇下，话唔定会发达，于是我就向住呢一个又黑又窄嘅洞",
       "zhongwen_4": "同学们叫我爬进去看看，说不定会发达",
-      "yuewen_5": "于是我就向住呢一个又黑又窄嘅洞⋯",
+      "yuewen_5": "系噉⋯",
       "zhongwen_5": "于是我就向着这个又黑又窄的洞⋯",
-      "yuewen_6": "系噉爬爬",
+      "yuewen_6": "爬，爬",
       "zhongwen_6": "一直爬",
       "yuewen_7": "洞里面乜都冇，净系有一个盒",
       "zhongwen_7": "洞里面什么也没有，只有一个盒子",
@@ -590,15 +590,14 @@
       "zhongwen_34": "世界的时候，我会怎么样？"
     },
     "answer": {
-      "yuewen_11": "「寻晚，食了六个餐包」",
-      "yuewen_12": "「可惜我依然系觉得仍未十分饱」",
-      "yuewen_13": "「寻晚，食了磅半方包」",
-      "yuewen_14": "「可叹是我依然觉得，不够顶肚」",
-      "yuewen_15": "「年少，练了六套脚法。」",
-      "yuewen_16": "「可惜我依然未觉够用。」",
-      "yuewen_17": "「年晚，又培育了珊珊！可惜⋯」"
-    },
-    "verified": true
+      "yuewen_11": "尋晚，食咗六個餐包\nEN: Filled the missing line in colloquial written Cantonese, using 食咗 and keeping the lyric-like tone.",
+      "yuewen_12": "可惜我依然係覺得仲未十分飽\nEN: Rendered the line into natural Cantonese with 依然係 and 仲未 to match surrounding style.",
+      "yuewen_13": "尋晚，食咗磅半方包\nEN: Translated directly into Cantonese, preserving the simple rhythmic phrasing.",
+      "yuewen_14": "可嘆係我依然覺餓，唔夠頂肚\nEN: Kept the lamenting tone and used 唔夠頂肚 for a natural Cantonese expression.",
+      "yuewen_15": "年少，練咗六套腳法。\nEN: Converted to Cantonese with 練咗 while preserving the original parallel structure.",
+      "yuewen_16": "可惜我依然未覺夠用。\nEN: Kept the sentence concise and parallel to the previous lines in Cantonese style.",
+      "yuewen_17": "年晚，又培育咗珊珊！可惜⋯\nEN: Filled the missing line with 又…咗 structure to match the surrounding colloquial Cantonese wording."
+    }
   },
   {
     "query": {
