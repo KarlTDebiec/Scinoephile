@@ -3667,11 +3667,11 @@
   },
   {
     "query": {
-      "yuewen": "好嘢！吓得我啊！咁都好啲",
+      "yuewen": "好嘢！嚇得我啊！咁都好啲",
       "zhongwen": "太好了！吓得我！"
     },
     "answer": {
-      "xiugai": "好嘢！吓得我啊！咁都好啲",
+      "xiugai": "好嘢！嚇得我啊！咁都好啲",
       "beizhu": ""
     },
     "verified": true
@@ -5768,22 +5768,22 @@
   },
   {
     "query": {
-      "yuewen": "唔通⋯冇理由㗎？",
+      "yuewen": "唔通⋯　冇理由㗎？",
       "zhongwen": "难道⋯　不会吧？"
     },
     "answer": {
-      "xiugai": "唔通⋯冇理由㗎？",
+      "xiugai": "唔通⋯　冇理由㗎？",
       "beizhu": ""
     },
     "verified": true
   },
   {
     "query": {
-      "yuewen": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
+      "yuewen": "咦，估唔到真系妈妈攞咗㖞．嚇得我啊！",
       "zhongwen": "想不到真的让妈妈拿去了．吓得我！"
     },
     "answer": {
-      "xiugai": "咦，估唔到真系妈妈攞咗㖞．吓得我啊！",
+      "xiugai": "咦，估唔到真系妈妈攞咗㖞．嚇得我啊！",
       "beizhu": ""
     },
     "verified": true
@@ -7700,11 +7700,11 @@
   },
   {
     "query": {
-      "yuewen": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
+      "yuewen": "谂住可以转行做运动员嘅茶餐厅夥计⋯",
       "zhongwen": "想着转行当运动员的茶餐厅伙记⋯"
     },
     "answer": {
-      "xiugai": "谂住可以转行做运动员嘅茶餐厅伙计⋯",
+      "xiugai": "谂住可以转行做运动员嘅茶餐厅夥计⋯",
       "beizhu": ""
     },
     "verified": true
@@ -8430,7 +8430,7 @@
   },
   {
     "query": {
-      "yuewen": "妈妈个Doccom散咗之后，佢又有计喇",
+      "yuewen": "妈妈个 Doccom 散咗之后，佢又有计喇",
       "zhongwen": "妈妈的 dot com 散掉后，她又有计"
     },
     "answer": {
@@ -8564,11 +8564,11 @@
   },
   {
     "query": {
-      "yuewen": "常餐？常餐有咩食㗎？",
+      "yuewen": "常餐？　常餐有咩食㗎？",
       "zhongwen": "常餐？　常餐有什么吃？"
     },
     "answer": {
-      "xiugai": "常餐？常餐有咩食㗎？",
+      "xiugai": "常餐？　常餐有咩食㗎？",
       "beizhu": ""
     },
     "verified": true
