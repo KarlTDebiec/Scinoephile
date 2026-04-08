@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""SQLite database operations for the CUHK dictionary cache."""
+"""Shared SQLite persistence and lookup for dictionary data."""
 
 from __future__ import annotations
 
@@ -9,22 +9,21 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core.dictionaries import (
-    DictionaryDefinition,
-    DictionaryEntry,
-    DictionarySource,
-    LookupDirection,
-)
+
+from .dictionary_definition import DictionaryDefinition
+from .dictionary_entry import DictionaryEntry
+from .dictionary_source import DictionarySource
+from .lookup_direction import LookupDirection
 
 __all__ = [
-    "CuhkDictionaryDatabase",
+    "DictionarySqliteStore",
 ]
 
 logger = getLogger(__name__)
 
 
-class CuhkDictionaryDatabase:
-    """SQLite schema and CRUD operations for CUHK dictionary data."""
+class DictionarySqliteStore:
+    """SQLite schema, persistence, and lookup for dictionary data."""
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -40,7 +39,7 @@ class CuhkDictionaryDatabase:
         direction: LookupDirection,
         limit: int,
     ) -> list[DictionaryEntry]:
-        """Lookup entries from the persisted CUHK dictionary.
+        """Lookup entries from the persisted dictionary data.
 
         Arguments:
             query: query string
@@ -55,19 +54,19 @@ class CuhkDictionaryDatabase:
 
     def persist(
         self,
-        scrape_data: tuple[DictionarySource, list[DictionaryEntry]],
+        source_data: tuple[DictionarySource, list[DictionaryEntry]],
     ) -> Path:
-        """Persist scraped CUHK dictionary data to SQLite.
+        """Persist dictionary data to SQLite.
 
         Arguments:
-            scrape_data: source metadata and scraped dictionary entries
+            source_data: source metadata and normalized dictionary entries
         Returns:
             SQLite database path
         """
-        source, entries = scrape_data
+        source, entries = source_data
         self.database_path.parent.mkdir(parents=True, exist_ok=True)
         if self.database_path.exists():
-            logger.info(f"Deleting existing CUHK SQLite database: {self.database_path}")
+            logger.info(f"Deleting existing SQLite database: {self.database_path}")
             self.database_path.unlink()
 
         with sqlite3.connect(self.database_path) as connection:
@@ -106,7 +105,7 @@ class CuhkDictionaryDatabase:
         """Aggregate joined rows into dictionary entries.
 
         Arguments:
-            rows: joined entry/definition rows
+            rows: joined entry and definition rows
         Returns:
             dictionary entries
         """
@@ -519,7 +518,7 @@ class CuhkDictionaryDatabase:
         source_id = cursor.lastrowid
         if source_id is None:
             raise RuntimeError("Failed to insert source")
-        return source_id
+        return int(source_id)
 
     @staticmethod
     def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
@@ -536,7 +535,7 @@ class CuhkDictionaryDatabase:
         return "no such table" in message and "_fts" in message
 
     def _lookup_cmn_to_yue(self, query: str, limit: int) -> list[DictionaryEntry]:
-        """Lookup Mandarin query terms in CUHK data.
+        """Lookup Mandarin query terms in dictionary data.
 
         Arguments:
             query: query string
@@ -586,7 +585,7 @@ class CuhkDictionaryDatabase:
         query: str,
         limit: int,
     ) -> list[DictionaryEntry]:
-        """Lookup Cantonese query terms in CUHK data.
+        """Lookup Cantonese query terms in dictionary data.
 
         Arguments:
             query: query string

@@ -7,13 +7,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
-from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.core.dictionaries import (
+    DictionaryEntry,
+    DictionarySqliteStore,
+    LookupDirection,
+)
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
 from .constants import MAX_LOOKUP_LIMIT
-from .database import CuhkDictionaryDatabase
 from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
 __all__ = [
@@ -46,7 +49,7 @@ class CuhkDictionaryService:
         self.auto_build_missing = auto_build_missing
         if scraper_kwargs is None:
             scraper_kwargs = {}
-        self.database = CuhkDictionaryDatabase(database_path=self.database_path)
+        self.database = DictionarySqliteStore(database_path=self.database_path)
         self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
         self.cache_dir_path = self.scraper.cache_dir_path
 
