@@ -16,6 +16,7 @@ from scinoephile.audio.subtitles import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
+from scinoephile.audio.transcription import get_backend
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
@@ -28,7 +29,6 @@ from scinoephile.core.llms import (
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
-from scinoephile.llms.default_test_cases import get_whisper_backend
 
 from .alignment import Alignment
 from .merging import YueZhoHansMergingPrompt
@@ -323,7 +323,7 @@ class Aligner:
             test_root: Path to root directory of test cases
         """
         test_root = val_input_dir_path(test_root)
-        backend = get_whisper_backend()
+        backend = get_backend()
 
         save_test_cases_to_json(
             test_root

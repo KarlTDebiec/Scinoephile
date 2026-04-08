@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
@@ -14,7 +15,6 @@ from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_pro
 from scinoephile.lang.eng.proofreading import get_eng_proofreader
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
-from scinoephile.llms.default_test_cases import get_whisper_backend
 from scinoephile.multilang.yue_zho import get_yue_vs_zho_proofread
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
@@ -27,7 +27,6 @@ from test.helpers import test_data_root
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
 output_dir = title_root / "output"
-whisper_backend = get_whisper_backend()
 set_logging_verbosity(2)
 
 actions = {
@@ -129,7 +128,7 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "proofreading"
-        / f"{whisper_backend}.json",
+        / f"{get_backend()}.json",
         auto_verify=True,
     )
     yue_hans_proofread = get_yue_vs_zho_proofread(

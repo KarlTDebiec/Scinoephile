@@ -6,11 +6,12 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import get_backend
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.subtitles import Series
@@ -22,7 +23,6 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHansProofreadingPrompt,
     ZhoHantProofreadingPrompt,
 )
-from scinoephile.llms.default_test_cases import get_whisper_backend
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
@@ -196,7 +196,7 @@ def get_kob_yue_shifting_test_cases(
         / "yue_zho"
         / "transcription"
         / "shifting"
-        / f"{get_whisper_backend()}.json"
+        / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
         path, DualPairManager, prompt_cls=prompt_cls, **kwargs
@@ -222,7 +222,7 @@ def get_kob_yue_merging_test_cases(
         / "yue_zho"
         / "transcription"
         / "merging"
-        / f"{get_whisper_backend()}.json"
+        / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
@@ -243,11 +243,7 @@ def get_kob_yue_vs_zho_proofreading_test_cases(
         test cases
     """
     path = (
-        title_root
-        / "multilang"
-        / "yue_zho"
-        / "proofreading"
-        / f"{get_whisper_backend()}.json"
+        title_root / "multilang" / "yue_zho" / "proofreading" / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs

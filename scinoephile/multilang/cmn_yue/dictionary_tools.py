@@ -54,7 +54,7 @@ def lookup_cuhk_dictionary(
     direction: str = LookupDirection.CMN_TO_YUE.value,
     limit: int = 10,
     *,
-    auto_build_missing: bool = True,
+    auto_build_missing: bool = False,
 ) -> dict[str, object]:
     """Lookup entries in CUHK dictionary data.
 
@@ -88,11 +88,21 @@ def lookup_cuhk_dictionary(
         }
 
     service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
-    entries = service.lookup(
-        query=normalized_query,
-        direction=direction_enum,
-        limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
-    )
+    try:
+        entries = service.lookup(
+            query=normalized_query,
+            direction=direction_enum,
+            limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
+        )
+    except FileNotFoundError as exc:
+        logger.warning("CUHK dictionary lookup unavailable: %s", exc)
+        return {
+            "query": normalized_query,
+            "direction": direction_enum.value,
+            "result_count": 0,
+            "entries": [],
+            "error": str(exc),
+        }
     logger.info(
         "CUHK dictionary lookup: query=%r direction=%s result_count=%d",
         normalized_query,
@@ -140,7 +150,7 @@ def _lookup_cuhk_dictionary_from_args(
         query=query,
         direction=direction,
         limit=limit,
-        auto_build_missing=True,
+        auto_build_missing=False,
     )
 
 

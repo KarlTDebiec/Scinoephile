@@ -31,7 +31,7 @@ from scinoephile.llms.default_test_cases import (
     ZHO_HANS_PROOFREADING_JSON_PATHS,
     ZHO_HANT_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_PROOFREADING_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
@@ -54,7 +54,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     test_data_root = package_root.parent / "test" / "data"
     count = 0
     for relative_path in relative_paths:
-        with open(test_data_root / relative_path, encoding="utf-8") as file_handle:
+        path = test_data_root / relative_path
+        if not path.is_file():
+            continue
+        with open(path, encoding="utf-8") as file_handle:
             count += len(json.load(file_handle))
     return count
 
@@ -64,7 +67,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     [
         (
             "eng_proofreading",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 MonoBlockManager, EngProofreadingPrompt, ENG_PROOFREADING_JSON_PATHS
             ),
             [
@@ -77,7 +80,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "eng_ocr_fusion",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 OcrFusionManager, EngOcrFusionPrompt, ENG_OCR_FUSION_JSON_PATHS
             ),
             [
@@ -89,7 +92,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hans_proofreading",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 MonoBlockManager,
                 ZhoHansProofreadingPrompt,
                 ZHO_HANS_PROOFREADING_JSON_PATHS,
@@ -102,7 +105,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hant_proofreading",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 MonoBlockManager,
                 ZhoHantProofreadingPrompt,
                 ZHO_HANT_PROOFREADING_JSON_PATHS,
@@ -116,7 +119,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hans_ocr_fusion",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 OcrFusionManager,
                 ZhoHansOcrFusionPrompt,
                 ZHO_HANS_OCR_FUSION_JSON_PATHS,
@@ -129,7 +132,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "zho_hant_ocr_fusion",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 OcrFusionManager,
                 ZhoHantOcrFusionPrompt,
                 ZHO_HANT_OCR_FUSION_JSON_PATHS,
@@ -143,37 +146,40 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         ),
         (
             "yue_zho_proofreading",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 YueZhoProofreadingManager,
                 YueZhoHansProofreadingPrompt,
                 YUE_ZHO_PROOFREADING_JSON_PATHS,
             ),
             [
                 "mlamd/multilang/yue_zho/proofreading/gpu.json",
+                "mlamd/multilang/yue_zho/proofreading/cpu.json",
                 "mlamd/multilang/yue_zho/proofreading/mps.json",
             ],
         ),
         (
             "yue_zho_review",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 DualBlockManager,
                 YueHansReviewPrompt,
                 YUE_ZHO_REVIEW_JSON_PATHS,
             ),
             [
                 "mlamd/multilang/yue_zho/review/gpu.json",
+                "mlamd/multilang/yue_zho/review/cpu.json",
                 "mlamd/multilang/yue_zho/review/mps.json",
             ],
         ),
         (
             "yue_from_zho_translation",
-            lambda: load_default_test_cases_from_repo_data(
+            lambda: load_default_test_cases(
                 DualBlockGappedManager,
                 YueHansFromZhoTranslationPrompt,
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
             [
                 "mlamd/multilang/yue_zho/translation/gpu.json",
+                "mlamd/multilang/yue_zho/translation/cpu.json",
                 "mlamd/multilang/yue_zho/translation/mps.json",
             ],
         ),

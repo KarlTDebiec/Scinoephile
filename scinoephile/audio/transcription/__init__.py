@@ -5,7 +5,10 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from functools import cache
 from logging import getLogger
+
+import torch
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -16,6 +19,7 @@ __all__ = [
     "TranscribedSegment",
     "TranscribedWord",
     "WhisperTranscriber",
+    "get_backend",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",
@@ -23,6 +27,20 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+@cache
+def get_backend() -> str:
+    """Get Whisper / torch backend name.
+
+    Returns:
+        backend name
+    """
+    if torch.mps.is_available():
+        return "mps"
+    if torch.cuda.is_available():
+        return "gpu"
+    return "cpu"
 
 
 def get_segment_zho_converted(

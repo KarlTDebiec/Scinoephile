@@ -11,7 +11,7 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_REVIEW_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
 from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
@@ -80,7 +80,7 @@ def get_yue_vs_zho_processor(
     """
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases_from_repo_data(
+            load_default_test_cases(
                 DualBlockManager,
                 prompt_cls,
                 YUE_ZHO_REVIEW_JSON_PATHS,

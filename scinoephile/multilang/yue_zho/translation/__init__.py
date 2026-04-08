@@ -11,7 +11,7 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
@@ -83,7 +83,7 @@ def get_yue_from_zho_translator(
     """
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases_from_repo_data(
+            load_default_test_cases(
                 DualBlockGappedManager,
                 prompt_cls,
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
