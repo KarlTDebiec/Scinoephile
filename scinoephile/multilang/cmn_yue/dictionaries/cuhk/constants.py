@@ -7,8 +7,7 @@ from __future__ import annotations
 import re
 
 from scinoephile.core.dictionaries import DictionarySource
-
-MAX_LOOKUP_LIMIT = 400
+from scinoephile.multilang.cmn_yue.dictionaries.constants import MAX_LOOKUP_LIMIT
 
 BASE_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/"
 TERMS_URL = "https://apps.itsc.cuhk.edu.hk/hanyu/Page/Terms.aspx"

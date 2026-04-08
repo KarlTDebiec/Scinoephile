@@ -17,7 +17,7 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedProcessor,
 )
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
@@ -76,7 +76,7 @@ def get_yue_from_zho_translator(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
-        use_dictionary_tool: whether to wire the CUHK dictionary tool
+        use_dictionary_tool: whether to wire the generic dictionary tool
         **kwargs: additional arguments for DualBlockGappedProcessor
     Returns:
         DualBlockGappedProcessor with provided configuration
@@ -92,7 +92,7 @@ def get_yue_from_zho_translator(
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_cuhk_dictionary_tooling()
+        tools, tool_handlers = get_dictionary_tooling()
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

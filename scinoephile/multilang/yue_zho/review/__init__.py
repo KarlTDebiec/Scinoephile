@@ -14,7 +14,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 
@@ -73,7 +73,7 @@ def get_yue_vs_zho_processor(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
-        use_dictionary_tool: whether to wire the CUHK dictionary tool
+        use_dictionary_tool: whether to wire the generic dictionary tool
         **kwargs: additional arguments for DualBlockProcessor
     Returns:
         DualBlockProcessor with provided configuration
@@ -89,7 +89,7 @@ def get_yue_vs_zho_processor(
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_cuhk_dictionary_tooling()
+        tools, tool_handlers = get_dictionary_tooling()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

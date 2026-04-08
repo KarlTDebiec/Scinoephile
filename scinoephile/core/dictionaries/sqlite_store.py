@@ -33,6 +33,63 @@ class DictionarySqliteStore:
         """
         self.database_path = val_output_path(database_path, exist_ok=True)
 
+    def load_source(self) -> DictionarySource:
+        """Load the only source metadata row from this database.
+
+        Returns:
+            dictionary source metadata
+        Raises:
+            RuntimeError: if the database does not contain exactly one source
+        """
+        sources = self.load_sources()
+        if not sources:
+            raise RuntimeError(
+                f"Dictionary database {self.database_path} does not contain a source"
+            )
+        if len(sources) != 1:
+            raise RuntimeError(
+                f"Dictionary database {self.database_path} contains "
+                f"{len(sources)} sources; expected exactly one"
+            )
+        return sources[0]
+
+    def load_sources(self) -> list[DictionarySource]:
+        """Load all source metadata rows from this database.
+
+        Returns:
+            dictionary source metadata rows
+        """
+        sql = """
+            SELECT
+                sourcename,
+                sourceshortname,
+                version,
+                description,
+                legal,
+                link,
+                update_url,
+                other
+            FROM sources
+            ORDER BY source_id
+        """
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(sql).fetchall()
+
+        return [
+            DictionarySource(
+                name=str(row["sourcename"]),
+                shortname=str(row["sourceshortname"]),
+                version=str(row["version"]),
+                description=str(row["description"]),
+                legal=str(row["legal"]),
+                link=str(row["link"]),
+                update_url=str(row["update_url"]),
+                other=str(row["other"]),
+            )
+            for row in rows
+        ]
+
     def lookup(
         self,
         query: str,

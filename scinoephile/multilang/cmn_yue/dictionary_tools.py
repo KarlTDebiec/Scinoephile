@@ -1,39 +1,46 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""In-process CUHK dictionary tools for 粤文/中文 LLM workflows."""
+"""In-process dictionary tools for 粤文/中文 LLM workflows."""
 
 from __future__ import annotations
 
 from logging import getLogger
+from pathlib import Path
 
-from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.core.dictionaries import DictionaryLookupResult, LookupDirection
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
-from .dictionaries.cuhk import CuhkDictionaryService
-from .dictionaries.cuhk.constants import MAX_LOOKUP_LIMIT
+from .dictionaries.constants import MAX_LOOKUP_LIMIT
+from .dictionaries.service import CmnYueDictionaryService
 
 __all__ = [
-    "CUHK_LOOKUP_TOOL_NAME",
-    "get_cuhk_dictionary_tooling",
-    "lookup_cuhk_dictionary",
+    "LOOKUP_TOOL_NAME",
+    "get_dictionary_tooling",
+    "lookup_dictionary",
 ]
 
-CUHK_LOOKUP_TOOL_NAME = "lookup_cuhk_dictionary"
-"""Tool name for CUHK dictionary lookups."""
+LOOKUP_TOOL_NAME = "lookup_dictionary"
+"""Tool name for generic dictionary lookups."""
 
 logger = getLogger(__name__)
 """Module logger."""
 
 
-def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
-    """Convert one dictionary entry into a JSON-serializable payload.
+def _entry_to_dict(result: DictionaryLookupResult) -> dict[str, object]:
+    """Convert one lookup result into a JSON-serializable payload.
 
     Arguments:
-        entry: dictionary entry
+        result: source-tagged dictionary lookup result
     Returns:
-        serialized dictionary entry
+        serialized lookup result
     """
+    entry = result.entry
     return {
+        "source": {
+            "id": result.source_id,
+            "shortname": result.source.shortname,
+            "name": result.source.name,
+        },
         "traditional": entry.traditional,
         "simplified": entry.simplified,
         "pinyin": entry.pinyin,
@@ -49,28 +56,32 @@ def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
     }
 
 
-def lookup_cuhk_dictionary(
+def lookup_dictionary(
     query: str,
     direction: str = LookupDirection.CMN_TO_YUE.value,
     limit: int = 10,
     *,
-    auto_build_missing: bool = False,
+    database_paths: list[Path] | None = None,
+    sources: list[str] | None = None,
 ) -> dict[str, object]:
-    """Lookup entries in CUHK dictionary data.
+    """Lookup entries in installed dictionary data.
 
     Arguments:
         query: input query string
         direction: lookup direction
         limit: max entries to return
-        auto_build_missing: build database automatically if missing
+        database_paths: explicit database paths to search
+        sources: optional source filters
     Returns:
         lookup response payload
     """
     normalized_query = str(query).strip()
+    normalized_sources = [source.strip() for source in sources or [] if source.strip()]
     if not normalized_query:
         return {
             "query": normalized_query,
             "direction": direction,
+            "sources": normalized_sources,
             "result_count": 0,
             "entries": [],
             "error": "query must be non-empty",
@@ -82,45 +93,50 @@ def lookup_cuhk_dictionary(
         return {
             "query": normalized_query,
             "direction": direction,
+            "sources": normalized_sources,
             "result_count": 0,
             "entries": [],
             "error": "direction must be 'cmn_to_yue' or 'yue_to_cmn'",
         }
 
-    service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
+    service = CmnYueDictionaryService(database_paths=database_paths)
     try:
-        entries = service.lookup(
+        results = service.lookup(
             query=normalized_query,
             direction=direction_enum,
             limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
+            source_ids=normalized_sources or None,
         )
-    except FileNotFoundError as exc:
-        logger.warning("CUHK dictionary lookup unavailable: %s", exc)
+    except (FileNotFoundError, ValueError) as exc:
+        logger.warning("Dictionary lookup unavailable: %s", exc)
         return {
             "query": normalized_query,
             "direction": direction_enum.value,
+            "sources": normalized_sources,
             "result_count": 0,
             "entries": [],
             "error": str(exc),
         }
     logger.info(
-        "CUHK dictionary lookup: query=%r direction=%s result_count=%d",
+        "Dictionary lookup: query=%r direction=%s source_count=%d result_count=%d",
         normalized_query,
         direction_enum.value,
-        len(entries),
+        len(normalized_sources),
+        len(results),
     )
     return {
         "query": normalized_query,
         "direction": direction_enum.value,
-        "result_count": len(entries),
-        "entries": [_entry_to_dict(entry) for entry in entries],
+        "sources": normalized_sources,
+        "result_count": len(results),
+        "entries": [_entry_to_dict(result) for result in results],
     }
 
 
-def _lookup_cuhk_dictionary_from_args(
+def _lookup_dictionary_from_args(
     arguments: dict[str, object],
 ) -> dict[str, object]:
-    """Execute CUHK dictionary lookup from parsed tool-call arguments.
+    """Execute generic dictionary lookup from parsed tool-call arguments.
 
     Arguments:
         arguments: decoded tool-call JSON arguments
@@ -146,26 +162,34 @@ def _lookup_cuhk_dictionary_from_args(
     else:
         limit = 10
 
-    return lookup_cuhk_dictionary(
+    sources_raw = arguments.get("sources", [])
+    if isinstance(sources_raw, list):
+        sources = [str(source).strip() for source in sources_raw if str(source).strip()]
+    elif isinstance(sources_raw, str) and sources_raw.strip():
+        sources = [sources_raw.strip()]
+    else:
+        sources = []
+
+    return lookup_dictionary(
         query=query,
         direction=direction,
         limit=limit,
-        auto_build_missing=False,
+        sources=sources,
     )
 
 
-def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
-    """Get CUHK dictionary tool definitions and handlers for LLM providers.
+def get_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+    """Get generic dictionary tool definitions and handlers for LLM providers.
 
     Returns:
         tool definitions and corresponding tool handlers
     """
     tools: list[LLMToolSpec] = [
         {
-            "name": CUHK_LOOKUP_TOOL_NAME,
+            "name": LOOKUP_TOOL_NAME,
             "description": (
-                "Lookup Cantonese <-> Mandarin entries from the CUHK "
-                "現代標準漢語與粵語對照資料庫 dictionary."
+                "Lookup Cantonese <-> Mandarin entries from installed "
+                "Scinoephile dictionary sources."
             ),
             "parameters": {
                 "type": "object",
@@ -192,11 +216,20 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
                         "maximum": 400,
                         "default": 10,
                     },
+                    "sources": {
+                        "type": "array",
+                        "description": (
+                            "Optional list of source ids to search, such as 'cuhk'."
+                        ),
+                        "items": {
+                            "type": "string",
+                        },
+                    },
                 },
             },
         }
     ]
     handlers: dict[str, ToolHandler] = {
-        CUHK_LOOKUP_TOOL_NAME: _lookup_cuhk_dictionary_from_args,
+        LOOKUP_TOOL_NAME: _lookup_dictionary_from_args,
     }
     return tools, handlers

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for searching the CUHK dictionary cache."""
+"""Command-line interface for searching installed 中文/粤文 dictionaries."""
 
 from __future__ import annotations
 
@@ -14,14 +14,14 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
-from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.core.dictionaries import DictionaryLookupResult, LookupDirection
+from scinoephile.multilang.cmn_yue.dictionaries.service import CmnYueDictionaryService
 
 logger = getLogger(__name__)
 
 
 class CmnYueDictionarySearchCli(CommandLineInterface):
-    """Command-line interface for searching the CUHK dictionary cache."""
+    """Command-line interface for searching installed 中文/粤文 dictionaries."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -43,8 +43,9 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             "--database-path",
             metavar="FILE",
             default=None,
+            action="append",
             type=input_file_arg(),
-            help="SQLite database input path",
+            help="SQLite database input path, may be specified more than once",
         )
 
         # Operation arguments
@@ -61,6 +62,14 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
             help="lookup direction",
         )
         arg_groups["operation arguments"].add_argument(
+            "--source",
+            metavar="SOURCE",
+            default=None,
+            action="append",
+            type=str,
+            help="optional source id filter, may be specified more than once",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--limit",
             metavar="N",
             type=int_arg(min_value=1),
@@ -75,17 +84,22 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        database_path = kwargs.pop("database_path")
+        database_paths = kwargs.pop("database_path")
         query = kwargs.pop("query")
         direction = kwargs.pop("direction")
+        source_ids = kwargs.pop("source")
         limit = kwargs.pop("limit")
 
-        service = CuhkDictionaryService(
-            database_path=database_path,
-            auto_build_missing=False,
+        service = CmnYueDictionaryService(
+            database_paths=database_paths,
         )
-        entries = service.lookup(query=query, direction=direction, limit=limit)
-        cls._log_search_results(query, direction, entries)
+        results = service.lookup(
+            query=query,
+            direction=direction,
+            limit=limit,
+            source_ids=source_ids,
+        )
+        cls._log_search_results(query, direction, results)
 
     @classmethod
     def name(cls) -> str:
@@ -101,21 +115,23 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         cls,
         query: str,
         direction: LookupDirection,
-        entries: list[DictionaryEntry],
+        results: list[DictionaryLookupResult],
     ):
         """Log formatted search results.
 
         Arguments:
             query: lookup query
             direction: lookup direction
-            entries: lookup results
+            results: lookup results
         """
         logger.info(
-            f"Found {len(entries)} CUHK match(es) for {query!r} using {direction.value}"
+            f"Found {len(results)} match(es) for {query!r} using {direction.value}"
         )
-        for index, entry in enumerate(entries, start=1):
+        for index, result in enumerate(results, start=1):
+            entry = result.entry
             logger.info(
-                f"{index}. {entry.traditional} | {entry.simplified} | "
+                f"{index}. [{result.source.shortname}] "
+                f"{entry.traditional} | {entry.simplified} | "
                 f"Jyutping: {entry.jyutping} | Pinyin: {entry.pinyin}"
             )
             for definition in entry.definitions:

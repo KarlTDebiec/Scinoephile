@@ -12,10 +12,9 @@ from scinoephile.core.dictionaries import (
     DictionarySqliteStore,
     LookupDirection,
 )
-from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
-from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
+from ..registry import get_cmn_yue_dictionary_source_spec
+from ..service import CmnYueDictionaryService
 from .constants import MAX_LOOKUP_LIMIT
 from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
@@ -42,9 +41,9 @@ class CuhkDictionaryService:
             scraper_kwargs: keyword arguments forwarded to CuhkDictionaryScraper
         """
         if database_path is None:
-            database_path = (
-                get_runtime_cache_dir_path("dictionaries", "cuhk") / "cuhk.db"
-            )
+            database_path = get_cmn_yue_dictionary_source_spec(
+                "cuhk"
+            ).get_default_database_path()
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
         if scraper_kwargs is None:
@@ -97,30 +96,10 @@ class CuhkDictionaryService:
                 )
             self.build(overwrite=False)
 
-        for lookup_query in self._get_lookup_queries(query, direction):
-            if entries := self.database.lookup(lookup_query, direction, limit):
-                return entries
-        return []
-
-    @staticmethod
-    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
-        """Get ordered query variants for dictionary lookup.
-
-        Arguments:
-            query: raw query text
-            direction: lookup direction
-        Returns:
-            ordered query variants
-        """
-        if direction == LookupDirection.CMN_TO_YUE:
-            query_variants = get_cmn_pinyin_query_strings(query)
-        else:
-            query_variants = get_yue_jyutping_query_strings(query)
-
-        ordered_queries: list[str] = []
-        seen_queries: set[str] = set()
-        for one_query in [*query_variants, query]:
-            if one_query and one_query not in seen_queries:
-                seen_queries.add(one_query)
-                ordered_queries.append(one_query)
-        return ordered_queries
+        aggregate_service = CmnYueDictionaryService(database_paths=[self.database_path])
+        results = aggregate_service.lookup(
+            query=query,
+            direction=direction,
+            limit=limit,
+        )
+        return [result.entry for result in results]
