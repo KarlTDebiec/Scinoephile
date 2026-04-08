@@ -48,22 +48,21 @@ class YueTranscriber:
             merging_test_cases: merging test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
-        cache_dir_path = get_runtime_cache_dir_path("llm")
         self.transcriber = WhisperTranscriber(
             "khleeloo/whisper-large-v3-cantonese",
-            cache_dir_path=cache_dir_path,
+            cache_dir_path=get_runtime_cache_dir_path("whisper"),
         )
         shifting_queryer_cls = Queryer.get_queryer_cls(YueZhoHansShiftingPrompt)
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
-            cache_dir_path=cache_dir_path,
+            cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         merging_queryer_cls = Queryer.get_queryer_cls(YueZhoHansMergingPrompt)
         self.merging_queryer = merging_queryer_cls(
             prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
-            cache_dir_path=cache_dir_path,
+            cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,

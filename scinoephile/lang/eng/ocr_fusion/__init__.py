@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, TypedDict, Unpack
 
 from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 
@@ -78,7 +78,7 @@ def get_eng_ocr_fuser(
     """
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases_from_repo_data(
+            load_default_test_cases(
                 OcrFusionManager,
                 prompt_cls,
                 ENG_OCR_FUSION_JSON_PATHS,

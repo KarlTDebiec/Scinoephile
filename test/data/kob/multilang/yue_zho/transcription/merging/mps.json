@@ -1,0 +1,10724 @@
+[
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "少爷",
+        "准备好了"
+      ],
+      "zhongwen": "少爷！准备好了"
+    },
+    "answer": {
+      "yuewen_merged": "少爷！准备好了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "辛苦啦,少爷"
+      ],
+      "zhongwen": "辛苦了！少爷"
+    },
+    "answer": {
+      "yuewen_merged": "辛苦啦！少爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "会喊啦,少爷"
+      ],
+      "zhongwen": "少爷！擦个汗吧"
+    },
+    "answer": {
+      "yuewen_merged": "会喊啦，少爷！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "师爷",
+        "少爷写乜嘢呀"
+      ],
+      "zhongwen": "师爷，少爷写的是甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "师爷，少爷写乜嘢呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哗",
+        "好靓呀",
+        "原来少爷识写自己个名㖞"
+      ],
+      "zhongwen": "好棒！原来少爷会写自己的名字"
+    },
+    "answer": {
+      "yuewen_merged": "哗，好靓呀！原来少爷识写自己个名㖞"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系呀",
+        "婴儿"
+      ],
+      "zhongwen": "对呀"
+    },
+    "answer": {
+      "yuewen_merged": "系呀，婴儿"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好字呀",
+        "龙飞凤舞",
+        "苏擦虾耳铲"
+      ],
+      "zhongwen": "好字！龙飞凤舞，苏察哈尔灿"
+    },
+    "answer": {
+      "yuewen_merged": "好字呀！龙飞凤舞，「苏擦虾耳铲」"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "调转咗呀",
+        "老爷"
+      ],
+      "zhongwen": "你念反了，老爷"
+    },
+    "answer": {
+      "yuewen_merged": "调转咗呀，老爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "叻仔",
+        "但事冇娇",
+        "知咩"
+      ],
+      "zhongwen": "好小子，但是别骄傲，知道吗？"
+    },
+    "answer": {
+      "yuewen_merged": "叻仔，但事冇娇，知咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹爹",
+        "我哋苏擦虾耳家"
+      ],
+      "zhongwen": "爹，我们苏察哈尔家"
+    },
+    "answer": {
+      "yuewen_merged": "爹爹，我哋苏擦虾耳家"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "而家唔系啦",
+        "我个仔你佢孙阿灿呢"
+      ],
+      "zhongwen": "现在可不同，我的儿子你的孙儿阿灿"
+    },
+    "answer": {
+      "yuewen_merged": "而家唔系啦，我个仔你佢孙阿灿呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹",
+        "呢一步非同小可"
+      ],
+      "zhongwen": "爹，这可是非同少可"
+    },
+    "answer": {
+      "yuewen_merged": "爹，呢一步非同小可"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵爷",
+        "你真系要好啲学写字"
+      ],
+      "zhongwen": "少爷，你真是要好好地学习写字"
+    },
+    "answer": {
+      "yuewen_merged": "赵爷，你真系要好啲学写字"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我傻",
+        "灿爷灿"
+      ],
+      "zhongwen": "阿灿，先把它裱起来"
+    },
+    "answer": {
+      "yuewen_merged": "我傻，灿爷灿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "表起佢",
+        "师爷",
+        "你攞佢有咁多眼挂咁多眼",
+        "咁唔系"
+      ],
+      "zhongwen": "师爷，把它挂在最当眼的地方"
+    },
+    "answer": {
+      "yuewen_merged": "表起佢，师爷，你攞佢有咁多眼挂咁多眼，咁唔系⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "师爷"
+      ],
+      "zhongwen": "这样吧，师爷"
+    },
+    "answer": {
+      "yuewen_merged": "师爷"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你揹住佢参夫阿国",
+        "和友伦皆威下先"
+      ],
+      "zhongwen": "你先揹著它簪花挂红，游行威风一下"
+    },
+    "answer": {
+      "yuewen_merged": "你揹住佢参夫阿国和友伦皆威下先"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "灿爷灿",
+        "来来",
+        "坐坐坐"
+      ],
+      "zhongwen": "阿灿，来⋯坐⋯"
+    },
+    "answer": {
+      "yuewen_merged": "灿爷灿，来来，坐坐坐⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "见你咁生性",
+        "我都好",
+        "我好安慰"
+      ],
+      "zhongwen": "你这么争气，我也很安慰"
+    },
+    "answer": {
+      "yuewen_merged": "见你咁生性，我都好，我好安慰"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你听我讲",
+        "爹呢书名系二世祖"
+      ],
+      "zhongwen": "你听我说，爹是有名的败家儿"
+    },
+    "answer": {
+      "yuewen_merged": "你听我讲，爹呢书名系二世祖"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好话唔好听",
+        "但系爹两个人呢"
+      ],
+      "zhongwen": "说难听一点，日后我两脚一伸"
+    },
+    "answer": {
+      "yuewen_merged": "好话唔好听，但系爹两个人呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你真系全部都靠自己喇"
+      ],
+      "zhongwen": "你个王八蛋，怎么到这里来讨饭？"
+    },
+    "answer": {
+      "yuewen_merged": "你真系全部都靠自己喇？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "成十万两一张",
+        "省得使呀"
+      ],
+      "zhongwen": "十万两一张，省一点花啊"
+    },
+    "answer": {
+      "yuewen_merged": "成十万两一张，省得使呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "茂利",
+        "攞我顶西洋帽过嚟"
+      ],
+      "zhongwen": "茂利，把我的西洋帽拿来"
+    },
+    "answer": {
+      "yuewen_merged": "茂利，攞我顶西洋帽过嚟"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "去边呀",
+        "灿"
+      ],
+      "zhongwen": "你去哪，阿灿？"
+    },
+    "answer": {
+      "yuewen_merged": "去边呀，灿？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你跪跟呀"
+      ],
+      "zhongwen": "你贵庚？"
+    },
+    "answer": {
+      "yuewen_merged": "你跪跟呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "廿五岁大寿嘛",
+        "早啲到呀"
+      ],
+      "zhongwen": "廿五岁大寿，早点到"
+    },
+    "answer": {
+      "yuewen_merged": "廿五岁大寿嘛，早啲到呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "乞丫会咁有钱",
+        "我都想做"
+      ],
+      "zhongwen": "乞丐会那么有钱？我也想当"
+    },
+    "answer": {
+      "yuewen_merged": "乞丫会咁有钱？我都想做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "个寿头硬事嘅真系"
+      ],
+      "zhongwen": "那寿头真是⋯"
+    },
+    "answer": {
+      "yuewen_merged": "个寿头硬事嘅真系⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "过嚟"
+      ],
+      "zhongwen": "过来，过来"
+    },
+    "answer": {
+      "yuewen_merged": "过嚟，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "过嚟",
+        "做咩呀",
+        "老爷"
+      ],
+      "zhongwen": "老爷，甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "过嚟，做咩呀，老爷？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "个衰仔摆大寿打张签",
+        "都嫁细个人嘅"
+      ],
+      "zhongwen": "那臭小子的寿帖真威风"
+    },
+    "answer": {
+      "yuewen_merged": "个衰仔摆大寿打张签，都嫁细个人嘅"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但系老爷摆大寿呢",
+        "要嫁细个佢",
+        "老爷"
+      ],
+      "zhongwen": "他日老爷做大寿，要比他威风"
+    },
+    "answer": {
+      "yuewen_merged": "但系老爷摆大寿呢，要嫁细个佢，老爷"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "王爷",
+        "你觉得广东嘅大戏如何"
+      ],
+      "zhongwen": "皇爷，你觉得广东大戏怎样？"
+    },
+    "answer": {
+      "yuewen_merged": "王爷，你觉得广东嘅大戏如何？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "地方戏曲",
+        "当然比不上京戏"
+      ],
+      "zhongwen": "地方戏曲，当然不及京戏"
+    },
+    "answer": {
+      "yuewen_merged": "地方戏曲，当然比不上京戏"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不过",
+        "都算系一番变色"
+      ],
+      "zhongwen": "但也算是一种见识"
+    },
+    "answer": {
+      "yuewen_merged": "不过，都算系一番变色"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "打赏…"
+      ],
+      "zhongwen": "打赏⋯打赏"
+    },
+    "answer": {
+      "yuewen_merged": "打赏⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我家善人,",
+        "喷病老药",
+        "死人塌楼,"
+      ],
+      "zhongwen": "我家破人亡、贫病老弱"
+    },
+    "answer": {
+      "yuewen_merged": "我家善人，喷病老药，死人塌楼，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "妻离子散"
+      ],
+      "zhongwen": "无亲无故、妻离子散"
+    },
+    "answer": {
+      "yuewen_merged": "妻离子散"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我咁家产呀?师兄佢点人钱呀?"
+      ],
+      "zhongwen": "打赏个救命钱　　怎么搅的，死乞丐！"
+    },
+    "answer": {
+      "yuewen_merged": "我咁家产呀？师兄佢点人钱呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "搞错呀,",
+        "死客医呀",
+        "打你个仆街又唔家贼",
+        "黑食黑到嚟呢度,"
+      ],
+      "zhongwen": "你个王八蛋，怎么到这里来讨饭？"
+    },
+    "answer": {
+      "yuewen_merged": "搞错呀，死客医呀，打你个仆街又唔家贼，黑食黑到嚟呢度？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我打…",
+        "打赏"
+      ],
+      "zhongwen": "我打⋯"
+    },
+    "answer": {
+      "yuewen_merged": "我打⋯打赏"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "闭小嘢"
+      ],
+      "zhongwen": "打赏　　是，少爷"
+    },
+    "answer": {
+      "yuewen_merged": "闭小嘢　　"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有冇搞错呀?",
+        "有冇钱就走呀"
+      ],
+      "zhongwen": "这样也有打赏？"
+    },
+    "answer": {
+      "yuewen_merged": "有冇搞错呀？有冇钱就走呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "食饭",
+        "睇你宵夜直落叫鸡,",
+        "我包"
+      ],
+      "zhongwen": "吃饭看戏宵夜嫖妓，我包"
+    },
+    "answer": {
+      "yuewen_merged": "食饭睇你宵夜直落叫鸡，我包"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "包"
+      ],
+      "zhongwen": "你包？"
+    },
+    "answer": {
+      "yuewen_merged": "包？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "包",
+        "点解?催呀?"
+      ],
+      "zhongwen": "不可以吗？"
+    },
+    "answer": {
+      "yuewen_merged": "包，点解？催呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔催…"
+      ],
+      "zhongwen": "可以，可以"
+    },
+    "answer": {
+      "yuewen_merged": "唔催…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "请跟我嚟"
+      ],
+      "zhongwen": "大爷进我间房吧⋯　　请你跟我来"
+    },
+    "answer": {
+      "yuewen_merged": "请跟我嚟⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点呀,"
+      ],
+      "zhongwen": "是⋯"
+    },
+    "answer": {
+      "yuewen_merged": "点呀⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "龟婆?"
+      ],
+      "zhongwen": "你好吗，鸨母？"
+    },
+    "answer": {
+      "yuewen_merged": "龟婆？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好衰㗎,",
+        "你冇名你叫龟婆呀?"
+      ],
+      "zhongwen": "你真坏，有名字你不叫，叫我鸨母"
+    },
+    "answer": {
+      "yuewen_merged": "好衰㗎，你冇名你叫龟婆呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大家坦白啲唔好咩?"
+      ],
+      "zhongwen": "大家坦白一点不好吗？"
+    },
+    "answer": {
+      "yuewen_merged": "大家坦白啲唔好咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你耳顶冇呀",
+        "譬如麻大孝噉,"
+      ],
+      "zhongwen": "你的帽子像披麻带孝似的"
+    },
+    "answer": {
+      "yuewen_merged": "你耳顶冇呀，譬如麻大孝噉"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "死老豆呀你"
+      ],
+      "zhongwen": "你老爸死了吗？"
+    },
+    "answer": {
+      "yuewen_merged": "死老豆呀你？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "今迟,",
+        "赵先生方本官苏平长毛贼"
+      ],
+      "zhongwen": "赵先生这趟帮本官扫平长毛贼"
+    },
+    "answer": {
+      "yuewen_merged": "今迟，赵先生方本官苏平长毛贼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "今次就好",
+        "希望有陆王爷喺皇上面前"
+      ],
+      "zhongwen": "那就有劳皇爷在皇上面前"
+    },
+    "answer": {
+      "yuewen_merged": "今次就好，希望有陆王爷喺皇上面前"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大喜做完,",
+        "请用毛巾啦"
+      ],
+      "zhongwen": "大戏做完了，请用毛巾"
+    },
+    "answer": {
+      "yuewen_merged": "大喜做完，请用毛巾啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏翁来了…",
+        "苏翁,"
+      ],
+      "zhongwen": "苏翁来了⋯"
+    },
+    "answer": {
+      "yuewen_merged": "苏翁来了⋯苏翁⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "恭喜发财,"
+      ],
+      "zhongwen": "苏翁，恭喜发财"
+    },
+    "answer": {
+      "yuewen_merged": "恭喜发财"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这边…"
+      ],
+      "zhongwen": "这边⋯这边"
+    },
+    "answer": {
+      "yuewen_merged": "这边⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏翁,",
+        "今天你好日子,",
+        "开心死你了"
+      ],
+      "zhongwen": "苏翁，今天是你的好日子，很高兴吧"
+    },
+    "answer": {
+      "yuewen_merged": "苏翁，今天你好日子，开心死你了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我们有几位新姑娘包你满意"
+      ],
+      "zhongwen": "我们有几位新来的姑娘，保证你满意"
+    },
+    "answer": {
+      "yuewen_merged": "我们有几位新姑娘，包你满意"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "金鱼还是木鱼?"
+      ],
+      "zhongwen": "金鱼还是木鱼？"
+    },
+    "answer": {
+      "yuewen_merged": "金鱼还是木鱼？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "少爷,",
+        "什么金鱼还是木鱼?"
+      ],
+      "zhongwen": "少爷，甚么金鱼、木鱼？"
+    },
+    "answer": {
+      "yuewen_merged": "少爷，什么金鱼、还是木鱼？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "傻子,",
+        "金鱼只用来看,"
+      ],
+      "zhongwen": "傻瓜，金鱼只可以看"
+    },
+    "answer": {
+      "yuewen_merged": "傻子，金鱼只用来看"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "几个木鱼还不过来招呼客人"
+      ],
+      "zhongwen": "你们还不过来待候客人⋯"
+    },
+    "answer": {
+      "yuewen_merged": "几个木鱼还不过来招呼客人⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏翁,",
+        "今天你是自大",
+        "你想要什么女人,"
+      ],
+      "zhongwen": "苏翁，今天是你的大日子"
+    },
+    "answer": {
+      "yuewen_merged": "苏翁，今天你是自大，你想要什么女人⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你开声就行了"
+      ],
+      "zhongwen": "你想要怎样的女人，你说就成"
+    },
+    "answer": {
+      "yuewen_merged": "你开声就行了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "无所谓,",
+        "女人个个都一样"
+      ],
+      "zhongwen": "随便，女人都是一样的"
+    },
+    "answer": {
+      "yuewen_merged": "无所谓，女人个个都一样"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "修勇,",
+        "什么事?"
+      ],
+      "zhongwen": "苏翁，甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "修勇，什么事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "什么?"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "什么？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谁这么大胆挑你"
+      ],
+      "zhongwen": "谁胆敢挑你？让我打她的咀"
+    },
+    "answer": {
+      "yuewen_merged": "谁这么大胆挑你？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是用嘴,",
+        "是用眼"
+      ],
+      "zhongwen": "是用眼睛"
+    },
+    "answer": {
+      "yuewen_merged": "不是用嘴，是用眼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有惑重大,",
+        "有杀气",
+        "这只眼神我没见过"
+      ],
+      "zhongwen": "诱惑中带有煞气，这种眼神我没见过"
+    },
+    "answer": {
+      "yuewen_merged": "有惑重大，有杀气，这只眼神我没见过"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "究竟是何方神圣?"
+      ],
+      "zhongwen": "究竟是何方神圣？"
+    },
+    "answer": {
+      "yuewen_merged": "究竟是何方神圣？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不知道赵大人有没有兴趣跟她拜访呢"
+      ],
+      "zhongwen": "赵大人有没有兴趣和她摆房？"
+    },
+    "answer": {
+      "yuewen_merged": "不知道赵大人有没有兴趣跟她拜访呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "怎么样?王爷"
+      ],
+      "zhongwen": "怎么样，皇爷？"
+    },
+    "answer": {
+      "yuewen_merged": "怎么样，王爷？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大格自己人,",
+        "又何必客气呢?"
+      ],
+      "zhongwen": "大家自己人，何必客气呢？"
+    },
+    "answer": {
+      "yuewen_merged": "大格自己人，又何必客气呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵先生请随便"
+      ],
+      "zhongwen": "赵先生，请随便"
+    },
+    "answer": {
+      "yuewen_merged": "赵先生，请随便"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如霜,",
+        "快点下来见赵大人"
+      ],
+      "zhongwen": "如霜，快点下来见赵大人"
+    },
+    "answer": {
+      "yuewen_merged": "如霜，快点下来见赵大人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是她,",
+        "女姐姐,"
+      ],
+      "zhongwen": "姐姐，就是他"
+    },
+    "answer": {
+      "yuewen_merged": "是她,女姐姐,"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我知道,",
+        "镇定点,"
+      ],
+      "zhongwen": "我知道，镇定点"
+    },
+    "answer": {
+      "yuewen_merged": "我知道，镇定点"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但"
+      ],
+      "zhongwen": "失陪　　赵大人"
+    },
+    "answer": {
+      "yuewen_merged": "但　　"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "小女子如霜,",
+        "拜见赵大人"
+      ],
+      "zhongwen": "小女子如霜，拜见赵大人"
+    },
+    "answer": {
+      "yuewen_merged": "小女子如霜，拜见赵大人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵大人,",
+        "那…"
+      ],
+      "zhongwen": "赵大人，那今晚⋯"
+    },
+    "answer": {
+      "yuewen_merged": "赵大人，那⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这么多位",
+        "真不好意思,"
+      ],
+      "zhongwen": "各位⋯真不好意思"
+    },
+    "answer": {
+      "yuewen_merged": "这么多位⋯真不好意思，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没什么意见吧"
+      ],
+      "zhongwen": "有甚么意见吗？"
+    },
+    "answer": {
+      "yuewen_merged": "没什么意见吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "让我来…",
+        "让我讲讲你们公道的话"
+      ],
+      "zhongwen": "让我来⋯让我说句公道话"
+    },
+    "answer": {
+      "yuewen_merged": "让我来⋯让我讲讲你们公道的话"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "千万不要伤了和气",
+        "听听…"
+      ],
+      "zhongwen": "千万不要伤和气，对不对？"
+    },
+    "answer": {
+      "yuewen_merged": "千万不要伤了和气，听听…？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我有粒朝廷大内的定封珠,",
+        "无价的"
+      ],
+      "zhongwen": "我有一颗朝廷大内的定风珠，无价宝"
+    },
+    "answer": {
+      "yuewen_merged": "我有粒朝廷大内的定封珠，无价的"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵大人呀",
+        "我返房等你喇"
+      ],
+      "zhongwen": "赵大人，我回房间等你"
+    },
+    "answer": {
+      "yuewen_merged": "赵大人呀，我返房等你喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "呢粒珠净即十万两呀"
+      ],
+      "zhongwen": "这颗珠值十万两吗？"
+    },
+    "answer": {
+      "yuewen_merged": "呢粒珠净即十万两呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "十万两银通姑娘你都钟意唔少"
+      ],
+      "zhongwen": "十万两你还嫌少吗，姑娘？"
+    },
+    "answer": {
+      "yuewen_merged": "十万两银通姑娘你都钟意唔少？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我一样钟意银两",
+        "不过唔钟意你啫嘛"
+      ],
+      "zhongwen": "我也喜欢银两，只是不喜欢你"
+    },
+    "answer": {
+      "yuewen_merged": "我一样钟意银两，不过唔钟意你啫嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "够坦白",
+        "我真系喜欢得非常"
+      ],
+      "zhongwen": "够坦白，我真的非常喜欢"
+    },
+    "answer": {
+      "yuewen_merged": "够坦白，我真系喜欢得非常"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "骚拥呀"
+      ],
+      "zhongwen": "苏翁⋯"
+    },
+    "answer": {
+      "yuewen_merged": "骚拥呀⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如霜姑娘睇我唔上眼系我",
+        "抵死呀"
+      ],
+      "zhongwen": "如霜姑娘看不上我，是我该死"
+    },
+    "answer": {
+      "yuewen_merged": "如霜姑娘睇我唔上眼，系我抵死呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你明白咁就好啦",
+        "你放心呀"
+      ],
+      "zhongwen": "你明白就好了"
+    },
+    "answer": {
+      "yuewen_merged": "你明白咁就好啦，你放心呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我哋做好多好靓好省嘅姑娘㗎"
+      ],
+      "zhongwen": "放心，我还有很多很漂亮的姑娘"
+    },
+    "answer": {
+      "yuewen_merged": "我哋做好多好靓好省嘅姑娘㗎"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "龟婆",
+        "咁今晚我就靠晒你㗎"
+      ],
+      "zhongwen": "鸨母，那今晚就倚仗你了"
+    },
+    "answer": {
+      "yuewen_merged": "龟婆，咁今晚我就靠晒你㗎"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "放肆"
+      ],
+      "zhongwen": "大胆！放肆"
+    },
+    "answer": {
+      "yuewen_merged": "放肆！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "螳螂拳?几似样啊",
+        "哦"
+      ],
+      "zhongwen": "螳螂拳？像模像样的"
+    },
+    "answer": {
+      "yuewen_merged": "螳螂拳？几似样啊「哦」"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "螳螂点救老虎砌呀",
+        "何况我加埋只壳"
+      ],
+      "zhongwen": "螳螂怎跟老虎斗？何况我还有一只鹤"
+    },
+    "answer": {
+      "yuewen_merged": "螳螂点救老虎砌呀？何况我加埋只壳"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哗",
+        "原来唔系虎学双刑"
+      ],
+      "zhongwen": "原来不是虎鹤双形"
+    },
+    "answer": {
+      "yuewen_merged": "哗，原来唔系虎学双刑"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "后生仔",
+        "物至天高地厚"
+      ],
+      "zhongwen": "年青人，不知天高地厚"
+    },
+    "answer": {
+      "yuewen_merged": "后生仔，物至天高地厚"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "边个兽囊欺我仔我蛋边个"
+      ],
+      "zhongwen": "谁敢欺负我的儿子，我就射谁"
+    },
+    "answer": {
+      "yuewen_merged": "边个兽囊欺我仔，我蛋边个"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谁欺你"
+      ],
+      "zhongwen": "不用害怕，阿灿，谁欺负你？"
+    },
+    "answer": {
+      "yuewen_merged": "谁欺你？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "死你欺",
+        "佢"
+      ],
+      "zhongwen": "甚么？你欺负别人？"
+    },
+    "answer": {
+      "yuewen_merged": "死你欺，佢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有几银性㗎"
+      ],
+      "zhongwen": "他有多少家财？他够不够资格"
+    },
+    "answer": {
+      "yuewen_merged": "有几银性㗎？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佢够唔够资格呀"
+      ],
+      "zhongwen": "老爷！是他们"
+    },
+    "answer": {
+      "yuewen_merged": "佢够唔够资格呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "老爷",
+        "系佢嘢呀"
+      ],
+      "zhongwen": "谁？"
+    },
+    "answer": {
+      "yuewen_merged": "老爷，系佢嘢呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "铁帽子王"
+      ],
+      "zhongwen": "铁帽子王？"
+    },
+    "answer": {
+      "yuewen_merged": "铁帽子王？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "人家送咗咁厚礼",
+        "唔好再欺佢啦"
+      ],
+      "zhongwen": "人家送那么厚的礼就不要再欺负他"
+    },
+    "answer": {
+      "yuewen_merged": "人家送咗咁厚礼，唔好再欺佢啦"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "拿去打赏畀佢啲姑娘",
+        "老爷"
+      ],
+      "zhongwen": "来⋯拿去打赏给这里的姑娘　　老爷"
+    },
+    "answer": {
+      "yuewen_merged": "拿去打赏畀佢啲姑娘　　老爷"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佢令牌上面写住",
+        "铁帽子王争嫁临心呀"
+      ],
+      "zhongwen": "令牌上写著「铁帽子王僧格林参」"
+    },
+    "answer": {
+      "yuewen_merged": "佢令牌上面写住「铁帽子王争嫁临心呀」"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "王爷的令牌你都敢抢"
+      ],
+      "zhongwen": "你胆敢抢皇爷的令牌？"
+    },
+    "answer": {
+      "yuewen_merged": "王爷的令牌你都敢抢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "等等…",
+        "根据大清律例"
+      ],
+      "zhongwen": "等一等！根据大清律例"
+    },
+    "answer": {
+      "yuewen_merged": "等等…！根据大清律例"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "身为朝廷命官",
+        "不得嫖妓"
+      ],
+      "zhongwen": "身为朝廷命官，不得嫖妓"
+    },
+    "answer": {
+      "yuewen_merged": "身为朝廷命官，不得嫖妓"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "知犯犯法该当何罪"
+      ],
+      "zhongwen": "知法犯法，该当何罪？"
+    },
+    "answer": {
+      "yuewen_merged": "知犯犯法，该当何罪？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "那你呢"
+      ],
+      "zhongwen": "那么你呢？"
+    },
+    "answer": {
+      "yuewen_merged": "那你呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是不是说我"
+      ],
+      "zhongwen": "你说我？　　是"
+    },
+    "answer": {
+      "yuewen_merged": "是不是说我？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是",
+        "是不是",
+        "我就是来…",
+        "来"
+      ],
+      "zhongwen": "对呀，我是来⋯"
+    },
+    "answer": {
+      "yuewen_merged": "是，是不是，我就是来…来⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "抓你"
+      ],
+      "zhongwen": "来拉⋯　　拉你"
+    },
+    "answer": {
+      "yuewen_merged": "抓你⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "抓你",
+        "抓他"
+      ],
+      "zhongwen": "他！　　拉他"
+    },
+    "answer": {
+      "yuewen_merged": "抓你！　　抓他"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "还有…",
+        "还有吗"
+      ],
+      "zhongwen": "还有⋯还有"
+    },
+    "answer": {
+      "yuewen_merged": "还有⋯还有吗"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "说"
+      ],
+      "zhongwen": "还有甚么？说吧"
+    },
+    "answer": {
+      "yuewen_merged": "说"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "今天是现清太祖皇后",
+        "叶克拿拉氏的忌辰"
+      ],
+      "zhongwen": "今天是清太祖皇后叶赫拿拉氏的忌辰"
+    },
+    "answer": {
+      "yuewen_merged": "今天是现清太祖皇后叶克拿拉氏的忌辰"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "身为军官",
+        "最佳等"
+      ],
+      "zhongwen": "身为京官罪加一等"
+    },
+    "answer": {
+      "yuewen_merged": "身为军官，最佳等"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "他",
+        "斩他…"
+      ],
+      "zhongwen": "斩他⋯斩他"
+    },
+    "answer": {
+      "yuewen_merged": "他斩他⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "那你不就…"
+      ],
+      "zhongwen": "那你是要⋯"
+    },
+    "answer": {
+      "yuewen_merged": "那你不就⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "还想不想看?"
+      ],
+      "zhongwen": "还想不想看？"
+    },
+    "answer": {
+      "yuewen_merged": "还想不想看？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "多多都有,",
+        "笨蛋"
+      ],
+      "zhongwen": "再多也有，傻瓜"
+    },
+    "answer": {
+      "yuewen_merged": "多多都有，笨蛋"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别多说了"
+      ],
+      "zhongwen": "不用再说，斩他"
+    },
+    "answer": {
+      "yuewen_merged": "别多说了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "闭嘴"
+      ],
+      "zhongwen": "好了好了，玩完了"
+    },
+    "answer": {
+      "yuewen_merged": "闭嘴"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏将军,",
+        "带你去这么开心就算了"
+      ],
+      "zhongwen": "苏将军，大家玩得那么开心就算了吧"
+    },
+    "answer": {
+      "yuewen_merged": "苏将军，带你去这么开心就算了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        ",",
+        "想不到在这里",
+        "给你无赖打扰你的雅兴"
+      ],
+      "zhongwen": "没想到在这里会让他们打扰你的雅兴"
+    },
+    "answer": {
+      "yuewen_merged": "想不到在这里，给你无赖打扰你的雅兴"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "王爷…",
+        "王爷,",
+        "这个玩不起,",
+        "见不收了"
+      ],
+      "zhongwen": "老爷！这个不能惹，见好就收"
+    },
+    "answer": {
+      "yuewen_merged": "王爷…王爷，这个玩不起，见不收了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大事化少,",
+        "小事化无"
+      ],
+      "zhongwen": "大事化小，小事化无"
+    },
+    "answer": {
+      "yuewen_merged": "大事化少，小事化无"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "少爷,",
+        "你的帽子"
+      ],
+      "zhongwen": "少爷，你的帽子"
+    },
+    "answer": {
+      "yuewen_merged": "少爷，你的帽子"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔",
+        "酒菜已经下了断肠散"
+      ],
+      "zhongwen": "莫大叔，酒菜已经加了断肠散"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔，酒菜已经下了断肠散"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "赵无极暗算我们帮主"
+      ],
+      "zhongwen": "好！赵无极暗算我们帮主"
+    },
+    "answer": {
+      "yuewen_merged": "好！赵无极暗算我们帮主"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这个仇",
+        "今天可以报了"
+      ],
+      "zhongwen": "这个仇今天可以报了"
+    },
+    "answer": {
+      "yuewen_merged": "这个仇今天可以报了"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你们一会儿见他未上当",
+        "千万不要出手"
+      ],
+      "zhongwen": "你们待会见他没上当，千万别出手"
+    },
+    "answer": {
+      "yuewen_merged": "你们一会儿见他未上当，千万不要出手"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "因为我们几个加起来",
+        "都未必是他的对手"
+      ],
+      "zhongwen": "因为凑合我们几个也不是他的对手"
+    },
+    "answer": {
+      "yuewen_merged": "因为我们几个加起来，都未必是他的对手"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "长老",
+        "来"
+      ],
+      "zhongwen": "长老，有人来"
+    },
+    "answer": {
+      "yuewen_merged": "长老，来"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大家准备"
+      ],
+      "zhongwen": "大家准备⋯"
+    },
+    "answer": {
+      "yuewen_merged": "大家准备⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "余霜姑娘,我们又见面了"
+      ],
+      "zhongwen": "如霜姑娘，我们又见面了"
+    },
+    "answer": {
+      "yuewen_merged": "余霜姑娘，我们又见面了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "怎么会是你?",
+        "天余",
+        "赵大爷呢?"
+      ],
+      "zhongwen": "怎么是你？赵大爷呢？"
+    },
+    "answer": {
+      "yuewen_merged": "怎么会是你？天余，赵大爷呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "被苏勇一打,被珍珠满",
+        "我"
+      ],
+      "zhongwen": "给苏翁一打就变成珍珠粉末"
+    },
+    "answer": {
+      "yuewen_merged": "被苏勇一打，被珍珠满我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但是…"
+      ],
+      "zhongwen": "但是⋯"
+    },
+    "answer": {
+      "yuewen_merged": "但是⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没有但是",
+        "那十万两我已经放进袋子里了"
+      ],
+      "zhongwen": "但是甚么，十万两我已拿了"
+    },
+    "answer": {
+      "yuewen_merged": "没有但是，那十万两我已经放进袋子里了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "说到苏勇这份人…"
+      ],
+      "zhongwen": "说到苏翁的为人⋯"
+    },
+    "answer": {
+      "yuewen_merged": "说到苏勇这份人⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "废话可以少说了,闺婆"
+      ],
+      "zhongwen": "废话少说，鸨母"
+    },
+    "answer": {
+      "yuewen_merged": "废话可以少说了，闺婆"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是的…"
+      ],
+      "zhongwen": "是的⋯是的"
+    },
+    "answer": {
+      "yuewen_merged": "是的⋯⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏姑娘",
+        "掌握一下吧"
+      ],
+      "zhongwen": "七姑娘⋯　　将就一下⋯"
+    },
+    "answer": {
+      "yuewen_merged": "苏姑娘⋯　　掌握一下吧⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "呢个边个嚟㗎"
+      ],
+      "zhongwen": "这个是谁？"
+    },
+    "answer": {
+      "yuewen_merged": "呢个边个嚟㗎？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "姑娘",
+        "首先有个好消息"
+      ],
+      "zhongwen": "姑娘，首先有个好消息"
+    },
+    "answer": {
+      "yuewen_merged": "姑娘，首先有个好消息"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "我就先饮为敬"
+      ],
+      "zhongwen": "好，我先饮为敬"
+    },
+    "answer": {
+      "yuewen_merged": "好，我就先饮为敬"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔好饮咩"
+      ],
+      "zhongwen": "不要喝⋯"
+    },
+    "answer": {
+      "yuewen_merged": "唔好饮咩⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是,我根本就不会武功"
+      ],
+      "zhongwen": "不，我根本就不会武功"
+    },
+    "answer": {
+      "yuewen_merged": "不是，我根本就不会武功"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如霜,从来没有人这样对我的"
+      ],
+      "zhongwen": "如霜，从来没有人这样对我"
+    },
+    "answer": {
+      "yuewen_merged": "如霜，从来没有人这样对我的"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "什么话"
+      ],
+      "zhongwen": "你说甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "什么话？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我说我敬意爱上了你"
+      ],
+      "zhongwen": "我说，我已经爱上了你"
+    },
+    "answer": {
+      "yuewen_merged": "我说，我敬意爱上了你"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你有什么搞错"
+      ],
+      "zhongwen": "你没有弄错吧？"
+    },
+    "answer": {
+      "yuewen_merged": "你有什么搞错？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "绝对没有,我决定要娶你"
+      ],
+      "zhongwen": "绝对没有！我决定要娶你"
+    },
+    "answer": {
+      "yuewen_merged": "绝对没有！我决定要娶你"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "啱啦",
+        "我正想揾个证人"
+      ],
+      "zhongwen": "正好，我正想找个证人"
+    },
+    "answer": {
+      "yuewen_merged": "啱啦，我正想揾个证人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "证人?",
+        "系"
+      ],
+      "zhongwen": "证人？　　对"
+    },
+    "answer": {
+      "yuewen_merged": "证人？　　系"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "若然有半句假话",
+        "天打雷劈"
+      ],
+      "zhongwen": "若然有半句假话，天打雷劈"
+    },
+    "answer": {
+      "yuewen_merged": "若然有半句假话，天打雷劈"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "姐姐",
+        "我真系等你兴奋"
+      ],
+      "zhongwen": "姐姐， 我真的替你兴奋⋯"
+    },
+    "answer": {
+      "yuewen_merged": "姐姐，我真系等你兴奋⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂"
+      ],
+      "zhongwen": "唏！"
+    },
+    "answer": {
+      "yuewen_merged": "喂！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁要点先可以做你丈夫呢"
+      ],
+      "zhongwen": "要怎样才可以当你丈夫呢？"
+    },
+    "answer": {
+      "yuewen_merged": "咁要点先可以做你丈夫呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我要佢武功盖世",
+        "状元之才"
+      ],
+      "zhongwen": "我要他武功盖世，状元之才"
+    },
+    "answer": {
+      "yuewen_merged": "我要佢武功盖世，状元之才"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "亿人之下",
+        "万人之上"
+      ],
+      "zhongwen": "一人之下，万人之上"
+    },
+    "answer": {
+      "yuewen_merged": "亿人之下，万人之上"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁你做唔做得到啊"
+      ],
+      "zhongwen": "那你是否做得到？"
+    },
+    "answer": {
+      "yuewen_merged": "咁你做唔做得到啊？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁等你做得到嗰阵先要返嚟揾我"
+      ],
+      "zhongwen": "待你做得到的时候，才回来找我"
+    },
+    "answer": {
+      "yuewen_merged": "咁等你做得到嗰阵先要返嚟揾我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "既然系噉",
+        "我谂我哋要先定分期"
+      ],
+      "zhongwen": "既然如此，我想我们要先定婚期"
+    },
+    "answer": {
+      "yuewen_merged": "既然系噉，我谂我哋要先定分期"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "咁都应该畀啲时间我考虑下吧"
+      ],
+      "zhongwen": "好！那也应该给我时间作考虑"
+    },
+    "answer": {
+      "yuewen_merged": "好！咁都应该畀啲时间我考虑下吧"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇问题",
+        "我就喺出面花园等你答复"
+      ],
+      "zhongwen": "没问题，我就在外面的花园等待答复"
+    },
+    "answer": {
+      "yuewen_merged": "冇问题，我就喺出面花园等你答复"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "外方犯事",
+        "无关人等立即离开"
+      ],
+      "zhongwen": "丐帮办事，闲杂人等立即离开"
+    },
+    "answer": {
+      "yuewen_merged": "外方犯事，无关人等立即离开"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大人",
+        "搬煮香嘅时间啱啱好"
+      ],
+      "zhongwen": "大人，半炷香的时间刚刚好"
+    },
+    "answer": {
+      "yuewen_merged": "大人，搬煮香嘅时间啱啱好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "而家条路好安全",
+        "请上路"
+      ],
+      "zhongwen": "现在路上很安全，请上路"
+    },
+    "answer": {
+      "yuewen_merged": "而家条路好安全，请上路"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "非常好"
+      ],
+      "zhongwen": "好！非常好"
+    },
+    "answer": {
+      "yuewen_merged": "好！非常好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "起桥"
+      ],
+      "zhongwen": "起轿！"
+    },
+    "answer": {
+      "yuewen_merged": "起桥！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "闭",
+        "我哋来迟咗"
+      ],
+      "zhongwen": "糟糕！我们来晚了"
+    },
+    "answer": {
+      "yuewen_merged": "闭！我哋来迟咗"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一日都系我骑下仔女事"
+      ],
+      "zhongwen": "都是那个人碍事！"
+    },
+    "answer": {
+      "yuewen_merged": "一日都系我骑下仔女事！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "姐姐",
+        "姐姐呀"
+      ],
+      "zhongwen": "姐姐⋯姐姐"
+    },
+    "answer": {
+      "yuewen_merged": "姐姐⋯姐姐呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咩事呀"
+      ],
+      "zhongwen": "甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "咩事呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "算啦",
+        "佢唔系有心阻我哋嘅"
+      ],
+      "zhongwen": "算吧！他不是有心阻碍我们"
+    },
+    "answer": {
+      "yuewen_merged": "算啦！佢唔系有心阻我哋嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你唔系钟意阻佢系嘛"
+      ],
+      "zhongwen": "你不是喜欢他吧？"
+    },
+    "answer": {
+      "yuewen_merged": "你唔系钟意阻佢系嘛？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你讲乜嘢呀"
+      ],
+      "zhongwen": "你胡说甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "你讲乜嘢呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "噉我唔使假",
+        "行啦",
+        "发口呢你"
+      ],
+      "zhongwen": "那我岂不是嫁不出吗？"
+    },
+    "answer": {
+      "yuewen_merged": "噉我唔使假行啦，发口呢你？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "字幕由索兰威廉",
+        "提供"
+      ],
+      "zhongwen": "行吧！别发情"
+    },
+    "answer": {
+      "yuewen_merged": "字幕由索兰威廉提供"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "何况妖孽,够胆出来欺骗本少爷"
+      ],
+      "zhongwen": "何方妖孽？竟敢来吓我？"
+    },
+    "answer": {
+      "yuewen_merged": "何况妖孽？够胆出来欺骗本少爷？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "素蓉,我是闺婆"
+      ],
+      "zhongwen": "苏翁，我是鸨母⋯"
+    },
+    "answer": {
+      "yuewen_merged": "素蓉，我是闺婆⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你是闺婆?"
+      ],
+      "zhongwen": "你是鸨母？"
+    },
+    "answer": {
+      "yuewen_merged": "你是闺婆？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "胸这么平,你对奶呢?"
+      ],
+      "zhongwen": "胸部那么平，你的奶子呢？"
+    },
+    "answer": {
+      "yuewen_merged": "胸这么平，你对奶呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "跪起身嘛"
+      ],
+      "zhongwen": "那么早，还未睡醒⋯"
+    },
+    "answer": {
+      "yuewen_merged": "跪起身嘛⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这次打你不死算你大命"
+      ],
+      "zhongwen": "这次没有把你打死，算是你走运"
+    },
+    "answer": {
+      "yuewen_merged": "这次打你不死，算你大命"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "以后没化妆不要视为闲,知道吗"
+      ],
+      "zhongwen": "以后没有化粧不要四处走，知道吗？"
+    },
+    "answer": {
+      "yuewen_merged": "以后没化妆不要视为闲，知道吗？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不会了…你别等余霜姑娘了",
+        "她走了",
+        "是"
+      ],
+      "zhongwen": "你不用等如霜姑娘了，她已经走了⋯"
+    },
+    "answer": {
+      "yuewen_merged": "不会了…你别等余霜姑娘了，她走了⋯是"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "走了?"
+      ],
+      "zhongwen": "走了？"
+    },
+    "answer": {
+      "yuewen_merged": "走了？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁究竟余双姑娘去咗边"
+      ],
+      "zhongwen": "那究竟如霜姑娘去了哪里？"
+    },
+    "answer": {
+      "yuewen_merged": "咁究竟余双姑娘去咗边？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "听讲话",
+        "佢",
+        "佢去咗京城呀"
+      ],
+      "zhongwen": "听说，她⋯她去了京城"
+    },
+    "answer": {
+      "yuewen_merged": "听讲话，佢⋯佢去咗京城呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "京城"
+      ],
+      "zhongwen": "京城？"
+    },
+    "answer": {
+      "yuewen_merged": "京城？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "南宜为国家"
+      ],
+      "zhongwen": "男儿为国家⋯"
+    },
+    "answer": {
+      "yuewen_merged": "南宜为国家⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "条边冇掟挂"
+      ],
+      "zhongwen": "⋯辫子怎样戴⋯"
+    },
+    "answer": {
+      "yuewen_merged": "条边冇掟挂⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "申贺",
+        "申贺"
+      ],
+      "zhongwen": "挥啊！挥啊！"
+    },
+    "answer": {
+      "yuewen_merged": "申贺，申贺！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我蚊墙又但闲呢"
+      ],
+      "zhongwen": "我拉长它又弹它⋯"
+    },
+    "answer": {
+      "yuewen_merged": "我蚊墙又但闲呢⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿爹等你讲呢句说话",
+        "等你廿五年"
+      ],
+      "zhongwen": "爹等你说这句话，等了二十五年"
+    },
+    "answer": {
+      "yuewen_merged": "阿爹等你讲呢句说话，等你廿五年"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "为咗须贼虾耳架",
+        "你应该咁做"
+      ],
+      "zhongwen": "为了苏察哈尔家，你应该这样做"
+    },
+    "answer": {
+      "yuewen_merged": "为咗须贼虾耳架，你应该咁做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔好爱",
+        "咁就唔系为咗任何人"
+      ],
+      "zhongwen": "别误会，我这样做并不是为谁"
+    },
+    "answer": {
+      "yuewen_merged": "唔好爱，咁就唔系为咗任何人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "为女死",
+        "为女亡",
+        "为女上京考状"
+      ],
+      "zhongwen": "为妞死，为妞亡，为妞上京考状元"
+    },
+    "answer": {
+      "yuewen_merged": "为女死，为女亡，为女上京考状⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "何家女子"
+      ],
+      "zhongwen": "何家女子？"
+    },
+    "answer": {
+      "yuewen_merged": "何家女子？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "而红院金牌清官人",
+        "余双姑娘"
+      ],
+      "zhongwen": "怡红院金牌清官人如霜姑娘"
+    },
+    "answer": {
+      "yuewen_merged": "而红院金牌清官人余双姑娘"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "只鸡"
+      ],
+      "zhongwen": "妓女？"
+    },
+    "answer": {
+      "yuewen_merged": "只鸡？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "乜嘢唔妥"
+      ],
+      "zhongwen": "有何不妥？"
+    },
+    "answer": {
+      "yuewen_merged": "乜嘢唔妥？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "品味与别不同",
+        "真系能人所不能"
+      ],
+      "zhongwen": "品味与别不同，真是能人所不能"
+    },
+    "answer": {
+      "yuewen_merged": "品味与别不同，真系能人所不能"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "二三正六"
+      ],
+      "zhongwen": "二，三，四，五，六"
+    },
+    "answer": {
+      "yuewen_merged": "二，三，正，六"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系喇"
+      ],
+      "zhongwen": "来了，老爷"
+    },
+    "answer": {
+      "yuewen_merged": "系喇"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "宵夜上京",
+        "反韩甲搬"
+      ],
+      "zhongwen": "少爷上京赴考，我们搬家"
+    },
+    "answer": {
+      "yuewen_merged": "宵夜上京，反韩甲搬"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "宵夜",
+        "你哋唔好追啦"
+      ],
+      "zhongwen": "你们不要追了"
+    },
+    "answer": {
+      "yuewen_merged": "宵夜，你哋唔好追啦"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你唔好声呀",
+        "你揹返我啲嘢",
+        "我打到你屁股开返"
+      ],
+      "zhongwen": "弄花了我的东西，我不会放过你"
+    },
+    "answer": {
+      "yuewen_merged": "你唔好声呀，你揹返我啲嘢，我打到你屁股开返"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系",
+        "阿爹",
+        "早晨"
+      ],
+      "zhongwen": "老爹，早"
+    },
+    "answer": {
+      "yuewen_merged": "系，阿爹，早晨"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "晨",
+        "真系乜到搬走晒"
+      ],
+      "zhongwen": "真的全部都搬走？"
+    },
+    "answer": {
+      "yuewen_merged": "晨，真系乜到搬走晒？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "小心呀",
+        "系呀",
+        "少爷哥怕啲嘢呢"
+      ],
+      "zhongwen": "小孩子怕甚么呢？"
+    },
+    "answer": {
+      "yuewen_merged": "小心呀，系呀，少爷哥怕啲嘢呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大得我咩家下"
+      ],
+      "zhongwen": "小看我？"
+    },
+    "answer": {
+      "yuewen_merged": "大得我咩家下？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "睇小木系咪",
+        "迟少日大过你嘅"
+      ],
+      "zhongwen": "总有一天比你大"
+    },
+    "answer": {
+      "yuewen_merged": "睇小木系咪，迟少日大过你嘅"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "后期边个快啲随调",
+        "搬落嚟撑住"
+      ],
+      "zhongwen": "有谁愿意脱下衣服来给我穿一下"
+    },
+    "answer": {
+      "yuewen_merged": "后期边个快啲随调搬落嚟撑住"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你哋企晒到做咩",
+        "你仲唔搬佢走"
+      ],
+      "zhongwen": "你们站著干嘛？还不把它搬走"
+    },
+    "answer": {
+      "yuewen_merged": "你哋企晒到做咩？你仲唔搬佢走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁大间屋呀几时先搬得完啦"
+      ],
+      "zhongwen": "屋那么大，何时才搬妥"
+    },
+    "answer": {
+      "yuewen_merged": "咁大间屋呀，几时先搬得完啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔该大家落力啲啦好唔好呀"
+      ],
+      "zhongwen": "请大家卖力点，好不好"
+    },
+    "answer": {
+      "yuewen_merged": "唔该大家落力啲啦，好唔好呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "数三声啦",
+        "一二三",
+        "推"
+      ],
+      "zhongwen": "数三声！一，二，三，推"
+    },
+    "answer": {
+      "yuewen_merged": "数三声啦！一，二，三，推"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "推"
+      ],
+      "zhongwen": "推⋯"
+    },
+    "answer": {
+      "yuewen_merged": "推⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "绑稳啲",
+        "绑稳啲呀"
+      ],
+      "zhongwen": "绑牢一点⋯绑牢一点"
+    },
+    "answer": {
+      "yuewen_merged": "绑稳啲，绑稳啲呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "老爷",
+        "树都搬"
+      ],
+      "zhongwen": "老爷，树也要搬？"
+    },
+    "answer": {
+      "yuewen_merged": "老爷，树都搬？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔系我上到京城边有荔枝食呀"
+      ],
+      "zhongwen": "否则我到京城哪有荔枝吃？"
+    },
+    "answer": {
+      "yuewen_merged": "唔系我上到京城边有荔枝食呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "家阵",
+        "来",
+        "推佢",
+        "过去推佢"
+      ],
+      "zhongwen": "推到那边⋯推到那边"
+    },
+    "answer": {
+      "yuewen_merged": "家阵来推佢过去推佢⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好声呀",
+        "好声呀"
+      ],
+      "zhongwen": "小心点⋯小心我的荔枝"
+    },
+    "answer": {
+      "yuewen_merged": "好声呀，好声呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "睇住我啲荔枝呀",
+        "睇住我啲荔枝呀",
+        "兽头"
+      ],
+      "zhongwen": "小心我的荔枝，笨蛋"
+    },
+    "answer": {
+      "yuewen_merged": "睇住我啲荔枝呀，睇住我啲荔枝呀，兽头"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵无极",
+        "今次协助微臣"
+      ],
+      "zhongwen": "赵无极这趟协助微臣"
+    },
+    "answer": {
+      "yuewen_merged": "赵无极今次协助微臣"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喺广西",
+        "招聘长毛余孽",
+        "立功不少"
+      ],
+      "zhongwen": "到广西剿平长毛余孽立功不少"
+    },
+    "answer": {
+      "yuewen_merged": "喺广西招聘长毛余孽立功不少"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "朕而家赐你为刀贼院副助都如是"
+      ],
+      "zhongwen": "好！朕现在赐你为都察院副左都御史"
+    },
+    "answer": {
+      "yuewen_merged": "好！朕而家赐你为刀贼院副助都如是"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上",
+        "赵先生一身奇技异术"
+      ],
+      "zhongwen": "皇上，赵先生一身奇技异术"
+    },
+    "answer": {
+      "yuewen_merged": "皇上，赵先生一身奇技异术"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不如请佢展示下畀皇上开下眼界"
+      ],
+      "zhongwen": "不如请他示范一下，让皇上开开眼界"
+    },
+    "answer": {
+      "yuewen_merged": "不如请佢展示下，畀皇上开下眼界"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "异术"
+      ],
+      "zhongwen": "异术？"
+    },
+    "answer": {
+      "yuewen_merged": "异术？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵先生",
+        "你就展示畀朕睇下"
+      ],
+      "zhongwen": "赵先生，你就示范给朕看"
+    },
+    "answer": {
+      "yuewen_merged": "赵先生，你就展示畀朕睇下"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大惊小败"
+      ],
+      "zhongwen": "大惊小怪！退下"
+    },
+    "answer": {
+      "yuewen_merged": "大惊小败！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "未神大胆",
+        "练皇上授经"
+      ],
+      "zhongwen": "微臣大胆，让皇上受惊"
+    },
+    "answer": {
+      "yuewen_merged": "未神大胆，练皇上授经"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "什么事?"
+      ],
+      "zhongwen": "甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "什么事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "进去吧…",
+        "进去吧…"
+      ],
+      "zhongwen": "躲进去"
+    },
+    "answer": {
+      "yuewen_merged": "进去吧…进去吧…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "准备好,少爷"
+      ],
+      "zhongwen": "准备好了，少爷"
+    },
+    "answer": {
+      "yuewen_merged": "准备好，少爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁香,",
+        "你系飘雄"
+      ],
+      "zhongwen": "那么香？你是飘红"
+    },
+    "answer": {
+      "yuewen_merged": "咁香？你系飘雄"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你好靓,",
+        "我钟意"
+      ],
+      "zhongwen": "少爷你很棒，我喜欢"
+    },
+    "answer": {
+      "yuewen_merged": "你好靓，我钟意"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁大,",
+        "一定系少少"
+      ],
+      "zhongwen": "那么大？一定是小小"
+    },
+    "answer": {
+      "yuewen_merged": "咁大？一定系少少"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "少爷,",
+        "你好衰㗎,",
+        "咁样话定我",
+        "咁"
+      ],
+      "zhongwen": "少爷你很坏，这样说人家"
+    },
+    "answer": {
+      "yuewen_merged": "少爷，你好衰㗎，咁样话定我咁"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你系吖嘛",
+        "真系"
+      ],
+      "zhongwen": "你是大嘛"
+    },
+    "answer": {
+      "yuewen_merged": "你系吖嘛，真系"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大肚婆都有?",
+        "呃我唔到嘅,"
+      ],
+      "zhongwen": "怀孕的也有？骗不倒我"
+    },
+    "answer": {
+      "yuewen_merged": "大肚婆都有？呃我唔到嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好衰㗎,",
+        "咁都畀你估到"
+      ],
+      "zhongwen": "你很坏！这样也给你猜中"
+    },
+    "answer": {
+      "yuewen_merged": "好衰㗎！咁都畀你估到"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "叻仔…"
+      ],
+      "zhongwen": "聪明，聪明"
+    },
+    "answer": {
+      "yuewen_merged": "叻仔，⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿爹唔谂整菇嚟添",
+        "好嘢…"
+      ],
+      "zhongwen": "阿爹还想作弄你一下，好棒好棒"
+    },
+    "answer": {
+      "yuewen_merged": "阿爹唔谂整菇嚟添，好嘢…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "少爷听知考试,"
+      ],
+      "zhongwen": "好了好了，少爷明早要考试"
+    },
+    "answer": {
+      "yuewen_merged": "少爷听知考试，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "出返去…"
+      ],
+      "zhongwen": "出去，出去"
+    },
+    "answer": {
+      "yuewen_merged": "出返去⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你明日考试喇㖞,",
+        "啲嘢预备好晒未",
+        "预备咩未?"
+      ],
+      "zhongwen": "准备好了没有？"
+    },
+    "answer": {
+      "yuewen_merged": "你明日考试喇㖞，啲嘢预备好晒未，预备咩未？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赢噉嘅话",
+        "乜你唔知咩"
+      ],
+      "zhongwen": "准备甚么？我赢定了，你不知道吗"
+    },
+    "answer": {
+      "yuewen_merged": "赢噉嘅话，乜你唔知咩？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你噉态度呢,",
+        "我就有晒信心啦"
+      ],
+      "zhongwen": "你这样的态度，我就有信心"
+    },
+    "answer": {
+      "yuewen_merged": "你噉态度呢，我就有晒信心啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿,",
+        "呢位就郑世伯"
+      ],
+      "zhongwen": "阿灿，这位是郑世伯"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，呢位就郑世伯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "郑世伯,",
+        "招呼唔到",
+        "系咪,"
+      ],
+      "zhongwen": "郑世伯，招呼不周"
+    },
+    "answer": {
+      "yuewen_merged": "郑世伯，招呼唔到，系咪"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我仔系咪成个状元噉间局呢"
+      ],
+      "zhongwen": "我的儿子是否状元脸？"
+    },
+    "answer": {
+      "yuewen_merged": "我仔系咪成个状元噉间局呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "你畀我啲试卷呢,"
+      ],
+      "zhongwen": "老郑，你给我的考卷"
+    },
+    "answer": {
+      "yuewen_merged": "喂，你畀我啲试卷呢⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔会改喇嘛"
+      ],
+      "zhongwen": "不会改了吧？"
+    },
+    "answer": {
+      "yuewen_merged": "唔会改喇嘛？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "至于到时考弓箭骑马"
+      ],
+      "zhongwen": "至于临场考弓箭、骑马"
+    },
+    "answer": {
+      "yuewen_merged": "至于到时考弓箭、骑马"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "、举石、搏击同兵器呢"
+      ],
+      "zhongwen": "举石、搏击、兵器"
+    },
+    "answer": {
+      "yuewen_merged": "举石、搏击、同兵器呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        ",",
+        "我仔十八般武艺,",
+        "健健皆精"
+      ],
+      "zhongwen": "我的儿子十八般武艺样样精通"
+    },
+    "answer": {
+      "yuewen_merged": ",我仔十八般武艺，健健皆精"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂,",
+        "佢二百万两系咪可以著量减啲啊"
+      ],
+      "zhongwen": "那二百万两可否酌量减一点？"
+    },
+    "answer": {
+      "yuewen_merged": "喂，佢二百万两系咪可以著量减啲啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "人情还人情,",
+        "均真啲好"
+      ],
+      "zhongwen": "人情归人情，数目一定要分明"
+    },
+    "answer": {
+      "yuewen_merged": "人情还人情，均真啲好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一语报个硬行阵",
+        "马队缠住中风营"
+      ],
+      "zhongwen": "决定布个雁行阵，马队前驻中锋营"
+    },
+    "answer": {
+      "yuewen_merged": "一语报个硬行阵，马队缠住中风营"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "攻队侧翼",
+        "枪队垫后"
+      ],
+      "zhongwen": "弓队侧翼，枪队殿后"
+    },
+    "answer": {
+      "yuewen_merged": "攻队侧翼，枪队垫后"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "补状元",
+        "初赛",
+        "偶生进场"
+      ],
+      "zhongwen": "武状元初赛，考生进场"
+    },
+    "answer": {
+      "yuewen_merged": "补状元初赛，偶生进场"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "无耻呀",
+        "指你好冇"
+      ],
+      "zhongwen": "无耻？无耻你娘"
+    },
+    "answer": {
+      "yuewen_merged": "无耻呀？指你好冇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "十分咯"
+      ],
+      "zhongwen": "十分！"
+    },
+    "answer": {
+      "yuewen_merged": "十分咯！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系由蒙古嘅博达尔多"
+      ],
+      "zhongwen": "是由蒙古的博达尔多⋯"
+    },
+    "answer": {
+      "yuewen_merged": "系由蒙古嘅博达尔多⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对广东嘅苏刷哈尔灿"
+      ],
+      "zhongwen": "⋯对广东的苏察哈尔灿"
+    },
+    "answer": {
+      "yuewen_merged": "⋯对广东嘅苏刷哈尔灿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏刷哈尔灿一赔十",
+        "博达尔多一赔一"
+      ],
+      "zhongwen": "苏察哈尔灿一赔十，博达尔多一赔一"
+    },
+    "answer": {
+      "yuewen_merged": "苏刷哈尔灿一赔十，博达尔多一赔一"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有冇搞错啊",
+        "啲赔率争咁远嘅"
+      ],
+      "zhongwen": "有没有搅错，赔率怎么差那么多？"
+    },
+    "answer": {
+      "yuewen_merged": "有冇搞错啊，啲赔率争咁远嘅？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一个一赔十",
+        "一个一赔一"
+      ],
+      "zhongwen": "一个是一赔十，一个是一赔一"
+    },
+    "answer": {
+      "yuewen_merged": "一个一赔十，一个一赔一"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哗",
+        "咁睇唔好苏刷啊"
+      ],
+      "zhongwen": "对苏灿那么没信心！"
+    },
+    "answer": {
+      "yuewen_merged": "哗，咁睇唔好苏刷啊！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁系啊嘛",
+        "苏刷呢举重项目呢就弃权嘅"
+      ],
+      "zhongwen": "没办法，苏灿在举重项目弃权"
+    },
+    "answer": {
+      "yuewen_merged": "咁系啊嘛，苏刷呢举重项目呢就弃权嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你睇下",
+        "人哋博达尔多啊"
+      ],
+      "zhongwen": "你看，博达尔多"
+    },
+    "answer": {
+      "yuewen_merged": "你睇下，人哋博达尔多啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "全部满分就晋级嘅",
+        "点同"
+      ],
+      "zhongwen": "全部是满分进级，怎么比呢？"
+    },
+    "answer": {
+      "yuewen_merged": "全部满分就晋级嘅，点同？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "家阵考状元嘅",
+        "你估做孤零啊"
+      ],
+      "zhongwen": "现在是考状元，又不是当苦力"
+    },
+    "answer": {
+      "yuewen_merged": "喂，家阵考状元嘅，你估做孤零啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "举重咁靓托贼咩"
+      ],
+      "zhongwen": "举重了得又有何用！"
+    },
+    "answer": {
+      "yuewen_merged": "举重咁靓托贼咩！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁又唔系咁讲啊"
+      ],
+      "zhongwen": "话不是这样说　　甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "咁又唔系咁讲啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系呀",
+        "系呀",
+        "我住完咗呢场赛事好耐"
+      ],
+      "zhongwen": "我钻研了这场比赛很久"
+    },
+    "answer": {
+      "yuewen_merged": "系呀系呀，我住完咗呢场赛事好耐"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系咩",
+        "佢博达尔多外形晋朗",
+        "混身上来"
+      ],
+      "zhongwen": "这个博达尔多外型俊朗，浑身有力"
+    },
+    "answer": {
+      "yuewen_merged": "系咩？佢博达尔多外形晋朗，混身上来"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系"
+      ],
+      "zhongwen": "是吗？"
+    },
+    "answer": {
+      "yuewen_merged": "系？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点呀",
+        "点呀"
+      ],
+      "zhongwen": "怎样？怎样？"
+    },
+    "answer": {
+      "yuewen_merged": "点呀？点呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "虾",
+        "乜虾啊",
+        "系",
+        "洋文嚟嘅",
+        "虾"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "虾？乜虾啊？系洋文嚟嘅，虾？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "即系有斗心噉解"
+      ],
+      "zhongwen": "是洋文！即是有斗心"
+    },
+    "answer": {
+      "yuewen_merged": "即系有斗心噉解！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哦",
+        "所以我谂住",
+        "瞓身"
+      ],
+      "zhongwen": "所以我准备全押"
+    },
+    "answer": {
+      "yuewen_merged": "哦，所以我谂住瞓身"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系呀",
+        "喂",
+        "咁你打算买几多啊"
+      ],
+      "zhongwen": "是吗？那你打算押多少？"
+    },
+    "answer": {
+      "yuewen_merged": "系呀？喂，咁你打算买几多啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "八十万两"
+      ],
+      "zhongwen": "八十万两！"
+    },
+    "answer": {
+      "yuewen_merged": "八十万两！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "八十万两咁少",
+        "卖够二百万两噉嘛"
+      ],
+      "zhongwen": "八十万两那么少？买够二百万两嘛"
+    },
+    "answer": {
+      "yuewen_merged": "八十万两咁少？卖够二百万两噉嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点解啊",
+        "点解你突然间睇得咁好"
+      ],
+      "zhongwen": "怎么？为甚么你突然间看好他"
+    },
+    "answer": {
+      "yuewen_merged": "点解啊？点解你突然间睇得咁好？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系",
+        "系",
+        "过嚟"
+      ],
+      "zhongwen": "过来过来"
+    },
+    "answer": {
+      "yuewen_merged": "系，系，过嚟"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我瞓两次身"
+      ],
+      "zhongwen": "是吗？"
+    },
+    "answer": {
+      "yuewen_merged": "我瞓两次身？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系",
+        "二百万两"
+      ],
+      "zhongwen": "二百万两"
+    },
+    "answer": {
+      "yuewen_merged": "系二百万两"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系",
+        "豪气豪气"
+      ],
+      "zhongwen": "豪气！豪气"
+    },
+    "answer": {
+      "yuewen_merged": "系，豪气豪气"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点解你唔落住"
+      ],
+      "zhongwen": "为甚么你不下注？"
+    },
+    "answer": {
+      "yuewen_merged": "点解你唔落住？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我落住嚟做乜嘢",
+        "哥我仔嚟噉啊"
+      ],
+      "zhongwen": "我下注干甚么？他是我的儿子"
+    },
+    "answer": {
+      "yuewen_merged": "我落住嚟做乜嘢？哥我仔嚟噉啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "衰喇",
+        "畀",
+        "睇流一样添"
+      ],
+      "zhongwen": "糟了！我少分析了这个"
+    },
+    "answer": {
+      "yuewen_merged": "衰喇，畀睇流一样添"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "睇流做乜嘢"
+      ],
+      "zhongwen": "少分析了甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "睇流做乜嘢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系",
+        "主考"
+      ],
+      "zhongwen": "主考到"
+    },
+    "answer": {
+      "yuewen_merged": "系主考"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔系老井主考咩"
+      ],
+      "zhongwen": "不是老郑主考吗？"
+    },
+    "answer": {
+      "yuewen_merged": "唔系老井主考咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "增加临时服务"
+      ],
+      "zhongwen": "僧格林参？"
+    },
+    "answer": {
+      "yuewen_merged": "增加临时服务？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有什么问题"
+      ],
+      "zhongwen": "有甚么问题？"
+    },
+    "answer": {
+      "yuewen_merged": "有什么问题？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "约仔",
+        "他是博达尔多的叔叔"
+      ],
+      "zhongwen": "他是博达尔多的叔叔"
+    },
+    "answer": {
+      "yuewen_merged": "约仔，他是博达尔多的叔叔"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是",
+        "开始"
+      ],
+      "zhongwen": "开始"
+    },
+    "answer": {
+      "yuewen_merged": "是开始"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哗",
+        "把都射住埋",
+        "最少都加到两分啊"
+      ],
+      "zhongwen": "靶都射穿了！至少都多加两分"
+    },
+    "answer": {
+      "yuewen_merged": "哗，把都射住埋，最少都加到两分啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "照隔系嘅",
+        "照隔系嘅"
+      ],
+      "zhongwen": "照道理是！照道理是"
+    },
+    "answer": {
+      "yuewen_merged": "照隔系嘅！照隔系嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "须衬把上"
+      ],
+      "zhongwen": "苏灿靶上没有箭！博达尔多胜"
+    },
+    "answer": {
+      "yuewen_merged": "须衬把上！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你老祖",
+        "而家做马咩而家"
+      ],
+      "zhongwen": "有没有搅错！你老祖！要把戏？"
+    },
+    "answer": {
+      "yuewen_merged": "你老祖！而家做马咩而家？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "考生上马",
+        "准备下一回合"
+      ],
+      "zhongwen": "考生上马！准备下一回合"
+    },
+    "answer": {
+      "yuewen_merged": "考生上马！准备下一回合"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵先生",
+        "赵先生"
+      ],
+      "zhongwen": "赵先生"
+    },
+    "answer": {
+      "yuewen_merged": "赵先生，赵先生"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你攞住呢套奏折",
+        "必要时有用"
+      ],
+      "zhongwen": "你拿著这套袖箭！必要时有用"
+    },
+    "answer": {
+      "yuewen_merged": "你攞住呢套奏折！必要时有用"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "兵器都做埋手脚"
+      ],
+      "zhongwen": "兵器都动了手脚？"
+    },
+    "answer": {
+      "yuewen_merged": "兵器都做埋手脚？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "太黑暗啦",
+        "退飞唔到都唔得啊"
+      ],
+      "zhongwen": "太黑暗了！退票不赌行不行？"
+    },
+    "answer": {
+      "yuewen_merged": "太黑暗啦！退飞唔到都唔得啊？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "追返嗰个",
+        "喂",
+        "张飞明咩噶"
+      ],
+      "zhongwen": "你的票撕了没有"
+    },
+    "answer": {
+      "yuewen_merged": "追返嗰个，喂，张飞明咩噶？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "黑咩咩",
+        "咩咩"
+      ],
+      "zhongwen": "没有"
+    },
+    "answer": {
+      "yuewen_merged": "黑咩咩咩咩"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "でも卡"
+      ],
+      "zhongwen": "有没有搅错？"
+    },
+    "answer": {
+      "yuewen_merged": "でも卡？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仲未复书呀",
+        "再嚟"
+      ],
+      "zhongwen": "还不认输？再来"
+    },
+    "answer": {
+      "yuewen_merged": "仲未复书呀？再嚟"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "由头再打个羊你单手单脚"
+      ],
+      "zhongwen": "重新开始，让你一手一脚"
+    },
+    "answer": {
+      "yuewen_merged": "由头再打个羊你单手单脚"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "噉嘅嗱咋招乱上嘅嘢",
+        "瞓醒未呀"
+      ],
+      "zhongwen": "你用这肮脏的手段来取得胜利？"
+    },
+    "answer": {
+      "yuewen_merged": "噉嘅嗱咋招乱上嘅嘢，瞓醒未呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "开嘅best",
+        "噢"
+      ],
+      "zhongwen": "祝你好运"
+    },
+    "answer": {
+      "yuewen_merged": "开嘅best噢"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "就梗用个pack嘅啦"
+      ],
+      "zhongwen": "这当然要用臀啦！还有别处可用吗？"
+    },
+    "answer": {
+      "yuewen_merged": "就梗用个pack嘅啦！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仲有第二次咩",
+        "唔系呀"
+      ],
+      "zhongwen": "是洋文"
+    },
+    "answer": {
+      "yuewen_merged": "仲有第二次咩，唔系呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "洋文嚟㗎",
+        "洋文吖嘛"
+      ],
+      "zhongwen": "洋文"
+    },
+    "answer": {
+      "yuewen_merged": "洋文嚟㗎，洋文吖嘛"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你先跌落地",
+        "呢个回合判",
+        "博达已多胜"
+      ],
+      "zhongwen": "你先掉下来，这个回合判博达尔多胜"
+    },
+    "answer": {
+      "yuewen_merged": "你先跌落地，呢个回合判博达已多胜"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你又呢"
+      ],
+      "zhongwen": "为甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "你又呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我边有二百万书呀"
+      ],
+      "zhongwen": "我那里有二百万输？"
+    },
+    "answer": {
+      "yuewen_merged": "我边有二百万书呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嗱",
+        "卑鄙无耻"
+      ],
+      "zhongwen": "卑鄙无耻"
+    },
+    "answer": {
+      "yuewen_merged": "嗱，卑鄙无耻"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "博大已多三局两胜",
+        "系金科冇"
+      ],
+      "zhongwen": "博达尔多三局两胜，是今科武状元"
+    },
+    "answer": {
+      "yuewen_merged": "博大已多三局两胜，系金科冇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "做乜嘢"
+      ],
+      "zhongwen": "甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "做乜嘢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "报应呀",
+        "抵死呀"
+      ],
+      "zhongwen": "报应来了！死得好"
+    },
+    "answer": {
+      "yuewen_merged": "报应呀，抵死呀！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "家阵佢死咗",
+        "我仔咪做紧状元"
+      ],
+      "zhongwen": "他死了，我儿子就当状元？"
+    },
+    "answer": {
+      "yuewen_merged": "家阵佢死咗，我仔咪做紧状元？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁呢次我个法",
+        "系呀…"
+      ],
+      "zhongwen": "那我现在不是发财了吗？"
+    },
+    "answer": {
+      "yuewen_merged": "咁呢次我个法，系呀…？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "江中耀祖…"
+      ],
+      "zhongwen": "光宗耀祖了⋯"
+    },
+    "answer": {
+      "yuewen_merged": "江中耀祖⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "精明",
+        "大人",
+        "皇上说要亲自音点"
+      ],
+      "zhongwen": "大人，皇上说要亲自钦点"
+    },
+    "answer": {
+      "yuewen_merged": "精明大人，皇上说要亲自音点"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "武状元…",
+        "我想问你几句,作为朝廷纪录"
+      ],
+      "zhongwen": "武状元，我想问你几句作为朝廷纪录"
+    },
+    "answer": {
+      "yuewen_merged": "武状元…我想问你几句，作为朝廷纪录"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这次你成功,你最想谢谢谁呢?"
+      ],
+      "zhongwen": "你这次成功！会先感谢谁？"
+    },
+    "answer": {
+      "yuewen_merged": "这次你成功，你最想谢谢谁呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "余襄姑娘?",
+        "会不会是她妈呢?",
+        "对了…"
+      ],
+      "zhongwen": "如霜姑娘！会不会是他的娘？"
+    },
+    "answer": {
+      "yuewen_merged": "余襄姑娘！会不会是她妈呢？对了…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "增加临心",
+        "金方武藏人是谁"
+      ],
+      "zhongwen": "僧格林参，今科武状元是谁？"
+    },
+    "answer": {
+      "yuewen_merged": "增加临心，金方武藏人是谁？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "禀告皇上",
+        "是广东的苏刷哈尔灿"
+      ],
+      "zhongwen": "禀告皇上，是广东的苏察哈尔灿"
+    },
+    "answer": {
+      "yuewen_merged": "禀告皇上，是广东的苏刷哈尔灿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏刷哈尔灿参见皇上"
+      ],
+      "zhongwen": "苏察哈尔灿！参见皇上"
+    },
+    "answer": {
+      "yuewen_merged": "苏刷哈尔灿！参见皇上"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上",
+        "微臣有事启奏"
+      ],
+      "zhongwen": "皇上，微臣有事启奏"
+    },
+    "answer": {
+      "yuewen_merged": "皇上，微臣有事启奏"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "怎可以答到考战略的题目呢"
+      ],
+      "zhongwen": "怎可以答到考战略的题目呢？"
+    },
+    "answer": {
+      "yuewen_merged": "怎可以答到考战略的题目呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "须贼、虾夷贼",
+        "你立刻写自己的名字出来"
+      ],
+      "zhongwen": "苏察哈尔灿，马上写出你的名字来"
+    },
+    "answer": {
+      "yuewen_merged": "须贼、虾夷贼，你立刻写自己的名字出来"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "幸好…只写名字而已"
+      ],
+      "zhongwen": "走运了！他懂得写名字"
+    },
+    "answer": {
+      "yuewen_merged": "幸好…只写名字而已"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "写名字就行…"
+      ],
+      "zhongwen": "懂写名字！懂写名字"
+    },
+    "answer": {
+      "yuewen_merged": "写名字就行⋯！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不要…"
+      ],
+      "zhongwen": "不要！不要"
+    },
+    "answer": {
+      "yuewen_merged": "不要⋯！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上,",
+        "作弊那是奴才"
+      ],
+      "zhongwen": "皇上，作弊的是奴才"
+    },
+    "answer": {
+      "yuewen_merged": "皇上，作弊那是奴才"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是,",
+        "应该斩我"
+      ],
+      "zhongwen": "不对！应该斩我"
+    },
+    "answer": {
+      "yuewen_merged": "不是，应该斩我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对不起,",
+        "爹"
+      ],
+      "zhongwen": "对不起，阿爹"
+    },
+    "answer": {
+      "yuewen_merged": "对不起，爹"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不用说了,",
+        "刚刚知道"
+      ],
+      "zhongwen": "不用说！刚刚知道了"
+    },
+    "answer": {
+      "yuewen_merged": "不用说了！刚刚知道⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上要斩就斩我"
+      ],
+      "zhongwen": "皇上！要斩就斩我吧"
+    },
+    "answer": {
+      "yuewen_merged": "皇上！要斩就斩我"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "斩我呢"
+      ],
+      "zhongwen": "斩我吧　　斩我吧"
+    },
+    "answer": {
+      "yuewen_merged": "斩我呢"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是,",
+        "斩我…",
+        "皇上,",
+        "我好斩一点"
+      ],
+      "zhongwen": "斩我吧　　皇上！你还是斩我吧"
+    },
+    "answer": {
+      "yuewen_merged": "不是，斩我…皇上！我好斩一点"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "浑肠,",
+        "你说斩谁就斩谁吗"
+      ],
+      "zhongwen": "混帐！你们说要斩谁就斩谁吗"
+    },
+    "answer": {
+      "yuewen_merged": "浑肠！你说斩谁就斩谁吗"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你不想输,",
+        "快出来",
+        "出来"
+      ],
+      "zhongwen": "吏部尚书，快点出来！出来"
+    },
+    "answer": {
+      "yuewen_merged": "你不想输，快出来！出来"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我在这里…"
+      ],
+      "zhongwen": "我在这里！在这里"
+    },
+    "answer": {
+      "yuewen_merged": "我在这里！…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佢系你部尚书"
+      ],
+      "zhongwen": "他是吏部尚书？"
+    },
+    "answer": {
+      "yuewen_merged": "佢系你部尚书？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏察哈",
+        "二产两父子罪犯欺君",
+        "理应问斩"
+      ],
+      "zhongwen": "苏察哈尔灿两父子罪犯欺君理应问斩"
+    },
+    "answer": {
+      "yuewen_merged": "苏察哈二产两父子罪犯欺君理应问斩"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我系功臣之校",
+        "可免一死"
+      ],
+      "zhongwen": "念在你是功臣之后！可免一死"
+    },
+    "answer": {
+      "yuewen_merged": "我系功臣之校！可免一死"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但贪赃以来充公",
+        "枉法㖞"
+      ],
+      "zhongwen": "但贪赃依例充公，枉法吗⋯"
+    },
+    "answer": {
+      "yuewen_merged": "但贪赃以来充公，枉法㖞⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你有冇执过法呀"
+      ],
+      "zhongwen": "你有没有执过法？"
+    },
+    "answer": {
+      "yuewen_merged": "你有冇执过法呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇呀冇呀",
+        "我七年冇返个军刑㗎喇"
+      ],
+      "zhongwen": "没有！我七年都没有到过军营"
+    },
+    "answer": {
+      "yuewen_merged": "冇呀冇呀！我七年冇返个军刑㗎喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇执法",
+        "即系冇枉法㗎㖞"
+      ],
+      "zhongwen": "没有执法即是没有枉法"
+    },
+    "answer": {
+      "yuewen_merged": "冇执法，即系冇枉法㗎㖞"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上",
+        "依例系最多判抄家咋㖞"
+      ],
+      "zhongwen": "皇上，依例最多判抄家的罪"
+    },
+    "answer": {
+      "yuewen_merged": "皇上，依例系最多判抄家咋㖞"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁轻",
+        "你有冇记错呀"
+      ],
+      "zhongwen": "这么轻？你有没有记错？"
+    },
+    "answer": {
+      "yuewen_merged": "咁轻？你有冇记错呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁我而家交到你刑罚得唔得呀"
+      ],
+      "zhongwen": "那朕现在多加刑罚行不行？"
+    },
+    "answer": {
+      "yuewen_merged": "咁我而家交到你刑罚得唔得呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上出道声嘅",
+        "要加码嘅就得啦"
+      ],
+      "zhongwen": "皇上说要加，当然没问题"
+    },
+    "answer": {
+      "yuewen_merged": "皇上出道声嘅，要加码嘅就得啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好",
+        "我而家就判你两父子一世行黑"
+      ],
+      "zhongwen": "好！那朕就判你们两父子一辈子讨饭"
+    },
+    "answer": {
+      "yuewen_merged": "好！我而家就判你两父子一世行黑"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵无极",
+        "你揭发有功",
+        "浸佢好好上嚟"
+      ],
+      "zhongwen": "赵无极，你揭发有功！朕会好好赏你"
+    },
+    "answer": {
+      "yuewen_merged": "赵无极，你揭发有功！浸佢好好上嚟"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "神力",
+        "呼吸"
+      ],
+      "zhongwen": "身如柳絮⋯"
+    },
+    "answer": {
+      "yuewen_merged": "神力呼吸⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嗰个我爹神珠牌嚟㖞",
+        "都要抄呀"
+      ],
+      "zhongwen": "这是我爹的神主牌位，你也要没收"
+    },
+    "answer": {
+      "yuewen_merged": "嗰个我爹神珠牌嚟㖞，都要抄呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "嗰个好等嚟㖞"
+      ],
+      "zhongwen": "这个香炉锅，你拿了也没用"
+    },
+    "answer": {
+      "yuewen_merged": "喂，嗰个好等嚟㖞"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇用㗎",
+        "叶沧桑",
+        "咩鸟"
+      ],
+      "zhongwen": "⋯历劫沧桑⋯鸳鸯扣"
+    },
+    "answer": {
+      "yuewen_merged": "冇用㗎⋯叶沧桑，咩鸟⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "易结",
+        "都不得易解",
+        "苦相"
+      ],
+      "zhongwen": "宜结不宜解，苦相思⋯"
+    },
+    "answer": {
+      "yuewen_merged": "易结，都不得易解，苦相⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "负相是能买都唔得能买"
+      ],
+      "zhongwen": "苦相思，能买不能卖⋯"
+    },
+    "answer": {
+      "yuewen_merged": "负相是能买都唔得能买⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "悔不得该",
+        "惹害"
+      ],
+      "zhongwen": "悔不该，惹下⋯"
+    },
+    "answer": {
+      "yuewen_merged": "悔不得该，惹害⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "老爷",
+        "我会好好养大细龟的"
+      ],
+      "zhongwen": "老爷，我会好好把小乌龟养大"
+    },
+    "answer": {
+      "yuewen_merged": "老爷，我会好好养大细龟的"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对不起",
+        "老爷"
+      ],
+      "zhongwen": "对不起，老爷"
+    },
+    "answer": {
+      "yuewen_merged": "对不起，老爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我们跟你在一起这么久",
+        "蛋都没生过"
+      ],
+      "zhongwen": "我们跟你一起这么久，蛋都没有生过"
+    },
+    "answer": {
+      "yuewen_merged": "我们跟你在一起这么久，蛋都没生过"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "而已",
+        "没关系…"
+      ],
+      "zhongwen": "不相干，不相干"
+    },
+    "answer": {
+      "yuewen_merged": "而已，没关系⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "若然老爷不甩",
+        "一百几天过都会生"
+      ],
+      "zhongwen": "若然老爷要的话，孩子多的是了"
+    },
+    "answer": {
+      "yuewen_merged": "若然老爷不甩，一百几天过都会生"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "站在那儿干什么",
+        "还不走"
+      ],
+      "zhongwen": "还在这干吗？快走"
+    },
+    "answer": {
+      "yuewen_merged": "站在那儿干什么？还不走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "老爷",
+        "我们走"
+      ],
+      "zhongwen": "老爷，我们走了"
+    },
+    "answer": {
+      "yuewen_merged": "老爷，我们走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "老爷"
+      ],
+      "zhongwen": "我们走了，老爷"
+    },
+    "answer": {
+      "yuewen_merged": "老爷"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "走吧"
+      ],
+      "zhongwen": "走吧，走吧"
+    },
+    "answer": {
+      "yuewen_merged": "走吧，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "很兴奋",
+        "真的开心"
+      ],
+      "zhongwen": "真开心"
+    },
+    "answer": {
+      "yuewen_merged": "很兴奋，真的开心"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "入去,"
+      ],
+      "zhongwen": "进去，进去"
+    },
+    "answer": {
+      "yuewen_merged": "入去，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "快点"
+      ],
+      "zhongwen": "快点⋯"
+    },
+    "answer": {
+      "yuewen_merged": "快点⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点解你…",
+        "打到我唔会松"
+      ],
+      "zhongwen": "为甚么他们给人家抄家还这样开心？"
+    },
+    "answer": {
+      "yuewen_merged": "点解你…打到我唔会松？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "笑死你了",
+        "笑死你"
+      ],
+      "zhongwen": "笑死人了⋯"
+    },
+    "answer": {
+      "yuewen_merged": "笑死你了，笑死你⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "请入去…"
+      ],
+      "zhongwen": "请进，请进⋯"
+    },
+    "answer": {
+      "yuewen_merged": "请入去⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "欢迎…"
+      ],
+      "zhongwen": "欢迎⋯欢迎"
+    },
+    "answer": {
+      "yuewen_merged": "欢迎⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "抄家仔,我舍得捞仔"
+      ],
+      "zhongwen": "孩儿，我们被抄家，我很想哭"
+    },
+    "answer": {
+      "yuewen_merged": "抄家仔，我舍得捞仔"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "顶住,千万别在这儿失礼人"
+      ],
+      "zhongwen": "不要！千万别丢脸"
+    },
+    "answer": {
+      "yuewen_merged": "顶住，千万别在这儿失礼人！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仔,刚才你有没有留你一张半张人跳泊下身"
+      ],
+      "zhongwen": "孩儿，你刚才有没有留点银票傍身"
+    },
+    "answer": {
+      "yuewen_merged": "仔,刚才你有没有留你一张半张人跳泊下身"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没,你呢"
+      ],
+      "zhongwen": "没有！你呢？"
+    },
+    "answer": {
+      "yuewen_merged": "没，你呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好呀",
+        "抄家仔…"
+      ],
+      "zhongwen": "完蛋了！我俩真是完蛋了"
+    },
+    "answer": {
+      "yuewen_merged": "好呀，抄家仔⋯！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仔,看这东西"
+      ],
+      "zhongwen": "善有善报，可怜我这个小乞丐⋯"
+    },
+    "answer": {
+      "yuewen_merged": "仔，看这东西⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "又像爹",
+        "你自己唱歌的"
+      ],
+      "zhongwen": "孩儿！你看这个像不像阿爹？"
+    },
+    "answer": {
+      "yuewen_merged": "又像爹，你自己唱歌的？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "真是…",
+        "不是,给他钱的"
+      ],
+      "zhongwen": "不是，是给钱的那个"
+    },
+    "answer": {
+      "yuewen_merged": "真是…不是,给他钱的"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "还折磨我唱歌的",
+        "不是,你真聪明,各花各眼"
+      ],
+      "zhongwen": "不是吧！多潇洒，各人眼光不同吧"
+    },
+    "answer": {
+      "yuewen_merged": "还折磨我唱歌的，不是,你真聪明,各花各眼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "以前常叫你乞丐仔…"
+      ],
+      "zhongwen": "以前老叫你小乞丐！小乞丐"
+    },
+    "answer": {
+      "yuewen_merged": "以前常叫你乞丐仔…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇帝叫我们做乞丐",
+        "就真的会做乞丐吗"
+      ],
+      "zhongwen": "我们就乖乖当乞丐吗？"
+    },
+    "answer": {
+      "yuewen_merged": "皇帝叫我们做乞丐，就真的会做乞丐吗？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "那倒是"
+      ],
+      "zhongwen": "我那里像乞丐？"
+    },
+    "answer": {
+      "yuewen_merged": "那倒是？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没有",
+        "是乞丐,是义工,我去买东西吃"
+      ],
+      "zhongwen": "小乞丐老乞丐，拿去买东西吧"
+    },
+    "answer": {
+      "yuewen_merged": "没有，是乞丐，是义工，我去买东西吃"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "你真系讲证我哋黑衣呀"
+      ],
+      "zhongwen": "你真的当我们是乞丐？"
+    },
+    "answer": {
+      "yuewen_merged": "喂，你真系讲证我哋黑衣呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "瘟你个酱呀简直"
+      ],
+      "zhongwen": "混你的帐！你⋯"
+    },
+    "answer": {
+      "yuewen_merged": "瘟你个酱呀，简直⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "吓你哂",
+        "食饭先",
+        "食饭先"
+      ],
+      "zhongwen": "太过分了！吃饭吃饭"
+    },
+    "answer": {
+      "yuewen_merged": "吓你哂！食饭先，食饭先"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿",
+        "还是食饭话冇嘢做"
+      ],
+      "zhongwen": "阿灿，反正吃饱没事干"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，还是食饭话冇嘢做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔啱阿爹过嗰边坐下",
+        "话唔定今晚嘅餐都有著落呢"
+      ],
+      "zhongwen": "让我在那边坐一会，说不定有晚饭吃"
+    },
+    "answer": {
+      "yuewen_merged": "唔啱阿爹过嗰边坐下，话唔定今晚嘅餐都有著落呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿爹你唔好担心"
+      ],
+      "zhongwen": "阿爹！不用担心"
+    },
+    "answer": {
+      "yuewen_merged": "阿爹！你唔好担心"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "黑嘅"
+      ],
+      "zhongwen": "不需要讨那里有钱呢？"
+    },
+    "answer": {
+      "yuewen_merged": "黑嘅？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔黑边得你有钱呢",
+        "攞咪就得啦"
+      ],
+      "zhongwen": "问人家借就行了"
+    },
+    "answer": {
+      "yuewen_merged": "唔黑边得你有钱呢，攞咪就得啦"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "兄弟",
+        "点称呼呀"
+      ],
+      "zhongwen": "兄弟，贵姓大名？"
+    },
+    "answer": {
+      "yuewen_merged": "兄弟，点称呼呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有冇一百几十两银喺身"
+      ],
+      "zhongwen": "你身上有没有银两？"
+    },
+    "answer": {
+      "yuewen_merged": "有冇一百几十两银喺身？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有",
+        "攞嚟使住先"
+      ],
+      "zhongwen": "有　　借来用用"
+    },
+    "answer": {
+      "yuewen_merged": "有　　攞嚟使住先"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我干嘛要给你钱"
+      ],
+      "zhongwen": "我为甚么要给你钱？"
+    },
+    "answer": {
+      "yuewen_merged": "我干嘛要给你钱？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你买这么多东西干什么"
+      ],
+      "zhongwen": "你问这么多干甚么！"
+    },
+    "answer": {
+      "yuewen_merged": "你买这么多东西干什么！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你知道就好,不知道就好",
+        "也要给你"
+      ],
+      "zhongwen": "知道要给，不知道也要给"
+    },
+    "answer": {
+      "yuewen_merged": "你知道就好，不知道就好，也要给你"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不行…还是搞清楚一点"
+      ],
+      "zhongwen": "不行不行，还是弄清楚比较好"
+    },
+    "answer": {
+      "yuewen_merged": "不行…还是搞清楚一点"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "给就给吧,买这么多干嘛"
+      ],
+      "zhongwen": "你拿来吧！问这么多干吗"
+    },
+    "answer": {
+      "yuewen_merged": "给就给吧！买这么多干嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "抢东西…"
+      ],
+      "zhongwen": "强盗⋯"
+    },
+    "answer": {
+      "yuewen_merged": "抢东西⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是抢,我们黑而已"
+      ],
+      "zhongwen": "不是抢！我们是讨饭"
+    },
+    "answer": {
+      "yuewen_merged": "不是抢，我们黑而已"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "当我猪兜吗",
+        "我都不知道多棒"
+      ],
+      "zhongwen": "别当我呆子！我很聪明的！"
+    },
+    "answer": {
+      "yuewen_merged": "当我猪兜吗！我都不知道多棒！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "两天天又翻风,两肚又空空"
+      ],
+      "zhongwen": "天气越来越冷！肚子越来越饿"
+    },
+    "answer": {
+      "yuewen_merged": "两天天又翻风，两肚又空空"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你想到办法了吗"
+      ],
+      "zhongwen": "你想到没有？"
+    },
+    "answer": {
+      "yuewen_merged": "你想到办法了吗？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "要不这样",
+        "我有个朋友的阿姨的妹妹"
+      ],
+      "zhongwen": "有办法，我有个朋友的阿姨的妹妹"
+    },
+    "answer": {
+      "yuewen_merged": "要不，这样，我有个朋友的阿姨的妹妹"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有这种事"
+      ],
+      "zhongwen": "会有这回事？"
+    },
+    "answer": {
+      "yuewen_merged": "有这种事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是的",
+        "如果你肯跟她交际一下"
+      ],
+      "zhongwen": "是！如果你肯跟他交际一下"
+    },
+    "answer": {
+      "yuewen_merged": "是的！如果你肯跟她交际一下"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不知道你老人家的意思"
+      ],
+      "zhongwen": "不知道你老人家意思⋯"
+    },
+    "answer": {
+      "yuewen_merged": "不知道你老人家的意思⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "为了头家,你说怎么样就怎么样"
+      ],
+      "zhongwen": "为了这个家，我甚么都可以做"
+    },
+    "answer": {
+      "yuewen_merged": "为了头家，你说怎么样就怎么样"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你别说那么多,我们见她…"
+      ],
+      "zhongwen": "别再说了！我们去见他"
+    },
+    "answer": {
+      "yuewen_merged": "你别说那么多，我们见她⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇整蛊啊",
+        "冇整蛊啊"
+      ],
+      "zhongwen": "没问题吗"
+    },
+    "answer": {
+      "yuewen_merged": "冇整蛊啊，冇整蛊啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不如你先",
+        "我后抱",
+        "喂"
+      ],
+      "zhongwen": "没问题！不过你先来，我跟在后面"
+    },
+    "answer": {
+      "yuewen_merged": "不如你先，我后抱，喂"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "查兰心老说大事我未试过"
+      ],
+      "zhongwen": "阿灿，胸口碎大石我还没玩过"
+    },
+    "answer": {
+      "yuewen_merged": "查兰，心老说大事我未试过"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "停啲啦"
+      ],
+      "zhongwen": "不用怕，我会很小心"
+    },
+    "answer": {
+      "yuewen_merged": "停啲啦"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我就住嚟帮你包",
+        "乜事都冇"
+      ],
+      "zhongwen": "确保你没有事"
+    },
+    "answer": {
+      "yuewen_merged": "我就住嚟帮你包，乜事都冇"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你都想揾个钱食碗翅先嘅",
+        "好啊"
+      ],
+      "zhongwen": "你也想赚点钱吃碗鱼翅吧？"
+    },
+    "answer": {
+      "yuewen_merged": "你都想揾个钱食碗翅先嘅，好啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好啊"
+      ],
+      "zhongwen": "对⋯"
+    },
+    "answer": {
+      "yuewen_merged": "好啊⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "走开",
+        "走开",
+        "走开",
+        "走开"
+      ],
+      "zhongwen": "走开⋯走开"
+    },
+    "answer": {
+      "yuewen_merged": "走开，走开⋯走开，走开"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "走开",
+        "走开",
+        "唔准喺度卖武"
+      ],
+      "zhongwen": "不许在这儿卖艺"
+    },
+    "answer": {
+      "yuewen_merged": "走开，走开，唔准喺度卖武"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "兄弟",
+        "我哋只系想筹啲水脚"
+      ],
+      "zhongwen": "大人，我们只想赚点钱"
+    },
+    "answer": {
+      "yuewen_merged": "兄弟，我哋只系想筹啲水脚"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "畀条路行下",
+        "无谓赶到咁绝"
+      ],
+      "zhongwen": "给我们一条生路，不要赶尽杀绝"
+    },
+    "answer": {
+      "yuewen_merged": "畀条路行下，无谓赶到咁绝"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我只系奉本子办事",
+        "是",
+        "引来"
+      ],
+      "zhongwen": "我是奉本子办事！人来"
+    },
+    "answer": {
+      "yuewen_merged": "我只系奉本子办事！是，引来"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有",
+        "就所有嘢搬走"
+      ],
+      "zhongwen": "有　　将所有东西搬走"
+    },
+    "answer": {
+      "yuewen_merged": "有　　就所有嘢搬走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "招打人喇",
+        "一个人搬唔起㖞"
+      ],
+      "zhongwen": "赵大人！一个人搬不动"
+    },
+    "answer": {
+      "yuewen_merged": "招打人喇！一个人搬唔起㖞"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一个唔够",
+        "咪上多几个啰"
+      ],
+      "zhongwen": "一个搬不动多上几个人"
+    },
+    "answer": {
+      "yuewen_merged": "一个唔够，咪上多几个啰"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你姐分明想漏蛋啫"
+      ],
+      "zhongwen": "不行，都搬不动　　让我来吧"
+    },
+    "answer": {
+      "yuewen_merged": "你姐分明想漏蛋啫"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你手脚骨胶和全身经脉",
+        "都被我打断了"
+      ],
+      "zhongwen": "你的手脚跟全身经脉都给我打断"
+    },
+    "answer": {
+      "yuewen_merged": "你手脚骨胶和全身经脉，都被我打断了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你这辈子都像死蛇烂蝉似的"
+      ],
+      "zhongwen": "你一辈子都像废人一样！"
+    },
+    "answer": {
+      "yuewen_merged": "你这辈子都像死蛇烂蝉似的！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "想打功夫?没你份"
+      ],
+      "zhongwen": "想用武功？没你份儿！"
+    },
+    "answer": {
+      "yuewen_merged": "想打功夫？没你份！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不过新手出来欺负钱还可以"
+      ],
+      "zhongwen": "不过，伸手讨几个钱还可以"
+    },
+    "answer": {
+      "yuewen_merged": "不过，新手出来欺负钱还可以"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "走…"
+      ],
+      "zhongwen": "走⋯没事⋯走开"
+    },
+    "answer": {
+      "yuewen_merged": "走⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别怕,",
+        "贼,",
+        "没事…",
+        "别怕…",
+        "没事…"
+      ],
+      "zhongwen": "不用怕阿灿，没事的，没事的⋯"
+    },
+    "answer": {
+      "yuewen_merged": "别怕，贼，没事…别怕…没事⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别怕,",
+        "贼"
+      ],
+      "zhongwen": "不用怕，没事的⋯"
+    },
+    "answer": {
+      "yuewen_merged": "别怕，贼⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你们猜猜是谁"
+      ],
+      "zhongwen": "你们猜他是谁？"
+    },
+    "answer": {
+      "yuewen_merged": "你们猜猜是谁？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一说就一怨于尘"
+      ],
+      "zhongwen": "一说到他我就气死了⋯"
+    },
+    "answer": {
+      "yuewen_merged": "一说就一怨于尘⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别说了,",
+        "先吃一口",
+        "是呀…"
+      ],
+      "zhongwen": "不要说了，先吸口烟"
+    },
+    "answer": {
+      "yuewen_merged": "别说了，先吃一口，是呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好点的",
+        "是呀…"
+      ],
+      "zhongwen": "是的，好多了"
+    },
+    "answer": {
+      "yuewen_merged": "好点的，是呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "什么混蛋",
+        "当日在怡红县"
+      ],
+      "zhongwen": "这个王八蛋当日在怡红院"
+    },
+    "answer": {
+      "yuewen_merged": "什么混蛋当日在怡红县"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "幸好我儿子又真材实料"
+      ],
+      "zhongwen": "还好我儿子有真材实料⋯"
+    },
+    "answer": {
+      "yuewen_merged": "幸好我儿子又真材实料⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "为愧世武功,"
+      ],
+      "zhongwen": "我要他武功盖世，状元之才"
+    },
+    "answer": {
+      "yuewen_merged": "为愧世武功，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "天下无敌",
+        "益人之下,",
+        "万人之上"
+      ],
+      "zhongwen": "一人之下，万人之上"
+    },
+    "answer": {
+      "yuewen_merged": "天下无敌，益人之下，万人之上"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "做得到",
+        "好"
+      ],
+      "zhongwen": "好"
+    },
+    "answer": {
+      "yuewen_merged": "做得到，好"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "那你做得到的时候,",
+        "才来找我"
+      ],
+      "zhongwen": "待你做得到的时候就回来找我"
+    },
+    "answer": {
+      "yuewen_merged": "那你做得到的时候，才来找我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我想我们要先定分歧"
+      ],
+      "zhongwen": "既然如此，我想我们要先定婚期"
+    },
+    "answer": {
+      "yuewen_merged": "我想我们要先定分歧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "因为做状元对我来说易如反掌",
+        "混蛋"
+      ],
+      "zhongwen": "因为做状元对我来说易如反掌"
+    },
+    "answer": {
+      "yuewen_merged": "因为做状元对我来说易如反掌，混蛋"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我唔识写",
+        "噼",
+        "啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+      ],
+      "zhongwen": "我不会写"
+    },
+    "answer": {
+      "yuewen_merged": "我唔识写噼啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "详",
+        "准备呀"
+      ],
+      "zhongwen": "灿！怎么？"
+    },
+    "answer": {
+      "yuewen_merged": "详，准备呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有花我梦呀"
+      ],
+      "zhongwen": "又作恶梦？"
+    },
+    "answer": {
+      "yuewen_merged": "有花我梦呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "虽然你休息了两个月",
+        "手脚就动得下"
+      ],
+      "zhongwen": "虽然休息了两个月，手脚可以动了"
+    },
+    "answer": {
+      "yuewen_merged": "虽然你休息了两个月，手脚就动得下"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "呀",
+        "呀",
+        "呀"
+      ],
+      "zhongwen": "哈尔叔⋯来⋯"
+    },
+    "answer": {
+      "yuewen_merged": "呀⋯呀⋯呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹出去揾啲嘢",
+        "返嚟今晚大家食"
+      ],
+      "zhongwen": "阿爹出去找点食物回来"
+    },
+    "answer": {
+      "yuewen_merged": "爹出去揾啲嘢返嚟今晚大家食"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嚟",
+        "爹",
+        "又去乞"
+      ],
+      "zhongwen": "爹，又去讨饭"
+    },
+    "answer": {
+      "yuewen_merged": "嚟，爹，又去乞"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔中意你堂堂武藏员"
+      ],
+      "zhongwen": "难道要你堂堂武状元⋯"
+    },
+    "answer": {
+      "yuewen_merged": "唔中意你堂堂武藏员⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "阿陈",
+        "原来做乞医系好撩撚㗎㖞"
+      ],
+      "zhongwen": "阿灿，原来当乞丐也不简单"
+    },
+    "answer": {
+      "yuewen_merged": "喂，阿陈，原来做乞医系好撩撚㗎㖞"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "起码要攞个铂㖞",
+        "噉样先至有身份"
+      ],
+      "zhongwen": "至少要拿个砵子！这样才有身份"
+    },
+    "answer": {
+      "yuewen_merged": "起码要攞个铂㖞！噉样先至有身份"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "黑衣都讲身份㖞",
+        "烧到佢脆裂"
+      ],
+      "zhongwen": "乞丐也论身份，真混帐"
+    },
+    "answer": {
+      "yuewen_merged": "黑衣都讲身份㖞，烧到佢脆裂"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嚟呀",
+        "嚟呀"
+      ],
+      "zhongwen": "来了"
+    },
+    "answer": {
+      "yuewen_merged": "嚟呀，嚟呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没了没了",
+        "走呀走呀"
+      ],
+      "zhongwen": "没有没有，走吧"
+    },
+    "answer": {
+      "yuewen_merged": "没了没了，走呀走呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "躲住",
+        "挡住做生意"
+      ],
+      "zhongwen": "走，快走⋯别碍我做生意"
+    },
+    "answer": {
+      "yuewen_merged": "躲住，挡住做生意"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "拿爹出去"
+      ],
+      "zhongwen": "阿灿，阿爹出去了"
+    },
+    "answer": {
+      "yuewen_merged": "拿爹出去"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谢谢",
+        "谢谢",
+        "谢谢",
+        "真的很厉害"
+      ],
+      "zhongwen": "谢谢⋯⋯"
+    },
+    "answer": {
+      "yuewen_merged": "谢谢，谢谢，谢谢，真的很厉害⋯⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "多谢",
+        "多谢"
+      ],
+      "zhongwen": "谢谢⋯谢谢"
+    },
+    "answer": {
+      "yuewen_merged": "多谢⋯多谢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不这么孤寂吧,",
+        "大佬"
+      ],
+      "zhongwen": "别那么吝啬吧，老兄？"
+    },
+    "answer": {
+      "yuewen_merged": "不这么孤寂吧，大佬？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你说自己写吧"
+      ],
+      "zhongwen": "你不会自己写？"
+    },
+    "answer": {
+      "yuewen_merged": "你说自己写吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是呀,",
+        "我看你下班",
+        "想顺便借来涌泳而已,",
+        "真的"
+      ],
+      "zhongwen": "我见你下班了，借你地方用一下吧"
+    },
+    "answer": {
+      "yuewen_merged": "是呀，我看你下班，想顺便借来涌泳而已，真的"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你当我傻的吗?"
+      ],
+      "zhongwen": "你当我呆子吗？"
+    },
+    "answer": {
+      "yuewen_merged": "你当我傻的吗？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你做咩"
+      ],
+      "zhongwen": "你甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "你做咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好冻呀,好冻呀,灿,好冻呀"
+      ],
+      "zhongwen": "好冷⋯阿灿！好冷⋯"
+    },
+    "answer": {
+      "yuewen_merged": "好冻呀，好冻呀⋯灿，好冻呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔系㖞,你个身好热㖞"
+      ],
+      "zhongwen": "好冷？糟糕了！你身体好熨"
+    },
+    "answer": {
+      "yuewen_merged": "唔系㖞，你个身好热㖞！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你病呀"
+      ],
+      "zhongwen": "你病了？"
+    },
+    "answer": {
+      "yuewen_merged": "你病呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇冇,"
+      ],
+      "zhongwen": "没有⋯没有"
+    },
+    "answer": {
+      "yuewen_merged": "冇冇⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "快啲瞓返低先,今次等我去"
+      ],
+      "zhongwen": "你快躺下吧，今天让我去"
+    },
+    "answer": {
+      "yuewen_merged": "快啲瞓返低先，今次等我去"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你又去闲"
+      ],
+      "zhongwen": "你去讨饭？"
+    },
+    "answer": {
+      "yuewen_merged": "你又去闲？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "得㗎喇,总之我有办法嘅"
+      ],
+      "zhongwen": "没有问题，我会有办法"
+    },
+    "answer": {
+      "yuewen_merged": "得㗎喇，总之我有办法嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "先",
+        "我揾到钱返嚟同你睇大夫"
+      ],
+      "zhongwen": "我找到钱就回来带你看大夫"
+    },
+    "answer": {
+      "yuewen_merged": "先，我揾到钱返嚟同你睇大夫"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你唔食嘢",
+        "边度可以有阿爹咁大只呀"
+      ],
+      "zhongwen": "你不吃又怎能像阿爹般强壮"
+    },
+    "answer": {
+      "yuewen_merged": "你唔食嘢，边度可以有阿爹咁大只呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔食啦",
+        "我饱㗎"
+      ],
+      "zhongwen": "吃不下了，我饱了"
+    },
+    "answer": {
+      "yuewen_merged": "唔食啦，我饱㗎"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "饱饱饱",
+        "饱都要食呀",
+        "返啲食埋佢"
+      ],
+      "zhongwen": "饱⋯饱也要吃，快点吃"
+    },
+    "answer": {
+      "yuewen_merged": "饱饱饱，饱都要食呀，返啲食埋佢"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔食就算啦",
+        "返家企啦"
+      ],
+      "zhongwen": "不吃吗！不吃就回家"
+    },
+    "answer": {
+      "yuewen_merged": "唔食就算啦！返家企啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "食",
+        "快啲食埋佢",
+        "食啦"
+      ],
+      "zhongwen": "吃！快点吃，吃"
+    },
+    "answer": {
+      "yuewen_merged": "食！快啲食埋佢，食啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "呀",
+        "咩呀"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "呀，咩呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "可唔可以",
+        "唔可以"
+      ],
+      "zhongwen": "可不可以⋯　　不可以"
+    },
+    "answer": {
+      "yuewen_merged": "可唔可以⋯　　唔可以"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好心啦",
+        "福心啦"
+      ],
+      "zhongwen": "好心吧！福心吧！"
+    },
+    "answer": {
+      "yuewen_merged": "好心啦！福心啦！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "可怜我呢个乞儿仔啦"
+      ],
+      "zhongwen": "可怜我这个⋯小乞丐"
+    },
+    "answer": {
+      "yuewen_merged": "可怜我呢个乞儿仔啦⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "儿子,啲碎炭你要唔要啊"
+      ],
+      "zhongwen": "小乞丐，这里有点碎碳你要不要"
+    },
+    "answer": {
+      "yuewen_merged": "儿子，啲碎炭你要唔要啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹,",
+        "系佢啊"
+      ],
+      "zhongwen": "姐姐！是他"
+    },
+    "answer": {
+      "yuewen_merged": "爹，系佢啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔系佢…"
+      ],
+      "zhongwen": "不是他！不是他"
+    },
+    "answer": {
+      "yuewen_merged": "唔系佢！⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "家晶"
+      ],
+      "zhongwen": "姐姐⋯姐姐！苏灿"
+    },
+    "answer": {
+      "yuewen_merged": "家晶⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "小姐",
+        "你找谁"
+      ],
+      "zhongwen": "小姐，你找谁呀？"
+    },
+    "answer": {
+      "yuewen_merged": "小姐，你找谁？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对不起",
+        "我认错人"
+      ],
+      "zhongwen": "对不起，我认错人！"
+    },
+    "answer": {
+      "yuewen_merged": "对不起，我认错人！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "小翠",
+        "拿些馒头出来"
+      ],
+      "zhongwen": "小翠，去拿几个馒头出来"
+    },
+    "answer": {
+      "yuewen_merged": "小翠，拿些馒头出来"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你认错人了",
+        "她不是苏灿"
+      ],
+      "zhongwen": "你认错人了！他不是苏灿"
+    },
+    "answer": {
+      "yuewen_merged": "你认错人了！她不是苏灿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "日后没东西吃",
+        "你就来我家拿馒头吧"
+      ],
+      "zhongwen": "以后没东西吃，就到我家取馒头"
+    },
+    "answer": {
+      "yuewen_merged": "日后没东西吃，你就来我家拿馒头吧"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我家人少",
+        "吃不完"
+      ],
+      "zhongwen": "我家里人少，吃不完"
+    },
+    "answer": {
+      "yuewen_merged": "我家人少，吃不完"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谢谢"
+      ],
+      "zhongwen": "谢谢⋯⋯"
+    },
+    "answer": {
+      "yuewen_merged": "谢谢⋯⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谢谢",
+        "姐姐"
+      ],
+      "zhongwen": "姐姐"
+    },
+    "answer": {
+      "yuewen_merged": "谢谢姐姐"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如果唔系因为你",
+        "佢都唔会搞成噉嘞"
+      ],
+      "zhongwen": "要不是为了你，他也不会变成这样"
+    },
+    "answer": {
+      "yuewen_merged": "如果唔系因为你，佢都唔会搞成噉嘞"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿爹",
+        "做乜?"
+      ],
+      "zhongwen": "阿爹！怎么呢"
+    },
+    "answer": {
+      "yuewen_merged": "阿爹！做乜？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿,我个头顶唔顺"
+      ],
+      "zhongwen": "阿灿！我刚刚饿坏了"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿！我个头顶唔顺"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "见到靓姐握紧馒头",
+        "借嚟咬咗胆咋嘛"
+      ],
+      "zhongwen": "看见小孩子吃馒头，我借来咬一口"
+    },
+    "answer": {
+      "yuewen_merged": "见到靓姐握紧馒头，借嚟咬咗胆咋嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿,我呢度有馒头我还返畀你"
+      ],
+      "zhongwen": "我这里有馒头！还给他"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，我呢度有馒头我还返畀你！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁都得㗎咩"
+      ],
+      "zhongwen": "这样也可以吗？"
+    },
+    "answer": {
+      "yuewen_merged": "咁都得㗎咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我握咗你个头再还返畀你,得唔得",
+        "喂…"
+      ],
+      "zhongwen": "我斩了你个头再还给你可不可以？"
+    },
+    "answer": {
+      "yuewen_merged": "我握咗你个头再还返畀你，得唔得？喂⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你咪撞完爷?",
+        "系咪?系咪撞完爷?"
+      ],
+      "zhongwen": "你是状元爷吗？"
+    },
+    "answer": {
+      "yuewen_merged": "你咪撞完爷？系咪？系咪撞完爷？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "真系,撞完爷嚟㗎"
+      ],
+      "zhongwen": "真的！真是状元爷"
+    },
+    "answer": {
+      "yuewen_merged": "真系，撞完爷嚟㗎！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "撞完爷…",
+        "撞完爷一定要畀面"
+      ],
+      "zhongwen": "一定给面子状元爷"
+    },
+    "answer": {
+      "yuewen_merged": "撞完爷…撞完爷一定要畀面"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哦,多谢…"
+      ],
+      "zhongwen": "多谢⋯多谢"
+    },
+    "answer": {
+      "yuewen_merged": "哦，多谢⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "闭住,相请不如偶遇啊"
+      ],
+      "zhongwen": "等一等！相请不如偶遇"
+    },
+    "answer": {
+      "yuewen_merged": "闭住，相请不如偶遇啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "相请不如偶遇㖞",
+        "唔知咪想请我哋饮埋烧酒先呢"
+      ],
+      "zhongwen": "相请不如偶遇，是否想请我们喝酒呢"
+    },
+    "answer": {
+      "yuewen_merged": "相请不如偶遇㖞，唔知咪想请我哋饮埋烧酒先呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "庄元爷",
+        "食咗呢碗饭咪放咗你爹啰"
+      ],
+      "zhongwen": "状元爷，吃完这饭就放你的爹"
+    },
+    "answer": {
+      "yuewen_merged": "庄元爷，食咗呢碗饭咪放咗你爹啰"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咩啊"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "咩啊？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿七,"
+      ],
+      "zhongwen": "阿灿！你不能吃"
+    },
+    "answer": {
+      "yuewen_merged": "阿七！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别吃了",
+        "吃了以后怎么见人"
+      ],
+      "zhongwen": "你吃了后怎样见人？"
+    },
+    "answer": {
+      "yuewen_merged": "别吃了，吃了以后怎么见人？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大佬,",
+        "我教你广州将军"
+      ],
+      "zhongwen": "老兄，说到底我是广州将军"
+    },
+    "answer": {
+      "yuewen_merged": "大佬，我教你广州将军"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你教我",
+        "你想怎样"
+      ],
+      "zhongwen": "想怎样呀？"
+    },
+    "answer": {
+      "yuewen_merged": "你教我，你想怎样？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹",
+        "几惹味㖞",
+        "系"
+      ],
+      "zhongwen": "爹，味道不错"
+    },
+    "answer": {
+      "yuewen_merged": "爹，几惹味㖞，系"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "试下试下试下",
+        "嚟嚟嚟",
+        "啧"
+      ],
+      "zhongwen": "尝尝⋯尝尝，来⋯来"
+    },
+    "answer": {
+      "yuewen_merged": "喂，试下试下试下⋯嚟嚟嚟⋯啧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好食㖞",
+        "系咪"
+      ],
+      "zhongwen": "好吃，是吗？"
+    },
+    "answer": {
+      "yuewen_merged": "好食㖞，系咪？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "爹",
+        "你睇下"
+      ],
+      "zhongwen": "阿爹，你看"
+    },
+    "answer": {
+      "yuewen_merged": "爹，你睇下"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "乜玉丝啊",
+        "玉牌嚟啊"
+      ],
+      "zhongwen": "甚么　　肉丝？是肉排"
+    },
+    "answer": {
+      "yuewen_merged": "乜玉丝啊　　玉牌嚟啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你俩那张后襟那张黑衣狗"
+      ],
+      "zhongwen": "你俩比狗还要饿！"
+    },
+    "answer": {
+      "yuewen_merged": "你俩那张后襟那张黑衣狗！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "吃完它,",
+        "快点"
+      ],
+      "zhongwen": "吃吧！快点吧！"
+    },
+    "answer": {
+      "yuewen_merged": "吃完它，快点！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "来,",
+        "我们去吃忍饭",
+        "对…去吃忍饭"
+      ],
+      "zhongwen": "来！我们去吃人的饭吧"
+    },
+    "answer": {
+      "yuewen_merged": "来！我们去吃忍饭，对…去吃忍饭"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "素老伯",
+        "素老伯"
+      ],
+      "zhongwen": "苏老伯"
+    },
+    "answer": {
+      "yuewen_merged": "素老伯，素老伯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你是…"
+      ],
+      "zhongwen": "你是⋯"
+    },
+    "answer": {
+      "yuewen_merged": "你是⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不如你哋两位加入我哋丐帮好吗"
+      ],
+      "zhongwen": "不如你俩加入丐帮，好不好？"
+    },
+    "answer": {
+      "yuewen_merged": "不如你哋两位加入我哋丐帮好吗？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔",
+        "好"
+      ],
+      "zhongwen": "莫大叔，好不好"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔，好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好呀"
+      ],
+      "zhongwen": "丐帮是不是讨饭帮？"
+    },
+    "answer": {
+      "yuewen_merged": "好呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系呀",
+        "啱啦",
+        "啱啦"
+      ],
+      "zhongwen": "正好⋯现在我们当乞丐"
+    },
+    "answer": {
+      "yuewen_merged": "系呀，啱啦，啱啦⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "而家我哋就做紧乞丐",
+        "加入你哋丐帮而佢照应都好呀"
+      ],
+      "zhongwen": "加入你们丐帮有个照应也好"
+    },
+    "answer": {
+      "yuewen_merged": "而家我哋就做紧乞丐，加入你哋丐帮而佢照应都好呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿呀",
+        "灿",
+        "个兽头呢"
+      ],
+      "zhongwen": "阿灿⋯他去哪儿呢？"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿呀，灿，个兽头呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "个",
+        "阿灿呢",
+        "喺边度呀"
+      ],
+      "zhongwen": "阿灿呢？在哪里？"
+    },
+    "answer": {
+      "yuewen_merged": "个阿灿呢？喺边度呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我哋两个报名呀",
+        "两个"
+      ],
+      "zhongwen": "好，我们两个报名，两个"
+    },
+    "answer": {
+      "yuewen_merged": "我哋两个报名呀，两个"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿",
+        "灿呀"
+      ],
+      "zhongwen": "灿⋯灿"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，灿呀⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "余先生,恭喜发财…"
+      ],
+      "zhongwen": "如霜！恭喜发财"
+    },
+    "answer": {
+      "yuewen_merged": "余先生，恭喜发财⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大叔,恭喜发财…"
+      ],
+      "zhongwen": "莫大叔！恭喜发财"
+    },
+    "answer": {
+      "yuewen_merged": "大叔！恭喜发财⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谢谢…"
+      ],
+      "zhongwen": "多谢！多谢"
+    },
+    "answer": {
+      "yuewen_merged": "谢谢⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这是一件衫,送给你",
+        "这是一件送给阿灿的"
+      ],
+      "zhongwen": "这两件衣服，一件给你，一件给阿灿"
+    },
+    "answer": {
+      "yuewen_merged": "这是一件衫，送给你这是一件送给阿灿的"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "放下它…"
+      ],
+      "zhongwen": "先把东西放下，先把东西放下"
+    },
+    "answer": {
+      "yuewen_merged": "放下它⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有没有睡著?",
+        "有"
+      ],
+      "zhongwen": "有"
+    },
+    "answer": {
+      "yuewen_merged": "有没有睡著?有"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有就拿来,来…",
+        "做甚么?"
+      ],
+      "zhongwen": "有就拿来！来⋯　　干甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "有就拿来！来⋯　　做甚么？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "新征头嘛,当然要来来试试"
+      ],
+      "zhongwen": "干甚么？过新年当然要利利是是"
+    },
+    "answer": {
+      "yuewen_merged": "新征头嘛，当然要来来试试"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "祝你新壮力健"
+      ],
+      "zhongwen": "来，祝你身体健康"
+    },
+    "answer": {
+      "yuewen_merged": "祝你新壮力健"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "青春美丽",
+        "谢谢"
+      ],
+      "zhongwen": "你就青春美丽　　谢谢"
+    },
+    "answer": {
+      "yuewen_merged": "青春美丽　　谢谢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大叔,我们亲家两面"
+      ],
+      "zhongwen": "莫大叔，我们二老就两免了"
+    },
+    "answer": {
+      "yuewen_merged": "大叔，我们亲家两面"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好了,阿灿呢?"
+      ],
+      "zhongwen": "阿灿呢？"
+    },
+    "answer": {
+      "yuewen_merged": "好了，阿灿呢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿…",
+        "他又年三十五,睡到年初一"
+      ],
+      "zhongwen": "阿灿？他由年三十睡到大年初一"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿？他又年三十五，睡到年初一"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "刚刚才睡著,别吵醒他"
+      ],
+      "zhongwen": "他刚刚才睡！别把他吵醒"
+    },
+    "answer": {
+      "yuewen_merged": "刚刚才睡著！别吵醒他"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "来…",
+        "好…",
+        "安静点"
+      ],
+      "zhongwen": "好！我帮你"
+    },
+    "answer": {
+      "yuewen_merged": "来…好…安静点"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "真是难来扶不上壁"
+      ],
+      "zhongwen": "真是没用的家伙！"
+    },
+    "answer": {
+      "yuewen_merged": "真是难来扶不上壁！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大家到齐了吧"
+      ],
+      "zhongwen": "大家到齐了没？"
+    },
+    "answer": {
+      "yuewen_merged": "大家到齐了吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我们立刻选位新帮主出来",
+        "主持大局"
+      ],
+      "zhongwen": "我们要选出新帮主来主持大局"
+    },
+    "answer": {
+      "yuewen_merged": "我们立刻选位新帮主出来，主持大局"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "余双…"
+      ],
+      "zhongwen": "如霜⋯如霜"
+    },
+    "answer": {
+      "yuewen_merged": "余双⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔,莲花乐阵你都没把握"
+      ],
+      "zhongwen": "莫大叔！莲花落阵你也没把握"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔！莲花乐阵你都没把握"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我又怎可以打下三位长老做帮主"
+      ],
+      "zhongwen": "怎么可能打败三位长老当上帮主呢？"
+    },
+    "answer": {
+      "yuewen_merged": "我又怎可以打下三位长老做帮主？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这颗大环丹,你吃了之后会功力大增"
+      ],
+      "zhongwen": "这颗大还丹，你吃了之后会功力大增"
+    },
+    "answer": {
+      "yuewen_merged": "这颗大环丹，你吃了之后会功力大增"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不行,这颗大环丹是医理内伤的"
+      ],
+      "zhongwen": "不行！这颗大还丹是给你治内伤用的"
+    },
+    "answer": {
+      "yuewen_merged": "不行！这颗大环丹是医理内伤的"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我怎么可以吃呢?"
+      ],
+      "zhongwen": "我怎么能吃呢？"
+    },
+    "answer": {
+      "yuewen_merged": "我怎么可以吃呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "假的,不是,曾经…"
+      ],
+      "zhongwen": "⋯不！曾经"
+    },
+    "answer": {
+      "yuewen_merged": "假的，不是，曾经⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "只会睡觉怎么打架"
+      ],
+      "zhongwen": "只会睡觉，怎能打架呢？"
+    },
+    "answer": {
+      "yuewen_merged": "只会睡觉，怎么打架？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你不要太坦白行不行"
+      ],
+      "zhongwen": "你别那么坦白行不行？"
+    },
+    "answer": {
+      "yuewen_merged": "你不要太坦白行不行？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你不要太大声行不行"
+      ],
+      "zhongwen": "你别那么大声好不好？"
+    },
+    "answer": {
+      "yuewen_merged": "你不要太大声行不行？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿",
+        "无论人家点样睇你唔起都好"
+      ],
+      "zhongwen": "阿灿，不管人家现在怎么看不起你"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，无论人家点样睇你唔起都好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我而家已经冇晒力",
+        "亦都唔想再用力"
+      ],
+      "zhongwen": "我现在已经没有力，也不想再用力"
+    },
+    "answer": {
+      "yuewen_merged": "我而家已经冇晒力，亦都唔想再用力"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点会冇晒力啫"
+      ],
+      "zhongwen": "怎么会没有力呢？"
+    },
+    "answer": {
+      "yuewen_merged": "点会冇晒力啫？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "打嘴过嚟",
+        "打呀",
+        "阿灿"
+      ],
+      "zhongwen": "快打我一拳"
+    },
+    "answer": {
+      "yuewen_merged": "打嘴过嚟，打呀，阿灿"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "所以话呢",
+        "做人呢"
+      ],
+      "zhongwen": "所以我说，做人⋯"
+    },
+    "answer": {
+      "yuewen_merged": "所以话呢，做人呢⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点",
+        "算啦",
+        "唔好再浪费时间"
+      ],
+      "zhongwen": "算了！不要再浪费时间"
+    },
+    "answer": {
+      "yuewen_merged": "点，算啦，唔好再浪费时间"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "做咩锁住"
+      ],
+      "zhongwen": "你怎么把门锁上？"
+    },
+    "answer": {
+      "yuewen_merged": "做咩锁住？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仔呀仔",
+        "我几经辛苦先搞到噉嘅阵容"
+      ],
+      "zhongwen": "孩儿，我费尽心思才弄出这么大阵容"
+    },
+    "answer": {
+      "yuewen_merged": "仔呀仔，我几经辛苦先搞到噉嘅阵容"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "你做乜走上去啊"
+      ],
+      "zhongwen": "你爬得那么高干甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "喂，你做乜走上去啊？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "抱歉",
+        "抱歉",
+        "拿接住啦",
+        "系"
+      ],
+      "zhongwen": "抱歉抱歉！你接好了"
+    },
+    "answer": {
+      "yuewen_merged": "抱歉，抱歉！拿接住啦，系"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "必先录其筋骨",
+        "握其体肤",
+        "苦其心志"
+      ],
+      "zhongwen": "必先劳其筋骨，饿其体肤，苦其心智"
+    },
+    "answer": {
+      "yuewen_merged": "必先录其筋骨，握其体肤，苦其心志"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苦海无解",
+        "你写㗎"
+      ],
+      "zhongwen": "苦海无涯？你写的？"
+    },
+    "answer": {
+      "yuewen_merged": "苦海无解？你写㗎？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "写得咁丑样",
+        "抹咗佢都啱嘅"
+      ],
+      "zhongwen": "写得这么丑，把它擦掉也对"
+    },
+    "answer": {
+      "yuewen_merged": "写得咁丑样，抹咗佢都啱嘅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "黑衣呀"
+      ],
+      "zhongwen": "乞丐？"
+    },
+    "answer": {
+      "yuewen_merged": "喂，黑衣呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂喂",
+        "有冇嘢食呀"
+      ],
+      "zhongwen": "有没有东西吃？　　没有"
+    },
+    "answer": {
+      "yuewen_merged": "喂喂，有冇嘢食呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "你噉嘅造型唔会黑食博同情呀",
+        "晒啲㖞"
+      ],
+      "zhongwen": "这造型不去讨饭博人家同情，真可惜"
+    },
+    "answer": {
+      "yuewen_merged": "喂，你噉嘅造型唔会黑食博同情呀，晒啲㖞"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "关你春事"
+      ],
+      "zhongwen": "这与你无关！"
+    },
+    "answer": {
+      "yuewen_merged": "关你春事！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我以前去到度度都畀人睇得起",
+        "而今日一样变成噉"
+      ],
+      "zhongwen": "我以前到那里都被人家看重"
+    },
+    "answer": {
+      "yuewen_merged": "我以前去到度度都畀人睇得起，而今日一样变成噉"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂喂",
+        "听我讲啊",
+        "唔好行住啊",
+        "听我讲啊"
+      ],
+      "zhongwen": "听我说，先别走，听我说"
+    },
+    "answer": {
+      "yuewen_merged": "喂喂，听我讲啊，唔好行住啊，听我讲啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "记得有一次",
+        "喺广东"
+      ],
+      "zhongwen": "记得有一次，在广东"
+    },
+    "answer": {
+      "yuewen_merged": "记得有一次，喺广东"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "一个傻佬嘅班会食饭饮酒",
+        "叫鸡直落"
+      ],
+      "zhongwen": "请我吃饭喝酒嫖妓过夜"
+    },
+    "answer": {
+      "yuewen_merged": "一个傻佬嘅班会食饭饮酒，叫鸡直落"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "靓仔",
+        "我记得你啊"
+      ],
+      "zhongwen": "帅哥，我记得你"
+    },
+    "answer": {
+      "yuewen_merged": "靓仔，我记得你啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嘻嘻",
+        "靓仔",
+        "我都记得你啊"
+      ],
+      "zhongwen": "臭小子，我也记得你"
+    },
+    "answer": {
+      "yuewen_merged": "嘻嘻，靓仔，我都记得你啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如果我有钱啊",
+        "我就唔使喺度挨馒头啦"
+      ],
+      "zhongwen": "我也不用在这儿挨馒头"
+    },
+    "answer": {
+      "yuewen_merged": "如果我有钱啊，我就唔使喺度挨馒头啦"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不过你唔使惊"
+      ],
+      "zhongwen": "不过你不用怕，你有恩于我"
+    },
+    "answer": {
+      "yuewen_merged": "不过你唔使惊，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "人哋有恩于我",
+        "我一定会报答你嘅"
+      ],
+      "zhongwen": "我会报答你的"
+    },
+    "answer": {
+      "yuewen_merged": "人哋有恩于我，我一定会报答你嘅"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "多谢",
+        "心灵"
+      ],
+      "zhongwen": "多谢，心领"
+    },
+    "answer": {
+      "yuewen_merged": "多谢，心灵"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我冇咗啲咩"
+      ],
+      "zhongwen": "我失去了甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "我冇咗啲咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "专业",
+        "自信"
+      ],
+      "zhongwen": "尊严，自信"
+    },
+    "answer": {
+      "yuewen_merged": "专业，自信"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你究竟系边个"
+      ],
+      "zhongwen": "你究竟是何人？"
+    },
+    "answer": {
+      "yuewen_merged": "你究竟系边个？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "好话喇",
+        "在下洪日新",
+        "称号老鬼身"
+      ],
+      "zhongwen": "好说，在下洪日新，外号老鬼新"
+    },
+    "answer": {
+      "yuewen_merged": "好话喇，在下洪日新，称号老鬼身"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "乞丐之中",
+        "辈分至高",
+        "自好自老"
+      ],
+      "zhongwen": "乞丐中辈份最高，字号最老"
+    },
+    "answer": {
+      "yuewen_merged": "乞丐之中，辈分至高，自好自老"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "做乞丐有咩唔好啊"
+      ],
+      "zhongwen": "做乞丐有甚么不好？"
+    },
+    "answer": {
+      "yuewen_merged": "做乞丐有咩唔好啊？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "想行就行"
+      ],
+      "zhongwen": "想走就走，想睡就睡"
+    },
+    "answer": {
+      "yuewen_merged": "想行就行，"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "想瞓就瞓",
+        "你都可以一样嘅啫"
+      ],
+      "zhongwen": "你也可以一样吗"
+    },
+    "answer": {
+      "yuewen_merged": "想瞓就瞓，你都可以一样嘅啫？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你讲啊",
+        "你想要乜嘢",
+        "我成全你"
+      ],
+      "zhongwen": "你说，你想要甚么？我成全你"
+    },
+    "answer": {
+      "yuewen_merged": "你讲啊，你想要乜嘢？我成全你"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你觉得你唔似系人咩"
+      ],
+      "zhongwen": "怎么你觉得你不像人吗？"
+    },
+    "answer": {
+      "yuewen_merged": "你觉得你唔似系人咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "所以你先搞成噉呢",
+        "后生仔"
+      ],
+      "zhongwen": "所以你才会弄成这样，年青人"
+    },
+    "answer": {
+      "yuewen_merged": "所以你先搞成噉呢，后生仔"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "非常好",
+        "非常好"
+      ],
+      "zhongwen": "非常好，非常好"
+    },
+    "answer": {
+      "yuewen_merged": "非常好，非常好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "实不相瞒",
+        "我睇阁下从头顶到脚趾尾"
+      ],
+      "zhongwen": "实不相瞒，我看阁下从头到脚趾头"
+    },
+    "answer": {
+      "yuewen_merged": "实不相瞒，我睇阁下从头顶到脚趾尾"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "又如何"
+      ],
+      "zhongwen": "又如何？"
+    },
+    "answer": {
+      "yuewen_merged": "又如何？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "都系唔同你讲住我想瞓阵先"
+      ],
+      "zhongwen": "还是不跟你说，我想睡一会儿"
+    },
+    "answer": {
+      "yuewen_merged": "都系唔同你讲住，我想瞓阵先"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "冇行住",
+        "行行出纵缘"
+      ],
+      "zhongwen": "先别走！行行出状元"
+    },
+    "answer": {
+      "yuewen_merged": "冇行住！行行出纵缘"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "乞衣中嘅霸主",
+        "即系咩"
+      ],
+      "zhongwen": "乞丐中的霸主？那是甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "乞衣中嘅霸主，即系咩？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我唔理你系边个",
+        "我唔想再同你讲嘢"
+      ],
+      "zhongwen": "我不管你是甚么人，我不想再跟你说"
+    },
+    "answer": {
+      "yuewen_merged": "我唔理你系边个，我唔想再同你讲嘢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "请你并埋耳边",
+        "唔好阻住我瞓觉"
+      ],
+      "zhongwen": "请你让开，不要碍著我睡觉"
+    },
+    "answer": {
+      "yuewen_merged": "请你并埋耳边，唔好阻住我瞓觉"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "顶你个肺呀",
+        "家贼",
+        "唔系咪",
+        "你话瞓觉"
+      ],
+      "zhongwen": "不是⋯你说要睡觉"
+    },
+    "answer": {
+      "yuewen_merged": "顶你个肺呀，家贼，唔系咪？你话瞓觉⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "后生仔",
+        "我哋梦中相见吓"
+      ],
+      "zhongwen": "年青人，我们梦中相见"
+    },
+    "answer": {
+      "yuewen_merged": "后生仔，我哋梦中相见吓"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佛前金座罗汉归位"
+      ],
+      "zhongwen": "佛前金座，罗汉归位"
+    },
+    "answer": {
+      "yuewen_merged": "佛前金座，罗汉归位"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "康隆",
+        "复古"
+      ],
+      "zhongwen": "降龙，伏虎"
+    },
+    "answer": {
+      "yuewen_merged": "康隆，复古"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏产",
+        "你享尽人间富贵"
+      ],
+      "zhongwen": "苏灿，你享尽人间富贵"
+    },
+    "answer": {
+      "yuewen_merged": "苏产，你享尽人间富贵"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "再以回梦心法",
+        "传授你睡梦罗汉拳"
+      ],
+      "zhongwen": "醉回梦生法，传授你睡梦罗汉拳"
+    },
+    "answer": {
+      "yuewen_merged": "再以回梦心法，传授你睡梦罗汉拳"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "希望你好好利用",
+        "照招喇"
+      ],
+      "zhongwen": "希望你好好利用，接招"
+    },
+    "answer": {
+      "yuewen_merged": "希望你好好利用，照招喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "前辈"
+      ],
+      "zhongwen": "前辈⋯"
+    },
+    "answer": {
+      "yuewen_merged": "前辈⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苦尽",
+        "今来"
+      ],
+      "zhongwen": "苦尽甘来？"
+    },
+    "answer": {
+      "yuewen_merged": "苦尽，今来？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "万万岁",
+        "百养江西"
+      ],
+      "zhongwen": "万岁！万岁！万万岁"
+    },
+    "answer": {
+      "yuewen_merged": "万万岁！百养江西"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "天理循环",
+        "真空家乡",
+        "无生老母",
+        "似我神通"
+      ],
+      "zhongwen": "真空家乡，无生老母，赐我神通"
+    },
+    "answer": {
+      "yuewen_merged": "天理循环，真空家乡，无生老母，似我神通"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "元凌",
+        "你明日可能要牺牲一下色相"
+      ],
+      "zhongwen": "宛玲，你明天可能要牺牲一下色相"
+    },
+    "answer": {
+      "yuewen_merged": "元凌，你明日可能要牺牲一下色相"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "万岁万万岁万万岁"
+      ],
+      "zhongwen": "万岁！万岁！万万岁"
+    },
+    "answer": {
+      "yuewen_merged": "万岁！万万岁万万岁"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "上水呀"
+      ],
+      "zhongwen": "我们追　　不用追了！"
+    },
+    "answer": {
+      "yuewen_merged": "上水呀！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你杀咗我个女人"
+      ],
+      "zhongwen": "你杀了我的女人⋯"
+    },
+    "answer": {
+      "yuewen_merged": "你杀咗我个女人⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我要将你献畀皇上"
+      ],
+      "zhongwen": "⋯我要把你献给皇上"
+    },
+    "answer": {
+      "yuewen_merged": "⋯我要将你献畀皇上"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点呀",
+        "冇人敢上嚟做帮主呀"
+      ],
+      "zhongwen": "怎么？没有人敢上来当帮主"
+    },
+    "answer": {
+      "yuewen_merged": "点呀，冇人敢上嚟做帮主呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "叫莫老三交返支打狗滚出嚟",
+        "是"
+      ],
+      "zhongwen": "叫莫老三把打狗棒交出来"
+    },
+    "answer": {
+      "yuewen_merged": "叫莫老三交返支打狗滚出嚟！是"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔和你姐姐到底去哪儿"
+      ],
+      "zhongwen": "莫大叔跟你姐姐到底到哪处？"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔和你姐姐到底去哪儿？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "刚才见到莫大叔",
+        "和姐姐说了几句话"
+      ],
+      "zhongwen": "刚才我听见莫大叔跟姐姐说了几句话"
+    },
+    "answer": {
+      "yuewen_merged": "刚才见到莫大叔，和姐姐说了几句话"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "原来他们俩有脑",
+        "是"
+      ],
+      "zhongwen": "难道他俩有暧昧关系？"
+    },
+    "answer": {
+      "yuewen_merged": "原来他们俩有脑，是？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔…"
+      ],
+      "zhongwen": "莫大叔⋯"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "怎么样",
+        "姐姐呢"
+      ],
+      "zhongwen": "没事吗？　　姐姐呢？"
+    },
+    "answer": {
+      "yuewen_merged": "怎么样？　　姐姐呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "到底带病是啥"
+      ],
+      "zhongwen": "到底派谁上去呢？"
+    },
+    "answer": {
+      "yuewen_merged": "到底带病是啥？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你不是九代弟子",
+        "下来"
+      ],
+      "zhongwen": "你不是九代弟子，快下来"
+    },
+    "answer": {
+      "yuewen_merged": "你不是九代弟子，下来"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "既然你武见好",
+        "我可以将就一下你"
+      ],
+      "zhongwen": "既然你挑不出好的，我可以教育你！"
+    },
+    "answer": {
+      "yuewen_merged": "既然你武见好，我可以将就一下你！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿",
+        "你别以为玩"
+      ],
+      "zhongwen": "阿灿，你不要以为好玩"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，你别以为玩"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你死没命"
+      ],
+      "zhongwen": "你会没命的！快下来"
+    },
+    "answer": {
+      "yuewen_merged": "你死没命！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "下来",
+        "不相干的",
+        "我们命早就当没了"
+      ],
+      "zhongwen": "没相干，我的命早就当没了"
+    },
+    "answer": {
+      "yuewen_merged": "下来，不相干的，我们命早就当没了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "废话",
+        "扔他",
+        "是呀",
+        "扔他"
+      ],
+      "zhongwen": "废话！丢他"
+    },
+    "answer": {
+      "yuewen_merged": "废话！扔他，是呀，扔他"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "雅君",
+        "既然如此",
+        "我就圣祀你"
+      ],
+      "zhongwen": "既然如此，我就成全你"
+    },
+    "answer": {
+      "yuewen_merged": "雅君，既然如此，我就圣祀你"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佢做咩嚟㗎"
+      ],
+      "zhongwen": "他在干吗？"
+    },
+    "answer": {
+      "yuewen_merged": "佢做咩嚟㗎？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "佢做咩呀",
+        "醒觉"
+      ],
+      "zhongwen": "睡觉？"
+    },
+    "answer": {
+      "yuewen_merged": "佢做咩呀，醒觉？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这一招难道就是"
+      ],
+      "zhongwen": "这一招难道就是⋯"
+    },
+    "answer": {
+      "yuewen_merged": "这一招难道就是⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "新师叔的睡梦来看拳"
+      ],
+      "zhongwen": "新师叔的睡梦罗汉拳？"
+    },
+    "answer": {
+      "yuewen_merged": "新师叔的睡梦来看拳？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "各位",
+        "我赢了"
+      ],
+      "zhongwen": "我赢了"
+    },
+    "answer": {
+      "yuewen_merged": "各位，我赢了"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你打赢有什么用"
+      ],
+      "zhongwen": "你打赢我们有甚么用？"
+    },
+    "answer": {
+      "yuewen_merged": "你打赢有什么用？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "打狗棍咋系嘛",
+        "系"
+      ],
+      "zhongwen": "打狗棒！是吗"
+    },
+    "answer": {
+      "yuewen_merged": "打狗棍咋系嘛！系"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔",
+        "棍唔棍都打狗呀"
+      ],
+      "zhongwen": "棒棒都打狗"
+    },
+    "answer": {
+      "yuewen_merged": "唔，棍唔棍都打狗呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "呀",
+        "边个话我唔知打狗棍"
+      ],
+      "zhongwen": "谁说我不会打狗棒法？"
+    },
+    "answer": {
+      "yuewen_merged": "呀，边个话我唔知打狗棍？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "噏㖞",
+        "佢几劲㖞"
+      ],
+      "zhongwen": "也蛮厉害！"
+    },
+    "answer": {
+      "yuewen_merged": "噏㖞，佢几劲㖞！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我哋杀咗佢"
+      ],
+      "zhongwen": "他打断我们镇帮之宝！我们杀了他"
+    },
+    "answer": {
+      "yuewen_merged": "我哋杀咗佢"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "洪七公在此",
+        "谁敢放肆"
+      ],
+      "zhongwen": "洪七公在此谁敢放肆"
+    },
+    "answer": {
+      "yuewen_merged": "洪七公在此，谁敢放肆"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你们是不是忘记了"
+      ],
+      "zhongwen": "你们是不是全忘掉了？"
+    },
+    "answer": {
+      "yuewen_merged": "你们是不是忘记了？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "还为了争夺他",
+        "而害盖邦四分五裂"
+      ],
+      "zhongwen": "还为了争夺它弄到丐帮四分五裂"
+    },
+    "answer": {
+      "yuewen_merged": "还为了争夺他，而害盖邦四分五裂"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "五年没帮主在位",
+        "你们惨不惨愧"
+      ],
+      "zhongwen": "五年没有帮主在位！你们惭不惭愧？"
+    },
+    "answer": {
+      "yuewen_merged": "五年没帮主在位！你们惨不惨愧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这个年轻人虽然资历浅"
+      ],
+      "zhongwen": "这个年青人！虽然资历低"
+    },
+    "answer": {
+      "yuewen_merged": "这个年轻人！虽然资历浅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但天才横日",
+        "聪明绝顶"
+      ],
+      "zhongwen": "但是天才横溢！聪明绝顶"
+    },
+    "answer": {
+      "yuewen_merged": "但天才横日！聪明绝顶"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "在我洪某的全人洪日新",
+        "亲手提携"
+      ],
+      "zhongwen": "还是我洪某的传人洪日新亲手提携"
+    },
+    "answer": {
+      "yuewen_merged": "在我洪某的全人洪日新亲手提携"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "谁不托他",
+        "真是不托我"
+      ],
+      "zhongwen": "谁要对付他就是对付我"
+    },
+    "answer": {
+      "yuewen_merged": "谁不托他，真是不托我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "来爱护他",
+        "关怀他",
+        "多点请他喝茶"
+      ],
+      "zhongwen": "来爱护他！关怀他！常常请他喝茶"
+    },
+    "answer": {
+      "yuewen_merged": "来爱护他！关怀他！多点请他喝茶"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "最多保佑盖邦生意兴隆",
+        "千秋万世"
+      ],
+      "zhongwen": "定会保佑丐帮生意兴隆！千秋万世"
+    },
+    "answer": {
+      "yuewen_merged": "最多保佑盖邦生意兴隆！千秋万世"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "真还是假"
+      ],
+      "zhongwen": "是真的还是假的？"
+    },
+    "answer": {
+      "yuewen_merged": "喂，真还是假？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "令我信其有",
+        "不可信其无"
+      ],
+      "zhongwen": "宁可信其有不可信其无"
+    },
+    "answer": {
+      "yuewen_merged": "令我信其有，不可信其无"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嘿",
+        "洪亲公血灵啊"
+      ],
+      "zhongwen": "洪七公显灵"
+    },
+    "answer": {
+      "yuewen_merged": "嘿，洪亲公血灵啊"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "天有眼",
+        "我们有福了"
+      ],
+      "zhongwen": "天有眼，我们有福"
+    },
+    "answer": {
+      "yuewen_merged": "天有眼，我们有福了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这样都过得了",
+        "我果然是天才"
+      ],
+      "zhongwen": "就这样瞒天过海，我果真是天才！"
+    },
+    "answer": {
+      "yuewen_merged": "这样都过得了，我果然是天才！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "发生什么事"
+      ],
+      "zhongwen": "发生甚么事？"
+    },
+    "answer": {
+      "yuewen_merged": "发生什么事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "参见方主",
+        "好…"
+      ],
+      "zhongwen": "参见帮主"
+    },
+    "answer": {
+      "yuewen_merged": "参见方主，好⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔,",
+        "娥仔多厉害"
+      ],
+      "zhongwen": "莫大叔！我儿子有一套吗"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔！娥仔多厉害"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "从现在开始,",
+        "你就是丐帮帮主"
+      ],
+      "zhongwen": "由现在开始，你就是丐帮帮主"
+    },
+    "answer": {
+      "yuewen_merged": "从现在开始，你就是丐帮帮主"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "太好了,",
+        "帮主太好了…"
+      ],
+      "zhongwen": "好棒！帮主好棒！"
+    },
+    "answer": {
+      "yuewen_merged": "太好了，帮主太好了⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔…你怎么样"
+      ],
+      "zhongwen": "莫大叔⋯莫大叔！你怎么呢？"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔⋯你怎么样？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "莫大叔"
+      ],
+      "zhongwen": "莫大叔⋯莫大叔"
+    },
+    "answer": {
+      "yuewen_merged": "莫大叔⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "似我未弃真",
+        "情"
+      ],
+      "zhongwen": "寻自我觅真情"
+    },
+    "answer": {
+      "yuewen_merged": "似我未弃真情"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "报处事座家乡",
+        "求日"
+      ],
+      "zhongwen": "停步处视作家乡"
+    },
+    "answer": {
+      "yuewen_merged": "报处事座家乡，求日"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "杭龙十八掌嘅身法",
+        "你真系明㗎喇"
+      ],
+      "zhongwen": "降龙十八掌的心法你真的明白了？"
+    },
+    "answer": {
+      "yuewen_merged": "杭龙十八掌嘅身法你真系明㗎喇？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你咪当我留嘅就得嘅"
+      ],
+      "zhongwen": "你别当我是呆子？"
+    },
+    "answer": {
+      "yuewen_merged": "你咪当我留嘅就得嘅？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "全身嘅经脉已经回复正常",
+        "内力大增"
+      ],
+      "zhongwen": "全身经脉已经回复正常，内力大增"
+    },
+    "answer": {
+      "yuewen_merged": "全身嘅经脉已经回复正常，内力大增"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "杭龙十八掌嘅头十七掌",
+        "我已经领回到"
+      ],
+      "zhongwen": "降龙十八掌首十七掌我已经领会到"
+    },
+    "answer": {
+      "yuewen_merged": "杭龙十八掌嘅头十七掌，我已经领回到"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "但系第十八式杀龙有悔"
+      ],
+      "zhongwen": "但是第十八式「杀龙有悔」"
+    },
+    "answer": {
+      "yuewen_merged": "但系第十八式「杀龙有悔」"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "最坏莫大叔已经唔喺度"
+      ],
+      "zhongwen": "最糟糕的是莫大叔已经不在，那怎办"
+    },
+    "answer": {
+      "yuewen_merged": "最坏莫大叔已经唔喺度"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "咁点算啊",
+        "冇得点算㗎"
+      ],
+      "zhongwen": "没甚么法子了！"
+    },
+    "answer": {
+      "yuewen_merged": "咁点算啊，冇得点算㗎！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你哋喺大营睇下准备好未"
+      ],
+      "zhongwen": "你们到大营去看那儿准备好没有？"
+    },
+    "answer": {
+      "yuewen_merged": "你哋喺大营睇下准备好未？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你带这个女人来是什么意思"
+      ],
+      "zhongwen": "你带这个女人来是甚么意思？"
+    },
+    "answer": {
+      "yuewen_merged": "你带这个女人来是什么意思？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上并没有召见",
+        "你无谓惊动她"
+      ],
+      "zhongwen": "皇上并没有诏见，你别惊动他"
+    },
+    "answer": {
+      "yuewen_merged": "皇上并没有召见，你无谓惊动她"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "仁泥",
+        "带这个女人进营"
+      ],
+      "zhongwen": "人来，带这个女人入营"
+    },
+    "answer": {
+      "yuewen_merged": "仁泥，带这个女人进营"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大人,",
+        "吴杰一邻气色好好"
+      ],
+      "zhongwen": "大人，好一阵子不见，气色不错"
+    },
+    "answer": {
+      "yuewen_merged": "大人，吴杰一邻气色好好"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是",
+        "走"
+      ],
+      "zhongwen": "是"
+    },
+    "answer": {
+      "yuewen_merged": "是走"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "女人"
+      ],
+      "zhongwen": "女人？"
+    },
+    "answer": {
+      "yuewen_merged": "女人？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我先去务徒更衣",
+        "待会儿带他们见我"
+      ],
+      "zhongwen": "我先去沐浴更衣，稍后带他来见我"
+    },
+    "answer": {
+      "yuewen_merged": "我先去务徒更衣，待会儿带他们见我"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这个黄八蛋",
+        "又想见王上"
+      ],
+      "zhongwen": "这个王八蛋又想见皇上"
+    },
+    "answer": {
+      "yuewen_merged": "这个黄八蛋又想见王上"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "再让你见多几次",
+        "我不就连官都没得做"
+      ],
+      "zhongwen": "再让你多见几次，不是连官都没得当"
+    },
+    "answer": {
+      "yuewen_merged": "再让你见多几次，我不就连官都没得做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "睇下发生咩事",
+        "系"
+      ],
+      "zhongwen": "看看发生甚么事　　是"
+    },
+    "answer": {
+      "yuewen_merged": "睇下发生咩事　　系"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大人",
+        "士林有一大袋人马"
+      ],
+      "zhongwen": "大人，树林里有一大队人马"
+    },
+    "answer": {
+      "yuewen_merged": "大人，士林有一大袋人马"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系咩人马"
+      ],
+      "zhongwen": "甚么人马？"
+    },
+    "answer": {
+      "yuewen_merged": "系咩人马？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "前锋刑放龙燕",
+        "大家戒备"
+      ],
+      "zhongwen": "前面大营放狼烟，大家戒备"
+    },
+    "answer": {
+      "yuewen_merged": "前锋刑放龙燕，大家戒备"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "死行义"
+      ],
+      "zhongwen": "臭乞丐？"
+    },
+    "answer": {
+      "yuewen_merged": "死行义？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏灿、哈尔灿,你搞什么鬼"
+      ],
+      "zhongwen": "苏察哈尔灿，你搅甚么鬼？"
+    },
+    "answer": {
+      "yuewen_merged": "苏灿、哈尔灿，你搞什么鬼？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没有,想问你师姐发财前"
+      ],
+      "zhongwen": "没有！只是想向你讨个钱"
+    },
+    "answer": {
+      "yuewen_merged": "没有，想问你师姐发财前⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你又像你,你不是严命长吗"
+      ],
+      "zhongwen": "岂有此理！你是不是不想活？"
+    },
+    "answer": {
+      "yuewen_merged": "你又像你，你不是严命长吗？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你还在这里懵懵"
+      ],
+      "zhongwen": "你还那么傻头傻脑！"
+    },
+    "answer": {
+      "yuewen_merged": "你还在这里懵懵！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "胆大包天,竟敢无告官员"
+      ],
+      "zhongwen": "胆大包天！竟敢诬告官员？"
+    },
+    "answer": {
+      "yuewen_merged": "胆大包天！竟敢无告官员？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂,贼,对方咁多人马",
+        "我哋边够打"
+      ],
+      "zhongwen": "阿灿，对方这么多人马我们怎么打？"
+    },
+    "answer": {
+      "yuewen_merged": "喂,贼，对方咁多人马我哋边够打？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "掌弄",
+        "是"
+      ],
+      "zhongwen": "长老　　在"
+    },
+    "answer": {
+      "yuewen_merged": "掌弄，是"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "其余的人马呢"
+      ],
+      "zhongwen": "其他人马呢？"
+    },
+    "answer": {
+      "yuewen_merged": "其余的人马呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系之好",
+        "好",
+        "帮主啊,你放心佢啰"
+      ],
+      "zhongwen": "帮主，你放心去吧"
+    },
+    "answer": {
+      "yuewen_merged": "系之好，好，帮主啊，你放心佢啰"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "家我死紧嘅放心佢"
+      ],
+      "zhongwen": "我现在死定了？放心去"
+    },
+    "answer": {
+      "yuewen_merged": "家我死紧嘅，放心佢？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "讲句老礼啲嘅嚟听下得唔得呢"
+      ],
+      "zhongwen": "说句吉利话行不行？"
+    },
+    "answer": {
+      "yuewen_merged": "讲句老礼啲嘅嚟听下得唔得呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "当",
+        "共祖你复仇与天齐"
+      ],
+      "zhongwen": "行！恭祝你福寿与天齐"
+    },
+    "answer": {
+      "yuewen_merged": "当！共祖你复仇与天齐"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "年年都有今日"
+      ],
+      "zhongwen": "年年都有今日⋯"
+    },
+    "answer": {
+      "yuewen_merged": "年年都有今日⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "够啦",
+        "够啦"
+      ],
+      "zhongwen": "够了够了"
+    },
+    "answer": {
+      "yuewen_merged": "够啦够啦"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "等我走咗你先唱",
+        "好啊"
+      ],
+      "zhongwen": "等我走了你再才唱　　好的"
+    },
+    "answer": {
+      "yuewen_merged": "等我走咗你先唱　　好啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "前面放狼烟",
+        "一定有人打草惊蛇"
+      ],
+      "zhongwen": "前面放狼烟，一定有人打草惊蛇"
+    },
+    "answer": {
+      "yuewen_merged": "前面放狼烟，一定有人打草惊蛇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "准备祈伦烟",
+        "是",
+        "我们"
+      ],
+      "zhongwen": "准备麒麟烟　　是"
+    },
+    "answer": {
+      "yuewen_merged": "准备祈伦烟　　是，我们"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "作反呀",
+        "呢班狗贼真系作反呀"
+      ],
+      "zhongwen": "作反了！这些狗贼真的作反了"
+    },
+    "answer": {
+      "yuewen_merged": "作反呀！呢班狗贼真系作反呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "闭",
+        "毒烟吹向皇上大帅"
+      ],
+      "zhongwen": "糟糕！毒烟吹向皇上大营"
+    },
+    "answer": {
+      "yuewen_merged": "闭！毒烟吹向皇上大帅"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不是",
+        "风向转了"
+      ],
+      "zhongwen": "不是！风向转了"
+    },
+    "answer": {
+      "yuewen_merged": "不是！风向转了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对了",
+        "等我"
+      ],
+      "zhongwen": "对！等等我"
+    },
+    "answer": {
+      "yuewen_merged": "对了，等我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "开帮阻不撤退",
+        "格杀勿论"
+      ],
+      "zhongwen": "丐帮再不撤退，格杀勿论"
+    },
+    "answer": {
+      "yuewen_merged": "开帮阻不撤退，格杀勿论"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "大家定啲嚟",
+        "用尿可以解毒㗎"
+      ],
+      "zhongwen": "大家镇定点！用尿可以解毒"
+    },
+    "answer": {
+      "yuewen_merged": "大家定啲嚟！用尿可以解毒㗎"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "喂",
+        "饿尿呢",
+        "饿尿呢"
+      ],
+      "zhongwen": "撒尿⋯撒尿⋯"
+    },
+    "answer": {
+      "yuewen_merged": "喂，饿尿呢⋯饿尿呢⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "神经病",
+        "喂呀",
+        "咁又点呀"
+      ],
+      "zhongwen": "那我该怎么办？"
+    },
+    "answer": {
+      "yuewen_merged": "神经病，喂呀，咁又点呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔啱啱",
+        "我都鸟大",
+        "分噉啲畀你"
+      ],
+      "zhongwen": "不怕！我的尿多，分一点给你"
+    },
+    "answer": {
+      "yuewen_merged": "唔啱啱，我都鸟大，分噉啲畀你"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "嚟嚟追住佢"
+      ],
+      "zhongwen": "来⋯拿著它"
+    },
+    "answer": {
+      "yuewen_merged": "嚟⋯嚟追住佢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "啊"
+      ],
+      "zhongwen": "冲！"
+    },
+    "answer": {
+      "yuewen_merged": "啊！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "应势如何"
+      ],
+      "zhongwen": "形势如何？"
+    },
+    "answer": {
+      "yuewen_merged": "应势如何？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "托皇上的红服",
+        "风向转了"
+      ],
+      "zhongwen": "托皇上鸿福，风向转变"
+    },
+    "answer": {
+      "yuewen_merged": "托皇上的红服，风向转了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "树围营和左右护翼怎样"
+      ],
+      "zhongwen": "四围营和左右护翼情况怎么样？"
+    },
+    "answer": {
+      "yuewen_merged": "树围营和左右护翼怎样？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "到全军覆没了",
+        "皇上"
+      ],
+      "zhongwen": "都全军覆没，皇上"
+    },
+    "answer": {
+      "yuewen_merged": "到全军覆没了，皇上"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不要",
+        "皇上"
+      ],
+      "zhongwen": "不要皇上，皇上⋯"
+    },
+    "answer": {
+      "yuewen_merged": "不要，皇上⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别妨碍我",
+        "走开"
+      ],
+      "zhongwen": "不要阻我，走开"
+    },
+    "answer": {
+      "yuewen_merged": "别妨碍我，走开"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "太危险了",
+        "皇上"
+      ],
+      "zhongwen": "皇上，很危险的！不要走"
+    },
+    "answer": {
+      "yuewen_merged": "太危险了，皇上！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "不去",
+        "别坐在这里等死",
+        "走开"
+      ],
+      "zhongwen": "不去！难道坐在这里等死吗？走开"
+    },
+    "answer": {
+      "yuewen_merged": "不去！别坐在这里等死，走开"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "皇上",
+        "不要",
+        "走开",
+        "你们"
+      ],
+      "zhongwen": "不要走"
+    },
+    "answer": {
+      "yuewen_merged": "皇上不要走开你们"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿橙"
+      ],
+      "zhongwen": "阿灿？"
+    },
+    "answer": {
+      "yuewen_merged": "阿橙？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你点嚟到呢度㗎"
+      ],
+      "zhongwen": "你怎么来到这里的？"
+    },
+    "answer": {
+      "yuewen_merged": "你点嚟到呢度㗎？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "点嚟",
+        "讲起场边啦"
+      ],
+      "zhongwen": "怎么来？就说来话长"
+    },
+    "answer": {
+      "yuewen_merged": "点嚟？讲起场边啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系"
+      ],
+      "zhongwen": "是吗？　　是"
+    },
+    "answer": {
+      "yuewen_merged": "系？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你知啦",
+        "馒头我唔系好啱㗎啫嘛"
+      ],
+      "zhongwen": "你知道的，馒头根本不合我胃口"
+    },
+    "answer": {
+      "yuewen_merged": "你知啦，馒头我唔系好啱㗎啫嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "未臣纠家来迟",
+        "望皇上恕罪"
+      ],
+      "zhongwen": "微臣救驾来迟，望皇上恕罪"
+    },
+    "answer": {
+      "yuewen_merged": "未臣纠家来迟，望皇上恕罪"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "啊",
+        "将你个身交畀我喇"
+      ],
+      "zhongwen": "狗皇帝，把你的江山交给我"
+    },
+    "answer": {
+      "yuewen_merged": "啊，将你个身交畀我喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "讲嘢啊",
+        "啊",
+        "吓"
+      ],
+      "zhongwen": "你说甚么？"
+    },
+    "answer": {
+      "yuewen_merged": "讲嘢啊，啊，吓？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系你"
+      ],
+      "zhongwen": "是你？"
+    },
+    "answer": {
+      "yuewen_merged": "系你？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系呀",
+        "扫黑衣呀",
+        "扫黑衣"
+      ],
+      "zhongwen": "是我！苏乞儿"
+    },
+    "answer": {
+      "yuewen_merged": "系呀！扫黑衣呀，扫黑衣"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你唔系黑衣斗到瞓觉㗎咩"
+      ],
+      "zhongwen": "苏乞儿？你不是在乞丐窝里睡觉吗"
+    },
+    "answer": {
+      "yuewen_merged": "你唔系黑衣斗到瞓觉㗎咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系㖞",
+        "讲起都有啲眼瞓",
+        "啊"
+      ],
+      "zhongwen": "是！你说起都有点困"
+    },
+    "answer": {
+      "yuewen_merged": "系㖞！讲起都有啲眼瞓啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "衰罗汉"
+      ],
+      "zhongwen": "睡罗汉？"
+    },
+    "answer": {
+      "yuewen_merged": "衰罗汉？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "杀",
+        "咦",
+        "披头散发个样都几乞丫"
+      ],
+      "zhongwen": "失礼！你披头散发的样子都蛮像乞丐"
+    },
+    "answer": {
+      "yuewen_merged": "杀！咦，披头散发个样都几乞丫"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有冇兴趣加入我哋丐帮"
+      ],
+      "zhongwen": "有没有兴趣加入我们丐帮？"
+    },
+    "answer": {
+      "yuewen_merged": "有冇兴趣加入我哋丐帮？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "哼",
+        "估唔到你条死蛇烂线都会翻衫"
+      ],
+      "zhongwen": "想不到你这条臭死鱼都可以复活"
+    },
+    "answer": {
+      "yuewen_merged": "哼，估唔到你条死蛇烂线都会翻衫"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "系喇",
+        "都系拜你所赐啫"
+      ],
+      "zhongwen": "是！这都是拜你所赐"
+    },
+    "answer": {
+      "yuewen_merged": "系喇！都系拜你所赐啫"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你出尽力呀",
+        "我仲未出力㖞"
+      ],
+      "zhongwen": "你已出全力？我还没出力"
+    },
+    "answer": {
+      "yuewen_merged": "你出尽力呀？我仲未出力㖞"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "蠢材",
+        "普天之下",
+        "除咗红龙十八掌"
+      ],
+      "zhongwen": "蠢蛋！普天之下除了降龙十八掌"
+    },
+    "answer": {
+      "yuewen_merged": "蠢材！普天之下，除咗红龙十八掌"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "杭龙十八掌",
+        "第七式"
+      ],
+      "zhongwen": "降龙十八掌第七式"
+    },
+    "answer": {
+      "yuewen_merged": "杭龙十八掌第七式"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "双龙出海",
+        "剑龙在天"
+      ],
+      "zhongwen": "双龙出海，战龙在田"
+    },
+    "answer": {
+      "yuewen_merged": "双龙出海，剑龙在天"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "龙飞凤舞伏",
+        "虎王龙"
+      ],
+      "zhongwen": "龙飞凤舞，伏虎降龙⋯"
+    },
+    "answer": {
+      "yuewen_merged": "龙飞凤舞，伏虎王龙⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "缩龙成串",
+        "龙蛇混杂"
+      ],
+      "zhongwen": "⋯缩龙成寸，龙蛇混杂"
+    },
+    "answer": {
+      "yuewen_merged": "⋯缩龙成串，龙蛇混杂"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "龙的传人",
+        "龙凤成像"
+      ],
+      "zhongwen": "龙的传人龙凤呈祥⋯"
+    },
+    "answer": {
+      "yuewen_merged": "龙的传人龙凤成像⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "龙马精神",
+        "望夫成龙"
+      ],
+      "zhongwen": "⋯龙马精神，望夫成龙⋯"
+    },
+    "answer": {
+      "yuewen_merged": "龙马精神，望夫成龙⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "唔得十七奖咋咩"
+      ],
+      "zhongwen": "怎么得十七掌？太可惜了"
+    },
+    "answer": {
+      "yuewen_merged": "唔得十七奖咋咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "晒咗啊",
+        "如果你学埋你十八奖"
+      ],
+      "zhongwen": "如果你学会第十八掌"
+    },
+    "answer": {
+      "yuewen_merged": "晒咗啊，如果你学埋你十八奖"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿"
+      ],
+      "zhongwen": "阿灿！"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我谂到喇",
+        "原来头十七掌融合埋一齐"
+      ],
+      "zhongwen": "我想到了，原来头十七掌融合一起"
+    },
+    "answer": {
+      "yuewen_merged": "我谂到喇，原来头十七掌融合埋一齐"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "低十八掌",
+        "杀龙有悔",
+        "呀"
+      ],
+      "zhongwen": "第十八掌－杀龙有悔"
+    },
+    "answer": {
+      "yuewen_merged": "低十八掌－杀龙有悔呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿灿,你没事吧?"
+      ],
+      "zhongwen": "阿灿，你没事吧？"
+    },
+    "answer": {
+      "yuewen_merged": "阿灿，你没事吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你看我姿势,你说我有没有事?"
+      ],
+      "zhongwen": "你看我的姿势，说有事没有？"
+    },
+    "answer": {
+      "yuewen_merged": "你看我姿势，你说我有没有事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "了",
+        "算了,什么事都没有"
+      ],
+      "zhongwen": "傻瓜！我没事"
+    },
+    "answer": {
+      "yuewen_merged": "了，算了,什么事都没有"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "木槿…",
+        "阿东"
+      ],
+      "zhongwen": "阿灿⋯你没事吧"
+    },
+    "answer": {
+      "yuewen_merged": "木槿⋯阿东⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "阿翠",
+        "赵木槿吧"
+      ],
+      "zhongwen": "赵无极呢"
+    },
+    "answer": {
+      "yuewen_merged": "阿翠，赵木槿吧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "四围都是"
+      ],
+      "zhongwen": "到处都是？"
+    },
+    "answer": {
+      "yuewen_merged": "四围都是？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "化为烟尘",
+        "这么沙尘",
+        "跳"
+      ],
+      "zhongwen": "化为烟尘咁沙尘？挑！"
+    },
+    "answer": {
+      "yuewen_merged": "化为烟尘，这么沙尘？跳！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "赵木槿的人马都被我们抓住了",
+        "好…"
+      ],
+      "zhongwen": "赵无极的人马都给我们捉住"
+    },
+    "answer": {
+      "yuewen_merged": "赵木槿的人马都被我们抓住了，好…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你记不记得",
+        "我们之间还有个协议"
+      ],
+      "zhongwen": "你记不记得我们之间还有一个协议"
+    },
+    "answer": {
+      "yuewen_merged": "你记不记得，我们之间还有个协议"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "记得",
+        "一人之下",
+        "万人之上"
+      ],
+      "zhongwen": "记得！一人之下！万人之上"
+    },
+    "answer": {
+      "yuewen_merged": "记得！一人之下！万人之上"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "盖世武功",
+        "状元之才"
+      ],
+      "zhongwen": "盖世武功！状元之才"
+    },
+    "answer": {
+      "yuewen_merged": "盖世武功！状元之才"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "对呀",
+        "但我都不喜欢状元"
+      ],
+      "zhongwen": "是！不过我不喜欢状元"
+    },
+    "answer": {
+      "yuewen_merged": "对呀！但我都不喜欢状元"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你才说好"
+      ],
+      "zhongwen": "你先！我稍后跟上"
+    },
+    "answer": {
+      "yuewen_merged": "你才说好！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "曾家南心,你见不分青红做白"
+      ],
+      "zhongwen": "僧格林参，你竟不分青红皂白"
+    },
+    "answer": {
+      "yuewen_merged": "曾家南心，你见不分青红做白"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你做黑衣好,看你个样有潜质"
+      ],
+      "zhongwen": "你当乞丐很好，看你的样很有天分"
+    },
+    "answer": {
+      "yuewen_merged": "你做黑衣好，看你个样有潜质"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "多谢帮主…关知好"
+      ],
+      "zhongwen": "多谢帮主，多谢帮主关照"
+    },
+    "answer": {
+      "yuewen_merged": "多谢帮主…关知好"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏灿,你有甚么要求"
+      ],
+      "zhongwen": "苏灿，你有甚么要求？"
+    },
+    "answer": {
+      "yuewen_merged": "苏灿，你有甚么要求？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你真的没话跟我说"
+      ],
+      "zhongwen": "你真没话跟朕说？"
+    },
+    "answer": {
+      "yuewen_merged": "你真的没话跟我说？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有话好讲",
+        "走"
+      ],
+      "zhongwen": "有甚么好说呢？走"
+    },
+    "answer": {
+      "yuewen_merged": "有话好讲？走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "苏英雄",
+        "苏英雄"
+      ],
+      "zhongwen": "苏英雄！苏英雄"
+    },
+    "answer": {
+      "yuewen_merged": "苏英雄！苏英雄"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "放下",
+        "你别以为救过我"
+      ],
+      "zhongwen": "你别以为救过朕"
+    },
+    "answer": {
+      "yuewen_merged": "放下，你别以为救过我"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你对我不敬",
+        "我一样可以杀了你"
+      ],
+      "zhongwen": "你对朕不敬，朕一样会杀了你"
+    },
+    "answer": {
+      "yuewen_merged": "你对我不敬，我一样可以杀了你"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "蹲下就别乱动了",
+        "不然还会长眼睛"
+      ],
+      "zhongwen": "不要动，否则还碍眼"
+    },
+    "answer": {
+      "yuewen_merged": "蹲下就别乱动了，不然还会长眼睛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "你一天不解散",
+        "叫我怎么安心"
+      ],
+      "zhongwen": "你一天不解散，朕怎么安心？"
+    },
+    "answer": {
+      "yuewen_merged": "你一天不解散，叫我怎么安心？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "丐帮有多少乞丐",
+        "不是由我决定"
+      ],
+      "zhongwen": "丐帮有多少弟子不是由我决定"
+    },
+    "answer": {
+      "yuewen_merged": "丐帮有多少乞丐不是由我决定"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "我"
+      ],
+      "zhongwen": "我？"
+    },
+    "answer": {
+      "yuewen_merged": "我？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "如果你真是英明神武",
+        "令到国泰民安"
+      ],
+      "zhongwen": "如果你真的英明神武，令到国泰民安"
+    },
+    "answer": {
+      "yuewen_merged": "如果你真是英明神武，令到国泰民安"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "找鬼得人做乞丐吗"
+      ],
+      "zhongwen": "谁会愿意当乞丐？"
+    },
+    "answer": {
+      "yuewen_merged": "找鬼得人做乞丐吗？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "有道理…",
+        "收拾衣服吧"
+      ],
+      "zhongwen": "有道理，有道理　　好自为之吧"
+    },
+    "answer": {
+      "yuewen_merged": "有道理…收拾衣服吧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "这样",
+        "你给我一点面子好",
+        "让我好下台"
+      ],
+      "zhongwen": "你总该给朕一点面子，让朕好下台"
+    },
+    "answer": {
+      "yuewen_merged": "这样，你给我一点面子好，让我好下台"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "万岁万万岁",
+        "平先生…"
+      ],
+      "zhongwen": "万岁万万岁　　平身"
+    },
+    "answer": {
+      "yuewen_merged": "万岁万万岁　　平先生…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "二兄弟,认得我没有"
+      ],
+      "zhongwen": "兄弟！认得我吗？"
+    },
+    "answer": {
+      "yuewen_merged": "二兄弟，认得我没有？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "发灰营的你,大众乞丐"
+      ],
+      "zhongwen": "化成灰也认得你！臭乞丐"
+    },
+    "answer": {
+      "yuewen_merged": "发灰营的你！大众乞丐"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "背上女儿来,博痛情"
+      ],
+      "zhongwen": "揹著女儿，博取同情？"
+    },
+    "answer": {
+      "yuewen_merged": "背上女儿来，博痛情？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "是吗",
+        "?私下写吧"
+      ],
+      "zhongwen": "是！施舍点吧"
+    },
+    "answer": {
+      "yuewen_merged": "是吗？私下写吧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "都说乞丐不给,过主吧"
+      ],
+      "zhongwen": "乞丐就是不给！快滚"
+    },
+    "answer": {
+      "yuewen_merged": "都说乞丐不给！过主吧"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        ",老冯的兄弟"
+      ],
+      "zhongwen": "应份的！兄弟"
+    },
+    "answer": {
+      "yuewen_merged": ",老冯的兄弟！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "凤子黑色,有没有搞错"
+      ],
+      "zhongwen": "奉旨乞食？有没有搅错？"
+    },
+    "answer": {
+      "yuewen_merged": "凤子黑色？有没有搞错？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "没有搞错,上手吧"
+      ],
+      "zhongwen": "没有搅错！爽手点！"
+    },
+    "answer": {
+      "yuewen_merged": "没有搞错！上手吧！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "别走,千都给几百"
+      ],
+      "zhongwen": "还有一家大小的！给多点"
+    },
+    "answer": {
+      "yuewen_merged": "别走，千都给几百⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "给我…",
+        "你们还不谢谢人"
+      ],
+      "zhongwen": "还不快谢谢人家？"
+    },
+    "answer": {
+      "yuewen_merged": "给我…你们还不谢谢人？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_merge": [
+        "给雪糕,",
+        "吃东西",
+        "你跟著我走",
+        "走啊",
+        "快点走啊"
+      ],
+      "zhongwen": "跟住我⋯走吧⋯"
+    },
+    "answer": {
+      "yuewen_merged": "给雪糕，吃东西，你跟著我走⋯走啊，快点走啊⋯"
+    },
+    "difficulty": 2
+  }
+]

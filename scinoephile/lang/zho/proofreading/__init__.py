@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, TypedDict, Unpack
 from scinoephile.llms.default_test_cases import (
     ZHO_HANS_PROOFREADING_JSON_PATHS,
     ZHO_HANT_PROOFREADING_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
@@ -79,7 +79,7 @@ def get_zho_proofreader(
     if test_cases is None:
         if prompt_cls is ZhoHantProofreadingPrompt:
             test_cases = list(
-                load_default_test_cases_from_repo_data(
+                load_default_test_cases(
                     MonoBlockManager,
                     prompt_cls,
                     ZHO_HANT_PROOFREADING_JSON_PATHS,
@@ -87,7 +87,7 @@ def get_zho_proofreader(
             )
         else:
             test_cases = list(
-                load_default_test_cases_from_repo_data(
+                load_default_test_cases(
                     MonoBlockManager,
                     prompt_cls,
                     ZHO_HANS_PROOFREADING_JSON_PATHS,

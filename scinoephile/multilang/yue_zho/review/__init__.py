@@ -5,19 +5,18 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, TypedDict, Unpack
+from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_REVIEW_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
-
-if TYPE_CHECKING:
-    from scinoephile.core.llms import TestCase
-    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "YueHansReviewPrompt",
@@ -66,6 +65,7 @@ def get_yue_vs_zho_reviewed(
 def get_yue_vs_zho_processor(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
+    use_dictionary_tool: bool = True,
     **kwargs: Unpack[YueZhoReviewProcessorKwargs],
 ) -> DualBlockProcessor:
     """Get DualBlockProcessor with provided configuration.
@@ -73,20 +73,27 @@ def get_yue_vs_zho_processor(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        use_dictionary_tool: whether to wire the CUHK dictionary tool
         **kwargs: additional arguments for DualBlockProcessor
     Returns:
         DualBlockProcessor with provided configuration
     """
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases_from_repo_data(
+            load_default_test_cases(
                 DualBlockManager,
                 prompt_cls,
                 YUE_ZHO_REVIEW_JSON_PATHS,
             )
         )
+    tools = None
+    tool_handlers = None
+    if use_dictionary_tool:
+        tools, tool_handlers = get_cuhk_dictionary_tooling()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        tools=tools,
+        tool_handlers=tool_handlers,
         **kwargs,
     )

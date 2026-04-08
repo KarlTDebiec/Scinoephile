@@ -8,6 +8,7 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.yue_zho import (
@@ -39,8 +40,8 @@ actions = {
     # "简体中文 (OCR)",
     # "English (OCR)",
     # "Bilingual 简体中文 and English",
-    # "Bilingual 简体粤文 and English",
-    "简体粤文 (Transcription)"
+    "Bilingual 简体粤文 and English",
+    # "简体粤文 (Transcription)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -97,7 +98,11 @@ if "简体粤文 (Transcription)" in actions:
 
     yue_hans = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
-        test_case_path=title_root / "multilang" / "yue_zho" / "proofreading.json",
+        test_case_path=title_root
+        / "multilang"
+        / "yue_zho"
+        / "proofreading"
+        / f"{get_backend()}.json",
         auto_verify=True,
     )
     yue_hans_proofread = get_yue_vs_zho_proofread(
@@ -107,7 +112,11 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread.save(outfile_path)
 
     translator = get_yue_from_zho_translator(
-        test_case_path=title_root / "multilang" / "yue_zho" / "translation.json",
+        test_case_path=title_root
+        / "multilang"
+        / "yue_zho"
+        / "translation"
+        / f"{get_backend()}.json",
         auto_verify=True,
     )
     yue_hans_proofread_translate = get_yue_from_zho_translated(
@@ -117,7 +126,11 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread_translate.save(outfile_path)
 
     transcriber = get_yue_vs_zho_processor(
-        test_case_path=title_root / "multilang" / "yue_zho" / "review.json",
+        test_case_path=title_root
+        / "multilang"
+        / "yue_zho"
+        / "review"
+        / f"{get_backend()}.json",
         auto_verify=True,
     )
     yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(

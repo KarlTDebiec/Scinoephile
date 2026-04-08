@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, TypedDict, Unpack
 
 from scinoephile.llms.default_test_cases import (
     ENG_PROOFREADING_JSON_PATHS,
-    load_default_test_cases_from_repo_data,
+    load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
@@ -76,7 +76,7 @@ def get_eng_proofreader(
     """
     if test_cases is None:
         test_cases = list(
-            load_default_test_cases_from_repo_data(
+            load_default_test_cases(
                 MonoBlockManager,
                 prompt_cls,
                 ENG_PROOFREADING_JSON_PATHS,

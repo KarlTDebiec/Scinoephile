@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from logging import getLogger
 from time import sleep
-from typing import Any, Unpack, cast, override
+from typing import Any, Unpack, override
 
 from openai import OpenAI, OpenAIError
 
@@ -30,14 +30,14 @@ class OpenAIProvider(LLMProvider):
         Arguments:
             client: synchronous OpenAI client
         """
-        self.sync_client = client or OpenAI()
+        self.sync_client: OpenAI = client or OpenAI()
 
     @override
     def chat_completion(  # noqa: PLR0912
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str = "gpt-5.1",
+        model: str = "gpt-5.4",
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -71,22 +71,21 @@ class OpenAIProvider(LLMProvider):
             max_tool_rounds = 8
             for round_idx in range(max_tool_rounds):
                 if response_format:
-                    completion = cast(
-                        Any, self.sync_client.beta.chat.completions
-                    ).parse(
-                        messages=messages,
+                    completion = self.sync_client.beta.chat.completions.parse(
+                        messages=messages,  # ty:ignore[invalid-argument-type]
                         model=model,
                         **request_kwargs,
                     )
                 else:
-                    completion = cast(Any, self.sync_client.chat.completions).create(
+                    completion = self.sync_client.chat.completions.create(
                         messages=messages,
                         model=model,
                         **request_kwargs,
-                    )
+                    )  # ty:ignore[no-matching-overload]
 
                 message = completion.choices[0].message
                 tool_calls = message.tool_calls or []
+
                 if not tool_calls:
                     content = message.content
                     if content is None:
@@ -164,6 +163,7 @@ class OpenAIProvider(LLMProvider):
                     "name": tool["name"],
                     "description": tool["description"],
                     "parameters": tool["parameters"],
+                    "strict": True,
                 },
             }
             for tool in tools

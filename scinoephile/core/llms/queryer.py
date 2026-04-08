@@ -386,12 +386,12 @@ class Queryer[
         Returns:
             formatted validation errors
         """
-        return "\n".join(
-            [
-                f"{'.'.join(map(str, e.get('loc', [])))}: {e.get('msg')}"
-                for e in exc.errors()
-            ]
-        )
+        lines: list[str] = []
+        for error in exc.errors():
+            location = ".".join(map(str, error.get("loc", ())))
+            message = str(error.get("msg"))
+            lines.append(f"{location}: {message}" if location else message)
+        return "\n".join(lines)
 
     @classmethod
     @cache

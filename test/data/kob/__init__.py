@@ -6,12 +6,14 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import get_backend
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
+from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
@@ -21,7 +23,9 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHansProofreadingPrompt,
     ZhoHantProofreadingPrompt,
 )
+from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
+from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.proofreading import (
@@ -36,11 +40,6 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 from test.helpers import test_data_root
-
-if TYPE_CHECKING:
-    from scinoephile.core.llms.manager import TestCaseClsKwargs
-    from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
-    from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "kob_eng",
@@ -191,7 +190,14 @@ def get_kob_yue_shifting_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "multilang" / "yue_zho" / "transcription" / "shifting.json"
+    path = (
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "shifting"
+        / f"{get_backend()}.json"
+    )
     return load_test_cases_from_json(
         path, DualPairManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -210,7 +216,14 @@ def get_kob_yue_merging_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "multilang" / "yue_zho" / "transcription" / "merging.json"
+    path = (
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "merging"
+        / f"{get_backend()}.json"
+    )
     return load_test_cases_from_json(
         path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -229,7 +242,9 @@ def get_kob_yue_vs_zho_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "multilang" / "yue_zho" / "proofreading.json"
+    path = (
+        title_root / "multilang" / "yue_zho" / "proofreading" / f"{get_backend()}.json"
+    )
     return load_test_cases_from_json(
         path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
     )
