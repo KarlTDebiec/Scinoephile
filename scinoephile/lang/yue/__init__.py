@@ -11,9 +11,11 @@ Package hierarchy (modules may import from any above):
 from __future__ import annotations
 
 from .conversion import get_yue_converted
-from .romanization import get_yue_romanized
+from .romanization import get_yue_romanized, is_accented_yale, is_numbered_jyutping
 
 __all__ = [
     "get_yue_converted",
     "get_yue_romanized",
+    "is_accented_yale",
+    "is_numbered_jyutping",
 ]

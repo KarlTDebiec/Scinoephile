@@ -4,47 +4,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from scinoephile.lang.id import LanguageIDResult
 
-
-@dataclass(frozen=True, slots=True)
-class DetectionCase:
-    """Test case for script and romanization detection helpers.
-
-    Attributes:
-        text: input text to classify
-        is_accented_pinyin: expected accented pinyin classification
-        is_numbered_pinyin: expected numbered pinyin classification
-        is_accented_yale: expected accented Yale classification
-        is_numbered_jyutping: expected numbered Jyutping classification
-        is_simplified: expected simplified Chinese classification
-        is_traditional: expected traditional Chinese classification
-    """
-
-    text: str
-    """Input text to classify."""
-
-    is_accented_pinyin: bool
-    """Expected accented pinyin classification."""
-
-    is_numbered_pinyin: bool
-    """Expected numbered pinyin classification."""
-
-    is_accented_yale: bool
-    """Expected accented Yale classification."""
-
-    is_numbered_jyutping: bool
-    """Expected numbered Jyutping classification."""
-
-    is_simplified: bool
-    """Expected simplified Chinese classification."""
-
-    is_traditional: bool
-    """Expected traditional Chinese classification."""
-
-
-DETECTION_CASES: list[DetectionCase] = [
-    DetectionCase(
+LANGUAGE_ID_TEST_CASES: list[LanguageIDResult] = [
+    LanguageIDResult(
         text="nǐ hǎo",
         is_accented_pinyin=True,
         is_numbered_pinyin=False,
@@ -53,7 +16,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="lüè",
         is_accented_pinyin=True,
         is_numbered_pinyin=False,
@@ -62,7 +25,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="ni3 hao3",
         is_accented_pinyin=False,
         is_numbered_pinyin=True,
@@ -71,7 +34,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="lu:e4",
         is_accented_pinyin=False,
         is_numbered_pinyin=True,
@@ -80,7 +43,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="lv4",
         is_accented_pinyin=False,
         is_numbered_pinyin=True,
@@ -89,7 +52,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="ni hao",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -98,7 +61,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="néih hóu",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -107,7 +70,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="gwóngdūngwá",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -116,7 +79,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="nei5 hou2",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -125,7 +88,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="gwong2 dung1 waa2",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -134,7 +97,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="简体中文",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -143,7 +106,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=True,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="汉字",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -152,7 +115,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=True,
         is_traditional=False,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="繁體中文",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -161,7 +124,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=True,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="漢字",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -170,7 +133,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=False,
         is_traditional=True,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="中文",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
@@ -179,7 +142,7 @@ DETECTION_CASES: list[DetectionCase] = [
         is_simplified=True,
         is_traditional=True,
     ),
-    DetectionCase(
+    LanguageIDResult(
         text="",
         is_accented_pinyin=False,
         is_numbered_pinyin=False,
