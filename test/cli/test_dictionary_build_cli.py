@@ -18,7 +18,6 @@ from test.helpers import (
     build_subcommands,
     get_usage_prefix,
     skip_if_ci,
-    skip_if_no_network,
 )
 
 
@@ -62,7 +61,6 @@ def test_dictionary_build_usage(
 
 
 @skip_if_ci()
-@skip_if_no_network()
 def test_dictionary_build_cli():
     """Test CUHK dictionary build CLI performs a limited real scrape."""
     with get_temp_directory_path() as cache_dir_path:

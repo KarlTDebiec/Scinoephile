@@ -10,7 +10,6 @@ from inspect import getfile
 from io import StringIO
 from os import getenv
 from pathlib import Path
-from socket import gaierror, getaddrinfo
 from typing import Any
 
 import pytest
@@ -28,7 +27,6 @@ __all__ = [
     "get_warning_messages",
     "get_usage_prefix",
     "parametrized_fixture",
-    "skip_if_no_network",
     "skip_if_ci",
     "skip_if_codex",
     "test_data_root",
@@ -171,25 +169,6 @@ def skip_if_ci() -> Any:
     return mark.skipif(
         bool(getenv("CI")),
         reason="Skip when running in CI",
-    )
-
-
-def skip_if_no_network(host: str = "apps.itsc.cuhk.edu.hk") -> Any:
-    """Build a decorator that skips tests when network resolution fails.
-
-    Arguments:
-        host: host to resolve for network availability
-    Returns:
-        pytest mark decorator
-    """
-    has_network = True
-    try:
-        getaddrinfo(host, 443)
-    except gaierror:
-        has_network = False
-    return mark.skipif(
-        not has_network,
-        reason=f"Skip when {host} cannot be resolved",
     )
 
 

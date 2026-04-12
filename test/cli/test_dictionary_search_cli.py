@@ -19,7 +19,6 @@ from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
     skip_if_ci,
-    skip_if_no_network,
 )
 
 
@@ -83,7 +82,6 @@ def cuhk_traditional_query(cuhk_database_path: Path) -> str:
 
 
 @skip_if_ci()
-@skip_if_no_network()
 def test_dictionary_search_cli_traditional(
     cuhk_traditional_query: str, cuhk_database_path: Path
 ):
