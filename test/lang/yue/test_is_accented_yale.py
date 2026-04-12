@@ -7,16 +7,18 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.yue.romanization import is_accented_yale
-from test.lang.yue.romanization_detection_cases import ROMANIZATION_CASES
+from test.lang.detection_cases import DETECTION_CASES
 
 
-@pytest.mark.parametrize(("text", "expected", "_"), ROMANIZATION_CASES)
-def test_is_accented_yale(text: str, expected: bool, _: bool):
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [(case.text, case.is_accented_yale) for case in DETECTION_CASES],
+)
+def test_is_accented_yale(text: str, expected: bool):
     """Detect accented Yale tokens.
 
     Arguments:
         text: Yale text to classify
         expected: expected accented classification
-        _: expected numbered classification (unused)
     """
     assert is_accented_yale(text) is expected

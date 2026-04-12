@@ -7,16 +7,18 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.cmn.romanization import is_numbered_pinyin
-from test.lang.cmn.pinyin_detection_cases import PINYIN_CASES
+from test.lang.detection_cases import DETECTION_CASES
 
 
-@pytest.mark.parametrize(("text", "_", "expected"), PINYIN_CASES)
-def test_is_numbered_pinyin(text: str, _: bool, expected: bool):
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [(case.text, case.is_numbered_pinyin) for case in DETECTION_CASES],
+)
+def test_is_numbered_pinyin(text: str, expected: bool):
     """Detect numbered pinyin tokens.
 
     Arguments:
         text: pinyin text to classify
-        _: expected accented classification (unused)
         expected: expected numbered classification
     """
     assert is_numbered_pinyin(text) is expected

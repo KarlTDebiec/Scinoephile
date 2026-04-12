@@ -7,17 +7,12 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.zho.conversion import is_simplified
+from test.lang.detection_cases import DETECTION_CASES
 
 
 @pytest.mark.parametrize(
     ("text", "expected"),
-    [
-        ("简体中文", True),
-        ("汉字", True),
-        ("繁體中文", False),
-        ("漢字", False),
-        ("中文", True),
-    ],
+    [(case.text, case.is_simplified) for case in DETECTION_CASES],
 )
 def test_is_simplified(text: str, expected: bool):
     """Detect simplified Chinese text.
