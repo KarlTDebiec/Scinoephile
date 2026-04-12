@@ -7,12 +7,12 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.zho.conversion import is_traditional
-from test.lang.detection_cases import DETECTION_CASES
+from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
 
 @pytest.mark.parametrize(
     ("text", "expected"),
-    [(case.text, case.is_traditional) for case in DETECTION_CASES],
+    [(case.text, case.is_traditional) for case in LANGUAGE_ID_TEST_CASES],
 )
 def test_is_traditional(text: str, expected: bool):
     """Detect traditional Chinese text.

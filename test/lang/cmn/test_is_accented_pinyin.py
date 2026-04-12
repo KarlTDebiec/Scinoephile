@@ -7,12 +7,12 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.cmn.romanization import is_accented_pinyin
-from test.lang.detection_cases import DETECTION_CASES
+from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
 
 @pytest.mark.parametrize(
     ("text", "expected"),
-    [(case.text, case.is_accented_pinyin) for case in DETECTION_CASES],
+    [(case.text, case.is_accented_pinyin) for case in LANGUAGE_ID_TEST_CASES],
 )
 def test_is_accented_pinyin(text: str, expected: bool):
     """Detect accented pinyin tokens.
