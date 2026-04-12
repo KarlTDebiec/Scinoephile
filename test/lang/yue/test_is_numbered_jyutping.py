@@ -7,22 +7,16 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.yue.romanization import is_numbered_jyutping
+from test.lang.yue.romanization_detection_cases import ROMANIZATION_CASES
 
 
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("nei5 hou2", True),
-        ("gwong2 dung1 waa2", True),
-        ("néih hóu", False),
-        ("", False),
-    ],
-)
-def test_is_numbered_jyutping(text: str, expected: bool):
+@pytest.mark.parametrize(("text", "_", "expected"), ROMANIZATION_CASES)
+def test_is_numbered_jyutping(text: str, _: bool, expected: bool):
     """Detect numbered Jyutping tokens.
 
     Arguments:
         text: Jyutping text to classify
+        _: expected accented classification (unused)
         expected: expected numbered classification
     """
     assert is_numbered_jyutping(text) is expected
