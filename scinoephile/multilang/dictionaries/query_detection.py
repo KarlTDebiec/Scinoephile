@@ -9,9 +9,14 @@ import unicodedata
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.lang.cmn.romanization import is_accented_pinyin_query
-from scinoephile.lang.yue.romanization import is_accented_yale_query
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.cmn.romanization import is_accented_pinyin
+from scinoephile.lang.yue.romanization import is_accented_yale
+from scinoephile.lang.zho.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+    is_simplified,
+    is_traditional,
+)
 from scinoephile.multilang.dictionaries import LookupDirection
 
 __all__ = [
@@ -76,8 +81,8 @@ def detect_dictionary_query_language(query: str) -> DictionaryQueryLanguage:
             "Dictionary queries must use accented romanization (no digits)."
         )
 
-    pinyin_match = is_accented_pinyin_query(query)
-    yale_match = is_accented_yale_query(query)
+    pinyin_match = is_accented_pinyin(query)
+    yale_match = is_accented_yale(query)
 
     if pinyin_match and yale_match:
         raise ScinoephileError(
@@ -124,10 +129,9 @@ def _detect_hanzi_variant(query: str) -> DictionaryQueryLanguage:
     """
     simplified = get_zho_text_converted(query, OpenCCConfig.t2s)
     traditional = get_zho_text_converted(query, OpenCCConfig.s2t)
-
-    if query == simplified and query != traditional:
+    if is_simplified(query):
         return DictionaryQueryLanguage.simplified
-    if query == traditional and query != simplified:
+    if is_traditional(query):
         return DictionaryQueryLanguage.traditional
     if query == simplified and query == traditional:
         raise ScinoephileError(

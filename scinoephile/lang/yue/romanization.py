@@ -28,7 +28,8 @@ from scinoephile.lang.zho.conversion import get_zho_converter
 __all__ = [
     "get_yue_jyutping_query_strings",
     "get_yue_romanized",
-    "is_accented_yale_query",
+    "is_accented_yale",
+    "is_numbered_jyutping",
     "yale_to_jyutping",
 ]
 
@@ -183,7 +184,7 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
                 )
             ]
 
-    if not is_accented_yale_query(text):
+    if not is_accented_yale(text):
         return []
     return yale_to_jyutping(text)
 
@@ -321,7 +322,7 @@ def yale_to_jyutping(text: str) -> list[str]:
     return [" ".join(variant) for variant in variants]
 
 
-def is_accented_yale_query(text: str) -> bool:
+def is_accented_yale(text: str) -> bool:
     """Check whether text appears to be Yale romanization.
 
     Arguments:
@@ -330,8 +331,27 @@ def is_accented_yale_query(text: str) -> bool:
         whether text appears to be Yale romanization
     """
     if "'" in text:
-        return True
+        return False
     return RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", text)) is not None
+
+
+def is_numbered_jyutping(text: str) -> bool:
+    """Check whether text appears to be numbered Jyutping.
+
+    Arguments:
+        text: query text
+    Returns:
+        whether text appears to be numbered Jyutping
+    """
+    normalized = unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
+    if not normalized:
+        return False
+    condensed = normalized.replace(" ", "").replace("'", "")
+    try:
+        parsed = pycantonese.parse_jyutping(condensed)
+    except ValueError:
+        return False
+    return bool(parsed)
 
 
 def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PLR0915

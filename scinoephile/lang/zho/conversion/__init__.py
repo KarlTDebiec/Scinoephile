@@ -20,6 +20,8 @@ __all__ = [
     "get_zho_converted",
     "get_zho_converter",
     "get_zho_text_converted",
+    "is_simplified",
+    "is_traditional",
 ]
 
 conversion_exclusions = {
@@ -109,3 +111,29 @@ def get_zho_text_converted(
                     converted_text = converted_text.replace(trad_char, simp_char)
 
     return converted_text
+
+
+def is_simplified(text: str) -> bool:
+    """Check whether text is simplified Chinese.
+
+    Arguments:
+        text: text to classify
+    Returns:
+        whether text is simplified Chinese
+    """
+    simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
+    traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
+    return text == simplified and text != traditional
+
+
+def is_traditional(text: str) -> bool:
+    """Check whether text is traditional Chinese.
+
+    Arguments:
+        text: text to classify
+    Returns:
+        whether text is traditional Chinese
+    """
+    simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
+    traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
+    return text == traditional and text != simplified

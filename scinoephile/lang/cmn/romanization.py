@@ -25,7 +25,8 @@ if TYPE_CHECKING:
 __all__ = [
     "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
-    "is_accented_pinyin_query",
+    "is_accented_pinyin",
+    "is_numbered_pinyin",
 ]
 
 RE_CMN_PINYIN = re.compile(
@@ -70,7 +71,7 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
     return sorted(query_strings)
 
 
-def is_accented_pinyin_query(text: str) -> bool:
+def is_accented_pinyin(text: str) -> bool:
     """Check whether text is accented Hanyu Pinyin.
 
     Arguments:
@@ -94,6 +95,30 @@ def is_accented_pinyin_query(text: str) -> bool:
             r"[\u0300\u0301\u0302\u0304\u0308\u030C]",
             unicodedata.normalize("NFD", text),
         )
+    )
+
+
+def is_numbered_pinyin(text: str) -> bool:
+    """Check whether text is numbered Hanyu Pinyin.
+
+    Arguments:
+        text: query text
+    Returns:
+        whether text appears to be numbered pinyin
+    """
+    normalized = (
+        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
+    )
+    if not normalized:
+        return False
+    tokens = normalized.split()
+    return all(
+        re.fullmatch(
+            r"[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
+            r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]",
+            token,
+        )
+        for token in tokens
     )
 
 
