@@ -37,6 +37,7 @@ RE_CMN_PINYIN_TONE_MARKS = re.compile(r"[\u0300\u0301\u0302\u0304\u0308\u030C]")
 RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
+RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
 
 
 def _get_cmn_text_romanized(text: str) -> str:
@@ -141,6 +142,8 @@ def is_accented_pinyin(text: str) -> bool:
     tokens = nfc_text.split()
     if any(any(char.isdigit() for char in token) for token in tokens):
         return False
+    if any(RE_CMN_PROHIBITED_TOKEN.search(token) for token in tokens):
+        return False
     if not all(RE_CMN_PINYIN_ACCENTED.fullmatch(token) for token in tokens):
         return False
     # Use NFD so precomposed characters (e.g., ǎ) expose combining tone marks.
@@ -171,5 +174,11 @@ def is_numbered_pinyin(text: str) -> bool:
     # letter + combining tone mark so we can detect tone marks reliably.
     nfd_text = unicodedata.normalize("NFD", nfc_text)
     if RE_CMN_PINYIN_TONE_MARKS.search(nfd_text):
+        return False
+    if any(token.endswith("5") for token in tokens) and any(
+        token[-1] in {"1", "2", "3", "4"} for token in tokens if token[-1].isdigit()
+    ):
+        return False
+    if any(RE_CMN_PROHIBITED_TOKEN.search(token) for token in tokens):
         return False
     return all(RE_CMN_PINYIN_NUMBERED.fullmatch(token) for token in tokens)

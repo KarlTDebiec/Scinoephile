@@ -39,6 +39,7 @@ data_root = package_root / "data/yue/"
 MAX_YUE_JYUTPING_VARIANTS = 16
 RE_YALE_SEPARATOR = re.compile(r"[\s'’]+")
 RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
+RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ'’:]")
 YUE_JYUTPING_ONSETS = (
     "b",
     "d",
@@ -330,9 +331,18 @@ def is_accented_yale(text: str) -> bool:
     Returns:
         whether text appears to be Yale romanization
     """
-    if "'" in text:
+    # NFC (Normalization Form C) composes characters so tone vowels are represented
+    # as single code points instead of base letters + combining marks.
+    normalized = unicodedata.normalize("NFC", text).strip()
+    if not normalized:
         return False
-    return RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", text)) is not None
+    if RE_YALE_PROHIBITED_CHARACTERS.search(normalized) is not None:
+        return False
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letters + combining tone marks so we can detect tone marks reliably.
+    return (
+        RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", normalized)) is not None
+    )
 
 
 def is_numbered_jyutping(text: str) -> bool:
@@ -343,10 +353,14 @@ def is_numbered_jyutping(text: str) -> bool:
     Returns:
         whether text appears to be numbered Jyutping
     """
-    normalized = unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
+    # NFC (Normalization Form C) composes characters so tone vowels are represented
+    # as single code points instead of base letters + combining marks.
+    normalized = unicodedata.normalize("NFC", text)
+    normalized = normalized.replace("’", "'").strip().lower()
     if not normalized:
         return False
     condensed = normalized.replace(" ", "").replace("'", "")
+    # Delegate to pycantonese
     try:
         parsed = pycantonese.parse_jyutping(condensed)
     except ValueError:
