@@ -33,6 +33,10 @@ RE_CMN_PINYIN = re.compile(
     r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
     r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]?$"
 )
+RE_CMN_PINYIN_ACCENTED = re.compile(
+    r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
+    r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+$"
+)
 
 
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:
@@ -79,21 +83,20 @@ def is_accented_pinyin(text: str) -> bool:
     Returns:
         whether text appears to be accented pinyin
     """
-    normalized = (
-        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
-    )
+    normalized = unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ")
+    normalized = normalized.strip()
     if not normalized:
         return False
     tokens = normalized.split()
-    if any(token.lower().endswith("h") for token in tokens):
+    if any(any(char.isdigit() for char in token) for token in tokens):
         return False
-    if not get_cmn_pinyin_query_strings(text):
+    if not all(RE_CMN_PINYIN_ACCENTED.fullmatch(token) for token in tokens):
         return False
     # Use NFD so precomposed characters (e.g., ǎ) expose combining marks.
     return bool(
         re.search(
             r"[\u0300\u0301\u0302\u0304\u0308\u030C]",
-            unicodedata.normalize("NFD", text),
+            unicodedata.normalize("NFD", normalized),
         )
     )
 
@@ -106,12 +109,16 @@ def is_numbered_pinyin(text: str) -> bool:
     Returns:
         whether text appears to be numbered pinyin
     """
-    normalized = (
-        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
-    )
+    normalized = unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ")
+    normalized = normalized.strip()
     if not normalized:
         return False
     tokens = normalized.split()
+    if re.search(
+        r"[\u0300\u0301\u0302\u0304\u0308\u030C]",
+        unicodedata.normalize("NFD", normalized),
+    ):
+        return False
     return all(
         re.fullmatch(
             r"[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
