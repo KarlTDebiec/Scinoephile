@@ -10,7 +10,6 @@ from io import StringIO
 import pytest
 
 from scinoephile.cli import (
-    CmnYueCli,
     CmnYueDictionaryBuildCli,
     CmnYueDictionaryCli,
     ScinoephileCli,
@@ -23,6 +22,7 @@ from test.helpers import (
     build_subcommands,
     get_usage_prefix,
     skip_if_ci,
+    skip_if_no_network,
 )
 
 
@@ -31,8 +31,7 @@ from test.helpers import (
     [
         (CmnYueDictionaryBuildCli,),
         (CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
-        (CmnYueCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
-        (ScinoephileCli, CmnYueCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
+        (ScinoephileCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
     ],
 )
 def test_cmn_yue_dictionary_build_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -45,8 +44,7 @@ def test_cmn_yue_dictionary_build_help(cli: tuple[type[CommandLineInterface], ..
     [
         (CmnYueDictionaryBuildCli,),
         (CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
-        (CmnYueCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
-        (ScinoephileCli, CmnYueCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
+        (ScinoephileCli, CmnYueDictionaryCli, CmnYueDictionaryBuildCli),
     ],
 )
 def test_cmn_yue_dictionary_build_usage(
@@ -68,13 +66,14 @@ def test_cmn_yue_dictionary_build_usage(
 
 
 @skip_if_ci()
+@skip_if_no_network()
 def test_cmn_yue_dictionary_build_cli():
     """Test CUHK dictionary build CLI performs a limited real scrape."""
     with get_temp_directory_path() as cache_dir_path:
         with get_temp_file_path(".db") as database_path:
             run_cli_with_args(
                 ScinoephileCli,
-                "cmn_yue dictionary build "
+                "dictionary build cuhk "
                 f"--cache-dir {cache_dir_path} "
                 f"--database-path {database_path} "
                 "--max-words 10 "

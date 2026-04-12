@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli import CmnYueCli, ScinoephileCli
+from scinoephile.cli import CmnYueCli
 from test.helpers import assert_cli_help, assert_cli_usage
 
 
@@ -14,7 +14,6 @@ from test.helpers import assert_cli_help, assert_cli_usage
     "cli",
     [
         (CmnYueCli,),
-        (ScinoephileCli, CmnYueCli),
     ],
 )
 def test_cmn_yue_help(cli):
@@ -26,7 +25,6 @@ def test_cmn_yue_help(cli):
     "cli",
     [
         (CmnYueCli,),
-        (ScinoephileCli, CmnYueCli),
     ],
 )
 def test_cmn_yue_usage(cli):

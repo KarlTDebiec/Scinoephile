@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.cmn_yue_dictionary_cli import CmnYueDictionaryCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
@@ -59,9 +58,7 @@ class CmnYueCli(CommandLineInterface):
         Returns:
             mapping of subcommand names to CLI classes
         """
-        return {
-            CmnYueDictionaryCli.name(): CmnYueDictionaryCli,
-        }
+        return {}
 
 
 if __name__ == "__main__":

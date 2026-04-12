@@ -16,6 +16,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.multilang.cmn_yue.dictionaries.query_detection import (
+    detect_dictionary_query_language,
+    get_dictionary_lookup_direction,
+)
 
 logger = getLogger(__name__)
 
@@ -51,14 +55,10 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         arg_groups["operation arguments"].add_argument(
             "query",
             type=str,
-            help="Mandarin or Cantonese query text",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--direction",
-            type=LookupDirection,
-            choices=list(LookupDirection),
-            default=LookupDirection.CMN_TO_YUE,
-            help="lookup direction",
+            help=(
+                "Mandarin or Cantonese query text; "
+                "Hanzi (simplified/traditional) or accented romanization"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--limit",
@@ -77,12 +77,18 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
         """
         database_path = kwargs.pop("database_path")
         query = kwargs.pop("query")
-        direction = kwargs.pop("direction")
         limit = kwargs.pop("limit")
 
         service = CuhkDictionaryService(
             database_path=database_path,
             auto_build_missing=False,
+        )
+        language = detect_dictionary_query_language(query)
+        direction = get_dictionary_lookup_direction(language)
+        logger.info(
+            "Detected dictionary query language %s; using %s lookup.",
+            language.value,
+            direction.value,
         )
         entries = service.lookup(query=query, direction=direction, limit=limit)
         cls._log_search_results(query, direction, entries)

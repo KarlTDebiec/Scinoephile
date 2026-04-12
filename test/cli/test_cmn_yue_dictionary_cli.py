@@ -6,11 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli import (
-    CmnYueCli,
-    CmnYueDictionaryCli,
-    ScinoephileCli,
-)
+from scinoephile.cli import CmnYueDictionaryCli, ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import assert_cli_help, assert_cli_usage
 
@@ -19,8 +15,7 @@ from test.helpers import assert_cli_help, assert_cli_usage
     "cli",
     [
         (CmnYueDictionaryCli,),
-        (CmnYueCli, CmnYueDictionaryCli),
-        (ScinoephileCli, CmnYueCli, CmnYueDictionaryCli),
+        (ScinoephileCli, CmnYueDictionaryCli),
     ],
 )
 def test_cmn_yue_dictionary_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -32,8 +27,7 @@ def test_cmn_yue_dictionary_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (CmnYueDictionaryCli,),
-        (CmnYueCli, CmnYueDictionaryCli),
-        (ScinoephileCli, CmnYueCli, CmnYueDictionaryCli),
+        (ScinoephileCli, CmnYueDictionaryCli),
     ],
 )
 def test_cmn_yue_dictionary_usage(cli: tuple[type[CommandLineInterface], ...]):

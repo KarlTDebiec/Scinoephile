@@ -16,7 +16,9 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
     output_file_arg,
+    str_arg,
 )
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
 logger = getLogger(__name__)
@@ -24,6 +26,9 @@ logger = getLogger(__name__)
 
 class CmnYueDictionaryBuildCli(CommandLineInterface):
     """Command-line interface for building the CUHK dictionary cache."""
+
+    _supported_dictionaries = ("cuhk",)
+    """Supported dictionary identifiers."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -51,6 +56,11 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         )
 
         # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "dictionary",
+            type=str_arg(options=cls._supported_dictionaries),
+            help="dictionary to build",
+        )
         arg_groups["operation arguments"].add_argument(
             "--max-words",
             metavar="N",
@@ -105,12 +115,16 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         """
         cache_dir_path = kwargs.pop("cache_dir")
         database_path = kwargs.pop("database_path")
+        dictionary_name = kwargs.pop("dictionary")
         max_words = kwargs.pop("max_words", None)
         overwrite = kwargs.pop("overwrite")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
         max_delay_seconds = kwargs.pop("max_delay_seconds")
         max_retries = kwargs.pop("max_retries")
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
+
+        if dictionary_name != "cuhk":
+            raise ScinoephileError(f"Unsupported dictionary: {dictionary_name}")
 
         service = CuhkDictionaryService(
             database_path=database_path,
@@ -127,12 +141,15 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             service.database_path,
             max_words,
             overwrite,
+            dictionary_name,
         )
         database_path = service.build(
             overwrite=overwrite,
             max_words=max_words,
         )
-        logger.info(f"CUHK dictionary build complete: {database_path}")
+        logger.info(
+            "%s dictionary build complete: %s", dictionary_name.upper(), database_path
+        )
 
     @classmethod
     def name(cls) -> str:
@@ -150,6 +167,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         database_path: Path,
         max_words: int | None,
         overwrite: bool,
+        dictionary_name: str,
     ):
         """Log the effective build configuration.
 
@@ -158,13 +176,15 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             database_path: SQLite database path
             max_words: optional max words cap
             overwrite: whether database overwrite is enabled
+            dictionary_name: dictionary name
         """
+        logger.info("Building dictionary: %s", dictionary_name)
         logger.info(f"Using cache directory: {cache_dir_path}")
         logger.info(f"Using SQLite database: {database_path}")
         if max_words is None:
-            logger.info("Building all discovered CUHK words")
+            logger.info("Building all discovered words")
         else:
-            logger.info(f"Building at most {max_words} discovered CUHK words")
+            logger.info(f"Building at most {max_words} discovered words")
         if overwrite:
             logger.info("Overwrite enabled")
 
