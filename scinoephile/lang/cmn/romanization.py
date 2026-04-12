@@ -25,6 +25,7 @@ if TYPE_CHECKING:
 __all__ = [
     "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
+    "is_accented_pinyin_query",
 ]
 
 RE_CMN_PINYIN = re.compile(
@@ -37,9 +38,10 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
     """Get normalized pinyin query strings for text.
 
     Arguments:
-        text: raw query text
+        text: Hanyu Pinyin query text with tone marks and optional apostrophes; tone
+          numbers like ni3 hao3 are not accepted
     Returns:
-        normalized pinyin query strings
+        normalized pinyin query strings using tone numbers
     """
     text = (
         unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
@@ -66,6 +68,33 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
             query_strings.add(query_string.replace("v", "u:"))
 
     return sorted(query_strings)
+
+
+def is_accented_pinyin_query(text: str) -> bool:
+    """Check whether text is accented Hanyu Pinyin.
+
+    Arguments:
+        text: query text
+    Returns:
+        whether text appears to be accented pinyin
+    """
+    normalized = (
+        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
+    )
+    if not normalized:
+        return False
+    tokens = normalized.split()
+    if any(token.lower().endswith("h") for token in tokens):
+        return False
+    if not get_cmn_pinyin_query_strings(text):
+        return False
+    # Use NFD so precomposed characters (e.g., ǎ) expose combining marks.
+    return bool(
+        re.search(
+            r"[\u0300\u0301\u0302\u0304\u0308\u030C]",
+            unicodedata.normalize("NFD", text),
+        )
+    )
 
 
 def get_cmn_romanized(series: Series, append: bool = True) -> Series:

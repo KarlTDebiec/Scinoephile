@@ -28,6 +28,8 @@ from scinoephile.lang.zho.conversion import get_zho_converter
 __all__ = [
     "get_yue_jyutping_query_strings",
     "get_yue_romanized",
+    "is_accented_yale_query",
+    "yale_to_jyutping",
 ]
 
 logger = getLogger(__name__)
@@ -181,9 +183,9 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
                 )
             ]
 
-    if not _is_yale_query(text):
+    if not is_accented_yale_query(text):
         return []
-    return _get_yale_query_strings(text)
+    return yale_to_jyutping(text)
 
 
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
@@ -289,7 +291,7 @@ def _get_yale_jyutping_syllables() -> tuple[
     return sorted_yale_syllables, sorted_mapping
 
 
-def _get_yale_query_strings(text: str) -> list[str]:
+def yale_to_jyutping(text: str) -> list[str]:
     """Get candidate Jyutping query strings from Yale text.
 
     Arguments:
@@ -319,7 +321,7 @@ def _get_yale_query_strings(text: str) -> list[str]:
     return [" ".join(variant) for variant in variants]
 
 
-def _is_yale_query(text: str) -> bool:
+def is_accented_yale_query(text: str) -> bool:
     """Check whether text appears to be Yale romanization.
 
     Arguments:

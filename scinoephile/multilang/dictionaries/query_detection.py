@@ -9,8 +9,8 @@ import unicodedata
 from enum import StrEnum
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
-from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
+from scinoephile.lang.cmn.romanization import is_accented_pinyin_query
+from scinoephile.lang.yue.romanization import is_accented_yale_query
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
 from scinoephile.multilang.dictionaries import LookupDirection
 
@@ -21,19 +21,6 @@ __all__ = [
 ]
 
 RE_HANZI = re.compile(r"[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]")
-PINYIN_TONE_MARKS = {
-    "\u0300",  # grave
-    "\u0301",  # acute
-    "\u0302",  # circumflex
-    "\u0304",  # macron
-    "\u0308",  # diaeresis
-    "\u030c",  # caron
-}
-YALE_TONE_MARKS = {
-    "\u0300",  # grave
-    "\u0301",  # acute
-    "\u0304",  # macron
-}
 
 
 class DictionaryQueryLanguage(StrEnum):
@@ -66,8 +53,10 @@ def detect_dictionary_query_language(query: str) -> DictionaryQueryLanguage:
     if not query:
         raise ScinoephileError("Dictionary query is empty.")
 
-    has_hanzi = _contains_hanzi(query)
-    has_latin = _contains_latin(query)
+    has_hanzi = RE_HANZI.search(query) is not None
+    has_latin = any(
+        char.isalpha() and "LATIN" in unicodedata.name(char, "") for char in query
+    )
     has_digits = any(char.isdigit() for char in query)
 
     if has_hanzi:
@@ -87,8 +76,8 @@ def detect_dictionary_query_language(query: str) -> DictionaryQueryLanguage:
             "Dictionary queries must use accented romanization (no digits)."
         )
 
-    pinyin_match = _is_accented_pinyin_query(query)
-    yale_match = _is_accented_yale_query(query)
+    pinyin_match = is_accented_pinyin_query(query)
+    yale_match = is_accented_yale_query(query)
 
     if pinyin_match and yale_match:
         raise ScinoephileError(
@@ -123,41 +112,6 @@ def get_dictionary_lookup_direction(
     return LookupDirection.YUE_TO_CMN
 
 
-def _contains_hanzi(text: str) -> bool:
-    """Check whether text contains Hanzi characters.
-
-    Arguments:
-        text: query text
-    Returns:
-        whether Hanzi characters are present
-    """
-    return RE_HANZI.search(text) is not None
-
-
-def _contains_latin(text: str) -> bool:
-    """Check whether text contains Latin letters.
-
-    Arguments:
-        text: query text
-    Returns:
-        whether Latin letters are present
-    """
-    return any(_is_latin_letter(char) for char in text)
-
-
-def _is_latin_letter(char: str) -> bool:
-    """Check whether a character is a Latin letter.
-
-    Arguments:
-        char: character to check
-    Returns:
-        whether character is a Latin letter
-    """
-    if not char.isalpha():
-        return False
-    return "LATIN" in unicodedata.name(char, "")
-
-
 def _detect_hanzi_variant(query: str) -> DictionaryQueryLanguage:
     """Detect whether Hanzi query is simplified or traditional.
 
@@ -180,50 +134,3 @@ def _detect_hanzi_variant(query: str) -> DictionaryQueryLanguage:
             "Dictionary query Hanzi is ambiguous between simplified and traditional."
         )
     raise ScinoephileError("Dictionary query Hanzi mixes simplified and traditional.")
-
-
-def _is_accented_pinyin_query(query: str) -> bool:
-    """Check whether query is accented Hanyu Pinyin.
-
-    Arguments:
-        query: romanized query text
-    Returns:
-        whether query appears to be accented pinyin
-    """
-    normalized = (
-        unicodedata.normalize("NFC", query).replace("’", "'").replace("'", " ").strip()
-    )
-    if not normalized:
-        return False
-    tokens = normalized.split()
-    if any(token.lower().endswith("h") for token in tokens):
-        return False
-    if not get_cmn_pinyin_query_strings(query):
-        return False
-    return _contains_diacritic(query, PINYIN_TONE_MARKS)
-
-
-def _is_accented_yale_query(query: str) -> bool:
-    """Check whether query is accented Yale romanization.
-
-    Arguments:
-        query: romanized query text
-    Returns:
-        whether query appears to be accented Yale
-    """
-    if not _contains_diacritic(query, YALE_TONE_MARKS):
-        return False
-    return bool(get_yue_jyutping_query_strings(query))
-
-
-def _contains_diacritic(text: str, marks: set[str]) -> bool:
-    """Check whether text contains any diacritic marks.
-
-    Arguments:
-        text: text to inspect
-        marks: combining diacritic marks to detect
-    Returns:
-        whether any of the marks are present
-    """
-    normalized = unicodedata.normalize("NFD", text)
-    return any(char in marks for char in normalized)
