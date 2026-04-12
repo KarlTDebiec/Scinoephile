@@ -18,7 +18,7 @@ def test_is_simplified(text: str, expected: bool):
     """Detect simplified Chinese text.
 
     Arguments:
-        text: Chinese text to classify
+        text: text to classify
         expected: expected simplified classification
     """
     assert is_simplified(text) is expected

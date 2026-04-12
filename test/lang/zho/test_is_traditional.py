@@ -18,7 +18,7 @@ def test_is_traditional(text: str, expected: bool):
     """Detect traditional Chinese text.
 
     Arguments:
-        text: Chinese text to classify
+        text: text to classify
         expected: expected traditional classification
     """
     assert is_traditional(text) is expected
