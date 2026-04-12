@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from collections.abc import Generator
-from contextlib import ExitStack
 from pathlib import Path
 
 import pytest
@@ -16,9 +15,15 @@ from scinoephile.cli import (
     ScinoephileCli,
 )
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage, skip_if_ci
+from scinoephile.multilang.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+    DictionarySource,
+    DictionarySqliteStore,
+)
+from test.helpers import assert_cli_help, assert_cli_usage
 
 
 @pytest.mark.parametrize(
@@ -49,21 +54,46 @@ def test_dictionary_search_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 @pytest.fixture(scope="module")
 def cuhk_database_path() -> Generator[Path]:
-    """Build a temporary CUHK database for end-to-end search tests."""
-    with ExitStack() as stack:
-        cache_dir_path = stack.enter_context(get_temp_directory_path())
-        database_path = stack.enter_context(get_temp_file_path(".db"))
-        run_cli_with_args(
-            ScinoephileCli,
-            "dictionary build cuhk "
-            f"--cache-dir {cache_dir_path} "
-            f"--database-path {database_path} "
-            "--max-words 10 "
-            "--overwrite "
-            "--min-delay-seconds 0 "
-            "--max-delay-seconds 0 "
-            "--max-retries 2 "
-            "--request-timeout-seconds 10",
+    """Build a temporary CUHK-like database for end-to-end search tests."""
+    with get_temp_file_path(".db") as database_path:
+        store = DictionarySqliteStore(database_path=database_path)
+        store.persist(
+            (
+                DictionarySource(
+                    name="Test Dictionary",
+                    shortname="test",
+                    version="2026.04",
+                    description="Dictionary source used for CLI tests.",
+                    legal="BSD",
+                    link="https://example.com/dictionary",
+                    update_url="https://example.com/dictionary/update",
+                    other="fixture",
+                ),
+                [
+                    DictionaryEntry(
+                        traditional="山坑",
+                        simplified="山坑",
+                        pinyin="shan1 keng1",
+                        jyutping="saan1 haang1",
+                        frequency=2.0,
+                        definitions=[
+                            DictionaryDefinition(text="gully"),
+                            DictionaryDefinition(
+                                text="mountain stream",
+                                label="noun",
+                            ),
+                        ],
+                    ),
+                    DictionaryEntry(
+                        traditional="山坑水",
+                        simplified="山坑水",
+                        pinyin="shan1 keng1 shui3",
+                        jyutping="saan1 haang1 seoi2",
+                        frequency=1.0,
+                        definitions=[DictionaryDefinition(text="stream water")],
+                    ),
+                ],
+            )
         )
         yield database_path
 
@@ -71,19 +101,13 @@ def cuhk_database_path() -> Generator[Path]:
 @pytest.mark.parametrize(
     "query",
     [
-        "山旮旯",
-        "山墳",
-        "山窿",
         "山坑",
+        "shān'kēng",
+        "saan1haang1",
+        "gully",
         "山坑水",
-        "上便",
-        "下便",
-        "山坑",
-        "山墳",
-        "大馬",
     ],
 )
-@skip_if_ci()
 def test_dictionary_search_cli(cuhk_database_path: Path, query: str):
     """Test CUHK dictionary search CLI against a freshly built database."""
     with get_temp_file_path(".log") as log_file_path:
@@ -93,7 +117,7 @@ def test_dictionary_search_cli(cuhk_database_path: Path, query: str):
             "-v "
             f"--log-file {log_file_path} "
             f"--database-path {cuhk_database_path} "
-            f"--direction yue_to_cmn --limit 3 {query}",
+            f"--limit 3 {query}",
         )
         output = log_file_path.read_text(encoding="utf-8")
 

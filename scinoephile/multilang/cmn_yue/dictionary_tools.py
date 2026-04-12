@@ -7,7 +7,12 @@ from __future__ import annotations
 from logging import getLogger
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-from scinoephile.multilang.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.multilang.dictionaries import DictionaryEntry
+from scinoephile.multilang.dictionaries.sqlite_store import (
+    CMN_TO_YUE_LOOKUP,
+    SUPPORTED_LOOKUP_DIRECTIONS,
+    YUE_TO_CMN_LOOKUP,
+)
 
 from .dictionaries.cuhk import CuhkDictionaryService
 from .dictionaries.cuhk.constants import MAX_LOOKUP_LIMIT
@@ -51,7 +56,7 @@ def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
 
 def lookup_cuhk_dictionary(
     query: str,
-    direction: str = LookupDirection.CMN_TO_YUE.value,
+    direction: str = CMN_TO_YUE_LOOKUP,
     limit: int = 10,
     *,
     auto_build_missing: bool = False,
@@ -77,8 +82,10 @@ def lookup_cuhk_dictionary(
         }
 
     try:
-        direction_enum = LookupDirection(direction.strip())
-    except ValueError:
+        direction = direction.strip()
+    except AttributeError:
+        direction = ""
+    if direction not in SUPPORTED_LOOKUP_DIRECTIONS:
         return {
             "query": normalized_query,
             "direction": direction,
@@ -91,14 +98,14 @@ def lookup_cuhk_dictionary(
     try:
         entries = service.lookup(
             query=normalized_query,
-            direction=direction_enum,
+            direction=direction,
             limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
         )
     except FileNotFoundError as exc:
         logger.warning("CUHK dictionary lookup unavailable: %s", exc)
         return {
             "query": normalized_query,
-            "direction": direction_enum.value,
+            "direction": direction,
             "result_count": 0,
             "entries": [],
             "error": str(exc),
@@ -106,12 +113,12 @@ def lookup_cuhk_dictionary(
     logger.info(
         "CUHK dictionary lookup: query=%r direction=%s result_count=%d",
         normalized_query,
-        direction_enum.value,
+        direction,
         len(entries),
     )
     return {
         "query": normalized_query,
-        "direction": direction_enum.value,
+        "direction": direction,
         "result_count": len(entries),
         "entries": [_entry_to_dict(entry) for entry in entries],
     }
@@ -131,7 +138,7 @@ def _lookup_cuhk_dictionary_from_args(
     direction = str(
         arguments.get(
             "direction",
-            LookupDirection.CMN_TO_YUE.value,
+            CMN_TO_YUE_LOOKUP,
         )
     )
 
@@ -180,10 +187,10 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
                         "type": "string",
                         "description": "Lookup direction.",
                         "enum": [
-                            LookupDirection.CMN_TO_YUE.value,
-                            LookupDirection.YUE_TO_CMN.value,
+                            CMN_TO_YUE_LOOKUP,
+                            YUE_TO_CMN_LOOKUP,
                         ],
-                        "default": LookupDirection.CMN_TO_YUE.value,
+                        "default": CMN_TO_YUE_LOOKUP,
                     },
                     "limit": {
                         "type": "integer",

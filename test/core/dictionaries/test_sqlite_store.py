@@ -16,7 +16,10 @@ from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
-    LookupDirection,
+)
+from scinoephile.multilang.dictionaries.sqlite_store import (
+    CMN_TO_YUE_LOOKUP,
+    YUE_TO_CMN_LOOKUP,
 )
 
 
@@ -79,17 +82,17 @@ def test_sqlite_store_lookup_round_trip(
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
 
-    assert store.lookup("山坑", LookupDirection.CMN_TO_YUE, limit=5) == [
+    assert store.lookup("山坑", CMN_TO_YUE_LOOKUP, limit=5) == [
         sample_entries[0],
     ]
-    assert store.lookup("shan keng", LookupDirection.CMN_TO_YUE, limit=5) == [
+    assert store.lookup("shan keng", CMN_TO_YUE_LOOKUP, limit=5) == [
         sample_entries[0],
         sample_entries[1],
     ]
-    assert store.lookup("gully", LookupDirection.CMN_TO_YUE, limit=5) == [
+    assert store.lookup("gully", CMN_TO_YUE_LOOKUP, limit=5) == [
         sample_entries[0],
     ]
-    assert store.lookup("saan1 haang1", LookupDirection.YUE_TO_CMN, limit=5) == [
+    assert store.lookup("saan1 haang1", YUE_TO_CMN_LOOKUP, limit=5) == [
         sample_entries[0],
         sample_entries[1],
     ]

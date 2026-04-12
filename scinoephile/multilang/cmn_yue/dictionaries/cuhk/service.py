@@ -4,16 +4,22 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
+from scinoephile.lang.id import LanguageIDResult
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySqliteStore,
-    LookupDirection,
+)
+from scinoephile.multilang.dictionaries.sqlite_store import (
+    CMN_TO_YUE_LOOKUP,
+    SUPPORTED_LOOKUP_DIRECTIONS,
+    YUE_TO_CMN_LOOKUP,
 )
 
 from .constants import MAX_LOOKUP_LIMIT
@@ -71,7 +77,7 @@ class CuhkDictionaryService:
     def lookup(
         self,
         query: str,
-        direction: LookupDirection = LookupDirection.CMN_TO_YUE,
+        direction: str = CMN_TO_YUE_LOOKUP,
         limit: int = 10,
     ) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data.
@@ -86,24 +92,134 @@ class CuhkDictionaryService:
         query = query.strip()
         if not query:
             return []
+        direction = direction.strip()
+        if direction not in SUPPORTED_LOOKUP_DIRECTIONS:
+            raise ValueError(
+                f"direction must be one of {sorted(SUPPORTED_LOOKUP_DIRECTIONS)!r}"
+            )
         limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        if not self.database_path.exists():
-            if not self.auto_build_missing:
-                raise FileNotFoundError(
-                    "CUHK dictionary database not found. "
-                    "Set auto_build_missing=True to build automatically, "
-                    "or build explicitly with CuhkDictionaryService.build()."
-                )
-            self.build(overwrite=False)
+        self._ensure_database()
 
         for lookup_query in self._get_lookup_queries(query, direction):
             if entries := self.database.lookup(lookup_query, direction, limit):
                 return entries
         return []
 
+    def lookup_inferred(
+        self,
+        query: str,
+        limit: int = 10,
+    ) -> list[DictionaryEntry]:
+        """Query local CUHK dictionary data using inferred query formats.
+
+        Arguments:
+            query: input text to search
+            limit: max results to return
+        Returns:
+            dictionary entries
+        """
+        query = query.strip()
+        if not query:
+            return []
+        limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
+
+        self._ensure_database()
+
+        entries: list[DictionaryEntry] = []
+        seen_keys: set[tuple[str, str, str, str]] = set()
+        for direction, lookup_query in self._get_inferred_lookup_queries(query):
+            for entry in self.database.lookup(lookup_query, direction, limit):
+                entry_key = (
+                    entry.traditional,
+                    entry.simplified,
+                    entry.pinyin,
+                    entry.jyutping,
+                )
+                if entry_key in seen_keys:
+                    continue
+                seen_keys.add(entry_key)
+                entries.append(entry)
+                if len(entries) >= limit:
+                    return entries
+
+        return entries
+
     @staticmethod
-    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
+    def _deduplicate_lookup_queries(
+        queries: Iterable[tuple[str, str]],
+    ) -> list[tuple[str, str]]:
+        """Deduplicate ordered lookup query pairs.
+
+        Arguments:
+            queries: ordered direction/query pairs
+        Returns:
+            deduplicated direction/query pairs
+        """
+        ordered_queries: list[tuple[str, str]] = []
+        seen_queries: set[tuple[str, str]] = set()
+        for direction, query in queries:
+            normalized_direction = direction.strip()
+            normalized_query = query.strip()
+            if (
+                normalized_direction not in SUPPORTED_LOOKUP_DIRECTIONS
+                or not normalized_query
+            ):
+                continue
+            query_key = (normalized_direction, normalized_query)
+            if query_key not in seen_queries:
+                seen_queries.add(query_key)
+                ordered_queries.append(query_key)
+        return ordered_queries
+
+    def _ensure_database(self):
+        """Ensure the SQLite database exists, building it if configured."""
+        if self.database_path.exists():
+            return
+        if not self.auto_build_missing:
+            raise FileNotFoundError(
+                "CUHK dictionary database not found. "
+                "Set auto_build_missing=True to build automatically, "
+                "or build explicitly with CuhkDictionaryService.build()."
+            )
+        self.build(overwrite=False)
+
+    @classmethod
+    def _get_inferred_lookup_queries(cls, query: str) -> list[tuple[str, str]]:
+        """Get ordered lookup direction/query pairs inferred from query format.
+
+        Arguments:
+            query: raw query text
+        Returns:
+            ordered lookup direction/query pairs
+        """
+        query_id = LanguageIDResult(query)
+        lookup_queries: list[tuple[str, str]] = []
+
+        if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
+            lookup_queries.extend(
+                (CMN_TO_YUE_LOOKUP, one_query)
+                for one_query in cls._get_lookup_queries(query, CMN_TO_YUE_LOOKUP)
+            )
+        if query_id.is_numbered_jyutping or query_id.is_accented_yale:
+            lookup_queries.extend(
+                (YUE_TO_CMN_LOOKUP, one_query)
+                for one_query in cls._get_lookup_queries(query, YUE_TO_CMN_LOOKUP)
+            )
+        if query_id.is_simplified or query_id.is_traditional:
+            lookup_queries.extend(
+                [
+                    (YUE_TO_CMN_LOOKUP, query),
+                    (CMN_TO_YUE_LOOKUP, query),
+                ]
+            )
+        if not lookup_queries:
+            lookup_queries.append((CMN_TO_YUE_LOOKUP, query))
+
+        return cls._deduplicate_lookup_queries(lookup_queries)
+
+    @staticmethod
+    def _get_lookup_queries(query: str, direction: str) -> list[str]:
         """Get ordered query variants for dictionary lookup.
 
         Arguments:
@@ -112,10 +228,14 @@ class CuhkDictionaryService:
         Returns:
             ordered query variants
         """
-        if direction == LookupDirection.CMN_TO_YUE:
+        if direction == CMN_TO_YUE_LOOKUP:
             query_variants = get_cmn_pinyin_query_strings(query)
-        else:
+        elif direction == YUE_TO_CMN_LOOKUP:
             query_variants = get_yue_jyutping_query_strings(query)
+        else:
+            raise ValueError(
+                f"direction must be one of {sorted(SUPPORTED_LOOKUP_DIRECTIONS)!r}"
+            )
 
         ordered_queries: list[str] = []
         seen_queries: set[str] = set()
