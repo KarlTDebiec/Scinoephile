@@ -39,7 +39,7 @@ data_root = package_root / "data/yue/"
 MAX_YUE_JYUTPING_VARIANTS = 16
 RE_YALE_SEPARATOR = re.compile(r"[\s'’]+")
 RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
-RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ'’:]")
+RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ:]")
 YUE_JYUTPING_ONSETS = (
     "b",
     "d",

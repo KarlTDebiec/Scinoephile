@@ -33,7 +33,10 @@ RE_CMN_PINYIN_BASE = (
     r"[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
     r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+"
 )
-RE_CMN_PINYIN_TONE_MARKS = re.compile(r"[\u0300\u0301\u0302\u0304\u0308\u030C]")
+# Combining tone marks used for accented pinyin.
+# Note: U+0308 COMBINING DIAERESIS is excluded so numbered inputs like "lüe4"
+# (NFD: "lu" + U+0308) are not treated as accented pinyin.
+RE_CMN_PINYIN_TONE_MARKS = re.compile(r"[\u0300\u0301\u0302\u0304\u030C]")
 RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
 RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
 RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
@@ -44,8 +47,8 @@ def get_cmn_pinyin_query_strings(text: str) -> list[str]:
     """Get normalized pinyin query strings for text.
 
     Arguments:
-        text: Hanyu Pinyin query text with tone marks and optional apostrophes; tone
-          numbers like ni3 hao3 are not accepted
+        text: Hanyu Pinyin query text with tone marks or tone numbers and optional
+          apostrophes
     Returns:
         normalized pinyin query strings using tone numbers
     """
