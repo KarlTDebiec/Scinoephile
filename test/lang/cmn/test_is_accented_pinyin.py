@@ -18,7 +18,7 @@ def test_is_accented_pinyin(text: str, expected: bool):
     """Detect accented pinyin tokens.
 
     Arguments:
-        text: pinyin text to classify
+        text: text to classify
         expected: expected accented classification
     """
     assert is_accented_pinyin(text) is expected

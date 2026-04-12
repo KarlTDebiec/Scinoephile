@@ -18,7 +18,7 @@ def test_is_accented_yale(text: str, expected: bool):
     """Detect accented Yale tokens.
 
     Arguments:
-        text: Yale text to classify
+        text: text to classify
         expected: expected accented classification
     """
     assert is_accented_yale(text) is expected
