@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from logging import getLogger
 
-from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
+from scinoephile.multilang.dictionaries import DictionaryEntry, LookupDirection
 
 from .dictionaries.cuhk import CuhkDictionaryService
 from .dictionaries.cuhk.constants import MAX_LOOKUP_LIMIT
