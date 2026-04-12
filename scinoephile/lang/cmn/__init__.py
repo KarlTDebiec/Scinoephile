@@ -4,8 +4,10 @@
 
 from __future__ import annotations
 
-from .romanization import get_cmn_romanized
+from .romanization import get_cmn_romanized, is_accented_pinyin, is_numbered_pinyin
 
 __all__ = [
     "get_cmn_romanized",
+    "is_accented_pinyin",
+    "is_numbered_pinyin",
 ]

@@ -16,10 +16,6 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 from scinoephile.multilang.dictionaries import DictionaryEntry, LookupDirection
-from scinoephile.multilang.dictionaries.query_detection import (
-    detect_dictionary_query_language,
-    get_dictionary_lookup_direction,
-)
 
 logger = getLogger(__name__)
 

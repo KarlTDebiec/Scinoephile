@@ -125,7 +125,11 @@ def is_simplified(text: str) -> bool:
     """
     if RE_HANZI.search(text) is None:
         return False
-    simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
+    simplified = get_zho_text_converted(
+        text,
+        OpenCCConfig.t2s,
+        apply_exclusions=False,
+    )
     return text == simplified
 
 
@@ -139,5 +143,9 @@ def is_traditional(text: str) -> bool:
     """
     if RE_HANZI.search(text) is None:
         return False
-    traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
+    traditional = get_zho_text_converted(
+        text,
+        OpenCCConfig.s2t,
+        apply_exclusions=False,
+    )
     return text == traditional
