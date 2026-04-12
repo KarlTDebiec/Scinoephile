@@ -18,7 +18,6 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
 logger = getLogger(__name__)
@@ -123,9 +122,6 @@ class DictionaryBuildCli(CommandLineInterface):
         max_retries = kwargs.pop("max_retries")
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
-        if dictionary_name != "cuhk":
-            raise ScinoephileError(f"Unsupported dictionary: {dictionary_name}")
-
         service = CuhkDictionaryService(
             database_path=database_path,
             scraper_kwargs={
@@ -148,7 +144,7 @@ class DictionaryBuildCli(CommandLineInterface):
             max_words=max_words,
         )
         logger.info(
-            "%s dictionary build complete: %s", dictionary_name.upper(), database_path
+            f"{dictionary_name.upper()} dictionary build complete: {database_path}"
         )
 
     @classmethod

@@ -8,11 +8,11 @@ import re
 import unicodedata
 from enum import StrEnum
 
-from scinoephile.core.dictionaries import LookupDirection
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.multilang.dictionaries import LookupDirection
 
 __all__ = [
     "DictionaryQueryLanguage",

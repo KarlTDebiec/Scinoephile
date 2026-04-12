@@ -8,7 +8,7 @@ import pycantonese
 import pytest
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.multilang.cmn_yue.dictionaries.query_detection import (
+from scinoephile.multilang.dictionaries.query_detection import (
     DictionaryQueryLanguage,
     detect_dictionary_query_language,
     get_dictionary_lookup_direction,

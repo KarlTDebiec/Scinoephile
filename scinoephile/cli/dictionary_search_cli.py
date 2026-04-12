@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for searching dictionary caches."""
+"""Command-line interface for searching dictionaries."""
 
 from __future__ import annotations
 
@@ -14,9 +14,9 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
-from scinoephile.core.dictionaries import DictionaryEntry, LookupDirection
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
-from scinoephile.multilang.cmn_yue.dictionaries.query_detection import (
+from scinoephile.multilang.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.multilang.dictionaries.query_detection import (
     detect_dictionary_query_language,
     get_dictionary_lookup_direction,
 )
@@ -25,7 +25,7 @@ logger = getLogger(__name__)
 
 
 class DictionarySearchCli(CommandLineInterface):
-    """Command-line interface for searching dictionary caches."""
+    """Command-line interface for searching dictionariesW."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
