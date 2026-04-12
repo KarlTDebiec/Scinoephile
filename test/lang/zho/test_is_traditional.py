@@ -1,12 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.lang.zho.conversion.is_traditional."""
+"""Tests of scinoephile.lang.zho.is_traditional."""
 
 from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho.conversion import is_traditional
+from scinoephile.lang.zho import is_traditional
 from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
 
