@@ -4,17 +4,26 @@
 
 from __future__ import annotations
 
+import pytest
+
 from scinoephile.lang.cmn.romanization import is_accented_pinyin
 
 
-def test_is_accented_pinyin_true():
-    """Detect accented pinyin tokens."""
-    assert is_accented_pinyin("nǐ hǎo") is True
-    assert is_accented_pinyin("lüè") is True
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("nǐ hǎo", True),
+        ("lüè", True),
+        ("ni3 hao3", False),
+        ("ni hao", False),
+        ("", False),
+    ],
+)
+def test_is_accented_pinyin(text: str, expected: bool):
+    """Detect accented pinyin tokens.
 
-
-def test_is_accented_pinyin_false():
-    """Reject numbered or plain Latin tokens."""
-    assert is_accented_pinyin("ni3 hao3") is False
-    assert is_accented_pinyin("ni hao") is False
-    assert is_accented_pinyin("") is False
+    Arguments:
+        text: pinyin text to classify
+        expected: expected accented classification
+    """
+    assert is_accented_pinyin(text) is expected

@@ -129,9 +129,15 @@ def _detect_hanzi_variant(query: str) -> DictionaryQueryLanguage:
     """
     simplified = get_zho_text_converted(query, OpenCCConfig.t2s)
     traditional = get_zho_text_converted(query, OpenCCConfig.s2t)
-    if is_simplified(query):
+    simplified_match = is_simplified(query)
+    traditional_match = is_traditional(query)
+    if simplified_match and traditional_match:
+        raise ScinoephileError(
+            "Dictionary query Hanzi is ambiguous between simplified and traditional."
+        )
+    if simplified_match:
         return DictionaryQueryLanguage.simplified
-    if is_traditional(query):
+    if traditional_match:
         return DictionaryQueryLanguage.traditional
     if query == simplified and query == traditional:
         raise ScinoephileError(

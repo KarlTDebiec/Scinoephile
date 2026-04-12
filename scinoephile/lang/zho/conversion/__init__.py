@@ -122,8 +122,7 @@ def is_simplified(text: str) -> bool:
         whether text is simplified Chinese
     """
     simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
-    traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
-    return text == simplified and text != traditional
+    return text == simplified
 
 
 def is_traditional(text: str) -> bool:
@@ -134,6 +133,5 @@ def is_traditional(text: str) -> bool:
     Returns:
         whether text is traditional Chinese
     """
-    simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
     traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
-    return text == traditional and text != simplified
+    return text == traditional
