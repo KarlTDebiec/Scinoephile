@@ -130,8 +130,12 @@ def is_accented_pinyin(text: str) -> bool:
     Returns:
         whether text appears to be accented pinyin
     """
-    nfc_text = unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ")
-    nfc_text = nfc_text.strip()
+    # NFC (Normalization Form C) composes characters so tone vowels like ǎ are
+    # represented as a single code point instead of a base letter + combining mark.
+    nfc_text = unicodedata.normalize("NFC", text)
+    # Apostrophes are treated as syllable separators in pinyin, so normalize them
+    # to spaces for tokenization.
+    nfc_text = nfc_text.replace("’", "'").replace("'", " ").strip()
     if not nfc_text:
         return False
     tokens = nfc_text.split()
@@ -140,6 +144,8 @@ def is_accented_pinyin(text: str) -> bool:
     if not all(RE_CMN_PINYIN_ACCENTED.fullmatch(token) for token in tokens):
         return False
     # Use NFD so precomposed characters (e.g., ǎ) expose combining tone marks.
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letter + combining tone mark so we can detect tone marks reliably.
     nfd_text = unicodedata.normalize("NFD", nfc_text)
     return bool(RE_CMN_PINYIN_TONE_MARKS.search(nfd_text))
 
@@ -152,11 +158,17 @@ def is_numbered_pinyin(text: str) -> bool:
     Returns:
         whether text appears to be numbered pinyin
     """
-    nfc_text = unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ")
-    nfc_text = nfc_text.strip()
+    # NFC (Normalization Form C) composes characters so tone vowels like ǎ are
+    # represented as a single code point instead of a base letter + combining mark.
+    nfc_text = unicodedata.normalize("NFC", text)
+    # Apostrophes are treated as syllable separators in pinyin, so normalize them
+    # to spaces for tokenization.
+    nfc_text = nfc_text.replace("’", "'").replace("'", " ").strip()
     if not nfc_text:
         return False
     tokens = nfc_text.split()
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letter + combining tone mark so we can detect tone marks reliably.
     nfd_text = unicodedata.normalize("NFD", nfc_text)
     if RE_CMN_PINYIN_TONE_MARKS.search(nfd_text):
         return False
