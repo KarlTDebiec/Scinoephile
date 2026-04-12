@@ -40,34 +40,6 @@ RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
 RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
 
 
-def _get_cmn_text_romanized(text: str) -> str:
-    """Get the Mandarin pinyin romanization of Hanzi text.
-
-    Arguments:
-        text: Hanzi text
-    Returns:
-        Mandarin pinyin romanization
-    """
-    text_romanization = ""
-    for line in text.split("\n"):
-        line_romanization = ""
-        for section in line.split():
-            section_romanization = ""
-            for word in jieba.cut(section):
-                if word in full_to_half_punc:
-                    if word in {"＜", "＞"}:
-                        section_romanization += word
-                    else:
-                        section_romanization += full_to_half_punc[word]
-                else:
-                    section_romanization += " " + "".join([a[0] for a in pinyin(word)])
-            line_romanization += "  " + section_romanization.strip()
-        text_romanization += "\n" + line_romanization.strip()
-    text_romanization = text_romanization.strip()
-
-    return text_romanization
-
-
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:
     """Get normalized pinyin query strings for text.
 
@@ -182,3 +154,31 @@ def is_numbered_pinyin(text: str) -> bool:
     if any(RE_CMN_PROHIBITED_TOKEN.search(token) for token in tokens):
         return False
     return all(RE_CMN_PINYIN_NUMBERED.fullmatch(token) for token in tokens)
+
+
+def _get_cmn_text_romanized(text: str) -> str:
+    """Get the Mandarin pinyin romanization of Hanzi text.
+
+    Arguments:
+        text: Hanzi text
+    Returns:
+        Mandarin pinyin romanization
+    """
+    text_romanization = ""
+    for line in text.split("\n"):
+        line_romanization = ""
+        for section in line.split():
+            section_romanization = ""
+            for word in jieba.cut(section):
+                if word in full_to_half_punc:
+                    if word in {"＜", "＞"}:
+                        section_romanization += word
+                    else:
+                        section_romanization += full_to_half_punc[word]
+                else:
+                    section_romanization += " " + "".join([a[0] for a in pinyin(word)])
+            line_romanization += "  " + section_romanization.strip()
+        text_romanization += "\n" + line_romanization.strip()
+    text_romanization = text_romanization.strip()
+
+    return text_romanization
