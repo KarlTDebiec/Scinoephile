@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the CUHK dictionary cache."""
+"""Command-line interface for building dictionary caches."""
 
 from __future__ import annotations
 
@@ -22,8 +22,12 @@ from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryServic
 logger = getLogger(__name__)
 
 
-class CmnYueDictionaryBuildCli(CommandLineInterface):
-    """Command-line interface for building the CUHK dictionary cache."""
+class DictionaryBuildCli(CommandLineInterface):
+    """Command-line interface for building dictionary caches."""
+
+    _supported_dictionaries: dict[str, type[CuhkDictionaryService]] = {
+        "cuhk": CuhkDictionaryService,
+    }
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -51,6 +55,11 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         )
 
         # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "dictionary_name",
+            choices=sorted(cls._supported_dictionaries),
+            help="dictionary to build",
+        )
         arg_groups["operation arguments"].add_argument(
             "--max-words",
             metavar="N",
@@ -103,6 +112,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        dictionary_name = kwargs.pop("dictionary_name")
         cache_dir_path = kwargs.pop("cache_dir")
         database_path = kwargs.pop("database_path")
         max_words = kwargs.pop("max_words", None)
@@ -112,7 +122,8 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         max_retries = kwargs.pop("max_retries")
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
-        service = CuhkDictionaryService(
+        service_cls = cls._supported_dictionaries[dictionary_name]
+        service = service_cls(
             database_path=database_path,
             scraper_kwargs={
                 "cache_dir_path": cache_dir_path,
@@ -123,6 +134,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
             },
         )
         cls._log_config(
+            dictionary_name,
             service.cache_dir_path,
             service.database_path,
             max_words,
@@ -146,6 +158,7 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
     @classmethod
     def _log_config(
         cls,
+        dictionary_name: str,
         cache_dir_path: Path,
         database_path: Path,
         max_words: int | None,
@@ -154,11 +167,13 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
         """Log the effective build configuration.
 
         Arguments:
+            dictionary_name: dictionary name
             cache_dir_path: cache directory path
             database_path: SQLite database path
             max_words: optional max words cap
             overwrite: whether database overwrite is enabled
         """
+        logger.info(f"Building dictionary: {dictionary_name}")
         logger.info(f"Using cache directory: {cache_dir_path}")
         logger.info(f"Using SQLite database: {database_path}")
         if max_words is None:
@@ -170,4 +185,4 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    CmnYueDictionaryBuildCli.main()
+    DictionaryBuildCli.main()

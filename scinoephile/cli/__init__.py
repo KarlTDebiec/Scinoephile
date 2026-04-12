@@ -7,10 +7,9 @@ This module may import from: common, core, lang
 
 from __future__ import annotations
 
-from scinoephile.cli.cmn_yue_cli import CmnYueCli
-from scinoephile.cli.cmn_yue_dictionary_build_cli import CmnYueDictionaryBuildCli
-from scinoephile.cli.cmn_yue_dictionary_cli import CmnYueDictionaryCli
-from scinoephile.cli.cmn_yue_dictionary_search_cli import CmnYueDictionarySearchCli
+from scinoephile.cli.dictionary_build_cli import DictionaryBuildCli
+from scinoephile.cli.dictionary_cli import DictionaryCli
+from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.eng_zho_cli import EngZhoCli
 from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
@@ -18,10 +17,9 @@ from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.zho_cli import ZhoCli
 
 __all__ = [
-    "CmnYueCli",
-    "CmnYueDictionaryBuildCli",
-    "CmnYueDictionaryCli",
-    "CmnYueDictionarySearchCli",
+    "DictionaryCli",
+    "DictionaryBuildCli",
+    "DictionarySearchCli",
     "EngCli",
     "EngZhoCli",
     "EngZhoSyncCli",
