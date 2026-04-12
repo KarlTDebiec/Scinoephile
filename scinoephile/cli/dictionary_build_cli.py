@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for building the CUHK dictionary cache."""
+"""Command-line interface for building dictionary caches."""
 
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryServic
 logger = getLogger(__name__)
 
 
-class CmnYueDictionaryBuildCli(CommandLineInterface):
-    """Command-line interface for building the CUHK dictionary cache."""
+class DictionaryBuildCli(CommandLineInterface):
+    """Command-line interface for building dictionary caches."""
 
     _supported_dictionaries = ("cuhk",)
     """Supported dictionary identifiers."""
@@ -190,4 +190,4 @@ class CmnYueDictionaryBuildCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    CmnYueDictionaryBuildCli.main()
+    DictionaryBuildCli.main()

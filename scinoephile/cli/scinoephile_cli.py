@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.cmn_yue_dictionary_cli import CmnYueDictionaryCli
+from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.eng_zho_cli import EngZhoCli
 from scinoephile.cli.zho_cli import ZhoCli
@@ -52,7 +52,7 @@ class ScinoephileCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
-            CmnYueDictionaryCli.name(): CmnYueDictionaryCli,
+            DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
             ZhoCli.name(): ZhoCli,
             EngZhoCli.name(): EngZhoCli,

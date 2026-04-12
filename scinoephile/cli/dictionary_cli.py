@@ -1,19 +1,19 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 中文/粤文 dictionary operations."""
+"""Command-line interface for dictionary operations."""
 
 from __future__ import annotations
 
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.cmn_yue_dictionary_build_cli import CmnYueDictionaryBuildCli
-from scinoephile.cli.cmn_yue_dictionary_search_cli import CmnYueDictionarySearchCli
+from scinoephile.cli.dictionary_build_cli import DictionaryBuildCli
+from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
-class CmnYueDictionaryCli(CommandLineInterface):
-    """Command-line interface for 中文/粤文 dictionary operations."""
+class DictionaryCli(CommandLineInterface):
+    """Command-line interface for dictionary operations."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -25,7 +25,7 @@ class CmnYueDictionaryCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="cmn_yue_dictionary_subcommand",
+            dest="dictionary_subcommand",
             help="subcommand",
             required=True,
         )
@@ -40,7 +40,7 @@ class CmnYueDictionaryCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        subcommand_name = kwargs.pop("cmn_yue_dictionary_subcommand")
+        subcommand_name = kwargs.pop("dictionary_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 
@@ -61,10 +61,10 @@ class CmnYueDictionaryCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
-            CmnYueDictionaryBuildCli.name(): CmnYueDictionaryBuildCli,
-            CmnYueDictionarySearchCli.name(): CmnYueDictionarySearchCli,
+            DictionaryBuildCli.name(): DictionaryBuildCli,
+            DictionarySearchCli.name(): DictionarySearchCli,
         }
 
 
 if __name__ == "__main__":
-    CmnYueDictionaryCli.main()
+    DictionaryCli.main()

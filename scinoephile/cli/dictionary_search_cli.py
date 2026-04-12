@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for searching the CUHK dictionary cache."""
+"""Command-line interface for searching dictionary caches."""
 
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ from scinoephile.multilang.cmn_yue.dictionaries.query_detection import (
 logger = getLogger(__name__)
 
 
-class CmnYueDictionarySearchCli(CommandLineInterface):
-    """Command-line interface for searching the CUHK dictionary cache."""
+class DictionarySearchCli(CommandLineInterface):
+    """Command-line interface for searching dictionary caches."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -130,4 +130,4 @@ class CmnYueDictionarySearchCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    CmnYueDictionarySearchCli.main()
+    DictionarySearchCli.main()
