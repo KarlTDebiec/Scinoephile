@@ -25,29 +25,64 @@ if TYPE_CHECKING:
 __all__ = [
     "get_cmn_pinyin_query_strings",
     "get_cmn_romanized",
+    "is_accented_pinyin",
+    "is_numbered_pinyin",
 ]
 
-RE_CMN_PINYIN = re.compile(
-    r"^[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
-    r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+[1-5]?$"
+RE_CMN_PINYIN_BASE = (
+    r"[A-Za-züÜvV:āáǎàēéěèīíǐìōóǒòūúǔù"
+    r"ĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙêÊḿḾńŃňŇǹǸ]+"
 )
+RE_CMN_PINYIN_TONE_MARKS = re.compile(r"[\u0300\u0301\u0302\u0304\u0308\u030C]")
+RE_CMN_PINYIN = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]?$")
+RE_CMN_PINYIN_ACCENTED = re.compile(rf"^{RE_CMN_PINYIN_BASE}$")
+RE_CMN_PINYIN_NUMBERED = re.compile(rf"^{RE_CMN_PINYIN_BASE}[1-5]$")
+RE_CMN_PROHIBITED_TOKEN = re.compile(r"^(gw|kw|ng)|h$", re.IGNORECASE)
+
+
+def _get_cmn_text_romanized(text: str) -> str:
+    """Get the Mandarin pinyin romanization of Hanzi text.
+
+    Arguments:
+        text: Hanzi text
+    Returns:
+        Mandarin pinyin romanization
+    """
+    text_romanization = ""
+    for line in text.split("\n"):
+        line_romanization = ""
+        for section in line.split():
+            section_romanization = ""
+            for word in jieba.cut(section):
+                if word in full_to_half_punc:
+                    if word in {"＜", "＞"}:
+                        section_romanization += word
+                    else:
+                        section_romanization += full_to_half_punc[word]
+                else:
+                    section_romanization += " " + "".join([a[0] for a in pinyin(word)])
+            line_romanization += "  " + section_romanization.strip()
+        text_romanization += "\n" + line_romanization.strip()
+    text_romanization = text_romanization.strip()
+
+    return text_romanization
 
 
 def get_cmn_pinyin_query_strings(text: str) -> list[str]:
     """Get normalized pinyin query strings for text.
 
     Arguments:
-        text: raw query text
+        text: Hanyu Pinyin query text with tone marks and optional apostrophes; tone
+          numbers like ni3 hao3 are not accepted
     Returns:
-        normalized pinyin query strings
+        normalized pinyin query strings using tone numbers
     """
-    text = (
-        unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ").strip()
-    )
-    if not text:
+    nfc_text = unicodedata.normalize("NFC", text).replace("’", "'").replace("'", " ")
+    nfc_text = nfc_text.strip()
+    if not nfc_text:
         return []
 
-    tokens = text.split()
+    tokens = nfc_text.split()
     if not all(RE_CMN_PINYIN.fullmatch(token) for token in tokens):
         return []
 
@@ -88,29 +123,62 @@ def get_cmn_romanized(series: Series, append: bool = True) -> Series:
     return series
 
 
-def _get_cmn_text_romanized(text: str) -> str:
-    """Get the Mandarin pinyin romanization of Hanzi text.
+def is_accented_pinyin(text: str) -> bool:
+    """Check whether text is accented Hanyu Pinyin.
 
     Arguments:
-        text: Hanzi text
+        text: query text
     Returns:
-        Mandarin pinyin romanization
+        whether text appears to be accented pinyin
     """
-    text_romanization = ""
-    for line in text.split("\n"):
-        line_romanization = ""
-        for section in line.split():
-            section_romanization = ""
-            for word in jieba.cut(section):
-                if word in full_to_half_punc:
-                    if word in {"＜", "＞"}:
-                        section_romanization += word
-                    else:
-                        section_romanization += full_to_half_punc[word]
-                else:
-                    section_romanization += " " + "".join([a[0] for a in pinyin(word)])
-            line_romanization += "  " + section_romanization.strip()
-        text_romanization += "\n" + line_romanization.strip()
-    text_romanization = text_romanization.strip()
+    # NFC (Normalization Form C) composes characters so tone vowels like ǎ are
+    # represented as a single code point instead of a base letter + combining mark.
+    nfc_text = unicodedata.normalize("NFC", text)
+    # Apostrophes are treated as syllable separators in pinyin, so normalize them
+    # to spaces for tokenization.
+    nfc_text = nfc_text.replace("’", "'").replace("'", " ").strip()
+    if not nfc_text:
+        return False
+    tokens = nfc_text.split()
+    if any(any(char.isdigit() for char in token) for token in tokens):
+        return False
+    if any(RE_CMN_PROHIBITED_TOKEN.search(token) for token in tokens):
+        return False
+    if not all(RE_CMN_PINYIN_ACCENTED.fullmatch(token) for token in tokens):
+        return False
+    # Use NFD so precomposed characters (e.g., ǎ) expose combining tone marks.
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letter + combining tone mark so we can detect tone marks reliably.
+    nfd_text = unicodedata.normalize("NFD", nfc_text)
+    return bool(RE_CMN_PINYIN_TONE_MARKS.search(nfd_text))
 
-    return text_romanization
+
+def is_numbered_pinyin(text: str) -> bool:
+    """Check whether text is numbered Hanyu Pinyin.
+
+    Arguments:
+        text: query text
+    Returns:
+        whether text appears to be numbered pinyin
+    """
+    # NFC (Normalization Form C) composes characters so tone vowels like ǎ are
+    # represented as a single code point instead of a base letter + combining mark.
+    nfc_text = unicodedata.normalize("NFC", text)
+    # Apostrophes are treated as syllable separators in pinyin, so normalize them
+    # to spaces for tokenization.
+    nfc_text = nfc_text.replace("’", "'").replace("'", " ").strip()
+    if not nfc_text:
+        return False
+    tokens = nfc_text.split()
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letter + combining tone mark so we can detect tone marks reliably.
+    nfd_text = unicodedata.normalize("NFD", nfc_text)
+    if RE_CMN_PINYIN_TONE_MARKS.search(nfd_text):
+        return False
+    if any(token.endswith("5") for token in tokens) and any(
+        token[-1] in {"1", "2", "3", "4"} for token in tokens if token[-1].isdigit()
+    ):
+        return False
+    if any(RE_CMN_PROHIBITED_TOKEN.search(token) for token in tokens):
+        return False
+    return all(RE_CMN_PINYIN_NUMBERED.fullmatch(token) for token in tokens)

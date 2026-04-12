@@ -21,7 +21,6 @@ __all__ = [
     "half_to_full_punc",
     "full_to_half_punc",
     "RE_HANZI",
-    "RE_HANZI_RARE",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
     "get_char_type",
@@ -154,11 +153,32 @@ half_to_full_punc = {
 full_to_half_punc = {v: k for k, v in half_to_full_punc.items()}
 """Mapping from full-width to half-width punctuation characters."""
 
-RE_HANZI = re.compile(r"[\u4e00-\u9fff]")
-"""Regular expression for Hanzi characters."""
+RE_HANZI = re.compile(
+    r"[\u4e00-\u9fff"
+    r"\u3400-\u4DBF"
+    r"\U00020000-\U0002A6DF"
+    r"\U0002A700-\U0002B73F"
+    r"\U0002B740-\U0002B81F"
+    r"\U0002B820-\U0002CEAF"
+    r"\U0002CEB0-\U0002EBEF"
+    r"\U0002EBF0-\U0002EE5D"
+    r"\U00030000-\U0003134A"
+    r"\U00031350-\U000323AF]"
+)
+"""Regular expression for Hanzi characters.
 
-RE_HANZI_RARE = re.compile(r"[\u3400-\u4DBF]")
-"""Regular expression for rare Hanzi characters."""
+Includes the following Unicode blocks:
+  - CJK Unified Ideographs (U+4E00–U+9FFF)
+  - CJK Unified Ideographs Extension A (U+3400–U+4DBF)
+  - CJK Unified Ideographs Extension B (U+20000–U+2A6DF)
+  - CJK Unified Ideographs Extension C (U+2A700–U+2B73F)
+  - CJK Unified Ideographs Extension D (U+2B740–U+2B81F)
+  - CJK Unified Ideographs Extension E (U+2B820–U+2CEAF)
+  - CJK Unified Ideographs Extension F (U+2CEB0–U+2EBEF)
+  - CJK Unified Ideographs Extension I (U+2EBF0–U+2EE5D)
+  - CJK Unified Ideographs Extension G (U+30000–U+3134A)
+  - CJK Unified Ideographs Extension H (U+31350–U+323AF)
+"""
 
 RE_PRIVATE_USE_AREA_BMP = re.compile(r"[\ue000-\uf8ff]")
 """Regular expression for BMP private-use area code points."""
@@ -195,6 +215,9 @@ def get_char_type(char: str) -> str:
             "\U0002b740" <= char <= "\U0002b81f",  # CJK Unified Ideographs Ext D
             "\U0002b820" <= char <= "\U0002ceaf",  # CJK Unified Ideographs Ext E
             "\U0002ceb0" <= char <= "\U0002ebef",  # CJK Unified Ideographs Ext F
+            "\U0002ebf0" <= char <= "\U0002ee5d",  # CJK Unified Ideographs Ext I
+            "\U00030000" <= char <= "\U0003134a",  # CJK Unified Ideographs Ext G
+            "\U00031350" <= char <= "\U000323af",  # CJK Unified Ideographs Ext H
             "\u3000" <= char <= "\u303f",  # CJK Symbols and Punctuation
         ]
     ):

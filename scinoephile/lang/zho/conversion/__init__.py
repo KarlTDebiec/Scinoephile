@@ -10,6 +10,8 @@ from typing import TYPE_CHECKING
 
 from opencc import OpenCC
 
+from scinoephile.core.text import RE_HANZI
+
 from .opencc_config import OpenCCConfig
 
 if TYPE_CHECKING:
@@ -20,6 +22,8 @@ __all__ = [
     "get_zho_converted",
     "get_zho_converter",
     "get_zho_text_converted",
+    "is_simplified",
+    "is_traditional",
 ]
 
 conversion_exclusions = {
@@ -109,3 +113,31 @@ def get_zho_text_converted(
                     converted_text = converted_text.replace(trad_char, simp_char)
 
     return converted_text
+
+
+def is_simplified(text: str) -> bool:
+    """Check whether text is simplified Chinese.
+
+    Arguments:
+        text: text to classify
+    Returns:
+        whether text is simplified Chinese
+    """
+    if RE_HANZI.search(text) is None:
+        return False
+    simplified = get_zho_text_converted(text, OpenCCConfig.t2s)
+    return text == simplified
+
+
+def is_traditional(text: str) -> bool:
+    """Check whether text is traditional Chinese.
+
+    Arguments:
+        text: text to classify
+    Returns:
+        whether text is traditional Chinese
+    """
+    if RE_HANZI.search(text) is None:
+        return False
+    traditional = get_zho_text_converted(text, OpenCCConfig.s2t)
+    return text == traditional

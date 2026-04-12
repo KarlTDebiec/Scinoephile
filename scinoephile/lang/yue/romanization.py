@@ -28,6 +28,9 @@ from scinoephile.lang.zho.conversion import get_zho_converter
 __all__ = [
     "get_yue_jyutping_query_strings",
     "get_yue_romanized",
+    "is_accented_yale",
+    "is_numbered_jyutping",
+    "yale_to_jyutping",
 ]
 
 logger = getLogger(__name__)
@@ -36,6 +39,7 @@ data_root = package_root / "data/yue/"
 MAX_YUE_JYUTPING_VARIANTS = 16
 RE_YALE_SEPARATOR = re.compile(r"[\s'’]+")
 RE_YALE_TONE_MARK = re.compile(r"[\u0300\u0301\u0304]")
+RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ'’:]")
 YUE_JYUTPING_ONSETS = (
     "b",
     "d",
@@ -181,9 +185,9 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
                 )
             ]
 
-    if not _is_yale_query(text):
+    if not is_accented_yale(text):
         return []
-    return _get_yale_query_strings(text)
+    return yale_to_jyutping(text)
 
 
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
@@ -289,7 +293,7 @@ def _get_yale_jyutping_syllables() -> tuple[
     return sorted_yale_syllables, sorted_mapping
 
 
-def _get_yale_query_strings(text: str) -> list[str]:
+def yale_to_jyutping(text: str) -> list[str]:
     """Get candidate Jyutping query strings from Yale text.
 
     Arguments:
@@ -319,7 +323,7 @@ def _get_yale_query_strings(text: str) -> list[str]:
     return [" ".join(variant) for variant in variants]
 
 
-def _is_yale_query(text: str) -> bool:
+def is_accented_yale(text: str) -> bool:
     """Check whether text appears to be Yale romanization.
 
     Arguments:
@@ -327,9 +331,41 @@ def _is_yale_query(text: str) -> bool:
     Returns:
         whether text appears to be Yale romanization
     """
-    if "'" in text:
-        return True
-    return RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", text)) is not None
+    # NFC (Normalization Form C) composes characters so tone vowels are represented
+    # as single code points instead of base letters + combining marks.
+    normalized = unicodedata.normalize("NFC", text).strip()
+    if not normalized:
+        return False
+    if RE_YALE_PROHIBITED_CHARACTERS.search(normalized) is not None:
+        return False
+    # NFD (Normalization Form D) decomposes precomposed tone vowels into base
+    # letters + combining tone marks so we can detect tone marks reliably.
+    return (
+        RE_YALE_TONE_MARK.search(unicodedata.normalize("NFD", normalized)) is not None
+    )
+
+
+def is_numbered_jyutping(text: str) -> bool:
+    """Check whether text appears to be numbered Jyutping.
+
+    Arguments:
+        text: query text
+    Returns:
+        whether text appears to be numbered Jyutping
+    """
+    # NFC (Normalization Form C) composes characters so tone vowels are represented
+    # as single code points instead of base letters + combining marks.
+    normalized = unicodedata.normalize("NFC", text)
+    normalized = normalized.replace("’", "'").strip().lower()
+    if not normalized:
+        return False
+    condensed = normalized.replace(" ", "").replace("'", "")
+    # Delegate to pycantonese
+    try:
+        parsed = pycantonese.parse_jyutping(condensed)
+    except ValueError:
+        return False
+    return bool(parsed)
 
 
 def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PLR0915
