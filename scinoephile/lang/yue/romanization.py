@@ -11,7 +11,7 @@ from collections import Counter
 from copy import deepcopy
 from functools import cache, lru_cache
 from logging import getLogger
-from typing import cast
+from typing import Any, cast
 from warnings import catch_warnings, filterwarnings, simplefilter
 
 with catch_warnings():
@@ -89,6 +89,19 @@ YUE_JYUTPING_CODAS = (
 YUE_JYUTPING_TONES = ("1", "2", "3", "4", "5", "6")
 
 
+corpus_file_path = data_root / "corpus.pkl"
+hanzi_to_yale_file_path = data_root / "hanzi_to_yale.pkl"
+unmatched_hanzi_file_path = data_root / "unmatched_hanzi.pkl"
+hanzi_to_jyutping_path = data_root / "hanzi_to_jyutping.cha"
+re_jyutping = re.compile(r"[a-z]+\\d")
+
+corpus: Any = None
+hanzi_to_romanization: dict[str, str | None] = {}
+unmatched: set[str] = set()
+hanzi_to_jyutping: dict[str, str] = {}
+_initialized = False
+
+
 def _build_corpus():
     """Build the Cantonese corpus and persist it to disk."""
     with catch_warnings():
@@ -107,56 +120,59 @@ def _build_corpus():
     return built_corpus
 
 
-# Load corpus
-corpus_file_path = data_root / "corpus.pkl"
-if corpus_file_path.exists():
-    try:
-        with open(corpus_file_path, "rb") as infile:
-            corpus = pickle.load(infile)
-    except (
-        AttributeError,
-        EOFError,
-        ImportError,
-        ModuleNotFoundError,
-        pickle.PickleError,
-    ):
-        corpus_file_path.unlink(missing_ok=True)
+def _initialize():
+    """Load romanization data lazily on first use."""
+    global corpus, hanzi_to_romanization, unmatched, hanzi_to_jyutping, _initialized  # noqa: PLW0603
+
+    if _initialized:
+        return
+
+    # Load corpus
+    if corpus_file_path.exists():
+        try:
+            with open(corpus_file_path, "rb") as infile:
+                corpus = pickle.load(infile)
+        except (
+            AttributeError,
+            EOFError,
+            ImportError,
+            ModuleNotFoundError,
+            pickle.PickleError,
+        ):
+            corpus_file_path.unlink(missing_ok=True)
+            corpus = _build_corpus()
+    else:
         corpus = _build_corpus()
-else:
-    corpus = _build_corpus()
 
-# Load Hanzi to Yale mapping
-hanzi_to_romanization = {}
-hanzi_to_yale_file_path = data_root / "hanzi_to_yale.pkl"
-if hanzi_to_yale_file_path.exists():
-    with open(hanzi_to_yale_file_path, "rb") as infile:
-        hanzi_to_romanization = pickle.load(infile)
+    # Load Hanzi to Yale mapping
+    hanzi_to_romanization = {}
+    if hanzi_to_yale_file_path.exists():
+        with open(hanzi_to_yale_file_path, "rb") as infile:
+            hanzi_to_romanization = pickle.load(infile)
 
-# Load unmatched Hanzi set
-unmatched = set()
-unmatched_hanzi_file_path = data_root / "unmatched_hanzi.pkl"
-if unmatched_hanzi_file_path.exists():
-    with open(unmatched_hanzi_file_path, "rb") as infile:
-        unmatched = pickle.load(infile)
+    # Load unmatched Hanzi set
+    unmatched = set()
+    if unmatched_hanzi_file_path.exists():
+        with open(unmatched_hanzi_file_path, "rb") as infile:
+            unmatched = pickle.load(infile)
 
-# Load Hanzi to Jyutping mapping
-hanzi_to_jyutping = {}
-hanzi_to_jyutping_path = data_root / "hanzi_to_jyutping.cha"
-if hanzi_to_jyutping_path.exists():
-    current_hanzi: str | None = None
-    with open(hanzi_to_jyutping_path, encoding="utf-8") as infile:
-        for raw_line in infile:
-            line = raw_line.strip()
-            if line.startswith("*XXA:"):
-                current_hanzi = line.replace("*XXA:", "", 1).strip()
-            elif line.startswith("%mor:") and current_hanzi is not None:
-                entry = line.replace("%mor:", "", 1).strip()
-                if "|" in entry:
-                    _, jyutping = entry.split("|", 1)
-                    hanzi_to_jyutping[current_hanzi] = jyutping.strip()
-                current_hanzi = None
+    # Load Hanzi to Jyutping mapping
+    hanzi_to_jyutping = {}
+    if hanzi_to_jyutping_path.exists():
+        current_hanzi: str | None = None
+        with open(hanzi_to_jyutping_path, encoding="utf-8") as infile:
+            for raw_line in infile:
+                line = raw_line.strip()
+                if line.startswith("*XXA:"):
+                    current_hanzi = line.replace("*XXA:", "", 1).strip()
+                elif line.startswith("%mor:") and current_hanzi is not None:
+                    entry = line.replace("%mor:", "", 1).strip()
+                    if "|" in entry:
+                        _, jyutping = entry.split("|", 1)
+                        hanzi_to_jyutping[current_hanzi] = jyutping.strip()
+                    current_hanzi = None
 
-re_jyutping = re.compile(r"[a-z]+\\d")
+    _initialized = True
 
 
 def get_yue_jyutping_query_strings(text: str) -> list[str]:
@@ -376,6 +392,8 @@ def _get_yue_character_romanized(hanzi: str) -> str | None:  # noqa: PLR0912, PL
     Returns:
         Yale Cantonese romanization
     """
+    _initialize()
+
     if len(hanzi) != 1:
         raise ScinoephileError(
             "get_cantonese_character_romanization only accepts single Chinese character"
