@@ -61,7 +61,7 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        like_query = self._build_like_query(query)
+        like_query = f"%{self._get_escaped_query(query)}%"
 
         sql = """
             SELECT
@@ -97,7 +97,7 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        like_query = self._build_like_query(query)
+        like_query = f"%{self._get_escaped_query(query)}%"
 
         sql = """
             SELECT
@@ -276,16 +276,15 @@ class DictionarySqliteStore:
         return output
 
     @staticmethod
-    def _build_like_query(query: str) -> str:
-        """Build escaped LIKE pattern for literal substring search.
+    def _get_escaped_query(query: str) -> str:
+        """Escape a query string for literal LIKE matching.
 
         Arguments:
             query: raw query text
         Returns:
-            escaped pattern wrapped for substring search
+            escaped query string
         """
-        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
-        return f"%{escaped}%"
+        return query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 
     def _create_tables(self, cursor: sqlite3.Cursor):
         """Create dictionary tables.
@@ -669,7 +668,7 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        like_query = self._build_like_query(query)
+        like_query = f"%{self._get_escaped_query(query)}%"
 
         sql = """
             SELECT
@@ -719,7 +718,7 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        like_query = self._build_like_query(query)
+        like_query = f"%{self._get_escaped_query(query)}%"
 
         sql = """
             SELECT
