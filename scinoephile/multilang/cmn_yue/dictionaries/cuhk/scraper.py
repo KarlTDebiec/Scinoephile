@@ -45,6 +45,7 @@ from .constants import (
 
 __all__ = [
     "CuhkDictionaryScraper",
+    "CuhkDictionaryScraperKwargs",
 ]
 
 logger = getLogger(__name__)

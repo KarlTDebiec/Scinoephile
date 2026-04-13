@@ -11,10 +11,7 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageIDResult
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
-from scinoephile.multilang.dictionaries import (
-    DictionaryEntry,
-    DictionarySqliteStore,
-)
+from scinoephile.multilang.dictionaries import DictionaryEntry, DictionarySqliteStore
 
 from .constants import MAX_LOOKUP_LIMIT
 from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
@@ -47,10 +44,8 @@ class CuhkDictionaryService:
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
         self.auto_build_missing = auto_build_missing
-        if scraper_kwargs is None:
-            scraper_kwargs = {}
         self.database = DictionarySqliteStore(database_path=self.database_path)
-        self.scraper = CuhkDictionaryScraper(**scraper_kwargs)
+        self.scraper = CuhkDictionaryScraper(**(scraper_kwargs or {}))
         self.cache_dir_path = self.scraper.cache_dir_path
 
     def build(self, overwrite: bool = False, max_words: int | None = None) -> Path:
