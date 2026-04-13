@@ -16,8 +16,8 @@ from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
+    LookupDirection,
 )
-from scinoephile.multilang.dictionaries.sqlite_store import CMN_TO_YUE_LOOKUP
 
 
 @pytest.fixture
@@ -85,7 +85,7 @@ def test_lookup_preserves_explicit_direction(
     sample_entries: list[DictionaryEntry],
 ):
     """Keep explicit-direction lookup available for LLM tooling."""
-    assert service.lookup("shan1 keng1", CMN_TO_YUE_LOOKUP, limit=5) == [
+    assert service.lookup("shan1 keng1", LookupDirection.CMN_TO_YUE, limit=5) == [
         sample_entries[0],
         sample_entries[1],
     ]

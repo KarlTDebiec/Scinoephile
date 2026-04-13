@@ -7,6 +7,7 @@ from __future__ import annotations
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 from .dictionary_source import DictionarySource
+from .lookup_direction import LookupDirection
 from .sqlite_store import DictionarySqliteStore
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     "DictionaryEntry",
     "DictionarySource",
     "DictionarySqliteStore",
+    "LookupDirection",
 ]

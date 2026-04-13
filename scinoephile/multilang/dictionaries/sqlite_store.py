@@ -13,14 +13,11 @@ from scinoephile.common.validation import val_output_path
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 from .dictionary_source import DictionarySource
+from .lookup_direction import LookupDirection
 
 __all__ = [
     "DictionarySqliteStore",
 ]
-
-CMN_TO_YUE_LOOKUP = "cmn_to_yue"
-YUE_TO_CMN_LOOKUP = "yue_to_cmn"
-SUPPORTED_LOOKUP_DIRECTIONS = frozenset({CMN_TO_YUE_LOOKUP, YUE_TO_CMN_LOOKUP})
 
 logger = getLogger(__name__)
 
@@ -39,7 +36,7 @@ class DictionarySqliteStore:
     def lookup(
         self,
         query: str,
-        direction: str,
+        direction: LookupDirection,
         limit: int,
     ) -> list[DictionaryEntry]:
         """Lookup entries from the persisted dictionary data.
@@ -51,13 +48,9 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        if direction == CMN_TO_YUE_LOOKUP:
+        if direction == LookupDirection.CMN_TO_YUE:
             return self._lookup_cmn_to_yue(query, limit)
-        if direction == YUE_TO_CMN_LOOKUP:
-            return self._lookup_yue_to_cmn(query, limit)
-        raise ValueError(
-            f"direction must be one of {sorted(SUPPORTED_LOOKUP_DIRECTIONS)!r}"
-        )
+        return self._lookup_yue_to_cmn(query, limit)
 
     def persist(
         self,

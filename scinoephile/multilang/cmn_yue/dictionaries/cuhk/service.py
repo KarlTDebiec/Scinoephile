@@ -15,11 +15,7 @@ from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySqliteStore,
-)
-from scinoephile.multilang.dictionaries.sqlite_store import (
-    CMN_TO_YUE_LOOKUP,
-    SUPPORTED_LOOKUP_DIRECTIONS,
-    YUE_TO_CMN_LOOKUP,
+    LookupDirection,
 )
 
 from .constants import MAX_LOOKUP_LIMIT
@@ -77,7 +73,7 @@ class CuhkDictionaryService:
     def lookup(
         self,
         query: str,
-        direction: str = CMN_TO_YUE_LOOKUP,
+        direction: LookupDirection = LookupDirection.CMN_TO_YUE,
         limit: int = 10,
     ) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data.
@@ -92,11 +88,6 @@ class CuhkDictionaryService:
         query = query.strip()
         if not query:
             return []
-        direction = direction.strip()
-        if direction not in SUPPORTED_LOOKUP_DIRECTIONS:
-            raise ValueError(
-                f"direction must be one of {sorted(SUPPORTED_LOOKUP_DIRECTIONS)!r}"
-            )
         limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
         self._ensure_database()
@@ -147,8 +138,8 @@ class CuhkDictionaryService:
 
     @staticmethod
     def _deduplicate_lookup_queries(
-        queries: Iterable[tuple[str, str]],
-    ) -> list[tuple[str, str]]:
+        queries: Iterable[tuple[LookupDirection, str]],
+    ) -> list[tuple[LookupDirection, str]]:
         """Deduplicate ordered lookup query pairs.
 
         Arguments:
@@ -156,17 +147,13 @@ class CuhkDictionaryService:
         Returns:
             deduplicated direction/query pairs
         """
-        ordered_queries: list[tuple[str, str]] = []
-        seen_queries: set[tuple[str, str]] = set()
+        ordered_queries: list[tuple[LookupDirection, str]] = []
+        seen_queries: set[tuple[LookupDirection, str]] = set()
         for direction, query in queries:
-            normalized_direction = direction.strip()
             normalized_query = query.strip()
-            if (
-                normalized_direction not in SUPPORTED_LOOKUP_DIRECTIONS
-                or not normalized_query
-            ):
+            if not normalized_query:
                 continue
-            query_key = (normalized_direction, normalized_query)
+            query_key = (direction, normalized_query)
             if query_key not in seen_queries:
                 seen_queries.add(query_key)
                 ordered_queries.append(query_key)
@@ -185,7 +172,9 @@ class CuhkDictionaryService:
         self.build(overwrite=False)
 
     @classmethod
-    def _get_inferred_lookup_queries(cls, query: str) -> list[tuple[str, str]]:
+    def _get_inferred_lookup_queries(
+        cls, query: str
+    ) -> list[tuple[LookupDirection, str]]:
         """Get ordered lookup direction/query pairs inferred from query format.
 
         Arguments:
@@ -194,32 +183,36 @@ class CuhkDictionaryService:
             ordered lookup direction/query pairs
         """
         query_id = LanguageIDResult(query)
-        lookup_queries: list[tuple[str, str]] = []
+        lookup_queries: list[tuple[LookupDirection, str]] = []
 
         if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
             lookup_queries.extend(
-                (CMN_TO_YUE_LOOKUP, one_query)
-                for one_query in cls._get_lookup_queries(query, CMN_TO_YUE_LOOKUP)
+                (LookupDirection.CMN_TO_YUE, one_query)
+                for one_query in cls._get_lookup_queries(
+                    query, LookupDirection.CMN_TO_YUE
+                )
             )
         if query_id.is_numbered_jyutping or query_id.is_accented_yale:
             lookup_queries.extend(
-                (YUE_TO_CMN_LOOKUP, one_query)
-                for one_query in cls._get_lookup_queries(query, YUE_TO_CMN_LOOKUP)
+                (LookupDirection.YUE_TO_CMN, one_query)
+                for one_query in cls._get_lookup_queries(
+                    query, LookupDirection.YUE_TO_CMN
+                )
             )
         if query_id.is_simplified or query_id.is_traditional:
             lookup_queries.extend(
                 [
-                    (YUE_TO_CMN_LOOKUP, query),
-                    (CMN_TO_YUE_LOOKUP, query),
+                    (LookupDirection.YUE_TO_CMN, query),
+                    (LookupDirection.CMN_TO_YUE, query),
                 ]
             )
         if not lookup_queries:
-            lookup_queries.append((CMN_TO_YUE_LOOKUP, query))
+            lookup_queries.append((LookupDirection.CMN_TO_YUE, query))
 
         return cls._deduplicate_lookup_queries(lookup_queries)
 
     @staticmethod
-    def _get_lookup_queries(query: str, direction: str) -> list[str]:
+    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
         """Get ordered query variants for dictionary lookup.
 
         Arguments:
@@ -228,14 +221,10 @@ class CuhkDictionaryService:
         Returns:
             ordered query variants
         """
-        if direction == CMN_TO_YUE_LOOKUP:
+        if direction == LookupDirection.CMN_TO_YUE:
             query_variants = get_cmn_pinyin_query_strings(query)
-        elif direction == YUE_TO_CMN_LOOKUP:
-            query_variants = get_yue_jyutping_query_strings(query)
         else:
-            raise ValueError(
-                f"direction must be one of {sorted(SUPPORTED_LOOKUP_DIRECTIONS)!r}"
-            )
+            query_variants = get_yue_jyutping_query_strings(query)
 
         ordered_queries: list[str] = []
         seen_queries: set[str] = set()
