@@ -34,7 +34,7 @@ def sample_entries() -> list[DictionaryEntry]:
         DictionaryEntry(
             traditional="山坑",
             simplified="山坑",
-            pinyin="shan keng",
+            pinyin="shan1 keng1",
             jyutping="saan1 haang1",
             frequency=2.0,
             definitions=[
@@ -45,7 +45,7 @@ def sample_entries() -> list[DictionaryEntry]:
         DictionaryEntry(
             traditional="山坑水",
             simplified="山坑水",
-            pinyin="shan keng shui",
+            pinyin="shan1 keng1 shui3",
             jyutping="saan1 haang1 seoi2",
             frequency=1.0,
             definitions=[
@@ -82,7 +82,7 @@ def test_sqlite_store_lookup_round_trip(
     assert store.lookup("山坑", LookupDirection.CMN_TO_YUE, limit=5) == [
         sample_entries[0],
     ]
-    assert store.lookup("shan keng", LookupDirection.CMN_TO_YUE, limit=5) == [
+    assert store.lookup("shan1 keng1", LookupDirection.CMN_TO_YUE, limit=5) == [
         sample_entries[0],
         sample_entries[1],
     ]
@@ -90,6 +90,27 @@ def test_sqlite_store_lookup_round_trip(
         sample_entries[0],
     ]
     assert store.lookup("saan1 haang1", LookupDirection.YUE_TO_CMN, limit=5) == [
+        sample_entries[0],
+        sample_entries[1],
+    ]
+
+
+def test_sqlite_store_field_lookups(
+    database_path: Path,
+    sample_entries: list[DictionaryEntry],
+    sample_source: DictionarySource,
+):
+    """Test direct field-specific SQLite lookup helpers."""
+    store = DictionarySqliteStore(database_path=database_path)
+    store.persist((sample_source, sample_entries))
+
+    assert store.lookup_by_traditional("山坑", limit=5) == [sample_entries[0]]
+    assert store.lookup_by_simplified("山坑", limit=5) == [sample_entries[0]]
+    assert store.lookup_by_pinyin("shan1 keng1", limit=5) == [
+        sample_entries[0],
+        sample_entries[1],
+    ]
+    assert store.lookup_by_jyutping("saan1 haang1", limit=5) == [
         sample_entries[0],
         sample_entries[1],
     ]

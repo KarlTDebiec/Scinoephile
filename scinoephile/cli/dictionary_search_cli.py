@@ -15,7 +15,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
-from scinoephile.multilang.dictionaries import DictionaryEntry, LookupDirection
+from scinoephile.multilang.dictionaries import DictionaryEntry
 
 logger = getLogger(__name__)
 
@@ -54,13 +54,6 @@ class DictionarySearchCli(CommandLineInterface):
             help="Mandarin or Cantonese query text",
         )
         arg_groups["operation arguments"].add_argument(
-            "--direction",
-            type=LookupDirection,
-            choices=list(LookupDirection),
-            default=LookupDirection.CMN_TO_YUE,
-            help="lookup direction",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--limit",
             metavar="N",
             type=int_arg(min_value=1),
@@ -77,15 +70,18 @@ class DictionarySearchCli(CommandLineInterface):
         """
         database_path = kwargs.pop("database_path")
         query = kwargs.pop("query")
-        direction = kwargs.pop("direction")
         limit = kwargs.pop("limit")
 
         service = CuhkDictionaryService(
             database_path=database_path,
             auto_build_missing=False,
         )
-        entries = service.lookup(query=query, direction=direction, limit=limit)
-        cls._log_search_results(query, direction, entries)
+        try:
+            entries = service.lookup_inferred(query=query, limit=limit)
+        except ValueError as exc:
+            logger.error(f"Unsupported query {query!r}: {exc}")
+            raise SystemExit(1) from exc
+        cls._log_search_results(query, entries)
 
     @classmethod
     def name(cls) -> str:
@@ -100,19 +96,15 @@ class DictionarySearchCli(CommandLineInterface):
     def _log_search_results(
         cls,
         query: str,
-        direction: LookupDirection,
         entries: list[DictionaryEntry],
     ):
         """Log formatted search results.
 
         Arguments:
             query: lookup query
-            direction: lookup direction
             entries: lookup results
         """
-        logger.info(
-            f"Found {len(entries)} CUHK match(es) for {query!r} using {direction.value}"
-        )
+        logger.info(f"Found {len(entries)} CUHK match(es) for {query!r}")
         for index, entry in enumerate(entries, start=1):
             logger.info(
                 f"{index}. {entry.traditional} | {entry.simplified} | "

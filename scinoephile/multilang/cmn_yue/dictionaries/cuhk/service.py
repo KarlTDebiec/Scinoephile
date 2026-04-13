@@ -9,6 +9,7 @@ from pathlib import Path
 from scinoephile.common.validation import val_int, val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
+from scinoephile.lang.id import LanguageIDResult
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
@@ -88,19 +89,74 @@ class CuhkDictionaryService:
             return []
         limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
 
-        if not self.database_path.exists():
-            if not self.auto_build_missing:
-                raise FileNotFoundError(
-                    "CUHK dictionary database not found. "
-                    "Set auto_build_missing=True to build automatically, "
-                    "or build explicitly with CuhkDictionaryService.build()."
-                )
-            self.build(overwrite=False)
+        self._ensure_database()
 
         for lookup_query in self._get_lookup_queries(query, direction):
             if entries := self.database.lookup(lookup_query, direction, limit):
                 return entries
         return []
+
+    def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
+        """Query local CUHK dictionary data using inferred query formats.
+
+        Arguments:
+            query: input text to search
+            limit: max results to return
+        Returns:
+            dictionary entries
+        """
+        query = query.strip()
+        if not query:
+            return []
+        limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
+
+        self._ensure_database()
+
+        query_id = LanguageIDResult(query)
+        matched_format = False
+        entries: list[DictionaryEntry] = []
+
+        if query_id.is_simplified:
+            matched_format = True
+            entries.extend(self.database.lookup_by_simplified(query, limit))
+        if query_id.is_traditional:
+            matched_format = True
+            entries.extend(self.database.lookup_by_traditional(query, limit))
+        if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
+            matched_format = True
+            for pinyin_query in get_cmn_pinyin_query_strings(query):
+                entries.extend(self.database.lookup_by_pinyin(pinyin_query, limit))
+        if query_id.is_numbered_jyutping or query_id.is_accented_yale:
+            matched_format = True
+            for jyutping_query in get_yue_jyutping_query_strings(query):
+                entries.extend(self.database.lookup_by_jyutping(jyutping_query, limit))
+
+        if matched_format:
+            entries_by_key = {
+                (
+                    entry.traditional,
+                    entry.simplified,
+                    entry.pinyin,
+                    entry.jyutping,
+                ): entry
+                for entry in entries
+            }
+            return list(entries_by_key.values())
+        raise ValueError(
+            f"Could not infer a supported lookup format for query {query!r}"
+        )
+
+    def _ensure_database(self):
+        """Ensure the SQLite database exists, building it if configured."""
+        if self.database_path.exists():
+            return
+        if not self.auto_build_missing:
+            raise FileNotFoundError(
+                "CUHK dictionary database not found. "
+                "Set auto_build_missing=True to build automatically, "
+                "or build explicitly with CuhkDictionaryService.build()."
+            )
+        self.build(overwrite=False)
 
     @staticmethod
     def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
