@@ -63,7 +63,7 @@ class CuhkDictionaryService:
         scrape_data = self.scraper.scrape(max_words=max_words)
         return self.database.persist(scrape_data)
 
-    def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
+    def lookup(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data using inferred query formats.
 
         Arguments:

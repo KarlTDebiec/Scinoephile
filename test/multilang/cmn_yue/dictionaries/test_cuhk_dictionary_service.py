@@ -113,7 +113,7 @@ def service(
         ),
     ],
 )
-def test_lookup_inferred(
+def test_lookup(
     service: CuhkDictionaryService,
     query: str,
     expected: list[str] | None,
@@ -121,5 +121,5 @@ def test_lookup_inferred(
 ):
     """Infer searchable query formats or reject unsupported queries."""
     with expectation:
-        entries = service.lookup_inferred(query, limit=5)
+        entries = service.lookup(query, limit=5)
         assert [entry.traditional for entry in entries] == expected

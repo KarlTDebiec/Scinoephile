@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""In-process CUHK dictionary tools for 粤文/中文 LLM workflows."""
+"""In-process dictionary tools for 粤文/中文 LLM workflows."""
 
 from __future__ import annotations
 
@@ -12,13 +12,9 @@ from scinoephile.multilang.dictionaries import DictionaryEntry
 from .dictionaries.cuhk import CuhkDictionaryService
 
 __all__ = [
-    "CUHK_LOOKUP_TOOL_NAME",
-    "get_cuhk_dictionary_tooling",
-    "lookup_cuhk_dictionary",
+    "get_dictionary_tooling",
+    "lookup_dictionary",
 ]
-
-CUHK_LOOKUP_TOOL_NAME = "lookup_cuhk_dictionary"
-"""Tool name for CUHK dictionary lookups."""
 
 logger = getLogger(__name__)
 """Module logger."""
@@ -48,12 +44,12 @@ def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
     }
 
 
-def lookup_cuhk_dictionary(
+def lookup_dictionary(
     query: str,
     *,
     auto_build_missing: bool = False,
 ) -> dict[str, object]:
-    """Lookup entries in CUHK dictionary data.
+    """Lookup entries in local dictionary data.
 
     Arguments:
         query: input query string
@@ -72,9 +68,9 @@ def lookup_cuhk_dictionary(
 
     service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
     try:
-        entries = service.lookup_inferred(query=normalized_query)
+        entries = service.lookup(query=normalized_query)
     except (FileNotFoundError, ValueError) as exc:
-        logger.warning("CUHK dictionary lookup failed: %s", exc)
+        logger.warning("Dictionary lookup failed: %s", exc)
         return {
             "query": normalized_query,
             "result_count": 0,
@@ -82,7 +78,7 @@ def lookup_cuhk_dictionary(
             "error": str(exc),
         }
     logger.info(
-        "CUHK dictionary lookup: query=%r result_count=%d",
+        "Dictionary lookup: query=%r result_count=%d",
         normalized_query,
         len(entries),
     )
@@ -93,10 +89,10 @@ def lookup_cuhk_dictionary(
     }
 
 
-def _lookup_cuhk_dictionary_from_args(
+def _lookup_dictionary_from_args(
     arguments: dict[str, object],
 ) -> dict[str, object]:
-    """Execute CUHK dictionary lookup from parsed tool-call arguments.
+    """Execute dictionary lookup from parsed tool-call arguments.
 
     Arguments:
         arguments: decoded tool-call JSON arguments
@@ -115,24 +111,24 @@ def _lookup_cuhk_dictionary_from_args(
         }
 
     query = str(arguments.get("query", "")).strip()
-    return lookup_cuhk_dictionary(
+    return lookup_dictionary(
         query=query,
         auto_build_missing=False,
     )
 
 
-def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
-    """Get CUHK dictionary tool definitions and handlers for LLM providers.
+def get_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+    """Get dictionary tool definitions and handlers for LLM providers.
 
     Returns:
         tool definitions and corresponding tool handlers
     """
     tools: list[LLMToolSpec] = [
         {
-            "name": CUHK_LOOKUP_TOOL_NAME,
+            "name": "lookup_dictionary",
             "description": (
-                "Lookup Cantonese <-> Mandarin entries from the CUHK "
-                "現代標準漢語與粵語對照資料庫 dictionary. "
+                "Lookup Cantonese <-> Mandarin dictionary entries from local "
+                "dictionary data. "
                 "The tool automatically infers whether the query is Hanzi, "
                 "pinyin, or jyutping."
             ),
@@ -153,6 +149,6 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
         }
     ]
     handlers: dict[str, ToolHandler] = {
-        CUHK_LOOKUP_TOOL_NAME: _lookup_cuhk_dictionary_from_args,
+        "lookup_dictionary": _lookup_dictionary_from_args,
     }
     return tools, handlers

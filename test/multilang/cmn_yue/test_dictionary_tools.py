@@ -38,9 +38,9 @@ def sample_entries() -> list[DictionaryEntry]:
     ]
 
 
-def test_lookup_cuhk_dictionary_requires_nonempty_query():
+def test_lookup_dictionary_requires_nonempty_query():
     """Reject empty dictionary tool queries."""
-    assert dictionary_tools.lookup_cuhk_dictionary("   ") == {
+    assert dictionary_tools.lookup_dictionary("   ") == {
         "query": "",
         "result_count": 0,
         "entries": [],
@@ -56,7 +56,7 @@ def test_lookup_cuhk_dictionary_requires_nonempty_query():
         "saan1 haang1",
     ],
 )
-def test_lookup_cuhk_dictionary_uses_inferred_lookup(
+def test_lookup_dictionary_uses_service_lookup(
     monkeypatch: pytest.MonkeyPatch,
     sample_entries: list[DictionaryEntry],
     query: str,
@@ -69,14 +69,14 @@ def test_lookup_cuhk_dictionary_uses_inferred_lookup(
         def __init__(self, *, auto_build_missing: bool = False):
             self.auto_build_missing = auto_build_missing
 
-        def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
+        def lookup(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
             assert query
             assert limit == 10
             return sample_entries
 
     monkeypatch.setattr(dictionary_tools, "CuhkDictionaryService", FakeService)
 
-    result = dictionary_tools.lookup_cuhk_dictionary(query)
+    result = dictionary_tools.lookup_dictionary(query)
 
     assert result == {
         "query": query,
@@ -120,7 +120,7 @@ def test_lookup_cuhk_dictionary_uses_inferred_lookup(
         ),
     ],
 )
-def test_lookup_cuhk_dictionary_returns_structured_errors(
+def test_lookup_dictionary_returns_structured_errors(
     monkeypatch: pytest.MonkeyPatch,
     exception: Exception,
     expected_error: str,
@@ -133,12 +133,12 @@ def test_lookup_cuhk_dictionary_returns_structured_errors(
         def __init__(self, *, auto_build_missing: bool = False):
             self.auto_build_missing = auto_build_missing
 
-        def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
+        def lookup(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
             raise exception
 
     monkeypatch.setattr(dictionary_tools, "CuhkDictionaryService", FakeService)
 
-    assert dictionary_tools.lookup_cuhk_dictionary("gully") == {
+    assert dictionary_tools.lookup_dictionary("gully") == {
         "query": "gully",
         "result_count": 0,
         "entries": [],
@@ -146,9 +146,9 @@ def test_lookup_cuhk_dictionary_returns_structured_errors(
     }
 
 
-def test_lookup_cuhk_dictionary_from_args_rejects_unexpected_arguments():
+def test_lookup_dictionary_from_args_rejects_unexpected_arguments():
     """Reject tool arguments outside the simplified schema."""
-    assert dictionary_tools._lookup_cuhk_dictionary_from_args(
+    assert dictionary_tools._lookup_dictionary_from_args(
         {"query": "山坑", "limit": 2, "direction": "cmn_to_yue"}
     ) == {
         "query": "山坑",
@@ -158,12 +158,12 @@ def test_lookup_cuhk_dictionary_from_args_rejects_unexpected_arguments():
     }
 
 
-def test_get_cuhk_dictionary_tooling_schema_drops_direction():
+def test_get_dictionary_tooling_schema_is_generic():
     """Publish a schema that only accepts inferred-lookups inputs."""
-    tools, handlers = dictionary_tools.get_cuhk_dictionary_tooling()
+    tools, handlers = dictionary_tools.get_dictionary_tooling()
 
-    assert [tool["name"] for tool in tools] == [dictionary_tools.CUHK_LOOKUP_TOOL_NAME]
-    assert sorted(handlers) == [dictionary_tools.CUHK_LOOKUP_TOOL_NAME]
+    assert [tool["name"] for tool in tools] == ["lookup_dictionary"]
+    assert sorted(handlers) == ["lookup_dictionary"]
 
     parameters = tools[0]["parameters"]
     properties = cast(dict[str, object], parameters["properties"])
@@ -172,14 +172,15 @@ def test_get_cuhk_dictionary_tooling_schema_drops_direction():
     assert set(properties) == {"query"}
 
 
-def test_get_cuhk_dictionary_tooling_description_mentions_inference():
+def test_get_dictionary_tooling_description_mentions_inference():
     """Describe the inferred query formats in the exported tool metadata."""
-    tools, _ = dictionary_tools.get_cuhk_dictionary_tooling()
+    tools, _ = dictionary_tools.get_dictionary_tooling()
     parameters = tools[0]["parameters"]
     properties = cast(dict[str, object], parameters["properties"])
     query_schema = cast(dict[str, object], properties["query"])
     query_description = str(query_schema["description"])
 
     assert "automatically infers" in tools[0]["description"]
+    assert "CUHK" not in tools[0]["description"]
     assert "pinyin" in query_description
     assert "jyutping" in query_description
