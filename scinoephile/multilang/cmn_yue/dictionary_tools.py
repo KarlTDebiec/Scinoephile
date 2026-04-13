@@ -70,7 +70,7 @@ def lookup_dictionary(
     try:
         entries = service.lookup(query=normalized_query)
     except (FileNotFoundError, ValueError) as exc:
-        logger.warning("Dictionary lookup failed: %s", exc)
+        logger.warning(f"Dictionary lookup failed: {exc}")
         return {
             "query": normalized_query,
             "result_count": 0,
@@ -78,9 +78,7 @@ def lookup_dictionary(
             "error": str(exc),
         }
     logger.info(
-        "Dictionary lookup: query=%r result_count=%d",
-        normalized_query,
-        len(entries),
+        f"Dictionary lookup: query={normalized_query!r} result_count={len(entries)}"
     )
     return {
         "query": normalized_query,
