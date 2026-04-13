@@ -52,6 +52,132 @@ class DictionarySqliteStore:
             return self._lookup_cmn_to_yue(query, limit)
         return self._lookup_yue_to_cmn(query, limit)
 
+    def lookup_by_jyutping(self, query: str, limit: int) -> list[DictionaryEntry]:
+        """Lookup entries by Jyutping.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        like_query = self._build_like_query(query)
+
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            WHERE e.jyutping = ?
+               OR e.jyutping LIKE ? ESCAPE '\\'
+            GROUP BY e.entry_id
+            ORDER BY
+                CASE
+                    WHEN e.jyutping = ? THEN 0
+                    ELSE 1
+                END,
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            like_query,
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
+    def lookup_by_pinyin(self, query: str, limit: int) -> list[DictionaryEntry]:
+        """Lookup entries by pinyin.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        like_query = self._build_like_query(query)
+
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            WHERE e.pinyin = ?
+               OR e.pinyin LIKE ? ESCAPE '\\'
+            GROUP BY e.entry_id
+            ORDER BY
+                CASE
+                    WHEN e.pinyin = ? THEN 0
+                    ELSE 1
+                END,
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            like_query,
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
+    def lookup_by_simplified(self, query: str, limit: int) -> list[DictionaryEntry]:
+        """Lookup entries by simplified Chinese headword.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            WHERE e.simplified = ?
+            GROUP BY e.entry_id
+            ORDER BY
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
+    def lookup_by_traditional(self, query: str, limit: int) -> list[DictionaryEntry]:
+        """Lookup entries by traditional Chinese headword.
+
+        Arguments:
+            query: query string
+            limit: max results
+        Returns:
+            dictionary entries
+        """
+        sql = """
+            SELECT
+                e.entry_id
+            FROM entries AS e
+            WHERE e.traditional = ?
+            GROUP BY e.entry_id
+            ORDER BY
+                LENGTH(e.traditional),
+                e.entry_id
+            LIMIT ?
+        """
+        params: tuple[str | int, ...] = (
+            query,
+            limit,
+        )
+        entry_ids = self._select_entry_ids(sql, params)
+        return self._fetch_entries(entry_ids)
+
     def persist(
         self,
         source_data: tuple[DictionarySource, list[DictionaryEntry]],

@@ -117,46 +117,84 @@ class CuhkDictionaryService:
 
         self._ensure_database()
 
+        query_id = LanguageIDResult(query)
+        matched_format = False
         entries: list[DictionaryEntry] = []
-        seen_keys: set[tuple[str, str, str, str]] = set()
-        for direction, lookup_query in self._get_inferred_lookup_queries(query):
-            for entry in self.database.lookup(lookup_query, direction, limit):
-                entry_key = (
-                    entry.traditional,
-                    entry.simplified,
-                    entry.pinyin,
-                    entry.jyutping,
-                )
-                if entry_key in seen_keys:
-                    continue
-                seen_keys.add(entry_key)
-                entries.append(entry)
-                if len(entries) >= limit:
-                    return entries
 
-        return entries
+        if query_id.is_simplified:
+            matched_format = True
+            entries.extend(self.database.lookup_by_simplified(query, limit))
+        if query_id.is_traditional:
+            matched_format = True
+            entries.extend(self.database.lookup_by_traditional(query, limit))
+        if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
+            matched_format = True
+            for pinyin_query in self._deduplicate_queries(
+                get_cmn_pinyin_query_strings(query)
+            ):
+                entries.extend(self.database.lookup_by_pinyin(pinyin_query, limit))
+        if query_id.is_numbered_jyutping or query_id.is_accented_yale:
+            matched_format = True
+            for jyutping_query in self._deduplicate_queries(
+                get_yue_jyutping_query_strings(query)
+            ):
+                entries.extend(self.database.lookup_by_jyutping(jyutping_query, limit))
+
+        if matched_format:
+            return self._deduplicate_entries(entries, limit)
+        return self.lookup(
+            query=query,
+            direction=LookupDirection.CMN_TO_YUE,
+            limit=limit,
+        )
 
     @staticmethod
-    def _deduplicate_lookup_queries(
-        queries: Iterable[tuple[LookupDirection, str]],
-    ) -> list[tuple[LookupDirection, str]]:
-        """Deduplicate ordered lookup query pairs.
+    def _deduplicate_entries(
+        entries: Iterable[DictionaryEntry],
+        limit: int,
+    ) -> list[DictionaryEntry]:
+        """Deduplicate ordered dictionary entries.
 
         Arguments:
-            queries: ordered direction/query pairs
+            entries: ordered dictionary entries
+            limit: max results to return
         Returns:
-            deduplicated direction/query pairs
+            deduplicated dictionary entries
         """
-        ordered_queries: list[tuple[LookupDirection, str]] = []
-        seen_queries: set[tuple[LookupDirection, str]] = set()
-        for direction, query in queries:
-            normalized_query = query.strip()
-            if not normalized_query:
+        ordered_entries: list[DictionaryEntry] = []
+        seen_entry_keys: set[tuple[str, str, str, str]] = set()
+        for entry in entries:
+            entry_key = (
+                entry.traditional,
+                entry.simplified,
+                entry.pinyin,
+                entry.jyutping,
+            )
+            if entry_key in seen_entry_keys:
                 continue
-            query_key = (direction, normalized_query)
-            if query_key not in seen_queries:
-                seen_queries.add(query_key)
-                ordered_queries.append(query_key)
+            seen_entry_keys.add(entry_key)
+            ordered_entries.append(entry)
+            if len(ordered_entries) >= limit:
+                break
+        return ordered_entries
+
+    @staticmethod
+    def _deduplicate_queries(queries: Iterable[str]) -> list[str]:
+        """Deduplicate ordered query strings.
+
+        Arguments:
+            queries: ordered query strings
+        Returns:
+            deduplicated query strings
+        """
+        ordered_queries: list[str] = []
+        seen_queries: set[str] = set()
+        for query in queries:
+            normalized_query = query.strip()
+            if not normalized_query or normalized_query in seen_queries:
+                continue
+            seen_queries.add(normalized_query)
+            ordered_queries.append(normalized_query)
         return ordered_queries
 
     def _ensure_database(self):
@@ -170,46 +208,6 @@ class CuhkDictionaryService:
                 "or build explicitly with CuhkDictionaryService.build()."
             )
         self.build(overwrite=False)
-
-    @classmethod
-    def _get_inferred_lookup_queries(
-        cls, query: str
-    ) -> list[tuple[LookupDirection, str]]:
-        """Get ordered lookup direction/query pairs inferred from query format.
-
-        Arguments:
-            query: raw query text
-        Returns:
-            ordered lookup direction/query pairs
-        """
-        query_id = LanguageIDResult(query)
-        lookup_queries: list[tuple[LookupDirection, str]] = []
-
-        if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
-            lookup_queries.extend(
-                (LookupDirection.CMN_TO_YUE, one_query)
-                for one_query in cls._get_lookup_queries(
-                    query, LookupDirection.CMN_TO_YUE
-                )
-            )
-        if query_id.is_numbered_jyutping or query_id.is_accented_yale:
-            lookup_queries.extend(
-                (LookupDirection.YUE_TO_CMN, one_query)
-                for one_query in cls._get_lookup_queries(
-                    query, LookupDirection.YUE_TO_CMN
-                )
-            )
-        if query_id.is_simplified or query_id.is_traditional:
-            lookup_queries.extend(
-                [
-                    (LookupDirection.YUE_TO_CMN, query),
-                    (LookupDirection.CMN_TO_YUE, query),
-                ]
-            )
-        if not lookup_queries:
-            lookup_queries.append((LookupDirection.CMN_TO_YUE, query))
-
-        return cls._deduplicate_lookup_queries(lookup_queries)
 
     @staticmethod
     def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
