@@ -51,6 +51,22 @@ def sample_entries() -> list[DictionaryEntry]:
             frequency=1.0,
             definitions=[DictionaryDefinition(text="stream water")],
         ),
+        DictionaryEntry(
+            traditional="甲",
+            simplified="甲",
+            pinyin="si1",
+            jyutping="gaap3",
+            frequency=1.0,
+            definitions=[DictionaryDefinition(text="first synthetic entry")],
+        ),
+        DictionaryEntry(
+            traditional="乙",
+            simplified="乙",
+            pinyin="yi3",
+            jyutping="si1",
+            frequency=1.0,
+            definitions=[DictionaryDefinition(text="second synthetic entry")],
+        ),
     ]
 
 

@@ -141,7 +141,7 @@ class CuhkDictionaryService:
                 ): entry
                 for entry in entries
             }
-            return list(entries_by_key.values())[:limit]
+            return list(entries_by_key.values())
         raise ValueError(
             f"Could not infer a supported lookup format for query {query!r}"
         )

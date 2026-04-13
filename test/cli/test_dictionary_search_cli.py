@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Generator
+from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
 import pytest
@@ -99,27 +100,39 @@ def cuhk_database_path() -> Generator[Path]:
 
 
 @pytest.mark.parametrize(
-    "query",
+    ("query", "expected_output", "expectation"),
     [
-        "山坑",
-        "shān'kēng",
-        "saan1haang1",
-        "山坑水",
+        ("山坑", "山坑", nullcontext()),
+        ("shān'kēng", "shān'kēng", nullcontext()),
+        ("saan1haang1", "saan1haang1", nullcontext()),
+        ("山坑水", "山坑水", nullcontext()),
+        (
+            "gully",
+            "Unsupported query 'gully'",
+            pytest.raises(SystemExit, match="1"),
+        ),
     ],
 )
-def test_dictionary_search_cli(cuhk_database_path: Path, query: str):
+def test_dictionary_search_cli(
+    cuhk_database_path: Path,
+    query: str,
+    expected_output: str,
+    expectation: AbstractContextManager[object],
+):
     """Test CUHK dictionary search CLI against a freshly built database."""
     with get_temp_file_path(".log") as log_file_path:
-        run_cli_with_args(
-            ScinoephileCli,
-            "dictionary search "
-            "-v "
-            f"--log-file {log_file_path} "
-            f"--database-path {cuhk_database_path} "
-            f"--limit 3 {query}",
-        )
+        with expectation:
+            run_cli_with_args(
+                ScinoephileCli,
+                "dictionary search "
+                "-v "
+                f"--log-file {log_file_path} "
+                f"--database-path {cuhk_database_path} "
+                f"--limit 3 {query}",
+            )
         output = log_file_path.read_text(encoding="utf-8")
 
-    assert "Found " in output, output
-    assert "Found 0 " not in output, output
-    assert query in output, output
+    if isinstance(expectation, type(nullcontext())):
+        assert "Found " in output, output
+        assert "Found 0 " not in output, output
+    assert expected_output in output, output
