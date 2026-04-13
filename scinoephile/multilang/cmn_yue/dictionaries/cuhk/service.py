@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 from pathlib import Path
 
 from scinoephile.common.validation import val_int, val_output_path
@@ -125,15 +124,11 @@ class CuhkDictionaryService:
             entries.extend(self.database.lookup_by_traditional(query, limit))
         if query_id.is_numbered_pinyin or query_id.is_accented_pinyin:
             matched_format = True
-            for pinyin_query in self._deduplicate_queries(
-                get_cmn_pinyin_query_strings(query)
-            ):
+            for pinyin_query in get_cmn_pinyin_query_strings(query):
                 entries.extend(self.database.lookup_by_pinyin(pinyin_query, limit))
         if query_id.is_numbered_jyutping or query_id.is_accented_yale:
             matched_format = True
-            for jyutping_query in self._deduplicate_queries(
-                get_yue_jyutping_query_strings(query)
-            ):
+            for jyutping_query in get_yue_jyutping_query_strings(query):
                 entries.extend(self.database.lookup_by_jyutping(jyutping_query, limit))
 
         if matched_format:
@@ -150,25 +145,6 @@ class CuhkDictionaryService:
         raise ValueError(
             f"Could not infer a supported lookup format for query {query!r}"
         )
-
-    @staticmethod
-    def _deduplicate_queries(queries: Iterable[str]) -> list[str]:
-        """Deduplicate ordered query strings.
-
-        Arguments:
-            queries: ordered query strings
-        Returns:
-            deduplicated query strings
-        """
-        ordered_queries: list[str] = []
-        seen_queries: set[str] = set()
-        for query in queries:
-            normalized_query = query.strip()
-            if not normalized_query or normalized_query in seen_queries:
-                continue
-            seen_queries.add(normalized_query)
-            ordered_queries.append(normalized_query)
-        return ordered_queries
 
     def _ensure_database(self):
         """Ensure the SQLite database exists, building it if configured."""
