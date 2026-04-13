@@ -10,7 +10,6 @@ from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 from scinoephile.multilang.dictionaries import DictionaryEntry
 
 from .dictionaries.cuhk import CuhkDictionaryService
-from .dictionaries.cuhk.constants import MAX_LOOKUP_LIMIT
 
 __all__ = [
     "CUHK_LOOKUP_TOOL_NAME",
@@ -51,7 +50,6 @@ def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
 
 def lookup_cuhk_dictionary(
     query: str,
-    limit: int = 10,
     *,
     auto_build_missing: bool = False,
 ) -> dict[str, object]:
@@ -59,7 +57,6 @@ def lookup_cuhk_dictionary(
 
     Arguments:
         query: input query string
-        limit: max entries to return
         auto_build_missing: build database automatically if missing
     Returns:
         lookup response payload
@@ -75,10 +72,7 @@ def lookup_cuhk_dictionary(
 
     service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
     try:
-        entries = service.lookup_inferred(
-            query=normalized_query,
-            limit=min(MAX_LOOKUP_LIMIT, max(1, int(limit))),
-        )
+        entries = service.lookup_inferred(query=normalized_query)
     except (FileNotFoundError, ValueError) as exc:
         logger.warning("CUHK dictionary lookup failed: %s", exc)
         return {
@@ -109,7 +103,7 @@ def _lookup_cuhk_dictionary_from_args(
     Returns:
         lookup response payload
     """
-    allowed_arguments = {"query", "limit"}
+    allowed_arguments = {"query"}
     unexpected_arguments = sorted(set(arguments) - allowed_arguments)
     if unexpected_arguments:
         query = str(arguments.get("query", "")).strip()
@@ -121,20 +115,8 @@ def _lookup_cuhk_dictionary_from_args(
         }
 
     query = str(arguments.get("query", "")).strip()
-    limit_raw = arguments.get("limit", 10)
-    if isinstance(limit_raw, int):
-        limit = limit_raw
-    elif isinstance(limit_raw, str):
-        try:
-            limit = int(limit_raw)
-        except ValueError:
-            limit = 10
-    else:
-        limit = 10
-
     return lookup_cuhk_dictionary(
         query=query,
-        limit=limit,
         auto_build_missing=False,
     )
 
@@ -157,7 +139,7 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
             "parameters": {
                 "type": "object",
                 "additionalProperties": False,
-                "required": ["query", "limit"],
+                "required": ["query"],
                 "properties": {
                     "query": {
                         "type": "string",
@@ -165,13 +147,6 @@ def get_cuhk_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHand
                             "Mandarin or Cantonese lookup query in Hanzi, "
                             "pinyin, or jyutping."
                         ),
-                    },
-                    "limit": {
-                        "type": "integer",
-                        "description": "Maximum number of entries to return.",
-                        "minimum": 1,
-                        "maximum": 400,
-                        "default": 10,
                     },
                 },
             },

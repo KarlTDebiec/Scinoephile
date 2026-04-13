@@ -69,14 +69,14 @@ def test_lookup_cuhk_dictionary_uses_inferred_lookup(
         def __init__(self, *, auto_build_missing: bool = False):
             self.auto_build_missing = auto_build_missing
 
-        def lookup_inferred(self, query: str, limit: int) -> list[DictionaryEntry]:
+        def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
             assert query
-            assert limit == 2
+            assert limit == 10
             return sample_entries
 
     monkeypatch.setattr(dictionary_tools, "CuhkDictionaryService", FakeService)
 
-    result = dictionary_tools.lookup_cuhk_dictionary(query, limit=2)
+    result = dictionary_tools.lookup_cuhk_dictionary(query)
 
     assert result == {
         "query": query,
@@ -133,7 +133,7 @@ def test_lookup_cuhk_dictionary_returns_structured_errors(
         def __init__(self, *, auto_build_missing: bool = False):
             self.auto_build_missing = auto_build_missing
 
-        def lookup_inferred(self, query: str, limit: int) -> list[DictionaryEntry]:
+        def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
             raise exception
 
     monkeypatch.setattr(dictionary_tools, "CuhkDictionaryService", FakeService)
@@ -147,14 +147,14 @@ def test_lookup_cuhk_dictionary_returns_structured_errors(
 
 
 def test_lookup_cuhk_dictionary_from_args_rejects_unexpected_arguments():
-    """Reject legacy direction-bearing tool arguments."""
+    """Reject tool arguments outside the simplified schema."""
     assert dictionary_tools._lookup_cuhk_dictionary_from_args(
         {"query": "山坑", "limit": 2, "direction": "cmn_to_yue"}
     ) == {
         "query": "山坑",
         "result_count": 0,
         "entries": [],
-        "error": "unexpected arguments: direction",
+        "error": "unexpected arguments: direction, limit",
     }
 
 
@@ -168,8 +168,8 @@ def test_get_cuhk_dictionary_tooling_schema_drops_direction():
     parameters = tools[0]["parameters"]
     properties = cast(dict[str, object], parameters["properties"])
     assert parameters["additionalProperties"] is False
-    assert parameters["required"] == ["query", "limit"]
-    assert set(properties) == {"query", "limit"}
+    assert parameters["required"] == ["query"]
+    assert set(properties) == {"query"}
 
 
 def test_get_cuhk_dictionary_tooling_description_mentions_inference():
