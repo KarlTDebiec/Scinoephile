@@ -97,11 +97,7 @@ class CuhkDictionaryService:
                 return entries
         return []
 
-    def lookup_inferred(
-        self,
-        query: str,
-        limit: int = 10,
-    ) -> list[DictionaryEntry]:
+    def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data using inferred query formats.
 
         Arguments:

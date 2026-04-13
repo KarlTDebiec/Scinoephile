@@ -753,11 +753,7 @@ class DictionarySqliteStore:
         entry_ids = self._select_entry_ids(sql, params)
         return self._fetch_entries(entry_ids)
 
-    def _select_entry_ids(
-        self,
-        sql: str,
-        params: tuple[str | int, ...],
-    ) -> list[int]:
+    def _select_entry_ids(self, sql: str, params: tuple[str | int, ...]) -> list[int]:
         """Run entry selection query.
 
         Arguments:
