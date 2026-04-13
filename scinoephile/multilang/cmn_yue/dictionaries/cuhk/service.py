@@ -141,42 +141,19 @@ class CuhkDictionaryService:
                 entries.extend(self.database.lookup_by_jyutping(jyutping_query, limit))
 
         if matched_format:
-            return self._deduplicate_entries(entries, limit)
-        return self.lookup(
-            query=query,
-            direction=LookupDirection.CMN_TO_YUE,
-            limit=limit,
+            entries_by_key = {
+                (
+                    entry.traditional,
+                    entry.simplified,
+                    entry.pinyin,
+                    entry.jyutping,
+                ): entry
+                for entry in entries
+            }
+            return list(entries_by_key.values())[:limit]
+        raise ValueError(
+            f"Could not infer a supported lookup format for query {query!r}"
         )
-
-    @staticmethod
-    def _deduplicate_entries(
-        entries: Iterable[DictionaryEntry],
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Deduplicate ordered dictionary entries.
-
-        Arguments:
-            entries: ordered dictionary entries
-            limit: max results to return
-        Returns:
-            deduplicated dictionary entries
-        """
-        ordered_entries: list[DictionaryEntry] = []
-        seen_entry_keys: set[tuple[str, str, str, str]] = set()
-        for entry in entries:
-            entry_key = (
-                entry.traditional,
-                entry.simplified,
-                entry.pinyin,
-                entry.jyutping,
-            )
-            if entry_key in seen_entry_keys:
-                continue
-            seen_entry_keys.add(entry_key)
-            ordered_entries.append(entry)
-            if len(ordered_entries) >= limit:
-                break
-        return ordered_entries
 
     @staticmethod
     def _deduplicate_queries(queries: Iterable[str]) -> list[str]:

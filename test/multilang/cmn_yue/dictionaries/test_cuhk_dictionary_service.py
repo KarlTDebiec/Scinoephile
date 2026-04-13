@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Generator
+from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 
 import pytest
@@ -92,20 +93,28 @@ def test_lookup_preserves_explicit_direction(
 
 
 @pytest.mark.parametrize(
-    ("query", "expected"),
+    ("query", "expected", "expectation"),
     [
-        ("山坑", ["山坑"]),
-        ("shān kēng", ["山坑", "山坑水"]),
-        ("saan1 haang1", ["山坑", "山坑水"]),
-        ("gully", ["山坑"]),
+        ("山坑", ["山坑"], nullcontext()),
+        ("shān kēng", ["山坑", "山坑水"], nullcontext()),
+        ("saan1 haang1", ["山坑", "山坑水"], nullcontext()),
+        (
+            "gully",
+            None,
+            pytest.raises(
+                ValueError,
+                match="Could not infer a supported lookup format",
+            ),
+        ),
     ],
 )
-def test_lookup_inferred_uses_matching_query_formats(
+def test_lookup_inferred(
     service: CuhkDictionaryService,
     query: str,
-    expected: list[str],
+    expected: list[str] | None,
+    expectation: AbstractContextManager[object],
 ):
-    """Infer searchable query formats and deduplicate results."""
-    entries = service.lookup_inferred(query, limit=5)
-
-    assert [entry.traditional for entry in entries] == expected
+    """Infer searchable query formats or reject unsupported queries."""
+    with expectation:
+        entries = service.lookup_inferred(query, limit=5)
+        assert [entry.traditional for entry in entries] == expected

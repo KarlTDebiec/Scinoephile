@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from pytest import fixture, mark, param
+from pytest import fixture, mark
 
 from scinoephile.common import package_root
 from scinoephile.common.testing import run_cli_with_args
@@ -23,7 +23,6 @@ __all__ = [
     "assert_cli_usage",
     "assert_expected_warnings",
     "build_subcommands",
-    "flaky",
     "get_warning_messages",
     "get_usage_prefix",
     "parametrized_fixture",
@@ -101,20 +100,6 @@ def build_subcommands(cli: tuple[type, ...]) -> str:
         subcommand string to append to the base CLI
     """
     return " ".join(f"{command.name()}" for command in cli[1:])
-
-
-def flaky(inner: partial | None = None) -> partial:
-    """Mark test as flaky (i.e., xfail but don't fail suite on pass/fail).
-
-    Arguments:
-        inner: nascent partial function of pytest.param with additional marks
-    Returns:
-        partial function of pytest.param with marks
-    """
-    marks = [mark.xfail(strict=False, reason="Intentionally flaky test")]
-    if inner:
-        marks.extend(inner.keywords["marks"])
-    return partial(param, marks=marks)
 
 
 def get_usage_prefix(cli: tuple[type, ...]) -> str:

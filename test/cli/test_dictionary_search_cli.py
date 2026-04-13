@@ -104,7 +104,6 @@ def cuhk_database_path() -> Generator[Path]:
         "山坑",
         "shān'kēng",
         "saan1haang1",
-        "gully",
         "山坑水",
     ],
 )
