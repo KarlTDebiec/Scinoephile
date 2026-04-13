@@ -13,7 +13,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_cuhk_dictionary_tooling
+from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
@@ -76,7 +76,7 @@ def get_yue_vs_zho_proofreader(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
-        use_dictionary_tool: whether to wire the CUHK dictionary tool
+        use_dictionary_tool: whether to wire the dictionary lookup tool
         **kwargs: additional keyword arguments for YueZhoProofreadingProcessor
     Returns:
         YueZhoProofreadingProcessor with provided configuration
@@ -92,7 +92,7 @@ def get_yue_vs_zho_proofreader(
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_cuhk_dictionary_tooling()
+        tools, tool_handlers = get_dictionary_tooling()
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

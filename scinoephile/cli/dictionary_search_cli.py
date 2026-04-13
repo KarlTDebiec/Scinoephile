@@ -77,7 +77,7 @@ class DictionarySearchCli(CommandLineInterface):
             auto_build_missing=False,
         )
         try:
-            entries = service.lookup_inferred(query=query, limit=limit)
+            entries = service.lookup(query=query, limit=limit)
         except ValueError as exc:
             logger.error(f"Unsupported query {query!r}: {exc}")
             raise SystemExit(1) from exc

@@ -45,6 +45,7 @@ from .constants import (
 
 __all__ = [
     "CuhkDictionaryScraper",
+    "CuhkDictionaryScraperKwargs",
 ]
 
 logger = getLogger(__name__)
@@ -203,22 +204,6 @@ class CuhkDictionaryScraper:
 
         return entries
 
-    def parse_word_files(self, html_paths: list[Path]) -> list[DictionaryEntry]:
-        """Parse selected scraped CUHK pages into normalized entries.
-
-        Arguments:
-            html_paths: scraped HTML paths to parse
-        Returns:
-            parsed dictionary entries
-        """
-        entries: list[DictionaryEntry] = []
-        for html_path in html_paths:
-            entry = self.parse_word_file(html_path)
-            if entry is not None:
-                entries.append(entry)
-
-        return entries
-
     def parse_word_file(self, html_path: Path) -> DictionaryEntry | None:
         """Parse one scraped CUHK word page.
 
@@ -331,6 +316,22 @@ class CuhkDictionaryScraper:
             frequency=0.0,
             definitions=definitions,
         )
+
+    def parse_word_files(self, html_paths: list[Path]) -> list[DictionaryEntry]:
+        """Parse selected scraped CUHK pages into normalized entries.
+
+        Arguments:
+            html_paths: scraped HTML paths to parse
+        Returns:
+            parsed dictionary entries
+        """
+        entries: list[DictionaryEntry] = []
+        for html_path in html_paths:
+            entry = self.parse_word_file(html_path)
+            if entry is not None:
+                entries.append(entry)
+
+        return entries
 
     def scrape(
         self,
@@ -455,19 +456,6 @@ class CuhkDictionaryScraper:
         stem = self._get_safe_filename_stem(target_name or "terms")
         return self.discovery_dir_path / f"{stem}.html"
 
-    @staticmethod
-    def _get_safe_filename_stem(value: str) -> str:
-        """Get a safe filename stem for a dictionary key.
-
-        Arguments:
-            value: raw value to encode in path
-        Returns:
-            safe filename stem
-        """
-        cleaned = value.strip().replace(" ", "_")
-        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
-        return cleaned
-
     def _get_variant_file_paths(self, item: str) -> list[Path]:
         """Get output file paths for one CUHK word item.
 
@@ -483,22 +471,31 @@ class CuhkDictionaryScraper:
                 stems.add(stem)
         return [self.scraped_dir_path / f"{stem}.html" for stem in sorted(stems)]
 
-    @staticmethod
-    def _strip_cuhk_headword_alternates(text: str) -> str:
-        """Remove CUHK parenthesized alternate spellings from a headword.
+    @classmethod
+    def _parse_jyutping_numbers(cls, raw_numbers: str) -> list[str]:
+        """Parse CUHK tone text into one normalized tone per syllable.
 
         Arguments:
-            text: raw CUHK headword text
+            raw_numbers: raw CUHK tone text
         Returns:
-            headword text without parenthesized alternates
+            normalized tone numbers
         """
-        collapsed = CUHK_HEADWORD_ALTERNATE_REGEX.sub("", text)
-        if collapsed != text:
-            logger.info(
-                "Removed CUHK parenthesized alternate spelling(s): "
-                f"{text!r} -> {collapsed!r}"
-            )
-        return collapsed
+        condensed = raw_numbers.replace(" ", "")
+        tokens = CUHK_TONE_TOKEN_REGEX.findall(condensed)
+        return [cls._normalize_jyutping_tone_token(token) for token in tokens]
+
+    @staticmethod
+    def _get_safe_filename_stem(value: str) -> str:
+        """Get a safe filename stem for a dictionary key.
+
+        Arguments:
+            value: raw value to encode in path
+        Returns:
+            safe filename stem
+        """
+        cleaned = value.strip().replace(" ", "_")
+        cleaned = INVALID_FILENAME_CHARS_REGEX.sub("_", cleaned)
+        return cleaned
 
     @staticmethod
     def _normalize_jyutping_tone_token(token: str) -> str:
@@ -538,15 +535,19 @@ class CuhkDictionaryScraper:
 
         return JYUTPING_TONE_MAP.get(token, token)
 
-    @classmethod
-    def _parse_jyutping_numbers(cls, raw_numbers: str) -> list[str]:
-        """Parse CUHK tone text into one normalized tone per syllable.
+    @staticmethod
+    def _strip_cuhk_headword_alternates(text: str) -> str:
+        """Remove CUHK parenthesized alternate spellings from a headword.
 
         Arguments:
-            raw_numbers: raw CUHK tone text
+            text: raw CUHK headword text
         Returns:
-            normalized tone numbers
+            headword text without parenthesized alternates
         """
-        condensed = raw_numbers.replace(" ", "")
-        tokens = CUHK_TONE_TOKEN_REGEX.findall(condensed)
-        return [cls._normalize_jyutping_tone_token(token) for token in tokens]
+        collapsed = CUHK_HEADWORD_ALTERNATE_REGEX.sub("", text)
+        if collapsed != text:
+            logger.info(
+                "Removed CUHK parenthesized alternate spelling(s): "
+                f"{text!r} -> {collapsed!r}"
+            )
+        return collapsed

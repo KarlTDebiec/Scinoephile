@@ -36,7 +36,8 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
         - 讲者可能会用唔同嘅粤语讲法。
         - 如果唔系转写错误，意义、语气同文法嘅差异都可以接受。
         - 如果你遇到唔确定嘅粤语词、可疑嘅用字，或者怀疑有同音误听，
-          可以调用 `lookup_cuhk_dictionary` 辅助判断。
+          可以调用 `lookup_dictionary` 辅助判断；
+          佢会自动判断查询系汉字、拼音定粤拼。
         - 如果粤文入面有啲词同中文字幕睇落唔对应，咁可以查中文字幕入面相关词语，
           睇下系咪有读音相近嘅粤语词被误写咗。
 
