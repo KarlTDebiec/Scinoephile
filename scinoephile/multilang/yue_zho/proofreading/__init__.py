@@ -13,7 +13,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor

@@ -7,9 +7,9 @@ from __future__ import annotations
 from logging import getLogger
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-from scinoephile.multilang.dictionaries import DictionaryEntry
 
-from .dictionaries.cuhk import CuhkDictionaryService
+from ..cmn_yue.dictionaries.cuhk import CuhkDictionaryService
+from .dictionary_entry import DictionaryEntry
 
 __all__ = [
     "get_dictionary_tooling",

@@ -14,7 +14,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 

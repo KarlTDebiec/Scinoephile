@@ -17,7 +17,7 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedProcessor,
 )
-from scinoephile.multilang.cmn_yue.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 
