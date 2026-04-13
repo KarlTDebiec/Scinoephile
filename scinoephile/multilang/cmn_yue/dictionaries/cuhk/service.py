@@ -14,7 +14,6 @@ from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySqliteStore,
-    LookupDirection,
 )
 
 from .constants import MAX_LOOKUP_LIMIT
@@ -68,33 +67,6 @@ class CuhkDictionaryService:
 
         scrape_data = self.scraper.scrape(max_words=max_words)
         return self.database.persist(scrape_data)
-
-    def lookup(
-        self,
-        query: str,
-        direction: LookupDirection = LookupDirection.CMN_TO_YUE,
-        limit: int = 10,
-    ) -> list[DictionaryEntry]:
-        """Query local CUHK dictionary data.
-
-        Arguments:
-            query: input text to search
-            direction: lookup direction
-            limit: max results to return
-        Returns:
-            dictionary entries
-        """
-        query = query.strip()
-        if not query:
-            return []
-        limit = val_int(limit, min_value=1, max_value=MAX_LOOKUP_LIMIT)
-
-        self._ensure_database()
-
-        for lookup_query in self._get_lookup_queries(query, direction):
-            if entries := self.database.lookup(lookup_query, direction, limit):
-                return entries
-        return []
 
     def lookup_inferred(self, query: str, limit: int = 10) -> list[DictionaryEntry]:
         """Query local CUHK dictionary data using inferred query formats.
@@ -157,26 +129,3 @@ class CuhkDictionaryService:
                 "or build explicitly with CuhkDictionaryService.build()."
             )
         self.build(overwrite=False)
-
-    @staticmethod
-    def _get_lookup_queries(query: str, direction: LookupDirection) -> list[str]:
-        """Get ordered query variants for dictionary lookup.
-
-        Arguments:
-            query: raw query text
-            direction: lookup direction
-        Returns:
-            ordered query variants
-        """
-        if direction == LookupDirection.CMN_TO_YUE:
-            query_variants = get_cmn_pinyin_query_strings(query)
-        else:
-            query_variants = get_yue_jyutping_query_strings(query)
-
-        ordered_queries: list[str] = []
-        seen_queries: set[str] = set()
-        for one_query in [*query_variants, query]:
-            if one_query and one_query not in seen_queries:
-                seen_queries.add(one_query)
-                ordered_queries.append(one_query)
-        return ordered_queries

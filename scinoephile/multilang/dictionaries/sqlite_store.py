@@ -13,7 +13,6 @@ from scinoephile.common.validation import val_output_path
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 from .dictionary_source import DictionarySource
-from .lookup_direction import LookupDirection
 
 __all__ = [
     "DictionarySqliteStore",
@@ -32,25 +31,6 @@ class DictionarySqliteStore:
             database_path: SQLite database path
         """
         self.database_path = val_output_path(database_path, exist_ok=True)
-
-    def lookup(
-        self,
-        query: str,
-        direction: LookupDirection,
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Lookup entries from the persisted dictionary data.
-
-        Arguments:
-            query: query string
-            direction: lookup direction
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        if direction == LookupDirection.CMN_TO_YUE:
-            return self._lookup_cmn_to_yue(query, limit)
-        return self._lookup_yue_to_cmn(query, limit)
 
     def lookup_by_jyutping(self, query: str, limit: int) -> list[DictionaryEntry]:
         """Lookup entries by Jyutping.
@@ -658,100 +638,6 @@ class DictionarySqliteStore:
         if "fts5" in message or "no such module" in message:
             return True
         return "no such table" in message and "_fts" in message
-
-    def _lookup_cmn_to_yue(self, query: str, limit: int) -> list[DictionaryEntry]:
-        """Lookup Mandarin query terms in dictionary data.
-
-        Arguments:
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        like_query = f"%{self._get_escaped_query(query)}%"
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            LEFT JOIN definitions AS d
-                ON d.fk_entry_id = e.entry_id
-            WHERE e.simplified = ?
-               OR e.traditional = ?
-               OR e.pinyin LIKE ? ESCAPE '\\'
-               OR d.definition LIKE ? ESCAPE '\\'
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.simplified = ? THEN 0
-                    WHEN e.traditional = ? THEN 1
-                    WHEN e.pinyin = ? THEN 2
-                    ELSE 3
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            query,
-            like_query,
-            like_query,
-            query,
-            query,
-            query,
-            limit,
-        )
-        entry_ids = self._select_entry_ids(sql, params)
-        return self._fetch_entries(entry_ids)
-
-    def _lookup_yue_to_cmn(
-        self,
-        query: str,
-        limit: int,
-    ) -> list[DictionaryEntry]:
-        """Lookup Cantonese query terms in dictionary data.
-
-        Arguments:
-            query: query string
-            limit: max results
-        Returns:
-            dictionary entries
-        """
-        like_query = f"%{self._get_escaped_query(query)}%"
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.jyutping = ?
-               OR e.jyutping LIKE ? ESCAPE '\\'
-               OR e.traditional = ?
-               OR e.simplified = ?
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.jyutping = ? THEN 0
-                    WHEN e.traditional = ? THEN 1
-                    WHEN e.simplified = ? THEN 2
-                    ELSE 3
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            like_query,
-            query,
-            query,
-            query,
-            query,
-            query,
-            limit,
-        )
-        entry_ids = self._select_entry_ids(sql, params)
-        return self._fetch_entries(entry_ids)
 
     def _select_entry_ids(self, sql: str, params: tuple[str | int, ...]) -> list[int]:
         """Run entry selection query.

@@ -17,7 +17,6 @@ from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
-    LookupDirection,
 )
 
 
@@ -97,20 +96,10 @@ def service(
     return CuhkDictionaryService(database_path=database_path)
 
 
-def test_lookup_preserves_explicit_direction(
-    service: CuhkDictionaryService,
-    sample_entries: list[DictionaryEntry],
-):
-    """Keep explicit-direction lookup available for LLM tooling."""
-    assert service.lookup("shan1 keng1", LookupDirection.CMN_TO_YUE, limit=5) == [
-        sample_entries[0],
-        sample_entries[1],
-    ]
-
-
 @pytest.mark.parametrize(
     ("query", "expected", "expectation"),
     [
+        ("", [], nullcontext()),
         ("山坑", ["山坑"], nullcontext()),
         ("shān kēng", ["山坑", "山坑水"], nullcontext()),
         ("saan1 haang1", ["山坑", "山坑水"], nullcontext()),

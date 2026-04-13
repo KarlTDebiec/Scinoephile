@@ -16,7 +16,6 @@ from scinoephile.multilang.dictionaries import (
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
-    LookupDirection,
 )
 
 
@@ -68,31 +67,6 @@ def sample_source() -> DictionarySource:
         update_url="https://example.com/dictionary/update",
         other="fixture",
     )
-
-
-def test_sqlite_store_lookup_round_trip(
-    database_path: Path,
-    sample_entries: list[DictionaryEntry],
-    sample_source: DictionarySource,
-):
-    """Test persisting entries and looking them up through SQLite."""
-    store = DictionarySqliteStore(database_path=database_path)
-    store.persist((sample_source, sample_entries))
-
-    assert store.lookup("山坑", LookupDirection.CMN_TO_YUE, limit=5) == [
-        sample_entries[0],
-    ]
-    assert store.lookup("shan1 keng1", LookupDirection.CMN_TO_YUE, limit=5) == [
-        sample_entries[0],
-        sample_entries[1],
-    ]
-    assert store.lookup("gully", LookupDirection.CMN_TO_YUE, limit=5) == [
-        sample_entries[0],
-    ]
-    assert store.lookup("saan1 haang1", LookupDirection.YUE_TO_CMN, limit=5) == [
-        sample_entries[0],
-        sample_entries[1],
-    ]
 
 
 def test_sqlite_store_field_lookups(
