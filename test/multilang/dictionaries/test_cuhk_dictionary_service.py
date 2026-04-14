@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.cmn_yue.dictionaries.cuhk.CuhkDictionaryService."""
+"""Tests of scinoephile.multilang.dictionaries.cuhk.CuhkDictionaryService."""
 
 from __future__ import annotations
 
@@ -11,13 +11,13 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 from scinoephile.multilang.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
     DictionarySqliteStore,
 )
+from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
 
 @pytest.fixture
