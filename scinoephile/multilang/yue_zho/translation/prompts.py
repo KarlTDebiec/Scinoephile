@@ -10,6 +10,9 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
 
 __all__ = [
     "YueHansFromZhoTranslationPrompt",
@@ -17,8 +20,24 @@ __all__ = [
 ]
 
 
-class YueHansFromZhoTranslationPrompt(DualBlockGappedPrompt, YueHansPrompt):
+class YueHansFromZhoTranslationPrompt(
+    DictionaryToolPrompt, DualBlockGappedPrompt, YueHansPrompt
+):
     """Text for LLM correspondence for translation of 简体粤文 from 中文."""
+
+    # Dictionary tool
+    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = (
+        "查本地词典入面嘅粤语同普通话词条。工具会自动判断查询系汉字、拼音定粤拼。"
+    )
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = (
+        "要查嘅普通话或者粤语词语，可以系汉字、拼音或者粤拼。"
+    )
+    """Description of the dictionary lookup query parameter."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(

@@ -17,7 +17,7 @@ from scinoephile.common.argument_parsing import (
     output_dir_arg,
     output_file_arg,
 )
-from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
 logger = getLogger(__name__)
 

@@ -5,50 +5,77 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TypedDict
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-from scinoephile.multilang.dictionaries import DictionaryEntry
+from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
-from .dictionaries.cuhk import CuhkDictionaryService
+from .dictionary_tool_prompt import DictionaryToolPrompt
+from .serialization import dictionary_entry_to_dict
 
 __all__ = [
-    "get_dictionary_tooling",
+    "DictionaryToolPrompt",
+    "get_dictionary_tools",
     "lookup_dictionary",
 ]
-
 logger = getLogger(__name__)
 """Module logger."""
 
 
-def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
-    """Convert one dictionary entry into a JSON-serializable payload.
+class DictionaryLookupResponse(TypedDict, total=False):
+    """Dictionary tool response payload."""
+
+    query: str
+    """Lookup query."""
+
+    result_count: int
+    """Number of matching entries returned."""
+
+    entries: list[dict[str, str | float | list[dict[str, str]]]]
+    """Serialized dictionary entries."""
+
+    error: str
+    """Error message when lookup fails."""
+
+
+def get_dictionary_tools(
+    prompt_cls: type[DictionaryToolPrompt],
+) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+    """Get dictionary tool definitions and handlers for LLM providers.
 
     Arguments:
-        entry: dictionary entry
+        prompt_cls: prompt class providing dictionary tool text
     Returns:
-        serialized dictionary entry
+        tool definitions and corresponding tool handlers
     """
-    return {
-        "traditional": entry.traditional,
-        "simplified": entry.simplified,
-        "pinyin": entry.pinyin,
-        "jyutping": entry.jyutping,
-        "frequency": entry.frequency,
-        "definitions": [
-            {
-                "label": definition.label,
-                "text": definition.text,
-            }
-            for definition in entry.definitions
-        ],
+    tools: list[LLMToolSpec] = [
+        {
+            "name": prompt_cls.dictionary_tool_name,
+            "description": prompt_cls.dictionary_tool_description,
+            "parameters": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["query"],
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": prompt_cls.dictionary_tool_query_description,
+                    },
+                },
+            },
+        }
+    ]
+    handlers: dict[str, ToolHandler] = {
+        prompt_cls.dictionary_tool_name: _lookup_dictionary_from_args,
     }
+    return tools, handlers
 
 
 def lookup_dictionary(
     query: str,
     *,
     auto_build_missing: bool = False,
-) -> dict[str, object]:
+) -> DictionaryLookupResponse:
     """Lookup entries in local dictionary data.
 
     Arguments:
@@ -83,13 +110,13 @@ def lookup_dictionary(
     return {
         "query": normalized_query,
         "result_count": len(entries),
-        "entries": [_entry_to_dict(entry) for entry in entries],
+        "entries": [dictionary_entry_to_dict(entry) for entry in entries],
     }
 
 
 def _lookup_dictionary_from_args(
     arguments: dict[str, object],
-) -> dict[str, object]:
+) -> DictionaryLookupResponse:
     """Execute dictionary lookup from parsed tool-call arguments.
 
     Arguments:
@@ -113,40 +140,3 @@ def _lookup_dictionary_from_args(
         query=query,
         auto_build_missing=False,
     )
-
-
-def get_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
-    """Get dictionary tool definitions and handlers for LLM providers.
-
-    Returns:
-        tool definitions and corresponding tool handlers
-    """
-    tools: list[LLMToolSpec] = [
-        {
-            "name": "lookup_dictionary",
-            "description": (
-                "Lookup Cantonese <-> Mandarin dictionary entries from local "
-                "dictionary data. "
-                "The tool automatically infers whether the query is Hanzi, "
-                "pinyin, or jyutping."
-            ),
-            "parameters": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["query"],
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": (
-                            "Mandarin or Cantonese lookup query in Hanzi, "
-                            "pinyin, or jyutping."
-                        ),
-                    },
-                },
-            },
-        }
-    ]
-    handlers: dict[str, ToolHandler] = {
-        "lookup_dictionary": _lookup_dictionary_from_args,
-    }
-    return tools, handlers

@@ -10,6 +10,9 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
 
 __all__ = [
     "YueHansReviewPrompt",
@@ -17,8 +20,22 @@ __all__ = [
 ]
 
 
-class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
+class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Text for LLM correspondence for 简体粤文 review against 中文."""
+
+    # Dictionary tool
+    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = (
+        "查本地词典入面嘅粤语同普通话词条。工具会自动判断查询系汉字、拼音定粤拼。"
+    )
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = (
+        "要查嘅普通话或者粤语词语，可以系汉字、拼音或者粤拼。"
+    )
+    """Description of the dictionary lookup query parameter."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
@@ -86,7 +103,7 @@ class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """Error template when output is present but note is missing."""
 
 
-class YueHantReviewPrompt:
+class YueHantReviewPrompt(YueHansReviewPrompt):
     """Text for LLM correspondence for 繁体粤文 review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk
