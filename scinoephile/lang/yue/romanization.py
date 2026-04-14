@@ -21,6 +21,7 @@ with catch_warnings():
 
 from scinoephile.common import package_root
 from scinoephile.core import ScinoephileError
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
 from scinoephile.lang.zho.conversion import get_zho_converter
@@ -108,7 +109,7 @@ def _build_corpus():
 
 
 # Load corpus
-corpus_file_path = data_root / "corpus.pkl"
+corpus_file_path = get_runtime_cache_dir_path("yue") / "corpus.pkl"
 if corpus_file_path.exists():
     try:
         with open(corpus_file_path, "rb") as infile:
@@ -127,14 +128,14 @@ else:
 
 # Load Hanzi to Yale mapping
 hanzi_to_romanization = {}
-hanzi_to_yale_file_path = data_root / "hanzi_to_yale.pkl"
+hanzi_to_yale_file_path = get_runtime_cache_dir_path("yue") / "hanzi_to_yale.pkl"
 if hanzi_to_yale_file_path.exists():
     with open(hanzi_to_yale_file_path, "rb") as infile:
         hanzi_to_romanization = pickle.load(infile)
 
 # Load unmatched Hanzi set
 unmatched = set()
-unmatched_hanzi_file_path = data_root / "unmatched_hanzi.pkl"
+unmatched_hanzi_file_path = get_runtime_cache_dir_path("yue") / "unmatched_hanzi.pkl"
 if unmatched_hanzi_file_path.exists():
     with open(unmatched_hanzi_file_path, "rb") as infile:
         unmatched = pickle.load(infile)
