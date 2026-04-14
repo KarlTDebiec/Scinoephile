@@ -25,6 +25,7 @@ class YueZhoHansProofreadingPrompt(
 ):
     """Text for LLM correspondence for 简体粤文 proofreading against 中文."""
 
+    # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
     """Name of the dictionary lookup tool."""
 

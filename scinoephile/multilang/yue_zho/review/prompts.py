@@ -23,6 +23,7 @@ __all__ = [
 class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Text for LLM correspondence for 简体粤文 review against 中文."""
 
+    # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
     """Name of the dictionary lookup tool."""
 

@@ -25,6 +25,7 @@ class YueHansFromZhoTranslationPrompt(
 ):
     """Text for LLM correspondence for translation of 简体粤文 from 中文."""
 
+    # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
     """Name of the dictionary lookup tool."""
 
