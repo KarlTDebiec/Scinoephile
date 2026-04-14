@@ -12,15 +12,12 @@ from warnings import catch_warnings, simplefilter
 with catch_warnings():
     simplefilter("ignore", SyntaxWarning)
     import jieba
-from typing import TYPE_CHECKING
-
 from pypinyin import pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.core.text import full_to_half_punc
 
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_cmn_pinyin_query_strings",

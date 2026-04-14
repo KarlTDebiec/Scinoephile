@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING, Self, TypedDict, Unpack, cast, override
+from typing import Self, TypedDict, Unpack, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -14,9 +14,8 @@ from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
 
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-    from pathlib import Path
+from collections.abc import Iterator
+from pathlib import Path
 
 __all__ = [
     "Series",

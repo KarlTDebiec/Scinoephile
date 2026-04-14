@@ -6,16 +6,13 @@ from __future__ import annotations
 
 from copy import deepcopy
 from functools import cache
-from typing import TYPE_CHECKING
-
 from opencc import OpenCC
 
 from scinoephile.core.text import RE_HANZI
 
 from .opencc_config import OpenCCConfig
 
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "OpenCCConfig",

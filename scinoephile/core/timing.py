@@ -5,12 +5,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import TYPE_CHECKING
-
 from scinoephile.core.exceptions import ScinoephileError
 
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = ["get_series_timewarped"]
 

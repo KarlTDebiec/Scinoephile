@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 from pprint import pformat
-from typing import TYPE_CHECKING
-
 import numpy as np
 
 from scinoephile.core import ScinoephileError
@@ -26,10 +24,9 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 
-if TYPE_CHECKING:
-    from scinoephile.audio.subtitles import AudioSeries
-    from scinoephile.core.llms import TestCase
-    from scinoephile.core.subtitles import Series
+from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 
 __all__ = ["Alignment"]
 

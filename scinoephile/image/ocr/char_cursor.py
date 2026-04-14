@@ -5,11 +5,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from scinoephile.image.bbox import Bbox
-    from scinoephile.image.subtitles import ImageSubtitle
+from scinoephile.image.bbox import Bbox
+from scinoephile.image.subtitles import ImageSubtitle
 
 __all__ = ["CharCursor"]
 

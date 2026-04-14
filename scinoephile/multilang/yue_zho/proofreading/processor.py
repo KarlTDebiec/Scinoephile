@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
-
 import numpy as np
 
 from scinoephile.core.llms import Processor, TestCase, save_test_cases_to_json
@@ -16,8 +14,7 @@ from scinoephile.core.synchronization import get_sync_overlap_matrix
 
 from .manager import YueZhoProofreadingManager
 
-if TYPE_CHECKING:
-    from .prompts import YueZhoHansProofreadingPrompt
+from .prompts import YueZhoHansProofreadingPrompt
 
 __all__ = ["YueZhoProofreadingProcessor"]
 

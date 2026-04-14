@@ -5,12 +5,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING
-
 from scinoephile.image.ocr import ValidationManager
 
-if TYPE_CHECKING:
-    from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["validate_eng_ocr"]
 

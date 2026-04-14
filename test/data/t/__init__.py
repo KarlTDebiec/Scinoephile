@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 import pytest
 
@@ -27,9 +27,8 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from test.helpers import test_data_root
 
-if TYPE_CHECKING:
-    from scinoephile.core.llms.manager import TestCaseClsKwargs
-    from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "t_eng",

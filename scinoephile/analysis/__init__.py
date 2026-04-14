@@ -12,14 +12,13 @@ Hierarchy within module:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
 from .series_diff import SeriesDiff, SeriesDiffKwargs
 
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
-    from .line_diff import LineDiff
+from .line_diff import LineDiff
 
 __all__ = ["get_series_diff"]
 

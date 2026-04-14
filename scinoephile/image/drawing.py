@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 import colorsys
-from typing import TYPE_CHECKING
-
 import numpy as np
 from PIL import Image, ImageDraw
 
@@ -18,8 +16,7 @@ from .colors import (
     get_grayscale_and_alpha_arrs,
 )
 
-if TYPE_CHECKING:
-    from .bbox import Bbox
+from .bbox import Bbox
 
 __all__ = [
     "convert_rgba_img_to_la",

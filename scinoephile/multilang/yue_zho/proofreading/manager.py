@@ -4,14 +4,13 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 from scinoephile.llms.dual_single import DualSingleManager
 
 from .prompts import YueZhoHansProofreadingPrompt
 
-if TYPE_CHECKING:
-    from scinoephile.core.llms import Answer, TestCase
+from scinoephile.core.llms import Answer, TestCase
 
 __all__ = ["YueZhoProofreadingManager"]
 

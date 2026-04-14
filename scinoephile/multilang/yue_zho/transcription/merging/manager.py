@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
@@ -14,8 +14,7 @@ from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
 from .prompt import YueZhoHansMergingPrompt
 
-if TYPE_CHECKING:
-    from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import TestCase
 
 __all__ = ["YueZhoMergingManager"]
 

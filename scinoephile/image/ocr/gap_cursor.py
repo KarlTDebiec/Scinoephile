@@ -5,18 +5,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
-
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.drawing import get_img_with_bboxes
 
 from .char_pair_gaps import get_expected_space, get_expected_tab
 
-if TYPE_CHECKING:
-    from PIL import Image
+from PIL import Image
 
-    from scinoephile.image.bbox import Bbox
-    from scinoephile.image.subtitles import ImageSubtitle
+from scinoephile.image.bbox import Bbox
+from scinoephile.image.subtitles import ImageSubtitle
 
 __all__ = ["GapCursor"]
 

@@ -7,7 +7,6 @@ from __future__ import annotations
 import hashlib
 import json
 from logging import getLogger
-from typing import TYPE_CHECKING
 from warnings import catch_warnings, filterwarnings
 
 import torch
@@ -17,10 +16,9 @@ from scinoephile.audio.transcription.transcribed_segment import TranscribedSegme
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 
-if TYPE_CHECKING:
-    from pathlib import Path
+from pathlib import Path
 
-    with catch_warnings():
+with catch_warnings():
         filterwarnings("ignore", category=SyntaxWarning)
         filterwarnings("ignore", category=RuntimeWarning)
         from pydub import AudioSegment

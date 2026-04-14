@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
-
 from scinoephile.common import package_root
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
@@ -23,8 +21,7 @@ from .char_pair_gaps import (
 )
 from .gap_cursor import GapCursor
 
-if TYPE_CHECKING:
-    from pathlib import Path
+from pathlib import Path
 
 __all__ = ["ValidationManager"]
 
