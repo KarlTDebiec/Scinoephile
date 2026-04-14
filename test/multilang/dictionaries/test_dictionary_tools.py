@@ -6,10 +6,15 @@ from __future__ import annotations
 
 from typing import ClassVar, cast
 
+from scinoephile.multilang.dictionaries import DictionaryDefinition, DictionaryEntry
 from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
     DictionaryToolPrompt,
 )
 from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.serialization import (
+    dictionary_definition_to_dict,
+    dictionary_entry_to_dict,
+)
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     get_yue_vs_zho_proofreader,
@@ -35,6 +40,49 @@ class StubDictionaryToolPrompt(DictionaryToolPrompt):
 
     dictionary_tool_query_description: ClassVar[str] = "Custom query description."
     """Description of the dictionary lookup query parameter."""
+
+
+def test_dictionary_definition_to_dict():
+    """Serialize one dictionary definition payload."""
+    assert dictionary_definition_to_dict(
+        DictionaryDefinition(label="noun", text="stream water")
+    ) == {
+        "label": "noun",
+        "text": "stream water",
+    }
+
+
+def test_dictionary_entry_to_dict():
+    """Serialize one dictionary entry payload."""
+    assert dictionary_entry_to_dict(
+        DictionaryEntry(
+            traditional="山坑",
+            simplified="山坑",
+            pinyin="shan1 keng1",
+            jyutping="saan1 haang1",
+            frequency=2.0,
+            definitions=[
+                DictionaryDefinition(text="gully"),
+                DictionaryDefinition(text="mountain stream", label="noun"),
+            ],
+        )
+    ) == {
+        "traditional": "山坑",
+        "simplified": "山坑",
+        "pinyin": "shan1 keng1",
+        "jyutping": "saan1 haang1",
+        "frequency": 2.0,
+        "definitions": [
+            {
+                "label": "",
+                "text": "gully",
+            },
+            {
+                "label": "noun",
+                "text": "mountain stream",
+            },
+        ],
+    }
 
 
 def test_get_dictionary_tooling_uses_prompt_text():

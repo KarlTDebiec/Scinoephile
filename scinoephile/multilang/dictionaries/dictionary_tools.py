@@ -5,12 +5,13 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TypedDict
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
-from .dictionary_entry import DictionaryEntry
 from .dictionary_tool_prompt import DictionaryToolPrompt
+from .serialization import DictionaryEntryDict, dictionary_entry_to_dict
 
 __all__ = [
     "DictionaryToolPrompt",
@@ -22,35 +23,27 @@ logger = getLogger(__name__)
 """Module logger."""
 
 
-def _entry_to_dict(entry: DictionaryEntry) -> dict[str, object]:
-    """Convert one dictionary entry into a JSON-serializable payload.
+class DictionaryLookupResponse(TypedDict, total=False):
+    """Dictionary tool response payload."""
 
-    Arguments:
-        entry: dictionary entry
-    Returns:
-        serialized dictionary entry
-    """
-    return {
-        "traditional": entry.traditional,
-        "simplified": entry.simplified,
-        "pinyin": entry.pinyin,
-        "jyutping": entry.jyutping,
-        "frequency": entry.frequency,
-        "definitions": [
-            {
-                "label": definition.label,
-                "text": definition.text,
-            }
-            for definition in entry.definitions
-        ],
-    }
+    query: str
+    """Lookup query."""
+
+    result_count: int
+    """Number of matching entries returned."""
+
+    entries: list[DictionaryEntryDict]
+    """Serialized dictionary entries."""
+
+    error: str
+    """Error message when lookup fails."""
 
 
 def lookup_dictionary(
     query: str,
     *,
     auto_build_missing: bool = False,
-) -> dict[str, object]:
+) -> DictionaryLookupResponse:
     """Lookup entries in local dictionary data.
 
     Arguments:
@@ -85,13 +78,13 @@ def lookup_dictionary(
     return {
         "query": normalized_query,
         "result_count": len(entries),
-        "entries": [_entry_to_dict(entry) for entry in entries],
+        "entries": [dictionary_entry_to_dict(entry) for entry in entries],
     }
 
 
 def _lookup_dictionary_from_args(
     arguments: dict[str, object],
-) -> dict[str, object]:
+) -> DictionaryLookupResponse:
     """Execute dictionary lookup from parsed tool-call arguments.
 
     Arguments:
