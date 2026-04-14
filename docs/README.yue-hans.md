@@ -6,8 +6,3 @@
 [English](/README.md) | [繁體中文](/docs/README.zh-hant.md) | [简体中文](/docs/README.zh-hans.md) | [繁體粵文](/docs/README.yue-hant.md) | [简体粤文](/docs/README.yue-hans.md)
 
 Scinoephile 系一个用嚟处理中英文双语字幕嘅套件，重点系将分开嘅中文同英文字幕结合成同步嘅双语字幕。
-
-## 注意事项
-
-第三方授权同字典资料来源说明请睇 `docs/THIRD_PARTY_NOTICES.md`。GZZJ
-字典要由使用者自己下载上游嘅 `B01_資料.json`，呢个 repo 唔会收录个资料档。
