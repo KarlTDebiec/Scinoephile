@@ -7,6 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
@@ -14,9 +16,6 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 
 from .prompts import EngOcrFusionPrompt
-
-from scinoephile.core.llms import TestCase
-from scinoephile.core.subtitles import Series
 
 __all__ = [
     "EngOcrFusionPrompt",

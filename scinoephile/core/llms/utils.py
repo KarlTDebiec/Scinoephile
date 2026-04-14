@@ -8,9 +8,8 @@ import json
 from pathlib import Path
 from typing import Unpack
 
-from .test_case import TestCase
-
 from .manager import Manager, TestCaseClsKwargs
+from .test_case import TestCase
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
 

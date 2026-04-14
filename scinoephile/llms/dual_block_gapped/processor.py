@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+
 import numpy as np
 
 from scinoephile.core.llms import Processor, save_test_cases_to_json
@@ -13,7 +14,6 @@ from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
 from .manager import DualBlockGappedManager
-
 from .prompt import DualBlockGappedPrompt
 
 __all__ = ["DualBlockGappedProcessor"]

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
+
 from scinoephile.core.subtitles import Series
 
 __all__ = [

@@ -5,13 +5,13 @@
 from __future__ import annotations
 
 from logging import getLogger
+
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Processor, save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.synchronization import are_series_one_to_one
 
 from .manager import DualBlockManager
-
 from .prompt import DualBlockPrompt
 
 __all__ = ["DualBlockProcessor"]

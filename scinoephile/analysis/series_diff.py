@@ -10,12 +10,11 @@ from collections.abc import Callable
 from typing import TypedDict
 
 from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
 
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .replace_cursor import ReplaceCursor
-
-from scinoephile.core.subtitles import Series
 
 __all__ = ["SeriesDiff", "SeriesDiffKwargs"]
 

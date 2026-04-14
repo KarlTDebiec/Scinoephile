@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from scinoephile.core import ScinoephileError
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 __all__ = [

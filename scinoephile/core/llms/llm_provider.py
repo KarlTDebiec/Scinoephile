@@ -7,9 +7,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Unpack
 
-from .tools import LLMToolSpec, ToolHandler
-
 from .answer import Answer
+from .tools import LLMToolSpec, ToolHandler
 
 __all__ = [
     "ChatCompletionKwargs",

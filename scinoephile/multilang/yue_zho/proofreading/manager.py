@@ -6,11 +6,10 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from scinoephile.core.llms import Answer, TestCase
 from scinoephile.llms.dual_single import DualSingleManager
 
 from .prompts import YueZhoHansProofreadingPrompt
-
-from scinoephile.core.llms import Answer, TestCase
 
 __all__ = ["YueZhoProofreadingManager"]
 

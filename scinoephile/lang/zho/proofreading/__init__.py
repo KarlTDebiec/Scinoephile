@@ -7,6 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ZHO_HANS_PROOFREADING_JSON_PATHS,
     ZHO_HANT_PROOFREADING_JSON_PATHS,
@@ -15,9 +17,6 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
 from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
-
-from scinoephile.core.llms import TestCase
-from scinoephile.core.subtitles import Series
 
 __all__ = [
     "ZhoHansProofreadingPrompt",

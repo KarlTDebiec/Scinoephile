@@ -20,11 +20,10 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.open_ai import OpenAIProvider
 
 from .answer import Answer
+from .llm_provider import LLMProvider
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
-
-from .llm_provider import LLMProvider
 from .tools import LLMToolSpec, ToolHandler
 
 __all__ = ["Queryer"]

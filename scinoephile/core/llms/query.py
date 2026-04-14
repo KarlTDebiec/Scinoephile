@@ -11,7 +11,6 @@ from typing import ClassVar
 from pydantic import BaseModel
 
 from .models import make_hashable
-
 from .prompt import Prompt
 
 __all__ = ["Query"]

@@ -7,6 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ENG_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
@@ -14,9 +16,6 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 
 from .prompts import EngProofreadingPrompt
-
-from scinoephile.core.llms import TestCase
-from scinoephile.core.subtitles import Series
 
 __all__ = [
     "EngProofreadingPrompt",

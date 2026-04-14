@@ -15,9 +15,8 @@ with catch_warnings():
 from pypinyin import pinyin
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
-from scinoephile.core.text import full_to_half_punc
-
 from scinoephile.core.subtitles import Series
+from scinoephile.core.text import full_to_half_punc
 
 __all__ = [
     "get_cmn_pinyin_query_strings",

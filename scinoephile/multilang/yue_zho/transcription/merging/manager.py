@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from scinoephile.core.llms import TestCase
 from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
@@ -13,8 +14,6 @@ from scinoephile.core.text import (
 from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
 from .prompt import YueZhoHansMergingPrompt
-
-from scinoephile.core.llms import TestCase
 
 __all__ = ["YueZhoMergingManager"]
 

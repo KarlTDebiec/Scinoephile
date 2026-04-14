@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from logging import getLogger
+
 from scinoephile.core.llms import Processor, save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 
 from .manager import MonoBlockManager
-
 from .prompt import MonoBlockPrompt
 
 __all__ = ["MonoBlockProcessor"]

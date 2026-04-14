@@ -11,6 +11,7 @@ from typing import Unpack
 import pytest
 
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
+from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
@@ -23,12 +24,10 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHansProofreadingPrompt,
     ZhoHantProofreadingPrompt,
 )
+from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from test.helpers import test_data_root
-
-from scinoephile.core.llms.manager import TestCaseClsKwargs
-from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
     "t_eng",

@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 from scinoephile.image.bbox import Bbox
 from scinoephile.image.subtitles import ImageSubtitle
 

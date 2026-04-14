@@ -5,8 +5,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from scinoephile.core.exceptions import ScinoephileError
 
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 __all__ = ["get_series_timewarped"]

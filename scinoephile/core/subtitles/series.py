@@ -4,7 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from logging import getLogger
+from pathlib import Path
 from typing import Self, TypedDict, Unpack, cast, override
 
 from pysubs2 import SSAFile
@@ -13,9 +15,6 @@ from pysubs2.time import ms_to_str
 from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
-
-from collections.abc import Iterator
-from pathlib import Path
 
 __all__ = [
     "Series",

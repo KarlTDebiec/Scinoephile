@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]
