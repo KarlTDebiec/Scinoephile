@@ -38,14 +38,14 @@ class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Description of the dictionary lookup query parameter."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(f"""
+    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
         你负责为广东话语音嘅粤文字幕做最后审核。
         每一条粤文字幕都已经同对应嘅中文字幕逐条校对过，而喺该对字幕入面出现嘅差异亦已经处理好。
         你而家要专注处理一啲可能喺单独对照时未必察觉到、但喺通盘检视成套字幕时会显现出嚟嘅粤文字幕问题。
         你唔需要评审写作质素、文法或者风格，只需要确保粤文转写嘅正确性。
         请记住，粤文字幕系广东话口语嘅转写，而中文字幕唔需要同粤文逐字对应。
         如果你唔确定某个词嘅普通话/粤语对应、读音或者用字，请调用
-        `{dictionary_tool_name}`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
+        `lookup_dictionary`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
         对于每一条粤文字幕，如果你认为需要修改，请回传修订后嘅完整粤文字幕。
         如果某条粤文字幕唔需要修改，请为该字幕回传空字串。
         如果有修改，请同时用英文附上一段备注，解释你作出咗啲乜嘢改动。
