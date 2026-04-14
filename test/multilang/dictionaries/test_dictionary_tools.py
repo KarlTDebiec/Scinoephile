@@ -10,7 +10,7 @@ from scinoephile.multilang.dictionaries import DictionaryDefinition, DictionaryE
 from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
     DictionaryToolPrompt,
 )
-from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.multilang.dictionaries.serialization import (
     dictionary_definition_to_dict,
     dictionary_entry_to_dict,
@@ -85,9 +85,9 @@ def test_dictionary_entry_to_dict():
     }
 
 
-def test_get_dictionary_tooling_uses_prompt_text():
+def test_get_dictionary_tools_uses_prompt_text():
     """Build the tool spec from the prompt-provided text."""
-    tools, handlers = get_dictionary_tooling(StubDictionaryToolPrompt)
+    tools, handlers = get_dictionary_tools(StubDictionaryToolPrompt)
 
     assert [tool["name"] for tool in tools] == [
         StubDictionaryToolPrompt.dictionary_tool_name

@@ -13,7 +13,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tools
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
@@ -92,7 +92,7 @@ def get_yue_vs_zho_proofreader(
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tooling(prompt_cls)
+        tools, tool_handlers = get_dictionary_tools(prompt_cls)
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

@@ -29,14 +29,12 @@ class YueHansFromZhoTranslationPrompt(
     """Name of the dictionary lookup tool."""
 
     dictionary_tool_description: ClassVar[str] = (
-        "Lookup Cantonese <-> Mandarin dictionary entries from local dictionary "
-        "data. The tool automatically infers whether the query is Hanzi, pinyin, "
-        "or jyutping."
+        "查本地词典入面嘅粤语同普通话词条。工具会自动判断查询系汉字、拼音定粤拼。"
     )
     """Description of the dictionary lookup tool."""
 
     dictionary_tool_query_description: ClassVar[str] = (
-        "Mandarin or Cantonese lookup query in Hanzi, pinyin, or jyutping."
+        "要查嘅普通话或者粤语词语，可以系汉字、拼音或者粤拼。"
     )
     """Description of the dictionary lookup query parameter."""
 

@@ -15,7 +15,7 @@ from .serialization import DictionaryEntryDict, dictionary_entry_to_dict
 
 __all__ = [
     "DictionaryToolPrompt",
-    "get_dictionary_tooling",
+    "get_dictionary_tools",
     "lookup_dictionary",
 ]
 
@@ -110,7 +110,7 @@ def _lookup_dictionary_from_args(
     )
 
 
-def get_dictionary_tooling(
+def get_dictionary_tools(
     prompt_cls: type[DictionaryToolPrompt],
 ) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
     """Get dictionary tool definitions and handlers for LLM providers.
