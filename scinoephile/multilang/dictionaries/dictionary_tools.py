@@ -38,6 +38,39 @@ class DictionaryLookupResponse(TypedDict, total=False):
     """Error message when lookup fails."""
 
 
+def get_dictionary_tools(
+    prompt_cls: type[DictionaryToolPrompt],
+) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+    """Get dictionary tool definitions and handlers for LLM providers.
+
+    Arguments:
+        prompt_cls: prompt class providing dictionary tool text
+    Returns:
+        tool definitions and corresponding tool handlers
+    """
+    tools: list[LLMToolSpec] = [
+        {
+            "name": prompt_cls.dictionary_tool_name,
+            "description": prompt_cls.dictionary_tool_description,
+            "parameters": {
+                "type": "object",
+                "additionalProperties": False,
+                "required": ["query"],
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": prompt_cls.dictionary_tool_query_description,
+                    },
+                },
+            },
+        }
+    ]
+    handlers: dict[str, ToolHandler] = {
+        prompt_cls.dictionary_tool_name: _lookup_dictionary_from_args,
+    }
+    return tools, handlers
+
+
 def lookup_dictionary(
     query: str,
     *,
@@ -107,36 +140,3 @@ def _lookup_dictionary_from_args(
         query=query,
         auto_build_missing=False,
     )
-
-
-def get_dictionary_tools(
-    prompt_cls: type[DictionaryToolPrompt],
-) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
-    """Get dictionary tool definitions and handlers for LLM providers.
-
-    Arguments:
-        prompt_cls: prompt class providing dictionary tool text
-    Returns:
-        tool definitions and corresponding tool handlers
-    """
-    tools: list[LLMToolSpec] = [
-        {
-            "name": prompt_cls.dictionary_tool_name,
-            "description": prompt_cls.dictionary_tool_description,
-            "parameters": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["query"],
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": prompt_cls.dictionary_tool_query_description,
-                    },
-                },
-            },
-        }
-    ]
-    handlers: dict[str, ToolHandler] = {
-        prompt_cls.dictionary_tool_name: _lookup_dictionary_from_args,
-    }
-    return tools, handlers
