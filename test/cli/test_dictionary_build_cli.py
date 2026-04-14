@@ -6,8 +6,11 @@ from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from os import environ
+from unittest.mock import patch
 
 import pytest
+import requests
 
 from scinoephile.cli import (
     DictionaryBuildCli,
@@ -64,22 +67,47 @@ def test_dictionary_build_usage(
     assert stderr.getvalue().startswith(get_usage_prefix(cli))
 
 
+def test_dictionary_build_usage_gzzj_missing_source():
+    """Test GZZJ build requires a source JSON file."""
+    stdout = StringIO()
+    stderr = StringIO()
+
+    with get_temp_directory_path() as cache_dir_path:
+        with pytest.raises(SystemExit) as excinfo:
+            with redirect_stdout(stdout):
+                with redirect_stderr(stderr):
+                    with patch.dict(
+                        environ, {"SCINOEPHILE_CACHE_DIR": str(cache_dir_path)}
+                    ):
+                        run_cli_with_args(
+                            DictionaryBuildCli,
+                            "gzzj --overwrite",
+                        )
+
+    assert excinfo.value.code == 1
+    assert stdout.getvalue() == ""
+    assert "GZZJ source JSON not found" in stderr.getvalue()
+
+
 @skip_if_ci()
 def test_dictionary_build_cli():
     """Test CUHK dictionary build CLI performs a limited real scrape."""
     with get_temp_directory_path() as cache_dir_path:
         with get_temp_file_path(".db") as database_path:
-            run_cli_with_args(
-                ScinoephileCli,
-                "dictionary build cuhk "
-                f"--cache-dir {cache_dir_path} "
-                f"--database-path {database_path} "
-                "--max-words 10 "
-                "--overwrite "
-                "--min-delay-seconds 0 "
-                "--max-delay-seconds 0 "
-                "--max-retries 2 "
-                "--request-timeout-seconds 10",
-            )
+            try:
+                run_cli_with_args(
+                    ScinoephileCli,
+                    "dictionary build cuhk "
+                    f"--cache-dir {cache_dir_path} "
+                    f"--database-path {database_path} "
+                    "--max-words 10 "
+                    "--overwrite "
+                    "--min-delay-seconds 0 "
+                    "--max-delay-seconds 0 "
+                    "--max-retries 2 "
+                    "--request-timeout-seconds 10",
+                )
+            except requests.RequestException as exc:
+                pytest.skip(f"CUHK build test requires network access: {exc}")
 
             assert database_path.exists()

@@ -6,7 +6,9 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
+from os import environ
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
@@ -16,7 +18,7 @@ from scinoephile.cli import (
     ScinoephileCli,
 )
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_file_path
+from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.multilang.dictionaries import (
     DictionaryDefinition,
@@ -54,10 +56,14 @@ def test_dictionary_search_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.fixture(scope="module")
-def cuhk_database_path() -> Generator[Path]:
-    """Build a temporary CUHK-like database for end-to-end search tests."""
-    with get_temp_file_path(".db") as database_path:
-        store = DictionarySqliteStore(database_path=database_path)
+def dictionary_database_dir_path() -> Generator[Path]:
+    """Build temporary databases for end-to-end search tests."""
+    with get_temp_directory_path() as dir_path:
+        cache_dir_path = dir_path / "scinoephile" / "dictionaries"
+        cuhk_database_path = cache_dir_path / "cuhk" / "cuhk.db"
+        gzzj_database_path = cache_dir_path / "gzzj" / "gzzj.db"
+
+        store = DictionarySqliteStore(database_path=cuhk_database_path)
         store.persist(
             (
                 DictionarySource(
@@ -96,7 +102,36 @@ def cuhk_database_path() -> Generator[Path]:
                 ],
             )
         )
-        yield database_path
+
+        store = DictionarySqliteStore(database_path=gzzj_database_path)
+        store.persist(
+            (
+                DictionarySource(
+                    name="Test GZZJ",
+                    shortname="gzzj",
+                    version="2026.04",
+                    description="GZZJ source used for CLI tests.",
+                    legal="BSD",
+                    link="https://example.com/gzzj",
+                    update_url="https://example.com/gzzj/update",
+                    other="fixture",
+                ),
+                [
+                    DictionaryEntry(
+                        traditional="仇",
+                        simplified="仇",
+                        pinyin="qiu2",
+                        jyutping="kau4",
+                        frequency=1.0,
+                        definitions=[
+                            DictionaryDefinition(text="surname", label="釋義"),
+                            DictionaryDefinition(text="又", label="讀音標記"),
+                        ],
+                    ),
+                ],
+            )
+        )
+        yield dir_path
 
 
 @pytest.mark.parametrize(
@@ -114,12 +149,19 @@ def cuhk_database_path() -> Generator[Path]:
     ],
 )
 def test_dictionary_search_cli(
-    cuhk_database_path: Path,
+    dictionary_database_dir_path: Path,
     query: str,
     expected_output: str,
     expectation: AbstractContextManager[object],
 ):
     """Test CUHK dictionary search CLI against a freshly built database."""
+    database_path = (
+        dictionary_database_dir_path
+        / "scinoephile"
+        / "dictionaries"
+        / "cuhk"
+        / "cuhk.db"
+    )
     with get_temp_file_path(".log") as log_file_path:
         with expectation:
             run_cli_with_args(
@@ -127,7 +169,8 @@ def test_dictionary_search_cli(
                 "dictionary search "
                 "-v "
                 f"--log-file {log_file_path} "
-                f"--database-path {cuhk_database_path} "
+                "--dictionary-name cuhk "
+                f"--database-path {database_path} "
                 f"--limit 3 {query}",
             )
         output = log_file_path.read_text(encoding="utf-8")
@@ -136,3 +179,22 @@ def test_dictionary_search_cli(
         assert "Found " in output, output
         assert "Found 0 " not in output, output
     assert expected_output in output, output
+
+
+def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Path):
+    """Test dictionary search can aggregate across installed dictionaries."""
+    with get_temp_file_path(".log") as log_file_path:
+        with patch.dict(
+            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+        ):
+            run_cli_with_args(
+                ScinoephileCli,
+                "dictionary search "
+                "-v "
+                f"--log-file {log_file_path} "
+                "--dictionary-name all "
+                "--limit 3 仇",
+            )
+            output = log_file_path.read_text(encoding="utf-8")
+
+    assert "仇" in output, output

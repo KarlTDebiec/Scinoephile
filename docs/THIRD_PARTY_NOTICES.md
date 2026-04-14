@@ -2,8 +2,8 @@
 
 ## jyut-dict (source inspiration and adapted logic)
 
-Scinoephile's CUHK dictionary ingestion code is informed by and partially adapted
-from the `jyut-dict` project:
+Scinoephile's CUHK and GZZJ dictionary ingestion code is informed by and
+partially adapted from the `jyut-dict` project:
 
 - Project: https://github.com/aaronhktan/jyut-dict
 - License: MIT
@@ -53,3 +53,13 @@ The CUHK data source used by the scraper is:
 The CUHK site states copyright ownership by the Chinese University of Hong Kong.
 Scinoephile does not distribute CUHK dictionary data in-repository; users build
 local caches from the source site.
+
+## GZZJ dictionary data source
+
+The GZZJ data source used by the local parser is:
+
+- 廣州話正音字典
+- https://github.com/jyutnet/cantonese-books-data/tree/master/2004_%E5%BB%A3%E5%B7%9E%E8%A9%B1%E6%AD%A3%E9%9F%B3%E5%AD%97%E5%85%B8
+
+Scinoephile does not distribute the upstream `B01_資料.json` file in-repository.
+Users must download it themselves before running `dictionary build gzzj`.

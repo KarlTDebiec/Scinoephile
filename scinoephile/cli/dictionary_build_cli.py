@@ -13,11 +13,13 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
+    input_file_arg,
     int_arg,
     output_dir_arg,
     output_file_arg,
 )
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
 
 logger = getLogger(__name__)
 
@@ -25,8 +27,9 @@ logger = getLogger(__name__)
 class DictionaryBuildCli(CommandLineInterface):
     """Command-line interface for building dictionary caches."""
 
-    _supported_dictionaries: dict[str, type[CuhkDictionaryService]] = {
+    _supported_dictionaries = {
         "cuhk": CuhkDictionaryService,
+        "gzzj": GzzjDictionaryService,
     }
 
     @classmethod
@@ -52,6 +55,13 @@ class DictionaryBuildCli(CommandLineInterface):
             default=None,
             type=output_dir_arg(),
             help="cache directory for scraped HTML and link data",
+        )
+        arg_groups["input arguments"].add_argument(
+            "--source-json-path",
+            metavar="FILE",
+            default=None,
+            type=input_file_arg(),
+            help="path to manually downloaded GZZJ source JSON",
         )
 
         # Operation arguments
@@ -115,6 +125,7 @@ class DictionaryBuildCli(CommandLineInterface):
         dictionary_name = kwargs.pop("dictionary_name")
         cache_dir_path = kwargs.pop("cache_dir")
         database_path = kwargs.pop("database_path")
+        source_json_path = kwargs.pop("source_json_path")
         max_words = kwargs.pop("max_words", None)
         overwrite = kwargs.pop("overwrite")
         min_delay_seconds = kwargs.pop("min_delay_seconds")
@@ -122,29 +133,56 @@ class DictionaryBuildCli(CommandLineInterface):
         max_retries = kwargs.pop("max_retries")
         request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
-        service_cls = cls._supported_dictionaries[dictionary_name]
-        service = service_cls(
-            database_path=database_path,
-            scraper_kwargs={
-                "cache_dir_path": cache_dir_path,
-                "min_delay_seconds": min_delay_seconds,
-                "max_delay_seconds": max_delay_seconds,
-                "max_retries": max_retries,
-                "request_timeout_seconds": request_timeout_seconds,
-            },
+        if dictionary_name == "cuhk":
+            service = CuhkDictionaryService(
+                database_path=database_path,
+                scraper_kwargs={
+                    "cache_dir_path": cache_dir_path,
+                    "min_delay_seconds": min_delay_seconds,
+                    "max_delay_seconds": max_delay_seconds,
+                    "max_retries": max_retries,
+                    "request_timeout_seconds": request_timeout_seconds,
+                },
+            )
+            cls._log_config(
+                dictionary_name,
+                getattr(service, "cache_dir_path", None),
+                service.database_path,
+                max_words,
+                overwrite,
+                source_json_path,
+            )
+            try:
+                database_path = service.build(
+                    overwrite=overwrite,
+                    max_words=max_words,
+                )
+            except FileNotFoundError as exc:
+                logger.error(str(exc))
+                raise SystemExit(1) from exc
+        elif dictionary_name == "gzzj":
+            service = GzzjDictionaryService(
+                database_path=database_path,
+                source_json_path=source_json_path,
+            )
+            cls._log_config(
+                dictionary_name,
+                getattr(service, "cache_dir_path", None),
+                service.database_path,
+                max_words,
+                overwrite,
+                source_json_path,
+            )
+            try:
+                database_path = service.build(overwrite=overwrite)
+            except FileNotFoundError as exc:
+                logger.error(str(exc))
+                raise SystemExit(1) from exc
+        else:
+            raise ValueError(f"Unsupported dictionary {dictionary_name!r}")
+        logger.info(
+            f"{dictionary_name.upper()} dictionary build complete: {database_path}"
         )
-        cls._log_config(
-            dictionary_name,
-            service.cache_dir_path,
-            service.database_path,
-            max_words,
-            overwrite,
-        )
-        database_path = service.build(
-            overwrite=overwrite,
-            max_words=max_words,
-        )
-        logger.info(f"CUHK dictionary build complete: {database_path}")
 
     @classmethod
     def name(cls) -> str:
@@ -159,10 +197,11 @@ class DictionaryBuildCli(CommandLineInterface):
     def _log_config(
         cls,
         dictionary_name: str,
-        cache_dir_path: Path,
+        cache_dir_path: Path | None,
         database_path: Path,
         max_words: int | None,
         overwrite: bool,
+        source_json_path: Path | None,
     ):
         """Log the effective build configuration.
 
@@ -172,14 +211,19 @@ class DictionaryBuildCli(CommandLineInterface):
             database_path: SQLite database path
             max_words: optional max words cap
             overwrite: whether database overwrite is enabled
+            source_json_path: optional manually downloaded GZZJ source JSON
         """
         logger.info(f"Building dictionary: {dictionary_name}")
-        logger.info(f"Using cache directory: {cache_dir_path}")
+        if cache_dir_path is not None:
+            logger.info(f"Using cache directory: {cache_dir_path}")
+        if source_json_path is not None:
+            logger.info(f"Using source JSON: {source_json_path}")
         logger.info(f"Using SQLite database: {database_path}")
-        if max_words is None:
-            logger.info("Building all discovered CUHK words")
-        else:
-            logger.info(f"Building at most {max_words} discovered CUHK words")
+        if dictionary_name == "cuhk":
+            if max_words is None:
+                logger.info("Building all discovered CUHK words")
+            else:
+                logger.info(f"Building at most {max_words} discovered CUHK words")
         if overwrite:
             logger.info("Overwrite enabled")
 
