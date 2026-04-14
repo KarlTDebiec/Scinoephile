@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from typing import TypedDict
-
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 
@@ -17,36 +15,11 @@ __all__ = [
 ]
 
 
-class DictionaryDefinitionDict(TypedDict):
-    """JSON-serializable dictionary definition payload."""
+type DictionaryDefinitionDict = dict[str, str]
+"""JSON-serializable dictionary definition payload."""
 
-    label: str
-    """Optional part-of-speech or usage label for the definition."""
-
-    text: str
-    """Definition text associated with the dictionary entry."""
-
-
-class DictionaryEntryDict(TypedDict):
-    """JSON-serializable dictionary entry payload."""
-
-    traditional: str
-    """Traditional Chinese headword text."""
-
-    simplified: str
-    """Simplified Chinese headword text."""
-
-    pinyin: str
-    """Mandarin pronunciation written in pinyin."""
-
-    jyutping: str
-    """Cantonese pronunciation written in Jyutping."""
-
-    frequency: float
-    """Frequency score used to rank or compare entries."""
-
-    definitions: list[DictionaryDefinitionDict]
-    """Definitions associated with this entry."""
+type DictionaryEntryDict = dict[str, str | float | list[DictionaryDefinitionDict]]
+"""JSON-serializable dictionary entry payload."""
 
 
 def dictionary_definition_to_dict(
