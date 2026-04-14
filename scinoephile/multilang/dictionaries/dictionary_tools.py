@@ -10,8 +10,10 @@ from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 from scinoephile.multilang.cmn_yue.dictionaries.cuhk import CuhkDictionaryService
 
 from .dictionary_entry import DictionaryEntry
+from .dictionary_tool_prompt import DictionaryToolPrompt
 
 __all__ = [
+    "DictionaryToolPrompt",
     "get_dictionary_tooling",
     "lookup_dictionary",
 ]
@@ -115,21 +117,20 @@ def _lookup_dictionary_from_args(
     )
 
 
-def get_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+def get_dictionary_tooling(
+    prompt_cls: type[DictionaryToolPrompt],
+) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
     """Get dictionary tool definitions and handlers for LLM providers.
 
+    Arguments:
+        prompt_cls: prompt class providing dictionary tool text
     Returns:
         tool definitions and corresponding tool handlers
     """
     tools: list[LLMToolSpec] = [
         {
-            "name": "lookup_dictionary",
-            "description": (
-                "Lookup Cantonese <-> Mandarin dictionary entries from local "
-                "dictionary data. "
-                "The tool automatically infers whether the query is Hanzi, "
-                "pinyin, or jyutping."
-            ),
+            "name": prompt_cls.dictionary_tool_name,
+            "description": prompt_cls.dictionary_tool_description,
             "parameters": {
                 "type": "object",
                 "additionalProperties": False,
@@ -137,16 +138,13 @@ def get_dictionary_tooling() -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": (
-                            "Mandarin or Cantonese lookup query in Hanzi, "
-                            "pinyin, or jyutping."
-                        ),
+                        "description": prompt_cls.dictionary_tool_query_description,
                     },
                 },
             },
         }
     ]
     handlers: dict[str, ToolHandler] = {
-        "lookup_dictionary": _lookup_dictionary_from_args,
+        prompt_cls.dictionary_tool_name: _lookup_dictionary_from_args,
     }
     return tools, handlers

@@ -10,6 +10,9 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
 
 __all__ = [
     "YueZhoHansProofreadingPrompt",
@@ -17,11 +20,28 @@ __all__ = [
 ]
 
 
-class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
+class YueZhoHansProofreadingPrompt(
+    DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt
+):
     """Text for LLM correspondence for 简体粤文 proofreading against 中文."""
 
+    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = (
+        "Lookup Cantonese <-> Mandarin dictionary entries from local dictionary "
+        "data. The tool automatically infers whether the query is Hanzi, pinyin, "
+        "or jyutping."
+    )
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = (
+        "Mandarin or Cantonese lookup query in Hanzi, pinyin, or jyutping."
+    )
+    """Description of the dictionary lookup query parameter."""
+
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(f"""
         你负责为广东话语音嘅粤文字幕做校对。
         作为参考，你会见到对应嘅中文字幕。
         你嘅目标系纠正明显嘅转写错误，主要系听错字、写错字。
@@ -36,7 +56,7 @@ class YueZhoHansProofreadingPrompt(DualSinglePrompt, YueHansPrompt):
         - 讲者可能会用唔同嘅粤语讲法。
         - 如果唔系转写错误，意义、语气同文法嘅差异都可以接受。
         - 如果你遇到唔确定嘅粤语词、可疑嘅用字，或者怀疑有同音误听，
-          可以调用 `lookup_dictionary` 辅助判断；
+          可以调用 `{dictionary_tool_name}` 辅助判断；
           佢会自动判断查询系汉字、拼音定粤拼。
         - 如果粤文入面有啲词同中文字幕睇落唔对应，咁可以查中文字幕入面相关词语，
           睇下系咪有读音相近嘅粤语词被误写咗。

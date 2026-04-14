@@ -92,7 +92,7 @@ def get_yue_from_zho_translator(
     tools = None
     tool_handlers = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tooling()
+        tools, tool_handlers = get_dictionary_tooling(prompt_cls)
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

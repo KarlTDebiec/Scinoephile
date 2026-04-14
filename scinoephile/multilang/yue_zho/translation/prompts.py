@@ -10,6 +10,9 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
 
 __all__ = [
     "YueHansFromZhoTranslationPrompt",
@@ -17,17 +20,34 @@ __all__ = [
 ]
 
 
-class YueHansFromZhoTranslationPrompt(DualBlockGappedPrompt, YueHansPrompt):
+class YueHansFromZhoTranslationPrompt(
+    DictionaryToolPrompt, DualBlockGappedPrompt, YueHansPrompt
+):
     """Text for LLM correspondence for translation of 简体粤文 from 中文."""
+
+    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = (
+        "Lookup Cantonese <-> Mandarin dictionary entries from local dictionary "
+        "data. The tool automatically infers whether the query is Hanzi, pinyin, "
+        "or jyutping."
+    )
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = (
+        "Mandarin or Cantonese lookup query in Hanzi, pinyin, or jyutping."
+    )
+    """Description of the dictionary lookup query parameter."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(
-        """
+        f"""
         你而家要核对一对对嘅粤文同中文字幕。有啲粤文字幕因为音频识别唔到而缺失。
         每当某行粤文字幕系空嘅，就用对应嗰行中文，翻译成书面粤语，语气同用词要贴近周边现有嘅粤文字幕嘅口
         语风格。
         如果你唔确定某个词嘅普通话/粤语对应、读音或者用字，请调用
-        `lookup_dictionary`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
+        `{dictionary_tool_name}`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
         如果嗰行粤文字幕已经有内容，唔好改，嗰行请输出空字串。
         只要你有提供翻译，就再加一段简短英文备注，简述你改动嘅重点。
         如果唔需要翻译，译文同备注都必须系空字串。

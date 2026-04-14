@@ -10,6 +10,9 @@ from scinoephile.core.text import get_dedented_and_compacted_multiline_text
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
 
 __all__ = [
     "YueHansReviewPrompt",
@@ -17,18 +20,33 @@ __all__ = [
 ]
 
 
-class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
+class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Text for LLM correspondence for 简体粤文 review against 中文."""
 
+    dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = (
+        "Lookup Cantonese <-> Mandarin dictionary entries from local dictionary "
+        "data. The tool automatically infers whether the query is Hanzi, pinyin, "
+        "or jyutping."
+    )
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = (
+        "Mandarin or Cantonese lookup query in Hanzi, pinyin, or jyutping."
+    )
+    """Description of the dictionary lookup query parameter."""
+
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(f"""
         你负责为广东话语音嘅粤文字幕做最后审核。
         每一条粤文字幕都已经同对应嘅中文字幕逐条校对过，而喺该对字幕入面出现嘅差异亦已经处理好。
         你而家要专注处理一啲可能喺单独对照时未必察觉到、但喺通盘检视成套字幕时会显现出嚟嘅粤文字幕问题。
         你唔需要评审写作质素、文法或者风格，只需要确保粤文转写嘅正确性。
         请记住，粤文字幕系广东话口语嘅转写，而中文字幕唔需要同粤文逐字对应。
         如果你唔确定某个词嘅普通话/粤语对应、读音或者用字，请调用
-        `lookup_dictionary`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
+        `{dictionary_tool_name}`；佢会自动判断查询系汉字、拼音定粤拼，唔好靠估。
         对于每一条粤文字幕，如果你认为需要修改，请回传修订后嘅完整粤文字幕。
         如果某条粤文字幕唔需要修改，请为该字幕回传空字串。
         如果有修改，请同时用英文附上一段备注，解释你作出咗啲乜嘢改动。
@@ -86,7 +104,7 @@ class YueHansReviewPrompt(DualBlockPrompt, YueHansPrompt):
     """Error template when output is present but note is missing."""
 
 
-class YueHantReviewPrompt:
+class YueHantReviewPrompt(YueHansReviewPrompt):
     """Text for LLM correspondence for 繁体粤文 review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk

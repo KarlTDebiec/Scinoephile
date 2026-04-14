@@ -1,0 +1,127 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests of prompt-derived dictionary tool specifications."""
+
+from __future__ import annotations
+
+from typing import ClassVar, cast
+
+from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+    DictionaryToolPrompt,
+)
+from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tooling
+from scinoephile.multilang.yue_zho.proofreading import (
+    YueZhoHansProofreadingPrompt,
+    get_yue_vs_zho_proofreader,
+)
+from scinoephile.multilang.yue_zho.review import (
+    YueHansReviewPrompt,
+    get_yue_vs_zho_processor,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YueHansFromZhoTranslationPrompt,
+    get_yue_from_zho_translator,
+)
+
+
+class StubDictionaryToolPrompt(DictionaryToolPrompt):
+    """Prompt stub providing custom dictionary tool specification text."""
+
+    dictionary_tool_name: ClassVar[str] = "lookup_stub_dictionary"
+    """Name of the dictionary lookup tool."""
+
+    dictionary_tool_description: ClassVar[str] = "Custom dictionary lookup tool."
+    """Description of the dictionary lookup tool."""
+
+    dictionary_tool_query_description: ClassVar[str] = "Custom query description."
+    """Description of the dictionary lookup query parameter."""
+
+
+def test_get_dictionary_tooling_uses_prompt_text():
+    """Build the tool spec from the prompt-provided text."""
+    tools, handlers = get_dictionary_tooling(StubDictionaryToolPrompt)
+
+    assert [tool["name"] for tool in tools] == [
+        StubDictionaryToolPrompt.dictionary_tool_name
+    ]
+    assert sorted(handlers) == [StubDictionaryToolPrompt.dictionary_tool_name]
+
+    parameters = tools[0]["parameters"]
+    properties = cast(dict[str, object], parameters["properties"])
+    query_schema = cast(dict[str, object], properties["query"])
+
+    assert (
+        tools[0]["description"] == StubDictionaryToolPrompt.dictionary_tool_description
+    )
+    assert query_schema["description"] == (
+        StubDictionaryToolPrompt.dictionary_tool_query_description
+    )
+
+
+def test_translation_prompt_mentions_configured_dictionary_tool_name():
+    """Keep the translation prompt text aligned with its tool metadata."""
+    assert (
+        f"`{YueHansFromZhoTranslationPrompt.dictionary_tool_name}`"
+        in YueHansFromZhoTranslationPrompt.base_system_prompt
+    )
+
+
+def test_review_prompt_mentions_configured_dictionary_tool_name():
+    """Keep the review prompt text aligned with its tool metadata."""
+    assert (
+        f"`{YueHansReviewPrompt.dictionary_tool_name}`"
+        in YueHansReviewPrompt.base_system_prompt
+    )
+
+
+def test_proofreading_prompt_mentions_configured_dictionary_tool_name():
+    """Keep the proofreading prompt text aligned with its tool metadata."""
+    assert (
+        f"`{YueZhoHansProofreadingPrompt.dictionary_tool_name}`"
+        in YueZhoHansProofreadingPrompt.base_system_prompt
+    )
+
+
+def test_translation_processor_uses_prompt_dictionary_tooling():
+    """Wire translation tooling from the selected prompt class."""
+    processor = get_yue_from_zho_translator(
+        prompt_cls=YueHansFromZhoTranslationPrompt,
+        test_cases=[],
+    )
+
+    assert [tool["name"] for tool in processor.queryer.tools] == [
+        YueHansFromZhoTranslationPrompt.dictionary_tool_name
+    ]
+    assert sorted(processor.queryer.tool_handlers) == [
+        YueHansFromZhoTranslationPrompt.dictionary_tool_name
+    ]
+
+
+def test_review_processor_uses_prompt_dictionary_tooling():
+    """Wire review tooling from the selected prompt class."""
+    processor = get_yue_vs_zho_processor(
+        prompt_cls=YueHansReviewPrompt,
+        test_cases=[],
+    )
+
+    assert [tool["name"] for tool in processor.queryer.tools] == [
+        YueHansReviewPrompt.dictionary_tool_name
+    ]
+    assert sorted(processor.queryer.tool_handlers) == [
+        YueHansReviewPrompt.dictionary_tool_name
+    ]
+
+
+def test_proofreading_processor_uses_prompt_dictionary_tooling():
+    """Wire proofreading tooling from the selected prompt class."""
+    processor = get_yue_vs_zho_proofreader(
+        prompt_cls=YueZhoHansProofreadingPrompt,
+        test_cases=[],
+    )
+
+    assert [tool["name"] for tool in processor.queryer.tools] == [
+        YueZhoHansProofreadingPrompt.dictionary_tool_name
+    ]
+    assert sorted(processor.queryer.tool_handlers) == [
+        YueZhoHansProofreadingPrompt.dictionary_tool_name
+    ]
