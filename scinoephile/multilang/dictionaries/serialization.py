@@ -8,23 +8,12 @@ from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 
 __all__ = [
-    "DictionaryDefinitionDict",
-    "DictionaryEntryDict",
     "dictionary_definition_to_dict",
     "dictionary_entry_to_dict",
 ]
 
 
-type DictionaryDefinitionDict = dict[str, str]
-"""JSON-serializable dictionary definition payload."""
-
-type DictionaryEntryDict = dict[str, str | float | list[DictionaryDefinitionDict]]
-"""JSON-serializable dictionary entry payload."""
-
-
-def dictionary_definition_to_dict(
-    definition: DictionaryDefinition,
-) -> DictionaryDefinitionDict:
+def dictionary_definition_to_dict(definition: DictionaryDefinition) -> dict[str, str]:
     """Convert one dictionary definition into a JSON-serializable payload.
 
     Arguments:
@@ -38,7 +27,9 @@ def dictionary_definition_to_dict(
     }
 
 
-def dictionary_entry_to_dict(entry: DictionaryEntry) -> DictionaryEntryDict:
+def dictionary_entry_to_dict(
+    entry: DictionaryEntry,
+) -> dict[str, str | float | list[dict[str, str]]]:
     """Convert one dictionary entry into a JSON-serializable payload.
 
     Arguments:

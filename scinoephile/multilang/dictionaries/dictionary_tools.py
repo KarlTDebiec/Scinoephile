@@ -11,14 +11,13 @@ from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
 from .dictionary_tool_prompt import DictionaryToolPrompt
-from .serialization import DictionaryEntryDict, dictionary_entry_to_dict
+from .serialization import dictionary_entry_to_dict
 
 __all__ = [
     "DictionaryToolPrompt",
     "get_dictionary_tools",
     "lookup_dictionary",
 ]
-
 logger = getLogger(__name__)
 """Module logger."""
 
@@ -32,7 +31,7 @@ class DictionaryLookupResponse(TypedDict, total=False):
     result_count: int
     """Number of matching entries returned."""
 
-    entries: list[DictionaryEntryDict]
+    entries: list[dict[str, str | float | list[dict[str, str]]]]
     """Serialized dictionary entries."""
 
     error: str
