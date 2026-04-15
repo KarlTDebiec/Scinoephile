@@ -4,14 +4,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
+from scinoephile.core.llms import TestCase
 from scinoephile.llms.dual_single import DualSingleManager
 
 from .prompt import OcrFusionPrompt
-
-if TYPE_CHECKING:
-    from scinoephile.core.llms import TestCase
 
 __all__ = ["OcrFusionManager"]
 

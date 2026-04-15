@@ -6,14 +6,13 @@ from __future__ import annotations
 
 import json
 from abc import ABC
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 from pydantic import BaseModel
 
-if TYPE_CHECKING:
-    from .answer import Answer
-    from .prompt import Prompt
-    from .query import Query
+from .answer import Answer
+from .prompt import Prompt
+from .query import Query
 
 __all__ = ["TestCase"]
 

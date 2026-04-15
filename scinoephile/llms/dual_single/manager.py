@@ -5,15 +5,14 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any, cast
 
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core.llms import Answer, Manager, Query
 from scinoephile.core.llms.models import get_model_name
 
-if TYPE_CHECKING:
-    from .prompt import DualSinglePrompt
+from .prompt import DualSinglePrompt
 
 __all__ = ["DualSingleManager"]
 

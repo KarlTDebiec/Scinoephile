@@ -6,10 +6,8 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series
 
 __all__ = [
     "get_eng_cleaned",
