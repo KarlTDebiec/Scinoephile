@@ -8,6 +8,8 @@ This module may import from: common, core, lang
 from __future__ import annotations
 
 from scinoephile.cli.dictionary_build_cli import DictionaryBuildCli
+from scinoephile.cli.dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
+from scinoephile.cli.dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.cli.eng_cli import EngCli
@@ -19,6 +21,8 @@ from scinoephile.cli.zho_cli import ZhoCli
 __all__ = [
     "DictionaryCli",
     "DictionaryBuildCli",
+    "DictionaryBuildCuhkCli",
+    "DictionaryBuildGzzjCli",
     "DictionarySearchCli",
     "EngCli",
     "EngZhoCli",

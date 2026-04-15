@@ -5,32 +5,19 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from logging import getLogger
-from pathlib import Path
 from typing import Unpack
 
+from scinoephile.cli.dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
+from scinoephile.cli.dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import (
-    float_arg,
-    get_arg_groups_by_name,
-    input_file_arg,
-    int_arg,
-    output_dir_arg,
-    output_file_arg,
-)
-from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
-from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
 
-logger = getLogger(__name__)
+__all__ = [
+    "DictionaryBuildCli",
+]
 
 
 class DictionaryBuildCli(CommandLineInterface):
     """Command-line interface for building dictionary caches."""
-
-    _supported_dictionaries = {
-        "cuhk": CuhkDictionaryService,
-        "gzzj": GzzjDictionaryService,
-    }
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -40,80 +27,14 @@ class DictionaryBuildCli(CommandLineInterface):
             parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
-        arg_groups = get_arg_groups_by_name(
-            parser,
-            "input arguments",
-            "operation arguments",
-            "output arguments",
-            optional_arguments_name="additional arguments",
-        )
 
-        # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            metavar="DIR",
-            default=None,
-            type=output_dir_arg(),
-            help="cache directory for scraped HTML and link data",
+        subparsers = parser.add_subparsers(
+            dest="dictionary_build_subcommand",
+            help="dictionary source",
+            required=True,
         )
-        arg_groups["input arguments"].add_argument(
-            "--source-json-path",
-            metavar="FILE",
-            default=None,
-            type=input_file_arg(),
-            help="path to manually downloaded GZZJ source JSON",
-        )
-
-        # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "dictionary_name",
-            choices=sorted(cls._supported_dictionaries),
-            help="dictionary to build",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--max-words",
-            metavar="N",
-            type=int_arg(min_value=1),
-            help="stop after building the first N discovered words",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--min-delay-seconds",
-            type=float_arg(min_value=0.0),
-            default=1.0,
-            help="minimum delay between HTTP requests",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--max-delay-seconds",
-            type=float_arg(min_value=0.0),
-            default=5.0,
-            help="maximum delay between HTTP requests",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--max-retries",
-            type=int_arg(min_value=1),
-            default=5,
-            help="maximum retries per HTTP request",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--request-timeout-seconds",
-            type=float_arg(min_value=0.1),
-            default=30.0,
-            help="per-request timeout in seconds",
-        )
-
-        # Output arguments
-        arg_groups["output arguments"].add_argument(
-            "--database-path",
-            metavar="FILE",
-            default=None,
-            type=output_file_arg(exist_ok=True),
-            help="SQLite database output path",
-        )
-        arg_groups["output arguments"].add_argument(
-            "--overwrite",
-            action="store_true",
-            help="overwrite the existing SQLite database if it already exists",
-        )
+        for name, subcommand in sorted(cls.subcommands().items()):
+            subcommand.argparser(subparsers=subparsers)
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -122,67 +43,8 @@ class DictionaryBuildCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        dictionary_name = kwargs.pop("dictionary_name")
-        cache_dir_path = kwargs.pop("cache_dir")
-        database_path = kwargs.pop("database_path")
-        source_json_path = kwargs.pop("source_json_path")
-        max_words = kwargs.pop("max_words", None)
-        overwrite = kwargs.pop("overwrite")
-        min_delay_seconds = kwargs.pop("min_delay_seconds")
-        max_delay_seconds = kwargs.pop("max_delay_seconds")
-        max_retries = kwargs.pop("max_retries")
-        request_timeout_seconds = kwargs.pop("request_timeout_seconds")
-
-        if dictionary_name == "cuhk":
-            service = CuhkDictionaryService(
-                database_path=database_path,
-                scraper_kwargs={
-                    "cache_dir_path": cache_dir_path,
-                    "min_delay_seconds": min_delay_seconds,
-                    "max_delay_seconds": max_delay_seconds,
-                    "max_retries": max_retries,
-                    "request_timeout_seconds": request_timeout_seconds,
-                },
-            )
-            cls._log_config(
-                dictionary_name,
-                getattr(service, "cache_dir_path", None),
-                service.database_path,
-                max_words,
-                overwrite,
-                source_json_path,
-            )
-            try:
-                database_path = service.build(
-                    overwrite=overwrite,
-                    max_words=max_words,
-                )
-            except FileNotFoundError as exc:
-                logger.error(str(exc))
-                raise SystemExit(1) from exc
-        elif dictionary_name == "gzzj":
-            service = GzzjDictionaryService(
-                database_path=database_path,
-                source_json_path=source_json_path,
-            )
-            cls._log_config(
-                dictionary_name,
-                getattr(service, "cache_dir_path", None),
-                service.database_path,
-                max_words,
-                overwrite,
-                source_json_path,
-            )
-            try:
-                database_path = service.build(overwrite=overwrite)
-            except FileNotFoundError as exc:
-                logger.error(str(exc))
-                raise SystemExit(1) from exc
-        else:
-            raise ValueError(f"Unsupported dictionary {dictionary_name!r}")
-        logger.info(
-            f"{dictionary_name.upper()} dictionary build complete: {database_path}"
-        )
+        subcommand_name = kwargs.pop("dictionary_build_subcommand")
+        cls.subcommands()[subcommand_name]._main(**kwargs)
 
     @classmethod
     def name(cls) -> str:
@@ -194,38 +56,16 @@ class DictionaryBuildCli(CommandLineInterface):
         return "build"
 
     @classmethod
-    def _log_config(
-        cls,
-        dictionary_name: str,
-        cache_dir_path: Path | None,
-        database_path: Path,
-        max_words: int | None,
-        overwrite: bool,
-        source_json_path: Path | None,
-    ):
-        """Log the effective build configuration.
+    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
+        """Names and types of build subcommands.
 
-        Arguments:
-            dictionary_name: dictionary name
-            cache_dir_path: cache directory path
-            database_path: SQLite database path
-            max_words: optional max words cap
-            overwrite: whether database overwrite is enabled
-            source_json_path: optional manually downloaded GZZJ source JSON
+        Returns:
+            mapping of subcommand names to CLI classes
         """
-        logger.info(f"Building dictionary: {dictionary_name}")
-        if cache_dir_path is not None:
-            logger.info(f"Using cache directory: {cache_dir_path}")
-        if source_json_path is not None:
-            logger.info(f"Using source JSON: {source_json_path}")
-        logger.info(f"Using SQLite database: {database_path}")
-        if dictionary_name == "cuhk":
-            if max_words is None:
-                logger.info("Building all discovered CUHK words")
-            else:
-                logger.info(f"Building at most {max_words} discovered CUHK words")
-        if overwrite:
-            logger.info("Overwrite enabled")
+        return {
+            DictionaryBuildCuhkCli.name(): DictionaryBuildCuhkCli,
+            DictionaryBuildGzzjCli.name(): DictionaryBuildGzzjCli,
+        }
 
 
 if __name__ == "__main__":

@@ -14,6 +14,8 @@ import requests
 
 from scinoephile.cli import (
     DictionaryBuildCli,
+    DictionaryBuildCuhkCli,
+    DictionaryBuildGzzjCli,
     DictionaryCli,
     ScinoephileCli,
 )
@@ -22,6 +24,7 @@ from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from test.helpers import (
     assert_cli_help,
+    assert_cli_usage,
     build_subcommands,
     get_usage_prefix,
     skip_if_ci,
@@ -37,7 +40,7 @@ from test.helpers import (
     ],
 )
 def test_dictionary_build_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK dictionary build CLI help output."""
+    """Test dictionary build CLI help output."""
     assert_cli_help(cli)
 
 
@@ -49,10 +52,36 @@ def test_dictionary_build_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, DictionaryCli, DictionaryBuildCli),
     ],
 )
-def test_dictionary_build_usage(
+def test_dictionary_build_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test dictionary build CLI usage output."""
+    assert_cli_usage(cli)
+
+
+@pytest.mark.parametrize(
+    "cli",
+    [
+        (DictionaryBuildCli, DictionaryBuildCuhkCli),
+        (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
+        (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
+    ],
+)
+def test_dictionary_build_cuhk_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test CUHK build subcommand help output."""
+    assert_cli_help(cli)
+
+
+@pytest.mark.parametrize(
+    "cli",
+    [
+        (DictionaryBuildCli, DictionaryBuildCuhkCli),
+        (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
+        (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
+    ],
+)
+def test_dictionary_build_cuhk_usage(
     cli: tuple[type[CommandLineInterface], ...],
 ):
-    """Test CUHK dictionary build CLI usage output on parse error."""
+    """Test CUHK build subcommand usage output on parse error."""
     stdout = StringIO()
     stderr = StringIO()
     subcommands = build_subcommands(cli)
@@ -60,11 +89,24 @@ def test_dictionary_build_usage(
     with pytest.raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
-                run_cli_with_args(cli[0], f"{subcommands} cuhk --max-words".strip())
+                run_cli_with_args(cli[0], f"{subcommands} --max-words".strip())
 
     assert excinfo.value.code == 2
     assert stdout.getvalue() == ""
     assert stderr.getvalue().startswith(get_usage_prefix(cli))
+
+
+@pytest.mark.parametrize(
+    "cli",
+    [
+        (DictionaryBuildCli, DictionaryBuildGzzjCli),
+        (DictionaryCli, DictionaryBuildCli, DictionaryBuildGzzjCli),
+        (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildGzzjCli),
+    ],
+)
+def test_dictionary_build_gzzj_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test GZZJ build subcommand help output."""
+    assert_cli_help(cli)
 
 
 def test_dictionary_build_usage_gzzj_missing_source():
