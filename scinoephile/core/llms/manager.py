@@ -6,19 +6,17 @@ from __future__ import annotations
 
 from abc import ABC
 from functools import cache
-from typing import TYPE_CHECKING, Any, TypedDict, Unpack, cast
+from typing import Any, TypedDict, Unpack, cast
 
 from pydantic import Field, create_model, model_validator
 
 from scinoephile.core import ScinoephileError
 
+from .answer import Answer
 from .models import get_model_name
+from .prompt import Prompt
+from .query import Query
 from .test_case import TestCase
-
-if TYPE_CHECKING:
-    from .answer import Answer
-    from .prompt import Prompt
-    from .query import Query
 
 __all__ = [
     "Manager",

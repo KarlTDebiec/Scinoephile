@@ -11,7 +11,7 @@ from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, ClassVar, Self, cast
+from typing import Any, ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -20,13 +20,11 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.open_ai import OpenAIProvider
 
 from .answer import Answer
+from .llm_provider import LLMProvider
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
-
-if TYPE_CHECKING:
-    from .llm_provider import LLMProvider
-    from .tools import LLMToolSpec, ToolHandler
+from .tools import LLMToolSpec, ToolHandler
 
 __all__ = ["Queryer"]
 

@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, TypedDict, Unpack
+from typing import TypedDict, Unpack
 
+from scinoephile.core.llms import TestCase
+from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_OCR_FUSION_JSON_PATHS,
@@ -18,10 +20,6 @@ from scinoephile.llms.dual_single.ocr_fusion import (
 )
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
-
-if TYPE_CHECKING:
-    from scinoephile.core.llms import TestCase
-    from scinoephile.core.subtitles import Series
 
 __all__ = [
     "ZhoHansOcrFusionPrompt",

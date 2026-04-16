@@ -6,12 +6,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING, Unpack
+from typing import Unpack
 
+from .manager import Manager, TestCaseClsKwargs
 from .test_case import TestCase
-
-if TYPE_CHECKING:
-    from .manager import Manager, TestCaseClsKwargs
 
 __all__ = ["load_test_cases_from_json", "save_test_cases_to_json"]
 

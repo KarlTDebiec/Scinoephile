@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -15,9 +14,7 @@ from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
 from .manager import DualBlockGappedManager
-
-if TYPE_CHECKING:
-    from .prompt import DualBlockGappedPrompt
+from .prompt import DualBlockGappedPrompt
 
 __all__ = ["DualBlockGappedProcessor"]
 
