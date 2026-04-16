@@ -9,17 +9,6 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
-## Dictionaries
-
-Scinoephile's dictionary CLI can now build and search local CUHK and GZZJ
-SQLite dictionaries.
-
-- `dictionary build cuhk` scrapes the CUHK source site into a local database.
-- `dictionary build gzzj --source-json-path /path/to/B01_資料.json` builds GZZJ
-  from a manually downloaded upstream JSON file.
-- `dictionary search QUERY` searches all locally available dictionaries by
-  default. Use `--dictionary-name` to limit the search to one source.
-
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in
