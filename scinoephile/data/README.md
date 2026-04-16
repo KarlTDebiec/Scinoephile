@@ -7,11 +7,6 @@ not included in the
 [Hong Kong Cantonese Corpus](http://compling.hss.ntu.edu.sg/hkcancor/) used by 
 `pycantonese`.
 
-Dictionary source data is not vendored here. In particular, GZZJ support expects
-users to download `B01_資料.json` themselves from:
-
-- https://github.com/jyutnet/cantonese-books-data/tree/master/2004_%E5%BB%A3%E5%B7%9E%E8%A9%B1%E6%AD%A3%E9%9F%B3%E5%AD%97%E5%85%B8
-
 ## OCR
 
 `Blocks-12.1.0.txt` lists the block ranges for Unicode.
