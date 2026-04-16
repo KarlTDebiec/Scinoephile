@@ -26,6 +26,7 @@ from test.helpers import assert_cli_help
 @pytest.mark.parametrize(
     "cli",
     [
+        (DictionaryBuildGzzjCli,),
         (DictionaryBuildCli, DictionaryBuildGzzjCli),
         (DictionaryCli, DictionaryBuildCli, DictionaryBuildGzzjCli),
         (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildGzzjCli),

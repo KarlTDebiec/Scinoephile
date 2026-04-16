@@ -16,9 +16,7 @@ from scinoephile.multilang.dictionaries import DictionaryEntry, DictionarySqlite
 from .constants import GZZJ_DOWNLOAD_URL, MAX_LOOKUP_LIMIT
 from .parser import GzzjDictionaryParser
 
-__all__ = [
-    "GzzjDictionaryService",
-]
+__all__ = ["GzzjDictionaryService"]
 
 
 class GzzjDictionaryService:

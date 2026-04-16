@@ -22,9 +22,7 @@ from scinoephile.multilang.dictionaries import (
 
 from .constants import GZZJ_SOURCE
 
-__all__ = [
-    "GzzjDictionaryParser",
-]
+__all__ = ["GzzjDictionaryParser"]
 
 logger = getLogger(__name__)
 
@@ -58,8 +56,29 @@ class GzzjDictionaryParser:
 
         return GZZJ_SOURCE, entries
 
+    @staticmethod
+    def _dedupe_definitions(
+        definitions: list[DictionaryDefinition],
+    ) -> list[DictionaryDefinition]:
+        """Deduplicate definitions while preserving order.
+
+        Arguments:
+            definitions: raw definition list
+        Returns:
+            deduplicated definitions
+        """
+        seen: set[tuple[str, str]] = set()
+        deduped: list[DictionaryDefinition] = []
+        for definition in definitions:
+            key = (definition.text, definition.label)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(definition)
+        return deduped
+
+    @staticmethod
     def _get_definitions(
-        self,
         *,
         explanation: str | None,
         variants: list[str],
@@ -181,24 +200,3 @@ class GzzjDictionaryParser:
         if not entries:
             logger.warning(f"Skipping GZZJ record without readings: {traditional!r}")
         return entries
-
-    @staticmethod
-    def _dedupe_definitions(
-        definitions: list[DictionaryDefinition],
-    ) -> list[DictionaryDefinition]:
-        """Deduplicate definitions while preserving order.
-
-        Arguments:
-            definitions: raw definition list
-        Returns:
-            deduplicated definitions
-        """
-        seen: set[tuple[str, str]] = set()
-        deduped: list[DictionaryDefinition] = []
-        for definition in definitions:
-            key = (definition.text, definition.label)
-            if key in seen:
-                continue
-            seen.add(key)
-            deduped.append(definition)
-        return deduped

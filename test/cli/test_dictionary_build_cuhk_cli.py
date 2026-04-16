@@ -30,6 +30,7 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
+        (DictionaryBuildCuhkCli,),
         (DictionaryBuildCli, DictionaryBuildCuhkCli),
         (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
         (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
@@ -43,6 +44,7 @@ def test_dictionary_build_cuhk_help(cli: tuple[type[CommandLineInterface], ...])
 @pytest.mark.parametrize(
     "cli",
     [
+        (DictionaryBuildCuhkCli,),
         (DictionaryBuildCli, DictionaryBuildCuhkCli),
         (DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
         (ScinoephileCli, DictionaryCli, DictionaryBuildCli, DictionaryBuildCuhkCli),
