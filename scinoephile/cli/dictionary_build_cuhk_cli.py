@@ -19,17 +19,13 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
-__all__ = [
-    "DictionaryBuildCuhkCli",
-]
+__all__ = ["DictionaryBuildCuhkCli"]
 
 logger = getLogger(__name__)
 
 
 class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
     """Command-line interface for building the CUHK dictionary cache."""
-
-    dictionary_name = "cuhk"
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -158,12 +154,3 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             logger.info("Building all discovered CUHK words")
         else:
             logger.info(f"Building at most {max_words} discovered CUHK words")
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "cuhk"

@@ -12,15 +12,11 @@ from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
 
-__all__ = [
-    "DictionaryBuildGzzjCli",
-]
+__all__ = ["DictionaryBuildGzzjCli"]
 
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     """Command-line interface for building the GZZJ dictionary cache."""
-
-    dictionary_name = "gzzj"
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -73,12 +69,3 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
         except FileNotFoundError as exc:
             cls.log_file_not_found_and_exit(exc)
         cls.log_completion(database_path)
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "gzzj"

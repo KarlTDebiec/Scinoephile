@@ -4,27 +4,40 @@
 
 from __future__ import annotations
 
+import re
+from abc import ABC
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    output_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
 
-__all__ = [
-    "DictionaryBuildCliBase",
-]
+__all__ = ["DictionaryBuildCliBase"]
 
 logger = getLogger(__name__)
 
 
-class DictionaryBuildCliBase(CommandLineInterface):
+class DictionaryBuildCliBase(CommandLineInterface, ABC):
     """Base class for building a specific dictionary cache."""
 
-    dictionary_name = ""
+    dictionary_name: str
+    """Dictionary short name derived from the class name."""
+
+    def __init_subclass__(cls, **kwargs):
+        """Initialize subclass metadata derived from the class name."""
+        super().__init_subclass__(**kwargs)
+        class_name = cls.__name__
+        if class_name == "DictionaryBuildCliBase":
+            return
+        if not class_name.startswith("DictionaryBuild") or not class_name.endswith(
+            "Cli"
+        ):
+            raise ValueError(
+                f"Cannot derive dictionary name from class name {class_name!r}"
+            )
+        dictionary_name = re.sub(r"^DictionaryBuild|Cli$", "", class_name)
+        cls.dictionary_name = dictionary_name.lower()
 
     @classmethod
     def add_common_output_arguments(cls, parser: ArgumentParser):
@@ -101,3 +114,8 @@ class DictionaryBuildCliBase(CommandLineInterface):
         """
         logger.error(str(exc))
         raise SystemExit(1) from exc
+
+    @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser."""
+        return cls.dictionary_name
