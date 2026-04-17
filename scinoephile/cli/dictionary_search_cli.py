@@ -15,7 +15,8 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
-from scinoephile.multilang.dictionaries import DictionaryEntry
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.multilang.dictionaries import DictionaryDefinition, DictionaryEntry
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
 
@@ -71,35 +72,8 @@ class DictionarySearchCli(CommandLineInterface):
             metavar="N",
             type=int_arg(min_value=1),
             default=10,
-            help="maximum number of matches to show",
+            help="maximum number of matches to show per dictionary",
         )
-
-    @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        database_path = kwargs.pop("database_path")
-        dictionary_name = kwargs.pop("dictionary_name")
-        query = kwargs.pop("query")
-        limit = kwargs.pop("limit")
-
-        try:
-            entries = cls._search_dictionaries(
-                query=query,
-                limit=limit,
-                dictionary_name=dictionary_name,
-                database_path=database_path,
-            )
-        except ValueError as exc:
-            logger.error(f"Unsupported query {query!r}: {exc}")
-            raise SystemExit(1) from exc
-        except FileNotFoundError as exc:
-            logger.error(str(exc))
-            raise SystemExit(1) from exc
-        cls._log_search_results(query, entries, dictionary_name)
 
     @classmethod
     def name(cls) -> str:
@@ -109,6 +83,28 @@ class DictionarySearchCli(CommandLineInterface):
             subcommand name
         """
         return "search"
+
+    @classmethod
+    def _dedupe_definitions(
+        cls,
+        definitions: list[DictionaryDefinition],
+    ) -> list[DictionaryDefinition]:
+        """Deduplicate definitions while preserving order.
+
+        Arguments:
+            definitions: definition list
+        Returns:
+            deduplicated definitions
+        """
+        seen: set[tuple[str, str]] = set()
+        deduped: list[DictionaryDefinition] = []
+        for definition in definitions:
+            key = (definition.text, definition.label)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(definition)
+        return deduped
 
     @classmethod
     def _log_search_results(
@@ -137,6 +133,73 @@ class DictionarySearchCli(CommandLineInterface):
                 logger.info(f"   - {label_prefix}{definition.text}")
 
     @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        database_path = kwargs.pop("database_path")
+        dictionary_name = kwargs.pop("dictionary_name")
+        query = kwargs.pop("query")
+        limit = kwargs.pop("limit")
+
+        try:
+            if dictionary_name == "all" and database_path is not None:
+                raise ArgumentConflictError(
+                    "--database-path may only be used with a specific --dictionary-name"
+                )
+            entries = cls._search_dictionaries(
+                query=query,
+                limit=limit,
+                dictionary_name=dictionary_name,
+                database_path=database_path,
+            )
+        except ArgumentConflictError as exc:
+            logger.error(str(exc))
+            raise SystemExit(2) from exc
+        except ValueError as exc:
+            logger.error(f"Unsupported query {query!r}: {exc}")
+            raise SystemExit(1) from exc
+        except FileNotFoundError as exc:
+            logger.error(str(exc))
+            raise SystemExit(1) from exc
+        cls._log_search_results(query, entries, dictionary_name)
+
+    @classmethod
+    def _merge_entries(cls, entries: list[DictionaryEntry]) -> list[DictionaryEntry]:
+        """Merge duplicate entries while preserving source-specific definitions.
+
+        Arguments:
+            entries: raw aggregated dictionary entries
+        Returns:
+            merged dictionary entries
+        """
+        merged_entries: dict[tuple[str, str, str, str], DictionaryEntry] = {}
+        for entry in entries:
+            key = (
+                entry.traditional,
+                entry.simplified,
+                entry.pinyin,
+                entry.jyutping,
+            )
+            if key not in merged_entries:
+                merged_entries[key] = entry
+                continue
+            existing_entry = merged_entries[key]
+            merged_entries[key] = DictionaryEntry(
+                traditional=existing_entry.traditional,
+                simplified=existing_entry.simplified,
+                pinyin=existing_entry.pinyin,
+                jyutping=existing_entry.jyutping,
+                frequency=max(existing_entry.frequency, entry.frequency),
+                definitions=cls._dedupe_definitions(
+                    [*existing_entry.definitions, *entry.definitions]
+                ),
+            )
+        return list(merged_entries.values())
+
+    @classmethod
     def _search_dictionaries(
         cls,
         *,
@@ -160,10 +223,6 @@ class DictionarySearchCli(CommandLineInterface):
             if dictionary_name == "all"
             else [dictionary_name]
         )
-        if dictionary_name == "all" and database_path is not None:
-            raise FileNotFoundError(
-                "--database-path may only be used with a specific --dictionary-name"
-            )
 
         entries: list[DictionaryEntry] = []
         missing_dictionaries: list[str] = []
@@ -173,23 +232,18 @@ class DictionarySearchCli(CommandLineInterface):
                 database_path=database_path,
                 auto_build_missing=False,
             )
-            try:
+            if dictionary_name == "all":
+                try:
+                    entries.extend(service.lookup(query=query, limit=limit))
+                    available_dictionary_count += 1
+                except FileNotFoundError:
+                    missing_dictionaries.append(name)
+            else:
                 entries.extend(service.lookup(query=query, limit=limit))
                 available_dictionary_count += 1
-            except FileNotFoundError:
-                missing_dictionaries.append(name)
 
         if entries or available_dictionary_count > 0:
-            entries_by_key = {
-                (
-                    entry.traditional,
-                    entry.simplified,
-                    entry.pinyin,
-                    entry.jyutping,
-                ): entry
-                for entry in entries
-            }
-            return list(entries_by_key.values())
+            return cls._merge_entries(entries)
 
         if missing_dictionaries:
             if dictionary_name == "all":

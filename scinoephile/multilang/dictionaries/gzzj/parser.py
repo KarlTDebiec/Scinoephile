@@ -186,17 +186,19 @@ class GzzjDictionaryParser:
                     definitions_by_key.setdefault((headword, jyutping), []).extend(
                         definitions
                     )
-        entries = [
-            DictionaryEntry(
-                traditional=headword,
-                simplified=self.opencc_converter.convert(headword),
-                pinyin=self._get_pinyin(self.opencc_converter.convert(headword)),
-                jyutping=jyutping,
-                frequency=0.0,
-                definitions=self._dedupe_definitions(definitions),
+        entries: list[DictionaryEntry] = []
+        for (headword, jyutping), definitions in definitions_by_key.items():
+            simplified = self.opencc_converter.convert(headword)
+            entries.append(
+                DictionaryEntry(
+                    traditional=headword,
+                    simplified=simplified,
+                    pinyin=self._get_pinyin(simplified),
+                    jyutping=jyutping,
+                    frequency=0.0,
+                    definitions=self._dedupe_definitions(definitions),
+                )
             )
-            for (headword, jyutping), definitions in definitions_by_key.items()
-        ]
         if not entries:
             logger.warning(f"Skipping GZZJ record without readings: {traditional!r}")
         return entries

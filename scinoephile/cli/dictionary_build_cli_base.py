@@ -90,7 +90,7 @@ class DictionaryBuildCliBase(CommandLineInterface, ABC):
             logger.info(f"Using source JSON: {source_json_path}")
         logger.info(f"Using SQLite database: {database_path}")
         if max_words is not None:
-            logger.info(f"Building at most {max_words} discovered CUHK words")
+            logger.info(f"Building at most {max_words} discovered words")
         if overwrite:
             logger.info("Overwrite enabled")
 

@@ -92,6 +92,14 @@ def dictionary_database_dir_path() -> Generator[Path]:
                         ],
                     ),
                     DictionaryEntry(
+                        traditional="共享",
+                        simplified="共享",
+                        pinyin="gong4 xiang3",
+                        jyutping="gung6 hoeng2",
+                        frequency=3.0,
+                        definitions=[DictionaryDefinition(text="cuhk definition")],
+                    ),
+                    DictionaryEntry(
                         traditional="山坑水",
                         simplified="山坑水",
                         pinyin="shan1 keng1 shui3",
@@ -127,6 +135,14 @@ def dictionary_database_dir_path() -> Generator[Path]:
                             DictionaryDefinition(text="surname", label="釋義"),
                             DictionaryDefinition(text="又", label="讀音標記"),
                         ],
+                    ),
+                    DictionaryEntry(
+                        traditional="共享",
+                        simplified="共享",
+                        pinyin="gong4 xiang3",
+                        jyutping="gung6 hoeng2",
+                        frequency=1.0,
+                        definitions=[DictionaryDefinition(text="gzzj definition")],
                     ),
                 ],
             )
@@ -198,3 +214,40 @@ def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Pa
             output = log_file_path.read_text(encoding="utf-8")
 
     assert "仇" in output, output
+
+
+def test_dictionary_search_cli_all_dictionaries_merges_definitions(
+    dictionary_database_dir_path: Path,
+):
+    """Test dictionary search preserves definitions from multiple dictionaries."""
+    with get_temp_file_path(".log") as log_file_path:
+        with patch.dict(
+            environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
+        ):
+            run_cli_with_args(
+                ScinoephileCli,
+                "dictionary search "
+                "-v "
+                f"--log-file {log_file_path} "
+                "--dictionary-name all "
+                "--limit 3 共享",
+            )
+            output = log_file_path.read_text(encoding="utf-8")
+
+    assert "cuhk definition" in output, output
+    assert "gzzj definition" in output, output
+
+
+def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
+    """Test aggregate search rejects an explicit database path as a usage error."""
+    with get_temp_directory_path() as temp_dir_path:
+        database_path = temp_dir_path / "existing.db"
+        database_path.touch()
+        with pytest.raises(SystemExit, match="2"):
+            run_cli_with_args(
+                ScinoephileCli,
+                "dictionary search "
+                f"--database-path {database_path} "
+                "--dictionary-name all "
+                "共享",
+            )
