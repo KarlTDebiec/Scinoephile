@@ -23,19 +23,6 @@ class LineDiff:
     one_texts: list[str] | None = None
     two_texts: list[str] | None = None
 
-    @staticmethod
-    def _format_idxs(idxs: list[int]) -> str:
-        """Format indices for display.
-
-        Arguments:
-            idxs: indices to format
-        Returns:
-            formatted index range
-        """
-        if len(idxs) == 1:
-            return str(idxs[0] + 1)
-        return f"{idxs[0] + 1}-{idxs[-1] + 1}"
-
     def __str__(self) -> str:
         """Format the diff as a display string.
 
@@ -65,3 +52,16 @@ class LineDiff:
             f"{self.two_lbl}[{self._format_idxs(two_idxs)}]: "
             f"{one_text_repr} -> {two_text_repr}"
         )
+
+    @staticmethod
+    def _format_idxs(idxs: list[int]) -> str:
+        """Format indices for display.
+
+        Arguments:
+            idxs: indices to format
+        Returns:
+            formatted index range
+        """
+        if len(idxs) == 1:
+            return str(idxs[0] + 1)
+        return f"{idxs[0] + 1}-{idxs[-1] + 1}"

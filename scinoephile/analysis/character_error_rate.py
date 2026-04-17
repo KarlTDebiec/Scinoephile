@@ -60,19 +60,13 @@ def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateRe
     deletions = 0
     for message in series_diff:
         if message.kind == LineDiffKind.DELETE:
-            chunk_result = get_text_cer(
-                _join_chunk_text(message.one_texts),
-                "",
-            )
+            chunk_result = get_text_cer("".join(message.one_texts or []), "")
         elif message.kind == LineDiffKind.INSERT:
-            chunk_result = get_text_cer(
-                "",
-                _join_chunk_text(message.one_texts),
-            )
+            chunk_result = get_text_cer("", "".join(message.one_texts or []))
         else:
             chunk_result = get_text_cer(
-                _join_chunk_text(message.one_texts),
-                _join_chunk_text(message.two_texts),
+                "".join(message.one_texts or []),
+                "".join(message.two_texts or []),
             )
         substitutions += chunk_result.substitutions
         insertions += chunk_result.insertions
@@ -200,19 +194,6 @@ def _get_edit_sort_key(
     """
     distance, substitutions, insertions, deletions, _correct = value
     return distance, insertions, deletions, substitutions
-
-
-def _join_chunk_text(texts: list[str] | None) -> str:
-    """Join one diff-side chunk into a single text string.
-
-    Arguments:
-        texts: diff-side texts
-    Returns:
-        joined text
-    """
-    if texts is None:
-        return ""
-    return "".join(texts)
 
 
 def _get_series_text(series: Series) -> str:
