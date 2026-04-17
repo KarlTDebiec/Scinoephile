@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis import get_series_diff
+from scinoephile.analysis import get_series_cer, get_series_diff
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
@@ -90,9 +90,9 @@ if "简体粤文 (SRT)" in actions:
     yue_hans_timewarp.save(output_dir / "yue-Hans_timewarp.srt")
     yue_hans_clean = get_zho_cleaned(yue_hans_timewarp)
     yue_hans_clean.save(output_dir / "yue-Hans_timewarp_clean.srt")
-    yue_hans_flatten = get_zho_flattened(yue_hans_clean)
-    yue_hans_flatten.save(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
-    yue_hans_romanized = get_yue_romanized(yue_hans_flatten, append=True)
+    yue_hans_reference = get_zho_flattened(yue_hans_clean)
+    yue_hans_reference.save(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
     yue_hans_romanized.save(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
 if "English (SRT)" in actions:
     eng_ocr = Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
@@ -125,18 +125,18 @@ if "简体粤文 (Transcription)" in actions:
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
 
     # Transcribe
-    yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
+    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = YueTranscriber(
         test_case_directory_path=test_data_root / "kob",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
-    yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
+    yue_hans_transcribe = transcriber.process_all_blocks(yue_hans_audio, zho_hans)
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
-    yue_hans.save(outfile_path)
+    yue_hans_transcribe.save(outfile_path)
 
     # Proofread
-    yue_hans = Series.load(outfile_path)
+    yue_hans_transcribe = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
         test_case_path=title_root
         / "multilang"
@@ -145,11 +145,11 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread = get_yue_vs_zho_proofread(
-        yue_hans, zho_hans, processor=proofreader
+    yue_hans_transcribe_proofread = get_yue_vs_zho_proofread(
+        yue_hans_transcribe, zho_hans, processor=proofreader
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
-    yue_hans_proofread.save(outfile_path)
+    yue_hans_transcribe_proofread.save(outfile_path)
 
     # Translate
     translator = get_yue_from_zho_translator(
@@ -160,11 +160,11 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread_translate = get_yue_from_zho_translated(
-        yue_hans_proofread, zho_hans, translator=translator
+    yue_hans_transcribe_proofread_translate = get_yue_from_zho_translated(
+        yue_hans_transcribe_proofread, zho_hans, translator=translator
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate.srt"
-    yue_hans_proofread_translate.save(outfile_path)
+    yue_hans_transcribe_proofread_translate.save(outfile_path)
 
     # Review
     transcriber = get_yue_vs_zho_reviewer(
@@ -175,20 +175,47 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
-        yue_hans_proofread_translate, zho_hans, reviewer=transcriber
+    yue_hans_transcribe_proofread_translate_review = get_yue_vs_zho_reviewed(
+        yue_hans_transcribe_proofread_translate, zho_hans, reviewer=transcriber
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
-    yue_hans_proofread_translate_review.save(outfile_path)
+    yue_hans_transcribe_proofread_translate_review.save(outfile_path)
 if "简体粤文 (Diff)" in actions:
-    yue_hans_proofread_translate_review = Series.load(
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    yue_hans_transcribe = Series.load(output_dir / "yue-Hans_transcribe.srt")
+    diff = get_series_diff(
+        yue_hans_transcribe,
+        yue_hans_reference,
+        one_lbl="TRANSCRIBE",
+        two_lbl="REFERENCE",
+    )
+    # print(diff)
+    cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
+    print(f"CER: {cer.cer}")
+    print(f"Correct: {cer.correct}")
+    print(f"Substitutions: {cer.substitutions}")
+    print(f"Insertions: {cer.insertions}")
+    print(f"Deletions: {cer.deletions}")
+    print(f"Reference length: {cer.reference_length}")
+
+    yue_hans_transcribe_proofread_translate_review = Series.load(
         output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
     )
-    yue_hans_flatten = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+
     diff = get_series_diff(
-        yue_hans_proofread_translate_review,
-        yue_hans_flatten,
+        yue_hans_transcribe_proofread_translate_review,
+        yue_hans_reference,
         one_lbl="TRANSCRIBE",
-        two_lbl="OFFICIAL",
+        two_lbl="REFERENCE",
     )
     print(diff)
+    cer = get_series_cer(
+        yue_hans_reference,
+        yue_hans_transcribe_proofread_translate_review,
+    )
+    print(f"CER: {cer.cer}")
+    print(f"Correct: {cer.correct}")
+    print(f"Substitutions: {cer.substitutions}")
+    print(f"Insertions: {cer.insertions}")
+    print(f"Deletions: {cer.deletions}")
+    print(f"Reference length: {cer.reference_length}")
