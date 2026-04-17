@@ -8,23 +8,8 @@ from math import inf
 
 import pytest
 
-from scinoephile.analysis import get_series_cer, get_text_cer
-from scinoephile.core.subtitles import Series, Subtitle
-
-
-def _get_series(*texts: str) -> Series:
-    """Build a simple subtitle series for tests.
-
-    Arguments:
-        *texts: subtitle texts in order
-    Returns:
-        subtitle series
-    """
-    events = [
-        Subtitle(start=index * 1000, end=(index + 1) * 1000, text=text)
-        for index, text in enumerate(texts)
-    ]
-    return Series(events=events)
+from scinoephile.analysis import CharacterErrorRateResult, get_series_cer, get_text_cer
+from scinoephile.core.subtitles import Series
 
 
 @pytest.mark.parametrize(
@@ -33,7 +18,7 @@ def _get_series(*texts: str) -> Series:
         (
             "abc",
             "abc",
-            dict(
+            CharacterErrorRateResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -45,7 +30,7 @@ def _get_series(*texts: str) -> Series:
         (
             "abc",
             "axc",
-            dict(
+            CharacterErrorRateResult(
                 cer=1 / 3,
                 substitutions=1,
                 insertions=0,
@@ -57,7 +42,7 @@ def _get_series(*texts: str) -> Series:
         (
             "abc",
             "abxc",
-            dict(
+            CharacterErrorRateResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=1,
@@ -69,7 +54,7 @@ def _get_series(*texts: str) -> Series:
         (
             "abc",
             "ac",
-            dict(
+            CharacterErrorRateResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=0,
@@ -81,7 +66,7 @@ def _get_series(*texts: str) -> Series:
         (
             "a b",
             "ab",
-            dict(
+            CharacterErrorRateResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -93,7 +78,7 @@ def _get_series(*texts: str) -> Series:
         (
             "a,b!",
             "ab",
-            dict(
+            CharacterErrorRateResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -105,7 +90,7 @@ def _get_series(*texts: str) -> Series:
         (
             "廣東話",
             "广东话",
-            dict(
+            CharacterErrorRateResult(
                 cer=1.0,
                 substitutions=3,
                 insertions=0,
@@ -117,7 +102,7 @@ def _get_series(*texts: str) -> Series:
         (
             "",
             "",
-            dict(
+            CharacterErrorRateResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -129,7 +114,7 @@ def _get_series(*texts: str) -> Series:
         (
             "",
             "abc",
-            dict(
+            CharacterErrorRateResult(
                 cer=inf,
                 substitutions=0,
                 insertions=3,
@@ -143,32 +128,65 @@ def _get_series(*texts: str) -> Series:
 def test_get_text_cer(
     reference: str,
     candidate: str,
-    expected: dict[str, float | int],
+    expected: CharacterErrorRateResult,
 ):
-    """Test text-level character error rate calculations."""
+    """Test text-level character error rate calculations.
+
+    Arguments:
+        reference: reference text
+        candidate: candidate text
+        expected: expected CER result
+    """
     result = get_text_cer(reference, candidate)
 
-    assert result.cer == expected["cer"]
-    assert result.substitutions == expected["substitutions"]
-    assert result.insertions == expected["insertions"]
-    assert result.deletions == expected["deletions"]
-    assert result.correct == expected["correct"]
-    assert result.reference_length == expected["reference_length"]
+    assert result == expected
 
 
-def test_get_series_cer():
-    """Test series-level character error rate calculations."""
-    reference = _get_series("廣東", "話！")
-    candidate = _get_series("廣 東", "话")
+def test_get_series_cer_kob_transcribe(
+    kob_yue_hans_timewarp_clean_flatten: Series,
+    kob_yue_hans_transcribe: Series,
+):
+    """Test KOB CER for transcribed subtitles against the flattened reference.
 
+    Arguments:
+        kob_yue_hans_timewarp_clean_flatten: reference subtitles
+        kob_yue_hans_transcribe: transcribed subtitles
+    """
     result = get_series_cer(
-        reference,
-        candidate,
+        kob_yue_hans_timewarp_clean_flatten,
+        kob_yue_hans_transcribe,
     )
 
-    assert result.cer == 1 / 3
-    assert result.substitutions == 1
-    assert result.insertions == 0
-    assert result.deletions == 0
-    assert result.correct == 2
-    assert result.reference_length == 3
+    assert result == CharacterErrorRateResult(
+        cer=0.9040239499867923,
+        substitutions=4155,
+        insertions=2835,
+        deletions=3277,
+        correct=3925,
+        reference_length=11357,
+    )
+
+
+def test_get_series_cer_kob_transcribe_proofread_translate_review(
+    kob_yue_hans_timewarp_clean_flatten: Series,
+    kob_yue_hans_transcribe_proofread_translate_review: Series,
+):
+    """Test KOB CER after proofread/translate/review against the reference.
+
+    Arguments:
+        kob_yue_hans_timewarp_clean_flatten: reference subtitles
+        kob_yue_hans_transcribe_proofread_translate_review: reviewed subtitles
+    """
+    result = get_series_cer(
+        kob_yue_hans_timewarp_clean_flatten,
+        kob_yue_hans_transcribe_proofread_translate_review,
+    )
+
+    assert result == CharacterErrorRateResult(
+        cer=0.6034163951747821,
+        substitutions=2789,
+        insertions=2091,
+        deletions=1973,
+        correct=6595,
+        reference_length=11357,
+    )

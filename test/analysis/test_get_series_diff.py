@@ -199,7 +199,13 @@ def test_get_series_diff_mlamd_zho_simplify(
     mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
 ):
-    """Test get_series_diff with MLAMD Simplified vs Traditional simplified subtitles."""
+    """Test get_series_diff with MLAMD Simplified vs Traditional subtitles.
+
+    Arguments:
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
         mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
@@ -230,7 +236,13 @@ def test_get_series_diff_mnt_zho_simplify(
     mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
 ):
-    """Test get_series_diff with MNT Simplified vs Traditional simplified subtitles."""
+    """Test get_series_diff with MNT Simplified vs Traditional subtitles.
+
+    Arguments:
+        mnt_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         mnt_zho_hans_fuse_clean_validate_proofread_flatten,
         mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
@@ -373,7 +385,13 @@ def test_get_series_diff_t_zho_simplify(
     t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
 ):
-    """Test get_series_diff with T Simplified vs Traditional simplified subtitles."""
+    """Test get_series_diff with T Simplified vs Traditional subtitles.
+
+    Arguments:
+        t_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         t_zho_hans_fuse_clean_validate_proofread_flatten,
         t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,

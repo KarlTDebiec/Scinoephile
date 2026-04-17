@@ -72,6 +72,10 @@ __all__ = [
     "kob_yue_hans_timewarp_clean",
     "kob_yue_hans_timewarp_clean_flatten",
     "kob_yue_hans_timewarp_clean_flatten_romanize",
+    "kob_yue_hans_transcribe",
+    "kob_yue_hans_transcribe_proofread",
+    "kob_yue_hans_transcribe_proofread_translate",
+    "kob_yue_hans_transcribe_proofread_translate_review",
     "kob_yue_hant_timewarp",
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
@@ -395,6 +399,32 @@ def kob_yue_hans_timewarp_clean_flatten() -> Series:
 def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
     """KOB 简体粤文 timewarp/cleaned/flattened romanized subtitles."""
     return Series.load(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe() -> Series:
+    """KOB 简体粤文 transcribed subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe.srt")
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe_proofread() -> Series:
+    """KOB 简体粤文 transcribed and proofread subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_proofread.srt")
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe_proofread_translate() -> Series:
+    """KOB 简体粤文 transcribed/proofread/translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_proofread_translate.srt")
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe_proofread_translate_review() -> Series:
+    """KOB 简体粤文 transcribed/proofread/translated/reviewed subtitles."""
+    return Series.load(
+        output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
+    )
 
 
 @pytest.fixture
