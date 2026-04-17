@@ -17,11 +17,7 @@ from typing import Unpack
 
 from scinoephile.core.subtitles import Series
 
-from .character_error_rate import (
-    CharacterErrorRateResult,
-    get_series_cer,
-    get_text_cer,
-)
+from .character_error_rate import CharacterErrorRateResult, get_series_cer, get_text_cer
 from .series_diff import SeriesDiff, SeriesDiffKwargs
 
 __all__ = [
@@ -44,6 +40,6 @@ def get_series_diff(
         two: second subtitle series
         **kwargs: additional keyword arguments for SeriesDiff
     Returns:
-        series-level diff object
+        series diff
     """
     return SeriesDiff(one, two, **kwargs)

@@ -8,13 +8,8 @@ from dataclasses import dataclass
 from math import inf
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import (
-    full_punc_chars,
-    half_punc_chars,
-    whitespace_chars,
-)
+from scinoephile.core.text import full_punc_chars, half_punc_chars, whitespace_chars
 
-from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .series_diff import SeriesDiff
 
@@ -48,26 +43,37 @@ class CharacterErrorRateResult:
     """Number of characters in the normalized reference text."""
 
 
-def get_series_cer(
-    reference: Series,
-    hypothesis: Series,
-) -> CharacterErrorRateResult:
+def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateResult:
     """Compute character error rate between subtitle series.
 
     Arguments:
         reference: reference subtitle series
-        hypothesis: hypothesis subtitle series
+        candidate: candidate subtitle series
     Returns:
         character error rate results
     """
     reference_text = _normalize_text_for_cer(_get_series_text(reference))
-    series_diff = SeriesDiff(reference, hypothesis)
+    series_diff = SeriesDiff(reference, candidate)
 
     substitutions = 0
     insertions = 0
     deletions = 0
     for message in series_diff:
-        chunk_result = _get_chunk_cer(message)
+        if message.kind == LineDiffKind.DELETE:
+            chunk_result = get_text_cer(
+                _join_chunk_text(message.one_texts),
+                "",
+            )
+        elif message.kind == LineDiffKind.INSERT:
+            chunk_result = get_text_cer(
+                "",
+                _join_chunk_text(message.one_texts),
+            )
+        else:
+            chunk_result = get_text_cer(
+                _join_chunk_text(message.one_texts),
+                _join_chunk_text(message.two_texts),
+            )
         substitutions += chunk_result.substitutions
         insertions += chunk_result.insertions
         deletions += chunk_result.deletions
@@ -89,28 +95,25 @@ def get_series_cer(
     )
 
 
-def get_text_cer(
-    reference: str,
-    hypothesis: str,
-) -> CharacterErrorRateResult:
+def get_text_cer(reference: str, candidate: str) -> CharacterErrorRateResult:
     """Compute character error rate between text strings.
 
     Arguments:
         reference: reference text
-        hypothesis: hypothesis text
+        candidate: candidate text
     Returns:
         character error rate results
     """
     normalized_reference = _normalize_text_for_cer(reference)
-    normalized_hypothesis = _normalize_text_for_cer(hypothesis)
+    normalized_candidate = _normalize_text_for_cer(candidate)
     substitutions, insertions, deletions, correct = _get_edit_counts(
         normalized_reference,
-        normalized_hypothesis,
+        normalized_candidate,
     )
     reference_length = len(normalized_reference)
 
     if reference_length == 0:
-        cer = 0.0 if len(normalized_hypothesis) == 0 else inf
+        cer = 0.0 if len(normalized_candidate) == 0 else inf
     else:
         cer = (substitutions + insertions + deletions) / reference_length
 
@@ -124,41 +127,17 @@ def get_text_cer(
     )
 
 
-def _get_chunk_cer(message: LineDiff) -> CharacterErrorRateResult:
-    """Compute CER for a single diff chunk.
-
-    Arguments:
-        message: line diff chunk
-    Returns:
-        character error rate results for the chunk
-    """
-    if message.kind == LineDiffKind.DELETE:
-        return get_text_cer(
-            _join_chunk_text(message.one_texts),
-            "",
-        )
-    if message.kind == LineDiffKind.INSERT:
-        return get_text_cer(
-            "",
-            _join_chunk_text(message.one_texts),
-        )
-    return get_text_cer(
-        _join_chunk_text(message.one_texts),
-        _join_chunk_text(message.two_texts),
-    )
-
-
-def _get_edit_counts(reference: str, hypothesis: str) -> tuple[int, int, int, int]:
+def _get_edit_counts(reference: str, candidate: str) -> tuple[int, int, int, int]:
     """Compute aggregate edit counts for two normalized strings.
 
     Arguments:
         reference: normalized reference text
-        hypothesis: normalized hypothesis text
+        candidate: normalized candidate text
     Returns:
         substitutions, insertions, deletions, and correct counts
     """
     rows = len(reference) + 1
-    cols = len(hypothesis) + 1
+    cols = len(candidate) + 1
     dp: list[list[tuple[int, int, int, int, int]]] = [
         [(0, 0, 0, 0, 0) for _ in range(cols)] for _ in range(rows)
     ]
@@ -172,7 +151,7 @@ def _get_edit_counts(reference: str, hypothesis: str) -> tuple[int, int, int, in
 
     for i in range(1, rows):
         for j in range(1, cols):
-            if reference[i - 1] == hypothesis[j - 1]:
+            if reference[i - 1] == candidate[j - 1]:
                 distance, substitutions, insertions, deletions, correct = dp[i - 1][
                     j - 1
                 ]

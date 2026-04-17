@@ -28,7 +28,7 @@ def _get_series(*texts: str) -> Series:
 
 
 @pytest.mark.parametrize(
-    ("reference", "hypothesis", "expected"),
+    ("reference", "candidate", "expected"),
     [
         (
             "abc",
@@ -142,11 +142,11 @@ def _get_series(*texts: str) -> Series:
 )
 def test_get_text_cer(
     reference: str,
-    hypothesis: str,
+    candidate: str,
     expected: dict[str, float | int],
 ):
     """Test text-level character error rate calculations."""
-    result = get_text_cer(reference, hypothesis)
+    result = get_text_cer(reference, candidate)
 
     assert result.cer == expected["cer"]
     assert result.substitutions == expected["substitutions"]
@@ -159,11 +159,11 @@ def test_get_text_cer(
 def test_get_series_cer():
     """Test series-level character error rate calculations."""
     reference = _get_series("廣東", "話！")
-    hypothesis = _get_series("廣 東", "话")
+    candidate = _get_series("廣 東", "话")
 
     result = get_series_cer(
         reference,
-        hypothesis,
+        candidate,
     )
 
     assert result.cer == 1 / 3
