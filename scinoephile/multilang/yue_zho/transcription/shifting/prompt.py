@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import EngPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_pair import DualPairPrompt
@@ -21,7 +21,7 @@ class YueZhoHansShiftingPrompt(DualPairPrompt, EngPrompt):
     """Text for LLM correspondence for 简体粤文 shifting."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责将广东话口语嘅简体粤文字幕同对应嘅中文字幕对齐。
         你会收到一条中文字幕 (zhongwen_1) 同一条初步简体粤文字幕 (yuewen_1)，
         以及第二条中文字幕 (zhongwen_2) 同第二条初步简体粤文字幕 (yuewen_2)。

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
@@ -21,7 +21,7 @@ class YueZhoHansMergingPrompt(DualMultiSinglePrompt, YueHansPrompt):
     """Text for LLM correspondence for 简体粤文/中文 transcription merging."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责将广东话口语嘅简体粤文字幕同对应嘅中文字幕对齐。
         你会收到一条中文字幕，以及同一条字幕对应嘅多行简体粤文转写。
         多行简体粤文代表口语停顿拆开嘅行。

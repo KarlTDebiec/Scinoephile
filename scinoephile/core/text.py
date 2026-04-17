@@ -23,8 +23,8 @@ __all__ = [
     "RE_HANZI",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
+    "dedent_and_compact",
     "get_char_type",
-    "get_dedented_and_compacted_multiline_text",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
@@ -187,6 +187,20 @@ RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
 
 
+def dedent_and_compact(text: str) -> str:
+    """Get multi-line string dedented and with newlines compacted.
+
+    Arguments:
+        text: text to process
+    Returns:
+        dedented and compacted text
+    """
+    text = dedent(text).strip()
+    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+    text = re.sub(r"\n{2,}", "\n", text)
+    return text
+
+
 @cache
 def get_char_type(char: str) -> str:
     """Return character type.
@@ -240,20 +254,6 @@ def get_char_type(char: str) -> str:
     )
 
 
-def get_dedented_and_compacted_multiline_text(text: str) -> str:
-    """Get multi-line string dedented and with newlines compacted.
-
-    Arguments:
-        text: text to process
-    Returns:
-        dedented and compacted text
-    """
-    text = dedent(text).strip()
-    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
-    text = re.sub(r"\n{2,}", "\n", text)
-    return text
-
-
 def remove_non_punc_and_whitespace(text: str) -> str:
     """Strip non-punctuation and non-whitespace characters from text.
 
@@ -275,4 +275,6 @@ def remove_punc_and_whitespace(text: str) -> str:
         Stripped text with punctuation and whitespace removed
     """
     chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
-    return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
+    return "".join(
+        char for char in text if not char.isspace() and char not in chars_to_remove
+    )

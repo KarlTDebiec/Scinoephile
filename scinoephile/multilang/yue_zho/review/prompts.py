@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
@@ -38,7 +38,7 @@ class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Description of the dictionary lookup query parameter."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责为广东话语音嘅粤文字幕做最后审核。
         每一条粤文字幕都已经同对应嘅中文字幕逐条校对过，而喺该对字幕入面出现嘅差异亦已经处理好。
         你而家要专注处理一啲可能喺单独对照时未必察觉到、但喺通盘检视成套字幕时会显现出嚟嘅粤文字幕问题。

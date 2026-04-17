@@ -16,7 +16,7 @@ from scinoephile.multilang.yue_zho import (
     get_yue_vs_zho_reviewed,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
-from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_processor
+from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_from_zho_translated,
@@ -73,6 +73,7 @@ if "Bilingual 简体中文 and English" in actions:
         overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
+    # Stage
     zho_hans = Series.load(
         output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
     )
@@ -86,6 +87,8 @@ if "简体粤文 (Transcription)" in actions:
         )
         zho_hans = get_series_with_subs_merged(zho_hans, 539)
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+
+    # Transcribe
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",
@@ -96,6 +99,7 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
+    # Proofread
     yue_hans = Series.load(outfile_path)
     proofreader = get_yue_vs_zho_proofreader(
         test_case_path=title_root
@@ -111,6 +115,7 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
     yue_hans_proofread.save(outfile_path)
 
+    # Translate
     translator = get_yue_from_zho_translator(
         test_case_path=title_root
         / "multilang"
@@ -125,7 +130,8 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate.srt"
     yue_hans_proofread_translate.save(outfile_path)
 
-    transcriber = get_yue_vs_zho_processor(
+    # Review
+    reviewer = get_yue_vs_zho_reviewer(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
@@ -134,7 +140,7 @@ if "简体粤文 (Transcription)" in actions:
         auto_verify=True,
     )
     yue_hans_proofread_translate_review = get_yue_vs_zho_reviewed(
-        yue_hans_proofread_translate, zho_hans, processor=transcriber
+        yue_hans_proofread_translate, zho_hans, reviewer=reviewer
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
     yue_hans_proofread_translate_review.save(outfile_path)

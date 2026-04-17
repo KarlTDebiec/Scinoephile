@@ -35,7 +35,7 @@ __all__ = [
 test_data_root = package_root.parent / "test" / "data"
 
 
-def assert_cli_help(cli: tuple[type, ...]) -> None:
+def assert_cli_help(cli: tuple[type, ...]):
     """Assert that a CLI tuple shows help text.
 
     Arguments:
@@ -53,7 +53,7 @@ def assert_cli_help(cli: tuple[type, ...]) -> None:
     assert stderr.getvalue() == ""
 
 
-def assert_cli_usage(cli: tuple[type, ...]) -> None:
+def assert_cli_usage(cli: tuple[type, ...]):
     """Assert that a CLI tuple shows usage on missing args.
 
     Arguments:
@@ -71,9 +71,7 @@ def assert_cli_usage(cli: tuple[type, ...]) -> None:
     assert stderr.getvalue().startswith(get_usage_prefix(cli))
 
 
-def assert_expected_warnings(
-    warnings: list[str], expected: list[str], label: str
-) -> None:
+def assert_expected_warnings(warnings: list[str], expected: list[str], label: str):
     """Assert that warning messages match expected values.
 
     Arguments:

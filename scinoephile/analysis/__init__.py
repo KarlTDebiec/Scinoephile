@@ -5,6 +5,7 @@
 This module may import from: common, core
 
 Hierarchy within module:
+* character_error_rate
 * line_diff_kind / replace_cursor
 * line_diff
 * series_diff
@@ -16,17 +17,22 @@ from typing import Unpack
 
 from scinoephile.core.subtitles import Series
 
-from .line_diff import LineDiff
+from .character_error_rate import CharacterErrorRateResult, get_series_cer, get_text_cer
 from .series_diff import SeriesDiff, SeriesDiffKwargs
 
-__all__ = ["get_series_diff"]
+__all__ = [
+    "CharacterErrorRateResult",
+    "get_series_cer",
+    "get_series_diff",
+    "get_text_cer",
+]
 
 
 def get_series_diff(
     one: Series,
     two: Series,
     **kwargs: Unpack[SeriesDiffKwargs],
-) -> list[LineDiff]:
+) -> SeriesDiff:
     """Compare two subtitle series by line content.
 
     Arguments:
@@ -34,6 +40,6 @@ def get_series_diff(
         two: second subtitle series
         **kwargs: additional keyword arguments for SeriesDiff
     Returns:
-        list of difference messages
+        series diff
     """
-    return SeriesDiff(one, two, **kwargs).msgs
+    return SeriesDiff(one, two, **kwargs)

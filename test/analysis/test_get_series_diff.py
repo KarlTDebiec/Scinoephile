@@ -7,18 +7,15 @@
 from __future__ import annotations
 
 from scinoephile.analysis import get_series_diff
-from scinoephile.analysis.line_diff import LineDiff
+from scinoephile.analysis.series_diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 
 
-def _assert_expected_differences(
-    differences: list[LineDiff],
-    expected: list[str],
-) -> None:
+def _assert_expected_differences(differences: SeriesDiff, expected: list[str]):
     """Assert that expected differences are present.
 
     Arguments:
-        differences: list of differences to check
+        differences: series diff to check
         expected: list of expected difference strings
     """
     formatted_differences = [str(diff) for diff in differences]
@@ -44,7 +41,6 @@ def test_get_series_diff_kob(
         one_lbl="OCR",
         two_lbl="SRT",
     )
-    # NOTE: Do not change expected entries through OCR[249]/SRT[260]; only adjust below.
     expected = [
         "insert: SRT[8] 'Damn!' not present in OCR",
         "insert: SRT[31] 'What?' not present in OCR",
@@ -202,8 +198,14 @@ def test_get_series_diff_kob(
 def test_get_series_diff_mlamd_zho_simplify(
     mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-) -> None:
-    """Test get_series_diff with MLAMD Simplified vs Traditional simplified subtitles."""
+):
+    """Test get_series_diff with MLAMD Simplified vs Traditional subtitles.
+
+    Arguments:
+        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
         mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
@@ -233,8 +235,14 @@ def test_get_series_diff_mlamd_zho_simplify(
 def test_get_series_diff_mnt_zho_simplify(
     mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-) -> None:
-    """Test get_series_diff with MNT Simplified vs Traditional simplified subtitles."""
+):
+    """Test get_series_diff with MNT Simplified vs Traditional subtitles.
+
+    Arguments:
+        mnt_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         mnt_zho_hans_fuse_clean_validate_proofread_flatten,
         mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
@@ -376,8 +384,14 @@ def test_get_series_diff_mnt_zho_simplify(
 def test_get_series_diff_t_zho_simplify(
     t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-) -> None:
-    """Test get_series_diff with T Simplified vs Traditional simplified subtitles."""
+):
+    """Test get_series_diff with T Simplified vs Traditional subtitles.
+
+    Arguments:
+        t_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
+        t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
+            traditional subtitles, programmatically simplified
+    """
     differences = get_series_diff(
         t_zho_hans_fuse_clean_validate_proofread_flatten,
         t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
