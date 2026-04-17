@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import difflib
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from typing import TypedDict
 
 from scinoephile.core import ScinoephileError
@@ -67,6 +67,32 @@ class SeriesDiff:
         self.two_normlines = [self._normalize_line(line) for line in self.two_lines]
         self.messages: list[LineDiff] = []
         self._diff()
+
+    def __iter__(self) -> Iterator[LineDiff]:
+        """Iterate over line-level diff messages.
+
+        Arguments:
+            None.
+        Returns:
+            iterator over diff messages
+        """
+        return iter(self.messages)
+
+    def __str__(self) -> str:
+        """Format the diff for human-readable display.
+
+        Arguments:
+            None.
+        Returns:
+            formatted multi-line diff representation
+        """
+        if not self.messages:
+            return "[]"
+
+        formatted_messages = "\n".join(
+            f"    {str(message)!r}," for message in self.messages
+        )
+        return f"[\n{formatted_messages}\n]"
 
     def _diff(self) -> list[LineDiff]:
         """Compare subtitle series by line content.
