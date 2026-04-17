@@ -18,10 +18,10 @@ output_dir.mkdir(parents=True, exist_ok=True)
 set_logging_verbosity(2)
 
 actions = {
-    "繁體粵文 (OCR)",
-    "简体粤文 (OCR)",
-    "繁體中文 (OCR)",
-    "简体中文 (OCR)",
+    # "繁體粵文 (OCR)",
+    # "简体粤文 (OCR)",
+    # "繁體中文 (OCR)",
+    # "简体中文 (OCR)",
     "English (OCR)",
     # "Bilingual 简体中文 and English",
     # "Bilingual 简体粤文 and English",
@@ -30,6 +30,9 @@ actions = {
 if "繁體粵文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
+        sup_path=Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-4.sup"
+        ),
         lang="yue",
         overwrite_srt=True,
         force_validation=True,
@@ -37,16 +40,40 @@ if "繁體粵文 (OCR)" in actions:
 if "简体粤文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
+        sup_path=Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-4.sup"
+        ),
         lang="yue",
         overwrite_srt=True,
         force_validation=True,
     )
 if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_zho_hant_ocr(
+        title_root,
+        sup_path=Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-7.sup"
+        ),
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "简体中文 (OCR)" in actions:
-    process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_zho_hans_ocr(
+        title_root,
+        sup_path=Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-6.sup"
+        ),
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_eng_ocr(
+        title_root,
+        sup_path=Path(
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/eng-5.sup"
+        ),
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
