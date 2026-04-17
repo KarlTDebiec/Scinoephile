@@ -173,20 +173,20 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
         return []
 
     condensed = text.replace(" ", "")
-    if "'" not in condensed:
-        try:
-            parsed = pycantonese.parse_jyutping(condensed)
-        except ValueError:
-            parsed = []
-        if parsed:
-            return [
-                " ".join(
-                    f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
-                    for syllable in parsed
-                )
-            ]
+    condensed_without_apostrophes = condensed.replace("'", "")
+    try:
+        parsed = pycantonese.parse_jyutping(condensed_without_apostrophes)
+    except ValueError:
+        parsed = []
+    if parsed:
+        return [
+            " ".join(
+                f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
+                for syllable in parsed
+            )
+        ]
 
-    if not is_accented_yale(text):
+    if "'" not in text and not is_accented_yale(text):
         return []
     return yale_to_jyutping(text)
 
