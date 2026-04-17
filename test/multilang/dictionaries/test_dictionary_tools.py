@@ -21,7 +21,7 @@ from scinoephile.multilang.yue_zho.proofreading import (
 )
 from scinoephile.multilang.yue_zho.review import (
     YueHansReviewPrompt,
-    get_yue_vs_zho_processor,
+    get_yue_vs_zho_reviewer,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueHansFromZhoTranslationPrompt,
@@ -147,7 +147,7 @@ def test_translation_processor_uses_prompt_dictionary_tooling():
 
 def test_review_processor_uses_prompt_dictionary_tooling():
     """Wire review tooling from the selected prompt class."""
-    processor = get_yue_vs_zho_processor(
+    processor = get_yue_vs_zho_reviewer(
         prompt_cls=YueHansReviewPrompt,
         test_cases=[],
     )

@@ -24,7 +24,7 @@ __all__ = [
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
     "get_yue_vs_zho_reviewed",
-    "get_yue_vs_zho_processor",
+    "get_yue_vs_zho_reviewer",
 ]
 
 
@@ -44,7 +44,7 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
 def get_yue_vs_zho_reviewed(
     yuewen: Series,
     zhongwen: Series,
-    processor: DualBlockProcessor | None = None,
+    reviewer: DualBlockProcessor | None = None,
     **kwargs: Unpack[YueZhoReviewProcessKwargs],
 ) -> Series:
     """Get 粤文 subtitles reviewed against 中文 subtitles.
@@ -52,17 +52,17 @@ def get_yue_vs_zho_reviewed(
     Arguments:
         yuewen: 粤文 Series
         zhongwen: 中文 Series
-        processor: processor to use
+        reviewer: processor to use
         **kwargs: additional arguments for DualBlockProcessor.process
     Returns:
         粤文 reviewed against 中文
     """
-    if processor is None:
-        processor = get_yue_vs_zho_processor()
-    return processor.process(yuewen, zhongwen, **kwargs)
+    if reviewer is None:
+        reviewer = get_yue_vs_zho_reviewer()
+    return reviewer.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_vs_zho_processor(
+def get_yue_vs_zho_reviewer(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
