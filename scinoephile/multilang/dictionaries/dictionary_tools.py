@@ -5,50 +5,20 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TypedDict
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
 
+from .dictionary_lookup_response import DictionaryLookupResponse
 from .dictionary_tool_prompt import DictionaryToolPrompt
 from .lookup import lookup_dictionary_entries
 from .serialization import dictionary_entry_to_dict
 
 __all__ = [
-    "DictionaryToolPrompt",
     "get_dictionary_tools",
     "lookup_dictionary",
 ]
 logger = getLogger(__name__)
 """Module logger."""
-
-
-class DictionaryLookupResponse(TypedDict, total=False):
-    """Dictionary tool response payload."""
-
-    query: str
-    """Lookup query."""
-
-    result_count: int
-    """Number of matching entries returned."""
-
-    entries: list[dict[str, str | float | list[dict[str, str]]]]
-    """Serialized dictionary entries."""
-
-    error: str
-    """Error message when lookup fails."""
-
-
-def _compact_lookup_error_message(error_message: str) -> str:
-    """Reduce verbose lookup failures to compact tool-facing messages.
-
-    Arguments:
-        error_message: raw lookup error message
-    Returns:
-        compact error message
-    """
-    if " dictionary database not found." in error_message:
-        return error_message.split(". ", maxsplit=1)[0] + "."
-    return error_message
 
 
 def get_dictionary_tools(
@@ -78,8 +48,33 @@ def get_dictionary_tools(
             },
         }
     ]
+
+    def lookup_dictionary_from_args(
+        arguments: dict[str, object],
+    ) -> DictionaryLookupResponse:
+        """Execute dictionary lookup from parsed tool-call arguments.
+
+        Arguments:
+            arguments: decoded tool-call JSON arguments
+        Returns:
+            lookup response payload
+        """
+        allowed_arguments = {"query"}
+        unexpected_arguments = sorted(set(arguments) - allowed_arguments)
+        if unexpected_arguments:
+            query = str(arguments.get("query", "")).strip()
+            return {
+                "query": query,
+                "result_count": 0,
+                "entries": [],
+                "error": ("unexpected arguments: " + ", ".join(unexpected_arguments)),
+            }
+
+        query = str(arguments.get("query", "")).strip()
+        return lookup_dictionary(query=query, auto_build_missing=False)
+
     handlers: dict[str, ToolHandler] = {
-        prompt_cls.dictionary_tool_name: _lookup_dictionary_from_args,
+        prompt_cls.dictionary_tool_name: lookup_dictionary_from_args,
     }
     return tools, handlers
 
@@ -113,13 +108,12 @@ def lookup_dictionary(
             auto_build_missing=auto_build_missing,
         )
     except (FileNotFoundError, ValueError) as exc:
-        error_message = _compact_lookup_error_message(str(exc))
-        logger.warning(f"Dictionary lookup failed: {error_message}")
+        logger.warning(f"Dictionary lookup failed: {exc}")
         return {
             "query": normalized_query,
             "result_count": 0,
             "entries": [],
-            "error": error_message,
+            "error": str(exc),
         }
     logger.info(
         f"Dictionary lookup: query={normalized_query!r} result_count={len(entries)}"
@@ -129,31 +123,3 @@ def lookup_dictionary(
         "result_count": len(entries),
         "entries": [dictionary_entry_to_dict(entry) for entry in entries],
     }
-
-
-def _lookup_dictionary_from_args(
-    arguments: dict[str, object],
-) -> DictionaryLookupResponse:
-    """Execute dictionary lookup from parsed tool-call arguments.
-
-    Arguments:
-        arguments: decoded tool-call JSON arguments
-    Returns:
-        lookup response payload
-    """
-    allowed_arguments = {"query"}
-    unexpected_arguments = sorted(set(arguments) - allowed_arguments)
-    if unexpected_arguments:
-        query = str(arguments.get("query", "")).strip()
-        return {
-            "query": query,
-            "result_count": 0,
-            "entries": [],
-            "error": ("unexpected arguments: " + ", ".join(unexpected_arguments)),
-        }
-
-    query = str(arguments.get("query", "")).strip()
-    return lookup_dictionary(
-        query=query,
-        auto_build_missing=False,
-    )

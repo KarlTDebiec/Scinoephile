@@ -10,9 +10,7 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
-from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
-    DictionaryToolPrompt,
-)
+from scinoephile.multilang.dictionaries import DictionaryToolPrompt
 
 __all__ = [
     "YueHansReviewPrompt",

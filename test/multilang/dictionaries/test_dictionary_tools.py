@@ -13,9 +13,10 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.multilang.dictionaries import DictionaryDefinition, DictionaryEntry
-from scinoephile.multilang.dictionaries.dictionary_source import DictionarySource
-from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
+from scinoephile.multilang.dictionaries import (
+    DictionaryDefinition,
+    DictionaryEntry,
+    DictionarySource,
     DictionaryToolPrompt,
 )
 from scinoephile.multilang.dictionaries.dictionary_tools import (
