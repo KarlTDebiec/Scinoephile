@@ -8,9 +8,9 @@ from logging import getLogger
 from typing import TypedDict
 
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
 
 from .dictionary_tool_prompt import DictionaryToolPrompt
+from .lookup import lookup_dictionary_entries
 from .serialization import dictionary_entry_to_dict
 
 __all__ = [
@@ -36,6 +36,19 @@ class DictionaryLookupResponse(TypedDict, total=False):
 
     error: str
     """Error message when lookup fails."""
+
+
+def _compact_lookup_error_message(error_message: str) -> str:
+    """Reduce verbose lookup failures to compact tool-facing messages.
+
+    Arguments:
+        error_message: raw lookup error message
+    Returns:
+        compact error message
+    """
+    if " dictionary database not found." in error_message:
+        return error_message.split(". ", maxsplit=1)[0] + "."
+    return error_message
 
 
 def get_dictionary_tools(
@@ -93,16 +106,20 @@ def lookup_dictionary(
             "error": "query must be non-empty",
         }
 
-    service = CuhkDictionaryService(auto_build_missing=auto_build_missing)
     try:
-        entries = service.lookup(query=normalized_query)
+        entries = lookup_dictionary_entries(
+            query=normalized_query,
+            limit=10,
+            auto_build_missing=auto_build_missing,
+        )
     except (FileNotFoundError, ValueError) as exc:
-        logger.warning(f"Dictionary lookup failed: {exc}")
+        error_message = _compact_lookup_error_message(str(exc))
+        logger.warning(f"Dictionary lookup failed: {error_message}")
         return {
             "query": normalized_query,
             "result_count": 0,
             "entries": [],
-            "error": str(exc),
+            "error": error_message,
         }
     logger.info(
         f"Dictionary lookup: query={normalized_query!r} result_count={len(entries)}"

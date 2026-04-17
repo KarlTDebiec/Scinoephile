@@ -16,20 +16,17 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.multilang.dictionaries import DictionaryDefinition, DictionaryEntry
-from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
-from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
+from scinoephile.multilang.dictionaries import DictionaryEntry
+from scinoephile.multilang.dictionaries.lookup import (
+    AVAILABLE_DICTIONARY_NAMES,
+    lookup_dictionary_entries,
+)
 
 logger = getLogger(__name__)
 
 
 class DictionarySearchCli(CommandLineInterface):
     """Command-line interface for searching dictionaries."""
-
-    _supported_dictionaries = {
-        "cuhk": CuhkDictionaryService,
-        "gzzj": GzzjDictionaryService,
-    }
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -57,7 +54,7 @@ class DictionarySearchCli(CommandLineInterface):
         arg_groups["input arguments"].add_argument(
             "--dictionary-name",
             default="all",
-            choices=["all", *sorted(cls._supported_dictionaries)],
+            choices=["all", *AVAILABLE_DICTIONARY_NAMES],
             help="dictionary to search, or all available dictionaries",
         )
 
@@ -83,28 +80,6 @@ class DictionarySearchCli(CommandLineInterface):
             subcommand name
         """
         return "search"
-
-    @classmethod
-    def _dedupe_definitions(
-        cls,
-        definitions: list[DictionaryDefinition],
-    ) -> list[DictionaryDefinition]:
-        """Deduplicate definitions while preserving order.
-
-        Arguments:
-            definitions: definition list
-        Returns:
-            deduplicated definitions
-        """
-        seen: set[tuple[str, str]] = set()
-        deduped: list[DictionaryDefinition] = []
-        for definition in definitions:
-            key = (definition.text, definition.label)
-            if key in seen:
-                continue
-            seen.add(key)
-            deduped.append(definition)
-        return deduped
 
     @classmethod
     def _log_search_results(
@@ -167,39 +142,6 @@ class DictionarySearchCli(CommandLineInterface):
         cls._log_search_results(query, entries, dictionary_name)
 
     @classmethod
-    def _merge_entries(cls, entries: list[DictionaryEntry]) -> list[DictionaryEntry]:
-        """Merge duplicate entries while preserving source-specific definitions.
-
-        Arguments:
-            entries: raw aggregated dictionary entries
-        Returns:
-            merged dictionary entries
-        """
-        merged_entries: dict[tuple[str, str, str, str], DictionaryEntry] = {}
-        for entry in entries:
-            key = (
-                entry.traditional,
-                entry.simplified,
-                entry.pinyin,
-                entry.jyutping,
-            )
-            if key not in merged_entries:
-                merged_entries[key] = entry
-                continue
-            existing_entry = merged_entries[key]
-            merged_entries[key] = DictionaryEntry(
-                traditional=existing_entry.traditional,
-                simplified=existing_entry.simplified,
-                pinyin=existing_entry.pinyin,
-                jyutping=existing_entry.jyutping,
-                frequency=max(existing_entry.frequency, entry.frequency),
-                definitions=cls._dedupe_definitions(
-                    [*existing_entry.definitions, *entry.definitions]
-                ),
-            )
-        return list(merged_entries.values())
-
-    @classmethod
     def _search_dictionaries(
         cls,
         *,
@@ -218,44 +160,14 @@ class DictionarySearchCli(CommandLineInterface):
         Returns:
             deduplicated dictionary entries
         """
-        names = (
-            sorted(cls._supported_dictionaries)
-            if dictionary_name == "all"
-            else [dictionary_name]
+        dictionaries = None if dictionary_name == "all" else [dictionary_name]
+        return lookup_dictionary_entries(
+            query=query,
+            limit=limit,
+            dictionaries=dictionaries,
+            database_path=database_path,
+            auto_build_missing=False,
         )
-
-        entries: list[DictionaryEntry] = []
-        missing_dictionaries: list[str] = []
-        available_dictionary_count = 0
-        for name in names:
-            service = cls._supported_dictionaries[name](
-                database_path=database_path,
-                auto_build_missing=False,
-            )
-            if dictionary_name == "all":
-                try:
-                    entries.extend(service.lookup(query=query, limit=limit))
-                    available_dictionary_count += 1
-                except FileNotFoundError:
-                    missing_dictionaries.append(name)
-            else:
-                entries.extend(service.lookup(query=query, limit=limit))
-                available_dictionary_count += 1
-
-        if entries or available_dictionary_count > 0:
-            return cls._merge_entries(entries)
-
-        if missing_dictionaries:
-            if dictionary_name == "all":
-                missing_display = ", ".join(sorted(missing_dictionaries))
-                raise FileNotFoundError(
-                    "No searchable dictionary databases were found. Build one or more "
-                    f"of: {missing_display}."
-                )
-            raise FileNotFoundError(
-                f"{dictionary_name.upper()} dictionary database not found."
-            )
-        return []
 
 
 if __name__ == "__main__":
