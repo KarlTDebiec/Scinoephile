@@ -1,8 +1,0 @@
-1
-01:00:56,917 --> 01:00:58,167
-<font size="0" color="#000000">{\an7}<font size="54"><font color="#ffffff">我嫁！</font></font></font>
-
-2
-01:01:16,125 --> 01:01:17,292
-<font size="0" color="#000000">{\an7}<font size="54"><font color="#ffffff">我騙他的</font></font></font>
-

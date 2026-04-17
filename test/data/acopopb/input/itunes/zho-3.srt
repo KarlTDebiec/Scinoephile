@@ -1,8 +1,0 @@
-1
-00:22:32,292 --> 00:22:35,000
-<font size="0" color="#000000">{\an7}<font size="54"><font color="#ffffff">去你媽的！發春呀？</font></font></font>
-
-2
-00:28:58,917 --> 00:29:00,750
-<font size="0" color="#000000">{\an7}<font size="54"><font color="#ffffff">去！去！</font></font></font>
-
