@@ -18,8 +18,8 @@ output_dir.mkdir(parents=True, exist_ok=True)
 set_logging_verbosity(2)
 
 actions = {
-    # "繁體粵文 (OCR)",
-    # "简体粤文 (OCR)",
+    "繁體粵文 (OCR)",
+    "简体粤文 (OCR)",
     "繁體中文 (OCR)",
     "简体中文 (OCR)",
     "English (OCR)",
@@ -28,9 +28,19 @@ actions = {
 }
 
 if "繁體粵文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_zho_hant_ocr(
+        title_root,
+        lang="yue",
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "简体粤文 (OCR)" in actions:
-    process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
+    process_zho_hans_ocr(
+        title_root,
+        lang="yue",
+        overwrite_srt=True,
+        force_validation=True,
+    )
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "简体中文 (OCR)" in actions:
