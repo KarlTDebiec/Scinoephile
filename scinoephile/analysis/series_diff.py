@@ -65,7 +65,7 @@ class SeriesDiff:
         self.two_lines = self._get_series_text_lines(two)
         self.one_normlines = [self._normalize_line(line) for line in self.one_lines]
         self.two_normlines = [self._normalize_line(line) for line in self.two_lines]
-        self.msgs: list[LineDiff] = []
+        self.messages: list[LineDiff] = []
         self._diff()
 
     def _diff(self) -> list[LineDiff]:
@@ -93,7 +93,7 @@ class SeriesDiff:
                 continue
             raise ScinoephileError(f"Unhandled opcode: {tag}")
 
-        return self.msgs
+        return self.messages
 
     def _process_delete(self, one_start: int, one_end: int):
         """Process delete opcode block.
@@ -105,14 +105,14 @@ class SeriesDiff:
             None.
         """
         for idx in range(one_start, one_end):
-            msg = LineDiff(
+            message = LineDiff(
                 kind=LineDiffKind.DELETE,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
                 one_idxs=[idx],
                 one_texts=[self.one_lines[idx]],
             )
-            self.msgs.append(msg)
+            self.messages.append(message)
 
     def _process_insert(self, two_start: int, two_end: int):
         """Process insert opcode block.
@@ -124,14 +124,14 @@ class SeriesDiff:
             None.
         """
         for idx in range(two_start, two_end):
-            msg = LineDiff(
+            message = LineDiff(
                 kind=LineDiffKind.INSERT,
                 one_lbl=self.two_lbl,
                 two_lbl=self.one_lbl,
                 one_idxs=[idx],
                 one_texts=[self.two_lines[idx]],
             )
-            self.msgs.append(msg)
+            self.messages.append(message)
 
     def _process_replace(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -779,7 +779,7 @@ class SeriesDiff:
         Returns:
             None.
         """
-        self.msgs.append(
+        self.messages.append(
             LineDiff(
                 kind=LineDiffKind.EDIT,
                 one_lbl=self.one_lbl,
@@ -806,7 +806,7 @@ class SeriesDiff:
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
-        msg = LineDiff(
+        message = LineDiff(
             kind=LineDiffKind.MERGE,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
@@ -815,7 +815,7 @@ class SeriesDiff:
             one_texts=[self.one_lines[idx] for idx in one_slc],
             two_texts=[self.two_lines[idx] for idx in two_slc],
         )
-        self.msgs.append(msg)
+        self.messages.append(message)
 
     def _process_merge_edit(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -832,7 +832,7 @@ class SeriesDiff:
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
-        msg = LineDiff(
+        message = LineDiff(
             kind=LineDiffKind.MERGE_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
@@ -841,7 +841,7 @@ class SeriesDiff:
             one_texts=[self.one_lines[idx] for idx in one_slc],
             two_texts=[self.two_lines[idx] for idx in two_slc],
         )
-        self.msgs.append(msg)
+        self.messages.append(message)
 
     def _process_shift(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -858,7 +858,7 @@ class SeriesDiff:
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
-        msg = LineDiff(
+        message = LineDiff(
             kind=LineDiffKind.SHIFT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
@@ -867,7 +867,7 @@ class SeriesDiff:
             one_texts=[self.one_lines[idx] for idx in one_slc],
             two_texts=[self.two_lines[idx] for idx in two_slc],
         )
-        self.msgs.append(msg)
+        self.messages.append(message)
 
     def _process_split(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -884,7 +884,7 @@ class SeriesDiff:
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
-        msg = LineDiff(
+        message = LineDiff(
             kind=LineDiffKind.SPLIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
@@ -893,7 +893,7 @@ class SeriesDiff:
             one_texts=[self.one_lines[idx] for idx in one_slc],
             two_texts=[self.two_lines[idx] for idx in two_slc],
         )
-        self.msgs.append(msg)
+        self.messages.append(message)
 
     def _process_split_edit(
         self, one_start: int, one_end: int, two_start: int, two_end: int
@@ -910,7 +910,7 @@ class SeriesDiff:
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
-        msg = LineDiff(
+        message = LineDiff(
             kind=LineDiffKind.SPLIT_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
@@ -919,7 +919,7 @@ class SeriesDiff:
             one_texts=[self.one_lines[idx] for idx in one_slc],
             two_texts=[self.two_lines[idx] for idx in two_slc],
         )
-        self.msgs.append(msg)
+        self.messages.append(message)
 
     @staticmethod
     def _get_series_text_lines(series: Series) -> list[str]:
