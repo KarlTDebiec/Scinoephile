@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
@@ -40,7 +40,7 @@ class YueZhoHansProofreadingPrompt(
     """Description of the dictionary lookup query parameter."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责为广东话语音嘅粤文字幕做校对。
         作为参考，你会见到对应嘅中文字幕。
         你嘅目标系纠正明显嘅转写错误，主要系听错字、写错字。

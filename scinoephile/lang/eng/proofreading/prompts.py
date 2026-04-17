@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import EngPrompt
 from scinoephile.llms.mono_block import MonoBlockPrompt
 
@@ -17,7 +17,7 @@ class EngProofreadingPrompt(MonoBlockPrompt, EngPrompt):
     """LLM correspondence text for English proofreading."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         You are responsible for proofreading English subtitles.
         For each subtitle, you are to provide revised subtitle only if revisions are
         necessary.

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
@@ -40,7 +40,7 @@ class YueHansFromZhoTranslationPrompt(
     """Description of the dictionary lookup query parameter."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text(
+    base_system_prompt: ClassVar[str] = dedent_and_compact(
         """
         你而家要核对一对对嘅粤文同中文字幕。有啲粤文字幕因为音频识别唔到而缺失。
         每当某行粤文字幕系空嘅，就用对应嗰行中文，翻译成书面粤语，语气同用词要贴近周边现有嘅粤文字幕嘅口

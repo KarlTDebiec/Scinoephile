@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
@@ -21,7 +21,7 @@ class ZhoHansOcrFusionPrompt(OcrFusionPrompt, ZhoHansPrompt):
     """Text for LLM correspondence for 简体中文 OCR fusion."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责将来自两个不同来源的中文字幕 OCR 结果进行融合：Google Lens 和 PaddleOCR。
         请遵循以下原则：
         * Google Lens 在识别汉字方面更可靠。

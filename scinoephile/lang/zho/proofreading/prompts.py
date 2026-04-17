@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
 from scinoephile.llms.mono_block import MonoBlockPrompt
@@ -21,7 +21,7 @@ class ZhoHansProofreadingPrompt(MonoBlockPrompt, ZhoHansPrompt):
     """LLM correspondence text for 简体中文 proofreading."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责校对中文字幕。
         仅修正排版与错别字等排版性/输入性错误。
         不要润色、改写、改动语气或用词，也不要根据上下文改剧情。

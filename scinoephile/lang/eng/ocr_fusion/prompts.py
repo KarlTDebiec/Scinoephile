@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scinoephile.core.text import get_dedented_and_compacted_multiline_text
+from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import EngPrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
 
@@ -19,7 +19,7 @@ class EngOcrFusionPrompt(OcrFusionPrompt, EngPrompt):
     """Text for LLM correspondence for English OCR fusion."""
 
     # Prompt
-    base_system_prompt: ClassVar[str] = get_dedented_and_compacted_multiline_text("""
+    base_system_prompt: ClassVar[str] = dedent_and_compact("""
         You are responsible for merging English subtitle OCR results from two different
         sources: Google Lens and Tesseract.
         Please follow these guidelines:

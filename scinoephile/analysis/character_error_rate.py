@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from math import inf
 
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import full_punc_chars, half_punc_chars, whitespace_chars
+from scinoephile.core.text import remove_punc_and_whitespace
 
 from .line_diff_kind import LineDiffKind
 from .series_diff import SeriesDiff
@@ -52,7 +52,9 @@ def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateRe
     Returns:
         character error rate results
     """
-    reference_text = _normalize_text_for_cer(_get_series_text(reference))
+    reference_text = remove_punc_and_whitespace(
+        "".join(event.text_with_newline for event in reference)
+    )
     series_diff = SeriesDiff(reference, candidate)
 
     substitutions = 0
@@ -98,8 +100,8 @@ def get_text_cer(reference: str, candidate: str) -> CharacterErrorRateResult:
     Returns:
         character error rate results
     """
-    normalized_reference = _normalize_text_for_cer(reference)
-    normalized_candidate = _normalize_text_for_cer(candidate)
+    normalized_reference = remove_punc_and_whitespace(reference)
+    normalized_candidate = remove_punc_and_whitespace(candidate)
     substitutions, insertions, deletions, correct = _get_edit_counts(
         normalized_reference,
         normalized_candidate,
@@ -175,47 +177,10 @@ def _get_edit_counts(reference: str, candidate: str) -> tuple[int, int, int, int
                 (distance + 1, substitutions, insertions, deletions + 1, correct)
             )
 
-            dp[i][j] = min(candidates, key=_get_edit_sort_key)
+            dp[i][j] = min(
+                candidates,
+                key=lambda value: (value[0], value[2], value[3], value[1]),
+            )
 
     _, substitutions, insertions, deletions, correct = dp[-1][-1]
     return substitutions, insertions, deletions, correct
-
-
-def _get_edit_sort_key(
-    value: tuple[int, int, int, int, int],
-) -> tuple[int, int, int, int]:
-    """Provide a stable tie-break key for edit operations.
-
-    Arguments:
-        value: distance/count tuple from the dynamic program
-    Returns:
-        sort key favoring fewer insertions, then fewer deletions, then
-        fewer substitutions
-    """
-    distance, substitutions, insertions, deletions, _correct = value
-    return distance, insertions, deletions, substitutions
-
-
-def _get_series_text(series: Series) -> str:
-    """Flatten a subtitle series into text for CER evaluation.
-
-    Arguments:
-        series: subtitle series
-    Returns:
-        concatenated subtitle text
-    """
-    return "".join(event.text_with_newline for event in series)
-
-
-def _normalize_text_for_cer(text: str) -> str:
-    """Normalize text for CER evaluation.
-
-    Arguments:
-        text: raw text to normalize
-    Returns:
-        normalized text
-    """
-    chars_to_remove = whitespace_chars | half_punc_chars | full_punc_chars
-    return "".join(
-        char for char in text if not char.isspace() and char not in chars_to_remove
-    )

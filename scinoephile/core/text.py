@@ -24,7 +24,7 @@ __all__ = [
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
     "get_char_type",
-    "get_dedented_and_compacted_multiline_text",
+    "dedent_and_compact",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
@@ -240,7 +240,7 @@ def get_char_type(char: str) -> str:
     )
 
 
-def get_dedented_and_compacted_multiline_text(text: str) -> str:
+def dedent_and_compact(text: str) -> str:
     """Get multi-line string dedented and with newlines compacted.
 
     Arguments:
@@ -275,4 +275,6 @@ def remove_punc_and_whitespace(text: str) -> str:
         Stripped text with punctuation and whitespace removed
     """
     chars_to_remove = half_punc_chars | full_punc_chars | whitespace_chars
-    return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
+    return "".join(
+        char for char in text if not char.isspace() and char not in chars_to_remove
+    )
