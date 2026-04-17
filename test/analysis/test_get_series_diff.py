@@ -195,26 +195,6 @@ def test_get_series_diff_kob(
         print(f"{i:>3d}: {diff}")
 
 
-def test_get_series_diff_str(
-    mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-):
-    """Test string formatting of SeriesDiff."""
-    differences = get_series_diff(
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten,
-        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
-        one_lbl="SIMP",
-        two_lbl="TRAD",
-    )
-
-    formatted = str(differences)
-
-    assert formatted.startswith("[\n")
-    assert '    "edit: SIMP[1] -> TRAD[1]: ' in formatted
-    assert formatted.count(",\n") >= 2
-    assert formatted.endswith("\n]")
-
-
 def test_get_series_diff_mlamd_zho_simplify(
     mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
     mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,

@@ -23,8 +23,8 @@ __all__ = [
     "RE_HANZI",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
-    "get_char_type",
     "dedent_and_compact",
+    "get_char_type",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
@@ -187,6 +187,20 @@ RE_WESTERN = re.compile(r"[a-zA-Z0-9]")
 """Regular expression for Western characters."""
 
 
+def dedent_and_compact(text: str) -> str:
+    """Get multi-line string dedented and with newlines compacted.
+
+    Arguments:
+        text: text to process
+    Returns:
+        dedented and compacted text
+    """
+    text = dedent(text).strip()
+    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+    text = re.sub(r"\n{2,}", "\n", text)
+    return text
+
+
 @cache
 def get_char_type(char: str) -> str:
     """Return character type.
@@ -238,20 +252,6 @@ def get_char_type(char: str) -> str:
     raise ScinoephileError(
         f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
     )
-
-
-def dedent_and_compact(text: str) -> str:
-    """Get multi-line string dedented and with newlines compacted.
-
-    Arguments:
-        text: text to process
-    Returns:
-        dedented and compacted text
-    """
-    text = dedent(text).strip()
-    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
-    text = re.sub(r"\n{2,}", "\n", text)
-    return text
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:

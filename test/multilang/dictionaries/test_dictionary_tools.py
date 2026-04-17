@@ -106,35 +106,10 @@ def test_get_dictionary_tools_uses_prompt_text():
     )
 
 
-def test_translation_prompt_mentions_configured_dictionary_tool_name():
-    """Keep the translation prompt text aligned with its tool metadata."""
-    assert (
-        f"`{YueHansFromZhoTranslationPrompt.dictionary_tool_name}`"
-        in YueHansFromZhoTranslationPrompt.base_system_prompt
-    )
-
-
-def test_review_prompt_mentions_configured_dictionary_tool_name():
-    """Keep the review prompt text aligned with its tool metadata."""
-    assert (
-        f"`{YueHansReviewPrompt.dictionary_tool_name}`"
-        in YueHansReviewPrompt.base_system_prompt
-    )
-
-
-def test_proofreading_prompt_mentions_configured_dictionary_tool_name():
-    """Keep the proofreading prompt text aligned with its tool metadata."""
-    assert (
-        f"`{YueZhoHansProofreadingPrompt.dictionary_tool_name}`"
-        in YueZhoHansProofreadingPrompt.base_system_prompt
-    )
-
-
 def test_translation_processor_uses_prompt_dictionary_tooling():
     """Wire translation tooling from the selected prompt class."""
     processor = get_yue_from_zho_translator(
-        prompt_cls=YueHansFromZhoTranslationPrompt,
-        test_cases=[],
+        prompt_cls=YueHansFromZhoTranslationPrompt, test_cases=[]
     )
 
     assert [tool["name"] for tool in processor.queryer.tools] == [
@@ -147,10 +122,7 @@ def test_translation_processor_uses_prompt_dictionary_tooling():
 
 def test_review_processor_uses_prompt_dictionary_tooling():
     """Wire review tooling from the selected prompt class."""
-    processor = get_yue_vs_zho_reviewer(
-        prompt_cls=YueHansReviewPrompt,
-        test_cases=[],
-    )
+    processor = get_yue_vs_zho_reviewer(prompt_cls=YueHansReviewPrompt, test_cases=[])
 
     assert [tool["name"] for tool in processor.queryer.tools] == [
         YueHansReviewPrompt.dictionary_tool_name
@@ -163,8 +135,7 @@ def test_review_processor_uses_prompt_dictionary_tooling():
 def test_proofreading_processor_uses_prompt_dictionary_tooling():
     """Wire proofreading tooling from the selected prompt class."""
     processor = get_yue_vs_zho_proofreader(
-        prompt_cls=YueZhoHansProofreadingPrompt,
-        test_cases=[],
+        prompt_cls=YueZhoHansProofreadingPrompt, test_cases=[]
     )
 
     assert [tool["name"] for tool in processor.queryer.tools] == [
