@@ -10,9 +10,7 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.multilang.dictionaries.dictionary_tool_prompt import (
-    DictionaryToolPrompt,
-)
+from scinoephile.multilang.dictionaries import DictionaryToolPrompt
 
 __all__ = [
     "YueZhoHansProofreadingPrompt",
@@ -43,10 +41,10 @@ class YueZhoHansProofreadingPrompt(
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
         你负责为广东话语音嘅粤文字幕做校对。
         作为参考，你会见到对应嘅中文字幕。
-        你嘅目标系纠正明显嘅转写错误，主要系听错字、写错字。
-        唔好为了贴近中文字幕而改写正确嘅粤文。
-        唔好调整语气、语法或者量词，除非明显系转写错误。
-        只可以喺有合理嘅同音误听情况下先更正（例如：临盘 vs. 临盆）。
+        你嘅目标系纠正明显嘅转写错误，主要系听错字、写错字，同其他一眼可见嘅转写问题。
+        唔好为了贴近中文字幕而改写本来已经正确嘅粤文。
+        唔好调整语气、语法、助词、量词或者措辞，除非嗰啲地方本身就系转写错误。
+        只有当你认为原句明显有误时，先作修改。
         如果发现粤文同中文字幕完全对唔上，说明呢行粤文系彻底误写，
         请回传字符 "�" 作为粤文，并喺备注说明无对应。
 
@@ -54,9 +52,6 @@ class YueZhoHansProofreadingPrompt(
         - 粤文转写唔需要同中文字幕逐字对应。
         - 讲者可能会用唔同嘅粤语讲法。
         - 如果唔系转写错误，意义、语气同文法嘅差异都可以接受。
-        - 如果你遇到唔确定嘅粤语词、可疑嘅用字，或者怀疑有同音误听，
-          可以调用 `lookup_dictionary` 辅助判断；
-          佢会自动判断查询系汉字、拼音定粤拼。
         - 如果粤文入面有啲词同中文字幕睇落唔对应，咁可以查中文字幕入面相关词语，
           睇下系咪有读音相近嘅粤语词被误写咗。
 

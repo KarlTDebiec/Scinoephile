@@ -6,12 +6,16 @@ from __future__ import annotations
 
 from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
+from .dictionary_lookup_response import DictionaryLookupResponse
 from .dictionary_source import DictionarySource
+from .dictionary_tool_prompt import DictionaryToolPrompt
 from .sqlite_store import DictionarySqliteStore
 
 __all__ = [
     "DictionaryDefinition",
     "DictionaryEntry",
+    "DictionaryLookupResponse",
     "DictionarySource",
     "DictionarySqliteStore",
+    "DictionaryToolPrompt",
 ]
