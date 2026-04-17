@@ -129,7 +129,7 @@ if "简体粤文 (Transcription)" in actions:
         merging_test_cases=get_mlamd_yue_merging_test_cases(),
     )
     yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
-    outfile_path = output_dir / "yue-Hans_transcribed.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
     # Proofread
@@ -145,7 +145,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_proofread = get_yue_vs_zho_proofread(
         yue_hans, zho_hans, processor=proofreader
     )
-    outfile_path = output_dir / "yue-Hans_transcribed_proofread.srt"
+    outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
     yue_hans_proofread.save(outfile_path)
 
     # Translate
