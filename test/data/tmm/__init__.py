@@ -22,10 +22,13 @@ __all__ = [
     "tmm_zho_hans_paddle",
     "tmm_zho_hant_lens",
     "tmm_zho_hant_paddle",
+    "tmm_yue_hant_fuse",
+    "tmm_yue_hant_fuse_clean",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
+output_dir = title_root / "output"
 
 
 @pytest.fixture
@@ -62,6 +65,18 @@ def tmm_yue_hant_lens() -> Series:
 def tmm_yue_hant_paddle() -> Series:
     """TMM 繁體粵文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "yue-Hant_paddle.srt")
+
+
+@pytest.fixture
+def tmm_yue_hant_fuse() -> Series:
+    """TMM 繁體粵文 fused subtitles."""
+    return Series.load(output_dir / "yue-Hant_fuse.srt")
+
+
+@pytest.fixture
+def tmm_yue_hant_fuse_clean() -> Series:
+    """TMM 繁體粵文 fused and cleaned subtitles."""
+    return Series.load(output_dir / "yue-Hant_fuse_clean.srt")
 
 
 @pytest.fixture

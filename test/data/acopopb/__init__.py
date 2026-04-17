@@ -12,23 +12,27 @@ from scinoephile.core.subtitles import Series
 from test.helpers import test_data_root
 
 __all__ = [
-    "acopopb_itunes_eng_6",
-    "acopopb_itunes_zho_3",
-    "acopopb_itunes_zho_4",
-    "acopopb_itunes_zho_5",
+    "acopopb_eng",
     "acopopb_yue_hans_lens",
     "acopopb_yue_hans_paddle",
     "acopopb_yue_hant_lens",
     "acopopb_yue_hant_paddle",
+    "acopopb_zho_hans",
     "acopopb_zho_hans_lens",
     "acopopb_zho_hans_paddle",
+    "acopopb_zho_hant",
     "acopopb_zho_hant_lens",
     "acopopb_zho_hant_paddle",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
-itunes_input_dir = input_dir / "itunes"
+
+
+@pytest.fixture
+def acopopb_eng() -> Series:
+    """ACOPOPB English subtitles."""
+    return Series.load(input_dir / "eng.srt")
 
 
 @pytest.fixture
@@ -68,6 +72,18 @@ def acopopb_zho_hans_paddle() -> Series:
 
 
 @pytest.fixture
+def acopopb_zho_hans() -> Series:
+    """ACOPOPB 简体中文 subtitles."""
+    return Series.load(input_dir / "zho-Hans.srt")
+
+
+@pytest.fixture
+def acopopb_zho_hant() -> Series:
+    """ACOPOPB 繁体中文 subtitles."""
+    return Series.load(input_dir / "zho-Hant.srt")
+
+
+@pytest.fixture
 def acopopb_zho_hant_lens() -> Series:
     """ACOPOPB 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_lens.srt")
@@ -77,27 +93,3 @@ def acopopb_zho_hant_lens() -> Series:
 def acopopb_zho_hant_paddle() -> Series:
     """ACOPOPB 繁体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_paddle.srt")
-
-
-@pytest.fixture
-def acopopb_itunes_eng_6() -> Series:
-    """ACOPOPB iTunes English subtitles."""
-    return Series.load(itunes_input_dir / "eng-6.srt")
-
-
-@pytest.fixture
-def acopopb_itunes_zho_3() -> Series:
-    """ACOPOPB iTunes 中文 subtitles track 3."""
-    return Series.load(itunes_input_dir / "zho-3.srt")
-
-
-@pytest.fixture
-def acopopb_itunes_zho_4() -> Series:
-    """ACOPOPB iTunes 中文 subtitles track 4."""
-    return Series.load(itunes_input_dir / "zho-4.srt")
-
-
-@pytest.fixture
-def acopopb_itunes_zho_5() -> Series:
-    """ACOPOPB iTunes 中文 subtitles track 5."""
-    return Series.load(itunes_input_dir / "zho-5.srt")

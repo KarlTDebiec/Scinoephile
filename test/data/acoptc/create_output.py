@@ -13,7 +13,6 @@ from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
-itunes_input_dir = input_dir / "itunes"
 output_dir = title_root / "output"
 output_dir.mkdir(parents=True, exist_ok=True)
 set_logging_verbosity(2)
@@ -21,25 +20,25 @@ set_logging_verbosity(2)
 actions = {
     # "繁體中文 (OCR)",
     # "简体中文 (OCR)",
-    # "Bilingual 简体中文 and English (iTunes)",
-    # "Bilingual 简体粤文 and English (iTunes)",
+    # "Bilingual 简体中文 and English (SRT)",
+    # "Bilingual 简体粤文 and English (SRT)",
 }
 
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 简体中文 and English (iTunes)" in actions:
+if "Bilingual 简体中文 and English (SRT)" in actions:
     process_zho_hans_eng(
         title_root,
-        zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        eng_path=itunes_input_dir / "eng-6.srt",
+        zho_hans_path=input_dir / "zho-Hans.srt",
+        eng_path=input_dir / "eng.srt",
         overwrite=True,
     )
-if "Bilingual 简体粤文 and English (iTunes)" in actions:
+if "Bilingual 简体粤文 and English (SRT)" in actions:
     process_yue_hans_eng(
         title_root,
         yue_hans_path=input_dir / "yue-Hans_lens.srt",
-        eng_path=itunes_input_dir / "eng-6.srt",
+        eng_path=input_dir / "eng.srt",
         overwrite=True,
     )
