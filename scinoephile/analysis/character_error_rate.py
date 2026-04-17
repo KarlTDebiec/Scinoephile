@@ -195,7 +195,8 @@ def _get_edit_sort_key(
     Arguments:
         value: distance/count tuple from the dynamic program
     Returns:
-        sort key favoring substitutions, then deletions, then insertions
+        sort key favoring fewer insertions, then fewer deletions, then
+        fewer substitutions
     """
     distance, substitutions, insertions, deletions, _correct = value
     return distance, insertions, deletions, substitutions
@@ -234,4 +235,6 @@ def _normalize_text_for_cer(text: str) -> str:
         normalized text
     """
     chars_to_remove = whitespace_chars | half_punc_chars | full_punc_chars
-    return "".join(char for char in text if char not in chars_to_remove)
+    return "".join(
+        char for char in text if not char.isspace() and char not in chars_to_remove
+    )
