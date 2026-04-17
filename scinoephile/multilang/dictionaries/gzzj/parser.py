@@ -110,8 +110,6 @@ class GzzjDictionaryParser:
             definitions.append(DictionaryDefinition(text=marker, label="讀音標記"))
         if note:
             definitions.append(DictionaryDefinition(text=note, label="校訂註"))
-        if not definitions:
-            definitions.append(DictionaryDefinition(text="-"))
         return definitions
 
     @staticmethod
@@ -136,6 +134,67 @@ class GzzjDictionaryParser:
             .replace("ü", "u:")
         )
 
+    @staticmethod
+    def _normalize_text_values(value: Any) -> list[str]:
+        """Normalize one or more text values into a flat string list.
+
+        Arguments:
+            value: scalar or list-like text value
+        Returns:
+            normalized non-empty text values
+        """
+        if isinstance(value, list):
+            raw_values = value
+        else:
+            raw_values = [value]
+
+        normalized_values: list[str] = []
+        for raw_value in raw_values:
+            normalized_value = unicodedata.normalize("NFKD", str(raw_value)).strip()
+            if normalized_value:
+                normalized_values.append(normalized_value)
+        return normalized_values
+
+    @classmethod
+    def _get_headwords(cls, record: dict[str, Any]) -> list[str]:
+        """Get normalized headwords for one record.
+
+        Arguments:
+            record: raw JSON record
+        Returns:
+            normalized headwords and variants in source order
+        """
+        primary_headwords = cls._normalize_text_values(record["字頭"])
+        extra_data = record.get("_校訂補充")
+        raw_variants = (
+            extra_data.get("異體", []) if isinstance(extra_data, dict) else []
+        )
+        variants = cls._normalize_text_values(raw_variants)
+
+        seen_headwords: set[str] = set()
+        headwords: list[str] = []
+        for headword in [*primary_headwords, *variants]:
+            if headword in seen_headwords:
+                continue
+            seen_headwords.add(headword)
+            headwords.append(headword)
+        return headwords
+
+    @classmethod
+    def _get_record_variants(cls, record: dict[str, Any]) -> list[str]:
+        """Get normalized variant headwords for one record.
+
+        Arguments:
+            record: raw JSON record
+        Returns:
+            normalized variant headwords
+        """
+        extra_data = record.get("_校訂補充")
+        raw_variants = (
+            extra_data.get("異體", []) if isinstance(extra_data, dict) else []
+        )
+        return cls._normalize_text_values(raw_variants)
+
     def _parse_record(self, record: dict[str, Any]) -> list[DictionaryEntry]:
         """Parse one raw GZZJ record.
 
@@ -144,17 +203,12 @@ class GzzjDictionaryParser:
         Returns:
             normalized dictionary entries
         """
-        traditional = unicodedata.normalize("NFKD", str(record["字頭"]))
-        extra_data = record.get("_校訂補充")
-        raw_variants = (
-            extra_data.get("異體", []) if isinstance(extra_data, dict) else []
-        )
-        variants = [
-            unicodedata.normalize("NFKD", str(variant))
-            for variant in raw_variants
-            if str(variant).strip()
-        ]
-        headwords = [traditional, *variants]
+        headwords = self._get_headwords(record)
+        if not headwords:
+            logger.warning(f"Skipping GZZJ record without headword: {record!r}")
+            return []
+        traditional = headwords[0]
+        variants = self._get_record_variants(record)
 
         definitions_by_key: dict[tuple[str, str], list[DictionaryDefinition]] = {}
         raw_senses = record.get("義項", [])
