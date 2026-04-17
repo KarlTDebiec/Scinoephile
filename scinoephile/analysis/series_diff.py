@@ -16,15 +16,23 @@ from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .replace_cursor import ReplaceCursor
 
-__all__ = ["SeriesDiff", "SeriesDiffKwargs"]
+__all__ = [
+    "SeriesDiff",
+    "SeriesDiffKwargs",
+]
 
 
 class SeriesDiffKwargs(TypedDict, total=False):
     """Keyword arguments for SeriesDiff."""
 
     one_lbl: str
+    """Label for the first subtitle series in diff messages."""
+
     two_lbl: str
+    """Label for the second subtitle series in diff messages."""
+
     similarity_cutoff: float
+    """Similarity threshold used when pairing replacement blocks."""
 
 
 class SeriesDiff:
