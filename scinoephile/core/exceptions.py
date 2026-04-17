@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
-__all__ = ["ScinoephileError", "UnsupportedCharacterError"]
+__all__ = [
+    "ScinoephileError",
+    "UnsupportedCharacterError",
+]
 
 
 class ScinoephileError(Exception):
