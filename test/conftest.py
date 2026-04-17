@@ -5,6 +5,8 @@
 from __future__ import annotations
 
 # ruff: noqa: F401 F403
+from test.data.acopopb import *
+from test.data.acoptc import *
 from test.data.kob import *
 from test.data.mlamd import *
 from test.data.mnt import *
