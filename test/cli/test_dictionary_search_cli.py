@@ -38,7 +38,7 @@ from test.helpers import assert_cli_help, assert_cli_usage
     ],
 )
 def test_dictionary_search_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK dictionary search CLI help output.
+    """Test dictionary search CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -55,7 +55,7 @@ def test_dictionary_search_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_dictionary_search_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK dictionary search CLI usage output.
+    """Test dictionary search CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -178,7 +178,7 @@ def test_dictionary_search_cli(
     expected_output: str,
     expectation: AbstractContextManager[object],
 ):
-    """Test CUHK dictionary search CLI against a freshly built database.
+    """Test dictionary search CLI against a freshly built database.
 
     Arguments:
         dictionary_database_dir_path: directory containing fixture dictionaries
