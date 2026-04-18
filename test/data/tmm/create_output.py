@@ -31,7 +31,7 @@ if "繁體粵文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
         sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-4.sup"
+            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-3.sup"
         ),
         lang="yue",
         overwrite_srt=True,

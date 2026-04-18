@@ -376,7 +376,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         clean = Series.load(clean_path)
     else:
         clean = get_zho_cleaned(fuse, remove_empty=False)
-        clean = get_zho_converted(clean, OpenCCConfig.s2t)
+        # clean = get_zho_converted(clean, OpenCCConfig.s2t)
         clean.save(clean_path)
 
     # Validate
