@@ -38,49 +38,45 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
-def _run_sync(
+@pytest.mark.parametrize(
+    ("cli", "top_path", "bottom_path", "args", "expected_path"),
+    [
+        (
+            (SyncCli,),
+            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+        (
+            (ScinoephileCli, SyncCli),
+            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+    ],
+)
+def test_sync_cli(
     cli: tuple[type[CommandLineInterface], ...],
+    top_path: str,
+    bottom_path: str,
     args: str,
-    *,
-    top_input: str,
-    bottom_input: str,
     expected_path: str,
 ):
-    """Run sync CLI with file arguments and compare output."""
-    top_input_path = test_data_root / top_input
-    bottom_input_path = test_data_root / bottom_input
+    """Test sync CLI processing with file arguments."""
+    full_top_path = test_data_root / top_path
+    full_bottom_path = test_data_root / bottom_path
     full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             cli[0],
-            f"{subcommands} {top_input_path} {bottom_input_path} "
+            f"{subcommands} {full_top_path} {full_bottom_path} "
             f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_sync_basic():
-    """Test sync with file arguments."""
-    _run_sync(
-        (SyncCli,),
-        "",
-        top_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        bottom_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
-        expected_path="mlamd/output/zho-Hans_eng.srt",
-    )
-
-
-def test_sync_as_subcommand():
-    """Test sync as subcommand."""
-    _run_sync(
-        (ScinoephileCli, SyncCli),
-        "",
-        top_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        bottom_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
-        expected_path="mlamd/output/zho-Hans_eng.srt",
-    )
