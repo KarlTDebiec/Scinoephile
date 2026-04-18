@@ -220,7 +220,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json",
+            title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json",
         )
         fuser = get_zho_ocr_fuser(
             auto_verify=True,
@@ -360,7 +360,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json",
+            title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json",
         )
         fuser = get_zho_ocr_fuser(
             prompt_cls=ZhoHantOcrFusionPrompt,
