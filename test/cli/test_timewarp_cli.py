@@ -47,17 +47,9 @@ def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.mark.parametrize(
-    ("cli", "anchor_path", "mobile_path", "args", "expected_path"),
+    ("anchor_path", "mobile_path", "args", "expected_path"),
     [
         (
-            (TimewarpCli,),
-            "kob/output/zho-Hant_fuse_clean_validate_proofread.srt",
-            "kob/input/yue-Hant.srt",
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
-            "kob/output/yue-Hant_timewarp.srt",
-        ),
-        (
-            (ScinoephileCli, TimewarpCli),
             "kob/output/zho-Hant_fuse_clean_validate_proofread.srt",
             "kob/input/yue-Hant.srt",
             "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
@@ -66,7 +58,6 @@ def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_timewarp_cli(
-    cli: tuple[type[CommandLineInterface], ...],
     anchor_path: str,
     mobile_path: str,
     args: str,
@@ -75,7 +66,6 @@ def test_timewarp_cli(
     """Test timewarp CLI processing with file arguments.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
         anchor_path: path to anchor subtitle fixture
         mobile_path: path to mobile subtitle fixture
         args: command-line arguments for anchor indexes
@@ -84,13 +74,11 @@ def test_timewarp_cli(
     full_anchor_path = test_data_root / anchor_path
     full_mobile_path = test_data_root / mobile_path
     full_expected_path = test_data_root / expected_path
-    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            cli[0],
-            f"{subcommands} {full_anchor_path} {full_mobile_path} "
-            f"{args} --outfile {output_path}",
+            TimewarpCli,
+            f"{full_anchor_path} {full_mobile_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)

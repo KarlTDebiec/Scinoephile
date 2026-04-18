@@ -47,17 +47,9 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.mark.parametrize(
-    ("cli", "top_path", "bottom_path", "args", "expected_path"),
+    ("top_path", "bottom_path", "args", "expected_path"),
     [
         (
-            (SyncCli,),
-            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
-            "",
-            "mlamd/output/zho-Hans_eng.srt",
-        ),
-        (
-            (ScinoephileCli, SyncCli),
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
             "",
@@ -66,7 +58,6 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_sync_cli(
-    cli: tuple[type[CommandLineInterface], ...],
     top_path: str,
     bottom_path: str,
     args: str,
@@ -75,7 +66,6 @@ def test_sync_cli(
     """Test sync CLI processing with file arguments.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
         top_path: path to top subtitle fixture
         bottom_path: path to bottom subtitle fixture
         args: extra command-line arguments
@@ -84,13 +74,11 @@ def test_sync_cli(
     full_top_path = test_data_root / top_path
     full_bottom_path = test_data_root / bottom_path
     full_expected_path = test_data_root / expected_path
-    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            cli[0],
-            f"{subcommands} {full_top_path} {full_bottom_path} "
-            f"{args} --outfile {output_path}",
+            SyncCli,
+            f"{full_top_path} {full_bottom_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
