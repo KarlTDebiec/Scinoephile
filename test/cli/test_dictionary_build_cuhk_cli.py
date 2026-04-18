@@ -78,11 +78,7 @@ def test_dictionary_build_cuhk_usage(
 
 @skip_if_ci()
 def test_dictionary_build_cuhk_cli():
-    """Test CUHK dictionary build CLI performs a limited real scrape.
-
-    Arguments:
-        None.
-    """
+    """Test CUHK dictionary build CLI performs a limited real scrape."""
     with get_temp_directory_path() as cache_dir_path:
         with get_temp_file_path(".db") as database_path:
             try:
