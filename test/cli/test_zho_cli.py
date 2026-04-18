@@ -51,59 +51,51 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.mark.parametrize(
-    ("cli", "input_path", "args", "expected_path", "expectation"),
+    ("input_path", "args", "expected_path", "expectation"),
     [
         (
-            (ZhoCli,),
             "mnt/output/zho-Hans_fuse.srt",
             "--clean",
             "mnt/output/zho-Hans_fuse_clean.srt",
             nullcontext(),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             nullcontext(),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "--romanize",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt",
             nullcontext(),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
             nullcontext(),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate.srt",
             "--proofread traditional",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
             nullcontext(),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert t2s --proofread traditional",
             "-",
             pytest.raises(SystemExit),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert s2t --proofread simplified",
             "-",
             pytest.raises(SystemExit),
         ),
         (
-            (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert s2t --proofread",
             "-",
@@ -112,7 +104,6 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_cli(
-    cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
     expected_path: str,
@@ -121,21 +112,18 @@ def test_zho_cli(
     """Test 中文 CLI processing with file arguments.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
         input_path: path to input subtitle fixture
         args: command-line arguments for operation selection
         expected_path: path to expected output subtitle fixture, or "-"
         expectation: expected context manager for success or failure
     """
     full_input_path = test_data_root / input_path
-    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         with expectation:
             run_cli_with_args(
-                cli[0],
-                f"{subcommands} --infile {full_input_path} "
-                f"{args} --outfile {output_path}",
+                ZhoCli,
+                f"--infile {full_input_path} {args} --outfile {output_path}",
             )
         if expected_path == "-":
             return
