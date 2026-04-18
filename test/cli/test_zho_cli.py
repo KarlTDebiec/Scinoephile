@@ -26,7 +26,11 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI help output."""
+    """Test 中文 CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -38,7 +42,11 @@ def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI usage output."""
+    """Test 中文 CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
@@ -96,7 +104,15 @@ def test_zho_cli(
     expected_path: str,
     expectation: AbstractContextManager[object],
 ):
-    """Test 中文 CLI processing with file arguments."""
+    """Test 中文 CLI processing with file arguments.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture, or "-"
+        expectation: expected context manager for success or failure
+    """
     full_input_path = test_data_root / input_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
@@ -132,7 +148,13 @@ def test_zho_cli(
     ],
 )
 def test_zho_cli_pipe(input_path: str, args: str, expected_path: str):
-    """Test 中文 CLI processing via stdin/stdout."""
+    """Test 中文 CLI processing via stdin/stdout.
+
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
     input_text = full_input_path.read_text()

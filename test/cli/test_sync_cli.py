@@ -22,7 +22,11 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test sync CLI help output."""
+    """Test sync CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -34,7 +38,11 @@ def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test sync CLI usage output."""
+    """Test sync CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
@@ -64,7 +72,15 @@ def test_sync_cli(
     args: str,
     expected_path: str,
 ):
-    """Test sync CLI processing with file arguments."""
+    """Test sync CLI processing with file arguments.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+        top_path: path to top subtitle fixture
+        bottom_path: path to bottom subtitle fixture
+        args: extra command-line arguments
+        expected_path: path to expected output subtitle fixture
+    """
     full_top_path = test_data_root / top_path
     full_bottom_path = test_data_root / bottom_path
     full_expected_path = test_data_root / expected_path

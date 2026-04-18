@@ -25,7 +25,11 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI help output."""
+    """Test English CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -37,7 +41,11 @@ def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI usage output."""
+    """Test English CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
@@ -51,13 +59,13 @@ def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            (EngCli),
+            (EngCli,),
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
         ),
         (
-            (EngCli),
+            (EngCli,),
             "mnt/output/eng_fuse_clean_validate.srt",
             "--proofread",
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
@@ -70,7 +78,14 @@ def test_eng_cli(
     args: str,
     expected_path: str,
 ):
-    """Test English CLI processing with file arguments."""
+    """Test English CLI processing with file arguments.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
@@ -102,7 +117,13 @@ def test_eng_cli(
     ],
 )
 def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
-    """Test English CLI processing via stdin/stdout."""
+    """Test English CLI processing via stdin/stdout.
+
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
     input_text = full_input_path.read_text()

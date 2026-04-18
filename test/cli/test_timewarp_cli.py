@@ -22,7 +22,11 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test timewarp CLI help output."""
+    """Test timewarp CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -34,7 +38,11 @@ def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test timewarp CLI usage output."""
+    """Test timewarp CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
@@ -64,7 +72,15 @@ def test_timewarp_cli(
     args: str,
     expected_path: str,
 ):
-    """Test timewarp CLI processing with file arguments."""
+    """Test timewarp CLI processing with file arguments.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+        anchor_path: path to anchor subtitle fixture
+        mobile_path: path to mobile subtitle fixture
+        args: command-line arguments for anchor indexes
+        expected_path: path to expected output subtitle fixture
+    """
     full_anchor_path = test_data_root / anchor_path
     full_mobile_path = test_data_root / mobile_path
     full_expected_path = test_data_root / expected_path
