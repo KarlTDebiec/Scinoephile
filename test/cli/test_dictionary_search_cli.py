@@ -38,7 +38,11 @@ from test.helpers import assert_cli_help, assert_cli_usage
     ],
 )
 def test_dictionary_search_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK dictionary search CLI help output."""
+    """Test dictionary search CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -51,7 +55,11 @@ def test_dictionary_search_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_dictionary_search_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK dictionary search CLI usage output."""
+    """Test dictionary search CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
@@ -170,7 +178,14 @@ def test_dictionary_search_cli(
     expected_output: str,
     expectation: AbstractContextManager[object],
 ):
-    """Test CUHK dictionary search CLI against a freshly built database."""
+    """Test dictionary search CLI against a freshly built database.
+
+    Arguments:
+        dictionary_database_dir_path: directory containing fixture dictionaries
+        query: query text to search
+        expected_output: text expected in log output
+        expectation: expected context manager for success or failure
+    """
     database_path = (
         dictionary_database_dir_path
         / "scinoephile"
@@ -181,8 +196,7 @@ def test_dictionary_search_cli(
     with get_temp_file_path(".log") as log_file_path:
         with expectation:
             run_cli_with_args(
-                ScinoephileCli,
-                "dictionary search "
+                DictionarySearchCli,
                 "-v "
                 f"--log-file {log_file_path} "
                 "--dictionary-name cuhk "
@@ -198,18 +212,18 @@ def test_dictionary_search_cli(
 
 
 def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Path):
-    """Test dictionary search can aggregate across installed dictionaries."""
+    """Test dictionary search can aggregate across installed dictionaries.
+
+    Arguments:
+        dictionary_database_dir_path: directory containing fixture dictionaries
+    """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
             environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
-                ScinoephileCli,
-                "dictionary search "
-                "-v "
-                f"--log-file {log_file_path} "
-                "--dictionary-name all "
-                "--limit 3 仇",
+                DictionarySearchCli,
+                f"-v --log-file {log_file_path} --dictionary-name all --limit 3 仇",
             )
             output = log_file_path.read_text(encoding="utf-8")
 
@@ -219,18 +233,18 @@ def test_dictionary_search_cli_all_dictionaries(dictionary_database_dir_path: Pa
 def test_dictionary_search_cli_all_dictionaries_merges_definitions(
     dictionary_database_dir_path: Path,
 ):
-    """Test dictionary search preserves definitions from multiple dictionaries."""
+    """Test dictionary search preserves definitions from multiple dictionaries.
+
+    Arguments:
+        dictionary_database_dir_path: directory containing fixture dictionaries
+    """
     with get_temp_file_path(".log") as log_file_path:
         with patch.dict(
             environ, {"SCINOEPHILE_CACHE_DIR": str(dictionary_database_dir_path)}
         ):
             run_cli_with_args(
-                ScinoephileCli,
-                "dictionary search "
-                "-v "
-                f"--log-file {log_file_path} "
-                "--dictionary-name all "
-                "--limit 3 共享",
+                DictionarySearchCli,
+                f"-v --log-file {log_file_path} --dictionary-name all --limit 3 共享",
             )
             output = log_file_path.read_text(encoding="utf-8")
 
@@ -245,9 +259,6 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
         database_path.touch()
         with pytest.raises(SystemExit, match="2"):
             run_cli_with_args(
-                ScinoephileCli,
-                "dictionary search "
-                f"--database-path {database_path} "
-                "--dictionary-name all "
-                "共享",
+                DictionarySearchCli,
+                f"--database-path {database_path} --dictionary-name all 共享",
             )

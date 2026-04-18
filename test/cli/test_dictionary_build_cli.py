@@ -24,7 +24,11 @@ from test.helpers import assert_cli_help, assert_cli_usage
     ],
 )
 def test_dictionary_build_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary build CLI help output."""
+    """Test dictionary build CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -37,5 +41,9 @@ def test_dictionary_build_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_dictionary_build_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary build CLI usage output."""
+    """Test dictionary build CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
