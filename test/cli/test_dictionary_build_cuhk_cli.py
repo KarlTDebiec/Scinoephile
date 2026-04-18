@@ -37,7 +37,11 @@ from test.helpers import (
     ],
 )
 def test_dictionary_build_cuhk_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test CUHK build subcommand help output."""
+    """Test CUHK build subcommand help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -53,7 +57,11 @@ def test_dictionary_build_cuhk_help(cli: tuple[type[CommandLineInterface], ...])
 def test_dictionary_build_cuhk_usage(
     cli: tuple[type[CommandLineInterface], ...],
 ):
-    """Test CUHK build subcommand usage output on parse error."""
+    """Test CUHK build subcommand usage output on parse error.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     stdout = StringIO()
     stderr = StringIO()
     subcommands = build_subcommands(cli)
@@ -70,13 +78,16 @@ def test_dictionary_build_cuhk_usage(
 
 @skip_if_ci()
 def test_dictionary_build_cuhk_cli():
-    """Test CUHK dictionary build CLI performs a limited real scrape."""
+    """Test CUHK dictionary build CLI performs a limited real scrape.
+
+    Arguments:
+        None.
+    """
     with get_temp_directory_path() as cache_dir_path:
         with get_temp_file_path(".db") as database_path:
             try:
                 run_cli_with_args(
-                    ScinoephileCli,
-                    "dictionary build cuhk "
+                    DictionaryBuildCuhkCli,
                     f"--cache-dir {cache_dir_path} "
                     f"--database-path {database_path} "
                     "--max-words 10 "

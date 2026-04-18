@@ -33,7 +33,11 @@ from test.helpers import assert_cli_help
     ],
 )
 def test_dictionary_build_gzzj_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test GZZJ build subcommand help output."""
+    """Test GZZJ build subcommand help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -50,8 +54,8 @@ def test_dictionary_build_gzzj_usage_missing_source():
                         environ, {"SCINOEPHILE_CACHE_DIR": str(cache_dir_path)}
                     ):
                         run_cli_with_args(
-                            DictionaryBuildCli,
-                            "gzzj --overwrite",
+                            DictionaryBuildGzzjCli,
+                            "--overwrite",
                         )
 
     assert excinfo.value.code == 1
