@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for English/中文 synchronization."""
+"""Command-line interface for synchronizing subtitle series."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
 
 
-class EngZhoSyncCli(CommandLineInterface):
-    """Command-line interface for synchronizing English and 中文 subtitles."""
+class SyncCli(CommandLineInterface):
+    """Command-line interface for synchronizing subtitle series."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -31,25 +31,22 @@ class EngZhoSyncCli(CommandLineInterface):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
-            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "--eng-infile",
-            metavar="FILE",
-            required=True,
+            "top_infile",
+            metavar="top-infile",
             type=input_file_arg(),
-            help="English subtitle infile",
+            help="subtitle infile for top line",
         )
         arg_groups["input arguments"].add_argument(
-            "--zho-infile",
-            metavar="FILE",
-            required=True,
+            "bottom_infile",
+            metavar="bottom-infile",
             type=input_file_arg(),
-            help="中文 subtitle infile",
+            help="subtitle infile for bottom line",
         )
 
         # Output arguments
@@ -59,7 +56,7 @@ class EngZhoSyncCli(CommandLineInterface):
             metavar="FILE",
             required=True,
             type=output_file_arg(exist_ok=True),
-            help="bilingual subtitle outfile",
+            help="synchronized subtitle outfile",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -76,19 +73,19 @@ class EngZhoSyncCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
-        eng_infile = kwargs.pop("eng_infile")
-        zho_infile = kwargs.pop("zho_infile")
+        top_infile = kwargs.pop("top_infile")
+        bottom_infile = kwargs.pop("bottom_infile")
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
         if outfile.exists() and not overwrite:
             parser.error(f"{outfile} already exists")
 
-        eng = Series.load(eng_infile)
-        zho = Series.load(zho_infile)
+        top = Series.load(top_infile)
+        bottom = Series.load(bottom_infile)
 
-        bilingual = get_synced_series(zho, eng)
-        bilingual.save(outfile)
+        synced = get_synced_series(top, bottom)
+        synced.save(outfile)
 
     @classmethod
     def name(cls) -> str:
@@ -101,4 +98,4 @@ class EngZhoSyncCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    EngZhoSyncCli.main()
+    SyncCli.main()

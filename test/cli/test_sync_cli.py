@@ -1,12 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.EngZhoSyncCli."""
+"""Tests of scinoephile.cli.SyncCli."""
 
 from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli import EngZhoCli, EngZhoSyncCli, ScinoephileCli
+from scinoephile.cli import ScinoephileCli, SyncCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -17,24 +17,24 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngZhoSyncCli,),
-        (EngZhoCli, EngZhoSyncCli),
+        (SyncCli,),
+        (ScinoephileCli, SyncCli),
     ],
 )
-def test_eng_zho_sync_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English/中文 sync CLI help output."""
+def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test sync CLI help output."""
     assert_cli_help(cli)
 
 
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngZhoSyncCli,),
-        (EngZhoCli, EngZhoSyncCli),
+        (SyncCli,),
+        (ScinoephileCli, SyncCli),
     ],
 )
-def test_eng_zho_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English/中文 sync CLI usage output."""
+def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test sync CLI usage output."""
     assert_cli_usage(cli)
 
 
@@ -42,21 +42,21 @@ def _run_sync(
     cli: tuple[type[CommandLineInterface], ...],
     args: str,
     *,
-    zho_input: str,
-    eng_input: str,
+    top_input: str,
+    bottom_input: str,
     expected_path: str,
 ):
     """Run sync CLI with file arguments and compare output."""
-    zho_input_path = test_data_root / zho_input
-    eng_input_path = test_data_root / eng_input
+    top_input_path = test_data_root / top_input
+    bottom_input_path = test_data_root / bottom_input
     full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             cli[0],
-            f"{subcommands} --zho-infile {zho_input_path} "
-            f"--eng-infile {eng_input_path} {args} --outfile {output_path}",
+            f"{subcommands} {top_input_path} {bottom_input_path} "
+            f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -64,23 +64,23 @@ def _run_sync(
     assert output == expected
 
 
-def test_eng_zho_sync_basic():
-    """Test English/中文 sync with file arguments."""
+def test_sync_basic():
+    """Test sync with file arguments."""
     _run_sync(
-        (EngZhoSyncCli,),
+        (SyncCli,),
         "",
-        zho_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        eng_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+        top_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+        bottom_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
         expected_path="mlamd/output/zho-Hans_eng.srt",
     )
 
 
-def test_eng_zho_sync_as_subcommand():
-    """Test English/中文 sync as subcommand."""
+def test_sync_as_subcommand():
+    """Test sync as subcommand."""
     _run_sync(
-        (ScinoephileCli, EngZhoCli, EngZhoSyncCli),
+        (ScinoephileCli, SyncCli),
         "",
-        zho_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-        eng_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+        top_input="mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+        bottom_input="mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
         expected_path="mlamd/output/zho-Hans_eng.srt",
     )
