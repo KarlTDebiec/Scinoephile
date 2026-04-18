@@ -51,13 +51,13 @@ def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            (ScinoephileCli, EngCli),
+            (EngCli),
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
         ),
         (
-            (ScinoephileCli, EngCli),
+            (EngCli),
             "mnt/output/eng_fuse_clean_validate.srt",
             "--proofread",
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
@@ -86,19 +86,34 @@ def test_eng_cli(
     assert output == expected
 
 
-def test_eng_cli_pipe():
+@pytest.mark.parametrize(
+    ("input_path", "args", "expected_path"),
+    [
+        (
+            "mnt/output/eng_fuse.srt",
+            "--clean",
+            "mnt/output/eng_fuse_clean.srt",
+        ),
+        (
+            "mnt/output/eng_fuse_clean_validate_proofread.srt",
+            "--flatten",
+            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
+        ),
+    ],
+)
+def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
     """Test English CLI processing via stdin/stdout."""
-    input_path = test_data_root / "mnt/output/eng_fuse.srt"
-    expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"
-    input_text = input_path.read_text()
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
+    input_text = full_input_path.read_text()
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
     with patch("scinoephile.cli.eng_cli.stdin", stdin_stream):
         with patch("scinoephile.cli.eng_cli.stdout", stdout_stream):
-            run_cli_with_args(EngCli, "--clean")
+            run_cli_with_args(EngCli, args)
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(expected_path)
+    expected = Series.load(full_expected_path)
 
     assert output == expected
