@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import AbstractContextManager, nullcontext
 from io import StringIO
 from unittest.mock import patch
 
@@ -42,37 +43,49 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.mark.parametrize(
-    ("cli", "input_path", "args", "expected_path"),
+    ("cli", "input_path", "args", "expected_path", "expectation"),
     [
         (
             (ZhoCli,),
             "mnt/output/zho-Hans_fuse.srt",
             "--clean",
             "mnt/output/zho-Hans_fuse_clean.srt",
+            nullcontext(),
         ),
         (
             (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            nullcontext(),
         ),
         (
             (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "--romanize",
             "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt",
+            nullcontext(),
         ),
         (
             (ScinoephileCli, ZhoCli),
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
             "--convert",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
+            nullcontext(),
         ),
         (
             (ZhoCli,),
             "mnt/output/zho-Hant_fuse_clean_validate.srt",
             "--proofread traditional",
             "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
+            nullcontext(),
+        ),
+        (
+            (ScinoephileCli, ZhoCli),
+            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
+            "--convert t2s --proofread traditional",
+            "-",
+            pytest.raises(SystemExit),
         ),
     ],
 )
@@ -81,60 +94,56 @@ def test_zho_cli(
     input_path: str,
     args: str,
     expected_path: str,
+    expectation: AbstractContextManager[object],
 ):
     """Test 中文 CLI processing with file arguments."""
     full_input_path = test_data_root / input_path
-    full_expected_path = test_data_root / expected_path
     subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            cli[0],
-            f"{subcommands} --infile {full_input_path} {args} --outfile {output_path}",
-        )
+        with expectation:
+            run_cli_with_args(
+                cli[0],
+                f"{subcommands} --infile {full_input_path} "
+                f"{args} --outfile {output_path}",
+            )
+        if expected_path == "-":
+            return
+        full_expected_path = test_data_root / expected_path
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
 
     assert output == expected
 
 
-def test_zho_cli_pipe():
+@pytest.mark.parametrize(
+    ("input_path", "args", "expected_path"),
+    [
+        (
+            "mnt/output/zho-Hans_fuse.srt",
+            "--clean",
+            "mnt/output/zho-Hans_fuse_clean.srt",
+        ),
+        (
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
+            "--flatten",
+            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+        ),
+    ],
+)
+def test_zho_cli_pipe(input_path: str, args: str, expected_path: str):
     """Test 中文 CLI processing via stdin/stdout."""
-    input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
-    expected_path = test_data_root / "mnt/output/zho-Hans_fuse_clean.srt"
-    input_text = input_path.read_text()
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
+    input_text = full_input_path.read_text()
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
     with patch("scinoephile.cli.zho_cli.stdin", stdin_stream):
         with patch("scinoephile.cli.zho_cli.stdout", stdout_stream):
-            run_cli_with_args(ZhoCli, "--clean")
+            run_cli_with_args(ZhoCli, args)
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(expected_path)
+    expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_zho_proofread_script_validation():
-    """Test proofread script validation against conversion output."""
-    input_path = (
-        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt"
-    )
-
-    stdout = StringIO()
-    stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
-        with patch("sys.stdout", stdout):
-            with patch("sys.stderr", stderr):
-                run_cli_with_args(
-                    ScinoephileCli,
-                    "zho --infile "
-                    f"{input_path} "
-                    "--convert t2s "
-                    "--proofread traditional "
-                    "--outfile -",
-                )
-
-    assert excinfo.value.code == 2
-    assert "Proofread script must match post-conversion script" in stderr.getvalue()
