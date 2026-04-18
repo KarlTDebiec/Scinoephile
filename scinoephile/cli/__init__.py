@@ -13,9 +13,8 @@ from scinoephile.cli.dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.cli.eng_cli import EngCli
-from scinoephile.cli.eng_zho_cli import EngZhoCli
-from scinoephile.cli.eng_zho_sync_cli import EngZhoSyncCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.cli.zho_cli import ZhoCli
 
 __all__ = [
@@ -25,8 +24,7 @@ __all__ = [
     "DictionaryBuildGzzjCli",
     "DictionarySearchCli",
     "EngCli",
-    "EngZhoCli",
-    "EngZhoSyncCli",
     "ScinoephileCli",
+    "SyncCli",
     "ZhoCli",
 ]

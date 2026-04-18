@@ -9,7 +9,7 @@ from typing import Unpack
 
 from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.eng_cli import EngCli
-from scinoephile.cli.eng_zho_cli import EngZhoCli
+from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.cli.zho_cli import ZhoCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
@@ -54,8 +54,8 @@ class ScinoephileCli(CommandLineInterface):
         return {
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            SyncCli.name(): SyncCli,
             ZhoCli.name(): ZhoCli,
-            EngZhoCli.name(): EngZhoCli,
         }
 
     @classmethod
