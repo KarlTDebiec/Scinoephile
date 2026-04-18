@@ -25,7 +25,11 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI help output."""
+    """Test English CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_help(cli)
 
 
@@ -37,27 +41,28 @@ def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI usage output."""
+    """Test English CLI usage output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
     assert_cli_usage(cli)
 
 
 @pytest.mark.parametrize(
-    ("cli", "input_path", "args", "expected_path"),
+    ("input_path", "args", "expected_path"),
     [
         (
-            (EngCli,),
             "mnt/output/eng_fuse.srt",
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            (ScinoephileCli, EngCli),
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
             "--flatten",
             "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
         ),
         (
-            (ScinoephileCli, EngCli),
             "mnt/output/eng_fuse_clean_validate.srt",
             "--proofread",
             "mnt/output/eng_fuse_clean_validate_proofread.srt",
@@ -65,20 +70,24 @@ def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_eng_cli(
-    cli: tuple[type[CommandLineInterface], ...],
     input_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test English CLI processing with file arguments."""
+    """Test English CLI processing with file arguments.
+
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
     full_input_path = test_data_root / input_path
     full_expected_path = test_data_root / expected_path
-    subcommands = " ".join(f"{command.name()}" for command in cli[1:])
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            cli[0],
-            f"{subcommands} --infile {full_input_path} {args} --outfile {output_path}",
+            EngCli,
+            f"--infile {full_input_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -86,19 +95,40 @@ def test_eng_cli(
     assert output == expected
 
 
-def test_eng_cli_pipe():
-    """Test English CLI processing via stdin/stdout."""
-    input_path = test_data_root / "mnt/output/eng_fuse.srt"
-    expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"
-    input_text = input_path.read_text()
+@pytest.mark.parametrize(
+    ("input_path", "args", "expected_path"),
+    [
+        (
+            "mnt/output/eng_fuse.srt",
+            "--clean",
+            "mnt/output/eng_fuse_clean.srt",
+        ),
+        (
+            "mnt/output/eng_fuse_clean_validate_proofread.srt",
+            "--flatten",
+            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
+        ),
+    ],
+)
+def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
+    """Test English CLI processing via stdin/stdout.
+
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
+    input_text = full_input_path.read_text()
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
     with patch("scinoephile.cli.eng_cli.stdin", stdin_stream):
         with patch("scinoephile.cli.eng_cli.stdout", stdout_stream):
-            run_cli_with_args(EngCli, "--clean")
+            run_cli_with_args(EngCli, args)
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(expected_path)
+    expected = Series.load(full_expected_path)
 
     assert output == expected
