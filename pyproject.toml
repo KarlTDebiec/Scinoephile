@@ -31,7 +31,7 @@ dependencies = [
     "setuptools>=82.0.1",
     "torch>=2.10.0",
     "torchaudio>=2.11.0",
-    "transformers>=5.5.3",
+    "transformers>=5.5.4",
     "whisper-timestamped>=1.15.9",
 ]
 
