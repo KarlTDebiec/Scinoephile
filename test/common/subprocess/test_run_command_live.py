@@ -150,7 +150,7 @@ def test_run_command_live_timeout():
         )
     elapsed = monotonic() - start_time
 
-    assert elapsed < 2
+    assert elapsed < 1.5
 
 
 def test_run_command_live_non_utf8_output():
