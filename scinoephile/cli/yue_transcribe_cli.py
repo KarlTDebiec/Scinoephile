@@ -89,7 +89,7 @@ class YueTranscribeCli(CommandLineInterface):
 
         try:
             validated_zhongwen_path = val_input_path(zhongwen_infile_path)
-            zhongwen = Series.load(zhongwen_infile_path)
+            zhongwen = Series.load(validated_zhongwen_path)
             yuewen = AudioSeries.load_from_media(
                 media_path=media_infile_path,
                 subtitle_path=validated_zhongwen_path,

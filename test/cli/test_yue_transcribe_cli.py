@@ -5,10 +5,11 @@
 from __future__ import annotations
 
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli import ScinoephileCli, YueCli, YueTranscribeCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
@@ -53,30 +54,39 @@ def test_yue_transcribe_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 def test_yue_transcribe_cli_writes_file():
-    """Test 粤文 transcription CLI writes file output and dispatches media args."""
+    """Test 粤文 transcription CLI writes file output and dispatches dependencies."""
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
     )
+    yuewen_audio_series = Mock(spec=AudioSeries)
 
     with get_temp_file_path(".srt") as outfile_path:
         with patch(
-            "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
-            return_value=expected_series,
-        ) as patched_transcribe:
-            run_cli_with_args(
-                YueTranscribeCli,
-                f"{media_infile_path} "
-                f"{zhongwen_infile_path} --stream-index 1 -o {outfile_path}",
-            )
+            "scinoephile.cli.yue_transcribe_cli.AudioSeries.load_from_media",
+            return_value=yuewen_audio_series,
+        ) as patched_loader:
+            with patch(
+                "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ) as patched_transcribe:
+                run_cli_with_args(
+                    YueTranscribeCli,
+                    f"{media_infile_path} "
+                    f"{zhongwen_infile_path} --stream-index 1 -o {outfile_path}",
+                )
         output_series = Series.load(outfile_path)
 
     called_kwargs = patched_transcribe.call_args.kwargs
-    assert called_kwargs["stream_index"] == 1
-    assert called_kwargs["media_path"] == media_infile_path
+    assert called_kwargs["yuewen"] == yuewen_audio_series
     assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
+    patched_loader.assert_called_once_with(
+        media_path=media_infile_path,
+        subtitle_path=zhongwen_infile_path,
+        stream_index=1,
+    )
     assert output_series == expected_series
 
 
@@ -88,16 +98,21 @@ def test_yue_transcribe_cli_writes_stdout():
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
     )
+    yuewen_audio_series = Mock(spec=AudioSeries)
     stdout_stream = StringIO()
 
     with patch(
-        "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
-        return_value=expected_series,
+        "scinoephile.cli.yue_transcribe_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
     ):
-        with patch("scinoephile.cli.yue_transcribe_cli.stdout", stdout_stream):
-            run_cli_with_args(
-                YueTranscribeCli, f"{media_infile_path} {zhongwen_infile_path}"
-            )
+        with patch(
+            "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
+            return_value=expected_series,
+        ):
+            with patch("scinoephile.cli.yue_transcribe_cli.stdout", stdout_stream):
+                run_cli_with_args(
+                    YueTranscribeCli, f"{media_infile_path} {zhongwen_infile_path}"
+                )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert output_series == expected_series
@@ -119,7 +134,7 @@ def test_yue_transcribe_cli_stream_errors_are_user_facing():
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with patch(
-        "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
+        "scinoephile.cli.yue_transcribe_cli.AudioSeries.load_from_media",
         side_effect=ScinoephileError("Invalid audio stream index 7"),
     ):
         with pytest.raises(SystemExit, match="2"):
