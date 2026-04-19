@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.llms import TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -56,30 +55,21 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
 
 
 def get_yue_transcribed_vs_zho(
+    yuewen: AudioSeries,
     zhongwen: Series,
-    media_path: Path | str,
-    stream_index: int = 0,
     transcriber: YueTranscriber | None = None,
     **kwargs: Unpack[YueZhoTranscriptionKwargs],
 ) -> AudioSeries:
-    """Get initial 粤文 transcription aligned to 中文字幕.
+    """Get initial 粤文 transcription aligned to 中文.
 
     Arguments:
-        zhongwen: 中文字幕 subtitle series
-        media_path: path to video container or audio media file
-        stream_index: audio stream index (zero-based)
+        yuewen: nascent 粤文 audio subtitle series
+        zhongwen: 中文 subtitle series
         transcriber: transcriber to use
         **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
     Returns:
         transcribed 粤文 subtitle series
     """
-    with get_temp_file_path(".srt") as subtitle_path:
-        zhongwen.save(subtitle_path, format_="srt")
-        yuewen = AudioSeries.load_from_media(
-            media_path=media_path,
-            subtitle_path=subtitle_path,
-            stream_index=stream_index,
-        )
     if transcriber is None:
         transcriber = get_yue_vs_zho_transcriber()
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)

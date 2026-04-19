@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from sys import stdout
 from typing import Unpack
 
+from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.common.exception import NotAFileError
@@ -80,23 +81,27 @@ class YueTranscribeCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
-        media_infile = kwargs.pop("media_infile")
-        zhongwen_infile = kwargs.pop("zhongwen_infile")
+        media_infile_path = kwargs.pop("media_infile")
+        zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
-        outfile = kwargs.pop("outfile")
+        outfile_path = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
         try:
-            zhongwen = Series.load(val_input_path(zhongwen_infile))
-            yuewen = get_yue_transcribed_vs_zho(
-                zhongwen=zhongwen,
-                media_path=media_infile,
+            validated_zhongwen_path = val_input_path(zhongwen_infile_path)
+            zhongwen = Series.load(zhongwen_infile_path)
+            yuewen = AudioSeries.load_from_media(
+                media_path=media_infile_path,
+                subtitle_path=validated_zhongwen_path,
                 stream_index=stream_index,
+            )
+            yuewen = get_yue_transcribed_vs_zho(
+                yuewen=yuewen,
+                zhongwen=zhongwen,
             )
         except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
             parser.error(str(exc))
-            return
-        cls._write_series(parser, yuewen, outfile, overwrite)
+        cls._write_series(parser, yuewen, outfile_path, overwrite)
 
     @classmethod
     def _write_series(
