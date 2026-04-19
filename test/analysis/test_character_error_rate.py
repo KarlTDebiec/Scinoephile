@@ -142,51 +142,43 @@ def test_get_text_cer(
     assert result == expected
 
 
-def test_get_series_cer_kob_transcribe(
-    kob_yue_hans_timewarp_clean_flatten: Series,
-    kob_yue_hans_transcribe: Series,
+@pytest.mark.parametrize(
+    (
+        "reference_series_fixture_name",
+        "candidate_series_fixture_name",
+        "expected_fixture_name",
+    ),
+    [
+        (
+            "kob_yue_hans_timewarp_clean_flatten",
+            "kob_yue_hans_transcribe",
+            "kob_yue_hans_transcribe_expected_cer",
+        ),
+        (
+            "kob_yue_hans_timewarp_clean_flatten",
+            "kob_yue_hans_transcribe_proofread_translate_review",
+            "kob_yue_hans_transcribe_proofread_translate_review_expected_cer",
+        ),
+    ],
+)
+def test_get_series_cer(
+    reference_series_fixture_name: str,
+    candidate_series_fixture_name: str,
+    expected_fixture_name: str,
+    request: pytest.FixtureRequest,
 ):
-    """Test KOB CER for transcribed subtitles against the flattened reference.
+    """Test series-level character error rate calculations.
 
     Arguments:
-        kob_yue_hans_timewarp_clean_flatten: reference subtitles
-        kob_yue_hans_transcribe: transcribed subtitles
+        reference_series_fixture_name: fixture name for reference subtitle series
+        candidate_series_fixture_name: fixture name for candidate subtitle series
+        expected_fixture_name: fixture name containing expected CER result
+        request: pytest fixture request object
     """
-    result = get_series_cer(
-        kob_yue_hans_timewarp_clean_flatten,
-        kob_yue_hans_transcribe,
-    )
+    reference_series: Series = request.getfixturevalue(reference_series_fixture_name)
+    candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
+    expected: CharacterErrorRateResult = request.getfixturevalue(expected_fixture_name)
 
-    assert result == CharacterErrorRateResult(
-        cer=0.9040239499867923,
-        substitutions=4155,
-        insertions=2835,
-        deletions=3277,
-        correct=3925,
-        reference_length=11357,
-    )
+    result = get_series_cer(reference_series, candidate_series)
 
-
-def test_get_series_cer_kob_transcribe_proofread_translate_review(
-    kob_yue_hans_timewarp_clean_flatten: Series,
-    kob_yue_hans_transcribe_proofread_translate_review: Series,
-):
-    """Test KOB CER after proofread/translate/review against the reference.
-
-    Arguments:
-        kob_yue_hans_timewarp_clean_flatten: reference subtitles
-        kob_yue_hans_transcribe_proofread_translate_review: reviewed subtitles
-    """
-    result = get_series_cer(
-        kob_yue_hans_timewarp_clean_flatten,
-        kob_yue_hans_transcribe_proofread_translate_review,
-    )
-
-    assert result == CharacterErrorRateResult(
-        cer=0.6034163951747821,
-        substitutions=2789,
-        insertions=2091,
-        deletions=1973,
-        correct=6595,
-        reference_length=11357,
-    )
+    assert result == expected

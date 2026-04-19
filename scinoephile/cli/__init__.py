@@ -7,6 +7,7 @@ This module may import from: common, core, lang
 
 from __future__ import annotations
 
+from scinoephile.cli.analysis_cer_cli import AnalysisCerCli
 from scinoephile.cli.analysis_cli import AnalysisCli
 from scinoephile.cli.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.dictionary_build_cli import DictionaryBuildCli
@@ -21,6 +22,7 @@ from scinoephile.cli.timewarp_cli import TimewarpCli
 from scinoephile.cli.zho_cli import ZhoCli
 
 __all__ = [
+    "AnalysisCerCli",
     "AnalysisCli",
     "AnalysisDiffCli",
     "DictionaryCli",
