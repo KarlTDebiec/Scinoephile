@@ -27,7 +27,7 @@ __all__ = [
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
     "get_yue_translated_vs_zho",
-    "get_yue_translator_vs_zho",
+    "get_yue_vs_zho_translator",
 ]
 
 
@@ -61,11 +61,11 @@ def get_yue_translated_vs_zho(
         粤文 translated from 中文
     """
     if translator is None:
-        translator = get_yue_translator_vs_zho()
+        translator = get_yue_vs_zho_translator()
     return translator.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_translator_vs_zho(
+def get_yue_vs_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

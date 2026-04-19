@@ -24,7 +24,7 @@ __all__ = [
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
     "get_yue_reviewed_vs_zho",
-    "get_yue_reviewer_vs_zho",
+    "get_yue_vs_zho_reviewer",
 ]
 
 
@@ -58,11 +58,11 @@ def get_yue_reviewed_vs_zho(
         粤文 reviewed against 中文
     """
     if reviewer is None:
-        reviewer = get_yue_reviewer_vs_zho()
+        reviewer = get_yue_vs_zho_reviewer()
     return reviewer.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_reviewer_vs_zho(
+def get_yue_vs_zho_reviewer(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

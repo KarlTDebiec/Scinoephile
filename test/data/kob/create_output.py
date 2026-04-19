@@ -21,11 +21,11 @@ from scinoephile.multilang.yue_zho import (
     get_yue_reviewed_vs_zho,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
-from scinoephile.multilang.yue_zho.review import get_yue_reviewer_vs_zho
+from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_translated_vs_zho,
-    get_yue_translator_vs_zho,
+    get_yue_vs_zho_translator,
 )
 from test.conftest import get_mlamd_yue_shifting_test_cases
 from test.data.mlamd import get_mlamd_yue_merging_test_cases
@@ -152,7 +152,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_transcribe_proofread.save(outfile_path)
 
     # Translate
-    translator = get_yue_translator_vs_zho(
+    translator = get_yue_vs_zho_translator(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
@@ -167,7 +167,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_transcribe_proofread_translate.save(outfile_path)
 
     # Review
-    reviewer = get_yue_reviewer_vs_zho(
+    reviewer = get_yue_vs_zho_reviewer(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
