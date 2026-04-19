@@ -2,12 +2,7 @@
 *.swp
 .DS_Store
 .idea
-.mypy_cache
 __pycache__
-Makefile
-build
-dist
-docs/doctrees
 scinoephile.egg-info
 /local/
 /test/.coverage
