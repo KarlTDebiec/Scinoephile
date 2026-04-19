@@ -10,7 +10,7 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.yue_cli import YueCli
+from scinoephile.cli.yue.yue_cli import YueCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args

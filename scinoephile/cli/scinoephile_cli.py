@@ -14,7 +14,7 @@ from .dictionary.dictionary_cli import DictionaryCli
 from .eng.eng_cli import EngCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
-from .yue_cli import YueCli
+from .yue.yue_cli import YueCli
 from .zho.zho_cli import ZhoCli
 
 
