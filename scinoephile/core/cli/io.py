@@ -31,46 +31,11 @@ def read_series(
     if allow_stdin and str(infile) == "-":
         return Series.from_string(stdin.read(), format_="srt")
 
-    infile_path = validate_infile_path(parser, infile)
-    return Series.load(infile_path)
-
-
-def validate_infile_path(parser: ArgumentParser, infile: str | Path) -> Path:
-    """Validate a subtitle infile path.
-
-    Arguments:
-        parser: parser used for user-facing error output
-        infile: input path value
-    Returns:
-        validated input path
-    """
     try:
-        return val_input_path(infile)
+        infile_path = val_input_path(infile)
     except (FileNotFoundError, NotAFileError) as exc:
         parser.error(str(exc))
-    raise AssertionError("unreachable")
-
-
-def validate_outfile_path(
-    parser: ArgumentParser, outfile: str | Path, overwrite: bool
-) -> Path:
-    """Validate an output path and enforce overwrite behavior.
-
-    Arguments:
-        parser: parser used for user-facing error output
-        outfile: output path value
-        overwrite: whether existing files may be overwritten
-    Returns:
-        validated output path
-    """
-    try:
-        outfile_path = val_output_path(outfile, exist_ok=True)
-    except (FileExistsError, NotAFileError) as exc:
-        parser.error(str(exc))
-
-    if outfile_path.exists() and not overwrite:
-        parser.error(f"{outfile_path} already exists")
-    return outfile_path
+    return Series.load(infile_path)
 
 
 def write_series(parser: ArgumentParser, series: Series, outfile: str, overwrite: bool):
@@ -86,5 +51,11 @@ def write_series(parser: ArgumentParser, series: Series, outfile: str, overwrite
         stdout.write(series.to_string(format_="srt"))
         return
 
-    outfile_path = validate_outfile_path(parser, outfile, overwrite)
+    try:
+        outfile_path = val_output_path(outfile, exist_ok=True)
+    except (FileExistsError, NotAFileError) as exc:
+        parser.error(str(exc))
+
+    if outfile_path.exists() and not overwrite:
+        parser.error(f"{outfile_path} already exists")
     series.save(outfile_path)
