@@ -4,20 +4,18 @@
 
 from __future__ import annotations
 
-import csv
 import re
 import unicodedata
 from copy import deepcopy
 from functools import cache, lru_cache
 from logging import getLogger
-from typing import cast
+from typing import Any, cast
 from warnings import catch_warnings, simplefilter
 
 with catch_warnings():
     simplefilter("ignore", UserWarning)
     import pycantonese
 
-from scinoephile.common import package_root
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
 from scinoephile.lang.zho.conversion import get_zho_converter
@@ -32,7 +30,6 @@ __all__ = [
 
 logger = getLogger(__name__)
 
-JYUTPING_DATA_PATH = package_root / "data" / "yue" / "jyutping.csv"
 MAX_YUE_JYUTPING_VARIANTS = 16
 RE_YALE_PROHIBITED_CHARACTERS = re.compile(r"[üÜ:]")
 RE_YALE_SEPARATOR = re.compile(r"[\s'’]+")
@@ -94,16 +91,11 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
     Returns:
         normalized Jyutping query strings
     """
-    text = unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
+    text = _normalize_yue_romanization_query_text(text)
     if not text:
         return []
 
-    condensed = text.replace(" ", "")
-    condensed_without_apostrophes = condensed.replace("'", "")
-    try:
-        parsed = pycantonese.parse_jyutping(condensed_without_apostrophes)
-    except ValueError:
-        parsed = []
+    parsed = _parse_normalized_jyutping(text)
     if parsed:
         return [
             " ".join(
@@ -163,16 +155,10 @@ def is_numbered_jyutping(text: str) -> bool:
     Returns:
         whether text appears to be numbered Jyutping
     """
-    normalized = unicodedata.normalize("NFC", text)
-    normalized = normalized.replace("’", "'").strip().lower()
+    normalized = _normalize_yue_romanization_query_text(text)
     if not normalized:
         return False
-    condensed = normalized.replace(" ", "").replace("'", "")
-    try:
-        parsed = pycantonese.parse_jyutping(condensed)
-    except ValueError:
-        return False
-    return bool(parsed)
+    return bool(_parse_normalized_jyutping(normalized))
 
 
 def yale_to_jyutping(text: str) -> list[str]:
@@ -288,16 +274,6 @@ def _get_yale_jyutping_syllables() -> tuple[
     return sorted_yale_syllables, sorted_mapping
 
 
-@lru_cache(maxsize=1)
-def _get_yue_word_to_jyutping_data() -> tuple[dict[str, str], int]:
-    """Get cached Yue word-to-Jyutping lookup data.
-
-    Returns:
-        word-to-Jyutping mapping and maximum mapped word length
-    """
-    return _load_yue_word_to_jyutping()
-
-
 def _get_yue_text_romanized(text: str) -> str:
     """Get the Yale Cantonese romanization of Chinese text.
 
@@ -330,39 +306,17 @@ def _get_yue_text_romanized(text: str) -> str:
                         and get_char_type(section[end_index]) == "full"
                     ):
                         end_index += 1
-                    section_romanization += " " + _romanize_yue_hanzi_run(
-                        section[index:end_index]
-                    )
+                    hanzi_run = section[index:end_index]
+                    hanzi_run_romanization = _romanize_yue_hanzi_run(hanzi_run)
+                    if hanzi_run_romanization[:1] != hanzi_run[:1]:
+                        section_romanization += " "
+                    section_romanization += hanzi_run_romanization
                     index = end_index
                 else:
                     index += 1
             line_romanization += "  " + section_romanization.strip()
         text_romanization += "\n" + line_romanization.strip()
     return text_romanization.strip()
-
-
-@cache
-def _get_yue_word_romanized(word: str) -> str | None:
-    """Get Yale romanization for one Yue word.
-
-    Arguments:
-        word: one or more Hanzi characters
-    Returns:
-        Yale romanization if available
-    """
-    word_to_jyutping, _ = _get_yue_word_to_jyutping_data()
-    for candidate in (
-        word,
-        get_zho_converter("s2t").convert(word),
-        get_zho_converter("t2s").convert(word),
-    ):
-        jyutping = word_to_jyutping.get(candidate)
-        if jyutping is None:
-            continue
-        yale = _jyutping_to_yale(jyutping)
-        if yale is not None:
-            return yale
-    return None
 
 
 def _jyutping_to_yale(jyutping: str) -> str | None:
@@ -373,98 +327,87 @@ def _jyutping_to_yale(jyutping: str) -> str | None:
     Returns:
         Yale romanization or ``None`` if conversion fails
     """
-    normalized = _normalize_yue_jyutping(jyutping)
-    if normalized is None:
+    normalized = _normalize_yue_romanization_query_text(jyutping)
+    if not normalized:
         return None
+    parsed = _parse_normalized_jyutping(normalized)
+    if not parsed:
+        return None
+    normalized_jyutping = " ".join(
+        f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
+        for syllable in parsed
+    )
     try:
         return " ".join(
             pycantonese.jyutping_to_yale(syllable, return_as="string")
-            for syllable in normalized.split()
+            for syllable in normalized_jyutping.split()
         )
     except (KeyError, ValueError):
         return None
 
 
-def _load_yue_word_to_jyutping() -> tuple[dict[str, str], int]:
-    """Load the Yue word-to-Jyutping lookup table.
-
-    Returns:
-        word-to-Jyutping mapping and maximum mapped word length
-    """
-    word_to_jyutping: dict[str, str] = {}
-    max_word_length = 0
-    with JYUTPING_DATA_PATH.open(encoding="utf-8", newline="") as infile:
-        for row in csv.reader(infile):
-            if len(row) < 2:
-                continue
-            word, raw_jyutping = row[0].strip(), row[1]
-            if word == "words" and raw_jyutping.strip() == "jyutping":
-                continue
-            jyutping = _normalize_yue_jyutping(raw_jyutping)
-            if not word or jyutping is None:
-                continue
-            word_to_jyutping[word] = jyutping
-            max_word_length = max(max_word_length, len(word))
-    return word_to_jyutping, max_word_length
-
-
-def _normalize_yue_jyutping(jyutping: str) -> str | None:
-    """Normalize numbered Jyutping to a space-delimited syllable string.
+def _normalize_yue_romanization_query_text(text: str) -> str:
+    """Normalize text for Yale and Jyutping query parsing.
 
     Arguments:
-        jyutping: raw Jyutping
+        text: raw query text
     Returns:
-        normalized Jyutping or ``None`` if parsing fails
+        normalized query text
     """
-    normalized = unicodedata.normalize("NFC", jyutping).replace("’", "'").strip()
-    if not normalized:
-        return None
-    condensed = normalized.replace(" ", "").replace("'", "").lower()
+    return unicodedata.normalize("NFC", text).replace("’", "'").strip().lower()
+
+
+def _parse_normalized_jyutping(text: str) -> tuple[Any, ...]:
+    """Parse normalized Jyutping text.
+
+    Arguments:
+        text: normalized Jyutping text
+    Returns:
+        parsed Jyutping syllables, or an empty tuple if parsing fails
+    """
+    condensed = text.replace(" ", "").replace("'", "")
     try:
-        parsed = pycantonese.parse_jyutping(condensed)
+        return tuple(pycantonese.parse_jyutping(condensed))
     except ValueError:
-        return None
-    return " ".join(
-        f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
-        for syllable in parsed
-    )
+        return ()
 
 
 def _romanize_yue_hanzi_run(text: str) -> str:
-    """Romanize a contiguous Hanzi run using longest-match lookup.
+    """Romanize a contiguous Hanzi run with PyCantonese segmentation.
 
     Arguments:
         text: contiguous Hanzi text
     Returns:
         Yale romanization with unmatched chunks preserved
     """
-    pieces: list[str] = []
-    _, max_yue_word_length = _get_yue_word_to_jyutping_data()
-    raw_piece = ""
-    index = 0
-    while index < len(text):
-        matched = False
-        max_length = min(max_yue_word_length, len(text) - index)
-        for length in range(max_length, 0, -1):
-            word = text[index : index + length]
-            romanized = _get_yue_word_romanized(word)
-            if romanized is None:
-                continue
-            if raw_piece:
-                pieces.append(raw_piece)
-                raw_piece = ""
-            pieces.append(romanized)
-            index += length
-            matched = True
-            break
+    trad_text = get_zho_converter("s2t").convert(text)
+    segments = pycantonese.segment(trad_text, offsets=True)
+    jyutping_segments = pycantonese.characters_to_jyutping(
+        [segment for segment, _ in segments]
+    )
 
-        if matched:
+    pieces: list[tuple[str, bool]] = []
+    for (_, (start, end)), (_, jyutping) in zip(
+        segments, jyutping_segments, strict=True
+    ):
+        original_segment = text[start:end]
+        if jyutping is None:
+            for char in original_segment:
+                logger.warning("No Cantonese romanization for character: %s", char)
+            pieces.append((original_segment, True))
             continue
 
-        raw_piece += text[index]
-        logger.warning("No Cantonese romanization for character: %s", text[index])
-        index += 1
+        yale = _jyutping_to_yale(jyutping)
+        if yale is None:
+            for char in original_segment:
+                logger.warning("No Cantonese romanization for character: %s", char)
+            pieces.append((original_segment, True))
+            continue
+        pieces.append((yale, False))
 
-    if raw_piece:
-        pieces.append(raw_piece)
-    return " ".join(pieces)
+    output = ""
+    for piece, is_raw in pieces:
+        if output and not is_raw:
+            output += " "
+        output += piece
+    return output

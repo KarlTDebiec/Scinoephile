@@ -2,12 +2,6 @@
 
 ## Yue
 
-`jyutping.csv` contains 粤文 text and Jyutping pairs used by Scinoephile's
-Cantonese romanization lookup.
-
-This file was seeded from the Hong Kong Cantonese Corpus (HKCanCor) data distributed
-with `pycantonese`
-
 The `pycantonese` HKCanCor data is a CHAT-format version of the Hong Kong
 Cantonese Corpus compiled by Kang Kwong Luke from conversational Hong Kong
 Cantonese recordings. `pycantonese` notes that its bundled HKCanCor data has
