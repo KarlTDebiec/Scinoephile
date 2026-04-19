@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+from io import StringIO
+from unittest.mock import patch
+
 import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -85,3 +88,44 @@ def test_sync_cli(
         expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_sync_cli_pipe():
+    """Test sync CLI processing writes stdout when outfile is omitted."""
+    full_top_path = (
+        test_data_root
+        / "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
+    full_bottom_path = (
+        test_data_root / "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt"
+    )
+    full_expected_path = test_data_root / "mlamd/output/zho-Hans_eng.srt"
+
+    stdout_stream = StringIO()
+    with patch("scinoephile.core.cli.stdout", stdout_stream):
+        run_cli_with_args(
+            SyncCli,
+            f"{full_top_path} {full_bottom_path}",
+        )
+
+    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    expected = Series.load(full_expected_path)
+
+    assert output == expected
+
+
+def test_sync_cli_rejects_overwrite_without_outfile():
+    """Test sync CLI rejects overwrite when outfile is omitted."""
+    full_top_path = (
+        test_data_root
+        / "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+    )
+    full_bottom_path = (
+        test_data_root / "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt"
+    )
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            SyncCli,
+            f"{full_top_path} {full_bottom_path} --overwrite",
+        )

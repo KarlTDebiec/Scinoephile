@@ -166,7 +166,7 @@ def test_eng_fuse_cli_pipe(
     full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.io.stdout", stdout_stream):
+    with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
             EngFuseCli,
             f"{full_lens_input_path} {full_tesseract_input_path} {args}",

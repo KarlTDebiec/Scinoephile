@@ -5,11 +5,18 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli.io import read_series, write_series
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+    output_file_arg,
+)
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.core.cli import write_series
+from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -50,8 +57,8 @@ class SyncCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="OUTFILE",
-            default="-",
-            type=str,
+            default=None,
+            type=output_file_arg(),
             help="synchronized subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
@@ -68,17 +75,29 @@ class SyncCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
         top_infile = kwargs.pop("top_infile")
         bottom_infile = kwargs.pop("bottom_infile")
-        outfile = kwargs.pop("outfile")
+        outfile: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if overwrite and outfile is None:
+            try:
+                raise ArgumentConflictError(
+                    "--overwrite may only be used with --outfile"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
-        top = read_series(parser, top_infile)
-        bottom = read_series(parser, bottom_infile)
+        # Read inputs
+        top = Series.load(top_infile)
+        bottom = Series.load(bottom_infile)
 
+        # Perform operations
         synced = get_synced_series(top, bottom)
-        write_series(parser, synced, outfile, overwrite)
+
+        # Write outputs
+        write_series(parser, synced, outfile if outfile is not None else "-", overwrite)
 
 
 if __name__ == "__main__":

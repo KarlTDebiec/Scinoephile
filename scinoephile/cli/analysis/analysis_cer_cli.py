@@ -46,9 +46,11 @@ class AnalysisCerCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        # Validate arguments
         reference_infile_path = kwargs.pop("reference_infile_path")
         candidate_infile_path = kwargs.pop("candidate_infile_path")
 
+        # Read inputs
         reference_series = Series.load(reference_infile_path)
         candidate_series = Series.load(candidate_infile_path)
         result = get_series_cer(reference_series, candidate_series)

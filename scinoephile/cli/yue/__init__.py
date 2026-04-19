@@ -3,3 +3,11 @@
 """CLI tools for 粤文 workflows."""
 
 from __future__ import annotations
+
+from .yue_cli import YueCli
+from .yue_transcribe_cli import YueTranscribeCli
+
+__all__ = [
+    "YueCli",
+    "YueTranscribeCli",
+]

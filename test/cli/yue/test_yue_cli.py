@@ -77,8 +77,8 @@ def test_yue_cli_romanize_pipe():
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.io.stdin", stdin_stream):
-        with patch("scinoephile.core.cli.io.stdout", stdout_stream):
+    with patch("scinoephile.core.cli.stdin", stdin_stream):
+        with patch("scinoephile.core.cli.stdout", stdout_stream):
             run_cli_with_args(YueCli, "--romanize")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")

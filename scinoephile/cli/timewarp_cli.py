@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
@@ -12,9 +13,12 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
+    output_file_arg,
 )
+from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli.io import read_series, write_series
+from scinoephile.core.cli import write_series
+from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 
 
@@ -86,9 +90,9 @@ class TimewarpCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="OUTFILE",
-            default="-",
-            type=str,
-            help='timewarped subtitle outfile path or "-" for stdout',
+            default=None,
+            type=output_file_arg(),
+            help="timewarped subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -104,6 +108,7 @@ class TimewarpCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
         anchor_infile = kwargs.pop("anchor_infile")
         mobile_infile = kwargs.pop("mobile_infile")
@@ -111,11 +116,21 @@ class TimewarpCli(CommandLineInterface):
         one_end_idx = kwargs.pop("one_end_idx")
         two_start_idx = kwargs.pop("two_start_idx")
         two_end_idx = kwargs.pop("two_end_idx")
-        outfile = kwargs.pop("outfile")
+        outfile: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if overwrite and outfile is None:
+            try:
+                raise ArgumentConflictError(
+                    "--overwrite may only be used with --outfile"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
-        anchor = read_series(parser, anchor_infile)
-        mobile = read_series(parser, mobile_infile)
+        # Read inputs
+        anchor = Series.load(anchor_infile)
+        mobile = Series.load(mobile_infile)
+
+        # Perform operations
         try:
             timewarped = get_series_timewarped(
                 source_one=anchor,
@@ -127,16 +142,14 @@ class TimewarpCli(CommandLineInterface):
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
-        write_series(parser, timewarped, outfile, overwrite)
 
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "timewarp"
+        # Write outputs
+        write_series(
+            parser,
+            timewarped,
+            outfile if outfile is not None else "-",
+            overwrite,
+        )
 
 
 if __name__ == "__main__":

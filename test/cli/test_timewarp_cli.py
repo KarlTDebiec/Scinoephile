@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+from io import StringIO
+from unittest.mock import patch
+
 import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -85,3 +88,41 @@ def test_timewarp_cli(
         expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_timewarp_cli_pipe():
+    """Test timewarp CLI writes stdout when outfile is omitted."""
+    full_anchor_path = (
+        test_data_root / "kob/output/zho-Hant_fuse_clean_validate_proofread.srt"
+    )
+    full_mobile_path = test_data_root / "kob/input/yue-Hant.srt"
+    full_expected_path = test_data_root / "kob/output/yue-Hant_timewarp.srt"
+
+    stdout_stream = StringIO()
+    with patch("scinoephile.core.cli.stdout", stdout_stream):
+        run_cli_with_args(
+            TimewarpCli,
+            f"{full_anchor_path} {full_mobile_path} "
+            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
+        )
+
+    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    expected = Series.load(full_expected_path)
+
+    assert output == expected
+
+
+def test_timewarp_cli_rejects_overwrite_without_outfile():
+    """Test timewarp CLI rejects overwrite when outfile is omitted."""
+    full_anchor_path = (
+        test_data_root / "kob/output/zho-Hant_fuse_clean_validate_proofread.srt"
+    )
+    full_mobile_path = test_data_root / "kob/input/yue-Hant.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            TimewarpCli,
+            f"{full_anchor_path} {full_mobile_path} "
+            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461 "
+            "--overwrite",
+        )
