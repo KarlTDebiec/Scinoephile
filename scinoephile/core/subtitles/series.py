@@ -139,17 +139,17 @@ class Series(SSAFile):
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
-        path = val_output_path(path, exist_ok=True)
+        validated_path = val_output_path(path, exist_ok=True)
         SSAFile.save(
             self,
-            str(path),
+            str(validated_path),
             encoding=encoding,
             format_=format_,
             fps=fps,
             errors=errors,
             **kwargs,
         )
-        logger.info(f"Saved series to {path}")
+        logger.info(f"Saved series to {validated_path}")
 
     def slice(self, start: int, end: int) -> Self:
         """Slice series.

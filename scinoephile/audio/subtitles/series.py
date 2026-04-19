@@ -146,22 +146,22 @@ class AudioSeries(Series):
 
         # Check if directory
         if format_ == "wav" or (not format_ and path.suffix == ""):
-            output_dir = val_output_dir_path(path)
-            self._save_wav(output_dir)
-            logger.info(f"Saved series to {output_dir}")
+            validated_output_dir_path = val_output_dir_path(path)
+            self._save_wav(validated_output_dir_path)
+            logger.info(f"Saved series to {validated_output_dir_path}")
             return
 
         # Otherwise, continue as superclass
-        output_path = val_output_path(path, exist_ok=True)
+        validated_output_path = val_output_path(path, exist_ok=True)
         super().save(
-            output_path,
+            validated_output_path,
             encoding=encoding,
             format_=format_,
             fps=fps,
             errors=errors,
             **kwargs,
         )
-        logger.info(f"Saved series to {output_path}")
+        logger.info(f"Saved series to {validated_output_path}")
 
     @override
     def slice(self, start: int, end: int) -> Self:
@@ -203,11 +203,13 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        dir_path = val_input_dir_path(path)
+        validated_path = val_input_dir_path(path)
         buffer = kwargs.pop("buffer", 1000)
-        srt_path = val_input_path(dir_path / f"{dir_path.stem}.srt")
+        validated_srt_path = val_input_path(
+            validated_path / f"{validated_path.stem}.srt"
+        )
         text_series = Series.load(
-            srt_path,
+            validated_srt_path,
             encoding=encoding,
             format_=format_,
             fps=fps,
@@ -215,9 +217,11 @@ class AudioSeries(Series):
             **kwargs,
         )
 
-        audio_path = val_input_path(dir_path / f"{dir_path.stem}.wav")
-        full_audio = AudioSegment.from_wav(audio_path)
-        logger.info(f"Loaded full audio from {audio_path}")
+        validated_audio_path = val_input_path(
+            validated_path / f"{validated_path.stem}.wav"
+        )
+        full_audio = AudioSegment.from_wav(validated_audio_path)
+        logger.info(f"Loaded full audio from {validated_audio_path}")
 
         return cls.build_series(text_series, full_audio, buffer)
 
