@@ -16,9 +16,7 @@ from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
 
-__all__ = [
-    "Series",
-]
+__all__ = ["Series"]
 
 logger = getLogger(__name__)
 
@@ -43,15 +41,6 @@ class Series(SSAFile):
         if events is not None:
             self.events = events
         self._blocks: list[Series] | None = None
-
-    @override
-    def __iter__(self) -> Iterator[Subtitle]:
-        """Iterate over subtitle events.
-
-        Returns:
-            iterator over subtitle events
-        """
-        return iter(self.events)
 
     def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
@@ -79,6 +68,17 @@ class Series(SSAFile):
 
         return True
 
+    __hash__ = None
+
+    @override
+    def __iter__(self) -> Iterator[Subtitle]:
+        """Iterate over subtitle events.
+
+        Returns:
+            iterator over subtitle events
+        """
+        return iter(self.events)
+
     def __ne__(self, other: object) -> bool:
         """Whether this series is not equal to another.
 
@@ -88,8 +88,6 @@ class Series(SSAFile):
             whether this series is not equal to another
         """
         return not self == other
-
-    __hash__ = None
 
     @override
     def __repr__(self) -> str:
@@ -121,6 +119,21 @@ class Series(SSAFile):
         """
         self._blocks = blocks
 
+    def slice(self, start: int, end: int) -> Self:
+        """Slice series.
+
+        Arguments:
+            start: start index
+            end: end index
+        Returns:
+            sliced series
+        """
+        sliced = type(self)()
+        sliced.events = [
+            self.event_class(**event.as_dict()) for event in self.events[start:end]
+        ]
+        return sliced
+
     @override
     def save(
         self,
@@ -130,7 +143,7 @@ class Series(SSAFile):
         fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
-    ):
+    ) -> None:
         """Save series to an output file.
 
         Arguments:
@@ -152,21 +165,6 @@ class Series(SSAFile):
             **kwargs,
         )
         logger.info(f"Saved series to {path}")
-
-    def slice(self, start: int, end: int) -> Self:
-        """Slice series.
-
-        Arguments:
-            start: start index
-            end: end index
-        Returns:
-            sliced series
-        """
-        sliced = type(self)()
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
 
     def to_simple_string(self, start: int | None = None, duration: int | None = None):
         """Convert series to a simple string representation.
@@ -195,6 +193,13 @@ class Series(SSAFile):
                 f"{text}\n"
             )
         return string.rstrip()
+
+    def _init_blocks(self):
+        """Initialize blocks."""
+        self._blocks = [
+            self.slice(start_idx, end_idx)
+            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
+        ]
 
     @classmethod
     @override
@@ -259,13 +264,6 @@ class Series(SSAFile):
 
         logger.info(f"Loaded series from {validated_path}")
         return series
-
-    def _init_blocks(self):
-        """Initialize blocks."""
-        self._blocks = [
-            self.slice(start_idx, end_idx)
-            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
-        ]
 
     @staticmethod
     def get_block_indexes_by_pause(
