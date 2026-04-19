@@ -7,9 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.analysis_cer_cli import AnalysisCerCli
-from scinoephile.cli.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+from .analysis_cer_cli import AnalysisCerCli
+from .analysis_diff_cli import AnalysisDiffCli
 
 
 class AnalysisCli(CommandLineInterface):
