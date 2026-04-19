@@ -7,9 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.dictionary_build_cli import DictionaryBuildCli
-from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+from .dictionary_build_cli import DictionaryBuildCli
+from .dictionary_search_cli import DictionarySearchCli
 
 
 class DictionaryCli(CommandLineInterface):

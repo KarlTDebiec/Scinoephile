@@ -16,6 +16,8 @@ from .opencc_config import OpenCCConfig
 
 __all__ = [
     "OpenCCConfig",
+    "SIMPLIFIED_CONFIGS",
+    "TRADITIONAL_CONFIGS",
     "get_zho_converted",
     "get_zho_converter",
     "get_zho_text_converted",
@@ -37,6 +39,26 @@ conversion_exclusions = {
     "剋": "克",
     "夥": "伙",
     "製": "制",
+}
+
+SIMPLIFIED_CONFIGS = {
+    OpenCCConfig.t2s,
+    OpenCCConfig.tw2s,
+    OpenCCConfig.hk2s,
+    OpenCCConfig.tw2sp,
+}
+
+TRADITIONAL_CONFIGS = {
+    OpenCCConfig.s2t,
+    OpenCCConfig.s2tw,
+    OpenCCConfig.s2hk,
+    OpenCCConfig.s2twp,
+    OpenCCConfig.t2tw,
+    OpenCCConfig.hk2t,
+    OpenCCConfig.t2hk,
+    OpenCCConfig.tw2t,
+    OpenCCConfig.t2jp,
+    OpenCCConfig.jp2t,
 }
 
 
@@ -90,21 +112,11 @@ def get_zho_text_converted(
     converted_text = converter.convert(text)
 
     if apply_exclusions:
-        if config in (
-            OpenCCConfig.t2s,
-            OpenCCConfig.tw2s,
-            OpenCCConfig.hk2s,
-            OpenCCConfig.tw2sp,
-        ):
+        if config in SIMPLIFIED_CONFIGS:
             for trad_char, simp_char in conversion_exclusions.items():
                 if trad_char in text and simp_char in converted_text:
                     converted_text = converted_text.replace(simp_char, trad_char)
-        if config in (
-            OpenCCConfig.s2t,
-            OpenCCConfig.s2tw,
-            OpenCCConfig.s2hk,
-            OpenCCConfig.s2twp,
-        ):
+        if config in TRADITIONAL_CONFIGS:
             for trad_char, simp_char in conversion_exclusions.items():
                 if simp_char in text and trad_char in converted_text:
                     converted_text = converted_text.replace(trad_char, simp_char)

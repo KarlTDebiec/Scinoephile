@@ -7,10 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.dictionary_build_cli_base import DictionaryBuildCliBase
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
+
+from .dictionary_build_cli_base import DictionaryBuildCliBase
 
 __all__ = ["DictionaryBuildGzzjCli"]
 

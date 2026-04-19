@@ -16,6 +16,8 @@ from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 
+from .eng_fuse_cli import EngFuseCli
+
 
 class EngCli(CommandLineInterface):
     """Command-line interface for English subtitle operations."""
@@ -77,6 +79,15 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+
+        subparsers = parser.add_subparsers(
+            dest="eng_subcommand",
+            help="subcommand",
+            required=False,
+        )
+        subcommands = cls.subcommands()
+        for name in sorted(subcommands):
+            subcommands[name].argparser(subparsers=subparsers)
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -87,6 +98,12 @@ class EngCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
+        subcommand_name = kwargs.pop("eng_subcommand", None)
+        if subcommand_name is not None:
+            subcommand_cli_class = cls.subcommands()[subcommand_name]
+            subcommand_cli_class._main(**kwargs)
+            return
+
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")
         clean = kwargs.pop("clean")
@@ -151,6 +168,17 @@ class EngCli(CommandLineInterface):
             subcommand name
         """
         return "eng"
+
+    @classmethod
+    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
+        return {
+            EngFuseCli.name(): EngFuseCli,
+        }
 
 
 if __name__ == "__main__":

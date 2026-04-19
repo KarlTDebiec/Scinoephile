@@ -7,14 +7,14 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.analysis_cli import AnalysisCli
-from scinoephile.cli.dictionary_cli import DictionaryCli
-from scinoephile.cli.eng_cli import EngCli
-from scinoephile.cli.sync_cli import SyncCli
-from scinoephile.cli.timewarp_cli import TimewarpCli
-from scinoephile.cli.yue_cli import YueCli
-from scinoephile.cli.zho_cli import ZhoCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+from .analysis_cli import AnalysisCli
+from .dictionary_cli import DictionaryCli
+from .eng_cli import EngCli
+from .sync_cli import SyncCli
+from .timewarp_cli import TimewarpCli
+from .zho_cli import ZhoCli
 
 
 class ScinoephileCli(CommandLineInterface):
