@@ -15,7 +15,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.transcription import (
     get_yue_audio_series_for_transcription,
-    get_yue_vs_zho_transcribed,
+    get_yue_transcribed_vs_zho,
 )
 
 
@@ -79,7 +79,7 @@ def test_get_yue_audio_series_for_transcription_rejects_invalid_stream_index():
                 )
 
 
-def test_get_yue_vs_zho_transcribed_dispatches_media_and_stream_index():
+def test_get_yue_transcribed_vs_zho_dispatches_media_and_stream_index():
     """Test transcription entrypoint dispatches media loading and block processing."""
     zhongwen = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -95,7 +95,7 @@ def test_get_yue_vs_zho_transcribed_dispatches_media_and_stream_index():
         "scinoephile.multilang.yue_zho.transcription.get_yue_audio_series_for_transcription",
         return_value=yuewen_audio,
     ) as patched_media_loader:
-        result = get_yue_vs_zho_transcribed(
+        result = get_yue_transcribed_vs_zho(
             zhongwen=zhongwen,
             media_path=media_path,
             stream_index=3,

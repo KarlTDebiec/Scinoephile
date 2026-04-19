@@ -26,8 +26,8 @@ __all__ = [
     "YueZhoProofreadingProcessKwargs",
     "YueZhoProofreadingProcessor",
     "YueZhoProofreadingProcessorKwargs",
-    "get_yue_vs_zho_proofread",
-    "get_yue_vs_zho_proofreader",
+    "get_yue_proofread_vs_zho",
+    "get_yue_proofreader_vs_zho",
 ]
 
 
@@ -44,7 +44,7 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_yue_vs_zho_proofread(
+def get_yue_proofread_vs_zho(
     yuewen: Series,
     zhongwen: Series,
     processor: YueZhoProofreadingProcessor | None = None,
@@ -61,11 +61,11 @@ def get_yue_vs_zho_proofread(
         proofread 粤文 subtitles
     """
     if processor is None:
-        processor = get_yue_vs_zho_proofreader()
+        processor = get_yue_proofreader_vs_zho()
     return processor.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_vs_zho_proofreader(
+def get_yue_proofreader_vs_zho(
     prompt_cls: type[YueZhoHansProofreadingPrompt] = YueZhoHansProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

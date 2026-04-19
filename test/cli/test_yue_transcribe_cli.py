@@ -65,7 +65,7 @@ def test_yue_transcribe_cli_writes_file():
 
     with get_temp_file_path(".srt") as outfile_path:
         with patch(
-            "scinoephile.cli.yue_transcribe_cli.get_yue_vs_zho_transcribed",
+            "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
             return_value=expected,
         ) as patched_transcribe:
             run_cli_with_args(
@@ -93,7 +93,7 @@ def test_yue_transcribe_cli_writes_stdout():
     stdout_stream = StringIO()
 
     with patch(
-        "scinoephile.cli.yue_transcribe_cli.get_yue_vs_zho_transcribed",
+        "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
         return_value=expected,
     ):
         with patch("scinoephile.cli.yue_transcribe_cli.stdout", stdout_stream):
@@ -119,7 +119,7 @@ def test_yue_transcribe_cli_stream_errors_are_user_facing():
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
     media_path = "/tmp/test_media.mp4"
     with patch(
-        "scinoephile.cli.yue_transcribe_cli.get_yue_vs_zho_transcribed",
+        "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
         side_effect=ScinoephileError("Invalid audio stream index 7"),
     ):
         with pytest.raises(SystemExit, match="2"):

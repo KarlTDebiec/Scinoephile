@@ -17,15 +17,15 @@ from scinoephile.lang.eng.proofreading import get_eng_proofreader
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import (
-    get_yue_vs_zho_proofread,
-    get_yue_vs_zho_reviewed,
+    get_yue_proofread_vs_zho,
+    get_yue_reviewed_vs_zho,
 )
-from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
-from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
+from scinoephile.multilang.yue_zho.proofreading import get_yue_proofreader_vs_zho
+from scinoephile.multilang.yue_zho.review import get_yue_reviewer_vs_zho
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from scinoephile.multilang.yue_zho.translation import (
-    get_yue_from_zho_translated,
-    get_yue_from_zho_translator,
+    get_yue_translated_vs_zho,
+    get_yue_translator_vs_zho,
 )
 from test.conftest import get_mlamd_yue_shifting_test_cases
 from test.data.mlamd import get_mlamd_yue_merging_test_cases
@@ -137,7 +137,7 @@ if "简体粤文 (Transcription)" in actions:
 
     # Proofread
     yue_hans_transcribe = Series.load(outfile_path)
-    proofreader = get_yue_vs_zho_proofreader(
+    proofreader = get_yue_proofreader_vs_zho(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
@@ -145,14 +145,14 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_transcribe_proofread = get_yue_vs_zho_proofread(
+    yue_hans_transcribe_proofread = get_yue_proofread_vs_zho(
         yue_hans_transcribe, zho_hans, processor=proofreader
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
     yue_hans_transcribe_proofread.save(outfile_path)
 
     # Translate
-    translator = get_yue_from_zho_translator(
+    translator = get_yue_translator_vs_zho(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
@@ -160,14 +160,14 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_transcribe_proofread_translate = get_yue_from_zho_translated(
+    yue_hans_transcribe_proofread_translate = get_yue_translated_vs_zho(
         yue_hans_transcribe_proofread, zho_hans, translator=translator
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate.srt"
     yue_hans_transcribe_proofread_translate.save(outfile_path)
 
     # Review
-    reviewer = get_yue_vs_zho_reviewer(
+    reviewer = get_yue_reviewer_vs_zho(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
@@ -175,7 +175,7 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_transcribe_proofread_translate_review = get_yue_vs_zho_reviewed(
+    yue_hans_transcribe_proofread_translate_review = get_yue_reviewed_vs_zho(
         yue_hans_transcribe_proofread_translate, zho_hans, reviewer=reviewer
     )
     outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"

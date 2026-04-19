@@ -13,7 +13,7 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcribed
+from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
 
 class YueTranscribeCli(CommandLineInterface):
@@ -87,7 +87,7 @@ class YueTranscribeCli(CommandLineInterface):
 
         zhongwen = Series.load(val_input_path(zhongwen_infile))
         try:
-            yuewen = get_yue_vs_zho_transcribed(
+            yuewen = get_yue_transcribed_vs_zho(
                 zhongwen=zhongwen,
                 media_path=media_path,
                 stream_index=stream_index,

@@ -44,13 +44,13 @@ __all__ = [
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
     "get_yue_audio_series_for_transcription",
-    "get_yue_vs_zho_transcribed",
-    "get_yue_vs_zho_transcriber",
+    "get_yue_transcribed_vs_zho",
+    "get_yue_transcriber_vs_zho",
 ]
 
 
 class YueZhoTranscriptionKwargs(TypedDict, total=False):
-    """Keyword arguments for get_yue_vs_zho_transcribed forwarding."""
+    """Keyword arguments for get_yue_transcribed_vs_zho forwarding."""
 
     stop_at_idx: int | None
 
@@ -127,7 +127,7 @@ def get_yue_audio_series_for_transcription(
     return AudioSeries.build_series(zhongwen, full_audio, buffer)
 
 
-def get_yue_vs_zho_transcriber(
+def get_yue_transcriber_vs_zho(
     shifting_test_cases: list[TestCase] | None = None,
     merging_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
@@ -170,7 +170,7 @@ def get_yue_vs_zho_transcriber(
     )
 
 
-def get_yue_vs_zho_transcribed(
+def get_yue_transcribed_vs_zho(
     zhongwen: Series,
     media_path: Path | str,
     stream_index: int = 0,
@@ -194,5 +194,5 @@ def get_yue_vs_zho_transcribed(
         stream_index=stream_index,
     )
     if transcriber is None:
-        transcriber = get_yue_vs_zho_transcriber()
+        transcriber = get_yue_transcriber_vs_zho()
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)

@@ -23,8 +23,8 @@ __all__ = [
     "YueHantReviewPrompt",
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
-    "get_yue_vs_zho_reviewed",
-    "get_yue_vs_zho_reviewer",
+    "get_yue_reviewed_vs_zho",
+    "get_yue_reviewer_vs_zho",
 ]
 
 
@@ -41,7 +41,7 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_yue_vs_zho_reviewed(
+def get_yue_reviewed_vs_zho(
     yuewen: Series,
     zhongwen: Series,
     reviewer: DualBlockProcessor | None = None,
@@ -58,11 +58,11 @@ def get_yue_vs_zho_reviewed(
         粤文 reviewed against 中文
     """
     if reviewer is None:
-        reviewer = get_yue_vs_zho_reviewer()
+        reviewer = get_yue_reviewer_vs_zho()
     return reviewer.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_vs_zho_reviewer(
+def get_yue_reviewer_vs_zho(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
