@@ -55,20 +55,32 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("lens_path", "paddle_path", "args", "expected_path"),
     [
         (
+            "kob/input/zho-Hant_lens.srt",
+            "kob/input/zho-Hant_paddle.srt",
+            "--clean --convert s2t",
+            "kob/output/zho-Hant_fuse.srt",
+        ),
+        (
+            "mlamd/input/zho-Hans_lens.srt",
+            "mlamd/input/zho-Hans_paddle.srt",
+            "--clean --convert",
+            "mlamd/output/zho-Hans_fuse.srt",
+        ),
+        (
             "mnt/input/zho-Hans_lens.srt",
             "mnt/input/zho-Hans_paddle.srt",
             "--clean --convert",
             "mnt/output/zho-Hans_fuse.srt",
         ),
         (
-            "kob/input/zho-Hant_lens.srt",
-            "kob/input/zho-Hant_paddle.srt",
-            "--clean --convert s2t",
-            "kob/output/zho-Hant_fuse.srt",
+            "t/input/zho-Hans_lens.srt",
+            "t/input/zho-Hans_paddle.srt",
+            "--clean --convert",
+            "t/output/zho-Hans_fuse.srt",
         ),
     ],
 )
-def test_zho_fuse_cli_file_output(
+def test_zho_fuse_cli(
     lens_path: str,
     paddle_path: str,
     args: str,
@@ -97,20 +109,43 @@ def test_zho_fuse_cli_file_output(
     assert output == expected
 
 
-def test_zho_fuse_cli_stdout_output():
-    """Test 中文 OCR fusion CLI processing with stdout output."""
-    lens_path = test_data_root / "mnt/input/zho-Hans_lens.srt"
-    paddle_path = test_data_root / "mnt/input/zho-Hans_paddle.srt"
-    expected_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
+@pytest.mark.parametrize(
+    ("lens_path", "paddle_path", "args", "expected_path"),
+    [
+        (
+            "mnt/input/zho-Hans_lens.srt",
+            "mnt/input/zho-Hans_paddle.srt",
+            "--clean --convert",
+            "mnt/output/zho-Hans_fuse.srt",
+        ),
+    ],
+)
+def test_zho_fuse_cli_pipe(
+    lens_path: str,
+    paddle_path: str,
+    args: str,
+    expected_path: str,
+):
+    """Test 中文 OCR fusion CLI processing with stdout output.
+
+    Arguments:
+        lens_path: path to Google Lens subtitle fixture
+        paddle_path: path to PaddleOCR subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
+    full_lens_path = test_data_root / lens_path
+    full_paddle_path = test_data_root / paddle_path
+    full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
     with patch("scinoephile.cli.zho_fuse_cli.stdout", stdout_stream):
         run_cli_with_args(
             ZhoFuseCli,
-            f"{lens_path} {paddle_path} --clean --convert",
+            f"{full_lens_path} {full_paddle_path} {args}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(expected_path)
+    expected = Series.load(full_expected_path)
 
     assert output == expected
