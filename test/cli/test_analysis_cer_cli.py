@@ -4,9 +4,6 @@
 
 from __future__ import annotations
 
-from io import StringIO
-from unittest.mock import patch
-
 import pytest
 
 from scinoephile.analysis import CharacterErrorRateResult
@@ -70,6 +67,7 @@ def test_analysis_cer_cli(
     candidate_path: str,
     expected_fixture_name: str,
     request: pytest.FixtureRequest,
+    capsys: pytest.CaptureFixture,
 ):
     """Test analysis cer CLI output against expected CER values.
 
@@ -78,6 +76,7 @@ def test_analysis_cer_cli(
         candidate_path: path to candidate subtitle fixture
         expected_fixture_name: fixture name containing expected CER result
         request: pytest fixture request object
+        capsys: pytest stdout/stderr capture fixture
     """
     reference_infile_path = test_data_root / reference_path
     candidate_infile_path = test_data_root / candidate_path
@@ -85,13 +84,11 @@ def test_analysis_cer_cli(
         expected_fixture_name
     )
 
-    output_stdout = StringIO()
-    with patch("scinoephile.cli.analysis_cer_cli.stdout", output_stdout):
-        run_cli_with_args(
-            AnalysisCerCli,
-            f"{reference_infile_path} {candidate_infile_path}",
-        )
-    output = output_stdout.getvalue()
+    run_cli_with_args(
+        AnalysisCerCli,
+        f"{reference_infile_path} {candidate_infile_path}",
+    )
+    output = capsys.readouterr().out
 
     assert f"CER: {expected_result.cer}" in output
     assert f"Correct: {expected_result.correct}" in output
