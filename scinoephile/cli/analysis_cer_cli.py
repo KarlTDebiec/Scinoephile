@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from sys import stdout
 from typing import Unpack
 
 from scinoephile.analysis import get_series_cer
@@ -55,12 +56,12 @@ class AnalysisCerCli(CommandLineInterface):
         reference_series = Series.load(reference_infile_path)
         candidate_series = Series.load(candidate_infile_path)
         result = get_series_cer(reference_series, candidate_series)
-        print(f"CER: {result.cer}")
-        print(f"Correct: {result.correct}")
-        print(f"Substitutions: {result.substitutions}")
-        print(f"Insertions: {result.insertions}")
-        print(f"Deletions: {result.deletions}")
-        print(f"Reference length: {result.reference_length}")
+        stdout.write(f"CER: {result.cer}\n")
+        stdout.write(f"Correct: {result.correct}\n")
+        stdout.write(f"Substitutions: {result.substitutions}\n")
+        stdout.write(f"Insertions: {result.insertions}\n")
+        stdout.write(f"Deletions: {result.deletions}\n")
+        stdout.write(f"Reference length: {result.reference_length}\n")
 
     @classmethod
     def name(cls) -> str:
