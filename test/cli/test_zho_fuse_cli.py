@@ -131,7 +131,7 @@ def test_zho_fuse_cli_clean_is_opt_in():
                 ZhoFuseCli,
                 f"{lens_path} {paddle_path} --convert --outfile {output_path}",
             )
-            assert get_zho_cleaned_mock.call_count == 0
+            get_zho_cleaned_mock.assert_not_called()
 
     with get_temp_file_path(".srt") as output_path:
         with patch.object(
@@ -143,4 +143,5 @@ def test_zho_fuse_cli_clean_is_opt_in():
                 ZhoFuseCli,
                 f"{lens_path} {paddle_path} --clean --convert --outfile {output_path}",
             )
+            get_zho_cleaned_mock.assert_called()
             assert get_zho_cleaned_mock.call_count == 2

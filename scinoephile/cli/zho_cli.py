@@ -153,6 +153,7 @@ class ZhoCli(CommandLineInterface):
             subcommand_cli_class._main(**kwargs)
             return
 
+        # Backward compatibility: no subcommand means legacy `zho --...` flow.
         parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")

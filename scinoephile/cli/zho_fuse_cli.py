@@ -84,7 +84,7 @@ class ZhoFuseCli(CommandLineInterface):
             type=OpenCCConfig,
             help=(
                 "convert Chinese characters using specified OpenCC configuration"
-                " before fusion (default when provided without value: t2s)"
+                " before fusion (value when provided without argument: t2s)"
             ),
         )
 
@@ -109,7 +109,8 @@ class ZhoFuseCli(CommandLineInterface):
         """Execute with provided keyword arguments.
 
         Arguments:
-            **kwargs: keyword arguments
+            **kwargs: keyword arguments including lens_infile, paddle_infile, clean,
+              convert, outfile, and overwrite
         """
         parser = kwargs.pop("_parser", cls.argparser())
         lens_infile = kwargs.pop("lens_infile")
