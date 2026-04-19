@@ -2,9 +2,9 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Tests of scinoephile.analysis.get_series_diff."""
 
-# ruff: noqa: E501
-
 from __future__ import annotations
+
+import pytest
 
 from scinoephile.analysis import get_series_diff
 from scinoephile.analysis.series_diff import SeriesDiff
@@ -25,405 +25,71 @@ def _assert_expected_differences(differences: SeriesDiff, expected: list[str]):
         raise AssertionError(f"Missing expected differences:\n{formatted}")
 
 
-def test_get_series_diff_kob(
-    kob_eng_fuse_clean_validate_proofread_flatten: Series,
-    kob_eng_timewarp_clean_proofread_flatten: Series,
+@pytest.mark.parametrize(
+    (
+        "one_series_fixture_name",
+        "two_series_fixture_name",
+        "one_lbl",
+        "two_lbl",
+        "expected_fixture_name",
+    ),
+    [
+        (
+            "kob_eng_fuse_clean_validate_proofread_flatten",
+            "kob_eng_timewarp_clean_proofread_flatten",
+            "OCR",
+            "SRT",
+            "kob_eng_expected_series_diff",
+        ),
+        (
+            "mlamd_zho_hans_fuse_clean_validate_proofread_flatten",
+            "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
+            "SIMP",
+            "TRAD",
+            "mlamd_zho_simplify_expected_series_diff",
+        ),
+        (
+            "mnt_zho_hans_fuse_clean_validate_proofread_flatten",
+            "mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
+            "SIMP",
+            "TRAD",
+            "mnt_zho_simplify_expected_series_diff",
+        ),
+        (
+            "t_zho_hans_fuse_clean_validate_proofread_flatten",
+            "t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
+            "SIMP",
+            "TRAD",
+            "t_zho_simplify_expected_series_diff",
+        ),
+    ],
+)
+def test_get_series_diff(
+    one_series_fixture_name: str,
+    two_series_fixture_name: str,
+    one_lbl: str,
+    two_lbl: str,
+    expected_fixture_name: str,
+    request: pytest.FixtureRequest,
 ):
-    """Test get_series_diff with KOB English subtitles.
+    """Test get_series_diff for subtitle fixture pairs.
 
     Arguments:
-        kob_eng_fuse_clean_validate_proofread_flatten: OCR English subtitles
-        kob_eng_timewarp_clean_proofread_flatten: timewarped SRT English subtitles
+        one_series_fixture_name: fixture name for first subtitle series
+        two_series_fixture_name: fixture name for second subtitle series
+        one_lbl: label for first subtitle stream in diff output
+        two_lbl: label for second subtitle stream in diff output
+        expected_fixture_name: fixture name containing expected diff strings
+        request: pytest fixture request object
     """
+    one_series: Series = request.getfixturevalue(one_series_fixture_name)
+    two_series: Series = request.getfixturevalue(two_series_fixture_name)
+    expected: list[str] = request.getfixturevalue(expected_fixture_name)
+
     differences = get_series_diff(
-        kob_eng_fuse_clean_validate_proofread_flatten,
-        kob_eng_timewarp_clean_proofread_flatten,
-        one_lbl="OCR",
-        two_lbl="SRT",
+        one_series,
+        two_series,
+        one_lbl=one_lbl,
+        two_lbl=two_lbl,
     )
-    expected = [
-        "insert: SRT[8] 'Damn!' not present in OCR",
-        "insert: SRT[31] 'What?' not present in OCR",
-        "insert: SRT[58] 'Tips. Tips…' not present in OCR",
-        "split: OCR[59] -> SRT[62-63]: ['- Please give me some money    - Kidding? Damn you beggar!'] -> ['Please give me some money', 'Kidding? Damn you beggar!']",
-        "split: OCR[62] -> SRT[66-67]: ['- Give him tips    - Yes, young master'] -> ['Give him tips', 'Yes, young master']",
-        "split_edit: OCR[71] -> SRT[76-77]: ['- Come into my room.    - Please follow me'] -> ['Please follow me', 'Come into my room…']",
-        "shift: OCR[103-104] -> SRT[109-110]: ['What?', \"Who dared so? I will hit that bastard's mouth for you\"] -> ['What? Who dared so?', \"I will hit that bastard's mouth for you\"]",
-        "shift: OCR[122-123] -> SRT[128-129]: ['- May I be excused,    - Mr Chiu,', 'Miss Yushang has arrived'] -> ['May I be excused', 'Mr Chiu, Miss Yushang has arrived']",
-        "split: OCR[133] -> SRT[139-140]: ['If any of you can offer more than 100,000 taels'] -> ['If any of you can offer', 'more than 100,000 taels']",
-        'split: OCR[135] -> SRT[142-143]: ["Don\'t quarrel because of such a small amount, isn\'t it right?"] -> ["Don\'t quarrel because of such a small amount,", "isn\'t it right?"]',
-        "split_edit: OCR[143] -> SRT[151-152]: [\"I love money too. But, I don't like you\"] -> ['I love money too', \"But, I don't like you\"]",
-        "split: OCR[150] -> SRT[159-160]: [\"Don't worry, I have many pretty girls here\"] -> [\"Don't worry,\", 'I have many pretty girls here']",
-        "split: OCR[185] -> SRT[195-196]: ['- Come on, give tips to the girls here    - Master'] -> ['Come on, give tips to the girls here', 'Master']",
-        "edit: OCR[247] -> SRT[258]: 'Stop, I have taken his money, 100,000 taels you know?' -> 'Stop, I have taken his money, 100,000 taels, you know?'",
-        'edit: OCR[248] -> SRT[259]: "I won\'t give it back" -> "I won\'t give it back."',
-        "edit: OCR[249] -> SRT[260]: 'About the personality of Mr So…' -> 'About the personality of Mr. So…'",
-        "edit: OCR[251] -> SRT[262]: 'Leave here first' -> 'Leave here first.'",
-        "edit: OCR[252] -> SRT[263]: 'Yes, you are right' -> 'Yes, you are right.'",
-        "merge_edit: OCR[253] -> SRT[264-265]: ['- Miss Seven…    - Just accept this'] -> ['Miss Seven…', 'Just accept this.']",
-        "edit: OCR[256] -> SRT[268]: 'Miss, first of all, I have good news for you' -> 'Miss, first of all, I have a good news for you'",
-        "edit: OCR[258] -> SRT[270]: 'To me, this is a bad news' -> 'To me, this is bad news'",
-        "shift: OCR[285-286] -> SRT[297-298]: ['- Witness?    - Yes', 'I swear in front of your sword'] -> ['Witness?', 'Yes, I swear in front of your sword']",
-        "edit: OCR[291] -> SRT[303]: \"Don't you know it isn't that easy to be my husband?\" -> \"Don't you know it's not that easy to be my husband?\"",
-        'edit: OCR[302] -> SRT[314]: "OK, but you\'d give me some time to consider it" -> "OK, but you\'d give me some time to consider it."',
-        "edit: OCR[394] -> SRT[406]: 'Take care of my lychee, you fathead!' -> 'Take care of my Lychee, you fathead!'",
-        "edit: OCR[414] -> SRT[426]: 'Hide in' -> 'Hide in here'",
-        "edit: OCR[419] -> SRT[431]: 'You are great! I love it' -> 'You are great! I love it.'",
-        "edit: OCR[422] -> SRT[434]: 'You are bad, how can you say so to me?' -> 'You are bad, how can you say that to me?'",
-        "edit: OCR[428] -> SRT[440]: 'I wanted to trick you actually, you are really smart' -> 'I wanted to trick you actually, you are really smart.'",
-        "split: OCR[477] -> SRT[489-490]: [\"- You shouldn't put it that way    - What?\"] -> [\"You shouldn't put it that way\", 'What?']",
-        "insert: SRT[530] 'Bravo…' not present in OCR",
-        "split: OCR[539] -> SRT[553-554]: ['What did you say?'] -> ['What did', 'you say?']",
-        "split: OCR[544] -> SRT[559-560]: ['Damn you Cheng! You betrayed me!'] -> ['Damn you Cheng!', 'You betrayed me!']",
-        "delete: OCR[562] 'You… You…' not present in SRT",
-        "delete: OCR[566] 'OK' not present in SRT",
-        "edit: OCR[567] -> SRT[581]: 'I want to take a statement from you as record' -> 'I want to take some statements from you as record'",
-        "edit: OCR[570] -> SRT[584]: 'Is Miss Yushang his mom?' -> 'Is Miss Yushang your mom?'",
-        "split: OCR[599] -> SRT[613-614]: ['- Kill me    - No, kill me'] -> ['Kill me', 'No, kill me']",
-        "split_edit: OCR[600] -> SRT[615-616]: [\"- Kill me.    - Your Majesty, you'd better kill me\"] -> ['Kill me', \"Your Majesty, you'd better kill me\"]",
-        "split: OCR[607] -> SRT[623-624]: [\"So's family should be sentenced to death\"] -> [\"So's family should be\", 'sentenced to death']",
-        'edit: OCR[612] -> SRT[629]: "So, he didn\'t miscarry out any duty" -> "So, he didn\'t miscarry any duty"',
-        "merge: OCR[621-622] -> SRT[638]: [\"Why couldn't you find out\", 'they cheated during the examination?'] -> [\"Why couldn't you find out they cheated during the examination?\"]",
-        'edit: OCR[632] -> SRT[648]: "you\'d be hardworking to learn how to write" -> "you\'d be hard working to learn how to write"',
-        "edit: OCR[637] -> SRT[653]: 'Master, I will take good care of the little turtle' -> 'Master, I will take good care of little turtle'",
-        "split: OCR[642] -> SRT[658-659]: ['If I did better, you could have many babies'] -> ['If I did better,', 'you could have many babies']",
-        "split: OCR[643] -> SRT[660-661]: ['But I think Chan is enough for me'] -> ['But I think', 'Chan is enough for me']",
-        "insert: SRT[671] 'How is it?' not present in OCR",
-        "insert: SRT[673] 'What happened?' not present in OCR",
-        "split_edit: OCR[660] -> SRT[680-681]: ['Son. Have you kept any money?'] -> ['Son', 'Have you kept any money?']",
-        "split: OCR[664] -> SRT[685-686]: ['Be merciful, please give money to us'] -> ['Be merciful,', 'please give money to us']",
-        'edit: OCR[677] -> SRT[699]: "Even the Gods won\'t let me be a beggar" -> "Even the Gods won\'t let me be beggars"',
-        "split: OCR[686] -> SRT[708-709]: ['Let me take a seat, maybe we can have something to eat tonight'] -> ['Let me take a seat,', 'maybe we can have something to eat tonight']",
-        "split: OCR[695] -> SRT[718-719]: ['- Yes    - Just give it to me'] -> ['Yes', 'Just give it to me']",
-        "edit: OCR[712] -> SRT[736]: 'Have you had any idea?' -> 'Have you had any ideas?'",
-        'edit: OCR[725] -> SRT[749]: "The one wearing red dress who stands under the lantern, that\'s her" -> "The one wearing the red dress who stands under the lantern, that\'s her"',
-        "edit: OCR[743] -> SRT[767]: 'I am carrying out my duty only, men!' -> 'I am carrying my duty only. Men!'",
-        "split: OCR[744] -> SRT[768-769]: ['- Yes!    - Remove all the things'] -> ['Yes!', 'Remove all the things']",
-        "split: OCR[751] -> SRT[776-777]: [\"- No, we can't move it    - Let me do it\"] -> [\"No, we can't move it\", 'Let me do it']",
-        "edit: OCR[753] -> SRT[779]: 'Last time you escaped from Yee Hung Hostel' -> 'Last time you could escape from Yee Hung Hostel'",
-        "split: OCR[756] -> SRT[782-783]: [\"I've got to defeat him by one powerful strike\"] -> [\"I've got to defeat him\", 'by one powerful strike']",
-        "split: OCR[760] -> SRT[787-788]: ['Your legs and hands are all broken by me'] -> ['Your legs and hands', 'are all broken by me']",
-        "edit: OCR[767] -> SRT[795]: \"Don't panic, you'll be alright… Chan!\" -> \"Don't panic, you'll be all right… Chan!\"",
-        'delete: OCR[768] "Don\'t panic" not present in SRT',
-        'edit: OCR[772] -> SRT[799]: "He is Seng-ko-lin-ch\'in, that bastard" -> "He is Seng-ko-lin-ch\'in, that bastard."',
-        "edit: OCR[775] -> SRT[802]: 'Let me stop here first, I want a smoke' -> 'Let me stop here first, I want a smoke.'",
-        'edit: OCR[776] -> SRT[803]: "It\'s better to smoke now" -> "It\'s better to smoke now."',
-        'edit: OCR[777] -> SRT[804]: "Yes, it\'s better" -> "Yes, it\'s better."',
-        "edit: OCR[779] -> SRT[806]: 'the Yee Hung Brothel' -> 'the Yee Hung Brothel.'",
-        "edit: OCR[780] -> SRT[807]: 'But he framed us in return' -> 'But he framed us in return.'",
-        "edit: OCR[782] -> SRT[809]: 'during the examination' -> 'during the examination.'",
-        "insert: SRT[811] 'He finally won the race' not present in OCR",
-        "edit: OCR[791] -> SRT[819]: 'Because being the scholar is too simple for me' -> 'Because being the scholar is too simple to me'",
-        "split: OCR[797] -> SRT[825-826]: [\"Although you have taken 2 months' rest,\"] -> ['Although you have taken', \"2 months' rest,\"]",
-        "edit: OCR[798] -> SRT[827]: 'your legs and hands have not been totally recovered' -> 'your legs and hands have not been totally recovered.'",
-        "edit: OCR[799] -> SRT[828]: '- Mr. Ha Yee    - Coming' -> 'Coming'",
-        "split: OCR[801] -> SRT[830-831]: ['I will make the last herbal tea for you later'] -> ['I will make the last herbal tea', 'for you later']",
-        'edit: OCR[812] -> SRT[842]: "We can\'t beg for food if we are late!" -> "We can\'t beg for good if we are late!"',
-        'delete: OCR[814] "You\'re not a master now." not present in SRT',
-        "edit: OCR[815] -> SRT[844]: 'Give me money please' -> 'Give me money, please'",
-        "edit: OCR[823] -> SRT[852]: 'You are off duty, so I just want to lend it' -> 'You are off duty, so I just want to lend it.'",
-        "split: OCR[847] -> SRT[876-877]: ['- May I…    - No'] -> ['May I…', 'No']",
-        "edit: OCR[851] -> SRT[881]: 'Beggar, do you want the broken charcoal?' -> 'Beggar, do you want the broken carbon?'",
-        "edit: OCR[863] -> SRT[893]: 'You are mistaken, he is not So Chan' -> 'You have mistaken, he is not So Chan'",
-        "shift: OCR[870-871] -> SRT[900-901]: ['Sister,', \"he wouldn't be that poor if it were not for you\"] -> [\"Sister, he wouldn't be that poor\", 'if it were not for you']",
-        'edit: OCR[873] -> SRT[903]: "I can\'t stand the hunger" -> "I can\'t stand the hunger."',
-        "edit: OCR[874] -> SRT[904]: 'So I bit the dumpling of the kid' -> 'So I bit the dumpling of the kid.'",
-        "edit: OCR[877] -> SRT[907]: 'if I chopped yours' -> 'if I chopped yours?'",
-        "split: OCR[885] -> SRT[915-916]: ['Are they going to treat me some food?'] -> ['Are they going to treat me', 'some food?']",
-        'edit: OCR[898] -> SRT[929]: "Dad. It\'s quite delicious" -> "It\'s quite delicious"',
-        "edit: OCR[908] -> SRT[939]: 'I want to save it for midnight snack' -> 'I want to save it for a midnight snack'",
-        "split: OCR[931] -> SRT[962-963]: ['One cloth is for you and the other is for Chan'] -> ['One cloth is for you', 'and the other is for Chan']",
-        "split: OCR[935] -> SRT[967-968]: ['- Give them to me, come on    - What for?'] -> ['Give them to me, come on', 'What for?']",
-        "split_edit: OCR[936] -> SRT[969-970]: [\"It's new year, you should receive a red packet\"] -> [\"It's new year,\", 'you should receive red pocket']",
-        "split_edit: OCR[939] -> SRT[973-974]: ['- Wish you ever beauty    - Thank you'] -> ['Wish you ever beauty', 'Thank you…']",
-        "edit: OCR[945] -> SRT[980]: 'I will cook you some new year cake' -> 'I will cook you some new year cakes'",
-        'edit: OCR[950] -> SRT[985]: "To fight against Chiu, we need a union of the Beggar\'s Association" -> "To fight against Chiu, we need a union of the Beggars\' Association"',
-        'edit: OCR[955] -> SRT[990]: "Uncle, I don\'t have faith to defeat them" -> "Uncle, I don\'t have faith in defeating them"',
-        "merge: OCR[963-964] -> SRT[998]: ['He was a scholar of Martial Arts', 'before…'] -> ['He was a scholar of Martial Arts before…']",
-        "edit: OCR[976] -> SRT[1010]: 'you can achieve something' -> 'you can achieve something.'",
-        "split: OCR[986] -> SRT[1020-1021]: ['Son, I tried very hard to get this for you'] -> ['Son,', 'I tried very hard to get this for you']",
-        "edit: OCR[995] -> SRT[1030]: \"It's ugly, it's right to wipe it away\" -> \"It's ugly, it's right to wipe it away.\"",
-        "split: OCR[1000] -> SRT[1035-1036]: ['- Is there anything to eat?    - No'] -> ['Is there anything to eat?', 'No']",
-        "split: OCR[1002] -> SRT[1038-1039]: [\"See your look, it's a waste for you not to beg\"] -> ['See your look,', \"it's a waste for you not to beg\"]",
-        "edit: OCR[1028] -> SRT[1065]: 'Who are you?' -> 'What are you?'",
-        'edit: OCR[1050] -> SRT[1087]: "I won\'t care who you are, I just want to stop the conversation" -> "I won\'t care who you are, I just want to stop the conversation."',
-        'edit: OCR[1051] -> SRT[1088]: "Please step aside, don\'t stop me from sleeping" -> "Please step aside, don\'t stop me from sleeping."',
-        "merge_edit: OCR[1053-1054] -> SRT[1090]: ['No… I just want to sleep', 'with you'] -> ['No… I just want to sleep with you.']",
-        "edit: OCR[1065] -> SRT[1101]: 'Hope you can make good use of it. Come on' -> 'Hope you can make good use of it Come on'",
-        "shift: OCR[1085-1086] -> SRT[1121-1122]: [\"- Let's chase them    - Stop!\", 'The Emperor is setting off soon'] -> [\"Let's chase them\", 'Stop The Emperor is setting off soon']",
-        "insert: SRT[1127] 'Ask that old bag to hand us the waddy' not present in OCR",
-        'edit: OCR[1099] -> SRT[1136]: "I think you won\'t come back" -> "I think you won\'t come back."',
-        'edit: OCR[1102] -> SRT[1139]: "We\'d better find someone to compete for the leadership" -> "We\'d find someone to compete for the leadership."',
-        "edit: OCR[1122] -> SRT[1159]: 'I won' -> 'I won.'",
-        "edit: OCR[1125] -> SRT[1162]: 'You are not qualified to be the leader of us' -> 'You are not qualified to be the leader of us.'",
-        'edit: OCR[1129] -> SRT[1166]: "But it\'s different from the standard stances!" -> "But it\'s unlike from the standard stances!"',
-        "edit: OCR[1138] -> SRT[1175]: 'We becomes the biggest association' -> 'We become the biggest association'",
-        "edit: OCR[1155] -> SRT[1192]: 'whole-heartedly, to care much for him, maybe, treat him dinner' -> 'whole-heartedly, to care much for him, maybe treat him dinner'",
-        "edit: OCR[1162] -> SRT[1199]: 'They are easily to be cheated, I am really a genius!' -> 'They are easily cheated, I am really a genius!'",
-        'edit: OCR[1163] -> SRT[1200]: "We\'ll have better living" -> "We\'ll have a better living"',
-        "edit: OCR[1166] -> SRT[1203]: 'Bravo…' -> 'You should have faith, you won, bravo…'",
-        "delete: OCR[1179] 'Chan,' not present in SRT",
-        "split: OCR[1180] -> SRT[1216-1217]: ['do you understand everything written in this book?'] -> ['Do you understand everything', 'written in this book?']",
-        "edit: OCR[1182] -> SRT[1219]: 'After getting the help of Taiwan Pill' -> 'After getting the help of Taiwan Pill,'",
-        "edit: OCR[1186] -> SRT[1223]: 'there is no picture or description of it' -> 'there is no picture or description of it.'",
-        'edit: OCR[1187] -> SRT[1224]: "I can\'t understand at all" -> "I can\'t understand it at all"',
-        "split: OCR[1216] -> SRT[1253-1254]: ['- Check what has happened    - Yes'] -> ['Check what has happened', 'Yes']",
-        "split_edit: OCR[1253] -> SRT[1291-1292]: [\"- Go on after I've left    - Sure\"] -> ['Go on after I left', 'Sure']",
-        "split_edit: OCR[1255] -> SRT[1294-1295]: ['- Get ready the Unicom Smoke.    - Yes.'] -> ['Get ready the Unicom Smoke', 'Yes']",
-        "shift: OCR[1295-1296] -> SRT[1335-1336]: ['- Really?    - Yes', 'Then I want to eat a sweet potato'] -> ['Really?', 'Yes, then I want to eat a sweet potato']",
-        "edit: OCR[1306] -> SRT[1346]: 'What are you telling him?' -> 'Are you telling him?'",
-        "edit: OCR[1312] -> SRT[1352]: 'Yes. Look at you, you are like beggar too' -> 'Yes. Look at you, you are like a beggar too'",
-        "edit: OCR[1313] -> SRT[1353]: 'Are you interested to join us?' -> 'Are you interested in joining us?'",
-        'edit: OCR[1334] -> SRT[1374]: "I\'ve got it. Just mix the 17 stances," -> "I\'ve got it Just mix the 17 stances,"',
-        "edit: OCR[1344] -> SRT[1384]: 'You are great!' -> 'Sister!'",
-        "edit: OCR[1345] -> SRT[1385]: 'Chan! Are you okay?' -> 'Tracy!'",
-        'edit: OCR[1352] -> SRT[1392]: "Chiu\'s fellows have all been caught by us" -> "Chiu\'s fellows are all caught by us"',
-        "edit: OCR[1356] -> SRT[1396]: 'Yes, be the top of all' -> 'Yes, be the top of all.'",
-        'edit: OCR[1359] -> SRT[1399]: "But I don\'t like Scholar at all" -> "But I don\'t like Scholar at all."',
-        "edit: OCR[1361] -> SRT[1401]: 'You first, I will go after you' -> 'You first, I will go after you.'",
-        "delete: OCR[1372] 'Pick me up' not present in SRT",
-        "edit: OCR[1374] -> SRT[1413]: 'Put me down' -> 'Put it down'",
-        'edit: OCR[1377] -> SRT[1416]: "If so, you needn\'t squat to talk to me" -> "If so, you needn\'t squat and talk to me"',
-        "split: OCR[1388] -> SRT[1427-1428]: [\"- It's reasonable    - Be smart\"] -> [\"It's reasonable\", 'Be smart']",
-        "shift: OCR[1392-1393] -> SRT[1432-1433]: ['Long life…', '- … to Your Majesty    - Get up'] -> ['Long life to Your Majesty', 'Get up']",
-        "delete: OCR[1411] 'Hurry up' not present in SRT",
-        "delete: OCR[1412] 'Follow me… go…' not present in SRT",
-    ]
-    _assert_expected_differences(differences, expected)
-    print()
-    for i, diff in enumerate(differences, 1):
-        print(f"{i:>3d}: {diff}")
-
-
-def test_get_series_diff_mlamd_zho_simplify(
-    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-):
-    """Test get_series_diff with MLAMD Simplified vs Traditional subtitles.
-
-    Arguments:
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
-        mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
-            traditional subtitles, programmatically simplified
-    """
-    differences = get_series_diff(
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
-        mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
-        one_lbl="SIMP",
-        two_lbl="TRAD",
-    )
-    expected = [
-        "edit: SIMP[178] -> TRAD[178]: '一个女人背起整个世界！' -> '一个女人支起整个世界！'",
-        "edit: SIMP[227] -> TRAD[227]: '他扭了脚骹！' -> '他扭了脚骸！'",
-        "edit: SIMP[420] -> TRAD[420]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
-        "edit: SIMP[461] -> TRAD[461]: '不成了！我的脚瓜太痹了！' -> '不成了！我的脚瓜太痺了！'",
-        "edit: SIMP[551] -> TRAD[551]: '黎根接著说了一大堆话⋯' -> '黎根接着说了一大堆话⋯'",
-        "edit: SIMP[566] -> TRAD[566]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
-        "edit: SIMP[579] -> TRAD[579]: '难道⋯\\u3000不会吧？' -> '难道⋯不会吧？'",
-        "edit: SIMP[580] -> TRAD[580]: '想不到真的让妈妈拿去了．吓得我！' -> '想不到真的让妈妈拿去了，吓得我！'",
-        "edit: SIMP[663] -> TRAD[663]: '这关于火鸡的一切，不过是我的想像' -> '这关于火鸡的一切，不过是我的想象'",
-        "edit: SIMP[665] -> TRAD[665]: '连它的气味也没嗅过' -> '连牠的气味也没嗅过'",
-        "edit: SIMP[678] -> TRAD[678]: '我学著妈妈，把双手涂满盐⋯' -> '我学着妈妈，把双手涂满盐⋯'",
-        "edit: SIMP[680] -> TRAD[680]: '联火鸡时⋯' -> '拎火鸡时⋯'",
-        "edit: SIMP[723] -> TRAD[723]: '栗子炆火鸡丝㷛' -> '栗子火鸡丝堡'",
-        "edit: SIMP[847] -> TRAD[847]: '足有一寸厚' -> '足有一吋厚'",
-        "edit: SIMP[855] -> TRAD[855]: '可是楝一双脚瓜站这儿⋯' -> '可是冻一双脚瓜站这儿⋯'",
-    ]
-    _assert_expected_differences(differences, expected)
-
-
-def test_get_series_diff_mnt_zho_simplify(
-    mnt_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-):
-    """Test get_series_diff with MNT Simplified vs Traditional subtitles.
-
-    Arguments:
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
-        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
-            traditional subtitles, programmatically simplified
-    """
-    differences = get_series_diff(
-        mnt_zho_hans_fuse_clean_validate_proofread_flatten,
-        mnt_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
-        one_lbl="SIMP",
-        two_lbl="TRAD",
-    )
-    expected = [
-        "edit: SIMP[1] -> TRAD[1]: '《龙猫》' -> '龙猫'",
-        "edit: SIMP[4] -> TRAD[4]: '你们两个累不累啊' -> '妳们两个累不累啊'",
-        "edit: SIMP[10] -> TRAD[10]: '我姓草壁\\u3000新搬来的' -> '我姓草壁，新搬来的'",
-        "edit: SIMP[20] -> TRAD[20]: '爸爸，这里好棒啊' -> '爸爸，这里太好了'",
-        "edit: SIMP[48] -> TRAD[48]: '还是\\u3000吃橡果子的老鼠呢？' -> '还是吃橡果子的老鼠呢？'",
-        "edit: SIMP[56] -> TRAD[56]: '等人家嘛' -> '等等'",
-        "edit: SIMP[58] -> TRAD[58]: '进去罗' -> '进去啰'",
-        "edit: SIMP[68] -> TRAD[68]: '那一定是〝灰尘精灵〞' -> '那一定是「灰尘精灵」'",
-        "edit: SIMP[79] -> TRAD[79]: '上二楼的楼梯\\u3000到底在哪里呢？' -> '上二楼的楼梯，到底在哪里呢？'",
-        "edit: SIMP[83] -> TRAD[83]: '人家也要' -> '小美也要'",
-        "edit: SIMP[85] -> TRAD[85]: '甚么？' -> '咦？'",
-        "edit: SIMP[86] -> TRAD[86]: '甚么？' -> '咦？'",
-        "edit: SIMP[87] -> TRAD[87]: '甚么？' -> '咦？'",
-        "edit: SIMP[88] -> TRAD[88]: '甚么？' -> '咦？'",
-        "edit: SIMP[89] -> TRAD[89]: '甚么？' -> '咦？'",
-        "shift: SIMP[100-101] -> TRAD[100-101]: ['那真是太棒了', '爸爸从小就梦想\\u3000能够住在鬼屋里面'] -> ['那真是太好了', '爸爸从小就梦想能够住在鬼屋里面']",
-        "edit: SIMP[127] -> TRAD[127]: '〝哇啦哇啦〞的乱跑啊' -> '「哇啦哇啦」的乱跑啊'",
-        "shift: SIMP[140-141] -> TRAD[140-141]: ['可是要是来这么一大堆\\u3000该怎么办？', '人家才不怕那些'] -> ['可是要是来这么一大堆，该怎么办？', '小美才不怕那些']",
-        "edit: SIMP[143] -> TRAD[143]: '那以后晚上\\u3000姐姐就不陪妳上厕所' -> '那以后晚上，姐姐就不陪妳上厕所'",
-        "edit: SIMP[147] -> TRAD[147]: '人家也要去' -> '小美也要去'",
-        "edit: SIMP[154] -> TRAD[154]: '你不是刚刚那个吗？\\u3000有事吗' -> '你不是刚刚那个吗？有事吗'",
-        "edit: SIMP[163] -> TRAD[163]: '不过\\u3000婆婆这个糯米团很好吃' -> '不过婆婆这个糯米团很好吃'",
-        "edit: SIMP[165] -> TRAD[165]: '婆婆，谢谢您的糯米团' -> '谢谢您'",
-        "edit: SIMP[168] -> TRAD[168]: '爸爸，我们家\\u3000破破烂烂的会否倒下来' -> '爸爸，我们家破破烂烂的会否倒下来'",
-        "shift: SIMP[172-174] -> TRAD[172-174]: ['人家才不怕呢！', '人家才不怕呢！', '一、二、一、二、一、二'] -> ['小美才不怕呢！', '小美才不怕呢！', '一，二，一，二，一，二']",
-        "edit: SIMP[177] -> TRAD[177]: '好了\\u3000衣服都洗好了' -> '好了，衣服都洗好了'",
-        "edit: SIMP[185] -> TRAD[185]: '替我帮妳们妈妈问好' -> '替我帮你们妈妈问好'",
-        "edit: SIMP[191] -> TRAD[191]: '小美妳也来啦' -> '小美妳也来啦！'",
-        "edit: SIMP[195] -> TRAD[195]: '今天田里休息一天' -> '今天是农假，学校休息一天'",
-        "edit: SIMP[201] -> TRAD[201]: '甚么？我们家是鬼屋啊' -> '什么？我们家是鬼屋啊'",
-        "edit: SIMP[208] -> TRAD[208]: '那妳们两个呢？' -> '那你们两个呢？'",
-        "edit: SIMP[211] -> TRAD[211]: '小美的头发都是妳梳的？' -> '小美的头发都是你梳的？'",
-        "edit: SIMP[219] -> TRAD[219]: '人家也要！人家也要！' -> '小美也要！小美也要！'",
-        "edit: SIMP[226] -> TRAD[226]: '因为妳跟妈妈最像了' -> '因为你跟妈妈最像了'",
-        "edit: SIMP[229] -> TRAD[229]: '医生也说\\u3000再过不久就可以出院了' -> '医生也说，再过不久就可以出院了'",
-        "edit: SIMP[231] -> TRAD[231]: '妳什么都是明天' -> '你什么都是明天'",
-        "shift: SIMP[233-234] -> TRAD[233-234]: ['可是人家好想要跟妈妈一起睡', '妳不是说妳已经长大\\u3000要自己一个人睡的吗？'] -> ['妈妈说想跟小美一起睡', '你不是说你已经长大，要自己一个人睡的吗？']",
-        "edit: SIMP[251] -> TRAD[251]: '糟了，来啊' -> '糟了，来啊！'",
-        "edit: SIMP[253] -> TRAD[253]: '叫得很真亲密呢' -> '叫得很真亲密呢。'",
-        "edit: SIMP[259] -> TRAD[259]: '早，赶快走吧\\u3000好' -> '﹣早，赶快走吧\\u3000\\u3000﹣好。'",
-        "edit: SIMP[287] -> TRAD[287]: '爸爸！\\u3000小美的帽子掉在这里' -> '爸爸！小美的帽子掉在这里'",
-        "shift: SIMP[298-299] -> TRAD[298-299]: ['它的名字叫做大龙猫啊', '它的毛好多啊'] -> ['牠的名字叫做大龙猫啊', '牠的毛好多啊']",
-        "edit: SIMP[313] -> TRAD[313]: '它刚才\\u3000睡在一棵很大的树里面' -> '牠刚才睡在一棵很大的树下面'",
-        "edit: SIMP[321] -> TRAD[321]: '人家没有骗你们' -> '我没有骗你们'",
-        "edit: SIMP[324] -> TRAD[324]: '小美刚才一定是\\u3000遇到了森林的主人' -> '小美刚才一定是遇到了森林的主人'",
-        "edit: SIMP[327] -> TRAD[327]: '来，我们去跟它打个招呼吧' -> '对了，我们还没有跟它打招呼'",
-        "edit: SIMP[340] -> TRAD[340]: '那不是想看\\u3000随时就能看到的' -> '那不是想看，随时就能看到的'",
-        "edit: SIMP[351] -> TRAD[351]: '而且知道\\u3000妈妈一定也会喜欢这里' -> '而且知道，妈妈一定也会喜欢这里'",
-        "shift: SIMP[354-355] -> TRAD[354-355]: ['对了\\u3000我跟小满约好要到她家去', '人家也要去'] -> ['对了，我跟小满约好要到她家去', '小美也要去']",
-        "edit: SIMP[360] -> TRAD[360]: '我们比赛看谁先到家' -> '比赛跑回家'",
-        "edit: SIMP[362] -> TRAD[362]: '等人家嘛' -> '等等'",
-        "edit: SIMP[364] -> TRAD[364]: '等人家嘛' -> '等等嘛'",
-        "edit: SIMP[366] -> TRAD[366]: '因为小美说她看到了\\u3000一只很大的龙猫精灵' -> '因为小美说她看到了，一只很大的龙猫精灵'",
-        "edit: SIMP[367] -> TRAD[367]: '我好希望我也能够见它一面' -> '我好希望我也能够见牠一面'",
-        "edit: SIMP[369] -> TRAD[369]: '再不快点就要迟到了\\u3000嗯' -> '﹣再不快点就要迟到了\\u3000﹣嗯'",
-        "delete: SIMP[374] '你们看，你们看，她妹妹' not present in TRAD",
-        "edit: SIMP[375] -> TRAD[374]: '婆婆、小美？' -> '婆婆，小美？'",
-        "shift: SIMP[382-383] -> TRAD[381-382]: ['你要在婆婆家\\u3000乖乖等姊姊放学的吗？', '姊姊还要再上两个小时的课'] -> ['你要在婆婆家\\u3000乖乖等姐姐放学的吗？', '姐姐还要再上两个小时的课']",
-        "edit: SIMP[390] -> TRAD[389]: '好、好' -> '是的'",
-        "edit: SIMP[402] -> TRAD[401]: '人家都没有哭，棒不棒？\\u3000嗯' -> '-小美都没有哭，了不起。 -嗯'",
-        "edit: SIMP[404] -> TRAD[403]: '土地公爷爷\\u3000请您让我们躲一下雨' -> '土地公爷爷，请您让我们躲一下雨'",
-        "shift: SIMP[406-407] -> TRAD[405-406]: ['姊姊，有伞子真棒啊', '可是伞子顶破了一个大洞'] -> ['姐姐，有伞子真好啊', '伞子破了好多洞洞']",
-        "edit: SIMP[409] -> TRAD[408]: '人家也要去接爸爸' -> '小美也要去接爸爸'",
-        "edit: SIMP[412] -> TRAD[411]: '竟然还会傻得忘了带伞\\u3000你骗鬼啊！' -> '竟然还会傻得忘了带伞，你骗鬼啊！'",
-        "edit: SIMP[414] -> TRAD[413]: '我看啊\\u3000你八成是把伞子弄坏了' -> '我看啊，你八成是把伞弄坏了'",
-        "edit: SIMP[421] -> TRAD[420]: '对了\\u3000这是勘太今天借我们的伞' -> '对了，这是勘太今天借我们的伞'",
-        "edit: SIMP[423] -> TRAD[422]: '这么破的伞子真不好意思' -> '这么破的伞真不好意思'",
-        "edit: SIMP[453] -> TRAD[452]: '快点啊\\u3000小美快要掉下来了啦' -> '快点啊，小美快要掉下来了啦'",
-        "edit: SIMP[462] -> TRAD[461]: '出现了，爸爸\\u3000真的出现了' -> '出现了，爸爸真的出现了'",
-        "shift: SIMP[467-468] -> TRAD[466-467]: ['看到了！\\u3000我看到大龙猫了！', '好棒啊'] -> ['看到了！我看到大龙猫了！', '太好了！']",
-        "edit: SIMP[473] -> TRAD[472]: '而且大龙猫送给我们的礼物\\u3000实在是太棒了' -> '而且大龙猫送给我们的礼物\\u3000实在是妙极了'",
-        "edit: SIMP[478] -> TRAD[477]: '我们想家里院子\\u3000变成森林的话一定很棒' -> '我们想家里院子变成森林的话一定很精彩'",
-        "edit: SIMP[484] -> TRAD[483]: '就好像猴子螃蟹大战\\u3000里面那个螃蟹一样啊' -> '就好像猴子蟹大战里面那个螃蟹一样啊'",
-        "edit: SIMP[486] -> TRAD[485]: '希望妈妈的病\\u3000能够快点好起来好吗？' -> '希望妈妈的病能够快点好起来好吗？'",
-        "edit: SIMP[496] -> TRAD[495]: '太棒了！' -> '太好了！'",
-        "edit: SIMP[525] -> TRAD[524]: '只要是\\u3000吃了婆婆田里种的东西' -> '只要是吃了婆婆田里种的东西'",
-        "edit: SIMP[527] -> TRAD[526]: '这个星期六\\u3000我妈妈就会回来了' -> '这个星期六我妈妈就会回来了'",
-        "edit: SIMP[529] -> TRAD[528]: '是吗？\\u3000马上就要出院了' -> '是吗？马上就要出院了'",
-        "edit: SIMP[531] -> TRAD[530]: '星期一还得回去复诊' -> '星期一还得回去覆诊'",
-        "edit: SIMP[535] -> TRAD[534]: '我要把我自己摘的\\u3000粟米给妈妈吃' -> '我要把我自己摘的粟米给妈妈吃'",
-        "edit: SIMP[538] -> TRAD[537]: '你们不在\\u3000所以邮差送去我家' -> '你们不在，所以邮差送去我家'",
-        "edit: SIMP[542] -> TRAD[541]: '发电处七国山医院' -> '发电出七国山医院'",
-        "merge_edit: SIMP[546-547] -> TRAD[545]: ['婆婆，怎么办？', '医院要我们跟他们联络'] -> ['婆婆，怎么办？医院要我们跟他们联络']",
-        "edit: SIMP[550] -> TRAD[548]: '爸爸研究室的电话号码\\u3000我是知道' -> '爸爸研究室的电话号码我是知道'",
-        "edit: SIMP[556] -> TRAD[554]: '请接东京31局1382号' -> '请接东京 31 局 1382 号'",
-        "edit: SIMP[561] -> TRAD[559]: '我爸爸⋯\\u3000麻烦请草壁先生听电话' -> '我爸爸⋯麻烦请找草壁先生听电话'",
-        "edit: SIMP[566] -> TRAD[564]: '爸爸现在就\\u3000打电话到医院去问' -> '爸爸现在就打电话到医院去问'",
-        "edit: SIMP[570] -> TRAD[568]: '爸爸给医院打过电话\\u3000就马上就回妳电话' -> '爸爸给医院打过电话就马上回妳电话'",
-        "edit: SIMP[573] -> TRAD[571]: '婆婆\\u3000我还可以在这里待一会吗？' -> '婆婆，我还可以在这里待一会吗？'",
-        "edit: SIMP[576] -> TRAD[574]: '姊姊' -> '姐姐'",
-        "edit: SIMP[586] -> TRAD[584]: '妈妈要是勉强出院\\u3000反而更严重了那怎么办' -> '妈妈要是勉强出院，反而更严重了，那怎么办'",
-        "edit: SIMP[590] -> TRAD[588]: '那妈妈死掉\\u3000也没有关系是不是' -> '那妈妈死掉，也没有关系是不是'",
-        "edit: SIMP[595] -> TRAD[593]: '姊姊大坏蛋！' -> '姐姐是大坏蛋！'",
-        "edit: SIMP[600] -> TRAD[598]: '你爸爸说他今天\\u3000要留在医院过夜' -> '你爸爸说他今天要留在医院过夜'",
-        "edit: SIMP[604] -> TRAD[602]: '医生说只要住数天就会好了' -> '医生说只要住几天就会好了'",
-        "edit: SIMP[606] -> TRAD[604]: '我妈妈要是死了该怎么办' -> '我妈妈要是死了，该怎么办'",
-        "edit: SIMP[608] -> TRAD[606]: '我妈妈要是死了那我们⋯' -> '我妈妈要是死了，那我们⋯'",
-        "edit: SIMP[610] -> TRAD[608]: '妳妈妈哪舍得下\\u3000妳们这些可爱的孩子' -> '妳妈妈哪舍得下妳们这些可爱的孩子'",
-        "edit: SIMP[618] -> TRAD[616]: '没在公车站牌那边吗？' -> '没在巴士站牌那边吗？'",
-        "edit: SIMP[623] -> TRAD[621]: '她会不会\\u3000跑去妈妈住的医院了' -> '她会不会跑去妈妈住的医院了'",
-        "edit: SIMP[625] -> TRAD[623]: '可是就连大人也得\\u3000走上三个钟头才会到' -> '可是就连大人也得走上三个钟头才会到'",
-        "edit: SIMP[632] -> TRAD[630]: '您有没有看见束辫子的小女孩\\u3000从这条路经过' -> '您有没有看见束辫子的小女孩，从这条路经过'",
-        "edit: SIMP[641] -> TRAD[639]: '搞什么啊！危险啊' -> '搞什么啊！危险啊！'",
-        "edit: SIMP[643] -> TRAD[641]: '你们有没有看一个小女孩' -> '你们有没有看到一个小女孩'",
-        "edit: SIMP[648] -> TRAD[646]: '我们两个\\u3000就是从那个方向来的' -> '我们两个就是从那个方向来的'",
-        "edit: SIMP[649] -> TRAD[647]: '不过\\u3000好像没有看到那样的小孩' -> '不过好像没有看到那样的小孩'",
-        "edit: SIMP[651] -> TRAD[649]: '她从哪里来的？' -> '妳从哪里来的？'",
-        "edit: SIMP[655] -> TRAD[653]: '就是啊' -> '再见啰'",
-        "shift: SIMP[669-670] -> TRAD[667-668]: ['喃呒阿弥陀佛', '池那边泥比较深一点\\u3000从那边开始啊'] -> ['南无阿弥陀佛', '池那边泥比较深一点，从那边开始啊']",
-        "edit: SIMP[672] -> TRAD[670]: '喃呒阿弥陀佛\\u3000婆婆，小月来了' -> '婆婆，小月来了'",
-        "edit: SIMP[677] -> TRAD[675]: '我还以\\u3000这是小美的' -> '我还以为这是小美的'",
-        "edit: SIMP[683] -> TRAD[681]: '不好意思啊' -> '大家，不好意思啊'",
-        "edit: SIMP[684] -> TRAD[682]: '大家辛苦你们\\u3000再回头去找找好了' -> '麻烦再分开找找'",
-        "split_edit: SIMP[697] -> TRAD[695-696]: ['大家都看不到它'] -> ['大家都看不到牠', '「小美」']",
-        "edit: SIMP[701] -> TRAD[700]: '姊姊' -> '姐姐'",
-        "edit: SIMP[702] -> TRAD[701]: '姊姊' -> '姐姐'",
-        "edit: SIMP[705] -> TRAD[704]: '姊姊' -> '姐姐'",
-        "shift: SIMP[708-709] -> TRAD[707-708]: ['妳是不是想要把粟米\\u3000送去医院给妈妈？', '〝七国山医院〞'] -> ['妳是不是想要把粟米送去医院给妈妈？', '「七国山医院」']",
-        "edit: SIMP[713] -> TRAD[712]: '医院就擅自决定\\u3000发电报给家里了' -> '医院就擅自决定，发电报给家里了'",
-        "edit: SIMP[720] -> TRAD[719]: '她们表面好像没事\\u3000可是心里一定很难过' -> '她们表面好像没事，可是心里一定很难过'",
-        "edit: SIMP[721] -> TRAD[720]: '小月越是懂事\\u3000就越教人于心不忍' -> '小月越是懂事，就越教人于心不忍'",
-        "shift: SIMP[723-724] -> TRAD[722-723]: ['出院以后我一定要好好疼她们', '让她们尽情耍耍小脾气'] -> ['出院以后我要好好疼疼她们，让她们尽情耍耍小脾气', '妳呀']",
-        "edit: SIMP[733] -> TRAD[732]: '妳看' -> '你看'",
-        "edit: SIMP[734] -> TRAD[733]: '〝送给妈妈〞' -> '「送给妈妈」'",
-        "edit: SIMP[735] -> TRAD[734]: '谢谢观看' -> '「送给妈妈」'",
-        "insert: TRAD[735] '「送给妈妈」' not present in SIMP",
-        "insert: TRAD[736] '完' not present in SIMP",
-    ]
-    _assert_expected_differences(differences, expected)
-
-
-def test_get_series_diff_t_zho_simplify(
-    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
-    t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
-):
-    """Test get_series_diff with T Simplified vs Traditional subtitles.
-
-    Arguments:
-        t_zho_hans_fuse_clean_validate_proofread_flatten: simplified subtitles
-        t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread:
-            traditional subtitles, programmatically simplified
-    """
-    differences = get_series_diff(
-        t_zho_hans_fuse_clean_validate_proofread_flatten,
-        t_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
-        one_lbl="SIMP",
-        two_lbl="TRAD",
-    )
-    expected = [
-        "edit: SIMP[95] -> TRAD[95]: '还谈什么？' -> '还谈甚么？'",
-        "edit: SIMP[119] -> TRAD[119]: '你耍我的吧？' -> '你要我的吧？'",
-        "edit: SIMP[211] -> TRAD[211]: '张总，看看想吃什么？' -> '张总，看看想吃甚么？'",
-        "edit: SIMP[288] -> TRAD[288]: '他看什么？' -> '他看甚么？'",
-        "edit: SIMP[314] -> TRAD[314]: '这潮哥是什么来头？' -> '这潮哥是什麽来头？'",
-        "edit: SIMP[315] -> TRAD[315]: '他就是不让你知道他什么来头' -> '他就是不让你知道他什麽来头'",
-        "edit: SIMP[410] -> TRAD[410]: '又不是赚很多，也不知为了什么' -> '又不是赚很多，也不知为什么'",
-        "edit: SIMP[432] -> TRAD[432]: '我家的VCD机坏了' -> '我家的 VCD 机坏了'",
-        "edit: SIMP[441] -> TRAD[441]: '还有一部VCD机' -> '还有一部 VCD 机'",
-        "edit: SIMP[451] -> TRAD[451]: '什么事？' -> '甚么事？'",
-        "edit: SIMP[526] -> TRAD[526]: '搞什么？' -> '搞甚么？'",
-        "shift: SIMP[528-529] -> TRAD[528-529]: ['唱什么歌？', '唱什么也听不到，有什么好听？'] -> ['唱甚么歌？', '唱甚么也听不到，有甚么好听？']",
-        "edit: SIMP[531] -> TRAD[531]: '唱什么也很厉害' -> '唱甚么也很厉害'",
-        "edit: SIMP[552] -> TRAD[552]: '喜玛拉雅山！' -> '喜马拉雅山！'",
-        "edit: SIMP[615] -> TRAD[615]: '海关龙科' -> '海关龙柯'",
-        "edit: SIMP[617] -> TRAD[617]: '龙科你好' -> '龙柯你好'",
-        "edit: SIMP[625] -> TRAD[625]: '龙科，他是我的好兄弟' -> '龙柯，他是我的好兄弟'",
-        "shift: SIMP[634-635] -> TRAD[634-635]: ['吃什么？吃什么？', '吃什么？'] -> ['吃甚么？吃甚么？', '吃甚么？']",
-        "edit: SIMP[722] -> TRAD[722]: '大家都一起开AK' -> '大家都一起开 AK'",
-        "edit: SIMP[848] -> TRAD[848]: '你做什么？' -> '你做甚么？'",
-        "edit: SIMP[862] -> TRAD[862]: '脱什么节？' -> '脱甚么节？'",
-        "edit: SIMP[905] -> TRAD[905]: '一场3T就抢光香港人的钱了' -> '一场 3T 就抢光香港人的钱了'",
-        "edit: SIMP[906] -> TRAD[906]: '3T什么意思？' -> '3T 什么意思？'",
-        "edit: SIMP[1044] -> TRAD[1044]: '我叶国欢有麟有角！' -> '我叶国欢有鳞有角！'",
-        "edit: SIMP[1100] -> TRAD[1100]: '怎样也要留下些什么吧？' -> '怎样也要留下些甚么吧？'",
-        "edit: SIMP[1116] -> TRAD[1116]: '老大，你说什么就是什么' -> '老大，你说甚么就是甚么'",
-    ]
     _assert_expected_differences(differences, expected)
