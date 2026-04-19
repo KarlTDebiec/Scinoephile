@@ -16,6 +16,7 @@ from scinoephile.cli.dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.dictionary_search_cli import DictionarySearchCli
 from scinoephile.cli.eng_cli import EngCli
+from scinoephile.cli.eng_fuse_cli import EngFuseCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.cli.timewarp_cli import TimewarpCli
@@ -31,6 +32,7 @@ __all__ = [
     "DictionaryBuildGzzjCli",
     "DictionarySearchCli",
     "EngCli",
+    "EngFuseCli",
     "ScinoephileCli",
     "SyncCli",
     "TimewarpCli",

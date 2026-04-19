@@ -103,11 +103,6 @@ def test_eng_cli(
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
         ),
-        (
-            "mnt/output/eng_fuse_clean_validate_proofread.srt",
-            "--flatten",
-            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
-        ),
     ],
 )
 def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):

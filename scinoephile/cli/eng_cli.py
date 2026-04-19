@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from sys import stdin, stdout
 from typing import Unpack
 
+from scinoephile.cli.eng_fuse_cli import EngFuseCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -77,6 +78,15 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+
+        subparsers = parser.add_subparsers(
+            dest="eng_subcommand",
+            help="subcommand",
+            required=False,
+        )
+        subcommands = cls.subcommands()
+        for name in sorted(subcommands):
+            subcommands[name].argparser(subparsers=subparsers)
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -87,6 +97,12 @@ class EngCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
+        subcommand_name = kwargs.pop("eng_subcommand", None)
+        if subcommand_name is not None:
+            subcommand_cli_class = cls.subcommands()[subcommand_name]
+            subcommand_cli_class._main(**kwargs)
+            return
+
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")
         clean = kwargs.pop("clean")
@@ -151,6 +167,17 @@ class EngCli(CommandLineInterface):
             subcommand name
         """
         return "eng"
+
+    @classmethod
+    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
+        return {
+            EngFuseCli.name(): EngFuseCli,
+        }
 
 
 if __name__ == "__main__":
