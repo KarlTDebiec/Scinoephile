@@ -14,11 +14,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli.io import (
-    load_subtitle_series,
-    parser_error_from_exception,
-    write_subtitle_series,
-)
+from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
 
@@ -118,8 +114,8 @@ class TimewarpCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        anchor = load_subtitle_series(parser, anchor_infile)
-        mobile = load_subtitle_series(parser, mobile_infile)
+        anchor = read_series(parser, anchor_infile)
+        mobile = read_series(parser, mobile_infile)
         try:
             timewarped = get_series_timewarped(
                 source_one=anchor,
@@ -130,8 +126,8 @@ class TimewarpCli(CommandLineInterface):
                 two_end_idx=two_end_idx,
             )
         except ScinoephileError as exc:
-            parser_error_from_exception(parser, exc)
-        write_subtitle_series(parser, timewarped, outfile, overwrite)
+            parser.error(str(exc))
+        write_series(parser, timewarped, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:

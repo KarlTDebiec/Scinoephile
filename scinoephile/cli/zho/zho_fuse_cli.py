@@ -9,7 +9,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
+from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
@@ -103,8 +103,8 @@ class ZhoFuseCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        lens = load_subtitle_series(parser, lens_infile)
-        paddle = load_subtitle_series(parser, paddle_infile)
+        lens = read_series(parser, lens_infile)
+        paddle = read_series(parser, paddle_infile)
         if clean:
             lens = get_zho_cleaned(lens, remove_empty=False)
             paddle = get_zho_cleaned(paddle, remove_empty=False)
@@ -114,7 +114,7 @@ class ZhoFuseCli(CommandLineInterface):
 
         processor = cls._get_ocr_fuser(convert)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
-        write_subtitle_series(parser, fused, outfile, overwrite)
+        write_series(parser, fused, outfile, overwrite)
 
     @classmethod
     def _get_ocr_fuser(

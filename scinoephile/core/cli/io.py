@@ -13,17 +13,7 @@ from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 
 
-def parser_error_from_exception(parser: ArgumentParser, exc: Exception):
-    """Report an exception as an argparse usage error.
-
-    Arguments:
-        parser: parser used for user-facing error output
-        exc: exception to format for parser error output
-    """
-    parser.error(str(exc))
-
-
-def load_subtitle_series(
+def read_series(
     parser: ArgumentParser,
     infile: str | Path,
     *,
@@ -57,7 +47,7 @@ def validate_infile_path(parser: ArgumentParser, infile: str | Path) -> Path:
     try:
         return val_input_path(infile)
     except (FileNotFoundError, NotAFileError) as exc:
-        parser_error_from_exception(parser, exc)
+        parser.error(str(exc))
     raise AssertionError("unreachable")
 
 
@@ -76,16 +66,14 @@ def validate_outfile_path(
     try:
         outfile_path = val_output_path(outfile, exist_ok=True)
     except (FileExistsError, NotAFileError) as exc:
-        parser_error_from_exception(parser, exc)
+        parser.error(str(exc))
 
     if outfile_path.exists() and not overwrite:
         parser.error(f"{outfile_path} already exists")
     return outfile_path
 
 
-def write_subtitle_series(
-    parser: ArgumentParser, series: Series, outfile: str, overwrite: bool
-):
+def write_series(parser: ArgumentParser, series: Series, outfile: str, overwrite: bool):
     """Write a subtitle series to stdout or a file.
 
     Arguments:

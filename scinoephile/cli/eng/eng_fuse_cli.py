@@ -9,7 +9,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
+from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
 
 
@@ -84,13 +84,13 @@ class EngFuseCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        lens = load_subtitle_series(parser, lens_infile)
-        tesseract = load_subtitle_series(parser, tesseract_infile)
+        lens = read_series(parser, lens_infile)
+        tesseract = read_series(parser, tesseract_infile)
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
         fused = get_eng_ocr_fused(lens, tesseract)
-        write_subtitle_series(parser, fused, outfile, overwrite)
+        write_series(parser, fused, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:

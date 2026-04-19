@@ -9,7 +9,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
-from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
+from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.lang.cmn import get_cmn_romanized
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
@@ -166,7 +166,7 @@ class ZhoCli(CommandLineInterface):
             parser.error("At least one operation required")
         cls._validate_proofread_script(parser, convert, proofread_script)
 
-        series = load_subtitle_series(parser, infile, allow_stdin=True)
+        series = read_series(parser, infile, allow_stdin=True)
         if clean:
             series = get_zho_cleaned(series)
         if convert is not None:
@@ -181,7 +181,7 @@ class ZhoCli(CommandLineInterface):
             series = get_cmn_romanized(series, append=True)
         elif romanize == "cantonese":
             series = get_yue_romanized(series, append=True)
-        write_subtitle_series(parser, series, outfile, overwrite)
+        write_series(parser, series, outfile, overwrite)
 
     @classmethod
     def _get_proofread_prompt_cls(

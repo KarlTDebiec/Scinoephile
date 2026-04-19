@@ -12,7 +12,7 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
+from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -77,11 +77,11 @@ class SyncCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        top = load_subtitle_series(parser, top_infile)
-        bottom = load_subtitle_series(parser, bottom_infile)
+        top = read_series(parser, top_infile)
+        bottom = read_series(parser, bottom_infile)
 
         synced = get_synced_series(top, bottom)
-        write_subtitle_series(parser, synced, outfile, overwrite)
+        write_series(parser, synced, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:

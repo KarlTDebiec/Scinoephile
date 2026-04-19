@@ -13,10 +13,7 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.common.exception import NotAFileError
 from scinoephile.common.validation import val_input_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli.io import (
-    parser_error_from_exception,
-    write_subtitle_series,
-)
+from scinoephile.core.cli.io import write_series
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
@@ -103,8 +100,8 @@ class YueTranscribeCli(CommandLineInterface):
                 zhongwen=zhongwen,
             )
         except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
-            parser_error_from_exception(parser, exc)
-        write_subtitle_series(parser, yuewen, outfile_path, overwrite)
+            parser.error(str(exc))
+        write_series(parser, yuewen, outfile_path, overwrite)
 
     @classmethod
     def name(cls) -> str:
