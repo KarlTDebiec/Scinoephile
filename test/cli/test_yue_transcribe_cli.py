@@ -10,7 +10,9 @@ from unittest.mock import Mock, patch
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.cli import ScinoephileCli, YueCli, YueTranscribeCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.yue_cli import YueCli
+from scinoephile.cli.yue_transcribe_cli import YueTranscribeCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -109,7 +111,7 @@ def test_yue_transcribe_cli_writes_stdout():
             "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
             return_value=expected_series,
         ):
-            with patch("scinoephile.cli.yue_transcribe_cli.stdout", stdout_stream):
+            with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
                 run_cli_with_args(
                     YueTranscribeCli, f"{media_infile_path} {zhongwen_infile_path}"
                 )

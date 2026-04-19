@@ -9,7 +9,8 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli import EngCli, ScinoephileCli
+from scinoephile.cli.eng.eng_cli import EngCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -119,8 +120,8 @@ def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
-    with patch("scinoephile.cli.eng_cli.stdin", stdin_stream):
-        with patch("scinoephile.cli.eng_cli.stdout", stdout_stream):
+    with patch("scinoephile.cli.subtitles_io.stdin", stdin_stream):
+        with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
             run_cli_with_args(EngCli, args)
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")

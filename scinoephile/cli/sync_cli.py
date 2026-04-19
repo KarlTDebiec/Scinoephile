@@ -11,10 +11,10 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
-    output_file_arg,
 )
-from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
+
+from .subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class SyncCli(CommandLineInterface):
@@ -38,13 +38,13 @@ class SyncCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "top_infile",
-            metavar="top-infile",
+            metavar="TOP_INFILE",
             type=input_file_arg(),
             help="subtitle infile for top line",
         )
         arg_groups["input arguments"].add_argument(
             "bottom_infile",
-            metavar="bottom-infile",
+            metavar="BOTTOM_INFILE",
             type=input_file_arg(),
             help="subtitle infile for bottom line",
         )
@@ -53,10 +53,10 @@ class SyncCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="FILE",
-            required=True,
-            type=output_file_arg(exist_ok=True),
-            help="synchronized subtitle outfile",
+            metavar="OUTFILE",
+            default="-",
+            type=str,
+            help='synchronized subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -78,14 +78,11 @@ class SyncCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        if outfile.exists() and not overwrite:
-            parser.error(f"{outfile} already exists")
-
-        top = Series.load(top_infile)
-        bottom = Series.load(bottom_infile)
+        top = load_subtitle_series(parser, top_infile)
+        bottom = load_subtitle_series(parser, bottom_infile)
 
         synced = get_synced_series(top, bottom)
-        synced.save(outfile)
+        write_subtitle_series(parser, synced, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:

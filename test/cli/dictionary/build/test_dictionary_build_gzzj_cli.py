@@ -9,12 +9,12 @@ from io import StringIO
 
 import pytest
 
-from scinoephile.cli import (
-    DictionaryBuildCli,
+from scinoephile.cli.dictionary.build.dictionary_build_cli import DictionaryBuildCli
+from scinoephile.cli.dictionary.build.dictionary_build_gzzj_cli import (
     DictionaryBuildGzzjCli,
-    DictionaryCli,
-    ScinoephileCli,
 )
+from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test.helpers import assert_cli_help, build_subcommands, get_usage_prefix

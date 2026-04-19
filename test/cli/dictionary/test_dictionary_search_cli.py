@@ -12,11 +12,9 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli import (
-    DictionaryCli,
-    DictionarySearchCli,
-    ScinoephileCli,
-)
+from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
+from scinoephile.cli.dictionary.dictionary_search_cli import DictionarySearchCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args

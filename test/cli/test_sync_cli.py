@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli, SyncCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args

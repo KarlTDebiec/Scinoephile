@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli, YueCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.yue_cli import YueCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import assert_cli_help, assert_cli_usage
 

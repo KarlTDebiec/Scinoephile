@@ -5,13 +5,10 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from sys import stdout
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.common.validation import val_output_path
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
@@ -20,6 +17,8 @@ from scinoephile.lang.zho.conversion import (
 )
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+
+from ..subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class ZhoFuseCli(CommandLineInterface):
@@ -44,13 +43,13 @@ class ZhoFuseCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "lens_infile",
-            metavar="lens-infile",
+            metavar="LENS_INFILE",
             type=input_file_arg(),
             help="Google Lens 中文 subtitle infile",
         )
         arg_groups["input arguments"].add_argument(
             "paddle_infile",
-            metavar="paddle-infile",
+            metavar="PADDLE_INFILE",
             type=input_file_arg(),
             help="PaddleOCR 中文 subtitle infile",
         )
@@ -77,10 +76,10 @@ class ZhoFuseCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="FILE",
+            metavar="OUTFILE",
             default="-",
             type=str,
-            help="fused 中文 subtitle outfile (default: stdout)",
+            help='fused 中文 subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -105,8 +104,8 @@ class ZhoFuseCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        lens = Series.load(lens_infile)
-        paddle = Series.load(paddle_infile)
+        lens = load_subtitle_series(parser, lens_infile)
+        paddle = load_subtitle_series(parser, paddle_infile)
         if clean:
             lens = get_zho_cleaned(lens, remove_empty=False)
             paddle = get_zho_cleaned(paddle, remove_empty=False)
@@ -116,7 +115,7 @@ class ZhoFuseCli(CommandLineInterface):
 
         processor = cls._get_ocr_fuser(convert)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
-        cls._write_series(parser, fused, outfile, overwrite)
+        write_subtitle_series(parser, fused, outfile, overwrite)
 
     @classmethod
     def _get_ocr_fuser(
@@ -151,30 +150,6 @@ class ZhoFuseCli(CommandLineInterface):
         if convert in SIMPLIFIED_CONFIGS:
             return "simplified"
         return "simplified"
-
-    @classmethod
-    def _write_series(
-        cls,
-        parser: ArgumentParser,
-        series: Series,
-        outfile: str,
-        overwrite: bool,
-    ):
-        """Write a Series to a file path or stdout.
-
-        Arguments:
-            parser: argument parser for error reporting
-            series: series to write
-            outfile: output file path or "-" for stdout
-            overwrite: whether to overwrite an existing file
-        """
-        if outfile == "-":
-            stdout.write(series.to_string(format_="srt"))
-            return
-        output_path = val_output_path(outfile, exist_ok=True)
-        if output_path.exists() and not overwrite:
-            parser.error(f"{output_path} already exists")
-        series.save(output_path)
 
     @classmethod
     def name(cls) -> str:

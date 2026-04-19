@@ -5,14 +5,13 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from sys import stdout
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.common.validation import val_output_path
-from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
+
+from ..subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class EngFuseCli(CommandLineInterface):
@@ -37,13 +36,13 @@ class EngFuseCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "lens_infile",
-            metavar="lens-infile",
+            metavar="LENS_INFILE",
             type=input_file_arg(),
             help="English subtitle infile OCRed using Google Lens",
         )
         arg_groups["input arguments"].add_argument(
             "tesseract_infile",
-            metavar="tesseract-infile",
+            metavar="TESSERACT_INFILE",
             type=input_file_arg(),
             help="English subtitle infile OCRed using Tesseract",
         )
@@ -60,10 +59,10 @@ class EngFuseCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="FILE",
+            metavar="OUTFILE",
             default="-",
             type=str,
-            help="English subtitle outfile (default: stdout)",
+            help='English subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -86,37 +85,13 @@ class EngFuseCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        lens = Series.load(lens_infile)
-        tesseract = Series.load(tesseract_infile)
+        lens = load_subtitle_series(parser, lens_infile)
+        tesseract = load_subtitle_series(parser, tesseract_infile)
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
         fused = get_eng_ocr_fused(lens, tesseract)
-        cls._write_series(parser, fused, outfile, overwrite)
-
-    @classmethod
-    def _write_series(
-        cls,
-        parser: ArgumentParser,
-        series: Series,
-        outfile: str,
-        overwrite: bool,
-    ):
-        """Write a Series to a file path or stdout.
-
-        Arguments:
-            parser: argument parser for error reporting
-            series: series to write
-            outfile: output file path or "-" for stdout
-            overwrite: whether to overwrite an existing file
-        """
-        if outfile == "-":
-            stdout.write(series.to_string(format_="srt"))
-            return
-        output_path = val_output_path(outfile, exist_ok=True)
-        if output_path.exists() and not overwrite:
-            parser.error(f"{output_path} already exists")
-        series.save(output_path)
+        write_subtitle_series(parser, fused, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:

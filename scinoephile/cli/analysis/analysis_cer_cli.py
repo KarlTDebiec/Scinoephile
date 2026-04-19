@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import sys
 from argparse import ArgumentParser
 from typing import Unpack
 
@@ -28,13 +29,13 @@ class AnalysisCerCli(CommandLineInterface):
 
         arg_groups["input arguments"].add_argument(
             "reference_infile_path",
-            metavar="reference-infile",
+            metavar="REFERENCE_INFILE",
             type=input_file_arg(),
             help="subtitle infile for reference series",
         )
         arg_groups["input arguments"].add_argument(
             "candidate_infile_path",
-            metavar="candidate-infile",
+            metavar="CANDIDATE_INFILE",
             type=input_file_arg(),
             help="subtitle infile for candidate series",
         )
@@ -52,12 +53,19 @@ class AnalysisCerCli(CommandLineInterface):
         reference_series = Series.load(reference_infile_path)
         candidate_series = Series.load(candidate_infile_path)
         result = get_series_cer(reference_series, candidate_series)
-        print(f"CER: {result.cer}")
-        print(f"Correct: {result.correct}")
-        print(f"Substitutions: {result.substitutions}")
-        print(f"Insertions: {result.insertions}")
-        print(f"Deletions: {result.deletions}")
-        print(f"Reference length: {result.reference_length}")
+        sys.stdout.write(
+            "\n".join(
+                [
+                    f"CER: {result.cer}",
+                    f"Correct: {result.correct}",
+                    f"Substitutions: {result.substitutions}",
+                    f"Insertions: {result.insertions}",
+                    f"Deletions: {result.deletions}",
+                    f"Reference length: {result.reference_length}",
+                ]
+            )
+        )
+        sys.stdout.write("\n")
 
     @classmethod
     def name(cls) -> str:

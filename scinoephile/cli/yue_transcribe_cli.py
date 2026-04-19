@@ -5,17 +5,21 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from sys import stdout
 from typing import Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.common.exception import NotAFileError
-from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.common.validation import val_input_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
+
+from .subtitles_io import (
+    parser_error_from_exception,
+    write_subtitle_series,
+)
 
 
 class YueTranscribeCli(CommandLineInterface):
@@ -61,10 +65,10 @@ class YueTranscribeCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="FILE",
+            metavar="OUTFILE",
             default="-",
             type=str,
-            help="粤文 subtitle outfile (default: stdout)",
+            help='粤文 subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -100,32 +104,8 @@ class YueTranscribeCli(CommandLineInterface):
                 zhongwen=zhongwen,
             )
         except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
-            parser.error(str(exc))
-        cls._write_series(parser, yuewen, outfile_path, overwrite)
-
-    @classmethod
-    def _write_series(
-        cls,
-        parser: ArgumentParser,
-        series: Series,
-        outfile: str,
-        overwrite: bool,
-    ):
-        """Write a Series to a file path or stdout.
-
-        Arguments:
-            parser: argument parser for error reporting
-            series: series to write
-            outfile: output file path or "-" for stdout
-            overwrite: whether to overwrite an existing file
-        """
-        if outfile == "-":
-            stdout.write(series.to_string(format_="srt"))
-            return
-        output_path = val_output_path(outfile, exist_ok=True)
-        if output_path.exists() and not overwrite:
-            parser.error(f"{output_path} already exists")
-        series.save(output_path)
+            parser_error_from_exception(parser, exc)
+        write_subtitle_series(parser, yuewen, outfile_path, overwrite)
 
     @classmethod
     def name(cls) -> str:

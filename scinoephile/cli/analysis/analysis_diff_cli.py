@@ -39,13 +39,13 @@ class AnalysisDiffCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "one_infile_path",
-            metavar="one-infile",
+            metavar="ONE_INFILE",
             type=input_file_arg(),
             help="subtitle infile for first series",
         )
         arg_groups["input arguments"].add_argument(
             "two_infile_path",
-            metavar="two-infile",
+            metavar="TWO_INFILE",
             type=input_file_arg(),
             help="subtitle infile for second series",
         )

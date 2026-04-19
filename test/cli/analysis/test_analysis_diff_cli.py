@@ -9,7 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli import AnalysisCli, AnalysisDiffCli, ScinoephileCli
+from scinoephile.cli.analysis.analysis_cli import AnalysisCli
+from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
@@ -108,7 +110,7 @@ def test_analysis_diff_cli(
     expected_edits: list[str] = request.getfixturevalue(expected_fixture_name)
 
     output_stdout = StringIO()
-    with patch("scinoephile.cli.analysis_diff_cli.stdout", output_stdout):
+    with patch("scinoephile.cli.analysis.analysis_diff_cli.stdout", output_stdout):
         run_cli_with_args(
             AnalysisDiffCli,
             f"{one_infile_path} {two_infile_path} "

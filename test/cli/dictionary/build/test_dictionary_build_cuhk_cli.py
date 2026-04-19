@@ -10,12 +10,12 @@ from io import StringIO
 import pytest
 import requests
 
-from scinoephile.cli import (
-    DictionaryBuildCli,
+from scinoephile.cli.dictionary.build.dictionary_build_cli import DictionaryBuildCli
+from scinoephile.cli.dictionary.build.dictionary_build_cuhk_cli import (
     DictionaryBuildCuhkCli,
-    DictionaryCli,
-    ScinoephileCli,
 )
+from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args

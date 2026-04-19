@@ -9,7 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli, ZhoCli, ZhoFuseCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.zho.zho_cli import ZhoCli
+from scinoephile.cli.zho.zho_fuse_cli import ZhoFuseCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -139,7 +141,7 @@ def test_zho_fuse_cli_pipe(
     full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
-    with patch("scinoephile.cli.zho_fuse_cli.stdout", stdout_stream):
+    with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
         run_cli_with_args(
             ZhoFuseCli,
             f"{full_lens_path} {full_paddle_path} {args}",

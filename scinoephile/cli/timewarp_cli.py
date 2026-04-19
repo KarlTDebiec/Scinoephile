@@ -12,11 +12,15 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
-    output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
+
+from .subtitles_io import (
+    load_subtitle_series,
+    parser_error_from_exception,
+    write_subtitle_series,
+)
 
 
 class TimewarpCli(CommandLineInterface):
@@ -41,13 +45,13 @@ class TimewarpCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "anchor_infile",
-            metavar="anchor-infile",
+            metavar="ANCHOR_INFILE",
             type=input_file_arg(),
             help="subtitle infile used as anchor timing reference",
         )
         arg_groups["input arguments"].add_argument(
             "mobile_infile",
-            metavar="mobile-infile",
+            metavar="MOBILE_INFILE",
             type=input_file_arg(),
             help="mobile subtitle infile to be timewarped",
         )
@@ -86,10 +90,10 @@ class TimewarpCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="FILE",
-            required=True,
-            type=output_file_arg(exist_ok=True),
-            help="timewarped subtitle outfile",
+            metavar="OUTFILE",
+            default="-",
+            type=str,
+            help='timewarped subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -115,11 +119,8 @@ class TimewarpCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        if outfile.exists() and not overwrite:
-            parser.error(f"{outfile} already exists")
-
-        anchor = Series.load(anchor_infile)
-        mobile = Series.load(mobile_infile)
+        anchor = load_subtitle_series(parser, anchor_infile)
+        mobile = load_subtitle_series(parser, mobile_infile)
         try:
             timewarped = get_series_timewarped(
                 source_one=anchor,
@@ -130,8 +131,8 @@ class TimewarpCli(CommandLineInterface):
                 two_end_idx=two_end_idx,
             )
         except ScinoephileError as exc:
-            parser.error(str(exc))
-        timewarped.save(outfile)
+            parser_error_from_exception(parser, exc)
+        write_subtitle_series(parser, timewarped, outfile, overwrite)
 
     @classmethod
     def name(cls) -> str:
