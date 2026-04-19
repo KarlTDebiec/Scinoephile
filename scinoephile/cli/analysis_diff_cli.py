@@ -19,7 +19,7 @@ from scinoephile.core.subtitles import Series
 
 
 class AnalysisDiffCli(CommandLineInterface):
-    """Command-line interface for subtitle diff analysis."""
+    """Command-line interface for line-level subtitle diff output."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -38,13 +38,13 @@ class AnalysisDiffCli(CommandLineInterface):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "one_infile",
+            "one_infile_path",
             metavar="one-infile",
             type=input_file_arg(),
             help="subtitle infile for first series",
         )
         arg_groups["input arguments"].add_argument(
-            "two_infile",
+            "two_infile_path",
             metavar="two-infile",
             type=input_file_arg(),
             help="subtitle infile for second series",
@@ -80,17 +80,17 @@ class AnalysisDiffCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        one_infile = kwargs.pop("one_infile")
-        two_infile = kwargs.pop("two_infile")
+        one_infile_path = kwargs.pop("one_infile_path")
+        two_infile_path = kwargs.pop("two_infile_path")
         one_label = kwargs.pop("one_label")
         two_label = kwargs.pop("two_label")
         similarity_cutoff = kwargs.pop("similarity_cutoff")
 
-        one_series = Series.load(one_infile)
-        two_series = Series.load(two_infile)
+        one_subtitle_series = Series.load(one_infile_path)
+        two_subtitle_series = Series.load(two_infile_path)
         diff = get_series_diff(
-            one_series,
-            two_series,
+            one_subtitle_series,
+            two_subtitle_series,
             one_lbl=one_label,
             two_lbl=two_label,
             similarity_cutoff=similarity_cutoff,

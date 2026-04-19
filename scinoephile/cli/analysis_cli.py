@@ -12,7 +12,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 
 class AnalysisCli(CommandLineInterface):
-    """Command-line interface for analysis operations."""
+    """Command-line interface wrapper for analysis subcommands."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

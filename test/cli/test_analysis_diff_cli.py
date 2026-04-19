@@ -51,19 +51,24 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 def test_analysis_diff_cli():
     """Test analysis diff CLI output against known expected differences."""
-    one_infile_path = (
+    simp_infile_path = (
         test_data_root / "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt"
     )
-    two_infile_path = test_data_root / (
-        "mnt/output/"
-        "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+    trad_infile_path = (
+        test_data_root
+        / "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify_"
+        "proofread.srt"
     )
 
     output_stdout = StringIO()
     with patch("scinoephile.cli.analysis_diff_cli.stdout", output_stdout):
         run_cli_with_args(
             AnalysisDiffCli,
-            (f"{one_infile_path} {two_infile_path} --one-label SIMP --two-label TRAD"),
+            (
+                f"{simp_infile_path} "
+                f"{trad_infile_path} "
+                "--one-label SIMP --two-label TRAD"
+            ),
         )
     output = output_stdout.getvalue()
 
