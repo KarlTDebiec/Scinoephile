@@ -15,7 +15,7 @@ __all__ = [
     "ENG_OCR_FUSION_JSON_PATHS",
     "ENG_PROOFREADING_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
-    "YUE_ZHO_TRANSCRIPTION_MERGING_JSON_PATHS",
+    "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
     "YUE_ZHO_PROOFREADING_JSON_PATHS",
     "YUE_ZHO_REVIEW_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS",
@@ -94,11 +94,11 @@ YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS = (
     Path("mlamd/multilang/yue_zho/transcription/shifting/mps.json"),
 )
 
-YUE_ZHO_TRANSCRIPTION_MERGING_JSON_PATHS = (
-    Path("kob/multilang/yue_zho/transcription/merging/gpu.json"),
-    Path("kob/multilang/yue_zho/transcription/merging/mps.json"),
-    Path("mlamd/multilang/yue_zho/transcription/merging/gpu.json"),
-    Path("mlamd/multilang/yue_zho/transcription/merging/mps.json"),
+YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS = (
+    Path("kob/multilang/yue_zho/transcription/punctuating/gpu.json"),
+    Path("kob/multilang/yue_zho/transcription/punctuating/mps.json"),
+    Path("mlamd/multilang/yue_zho/transcription/punctuating/gpu.json"),
+    Path("mlamd/multilang/yue_zho/transcription/punctuating/mps.json"),
 )
 
 

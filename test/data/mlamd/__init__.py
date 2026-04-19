@@ -43,9 +43,9 @@ from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoProofreadingManager,
 )
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
-from scinoephile.multilang.yue_zho.transcription.merging import (
-    YueZhoHansMergingPrompt,
-    YueZhoMergingManager,
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+    YueZhoPunctuatingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -66,7 +66,7 @@ __all__ = [
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_eng_proofreading_test_cases",
     "get_mlamd_yue_from_zho_translation_test_cases",
-    "get_mlamd_yue_merging_test_cases",
+    "get_mlamd_yue_punctuating_test_cases",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_vs_zho_proofreading_test_cases",
     "get_mlamd_yue_vs_zho_review_test_cases",
@@ -196,11 +196,11 @@ def get_mlamd_yue_shifting_test_cases(
 
 
 @cache
-def get_mlamd_yue_merging_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansMergingPrompt,
+def get_mlamd_yue_punctuating_test_cases(
+    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuatingPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 merging test cases.
+    """Get MLAMD 简体粤文 punctuating test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -213,11 +213,11 @@ def get_mlamd_yue_merging_test_cases(
         / "multilang"
         / "yue_zho"
         / "transcription"
-        / "merging"
+        / "punctuating"
         / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoMergingManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoPunctuatingManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

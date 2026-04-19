@@ -31,7 +31,7 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .merging import YueZhoHansMergingPrompt
+from .punctuating import YueZhoHansPunctuatingPrompt
 from .shifting import YueZhoHansShiftingPrompt
 
 __all__ = ["Aligner"]
@@ -46,16 +46,16 @@ class Aligner:
     def __init__(
         self,
         shifting_queryer: Queryer,
-        merging_queryer: Queryer,
+        punctuating_queryer: Queryer,
     ):
         """Initialize.
 
         Arguments:
             shifting_queryer: queryer for shifting
-            merging_queryer: queryer for merging
+            punctuating_queryer: queryer for punctuating
         """
-        self.merging_queryer = merging_queryer
-        """Merges transcribed 粤文 text based on corresponding 中文."""
+        self.punctuating_queryer = punctuating_queryer
+        """Punctuates transcribed 粤文 text based on corresponding 中文."""
         self.shifting_queryer = shifting_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
@@ -67,7 +67,7 @@ class Aligner:
           * If a 粤文 subtitle overlaps with two 中文 subtitles, asks LLM to distribute
           * At the end of this each sync group should have one 中文 subtitle and
           * zero or more 粤文 subtitles
-          * Merges 粤文 subtitles using LLM to match 中文 punctuation and spacing
+          * Punctuates 粤文 subtitles using LLM to match 中文 punctuation and spacing
         It needs to also do the following:
         * If there is a discrepancy in the length of the 中文 and concatenated 粤文
           subtitles, prompt LLM with known one 中文 and two 中文 subtitles and ask
@@ -85,8 +85,8 @@ class Aligner:
         while shifting_in_progress:
             shifting_in_progress = self._shift(alignment)
 
-        # Merge 粤文 subtitles to match 中文 punctuation and spacing
-        self._merge(alignment)
+        # Punctuate 粤文 subtitles to match 中文 punctuation and spacing
+        self._punctuate(alignment)
 
         # Return final alignment
         return alignment
@@ -241,8 +241,8 @@ class Aligner:
             f"Unexpected case:\nQuery:\n{query}\n with Answer:\n{answer}\n"
         )
 
-    def _merge(self, alignment: Alignment):
-        """Merge 粤文 subs.
+    def _punctuate(self, alignment: Alignment):
+        """Punctuate 粤文 subs.
 
         Arguments:
             alignment: Nascent alignment
@@ -286,25 +286,27 @@ class Aligner:
                 nascent_sg.append(([zw_idx], [len(nascent_yw) - 1]))
                 continue
 
-            # Query for 粤文 merge
-            test_case = alignment.get_merging_test_case(sg_idx)
+            # Query for 粤文 punctuate
+            test_case = alignment.get_punctuating_test_case(sg_idx)
             if test_case is None:
                 logger.info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:
-                test_case = self.merging_queryer.call(test_case)
+                test_case = self.punctuating_queryer.call(test_case)
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 logger.error(
-                    f"Error merging sync group {sg_idx}; concatenating.\n"
+                    f"Error punctuating sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt_cls: type[YueZhoHansMergingPrompt] = getattr(test_case, "prompt_cls")
-            yuewen_merged = getattr(test_case.answer, prompt_cls.output, None)
-            yw = get_sub_merged(yws, text=yuewen_merged)
+            prompt_cls: type[YueZhoHansPunctuatingPrompt] = getattr(
+                test_case, "prompt_cls"
+            )
+            yuewen_punctuated = getattr(test_case.answer, prompt_cls.output, None)
+            yw = get_sub_merged(yws, text=yuewen_punctuated)
             yw.start = zw.start
             yw.end = zw.end
 
@@ -339,7 +341,7 @@ class Aligner:
             / "multilang"
             / "yue_zho"
             / "transcription"
-            / "merging"
+            / "punctuating"
             / f"{backend}.json",
-            list(self.merging_queryer.encountered_test_cases.values()),
+            list(self.punctuating_queryer.encountered_test_cases.values()),
         )
