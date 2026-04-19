@@ -40,7 +40,7 @@ def test_get_yue_audio_series_for_transcription_supports_stream_index():
             },
         ):
             with patch(
-                "scinoephile.multilang.yue_zho.transcription.AudioSeries._extract_audio_track"
+                "scinoephile.multilang.yue_zho.transcription.AudioSeries.extract_audio_track"
             ) as extract_audio:
                 with patch(
                     "scinoephile.multilang.yue_zho.transcription.AudioSegment.from_wav",

@@ -114,7 +114,7 @@ def get_yue_audio_series_for_transcription(
     with get_temp_directory_path() as temp_dir_path:
         full_audio_path = temp_dir_path / "full_audio.wav"
         try:
-            AudioSeries._extract_audio_track(
+            AudioSeries.extract_audio_track(
                 validated_media_path, full_audio_path, stream_index, channel_count
             )
             full_audio = AudioSegment.from_wav(full_audio_path)
@@ -124,7 +124,7 @@ def get_yue_audio_series_for_transcription(
                 f"{stream_index} from {validated_media_path}"
             ) from exc
 
-    return AudioSeries._build_series(zhongwen, full_audio, buffer)
+    return AudioSeries.build_series(zhongwen, full_audio, buffer)
 
 
 def get_yue_vs_zho_transcriber(
