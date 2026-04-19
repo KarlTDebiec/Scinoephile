@@ -34,7 +34,7 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     filterwarnings("ignore", category=RuntimeWarning)
-from pydub import AudioSegment
+    from pydub import AudioSegment
 
 from .transcriber import YueTranscriber
 
@@ -52,14 +52,18 @@ class YueZhoTranscriptionKwargs(TypedDict, total=False):
     """Keyword arguments for get_yue_transcribed_vs_zho forwarding."""
 
     stop_at_idx: int | None
+    """block index at which to stop processing, inclusive."""
 
 
 class YueZhoTranscriberKwargs(TypedDict, total=False):
     """Keyword arguments for default YueTranscriber construction."""
 
     test_case_directory_path: Path | None
+    """directory where encountered transcription test cases are persisted."""
     shifting_test_cases: list[TestCase] | None
+    """preloaded shifting test cases used to seed the transcriber."""
     merging_test_cases: list[TestCase] | None
+    """preloaded merging test cases used to seed the transcriber."""
 
 
 def get_yue_audio_series_for_transcription(
