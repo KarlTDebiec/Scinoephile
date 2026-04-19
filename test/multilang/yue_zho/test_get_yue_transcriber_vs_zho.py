@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of get_yue_transcriber_vs_zho."""
+"""Tests of get_yue_vs_zho_transcriber."""
 
 from __future__ import annotations
 
@@ -9,10 +9,10 @@ from unittest.mock import Mock, patch
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
-from scinoephile.multilang.yue_zho.transcription import get_yue_transcriber_vs_zho
+from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
 
 
-def test_get_yue_transcriber_vs_zho_uses_writable_runtime_test_case_root():
+def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
     """Test default transcriber setup uses a writable runtime test-case root."""
     shifting_test_cases = [cast(TestCase, Mock())]
     merging_test_cases = [cast(TestCase, Mock())]
@@ -26,7 +26,7 @@ def test_get_yue_transcriber_vs_zho_uses_writable_runtime_test_case_root():
             with patch(
                 "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
             ) as patched_transcriber:
-                get_yue_transcriber_vs_zho(
+                get_yue_vs_zho_transcriber(
                     shifting_test_cases=shifting_test_cases,
                     merging_test_cases=merging_test_cases,
                 )

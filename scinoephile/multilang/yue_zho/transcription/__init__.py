@@ -33,7 +33,7 @@ __all__ = [
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
     "get_yue_transcribed_vs_zho",
-    "get_yue_transcriber_vs_zho",
+    "get_yue_vs_zho_transcriber",
 ]
 
 
@@ -55,7 +55,37 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """preloaded merging test cases used to seed the transcriber."""
 
 
-def get_yue_transcriber_vs_zho(
+def get_yue_transcribed_vs_zho(
+    zhongwen: Series,
+    media_path: Path | str,
+    stream_index: int = 0,
+    transcriber: YueTranscriber | None = None,
+    **kwargs: Unpack[YueZhoTranscriptionKwargs],
+) -> AudioSeries:
+    """Get initial 粤文 transcription aligned to 中文字幕.
+
+    Arguments:
+        zhongwen: 中文字幕 subtitle series
+        media_path: path to video container or audio media file
+        stream_index: audio stream index (zero-based)
+        transcriber: transcriber to use
+        **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
+    Returns:
+        transcribed 粤文 subtitle series
+    """
+    with get_temp_file_path(".srt") as subtitle_path:
+        zhongwen.save(subtitle_path, format_="srt")
+        yuewen = AudioSeries.load_from_media(
+            media_path=media_path,
+            subtitle_path=subtitle_path,
+            stream_index=stream_index,
+        )
+    if transcriber is None:
+        transcriber = get_yue_vs_zho_transcriber()
+    return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)
+
+
+def get_yue_vs_zho_transcriber(
     shifting_test_cases: list[TestCase] | None = None,
     merging_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
@@ -92,36 +122,6 @@ def get_yue_transcriber_vs_zho(
         shifting_test_cases=shifting_test_cases,
         merging_test_cases=merging_test_cases,
     )
-
-
-def get_yue_transcribed_vs_zho(
-    zhongwen: Series,
-    media_path: Path | str,
-    stream_index: int = 0,
-    transcriber: YueTranscriber | None = None,
-    **kwargs: Unpack[YueZhoTranscriptionKwargs],
-) -> AudioSeries:
-    """Get initial 粤文 transcription aligned to 中文字幕.
-
-    Arguments:
-        zhongwen: 中文字幕 subtitle series
-        media_path: path to video container or audio media file
-        stream_index: audio stream index (zero-based)
-        transcriber: transcriber to use
-        **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
-    Returns:
-        transcribed 粤文 subtitle series
-    """
-    with get_temp_file_path(".srt") as subtitle_path:
-        zhongwen.save(subtitle_path, format_="srt")
-        yuewen = AudioSeries.load_from_media(
-            media_path=media_path,
-            subtitle_path=subtitle_path,
-            stream_index=stream_index,
-        )
-    if transcriber is None:
-        transcriber = get_yue_transcriber_vs_zho()
-    return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)
 
 
 def _get_default_test_case_dir_path() -> Path:
