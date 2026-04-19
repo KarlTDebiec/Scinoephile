@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from sys import stdout
 from typing import Unpack
 
 from scinoephile.analysis import get_series_diff
@@ -96,7 +95,7 @@ class AnalysisDiffCli(CommandLineInterface):
             similarity_cutoff=similarity_cutoff,
         )
         for line_diff in diff:
-            stdout.write(f"{line_diff}\n")
+            print(line_diff)
 
     @classmethod
     def name(cls) -> str:
