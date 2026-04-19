@@ -8,10 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
@@ -55,7 +52,7 @@ class SyncCli(CommandLineInterface):
             metavar="OUTFILE",
             default="-",
             type=str,
-            help='synchronized subtitle outfile path or "-" for stdout',
+            help="synchronized subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -82,15 +79,6 @@ class SyncCli(CommandLineInterface):
 
         synced = get_synced_series(top, bottom)
         write_series(parser, synced, outfile, overwrite)
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "sync"
 
 
 if __name__ == "__main__":

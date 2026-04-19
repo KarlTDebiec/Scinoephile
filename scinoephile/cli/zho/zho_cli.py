@@ -11,7 +11,6 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
 from scinoephile.core.cli.io import read_series, write_series
 from scinoephile.lang.cmn import get_cmn_romanized
-from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.proofreading import (
@@ -107,11 +106,8 @@ class ZhoCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--romanize",
-            metavar="LANGUAGE",
-            nargs="?",
-            const="mandarin",
-            type=str_arg(options=("mandarin", "cantonese")),
-            help="append romanization to subtitles (default: mandarin)",
+            action="store_true",
+            help="append Mandarin romanization to subtitles",
         )
 
         # Output arguments
@@ -177,10 +173,8 @@ class ZhoCli(CommandLineInterface):
             series = get_zho_proofread(series, processor=proofreader)
         if flatten:
             series = get_zho_flattened(series)
-        if romanize == "mandarin":
+        if romanize:
             series = get_cmn_romanized(series, append=True)
-        elif romanize == "cantonese":
-            series = get_yue_romanized(series, append=True)
         write_series(parser, series, outfile, overwrite)
 
     @classmethod
