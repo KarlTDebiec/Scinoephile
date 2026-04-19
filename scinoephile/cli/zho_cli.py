@@ -23,6 +23,8 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 
+from .zho_fuse_cli import ZhoFuseCli
+
 
 class ZhoCli(CommandLineInterface):
     """Command-line interface for 中文 subtitle operations."""
@@ -128,6 +130,14 @@ class ZhoCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
+        subparsers = parser.add_subparsers(
+            dest="zho_subcommand",
+            help="subcommand",
+            required=False,
+        )
+        subcommands = cls.subcommands()
+        for name in sorted(subcommands):
+            subcommands[name].argparser(subparsers=subparsers)
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -137,6 +147,12 @@ class ZhoCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        subcommand_name = kwargs.pop("zho_subcommand", None)
+        if subcommand_name is not None:
+            subcommand_cli_class = cls.subcommands()[subcommand_name]
+            subcommand_cli_class._main(**kwargs)
+            return
+
         parser = kwargs.pop("_parser", cls.argparser())
         infile = kwargs.pop("infile")
         outfile = kwargs.pop("outfile")
@@ -269,6 +285,17 @@ class ZhoCli(CommandLineInterface):
             subcommand name
         """
         return "zho"
+
+    @classmethod
+    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
+        """Names and types of tools wrapped by command-line interface.
+
+        Returns:
+            mapping of subcommand names to CLI classes
+        """
+        return {
+            ZhoFuseCli.name(): ZhoFuseCli,
+        }
 
 
 if __name__ == "__main__":

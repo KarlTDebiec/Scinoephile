@@ -19,6 +19,7 @@ from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.cli.timewarp_cli import TimewarpCli
 from scinoephile.cli.zho_cli import ZhoCli
+from scinoephile.cli.zho_fuse_cli import ZhoFuseCli
 
 __all__ = [
     "AnalysisCli",
@@ -33,4 +34,5 @@ __all__ = [
     "SyncCli",
     "TimewarpCli",
     "ZhoCli",
+    "ZhoFuseCli",
 ]
