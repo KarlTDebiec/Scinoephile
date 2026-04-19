@@ -6,14 +6,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import TypedDict, Unpack
-from warnings import catch_warnings, filterwarnings
-
-import ffmpeg
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.common.file import get_temp_directory_path
-from scinoephile.common.validation import val_input_path
-from scinoephile.core import ScinoephileError
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.llms import TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -31,18 +26,12 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
 
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
-
 from .transcriber import YueTranscriber
 
 __all__ = [
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
-    "get_yue_audio_series_for_transcription",
     "get_yue_transcribed_vs_zho",
     "get_yue_transcriber_vs_zho",
 ]
@@ -64,70 +53,6 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """preloaded shifting test cases used to seed the transcriber."""
     merging_test_cases: list[TestCase] | None
     """preloaded merging test cases used to seed the transcriber."""
-
-
-def get_yue_audio_series_for_transcription(
-    zhongwen: Series,
-    media_path: Path | str,
-    stream_index: int = 0,
-    buffer: int = 1000,
-) -> AudioSeries:
-    """Get an AudioSeries for transcription from subtitles and media input.
-
-    Arguments:
-        zhongwen: 中文字幕 subtitles with timing data
-        media_path: path to video container or audio media file
-        stream_index: audio stream index (zero-based)
-        buffer: additional buffer to include before and after subtitles (ms)
-    Returns:
-        AudioSeries aligned to 中文字幕 timings
-    """
-    validated_media_path = val_input_path(media_path)
-
-    try:
-        probe = ffmpeg.probe(str(validated_media_path))
-    except ffmpeg.Error as exc:
-        raise ScinoephileError(
-            f"Could not probe media file {validated_media_path}"
-        ) from exc
-    streams = probe.get("streams", [])
-    audio_streams = [
-        stream for stream in streams if stream.get("codec_type") == "audio"
-    ]
-    if not audio_streams:
-        raise ScinoephileError(
-            f"No audio streams found in media file {validated_media_path}"
-        )
-    if stream_index < 0 or stream_index >= len(audio_streams):
-        raise ScinoephileError(
-            f"Invalid audio stream index {stream_index} for {validated_media_path}; "
-            f"found {len(audio_streams)} audio stream(s)."
-        )
-
-    stream = audio_streams[stream_index]
-    channels = stream.get("channels")
-    try:
-        channel_count = int(channels)
-    except (TypeError, ValueError) as exc:
-        raise ScinoephileError(
-            f"Audio stream {stream_index} in {validated_media_path} "
-            "cannot be used for transcription."
-        ) from exc
-
-    with get_temp_directory_path() as temp_dir_path:
-        audio_output_path = temp_dir_path / "full_audio.wav"
-        try:
-            AudioSeries.extract_audio_track(
-                validated_media_path, audio_output_path, stream_index, channel_count
-            )
-            full_audio = AudioSegment.from_wav(audio_output_path)
-        except ffmpeg.Error as exc:
-            raise ScinoephileError(
-                "Could not extract audio stream "
-                f"{stream_index} from {validated_media_path}"
-            ) from exc
-
-    return AudioSeries.build_series(zhongwen, full_audio, buffer)
 
 
 def get_yue_transcriber_vs_zho(
@@ -187,11 +112,13 @@ def get_yue_transcribed_vs_zho(
     Returns:
         transcribed 粤文 subtitle series
     """
-    yuewen = get_yue_audio_series_for_transcription(
-        zhongwen=zhongwen,
-        media_path=media_path,
-        stream_index=stream_index,
-    )
+    with get_temp_file_path(".srt") as subtitle_path:
+        zhongwen.save(subtitle_path, format_="srt")
+        yuewen = AudioSeries.load_from_media(
+            media_path=media_path,
+            subtitle_path=subtitle_path,
+            stream_index=stream_index,
+        )
     if transcriber is None:
         transcriber = get_yue_transcriber_vs_zho()
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)

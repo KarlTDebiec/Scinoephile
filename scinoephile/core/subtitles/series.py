@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from logging import getLogger
-from pathlib import Path
-from typing import Self, TypedDict, Unpack, cast, override
+from os import PathLike
+from typing import Any, Self, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -18,16 +18,9 @@ from .subtitle import Subtitle
 
 __all__ = [
     "Series",
-    "SeriesKwargs",
 ]
 
 logger = getLogger(__name__)
-
-
-class SeriesKwargs(TypedDict, total=False):
-    """Keyword arguments for Series methods."""
-
-    pass
 
 
 class Series(SSAFile):
@@ -131,12 +124,12 @@ class Series(SSAFile):
     @override
     def save(
         self,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ):
         """Save series to an output file.
 
@@ -210,7 +203,7 @@ class Series(SSAFile):
         string: str,
         format_: str | None = None,
         fps: float | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ) -> Self:
         """Parse series from string.
 
@@ -234,12 +227,12 @@ class Series(SSAFile):
     @override
     def load(
         cls,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 

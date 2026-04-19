@@ -6,8 +6,9 @@ from __future__ import annotations
 
 import re
 from logging import getLogger
+from os import PathLike
 from pathlib import Path
-from typing import Self, TypedDict, Unpack, override
+from typing import Any, Self, TypedDict, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -18,7 +19,6 @@ with catch_warnings():
     from pydub import AudioSegment
 
 
-from scinoephile.common import DirectoryNotFoundError, NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
     val_input_dir_path,
@@ -27,7 +27,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, SeriesKwargs
+from scinoephile.core.subtitles import Series
 
 from .subtitle import AudioSubtitle
 
@@ -43,8 +43,7 @@ class AudioSeriesLoadKwargs(TypedDict, total=False):
     """Keyword arguments for AudioSeries.load() methods."""
 
     buffer: int
-    audio_track: int
-    channels: int
+    """Additional buffer to include before and after each subtitle (ms)."""
 
 
 class AudioSeries(Series):
@@ -126,12 +125,12 @@ class AudioSeries(Series):
     @override
     def save(
         self,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ):
         """Save series to an output file.
 
@@ -148,7 +147,7 @@ class AudioSeries(Series):
         # Check if directory
         if format_ == "wav" or (not format_ and path.suffix == ""):
             output_dir = val_output_dir_path(path)
-            self._save_wav(output_dir, **kwargs)
+            self._save_wav(output_dir)
             logger.info(f"Saved series to {output_dir}")
             return
 
@@ -228,12 +227,11 @@ class AudioSeries(Series):
 
         self._blocks = blocks
 
-    def _save_wav(self, fp: Path, **kwargs: Unpack[SeriesKwargs]):
+    def _save_wav(self, fp: Path):
         """Save series to directory of wav files.
 
         Arguments:
             fp: Path to output directory
-            **kwargs: Additional keyword arguments
         """
         # Prepare empty directory, deleting existing files if needed
         if fp.exists() and fp.is_dir():
@@ -272,17 +270,17 @@ class AudioSeries(Series):
     @override
     def load(
         cls,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[AudioSeriesLoadKwargs],
+        **kwargs: Any,
     ) -> Self:
-        """Load series from an input file.
+        """Load series from a directory of wav files.
 
         Arguments:
-            path : input file path
+            path : input directory path
             encoding: input file encoding
             format_: input file format
             fps: frames per second
@@ -291,37 +289,96 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
+        dir_path = val_input_dir_path(path)
+        buffer = kwargs.pop("buffer", 1000)
+        srt_path = val_input_path(dir_path / f"{dir_path.stem}.srt")
+        text_series = Series.load(
+            srt_path,
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+            **kwargs,
+        )
+
+        audio_path = val_input_path(dir_path / f"{dir_path.stem}.wav")
+        full_audio = AudioSegment.from_wav(audio_path)
+        logger.info(f"Loaded full audio from {audio_path}")
+
+        return cls.build_series(text_series, full_audio, buffer)
+
+    @classmethod
+    def load_from_media(
+        cls,
+        media_path: Path | str,
+        subtitle_path: Path | str,
+        stream_index: int = 0,
+        buffer: int = 1000,
+        **kwargs: Any,
+    ) -> Self:
+        """Load series from a subtitle file and associated media file.
+
+        Arguments:
+            media_path: path to media file
+            subtitle_path: path to subtitle file
+            stream_index: audio stream index (zero-based)
+            buffer: additional buffer to include before and after subtitles (ms)
+            **kwargs: additional keyword arguments passed to Series.load
+        Returns:
+            loaded series
+        """
+        validated_media_path = val_input_path(media_path)
+        validated_subtitle_path = val_input_path(subtitle_path)
+        text_series = Series.load(validated_subtitle_path, **kwargs)
+
         try:
-            validated_path = val_input_dir_path(path)
-            return cls._load_wav(
-                validated_path,
-                encoding=encoding,
-                format_=format_,
-                fps=fps,
-                errors=errors,
-                **kwargs,
+            probe = ffmpeg.probe(str(validated_media_path))
+        except ffmpeg.Error as exc:
+            raise ScinoephileError(
+                f"Could not probe media file {validated_media_path}"
+            ) from exc
+        audio_streams = [
+            stream
+            for stream in probe.get("streams", [])
+            if stream.get("codec_type") == "audio"
+        ]
+        if not audio_streams:
+            raise ScinoephileError(
+                f"No audio streams found in media file {validated_media_path}"
             )
-        except (DirectoryNotFoundError, NotADirectoryError):
+        if stream_index < 0 or stream_index >= len(audio_streams):
+            raise ScinoephileError(
+                f"Invalid audio stream index {stream_index} for "
+                f"{validated_media_path}; found {len(audio_streams)} audio stream(s)."
+            )
+        stream = audio_streams[stream_index]
+        channels = stream.get("channels")
+        try:
+            channel_count = int(channels)
+        except (TypeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Audio stream {stream_index} in {validated_media_path} "
+                "cannot be used for transcription."
+            ) from exc
+
+        with get_temp_directory_path() as temp_dir_path:
+            full_audio_path = temp_dir_path / "full_audio.wav"
             try:
-                validated_path = val_input_path(path)
-                video_path = kwargs.pop("video_path", None)
-                validated_video_path = val_input_path(video_path)
-                return cls._load_video(
-                    subtitle_path=validated_path,
-                    video_path=validated_video_path,
-                    encoding=encoding,
-                    format_=format_,
-                    fps=fps,
-                    errors=errors,
-                    **kwargs,
+                cls.extract_audio_track(
+                    validated_media_path,
+                    full_audio_path,
+                    stream_index,
+                    channel_count,
                 )
-            except (FileNotFoundError, KeyError, NotAFileError) as exc:
-                raise ValueError(
-                    f"{cls.__name__}'s path must be either path to a directory "
-                    "containing one srt file containing N subtitles and N wav files, "
-                    "or path to an srt file with a separate video file provided as the "
-                    "argument 'video_path'.",
+                logger.info(f"Loading full audio from {full_audio_path}")
+                full_audio = AudioSegment.from_wav(full_audio_path)
+            except ffmpeg.Error as exc:
+                raise ScinoephileError(
+                    f"Could not extract audio stream {stream_index} from "
+                    f"{validated_media_path}"
                 ) from exc
+
+        return cls.build_series(text_series, full_audio, buffer)
 
     @classmethod
     def build_series(
@@ -380,86 +437,6 @@ class AudioSeries(Series):
         series.events = events
 
         return series
-
-    @classmethod
-    def _load_video(
-        cls,
-        subtitle_path: Path,
-        video_path: Path,
-        audio_track: int = 0,
-        buffer=1000,
-        **kwargs: Unpack[AudioSeriesLoadKwargs],
-    ) -> Self:
-        """Load series from a subtitle file and associated video file.
-
-        Arguments:
-            subtitle_path: Path to subtitle file
-            video_path: Path to video file
-            audio_track: audio track (zero-indexed)
-            buffer: additional buffer to include before and after subtitles (ms)
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        # Load text
-        encoding = kwargs.pop("encoding", "utf-8")
-        format_ = kwargs.pop("format_", None)
-        fps = kwargs.pop("fps", None)
-        errors = kwargs.pop("errors", None)
-        text_series = Series.load(
-            subtitle_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-        )
-
-        # Probe audio track to determine number of channels
-        logger.info(f"Probing audio track {audio_track} in {video_path}")
-        probe = ffmpeg.probe(str(video_path))
-        audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
-        try:
-            stream = audio_streams[audio_track]
-            channels = int(stream["channels"])
-            logger.info(f"Audio track has {channels} channels")
-        except (IndexError, KeyError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Could not determine number of channels for audio track {audio_track} "
-                f"in {video_path}"
-            ) from exc
-
-        # Load full audio from video
-        with get_temp_directory_path() as temp_dir_path:
-            full_audio_path = temp_dir_path / "full_audio.wav"
-            cls.extract_audio_track(video_path, full_audio_path, audio_track, channels)
-            logger.info(f"Loading full audio from {full_audio_path}")
-            full_audio = AudioSegment.from_wav(full_audio_path)
-
-        return cls.build_series(text_series, full_audio, buffer)
-
-    @classmethod
-    def _load_wav(
-        cls, dir_path: Path, buffer=1000, **kwargs: Unpack[SeriesKwargs]
-    ) -> Self:
-        """Load series from a directory of wav files.
-
-        Arguments:
-            dir_path: Path to input directory
-            buffer: additional buffer to include before and after subtitles (ms)
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        # Load text
-        srt_path = dir_path / f"{dir_path.stem}.srt"
-        text_series = Series.load(srt_path, **kwargs)
-
-        # Load full audio file
-        audio_path = dir_path / f"{dir_path.stem}.wav"
-        full_audio = AudioSegment.from_wav(audio_path)
-        logger.info(f"Loaded full audio from {audio_path}")
-
-        return cls.build_series(text_series, full_audio, buffer)
 
     @staticmethod
     def extract_audio_track(

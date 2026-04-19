@@ -7,8 +7,9 @@ from __future__ import annotations
 import re
 from html import escape, unescape
 from logging import getLogger
+from os import PathLike
 from pathlib import Path
-from typing import Any, Self, Unpack, override
+from typing import Any, Self, override
 
 import numpy as np
 from PIL import Image
@@ -21,7 +22,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, SeriesKwargs
+from scinoephile.core.subtitles import Series
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
@@ -96,12 +97,12 @@ class ImageSeries(Series):
     @override
     def save(
         self,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ):
         """Save series to an output file.
 
@@ -208,12 +209,12 @@ class ImageSeries(Series):
     @override
     def load(
         cls,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
