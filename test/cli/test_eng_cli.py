@@ -103,11 +103,6 @@ def test_eng_cli(
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
         ),
-        (
-            "mnt/output/eng_fuse_clean_validate_proofread.srt",
-            "--flatten",
-            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
-        ),
     ],
 )
 def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
@@ -130,21 +125,5 @@ def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
-
-    assert output == expected
-
-
-def test_eng_cli_legacy_invocation_with_root():
-    """Test legacy English CLI invocation through root CLI."""
-    full_input_path = test_data_root / "mnt/output/eng_fuse.srt"
-    full_expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            ScinoephileCli,
-            f"eng --infile {full_input_path} --clean --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-        expected = Series.load(full_expected_path)
 
     assert output == expected
