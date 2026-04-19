@@ -57,7 +57,7 @@ def test_yue_transcribe_usage(cli: tuple[type[CommandLineInterface], ...]):
 def test_yue_transcribe_cli_writes_file():
     """Test 粤文 transcription CLI writes file output and dispatches media args."""
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    media_path = "/tmp/test_media.mp4"
     expected = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
@@ -77,7 +77,7 @@ def test_yue_transcribe_cli_writes_file():
 
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["stream_index"] == 1
-    assert called_kwargs["media_path"] == str(media_path)
+    assert called_kwargs["media_path"] == media_path
     assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
     assert output == expected
 
@@ -85,7 +85,7 @@ def test_yue_transcribe_cli_writes_file():
 def test_yue_transcribe_cli_writes_stdout():
     """Test 粤文 transcription CLI writes stdout output."""
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    media_path = "/tmp/test_media.mp4"
     expected = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
@@ -106,7 +106,7 @@ def test_yue_transcribe_cli_writes_stdout():
 def test_yue_transcribe_cli_rejects_negative_stream_index():
     """Test 粤文 transcription CLI rejects negative stream indexes."""
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    media_path = "/tmp/test_media.mp4"
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeCli,
@@ -117,7 +117,7 @@ def test_yue_transcribe_cli_rejects_negative_stream_index():
 def test_yue_transcribe_cli_stream_errors_are_user_facing():
     """Test 粤文 transcription CLI surfaces stream-selection errors."""
     zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    media_path = "/tmp/test_media.mp4"
     with patch(
         "scinoephile.cli.yue_transcribe_cli.get_yue_vs_zho_transcribed",
         side_effect=ScinoephileError("Invalid audio stream index 7"),

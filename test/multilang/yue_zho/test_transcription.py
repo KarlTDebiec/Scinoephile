@@ -10,13 +10,13 @@ import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.transcription import (
     get_yue_audio_series_for_transcription,
     get_yue_vs_zho_transcribed,
 )
-from test.helpers import test_data_root
 
 
 def test_get_yue_audio_series_for_transcription_supports_stream_index():
@@ -25,31 +25,32 @@ def test_get_yue_audio_series_for_transcription_supports_stream_index():
         "1\n00:00:01,000 --> 00:00:02,000\n你好\n",
         format_="srt",
     )
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
     full_audio = AudioSegment.silent(duration=3000)
 
-    with patch(
-        "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
-        return_value={
-            "streams": [
-                {"codec_type": "video"},
-                {"codec_type": "audio", "channels": 2},
-                {"codec_type": "audio", "channels": 6},
-            ]
-        },
-    ):
+    with get_temp_file_path(".mp4") as media_path:
+        media_path.touch()
         with patch(
-            "scinoephile.multilang.yue_zho.transcription.AudioSeries._extract_audio_track"
-        ) as extract_audio:
+            "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
+            return_value={
+                "streams": [
+                    {"codec_type": "video"},
+                    {"codec_type": "audio", "channels": 2},
+                    {"codec_type": "audio", "channels": 6},
+                ]
+            },
+        ):
             with patch(
-                "scinoephile.multilang.yue_zho.transcription.AudioSegment.from_wav",
-                return_value=full_audio,
-            ):
-                yuewen = get_yue_audio_series_for_transcription(
-                    zhongwen=zhongwen,
-                    media_path=media_path,
-                    stream_index=1,
-                )
+                "scinoephile.multilang.yue_zho.transcription.AudioSeries._extract_audio_track"
+            ) as extract_audio:
+                with patch(
+                    "scinoephile.multilang.yue_zho.transcription.AudioSegment.from_wav",
+                    return_value=full_audio,
+                ):
+                    yuewen = get_yue_audio_series_for_transcription(
+                        zhongwen=zhongwen,
+                        media_path=media_path,
+                        stream_index=1,
+                    )
 
     assert isinstance(yuewen, AudioSeries)
     assert [event.text for event in yuewen.events] == ["你好"]
@@ -64,18 +65,18 @@ def test_get_yue_audio_series_for_transcription_rejects_invalid_stream_index():
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
     )
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
-
-    with patch(
-        "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
-        return_value={"streams": [{"codec_type": "audio", "channels": 2}]},
-    ):
-        with pytest.raises(ScinoephileError, match="Invalid audio stream index 1"):
-            get_yue_audio_series_for_transcription(
-                zhongwen=zhongwen,
-                media_path=media_path,
-                stream_index=1,
-            )
+    with get_temp_file_path(".mp4") as media_path:
+        media_path.touch()
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
+            return_value={"streams": [{"codec_type": "audio", "channels": 2}]},
+        ):
+            with pytest.raises(ScinoephileError, match="Invalid audio stream index 1"):
+                get_yue_audio_series_for_transcription(
+                    zhongwen=zhongwen,
+                    media_path=media_path,
+                    stream_index=1,
+                )
 
 
 def test_get_yue_vs_zho_transcribed_dispatches_media_and_stream_index():
@@ -84,7 +85,7 @@ def test_get_yue_vs_zho_transcribed_dispatches_media_and_stream_index():
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
         format_="srt",
     )
-    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    media_path = "/tmp/test_media.mp4"
     yuewen_audio = Mock(spec=AudioSeries)
     expected = Mock(spec=AudioSeries)
     transcriber = Mock()
