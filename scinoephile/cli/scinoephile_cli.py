@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
+from scinoephile.cli.analysis_cli import AnalysisCli
 from scinoephile.cli.dictionary_cli import DictionaryCli
 from scinoephile.cli.eng_cli import EngCli
 from scinoephile.cli.sync_cli import SyncCli
@@ -53,6 +54,7 @@ class ScinoephileCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
+            AnalysisCli.name(): AnalysisCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
             SyncCli.name(): SyncCli,
