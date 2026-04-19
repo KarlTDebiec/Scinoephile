@@ -8,9 +8,24 @@ from collections.abc import Iterable
 from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
+from time import monotonic
 from typing import IO
 
 logger = getLogger(__name__)
+
+
+def _decode_output(content: bytes) -> str:
+    """Decode subprocess output bytes with UTF-8 fallback.
+
+    Arguments:
+        content: bytes to decode
+    Returns:
+        decoded text
+    """
+    try:
+        return content.decode("utf-8")
+    except UnicodeDecodeError:
+        return content.decode("ISO-8859-1")
 
 
 def run_command(
@@ -88,34 +103,71 @@ def run_command_live(
     stdout_lines = []
     stderr_lines = []
 
-    def read_stream(stream: IO[str], lines: list[str]):
+    def read_stream(stream: IO[bytes], lines: list[str]):
         """Read subprocess stream line-by-line and mirror to logs.
 
         Arguments:
             stream: stream to read from
             lines: list that collects the stream content
         """
-        for line in iter(stream.readline, ""):
-            logger.info(line.rstrip())
-            lines.append(line)
+        for line in iter(stream.readline, b""):
+            decoded_line = _decode_output(line)
+            logger.info(decoded_line.rstrip())
+            lines.append(decoded_line)
         stream.close()
 
     with Popen(
         command,
         stdout=PIPE,
         stderr=PIPE,
-        text=True,
         bufsize=0,
-        encoding="utf-8",
     ) as child:
+        assert child.stdout is not None
+        assert child.stderr is not None
         stdout_thread = Thread(target=read_stream, args=(child.stdout, stdout_lines))
         stderr_thread = Thread(target=read_stream, args=(child.stderr, stderr_lines))
         stdout_thread.start()
         stderr_thread.start()
-        stdout_thread.join(timeout)
-        stderr_thread.join(timeout)
 
-        exitcode = child.wait(timeout)
+        if timeout is None:
+            exitcode = child.wait()
+        else:
+            deadline = monotonic() + timeout
+            try:
+                exitcode = child.wait(timeout=max(0.0, deadline - monotonic()))
+            except TimeoutExpired as exception:
+                child.kill()
+                child.wait()
+                stdout_thread.join()
+                stderr_thread.join()
+                stdout_str = "".join(stdout_lines)
+                stderr_str = "".join(stderr_lines)
+                raise TimeoutExpired(
+                    command,
+                    timeout,
+                    output=stdout_str,
+                    stderr=stderr_str,
+                ) from exception
+
+            stdout_thread.join(timeout=max(0.0, deadline - monotonic()))
+            stderr_thread.join(timeout=max(0.0, deadline - monotonic()))
+            if stdout_thread.is_alive() or stderr_thread.is_alive():
+                child.kill()
+                child.wait()
+                stdout_thread.join()
+                stderr_thread.join()
+                stdout_str = "".join(stdout_lines)
+                stderr_str = "".join(stderr_lines)
+                raise TimeoutExpired(
+                    command,
+                    timeout,
+                    output=stdout_str,
+                    stderr=stderr_str,
+                )
+
+        if timeout is None:
+            stdout_thread.join()
+            stderr_thread.join()
 
         stdout_str = "".join(stdout_lines)
         stderr_str = "".join(stderr_lines)
