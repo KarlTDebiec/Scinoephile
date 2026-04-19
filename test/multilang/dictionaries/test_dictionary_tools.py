@@ -30,7 +30,7 @@ from scinoephile.multilang.dictionaries.serialization import (
 from scinoephile.multilang.dictionaries.sqlite_store import DictionarySqliteStore
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
-    get_yue_proofreader_vs_zho,
+    get_yue_vs_zho_proofreader,
 )
 from scinoephile.multilang.yue_zho.review import (
     YueHansReviewPrompt,
@@ -236,7 +236,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     [
         (YueHansFromZhoTranslationPrompt, get_yue_translator_vs_zho),
         (YueHansReviewPrompt, get_yue_reviewer_vs_zho),
-        (YueZhoHansProofreadingPrompt, get_yue_proofreader_vs_zho),
+        (YueZhoHansProofreadingPrompt, get_yue_vs_zho_proofreader),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(

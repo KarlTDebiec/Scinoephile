@@ -70,8 +70,8 @@ def test_yue_transcribe_cli_writes_file():
         ) as patched_transcribe:
             run_cli_with_args(
                 YueTranscribeCli,
-                f"{zhongwen_infile_path} "
-                f"{media_path} --stream-index 1 -o {outfile_path}",
+                f"{media_path} "
+                f"{zhongwen_infile_path} --stream-index 1 -o {outfile_path}",
             )
         output = Series.load(outfile_path)
 
@@ -97,7 +97,7 @@ def test_yue_transcribe_cli_writes_stdout():
         return_value=expected,
     ):
         with patch("scinoephile.cli.yue_transcribe_cli.stdout", stdout_stream):
-            run_cli_with_args(YueTranscribeCli, f"{zhongwen_infile_path} {media_path}")
+            run_cli_with_args(YueTranscribeCli, f"{media_path} {zhongwen_infile_path}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert output == expected
@@ -110,7 +110,7 @@ def test_yue_transcribe_cli_rejects_negative_stream_index():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeCli,
-            f"{zhongwen_infile_path} {media_path} --stream-index -1",
+            f"{media_path} {zhongwen_infile_path} --stream-index -1",
         )
 
 
@@ -125,5 +125,5 @@ def test_yue_transcribe_cli_stream_errors_are_user_facing():
         with pytest.raises(SystemExit, match="2"):
             run_cli_with_args(
                 YueTranscribeCli,
-                f"{zhongwen_infile_path} {media_path} --stream-index 7",
+                f"{media_path} {zhongwen_infile_path} --stream-index 7",
             )

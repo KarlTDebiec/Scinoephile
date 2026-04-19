@@ -36,16 +36,16 @@ class YueTranscribeCli(CommandLineInterface):
         )
 
         arg_groups["input arguments"].add_argument(
+            "media_infile",
+            metavar="MEDIA_INFILE",
+            type=str,
+            help="video or audio media input path used for transcription",
+        )
+        arg_groups["input arguments"].add_argument(
             "zhongwen_infile",
             metavar="ZHONGWEN_INFILE",
             type=str,
             help="中文字幕 subtitle infile",
-        )
-        arg_groups["input arguments"].add_argument(
-            "media_path",
-            metavar="MEDIA_PATH",
-            type=str,
-            help="video or audio media input path used for transcription",
         )
 
         arg_groups["operation arguments"].add_argument(
@@ -79,8 +79,8 @@ class YueTranscribeCli(CommandLineInterface):
             **kwargs: keyword arguments
         """
         parser = kwargs.pop("_parser", cls.argparser())
+        media_infile = kwargs.pop("media_infile")
         zhongwen_infile = kwargs.pop("zhongwen_infile")
-        media_path = kwargs.pop("media_path")
         stream_index = kwargs.pop("stream_index")
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
@@ -89,7 +89,7 @@ class YueTranscribeCli(CommandLineInterface):
         try:
             yuewen = get_yue_transcribed_vs_zho(
                 zhongwen=zhongwen,
-                media_path=media_path,
+                media_path=media_infile,
                 stream_index=stream_index,
             )
         except ScinoephileError as exc:

@@ -324,7 +324,7 @@ class AudioSeries(Series):
                 ) from exc
 
     @classmethod
-    def _build_series(
+    def build_series(
         cls,
         text_series: Series,
         full_audio: AudioSegment,
@@ -382,24 +382,6 @@ class AudioSeries(Series):
         return series
 
     @classmethod
-    def build_series(
-        cls,
-        text_series: Series,
-        full_audio: AudioSegment,
-        buffer: int,
-    ) -> Self:
-        """Build a series from text subtitles and full audio.
-
-        Arguments:
-            text_series: Series of subtitle events
-            full_audio: Full audio segment for the series
-            buffer: Additional buffer before and after each subtitle (ms)
-        Returns:
-            Loaded series with audio clips
-        """
-        return cls._build_series(text_series, full_audio, buffer)
-
-    @classmethod
     def _load_video(
         cls,
         subtitle_path: Path,
@@ -449,11 +431,11 @@ class AudioSeries(Series):
         # Load full audio from video
         with get_temp_directory_path() as temp_dir_path:
             full_audio_path = temp_dir_path / "full_audio.wav"
-            cls._extract_audio_track(video_path, full_audio_path, audio_track, channels)
+            cls.extract_audio_track(video_path, full_audio_path, audio_track, channels)
             logger.info(f"Loading full audio from {full_audio_path}")
             full_audio = AudioSegment.from_wav(full_audio_path)
 
-        return cls._build_series(text_series, full_audio, buffer)
+        return cls.build_series(text_series, full_audio, buffer)
 
     @classmethod
     def _load_wav(
@@ -477,10 +459,10 @@ class AudioSeries(Series):
         full_audio = AudioSegment.from_wav(audio_path)
         logger.info(f"Loaded full audio from {audio_path}")
 
-        return cls._build_series(text_series, full_audio, buffer)
+        return cls.build_series(text_series, full_audio, buffer)
 
     @staticmethod
-    def _extract_audio_track(
+    def extract_audio_track(
         video_input_path: Path,
         audio_output_path: Path,
         audio_track: int,
@@ -520,26 +502,3 @@ class AudioSeries(Series):
                 map=f"0:a:{audio_track}",
                 ac=1,
             ).run(quiet=False, overwrite_output=True)
-
-    @classmethod
-    def extract_audio_track(
-        cls,
-        video_input_path: Path,
-        audio_output_path: Path,
-        audio_track: int,
-        channels: int,
-    ):
-        """Extract a mono audio track from a media file.
-
-        Arguments:
-            video_input_path: Path to input media file
-            audio_output_path: Path to output audio file
-            audio_track: Audio track (zero-indexed)
-            channels: Number of channels in audio track
-        """
-        cls._extract_audio_track(
-            video_input_path=video_input_path,
-            audio_output_path=audio_output_path,
-            audio_track=audio_track,
-            channels=channels,
-        )

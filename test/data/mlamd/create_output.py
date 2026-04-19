@@ -15,7 +15,7 @@ from scinoephile.multilang.yue_zho import (
     get_yue_proofread_vs_zho,
     get_yue_reviewed_vs_zho,
 )
-from scinoephile.multilang.yue_zho.proofreading import get_yue_proofreader_vs_zho
+from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_reviewer_vs_zho
 from scinoephile.multilang.yue_zho.transcription import YueTranscriber
 from scinoephile.multilang.yue_zho.translation import (
@@ -101,7 +101,7 @@ if "简体粤文 (Transcription)" in actions:
 
     # Proofread
     yue_hans = Series.load(outfile_path)
-    proofreader = get_yue_proofreader_vs_zho(
+    proofreader = get_yue_vs_zho_proofreader(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
