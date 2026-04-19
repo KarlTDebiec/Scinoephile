@@ -12,14 +12,14 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    YUE_ZHO_TRANSCRIPTION_MERGING_JSON_PATHS,
+    YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_pair import DualPairManager
-from scinoephile.multilang.yue_zho.transcription.merging import (
-    YueZhoHansMergingPrompt,
-    YueZhoMergingManager,
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+    YueZhoPunctuatingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -50,8 +50,8 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """directory where encountered transcription test cases are persisted."""
     shifting_test_cases: list[TestCase] | None
     """preloaded shifting test cases used to seed the transcriber."""
-    merging_test_cases: list[TestCase] | None
-    """preloaded merging test cases used to seed the transcriber."""
+    punctuating_test_cases: list[TestCase] | None
+    """preloaded punctuating test cases used to seed the transcriber."""
 
 
 def get_yue_transcribed_vs_zho(
@@ -77,14 +77,14 @@ def get_yue_transcribed_vs_zho(
 
 def get_yue_vs_zho_transcriber(
     shifting_test_cases: list[TestCase] | None = None,
-    merging_test_cases: list[TestCase] | None = None,
+    punctuating_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
 
     Arguments:
         shifting_test_cases: optional shifting test cases
-        merging_test_cases: optional merging test cases
+        punctuating_test_cases: optional punctuating test cases
         test_case_directory_path: optional directory where test cases are updated
     Returns:
         configured YueTranscriber
@@ -97,12 +97,12 @@ def get_yue_vs_zho_transcriber(
                 YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS,
             )
         )
-    if merging_test_cases is None:
-        merging_test_cases = list(
+    if punctuating_test_cases is None:
+        punctuating_test_cases = list(
             load_default_test_cases(
-                YueZhoMergingManager,
-                YueZhoHansMergingPrompt,
-                YUE_ZHO_TRANSCRIPTION_MERGING_JSON_PATHS,
+                YueZhoPunctuatingManager,
+                YueZhoHansPunctuatingPrompt,
+                YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS,
             )
         )
     if test_case_directory_path is None:
@@ -110,7 +110,7 @@ def get_yue_vs_zho_transcriber(
     return YueTranscriber(
         test_case_directory_path=test_case_directory_path,
         shifting_test_cases=shifting_test_cases,
-        merging_test_cases=merging_test_cases,
+        punctuating_test_cases=punctuating_test_cases,
     )
 
 
@@ -124,7 +124,7 @@ def _get_default_test_case_dir_path() -> Path:
     (test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "shifting").mkdir(
         parents=True, exist_ok=True
     )
-    (test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "merging").mkdir(
-        parents=True, exist_ok=True
-    )
+    (
+        test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "punctuating"
+    ).mkdir(parents=True, exist_ok=True)
     return test_case_dir_path

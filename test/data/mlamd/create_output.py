@@ -23,7 +23,7 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_vs_zho_translator,
 )
 from test.data.mlamd import (
-    get_mlamd_yue_merging_test_cases,
+    get_mlamd_yue_punctuating_test_cases,
     get_mlamd_yue_shifting_test_cases,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
@@ -93,7 +93,7 @@ if "简体粤文 (Transcription)" in actions:
     transcriber = YueTranscriber(
         test_case_directory_path=test_data_root / "mlamd",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
-        merging_test_cases=get_mlamd_yue_merging_test_cases(),
+        punctuating_test_cases=get_mlamd_yue_punctuating_test_cases(),
     )
     yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
     outfile_path = output_dir / "yue-Hans_transcribe.srt"

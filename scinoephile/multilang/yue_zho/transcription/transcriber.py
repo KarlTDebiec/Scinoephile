@@ -21,7 +21,9 @@ from scinoephile.core.llms import Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription.merging import YueZhoHansMergingPrompt
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
 )
@@ -38,14 +40,14 @@ class YueTranscriber:
         self,
         test_case_directory_path: Path,
         shifting_test_cases: list[TestCase],
-        merging_test_cases: list[TestCase],
+        punctuating_test_cases: list[TestCase],
     ):
         """Initialize.
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
             shifting_test_cases: shifting test cases
-            merging_test_cases: merging test cases
+            punctuating_test_cases: punctuating test cases
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
@@ -58,15 +60,15 @@ class YueTranscriber:
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
-        merging_queryer_cls = Queryer.get_queryer_cls(YueZhoHansMergingPrompt)
-        self.merging_queryer = merging_queryer_cls(
-            prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
+        punctuating_queryer_cls = Queryer.get_queryer_cls(YueZhoHansPunctuatingPrompt)
+        self.punctuating_queryer = punctuating_queryer_cls(
+            prompt_test_cases=[tc for tc in punctuating_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in punctuating_test_cases if tc.verified],
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,
-            merging_queryer=self.merging_queryer,
+            punctuating_queryer=self.punctuating_queryer,
         )
 
     def process_all_blocks(

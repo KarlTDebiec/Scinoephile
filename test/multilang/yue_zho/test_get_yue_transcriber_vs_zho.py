@@ -15,7 +15,7 @@ from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcrib
 def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
     """Test default transcriber setup uses a writable runtime test-case root."""
     shifting_test_cases = [cast(TestCase, Mock())]
-    merging_test_cases = [cast(TestCase, Mock())]
+    punctuating_test_cases = [cast(TestCase, Mock())]
 
     with get_temp_directory_path() as temp_dir_path:
         runtime_test_case_dir_path = temp_dir_path / "test_cases"
@@ -28,12 +28,12 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             ) as patched_transcriber:
                 get_yue_vs_zho_transcriber(
                     shifting_test_cases=shifting_test_cases,
-                    merging_test_cases=merging_test_cases,
+                    punctuating_test_cases=punctuating_test_cases,
                 )
         patched_transcriber.assert_called_once_with(
             test_case_directory_path=runtime_test_case_dir_path,
             shifting_test_cases=shifting_test_cases,
-            merging_test_cases=merging_test_cases,
+            punctuating_test_cases=punctuating_test_cases,
         )
         assert (
             runtime_test_case_dir_path
@@ -47,5 +47,5 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             / "multilang"
             / "yue_zho"
             / "transcription"
-            / "merging"
+            / "punctuating"
         ).is_dir()
