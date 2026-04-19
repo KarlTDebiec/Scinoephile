@@ -1,0 +1,110 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Tests of scinoephile.multilang.yue_zho.transcription."""
+
+from __future__ import annotations
+
+from unittest.mock import Mock, patch
+
+import pytest
+from pydub import AudioSegment
+
+from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.core import ScinoephileError
+from scinoephile.core.subtitles import Series
+from scinoephile.multilang.yue_zho.transcription import (
+    get_yue_audio_series_for_transcription,
+    get_yue_vs_zho_transcribed,
+)
+from test.helpers import test_data_root
+
+
+def test_get_yue_audio_series_for_transcription_supports_stream_index():
+    """Test media loading helper probes media and loads requested audio stream."""
+    zhongwen = Series.from_string(
+        "1\n00:00:01,000 --> 00:00:02,000\n你好\n",
+        format_="srt",
+    )
+    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    full_audio = AudioSegment.silent(duration=3000)
+
+    with patch(
+        "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {"codec_type": "video"},
+                {"codec_type": "audio", "channels": 2},
+                {"codec_type": "audio", "channels": 6},
+            ]
+        },
+    ):
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.AudioSeries._extract_audio_track"
+        ) as extract_audio:
+            with patch(
+                "scinoephile.multilang.yue_zho.transcription.AudioSegment.from_wav",
+                return_value=full_audio,
+            ):
+                yuewen = get_yue_audio_series_for_transcription(
+                    zhongwen=zhongwen,
+                    media_path=media_path,
+                    stream_index=1,
+                )
+
+    assert isinstance(yuewen, AudioSeries)
+    assert [event.text for event in yuewen.events] == ["你好"]
+    extract_audio.assert_called_once()
+    assert extract_audio.call_args.args[2] == 1
+    assert extract_audio.call_args.args[3] == 6
+
+
+def test_get_yue_audio_series_for_transcription_rejects_invalid_stream_index():
+    """Test media loading helper rejects invalid stream indexes."""
+    zhongwen = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+
+    with patch(
+        "scinoephile.multilang.yue_zho.transcription.ffmpeg.probe",
+        return_value={"streams": [{"codec_type": "audio", "channels": 2}]},
+    ):
+        with pytest.raises(ScinoephileError, match="Invalid audio stream index 1"):
+            get_yue_audio_series_for_transcription(
+                zhongwen=zhongwen,
+                media_path=media_path,
+                stream_index=1,
+            )
+
+
+def test_get_yue_vs_zho_transcribed_dispatches_media_and_stream_index():
+    """Test transcription entrypoint dispatches media loading and block processing."""
+    zhongwen = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    media_path = test_data_root / "mnt" / "output" / "eng_fuse.srt"
+    yuewen_audio = Mock(spec=AudioSeries)
+    expected = Mock(spec=AudioSeries)
+    transcriber = Mock()
+    transcriber.process_all_blocks.return_value = expected
+
+    with patch(
+        "scinoephile.multilang.yue_zho.transcription.get_yue_audio_series_for_transcription",
+        return_value=yuewen_audio,
+    ) as patched_media_loader:
+        result = get_yue_vs_zho_transcribed(
+            zhongwen=zhongwen,
+            media_path=media_path,
+            stream_index=3,
+            transcriber=transcriber,
+        )
+
+    assert result == expected
+    patched_media_loader.assert_called_once_with(
+        zhongwen=zhongwen,
+        media_path=media_path,
+        stream_index=3,
+    )
+    transcriber.process_all_blocks.assert_called_once_with(yuewen_audio, zhongwen)
