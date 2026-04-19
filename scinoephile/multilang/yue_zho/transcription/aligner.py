@@ -67,7 +67,8 @@ class Aligner:
           * If a 粤文 subtitle overlaps with two 中文 subtitles, asks LLM to distribute
           * At the end of this each sync group should have one 中文 subtitle and
           * zero or more 粤文 subtitles
-          * Punctuates 粤文 subtitles using LLM to match 中文 punctuation and spacing
+          * Combines and punctuates 粤文 subtitles using LLM to match 中文
+            punctuation and spacing
         It needs to also do the following:
         * If there is a discrepancy in the length of the 中文 and concatenated 粤文
           subtitles, prompt LLM with known one 中文 and two 中文 subtitles and ask

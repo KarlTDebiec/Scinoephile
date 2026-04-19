@@ -217,7 +217,7 @@ class Alignment:
         Arguments:
             sg_idx: Index of sync group
         Returns:
-            Query, or None if there are no 粤文 to punctuate
+            test case, or None if there are no 粤文 to punctuate
         """
         # Get sync group
         if sg_idx < 0 or sg_idx >= len(self.sync_groups):
