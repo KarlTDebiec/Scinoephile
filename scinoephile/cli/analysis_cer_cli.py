@@ -53,9 +53,9 @@ class AnalysisCerCli(CommandLineInterface):
         reference_infile_path = kwargs.pop("reference_infile_path")
         candidate_infile_path = kwargs.pop("candidate_infile_path")
 
-        reference_subtitle_series = Series.load(reference_infile_path)
-        candidate_subtitle_series = Series.load(candidate_infile_path)
-        result = get_series_cer(reference_subtitle_series, candidate_subtitle_series)
+        reference_series = Series.load(reference_infile_path)
+        candidate_series = Series.load(candidate_infile_path)
+        result = get_series_cer(reference_series, candidate_series)
         stdout.write(f"CER: {result.cer}\n")
         stdout.write(f"Correct: {result.correct}\n")
         stdout.write(f"Substitutions: {result.substitutions}\n")
