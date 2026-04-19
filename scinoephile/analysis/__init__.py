@@ -4,7 +4,7 @@
 
 This module may import from: common, core
 
-Hierarchy within module:
+Hierarchy within module (lower may import from higher)::
 * character_error_rate
 * line_diff_kind / replace_cursor
 * line_diff

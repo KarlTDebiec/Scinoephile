@@ -10,7 +10,8 @@ from sys import stdin, stdout
 
 from scinoephile.common.exception import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
-from scinoephile.core.subtitles import Series
+
+from .subtitles import Series
 
 
 def read_series(
