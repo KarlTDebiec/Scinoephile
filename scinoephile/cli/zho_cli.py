@@ -279,15 +279,6 @@ class ZhoCli(CommandLineInterface):
         series.save(output_path)
 
     @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "zho"
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 

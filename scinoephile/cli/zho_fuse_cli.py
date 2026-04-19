@@ -13,32 +13,17 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_fi
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.conversion import (
+    SIMPLIFIED_CONFIGS,
+    TRADITIONAL_CONFIGS,
+    OpenCCConfig,
+)
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 
 class ZhoFuseCli(CommandLineInterface):
     """Command-line interface for 中文 OCR subtitle fusion."""
-
-    _simplified_configs = {
-        OpenCCConfig.t2s,
-        OpenCCConfig.tw2s,
-        OpenCCConfig.hk2s,
-        OpenCCConfig.tw2sp,
-    }
-    _traditional_configs = {
-        OpenCCConfig.s2t,
-        OpenCCConfig.s2tw,
-        OpenCCConfig.s2hk,
-        OpenCCConfig.s2twp,
-        OpenCCConfig.t2tw,
-        OpenCCConfig.hk2t,
-        OpenCCConfig.t2hk,
-        OpenCCConfig.tw2t,
-        OpenCCConfig.t2jp,
-        OpenCCConfig.jp2t,
-    }
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -161,9 +146,9 @@ class ZhoFuseCli(CommandLineInterface):
         Returns:
             "simplified" or "traditional"
         """
-        if convert in cls._traditional_configs:
+        if convert in TRADITIONAL_CONFIGS:
             return "traditional"
-        if convert in cls._simplified_configs:
+        if convert in SIMPLIFIED_CONFIGS:
             return "simplified"
         return "simplified"
 

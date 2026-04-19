@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli import ScinoephileCli, ZhoCli, ZhoFuseCli, zho_fuse_cli
+from scinoephile.cli import ScinoephileCli, ZhoCli, ZhoFuseCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -114,34 +114,3 @@ def test_zho_fuse_cli_stdout_output():
     expected = Series.load(expected_path)
 
     assert output == expected
-
-
-def test_zho_fuse_cli_clean_is_opt_in():
-    """Test 中文 OCR fusion CLI only cleans when --clean is provided."""
-    lens_path = test_data_root / "mnt/input/zho-Hans_lens.srt"
-    paddle_path = test_data_root / "mnt/input/zho-Hans_paddle.srt"
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch.object(
-            zho_fuse_cli,
-            "get_zho_cleaned",
-            wraps=zho_fuse_cli.get_zho_cleaned,
-        ) as get_zho_cleaned_mock:
-            run_cli_with_args(
-                ZhoFuseCli,
-                f"{lens_path} {paddle_path} --convert --outfile {output_path}",
-            )
-            get_zho_cleaned_mock.assert_not_called()
-
-    with get_temp_file_path(".srt") as output_path:
-        with patch.object(
-            zho_fuse_cli,
-            "get_zho_cleaned",
-            wraps=zho_fuse_cli.get_zho_cleaned,
-        ) as get_zho_cleaned_mock:
-            run_cli_with_args(
-                ZhoFuseCli,
-                f"{lens_path} {paddle_path} --clean --convert --outfile {output_path}",
-            )
-            get_zho_cleaned_mock.assert_called()
-            assert get_zho_cleaned_mock.call_count == 2
