@@ -119,21 +119,6 @@ class Series(SSAFile):
         """
         self._blocks = blocks
 
-    def slice(self, start: int, end: int) -> Self:
-        """Slice series.
-
-        Arguments:
-            start: start index
-            end: end index
-        Returns:
-            sliced series
-        """
-        sliced = type(self)()
-        sliced.events = [
-            self.event_class(**event.as_dict()) for event in self.events[start:end]
-        ]
-        return sliced
-
     @override
     def save(
         self,
@@ -166,6 +151,21 @@ class Series(SSAFile):
         )
         logger.info(f"Saved series to {path}")
 
+    def slice(self, start: int, end: int) -> Self:
+        """Slice series.
+
+        Arguments:
+            start: start index
+            end: end index
+        Returns:
+            sliced series
+        """
+        sliced = type(self)()
+        sliced.events = [
+            self.event_class(**event.as_dict()) for event in self.events[start:end]
+        ]
+        return sliced
+
     def to_simple_string(self, start: int | None = None, duration: int | None = None):
         """Convert series to a simple string representation.
 
@@ -193,13 +193,6 @@ class Series(SSAFile):
                 f"{text}\n"
             )
         return string.rstrip()
-
-    def _init_blocks(self):
-        """Initialize blocks."""
-        self._blocks = [
-            self.slice(start_idx, end_idx)
-            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
-        ]
 
     @classmethod
     @override
@@ -291,3 +284,10 @@ class Series(SSAFile):
         block_indexes.append((start, len(series)))
 
         return block_indexes
+
+    def _init_blocks(self):
+        """Initialize blocks."""
+        self._blocks = [
+            self.slice(start_idx, end_idx)
+            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
+        ]

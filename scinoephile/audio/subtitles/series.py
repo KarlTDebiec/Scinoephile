@@ -180,92 +180,6 @@ class AudioSeries(Series):
         ]
         return sliced
 
-    @override
-    def _init_blocks(self):
-        """Initialize blocks."""
-        # First get the basic block indexes
-        block_indexes = Series.get_block_indexes_by_pause(self)
-
-        # Calculate buffered times and create series for each block
-        blocks = []
-        for i, (start_idx, end_idx) in enumerate(block_indexes):
-            block_start_time = self.events[start_idx].start
-            block_end_time = self.events[end_idx - 1].end
-
-            # Buffer start
-            if i == 0:
-                buffered_start = max(0, block_start_time - 1000)
-            else:
-                prev_end = self.events[block_indexes[i - 1][1] - 1].end
-                max_unbuffered_end = (prev_end + block_start_time) // 2
-                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
-
-            # Buffer end
-            if i < len(block_indexes) - 1:
-                next_start = self.events[block_indexes[i + 1][0]].start
-                min_unbuffered_start = (block_end_time + next_start) // 2
-                buffered_end = min(block_end_time + 1000, min_unbuffered_start)
-            else:
-                buffered_end = min(len(self.audio), block_end_time + 1000)
-
-            # Slice audio
-            logger.debug(
-                f"Slicing audio for block {block_start_time}-{block_end_time} "
-                f"({buffered_start} - {buffered_end})"
-            )
-            block_audio = self.audio[buffered_start:buffered_end]
-
-            # Create AudioSeries block
-            block = self.slice(start_idx, end_idx)
-            # Store buffered timing information as attributes
-            block.buffered_start = buffered_start
-            block.buffered_end = buffered_end
-            # Override the audio with the buffered version
-            block.audio = block_audio
-
-            blocks.append(block)
-
-        self._blocks = blocks
-
-    def _save_wav(self, fp: Path):
-        """Save series to directory of wav files.
-
-        Arguments:
-            fp: Path to output directory
-        """
-        # Prepare empty directory, deleting existing files if needed
-        if fp.exists() and fp.is_dir():
-            for file in fp.iterdir():
-                if file.is_file() or file.is_symlink():
-                    file.unlink()
-                    logger.info(f"Deleted {file}")
-        else:
-            fp.mkdir(parents=True)
-            logger.info(f"Created directory {fp}")
-
-        # Save audio
-        outfile_path = fp / f"{fp.stem}.wav"
-        self.audio.export(outfile_path, format="wav")
-        logger.info(f"Saved full audio to {outfile_path}")
-
-        # Calculate block indices and save block audio
-        current_idx = 0
-        for block in self.blocks:
-            start_idx = current_idx
-            end_idx = current_idx + len(block)
-            current_idx = end_idx
-
-            outfile_path = (
-                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
-                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
-            )
-            block.audio.export(outfile_path, format="wav")
-            logger.info(f"Saved block audio to {outfile_path}")
-
-        # Save text
-        outfile_path = fp / f"{fp.stem}.srt"
-        super().save(outfile_path, format_="srt")
-
     @classmethod
     @override
     def load(
@@ -479,3 +393,89 @@ class AudioSeries(Series):
                 map=f"0:a:{audio_track}",
                 ac=1,
             ).run(quiet=False, overwrite_output=True)
+
+    @override
+    def _init_blocks(self):
+        """Initialize blocks."""
+        # First get the basic block indexes
+        block_indexes = Series.get_block_indexes_by_pause(self)
+
+        # Calculate buffered times and create series for each block
+        blocks = []
+        for i, (start_idx, end_idx) in enumerate(block_indexes):
+            block_start_time = self.events[start_idx].start
+            block_end_time = self.events[end_idx - 1].end
+
+            # Buffer start
+            if i == 0:
+                buffered_start = max(0, block_start_time - 1000)
+            else:
+                prev_end = self.events[block_indexes[i - 1][1] - 1].end
+                max_unbuffered_end = (prev_end + block_start_time) // 2
+                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
+
+            # Buffer end
+            if i < len(block_indexes) - 1:
+                next_start = self.events[block_indexes[i + 1][0]].start
+                min_unbuffered_start = (block_end_time + next_start) // 2
+                buffered_end = min(block_end_time + 1000, min_unbuffered_start)
+            else:
+                buffered_end = min(len(self.audio), block_end_time + 1000)
+
+            # Slice audio
+            logger.debug(
+                f"Slicing audio for block {block_start_time}-{block_end_time} "
+                f"({buffered_start} - {buffered_end})"
+            )
+            block_audio = self.audio[buffered_start:buffered_end]
+
+            # Create AudioSeries block
+            block = self.slice(start_idx, end_idx)
+            # Store buffered timing information as attributes
+            block.buffered_start = buffered_start
+            block.buffered_end = buffered_end
+            # Override the audio with the buffered version
+            block.audio = block_audio
+
+            blocks.append(block)
+
+        self._blocks = blocks
+
+    def _save_wav(self, fp: Path):
+        """Save series to directory of wav files.
+
+        Arguments:
+            fp: Path to output directory
+        """
+        # Prepare empty directory, deleting existing files if needed
+        if fp.exists() and fp.is_dir():
+            for file in fp.iterdir():
+                if file.is_file() or file.is_symlink():
+                    file.unlink()
+                    logger.info(f"Deleted {file}")
+        else:
+            fp.mkdir(parents=True)
+            logger.info(f"Created directory {fp}")
+
+        # Save audio
+        outfile_path = fp / f"{fp.stem}.wav"
+        self.audio.export(outfile_path, format="wav")
+        logger.info(f"Saved full audio to {outfile_path}")
+
+        # Calculate block indices and save block audio
+        current_idx = 0
+        for block in self.blocks:
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
+
+            outfile_path = (
+                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
+                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
+            )
+            block.audio.export(outfile_path, format="wav")
+            logger.info(f"Saved block audio to {outfile_path}")
+
+        # Save text
+        outfile_path = fp / f"{fp.stem}.srt"
+        super().save(outfile_path, format_="srt")

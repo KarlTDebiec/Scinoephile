@@ -136,6 +136,71 @@ class ImageSeries(Series):
         )
         logger.info(f"Saved series to {output_path}")
 
+    @classmethod
+    @override
+    def load(
+        cls,
+        path: str | PathLike[Any],
+        encoding: str = "utf-8",
+        format_: str | None = None,
+        fps: float | None = None,
+        errors: str | None = None,
+        **kwargs: Any,
+    ) -> Self:
+        """Load series from an input file.
+
+        Arguments:
+            path: input file path
+            encoding: input file encoding
+            format_: input file format
+            fps: frames per second
+            errors: encoding error handling
+            **kwargs: additional keyword arguments
+        Returns:
+            loaded series
+        """
+        try:
+            validated_path = val_input_dir_path(path)
+            return cls._load_html(
+                validated_path,
+                encoding=encoding,
+                errors=errors,
+            )
+        except (DirectoryNotFoundError, NotADirectoryError):
+            validated_path = val_input_path(path)
+            if format_ == "sup" or validated_path.suffix == ".sup":
+                return cls._load_sup(validated_path)
+            raise ValueError(
+                f"{cls.__name__}'s path must be path to a directory containing one "
+                "index.html file and N png files, or a .sup file."
+            )
+
+    @override
+    def _init_blocks(self):
+        """Initialize blocks."""
+        self._blocks = [
+            self.slice(start_idx, end_idx)
+            for start_idx, end_idx in Series.get_block_indexes_by_pause(self)
+        ]
+
+    def _init_fill_and_outline_colors(self):
+        """Initialize the fill and outline colors used in this series.
+
+        * Uses the most common two colors, which works correctly for tested images.
+        * Tested images used a 16-color palette.
+        """
+        hist = np.zeros(256, dtype=np.uint64)
+        for subtitle in self.events:
+            grayscale = subtitle.arr[:, :, 0]
+            alpha = subtitle.arr[:, :, 1]
+            mask = alpha != 0
+            values = grayscale[mask]
+            np.add.at(hist, values, 1)
+
+        fill, outline = get_fill_and_outline_colors_from_hist(hist)
+        self._fill_color = fill
+        self._outline_color = outline
+
     def _save_html(
         self,
         dir_path: Path,
@@ -206,45 +271,6 @@ class ImageSeries(Series):
         logger.info(f"Saved HTML to {html_path}")
 
     @classmethod
-    @override
-    def load(
-        cls,
-        path: str | PathLike[Any],
-        encoding: str = "utf-8",
-        format_: str | None = None,
-        fps: float | None = None,
-        errors: str | None = None,
-        **kwargs: Any,
-    ) -> Self:
-        """Load series from an input file.
-
-        Arguments:
-            path: input file path
-            encoding: input file encoding
-            format_: input file format
-            fps: frames per second
-            errors: encoding error handling
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        try:
-            validated_path = val_input_dir_path(path)
-            return cls._load_html(
-                validated_path,
-                encoding=encoding,
-                errors=errors,
-            )
-        except (DirectoryNotFoundError, NotADirectoryError):
-            validated_path = val_input_path(path)
-            if format_ == "sup" or validated_path.suffix == ".sup":
-                return cls._load_sup(validated_path)
-            raise ValueError(
-                f"{cls.__name__}'s path must be path to a directory containing one "
-                "index.html file and N png files, or a .sup file."
-            )
-
-    @classmethod
     def _load_html(
         cls,
         dir_path: Path,
@@ -286,6 +312,82 @@ class ImageSeries(Series):
             )
         series.events = events
         return series
+
+    @classmethod
+    def _load_sup(cls, file_path: Path) -> Self:
+        """Load series from a sup file.
+
+        Arguments:
+            file_path: path to sup file
+        Returns:
+            loaded series
+        """
+        data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
+        starts, ends, images = read_sup_series(data)
+        if len(starts) != len(ends) or len(starts) != len(images):
+            raise ScinoephileError(
+                f"Sup data in {file_path} is malformed: "
+                f"{len(starts)} starts, {len(ends)} ends, {len(images)} images."
+            )
+
+        events = []
+        for start, end, image in zip(starts, ends, images):
+            img = Image.fromarray(image, "RGBA")
+            img, _ = convert_rgba_img_to_la(img)
+            events.append(
+                cls.event_class(
+                    start=int(round(start * 1000)),
+                    end=int(round(end * 1000)),
+                    img=img,
+                )
+            )
+        series = cls(events=events)
+        series.format = "sup"
+        return series
+
+    @classmethod
+    def _parse_html_events(
+        cls,
+        html_text: str,
+        dir_path: Path,
+    ) -> list[dict[str, Any]]:
+        """Parse HTML events for image subtitles.
+
+        Arguments:
+            html_text: HTML content
+            dir_path: directory containing images
+        Returns:
+            list of parsed event data
+        """
+        pattern = re.compile(
+            r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
+            r"<div style=['\"]text-align:center['\"]>"
+            r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
+            r"(?:<br /><div style=['\"]font-size:22px; "
+            r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
+            r"</div><br /><hr />",
+            re.DOTALL,
+        )
+        events = []
+        for match in pattern.finditer(html_text):
+            image_name = match.group("img")
+            image_path = dir_path / image_name
+            raw_text = match.group("text") or ""
+            text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
+            events.append(
+                {
+                    "index": int(match.group("index")),
+                    "start": cls._parse_html_time(match.group("start")),
+                    "end": cls._parse_html_time(match.group("end")),
+                    "path": image_path,
+                    "text": text,
+                }
+            )
+        if not events:
+            raise ScinoephileError(
+                f"No subtitle entries found in HTML file for {dir_path}."
+            )
+        return events
 
     @staticmethod
     def _format_html_time(time_ms: int) -> str:
@@ -336,105 +438,3 @@ class ImageSeries(Series):
         else:
             raise ValueError(f"Unrecognized time format: {time_str}")
         return int(((hours * 3600) + (minutes * 60) + seconds) * 1000 + ms)
-
-    @classmethod
-    def _parse_html_events(
-        cls,
-        html_text: str,
-        dir_path: Path,
-    ) -> list[dict[str, Any]]:
-        """Parse HTML events for image subtitles.
-
-        Arguments:
-            html_text: HTML content
-            dir_path: directory containing images
-        Returns:
-            list of parsed event data
-        """
-        pattern = re.compile(
-            r"#(?P<index>\d+):(?P<start>[^-]+)->(?P<end>[^<]+)"
-            r"<div style=['\"]text-align:center['\"]>"
-            r"<img src=['\"](?P<img>[^'\"]+)['\"] />"
-            r"(?:<br /><div style=['\"]font-size:22px; "
-            r"background-color:WhiteSmoke['\"]>(?P<text>.*?)</div>)?"
-            r"</div><br /><hr />",
-            re.DOTALL,
-        )
-        events = []
-        for match in pattern.finditer(html_text):
-            image_name = match.group("img")
-            image_path = dir_path / image_name
-            raw_text = match.group("text") or ""
-            text = unescape(raw_text.replace("<br />", "\n")).replace("\n", "\\N")
-            events.append(
-                {
-                    "index": int(match.group("index")),
-                    "start": cls._parse_html_time(match.group("start")),
-                    "end": cls._parse_html_time(match.group("end")),
-                    "path": image_path,
-                    "text": text,
-                }
-            )
-        if not events:
-            raise ScinoephileError(
-                f"No subtitle entries found in HTML file for {dir_path}."
-            )
-        return events
-
-    @classmethod
-    def _load_sup(cls, file_path: Path) -> Self:
-        """Load series from a sup file.
-
-        Arguments:
-            file_path: path to sup file
-        Returns:
-            loaded series
-        """
-        data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
-        starts, ends, images = read_sup_series(data)
-        if len(starts) != len(ends) or len(starts) != len(images):
-            raise ScinoephileError(
-                f"Sup data in {file_path} is malformed: "
-                f"{len(starts)} starts, {len(ends)} ends, {len(images)} images."
-            )
-
-        events = []
-        for start, end, image in zip(starts, ends, images):
-            img = Image.fromarray(image, "RGBA")
-            img, _ = convert_rgba_img_to_la(img)
-            events.append(
-                cls.event_class(
-                    start=int(round(start * 1000)),
-                    end=int(round(end * 1000)),
-                    img=img,
-                )
-            )
-        series = cls(events=events)
-        series.format = "sup"
-        return series
-
-    @override
-    def _init_blocks(self):
-        """Initialize blocks."""
-        self._blocks = [
-            self.slice(start_idx, end_idx)
-            for start_idx, end_idx in Series.get_block_indexes_by_pause(self)
-        ]
-
-    def _init_fill_and_outline_colors(self):
-        """Initialize the fill and outline colors used in this series.
-
-        * Uses the most common two colors, which works correctly for tested images.
-        * Tested images used a 16-color palette.
-        """
-        hist = np.zeros(256, dtype=np.uint64)
-        for subtitle in self.events:
-            grayscale = subtitle.arr[:, :, 0]
-            alpha = subtitle.arr[:, :, 1]
-            mask = alpha != 0
-            values = grayscale[mask]
-            np.add.at(hist, values, 1)
-
-        fill, outline = get_fill_and_outline_colors_from_hist(hist)
-        self._fill_color = fill
-        self._outline_color = outline
