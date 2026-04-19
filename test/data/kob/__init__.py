@@ -12,6 +12,7 @@ from typing import Unpack
 
 import pytest
 
+from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import get_backend
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
@@ -76,9 +77,11 @@ __all__ = [
     "kob_yue_hans_timewarp_clean_flatten",
     "kob_yue_hans_timewarp_clean_flatten_romanize",
     "kob_yue_hans_transcribe",
+    "kob_yue_hans_transcribe_expected_cer",
     "kob_yue_hans_transcribe_proofread",
     "kob_yue_hans_transcribe_proofread_translate",
     "kob_yue_hans_transcribe_proofread_translate_review",
+    "kob_yue_hans_transcribe_proofread_translate_review_expected_cer",
     "kob_yue_hant_timewarp",
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
@@ -256,6 +259,34 @@ def kob_eng_expected_series_diff() -> list[str]:
         "delete: OCR[1411] 'Hurry up' not present in SRT",
         "delete: OCR[1412] 'Follow me… go…' not present in SRT",
     ]
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
+    """Expected CER for KOB transcribed subtitles against flattened reference."""
+    return CharacterErrorRateResult(
+        cer=0.9040239499867923,
+        substitutions=4155,
+        insertions=2835,
+        deletions=3277,
+        correct=3925,
+        reference_length=11357,
+    )
+
+
+@pytest.fixture
+def kob_yue_hans_transcribe_proofread_translate_review_expected_cer() -> (
+    CharacterErrorRateResult
+):
+    """Expected CER for KOB reviewed subtitles against flattened reference."""
+    return CharacterErrorRateResult(
+        cer=0.6034163951747821,
+        substitutions=2789,
+        insertions=2091,
+        deletions=1973,
+        correct=6595,
+        reference_length=11357,
+    )
 
 
 @pytest.fixture
