@@ -66,7 +66,7 @@ def test_val_output_path_exists_ok(tmp_path: Path):
     assert result.exists()
 
 
-def test_val_output_path_existing_directory_not_ok(tmp_path: Path):
+def test_val_output_path_existing_directory_exist_ok_false(tmp_path: Path):
     """Test validation when path exists and is a directory with exist_ok False."""
     test_dir = tmp_path / "output_dir"
     test_dir.mkdir()
@@ -75,7 +75,7 @@ def test_val_output_path_existing_directory_not_ok(tmp_path: Path):
         val_output_path(test_dir, exist_ok=False)
 
 
-def test_val_output_path_existing_directory_ok(tmp_path: Path):
+def test_val_output_path_existing_directory_exist_ok_true(tmp_path: Path):
     """Test validation when path exists and is a directory with exist_ok True."""
     test_dir = tmp_path / "output_dir"
     test_dir.mkdir()

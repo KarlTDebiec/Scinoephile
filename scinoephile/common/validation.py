@@ -457,9 +457,10 @@ def val_output_path(
                 f"{value_to_validate} is of type "
                 f"{type(value_to_validate)}, cannot be cast to Path"
             ) from exc
-        if validated_value.exists() and not validated_value.is_file():
+        exists = validated_value.exists()
+        if exists and not validated_value.is_file():
             raise NotAFileError(f"{validated_value} is not a file")
-        if validated_value.exists() and not exist_ok:
+        if exists and not exist_ok:
             raise FileExistsError(f"Output file {validated_value} already exists")
         if not validated_value.parent.exists():
             validated_value.parent.mkdir(parents=True)
