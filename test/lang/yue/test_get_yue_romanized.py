@@ -54,6 +54,7 @@ def test_get_yue_romanized_titles(
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
+        ("广东话", "gwóng dūng wá"),
         ("你好世界", "néih hóu sai gaai"),
     ],
 )
