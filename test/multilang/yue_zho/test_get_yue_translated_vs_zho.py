@@ -4,33 +4,8 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.yue_zho import get_yue_translated_vs_zho
-
-
-def _test_get_yue_translated_vs_zho(yuewen: Series, zhongwen: Series, expected: Series):
-    """Test get_yue_translated_vs_zho function.
-
-    Arguments:
-        yuewen: input 粤文 subtitles
-        zhongwen: input 中文 subtitles
-        expected: expected output subtitles
-    """
-    output = get_yue_translated_vs_zho(yuewen, zhongwen)
-
-    assert len(output) == len(expected)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
 
 
 def test_get_yue_translated_vs_zho_mlamd(
@@ -48,9 +23,5 @@ def test_get_yue_translated_vs_zho_mlamd(
     zhongwen = get_series_with_subs_merged(
         mlamd_zho_hans_fuse_clean_validate_proofread_flatten, 539
     )
-
-    _test_get_yue_translated_vs_zho(
-        mlamd_yue_hans_transcribe_proofread,
-        zhongwen,
-        mlamd_yue_hans_transcribe_proofread_translate,
-    )
+    output = get_yue_translated_vs_zho(mlamd_yue_hans_transcribe_proofread, zhongwen)
+    assert output == mlamd_yue_hans_transcribe_proofread_translate
