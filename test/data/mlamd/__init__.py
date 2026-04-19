@@ -2,6 +2,8 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Test data for MLAMD."""
 
+# ruff: noqa: E501
+
 from __future__ import annotations
 
 from functools import cache
@@ -105,6 +107,7 @@ __all__ = [
     "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
+    "mlamd_zho_simplify_expected_series_diff",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -615,3 +618,25 @@ def mlamd_zho_hant_image() -> ImageSeries:
 def mlamd_zho_hant_image_path() -> Path:
     """Path to MLAMD 繁体中文 image subtitles."""
     return output_dir / "zho-Hant_image"
+
+
+@pytest.fixture
+def mlamd_zho_simplify_expected_series_diff() -> list[str]:
+    """Expected differences for MLAMD Simplified vs Traditional subtitles."""
+    return [
+        "edit: SIMP[178] -> TRAD[178]: '一个女人背起整个世界！' -> '一个女人支起整个世界！'",
+        "edit: SIMP[227] -> TRAD[227]: '他扭了脚骹！' -> '他扭了脚骸！'",
+        "edit: SIMP[420] -> TRAD[420]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
+        "edit: SIMP[461] -> TRAD[461]: '不成了！我的脚瓜太痹了！' -> '不成了！我的脚瓜太痺了！'",
+        "edit: SIMP[551] -> TRAD[551]: '黎根接著说了一大堆话⋯' -> '黎根接着说了一大堆话⋯'",
+        "edit: SIMP[566] -> TRAD[566]: '脚趾甲有一寸厚，究竟⋯' -> '脚趾甲有一吋厚，究竟⋯'",
+        "edit: SIMP[579] -> TRAD[579]: '难道⋯\\u3000不会吧？' -> '难道⋯不会吧？'",
+        "edit: SIMP[580] -> TRAD[580]: '想不到真的让妈妈拿去了．吓得我！' -> '想不到真的让妈妈拿去了，吓得我！'",
+        "edit: SIMP[663] -> TRAD[663]: '这关于火鸡的一切，不过是我的想像' -> '这关于火鸡的一切，不过是我的想象'",
+        "edit: SIMP[665] -> TRAD[665]: '连它的气味也没嗅过' -> '连牠的气味也没嗅过'",
+        "edit: SIMP[678] -> TRAD[678]: '我学著妈妈，把双手涂满盐⋯' -> '我学着妈妈，把双手涂满盐⋯'",
+        "edit: SIMP[680] -> TRAD[680]: '联火鸡时⋯' -> '拎火鸡时⋯'",
+        "edit: SIMP[723] -> TRAD[723]: '栗子炆火鸡丝㷛' -> '栗子火鸡丝堡'",
+        "edit: SIMP[847] -> TRAD[847]: '足有一寸厚' -> '足有一吋厚'",
+        "edit: SIMP[855] -> TRAD[855]: '可是楝一双脚瓜站这儿⋯' -> '可是冻一双脚瓜站这儿⋯'",
+    ]
