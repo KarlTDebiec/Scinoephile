@@ -112,12 +112,12 @@ def get_yue_audio_series_for_transcription(
         ) from exc
 
     with get_temp_directory_path() as temp_dir_path:
-        full_audio_path = temp_dir_path / "full_audio.wav"
+        audio_output_path = temp_dir_path / "full_audio.wav"
         try:
             AudioSeries.extract_audio_track(
-                validated_media_path, full_audio_path, stream_index, channel_count
+                validated_media_path, audio_output_path, stream_index, channel_count
             )
-            full_audio = AudioSegment.from_wav(full_audio_path)
+            full_audio = AudioSegment.from_wav(audio_output_path)
         except ffmpeg.Error as exc:
             raise ScinoephileError(
                 "Could not extract audio stream "
