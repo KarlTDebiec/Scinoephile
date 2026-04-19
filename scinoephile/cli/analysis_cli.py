@@ -7,6 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
+from scinoephile.cli.analysis_cer_cli import AnalysisCerCli
 from scinoephile.cli.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
@@ -50,7 +51,10 @@ class AnalysisCli(CommandLineInterface):
         Returns:
             mapping of subcommand names to CLI classes
         """
-        return {AnalysisDiffCli.name(): AnalysisDiffCli}
+        return {
+            AnalysisCerCli.name(): AnalysisCerCli,
+            AnalysisDiffCli.name(): AnalysisDiffCli,
+        }
 
 
 if __name__ == "__main__":
