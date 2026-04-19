@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import sys
 from subprocess import TimeoutExpired
 from time import monotonic
 
@@ -144,7 +145,9 @@ def test_run_command_live_timeout():
     """Test command timeout behavior."""
     start_time = monotonic()
     with pytest.raises(TimeoutExpired):
-        run_command_live(["python3", "-c", "import time; time.sleep(2)"], timeout=1)
+        run_command_live(
+            [sys.executable, "-c", "import time; time.sleep(2)"], timeout=1
+        )
     elapsed = monotonic() - start_time
 
     assert elapsed < 2
@@ -153,7 +156,7 @@ def test_run_command_live_timeout():
 def test_run_command_live_non_utf8_output():
     """Test handling of non-UTF-8 output."""
     exitcode, stdout, stderr = run_command_live(
-        ["python3", "-c", "import sys; sys.stdout.buffer.write(b'\\xff')"]
+        [sys.executable, "-c", "import sys; sys.stdout.buffer.write(b'\\xff')"]
     )
 
     assert exitcode == 0
