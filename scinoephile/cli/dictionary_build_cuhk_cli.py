@@ -9,7 +9,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.cli.dictionary_build_cli_base import DictionaryBuildCliBase
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
@@ -18,6 +17,8 @@ from scinoephile.common.argument_parsing import (
     output_dir_arg,
 )
 from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
+
+from .dictionary_build_cli_base import DictionaryBuildCliBase
 
 __all__ = ["DictionaryBuildCuhkCli"]
 

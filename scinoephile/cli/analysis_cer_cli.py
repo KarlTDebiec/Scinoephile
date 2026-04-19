@@ -9,10 +9,7 @@ from typing import Unpack
 
 from scinoephile.analysis import get_series_cer
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-    input_file_arg,
-)
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.subtitles import Series
 
 

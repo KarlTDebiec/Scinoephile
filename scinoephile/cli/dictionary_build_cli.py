@@ -7,9 +7,10 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
-from scinoephile.cli.dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
+from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 
 __all__ = [
     "DictionaryBuildCli",
