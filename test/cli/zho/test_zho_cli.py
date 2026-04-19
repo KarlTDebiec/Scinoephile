@@ -164,8 +164,8 @@ def test_zho_cli_pipe(input_path: str, args: str, expected_path: str):
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
-    with patch("scinoephile.cli.subtitles_io.stdin", stdin_stream):
-        with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
+    with patch("scinoephile.core.cli.io.stdin", stdin_stream):
+        with patch("scinoephile.core.cli.io.stdout", stdout_stream):
             run_cli_with_args(ZhoCli, args)
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")

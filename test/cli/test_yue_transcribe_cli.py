@@ -111,7 +111,7 @@ def test_yue_transcribe_cli_writes_stdout():
             "scinoephile.cli.yue_transcribe_cli.get_yue_transcribed_vs_zho",
             return_value=expected_series,
         ):
-            with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
+            with patch("scinoephile.core.cli.io.stdout", stdout_stream):
                 run_cli_with_args(
                     YueTranscribeCli, f"{media_infile_path} {zhongwen_infile_path}"
                 )

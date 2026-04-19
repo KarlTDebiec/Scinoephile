@@ -12,9 +12,8 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
+from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
 from scinoephile.core.synchronization import get_synced_series
-
-from .subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class SyncCli(CommandLineInterface):

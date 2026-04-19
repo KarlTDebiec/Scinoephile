@@ -9,6 +9,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
@@ -17,8 +18,6 @@ from scinoephile.lang.zho.conversion import (
 )
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
-
-from ..subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class ZhoFuseCli(CommandLineInterface):

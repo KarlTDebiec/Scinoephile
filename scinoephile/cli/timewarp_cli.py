@@ -14,13 +14,12 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.timing import get_series_timewarped
-
-from .subtitles_io import (
+from scinoephile.core.cli.io import (
     load_subtitle_series,
     parser_error_from_exception,
     write_subtitle_series,
 )
+from scinoephile.core.timing import get_series_timewarped
 
 
 class TimewarpCli(CommandLineInterface):

@@ -8,4 +8,8 @@ from .analysis_cer_cli import AnalysisCerCli
 from .analysis_cli import AnalysisCli
 from .analysis_diff_cli import AnalysisDiffCli
 
-__all__ = ["AnalysisCerCli", "AnalysisCli", "AnalysisDiffCli"]
+__all__ = [
+    "AnalysisCerCli",
+    "AnalysisCli",
+    "AnalysisDiffCli",
+]

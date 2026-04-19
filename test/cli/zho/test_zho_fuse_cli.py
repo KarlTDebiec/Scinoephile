@@ -141,7 +141,7 @@ def test_zho_fuse_cli_pipe(
     full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
-    with patch("scinoephile.cli.subtitles_io.stdout", stdout_stream):
+    with patch("scinoephile.core.cli.io.stdout", stdout_stream):
         run_cli_with_args(
             ZhoFuseCli,
             f"{full_lens_path} {full_paddle_path} {args}",

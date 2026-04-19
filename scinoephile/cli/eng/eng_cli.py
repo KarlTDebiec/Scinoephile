@@ -11,9 +11,9 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
 )
+from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 
-from ..subtitles_io import load_subtitle_series, write_subtitle_series
 from .eng_fuse_cli import EngFuseCli
 
 

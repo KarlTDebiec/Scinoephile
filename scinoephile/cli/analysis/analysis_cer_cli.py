@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import sys
 from argparse import ArgumentParser
 from typing import Unpack
 
@@ -53,19 +52,12 @@ class AnalysisCerCli(CommandLineInterface):
         reference_series = Series.load(reference_infile_path)
         candidate_series = Series.load(candidate_infile_path)
         result = get_series_cer(reference_series, candidate_series)
-        sys.stdout.write(
-            "\n".join(
-                [
-                    f"CER: {result.cer}",
-                    f"Correct: {result.correct}",
-                    f"Substitutions: {result.substitutions}",
-                    f"Insertions: {result.insertions}",
-                    f"Deletions: {result.deletions}",
-                    f"Reference length: {result.reference_length}",
-                ]
-            )
-        )
-        sys.stdout.write("\n")
+        print(f"CER: {result.cer}")
+        print(f"Correct: {result.correct}")
+        print(f"Substitutions: {result.substitutions}")
+        print(f"Insertions: {result.insertions}")
+        print(f"Deletions: {result.deletions}")
+        print(f"Reference length: {result.reference_length}")
 
     @classmethod
     def name(cls) -> str:

@@ -13,13 +13,12 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.common.exception import NotAFileError
 from scinoephile.common.validation import val_input_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
-
-from .subtitles_io import (
+from scinoephile.core.cli.io import (
     parser_error_from_exception,
     write_subtitle_series,
 )
+from scinoephile.core.subtitles import Series
+from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
 
 class YueTranscribeCli(CommandLineInterface):

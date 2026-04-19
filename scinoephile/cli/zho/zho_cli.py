@@ -9,6 +9,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, str_arg
+from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
 from scinoephile.lang.cmn import get_cmn_romanized
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
@@ -20,7 +21,6 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 
-from ..subtitles_io import load_subtitle_series, write_subtitle_series
 from .zho_fuse_cli import ZhoFuseCli
 
 

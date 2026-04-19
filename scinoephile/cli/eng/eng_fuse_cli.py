@@ -9,9 +9,8 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
+from scinoephile.core.cli.io import load_subtitle_series, write_subtitle_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
-
-from ..subtitles_io import load_subtitle_series, write_subtitle_series
 
 
 class EngFuseCli(CommandLineInterface):

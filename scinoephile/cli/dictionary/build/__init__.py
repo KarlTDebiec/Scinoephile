@@ -8,4 +8,8 @@ from .dictionary_build_cli import DictionaryBuildCli
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 
-__all__ = ["DictionaryBuildCli", "DictionaryBuildCuhkCli", "DictionaryBuildGzzjCli"]
+__all__ = [
+    "DictionaryBuildCli",
+    "DictionaryBuildCuhkCli",
+    "DictionaryBuildGzzjCli",
+]
