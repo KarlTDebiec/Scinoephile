@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
-from .proofreading import get_yue_vs_zho_proofread
-from .review import get_yue_vs_zho_reviewed
-from .translation import get_yue_from_zho_translated
+from .proofreading import get_yue_proofread_vs_zho
+from .review import get_yue_reviewed_vs_zho
+from .transcription import get_yue_transcribed_vs_zho
+from .translation import get_yue_translated_vs_zho
 
 __all__ = [
-    "get_yue_vs_zho_proofread",
-    "get_yue_vs_zho_reviewed",
-    "get_yue_from_zho_translated",
+    "get_yue_proofread_vs_zho",
+    "get_yue_reviewed_vs_zho",
+    "get_yue_transcribed_vs_zho",
+    "get_yue_translated_vs_zho",
 ]

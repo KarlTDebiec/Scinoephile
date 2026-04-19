@@ -26,7 +26,7 @@ __all__ = [
     "YueZhoProofreadingProcessKwargs",
     "YueZhoProofreadingProcessor",
     "YueZhoProofreadingProcessorKwargs",
-    "get_yue_vs_zho_proofread",
+    "get_yue_proofread_vs_zho",
     "get_yue_vs_zho_proofreader",
 ]
 
@@ -44,7 +44,7 @@ class YueZhoProofreadingProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_yue_vs_zho_proofread(
+def get_yue_proofread_vs_zho(
     yuewen: Series,
     zhongwen: Series,
     processor: YueZhoProofreadingProcessor | None = None,

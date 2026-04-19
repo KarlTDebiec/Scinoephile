@@ -14,6 +14,7 @@ from .dictionary_cli import DictionaryCli
 from .eng_cli import EngCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
+from .yue_cli import YueCli
 from .zho_cli import ZhoCli
 
 
@@ -60,6 +61,7 @@ class ScinoephileCli(CommandLineInterface):
             EngCli.name(): EngCli,
             SyncCli.name(): SyncCli,
             TimewarpCli.name(): TimewarpCli,
+            YueCli.name(): YueCli,
             ZhoCli.name(): ZhoCli,
         }
 

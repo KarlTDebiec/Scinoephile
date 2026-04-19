@@ -23,7 +23,7 @@ __all__ = [
     "YueHantReviewPrompt",
     "YueZhoReviewProcessKwargs",
     "YueZhoReviewProcessorKwargs",
-    "get_yue_vs_zho_reviewed",
+    "get_yue_reviewed_vs_zho",
     "get_yue_vs_zho_reviewer",
 ]
 
@@ -41,7 +41,7 @@ class YueZhoReviewProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_yue_vs_zho_reviewed(
+def get_yue_reviewed_vs_zho(
     yuewen: Series,
     zhongwen: Series,
     reviewer: DualBlockProcessor | None = None,

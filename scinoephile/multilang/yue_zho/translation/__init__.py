@@ -26,8 +26,8 @@ __all__ = [
     "YueHantFromZhoTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
-    "get_yue_from_zho_translated",
-    "get_yue_from_zho_translator",
+    "get_yue_translated_vs_zho",
+    "get_yue_vs_zho_translator",
 ]
 
 
@@ -44,7 +44,7 @@ class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_yue_from_zho_translated(
+def get_yue_translated_vs_zho(
     yuewen: Series,
     zhongwen: Series,
     translator: DualBlockGappedProcessor | None = None,
@@ -61,11 +61,11 @@ def get_yue_from_zho_translated(
         粤文 translated from 中文
     """
     if translator is None:
-        translator = get_yue_from_zho_translator()
+        translator = get_yue_vs_zho_translator()
     return translator.process(yuewen, zhongwen, **kwargs)
 
 
-def get_yue_from_zho_translator(
+def get_yue_vs_zho_translator(
     prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

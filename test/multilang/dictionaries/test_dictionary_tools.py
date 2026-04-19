@@ -38,7 +38,7 @@ from scinoephile.multilang.yue_zho.review import (
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueHansFromZhoTranslationPrompt,
-    get_yue_from_zho_translator,
+    get_yue_vs_zho_translator,
 )
 
 
@@ -234,7 +234,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 @pytest.mark.parametrize(
     ("prompt_cls", "factory"),
     [
-        (YueHansFromZhoTranslationPrompt, get_yue_from_zho_translator),
+        (YueHansFromZhoTranslationPrompt, get_yue_vs_zho_translator),
         (YueHansReviewPrompt, get_yue_vs_zho_reviewer),
         (YueZhoHansProofreadingPrompt, get_yue_vs_zho_proofreader),
     ],

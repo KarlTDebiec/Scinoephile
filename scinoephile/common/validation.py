@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Collection, Iterable
 from logging import getLogger
+from os import PathLike
 from os.path import defpath, expanduser, expandvars
 from pathlib import Path
 from platform import system
@@ -149,14 +150,16 @@ def val_float(
 
 
 @overload
-def val_input_dir_path(value: Path | str) -> Path: ...
+def val_input_dir_path(value: Path | str | PathLike[Any]) -> Path: ...
 
 
 @overload
-def val_input_dir_path(value: Iterable[Path | str]) -> list[Path]: ...
+def val_input_dir_path(value: Iterable[Path | str | PathLike[Any]]) -> list[Path]: ...
 
 
-def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
+def val_input_dir_path(
+    value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+) -> Path | list[Path]:
     """Validate input directory path(s) and make them absolute.
 
     Arguments:
@@ -169,7 +172,7 @@ def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[
         TypeError: If any value cannot be cast to Path
     """
 
-    def _val_input_dir(value_to_validate: Path | str) -> Path:
+    def _val_input_dir(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
 
         Arguments:
@@ -201,7 +204,7 @@ def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[
         return validated_value
 
     # Handle non-iterables and iterables we don't want to iterate over
-    if isinstance(value, Path | str) or not isinstance(value, Iterable):
+    if isinstance(value, Path | str | PathLike) or not isinstance(value, Iterable):
         return _val_input_dir(value)
 
     # Handle iterables
@@ -209,14 +212,16 @@ def val_input_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[
 
 
 @overload
-def val_input_path(value: Path | str) -> Path: ...
+def val_input_path(value: Path | str | PathLike[Any]) -> Path: ...
 
 
 @overload
-def val_input_path(value: Iterable[Path | str]) -> list[Path]: ...
+def val_input_path(value: Iterable[Path | str | PathLike[Any]]) -> list[Path]: ...
 
 
-def val_input_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
+def val_input_path(
+    value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+) -> Path | list[Path]:
     """Validate input file path(s) and make them absolute.
 
     Arguments:
@@ -229,7 +234,7 @@ def val_input_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path
         TypeError: If any value cannot be cast to Path
     """
 
-    def _val_input_path(value_to_validate: Path | str) -> Path:
+    def _val_input_path(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
 
         Arguments:
@@ -257,7 +262,7 @@ def val_input_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path
         return validated_value
 
     # Handle non-iterables and iterables we don't want to iterate over
-    if isinstance(value, Path | str) or not isinstance(value, Iterable):
+    if isinstance(value, Path | str | PathLike) or not isinstance(value, Iterable):
         return _val_input_path(value)
 
     # Handle iterables
@@ -354,14 +359,16 @@ def val_int(
 
 
 @overload
-def val_output_dir_path(value: Path | str) -> Path: ...
+def val_output_dir_path(value: Path | str | PathLike[Any]) -> Path: ...
 
 
 @overload
-def val_output_dir_path(value: Iterable[Path | str]) -> list[Path]: ...
+def val_output_dir_path(value: Iterable[Path | str | PathLike[Any]]) -> list[Path]: ...
 
 
-def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list[Path]:
+def val_output_dir_path(
+    value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+) -> Path | list[Path]:
     """Validate output directory path(s), make them absolute, and create them if needed.
 
     Arguments:
@@ -373,7 +380,7 @@ def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list
         TypeError: If any value cannot be cast to Path
     """
 
-    def _val_output_dir_path(value_to_validate: Path | str) -> Path:
+    def _val_output_dir_path(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
 
         Arguments:
@@ -403,7 +410,7 @@ def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list
         return validated_value
 
     # Handle non-iterables and iterables we don't want to iterate over
-    if isinstance(value, Path | str) or not isinstance(value, Iterable):
+    if isinstance(value, Path | str | PathLike) or not isinstance(value, Iterable):
         return _val_output_dir_path(value)
 
     # Handle iterables
@@ -411,17 +418,20 @@ def val_output_dir_path(value: Path | str | Iterable[Path | str]) -> Path | list
 
 
 @overload
-def val_output_path(value: Path | str, exist_ok: bool = False) -> Path: ...
+def val_output_path(
+    value: Path | str | PathLike[Any], exist_ok: bool = False
+) -> Path: ...
 
 
 @overload
 def val_output_path(
-    value: Iterable[Path | str], exist_ok: bool = False
+    value: Iterable[Path | str | PathLike[Any]], exist_ok: bool = False
 ) -> list[Path]: ...
 
 
 def val_output_path(
-    value: Path | str | Iterable[Path | str], exist_ok: bool = False
+    value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+    exist_ok: bool = False,
 ) -> Path | list[Path]:
     """Validate output file path(s) and make them absolute.
 
@@ -436,7 +446,7 @@ def val_output_path(
         TypeError: If any value cannot be cast to a Path
     """
 
-    def _val_output_path(value_to_validate: Path | str) -> Path:
+    def _val_output_path(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
 
         Arguments:
@@ -468,7 +478,7 @@ def val_output_path(
         return validated_value
 
     # Handle non-iterables and iterables we don't want to iterate over
-    if isinstance(value, Path | str) or not isinstance(value, Iterable):
+    if isinstance(value, Path | str | PathLike) or not isinstance(value, Iterable):
         return _val_output_path(value)
 
     # Handle iterables
