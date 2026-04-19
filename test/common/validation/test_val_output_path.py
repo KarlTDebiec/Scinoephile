@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from common.exception import NotAFileError  # ty:ignore[unresolved-import]
 from common.validation import val_output_path  # ty:ignore[unresolved-import]
 
 
@@ -63,6 +64,24 @@ def test_val_output_path_exists_ok(tmp_path: Path):
     result = val_output_path(test_file, exist_ok=True)
     assert isinstance(result, Path)
     assert result.exists()
+
+
+def test_val_output_path_existing_directory_not_ok(tmp_path: Path):
+    """Test validation when path exists and is a directory with exist_ok False."""
+    test_dir = tmp_path / "output_dir"
+    test_dir.mkdir()
+
+    with pytest.raises(NotAFileError):
+        val_output_path(test_dir, exist_ok=False)
+
+
+def test_val_output_path_existing_directory_ok(tmp_path: Path):
+    """Test validation when path exists and is a directory with exist_ok True."""
+    test_dir = tmp_path / "output_dir"
+    test_dir.mkdir()
+
+    with pytest.raises(NotAFileError):
+        val_output_path(test_dir, exist_ok=True)
 
 
 def test_val_output_path_absolute(tmp_path: Path):
