@@ -11,7 +11,6 @@ from warnings import catch_warnings, filterwarnings
 import ffmpeg
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.common import package_root
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import val_input_path
 from scinoephile.core import ScinoephileError
@@ -35,7 +34,7 @@ from scinoephile.multilang.yue_zho.transcription.shifting import (
 with catch_warnings():
     filterwarnings("ignore", category=SyntaxWarning)
     filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
+from pydub import AudioSegment
 
 from .transcriber import YueTranscriber
 
@@ -158,11 +157,7 @@ def get_yue_transcriber_vs_zho(
             )
         )
     if test_case_directory_path is None:
-        default_test_data_dir_path = package_root.parent / "test" / "data" / "mlamd"
-        if default_test_data_dir_path.is_dir():
-            test_case_directory_path = default_test_data_dir_path
-        else:
-            test_case_directory_path = get_runtime_cache_dir_path("test_cases")
+        test_case_directory_path = _get_default_test_case_dir_path()
     return YueTranscriber(
         test_case_directory_path=test_case_directory_path,
         shifting_test_cases=shifting_test_cases,
@@ -196,3 +191,19 @@ def get_yue_transcribed_vs_zho(
     if transcriber is None:
         transcriber = get_yue_transcriber_vs_zho()
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)
+
+
+def _get_default_test_case_dir_path() -> Path:
+    """Get the default writable test-case directory for transcription updates.
+
+    Returns:
+        writable runtime test-case root with transcription subdirectories present
+    """
+    test_case_dir_path = get_runtime_cache_dir_path("test_cases")
+    (test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "shifting").mkdir(
+        parents=True, exist_ok=True
+    )
+    (test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "merging").mkdir(
+        parents=True, exist_ok=True
+    )
+    return test_case_dir_path
