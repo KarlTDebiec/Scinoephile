@@ -127,3 +127,27 @@ def test_yue_transcribe_cli_stream_errors_are_user_facing():
                 YueTranscribeCli,
                 f"{media_infile_path} {zhongwen_infile_path} --stream-index 7",
             )
+
+
+def test_yue_transcribe_cli_rejects_missing_subtitle_infile():
+    """Test 粤文 transcription CLI surfaces missing subtitle infiles."""
+    media_infile_path = "/tmp/test_media.mp4"
+    zhongwen_infile_path = "/tmp/missing_subtitles.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranscribeCli,
+            f"{media_infile_path} {zhongwen_infile_path}",
+        )
+
+
+def test_yue_transcribe_cli_rejects_missing_media_infile():
+    """Test 粤文 transcription CLI surfaces missing media infiles."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/missing_media.mp4"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranscribeCli,
+            f"{media_infile_path} {zhongwen_infile_path}",
+        )

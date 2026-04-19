@@ -10,6 +10,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.common.exception import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
@@ -85,14 +86,14 @@ class YueTranscribeCli(CommandLineInterface):
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
 
-        zhongwen = Series.load(val_input_path(zhongwen_infile))
         try:
+            zhongwen = Series.load(val_input_path(zhongwen_infile))
             yuewen = get_yue_transcribed_vs_zho(
                 zhongwen=zhongwen,
                 media_path=media_infile,
                 stream_index=stream_index,
             )
-        except ScinoephileError as exc:
+        except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
             parser.error(str(exc))
             return
         cls._write_series(parser, yuewen, outfile, overwrite)
