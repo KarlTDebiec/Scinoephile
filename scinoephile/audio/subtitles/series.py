@@ -388,7 +388,7 @@ class AudioSeries(Series):
         full_audio: AudioSegment,
         buffer: int,
     ) -> Self:
-        """Construct a series from text subtitles and full audio.
+        """Build a series from text subtitles and full audio.
 
         Arguments:
             text_series: Series of subtitle events

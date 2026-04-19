@@ -50,7 +50,7 @@ __all__ = [
 
 
 class YueZhoTranscriptionKwargs(TypedDict, total=False):
-    """Keyword arguments for YueTranscriber.process_all_blocks."""
+    """Keyword arguments for get_yue_vs_zho_transcribed forwarding."""
 
     stop_at_idx: int | None
 
@@ -69,7 +69,7 @@ def get_yue_audio_series_for_transcription(
     stream_index: int = 0,
     buffer: int = 1000,
 ) -> AudioSeries:
-    """Build an AudioSeries for transcription from subtitles and media input.
+    """Get an AudioSeries for transcription from subtitles and media input.
 
     Arguments:
         zhongwen: 中文字幕 subtitles with timing data
