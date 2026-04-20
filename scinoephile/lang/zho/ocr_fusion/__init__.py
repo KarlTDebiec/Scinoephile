@@ -18,6 +18,7 @@ from scinoephile.llms.dual_single.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
 )
+from scinoephile.llms.providers.registry import get_default_provider
 
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
@@ -99,5 +100,6 @@ def get_zho_ocr_fuser(
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        provider=get_default_provider(),
         **kwargs,
     )

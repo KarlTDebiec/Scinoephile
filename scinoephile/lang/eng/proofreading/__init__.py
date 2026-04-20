@@ -14,6 +14,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
+from scinoephile.llms.providers.registry import get_default_provider
 
 from .prompts import EngProofreadingPrompt
 
@@ -83,5 +84,6 @@ def get_eng_proofreader(
     return MonoBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        provider=get_default_provider(),
         **kwargs,
     )

@@ -14,6 +14,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
 )
+from scinoephile.llms.providers.registry import get_default_provider
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor
@@ -96,6 +97,7 @@ def get_yue_vs_zho_proofreader(
     return YueZhoProofreadingProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
+        provider=get_default_provider(),
         tools=tools,
         tool_handlers=tool_handlers,
         **kwargs,

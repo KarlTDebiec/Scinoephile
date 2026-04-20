@@ -17,6 +17,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_pair import DualPairManager
+from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.punctuating import (
     YueZhoHansPunctuatingPrompt,
     YueZhoPunctuatingManager,
@@ -111,6 +112,7 @@ def get_yue_vs_zho_transcriber(
         test_case_directory_path=test_case_directory_path,
         shifting_test_cases=shifting_test_cases,
         punctuating_test_cases=punctuating_test_cases,
+        provider=get_default_provider(),
     )
 
 
