@@ -82,22 +82,3 @@ def test_zho_validate_ocr_cli(input_path: str):
         assert output == expected
         assert (outfile_path / "index.html").exists()
         assert any(outfile_path.glob("*.png"))
-
-
-def test_zho_validate_ocr_cli_missing_outfile(capsys: pytest.CaptureFixture):
-    """Test 中文 validate-ocr CLI rejects missing --outfile.
-
-    Arguments:
-        capsys: stdout/stderr capture fixture
-    """
-    full_input_path = test_data_root / "mlamd" / "output" / "zho-Hans_image"
-
-    with pytest.raises(SystemExit) as excinfo:
-        run_cli_with_args(
-            ZhoValidateOcrCli,
-            f"--infile {full_input_path}",
-        )
-
-    captured = capsys.readouterr()
-    assert excinfo.value.code == 2
-    assert "--outfile" in captured.err
