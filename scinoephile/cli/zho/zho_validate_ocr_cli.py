@@ -54,7 +54,8 @@ class ZhoValidateOcrCli(CommandLineInterface):
             type=Path,
             help=(
                 "中文 OCR image subtitle infile path "
-                "(directory with index.html/pngs or .sup file; stdin is not supported)"
+                "(directory containing index.html and png files, or a .sup file; "
+                "stdin is not supported)"
             ),
         )
 

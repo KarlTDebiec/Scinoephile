@@ -54,7 +54,8 @@ class EngValidateOcrCli(CommandLineInterface):
             type=Path,
             help=(
                 "English OCR image subtitle infile path "
-                "(directory with index.html/pngs or .sup file; stdin is not supported)"
+                "(directory containing index.html and png files, or a .sup file; "
+                "stdin is not supported)"
             ),
         )
 
