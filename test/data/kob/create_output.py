@@ -19,10 +19,11 @@ from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import (
     get_yue_proofread_vs_zho,
     get_yue_reviewed_vs_zho,
+    get_yue_transcribed_vs_zho,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
-from scinoephile.multilang.yue_zho.transcription import YueTranscriber
+from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_translated_vs_zho,
     get_yue_vs_zho_translator,
@@ -126,12 +127,16 @@ if "简体粤文 (Transcription)" in actions:
 
     # Transcribe
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
-    transcriber = YueTranscriber(
+    transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=test_data_root / "kob",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         punctuating_test_cases=get_mlamd_yue_punctuating_test_cases(),
     )
-    yue_hans_transcribe = transcriber.process_all_blocks(yue_hans_audio, zho_hans)
+    yue_hans_transcribe = get_yue_transcribed_vs_zho(
+        yue_hans_audio,
+        zho_hans,
+        transcriber=transcriber,
+    )
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans_transcribe.save(outfile_path)
 
