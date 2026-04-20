@@ -22,7 +22,7 @@ __all__ = ["EngFuseCli"]
 
 
 class EngFuseCli(CommandLineInterface):
-    """Command-line interface for English OCR subtitle fusion."""
+    """Fuse OCR output form Google Lens and Tesseract."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

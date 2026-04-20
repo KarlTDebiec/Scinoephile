@@ -20,7 +20,7 @@ logger = getLogger(__name__)
 
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
-    """Command-line interface for building the GZZJ dictionary cache."""
+    """Build GZZJ dictionary cache."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -37,6 +37,7 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--source-json-path",
             default=None,

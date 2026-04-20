@@ -29,7 +29,7 @@ __all__ = ["ZhoFuseCli"]
 
 
 class ZhoFuseCli(CommandLineInterface):
-    """Command-line interface for 中文 OCR subtitle fusion."""
+    """Fuse OCR output from Google Lens and PaddleOCR."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

@@ -33,6 +33,8 @@ class DictionaryBuildCliBase(CommandLineInterface, ABC):
             "output arguments",
             optional_arguments_name="additional arguments",
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "--database-path",
             default=None,

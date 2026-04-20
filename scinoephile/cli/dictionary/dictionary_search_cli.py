@@ -28,7 +28,7 @@ logger = getLogger(__name__)
 
 
 class DictionarySearchCli(CommandLineInterface):
-    """Command-line interface for searching dictionaries."""
+    """Search dictionaries."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

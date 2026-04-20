@@ -26,7 +26,7 @@ logger = getLogger(__name__)
 
 
 class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
-    """Command-line interface for building the CUHK dictionary cache."""
+    """Build CUHK dictionary cache."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -44,12 +44,15 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             default=None,
             type=output_dir_arg(),
             help="cache directory for scraped HTML and link data",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--max-words",
             type=int_arg(min_value=1),

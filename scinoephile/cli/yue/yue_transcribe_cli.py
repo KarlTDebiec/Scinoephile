@@ -26,7 +26,7 @@ __all__ = ["YueTranscribeCli"]
 
 
 class YueTranscribeCli(CommandLineInterface):
-    """Command-line interface for 粤文 subtitle transcription."""
+    """Transcribe subtitles from audio and revise using Standard Chinese text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
