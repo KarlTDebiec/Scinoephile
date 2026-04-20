@@ -33,7 +33,7 @@ class AnalysisDiffCli(CommandLineInterface):
             parser,
             "input arguments",
             "operation arguments",
-            "output",
+            "output arguments",
             optional_arguments_name="additional arguments",
         )
 
