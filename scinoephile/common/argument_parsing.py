@@ -48,35 +48,45 @@ class FloatValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_float."""
 
     n_values: int | None
+    """required number of values."""
     min_value: float | None
+    """minimum allowed value."""
     max_value: float | None
+    """maximum allowed value."""
 
 
 class IntValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_int."""
 
     n_values: int | None
+    """required number of values."""
     min_value: int | None
+    """minimum allowed value."""
     max_value: int | None
+    """maximum allowed value."""
     acceptable_values: Collection[int] | None
+    """explicit set of acceptable values."""
 
 
 class OutputPathValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_output_path."""
 
     exist_ok: bool
+    """whether existing output files are accepted."""
 
 
 class OutputDirValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_output_dir_path."""
 
     create: bool
+    """whether missing output directories should be created."""
 
 
 class StrValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_str."""
 
     options: Collection[str]
+    """allowed string options."""
 
 
 def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
