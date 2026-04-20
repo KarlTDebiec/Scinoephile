@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for English subtitle operations."""
+"""Command-line interface for English OCR subtitle validation."""
 
 from __future__ import annotations
 
@@ -8,24 +8,27 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import (
+    CLIKwargs,
+    CommandLineInterface,
+    DirectoryNotFoundError,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
-    input_file_arg,
+    int_arg,
+    output_dir_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
+from scinoephile.common.exception import ArgumentConflictError, NotAFileError
+from scinoephile.core.cli import write_series
+from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.eng import validate_eng_ocr
 
-from .eng_fuse_cli import EngFuseCli
-from .eng_validate_ocr_cli import EngValidateOcrCli
-
-__all__ = ["EngCli"]
+__all__ = ["EngValidateOcrCli"]
 
 
-class EngCli(CommandLineInterface):
-    """Modify English subtitles."""
+class EngValidateOcrCli(CommandLineInterface):
+    """Validate English OCR text against subtitle images."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -37,7 +40,6 @@ class EngCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
-            "positional arguments",
             "input arguments",
             "operation arguments",
             "output arguments",
@@ -49,25 +51,29 @@ class EngCli(CommandLineInterface):
             "-i",
             "--infile",
             required=True,
-            type=input_file_arg(allow_stdin=True),
-            help='English subtitle infile path or "-" for stdin',
+            type=Path,
+            help=(
+                "English OCR image subtitle infile path "
+                "(directory with index.html/pngs or .sup file; stdin is not supported)"
+            ),
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--clean",
-            action="store_true",
-            help="clean subtitles of closed-caption annotations and other anomalies",
+            "--stop-at-idx",
+            type=int_arg(min_value=0),
+            help="stop validation after this subtitle index",
         )
         arg_groups["operation arguments"].add_argument(
-            "--flatten",
+            "--interactive",
             action="store_true",
-            help="flatten multi-line subtitles into single lines",
+            help="prompt for interactive validation decisions",
         )
         arg_groups["operation arguments"].add_argument(
-            "--proofread",
-            action="store_true",
-            help="proofread subtitles using LLM",
+            "--output-dir",
+            default=None,
+            type=output_dir_arg(),
+            help="directory in which to save validation image outputs",
         )
 
         # Output arguments
@@ -83,28 +89,16 @@ class EngCli(CommandLineInterface):
             action="store_true",
             help="overwrite outfile if it exists",
         )
-
-        subparsers = parser.add_subparsers(
-            dest="eng_subcommand",
-            help="subcommand",
-            required=False,
-        )
-        subcommands = cls.subcommands()
-        for name in sorted(subcommands):
-            subcommands[name].argparser(subparsers=subparsers)
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
-        """Names and types of tools wrapped by command-line interface.
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
 
         Returns:
-            mapping of subcommand names to CLI classes
+            subcommand name
         """
-        return {
-            EngFuseCli.name(): EngFuseCli,
-            EngValidateOcrCli.name(): EngValidateOcrCli,
-        }
+        return "validate-ocr"
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -115,21 +109,12 @@ class EngCli(CommandLineInterface):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        subcommand_name = kwargs.pop("eng_subcommand", None)
-        if subcommand_name is not None:
-            subcommand_cli_class = cls.subcommands()[subcommand_name]
-            subcommand_cli_class._main(**kwargs)
-            return
-
         infile_path = kwargs.pop("infile")
+        stop_at_idx = kwargs.pop("stop_at_idx")
+        interactive = kwargs.pop("interactive")
+        output_dir_path: Path | None = kwargs.pop("output_dir")
         outfile_path: Path | None = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        proofread = kwargs.pop("proofread")
         overwrite = kwargs.pop("overwrite")
-
-        if not (clean or flatten or proofread):
-            parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
@@ -139,21 +124,33 @@ class EngCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read input
-        series = read_series(parser, infile_path, allow_stdin=True)
+        try:
+            series = ImageSeries.load(infile_path)
+        except (
+            DirectoryNotFoundError,
+            FileNotFoundError,
+            NotADirectoryError,
+            NotAFileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
-        if clean:
-            series = get_eng_cleaned(series)
-        if flatten:
-            series = get_eng_flattened(series)
-        if proofread:
-            series = get_eng_proofread(series)
+        validated = validate_eng_ocr(
+            series,
+            stop_at_idx=stop_at_idx,
+            interactive=interactive,
+            output_dir_path=output_dir_path,
+        )
 
         # Write output
         write_series(
-            parser, series, outfile_path if outfile_path is not None else "-", overwrite
+            parser,
+            validated,
+            outfile_path if outfile_path is not None else "-",
+            overwrite,
         )
 
 
 if __name__ == "__main__":
-    EngCli.main()
+    EngValidateOcrCli.main()

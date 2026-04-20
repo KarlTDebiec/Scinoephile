@@ -32,6 +32,7 @@ from scinoephile.lang.zho.proofreading import (
 )
 
 from .zho_fuse_cli import ZhoFuseCli
+from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
 __all__ = ["ZhoCli"]
 
@@ -133,6 +134,7 @@ class ZhoCli(CommandLineInterface):
         """
         return {
             ZhoFuseCli.name(): ZhoFuseCli,
+            ZhoValidateOcrCli.name(): ZhoValidateOcrCli,
         }
 
     @classmethod
