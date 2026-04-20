@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli Yue translate-vs-zho CLI."""
+"""Tests of scinoephile.cli.yue.yue_translate_vs_zho_cli."""
 
 from __future__ import annotations
 
@@ -15,6 +15,9 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
+from scinoephile.multilang.yue_zho.translation import (
+    YueHansFromZhoTranslationPrompt,
+)
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -62,7 +65,7 @@ def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...])
         ),
     ],
 )
-def test_yue_translate_cli(
+def test_yue_translate_vs_zho_cli(
     yue_input_path: str,
     zho_input_path: str,
     expected_path: str,
@@ -81,18 +84,27 @@ def test_yue_translate_cli(
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_translated_vs_zho",
-            return_value=expected,
-        ) as patched_translate:
-            run_cli_with_args(
-                YueTranslateVsZhoCli,
-                f"--yue-infile {full_yue_input_path} "
-                f"--zho-infile {full_zho_input_path} "
-                f"--outfile {output_path}",
-            )
+            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_vs_zho_translator",
+            return_value="translator",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_translated_vs_zho",
+                return_value=expected,
+            ) as patched_translate:
+                run_cli_with_args(
+                    YueTranslateVsZhoCli,
+                    f"--yue-infile {full_yue_input_path} "
+                    f"--zho-infile {full_zho_input_path} "
+                    f"--outfile {output_path}",
+                )
         output = Series.load(output_path)
 
+    assert (
+        patched_factory.call_args.kwargs["prompt_cls"]
+        is YueHansFromZhoTranslationPrompt
+    )
     called_kwargs = patched_translate.call_args.kwargs
     assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
     assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+    assert called_kwargs["translator"] == "translator"
     assert output == expected
