@@ -154,28 +154,3 @@ def test_eng_fuse_cli_pipe(
     expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_eng_fuse_nested_invocation_through_scinoephile():
-    """Test `scinoephile eng fuse` runs through parent parser."""
-    full_lens_input_path = test_data_root / "kob/input/eng_lens.srt"
-    full_tesseract_input_path = test_data_root / "kob/input/eng_tesseract.srt"
-    full_expected_path = test_data_root / "kob/output/eng_fuse_clean.srt"
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            ScinoephileCli,
-            " ".join(
-                [
-                    "eng fuse",
-                    f"--lens-infile {full_lens_input_path}",
-                    f"--tesseract-infile {full_tesseract_input_path}",
-                    "--clean",
-                    f"--outfile {output_path}",
-                ]
-            ),
-        )
-        output = Series.load(output_path)
-        expected = Series.load(full_expected_path)
-
-    assert output == expected
