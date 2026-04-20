@@ -26,11 +26,7 @@ __all__ = ["YueReviewCli"]
 
 
 class YueReviewCli(CommandLineInterface):
-    """Review 粤文 subtitles against 中文 subtitles.
-
-    Supports either block-by-block review or line-by-line proofreading.
-    Only one input may use stdin ("-") at a time.
-    """
+    """Review 粤文 subtitles against 中文 subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
