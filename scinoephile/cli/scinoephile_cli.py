@@ -19,7 +19,11 @@ from .zho import ZhoCli
 
 
 class ScinoephileCli(CommandLineInterface):
-    """Command-line interface for Scinoephile."""
+    """Command-line interface for Scinoephile.
+
+    Scinoephile is an application for working with Chinese, English, and bilingual
+    subtitles.
+    """
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
