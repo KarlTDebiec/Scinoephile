@@ -4,9 +4,13 @@
 
 from __future__ import annotations
 
+from io import StringIO
+from unittest.mock import patch
+
 import pytest
 
-from scinoephile.cli import ScinoephileCli, SyncCli
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -78,9 +82,45 @@ def test_sync_cli(
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             SyncCli,
-            f"{full_top_path} {full_bottom_path} {args} --outfile {output_path}",
+            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
+            f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
+
+    assert output == expected
+
+
+@pytest.mark.parametrize(
+    ("top_path", "bottom_path", "expected_path"),
+    [
+        (
+            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+    ],
+)
+def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
+    """Test sync CLI processing writes stdout when outfile is omitted.
+
+    Arguments:
+        top_path: path to top subtitle fixture
+        bottom_path: path to bottom subtitle fixture
+        expected_path: path to expected output subtitle fixture
+    """
+    full_top_path = test_data_root / top_path
+    full_bottom_path = test_data_root / bottom_path
+    full_expected_path = test_data_root / expected_path
+
+    stdout_stream = StringIO()
+    with patch("scinoephile.core.cli.stdout", stdout_stream):
+        run_cli_with_args(
+            SyncCli,
+            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path}",
+        )
+
+    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    expected = Series.load(full_expected_path)
 
     assert output == expected

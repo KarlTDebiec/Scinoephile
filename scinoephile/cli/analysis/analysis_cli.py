@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Scinoephile."""
+"""Command-line interface for analysis operations."""
 
 from __future__ import annotations
 
@@ -9,23 +9,14 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
-from .analysis import AnalysisCli
-from .dictionary import DictionaryCli
-from .eng import EngCli
-from .sync_cli import SyncCli
-from .timewarp_cli import TimewarpCli
-from .yue import YueCli
-from .zho import ZhoCli
+from .analysis_cer_cli import AnalysisCerCli
+from .analysis_diff_cli import AnalysisDiffCli
 
-__all__ = ["ScinoephileCli"]
+__all__ = ["AnalysisCli"]
 
 
-class ScinoephileCli(CommandLineInterface):
-    """Command-line interface for Scinoephile.
-
-    Scinoephile is an application for working with Chinese, English, and bilingual
-    subtitles.
-    """
+class AnalysisCli(CommandLineInterface):
+    """Analyze subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -37,7 +28,7 @@ class ScinoephileCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="subcommand",
+            dest="analysis_subcommand",
             help="subcommand",
             required=True,
         )
@@ -53,13 +44,8 @@ class ScinoephileCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
-            AnalysisCli.name(): AnalysisCli,
-            DictionaryCli.name(): DictionaryCli,
-            EngCli.name(): EngCli,
-            SyncCli.name(): SyncCli,
-            TimewarpCli.name(): TimewarpCli,
-            YueCli.name(): YueCli,
-            ZhoCli.name(): ZhoCli,
+            AnalysisCerCli.name(): AnalysisCerCli,
+            AnalysisDiffCli.name(): AnalysisDiffCli,
         }
 
     @classmethod
@@ -69,10 +55,10 @@ class ScinoephileCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
-        subcommand_name = kwargs.pop("subcommand")
+        subcommand_name = kwargs.pop("analysis_subcommand")
         subcommand_cli_class = cls.subcommands()[subcommand_name]
         subcommand_cli_class._main(**kwargs)
 
 
 if __name__ == "__main__":
-    ScinoephileCli.main()
+    AnalysisCli.main()

@@ -13,6 +13,7 @@ from collections.abc import Callable, Collection
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
+from .exception import NotAFileError
 from .validation import (
     val_float,
     val_input_dir_path,
@@ -207,13 +208,37 @@ def input_dir_arg() -> Callable[[Any], Path | list[Path]]:
     return get_validator(val_input_dir_path)
 
 
-def input_file_arg() -> Callable[[Any], Path | list[Path]]:
+def input_file_arg(
+    *, allow_stdin: bool = False
+) -> Callable[[Any], Path | str | list[Path]]:
     """Validate an input file path argument.
 
+    Arguments:
+        allow_stdin: whether "-" should be accepted as stdin sentinel
     Returns:
         value validator function
     """
-    return get_validator(val_input_path)
+    if not allow_stdin:
+        return get_validator(val_input_path)
+
+    def wrapped(value: Any) -> Path | str | list[Path]:
+        """Validate an input file path argument, with optional stdin support.
+
+        Arguments:
+            value: value to validate
+        Returns:
+            validated path-like value, or "-" when stdin is allowed
+        Raises:
+            ArgumentTypeError: If TypeError is raised while validating value
+        """
+        if str(value) == "-":
+            return "-"
+        try:
+            return val_input_path(value)
+        except (FileNotFoundError, NotAFileError, TypeError) as exc:
+            raise ArgumentTypeError(str(exc)) from exc
+
+    return wrapped
 
 
 def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[int]]:

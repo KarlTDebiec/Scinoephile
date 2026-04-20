@@ -4,7 +4,7 @@
 
 This module may import from: common, core, lang
 
-Hierarchy within module:
+Hierarchy within module (lower may import from higher)::
 * transcription
 * subtitles
 """

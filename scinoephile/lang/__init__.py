@@ -4,7 +4,7 @@
 
 This module may import from: common, core, image, llms
 
-Hierarchy within module:
+Hierarchy within module (lower may import from higher)::
 * eng / zho
 * cmn / yue
 * id

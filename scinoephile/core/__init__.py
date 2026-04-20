@@ -4,11 +4,11 @@
 
 This module may import from: common
 
-Hierarchy within module:
+Hierarchy within module (lower may import from higher):
 * exceptions / text
-* paths / llms
-* subtitles
-* timing / pairs
+* paths / pairs
+* subtitles / llms
+* timing / cli
 * synchronization
 """
 
