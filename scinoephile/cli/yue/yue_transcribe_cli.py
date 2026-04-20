@@ -12,7 +12,11 @@ from typing import Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    int_arg,
+    output_file_arg,
+)
 from scinoephile.common.exception import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_input_path
@@ -72,9 +76,9 @@ class YueTranscribeCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="OUTFILE",
-            default="-",
-            type=str,
-            help='粤文 subtitle outfile path or "-" for stdout',
+            default=None,
+            type=output_file_arg(),
+            help="粤文 subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -104,12 +108,19 @@ class YueTranscribeCli(CommandLineInterface):
         media_infile_path = kwargs.pop("media_infile")
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
-        outfile_path = kwargs.pop("outfile")
+        outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if media_infile_path == "-" and zhongwen_infile_path == "-":
             try:
                 raise ArgumentConflictError(
                     "--media-infile and --zhongwen-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
+        if overwrite and outfile_path is None:
+            try:
+                raise ArgumentConflictError(
+                    "--overwrite may only be used with --outfile"
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
@@ -152,7 +163,9 @@ class YueTranscribeCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Write outputs
-        write_series(parser, yuewen, outfile_path, overwrite)
+        write_series(
+            parser, yuewen, outfile_path if outfile_path is not None else "-", overwrite
+        )
 
 
 if __name__ == "__main__":

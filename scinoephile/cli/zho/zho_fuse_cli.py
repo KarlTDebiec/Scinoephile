@@ -5,10 +5,11 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
@@ -79,9 +80,9 @@ class ZhoFuseCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="OUTFILE",
-            default="-",
-            type=str,
-            help='中文 subtitle outfile path or "-" for stdout',
+            default=None,
+            type=output_file_arg(),
+            help="中文 subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -112,12 +113,19 @@ class ZhoFuseCli(CommandLineInterface):
         paddle_infile = kwargs.pop("paddle_infile")
         clean = kwargs.pop("clean")
         convert = kwargs.pop("convert")
-        outfile = kwargs.pop("outfile")
+        outfile: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if lens_infile == "-" and paddle_infile == "-":
             try:
                 raise ArgumentConflictError(
                     "--lens-infile and --paddle-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
+        if overwrite and outfile is None:
+            try:
+                raise ArgumentConflictError(
+                    "--overwrite may only be used with --outfile"
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
@@ -138,7 +146,7 @@ class ZhoFuseCli(CommandLineInterface):
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
 
         # Write outputs
-        write_series(parser, fused, outfile, overwrite)
+        write_series(parser, fused, outfile if outfile is not None else "-", overwrite)
 
     @classmethod
     def _get_ocr_fuser(cls, convert: OpenCCConfig | None) -> OcrFusionProcessor:
