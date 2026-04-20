@@ -54,17 +54,19 @@ def test_yue_review_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 
 @pytest.mark.parametrize(
-    ("yue_input_path", "zho_input_path", "expected_path"),
+    ("yue_input_path", "zho_input_path", "expected_path", "args"),
     [
         (
             "mlamd/output/yue-Hans_transcribe.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "mlamd/output/yue-Hans_transcribe_proofread.srt",
+            "--mode line",
         ),
         (
             "mlamd/output/yue-Hans_transcribe_proofread_translate.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
             "mlamd/output/yue-Hans_transcribe_proofread_translate_review.srt",
+            "",
         ),
     ],
 )
@@ -72,6 +74,7 @@ def test_yue_review_vs_zho_cli(
     yue_input_path: str,
     zho_input_path: str,
     expected_path: str,
+    args: str,
 ):
     """Test 粤文 review-vs-zho CLI with file arguments."""
     full_yue_input_path = test_data_root / yue_input_path
@@ -95,14 +98,22 @@ def test_yue_review_vs_zho_cli(
                         YueReviewVsZhoCli,
                         f"--yue-infile {full_yue_input_path} "
                         f"--zho-infile {full_zho_input_path} "
+                        f"{args} "
                         f"--outfile {outfile_path}",
                     )
         output = Series.load(outfile_path)
 
-    assert patched_factory.call_args.kwargs["prompt_cls"] is YueHansReviewPrompt
-    called_kwargs = patched_review.call_args.kwargs
-    assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
-    assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
-    assert called_kwargs["reviewer"] == "reviewer"
-    patched_line.assert_not_called()
+    if args == "--mode line":
+        called_kwargs = patched_line.call_args.kwargs
+        assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
+        assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+        patched_review.assert_not_called()
+        patched_factory.assert_not_called()
+    else:
+        assert patched_factory.call_args.kwargs["prompt_cls"] is YueHansReviewPrompt
+        called_kwargs = patched_review.call_args.kwargs
+        assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
+        assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+        assert called_kwargs["reviewer"] == "reviewer"
+        patched_line.assert_not_called()
     assert output == expected
