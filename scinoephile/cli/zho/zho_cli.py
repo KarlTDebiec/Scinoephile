@@ -11,6 +11,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 from .zho_fuse_cli import ZhoFuseCli
 from .zho_process_cli import ZhoProcessCli
+from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
 __all__ = ["ZhoCli"]
 
@@ -47,6 +48,7 @@ class ZhoCli(CommandLineInterface):
         return {
             ZhoFuseCli.name(): ZhoFuseCli,
             ZhoProcessCli.name(): ZhoProcessCli,
+            ZhoValidateOcrCli.name(): ZhoValidateOcrCli,
         }
 
     @classmethod

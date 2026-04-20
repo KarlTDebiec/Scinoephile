@@ -359,26 +359,51 @@ def val_int(
 
 
 @overload
-def val_output_dir_path(value: Path | str | PathLike[Any]) -> Path: ...
+def val_output_dir_path(
+    value: Path | str | PathLike[Any], create: bool = True
+) -> Path: ...
 
 
 @overload
-def val_output_dir_path(value: Iterable[Path | str | PathLike[Any]]) -> list[Path]: ...
+def val_output_dir_path(
+    value: Iterable[Path | str | PathLike[Any]], create: bool = True
+) -> list[Path]: ...
 
 
 def val_output_dir_path(
     value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+    create: bool = True,
 ) -> Path | list[Path]:
     """Validate output directory path(s), make them absolute, and create them if needed.
 
     Arguments:
         value: Path or paths to output directories
+        create: whether missing directories should be created
     Returns:
         Validated path or paths
     Raises:
         NotADirectoryError: If any path is not a directory
         TypeError: If any value cannot be cast to Path
     """
+
+    def _get_nearest_existing_ancestor_dir_path(path: Path) -> Path:
+        """Get nearest existing ancestor of a path.
+
+        Arguments:
+            path: path to inspect
+        Returns:
+            nearest existing ancestor path
+        Raises:
+            DirectoryNotFoundError: if no existing ancestor is found
+        """
+        current_path = path.parent
+        while not current_path.exists():
+            if current_path == current_path.parent:
+                raise DirectoryNotFoundError(
+                    f"No existing ancestor directory found for {path}"
+                )
+            current_path = current_path.parent
+        return current_path
 
     def _val_output_dir_path(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
@@ -402,8 +427,16 @@ def val_output_dir_path(
                 f"{type(value_to_validate)}, cannot be cast to Path"
             ) from exc
         if not validated_value.exists():
-            validated_value.mkdir(parents=True)
-            logger.info(f"Created directory {validated_value}")
+            nearest_existing_ancestor_dir_path = (
+                _get_nearest_existing_ancestor_dir_path(validated_value)
+            )
+            if not nearest_existing_ancestor_dir_path.is_dir():
+                raise NotADirectoryError(
+                    f"{nearest_existing_ancestor_dir_path} is not a directory"
+                )
+            if create:
+                validated_value.mkdir(parents=True)
+                logger.info(f"Created directory {validated_value}")
             return validated_value
         if not validated_value.is_dir():
             raise NotADirectoryError(f"{validated_value} is not a directory")
