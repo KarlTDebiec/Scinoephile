@@ -96,19 +96,19 @@ class EngFuseCli(CommandLineInterface):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        lens_infile = kwargs.pop("lens_infile")
-        tesseract_infile = kwargs.pop("tesseract_infile")
+        lens_infile_path = kwargs.pop("lens_infile")
+        tesseract_infile_path = kwargs.pop("tesseract_infile")
         clean = kwargs.pop("clean")
-        outfile: Path | None = kwargs.pop("outfile")
+        outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-        if lens_infile == "-" and tesseract_infile == "-":
+        if lens_infile_path == "-" and tesseract_infile_path == "-":
             try:
                 raise ArgumentConflictError(
                     "--lens-infile and --tesseract-infile may not both be '-'"
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
-        if overwrite and outfile is None:
+        if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
                     "--overwrite may only be used with --outfile"
@@ -117,8 +117,8 @@ class EngFuseCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        lens = read_series(parser, lens_infile, allow_stdin=True)
-        tesseract = read_series(parser, tesseract_infile, allow_stdin=True)
+        lens = read_series(parser, lens_infile_path, allow_stdin=True)
+        tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
 
         # Perform operations
         if clean:
@@ -127,7 +127,9 @@ class EngFuseCli(CommandLineInterface):
         fused = get_eng_ocr_fused(lens, tesseract)
 
         # Write outputs
-        write_series(parser, fused, outfile if outfile is not None else "-", overwrite)
+        write_series(
+            parser, fused, outfile_path if outfile_path is not None else "-", overwrite
+        )
 
 
 if __name__ == "__main__":

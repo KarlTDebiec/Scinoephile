@@ -111,22 +111,22 @@ class TimewarpCli(CommandLineInterface):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        anchor_infile = kwargs.pop("anchor_infile")
-        mobile_infile = kwargs.pop("mobile_infile")
+        anchor_infile_path = kwargs.pop("anchor_infile")
+        mobile_infile_path = kwargs.pop("mobile_infile")
         one_start_idx = kwargs.pop("one_start_idx")
         one_end_idx = kwargs.pop("one_end_idx")
         two_start_idx = kwargs.pop("two_start_idx")
         two_end_idx = kwargs.pop("two_end_idx")
-        outfile: Path | None = kwargs.pop("outfile")
+        outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-        if anchor_infile == "-" and mobile_infile == "-":
+        if anchor_infile_path == "-" and mobile_infile_path == "-":
             try:
                 raise ArgumentConflictError(
                     "--anchor-infile and --mobile-infile may not both be '-'"
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
-        if overwrite and outfile is None:
+        if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
                     "--overwrite may only be used with --outfile"
@@ -135,8 +135,8 @@ class TimewarpCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        anchor = read_series(parser, anchor_infile, allow_stdin=True)
-        mobile = read_series(parser, mobile_infile, allow_stdin=True)
+        anchor = read_series(parser, anchor_infile_path, allow_stdin=True)
+        mobile = read_series(parser, mobile_infile_path, allow_stdin=True)
 
         # Perform operations
         try:
@@ -155,7 +155,7 @@ class TimewarpCli(CommandLineInterface):
         write_series(
             parser,
             timewarped,
-            outfile if outfile is not None else "-",
+            outfile_path if outfile_path is not None else "-",
             overwrite,
         )
 

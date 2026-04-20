@@ -78,18 +78,18 @@ class SyncCli(CommandLineInterface):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        top_infile = kwargs.pop("top_infile")
-        bottom_infile = kwargs.pop("bottom_infile")
-        outfile: Path | None = kwargs.pop("outfile")
+        top_infile_path = kwargs.pop("top_infile")
+        bottom_infile_path = kwargs.pop("bottom_infile")
+        outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-        if top_infile == "-" and bottom_infile == "-":
+        if top_infile_path == "-" and bottom_infile_path == "-":
             try:
                 raise ArgumentConflictError(
                     "--top-infile and --bottom-infile may not both be '-'"
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
-        if overwrite and outfile is None:
+        if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
                     "--overwrite may only be used with --outfile"
@@ -98,14 +98,16 @@ class SyncCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        top = read_series(parser, top_infile, allow_stdin=True)
-        bottom = read_series(parser, bottom_infile, allow_stdin=True)
+        top = read_series(parser, top_infile_path, allow_stdin=True)
+        bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
 
         # Perform operations
         synced = get_synced_series(top, bottom)
 
         # Write outputs
-        write_series(parser, synced, outfile if outfile is not None else "-", overwrite)
+        write_series(
+            parser, synced, outfile_path if outfile_path is not None else "-", overwrite
+        )
 
 
 if __name__ == "__main__":

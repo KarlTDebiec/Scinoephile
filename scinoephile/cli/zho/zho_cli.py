@@ -151,8 +151,8 @@ class ZhoCli(CommandLineInterface):
             subcommand_cli_class._main(**kwargs)
             return
 
-        infile = kwargs.pop("infile")
-        outfile: Path | None = kwargs.pop("outfile")
+        infile_path = kwargs.pop("infile")
+        outfile_path: Path | None = kwargs.pop("outfile")
         clean = kwargs.pop("clean")
         flatten = kwargs.pop("flatten")
         convert = kwargs.pop("convert")
@@ -162,7 +162,7 @@ class ZhoCli(CommandLineInterface):
 
         if not (clean or flatten or convert or proofread_script or romanize):
             parser.error("At least one operation required")
-        if overwrite and outfile is None:
+        if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
                     "--overwrite may only be used with --outfile"
@@ -172,7 +172,7 @@ class ZhoCli(CommandLineInterface):
         cls._validate_proofread_script(parser, convert, proofread_script)
 
         # Read uboyt
-        series = read_series(parser, infile, allow_stdin=True)
+        series = read_series(parser, infile_path, allow_stdin=True)
 
         # Perform operations
         if clean:
@@ -189,7 +189,9 @@ class ZhoCli(CommandLineInterface):
             series = get_cmn_romanized(series, append=True)
 
         # Write output
-        write_series(parser, series, outfile if outfile is not None else "-", overwrite)
+        write_series(
+            parser, series, outfile_path if outfile_path is not None else "-", overwrite
+        )
 
     @classmethod
     def _get_proofread_prompt_cls(

@@ -102,12 +102,12 @@ class YueTranscribeCli(CommandLineInterface):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        media_infile = kwargs.pop("media_infile")
-        zhongwen_infile = kwargs.pop("zhongwen_infile")
+        media_infile_path = kwargs.pop("media_infile")
+        zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-        if media_infile == "-" and zhongwen_infile == "-":
+        if media_infile_path == "-" and zhongwen_infile_path == "-":
             try:
                 raise ArgumentConflictError(
                     "--media-infile and --zhongwen-infile may not both be '-'"
@@ -123,24 +123,24 @@ class YueTranscribeCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        if zhongwen_infile == "-":
+        if zhongwen_infile_path == "-":
             zhongwen = read_series(parser, "-", allow_stdin=True)
             with get_temp_file_path(suffix=".srt") as temp_zhongwen_path:
                 zhongwen.save(temp_zhongwen_path)
                 try:
                     yuewen = AudioSeries.load_from_media(
-                        media_path=media_infile,
+                        media_path=media_infile_path,
                         subtitle_path=temp_zhongwen_path,
                         stream_index=stream_index,
                     )
                 except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
                     parser.error(str(exc))
         else:
-            zhongwen = read_series(parser, zhongwen_infile, allow_stdin=True)
+            zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
             try:
                 yuewen = AudioSeries.load_from_media(
-                    media_path=media_infile,
-                    subtitle_path=zhongwen_infile,
+                    media_path=media_infile_path,
+                    subtitle_path=zhongwen_infile_path,
                     stream_index=stream_index,
                 )
             except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
