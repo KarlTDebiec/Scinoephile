@@ -59,10 +59,7 @@ class YueReviewCli(CommandLineInterface):
             "--zho-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help=(
-                'reference 中文 subtitle infile path or "-" for stdin; '
-                "--yue-infile and --zho-infile may not both be '-'"
-            ),
+            help=('reference 中文 subtitle infile path or "-" for stdin'),
         )
 
         # Operation arguments
@@ -107,13 +104,13 @@ class YueReviewCli(CommandLineInterface):
         Arguments:
             **kwargs: keyword arguments
         """
+        # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
         yue_infile_path = kwargs.pop("yue_infile")
         zho_infile_path = kwargs.pop("zho_infile")
         mode = kwargs.pop("mode")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-
         if yue_infile_path == "-" and zho_infile_path == "-":
             try:
                 raise ArgumentConflictError(
@@ -129,14 +126,17 @@ class YueReviewCli(CommandLineInterface):
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
 
+        # Read inputs
         yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
 
+        # Perform operations
         if mode == "line":
             reviewed = get_yue_proofread_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
         else:
             reviewed = get_yue_reviewed_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
 
+        # Write output
         write_series(
             parser,
             reviewed,
