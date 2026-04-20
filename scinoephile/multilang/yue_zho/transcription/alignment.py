@@ -20,9 +20,9 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 from scinoephile.llms.dual_pair import DualPairManager
-from scinoephile.multilang.yue_zho.transcription.merging import (
-    YueZhoHansMergingPrompt,
-    YueZhoMergingManager,
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+    YueZhoPunctuatingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -211,13 +211,13 @@ class Alignment:
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
         return test_case
 
-    def get_merging_test_case(self, sg_idx: int) -> TestCase | None:
-        """Get merging query for a sync group.
+    def get_punctuating_test_case(self, sg_idx: int) -> TestCase | None:
+        """Get punctuating query for a sync group.
 
         Arguments:
             sg_idx: Index of sync group
         Returns:
-            Query, or None if there are no 粤文 to merge
+            test case, or None if there are no 粤文 to punctuate
         """
         # Get sync group
         if sg_idx < 0 or sg_idx >= len(self.sync_groups):
@@ -242,9 +242,9 @@ class Alignment:
             return None
         yws = [self.yuewen[i].text for i in yw_idxs]
 
-        # Return merge query
-        test_case_cls = YueZhoMergingManager.get_test_case_cls(
-            prompt_cls=YueZhoHansMergingPrompt
+        # Return punctuate query
+        test_case_cls = YueZhoPunctuatingManager.get_test_case_cls(
+            prompt_cls=YueZhoHansPunctuatingPrompt
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_2: zw,

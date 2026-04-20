@@ -18,11 +18,11 @@ dependencies = [
     "numba>=0.64.0",
     "numpy>=2.4.3",
     "onnxruntime>=1.24.4",
-    "openai>=2.31.0",
+    "openai>=2.32.0",
     "opencc>=1.2.0",
     "pillow>=12.1.1",
     "pycantonese>=4.1.0",
-    "pydantic>=2.12.5",
+    "pydantic>=2.13.2",
     "pydub>=0.25.1",
     "pypinyin>=0.55.0",
     "pysubs2>=1.8.1",
@@ -31,7 +31,7 @@ dependencies = [
     "setuptools>=82.0.1",
     "torch>=2.10.0",
     "torchaudio>=2.11.0",
-    "transformers>=5.5.3",
+    "transformers>=5.5.4",
     "whisper-timestamped>=1.15.9",
 ]
 
@@ -43,8 +43,8 @@ dev = [
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.15.7",
-    "ty>=0.0.29",
+    "ruff>=0.15.11",
+    "ty>=0.0.31",
 ]
 
 [tool.pytest.ini_options]

@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
+from .llm_provider import LLMProvider
 from .manager import Manager
 from .prompt import Prompt
 from .queryer import Queryer
@@ -34,6 +35,8 @@ class Processor(ABC):
         prompt_cls: type[Prompt],
         test_cases: list[TestCase] | None = None,
         test_case_path: Path | None = None,
+        *,
+        provider: LLMProvider,
         auto_verify: bool = False,
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
@@ -44,6 +47,7 @@ class Processor(ABC):
             prompt_cls: text for LLM correspondence
             test_cases: test cases
             test_case_path: path to file containing test cases
+            provider: provider to use for queries
             auto_verify: automatically verify test cases if they meet selected criteria
             tools: available function-tool definitions
             tool_handlers: handlers for available function tools
@@ -72,6 +76,7 @@ class Processor(ABC):
         self.queryer = queryer_cls(
             prompt_test_cases=[tc for tc in test_cases if tc.prompt],
             verified_test_cases=[tc for tc in test_cases if tc.verified],
+            provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             auto_verify=auto_verify,
             tools=tools,

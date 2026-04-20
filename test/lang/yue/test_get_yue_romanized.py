@@ -10,7 +10,9 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.yue import get_yue_romanized
 
 # noinspection PyProtectedMember
-from scinoephile.lang.yue.romanization import _get_yue_text_romanized
+from scinoephile.lang.yue.romanization import (
+    _get_yue_text_romanized,
+)
 
 
 def _test_get_yue_romanized(series: Series, expected: Series):
@@ -54,7 +56,10 @@ def test_get_yue_romanized_titles(
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
+        ("广东话", "gwóng dūng wá"),
         ("你好世界", "néih hóu sai gaai"),
+        ("原来少爷", "yùhn lòih siu yèh"),
+        ("龙飞凤舞，苏察哈尔灿", "lùhng fēi fuhng móuh, sōu chaat hā yíh chaan"),
     ],
 )
 def test_get_yue_text_romanized(text: str, expected: str):

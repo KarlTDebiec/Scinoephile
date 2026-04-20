@@ -3,8 +3,8 @@
 """Code related to English (eng) text.
 
 Package hierarchy (modules may import from any above):
-* prompts
-* cleaning / flattening / ocr_fusion / proofreading
+* cleaning / flattening / ocr_validation / prompts
+* ocr_fusion / proofreading
 """
 
 from __future__ import annotations

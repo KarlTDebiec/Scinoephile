@@ -17,13 +17,18 @@ from scinoephile.audio.transcription import (
     get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core.llms import Queryer, TestCase
+from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription.merging import YueZhoHansMergingPrompt
+from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+    YueZhoHantPunctuatingPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
+    YueZhoHantShiftingPrompt,
 )
 
 from .aligner import Aligner
@@ -38,35 +43,47 @@ class YueTranscriber:
         self,
         test_case_directory_path: Path,
         shifting_test_cases: list[TestCase],
-        merging_test_cases: list[TestCase],
+        punctuating_test_cases: list[TestCase],
+        shifting_prompt_cls: type[YueZhoHansShiftingPrompt]
+        | type[YueZhoHantShiftingPrompt],
+        punctuating_prompt_cls: type[YueZhoHansPunctuatingPrompt]
+        | type[YueZhoHantPunctuatingPrompt],
+        provider: LLMProvider | None = None,
     ):
         """Initialize.
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
             shifting_test_cases: shifting test cases
-            merging_test_cases: merging test cases
+            punctuating_test_cases: punctuating test cases
+            provider: provider to use for LLM queryers
+            shifting_prompt_cls: prompt class for block-boundary shifting
+            punctuating_prompt_cls: prompt class for line punctuating
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
+        if provider is None:
+            provider = get_default_provider()
         self.transcriber = WhisperTranscriber(
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
         )
-        shifting_queryer_cls = Queryer.get_queryer_cls(YueZhoHansShiftingPrompt)
+        shifting_queryer_cls = Queryer.get_queryer_cls(shifting_prompt_cls)
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
+            provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
-        merging_queryer_cls = Queryer.get_queryer_cls(YueZhoHansMergingPrompt)
-        self.merging_queryer = merging_queryer_cls(
-            prompt_test_cases=[tc for tc in merging_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in merging_test_cases if tc.verified],
+        punctuating_queryer_cls = Queryer.get_queryer_cls(punctuating_prompt_cls)
+        self.punctuating_queryer = punctuating_queryer_cls(
+            prompt_test_cases=[tc for tc in punctuating_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in punctuating_test_cases if tc.verified],
+            provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,
-            merging_queryer=self.merging_queryer,
+            punctuating_queryer=self.punctuating_queryer,
         )
 
     def process_all_blocks(

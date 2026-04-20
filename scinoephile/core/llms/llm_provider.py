@@ -19,7 +19,7 @@ __all__ = [
 class ChatCompletionKwargs(TypedDict, total=False):
     """Keyword arguments for LLM chat completion methods.
 
-    These correspond to common parameters accepted by LLM APIs like OpenAI.
+    These correspond to common parameters accepted by chat-completion style APIs.
     """
 
     temperature: float
@@ -39,7 +39,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str = "gpt-5.4",
+        model: str | None = None,
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -49,10 +49,10 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
-            model: model to use
+            model: model identifier to use; if omitted, provider default is used
             tools: available function-tool definitions
             tool_handlers: handlers for available function tools
-            **kwargs: additional keyword arguments
+            **kwargs: provider-specific keyword arguments
         Returns:
             completion text from the model
         Raises:

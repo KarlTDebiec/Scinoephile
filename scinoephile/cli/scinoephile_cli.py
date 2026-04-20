@@ -7,15 +7,25 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import Unpack
 
-from scinoephile.cli.dictionary_cli import DictionaryCli
-from scinoephile.cli.eng_cli import EngCli
-from scinoephile.cli.eng_zho_cli import EngZhoCli
-from scinoephile.cli.zho_cli import ZhoCli
 from scinoephile.common import CLIKwargs, CommandLineInterface
+
+from .analysis import AnalysisCli
+from .dictionary import DictionaryCli
+from .eng import EngCli
+from .sync_cli import SyncCli
+from .timewarp_cli import TimewarpCli
+from .yue import YueCli
+from .zho import ZhoCli
+
+__all__ = ["ScinoephileCli"]
 
 
 class ScinoephileCli(CommandLineInterface):
-    """Command-line interface for Scinoephile."""
+    """Command-line interface for Scinoephile.
+
+    Scinoephile is an application for working with Chinese, English, and bilingual
+    subtitles.
+    """
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -36,15 +46,6 @@ class ScinoephileCli(CommandLineInterface):
             subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "scinoephile"
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 
@@ -52,10 +53,13 @@ class ScinoephileCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
+            AnalysisCli.name(): AnalysisCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            SyncCli.name(): SyncCli,
+            TimewarpCli.name(): TimewarpCli,
+            YueCli.name(): YueCli,
             ZhoCli.name(): ZhoCli,
-            EngZhoCli.name(): EngZhoCli,
         }
 
     @classmethod

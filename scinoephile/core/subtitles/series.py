@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from logging import getLogger
-from pathlib import Path
-from typing import Self, TypedDict, Unpack, cast, override
+from os import PathLike
+from typing import Any, Self, cast, override
 
 from pysubs2 import SSAFile
 from pysubs2.time import ms_to_str
@@ -16,18 +16,9 @@ from scinoephile.common.validation import val_input_path, val_output_path
 
 from .subtitle import Subtitle
 
-__all__ = [
-    "Series",
-    "SeriesKwargs",
-]
+__all__ = ["Series"]
 
 logger = getLogger(__name__)
-
-
-class SeriesKwargs(TypedDict, total=False):
-    """Keyword arguments for Series methods."""
-
-    pass
 
 
 class Series(SSAFile):
@@ -50,15 +41,6 @@ class Series(SSAFile):
         if events is not None:
             self.events = events
         self._blocks: list[Series] | None = None
-
-    @override
-    def __iter__(self) -> Iterator[Subtitle]:
-        """Iterate over subtitle events.
-
-        Returns:
-            iterator over subtitle events
-        """
-        return iter(self.events)
 
     def __eq__(self, other: object) -> bool:
         """Whether this series is equal to another.
@@ -86,6 +68,17 @@ class Series(SSAFile):
 
         return True
 
+    __hash__ = None
+
+    @override
+    def __iter__(self) -> Iterator[Subtitle]:
+        """Iterate over subtitle events.
+
+        Returns:
+            iterator over subtitle events
+        """
+        return iter(self.events)
+
     def __ne__(self, other: object) -> bool:
         """Whether this series is not equal to another.
 
@@ -95,8 +88,6 @@ class Series(SSAFile):
             whether this series is not equal to another
         """
         return not self == other
-
-    __hash__ = None
 
     @override
     def __repr__(self) -> str:
@@ -131,13 +122,13 @@ class Series(SSAFile):
     @override
     def save(
         self,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
-    ):
+        **kwargs: Any,
+    ) -> None:
         """Save series to an output file.
 
         Arguments:
@@ -148,17 +139,17 @@ class Series(SSAFile):
             errors: encoding error handling
             **kwargs: additional keyword arguments
         """
-        path = val_output_path(path, exist_ok=True)
+        validated_path = val_output_path(path, exist_ok=True)
         SSAFile.save(
             self,
-            str(path),
+            str(validated_path),
             encoding=encoding,
             format_=format_,
             fps=fps,
             errors=errors,
             **kwargs,
         )
-        logger.info(f"Saved series to {path}")
+        logger.info(f"Saved series to {validated_path}")
 
     def slice(self, start: int, end: int) -> Self:
         """Slice series.
@@ -210,7 +201,7 @@ class Series(SSAFile):
         string: str,
         format_: str | None = None,
         fps: float | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ) -> Self:
         """Parse series from string.
 
@@ -234,12 +225,12 @@ class Series(SSAFile):
     @override
     def load(
         cls,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ) -> Self:
         """Load series from an input file.
 
@@ -267,13 +258,6 @@ class Series(SSAFile):
         logger.info(f"Loaded series from {validated_path}")
         return series
 
-    def _init_blocks(self):
-        """Initialize blocks."""
-        self._blocks = [
-            self.slice(start_idx, end_idx)
-            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
-        ]
-
     @staticmethod
     def get_block_indexes_by_pause(
         series: Series, pause_length: int = 3000
@@ -300,3 +284,10 @@ class Series(SSAFile):
         block_indexes.append((start, len(series)))
 
         return block_indexes
+
+    def _init_blocks(self):
+        """Initialize blocks."""
+        self._blocks = [
+            self.slice(start_idx, end_idx)
+            for start_idx, end_idx in self.get_block_indexes_by_pause(self)
+        ]

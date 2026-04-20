@@ -6,8 +6,9 @@ from __future__ import annotations
 
 import re
 from logging import getLogger
+from os import PathLike
 from pathlib import Path
-from typing import Self, TypedDict, Unpack, override
+from typing import Any, Self, TypedDict, override
 from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
@@ -18,7 +19,6 @@ with catch_warnings():
     from pydub import AudioSegment
 
 
-from scinoephile.common import DirectoryNotFoundError, NotAFileError
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
     val_input_dir_path,
@@ -27,7 +27,7 @@ from scinoephile.common.validation import (
     val_output_path,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, SeriesKwargs
+from scinoephile.core.subtitles import Series
 
 from .subtitle import AudioSubtitle
 
@@ -43,8 +43,7 @@ class AudioSeriesLoadKwargs(TypedDict, total=False):
     """Keyword arguments for AudioSeries.load() methods."""
 
     buffer: int
-    audio_track: int
-    channels: int
+    """Additional buffer to include before and after each subtitle (ms)."""
 
 
 class AudioSeries(Series):
@@ -126,12 +125,12 @@ class AudioSeries(Series):
     @override
     def save(
         self,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[SeriesKwargs],
+        **kwargs: Any,
     ):
         """Save series to an output file.
 
@@ -147,22 +146,22 @@ class AudioSeries(Series):
 
         # Check if directory
         if format_ == "wav" or (not format_ and path.suffix == ""):
-            output_dir = val_output_dir_path(path)
-            self._save_wav(output_dir, **kwargs)
-            logger.info(f"Saved series to {output_dir}")
+            validated_output_dir_path = val_output_dir_path(path)
+            self._save_wav(validated_output_dir_path)
+            logger.info(f"Saved series to {validated_output_dir_path}")
             return
 
         # Otherwise, continue as superclass
-        output_path = val_output_path(path, exist_ok=True)
+        validated_output_path = val_output_path(path, exist_ok=True)
         super().save(
-            output_path,
+            validated_output_path,
             encoding=encoding,
             format_=format_,
             fps=fps,
             errors=errors,
             **kwargs,
         )
-        logger.info(f"Saved series to {output_path}")
+        logger.info(f"Saved series to {validated_output_path}")
 
     @override
     def slice(self, start: int, end: int) -> Self:
@@ -181,108 +180,21 @@ class AudioSeries(Series):
         ]
         return sliced
 
-    @override
-    def _init_blocks(self):
-        """Initialize blocks."""
-        # First get the basic block indexes
-        block_indexes = Series.get_block_indexes_by_pause(self)
-
-        # Calculate buffered times and create series for each block
-        blocks = []
-        for i, (start_idx, end_idx) in enumerate(block_indexes):
-            block_start_time = self.events[start_idx].start
-            block_end_time = self.events[end_idx - 1].end
-
-            # Buffer start
-            if i == 0:
-                buffered_start = max(0, block_start_time - 1000)
-            else:
-                prev_end = self.events[block_indexes[i - 1][1] - 1].end
-                max_unbuffered_end = (prev_end + block_start_time) // 2
-                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
-
-            # Buffer end
-            if i < len(block_indexes) - 1:
-                next_start = self.events[block_indexes[i + 1][0]].start
-                min_unbuffered_start = (block_end_time + next_start) // 2
-                buffered_end = min(block_end_time + 1000, min_unbuffered_start)
-            else:
-                buffered_end = min(len(self.audio), block_end_time + 1000)
-
-            # Slice audio
-            logger.debug(
-                f"Slicing audio for block {block_start_time}-{block_end_time} "
-                f"({buffered_start} - {buffered_end})"
-            )
-            block_audio = self.audio[buffered_start:buffered_end]
-
-            # Create AudioSeries block
-            block = self.slice(start_idx, end_idx)
-            # Store buffered timing information as attributes
-            block.buffered_start = buffered_start
-            block.buffered_end = buffered_end
-            # Override the audio with the buffered version
-            block.audio = block_audio
-
-            blocks.append(block)
-
-        self._blocks = blocks
-
-    def _save_wav(self, fp: Path, **kwargs: Unpack[SeriesKwargs]):
-        """Save series to directory of wav files.
-
-        Arguments:
-            fp: Path to output directory
-            **kwargs: Additional keyword arguments
-        """
-        # Prepare empty directory, deleting existing files if needed
-        if fp.exists() and fp.is_dir():
-            for file in fp.iterdir():
-                if file.is_file() or file.is_symlink():
-                    file.unlink()
-                    logger.info(f"Deleted {file}")
-        else:
-            fp.mkdir(parents=True)
-            logger.info(f"Created directory {fp}")
-
-        # Save audio
-        outfile_path = fp / f"{fp.stem}.wav"
-        self.audio.export(outfile_path, format="wav")
-        logger.info(f"Saved full audio to {outfile_path}")
-
-        # Calculate block indices and save block audio
-        current_idx = 0
-        for block in self.blocks:
-            start_idx = current_idx
-            end_idx = current_idx + len(block)
-            current_idx = end_idx
-
-            outfile_path = (
-                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
-                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
-            )
-            block.audio.export(outfile_path, format="wav")
-            logger.info(f"Saved block audio to {outfile_path}")
-
-        # Save text
-        outfile_path = fp / f"{fp.stem}.srt"
-        super().save(outfile_path, format_="srt")
-
     @classmethod
     @override
     def load(
         cls,
-        path: Path | str,
+        path: str | PathLike[Any],
         encoding: str = "utf-8",
         format_: str | None = None,
         fps: float | None = None,
         errors: str | None = None,
-        **kwargs: Unpack[AudioSeriesLoadKwargs],
+        **kwargs: Any,
     ) -> Self:
-        """Load series from an input file.
+        """Load series from a directory of wav files.
 
         Arguments:
-            path : input file path
+            path : input directory path
             encoding: input file encoding
             format_: input file format
             fps: frames per second
@@ -291,40 +203,103 @@ class AudioSeries(Series):
         Returns:
             loaded series
         """
-        try:
-            validated_path = val_input_dir_path(path)
-            return cls._load_wav(
-                validated_path,
-                encoding=encoding,
-                format_=format_,
-                fps=fps,
-                errors=errors,
-                **kwargs,
-            )
-        except (DirectoryNotFoundError, NotADirectoryError):
-            try:
-                validated_path = val_input_path(path)
-                video_path = kwargs.pop("video_path", None)
-                validated_video_path = val_input_path(video_path)
-                return cls._load_video(
-                    subtitle_path=validated_path,
-                    video_path=validated_video_path,
-                    encoding=encoding,
-                    format_=format_,
-                    fps=fps,
-                    errors=errors,
-                    **kwargs,
-                )
-            except (FileNotFoundError, KeyError, NotAFileError) as exc:
-                raise ValueError(
-                    f"{cls.__name__}'s path must be either path to a directory "
-                    "containing one srt file containing N subtitles and N wav files, "
-                    "or path to an srt file with a separate video file provided as the "
-                    "argument 'video_path'.",
-                ) from exc
+        validated_path = val_input_dir_path(path)
+        buffer = kwargs.pop("buffer", 1000)
+        validated_srt_path = val_input_path(
+            validated_path / f"{validated_path.stem}.srt"
+        )
+        text_series = Series.load(
+            validated_srt_path,
+            encoding=encoding,
+            format_=format_,
+            fps=fps,
+            errors=errors,
+            **kwargs,
+        )
+
+        validated_audio_path = val_input_path(
+            validated_path / f"{validated_path.stem}.wav"
+        )
+        full_audio = AudioSegment.from_wav(validated_audio_path)
+        logger.info(f"Loaded full audio from {validated_audio_path}")
+
+        return cls.build_series(text_series, full_audio, buffer)
 
     @classmethod
-    def _build_series(
+    def load_from_media(
+        cls,
+        media_path: Path | str,
+        subtitle_path: Path | str,
+        stream_index: int = 0,
+        buffer: int = 1000,
+        **kwargs: Any,
+    ) -> Self:
+        """Load series from a subtitle file and associated media file.
+
+        Arguments:
+            media_path: path to media file
+            subtitle_path: path to subtitle file
+            stream_index: audio stream index (zero-based)
+            buffer: additional buffer to include before and after subtitles (ms)
+            **kwargs: additional keyword arguments passed to Series.load
+        Returns:
+            loaded series
+        """
+        validated_media_path = val_input_path(media_path)
+        validated_subtitle_path = val_input_path(subtitle_path)
+        text_series = Series.load(validated_subtitle_path, **kwargs)
+
+        try:
+            probe = ffmpeg.probe(str(validated_media_path))
+        except ffmpeg.Error as exc:
+            raise ScinoephileError(
+                f"Could not probe media file {validated_media_path}"
+            ) from exc
+        audio_streams = [
+            stream
+            for stream in probe.get("streams", [])
+            if stream.get("codec_type") == "audio"
+        ]
+        if not audio_streams:
+            raise ScinoephileError(
+                f"No audio streams found in media file {validated_media_path}"
+            )
+        if stream_index < 0 or stream_index >= len(audio_streams):
+            raise ScinoephileError(
+                f"Invalid audio stream index {stream_index} for "
+                f"{validated_media_path}; found {len(audio_streams)} audio stream(s)."
+            )
+        stream = audio_streams[stream_index]
+        channels = stream.get("channels")
+        try:
+            channel_count = int(channels)
+        except (TypeError, ValueError) as exc:
+            raise ScinoephileError(
+                f"Audio stream {stream_index} in {validated_media_path} "
+                "cannot be used for transcription."
+            ) from exc
+
+        with get_temp_directory_path() as temp_dir_path:
+            full_audio_path = temp_dir_path / "full_audio.wav"
+            try:
+                cls.extract_audio_track(
+                    validated_media_path,
+                    full_audio_path,
+                    stream_index,
+                    channel_count,
+                )
+                logger.info(f"Loading full audio from {full_audio_path}")
+                full_audio = AudioSegment.from_wav(full_audio_path)
+            except ffmpeg.Error as exc:
+                raise ScinoephileError(
+                    f"Could not extract audio stream {stream_index} from "
+                    f"{validated_media_path}"
+                ) from exc
+
+        return cls.build_series(text_series, full_audio, buffer)
+
+    @classmethod
+    def build_series(
         cls,
         text_series: Series,
         full_audio: AudioSegment,
@@ -381,88 +356,8 @@ class AudioSeries(Series):
 
         return series
 
-    @classmethod
-    def _load_video(
-        cls,
-        subtitle_path: Path,
-        video_path: Path,
-        audio_track: int = 0,
-        buffer=1000,
-        **kwargs: Unpack[AudioSeriesLoadKwargs],
-    ) -> Self:
-        """Load series from a subtitle file and associated video file.
-
-        Arguments:
-            subtitle_path: Path to subtitle file
-            video_path: Path to video file
-            audio_track: audio track (zero-indexed)
-            buffer: additional buffer to include before and after subtitles (ms)
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        # Load text
-        encoding = kwargs.pop("encoding", "utf-8")
-        format_ = kwargs.pop("format_", None)
-        fps = kwargs.pop("fps", None)
-        errors = kwargs.pop("errors", None)
-        text_series = Series.load(
-            subtitle_path,
-            encoding=encoding,
-            format_=format_,
-            fps=fps,
-            errors=errors,
-        )
-
-        # Probe audio track to determine number of channels
-        logger.info(f"Probing audio track {audio_track} in {video_path}")
-        probe = ffmpeg.probe(str(video_path))
-        audio_streams = [s for s in probe["streams"] if s["codec_type"] == "audio"]
-        try:
-            stream = audio_streams[audio_track]
-            channels = int(stream["channels"])
-            logger.info(f"Audio track has {channels} channels")
-        except (IndexError, KeyError, ValueError) as exc:
-            raise ScinoephileError(
-                f"Could not determine number of channels for audio track {audio_track} "
-                f"in {video_path}"
-            ) from exc
-
-        # Load full audio from video
-        with get_temp_directory_path() as temp_dir_path:
-            full_audio_path = temp_dir_path / "full_audio.wav"
-            cls._extract_audio_track(video_path, full_audio_path, audio_track, channels)
-            logger.info(f"Loading full audio from {full_audio_path}")
-            full_audio = AudioSegment.from_wav(full_audio_path)
-
-        return cls._build_series(text_series, full_audio, buffer)
-
-    @classmethod
-    def _load_wav(
-        cls, dir_path: Path, buffer=1000, **kwargs: Unpack[SeriesKwargs]
-    ) -> Self:
-        """Load series from a directory of wav files.
-
-        Arguments:
-            dir_path: Path to input directory
-            buffer: additional buffer to include before and after subtitles (ms)
-            **kwargs: additional keyword arguments
-        Returns:
-            loaded series
-        """
-        # Load text
-        srt_path = dir_path / f"{dir_path.stem}.srt"
-        text_series = Series.load(srt_path, **kwargs)
-
-        # Load full audio file
-        audio_path = dir_path / f"{dir_path.stem}.wav"
-        full_audio = AudioSegment.from_wav(audio_path)
-        logger.info(f"Loaded full audio from {audio_path}")
-
-        return cls._build_series(text_series, full_audio, buffer)
-
     @staticmethod
-    def _extract_audio_track(
+    def extract_audio_track(
         video_input_path: Path,
         audio_output_path: Path,
         audio_track: int,
@@ -502,3 +397,89 @@ class AudioSeries(Series):
                 map=f"0:a:{audio_track}",
                 ac=1,
             ).run(quiet=False, overwrite_output=True)
+
+    @override
+    def _init_blocks(self):
+        """Initialize blocks."""
+        # First get the basic block indexes
+        block_indexes = Series.get_block_indexes_by_pause(self)
+
+        # Calculate buffered times and create series for each block
+        blocks = []
+        for i, (start_idx, end_idx) in enumerate(block_indexes):
+            block_start_time = self.events[start_idx].start
+            block_end_time = self.events[end_idx - 1].end
+
+            # Buffer start
+            if i == 0:
+                buffered_start = max(0, block_start_time - 1000)
+            else:
+                prev_end = self.events[block_indexes[i - 1][1] - 1].end
+                max_unbuffered_end = (prev_end + block_start_time) // 2
+                buffered_start = max(max_unbuffered_end, block_start_time - 1000)
+
+            # Buffer end
+            if i < len(block_indexes) - 1:
+                next_start = self.events[block_indexes[i + 1][0]].start
+                min_unbuffered_start = (block_end_time + next_start) // 2
+                buffered_end = min(block_end_time + 1000, min_unbuffered_start)
+            else:
+                buffered_end = min(len(self.audio), block_end_time + 1000)
+
+            # Slice audio
+            logger.debug(
+                f"Slicing audio for block {block_start_time}-{block_end_time} "
+                f"({buffered_start} - {buffered_end})"
+            )
+            block_audio = self.audio[buffered_start:buffered_end]
+
+            # Create AudioSeries block
+            block = self.slice(start_idx, end_idx)
+            # Store buffered timing information as attributes
+            block.buffered_start = buffered_start
+            block.buffered_end = buffered_end
+            # Override the audio with the buffered version
+            block.audio = block_audio
+
+            blocks.append(block)
+
+        self._blocks = blocks
+
+    def _save_wav(self, fp: Path):
+        """Save series to directory of wav files.
+
+        Arguments:
+            fp: Path to output directory
+        """
+        # Prepare empty directory, deleting existing files if needed
+        if fp.exists() and fp.is_dir():
+            for file in fp.iterdir():
+                if file.is_file() or file.is_symlink():
+                    file.unlink()
+                    logger.info(f"Deleted {file}")
+        else:
+            fp.mkdir(parents=True)
+            logger.info(f"Created directory {fp}")
+
+        # Save audio
+        outfile_path = fp / f"{fp.stem}.wav"
+        self.audio.export(outfile_path, format="wav")
+        logger.info(f"Saved full audio to {outfile_path}")
+
+        # Calculate block indices and save block audio
+        current_idx = 0
+        for block in self.blocks:
+            start_idx = current_idx
+            end_idx = current_idx + len(block)
+            current_idx = end_idx
+
+            outfile_path = (
+                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
+                f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
+            )
+            block.audio.export(outfile_path, format="wav")
+            logger.info(f"Saved block audio to {outfile_path}")
+
+        # Save text
+        outfile_path = fp / f"{fp.stem}.srt"
+        super().save(outfile_path, format_="srt")
