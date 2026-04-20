@@ -22,7 +22,7 @@ __all__ = ["YueTranslateVsZhoCli"]
 
 
 class YueTranslateVsZhoCli(CommandLineInterface):
-    """Translate 粤文 subtitles against a 中文 reference series."""
+    """Translate missing subtitles using a Standard Chinese reference series."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
