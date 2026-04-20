@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.zho.zho_cli import ZhoCli
+from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -22,12 +23,13 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoCli,),
-        (ScinoephileCli, ZhoCli),
+        (ZhoProcessCli,),
+        (ZhoCli, ZhoProcessCli),
+        (ScinoephileCli, ZhoCli, ZhoProcessCli),
     ],
 )
-def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI help output.
+def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test 中文 processing CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -38,12 +40,13 @@ def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoCli,),
-        (ScinoephileCli, ZhoCli),
+        (ZhoProcessCli,),
+        (ZhoCli, ZhoProcessCli),
+        (ScinoephileCli, ZhoCli, ZhoProcessCli),
     ],
 )
-def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI usage output.
+def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test 中文 processing CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -106,7 +109,7 @@ def test_zho_cli(
         with expectation:
             run_cli_with_args(
                 ZhoCli,
-                f"--infile {full_input_path} {args} --outfile {output_path}",
+                f"process --infile {full_input_path} {args} --outfile {output_path}",
             )
         full_expected_path = test_data_root / expected_path
         output = Series.load(output_path)
@@ -141,9 +144,25 @@ def test_zho_cli_pipe(input_path: str, args: str, expected_path: str):
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdin", stdin_stream):
         with patch("scinoephile.core.cli.stdout", stdout_stream):
-            run_cli_with_args(ZhoCli, f"--infile - {args}")
+            run_cli_with_args(ZhoCli, f"process --infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
+
+    assert output == expected
+
+
+def test_zho_process_nested_invocation_through_scinoephile():
+    """Test `scinoephile zho process` runs through parent parser."""
+    full_input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
+    full_expected_path = test_data_root / "mnt/output/zho-Hans_fuse_clean.srt"
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            ScinoephileCli,
+            f"zho process --infile {full_input_path} --clean --outfile {output_path}",
+        )
+        output = Series.load(output_path)
+        expected = Series.load(full_expected_path)
 
     assert output == expected

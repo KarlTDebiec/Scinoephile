@@ -10,6 +10,7 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.eng.eng_cli import EngCli
+from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
@@ -21,12 +22,13 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngCli,),
-        (ScinoephileCli, EngCli),
+        (EngProcessCli,),
+        (EngCli, EngProcessCli),
+        (ScinoephileCli, EngCli, EngProcessCli),
     ],
 )
-def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI help output.
+def test_eng_process_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test English processing CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -37,12 +39,13 @@ def test_eng_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngCli,),
-        (ScinoephileCli, EngCli),
+        (EngProcessCli,),
+        (EngCli, EngProcessCli),
+        (ScinoephileCli, EngCli, EngProcessCli),
     ],
 )
-def test_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English CLI usage output.
+def test_eng_process_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test English processing CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -88,7 +91,7 @@ def test_eng_cli(
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             EngCli,
-            f"--infile {full_input_path} {args} --outfile {output_path}",
+            f"process --infile {full_input_path} {args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -122,9 +125,25 @@ def test_eng_cli_pipe(input_path: str, args: str, expected_path: str):
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdin", stdin_stream):
         with patch("scinoephile.core.cli.stdout", stdout_stream):
-            run_cli_with_args(EngCli, f"--infile - {args}")
+            run_cli_with_args(EngCli, f"process --infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
+
+    assert output == expected
+
+
+def test_eng_process_nested_invocation_through_scinoephile():
+    """Test `scinoephile eng process` runs through parent parser."""
+    full_input_path = test_data_root / "mnt/output/eng_fuse.srt"
+    full_expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            ScinoephileCli,
+            f"eng process --infile {full_input_path} --clean --outfile {output_path}",
+        )
+        output = Series.load(output_path)
+        expected = Series.load(full_expected_path)
 
     assert output == expected
