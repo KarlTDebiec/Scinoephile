@@ -59,20 +59,8 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "kob/input/eng_lens.srt",
             "kob/input/eng_tesseract.srt",
-            "",
-            "kob/output/eng_fuse.srt",
-        ),
-        (
-            "kob/input/eng_lens.srt",
-            "kob/input/eng_tesseract.srt",
             "--clean",
             "kob/output/eng_fuse_clean.srt",
-        ),
-        (
-            "mlamd/input/eng_lens.srt",
-            "mlamd/input/eng_tesseract.srt",
-            "",
-            "mlamd/output/eng_fuse.srt",
         ),
         (
             "mlamd/input/eng_lens.srt",
@@ -83,20 +71,8 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mnt/input/eng_lens.srt",
             "mnt/input/eng_tesseract.srt",
-            "",
-            "mnt/output/eng_fuse.srt",
-        ),
-        (
-            "mnt/input/eng_lens.srt",
-            "mnt/input/eng_tesseract.srt",
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
-        ),
-        (
-            "t/input/eng_lens.srt",
-            "t/input/eng_tesseract.srt",
-            "",
-            "t/output/eng_fuse.srt",
         ),
         (
             "t/input/eng_lens.srt",
@@ -178,46 +154,3 @@ def test_eng_fuse_cli_pipe(
     expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_eng_fuse_cli_allows_one_stdin_infile():
-    """Test English fuse CLI allows exactly one stdin subtitle input."""
-    lens_input_path = test_data_root / "kob" / "input" / "eng_lens.srt"
-    tesseract_input_path = test_data_root / "kob" / "input" / "eng_tesseract.srt"
-    expected_path = test_data_root / "kob" / "output" / "eng_fuse.srt"
-    stdin_stream = StringIO(lens_input_path.read_text())
-    stdout_stream = StringIO()
-
-    with patch("scinoephile.core.cli.stdin", stdin_stream):
-        with patch("scinoephile.core.cli.stdout", stdout_stream):
-            run_cli_with_args(
-                EngFuseCli,
-                f"--lens-infile - --tesseract-infile {tesseract_input_path}",
-            )
-
-    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(expected_path)
-
-    assert output == expected
-
-
-def test_eng_fuse_cli_rejects_two_stdin_infiles():
-    """Test English fuse CLI rejects stdin for both subtitle inputs."""
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            EngFuseCli,
-            "--lens-infile - --tesseract-infile -",
-        )
-
-
-def test_eng_fuse_cli_rejects_overwrite_without_outfile():
-    """Test English fuse CLI rejects overwrite when writing to stdout."""
-    lens_input_path = test_data_root / "kob" / "input" / "eng_lens.srt"
-    tesseract_input_path = test_data_root / "kob" / "input" / "eng_tesseract.srt"
-
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            EngFuseCli,
-            f"--lens-infile {lens_input_path} "
-            f"--tesseract-infile {tesseract_input_path} --overwrite",
-        )

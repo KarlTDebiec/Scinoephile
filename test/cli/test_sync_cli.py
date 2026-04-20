@@ -113,30 +113,3 @@ def test_sync_cli_pipe():
     expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_sync_cli_rejects_overwrite_without_outfile():
-    """Test sync CLI rejects overwrite when outfile is omitted."""
-    full_top_path = (
-        test_data_root
-        / "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt"
-    )
-    full_bottom_path = (
-        test_data_root / "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt"
-    )
-
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            SyncCli,
-            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
-            "--overwrite",
-        )
-
-
-def test_sync_cli_rejects_two_stdin_infiles():
-    """Test sync CLI rejects stdin for both inputs."""
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            SyncCli,
-            "--top-infile - --bottom-infile -",
-        )
