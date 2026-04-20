@@ -91,20 +91,38 @@ def test_timewarp_cli(
     assert output == expected
 
 
-def test_timewarp_cli_pipe():
-    """Test timewarp CLI writes stdout when outfile is omitted."""
-    full_anchor_path = (
-        test_data_root / "kob/output/zho-Hant_fuse_clean_validate_proofread.srt"
-    )
-    full_mobile_path = test_data_root / "kob/input/yue-Hant.srt"
-    full_expected_path = test_data_root / "kob/output/yue-Hant_timewarp.srt"
+@pytest.mark.parametrize(
+    ("anchor_path", "mobile_path", "args", "expected_path"),
+    [
+        (
+            "kob/output/zho-Hant_fuse_clean_validate_proofread.srt",
+            "kob/input/yue-Hant.srt",
+            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
+            "kob/output/yue-Hant_timewarp.srt",
+        ),
+    ],
+)
+def test_timewarp_cli_pipe(
+    anchor_path: str, mobile_path: str, args: str, expected_path: str
+):
+    """Test timewarp CLI writes stdout when outfile is omitted.
+
+    Arguments:
+        anchor_path: path to anchor subtitle fixture
+        mobile_path: path to mobile subtitle fixture
+        args: command-line arguments for anchor indexes
+        expected_path: path to expected output subtitle fixture
+    """
+    full_anchor_path = test_data_root / anchor_path
+    full_mobile_path = test_data_root / mobile_path
+    full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
             TimewarpCli,
             f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
+            f"{args}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")

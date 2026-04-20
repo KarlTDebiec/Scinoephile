@@ -4,16 +4,12 @@
 
 from __future__ import annotations
 
-from io import StringIO
-from unittest.mock import patch
-
 import pytest
 
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.testing import run_cli_with_args
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -94,6 +90,7 @@ def test_analysis_diff_cli(
     two_lbl: str,
     expected_fixture_name: str,
     request: pytest.FixtureRequest,
+    capsys: pytest.CaptureFixture,
 ):
     """Test analysis diff CLI output against expected differences.
 
@@ -104,19 +101,24 @@ def test_analysis_diff_cli(
         two_lbl: label for second subtitle stream in diff output
         expected_fixture_name: fixture name containing expected diff strings
         request: pytest fixture request object
+        capsys: pytest stdout/stderr capture fixture
     """
     one_infile_path = test_data_root / one_path
     two_infile_path = test_data_root / two_path
     expected_edits: list[str] = request.getfixturevalue(expected_fixture_name)
 
-    output_stdout = StringIO()
-    with patch("scinoephile.cli.analysis.analysis_diff_cli.stdout", output_stdout):
-        run_cli_with_args(
-            AnalysisDiffCli,
+    parser = AnalysisDiffCli.argparser()
+    parsed_args = parser.parse_args(
+        (
             f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
-            f"--one-label {one_lbl} --two-label {two_lbl}",
-        )
-    output = output_stdout.getvalue()
+            f"--one-label {one_lbl} --two-label {two_lbl}"
+        ).split()
+    )
+    kwargs = vars(parsed_args)
+    kwargs["one_infile_path"] = kwargs.pop("one_infile")
+    kwargs["two_infile_path"] = kwargs.pop("two_infile")
+    AnalysisDiffCli._main(**kwargs)
+    output = capsys.readouterr().out
 
     for expected_edit in expected_edits:
         assert expected_edit in output

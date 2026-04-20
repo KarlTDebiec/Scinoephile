@@ -91,16 +91,27 @@ def test_sync_cli(
     assert output == expected
 
 
-def test_sync_cli_pipe():
-    """Test sync CLI processing writes stdout when outfile is omitted."""
-    full_top_path = (
-        test_data_root
-        / "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt"
-    )
-    full_bottom_path = (
-        test_data_root / "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt"
-    )
-    full_expected_path = test_data_root / "mlamd/output/zho-Hans_eng.srt"
+@pytest.mark.parametrize(
+    ("top_path", "bottom_path", "expected_path"),
+    [
+        (
+            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+    ],
+)
+def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
+    """Test sync CLI processing writes stdout when outfile is omitted.
+
+    Arguments:
+        top_path: path to top subtitle fixture
+        bottom_path: path to bottom subtitle fixture
+        expected_path: path to expected output subtitle fixture
+    """
+    full_top_path = test_data_root / top_path
+    full_bottom_path = test_data_root / bottom_path
+    full_expected_path = test_data_root / expected_path
 
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):

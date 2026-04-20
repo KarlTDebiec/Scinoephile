@@ -126,8 +126,6 @@ def test_zho_cli(
                 ZhoCli,
                 f"--infile {full_input_path} {args} --outfile {output_path}",
             )
-        if expected_path == "-":
-            return
         full_expected_path = test_data_root / expected_path
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
