@@ -119,3 +119,15 @@ def test_output_dir_arg_without_create(tmp_path: Path):
     assert isinstance(result, Path)
     assert result == test_dir.resolve()
     assert not result.exists()
+
+
+def test_output_dir_arg_without_create_rejects_file_ancestor(tmp_path: Path):
+    """Test output_dir_arg rejects paths below a file when create is False."""
+    file_path = tmp_path / "parent"
+    file_path.write_text("test content")
+    test_dir = file_path / "child"
+
+    validator = output_dir_arg(create=False)
+
+    with pytest.raises(NotADirectoryError):
+        validator(str(test_dir))

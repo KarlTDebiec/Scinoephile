@@ -50,6 +50,16 @@ def test_val_output_dir_path_without_create(tmp_path: Path):
     assert not result.exists()
 
 
+def test_val_output_dir_path_without_create_rejects_file_ancestor(tmp_path: Path):
+    """Test that create=False rejects paths below a file ancestor."""
+    file_path = tmp_path / "parent"
+    file_path.write_text("test content")
+    test_dir = file_path / "child"
+
+    with pytest.raises(NotADirectoryError):
+        val_output_dir_path(test_dir, create=False)
+
+
 def test_val_output_dir_path_nested_dirs(tmp_path: Path):
     """Test that nested directories are created."""
     test_dir = tmp_path / "dir1" / "dir2" / "dir3"

@@ -386,6 +386,25 @@ def val_output_dir_path(
         TypeError: If any value cannot be cast to Path
     """
 
+    def _get_nearest_existing_ancestor_dir_path(path: Path) -> Path:
+        """Get nearest existing ancestor of a path.
+
+        Arguments:
+            path: path to inspect
+        Returns:
+            nearest existing ancestor path
+        Raises:
+            DirectoryNotFoundError: if no existing ancestor is found
+        """
+        current_path = path.parent
+        while not current_path.exists():
+            if current_path == current_path.parent:
+                raise DirectoryNotFoundError(
+                    f"No existing ancestor directory found for {path}"
+                )
+            current_path = current_path.parent
+        return current_path
+
     def _val_output_dir_path(value_to_validate: Path | str | PathLike[Any]) -> Path:
         """Validate a path.
 
@@ -408,6 +427,13 @@ def val_output_dir_path(
                 f"{type(value_to_validate)}, cannot be cast to Path"
             ) from exc
         if not validated_value.exists():
+            nearest_existing_ancestor_dir_path = (
+                _get_nearest_existing_ancestor_dir_path(validated_value)
+            )
+            if not nearest_existing_ancestor_dir_path.is_dir():
+                raise NotADirectoryError(
+                    f"{nearest_existing_ancestor_dir_path} is not a directory"
+                )
             if create:
                 validated_value.mkdir(parents=True)
                 logger.info(f"Created directory {validated_value}")
