@@ -20,12 +20,12 @@ from pypinyin import Style, lazy_pinyin
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.lang.yue import get_yue_converted
-from scinoephile.multilang.dictionaries import (
+from scinoephile.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
 )
+from scinoephile.lang.yue import get_yue_converted
 
 from .constants import (
     BASE_URL,

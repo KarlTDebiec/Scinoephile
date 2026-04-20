@@ -4,12 +4,10 @@
 
 Module hierarchy (modules may import from any above):
 * common
-* core
-* analysis
-* image / open_ai
-* llms
+* core / open_ai
+* analysis / image / llms
 * lang
-* audio
+* audio / dictionaries
 * multilang
 * cli
 """

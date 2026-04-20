@@ -9,6 +9,7 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms.default_test_cases import (
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     load_default_test_cases,
@@ -17,7 +18,6 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedProcessor,
 )
-from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tools
 
 from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
 

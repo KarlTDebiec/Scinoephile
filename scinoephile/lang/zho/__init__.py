@@ -3,9 +3,9 @@
 """Code related to Chinese (zho) text.
 
 Package hierarchy (modules may import from any above):
-* conversion
+* cleaning / conversion / flattening / ocr_validation
 * prompts
-* cleaning / flattening / ocr_fusion / proofreading
+* ocr_fusion / proofreading
 """
 
 from __future__ import annotations

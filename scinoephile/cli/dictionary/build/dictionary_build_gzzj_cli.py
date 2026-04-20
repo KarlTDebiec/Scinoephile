@@ -10,7 +10,7 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
+from scinoephile.dictionaries.gzzj import GzzjDictionaryService
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
