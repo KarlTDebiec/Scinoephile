@@ -35,7 +35,7 @@ from .yue_transcribe_cli import YueTranscribeCli
 
 
 class YueCli(CommandLineInterface):
-    """Command-line interface for 粤文 subtitle operations."""
+    """Modify Written Cantonese (粤文) subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

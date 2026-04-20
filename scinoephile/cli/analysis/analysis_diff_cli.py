@@ -17,9 +17,11 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series
 
+__all__ = ["AnalysisDiffCli"]
+
 
 class AnalysisDiffCli(CommandLineInterface):
-    """Command-line interface for line-level subtitle diff output."""
+    """Calculate the diff between two series."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

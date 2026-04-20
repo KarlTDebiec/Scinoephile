@@ -16,7 +16,7 @@ __all__ = ["DictionaryBuildCli"]
 
 
 class DictionaryBuildCli(CommandLineInterface):
-    """Command-line interface for building dictionary caches."""
+    """Build dictionary caches."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

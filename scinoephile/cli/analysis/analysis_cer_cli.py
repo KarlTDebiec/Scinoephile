@@ -13,9 +13,11 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_fi
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series
 
+__all__ = ["AnalysisCerCli"]
+
 
 class AnalysisCerCli(CommandLineInterface):
-    """Command-line interface for subtitle character error rate output."""
+    """Calculate the Character Error Rate (CER) of one series relative to another."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

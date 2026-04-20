@@ -22,7 +22,7 @@ from .eng_fuse_cli import EngFuseCli
 
 
 class EngCli(CommandLineInterface):
-    """Command-line interface for English subtitle operations."""
+    """Modify English subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

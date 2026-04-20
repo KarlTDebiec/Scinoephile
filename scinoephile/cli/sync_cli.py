@@ -20,7 +20,7 @@ from scinoephile.core.synchronization import get_synced_series
 
 
 class SyncCli(CommandLineInterface):
-    """Command-line interface for synchronizing subtitle series."""
+    """Combine two series into the top and bottom of a synchronized series."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

@@ -12,9 +12,11 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from .build.dictionary_build_cli import DictionaryBuildCli
 from .dictionary_search_cli import DictionarySearchCli
 
+__all__ = ["DictionaryCli"]
+
 
 class DictionaryCli(CommandLineInterface):
-    """Command-line interface for dictionary operations."""
+    """Build or search Chinese dictionaries."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

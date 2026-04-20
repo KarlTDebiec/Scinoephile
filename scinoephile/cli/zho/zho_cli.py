@@ -35,7 +35,7 @@ from .zho_fuse_cli import ZhoFuseCli
 
 
 class ZhoCli(CommandLineInterface):
-    """Command-line interface for 中文 subtitle operations."""
+    """Modify Standard Chinese (中文) subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

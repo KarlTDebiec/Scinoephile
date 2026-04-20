@@ -12,9 +12,11 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from .analysis_cer_cli import AnalysisCerCli
 from .analysis_diff_cli import AnalysisDiffCli
 
+__all__ = ["AnalysisCli"]
+
 
 class AnalysisCli(CommandLineInterface):
-    """Command-line interface wrapper for analysis subcommands."""
+    """Analyze subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

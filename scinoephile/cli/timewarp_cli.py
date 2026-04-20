@@ -22,7 +22,7 @@ from scinoephile.core.timing import get_series_timewarped
 
 
 class TimewarpCli(CommandLineInterface):
-    """Command-line interface for timewarping subtitle series."""
+    """Shift and stretch the timings of one subtitle series to match another."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
