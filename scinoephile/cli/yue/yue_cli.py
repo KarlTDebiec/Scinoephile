@@ -10,7 +10,6 @@ from typing import Unpack
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
 from .yue_process_cli import YueProcessCli
-from .yue_review_cli import YueReviewCli
 from .yue_transcribe_cli import YueTranscribeCli
 
 __all__ = ["YueCli"]
@@ -47,7 +46,6 @@ class YueCli(CommandLineInterface):
         """
         return {
             YueProcessCli.name(): YueProcessCli,
-            YueReviewCli.name(): YueReviewCli,
             YueTranscribeCli.name(): YueTranscribeCli,
         }
 
