@@ -5,13 +5,13 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import (
-    get_arg_groups_by_name,
-)
-from scinoephile.core.cli.io import read_series, write_series
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
 
 from .eng_fuse_cli import EngFuseCli
@@ -41,7 +41,7 @@ class EngCli(CommandLineInterface):
             "-i",
             "--infile",
             metavar="INFILE",
-            default="-",
+            required=True,
             type=str,
             help='English subtitle infile path or "-" for stdin',
         )
@@ -60,7 +60,7 @@ class EngCli(CommandLineInterface):
         arg_groups["operation arguments"].add_argument(
             "--proofread",
             action="store_true",
-            help="proofread subtitles using configured LLM workflow",
+            help="proofread subtitles using LLM",
         )
 
         # Output arguments
@@ -68,9 +68,9 @@ class EngCli(CommandLineInterface):
             "-o",
             "--outfile",
             metavar="OUTFILE",
-            default="-",
-            type=str,
-            help='English subtitle outfile path or "-" for stdout',
+            default=None,
+            type=output_file_arg(),
+            help="English subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -89,47 +89,6 @@ class EngCli(CommandLineInterface):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        parser = kwargs.pop("_parser", cls.argparser())
-        subcommand_name = kwargs.pop("eng_subcommand", None)
-        if subcommand_name is not None:
-            subcommand_cli_class = cls.subcommands()[subcommand_name]
-            subcommand_cli_class._main(**kwargs)
-            return
-
-        infile = kwargs.pop("infile")
-        outfile = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        proofread = kwargs.pop("proofread")
-        overwrite = kwargs.pop("overwrite")
-
-        if not (clean or flatten or proofread):
-            parser.error("At least one operation required")
-        series = read_series(parser, infile, allow_stdin=True)
-        if clean:
-            series = get_eng_cleaned(series)
-        if proofread:
-            series = get_eng_proofread(series)
-        if flatten:
-            series = get_eng_flattened(series)
-        write_series(parser, series, outfile, overwrite)
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "eng"
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 
@@ -139,6 +98,52 @@ class EngCli(CommandLineInterface):
         return {
             EngFuseCli.name(): EngFuseCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        # Validate arguments
+        parser = kwargs.pop("_parser", cls.argparser())
+        subcommand_name = kwargs.pop("eng_subcommand", None)
+        if subcommand_name is not None:
+            subcommand_cli_class = cls.subcommands()[subcommand_name]
+            subcommand_cli_class._main(**kwargs)
+            return
+
+        infile = kwargs.pop("infile")
+        outfile: Path | None = kwargs.pop("outfile")
+        clean = kwargs.pop("clean")
+        flatten = kwargs.pop("flatten")
+        proofread = kwargs.pop("proofread")
+        overwrite = kwargs.pop("overwrite")
+
+        if not (clean or flatten or proofread):
+            parser.error("At least one operation required")
+        if overwrite and outfile is None:
+            try:
+                raise ArgumentConflictError(
+                    "--overwrite may only be used with --outfile"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
+
+        # Read input
+        series = read_series(parser, infile, allow_stdin=True)
+
+        # Perform operations
+        if clean:
+            series = get_eng_cleaned(series)
+        if flatten:
+            series = get_eng_flattened(series)
+        if proofread:
+            series = get_eng_proofread(series)
+
+        # Write output
+        write_series(parser, series, outfile if outfile is not None else "-", overwrite)
 
 
 if __name__ == "__main__":
