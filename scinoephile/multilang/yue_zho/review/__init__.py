@@ -9,12 +9,12 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
-from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tools
 
 from .prompts import YueHansReviewPrompt, YueHantReviewPrompt
 

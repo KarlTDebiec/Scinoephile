@@ -10,6 +10,7 @@ Module hierarchy (modules may import from any above):
 * llms
 * lang
 * audio
+* dictionaries
 * multilang
 * cli
 """
