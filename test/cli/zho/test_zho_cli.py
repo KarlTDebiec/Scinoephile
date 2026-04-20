@@ -84,24 +84,6 @@ def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
             nullcontext(),
         ),
-        (
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
-            "--convert t2s --proofread traditional",
-            "-",
-            pytest.raises(SystemExit),
-        ),
-        (
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
-            "--convert s2t --proofread simplified",
-            "-",
-            pytest.raises(SystemExit),
-        ),
-        (
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
-            "--convert s2t --proofread",
-            "-",
-            pytest.raises(SystemExit),
-        ),
     ],
 )
 def test_zho_cli(

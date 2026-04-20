@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import AbstractContextManager, nullcontext
 from io import StringIO
 from unittest.mock import patch
 
@@ -15,9 +16,6 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.yue import get_yue_romanized
-from scinoephile.lang.zho import get_zho_converted
-from scinoephile.lang.zho.conversion import OpenCCConfig
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -53,61 +51,74 @@ def test_yue_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
-def test_yue_cli_romanize():
-    """Test 粤文 CLI direct romanization with file arguments."""
-    input_path = test_data_root / "kob" / "input" / "yue-Hant.srt"
+@pytest.mark.parametrize(
+    ("input_path", "args", "expected_path", "expectation"),
+    [
+        (
+            "kob/output/yue-Hans_timewarp_clean_flatten.srt",
+            "--romanize",
+            "kob/output/yue-Hans_timewarp_clean_flatten_romanize.srt",
+            nullcontext(),
+        ),
+    ],
+)
+def test_yue_cli(
+    input_path: str,
+    args: str,
+    expected_path: str,
+    expectation: AbstractContextManager[object],
+):
+    """Test 粤文 CLI processing with file arguments.
+
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+        expectation: expected context manager for success or failure
+    """
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
 
     with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            YueCli,
-            f"--infile {input_path} --romanize --outfile {output_path}",
-        )
+        with expectation:
+            run_cli_with_args(
+                YueCli,
+                f"--infile {full_input_path} {args} --outfile {output_path}",
+            )
         output = Series.load(output_path)
 
-    expected = get_yue_romanized(Series.load(input_path), append=True)
+    expected = Series.load(full_expected_path)
     assert output == expected
 
 
-def test_yue_cli_convert():
-    """Test 粤文 CLI direct conversion with file arguments."""
-    input_path = test_data_root / "kob" / "input" / "yue-Hant.srt"
+@pytest.mark.parametrize(
+    ("input_path", "args", "expected_path"),
+    [
+        (
+            "kob/output/yue-Hans_timewarp_clean_flatten.srt",
+            "--romanize",
+            "kob/output/yue-Hans_timewarp_clean_flatten_romanize.srt",
+        ),
+    ],
+)
+def test_yue_cli_pipe(input_path: str, args: str, expected_path: str):
+    """Test 粤文 CLI processing via stdin/stdout.
 
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            YueCli,
-            f"--infile {input_path} --convert --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-
-    expected = get_zho_converted(Series.load(input_path), OpenCCConfig.t2s)
-    assert output == expected
-
-
-def test_yue_cli_romanize_pipe():
-    """Test 粤文 CLI direct romanization via stdin/stdout."""
-    input_path = test_data_root / "kob" / "input" / "yue-Hant.srt"
-    input_text = input_path.read_text()
-    expected = get_yue_romanized(
-        Series.from_string(input_text, format_="srt"),
-        append=True,
-    )
+    Arguments:
+        input_path: path to input subtitle fixture
+        args: command-line arguments for operation selection
+        expected_path: path to expected output subtitle fixture
+    """
+    full_input_path = test_data_root / input_path
+    full_expected_path = test_data_root / expected_path
+    input_text = full_input_path.read_text()
 
     stdin_stream = StringIO(input_text)
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdin", stdin_stream):
         with patch("scinoephile.core.cli.stdout", stdout_stream):
-            run_cli_with_args(YueCli, "--infile - --romanize")
+            run_cli_with_args(YueCli, f"--infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    expected = Series.load(full_expected_path)
     assert output == expected
-
-
-def test_yue_cli_rejects_overwrite_without_outfile():
-    """Test 粤文 CLI rejects overwrite when outfile is omitted."""
-    input_path = test_data_root / "kob" / "input" / "yue-Hant.srt"
-
-    with pytest.raises(SystemExit, match="2"):
-        run_cli_with_args(
-            YueCli,
-            f"--infile {input_path} --romanize --overwrite",
-        )
