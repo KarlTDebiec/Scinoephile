@@ -14,7 +14,8 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.core.subtitles import Series
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.core.cli import read_series
 
 
 class AnalysisDiffCli(CommandLineInterface):
@@ -32,38 +33,27 @@ class AnalysisDiffCli(CommandLineInterface):
             parser,
             "input arguments",
             "operation arguments",
+            "output",
             optional_arguments_name="additional arguments",
         )
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "one_infile_path",
+            "--one-infile",
             metavar="ONE_INFILE",
-            type=input_file_arg(),
-            help="subtitle infile for first series",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='subtitle infile for first series or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "two_infile_path",
+            "--two-infile",
             metavar="TWO_INFILE",
-            type=input_file_arg(),
-            help="subtitle infile for second series",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='subtitle infile for second series or "-" for stdin',
         )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--one-label",
-            metavar="LABEL",
-            default="one",
-            type=str,
-            help="label for first series (default: one)",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--two-label",
-            metavar="LABEL",
-            default="two",
-            type=str,
-            help="label for second series (default: two)",
-        )
         arg_groups["operation arguments"].add_argument(
             "--similarity-cutoff",
             metavar="N",
@@ -72,30 +62,21 @@ class AnalysisDiffCli(CommandLineInterface):
             help="similarity threshold used to pair replacements (default: 0.6)",
         )
 
-    @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        one_infile_path = kwargs.pop("one_infile_path")
-        two_infile_path = kwargs.pop("two_infile_path")
-        one_label = kwargs.pop("one_label")
-        two_label = kwargs.pop("two_label")
-        similarity_cutoff = kwargs.pop("similarity_cutoff")
-
-        one_subtitle_series = Series.load(one_infile_path)
-        two_subtitle_series = Series.load(two_infile_path)
-        diff = get_series_diff(
-            one_subtitle_series,
-            two_subtitle_series,
-            one_lbl=one_label,
-            two_lbl=two_label,
-            similarity_cutoff=similarity_cutoff,
+        # Output arguments
+        arg_groups["output arguments"].add_argument(
+            "--one-label",
+            metavar="LABEL",
+            default="one",
+            type=str,
+            help="label for first series (default: one)",
         )
-        for line_diff in diff:
-            print(line_diff)
+        arg_groups["output arguments"].add_argument(
+            "--two-label",
+            metavar="LABEL",
+            default="two",
+            type=str,
+            help="label for second series (default: two)",
+        )
 
     @classmethod
     def name(cls) -> str:
@@ -105,6 +86,45 @@ class AnalysisDiffCli(CommandLineInterface):
             subcommand name
         """
         return "diff"
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        # Validate arguments
+        parser = kwargs.pop("_parser", cls.argparser())
+        one_infile_path = kwargs.pop("one_infile_path")
+        two_infile_path = kwargs.pop("two_infile_path")
+        similarity_cutoff = kwargs.pop("similarity_cutoff")
+        one_label = kwargs.pop("one_label")
+        two_label = kwargs.pop("two_label")
+        if one_infile_path == "-" and two_infile_path == "-":
+            try:
+                raise ArgumentConflictError(
+                    "--one-infile and --two-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
+
+        # Read inputs
+        one_subtitle_series = read_series(parser, one_infile_path, allow_stdin=True)
+        two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
+
+        # Perform operations
+        diff = get_series_diff(
+            one_subtitle_series,
+            two_subtitle_series,
+            one_lbl=one_label,
+            two_lbl=two_label,
+            similarity_cutoff=similarity_cutoff,
+        )
+
+        # Write outputs
+        for line_diff in diff:
+            print(line_diff)
 
 
 if __name__ == "__main__":

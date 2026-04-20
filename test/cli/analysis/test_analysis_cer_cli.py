@@ -88,7 +88,8 @@ def test_analysis_cer_cli(
 
     run_cli_with_args(
         AnalysisCerCli,
-        f"{reference_infile_path} {candidate_infile_path}",
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path}",
     )
     output = capsys.readouterr().out
 

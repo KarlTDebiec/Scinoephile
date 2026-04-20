@@ -113,7 +113,7 @@ def test_analysis_diff_cli(
     with patch("scinoephile.cli.analysis.analysis_diff_cli.stdout", output_stdout):
         run_cli_with_args(
             AnalysisDiffCli,
-            f"{one_infile_path} {two_infile_path} "
+            f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
             f"--one-label {one_lbl} --two-label {two_lbl}",
         )
     output = output_stdout.getvalue()
