@@ -13,10 +13,16 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
+    str_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
-from scinoephile.multilang.yue_zho.translation import get_yue_translated_vs_zho
+from scinoephile.multilang.yue_zho.translation import (
+    YueHansFromZhoTranslationPrompt,
+    YueHantFromZhoTranslationPrompt,
+    get_yue_translated_vs_zho,
+    get_yue_vs_zho_translator,
+)
 
 __all__ = ["YueTranslateVsZhoCli"]
 
@@ -35,6 +41,7 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -51,6 +58,14 @@ class YueTranslateVsZhoCli(CommandLineInterface):
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='reference 中文 subtitle infile or "-" for stdin',
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--script",
+            default="simplified",
+            type=str_arg(options=("simplified", "traditional")),
+            help="script for prompts and output conversion (default: simplified)",
         )
 
         # Output arguments
@@ -78,6 +93,21 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         return "translate-vs-zho"
 
     @classmethod
+    def _get_translation_prompt_cls(
+        cls, script: str
+    ) -> type[YueHansFromZhoTranslationPrompt] | type[YueHantFromZhoTranslationPrompt]:
+        """Get the translation prompt class for the selected script.
+
+        Arguments:
+            script: selected script identifier
+        Returns:
+            translation prompt class
+        """
+        if script == "traditional":
+            return YueHantFromZhoTranslationPrompt
+        return YueHansFromZhoTranslationPrompt
+
+    @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
@@ -88,6 +118,7 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         parser = kwargs.pop("_parser", cls.argparser())
         yue_infile_path = kwargs.pop("yue_infile")
         zho_infile_path = kwargs.pop("zho_infile")
+        script = kwargs.pop("script")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if yue_infile_path == "-" and zho_infile_path == "-":
@@ -110,7 +141,13 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
 
         # Perform operations
-        yuewen = get_yue_translated_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
+        prompt_cls = cls._get_translation_prompt_cls(script)
+        translator = get_yue_vs_zho_translator(prompt_cls=prompt_cls)
+        yuewen = get_yue_translated_vs_zho(
+            yuewen=yuewen,
+            zhongwen=zhongwen,
+            translator=translator,
+        )
 
         # Write outputs
         write_series(
