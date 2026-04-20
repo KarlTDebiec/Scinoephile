@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -17,6 +17,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_pair import DualPairManager
+from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.punctuating import (
     YueZhoHansPunctuatingPrompt,
     YueZhoPunctuatingManager,
@@ -79,6 +80,7 @@ def get_yue_vs_zho_transcriber(
     shifting_test_cases: list[TestCase] | None = None,
     punctuating_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
+    provider: LLMProvider | None = None,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
 
@@ -86,6 +88,7 @@ def get_yue_vs_zho_transcriber(
         shifting_test_cases: optional shifting test cases
         punctuating_test_cases: optional punctuating test cases
         test_case_directory_path: optional directory where test cases are updated
+        provider: provider to use for queries
     Returns:
         configured YueTranscriber
     """
@@ -107,10 +110,13 @@ def get_yue_vs_zho_transcriber(
         )
     if test_case_directory_path is None:
         test_case_directory_path = _get_default_test_case_dir_path()
+    if provider is None:
+        provider = get_default_provider()
     return YueTranscriber(
         test_case_directory_path=test_case_directory_path,
         shifting_test_cases=shifting_test_cases,
         punctuating_test_cases=punctuating_test_cases,
+        provider=provider,
     )
 
 
