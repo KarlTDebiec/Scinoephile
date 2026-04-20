@@ -20,10 +20,12 @@ from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.punctuating import (
     YueZhoHansPunctuatingPrompt,
+    YueZhoHantPunctuatingPrompt,
     YueZhoPunctuatingManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
+    YueZhoHantShiftingPrompt,
 )
 
 from .transcriber import YueTranscriber
@@ -53,6 +55,12 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """preloaded shifting test cases used to seed the transcriber."""
     punctuating_test_cases: list[TestCase] | None
     """preloaded punctuating test cases used to seed the transcriber."""
+    shifting_prompt_cls: type[YueZhoHansShiftingPrompt] | type[YueZhoHantShiftingPrompt]
+    """prompt class used for alignment shifting."""
+    punctuating_prompt_cls: (
+        type[YueZhoHansPunctuatingPrompt] | type[YueZhoHantPunctuatingPrompt]
+    )
+    """prompt class used for transcription punctuating."""
 
 
 def get_yue_transcribed_vs_zho(
@@ -81,6 +89,10 @@ def get_yue_vs_zho_transcriber(
     punctuating_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
     provider: LLMProvider | None = None,
+    shifting_prompt_cls: type[YueZhoHansShiftingPrompt]
+    | type[YueZhoHantShiftingPrompt] = YueZhoHansShiftingPrompt,
+    punctuating_prompt_cls: type[YueZhoHansPunctuatingPrompt]
+    | type[YueZhoHantPunctuatingPrompt] = YueZhoHansPunctuatingPrompt,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
 
@@ -89,6 +101,8 @@ def get_yue_vs_zho_transcriber(
         punctuating_test_cases: optional punctuating test cases
         test_case_directory_path: optional directory where test cases are updated
         provider: provider to use for queries
+        shifting_prompt_cls: prompt class for alignment shifting
+        punctuating_prompt_cls: prompt class for transcription punctuating
     Returns:
         configured YueTranscriber
     """
@@ -96,7 +110,7 @@ def get_yue_vs_zho_transcriber(
         shifting_test_cases = list(
             load_default_test_cases(
                 DualPairManager,
-                YueZhoHansShiftingPrompt,
+                shifting_prompt_cls,
                 YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS,
             )
         )
@@ -104,7 +118,7 @@ def get_yue_vs_zho_transcriber(
         punctuating_test_cases = list(
             load_default_test_cases(
                 YueZhoPunctuatingManager,
-                YueZhoHansPunctuatingPrompt,
+                punctuating_prompt_cls,
                 YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS,
             )
         )
@@ -117,6 +131,8 @@ def get_yue_vs_zho_transcriber(
         shifting_test_cases=shifting_test_cases,
         punctuating_test_cases=punctuating_test_cases,
         provider=provider,
+        shifting_prompt_cls=shifting_prompt_cls,
+        punctuating_prompt_cls=punctuating_prompt_cls,
     )
 
 

@@ -21,11 +21,21 @@ from scinoephile.multilang.yue_zho import (
     get_yue_proofread_vs_zho,
     get_yue_reviewed_vs_zho,
 )
+from scinoephile.multilang.yue_zho.proofreading import (
+    YueZhoHansProofreadingPrompt,
+    YueZhoHantProofreadingPrompt,
+    get_yue_vs_zho_proofreader,
+)
+from scinoephile.multilang.yue_zho.review import (
+    YueHansReviewPrompt,
+    YueHantReviewPrompt,
+    get_yue_vs_zho_reviewer,
+)
 
-__all__ = ["YueReviewCli"]
+__all__ = ["YueReviewVsZhoCli"]
 
 
-class YueReviewCli(CommandLineInterface):
+class YueReviewVsZhoCli(CommandLineInterface):
     """Review 粤文 subtitles against 中文 subtitles."""
 
     @classmethod
@@ -68,6 +78,12 @@ class YueReviewCli(CommandLineInterface):
                 "block=block-by-block review, line=line-by-line proofreading"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--script",
+            default="simplified",
+            type=str_arg(options=("simplified", "traditional")),
+            help="script for prompts and output conversion (default: simplified)",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -94,6 +110,36 @@ class YueReviewCli(CommandLineInterface):
         return "review"
 
     @classmethod
+    def _get_proofreading_prompt_cls(
+        cls, script: str
+    ) -> type[YueZhoHansProofreadingPrompt] | type[YueZhoHantProofreadingPrompt]:
+        """Get the proofreading prompt class for the selected script.
+
+        Arguments:
+            script: selected script identifier
+        Returns:
+            proofreading prompt class
+        """
+        if script == "traditional":
+            return YueZhoHantProofreadingPrompt
+        return YueZhoHansProofreadingPrompt
+
+    @classmethod
+    def _get_review_prompt_cls(
+        cls, script: str
+    ) -> type[YueHansReviewPrompt] | type[YueHantReviewPrompt]:
+        """Get the review prompt class for the selected script.
+
+        Arguments:
+            script: selected script identifier
+        Returns:
+            review prompt class
+        """
+        if script == "traditional":
+            return YueHantReviewPrompt
+        return YueHansReviewPrompt
+
+    @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
@@ -105,6 +151,7 @@ class YueReviewCli(CommandLineInterface):
         yue_infile_path = kwargs.pop("yue_infile")
         zho_infile_path = kwargs.pop("zho_infile")
         mode = kwargs.pop("mode")
+        script = kwargs.pop("script")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if yue_infile_path == "-" and zho_infile_path == "-":
@@ -128,9 +175,21 @@ class YueReviewCli(CommandLineInterface):
 
         # Perform operations
         if mode == "line":
-            reviewed = get_yue_proofread_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
+            prompt_cls = cls._get_proofreading_prompt_cls(script)
+            processor = get_yue_vs_zho_proofreader(prompt_cls=prompt_cls)
+            reviewed = get_yue_proofread_vs_zho(
+                yuewen=yuewen,
+                zhongwen=zhongwen,
+                processor=processor,
+            )
         else:
-            reviewed = get_yue_reviewed_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
+            prompt_cls = cls._get_review_prompt_cls(script)
+            reviewer = get_yue_vs_zho_reviewer(prompt_cls=prompt_cls)
+            reviewed = get_yue_reviewed_vs_zho(
+                yuewen=yuewen,
+                zhongwen=zhongwen,
+                reviewer=reviewer,
+            )
 
         # Write output
         write_series(
@@ -142,4 +201,4 @@ class YueReviewCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    YueReviewCli.main()
+    YueReviewVsZhoCli.main()
