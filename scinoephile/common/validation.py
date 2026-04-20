@@ -359,20 +359,26 @@ def val_int(
 
 
 @overload
-def val_output_dir_path(value: Path | str | PathLike[Any]) -> Path: ...
+def val_output_dir_path(
+    value: Path | str | PathLike[Any], create: bool = True
+) -> Path: ...
 
 
 @overload
-def val_output_dir_path(value: Iterable[Path | str | PathLike[Any]]) -> list[Path]: ...
+def val_output_dir_path(
+    value: Iterable[Path | str | PathLike[Any]], create: bool = True
+) -> list[Path]: ...
 
 
 def val_output_dir_path(
     value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
+    create: bool = True,
 ) -> Path | list[Path]:
     """Validate output directory path(s), make them absolute, and create them if needed.
 
     Arguments:
         value: Path or paths to output directories
+        create: whether missing directories should be created
     Returns:
         Validated path or paths
     Raises:
@@ -402,8 +408,9 @@ def val_output_dir_path(
                 f"{type(value_to_validate)}, cannot be cast to Path"
             ) from exc
         if not validated_value.exists():
-            validated_value.mkdir(parents=True)
-            logger.info(f"Created directory {validated_value}")
+            if create:
+                validated_value.mkdir(parents=True)
+                logger.info(f"Created directory {validated_value}")
             return validated_value
         if not validated_value.is_dir():
             raise NotADirectoryError(f"{validated_value} is not a directory")

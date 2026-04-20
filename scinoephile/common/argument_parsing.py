@@ -27,6 +27,7 @@ from .validation import (
 __all__ = [
     "FloatValidatorKwargs",
     "IntValidatorKwargs",
+    "OutputDirValidatorKwargs",
     "OutputPathValidatorKwargs",
     "StrValidatorKwargs",
     "float_arg",
@@ -64,6 +65,12 @@ class OutputPathValidatorKwargs(TypedDict, total=False):
     """Keyword arguments for val_output_path."""
 
     exist_ok: bool
+
+
+class OutputDirValidatorKwargs(TypedDict, total=False):
+    """Keyword arguments for val_output_dir_path."""
+
+    create: bool
 
 
 class StrValidatorKwargs(TypedDict, total=False):
@@ -252,13 +259,17 @@ def int_arg(**kwargs: Unpack[IntValidatorKwargs]) -> Callable[[Any], int | list[
     return get_validator(val_int, **kwargs)
 
 
-def output_dir_arg() -> Callable[[Any], Path | list[Path]]:
+def output_dir_arg(
+    **kwargs: Unpack[OutputDirValidatorKwargs],
+) -> Callable[[Any], Path | list[Path]]:
     """Validate an output directory path argument.
 
+    Arguments:
+        **kwargs: keyword arguments to pass to val_output_dir_path
     Returns:
         value validator function
     """
-    return get_validator(val_output_dir_path)
+    return get_validator(val_output_dir_path, **kwargs)
 
 
 def output_file_arg(

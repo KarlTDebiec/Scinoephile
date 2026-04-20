@@ -9,4 +9,9 @@ from .zho_fuse_cli import ZhoFuseCli
 from .zho_process_cli import ZhoProcessCli
 from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
-__all__ = ["ZhoCli", "ZhoFuseCli", "ZhoProcessCli", "ZhoValidateOcrCli"]
+__all__ = [
+    "ZhoCli",
+    "ZhoFuseCli",
+    "ZhoProcessCli",
+    "ZhoValidateOcrCli",
+]

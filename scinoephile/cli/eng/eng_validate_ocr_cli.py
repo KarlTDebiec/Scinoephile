@@ -8,19 +8,13 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import (
-    CLIKwargs,
-    CommandLineInterface,
-    DirectoryNotFoundError,
-)
+from scinoephile.common import CLIKwargs, CommandLineInterface, DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     int_arg,
     output_dir_arg,
-    output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError, NotAFileError
-from scinoephile.core.cli import write_series
+from scinoephile.common.exception import NotAFileError
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import validate_eng_ocr
 
@@ -28,7 +22,7 @@ __all__ = ["EngValidateOcrCli"]
 
 
 class EngValidateOcrCli(CommandLineInterface):
-    """Validate English OCR text against subtitle images."""
+    """Validate OCR text against subtitle images."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -54,8 +48,7 @@ class EngValidateOcrCli(CommandLineInterface):
             type=Path,
             help=(
                 "English OCR image subtitle infile path "
-                "(directory containing index.html and png files, or a .sup file; "
-                "stdin is not supported)"
+                "(directory containing index.html and png files, or a .sup file)"
             ),
         )
 
@@ -70,25 +63,19 @@ class EngValidateOcrCli(CommandLineInterface):
             action="store_true",
             help="prompt for interactive validation decisions",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--output-dir",
-            default=None,
-            type=output_dir_arg(),
-            help="directory in which to save validation image outputs",
-        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            default=None,
-            type=output_file_arg(),
-            help="English subtitle outfile path (default: stdout)",
+            required=True,
+            type=output_dir_arg(create=False),
+            help="directory in which to save validation image outputs",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
             action="store_true",
-            help="overwrite outfile if it exists",
+            help="overwrite outfile directory if it exists",
         )
         parser.set_defaults(_parser=parser)
 
@@ -113,16 +100,10 @@ class EngValidateOcrCli(CommandLineInterface):
         infile_path = kwargs.pop("infile")
         stop_at_idx = kwargs.pop("stop_at_idx")
         interactive = kwargs.pop("interactive")
-        output_dir_path: Path | None = kwargs.pop("output_dir")
-        outfile_path: Path | None = kwargs.pop("outfile")
+        outfile_path: Path = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
-        if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+        if outfile_path.exists() and not overwrite:
+            parser.error(f"{outfile_path} already exists")
 
         # Read input
         try:
@@ -141,16 +122,10 @@ class EngValidateOcrCli(CommandLineInterface):
             series,
             stop_at_idx=stop_at_idx,
             interactive=interactive,
-            output_dir_path=output_dir_path,
         )
 
         # Write output
-        write_series(
-            parser,
-            validated,
-            outfile_path if outfile_path is not None else "-",
-            overwrite,
-        )
+        validated.save(outfile_path)
 
 
 if __name__ == "__main__":
