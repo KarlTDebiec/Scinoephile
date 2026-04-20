@@ -4,7 +4,7 @@
 
 This module may import from: common
 
-Hierarchy within module (lower may import from higher): (lower may import from higher):
+Hierarchy within module (lower may import from higher):
 * exceptions / text
 * paths / pairs
 * subtitles / llms

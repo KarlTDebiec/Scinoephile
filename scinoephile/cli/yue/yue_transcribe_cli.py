@@ -49,10 +49,7 @@ class YueTranscribeCli(CommandLineInterface):
             "--media-infile",
             required=True,
             type=str,
-            help=(
-                "video or audio media input path used for transcription or '-' "
-                "for stdin"
-            ),
+            help="video or audio media input path used for transcription",
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
