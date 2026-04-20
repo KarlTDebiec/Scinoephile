@@ -103,7 +103,9 @@ def test_zho_fuse_cli(
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             ZhoFuseCli,
-            f"{full_lens_path} {full_paddle_path} {args} --outfile {output_path}",
+            f"--lens-infile {full_lens_path} "
+            f"--paddle-infile {full_paddle_path} "
+            f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -144,10 +146,53 @@ def test_zho_fuse_cli_pipe(
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
             ZhoFuseCli,
-            f"{full_lens_path} {full_paddle_path} {args}",
+            f"--lens-infile {full_lens_path} --paddle-infile {full_paddle_path} {args}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_zho_fuse_cli_allows_one_stdin_infile():
+    """Test 中文 OCR fusion CLI allows exactly one stdin subtitle input."""
+    lens_path = test_data_root / "mnt" / "input" / "zho-Hans_lens.srt"
+    paddle_path = test_data_root / "mnt" / "input" / "zho-Hans_paddle.srt"
+    expected_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    stdin_stream = StringIO(lens_path.read_text())
+    stdout_stream = StringIO()
+
+    with patch("scinoephile.core.cli.stdin", stdin_stream):
+        with patch("scinoephile.core.cli.stdout", stdout_stream):
+            run_cli_with_args(
+                ZhoFuseCli,
+                f"--lens-infile - --paddle-infile {paddle_path} --clean --convert",
+            )
+
+    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    expected = Series.load(expected_path)
+
+    assert output == expected
+
+
+def test_zho_fuse_cli_rejects_two_stdin_infiles():
+    """Test 中文 OCR fusion CLI rejects stdin for both subtitle inputs."""
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            ZhoFuseCli,
+            "--lens-infile - --paddle-infile -",
+        )
+
+
+def test_zho_fuse_cli_rejects_overwrite_without_outfile():
+    """Test 中文 OCR fusion CLI rejects overwrite when writing to stdout."""
+    lens_path = test_data_root / "mnt" / "input" / "zho-Hans_lens.srt"
+    paddle_path = test_data_root / "mnt" / "input" / "zho-Hans_paddle.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            ZhoFuseCli,
+            f"--lens-infile {lens_path} "
+            f"--paddle-infile {paddle_path} --clean --convert --overwrite",
+        )

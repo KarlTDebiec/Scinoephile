@@ -166,9 +166,20 @@ def test_zho_cli_pipe(input_path: str, args: str, expected_path: str):
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdin", stdin_stream):
         with patch("scinoephile.core.cli.stdout", stdout_stream):
-            run_cli_with_args(ZhoCli, args)
+            run_cli_with_args(ZhoCli, f"--infile - {args}")
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_zho_cli_rejects_overwrite_without_outfile():
+    """Test 中文 CLI rejects overwrite when outfile is omitted."""
+    full_input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            ZhoCli,
+            f"--infile {full_input_path} --clean --overwrite",
+        )
