@@ -11,6 +11,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 from .eng_fuse_cli import EngFuseCli
 from .eng_process_cli import EngProcessCli
+from .eng_validate_ocr_cli import EngValidateOcrCli
 
 __all__ = ["EngCli"]
 
@@ -46,6 +47,7 @@ class EngCli(CommandLineInterface):
         return {
             EngFuseCli.name(): EngFuseCli,
             EngProcessCli.name(): EngProcessCli,
+            EngValidateOcrCli.name(): EngValidateOcrCli,
         }
 
     @classmethod
