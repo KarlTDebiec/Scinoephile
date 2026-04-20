@@ -34,7 +34,6 @@ class EngProcessCli(CommandLineInterface):
         super().add_arguments_to_argparser(parser)
         arg_groups = get_arg_groups_by_name(
             parser,
-            "positional arguments",
             "input arguments",
             "operation arguments",
             "output arguments",
