@@ -40,6 +40,16 @@ def test_val_output_dir_path_creates_dir(tmp_path: Path):
     assert result.is_dir()
 
 
+def test_val_output_dir_path_without_create(tmp_path: Path):
+    """Test that directory is not created when create is False."""
+    test_dir = tmp_path / "newdir"
+    assert not test_dir.exists()
+
+    result = val_output_dir_path(test_dir, create=False)
+    assert result == test_dir.resolve()
+    assert not result.exists()
+
+
 def test_val_output_dir_path_nested_dirs(tmp_path: Path):
     """Test that nested directories are created."""
     test_dir = tmp_path / "dir1" / "dir2" / "dir3"

@@ -106,3 +106,16 @@ def test_output_dir_arg(tmp_path: Path):
     assert isinstance(result, Path)
     assert result.exists()
     assert result.is_dir()
+
+
+def test_output_dir_arg_without_create(tmp_path: Path):
+    """Test output_dir_arg validator without directory creation."""
+    test_dir = tmp_path / "outputdir"
+    assert not test_dir.exists()
+
+    validator = output_dir_arg(create=False)
+
+    result = validator(str(test_dir))
+    assert isinstance(result, Path)
+    assert result == test_dir.resolve()
+    assert not result.exists()
