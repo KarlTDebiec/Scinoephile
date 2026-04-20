@@ -11,6 +11,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 from .yue_process_cli import YueProcessCli
 from .yue_transcribe_cli import YueTranscribeCli
+from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = ["YueCli"]
 
@@ -47,6 +48,7 @@ class YueCli(CommandLineInterface):
         return {
             YueProcessCli.name(): YueProcessCli,
             YueTranscribeCli.name(): YueTranscribeCli,
+            YueTranslateVsZhoCli.name(): YueTranslateVsZhoCli,
         }
 
     @classmethod
