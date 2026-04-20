@@ -32,6 +32,7 @@ from scinoephile.lang.zho.proofreading import (
 )
 
 from .yue_transcribe_cli import YueTranscribeCli
+from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = ["YueCli"]
 
@@ -132,6 +133,7 @@ class YueCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
+            YueTranslateVsZhoCli.name(): YueTranslateVsZhoCli,
             YueTranscribeCli.name(): YueTranscribeCli,
         }
 
