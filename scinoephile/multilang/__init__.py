@@ -5,6 +5,5 @@
 This module may import from: common, core, lang, audio, llms
 
 Hierarchy within module (lower may import from higher)::
-* dictionaries
 * yue_zho
 """

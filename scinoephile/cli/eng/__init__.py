@@ -6,8 +6,10 @@ from __future__ import annotations
 
 from .eng_cli import EngCli
 from .eng_fuse_cli import EngFuseCli
+from .eng_process_cli import EngProcessCli
 
 __all__ = [
     "EngCli",
     "EngFuseCli",
+    "EngProcessCli",
 ]
