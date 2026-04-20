@@ -9,13 +9,13 @@ from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
 
-from .analysis.analysis_cli import AnalysisCli
-from .dictionary.dictionary_cli import DictionaryCli
-from .eng.eng_cli import EngCli
+from .analysis import AnalysisCli
+from .dictionary import DictionaryCli
+from .eng import EngCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
-from .yue.yue_cli import YueCli
-from .zho.zho_cli import ZhoCli
+from .yue import YueCli
+from .zho import ZhoCli
 
 
 class ScinoephileCli(CommandLineInterface):
