@@ -18,6 +18,8 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
+__all__ = ["SyncCli"]
+
 
 class SyncCli(CommandLineInterface):
     """Combine two series into the top and bottom of a synchronized series."""

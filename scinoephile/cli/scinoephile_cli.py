@@ -17,6 +17,8 @@ from .timewarp_cli import TimewarpCli
 from .yue import YueCli
 from .zho import ZhoCli
 
+__all__ = ["ScinoephileCli"]
+
 
 class ScinoephileCli(CommandLineInterface):
     """Command-line interface for Scinoephile.

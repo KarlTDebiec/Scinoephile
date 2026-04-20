@@ -20,6 +20,8 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
+__all__ = ["TimewarpCli"]
+
 
 class TimewarpCli(CommandLineInterface):
     """Shift and stretch the timings of one subtitle series to match another."""

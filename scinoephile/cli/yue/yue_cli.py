@@ -33,6 +33,8 @@ from scinoephile.lang.zho.proofreading import (
 
 from .yue_transcribe_cli import YueTranscribeCli
 
+__all__ = ["YueCli"]
+
 
 class YueCli(CommandLineInterface):
     """Modify Written Cantonese (粤文) subtitles."""

@@ -33,6 +33,8 @@ from scinoephile.lang.zho.proofreading import (
 
 from .zho_fuse_cli import ZhoFuseCli
 
+__all__ = ["ZhoCli"]
+
 
 class ZhoCli(CommandLineInterface):
     """Modify Standard Chinese (中文) subtitles."""

@@ -22,6 +22,8 @@ from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
+__all__ = ["YueTranscribeCli"]
+
 
 class YueTranscribeCli(CommandLineInterface):
     """Command-line interface for 粤文 subtitle transcription."""

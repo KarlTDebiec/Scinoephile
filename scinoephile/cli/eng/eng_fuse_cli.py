@@ -18,6 +18,8 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
 
+__all__ = ["EngFuseCli"]
+
 
 class EngFuseCli(CommandLineInterface):
     """Command-line interface for English OCR subtitle fusion."""

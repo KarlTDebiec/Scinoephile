@@ -20,6 +20,8 @@ from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_pro
 
 from .eng_fuse_cli import EngFuseCli
 
+__all__ = ["EngCli"]
+
 
 class EngCli(CommandLineInterface):
     """Modify English subtitles."""

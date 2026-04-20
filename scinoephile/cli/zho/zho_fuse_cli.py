@@ -25,6 +25,8 @@ from scinoephile.lang.zho.conversion import (
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
+__all__ = ["ZhoFuseCli"]
+
 
 class ZhoFuseCli(CommandLineInterface):
     """Command-line interface for 中文 OCR subtitle fusion."""

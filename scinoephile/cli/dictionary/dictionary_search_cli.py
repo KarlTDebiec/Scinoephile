@@ -22,6 +22,8 @@ from scinoephile.multilang.dictionaries.lookup import (
     lookup_dictionary_entries,
 )
 
+__all__ = ["DictionarySearchCli"]
+
 logger = getLogger(__name__)
 
 
