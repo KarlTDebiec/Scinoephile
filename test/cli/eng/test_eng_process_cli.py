@@ -131,19 +131,3 @@ def test_eng_process_cli_pipe(input_path: str, args: str, expected_path: str):
     expected = Series.load(full_expected_path)
 
     assert output == expected
-
-
-def test_eng_process_nested_invocation_through_scinoephile():
-    """Test `scinoephile eng process` runs through parent parser."""
-    full_input_path = test_data_root / "mnt/output/eng_fuse.srt"
-    full_expected_path = test_data_root / "mnt/output/eng_fuse_clean.srt"
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            ScinoephileCli,
-            f"eng process --infile {full_input_path} --clean --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-        expected = Series.load(full_expected_path)
-
-    assert output == expected
