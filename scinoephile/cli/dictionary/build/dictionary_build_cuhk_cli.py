@@ -16,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.multilang.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.dictionaries.cuhk import CuhkDictionaryService
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 

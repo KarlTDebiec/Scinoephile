@@ -7,10 +7,10 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
+from scinoephile.dictionaries import DictionaryToolPrompt
 from scinoephile.lang.yue.prompts import YueHansPrompt
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
-from scinoephile.multilang.dictionaries import DictionaryToolPrompt
 
 __all__ = [
     "YueHansReviewPrompt",

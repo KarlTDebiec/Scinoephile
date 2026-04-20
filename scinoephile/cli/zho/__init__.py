@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from .zho_cli import ZhoCli
 from .zho_fuse_cli import ZhoFuseCli
+from .zho_process_cli import ZhoProcessCli
 from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
-__all__ = ["ZhoCli", "ZhoFuseCli", "ZhoValidateOcrCli"]
+__all__ = ["ZhoCli", "ZhoFuseCli", "ZhoProcessCli", "ZhoValidateOcrCli"]

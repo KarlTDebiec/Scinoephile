@@ -9,11 +9,11 @@ from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
 from scinoephile.core.subtitles import Series
+from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.multilang.dictionaries.dictionary_tools import get_dictionary_tools
 
 from .manager import YueZhoProofreadingManager
 from .processor import YueZhoProofreadingProcessor

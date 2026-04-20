@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.dictionaries.DictionarySqliteStore."""
+"""Tests of scinoephile.dictionaries.DictionarySqliteStore."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.multilang.dictionaries import (
+from scinoephile.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
