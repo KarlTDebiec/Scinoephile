@@ -12,9 +12,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 
-__all__ = [
-    "DictionaryBuildCli",
-]
+__all__ = ["DictionaryBuildCli"]
 
 
 class DictionaryBuildCli(CommandLineInterface):
@@ -38,16 +36,6 @@ class DictionaryBuildCli(CommandLineInterface):
             subcommand.argparser(subparsers=subparsers)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("dictionary_build_subcommand")
-        cls.subcommands()[subcommand_name]._main(**kwargs)
-
-    @classmethod
     def name(cls) -> str:
         """Name of this tool used to define it when it is a subparser.
 
@@ -67,6 +55,16 @@ class DictionaryBuildCli(CommandLineInterface):
             DictionaryBuildCuhkCli.name(): DictionaryBuildCuhkCli,
             DictionaryBuildGzzjCli.name(): DictionaryBuildGzzjCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        subcommand_name = kwargs.pop("dictionary_build_subcommand")
+        cls.subcommands()[subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

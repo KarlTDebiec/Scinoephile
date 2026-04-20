@@ -35,17 +35,6 @@ class AnalysisCli(CommandLineInterface):
             subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("analysis_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 
@@ -56,6 +45,17 @@ class AnalysisCli(CommandLineInterface):
             AnalysisCerCli.name(): AnalysisCerCli,
             AnalysisDiffCli.name(): AnalysisDiffCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        subcommand_name = kwargs.pop("analysis_subcommand")
+        subcommand_cli_class = cls.subcommands()[subcommand_name]
+        subcommand_cli_class._main(**kwargs)
 
 
 if __name__ == "__main__":

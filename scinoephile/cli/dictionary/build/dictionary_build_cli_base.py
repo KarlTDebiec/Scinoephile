@@ -65,6 +65,17 @@ class DictionaryBuildCliBase(CommandLineInterface, ABC):
         )
 
     @classmethod
+    def log_completion(cls, database_path: Path):
+        """Log completion of dictionary build.
+
+        Arguments:
+            database_path: SQLite database path
+        """
+        logger.info(
+            f"{cls.dictionary_name.upper()} dictionary build complete: {database_path}"
+        )
+
+    @classmethod
     def log_config(
         cls,
         *,
@@ -93,17 +104,6 @@ class DictionaryBuildCliBase(CommandLineInterface, ABC):
             logger.info(f"Building at most {max_words} discovered words")
         if overwrite:
             logger.info("Overwrite enabled")
-
-    @classmethod
-    def log_completion(cls, database_path: Path):
-        """Log completion of dictionary build.
-
-        Arguments:
-            database_path: SQLite database path
-        """
-        logger.info(
-            f"{cls.dictionary_name.upper()} dictionary build complete: {database_path}"
-        )
 
     @classmethod
     def log_file_not_found_and_exit(cls, exc: FileNotFoundError):

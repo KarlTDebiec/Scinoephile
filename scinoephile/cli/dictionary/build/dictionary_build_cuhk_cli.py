@@ -84,6 +84,37 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
+    def log_config(
+        cls,
+        *,
+        cache_dir_path: Path | None,
+        database_path: Path,
+        max_words: int | None,
+        overwrite: bool,
+        source_json_path: Path | None,
+    ):
+        """Log the effective CUHK build configuration.
+
+        Arguments:
+            cache_dir_path: cache directory path
+            database_path: SQLite database path
+            max_words: optional max words cap
+            overwrite: whether database overwrite is enabled
+            source_json_path: unused source JSON path
+        """
+        super().log_config(
+            cache_dir_path=cache_dir_path,
+            database_path=database_path,
+            max_words=None,
+            overwrite=overwrite,
+            source_json_path=source_json_path,
+        )
+        if max_words is None:
+            logger.info("Building all discovered CUHK words")
+        else:
+            logger.info(f"Building at most {max_words} discovered CUHK words")
+
+    @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
@@ -124,34 +155,3 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         except FileNotFoundError as exc:
             cls.log_file_not_found_and_exit(exc)
         cls.log_completion(database_path)
-
-    @classmethod
-    def log_config(
-        cls,
-        *,
-        cache_dir_path: Path | None,
-        database_path: Path,
-        max_words: int | None,
-        overwrite: bool,
-        source_json_path: Path | None,
-    ):
-        """Log the effective CUHK build configuration.
-
-        Arguments:
-            cache_dir_path: cache directory path
-            database_path: SQLite database path
-            max_words: optional max words cap
-            overwrite: whether database overwrite is enabled
-            source_json_path: unused source JSON path
-        """
-        super().log_config(
-            cache_dir_path=cache_dir_path,
-            database_path=database_path,
-            max_words=None,
-            overwrite=overwrite,
-            source_json_path=source_json_path,
-        )
-        if max_words is None:
-            logger.info("Building all discovered CUHK words")
-        else:
-            logger.info(f"Building at most {max_words} discovered CUHK words")

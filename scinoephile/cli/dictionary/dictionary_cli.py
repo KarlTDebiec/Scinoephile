@@ -35,26 +35,6 @@ class DictionaryCli(CommandLineInterface):
             subcommands[name].argparser(subparsers=subparsers)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("dictionary_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "dictionary"
-
-    @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
         """Names and types of tools wrapped by command-line interface.
 
@@ -65,6 +45,17 @@ class DictionaryCli(CommandLineInterface):
             DictionaryBuildCli.name(): DictionaryBuildCli,
             DictionarySearchCli.name(): DictionarySearchCli,
         }
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        subcommand_name = kwargs.pop("dictionary_subcommand")
+        subcommand_cli_class = cls.subcommands()[subcommand_name]
+        subcommand_cli_class._main(**kwargs)
 
 
 if __name__ == "__main__":
