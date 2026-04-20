@@ -153,5 +153,6 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
                 max_words=max_words,
             )
         except FileNotFoundError as exc:
-            cls.log_file_not_found_and_exit(exc)
-        cls.log_completion(database_path)
+            logger.error(str(exc))
+            raise SystemExit(1) from exc
+        logger.info(f"{cls.name().upper()} dictionary build complete: {database_path}")

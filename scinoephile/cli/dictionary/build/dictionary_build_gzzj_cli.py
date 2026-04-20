@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from logging import getLogger
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs
@@ -14,6 +15,8 @@ from scinoephile.multilang.dictionaries.gzzj import GzzjDictionaryService
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
 __all__ = ["DictionaryBuildGzzjCli"]
+
+logger = getLogger(__name__)
 
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
@@ -68,5 +71,6 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
         try:
             database_path = service.build(overwrite=overwrite)
         except FileNotFoundError as exc:
-            cls.log_file_not_found_and_exit(exc)
-        cls.log_completion(database_path)
+            logger.error(str(exc))
+            raise SystemExit(1) from exc
+        logger.info(f"{cls.name().upper()} dictionary build complete: {database_path}")
