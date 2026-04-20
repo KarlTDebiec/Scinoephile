@@ -3,9 +3,7 @@
 """Code related to Cantonese (yue) text.
 
 Package hierarchy (modules may import from any above):
-* conversion
-* prompts
-* romanization
+* conversion / prompts / romanization
 """
 
 from __future__ import annotations

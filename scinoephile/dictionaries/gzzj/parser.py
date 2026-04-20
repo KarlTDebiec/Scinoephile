@@ -14,7 +14,7 @@ import opencc
 from pypinyin import Style, lazy_pinyin
 
 from scinoephile.common.validation import val_input_path
-from scinoephile.multilang.dictionaries import (
+from scinoephile.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
