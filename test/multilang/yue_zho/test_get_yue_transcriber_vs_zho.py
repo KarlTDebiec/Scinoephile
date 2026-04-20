@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from typing import cast
-from unittest.mock import Mock, patch
+from unittest.mock import ANY, Mock, patch
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
@@ -34,6 +34,7 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             test_case_directory_path=runtime_test_case_dir_path,
             shifting_test_cases=shifting_test_cases,
             punctuating_test_cases=punctuating_test_cases,
+            provider=ANY,
         )
         assert (
             runtime_test_case_dir_path

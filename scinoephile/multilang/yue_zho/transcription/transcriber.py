@@ -17,7 +17,7 @@ from scinoephile.audio.transcription import (
     get_segment_zho_converted,
 )
 from scinoephile.common.validation import val_input_dir_path
-from scinoephile.core.llms import Queryer, TestCase
+from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
@@ -41,6 +41,7 @@ class YueTranscriber:
         test_case_directory_path: Path,
         shifting_test_cases: list[TestCase],
         punctuating_test_cases: list[TestCase],
+        provider: LLMProvider,
     ):
         """Initialize.
 
@@ -48,6 +49,7 @@ class YueTranscriber:
             test_case_directory_path: path to directory containing test cases
             shifting_test_cases: shifting test cases
             punctuating_test_cases: punctuating test cases
+            provider: provider to use for LLM queryers
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.transcriber = WhisperTranscriber(
@@ -58,12 +60,14 @@ class YueTranscriber:
         self.shifting_queryer = shifting_queryer_cls(
             prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
+            provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         punctuating_queryer_cls = Queryer.get_queryer_cls(YueZhoHansPunctuatingPrompt)
         self.punctuating_queryer = punctuating_queryer_cls(
             prompt_test_cases=[tc for tc in punctuating_test_cases if tc.prompt],
             verified_test_cases=[tc for tc in punctuating_test_cases if tc.verified],
+            provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(

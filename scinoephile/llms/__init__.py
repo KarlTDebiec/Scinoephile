@@ -2,10 +2,10 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Code related to interactions with LLMs.
 
-This module may import from: common, core, open_ai
+This module may import from: common, core
 
 Hierarchy within module (lower may import from higher)::
-* default_test_cases
+* providers / default_test_cases
 * dual_block / dual_block_gapped / dual_multi_single / dual_pair / dual_single
   / mono_block
 """

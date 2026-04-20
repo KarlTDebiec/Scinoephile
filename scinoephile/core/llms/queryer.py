@@ -17,7 +17,6 @@ from pydantic import ValidationError
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.open_ai import OpenAIProvider
 
 from .answer import Answer
 from .llm_provider import LLMProvider
@@ -46,8 +45,8 @@ class Queryer[
         self,
         prompt_test_cases: list[TTestCase] | None = None,
         verified_test_cases: list[TTestCase] | None = None,
-        provider: LLMProvider | None = None,
         *,
+        provider: LLMProvider,
         cache_dir_path: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
@@ -103,10 +102,8 @@ class Queryer[
         return self.call(test_case)
 
     @property
-    def provider(self):
+    def provider(self) -> LLMProvider:
         """LLM Provider to use for queries."""
-        if self._provider is None:
-            self._provider = OpenAIProvider()
         return self._provider
 
     @provider.setter
