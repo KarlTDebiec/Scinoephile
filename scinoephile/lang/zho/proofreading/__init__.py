@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ZHO_HANS_PROOFREADING_JSON_PATHS,
@@ -64,6 +65,7 @@ def get_zho_proofread(
 def get_zho_proofreader(
     prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
     test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
     **kwargs: Unpack[ZhoProofreadingProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
@@ -71,6 +73,7 @@ def get_zho_proofreader(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        provider: provider to use for queries
         **kwargs: additional keyword arguments for MonoBlockProcessor
     Returns:
         MonoBlockProcessor with provided configuration
@@ -92,9 +95,11 @@ def get_zho_proofreader(
                     ZHO_HANS_PROOFREADING_JSON_PATHS,
                 )
             )
+    if provider is None:
+        provider = get_default_provider()
     return MonoBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
-        provider=get_default_provider(),
+        provider=provider,
         **kwargs,
     )

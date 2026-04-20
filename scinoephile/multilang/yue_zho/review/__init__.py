@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
 from scinoephile.llms.default_test_cases import (
@@ -67,6 +68,7 @@ def get_yue_vs_zho_reviewer(
     prompt_cls: type[YueHansReviewPrompt] = YueHansReviewPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
+    provider: LLMProvider | None = None,
     **kwargs: Unpack[YueZhoReviewProcessorKwargs],
 ) -> DualBlockProcessor:
     """Get DualBlockProcessor with provided configuration.
@@ -75,6 +77,7 @@ def get_yue_vs_zho_reviewer(
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         use_dictionary_tool: whether to wire the dictionary lookup tool
+        provider: provider to use for queries
         **kwargs: additional arguments for DualBlockProcessor
     Returns:
         DualBlockProcessor with provided configuration
@@ -91,10 +94,12 @@ def get_yue_vs_zho_reviewer(
     tool_handlers = None
     if use_dictionary_tool:
         tools, tool_handlers = get_dictionary_tools(prompt_cls)
+    if provider is None:
+        provider = get_default_provider()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
-        provider=get_default_provider(),
+        provider=provider,
         tools=tools,
         tool_handlers=tool_handlers,
         **kwargs,

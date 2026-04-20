@@ -5,8 +5,7 @@
 Module hierarchy (modules may import from any above):
 * common
 * core
-* llms
-* analysis / image
+* analysis / image / llms
 * lang
 * audio / dictionaries
 * multilang

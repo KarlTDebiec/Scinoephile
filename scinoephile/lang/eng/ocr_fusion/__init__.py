@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
@@ -64,6 +65,7 @@ def get_eng_ocr_fused(
 def get_eng_ocr_fuser(
     prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
     test_cases: list[TestCase] | None = None,
+    provider: LLMProvider | None = None,
     **kwargs: Unpack[EngOcrFusionProcessorKwargs],
 ) -> OcrFusionProcessor:
     """Get OcrFusionProcessor with provided configuration.
@@ -71,6 +73,7 @@ def get_eng_ocr_fuser(
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
+        provider: provider to use for queries
         **kwargs: additional keyword arguments for OcrFusionProcessor
     Returns:
         OcrFusionProcessor with provided configuration
@@ -83,9 +86,11 @@ def get_eng_ocr_fuser(
                 ENG_OCR_FUSION_JSON_PATHS,
             )
         )
+    if provider is None:
+        provider = get_default_provider()
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
-        provider=get_default_provider(),
+        provider=provider,
         **kwargs,
     )
