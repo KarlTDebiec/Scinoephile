@@ -43,14 +43,12 @@ class TimewarpCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--anchor-infile",
-            metavar="ANCHOR_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile used as anchor timing reference or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--mobile-infile",
-            metavar="MOBILE_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='mobile subtitle infile to be timewarped or "-" for stdin',
@@ -59,28 +57,24 @@ class TimewarpCli(CommandLineInterface):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--one-start-idx",
-            metavar="N",
             type=int_arg(min_value=1),
             default=None,
             help="1-based start index in anchor series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
             "--one-end-idx",
-            metavar="N",
             type=int_arg(min_value=1),
             default=None,
             help="1-based end index in anchor series (default: final subtitle)",
         )
         arg_groups["operation arguments"].add_argument(
             "--two-start-idx",
-            metavar="N",
             type=int_arg(min_value=1),
             default=None,
             help="1-based start index in moving series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
             "--two-end-idx",
-            metavar="N",
             type=int_arg(min_value=1),
             default=None,
             help="1-based end index in moving series (default: final subtitle)",
@@ -90,7 +84,6 @@ class TimewarpCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="timewarped subtitle outfile path (default: stdout)",

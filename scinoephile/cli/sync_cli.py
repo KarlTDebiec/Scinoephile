@@ -40,14 +40,12 @@ class SyncCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--top-infile",
-            metavar="TOP_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for top line or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--bottom-infile",
-            metavar="BOTTOM_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for bottom line or "-" for stdin',
@@ -57,7 +55,6 @@ class SyncCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="synchronized subtitle outfile path (default: stdout)",

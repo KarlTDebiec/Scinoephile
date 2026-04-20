@@ -30,14 +30,12 @@ class AnalysisCerCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--reference-infile",
-            metavar="REFERENCE_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for reference series or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--candidate-infile",
-            metavar="CANDIDATE_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for candidate series or "-" for stdin',

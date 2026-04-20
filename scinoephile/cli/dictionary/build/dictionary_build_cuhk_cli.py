@@ -46,14 +46,12 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
 
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
-            metavar="DIR",
             default=None,
             type=output_dir_arg(),
             help="cache directory for scraped HTML and link data",
         )
         arg_groups["operation arguments"].add_argument(
             "--max-words",
-            metavar="N",
             type=int_arg(min_value=1),
             help="stop after building the first N discovered words",
         )

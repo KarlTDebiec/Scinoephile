@@ -44,7 +44,6 @@ class EngCli(CommandLineInterface):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
-            metavar="INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitle infile path or "-" for stdin',
@@ -71,7 +70,6 @@ class EngCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="English subtitle outfile path (default: stdout)",

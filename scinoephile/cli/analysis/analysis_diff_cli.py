@@ -40,14 +40,12 @@ class AnalysisDiffCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--one-infile",
-            metavar="ONE_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for first series or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--two-infile",
-            metavar="TWO_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for second series or "-" for stdin',
@@ -56,7 +54,6 @@ class AnalysisDiffCli(CommandLineInterface):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--similarity-cutoff",
-            metavar="N",
             default=0.6,
             type=float_arg(min_value=0.0, max_value=1.0),
             help="similarity threshold used to pair replacements (default: 0.6)",
@@ -65,14 +62,12 @@ class AnalysisDiffCli(CommandLineInterface):
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "--one-label",
-            metavar="LABEL",
             default="one",
             type=str,
             help="label for first series (default: one)",
         )
         arg_groups["output arguments"].add_argument(
             "--two-label",
-            metavar="LABEL",
             default="two",
             type=str,
             help="label for second series (default: two)",

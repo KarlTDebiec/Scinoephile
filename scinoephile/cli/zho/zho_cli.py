@@ -57,7 +57,6 @@ class ZhoCli(CommandLineInterface):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
-            metavar="INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='中文 subtitle infile path or "-" for stdin',
@@ -76,7 +75,6 @@ class ZhoCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--convert",
-            metavar="CONFIG",
             nargs="?",
             const=OpenCCConfig.t2s,
             type=OpenCCConfig,
@@ -87,7 +85,6 @@ class ZhoCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--proofread",
-            metavar="SCRIPT",
             nargs="?",
             const="simplified",
             type=str_arg(options=("simplified", "traditional")),
@@ -103,7 +100,6 @@ class ZhoCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="中文 subtitle outfile path (default: stdout)",

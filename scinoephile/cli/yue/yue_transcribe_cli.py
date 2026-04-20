@@ -45,7 +45,6 @@ class YueTranscribeCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--media-infile",
-            metavar="MEDIA_INFILE",
             required=True,
             type=str,
             help=(
@@ -55,14 +54,12 @@ class YueTranscribeCli(CommandLineInterface):
         )
         arg_groups["input arguments"].add_argument(
             "--stream-index",
-            metavar="N",
             type=int_arg(min_value=0),
             default=0,
             help="audio stream index in media input (default: 0)",
         )
         arg_groups["input arguments"].add_argument(
             "--zhongwen-infile",
-            metavar="ZHONGWEN_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='中文 subtitle infile or "-" for stdin',
@@ -72,7 +69,6 @@ class YueTranscribeCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="粤文 subtitle outfile path (default: stdout)",

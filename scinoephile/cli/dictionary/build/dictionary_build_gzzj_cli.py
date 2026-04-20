@@ -39,7 +39,6 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
 
         arg_groups["input arguments"].add_argument(
             "--source-json-path",
-            metavar="FILE",
             default=None,
             type=input_file_arg(),
             help="path to manually downloaded GZZJ source JSON",

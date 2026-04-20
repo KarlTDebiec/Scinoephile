@@ -35,7 +35,6 @@ class DictionaryBuildCliBase(CommandLineInterface, ABC):
         )
         arg_groups["output arguments"].add_argument(
             "--database-path",
-            metavar="FILE",
             default=None,
             type=output_file_arg(exist_ok=True),
             help="SQLite database output path",

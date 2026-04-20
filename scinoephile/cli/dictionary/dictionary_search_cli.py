@@ -46,7 +46,6 @@ class DictionarySearchCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--database-path",
-            metavar="FILE",
             default=None,
             type=input_file_arg(),
             help="SQLite database input path",
@@ -66,7 +65,6 @@ class DictionarySearchCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--limit",
-            metavar="N",
             type=int_arg(min_value=1),
             default=10,
             help="maximum number of matches to show per dictionary",

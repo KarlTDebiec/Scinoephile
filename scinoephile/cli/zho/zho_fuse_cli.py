@@ -48,14 +48,12 @@ class ZhoFuseCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
-            metavar="LENS_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='中文 subtitles ORCed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
-            metavar="PADDLE_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='中文 subtitles OCRed using PaddleOCR or "-" for stdin',
@@ -69,7 +67,6 @@ class ZhoFuseCli(CommandLineInterface):
         )
         arg_groups["operation arguments"].add_argument(
             "--convert",
-            metavar="CONFIG",
             nargs="?",
             const=OpenCCConfig.t2s,
             type=OpenCCConfig,
@@ -83,7 +80,6 @@ class ZhoFuseCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="中文 subtitle outfile path (default: stdout)",

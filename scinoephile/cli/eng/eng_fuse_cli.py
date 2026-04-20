@@ -41,14 +41,12 @@ class EngFuseCli(CommandLineInterface):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
-            metavar="LENS_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitles OCRed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--tesseract-infile",
-            metavar="TESSERACT_INFILE",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitles OCRed using Tesseract or "-" for stdin',
@@ -66,7 +64,6 @@ class EngFuseCli(CommandLineInterface):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
-            metavar="OUTFILE",
             default=None,
             type=output_file_arg(),
             help="English subtitle outfile path (default: stdout)",
