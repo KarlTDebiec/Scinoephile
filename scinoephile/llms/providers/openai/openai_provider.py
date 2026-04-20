@@ -24,20 +24,30 @@ logger = getLogger(__name__)
 class OpenAIProvider(LLMProvider):
     """OpenAI LLM Provider."""
 
+    default_model = "gpt-5.4"
+    """Default OpenAI model identifier."""
+
     def __init__(self, client: OpenAI | None = None):
         """Initialize.
 
         Arguments:
             client: synchronous OpenAI client
         """
-        self.sync_client: OpenAI = client or OpenAI()
+        self._sync_client: OpenAI | None = client
+
+    @property
+    def sync_client(self) -> OpenAI:
+        """Synchronous OpenAI client."""
+        if self._sync_client is None:
+            self._sync_client = OpenAI()
+        return self._sync_client
 
     @override
     def chat_completion(  # noqa: PLR0912
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str = "gpt-5.4",
+        model: str | None = None,
         tools: list[LLMToolSpec] | None = None,
         tool_handlers: dict[str, ToolHandler] | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
@@ -49,7 +59,7 @@ class OpenAIProvider(LLMProvider):
             response_format: response format
             tools: available function-tool definitions
             tool_handlers: handlers for available function tools
-            model: model to use
+            model: OpenAI model to use; if omitted, provider default is used
             **kwargs: additional keyword arguments
         Returns:
             completion text from the model
@@ -73,13 +83,13 @@ class OpenAIProvider(LLMProvider):
                 if response_format:
                     completion = self.sync_client.beta.chat.completions.parse(
                         messages=messages,  # ty:ignore[invalid-argument-type]
-                        model=model,
+                        model=model or self.default_model,
                         **request_kwargs,
                     )
                 else:
                     completion = self.sync_client.chat.completions.create(
                         messages=messages,
-                        model=model,
+                        model=model or self.default_model,
                         **request_kwargs,
                     )  # ty:ignore[no-matching-overload]
 
