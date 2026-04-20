@@ -133,8 +133,8 @@ class YueCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
-            YueTranslateVsZhoCli.name(): YueTranslateVsZhoCli,
             YueTranscribeCli.name(): YueTranscribeCli,
+            YueTranslateVsZhoCli.name(): YueTranslateVsZhoCli,
         }
 
     @classmethod

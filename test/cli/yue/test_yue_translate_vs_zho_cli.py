@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli Yue translation-vs-zho CLIs."""
+"""Tests of scinoephile.cli Yue translate-vs-zho CLI."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_yue_translate_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 translation-vs-zho CLI help output.
+    """Test 粤文 translate-vs-zho CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -44,7 +44,7 @@ def test_yue_translate_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 translation-vs-zho CLI usage output.
+    """Test 粤文 translate-vs-zho CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -53,7 +53,7 @@ def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...])
 
 
 def test_yue_translate_vs_zho_cli_writes_file():
-    """Test 粤文 translation-vs-zho CLI writes file output."""
+    """Test 粤文 translate-vs-zho CLI writes file output."""
     yue_infile_path = test_data_root / "mlamd" / "output" / "yue-Hans_transcribe.srt"
     zho_infile_path = test_data_root / "mlamd" / "output" / "zho-Hans_fuse.srt"
     expected_series = Series.from_string(
@@ -80,7 +80,7 @@ def test_yue_translate_vs_zho_cli_writes_file():
 
 
 def test_yue_translate_vs_zho_cli_rejects_two_stdin_infiles():
-    """Test 粤文 translation-vs-zho CLI rejects stdin for both inputs."""
+    """Test 粤文 translate-vs-zho CLI rejects stdin for both inputs."""
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranslateVsZhoCli,
@@ -89,7 +89,7 @@ def test_yue_translate_vs_zho_cli_rejects_two_stdin_infiles():
 
 
 def test_yue_translate_vs_zho_cli_rejects_overwrite_without_outfile():
-    """Test 粤文 translation-vs-zho CLI rejects overwrite when writing to stdout."""
+    """Test 粤文 translate-vs-zho CLI rejects overwrite when writing to stdout."""
     yue_infile_path = test_data_root / "mlamd" / "output" / "yue-Hans_transcribe.srt"
     zho_infile_path = test_data_root / "mlamd" / "output" / "zho-Hans_fuse.srt"
 

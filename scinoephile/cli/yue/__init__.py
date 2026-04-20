@@ -10,6 +10,6 @@ from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = [
     "YueCli",
-    "YueTranslateVsZhoCli",
     "YueTranscribeCli",
+    "YueTranslateVsZhoCli",
 ]
