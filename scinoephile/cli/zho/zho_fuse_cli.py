@@ -8,8 +8,9 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.core.cli.io import read_series, write_series
+from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
@@ -41,16 +42,18 @@ class ZhoFuseCli(CommandLineInterface):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "lens_infile",
+            "--lens-infile",
             metavar="LENS_INFILE",
-            type=input_file_arg(),
-            help="Google Lens 中文 subtitle infile",
+            required=True,
+            type=str,
+            help='中文 subtitles ORCed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "paddle_infile",
+            "--paddle-infile",
             metavar="PADDLE_INFILE",
-            type=input_file_arg(),
-            help="PaddleOCR 中文 subtitle infile",
+            required=True,
+            type=str,
+            help='中文 subtitles OCRed using PaddleOCR or "-" for stdin',
         )
 
         # Operation arguments
@@ -78,7 +81,7 @@ class ZhoFuseCli(CommandLineInterface):
             metavar="OUTFILE",
             default="-",
             type=str,
-            help='fused 中文 subtitle outfile path or "-" for stdout',
+            help='中文 subtitle outfile path or "-" for stdout',
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -88,13 +91,22 @@ class ZhoFuseCli(CommandLineInterface):
         parser.set_defaults(_parser=parser)
 
     @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "fuse"
+
+    @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
-            **kwargs: keyword arguments including lens_infile, paddle_infile, clean,
-              convert, outfile, and overwrite
+            **kwargs: keyword arguments
         """
+        # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
         lens_infile = kwargs.pop("lens_infile")
         paddle_infile = kwargs.pop("paddle_infile")
@@ -102,9 +114,19 @@ class ZhoFuseCli(CommandLineInterface):
         convert = kwargs.pop("convert")
         outfile = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if lens_infile == "-" and paddle_infile == "-":
+            try:
+                raise ArgumentConflictError(
+                    "--lens-infile and --paddle-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
-        lens = read_series(parser, lens_infile)
-        paddle = read_series(parser, paddle_infile)
+        # Read inputs
+        lens = read_series(parser, lens_infile, allow_stdin=True)
+        paddle = read_series(parser, paddle_infile, allow_stdin=True)
+
+        # Perform operations
         if clean:
             lens = get_zho_cleaned(lens, remove_empty=False)
             paddle = get_zho_cleaned(paddle, remove_empty=False)
@@ -114,13 +136,12 @@ class ZhoFuseCli(CommandLineInterface):
 
         processor = cls._get_ocr_fuser(convert)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
+
+        # Write outputs
         write_series(parser, fused, outfile, overwrite)
 
     @classmethod
-    def _get_ocr_fuser(
-        cls,
-        convert: OpenCCConfig | None,
-    ) -> OcrFusionProcessor:
+    def _get_ocr_fuser(cls, convert: OpenCCConfig | None) -> OcrFusionProcessor:
         """Get OCR fuser for selected conversion output script.
 
         Arguments:
@@ -149,15 +170,6 @@ class ZhoFuseCli(CommandLineInterface):
         if convert in SIMPLIFIED_CONFIGS:
             return "simplified"
         return "simplified"
-
-    @classmethod
-    def name(cls) -> str:
-        """Name of this tool used to define it when it is a subparser.
-
-        Returns:
-            subcommand name
-        """
-        return "fuse"
 
 
 if __name__ == "__main__":
