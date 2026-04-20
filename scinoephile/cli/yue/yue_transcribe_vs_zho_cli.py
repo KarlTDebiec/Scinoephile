@@ -15,17 +15,29 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
     output_file_arg,
+    str_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
+from scinoephile.multilang.yue_zho.transcription import (
+    get_yue_transcribed_vs_zho,
+    get_yue_vs_zho_transcriber,
+)
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+    YueZhoHantPunctuatingPrompt,
+)
+from scinoephile.multilang.yue_zho.transcription.shifting import (
+    YueZhoHansShiftingPrompt,
+    YueZhoHantShiftingPrompt,
+)
 
-__all__ = ["YueTranscribeCli"]
+__all__ = ["YueTranscribeVsZhoCli"]
 
 
-class YueTranscribeCli(CommandLineInterface):
+class YueTranscribeVsZhoCli(CommandLineInterface):
     """Transcribe subtitles from audio and revise using Standard Chinese text."""
 
     @classmethod
@@ -64,6 +76,14 @@ class YueTranscribeCli(CommandLineInterface):
             help='中文 subtitle infile or "-" for stdin',
         )
 
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--script",
+            default="simplified",
+            type=str_arg(options=("simplified", "traditional")),
+            help="script for prompts and output conversion (default: simplified)",
+        )
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -89,6 +109,24 @@ class YueTranscribeCli(CommandLineInterface):
         return "transcribe"
 
     @classmethod
+    def _get_transcription_prompt_classes(
+        cls, script: str
+    ) -> tuple[
+        type[YueZhoHansShiftingPrompt] | type[YueZhoHantShiftingPrompt],
+        type[YueZhoHansPunctuatingPrompt] | type[YueZhoHantPunctuatingPrompt],
+    ]:
+        """Get transcription prompt classes for the selected script.
+
+        Arguments:
+            script: selected script identifier
+        Returns:
+            shifting and punctuating prompt classes
+        """
+        if script == "traditional":
+            return YueZhoHantShiftingPrompt, YueZhoHantPunctuatingPrompt
+        return YueZhoHansShiftingPrompt, YueZhoHansPunctuatingPrompt
+
+    @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
         """Execute with provided keyword arguments.
 
@@ -100,6 +138,7 @@ class YueTranscribeCli(CommandLineInterface):
         media_infile_path = kwargs.pop("media_infile")
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
+        script = kwargs.pop("script")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if media_infile_path == "-" and zhongwen_infile_path == "-":
@@ -142,7 +181,18 @@ class YueTranscribeCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Perform operations
-        yuewen = get_yue_transcribed_vs_zho(yuewen=yuewen, zhongwen=zhongwen)
+        shifting_prompt_cls, punctuating_prompt_cls = (
+            cls._get_transcription_prompt_classes(script)
+        )
+        transcriber = get_yue_vs_zho_transcriber(
+            shifting_prompt_cls=shifting_prompt_cls,
+            punctuating_prompt_cls=punctuating_prompt_cls,
+        )
+        yuewen = get_yue_transcribed_vs_zho(
+            yuewen=yuewen,
+            zhongwen=zhongwen,
+            transcriber=transcriber,
+        )
 
         # Write outputs
         write_series(
@@ -151,4 +201,4 @@ class YueTranscribeCli(CommandLineInterface):
 
 
 if __name__ == "__main__":
-    YueTranscribeCli.main()
+    YueTranscribeVsZhoCli.main()

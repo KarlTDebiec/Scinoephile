@@ -10,6 +10,12 @@ from unittest.mock import ANY, Mock, patch
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
 from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
+from scinoephile.multilang.yue_zho.transcription.punctuating import (
+    YueZhoHansPunctuatingPrompt,
+)
+from scinoephile.multilang.yue_zho.transcription.shifting import (
+    YueZhoHansShiftingPrompt,
+)
 
 
 def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
@@ -34,6 +40,8 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             test_case_directory_path=runtime_test_case_dir_path,
             shifting_test_cases=shifting_test_cases,
             punctuating_test_cases=punctuating_test_cases,
+            shifting_prompt_cls=YueZhoHansShiftingPrompt,
+            punctuating_prompt_cls=YueZhoHansPunctuatingPrompt,
             provider=ANY,
         )
         assert (

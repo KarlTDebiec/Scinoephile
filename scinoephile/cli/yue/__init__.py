@@ -6,12 +6,14 @@ from __future__ import annotations
 
 from .yue_cli import YueCli
 from .yue_process_cli import YueProcessCli
-from .yue_transcribe_cli import YueTranscribeCli
+from .yue_review_vs_zho_cli import YueReviewVsZhoCli
+from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = [
     "YueCli",
     "YueProcessCli",
-    "YueTranscribeCli",
+    "YueReviewVsZhoCli",
+    "YueTranscribeVsZhoCli",
     "YueTranslateVsZhoCli",
 ]

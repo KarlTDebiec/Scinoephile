@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 粤文 translation against 中文 reference subtitles."""
+"""Command-line interface for 粤文 review against 中文."""
 
 from __future__ import annotations
 
@@ -17,18 +17,26 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
-from scinoephile.multilang.yue_zho.translation import (
-    YueHansFromZhoTranslationPrompt,
-    YueHantFromZhoTranslationPrompt,
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
+from scinoephile.multilang.yue_zho import (
+    get_yue_proofread_vs_zho,
+    get_yue_reviewed_vs_zho,
+)
+from scinoephile.multilang.yue_zho.proofreading import (
+    YueZhoHansProofreadingPrompt,
+    YueZhoHantProofreadingPrompt,
+    get_yue_vs_zho_proofreader,
+)
+from scinoephile.multilang.yue_zho.review import (
+    YueHansReviewPrompt,
+    YueHantReviewPrompt,
+    get_yue_vs_zho_reviewer,
 )
 
-__all__ = ["YueTranslateVsZhoCli"]
+__all__ = ["YueReviewVsZhoCli"]
 
 
-class YueTranslateVsZhoCli(CommandLineInterface):
-    """Translate missing subtitles using a Standard Chinese reference series."""
+class YueReviewVsZhoCli(CommandLineInterface):
+    """Review 粤文 subtitles against 中文 subtitles."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -51,16 +59,25 @@ class YueTranslateVsZhoCli(CommandLineInterface):
             "--yue-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='target 粤文 subtitle infile or "-" for stdin',
+            help='target 粤文 subtitle infile path or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='reference 中文 subtitle infile or "-" for stdin',
+            help=('reference 中文 subtitle infile path or "-" for stdin'),
         )
 
         # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--mode",
+            default="block",
+            type=str_arg(options=("block", "line")),
+            help=(
+                "review mode (default: block): "
+                "block=block-by-block review, line=line-by-line proofreading"
+            ),
+        )
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
@@ -74,7 +91,7 @@ class YueTranslateVsZhoCli(CommandLineInterface):
             "--outfile",
             default=None,
             type=output_file_arg(),
-            help="translated 粤文 subtitle outfile path (default: stdout)",
+            help="reviewed 粤文 subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
@@ -90,22 +107,37 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         Returns:
             subcommand name
         """
-        return "translate-vs-zho"
+        return "review"
 
     @classmethod
-    def _get_translation_prompt_cls(
+    def _get_proofreading_prompt_cls(
         cls, script: str
-    ) -> type[YueHansFromZhoTranslationPrompt] | type[YueHantFromZhoTranslationPrompt]:
-        """Get the translation prompt class for the selected script.
+    ) -> type[YueZhoHansProofreadingPrompt] | type[YueZhoHantProofreadingPrompt]:
+        """Get the proofreading prompt class for the selected script.
 
         Arguments:
             script: selected script identifier
         Returns:
-            translation prompt class
+            proofreading prompt class
         """
         if script == "traditional":
-            return YueHantFromZhoTranslationPrompt
-        return YueHansFromZhoTranslationPrompt
+            return YueZhoHantProofreadingPrompt
+        return YueZhoHansProofreadingPrompt
+
+    @classmethod
+    def _get_review_prompt_cls(
+        cls, script: str
+    ) -> type[YueHansReviewPrompt] | type[YueHantReviewPrompt]:
+        """Get the review prompt class for the selected script.
+
+        Arguments:
+            script: selected script identifier
+        Returns:
+            review prompt class
+        """
+        if script == "traditional":
+            return YueHantReviewPrompt
+        return YueHansReviewPrompt
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -118,6 +150,7 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         parser = kwargs.pop("_parser", cls.argparser())
         yue_infile_path = kwargs.pop("yue_infile")
         zho_infile_path = kwargs.pop("zho_infile")
+        mode = kwargs.pop("mode")
         script = kwargs.pop("script")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
@@ -141,19 +174,31 @@ class YueTranslateVsZhoCli(CommandLineInterface):
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
 
         # Perform operations
-        prompt_cls = cls._get_translation_prompt_cls(script)
-        translator = get_yue_vs_zho_translator(prompt_cls=prompt_cls)
-        yuewen = get_yue_translated_vs_zho(
-            yuewen=yuewen,
-            zhongwen=zhongwen,
-            translator=translator,
-        )
+        if mode == "line":
+            prompt_cls = cls._get_proofreading_prompt_cls(script)
+            processor = get_yue_vs_zho_proofreader(prompt_cls=prompt_cls)
+            reviewed = get_yue_proofread_vs_zho(
+                yuewen=yuewen,
+                zhongwen=zhongwen,
+                processor=processor,
+            )
+        else:
+            prompt_cls = cls._get_review_prompt_cls(script)
+            reviewer = get_yue_vs_zho_reviewer(prompt_cls=prompt_cls)
+            reviewed = get_yue_reviewed_vs_zho(
+                yuewen=yuewen,
+                zhongwen=zhongwen,
+                reviewer=reviewer,
+            )
 
-        # Write outputs
+        # Write output
         write_series(
-            parser, yuewen, outfile_path if outfile_path is not None else "-", overwrite
+            parser,
+            reviewed,
+            outfile_path if outfile_path is not None else "-",
+            overwrite,
         )
 
 
 if __name__ == "__main__":
-    YueTranslateVsZhoCli.main()
+    YueReviewVsZhoCli.main()
