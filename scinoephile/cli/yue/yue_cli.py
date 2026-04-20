@@ -31,6 +31,7 @@ from scinoephile.lang.zho.proofreading import (
     get_zho_proofreader,
 )
 
+from .yue_review_cli import YueReviewCli
 from .yue_transcribe_cli import YueTranscribeCli
 
 __all__ = ["YueCli"]
@@ -132,6 +133,7 @@ class YueCli(CommandLineInterface):
             mapping of subcommand names to CLI classes
         """
         return {
+            YueReviewCli.name(): YueReviewCli,
             YueTranscribeCli.name(): YueTranscribeCli,
         }
 
