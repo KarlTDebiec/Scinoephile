@@ -17,8 +17,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import write_series
-from scinoephile.core.subtitles import Series
+from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
 
@@ -43,16 +42,18 @@ class TimewarpCli(CommandLineInterface):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "anchor_infile",
+            "--anchor-infile",
             metavar="ANCHOR_INFILE",
-            type=input_file_arg(),
-            help="subtitle infile used as anchor timing reference",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='subtitle infile used as anchor timing reference or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "mobile_infile",
+            "--mobile-infile",
             metavar="MOBILE_INFILE",
-            type=input_file_arg(),
-            help="mobile subtitle infile to be timewarped",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='mobile subtitle infile to be timewarped or "-" for stdin',
         )
 
         # Operation arguments
@@ -118,6 +119,13 @@ class TimewarpCli(CommandLineInterface):
         two_end_idx = kwargs.pop("two_end_idx")
         outfile: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if anchor_infile == "-" and mobile_infile == "-":
+            try:
+                raise ArgumentConflictError(
+                    "--anchor-infile and --mobile-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
         if overwrite and outfile is None:
             try:
                 raise ArgumentConflictError(
@@ -127,8 +135,8 @@ class TimewarpCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        anchor = Series.load(anchor_infile)
-        mobile = Series.load(mobile_infile)
+        anchor = read_series(parser, anchor_infile, allow_stdin=True)
+        mobile = read_series(parser, mobile_infile, allow_stdin=True)
 
         # Perform operations
         try:

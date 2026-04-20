@@ -82,7 +82,8 @@ def test_timewarp_cli(
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             TimewarpCli,
-            f"{full_anchor_path} {full_mobile_path} {args} --outfile {output_path}",
+            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
+            f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -102,7 +103,7 @@ def test_timewarp_cli_pipe():
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
             TimewarpCli,
-            f"{full_anchor_path} {full_mobile_path} "
+            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
             "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
         )
 
@@ -122,7 +123,16 @@ def test_timewarp_cli_rejects_overwrite_without_outfile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             TimewarpCli,
-            f"{full_anchor_path} {full_mobile_path} "
+            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
             "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461 "
             "--overwrite",
+        )
+
+
+def test_timewarp_cli_rejects_two_stdin_infiles():
+    """Test timewarp CLI rejects stdin for both inputs."""
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            TimewarpCli,
+            "--anchor-infile - --mobile-infile -",
         )

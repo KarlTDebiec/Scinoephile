@@ -82,7 +82,8 @@ def test_sync_cli(
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
             SyncCli,
-            f"{full_top_path} {full_bottom_path} {args} --outfile {output_path}",
+            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
+            f"{args} --outfile {output_path}",
         )
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
@@ -105,7 +106,7 @@ def test_sync_cli_pipe():
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
             SyncCli,
-            f"{full_top_path} {full_bottom_path}",
+            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
@@ -127,5 +128,15 @@ def test_sync_cli_rejects_overwrite_without_outfile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             SyncCli,
-            f"{full_top_path} {full_bottom_path} --overwrite",
+            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
+            "--overwrite",
+        )
+
+
+def test_sync_cli_rejects_two_stdin_infiles():
+    """Test sync CLI rejects stdin for both inputs."""
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            SyncCli,
+            "--top-infile - --bottom-infile -",
         )

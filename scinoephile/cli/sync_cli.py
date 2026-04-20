@@ -15,8 +15,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import write_series
-from scinoephile.core.subtitles import Series
+from scinoephile.core.cli import read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
 
@@ -40,16 +39,18 @@ class SyncCli(CommandLineInterface):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "top_infile",
+            "--top-infile",
             metavar="TOP_INFILE",
-            type=input_file_arg(),
-            help="subtitle infile for top line",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='subtitle infile for top line or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "bottom_infile",
+            "--bottom-infile",
             metavar="BOTTOM_INFILE",
-            type=input_file_arg(),
-            help="subtitle infile for bottom line",
+            required=True,
+            type=input_file_arg(allow_stdin=True),
+            help='subtitle infile for bottom line or "-" for stdin',
         )
 
         # Output arguments
@@ -81,6 +82,13 @@ class SyncCli(CommandLineInterface):
         bottom_infile = kwargs.pop("bottom_infile")
         outfile: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if top_infile == "-" and bottom_infile == "-":
+            try:
+                raise ArgumentConflictError(
+                    "--top-infile and --bottom-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
         if overwrite and outfile is None:
             try:
                 raise ArgumentConflictError(
@@ -90,8 +98,8 @@ class SyncCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        top = Series.load(top_infile)
-        bottom = Series.load(bottom_infile)
+        top = read_series(parser, top_infile, allow_stdin=True)
+        bottom = read_series(parser, bottom_infile, allow_stdin=True)
 
         # Perform operations
         synced = get_synced_series(top, bottom)
