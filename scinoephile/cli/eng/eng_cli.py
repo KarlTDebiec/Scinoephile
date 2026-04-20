@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+    output_file_arg,
+)
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
@@ -42,7 +46,7 @@ class EngCli(CommandLineInterface):
             "--infile",
             metavar="INFILE",
             required=True,
-            type=str,
+            type=input_file_arg(allow_stdin=True),
             help='English subtitle infile path or "-" for stdin',
         )
 

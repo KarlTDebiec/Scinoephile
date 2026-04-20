@@ -12,12 +12,14 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
+    input_file_arg,
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exception import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
 
@@ -62,7 +64,7 @@ class YueTranscribeCli(CommandLineInterface):
             "--zhongwen-infile",
             metavar="ZHONGWEN_INFILE",
             required=True,
-            type=str,
+            type=input_file_arg(allow_stdin=True),
             help='中文 subtitle infile or "-" for stdin',
         )
 
@@ -105,6 +107,13 @@ class YueTranscribeCli(CommandLineInterface):
         stream_index = kwargs.pop("stream_index")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        if media_infile == "-" and zhongwen_infile == "-":
+            try:
+                raise ArgumentConflictError(
+                    "--media-infile and --zhongwen-infile may not both be '-'"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
         if overwrite and outfile_path is None:
             try:
                 raise ArgumentConflictError(
@@ -114,21 +123,28 @@ class YueTranscribeCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Read inputs
-        if zhongwen_infile:
-            zhongwen = read_series(parser, zhongwen_infile, allow_stdin=True)
-            yuewen = AudioSeries.load_from_media(
-                media_path=media_infile,
-                subtitle_path=zhongwen_infile,
-                stream_index=stream_index,
-            )
-        else:
+        if zhongwen_infile == "-":
             zhongwen = read_series(parser, "-", allow_stdin=True)
             with get_temp_file_path(suffix=".srt") as temp_zhongwen_path:
+                zhongwen.save(temp_zhongwen_path)
+                try:
+                    yuewen = AudioSeries.load_from_media(
+                        media_path=media_infile,
+                        subtitle_path=temp_zhongwen_path,
+                        stream_index=stream_index,
+                    )
+                except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
+                    parser.error(str(exc))
+        else:
+            zhongwen = read_series(parser, zhongwen_infile, allow_stdin=True)
+            try:
                 yuewen = AudioSeries.load_from_media(
                     media_path=media_infile,
-                    subtitle_path=temp_zhongwen_path,
+                    subtitle_path=zhongwen_infile,
                     stream_index=stream_index,
                 )
+            except (FileNotFoundError, NotAFileError, ScinoephileError) as exc:
+                parser.error(str(exc))
 
         # Perform operations
         yuewen = get_yue_transcribed_vs_zho(yuewen=yuewen, zhongwen=zhongwen)

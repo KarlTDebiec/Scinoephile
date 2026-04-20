@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
-from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_arg,
+    output_file_arg,
+)
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
@@ -46,14 +50,14 @@ class ZhoFuseCli(CommandLineInterface):
             "--lens-infile",
             metavar="LENS_INFILE",
             required=True,
-            type=str,
+            type=input_file_arg(allow_stdin=True),
             help='中文 subtitles ORCed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
             metavar="PADDLE_INFILE",
             required=True,
-            type=str,
+            type=input_file_arg(allow_stdin=True),
             help='中文 subtitles OCRed using PaddleOCR or "-" for stdin',
         )
 

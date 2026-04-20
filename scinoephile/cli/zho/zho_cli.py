@@ -11,6 +11,7 @@ from typing import Unpack
 from scinoephile.common import CLIKwargs, CommandLineInterface
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
+    input_file_arg,
     output_file_arg,
     str_arg,
 )
@@ -58,7 +59,7 @@ class ZhoCli(CommandLineInterface):
             "--infile",
             metavar="INFILE",
             required=True,
-            type=str,
+            type=input_file_arg(allow_stdin=True),
             help='中文 subtitle infile path or "-" for stdin',
         )
 
