@@ -76,7 +76,7 @@ class KaifangcidianDictionaryService:
             force_download: force fresh website download before build
             update_local_data: update canonical local CSV in repository data directory
         Returns:
-            SQLite database path
+            sqlite database path
         """
         if self.database_path.exists() and not overwrite:
             return self.database_path

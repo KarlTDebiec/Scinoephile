@@ -38,16 +38,64 @@ class KaifangcidianDictionaryParser:
         return KAIFANGCIDIAN_SOURCE, entries
 
     @staticmethod
+    def _dedupe_definitions(
+        definitions: list[DictionaryDefinition],
+    ) -> list[DictionaryDefinition]:
+        """Deduplicate definitions while preserving order.
+
+        Arguments:
+            definitions: raw definition list
+        Returns:
+            deduplicated definitions
+        """
+        seen: set[tuple[str, str]] = set()
+        deduped: list[DictionaryDefinition] = []
+        for definition in definitions:
+            key = (definition.text, definition.label)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(definition)
+        return deduped
+
+    @staticmethod
     def _read_rows(source_csv_path: Path) -> list[dict[str, str]]:
         """Read canonical Kaifangcidian CSV rows.
 
         Arguments:
             source_csv_path: canonical CSV path
         Returns:
-            CSV rows
+            csv rows
         """
         with source_csv_path.open("r", encoding="utf-8", newline="") as infile:
             return [dict(row) for row in csv.DictReader(infile)]
+
+    @staticmethod
+    def _row_definitions(row: dict[str, str]) -> list[DictionaryDefinition]:
+        """Get normalized definitions for one canonical CSV row.
+
+        Arguments:
+            row: canonical CSV row
+        Returns:
+            dictionary definitions
+        """
+        definitions: list[DictionaryDefinition] = []
+        definition_text = row.get("definition", "").strip()
+        note_text = row.get("note", "").strip()
+        variants_text = row.get("variants", "").strip()
+        kind_text = row.get("kind", "").strip()
+
+        if definition_text:
+            definitions.append(DictionaryDefinition(text=definition_text, label="釋義"))
+        if note_text:
+            definitions.append(DictionaryDefinition(text=note_text, label="註記"))
+        if variants_text:
+            definitions.append(DictionaryDefinition(text=variants_text, label="異體"))
+        if kind_text:
+            definitions.append(DictionaryDefinition(text=kind_text, label="來源"))
+        if definitions:
+            return definitions
+        return [DictionaryDefinition(text="（沒有對應漢語詞彙）", label="釋義")]
 
     @staticmethod
     def _rows_to_entries(rows: list[dict[str, str]]) -> list[DictionaryEntry]:
@@ -96,51 +144,3 @@ class KaifangcidianDictionaryParser:
                 )
             )
         return entries
-
-    @staticmethod
-    def _row_definitions(row: dict[str, str]) -> list[DictionaryDefinition]:
-        """Get normalized definitions for one canonical CSV row.
-
-        Arguments:
-            row: canonical CSV row
-        Returns:
-            dictionary definitions
-        """
-        definitions: list[DictionaryDefinition] = []
-        definition_text = row.get("definition", "").strip()
-        note_text = row.get("note", "").strip()
-        variants_text = row.get("variants", "").strip()
-        kind_text = row.get("kind", "").strip()
-
-        if definition_text:
-            definitions.append(DictionaryDefinition(text=definition_text, label="釋義"))
-        if note_text:
-            definitions.append(DictionaryDefinition(text=note_text, label="註記"))
-        if variants_text:
-            definitions.append(DictionaryDefinition(text=variants_text, label="異體"))
-        if kind_text:
-            definitions.append(DictionaryDefinition(text=kind_text, label="來源"))
-        if definitions:
-            return definitions
-        return [DictionaryDefinition(text="（沒有對應漢語詞彙）", label="釋義")]
-
-    @staticmethod
-    def _dedupe_definitions(
-        definitions: list[DictionaryDefinition],
-    ) -> list[DictionaryDefinition]:
-        """Deduplicate definitions while preserving order.
-
-        Arguments:
-            definitions: raw definition list
-        Returns:
-            deduplicated definitions
-        """
-        seen: set[tuple[str, str]] = set()
-        deduped: list[DictionaryDefinition] = []
-        for definition in definitions:
-            key = (definition.text, definition.label)
-            if key in seen:
-                continue
-            seen.add(key)
-            deduped.append(definition)
-        return deduped

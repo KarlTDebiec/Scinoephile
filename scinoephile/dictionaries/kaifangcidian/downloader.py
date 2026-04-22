@@ -37,13 +37,28 @@ class _CanonicalRow:
     """One canonical Kaifangcidian CSV row."""
 
     kind: str
+    """Source subsection key."""
+
     traditional: str
+    """Traditional headword text."""
+
     simplified: str
+    """Simplified headword text."""
+
     pinyin: str
+    """Mandarin pinyin string."""
+
     jyutping: str
+    """Cantonese Jyutping string."""
+
     definition: str
+    """Primary normalized definition text."""
+
     note: str
+    """Optional note text."""
+
     variants: str
+    """Optional variant headword payload."""
 
 
 class KaifangcidianDownloader:
@@ -104,7 +119,7 @@ class KaifangcidianDownloader:
         """Download required Kaifangcidian JavaScript payloads.
 
         Returns:
-            JavaScript payload text by source key
+            javascript payload text by source key
         """
         urls = {
             "hzsg": KAIFANGCIDIAN_HZSG_URL,
@@ -152,20 +167,6 @@ class KaifangcidianDownloader:
             )
         )
         return rows
-
-    @staticmethod
-    def _parse_js_vars(js_text: str) -> dict[str, str]:
-        """Parse JavaScript `var name = "value";` assignments.
-
-        Arguments:
-            js_text: JavaScript source text
-        Returns:
-            mapping of variable names to raw string payloads
-        """
-        parsed: dict[str, str] = {}
-        for match in _JS_VAR_REGEX.finditer(js_text):
-            parsed[match.group("name")] = match.group("value")
-        return parsed
 
     def _pair_rows(
         self, kind: str, han_data: str, jyutping_data: str
@@ -277,3 +278,17 @@ class KaifangcidianDownloader:
             .lower()
             .replace("ü", "u:")
         )
+
+    @staticmethod
+    def _parse_js_vars(js_text: str) -> dict[str, str]:
+        """Parse JavaScript `var name = "value";` assignments.
+
+        Arguments:
+            js_text: JavaScript source text
+        Returns:
+            mapping of variable names to raw string payloads
+        """
+        parsed: dict[str, str] = {}
+        for match in _JS_VAR_REGEX.finditer(js_text):
+            parsed[match.group("name")] = match.group("value")
+        return parsed

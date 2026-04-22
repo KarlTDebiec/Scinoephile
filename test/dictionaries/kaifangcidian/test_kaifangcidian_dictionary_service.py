@@ -130,6 +130,13 @@ def test_build_downloads_when_local_csv_missing(
     )
 
     def _download_to_csv(csv_path: Path) -> Path:
+        """Mock downloader by writing fixture canonical CSV.
+
+        Arguments:
+            csv_path: canonical CSV output path
+        Returns:
+            canonical CSV path
+        """
         _write_fixture_csv(csv_path)
         return csv_path
 
