@@ -25,8 +25,8 @@ from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+    YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
     YUE_ZHO_PROOFREADING_JSON_PATHS,
-    YUE_ZHO_REVIEW_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
@@ -37,9 +37,9 @@ from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_block.manager import MonoBlockManager
+from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
 from scinoephile.multilang.yue_zho.proofreading import YueZhoHansProofreadingPrompt
 from scinoephile.multilang.yue_zho.proofreading.manager import YueZhoProofreadingManager
-from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 
 
@@ -158,16 +158,16 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_zho_review",
+            "yue_zho_block_review",
             lambda: load_default_test_cases(
                 DualBlockManager,
-                YueHansReviewPrompt,
-                YUE_ZHO_REVIEW_JSON_PATHS,
+                YueHansBlockReviewPrompt,
+                YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/review/gpu.json",
-                "mlamd/multilang/yue_zho/review/cpu.json",
-                "mlamd/multilang/yue_zho/review/mps.json",
+                "mlamd/multilang/yue_zho/block_review/gpu.json",
+                "mlamd/multilang/yue_zho/block_review/cpu.json",
+                "mlamd/multilang/yue_zho/block_review/mps.json",
             ],
         ),
         (

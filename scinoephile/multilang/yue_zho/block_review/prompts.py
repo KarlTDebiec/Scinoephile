@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 review against 中文."""
+"""Text for LLM correspondence for 粤文 block review against 中文."""
 
 from __future__ import annotations
 
@@ -13,13 +13,13 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
 
 __all__ = [
-    "YueHansReviewPrompt",
-    "YueHantReviewPrompt",
+    "YueHansBlockReviewPrompt",
+    "YueHantBlockReviewPrompt",
 ]
 
 
-class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
-    """Text for LLM correspondence for 简体粤文 review against 中文."""
+class YueHansBlockReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
+    """Text for LLM correspondence for 简体粤文 block review against 中文."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -99,8 +99,8 @@ class YueHansReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
     """Error template when output is present but note is missing."""
 
 
-class YueHantReviewPrompt(YueHansReviewPrompt):
-    """Text for LLM correspondence for 繁体粤文 review against 中文."""
+class YueHantBlockReviewPrompt(YueHansBlockReviewPrompt):
+    """Text for LLM correspondence for 繁体粤文 block review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config with which to convert characters from 简体中文 present in parent class."""

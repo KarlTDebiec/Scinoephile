@@ -78,10 +78,10 @@ __all__ = [
     "kob_yue_hans_timewarp_clean_flatten_romanize",
     "kob_yue_hans_transcribe",
     "kob_yue_hans_transcribe_expected_cer",
-    "kob_yue_hans_transcribe_proofread",
-    "kob_yue_hans_transcribe_proofread_translate",
-    "kob_yue_hans_transcribe_proofread_translate_review",
-    "kob_yue_hans_transcribe_proofread_translate_review_expected_cer",
+    "kob_yue_hans_transcribe_review",
+    "kob_yue_hans_transcribe_review_translate",
+    "kob_yue_hans_transcribe_review_translate_block_review",
+    "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
     "kob_yue_hant_timewarp",
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
@@ -580,27 +580,27 @@ def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_proofread() -> Series:
-    """KOB 简体粤文 transcribed and proofread subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_proofread.srt")
+def kob_yue_hans_transcribe_review() -> Series:
+    """KOB 简体粤文 transcribed and line reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_review.srt")
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_proofread_translate() -> Series:
-    """KOB 简体粤文 transcribed/proofread/translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_proofread_translate.srt")
+def kob_yue_hans_transcribe_review_translate() -> Series:
+    """KOB 简体粤文 transcribed/line-reviewed/translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_review_translate.srt")
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_proofread_translate_review() -> Series:
-    """KOB 简体粤文 transcribed/proofread/translated/reviewed subtitles."""
+def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
+    """KOB 简体粤文 transcribed/line-reviewed/translated/block-reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
+        output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     )
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_proofread_translate_review_expected_cer() -> (
+def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
     CharacterErrorRateResult
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
