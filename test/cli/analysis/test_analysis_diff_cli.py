@@ -60,7 +60,7 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
             "mlamd/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
-            "proofread.srt",
+            "review.srt",
             "SIMP",
             "TRAD",
             "mlamd_zho_simplify_expected_series_diff",
@@ -68,15 +68,14 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
             "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
-            "proofread.srt",
+            "review.srt",
             "SIMP",
             "TRAD",
             "mnt_zho_simplify_expected_series_diff",
         ),
         (
             "t/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "t/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
-            "proofread.srt",
+            "t/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
             "SIMP",
             "TRAD",
             "t_zho_simplify_expected_series_diff",

@@ -465,7 +465,7 @@ def get_kob_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 proofreading test cases.
+    """Get KOB 繁体中文 block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -484,7 +484,7 @@ def get_kob_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get KOB 繁体中文 simplification proofreading test cases.
+    """Get KOB 繁体中文 simplification block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -658,19 +658,19 @@ def kob_zho_hant_fuse_clean_validate() -> Series:
 
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, and proofread subtitles."""
+    """KOB 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """KOB 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    """KOB 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """KOB 繁体中文 simplified fused/cleaned/validated/proofread/flattened subtitles."""
+    """KOB 繁体中文 simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -678,7 +678,7 @@ def kob_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """KOB 繁体中文 simplified/proofread fused/cleaned subtitles."""
+    """KOB 繁体中文 simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
@@ -687,7 +687,7 @@ def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
 ) -> Series:
-    """KOB 简体中文 simplified/proofread fused/cleaned romanized subtitles."""
+    """KOB 简体中文 simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_"
         "simplify_review_romanize.srt"

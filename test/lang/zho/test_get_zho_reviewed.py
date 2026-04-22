@@ -48,7 +48,7 @@ def test_get_zho_reviewed_kob(
 
     Arguments:
         kob_zho_hant_fuse_clean_validate: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_review: Expected proofread KOB
+        kob_zho_hant_fuse_clean_validate_review: Expected block-reviewed KOB
           繁体中文 series fixture
     """
     _test_get_zho_reviewed(
@@ -66,7 +66,7 @@ def test_get_zho_reviewed_mlamd(
 
     Arguments:
         mlamd_zho_hans_fuse_clean_validate: MLAMD 简体中文 series fixture
-        mlamd_zho_hans_fuse_clean_validate_review: Expected proofread MLAMD
+        mlamd_zho_hans_fuse_clean_validate_review: Expected block-reviewed MLAMD
           简体中文 series fixture
     """
     _test_get_zho_reviewed(
@@ -83,7 +83,7 @@ def test_get_zho_reviewed_mnt(
 
     Arguments:
         mnt_zho_hans_fuse_clean_validate: MNT 简体中文 series fixture
-        mnt_zho_hans_fuse_clean_validate_review: Expected proofread MNT
+        mnt_zho_hans_fuse_clean_validate_review: Expected block-reviewed MNT
           简体中文 series fixture
     """
     _test_get_zho_reviewed(
@@ -100,7 +100,7 @@ def test_get_zho_reviewed_t(
 
     Arguments:
         t_zho_hans_fuse_clean_validate: T 简体中文 series fixture
-        t_zho_hans_fuse_clean_validate_review: Expected proofread T
+        t_zho_hans_fuse_clean_validate_review: Expected block-reviewed T
           简体中文 series fixture
     """
     _test_get_zho_reviewed(

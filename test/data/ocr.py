@@ -61,7 +61,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        proofreader_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to rerun validation if output exists
@@ -144,7 +144,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
+    # Block review
     proofread_path = output_dir / "eng_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
@@ -189,7 +189,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        proofreader_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -275,7 +275,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
+    # Block review
     proofread_path = output_dir / "zho-Hans_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
@@ -328,7 +328,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        proofreader_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -415,7 +415,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
+    # Block review
     proofread_path = output_dir / "zho-Hant_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
@@ -452,7 +452,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         simplify = get_zho_converted(flatten, OpenCCConfig.t2s)
         simplify.save(simplify_path, exist_ok=True)
 
-    # Simplify proofread
+    # Simplify block review
     simplify_review_path = (
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
@@ -464,7 +464,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             test_case_path=title_root
             / "lang"
             / "zho"
-            / "proofreading"
+            / "block_review"
             / "zho-Hant_simplify.json",
             auto_verify=True,
         )

@@ -156,7 +156,7 @@ def get_t_zho_hans_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get T 简体中文 proofreading test cases.
+    """Get T 简体中文 block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -175,7 +175,7 @@ def get_t_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get T 繁体中文 proofreading test cases.
+    """Get T 繁体中文 block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -194,7 +194,7 @@ def get_t_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get T 繁体中文 simplification proofreading test cases.
+    """Get T 繁体中文 simplification block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -327,19 +327,19 @@ def t_zho_hans_fuse_clean_validate() -> Series:
 
 @pytest.fixture
 def t_zho_hans_fuse_clean_validate_review() -> Series:
-    """T 简体中文 fused, cleaned, validated, and proofread subtitles."""
+    """T 简体中文 fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def t_zho_hans_fuse_clean_validate_review_flatten() -> Series:
-    """T 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    """T 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
 def t_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
-    """T 简体中文 fused/cleaned/validated/proofread/flattened romanized subtitles."""
+    """T 简体中文 fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
         output_dir / "zho-Hans_fuse_clean_validate_review_flatten_romanize.srt"
     )
@@ -371,19 +371,19 @@ def t_zho_hant_fuse_clean_validate() -> Series:
 
 @pytest.fixture
 def t_zho_hant_fuse_clean_validate_review() -> Series:
-    """T 繁体中文 fused, cleaned, validated, and proofread subtitles."""
+    """T 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def t_zho_hant_fuse_clean_validate_review_flatten() -> Series:
-    """T 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
+    """T 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
-    """T 繁体中文 fused/cleaned/validated/proofread/flattened/simplified subtitles."""
+    """T 繁体中文 fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
     )
@@ -391,7 +391,7 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 
 @pytest.fixture
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
-    """T 繁体中文 simplified/proofread fused/cleaned subtitles."""
+    """T 繁体中文 simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
