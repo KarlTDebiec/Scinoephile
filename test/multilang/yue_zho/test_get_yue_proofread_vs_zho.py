@@ -11,17 +11,17 @@ from scinoephile.multilang.yue_zho import get_yue_proofread_vs_zho
 def test_get_yue_proofread_vs_zho_mlamd(
     mlamd_yue_hans_transcribe: Series,
     mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
-    mlamd_yue_hans_transcribe_proofread: Series,
+    mlamd_yue_hans_transcribe_review: Series,
 ):
     """Test get_yue_proofread_vs_zho with MLAMD subtitles.
 
     Arguments:
         mlamd_yue_hans_transcribe: input 粤文 subtitles
         mlamd_zho_hans_fuse_clean_validate_review_flatten: input 中文 subtitles
-        mlamd_yue_hans_transcribe_proofread: expected output subtitles
+        mlamd_yue_hans_transcribe_review: expected output subtitles
     """
     zhongwen = get_series_with_subs_merged(
         mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
     )
     output = get_yue_proofread_vs_zho(mlamd_yue_hans_transcribe, zhongwen)
-    assert output == mlamd_yue_hans_transcribe_proofread
+    assert output == mlamd_yue_hans_transcribe_review
