@@ -119,8 +119,7 @@ if "Bilingual 简体粤文 and English" in actions:
 if "简体粤文 (Transcription)" in actions:
     # Stage
     zho_hans = Series.load(
-        output_dir
-        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
 

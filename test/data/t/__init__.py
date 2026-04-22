@@ -18,13 +18,13 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
-)
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
+)
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHansOcrFusionPrompt,
+    ZhoHantOcrFusionPrompt,
 )
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
@@ -334,9 +334,7 @@ def t_zho_hans_fuse_clean_validate_review() -> Series:
 @pytest.fixture
 def t_zho_hans_fuse_clean_validate_review_flatten() -> Series:
     """T 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt"
-    )
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
@@ -380,9 +378,7 @@ def t_zho_hant_fuse_clean_validate_review() -> Series:
 @pytest.fixture
 def t_zho_hant_fuse_clean_validate_review_flatten() -> Series:
     """T 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt"
-    )
+    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
@@ -397,8 +393,7 @@ def t_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 def t_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """T 繁体中文 simplified/proofread fused/cleaned subtitles."""
     return Series.load(
-        output_dir
-        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 

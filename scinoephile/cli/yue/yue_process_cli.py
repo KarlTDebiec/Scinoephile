@@ -19,16 +19,16 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
-from scinoephile.lang.zho.conversion import (
-    SIMPLIFIED_CONFIGS,
-    TRADITIONAL_CONFIGS,
-    OpenCCConfig,
-)
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_reviewed,
     get_zho_reviewer,
+)
+from scinoephile.lang.zho.conversion import (
+    SIMPLIFIED_CONFIGS,
+    TRADITIONAL_CONFIGS,
+    OpenCCConfig,
 )
 
 __all__ = ["YueProcessCli"]
@@ -84,7 +84,8 @@ class YueProcessCli(CommandLineInterface):
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--review", "--proofread",
+            "--review",
+            "--proofread",
             nargs="?",
             const="traditional",
             type=str_arg(options=("simplified", "traditional")),

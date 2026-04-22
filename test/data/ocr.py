@@ -29,14 +29,14 @@ from scinoephile.lang.zho import (
     get_zho_ocr_fused,
     validate_zho_ocr,
 )
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_reviewed,
     get_zho_reviewer,
 )
+from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
 
 __all__ = [
     "process_eng_ocr",
@@ -454,8 +454,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Simplify proofread
     simplify_review_path = (
-        output_dir
-        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     if simplify_review_path.exists() and not overwrite_srt:
         simplify_review = Series.load(simplify_review_path)

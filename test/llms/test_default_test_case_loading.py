@@ -13,13 +13,13 @@ from scinoephile.common import package_root
 from scinoephile.core.llms import TestCase
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
-)
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
+)
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHansOcrFusionPrompt,
+    ZhoHantOcrFusionPrompt,
 )
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
@@ -27,10 +27,10 @@ from scinoephile.llms.default_test_cases import (
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     YUE_ZHO_REVIEW_JSON_PATHS,
-    ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
-    ZHO_HANT_OCR_FUSION_JSON_PATHS,
+    ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
+    ZHO_HANT_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block.manager import DualBlockManager

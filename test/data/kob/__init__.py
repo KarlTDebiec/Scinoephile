@@ -21,11 +21,11 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
 )
+from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
@@ -665,9 +665,7 @@ def kob_zho_hant_fuse_clean_validate_review() -> Series:
 @pytest.fixture
 def kob_zho_hant_fuse_clean_validate_review_flatten() -> Series:
     """KOB 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt"
-    )
+    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
@@ -682,8 +680,7 @@ def kob_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """KOB 繁体中文 simplified/proofread fused/cleaned subtitles."""
     return Series.load(
-        output_dir
-        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 

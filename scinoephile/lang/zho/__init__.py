@@ -10,12 +10,12 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from .block_review import get_zho_reviewed
 from .cleaning import get_zho_cleaned
 from .conversion import get_zho_converted, is_simplified, is_traditional
 from .flattening import get_zho_flattened
 from .ocr_fusion import get_zho_ocr_fused
 from .ocr_validation import validate_zho_ocr
-from .block_review import get_zho_reviewed
 
 __all__ = [
     "get_zho_cleaned",
