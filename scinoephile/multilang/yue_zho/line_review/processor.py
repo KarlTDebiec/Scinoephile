@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes 粤文 vs. 中文 proofreading."""
+"""Processes 粤文 vs. 中文 line review."""
 
 from __future__ import annotations
 
@@ -13,22 +13,22 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
-from .manager import YueZhoProofreadingManager
-from .prompts import YueZhoHansProofreadingPrompt
+from .manager import YueZhoLineReviewManager
+from .prompts import YueZhoHansLineReviewPrompt
 
-__all__ = ["YueZhoProofreadingProcessor"]
+__all__ = ["YueZhoLineReviewProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class YueZhoProofreadingProcessor(Processor):
-    """Processes 粤文 vs. 中文 proofreading."""
+class YueZhoLineReviewProcessor(Processor):
+    """Processes 粤文 vs. 中文 line review."""
 
-    prompt_cls: type[YueZhoHansProofreadingPrompt]
+    prompt_cls: type[YueZhoHansLineReviewPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = YueZhoProofreadingManager
+    manager_cls = YueZhoLineReviewManager
     """Manager class used to construct test case models."""
 
     def process(
@@ -37,14 +37,14 @@ class YueZhoProofreadingProcessor(Processor):
         source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Proofread 粤文 against 中文 with tolerant alignment.
+        """Line review 粤文 against 中文 with tolerant alignment.
 
         Arguments:
             source_one: 粤文 subtitles (may omit some 中文 lines)
             source_two: 中文 reference subtitles
             stop_at_idx: stop processing at this block index
         Returns:
-            Proofread 粤文 subtitles
+            line-reviewed 粤文 subtitles
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
@@ -62,7 +62,7 @@ class YueZhoProofreadingProcessor(Processor):
                 sync_grps[two_idx][0].append(one_idx)
 
             # Query LLM
-            test_case_cls = YueZhoProofreadingManager.get_test_case_cls(
+            test_case_cls = YueZhoLineReviewManager.get_test_case_cls(
                 prompt_cls=self.prompt_cls
             )
             query_cls = test_case_cls.query_cls
