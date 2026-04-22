@@ -36,68 +36,68 @@ def _test_get_zho_flattened(series: Series, expected: Series):
 
 
 def test_get_zho_flattened_kob(
-    kob_zho_hant_fuse_clean_validate_proofread: Series,
-    kob_zho_hant_fuse_clean_validate_proofread_flatten: Series,
+    kob_zho_hant_fuse_clean_validate_review: Series,
+    kob_zho_hant_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_zho_flattened with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_proofread: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_proofread_flatten: Expected flattened KOB
+        kob_zho_hant_fuse_clean_validate_review: KOB 繁体中文 series fixture
+        kob_zho_hant_fuse_clean_validate_review_flatten: Expected flattened KOB
           繁体中文 series fixture
     """
     _test_get_zho_flattened(
-        kob_zho_hant_fuse_clean_validate_proofread,
-        kob_zho_hant_fuse_clean_validate_proofread_flatten,
+        kob_zho_hant_fuse_clean_validate_review,
+        kob_zho_hant_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_zho_flattened_mlamd(
-    mlamd_zho_hans_fuse_clean_validate_proofread: Series,
-    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_review: Series,
+    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_zho_flattened with MLAMD 简体中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_clean_validate_proofread: MLAMD 简体中文 series fixture
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened
+        mlamd_zho_hans_fuse_clean_validate_review: MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: Expected flattened
           MLAMD 简体中文 series fixture
     """
     _test_get_zho_flattened(
-        mlamd_zho_hans_fuse_clean_validate_proofread,
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        mlamd_zho_hans_fuse_clean_validate_review,
+        mlamd_zho_hans_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_zho_flattened_mnt(
-    mnt_zho_hant_fuse_clean_validate_proofread: Series,
-    mnt_zho_hant_fuse_clean_validate_proofread_flatten: Series,
+    mnt_zho_hant_fuse_clean_validate_review: Series,
+    mnt_zho_hant_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_zho_flattened with MNT 繁体中文 subtitles.
 
     Arguments:
-        mnt_zho_hant_fuse_clean_validate_proofread: MNT 繁体中文 series fixture
-        mnt_zho_hant_fuse_clean_validate_proofread_flatten: Expected flattened MNT
+        mnt_zho_hant_fuse_clean_validate_review: MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_review_flatten: Expected flattened MNT
           繁体中文 series fixture
     """
     _test_get_zho_flattened(
-        mnt_zho_hant_fuse_clean_validate_proofread,
-        mnt_zho_hant_fuse_clean_validate_proofread_flatten,
+        mnt_zho_hant_fuse_clean_validate_review,
+        mnt_zho_hant_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_zho_flattened_t(
-    t_zho_hans_fuse_clean_validate_proofread: Series,
-    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    t_zho_hans_fuse_clean_validate_review: Series,
+    t_zho_hans_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_zho_flattened with T 简体中文 subtitles.
 
     Arguments:
-        t_zho_hans_fuse_clean_validate_proofread: T 简体中文 series fixture
-        t_zho_hans_fuse_clean_validate_proofread_flatten: Expected flattened T
+        t_zho_hans_fuse_clean_validate_review: T 简体中文 series fixture
+        t_zho_hans_fuse_clean_validate_review_flatten: Expected flattened T
           简体中文 series fixture
     """
     _test_get_zho_flattened(
-        t_zho_hans_fuse_clean_validate_proofread,
-        t_zho_hans_fuse_clean_validate_proofread_flatten,
+        t_zho_hans_fuse_clean_validate_review,
+        t_zho_hans_fuse_clean_validate_review_flatten,
     )

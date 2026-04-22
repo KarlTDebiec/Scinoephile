@@ -51,32 +51,31 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("one_path", "two_path", "one_lbl", "two_lbl", "expected_fixture_name"),
     [
         (
-            "kob/output/eng_fuse_clean_validate_proofread_flatten.srt",
-            "kob/output/eng_timewarp_clean_proofread_flatten.srt",
+            "kob/output/eng_fuse_clean_validate_review_flatten.srt",
+            "kob/output/eng_timewarp_clean_review_flatten.srt",
             "OCR",
             "SRT",
             "kob_eng_expected_series_diff",
         ),
         (
-            "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify_"
-            "proofread.srt",
+            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
+            "review.srt",
             "SIMP",
             "TRAD",
             "mlamd_zho_simplify_expected_series_diff",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify_"
-            "proofread.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
+            "review.srt",
             "SIMP",
             "TRAD",
             "mnt_zho_simplify_expected_series_diff",
         ),
         (
-            "t/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "t/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify_"
-            "proofread.srt",
+            "t/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "t/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
             "SIMP",
             "TRAD",
             "t_zho_simplify_expected_series_diff",

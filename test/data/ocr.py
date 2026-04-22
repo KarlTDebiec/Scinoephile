@@ -17,14 +17,23 @@ from scinoephile.lang.eng import (
     get_eng_flattened,
     validate_eng_ocr,
 )
+from scinoephile.lang.eng.block_review import (
+    get_eng_block_reviewed,
+    get_eng_block_reviewer,
+)
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.eng.proofreading import get_eng_proofread, get_eng_proofreader
 from scinoephile.lang.zho import (
     get_zho_cleaned,
     get_zho_converted,
     get_zho_flattened,
     get_zho_ocr_fused,
     validate_zho_ocr,
+)
+from scinoephile.lang.zho.block_review import (
+    ZhoHansBlockReviewPrompt,
+    ZhoHantBlockReviewPrompt,
+    get_zho_block_reviewed,
+    get_zho_reviewer,
 )
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
@@ -58,7 +67,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        proofreader_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to rerun validation if output exists
@@ -141,8 +150,8 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
-    proofread_path = output_dir / "eng_fuse_clean_validate_proofread.srt"
+    # Block review
+    proofread_path = output_dir / "eng_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
@@ -150,17 +159,17 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             proofreader_kw = {}
         proofreader_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "eng" / "proofreading.json",
+            title_root / "lang" / "eng" / "block_review.json",
         )
-        proofreader = get_eng_proofreader(
+        proofreader = get_eng_block_reviewer(
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_eng_proofread(validate, proofreader)
+        proofread = get_eng_block_reviewed(validate, proofreader)
         proofread.save(proofread_path)
 
     # Flatten
-    flatten_path = output_dir / "eng_fuse_clean_validate_proofread_flatten.srt"
+    flatten_path = output_dir / "eng_fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -273,7 +282,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
+    # Block review
     proofread_path = output_dir / f"{lang_code}_fuse_clean_validate_proofread.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
@@ -282,17 +291,17 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             proofreader_kw = {}
         proofreader_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json",
+            title_root / "lang" / "zho" / "block_review" / "zho-Hans.json",
         )
-        proofreader = get_zho_proofreader(
+        proofreader = get_zho_reviewer(
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_zho_proofread(validate, proofreader)
+        proofread = get_zho_block_reviewed(validate, proofreader)
         proofread.save(proofread_path)
 
     # Flatten
-    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_proofread_flatten.srt"
+    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -301,7 +310,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
     # Romanize
     romanize_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_proofread_flatten_romanize.srt"
+        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_romanize.srt"
     )
     if not romanize_path.exists() or overwrite_srt:
         romanized = get_cmn_romanized(flatten, append=True)
@@ -348,12 +357,14 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         lens_path = input_dir / f"{lang_code}_lens.srt"
         lens = Series.load(lens_path)
         lens = get_zho_cleaned(lens, remove_empty=False)
+        lens = get_zho_converted(lens, OpenCCConfig.s2t)
         lens.save(lens_path)
 
         # PaddleOCR
         paddle_path = input_dir / f"{lang_code}_paddle.srt"
         paddle = Series.load(paddle_path)
         paddle = get_zho_cleaned(paddle, remove_empty=False)
+        paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
         paddle.save(paddle_path)
 
         if fuser_kw is None:
@@ -414,8 +425,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         validate.save(validate_path, exist_ok=True)
         validate = Series.load(validate_path)
 
-    # Proofread
-    proofread_path = output_dir / f"{lang_code}_fuse_clean_validate_proofread.srt"
+    # Block review
+    proofread_path = output_dir / f"{lang_code}_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
@@ -434,7 +445,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         proofread.save(proofread_path)
 
     # Flatten
-    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_proofread_flatten.srt"
+    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -443,7 +454,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Simplify
     simplify_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_proofread_flatten_simplify.srt"
+        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_simplify.srt"
     )
     if simplify_path.exists() and not overwrite_srt:
         simplify = Series.load(simplify_path)
@@ -451,10 +462,10 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         simplify = get_zho_converted(flatten, OpenCCConfig.t2s)
         simplify.save(simplify_path, exist_ok=True)
 
-    # Simplify proofread
+    # Simplify block review
     simplify_proofread_path = (
         output_dir
-        / f"{lang_code}_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+        / f"{lang_code}_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     if simplify_proofread_path.exists() and not overwrite_srt:
         simplify_proofread = Series.load(simplify_proofread_path)
@@ -473,8 +484,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Romanize
     romanize_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_proofread_flatten_"
-        "simplify_proofread_romanize.srt"
+        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_"
+        "simplify_review_romanize.srt"
     )
     if not romanize_path.exists() or overwrite_srt:
         romanized = get_cmn_romanized(simplify_proofread, append=True)

@@ -12,28 +12,28 @@ from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
 
 __all__ = [
+    "ENG_BLOCK_REVIEW_JSON_PATHS",
     "ENG_OCR_FUSION_JSON_PATHS",
-    "ENG_PROOFREADING_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
-    "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
     "YUE_ZHO_PROOFREADING_JSON_PATHS",
     "YUE_ZHO_REVIEW_JSON_PATHS",
+    "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS",
+    "ZHO_HANS_BLOCK_REVIEW_JSON_PATHS",
     "ZHO_HANS_OCR_FUSION_JSON_PATHS",
-    "ZHO_HANS_PROOFREADING_JSON_PATHS",
+    "ZHO_HANT_BLOCK_REVIEW_JSON_PATHS",
     "ZHO_HANT_OCR_FUSION_JSON_PATHS",
-    "ZHO_HANT_PROOFREADING_JSON_PATHS",
     "load_default_test_cases",
 ]
 
 logger = getLogger(__name__)
 
-ENG_PROOFREADING_JSON_PATHS = (
-    Path("kob/lang/eng/proofreading/eng_ocr.json"),
-    Path("kob/lang/eng/proofreading/eng_srt.json"),
-    Path("mlamd/lang/eng/proofreading.json"),
-    Path("mnt/lang/eng/proofreading.json"),
-    Path("t/lang/eng/proofreading.json"),
+ENG_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/lang/eng/block_review/eng_ocr.json"),
+    Path("kob/lang/eng/block_review/eng_srt.json"),
+    Path("mlamd/lang/eng/block_review.json"),
+    Path("mnt/lang/eng/block_review.json"),
+    Path("t/lang/eng/block_review.json"),
 )
 
 ENG_OCR_FUSION_JSON_PATHS = (
@@ -43,17 +43,17 @@ ENG_OCR_FUSION_JSON_PATHS = (
     Path("t/lang/eng/ocr_fusion.json"),
 )
 
-ZHO_HANS_PROOFREADING_JSON_PATHS = (
-    Path("mlamd/lang/zho/proofreading/zho-Hans.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hans.json"),
-    Path("t/lang/zho/proofreading/zho-Hans.json"),
+ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
+    Path("mlamd/lang/zho/block_review/zho-Hans.json"),
+    Path("mnt/lang/zho/block_review/zho-Hans.json"),
+    Path("t/lang/zho/block_review/zho-Hans.json"),
 )
 
-ZHO_HANT_PROOFREADING_JSON_PATHS = (
-    Path("kob/lang/zho/proofreading/zho-Hant.json"),
-    Path("mlamd/lang/zho/proofreading/zho-Hant.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hant.json"),
-    Path("t/lang/zho/proofreading/zho-Hant.json"),
+ZHO_HANT_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/lang/zho/block_review/zho-Hant.json"),
+    Path("mlamd/lang/zho/block_review/zho-Hant.json"),
+    Path("mnt/lang/zho/block_review/zho-Hant.json"),
+    Path("t/lang/zho/block_review/zho-Hant.json"),
 )
 
 ZHO_HANS_OCR_FUSION_JSON_PATHS = (

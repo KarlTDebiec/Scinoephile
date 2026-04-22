@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 proofreading."""
+"""Code related to English block review."""
 
 from __future__ import annotations
 
@@ -11,62 +11,63 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    ZHO_HANS_PROOFREADING_JSON_PATHS,
-    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    ENG_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
+from .prompts import EngBlockReviewPrompt
 
 __all__ = [
-    "ZhoHansProofreadingPrompt",
-    "ZhoHantProofreadingPrompt",
-    "ZhoProofreadingProcessKwargs",
-    "ZhoProofreadingProcessorKwargs",
-    "get_zho_proofread",
-    "get_zho_proofreader",
+    "EngBlockReviewProcessKwargs",
+    "EngBlockReviewProcessorKwargs",
+    "EngBlockReviewPrompt",
+    "get_eng_block_reviewed",
+    "get_eng_block_reviewer",
 ]
 
 
-class ZhoProofreadingProcessKwargs(TypedDict, total=False):
+class EngBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """subtitle index at which to stop processing, inclusive."""
 
 
-class ZhoProofreadingProcessorKwargs(TypedDict, total=False):
+class EngBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """path where encountered or verified test cases are persisted."""
     auto_verify: bool
+    """whether to automatically verify model outputs against expected cases."""
 
 
-def get_zho_proofread(
+def get_eng_block_reviewed(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Unpack[ZhoProofreadingProcessKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessKwargs],
 ) -> Series:
-    """Get 中文 series proofread.
+    """Get English series block reviewed.
 
     Arguments:
-        series: Series to proofread
+        series: Series to block review
         processor: MonoBlockProcessor to use
         **kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
-        proofread Series
+        block-reviewed Series
     """
     if processor is None:
-        processor = get_zho_proofreader()
+        processor = get_eng_block_reviewer()
     return processor.process(series, **kwargs)
 
 
-def get_zho_proofreader(
-    prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
+def get_eng_block_reviewer(
+    prompt_cls: type[EngBlockReviewPrompt] = EngBlockReviewPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[ZhoProofreadingProcessorKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
@@ -79,22 +80,13 @@ def get_zho_proofreader(
         MonoBlockProcessor with provided configuration
     """
     if test_cases is None:
-        if prompt_cls is ZhoHantProofreadingPrompt:
-            test_cases = list(
-                load_default_test_cases(
-                    MonoBlockManager,
-                    prompt_cls,
-                    ZHO_HANT_PROOFREADING_JSON_PATHS,
-                )
+        test_cases = list(
+            load_default_test_cases(
+                MonoBlockManager,
+                prompt_cls,
+                ENG_BLOCK_REVIEW_JSON_PATHS,
             )
-        else:
-            test_cases = list(
-                load_default_test_cases(
-                    MonoBlockManager,
-                    prompt_cls,
-                    ZHO_HANS_PROOFREADING_JSON_PATHS,
-                )
-            )
+        )
     if provider is None:
         provider = get_default_provider()
     return MonoBlockProcessor(

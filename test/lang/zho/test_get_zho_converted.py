@@ -34,20 +34,20 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):
 
 
 def test_get_zho_converted_kob(
-    kob_zho_hant_fuse_clean_validate_proofread_flatten: Series,
-    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Series,
+    kob_zho_hant_fuse_clean_validate_review_flatten: Series,
+    kob_zho_hant_fuse_clean_validate_review_flatten_simplify: Series,
 ):
     """Test get_zho_converted with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_proofread_flatten: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify: Expected simplified
+        kob_zho_hant_fuse_clean_validate_review_flatten: KOB 繁体中文 series fixture
+        kob_zho_hant_fuse_clean_validate_review_flatten_simplify: Expected simplified
           KOB 繁体中文 series fixture
     """
     _test_get_zho_converted(
-        kob_zho_hant_fuse_clean_validate_proofread_flatten,
+        kob_zho_hant_fuse_clean_validate_review_flatten,
         OpenCCConfig.t2s,
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify,
+        kob_zho_hant_fuse_clean_validate_review_flatten_simplify,
     )
 
 

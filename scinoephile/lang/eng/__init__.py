@@ -4,21 +4,21 @@
 
 Package hierarchy (modules may import from any above):
 * cleaning / flattening / ocr_validation / prompts
-* ocr_fusion / proofreading
+* ocr_fusion / block_review
 """
 
 from __future__ import annotations
 
+from .block_review import get_eng_block_reviewed
 from .cleaning import get_eng_cleaned
 from .flattening import get_eng_flattened
 from .ocr_fusion import get_eng_ocr_fused
 from .ocr_validation import validate_eng_ocr
-from .proofreading import get_eng_proofread
 
 __all__ = [
     "get_eng_cleaned",
     "get_eng_flattened",
     "get_eng_ocr_fused",
-    "get_eng_proofread",
+    "get_eng_block_reviewed",
     "validate_eng_ocr",
 ]

@@ -10,18 +10,18 @@ from scinoephile.multilang.yue_zho import get_yue_reviewed_vs_zho
 
 def test_get_yue_reviewed_vs_zho_mlamd(
     mlamd_yue_hans_transcribe_proofread_translate: Series,
-    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
     mlamd_yue_hans_transcribe_proofread_translate_review: Series,
 ):
     """Test get_yue_reviewed_vs_zho with MLAMD subtitles.
 
     Arguments:
         mlamd_yue_hans_transcribe_proofread_translate: input 粤文 subtitles
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: input 中文 subtitles
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: input 中文 subtitles
         mlamd_yue_hans_transcribe_proofread_translate_review: Expected output subtitles
     """
     zhongwen = get_series_with_subs_merged(
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten, 539
+        mlamd_zho_hans_fuse_clean_validate_review_flatten, 539
     )
     output = get_yue_reviewed_vs_zho(
         mlamd_yue_hans_transcribe_proofread_translate, zhongwen

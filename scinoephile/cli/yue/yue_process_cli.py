@@ -19,16 +19,16 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
+from scinoephile.lang.zho.block_review import (
+    ZhoHansBlockReviewPrompt,
+    ZhoHantBlockReviewPrompt,
+    get_zho_block_reviewed,
+    get_zho_reviewer,
+)
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
-)
-from scinoephile.lang.zho.proofreading import (
-    ZhoHansProofreadingPrompt,
-    ZhoHantProofreadingPrompt,
-    get_zho_proofread,
-    get_zho_proofreader,
 )
 
 __all__ = ["YueProcessCli"]
@@ -134,11 +134,11 @@ class YueProcessCli(CommandLineInterface):
         clean = kwargs.pop("clean")
         flatten = kwargs.pop("flatten")
         convert = kwargs.pop("convert")
-        proofread_script = kwargs.pop("proofread")
+        review_script = kwargs.pop("proofread")
         romanize = kwargs.pop("romanize")
         overwrite = kwargs.pop("overwrite")
 
-        if not (clean or flatten or convert or proofread_script or romanize):
+        if not (clean or flatten or convert or review_script or romanize):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
@@ -147,7 +147,7 @@ class YueProcessCli(CommandLineInterface):
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
-        cls._validate_proofread_script(parser, convert, proofread_script)
+        cls._validate_review_script(parser, convert, review_script)
 
         # Read input
         series = read_series(parser, infile_path, allow_stdin=True)
@@ -159,10 +159,10 @@ class YueProcessCli(CommandLineInterface):
             series = get_zho_converted(series, convert)
         if flatten:
             series = get_zho_flattened(series)
-        if proofread_script is not None:
-            prompt_cls = cls._get_proofread_prompt_cls(proofread_script)
-            proofreader = get_zho_proofreader(prompt_cls=prompt_cls)
-            series = get_zho_proofread(series, processor=proofreader)
+        if review_script is not None:
+            prompt_cls = cls._get_review_prompt_cls(review_script)
+            proofreader = get_zho_reviewer(prompt_cls=prompt_cls)
+            series = get_zho_block_reviewed(series, processor=proofreader)
         if romanize:
             series = get_yue_romanized(series, append=True)
 
@@ -172,19 +172,19 @@ class YueProcessCli(CommandLineInterface):
         )
 
     @classmethod
-    def _get_proofread_prompt_cls(
-        cls, proofread_script: str
-    ) -> type[ZhoHansProofreadingPrompt] | type[ZhoHantProofreadingPrompt]:
-        """Get the proofreading prompt class for the selected script.
+    def _get_review_prompt_cls(
+        cls, review_script: str
+    ) -> type[ZhoHansBlockReviewPrompt] | type[ZhoHantBlockReviewPrompt]:
+        """Get the block-review prompt class for the selected script.
 
         Arguments:
-            proofread_script: script identifier
+            review_script: script identifier
         Returns:
-            proofreading prompt class
+            block-review prompt class
         """
-        if proofread_script == "traditional":
-            return ZhoHantProofreadingPrompt
-        return ZhoHansProofreadingPrompt
+        if review_script == "traditional":
+            return ZhoHantBlockReviewPrompt
+        return ZhoHansBlockReviewPrompt
 
     @classmethod
     def _get_script_for_conversion(cls, convert: OpenCCConfig) -> str | None:
@@ -202,27 +202,27 @@ class YueProcessCli(CommandLineInterface):
         return None
 
     @classmethod
-    def _validate_proofread_script(
+    def _validate_review_script(
         cls,
         parser: ArgumentParser,
         convert: OpenCCConfig | None,
-        proofread_script: str | None,
+        review_script: str | None,
     ):
-        """Validate that proofread script matches conversion output.
+        """Validate that review script matches conversion output.
 
         Arguments:
             parser: argument parser for error reporting
             convert: OpenCC configuration
-            proofread_script: script identifier for proofreading
+            review_script: script identifier for block review
         """
-        if proofread_script is None or convert is None:
+        if review_script is None or convert is None:
             return
         convert_script = cls._get_script_for_conversion(convert)
         if convert_script is None:
             return
-        if convert_script != proofread_script:
+        if convert_script != review_script:
             parser.error(
-                "Proofread script must match post-conversion script: "
+                "Review script must match post-conversion script: "
                 f"{convert} yields {convert_script}"
             )
 
