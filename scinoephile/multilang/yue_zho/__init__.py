@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from .block_review import get_yue_block_reviewed_vs_zho
-from .proofreading import get_yue_proofread_vs_zho
+from .line_review import get_yue_line_reviewed_vs_zho
 from .transcription import get_yue_transcribed_vs_zho
 from .translation import get_yue_translated_vs_zho
 
 __all__ = [
-    "get_yue_proofread_vs_zho",
+    "get_yue_line_reviewed_vs_zho",
     "get_yue_block_reviewed_vs_zho",
     "get_yue_transcribed_vs_zho",
     "get_yue_translated_vs_zho",

@@ -39,9 +39,9 @@ from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    YueZhoProofreadingManager,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuating import (
     YueZhoHansPunctuatingPrompt,
@@ -68,7 +68,7 @@ __all__ = [
     "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_punctuating_test_cases",
     "get_mlamd_yue_shifting_test_cases",
-    "get_mlamd_yue_vs_zho_proofreading_test_cases",
+    "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_zho_hans_block_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
@@ -281,11 +281,11 @@ def get_mlamd_yue_shifting_test_cases(
 
 
 @cache
-def get_mlamd_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
+def get_mlamd_yue_vs_zho_line_review_test_cases(
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansLineReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 vs 简体中文 proofreading test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -294,10 +294,10 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
         test cases
     """
     path = (
-        title_root / "multilang" / "yue_zho" / "proofreading" / f"{get_backend()}.json"
+        title_root / "multilang" / "yue_zho" / "line_review" / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

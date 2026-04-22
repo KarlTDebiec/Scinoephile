@@ -19,17 +19,17 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.multilang.yue_zho import (
     get_yue_block_reviewed_vs_zho,
-    get_yue_proofread_vs_zho,
+    get_yue_line_reviewed_vs_zho,
 )
 from scinoephile.multilang.yue_zho.block_review import (
     YueHansBlockReviewPrompt,
     YueHantBlockReviewPrompt,
     get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    YueZhoHantProofreadingPrompt,
-    get_yue_vs_zho_proofreader,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    YueZhoHantLineReviewPrompt,
+    get_yue_vs_zho_line_reviewer,
 )
 
 __all__ = ["YueReviewVsZhoCli"]
@@ -110,19 +110,19 @@ class YueReviewVsZhoCli(CommandLineInterface):
         return "review"
 
     @classmethod
-    def _get_proofreading_prompt_cls(
+    def _get_line_review_prompt_cls(
         cls, script: str
-    ) -> type[YueZhoHansProofreadingPrompt] | type[YueZhoHantProofreadingPrompt]:
-        """Get the proofreading prompt class for the selected script.
+    ) -> type[YueZhoHansLineReviewPrompt] | type[YueZhoHantLineReviewPrompt]:
+        """Get the line-review prompt class for the selected script.
 
         Arguments:
             script: selected script identifier
         Returns:
-            proofreading prompt class
+            line-review prompt class
         """
         if script == "traditional":
-            return YueZhoHantProofreadingPrompt
-        return YueZhoHansProofreadingPrompt
+            return YueZhoHantLineReviewPrompt
+        return YueZhoHansLineReviewPrompt
 
     @classmethod
     def _get_block_review_prompt_cls(
@@ -175,9 +175,9 @@ class YueReviewVsZhoCli(CommandLineInterface):
 
         # Perform operations
         if mode == "line":
-            prompt_cls = cls._get_proofreading_prompt_cls(script)
-            processor = get_yue_vs_zho_proofreader(prompt_cls=prompt_cls)
-            reviewed = get_yue_proofread_vs_zho(
+            prompt_cls = cls._get_line_review_prompt_cls(script)
+            processor = get_yue_vs_zho_line_reviewer(prompt_cls=prompt_cls)
+            reviewed = get_yue_line_reviewed_vs_zho(
                 yuewen=yuewen,
                 zhongwen=zhongwen,
                 processor=processor,

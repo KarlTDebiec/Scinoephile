@@ -32,9 +32,9 @@ from scinoephile.multilang.yue_zho.block_review import (
     YueHansBlockReviewPrompt,
     get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    get_yue_vs_zho_proofreader,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    get_yue_vs_zho_line_reviewer,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueHansFromZhoTranslationPrompt,
@@ -236,7 +236,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     [
         (YueHansFromZhoTranslationPrompt, get_yue_vs_zho_translator),
         (YueHansBlockReviewPrompt, get_yue_vs_zho_block_reviewer),
-        (YueZhoHansProofreadingPrompt, get_yue_vs_zho_proofreader),
+        (YueZhoHansLineReviewPrompt, get_yue_vs_zho_line_reviewer),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(

@@ -92,7 +92,7 @@ def test_yue_review_vs_zho_cli(
                 return_value=expected,
             ) as patched_review:
                 with patch(
-                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_proofread_vs_zho",
+                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_line_reviewed_vs_zho",
                     return_value=expected,
                 ) as patched_line:
                     run_cli_with_args(
