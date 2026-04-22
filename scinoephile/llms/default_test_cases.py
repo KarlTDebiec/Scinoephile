@@ -16,7 +16,7 @@ __all__ = [
     "ENG_PROOFREADING_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
-    "YUE_ZHO_PROOFREADING_JSON_PATHS",
+    "YUE_ZHO_LINE_REVIEW_JSON_PATHS",
     "YUE_ZHO_REVIEW_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS",
     "ZHO_HANS_OCR_FUSION_JSON_PATHS",
@@ -69,10 +69,10 @@ ZHO_HANT_OCR_FUSION_JSON_PATHS = (
     Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
 )
 
-YUE_ZHO_PROOFREADING_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/proofreading/gpu.json"),
-    Path("mlamd/multilang/yue_zho/proofreading/cpu.json"),
-    Path("mlamd/multilang/yue_zho/proofreading/mps.json"),
+YUE_ZHO_LINE_REVIEW_JSON_PATHS = (
+    Path("mlamd/multilang/yue_zho/line_review/gpu.json"),
+    Path("mlamd/multilang/yue_zho/line_review/cpu.json"),
+    Path("mlamd/multilang/yue_zho/line_review/mps.json"),
 )
 
 YUE_ZHO_REVIEW_JSON_PATHS = (

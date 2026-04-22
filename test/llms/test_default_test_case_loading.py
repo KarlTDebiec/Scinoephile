@@ -25,7 +25,7 @@ from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
     ENG_PROOFREADING_JSON_PATHS,
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
-    YUE_ZHO_PROOFREADING_JSON_PATHS,
+    YUE_ZHO_LINE_REVIEW_JSON_PATHS,
     YUE_ZHO_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANS_PROOFREADING_JSON_PATHS,
@@ -37,8 +37,8 @@ from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_block.manager import MonoBlockManager
-from scinoephile.multilang.yue_zho.proofreading import YueZhoHansProofreadingPrompt
-from scinoephile.multilang.yue_zho.proofreading.manager import YueZhoProofreadingManager
+from scinoephile.multilang.yue_zho.line_review import YueZhoHansLineReviewPrompt
+from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
 from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 
@@ -145,16 +145,16 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_zho_proofreading",
+            "yue_zho_line_review",
             lambda: load_default_test_cases(
-                YueZhoProofreadingManager,
-                YueZhoHansProofreadingPrompt,
-                YUE_ZHO_PROOFREADING_JSON_PATHS,
+                YueZhoLineReviewManager,
+                YueZhoHansLineReviewPrompt,
+                YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/proofreading/gpu.json",
-                "mlamd/multilang/yue_zho/proofreading/cpu.json",
-                "mlamd/multilang/yue_zho/proofreading/mps.json",
+                "mlamd/multilang/yue_zho/line_review/gpu.json",
+                "mlamd/multilang/yue_zho/line_review/cpu.json",
+                "mlamd/multilang/yue_zho/line_review/mps.json",
             ],
         ),
         (

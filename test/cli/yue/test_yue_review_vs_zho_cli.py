@@ -59,13 +59,13 @@ def test_yue_review_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mlamd/output/yue-Hans_transcribe.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_proofread.srt",
+            "mlamd/output/yue-Hans_transcribe_review.srt",
             "--mode line",
         ),
         (
-            "mlamd/output/yue-Hans_transcribe_proofread_translate.srt",
+            "mlamd/output/yue-Hans_transcribe_review_translate.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_proofread_translate_review.srt",
+            "mlamd/output/yue-Hans_transcribe_review_translate_review.srt",
             "",
         ),
     ],
@@ -92,7 +92,7 @@ def test_yue_review_vs_zho_cli(
                 return_value=expected,
             ) as patched_review:
                 with patch(
-                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_proofread_vs_zho",
+                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_line_reviewed_vs_zho",
                     return_value=expected,
                 ) as patched_line:
                     run_cli_with_args(

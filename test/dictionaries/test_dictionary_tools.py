@@ -28,9 +28,9 @@ from scinoephile.dictionaries.serialization import (
     dictionary_entry_to_dict,
 )
 from scinoephile.dictionaries.sqlite_store import DictionarySqliteStore
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    get_yue_vs_zho_proofreader,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    get_yue_vs_zho_line_reviewer,
 )
 from scinoephile.multilang.yue_zho.review import (
     YueHansReviewPrompt,
@@ -236,7 +236,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     [
         (YueHansFromZhoTranslationPrompt, get_yue_vs_zho_translator),
         (YueHansReviewPrompt, get_yue_vs_zho_reviewer),
-        (YueZhoHansProofreadingPrompt, get_yue_vs_zho_proofreader),
+        (YueZhoHansLineReviewPrompt, get_yue_vs_zho_line_reviewer),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(

@@ -59,9 +59,9 @@ def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...])
     ("yue_input_path", "zho_input_path", "expected_path"),
     [
         (
-            "mlamd/output/yue-Hans_transcribe_proofread.srt",
+            "mlamd/output/yue-Hans_transcribe_review.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_proofread_translate.srt",
+            "mlamd/output/yue-Hans_transcribe_review_translate.srt",
         ),
     ],
 )

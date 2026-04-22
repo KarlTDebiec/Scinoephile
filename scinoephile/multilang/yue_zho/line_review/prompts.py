@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 proofreading against 中文."""
+"""Text for LLM correspondence for 粤文 line review against 中文."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
-    "YueZhoHansProofreadingPrompt",
-    "YueZhoHantProofreadingPrompt",
+    "YueZhoHansLineReviewPrompt",
+    "YueZhoHantLineReviewPrompt",
 ]
 
 
-class YueZhoHansProofreadingPrompt(
+class YueZhoHansLineReviewPrompt(
     DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt
 ):
-    """Text for LLM correspondence for 简体粤文 proofreading against 中文."""
+    """Text for LLM correspondence for 简体粤文 line review against 中文."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -102,8 +102,8 @@ class YueZhoHansProofreadingPrompt(
     """Error when output and note fields are both missing from answer."""
 
 
-class YueZhoHantProofreadingPrompt(YueZhoHansProofreadingPrompt):
-    """Text for LLM correspondence for 繁体粤文 proofreading against 中文."""
+class YueZhoHantLineReviewPrompt(YueZhoHansLineReviewPrompt):
+    """Text for LLM correspondence for 繁体粤文 line review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config with which to convert characters from 简体中文 present in parent class."""
