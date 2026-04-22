@@ -16,8 +16,8 @@ from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import (
     ZhoHansOcrFusionPrompt,
     ZhoHantOcrFusionPrompt,
@@ -39,8 +39,8 @@ __all__ = [
     "mnt_zho_hant",
     "mnt_zho_hant_lens",
     "mnt_zho_hant_paddle",
+    "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
-    "get_mnt_eng_proofreading_test_cases",
     "get_mnt_zho_hans_ocr_fusion_test_cases",
     "get_mnt_zho_hans_block_review_test_cases",
     "get_mnt_zho_hant_ocr_fusion_test_cases",
@@ -49,8 +49,8 @@ __all__ = [
     "mnt_eng_fuse",
     "mnt_eng_fuse_clean",
     "mnt_eng_fuse_clean_validate",
-    "mnt_eng_fuse_clean_validate_proofread",
-    "mnt_eng_fuse_clean_validate_proofread_flatten",
+    "mnt_eng_fuse_clean_validate_review",
+    "mnt_eng_fuse_clean_validate_review_flatten",
     "mnt_eng_image",
     "mnt_eng_image_path",
     "mnt_zho_hans_fuse",
@@ -140,11 +140,11 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_mnt_eng_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
+def get_mnt_eng_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MNT English proofreading test cases.
+    """Get MNT English block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -152,7 +152,7 @@ def get_mnt_eng_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "proofreading.json"
+    path = title_root / "lang" / "eng" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -272,15 +272,15 @@ def mnt_eng_fuse_clean_validate() -> Series:
 
 
 @pytest.fixture
-def mnt_eng_fuse_clean_validate_proofread() -> Series:
+def mnt_eng_fuse_clean_validate_review() -> Series:
     """MNT English fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+    return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def mnt_eng_fuse_clean_validate_proofread_flatten() -> Series:
+def mnt_eng_fuse_clean_validate_review_flatten() -> Series:
     """MNT English fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
+    return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture

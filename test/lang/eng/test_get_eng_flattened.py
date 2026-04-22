@@ -38,70 +38,70 @@ def _test_get_eng_flattened(series: Series, expected: Series):
 
 
 def test_get_eng_flattened_kob(
-    kob_eng_fuse_clean_validate_proofread: Series,
-    kob_eng_fuse_clean_validate_proofread_flatten: Series,
+    kob_eng_fuse_clean_validate_review: Series,
+    kob_eng_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_eng_flattened with KOB English subtitles.
 
     Arguments:
-        kob_eng_fuse_clean_validate_proofread: KOB English series fixture
-        kob_eng_fuse_clean_validate_proofread_flatten: Expected flattened KOB English
+        kob_eng_fuse_clean_validate_review: KOB English series fixture
+        kob_eng_fuse_clean_validate_review_flatten: Expected flattened KOB English
           series fixture
     """
     _test_get_eng_flattened(
-        kob_eng_fuse_clean_validate_proofread,
-        kob_eng_fuse_clean_validate_proofread_flatten,
+        kob_eng_fuse_clean_validate_review,
+        kob_eng_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_eng_flattened_mlamd(
-    mlamd_eng_fuse_clean_validate_proofread: Series,
-    mlamd_eng_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_eng_fuse_clean_validate_review: Series,
+    mlamd_eng_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_eng_flattened with MLAMD English subtitles.
 
     Arguments:
-        mlamd_eng_fuse_clean_validate_proofread: MLAMD English series fixture
-        mlamd_eng_fuse_clean_validate_proofread_flatten: Expected flattened MLAMD
+        mlamd_eng_fuse_clean_validate_review: MLAMD English series fixture
+        mlamd_eng_fuse_clean_validate_review_flatten: Expected flattened MLAMD
           English series fixture
     """
     _test_get_eng_flattened(
-        mlamd_eng_fuse_clean_validate_proofread,
-        mlamd_eng_fuse_clean_validate_proofread_flatten,
+        mlamd_eng_fuse_clean_validate_review,
+        mlamd_eng_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_eng_flattened_mnt(
-    mnt_eng_fuse_clean_validate_proofread: Series,
-    mnt_eng_fuse_clean_validate_proofread_flatten: Series,
+    mnt_eng_fuse_clean_validate_review: Series,
+    mnt_eng_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_eng_flattened with MNT English subtitles.
 
     Arguments:
-        mnt_eng_fuse_clean_validate_proofread: MNT English series fixture
-        mnt_eng_fuse_clean_validate_proofread_flatten: Expected flattened MNT English
+        mnt_eng_fuse_clean_validate_review: MNT English series fixture
+        mnt_eng_fuse_clean_validate_review_flatten: Expected flattened MNT English
           series fixture
     """
     _test_get_eng_flattened(
-        mnt_eng_fuse_clean_validate_proofread,
-        mnt_eng_fuse_clean_validate_proofread_flatten,
+        mnt_eng_fuse_clean_validate_review,
+        mnt_eng_fuse_clean_validate_review_flatten,
     )
 
 
 def test_get_eng_flattened_t(
-    t_eng_fuse_clean_validate_proofread: Series,
-    t_eng_fuse_clean_validate_proofread_flatten: Series,
+    t_eng_fuse_clean_validate_review: Series,
+    t_eng_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_eng_flattened with T English subtitles.
 
     Arguments:
-        t_eng_fuse_clean_validate_proofread: T English series fixture
-        t_eng_fuse_clean_validate_proofread_flatten: Expected flattened T English series
+        t_eng_fuse_clean_validate_review: T English series fixture
+        t_eng_fuse_clean_validate_review_flatten: Expected flattened T English series
           fixture
     """
     _test_get_eng_flattened(
-        t_eng_fuse_clean_validate_proofread,
-        t_eng_fuse_clean_validate_proofread_flatten,
+        t_eng_fuse_clean_validate_review,
+        t_eng_fuse_clean_validate_review_flatten,
     )
 
 

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to English proofreading."""
+"""Code related to English block review."""
 
 from __future__ import annotations
 
@@ -11,60 +11,63 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    ENG_PROOFREADING_JSON_PATHS,
+    ENG_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import EngProofreadingPrompt
+from .prompts import EngBlockReviewPrompt
 
 __all__ = [
-    "EngProofreadingPrompt",
-    "EngProofreadingProcessKwargs",
-    "EngProofreadingProcessorKwargs",
-    "get_eng_proofread",
-    "get_eng_proofreader",
+    "EngBlockReviewProcessKwargs",
+    "EngBlockReviewProcessorKwargs",
+    "EngBlockReviewPrompt",
+    "get_eng_block_reviewed",
+    "get_eng_block_reviewer",
 ]
 
 
-class EngProofreadingProcessKwargs(TypedDict, total=False):
+class EngBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """subtitle index at which to stop processing, inclusive."""
 
 
-class EngProofreadingProcessorKwargs(TypedDict, total=False):
+class EngBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """path where encountered or verified test cases are persisted."""
     auto_verify: bool
+    """whether to automatically verify model outputs against expected cases."""
 
 
-def get_eng_proofread(
+def get_eng_block_reviewed(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Unpack[EngProofreadingProcessKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessKwargs],
 ) -> Series:
-    """Get English series proofread.
+    """Get English series block reviewed.
 
     Arguments:
-        series: Series to proofread
+        series: Series to block review
         processor: MonoBlockProcessor to use
         **kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
-        proofread Series
+        block-reviewed Series
     """
     if processor is None:
-        processor = get_eng_proofreader()
+        processor = get_eng_block_reviewer()
     return processor.process(series, **kwargs)
 
 
-def get_eng_proofreader(
-    prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
+def get_eng_block_reviewer(
+    prompt_cls: type[EngBlockReviewPrompt] = EngBlockReviewPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[EngProofreadingProcessorKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
@@ -81,7 +84,7 @@ def get_eng_proofreader(
             load_default_test_cases(
                 MonoBlockManager,
                 prompt_cls,
-                ENG_PROOFREADING_JSON_PATHS,
+                ENG_BLOCK_REVIEW_JSON_PATHS,
             )
         )
     if provider is None:

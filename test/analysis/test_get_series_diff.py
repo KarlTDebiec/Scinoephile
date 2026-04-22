@@ -35,8 +35,8 @@ def _assert_expected_differences(differences: SeriesDiff, expected: list[str]):
     ),
     [
         (
-            "kob_eng_fuse_clean_validate_proofread_flatten",
-            "kob_eng_timewarp_clean_proofread_flatten",
+            "kob_eng_fuse_clean_validate_review_flatten",
+            "kob_eng_timewarp_clean_review_flatten",
             "OCR",
             "SRT",
             "kob_eng_expected_series_diff",
