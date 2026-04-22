@@ -12,8 +12,8 @@ from scinoephile.common import package_root
 from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
 
 __all__ = [
-    "ENG_OCR_FUSION_JSON_PATHS",
     "ENG_BLOCK_REVIEW_JSON_PATHS",
+    "ENG_OCR_FUSION_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
     "YUE_ZHO_PROOFREADING_JSON_PATHS",

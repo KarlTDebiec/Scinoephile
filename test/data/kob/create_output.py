@@ -12,8 +12,12 @@ from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
-from scinoephile.lang.eng.block_review import get_eng_proofreader
+from scinoephile.lang.eng import (
+    get_eng_block_reviewed,
+    get_eng_cleaned,
+    get_eng_flattened,
+)
+from scinoephile.lang.eng.block_review import get_eng_block_reviewer
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import (
@@ -102,11 +106,11 @@ if "English (SRT)" in actions:
     eng_timewarp.save(output_dir / "eng_timewarp.srt")
     eng_clean = get_eng_cleaned(eng_timewarp)
     eng_clean.save(output_dir / "eng_timewarp_clean.srt")
-    eng_proofreader = get_eng_proofreader(
+    eng_proofreader = get_eng_block_reviewer(
         test_case_path=title_root / "lang" / "eng" / "block_review" / "eng_srt.json",
         auto_verify=True,
     )
-    eng_proofread = get_eng_proofread(eng_clean, eng_proofreader)
+    eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
     eng_proofread.save(output_dir / "eng_timewarp_clean_review.srt")
     eng_flatten = get_eng_flattened(eng_proofread)
     eng_flatten.save(output_dir / "eng_timewarp_clean_review_flatten.srt")

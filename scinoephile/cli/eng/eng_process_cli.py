@@ -16,7 +16,11 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened, get_eng_proofread
+from scinoephile.lang.eng import (
+    get_eng_block_reviewed,
+    get_eng_cleaned,
+    get_eng_flattened,
+)
 
 __all__ = ["EngProcessCli"]
 
@@ -125,7 +129,7 @@ class EngProcessCli(CommandLineInterface):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            series = get_eng_proofread(series)
+            series = get_eng_block_reviewed(series)
 
         # Write output
         write_series(

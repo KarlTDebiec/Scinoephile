@@ -17,7 +17,10 @@ from scinoephile.lang.eng import (
     get_eng_flattened,
     validate_eng_ocr,
 )
-from scinoephile.lang.eng.block_review import get_eng_proofread, get_eng_proofreader
+from scinoephile.lang.eng.block_review import (
+    get_eng_block_reviewed,
+    get_eng_block_reviewer,
+)
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.zho import (
     get_zho_cleaned,
@@ -152,11 +155,11 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             "test_case_path",
             title_root / "lang" / "eng" / "block_review.json",
         )
-        proofreader = get_eng_proofreader(
+        proofreader = get_eng_block_reviewer(
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_eng_proofread(validate, proofreader)
+        proofread = get_eng_block_reviewed(validate, proofreader)
         proofread.save(proofread_path)
 
     # Flatten

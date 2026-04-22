@@ -20,11 +20,11 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import EngBlockReviewPrompt
 
 __all__ = [
-    "EngBlockReviewPrompt",
     "EngBlockReviewProcessKwargs",
     "EngBlockReviewProcessorKwargs",
-    "get_eng_proofread",
-    "get_eng_proofreader",
+    "EngBlockReviewPrompt",
+    "get_eng_block_reviewed",
+    "get_eng_block_reviewer",
 ]
 
 
@@ -32,35 +32,38 @@ class EngBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """subtitle index at which to stop processing, inclusive."""
 
 
 class EngBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """path where encountered or verified test cases are persisted."""
     auto_verify: bool
+    """whether to automatically verify model outputs against expected cases."""
 
 
-def get_eng_proofread(
+def get_eng_block_reviewed(
     series: Series,
     processor: MonoBlockProcessor | None = None,
     **kwargs: Unpack[EngBlockReviewProcessKwargs],
 ) -> Series:
-    """Get English series proofread.
+    """Get English series block reviewed.
 
     Arguments:
-        series: Series to proofread
+        series: Series to block review
         processor: MonoBlockProcessor to use
         **kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
-        proofread Series
+        block-reviewed Series
     """
     if processor is None:
-        processor = get_eng_proofreader()
+        processor = get_eng_block_reviewer()
     return processor.process(series, **kwargs)
 
 
-def get_eng_proofreader(
+def get_eng_block_reviewer(
     prompt_cls: type[EngBlockReviewPrompt] = EngBlockReviewPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
