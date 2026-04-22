@@ -51,8 +51,8 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("one_path", "two_path", "one_lbl", "two_lbl", "expected_fixture_name"),
     [
         (
-            "kob/output/eng_fuse_clean_validate_proofread_flatten.srt",
-            "kob/output/eng_timewarp_clean_proofread_flatten.srt",
+            "kob/output/eng_fuse_clean_validate_review_flatten.srt",
+            "kob/output/eng_timewarp_clean_review_flatten.srt",
             "OCR",
             "SRT",
             "kob_eng_expected_series_diff",

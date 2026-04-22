@@ -11,8 +11,8 @@ import pytest
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import TestCase
+from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
 from scinoephile.lang.zho.ocr_fusion import (
     ZhoHansOcrFusionPrompt,
     ZhoHantOcrFusionPrompt,
@@ -22,8 +22,8 @@ from scinoephile.lang.zho.proofreading import (
     ZhoHantProofreadingPrompt,
 )
 from scinoephile.llms.default_test_cases import (
+    ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
-    ENG_PROOFREADING_JSON_PATHS,
     YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     YUE_ZHO_REVIEW_JSON_PATHS,
@@ -66,16 +66,16 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     ("name", "loader", "relative_paths"),
     [
         (
-            "eng_proofreading",
+            "eng_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager, EngProofreadingPrompt, ENG_PROOFREADING_JSON_PATHS
+                MonoBlockManager, EngBlockReviewPrompt, ENG_BLOCK_REVIEW_JSON_PATHS
             ),
             [
-                "kob/lang/eng/proofreading/eng_ocr.json",
-                "kob/lang/eng/proofreading/eng_srt.json",
-                "mlamd/lang/eng/proofreading.json",
-                "mnt/lang/eng/proofreading.json",
-                "t/lang/eng/proofreading.json",
+                "kob/lang/eng/block_review/eng_ocr.json",
+                "kob/lang/eng/block_review/eng_srt.json",
+                "mlamd/lang/eng/block_review.json",
+                "mnt/lang/eng/block_review.json",
+                "t/lang/eng/block_review.json",
             ],
         ),
         (

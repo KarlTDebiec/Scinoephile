@@ -55,7 +55,7 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
     [
         (
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
             "",
             "mlamd/output/zho-Hans_eng.srt",
         ),
@@ -96,7 +96,7 @@ def test_sync_cli(
     [
         (
             "mlamd/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
-            "mlamd/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
             "mlamd/output/zho-Hans_eng.srt",
         ),
     ],

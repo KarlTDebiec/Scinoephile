@@ -62,14 +62,14 @@ def test_eng_process_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            "mnt/output/eng_fuse_clean_validate_proofread.srt",
+            "mnt/output/eng_fuse_clean_validate_review.srt",
             "--flatten",
-            "mnt/output/eng_fuse_clean_validate_proofread_flatten.srt",
+            "mnt/output/eng_fuse_clean_validate_review_flatten.srt",
         ),
         (
             "mnt/output/eng_fuse_clean_validate.srt",
             "--proofread",
-            "mnt/output/eng_fuse_clean_validate_proofread.srt",
+            "mnt/output/eng_fuse_clean_validate_review.srt",
         ),
     ],
 )
