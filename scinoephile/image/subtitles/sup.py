@@ -15,6 +15,30 @@ __all__ = [
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
+def _render_sup_image(
+    compressed_image: np.ndarray,
+    height: int,
+    width: int,
+    palette: np.ndarray,
+) -> np.ndarray:
+    """Render an RGBA subtitle image from palette and compressed image data.
+
+    Arguments:
+        compressed_image: palette-index image data
+        height: image height
+        width: image width
+        palette: RGBA palette
+    Returns:
+        rendered RGBA image
+    """
+    image = np.zeros((height, width, 4), np.uint8)
+    for i in range(height):
+        for j in range(width):
+            image[i, j] = palette[compressed_image[i, j]]
+    return image
+
+
+@nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
 def read_sup_image_array(bytes_: np.ndarray, height: int, width: int) -> np.ndarray:
     """Read a palette-compressed image from a block of bytes.
 
@@ -108,48 +132,90 @@ def read_sup_series(
     starts = []
     ends = []
     images = []
+
     palette = np.zeros((256, 4), np.uint8)
-    compressed_image = np.zeros((0, 0), np.uint8)
-    height = 0
-    width = 0
+    current_image = np.zeros((0, 0), np.uint8)
+    has_current_image = False
+
+    active_start = -1.0
+    active_image = np.zeros((0, 0, 4), np.uint8)
+    has_active_image = False
+    active_composition_number = -1
+
+    set_timestamp = -1.0
+    set_composition_number = -1
+    set_has_object = False
 
     byte_i = 0
-    seeking_start = True
     while byte_i < len(bytes_):
-        # Load header
         byte_i += 2
         timestamp = (
-            bytes_[byte_i] * 16777216
-            + bytes_[byte_i + 1] * 65536
-            + bytes_[byte_i + 2] * 256
-            + bytes_[byte_i + 3]
-        )
+            int(bytes_[byte_i]) * 16777216
+            + int(bytes_[byte_i + 1]) * 65536
+            + int(bytes_[byte_i + 2]) * 256
+            + int(bytes_[byte_i + 3])
+        ) / 90000
         byte_i += 8
         segment_kind = bytes_[byte_i]
         byte_i += 1
-        size = bytes_[byte_i] * 256 + bytes_[byte_i + 1]
+        size = int(bytes_[byte_i]) * 256 + int(bytes_[byte_i + 1])
         byte_i += 2
+        segment_bytes = bytes_[byte_i : byte_i + size]
 
-        # Load content
+        if set_timestamp < 0:
+            set_timestamp = timestamp
+
         if segment_kind == 0x14:  # Palette
-            palette_bytes = bytes_[byte_i + 2 : byte_i + size]
-            palette = read_sup_palette(palette_bytes)
+            palette = read_sup_palette(segment_bytes[2:])
         elif segment_kind == 0x15:  # Image
-            width = bytes_[byte_i + 7] * 256 + bytes_[byte_i + 8]
-            height = bytes_[byte_i + 9] * 256 + bytes_[byte_i + 10]
-            image_bytes = bytes_[byte_i + 11 : byte_i + size]
-            compressed_image = read_sup_image_array(image_bytes, height, width)
+            width = int(segment_bytes[7]) * 256 + int(segment_bytes[8])
+            height = int(segment_bytes[9]) * 256 + int(segment_bytes[10])
+            current_image = read_sup_image_array(segment_bytes[11:], height, width)
+            has_current_image = True
+        elif segment_kind == 0x16:  # Presentation Composition
+            set_composition_number = int(segment_bytes[5]) * 256 + int(segment_bytes[6])
+            set_has_object = segment_bytes[10] > 0
         elif segment_kind == 0x80:  # End
-            if seeking_start:
-                starts.append(timestamp / 90000)
-                image = np.zeros((height, width, 4), np.uint8)
-                for i in range(height):
-                    for j in range(width):
-                        image[i, j] = palette[compressed_image[i, j]]
-                images.append(image)
-                seeking_start = False
-            else:
-                ends.append(timestamp / 90000)
-                seeking_start = True
+            if set_timestamp < 0:
+                raise ValueError("Unexpected empty display set in SUP data.")
+
+            if set_has_object:
+                if set_composition_number != active_composition_number:
+                    if has_active_image:
+                        starts.append(active_start)
+                        ends.append(set_timestamp)
+                        images.append(active_image)
+                    if not has_current_image:
+                        raise ValueError(
+                            "Encountered object display set without image data."
+                        )
+                    active_start = set_timestamp
+                    active_image = _render_sup_image(
+                        current_image,
+                        current_image.shape[0],
+                        current_image.shape[1],
+                        palette,
+                    )
+                    has_active_image = True
+                    active_composition_number = set_composition_number
+            elif has_active_image:
+                starts.append(active_start)
+                ends.append(set_timestamp)
+                images.append(active_image)
+                active_start = -1.0
+                active_image = np.zeros((0, 0, 4), np.uint8)
+                has_active_image = False
+                active_composition_number = -1
+
+            set_timestamp = -1.0
+            set_composition_number = -1
+            set_has_object = False
+
         byte_i += size
+
+    if has_active_image:
+        starts.append(active_start)
+        ends.append(active_start)
+        images.append(active_image)
+
     return starts, ends, images
