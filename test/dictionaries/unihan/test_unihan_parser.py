@@ -98,3 +98,41 @@ def test_parse_variants_readings_and_dictionary_like_data(source_dir_path: Path)
         definition.label == "Cangjie Input" and definition.text == "YKD"
         for definition in paired_entry.definitions
     )
+
+
+def test_parse_readings_preserves_simplified_only_source_rows(source_dir_path: Path):
+    """Preserve readings that exist only on the simplified side of a variant pair.
+
+    Arguments:
+        source_dir_path: fixture source directory path
+    """
+    (source_dir_path / "Unihan_Variants.txt").write_text(
+        "U+4E07\tkTraditionalVariant\tU+842C\n",
+        encoding="utf-8",
+    )
+    (source_dir_path / "Unihan_Readings.txt").write_text(
+        (
+            "U+4E07\tkMandarin\twan\n"
+            "U+4E07\tkCantonese\tmaan6\n"
+            "U+4E07\tkDefinition\tten thousand\n"
+        ),
+        encoding="utf-8",
+    )
+    (source_dir_path / "Unihan_DictionaryLikeData.txt").write_text(
+        "",
+        encoding="utf-8",
+    )
+
+    _, entries = UnihanDictionaryParser().parse(
+        dictionary_like_data_path=source_dir_path / "Unihan_DictionaryLikeData.txt",
+        readings_path=source_dir_path / "Unihan_Readings.txt",
+        variants_path=source_dir_path / "Unihan_Variants.txt",
+    )
+
+    assert len(entries) == 1
+    entry = entries[0]
+    assert entry.traditional == "萬"
+    assert entry.simplified == "万"
+    assert entry.pinyin == "wan"
+    assert entry.jyutping == "maan6"
+    assert [definition.text for definition in entry.definitions] == ["ten thousand"]

@@ -8,6 +8,7 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+import requests
 
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
@@ -164,3 +165,69 @@ def test_build_updates_local_data_from_existing_runtime_files(
         assert (local_data_dir_path / filename).read_text(encoding="utf-8") == (
             runtime_data_dir_path / filename
         ).read_text(encoding="utf-8")
+
+
+def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
+    runtime_data_dir_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Raise FileNotFoundError when Unihan.zip is missing a required source file.
+
+    Arguments:
+        runtime_data_dir_path: runtime canonical data directory
+        monkeypatch: pytest monkeypatch fixture
+    """
+
+    class _Response:
+        """Mock requests response."""
+
+        content = b"placeholder zip bytes"
+
+        @staticmethod
+        def raise_for_status():
+            """Succeed without error."""
+
+    class _ArchiveSource:
+        """Mock zip member reader."""
+
+        def __enter__(self) -> _ArchiveSource:
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+        @staticmethod
+        def read() -> bytes:
+            """Return deterministic source content."""
+            return b"U+4E00\tkDefinition\tone\n"
+
+    class _Archive:
+        """Mock zip archive with one missing member."""
+
+        def __enter__(self) -> _Archive:
+            return self
+
+        def __exit__(self, exc_type, exc, traceback):
+            return False
+
+        @staticmethod
+        def open(filename: str, mode: str = "r") -> _ArchiveSource:
+            """Open one archive member or simulate a missing file.
+
+            Arguments:
+                filename: archive member filename
+                mode: zipfile open mode
+            Returns:
+                source reader
+            """
+            if filename == "Unihan_Readings.txt":
+                raise KeyError(filename)
+            return _ArchiveSource()
+
+    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: _Response())
+    monkeypatch.setattr("zipfile.ZipFile", lambda *args, **kwargs: _Archive())
+
+    service = UnihanDictionaryService(runtime_data_dir_path=runtime_data_dir_path)
+
+    with pytest.raises(FileNotFoundError, match="Unihan_Readings.txt"):
+        service._download_and_extract_to_runtime()

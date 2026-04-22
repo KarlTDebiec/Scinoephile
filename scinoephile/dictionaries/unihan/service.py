@@ -198,8 +198,13 @@ class UnihanDictionaryService:
         with zipfile.ZipFile(zip_path, mode="r") as archive:
             for filename in UNIHAN_REQUIRED_SOURCE_FILENAMES:
                 target_path = extracted_paths[filename]
-                with archive.open(filename, mode="r") as src:
-                    target_path.write_bytes(src.read())
+                try:
+                    with archive.open(filename, mode="r") as src:
+                        target_path.write_bytes(src.read())
+                except KeyError as exc:
+                    raise FileNotFoundError(
+                        f"Required file {filename!r} not found in downloaded Unihan.zip"
+                    ) from exc
         return self._validate_paths(extracted_paths)
 
     def _require_source_paths(

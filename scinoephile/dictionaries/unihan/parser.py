@@ -170,7 +170,7 @@ class UnihanDictionaryParser:
         if character in traditional_index:
             return sorted(traditional_index[character]), character in simplified_index
         if character in simplified_index:
-            return [], True
+            return sorted(simplified_index[character]), True
         pair = (character, character)
         entries_data.setdefault(pair, _EntryData())
         traditional_index.setdefault(character, set()).add(pair)
