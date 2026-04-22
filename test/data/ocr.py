@@ -50,7 +50,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     sup_path: Path | None = None,
     *,
     fuser_kw: Any | None = None,
-    proofreader_kw: Any | None = None,
+    reviewer_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -61,7 +61,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         title_root: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR block reviewer
+        reviewer_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to rerun validation if output exists
@@ -149,15 +149,15 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
-        if proofreader_kw is None:
-            proofreader_kw = {}
-        proofreader_kw.setdefault(
+        if reviewer_kw is None:
+            reviewer_kw = {}
+        reviewer_kw.setdefault(
             "test_case_path",
             title_root / "lang" / "eng" / "block_review.json",
         )
         reviewer = get_eng_block_reviewer(
             auto_verify=True,
-            **proofreader_kw,
+            **reviewer_kw,
         )
         review = get_eng_block_reviewed(validate, reviewer)
         review.save(review_path)
@@ -179,7 +179,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     *,
     lang: str = "zho",
     fuser_kw: Any | None = None,
-    proofreader_kw: Any | None = None,
+    reviewer_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -191,7 +191,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         sup_path: subtitle image input path
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        reviewer_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -277,19 +277,19 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate = Series.load(validate_path)
 
     # Block review
-    review_path = output_dir / f"{lang_code}_fuse_clean_validate_proofread.srt"
+    review_path = output_dir / f"{lang_code}_fuse_clean_validate_review.srt"
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
-        if proofreader_kw is None:
-            proofreader_kw = {}
-        proofreader_kw.setdefault(
+        if reviewer_kw is None:
+            reviewer_kw = {}
+        reviewer_kw.setdefault(
             "test_case_path",
             title_root / "lang" / "zho" / "block_review" / "zho-Hans.json",
         )
         reviewer = get_zho_reviewer(
             auto_verify=True,
-            **proofreader_kw,
+            **reviewer_kw,
         )
         review = get_zho_block_reviewed(validate, reviewer)
         review.save(review_path)
@@ -319,7 +319,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     *,
     lang: str = "zho",
     fuser_kw: Any | None = None,
-    proofreader_kw: Any | None = None,
+    reviewer_kw: Any | None = None,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -331,7 +331,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         sup_path: subtitle image input path
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
-        proofreader_kw: keyword arguments for OCR proofreader
+        reviewer_kw: keyword arguments for OCR block reviewer
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -424,16 +424,16 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
-        if proofreader_kw is None:
-            proofreader_kw = {}
-        proofreader_kw.setdefault(
+        if reviewer_kw is None:
+            reviewer_kw = {}
+        reviewer_kw.setdefault(
             "test_case_path",
             title_root / "lang" / "zho" / "block_review" / "zho-Hant.json",
         )
         reviewer = get_zho_reviewer(
             prompt_cls=ZhoHantBlockReviewPrompt,
             auto_verify=True,
-            **proofreader_kw,
+            **reviewer_kw,
         )
         review = get_zho_block_reviewed(validate, reviewer)
         review.save(review_path)
