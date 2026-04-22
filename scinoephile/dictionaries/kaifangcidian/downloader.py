@@ -26,7 +26,8 @@ __all__ = [
 logger = getLogger(__name__)
 
 _JS_VAR_REGEX = re.compile(
-    r'var\s+(?P<name>[A-Za-z_]\w*)\s*=\s*"(?P<value>.*?)";',
+    r'var\s+(?P<name>[A-Za-z_]\w*)\s*=\s*"(?P<value>.*?)"(?:;)?\s*'
+    r"(?=var\s+[A-Za-z_]\w*\s*=|\Z)",
     re.DOTALL,
 )
 
@@ -279,7 +280,7 @@ class KaifangcidianDownloader:
 
     @staticmethod
     def _parse_js_vars(js_text: str) -> dict[str, str]:
-        """Parse JavaScript `var name = "value";` assignments.
+        """Parse JavaScript `var name = "value"` assignments.
 
         Arguments:
             js_text: JavaScript source text

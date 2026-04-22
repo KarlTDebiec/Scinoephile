@@ -83,3 +83,22 @@ Creative Commons Attribution 3.0 unless otherwise noted:
 Scinoephile can build from local canonical CSV snapshots under
 `scinoephile/data/dictionaries/kaifangcidian/`, or by downloading the upstream
 website payloads during `dictionary build kaifangcidian`.
+
+## Unihan dictionary data source
+
+The Unihan source used by the local parser is:
+
+- Unihan Database
+- https://www.unicode.org/charts/unihan.html
+- Archive endpoint:
+  - https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip
+
+Unicode data and software are provided under the Unicode License Agreement and
+Terms of Use:
+
+- https://www.unicode.org/license.html
+- https://www.unicode.org/copyright.html
+
+Scinoephile can build from local Unihan source snapshots under
+`scinoephile/data/dictionaries/unihan/`, or by downloading and extracting
+`Unihan.zip` during `dictionary build unihan`.
