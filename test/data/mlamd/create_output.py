@@ -15,18 +15,12 @@ from scinoephile.multilang.yue_zho import (
     get_yue_proofread_vs_zho,
     get_yue_reviewed_vs_zho,
     get_yue_transcribed_vs_zho,
+    get_yue_translated_vs_zho,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
-from scinoephile.multilang.yue_zho.transcription import (
-    get_yue_transcribed_vs_zho,
-    get_yue_vs_zho_transcriber,
-)
 from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
-from scinoephile.multilang.yue_zho.translation import (
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
-)
+from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
 from test.data.mlamd import (
     get_mlamd_yue_punctuating_test_cases,
     get_mlamd_yue_shifting_test_cases,
