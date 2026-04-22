@@ -17,7 +17,10 @@ from scinoephile.multilang.yue_zho import (
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
-from scinoephile.multilang.yue_zho.transcription import YueTranscriber
+from scinoephile.multilang.yue_zho.transcription import (
+    get_yue_transcribed_vs_zho,
+    get_yue_vs_zho_transcriber,
+)
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_translated_vs_zho,
     get_yue_vs_zho_translator,
@@ -69,7 +72,7 @@ if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt",
-        eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        eng_path=output_dir / "eng_fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
@@ -90,12 +93,12 @@ if "简体粤文 (Transcription)" in actions:
 
     # Transcribe
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
-    transcriber = YueTranscriber(
+    transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=test_data_root / "mlamd",
         shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
         punctuating_test_cases=get_mlamd_yue_punctuating_test_cases(),
     )
-    yue_hans = transcriber.process_all_blocks(yue_hans, zho_hans)
+    yue_hans = get_yue_transcribed_vs_zho(yue_hans, zho_hans, transcriber=transcriber)
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
@@ -148,6 +151,6 @@ if "Bilingual 简体粤文 and English" in actions:
     process_yue_hans_eng(
         title_root,
         yue_hans_path=output_dir / "yue-Hans_transcribe_proofread_translate_review.srt",
-        eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
+        eng_path=output_dir / "eng_fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )
