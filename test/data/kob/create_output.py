@@ -23,11 +23,13 @@ from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.multilang.yue_zho import (
     get_yue_proofread_vs_zho,
     get_yue_reviewed_vs_zho,
-    get_yue_transcribed_vs_zho,
 )
 from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
 from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
-from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
+from scinoephile.multilang.yue_zho.transcription import (
+    get_yue_transcribed_vs_zho,
+    get_yue_vs_zho_transcriber,
+)
 from scinoephile.multilang.yue_zho.translation import (
     get_yue_translated_vs_zho,
     get_yue_vs_zho_translator,
@@ -71,12 +73,12 @@ if "Bilingual 繁體中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt",
+        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )
 if "繁體粵文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
         zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
@@ -87,7 +89,7 @@ if "繁體粵文 (SRT)" in actions:
     flatten = get_zho_flattened(clean)
     flatten.save(output_dir / "yue-Hant_timewarp_clean_flatten.srt")
 if "简体粤文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
         zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
@@ -124,8 +126,7 @@ if "Bilingual 简体粤文 and English" in actions:
 if "简体粤文 (Transcription)" in actions:
     # Stage
     zho_hans = Series.load(
-        output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
 
@@ -137,9 +138,7 @@ if "简体粤文 (Transcription)" in actions:
         punctuating_test_cases=get_mlamd_yue_punctuating_test_cases(),
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
-        yue_hans_audio,
-        zho_hans,
-        transcriber=transcriber,
+        yue_hans_audio, zho_hans, transcriber=transcriber
     )
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans_transcribe.save(outfile_path)

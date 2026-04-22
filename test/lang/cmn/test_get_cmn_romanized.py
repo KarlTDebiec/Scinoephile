@@ -28,16 +28,16 @@ def _test_get_cmn_romanized(series: Series, expected: Series):
     ("series_fixture", "expected_fixture"),
     [
         (
-            "mlamd_zho_hans_fuse_clean_validate_proofread_flatten",
-            "mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+            "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
         ),
         (
-            "mnt_zho_hans_fuse_clean_validate_proofread_flatten",
-            "mnt_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+            "mnt_zho_hans_fuse_clean_validate_review_flatten",
+            "mnt_zho_hans_fuse_clean_validate_review_flatten_romanize",
         ),
         (
-            "t_zho_hans_fuse_clean_validate_proofread_flatten",
-            "t_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+            "t_zho_hans_fuse_clean_validate_review_flatten",
+            "t_zho_hans_fuse_clean_validate_review_flatten_romanize",
         ),
     ],
 )
