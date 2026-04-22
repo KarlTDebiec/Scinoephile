@@ -238,7 +238,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         clean = Series.load(clean_path)
     else:
         clean = get_zho_cleaned(fuse, remove_empty=False)
-        clean = get_zho_converted(clean)
+        # clean = get_zho_converted(clean)
         clean.save(clean_path)
 
     # Validate
@@ -351,14 +351,14 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         lens_path = input_dir / f"{lang_code}_lens.srt"
         lens = Series.load(lens_path)
         lens = get_zho_cleaned(lens, remove_empty=False)
-        lens = get_zho_converted(lens, OpenCCConfig.s2t)
+        # lens = get_zho_converted(lens, OpenCCConfig.s2t)
         lens.save(lens_path)
 
         # PaddleOCR
         paddle_path = input_dir / f"{lang_code}_paddle.srt"
         paddle = Series.load(paddle_path)
         paddle = get_zho_cleaned(paddle, remove_empty=False)
-        paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
+        # paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
         paddle.save(paddle_path)
 
         if fuser_kw is None:
