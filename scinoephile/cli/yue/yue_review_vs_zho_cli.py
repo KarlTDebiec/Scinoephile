@@ -18,18 +18,18 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import read_series, write_series
 from scinoephile.multilang.yue_zho import (
+    get_yue_block_reviewed_vs_zho,
     get_yue_proofread_vs_zho,
-    get_yue_reviewed_vs_zho,
+)
+from scinoephile.multilang.yue_zho.block_review import (
+    YueHansBlockReviewPrompt,
+    YueHantBlockReviewPrompt,
+    get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.proofreading import (
     YueZhoHansProofreadingPrompt,
     YueZhoHantProofreadingPrompt,
     get_yue_vs_zho_proofreader,
-)
-from scinoephile.multilang.yue_zho.review import (
-    YueHansReviewPrompt,
-    YueHantReviewPrompt,
-    get_yue_vs_zho_reviewer,
 )
 
 __all__ = ["YueReviewVsZhoCli"]
@@ -75,7 +75,7 @@ class YueReviewVsZhoCli(CommandLineInterface):
             type=str_arg(options=("block", "line")),
             help=(
                 "review mode (default: block): "
-                "block=block-by-block review, line=line-by-line proofreading"
+                "block=block-by-block review, line=line-by-line review"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -127,7 +127,7 @@ class YueReviewVsZhoCli(CommandLineInterface):
     @classmethod
     def _get_review_prompt_cls(
         cls, script: str
-    ) -> type[YueHansReviewPrompt] | type[YueHantReviewPrompt]:
+    ) -> type[YueHansBlockReviewPrompt] | type[YueHantBlockReviewPrompt]:
         """Get the review prompt class for the selected script.
 
         Arguments:
@@ -136,8 +136,8 @@ class YueReviewVsZhoCli(CommandLineInterface):
             review prompt class
         """
         if script == "traditional":
-            return YueHantReviewPrompt
-        return YueHansReviewPrompt
+            return YueHantBlockReviewPrompt
+        return YueHansBlockReviewPrompt
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -184,8 +184,8 @@ class YueReviewVsZhoCli(CommandLineInterface):
             )
         else:
             prompt_cls = cls._get_review_prompt_cls(script)
-            reviewer = get_yue_vs_zho_reviewer(prompt_cls=prompt_cls)
-            reviewed = get_yue_reviewed_vs_zho(
+            reviewer = get_yue_vs_zho_block_reviewer(prompt_cls=prompt_cls)
+            reviewed = get_yue_block_reviewed_vs_zho(
                 yuewen=yuewen,
                 zhongwen=zhongwen,
                 reviewer=reviewer,
