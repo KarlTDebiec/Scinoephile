@@ -22,7 +22,7 @@ from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_fla
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
-    get_zho_reviewed,
+    get_zho_block_reviewed,
     get_zho_reviewer,
 )
 from scinoephile.lang.zho.conversion import (
@@ -84,12 +84,11 @@ class YueProcessCli(CommandLineInterface):
             ),
         )
         arg_groups["operation arguments"].add_argument(
-            "--review",
             "--proofread",
             nargs="?",
             const="traditional",
             type=str_arg(options=("simplified", "traditional")),
-            help="block-review subtitles using LLM (default: traditional)",
+            help="proofread subtitles using LLM (default: traditional)",
         )
         arg_groups["operation arguments"].add_argument(
             "--romanize",
@@ -135,7 +134,7 @@ class YueProcessCli(CommandLineInterface):
         clean = kwargs.pop("clean")
         flatten = kwargs.pop("flatten")
         convert = kwargs.pop("convert")
-        review_script = kwargs.pop("review")
+        review_script = kwargs.pop("proofread")
         romanize = kwargs.pop("romanize")
         overwrite = kwargs.pop("overwrite")
 
@@ -163,7 +162,7 @@ class YueProcessCli(CommandLineInterface):
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
             proofreader = get_zho_reviewer(prompt_cls=prompt_cls)
-            series = get_zho_reviewed(series, processor=proofreader)
+            series = get_zho_block_reviewed(series, processor=proofreader)
         if romanize:
             series = get_yue_romanized(series, append=True)
 

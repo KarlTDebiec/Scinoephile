@@ -21,11 +21,11 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import ZhoHansBlockReviewPrompt, ZhoHantBlockReviewPrompt
 
 __all__ = [
-    "ZhoHansBlockReviewPrompt",
-    "ZhoHantBlockReviewPrompt",
     "ZhoBlockReviewProcessKwargs",
     "ZhoBlockReviewProcessorKwargs",
-    "get_zho_reviewed",
+    "ZhoHansBlockReviewPrompt",
+    "ZhoHantBlockReviewPrompt",
+    "get_zho_block_reviewed",
     "get_zho_reviewer",
 ]
 
@@ -43,7 +43,7 @@ class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     auto_verify: bool
 
 
-def get_zho_reviewed(
+def get_zho_block_reviewed(
     series: Series,
     processor: MonoBlockProcessor | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessKwargs],

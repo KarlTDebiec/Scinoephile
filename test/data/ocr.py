@@ -32,7 +32,7 @@ from scinoephile.lang.zho import (
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
-    get_zho_reviewed,
+    get_zho_block_reviewed,
     get_zho_reviewer,
 )
 from scinoephile.lang.zho.conversion import OpenCCConfig
@@ -290,7 +290,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_zho_reviewed(validate, proofreader)
+        proofread = get_zho_block_reviewed(validate, proofreader)
         proofread.save(proofread_path)
 
     # Flatten
@@ -431,7 +431,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             auto_verify=True,
             **proofreader_kw,
         )
-        proofread = get_zho_reviewed(validate, proofreader)
+        proofread = get_zho_block_reviewed(validate, proofreader)
         proofread.save(proofread_path)
 
     # Flatten
@@ -468,7 +468,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             / "zho-Hant_simplify.json",
             auto_verify=True,
         )
-        simplify_review = get_zho_reviewed(simplify, simplify_reviewer)
+        simplify_review = get_zho_block_reviewed(simplify, simplify_reviewer)
         simplify_review.save(simplify_review_path, exist_ok=True)
 
     # Romanize

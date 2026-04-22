@@ -10,7 +10,7 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .block_review import get_zho_reviewed
+from .block_review import get_zho_block_reviewed
 from .cleaning import get_zho_cleaned
 from .conversion import get_zho_converted, is_simplified, is_traditional
 from .flattening import get_zho_flattened
@@ -22,7 +22,7 @@ __all__ = [
     "get_zho_converted",
     "get_zho_flattened",
     "get_zho_ocr_fused",
-    "get_zho_reviewed",
+    "get_zho_block_reviewed",
     "is_simplified",
     "is_traditional",
     "validate_zho_ocr",
