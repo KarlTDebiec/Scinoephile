@@ -285,13 +285,13 @@ def t_eng_fuse_clean_validate() -> Series:
 
 @pytest.fixture
 def t_eng_fuse_clean_validate_review() -> Series:
-    """T English fused, cleaned, validated, and proofread subtitles."""
+    """T English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def t_eng_fuse_clean_validate_review_flatten() -> Series:
-    """T English fused, cleaned, validated, proofread, and flattened subtitles."""
+    """T English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
 
 

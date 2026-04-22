@@ -490,13 +490,13 @@ def kob_eng_fuse_clean_validate() -> Series:
 
 @pytest.fixture
 def kob_eng_fuse_clean_validate_review() -> Series:
-    """KOB English fused, cleaned, validated, and proofread subtitles."""
+    """KOB English fused, cleaned, validated, and reviewed subtitles."""
     return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def kob_eng_fuse_clean_validate_review_flatten() -> Series:
-    """KOB English fused, cleaned, validated, proofread, and flattened subtitles."""
+    """KOB English fused, cleaned, validated, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
 
 
@@ -520,13 +520,13 @@ def kob_eng_timewarp_clean() -> Series:
 
 @pytest.fixture
 def kob_eng_timewarp_clean_review() -> Series:
-    """KOB English timewarp, cleaned, and proofread subtitles."""
+    """KOB English timewarp, cleaned, and reviewed subtitles."""
     return Series.load(output_dir / "eng_timewarp_clean_review.srt")
 
 
 @pytest.fixture
 def kob_eng_timewarp_clean_review_flatten() -> Series:
-    """KOB English timewarp, cleaned, proofread, and flattened subtitles."""
+    """KOB English timewarp, cleaned, reviewed, and flattened subtitles."""
     return Series.load(output_dir / "eng_timewarp_clean_review_flatten.srt")
 
 
