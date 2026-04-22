@@ -54,3 +54,19 @@ def test_download_payloads_only_fetch_required_sources(
 
     assert list(payloads) == ["hzsg", "jpsg"]
     assert len(requested_urls) == 2
+
+
+def test_parse_js_vars_supports_optional_semicolon():
+    """Parse JavaScript var assignments with or without trailing semicolons."""
+    js_text = (
+        'var zi = "han payload"\nvar ci = "ci payload";\nvar jpzi = "jp payload"\n'
+    )
+    downloader = KaifangcidianDownloader()
+
+    parsed = downloader._parse_js_vars(js_text)
+
+    assert parsed == {
+        "zi": "han payload",
+        "ci": "ci payload",
+        "jpzi": "jp payload",
+    }
