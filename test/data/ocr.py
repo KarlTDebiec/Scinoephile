@@ -18,7 +18,7 @@ from scinoephile.lang.eng import (
     validate_eng_ocr,
 )
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.eng.proofreading import get_eng_proofread, get_eng_proofreader
+from scinoephile.lang.eng.block_review import get_eng_proofread, get_eng_proofreader
 from scinoephile.lang.zho import (
     get_zho_cleaned,
     get_zho_converted,
@@ -142,7 +142,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate = Series.load(validate_path)
 
     # Proofread
-    proofread_path = output_dir / "eng_fuse_clean_validate_proofread.srt"
+    proofread_path = output_dir / "eng_fuse_clean_validate_review.srt"
     if proofread_path.exists() and not overwrite_srt:
         proofread = Series.load(proofread_path)
     else:
@@ -150,7 +150,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             proofreader_kw = {}
         proofreader_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "eng" / "proofreading.json",
+            title_root / "lang" / "eng" / "block_review.json",
         )
         proofreader = get_eng_proofreader(
             auto_verify=True,
@@ -160,7 +160,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         proofread.save(proofread_path)
 
     # Flatten
-    flatten_path = output_dir / "eng_fuse_clean_validate_proofread_flatten.srt"
+    flatten_path = output_dir / "eng_fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:

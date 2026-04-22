@@ -13,7 +13,7 @@ from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
 
 __all__ = [
     "ENG_OCR_FUSION_JSON_PATHS",
-    "ENG_PROOFREADING_JSON_PATHS",
+    "ENG_BLOCK_REVIEW_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATING_JSON_PATHS",
     "YUE_ZHO_PROOFREADING_JSON_PATHS",
@@ -28,12 +28,12 @@ __all__ = [
 
 logger = getLogger(__name__)
 
-ENG_PROOFREADING_JSON_PATHS = (
-    Path("kob/lang/eng/proofreading/eng_ocr.json"),
-    Path("kob/lang/eng/proofreading/eng_srt.json"),
-    Path("mlamd/lang/eng/proofreading.json"),
-    Path("mnt/lang/eng/proofreading.json"),
-    Path("t/lang/eng/proofreading.json"),
+ENG_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/lang/eng/block_review/eng_ocr.json"),
+    Path("kob/lang/eng/block_review/eng_srt.json"),
+    Path("mlamd/lang/eng/block_review.json"),
+    Path("mnt/lang/eng/block_review.json"),
+    Path("t/lang/eng/block_review.json"),
 )
 
 ENG_OCR_FUSION_JSON_PATHS = (

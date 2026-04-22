@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to English proofreading."""
+"""Code related to English block review."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import EngPrompt
 from scinoephile.llms.mono_block import MonoBlockPrompt
 
-__all__ = ["EngProofreadingPrompt"]
+__all__ = ["EngBlockReviewPrompt"]
 
 
-class EngProofreadingPrompt(MonoBlockPrompt, EngPrompt):
-    """LLM correspondence text for English proofreading."""
+class EngBlockReviewPrompt(MonoBlockPrompt, EngPrompt):
+    """LLM correspondence text for English block review."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""

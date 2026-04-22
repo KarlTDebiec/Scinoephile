@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to English proofreading."""
+"""Code related to English block review."""
 
 from __future__ import annotations
 
@@ -11,30 +11,30 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    ENG_PROOFREADING_JSON_PATHS,
+    ENG_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import EngProofreadingPrompt
+from .prompts import EngBlockReviewPrompt
 
 __all__ = [
-    "EngProofreadingPrompt",
-    "EngProofreadingProcessKwargs",
-    "EngProofreadingProcessorKwargs",
+    "EngBlockReviewPrompt",
+    "EngBlockReviewProcessKwargs",
+    "EngBlockReviewProcessorKwargs",
     "get_eng_proofread",
     "get_eng_proofreader",
 ]
 
 
-class EngProofreadingProcessKwargs(TypedDict, total=False):
+class EngBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
 
 
-class EngProofreadingProcessorKwargs(TypedDict, total=False):
+class EngBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
@@ -44,7 +44,7 @@ class EngProofreadingProcessorKwargs(TypedDict, total=False):
 def get_eng_proofread(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Unpack[EngProofreadingProcessKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessKwargs],
 ) -> Series:
     """Get English series proofread.
 
@@ -61,10 +61,10 @@ def get_eng_proofread(
 
 
 def get_eng_proofreader(
-    prompt_cls: type[EngProofreadingPrompt] = EngProofreadingPrompt,
+    prompt_cls: type[EngBlockReviewPrompt] = EngBlockReviewPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[EngProofreadingProcessorKwargs],
+    **kwargs: Unpack[EngBlockReviewProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
@@ -81,7 +81,7 @@ def get_eng_proofreader(
             load_default_test_cases(
                 MonoBlockManager,
                 prompt_cls,
-                ENG_PROOFREADING_JSON_PATHS,
+                ENG_BLOCK_REVIEW_JSON_PATHS,
             )
         )
     if provider is None:

@@ -20,7 +20,7 @@ from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
-from scinoephile.lang.eng.proofreading import EngProofreadingPrompt
+from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
 from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
 from scinoephile.lang.zho.proofreading import (
     ZhoHansProofreadingPrompt,
@@ -54,7 +54,7 @@ __all__ = [
     "kob_zho_hant_lens",
     "kob_zho_hant_paddle",
     "get_kob_eng_ocr_fusion_test_cases",
-    "get_kob_eng_proofreading_test_cases",
+    "get_kob_eng_block_review_test_cases",
     "get_kob_yue_punctuating_test_cases",
     "get_kob_yue_shifting_test_cases",
     "get_kob_yue_vs_zho_proofreading_test_cases",
@@ -64,12 +64,12 @@ __all__ = [
     "kob_eng_fuse",
     "kob_eng_fuse_clean",
     "kob_eng_fuse_clean_validate",
-    "kob_eng_fuse_clean_validate_proofread",
-    "kob_eng_fuse_clean_validate_proofread_flatten",
+    "kob_eng_fuse_clean_validate_review",
+    "kob_eng_fuse_clean_validate_review_flatten",
     "kob_eng_timewarp",
     "kob_eng_timewarp_clean",
-    "kob_eng_timewarp_clean_proofread",
-    "kob_eng_timewarp_clean_proofread_flatten",
+    "kob_eng_timewarp_clean_review",
+    "kob_eng_timewarp_clean_review_flatten",
     "kob_eng_image",
     "kob_yue_hans_audio",
     "kob_yue_hans_timewarp",
@@ -345,11 +345,11 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 
 @cache
-def get_kob_eng_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngProofreadingPrompt,
+def get_kob_eng_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get KOB English proofreading test cases.
+    """Get KOB English block review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -357,8 +357,8 @@ def get_kob_eng_proofreading_test_cases(
     Returns:
         test cases
     """
-    ocr_path = title_root / "lang" / "eng" / "proofreading" / "eng_ocr.json"
-    srt_path = title_root / "lang" / "eng" / "proofreading" / "eng_srt.json"
+    ocr_path = title_root / "lang" / "eng" / "block_review" / "eng_ocr.json"
+    srt_path = title_root / "lang" / "eng" / "block_review" / "eng_srt.json"
     ocr_test_cases = load_test_cases_from_json(
         ocr_path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -517,15 +517,15 @@ def kob_eng_fuse_clean_validate() -> Series:
 
 
 @pytest.fixture
-def kob_eng_fuse_clean_validate_proofread() -> Series:
+def kob_eng_fuse_clean_validate_review() -> Series:
     """KOB English fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread.srt")
+    return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def kob_eng_fuse_clean_validate_proofread_flatten() -> Series:
+def kob_eng_fuse_clean_validate_review_flatten() -> Series:
     """KOB English fused, cleaned, validated, proofread, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_proofread_flatten.srt")
+    return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
 
 
 @pytest.fixture
@@ -541,15 +541,15 @@ def kob_eng_timewarp_clean() -> Series:
 
 
 @pytest.fixture
-def kob_eng_timewarp_clean_proofread() -> Series:
+def kob_eng_timewarp_clean_review() -> Series:
     """KOB English timewarp, cleaned, and proofread subtitles."""
-    return Series.load(output_dir / "eng_timewarp_clean_proofread.srt")
+    return Series.load(output_dir / "eng_timewarp_clean_review.srt")
 
 
 @pytest.fixture
-def kob_eng_timewarp_clean_proofread_flatten() -> Series:
+def kob_eng_timewarp_clean_review_flatten() -> Series:
     """KOB English timewarp, cleaned, proofread, and flattened subtitles."""
-    return Series.load(output_dir / "eng_timewarp_clean_proofread_flatten.srt")
+    return Series.load(output_dir / "eng_timewarp_clean_review_flatten.srt")
 
 
 @pytest.fixture
