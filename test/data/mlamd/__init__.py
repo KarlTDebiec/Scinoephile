@@ -116,27 +116,21 @@ output_dir = title_root / "output"
 
 
 @pytest.fixture
-def mlamd_eng_sup_path() -> Path:
-    """Path to MLAMD English SUP subtitles."""
-    return input_dir / "eng.sup"
-
-
-@pytest.fixture
 def mlamd_eng_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "eng_lens.srt")
 
 
 @pytest.fixture
-def mlamd_eng_tesseract() -> Series:
-    """MLAMD English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
+def mlamd_eng_sup_path() -> Path:
+    """Path to MLAMD English SUP subtitles."""
+    return input_dir / "eng.sup"
 
 
 @pytest.fixture
-def mlamd_zho_hans_sup_path() -> Path:
-    """Path to MLAMD 简体中文 SUP subtitles."""
-    return input_dir / "zho-Hans.sup"
+def mlamd_eng_tesseract() -> Series:
+    """MLAMD English subtitles OCRed using Tesseract."""
+    return Series.load(input_dir / "eng_tesseract.srt")
 
 
 @pytest.fixture
@@ -152,9 +146,9 @@ def mlamd_zho_hans_paddle() -> Series:
 
 
 @pytest.fixture
-def mlamd_zho_hant_sup_path() -> Path:
-    """Path to MLAMD 繁体中文 SUP subtitles."""
-    return input_dir / "zho-Hant.sup"
+def mlamd_zho_hans_sup_path() -> Path:
+    """Path to MLAMD 简体中文 SUP subtitles."""
+    return input_dir / "zho-Hans.sup"
 
 
 @pytest.fixture
@@ -169,12 +163,56 @@ def mlamd_zho_hant_paddle() -> Series:
     return Series.load(input_dir / "zho-Hant_paddle.srt")
 
 
+@pytest.fixture
+def mlamd_zho_hant_sup_path() -> Path:
+    """Path to MLAMD 繁体中文 SUP subtitles."""
+    return input_dir / "zho-Hant.sup"
+
+
 @cache
-def get_mlamd_yue_shifting_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+def get_mlamd_eng_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 shifting test cases.
+    """Get MLAMD English block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "eng" / "block_review.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_eng_ocr_fusion_test_cases(
+    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD English OCR fusion test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "eng" / "ocr_fusion.json"
+    return load_test_cases_from_json(
+        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_yue_from_zho_translation_test_cases(
+    prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 简体粤文 from 简体中文 translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -183,15 +221,10 @@ def get_mlamd_yue_shifting_test_cases(
         test cases
     """
     path = (
-        title_root
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "shifting"
-        / f"{get_backend()}.json"
+        title_root / "multilang" / "yue_zho" / "translation" / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -222,6 +255,32 @@ def get_mlamd_yue_punctuating_test_cases(
 
 
 @cache
+def get_mlamd_yue_shifting_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 简体粤文 shifting test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "shifting"
+        / f"{get_backend()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_mlamd_yue_vs_zho_proofreading_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
@@ -239,27 +298,6 @@ def get_mlamd_yue_vs_zho_proofreading_test_cases(
     )
     return load_test_cases_from_json(
         path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 简体粤文 from 简体中文 translation test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        title_root / "multilang" / "yue_zho" / "translation" / f"{get_backend()}.json"
-    )
-    return load_test_cases_from_json(
-        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -283,25 +321,6 @@ def get_mlamd_yue_vs_zho_review_test_cases(
 
 
 @cache
-def get_mlamd_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD English block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "eng" / "block_review.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
 def get_mlamd_zho_hans_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
@@ -317,63 +336,6 @@ def get_mlamd_zho_hans_block_review_test_cases(
     path = title_root / "lang" / "zho" / "block_review" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 繁体中文 block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 繁体中文 simplification block review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant_simplify.json"
-    return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD English OCR fusion test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = title_root / "lang" / "eng" / "ocr_fusion.json"
-    return load_test_cases_from_json(
-        path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -397,6 +359,25 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
 
 
 @cache
+def get_mlamd_zho_hant_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 繁体中文 block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_mlamd_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
@@ -412,6 +393,25 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
     path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_zho_hant_simplify_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 繁体中文 simplification block review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant_simplify.json"
+    return load_test_cases_from_json(
+        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
