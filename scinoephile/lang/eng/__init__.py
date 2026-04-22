@@ -9,11 +9,11 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
+from .block_review import get_eng_proofread
 from .cleaning import get_eng_cleaned
 from .flattening import get_eng_flattened
 from .ocr_fusion import get_eng_ocr_fused
 from .ocr_validation import validate_eng_ocr
-from .block_review import get_eng_proofread
 
 __all__ = [
     "get_eng_cleaned",

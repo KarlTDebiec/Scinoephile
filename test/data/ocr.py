@@ -17,8 +17,8 @@ from scinoephile.lang.eng import (
     get_eng_flattened,
     validate_eng_ocr,
 )
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.eng.block_review import get_eng_proofread, get_eng_proofreader
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.zho import (
     get_zho_cleaned,
     get_zho_converted,
