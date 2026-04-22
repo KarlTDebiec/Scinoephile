@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 proofreading."""
+"""Code related to 中文 block review."""
 
 from __future__ import annotations
 
@@ -11,62 +11,62 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    ZHO_HANS_PROOFREADING_JSON_PATHS,
-    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
+    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import ZhoHansProofreadingPrompt, ZhoHantProofreadingPrompt
+from .prompts import ZhoHansBlockReviewPrompt, ZhoHantBlockReviewPrompt
 
 __all__ = [
-    "ZhoHansProofreadingPrompt",
-    "ZhoHantProofreadingPrompt",
-    "ZhoProofreadingProcessKwargs",
-    "ZhoProofreadingProcessorKwargs",
-    "get_zho_proofread",
-    "get_zho_proofreader",
+    "ZhoHansBlockReviewPrompt",
+    "ZhoHantBlockReviewPrompt",
+    "ZhoBlockReviewProcessKwargs",
+    "ZhoBlockReviewProcessorKwargs",
+    "get_zho_reviewed",
+    "get_zho_reviewer",
 ]
 
 
-class ZhoProofreadingProcessKwargs(TypedDict, total=False):
+class ZhoBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
 
 
-class ZhoProofreadingProcessorKwargs(TypedDict, total=False):
+class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
     auto_verify: bool
 
 
-def get_zho_proofread(
+def get_zho_reviewed(
     series: Series,
     processor: MonoBlockProcessor | None = None,
-    **kwargs: Unpack[ZhoProofreadingProcessKwargs],
+    **kwargs: Unpack[ZhoBlockReviewProcessKwargs],
 ) -> Series:
-    """Get 中文 series proofread.
+    """Get 中文 series block reviewed.
 
     Arguments:
-        series: Series to proofread
+        series: Series to block review
         processor: MonoBlockProcessor to use
         **kwargs: additional keyword arguments for MonoBlockProcessor.process
     Returns:
-        proofread Series
+        block-reviewed Series
     """
     if processor is None:
-        processor = get_zho_proofreader()
+        processor = get_zho_reviewer()
     return processor.process(series, **kwargs)
 
 
-def get_zho_proofreader(
-    prompt_cls: type[ZhoHansProofreadingPrompt] = ZhoHansProofreadingPrompt,
+def get_zho_reviewer(
+    prompt_cls: type[ZhoHansBlockReviewPrompt] = ZhoHansBlockReviewPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[ZhoProofreadingProcessorKwargs],
+    **kwargs: Unpack[ZhoBlockReviewProcessorKwargs],
 ) -> MonoBlockProcessor:
     """Get MonoBlockProcessor with provided configuration.
 
@@ -79,12 +79,12 @@ def get_zho_proofreader(
         MonoBlockProcessor with provided configuration
     """
     if test_cases is None:
-        if prompt_cls is ZhoHantProofreadingPrompt:
+        if prompt_cls is ZhoHantBlockReviewPrompt:
             test_cases = list(
                 load_default_test_cases(
                     MonoBlockManager,
                     prompt_cls,
-                    ZHO_HANT_PROOFREADING_JSON_PATHS,
+                    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
                 )
             )
         else:
@@ -92,7 +92,7 @@ def get_zho_proofreader(
                 load_default_test_cases(
                     MonoBlockManager,
                     prompt_cls,
-                    ZHO_HANS_PROOFREADING_JSON_PATHS,
+                    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
                 )
             )
     if provider is None:

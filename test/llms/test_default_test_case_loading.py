@@ -17,9 +17,9 @@ from scinoephile.lang.zho.ocr_fusion import (
     ZhoHansOcrFusionPrompt,
     ZhoHantOcrFusionPrompt,
 )
-from scinoephile.lang.zho.proofreading import (
-    ZhoHansProofreadingPrompt,
-    ZhoHantProofreadingPrompt,
+from scinoephile.lang.zho.block_review import (
+    ZhoHansBlockReviewPrompt,
+    ZhoHantBlockReviewPrompt,
 )
 from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
@@ -28,9 +28,9 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_PROOFREADING_JSON_PATHS,
     YUE_ZHO_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
-    ZHO_HANS_PROOFREADING_JSON_PATHS,
+    ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANT_OCR_FUSION_JSON_PATHS,
-    ZHO_HANT_PROOFREADING_JSON_PATHS,
+    ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block.manager import DualBlockManager
@@ -91,30 +91,30 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "zho_hans_proofreading",
+            "zho_hans_block_review",
             lambda: load_default_test_cases(
                 MonoBlockManager,
-                ZhoHansProofreadingPrompt,
-                ZHO_HANS_PROOFREADING_JSON_PATHS,
+                ZhoHansBlockReviewPrompt,
+                ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/lang/zho/proofreading/zho-Hans.json",
-                "mnt/lang/zho/proofreading/zho-Hans.json",
-                "t/lang/zho/proofreading/zho-Hans.json",
+                "mlamd/lang/zho/block_review/zho-Hans.json",
+                "mnt/lang/zho/block_review/zho-Hans.json",
+                "t/lang/zho/block_review/zho-Hans.json",
             ],
         ),
         (
-            "zho_hant_proofreading",
+            "zho_hant_block_review",
             lambda: load_default_test_cases(
                 MonoBlockManager,
-                ZhoHantProofreadingPrompt,
-                ZHO_HANT_PROOFREADING_JSON_PATHS,
+                ZhoHantBlockReviewPrompt,
+                ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "kob/lang/zho/proofreading/zho-Hant.json",
-                "mlamd/lang/zho/proofreading/zho-Hant.json",
-                "mnt/lang/zho/proofreading/zho-Hant.json",
-                "t/lang/zho/proofreading/zho-Hant.json",
+                "kob/lang/zho/block_review/zho-Hant.json",
+                "mlamd/lang/zho/block_review/zho-Hant.json",
+                "mnt/lang/zho/block_review/zho-Hant.json",
+                "t/lang/zho/block_review/zho-Hant.json",
             ],
         ),
         (

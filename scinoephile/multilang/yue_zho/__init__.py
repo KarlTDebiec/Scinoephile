@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from .proofreading import get_yue_proofread_vs_zho
+from .block_review import get_yue_proofread_vs_zho
 from .review import get_yue_reviewed_vs_zho
 from .transcription import get_yue_transcribed_vs_zho
 from .translation import get_yue_translated_vs_zho

@@ -13,7 +13,7 @@ from .cleaning import get_eng_cleaned
 from .flattening import get_eng_flattened
 from .ocr_fusion import get_eng_ocr_fused
 from .ocr_validation import validate_eng_ocr
-from .proofreading import get_eng_proofread
+from .block_review import get_eng_proofread
 
 __all__ = [
     "get_eng_cleaned",

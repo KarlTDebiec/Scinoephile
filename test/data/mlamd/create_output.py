@@ -68,14 +68,14 @@ if "English (OCR)" in actions:
 if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
-        zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+        zho_hans_path=output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
         overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
     # Stage
     zho_hans = Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+        output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt"
     )
     if (
         zho_hans.events[539].text == "不知道为什么"

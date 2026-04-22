@@ -42,58 +42,58 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
 
 
 def test_get_synced_series_kob(
-    kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: Series,
+    kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review: Series,
     kob_eng_fuse_clean_validate_proofread_flatten: Series,
     kob_zho_hans_eng: Series,
 ):
     """Test get_synced_series with KOB subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread: 简体中文
+        kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review: 简体中文
           subtitle fixture
         kob_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
         kob_zho_hans_eng: expected synced subtitles fixture
     """
     _test_get_synced_series(
-        kob_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread,
+        kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review,
         kob_eng_fuse_clean_validate_proofread_flatten,
         kob_zho_hans_eng,
     )
 
 
 def test_get_synced_series_mlamd(
-    mlamd_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
     mlamd_eng_fuse_clean_validate_proofread_flatten: Series,
     mlamd_zho_hans_eng: Series,
 ):
     """Test get_synced_series with MLAMD subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten: 简体中文 subtitle fixture
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: 简体中文 subtitle fixture
         mlamd_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
         mlamd_zho_hans_eng: expected synced subtitle fixture
     """
     _test_get_synced_series(
-        mlamd_zho_hans_fuse_clean_validate_proofread_flatten,
+        mlamd_zho_hans_fuse_clean_validate_review_flatten,
         mlamd_eng_fuse_clean_validate_proofread_flatten,
         mlamd_zho_hans_eng,
     )
 
 
 def test_get_synced_series_t(
-    t_zho_hans_fuse_clean_validate_proofread_flatten: Series,
+    t_zho_hans_fuse_clean_validate_review_flatten: Series,
     t_eng_fuse_clean_validate_proofread_flatten: Series,
     t_zho_hans_eng: Series,
 ):
     """Test get_synced_series with T subtitles.
 
     Arguments:
-        t_zho_hans_fuse_clean_validate_proofread_flatten: 简体中文 subtitle fixture
+        t_zho_hans_fuse_clean_validate_review_flatten: 简体中文 subtitle fixture
         t_eng_fuse_clean_validate_proofread_flatten: English subtitle fixture
         t_zho_hans_eng: expected synced subtitle fixture
     """
     _test_get_synced_series(
-        t_zho_hans_fuse_clean_validate_proofread_flatten,
+        t_zho_hans_fuse_clean_validate_review_flatten,
         t_eng_fuse_clean_validate_proofread_flatten,
         t_zho_hans_eng,
     )

@@ -20,9 +20,9 @@ __all__ = [
     "YUE_ZHO_REVIEW_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS",
     "ZHO_HANS_OCR_FUSION_JSON_PATHS",
-    "ZHO_HANS_PROOFREADING_JSON_PATHS",
+    "ZHO_HANS_BLOCK_REVIEW_JSON_PATHS",
     "ZHO_HANT_OCR_FUSION_JSON_PATHS",
-    "ZHO_HANT_PROOFREADING_JSON_PATHS",
+    "ZHO_HANT_BLOCK_REVIEW_JSON_PATHS",
     "load_default_test_cases",
 ]
 
@@ -43,17 +43,17 @@ ENG_OCR_FUSION_JSON_PATHS = (
     Path("t/lang/eng/ocr_fusion.json"),
 )
 
-ZHO_HANS_PROOFREADING_JSON_PATHS = (
-    Path("mlamd/lang/zho/proofreading/zho-Hans.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hans.json"),
-    Path("t/lang/zho/proofreading/zho-Hans.json"),
+ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
+    Path("mlamd/lang/zho/block_review/zho-Hans.json"),
+    Path("mnt/lang/zho/block_review/zho-Hans.json"),
+    Path("t/lang/zho/block_review/zho-Hans.json"),
 )
 
-ZHO_HANT_PROOFREADING_JSON_PATHS = (
-    Path("kob/lang/zho/proofreading/zho-Hant.json"),
-    Path("mlamd/lang/zho/proofreading/zho-Hant.json"),
-    Path("mnt/lang/zho/proofreading/zho-Hant.json"),
-    Path("t/lang/zho/proofreading/zho-Hant.json"),
+ZHO_HANT_BLOCK_REVIEW_JSON_PATHS = (
+    Path("kob/lang/zho/block_review/zho-Hant.json"),
+    Path("mlamd/lang/zho/block_review/zho-Hant.json"),
+    Path("mnt/lang/zho/block_review/zho-Hant.json"),
+    Path("t/lang/zho/block_review/zho-Hant.json"),
 )
 
 ZHO_HANS_OCR_FUSION_JSON_PATHS = (

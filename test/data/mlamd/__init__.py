@@ -24,9 +24,9 @@ from scinoephile.lang.zho.ocr_fusion import (
     ZhoHansOcrFusionPrompt,
     ZhoHantOcrFusionPrompt,
 )
-from scinoephile.lang.zho.proofreading import (
-    ZhoHansProofreadingPrompt,
-    ZhoHantProofreadingPrompt,
+from scinoephile.lang.zho.block_review import (
+    ZhoHansBlockReviewPrompt,
+    ZhoHantBlockReviewPrompt,
 )
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
@@ -71,10 +71,10 @@ __all__ = [
     "get_mlamd_yue_vs_zho_proofreading_test_cases",
     "get_mlamd_yue_vs_zho_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
-    "get_mlamd_zho_hans_proofreading_test_cases",
+    "get_mlamd_zho_hans_block_review_test_cases",
     "get_mlamd_zho_hant_ocr_fusion_test_cases",
-    "get_mlamd_zho_hant_proofreading_test_cases",
-    "get_mlamd_zho_hant_simplify_proofreading_test_cases",
+    "get_mlamd_zho_hant_block_review_test_cases",
+    "get_mlamd_zho_hant_simplify_block_review_test_cases",
     "mlamd_eng_fuse",
     "mlamd_eng_fuse_clean",
     "mlamd_eng_fuse_clean_validate",
@@ -93,18 +93,18 @@ __all__ = [
     "mlamd_zho_hans_fuse",
     "mlamd_zho_hans_fuse_clean",
     "mlamd_zho_hans_fuse_clean_validate",
-    "mlamd_zho_hans_fuse_clean_validate_proofread",
-    "mlamd_zho_hans_fuse_clean_validate_proofread_flatten",
-    "mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize",
+    "mlamd_zho_hans_fuse_clean_validate_review",
+    "mlamd_zho_hans_fuse_clean_validate_review_flatten",
+    "mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize",
     "mlamd_zho_hans_image",
     "mlamd_zho_hans_image_path",
     "mlamd_zho_hant_fuse",
     "mlamd_zho_hant_fuse_clean",
     "mlamd_zho_hant_fuse_clean_validate",
-    "mlamd_zho_hant_fuse_clean_validate_proofread",
-    "mlamd_zho_hant_fuse_clean_validate_proofread_flatten",
-    "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify",
-    "mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread",
+    "mlamd_zho_hant_fuse_clean_validate_review",
+    "mlamd_zho_hant_fuse_clean_validate_review_flatten",
+    "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify",
+    "mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
     "mlamd_zho_hant_image",
     "mlamd_zho_hant_image_path",
     "mlamd_zho_simplify_expected_series_diff",
@@ -302,8 +302,8 @@ def get_mlamd_eng_proofreading_test_cases(
 
 
 @cache
-def get_mlamd_zho_hans_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
+def get_mlamd_zho_hans_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体中文 proofreading test cases.
@@ -314,15 +314,15 @@ def get_mlamd_zho_hans_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hans.json"
+    path = title_root / "lang" / "zho" / "block_review" / "zho-Hans.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_zho_hant_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantProofreadingPrompt,
+def get_mlamd_zho_hant_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 proofreading test cases.
@@ -333,15 +333,15 @@ def get_mlamd_zho_hant_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant.json"
+    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_zho_hant_simplify_proofreading_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansProofreadingPrompt,
+def get_mlamd_zho_hant_simplify_block_review_test_cases(
+    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 simplification proofreading test cases.
@@ -352,7 +352,7 @@ def get_mlamd_zho_hant_simplify_proofreading_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "proofreading" / "zho-Hant_simplify.json"
+    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant_simplify.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -526,24 +526,24 @@ def mlamd_zho_hans_fuse_clean_validate() -> Series:
 
 
 @pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate_proofread() -> Series:
+def mlamd_zho_hans_fuse_clean_validate_review() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_proofread.srt")
+    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate_proofread_flatten() -> Series:
+def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten.srt"
+        output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt"
     )
 
 
 @pytest.fixture
-def mlamd_zho_hans_fuse_clean_validate_proofread_flatten_romanize() -> Series:
+def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
     """MLAMD 简体中文 fused/cleaned/validated/proofread/flattened romanized subs."""
     return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt"
+        output_dir / "zho-Hans_fuse_clean_validate_review_flatten_romanize.srt"
     )
 
 
@@ -578,33 +578,33 @@ def mlamd_zho_hant_fuse_clean_validate() -> Series:
 
 
 @pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread() -> Series:
+def mlamd_zho_hant_fuse_clean_validate_review() -> Series:
     """MLAMD 繁体中文 fused, cleaned, validated, and proofread subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread_flatten() -> Series:
+def mlamd_zho_hant_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD 繁体中文 fused, cleaned, validated, proofread, and flattened subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt"
     )
 
 
 @pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify() -> Series:
+def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
     """MLAMD 繁体中文 simplified fused/cleaned/validated/proofread/flattened subs."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt"
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
 @pytest.fixture
-def mlamd_zho_hant_fuse_clean_validate_proofread_flatten_simplify_proofread() -> Series:
+def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """MLAMD 繁体中文 simplified/proofread fused/cleaned subtitles."""
     return Series.load(
         output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 

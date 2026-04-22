@@ -66,12 +66,12 @@ if "Bilingual 繁體中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
         zho_hans_path=output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt",
+        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_proofread_flatten.srt",
         overwrite=True,
     )
 if "繁體粵文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
         zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
@@ -82,7 +82,7 @@ if "繁體粵文 (SRT)" in actions:
     flatten = get_zho_flattened(clean)
     flatten.save(output_dir / "yue-Hant_timewarp_clean_flatten.srt")
 if "简体粤文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_proofread.srt")
+    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
         zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
@@ -120,7 +120,7 @@ if "简体粤文 (Transcription)" in actions:
     # Stage
     zho_hans = Series.load(
         output_dir
-        / "zho-Hant_fuse_clean_validate_proofread_flatten_simplify_proofread.srt"
+        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
 

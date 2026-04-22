@@ -5,7 +5,7 @@
 Package hierarchy (modules may import from any above):
 * cleaning / conversion / flattening / ocr_validation
 * prompts
-* ocr_fusion / proofreading
+* ocr_fusion / block_review
 """
 
 from __future__ import annotations
@@ -15,14 +15,14 @@ from .conversion import get_zho_converted, is_simplified, is_traditional
 from .flattening import get_zho_flattened
 from .ocr_fusion import get_zho_ocr_fused
 from .ocr_validation import validate_zho_ocr
-from .proofreading import get_zho_proofread
+from .block_review import get_zho_reviewed
 
 __all__ = [
     "get_zho_cleaned",
     "get_zho_converted",
     "get_zho_flattened",
     "get_zho_ocr_fused",
-    "get_zho_proofread",
+    "get_zho_reviewed",
     "is_simplified",
     "is_traditional",
     "validate_zho_ocr",

@@ -62,24 +62,24 @@ def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/zho-Hans_fuse_clean.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_proofread.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_review.srt",
             "--flatten",
-            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
             "--romanize",
-            "mnt/output/zho-Hans_fuse_clean_validate_proofread_flatten_romanize.srt",
+            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten_romanize.srt",
         ),
         (
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt",
             "--convert",
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread_flatten_simplify.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify.srt",
         ),
         (
             "mnt/output/zho-Hant_fuse_clean_validate.srt",
             "--proofread traditional",
-            "mnt/output/zho-Hant_fuse_clean_validate_proofread.srt",
+            "mnt/output/zho-Hant_fuse_clean_validate_review.srt",
         ),
     ],
 )
