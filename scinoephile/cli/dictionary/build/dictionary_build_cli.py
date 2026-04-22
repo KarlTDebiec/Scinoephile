@@ -11,6 +11,7 @@ from scinoephile.common import CLIKwargs, CommandLineInterface
 
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
+from .dictionary_build_kaifangcidian_cli import DictionaryBuildKaifangcidianCli
 
 __all__ = ["DictionaryBuildCli"]
 
@@ -54,6 +55,7 @@ class DictionaryBuildCli(CommandLineInterface):
         return {
             DictionaryBuildCuhkCli.name(): DictionaryBuildCuhkCli,
             DictionaryBuildGzzjCli.name(): DictionaryBuildGzzjCli,
+            DictionaryBuildKaifangcidianCli.name(): DictionaryBuildKaifangcidianCli,
         }
 
     @classmethod
