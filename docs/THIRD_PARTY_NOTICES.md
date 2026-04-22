@@ -63,3 +63,23 @@ The GZZJ data source used by the local parser is:
 
 Scinoephile does not distribute the upstream `B01_資料.json` file in-repository.
 Users must download it themselves before running `dictionary build gzzj`.
+
+## Kaifangcidian dictionary data source
+
+The Kaifangcidian source used by the local parser is:
+
+- 開放粵語詞典
+- https://www.kaifangcidian.com/han/yue
+- Data endpoints:
+  - https://www.kaifangcidian.com/yue/js/hzsg.js
+  - https://www.kaifangcidian.com/yue/js/jpsg.js
+  - https://www.kaifangcidian.com/yue/js/lg.js
+
+Kaifangcidian's copyright page states that site resources are licensed under
+Creative Commons Attribution 3.0 unless otherwise noted:
+
+- https://www.kaifangcidian.com/yue/cc/
+
+Scinoephile can build from local canonical CSV snapshots under
+`scinoephile/data/dictionaries/kaifangcidian/`, or by downloading the upstream
+website payloads during `dictionary build kaifangcidian`.
