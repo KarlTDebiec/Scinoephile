@@ -168,6 +168,40 @@ class UnihanDictionaryService:
             )
         self.build(overwrite=False)
 
+    def _copy_sources_to_local(self, source_paths: dict[str, Path]) -> dict[str, Path]:
+        """Copy source files into repository-local data snapshots.
+
+        Arguments:
+            source_paths: source path mapping
+        Returns:
+            validated local path mapping
+        """
+        self.local_data_dir_path.mkdir(parents=True, exist_ok=True)
+        local_paths = self._get_required_paths(self.local_data_dir_path)
+        for filename, source_path in source_paths.items():
+            shutil.copy2(source_path, local_paths[filename])
+        return self._validate_paths(local_paths)
+
+    def _download_and_extract_to_runtime(self) -> dict[str, Path]:
+        """Download Unihan.zip and extract required files to runtime cache.
+
+        Returns:
+            validated extracted file paths keyed by filename
+        """
+        self.runtime_data_dir_path.mkdir(parents=True, exist_ok=True)
+        zip_path = self.runtime_data_dir_path / "Unihan.zip"
+        response = requests.get(UNIHAN_ZIP_URL, timeout=60.0)
+        response.raise_for_status()
+        zip_path.write_bytes(response.content)
+
+        extracted_paths = self._get_required_paths(self.runtime_data_dir_path)
+        with zipfile.ZipFile(zip_path, mode="r") as archive:
+            for filename in UNIHAN_REQUIRED_SOURCE_FILENAMES:
+                target_path = extracted_paths[filename]
+                with archive.open(filename, mode="r") as src:
+                    target_path.write_bytes(src.read())
+        return self._validate_paths(extracted_paths)
+
     def _require_source_paths(
         self,
         *,
@@ -212,6 +246,24 @@ class UnihanDictionaryService:
             return self._copy_sources_to_local(downloaded_paths)
         return downloaded_paths
 
+    def _resolve_explicit_source_paths(
+        self,
+        explicit_paths: dict[str, Path | None],
+    ) -> dict[str, Path]:
+        """Resolve optional explicit source path overrides.
+
+        Arguments:
+            explicit_paths: explicit source path mapping
+        Returns:
+            validated source paths keyed by filename
+        """
+        resolved_paths: dict[str, Path] = {}
+        defaults = self._get_required_paths(self.local_data_dir_path)
+        for filename, explicit_path in explicit_paths.items():
+            source_path = defaults[filename] if explicit_path is None else explicit_path
+            resolved_paths[filename] = val_input_path(source_path)
+        return resolved_paths
+
     @staticmethod
     def _all_paths_exist(paths: dict[str, Path]) -> bool:
         """Check whether all required paths exist.
@@ -247,55 +299,3 @@ class UnihanDictionaryService:
             validated source path mapping
         """
         return {name: val_input_path(path) for name, path in paths.items()}
-
-    def _resolve_explicit_source_paths(
-        self,
-        explicit_paths: dict[str, Path | None],
-    ) -> dict[str, Path]:
-        """Resolve optional explicit source path overrides.
-
-        Arguments:
-            explicit_paths: explicit source path mapping
-        Returns:
-            validated source paths keyed by filename
-        """
-        resolved_paths: dict[str, Path] = {}
-        defaults = self._get_required_paths(self.local_data_dir_path)
-        for filename, explicit_path in explicit_paths.items():
-            source_path = defaults[filename] if explicit_path is None else explicit_path
-            resolved_paths[filename] = val_input_path(source_path)
-        return resolved_paths
-
-    def _download_and_extract_to_runtime(self) -> dict[str, Path]:
-        """Download Unihan.zip and extract required files to runtime cache.
-
-        Returns:
-            validated extracted file paths keyed by filename
-        """
-        self.runtime_data_dir_path.mkdir(parents=True, exist_ok=True)
-        zip_path = self.runtime_data_dir_path / "Unihan.zip"
-        response = requests.get(UNIHAN_ZIP_URL, timeout=60.0)
-        response.raise_for_status()
-        zip_path.write_bytes(response.content)
-
-        extracted_paths = self._get_required_paths(self.runtime_data_dir_path)
-        with zipfile.ZipFile(zip_path, mode="r") as archive:
-            for filename in UNIHAN_REQUIRED_SOURCE_FILENAMES:
-                target_path = extracted_paths[filename]
-                with archive.open(filename, mode="r") as src:
-                    target_path.write_bytes(src.read())
-        return self._validate_paths(extracted_paths)
-
-    def _copy_sources_to_local(self, source_paths: dict[str, Path]) -> dict[str, Path]:
-        """Copy source files into repository-local data snapshots.
-
-        Arguments:
-            source_paths: source path mapping
-        Returns:
-            validated local path mapping
-        """
-        self.local_data_dir_path.mkdir(parents=True, exist_ok=True)
-        local_paths = self._get_required_paths(self.local_data_dir_path)
-        for filename, source_path in source_paths.items():
-            shutil.copy2(source_path, local_paths[filename])
-        return self._validate_paths(local_paths)
