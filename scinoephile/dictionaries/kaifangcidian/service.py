@@ -170,12 +170,36 @@ class KaifangcidianDictionaryService:
         if not force_download and local_csv_path.exists():
             return val_input_path(local_csv_path)
         if not force_download and runtime_csv_path.exists():
+            if update_local_data:
+                return self._copy_runtime_csv_to_local(
+                    runtime_csv_path=runtime_csv_path,
+                    local_csv_path=local_csv_path,
+                )
             return val_input_path(runtime_csv_path)
 
         runtime_csv_path = self.downloader.download_to_csv(runtime_csv_path)
         if not update_local_data:
             return runtime_csv_path
 
+        return self._copy_runtime_csv_to_local(
+            runtime_csv_path=runtime_csv_path,
+            local_csv_path=local_csv_path,
+        )
+
+    def _copy_runtime_csv_to_local(
+        self,
+        *,
+        runtime_csv_path: Path,
+        local_csv_path: Path,
+    ) -> Path:
+        """Copy runtime canonical CSV into the repository-local snapshot.
+
+        Arguments:
+            runtime_csv_path: runtime canonical CSV path
+            local_csv_path: repository-local canonical CSV path
+        Returns:
+            local canonical CSV path
+        """
         self.local_data_dir_path.mkdir(parents=True, exist_ok=True)
         shutil.copy2(runtime_csv_path, local_csv_path)
         return val_input_path(local_csv_path)

@@ -17,7 +17,6 @@ from pypinyin import Style, lazy_pinyin
 from .constants import (
     KAIFANGCIDIAN_HZSG_URL,
     KAIFANGCIDIAN_JPSG_URL,
-    KAIFANGCIDIAN_LG_URL,
 )
 
 __all__ = [
@@ -124,7 +123,6 @@ class KaifangcidianDownloader:
         urls = {
             "hzsg": KAIFANGCIDIAN_HZSG_URL,
             "jpsg": KAIFANGCIDIAN_JPSG_URL,
-            "lg": KAIFANGCIDIAN_LG_URL,
         }
         payloads: dict[str, str] = {}
         for payload_name, url in urls.items():

@@ -146,3 +146,33 @@ def test_build_downloads_when_local_csv_missing(
 
     entries = service.lookup("山坑", limit=5)
     assert [entry.traditional for entry in entries] == ["山坑"]
+
+
+def test_build_updates_local_data_from_existing_runtime_csv(
+    database_path: Path,
+    local_data_dir_path: Path,
+    runtime_data_dir_path: Path,
+):
+    """Update local canonical CSV from an existing runtime CSV.
+
+    Arguments:
+        database_path: temporary SQLite database path
+        local_data_dir_path: local canonical data directory
+        runtime_data_dir_path: runtime canonical data directory
+    """
+    runtime_csv_path = runtime_data_dir_path / "entries.csv"
+    local_csv_path = local_data_dir_path / "entries.csv"
+    _write_fixture_csv(runtime_csv_path)
+
+    service = KaifangcidianDictionaryService(
+        database_path=database_path,
+        local_data_dir_path=local_data_dir_path,
+        runtime_data_dir_path=runtime_data_dir_path,
+    )
+
+    service.build(overwrite=True, update_local_data=True)
+
+    assert local_csv_path.exists()
+    assert local_csv_path.read_text(encoding="utf-8") == runtime_csv_path.read_text(
+        encoding="utf-8"
+    )
