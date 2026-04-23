@@ -31,7 +31,7 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .deliniation import YueZhoHansDeliniationPrompt
+from .deliniation import YueZhoHansDeliniationPrompt as YueZhoHansDelineationPrompt
 from .punctuation import YueZhoHansPunctuationPrompt
 
 __all__ = ["Aligner"]
@@ -51,7 +51,7 @@ class Aligner:
         """Initialize.
 
         Arguments:
-            deliniation_queryer: queryer for deliniation
+            deliniation_queryer: queryer for delineation
             punctuation_queryer: queryer for punctuation
         """
         self.punctuation_queryer = punctuation_queryer
@@ -65,26 +65,26 @@ class Aligner:
         Presently, this does the following:
           * Assigns 粤文 subtitles to sync groups with 中文 subtitles based on overlap
           * If a 粤文 subtitle overlaps with two 中文 subtitles, asks LLM to distribute
-          * At the end of this each sync group should have one 中文 subtitle and
+          * At the end of this, each sync group should have one 中文 subtitle and
           * zero or more 粤文 subtitles
           * Combines and punctuates 粤文 subtitles using LLM to match 中文
             punctuation and spacing
         It needs to also do the following:
-        * If there is a discrepancy in the length of the 中文 and concatenated 粤文
-          subtitles, prompt LLM with known one 中文 and two 中文 subtitles and ask
-          if 粤文 should be shifted.
-        * If a 中文 subtitle has no partner 粤文 subtitle, prompt LLM with preceding
-          and following 粤文 subtitles and ask if they should be shifted.
+          * If there is a discrepancy in the length of the 中文 and concatenated 粤文
+            subtitles, prompt the LLM with one known 中文 subtitle and two known 粤文
+            subtitles and ask whether 粤文 should be shifted.
+          * If a 中文 subtitle has no partner 粤文 subtitle, prompt LLM with preceding
+            and following 粤文 subtitles and ask whether they should be shifted.
         """
         alignment = Alignment(zhongwen_subs, yuewen_subs)
 
-        # Deliniation may involve moving a whole 粤文 subtitle from one sync group to
+        # Delineation may involve moving a whole 粤文 subtitle from one sync group to
         # another, or it may involve splitting a 粤文 subtitle into two 粤文 subtitles.
-        # Each time a 粤文 subtitle is split, deliniation is implicitly restarted by
+        # Each time a 粤文 subtitle is split, delineation is implicitly restarted by
         # clearing the sync group override.
-        shifting_in_progress = True
-        while shifting_in_progress:
-            shifting_in_progress = self._shift(alignment)
+        delineation_in_progress = True
+        while delineation_in_progress:
+            delineation_in_progress = self._delineate(alignment)
 
         # Punctuate 粤文 subtitles to match 中文 punctuation and spacing
         self._punctuate(alignment)
@@ -92,8 +92,8 @@ class Aligner:
         # Return final alignment
         return alignment
 
-    def _shift(self, alignment) -> bool:
-        """Shift 粤文 text.
+    def _delineate(self, alignment) -> bool:
+        """Delineate 粤文 text.
 
         Arguments:
             alignment: Nascent alignment
@@ -112,25 +112,25 @@ class Aligner:
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
-            prompt_cls: type[YueZhoHansDeliniationPrompt] = getattr(
+            prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
             yuewen_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, None)
             if yuewen_1_shifted == "" and yuewen_2_shifted == "":
                 continue
-            if self._shift_one(alignment, sg_1_idx, query, answer):
+            if self._delineate_one(alignment, sg_1_idx, query, answer):
                 return True
         return False
 
-    def _shift_one(
+    def _delineate_one(
         self,
         alignment: Alignment,
         sg_1_idx: int,
         query: Query,
         answer: Answer,
     ) -> bool:
-        """Shift text between one sync-group pair when LLM output requires it.
+        """Delineate text between one sync-group pair when LLM output requires it.
 
         Arguments:
             alignment: current alignment being updated
@@ -138,7 +138,7 @@ class Aligner:
             query: LLM query payload for the pair
             answer: LLM answer payload for the pair
         Returns:
-            whether deliniation requires restarting group traversal
+            whether delineation requires restarting group traversal
         """
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
@@ -158,7 +158,7 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get 粤文
-        prompt_cls: type[YueZhoHansDeliniationPrompt] = getattr(query, "prompt_cls")
+        prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(query, "prompt_cls")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
         yw_1 = getattr(query, prompt_cls.src_2_sub_1, "")
@@ -179,14 +179,14 @@ class Aligner:
             for yw_2_idx in yw_2_idxs:
                 yw = alignment.yuewen[yw_2_idx]
 
-                # Case: A sub in 粤文 2 overlaps partialy with 中文 1 and 2
+                # Case: A sub in 粤文 2 overlaps partially with 中文 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
-                #   deliniation must be restarted
+                #   delineation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
                         alignment.yuewen, yw_2_idx, n_chars_remaining_to_shift
                     )
-                    # Must restart deliniation after splitting a sub
+                    # Must restart delineation after splitting a subtitle
                     alignment._sync_groups_override = None
                     return True
 
@@ -196,7 +196,7 @@ class Aligner:
                 nascent_sg[sg_2_idx][1].remove(yw_2_idx)
                 n_chars_remaining_to_shift -= len(yw.text)
 
-                # Case: Deliniation is complete
+                # Case: Delineation is complete
                 # Action: Set sync groups and return False to indicate completion
                 if n_chars_remaining_to_shift == 0:
                     alignment._sync_groups_override = nascent_sg
@@ -215,14 +215,14 @@ class Aligner:
 
                 # Case: A sub in 粤文 1 overlaps partially with 中文 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
-                #   deliniation must be restarted
+                #   delineation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
                         alignment.yuewen,
                         yw_1_idx,
                         len(yw.text) - n_chars_remaining_to_shift,
                     )
-                    # Must restart deliniation after splitting a subtitle
+                    # Must restart delineation after splitting a subtitle
                     alignment._sync_groups_override = None
                     return True
 
@@ -232,7 +232,7 @@ class Aligner:
                 nascent_sg[sg_2_idx][1].insert(0, yw_1_idx)
                 n_chars_remaining_to_shift -= len(yw.text)
 
-                # Case: Deliniation is complete
+                # Case: Delineation is complete
                 # Action: Set sync groups and return False to indicate completion
                 if n_chars_remaining_to_shift == 0:
                     alignment._sync_groups_override = nascent_sg
@@ -287,7 +287,7 @@ class Aligner:
                 nascent_sg.append(([zw_idx], [len(nascent_yw) - 1]))
                 continue
 
-            # Query for 粤文 punctuate
+            # Query for 粤文 punctuation
             test_case = alignment.get_punctuation_test_case(sg_idx)
             if test_case is None:
                 logger.info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")

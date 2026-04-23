@@ -31,11 +31,11 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
 from .transcriber import YueTranscriber
 
 __all__ = [
+    "get_yue_transcribed_vs_zho",
+    "get_yue_vs_zho_transcriber",
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
-    "get_yue_transcribed_vs_zho",
-    "get_yue_vs_zho_transcriber",
 ]
 
 
