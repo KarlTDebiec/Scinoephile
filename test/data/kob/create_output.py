@@ -210,7 +210,7 @@ if "简体粤文 (Diff)" in actions:
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
-    print(diff)
+    # print(diff)
     cer = get_series_cer(
         yue_hans_reference,
         yue_hans_transcribe_review_translate_block_review,
