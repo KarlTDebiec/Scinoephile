@@ -142,6 +142,27 @@ def test_get_text_cer(
     assert result == expected
 
 
+def test_character_error_rate_result_str():
+    """Test string formatting for character error rate results."""
+    result = CharacterErrorRateResult(
+        cer=0.25,
+        substitutions=1,
+        insertions=2,
+        deletions=3,
+        correct=4,
+        reference_length=8,
+    )
+
+    assert str(result) == (
+        "CER: 0.25\n"
+        "Correct: 4\n"
+        "Substitutions: 1\n"
+        "Insertions: 2\n"
+        "Deletions: 3\n"
+        "Reference length: 8"
+    )
+
+
 @pytest.mark.parametrize(
     (
         "reference_series_fixture_name",

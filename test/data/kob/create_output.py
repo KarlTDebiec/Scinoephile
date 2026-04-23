@@ -49,8 +49,9 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)"
-    "简体粤文 (Diff)"
+    # "简体粤文 (Transcription)",
+    "简体粤文 (Diff)",
+    "简体粤文 (Transcription Test No VAD)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -132,6 +133,7 @@ if "简体粤文 (Transcription)" in actions:
         test_case_directory_path=test_data_root / "kob",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        use_vad=True,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
@@ -185,6 +187,7 @@ if "简体粤文 (Transcription)" in actions:
     outfile_path = output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     yue_hans_transcribe_review_translate_block_review.save(outfile_path)
 if "简体粤文 (Diff)" in actions:
+    # Initial transcription
     yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
     yue_hans_transcribe = Series.load(output_dir / "yue-Hans_transcribe.srt")
     diff = get_series_diff(
@@ -195,17 +198,12 @@ if "简体粤文 (Diff)" in actions:
     )
     # print(diff)
     cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
-    print(f"CER: {cer.cer}")
-    print(f"Correct: {cer.correct}")
-    print(f"Substitutions: {cer.substitutions}")
-    print(f"Insertions: {cer.insertions}")
-    print(f"Deletions: {cer.deletions}")
-    print(f"Reference length: {cer.reference_length}")
+    print(cer)
 
+    # Revised transcription
     yue_hans_transcribe_review_translate_block_review = Series.load(
         output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     )
-
     diff = get_series_diff(
         yue_hans_transcribe_review_translate_block_review,
         yue_hans_reference,
@@ -217,9 +215,25 @@ if "简体粤文 (Diff)" in actions:
         yue_hans_reference,
         yue_hans_transcribe_review_translate_block_review,
     )
-    print(f"CER: {cer.cer}")
-    print(f"Correct: {cer.correct}")
-    print(f"Substitutions: {cer.substitutions}")
-    print(f"Insertions: {cer.insertions}")
-    print(f"Deletions: {cer.deletions}")
-    print(f"Reference length: {cer.reference_length}")
+    print(cer)
+if "简体粤文 (Transcription Test No VAD)" in actions:
+    zho_hans = Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+
+    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    transcriber = get_yue_vs_zho_transcriber(
+        test_case_directory_path=test_data_root / "kob",
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        use_vad=False,
+    )
+    yue_hans_transcribe = get_yue_transcribed_vs_zho(
+        yue_hans_audio, zho_hans, transcriber=transcriber
+    )
+
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
+    print("No VAD transcription CER:")
+    print(cer)
