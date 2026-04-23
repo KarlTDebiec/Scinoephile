@@ -13,21 +13,21 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
     DictionaryToolPrompt,
 )
+from scinoephile.core.dictionaries.serialization import (
+    dictionary_definition_to_dict,
+    dictionary_entry_to_dict,
+)
+from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
 from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.dictionaries.serialization import (
-    dictionary_definition_to_dict,
-    dictionary_entry_to_dict,
-)
-from scinoephile.dictionaries.sqlite_store import DictionarySqliteStore
 from scinoephile.multilang.yue_zho.block_review import (
     YueHansBlockReviewPrompt,
     get_yue_vs_zho_block_reviewer,

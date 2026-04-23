@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from logging import getLogger
 
+from scinoephile.core.dictionaries import DictionaryLookupResponse, DictionaryToolPrompt
+from scinoephile.core.dictionaries.serialization import dictionary_entry_to_dict
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-
-from .dictionary_lookup_response import DictionaryLookupResponse
-from .dictionary_tool_prompt import DictionaryToolPrompt
-from .lookup import lookup_dictionary_entries
-from .serialization import dictionary_entry_to_dict
+from scinoephile.dictionaries.lookup import lookup_dictionary_entries
 
 __all__ = [
     "get_dictionary_tools",
