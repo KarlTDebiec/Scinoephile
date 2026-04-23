@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 简体粤文 shifting."""
+"""Text for LLM correspondence for 简体粤文 deliniation."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_pair import DualPairPrompt
 
 __all__ = [
-    "YueZhoHansShiftingPrompt",
-    "YueZhoHantShiftingPrompt",
+    "YueZhoHansDeliniationPrompt",
+    "YueZhoHantDeliniationPrompt",
 ]
 
 
-class YueZhoHansShiftingPrompt(DualPairPrompt, EngPrompt):
-    """Text for LLM correspondence for 简体粤文 shifting."""
+class YueZhoHansDeliniationPrompt(DualPairPrompt, EngPrompt):
+    """Text for LLM correspondence for 简体粤文 deliniation."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -107,8 +107,8 @@ class YueZhoHansShiftingPrompt(DualPairPrompt, EngPrompt):
         )
 
 
-class YueZhoHantShiftingPrompt(YueZhoHansShiftingPrompt):
-    """Text for LLM correspondence for 繁体粤文 shifting."""
+class YueZhoHantDeliniationPrompt(YueZhoHansDeliniationPrompt):
+    """Text for LLM correspondence for 繁体粤文 deliniation."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config with which to convert characters from 简体中文 present in parent class."""

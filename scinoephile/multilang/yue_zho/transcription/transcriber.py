@@ -22,13 +22,13 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
+    YueZhoHantDeliniationPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
     YueZhoHantPunctuationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
-    YueZhoHantShiftingPrompt,
 )
 
 from .aligner import Aligner
@@ -42,10 +42,10 @@ class YueTranscriber:
     def __init__(
         self,
         test_case_directory_path: Path,
-        shifting_test_cases: list[TestCase],
+        deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
-        shifting_prompt_cls: type[YueZhoHansShiftingPrompt]
-        | type[YueZhoHantShiftingPrompt],
+        deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
+        | type[YueZhoHantDeliniationPrompt],
         punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
         | type[YueZhoHantPunctuationPrompt],
         provider: LLMProvider | None = None,
@@ -54,10 +54,10 @@ class YueTranscriber:
 
         Arguments:
             test_case_directory_path: path to directory containing test cases
-            shifting_test_cases: shifting test cases
+            deliniation_test_cases: deliniation test cases
             punctuation_test_cases: punctuation test cases
             provider: provider to use for LLM queryers
-            shifting_prompt_cls: prompt class for block-boundary shifting
+            deliniation_prompt_cls: prompt class for block-boundary deliniation
             punctuation_prompt_cls: prompt class for line punctuation
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
@@ -67,10 +67,10 @@ class YueTranscriber:
             "khleeloo/whisper-large-v3-cantonese",
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
         )
-        shifting_queryer_cls = Queryer.get_queryer_cls(shifting_prompt_cls)
-        self.shifting_queryer = shifting_queryer_cls(
-            prompt_test_cases=[tc for tc in shifting_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in shifting_test_cases if tc.verified],
+        deliniation_queryer_cls = Queryer.get_queryer_cls(deliniation_prompt_cls)
+        self.deliniation_queryer = deliniation_queryer_cls(
+            prompt_test_cases=[tc for tc in deliniation_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in deliniation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
@@ -82,7 +82,7 @@ class YueTranscriber:
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(
-            shifting_queryer=self.shifting_queryer,
+            deliniation_queryer=self.deliniation_queryer,
             punctuation_queryer=self.punctuation_queryer,
         )
 

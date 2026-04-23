@@ -43,12 +43,12 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueZhoHansLineReviewPrompt,
     YueZhoLineReviewManager,
 )
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
     YueZhoPunctuationManager,
-)
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from test.helpers import test_data_root
@@ -65,11 +65,11 @@ __all__ = [
     "mlamd_zho_hant_sup_path",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
+    "get_mlamd_yue_deliniation_test_cases",
     "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
-    "get_mlamd_yue_shifting_test_cases",
-    "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
+    "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_zho_hans_block_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
     "get_mlamd_zho_hant_block_review_test_cases",
@@ -208,6 +208,32 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 
 @cache
+def get_mlamd_yue_deliniation_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansDeliniationPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 简体粤文 deliniation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "deliniation"
+        / f"{get_backend()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_mlamd_yue_from_zho_translation_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
@@ -255,11 +281,11 @@ def get_mlamd_yue_punctuation_test_cases(
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+def get_mlamd_yue_vs_zho_block_review_test_cases(
+    prompt_cls: type[DualBlockPrompt] = YueHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 shifting test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 review test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -268,15 +294,10 @@ def get_mlamd_yue_shifting_test_cases(
         test cases
     """
     path = (
-        title_root
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "shifting"
-        / f"{get_backend()}.json"
+        title_root / "multilang" / "yue_zho" / "block_review" / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -298,27 +319,6 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
     )
     return load_test_cases_from_json(
         path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_yue_vs_zho_block_review_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 简体粤文 vs 简体中文 review test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        title_root / "multilang" / "yue_zho" / "block_review" / f"{get_backend()}.json"
-    )
-    return load_test_cases_from_json(
-        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

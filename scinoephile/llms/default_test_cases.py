@@ -18,7 +18,7 @@ __all__ = [
     "YUE_ZHO_LINE_REVIEW_JSON_PATHS",
     "YUE_ZHO_BLOCK_REVIEW_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS",
-    "YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS",
+    "YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS",
     "ZHO_HANS_BLOCK_REVIEW_JSON_PATHS",
     "ZHO_HANS_OCR_FUSION_JSON_PATHS",
     "ZHO_HANT_BLOCK_REVIEW_JSON_PATHS",
@@ -87,11 +87,11 @@ YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = (
     Path("mlamd/multilang/yue_zho/translation/mps.json"),
 )
 
-YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS = (
-    Path("kob/multilang/yue_zho/transcription/shifting/gpu.json"),
-    Path("kob/multilang/yue_zho/transcription/shifting/mps.json"),
-    Path("mlamd/multilang/yue_zho/transcription/shifting/gpu.json"),
-    Path("mlamd/multilang/yue_zho/transcription/shifting/mps.json"),
+YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
+    Path("kob/multilang/yue_zho/transcription/deliniation/gpu.json"),
+    Path("kob/multilang/yue_zho/transcription/deliniation/mps.json"),
+    Path("mlamd/multilang/yue_zho/transcription/deliniation/gpu.json"),
+    Path("mlamd/multilang/yue_zho/transcription/deliniation/mps.json"),
 )
 
 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (

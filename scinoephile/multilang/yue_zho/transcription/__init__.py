@@ -12,30 +12,30 @@ from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
+    YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
-    YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
+    YueZhoHantDeliniationPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
     YueZhoHantPunctuationPrompt,
     YueZhoPunctuationManager,
 )
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
-    YueZhoHantShiftingPrompt,
-)
 
 from .transcriber import YueTranscriber
 
 __all__ = [
+    "get_yue_transcribed_vs_zho",
+    "get_yue_vs_zho_transcriber",
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
-    "get_yue_transcribed_vs_zho",
-    "get_yue_vs_zho_transcriber",
 ]
 
 
@@ -51,12 +51,14 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
 
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
-    shifting_test_cases: list[TestCase] | None
-    """preloaded shifting test cases used to seed the transcriber."""
+    deliniation_test_cases: list[TestCase] | None
+    """preloaded deliniation test cases used to seed the transcriber."""
     punctuation_test_cases: list[TestCase] | None
     """preloaded punctuation test cases used to seed the transcriber."""
-    shifting_prompt_cls: type[YueZhoHansShiftingPrompt] | type[YueZhoHantShiftingPrompt]
-    """prompt class used for alignment shifting."""
+    deliniation_prompt_cls: (
+        type[YueZhoHansDeliniationPrompt] | type[YueZhoHantDeliniationPrompt]
+    )
+    """prompt class used for alignment deliniation."""
     punctuation_prompt_cls: (
         type[YueZhoHansPunctuationPrompt] | type[YueZhoHantPunctuationPrompt]
     )
@@ -85,33 +87,33 @@ def get_yue_transcribed_vs_zho(
 
 
 def get_yue_vs_zho_transcriber(
-    shifting_test_cases: list[TestCase] | None = None,
+    deliniation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
     provider: LLMProvider | None = None,
-    shifting_prompt_cls: type[YueZhoHansShiftingPrompt]
-    | type[YueZhoHantShiftingPrompt] = YueZhoHansShiftingPrompt,
+    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
+    | type[YueZhoHantDeliniationPrompt] = YueZhoHansDeliniationPrompt,
     punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
     | type[YueZhoHantPunctuationPrompt] = YueZhoHansPunctuationPrompt,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
 
     Arguments:
-        shifting_test_cases: optional shifting test cases
+        deliniation_test_cases: optional deliniation test cases
         punctuation_test_cases: optional punctuation test cases
         test_case_directory_path: optional directory where test cases are updated
         provider: provider to use for queries
-        shifting_prompt_cls: prompt class for alignment shifting
+        deliniation_prompt_cls: prompt class for alignment deliniation
         punctuation_prompt_cls: prompt class for transcription punctuation
     Returns:
         configured YueTranscriber
     """
-    if shifting_test_cases is None:
-        shifting_test_cases = list(
+    if deliniation_test_cases is None:
+        deliniation_test_cases = list(
             load_default_test_cases(
                 DualPairManager,
-                shifting_prompt_cls,
-                YUE_ZHO_TRANSCRIPTION_SHIFTING_JSON_PATHS,
+                deliniation_prompt_cls,
+                YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
             )
         )
     if punctuation_test_cases is None:
@@ -128,10 +130,10 @@ def get_yue_vs_zho_transcriber(
         provider = get_default_provider()
     return YueTranscriber(
         test_case_directory_path=test_case_directory_path,
-        shifting_test_cases=shifting_test_cases,
+        deliniation_test_cases=deliniation_test_cases,
         punctuation_test_cases=punctuation_test_cases,
         provider=provider,
-        shifting_prompt_cls=shifting_prompt_cls,
+        deliniation_prompt_cls=deliniation_prompt_cls,
         punctuation_prompt_cls=punctuation_prompt_cls,
     )
 
@@ -143,9 +145,9 @@ def _get_default_test_case_dir_path() -> Path:
         writable runtime test-case root with transcription subdirectories present
     """
     test_case_dir_path = get_runtime_cache_dir_path("test_cases")
-    (test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "shifting").mkdir(
-        parents=True, exist_ok=True
-    )
+    (
+        test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "deliniation"
+    ).mkdir(parents=True, exist_ok=True)
     (
         test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "punctuation"
     ).mkdir(parents=True, exist_ok=True)
