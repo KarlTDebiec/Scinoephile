@@ -50,6 +50,7 @@ def save_test_cases_to_json(output_path: Path, test_cases: list[TestCase]):
         test_cases: test cases to save
     """
     data = [tc.model_dump(exclude_defaults=True) for tc in test_cases]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)

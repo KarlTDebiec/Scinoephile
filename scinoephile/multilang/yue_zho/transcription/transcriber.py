@@ -44,6 +44,7 @@ class YueTranscriber:
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
+        use_vad: bool,
         deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
         | type[YueZhoHantDeliniationPrompt],
         punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
@@ -57,15 +58,22 @@ class YueTranscriber:
             deliniation_test_cases: deliniation test cases
             punctuation_test_cases: punctuation test cases
             provider: provider to use for LLM queryers
+            use_vad: whether Whisper VAD is enabled for transcription
             deliniation_prompt_cls: prompt class for block-boundary deliniation
             punctuation_prompt_cls: prompt class for line punctuation
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
+        self.transcription_test_case_dir_path = (
+            self._get_transcription_test_case_dir_path(use_vad)
+        )
         if provider is None:
             provider = get_default_provider()
         self.transcriber = WhisperTranscriber(
             "khleeloo/whisper-large-v3-cantonese",
-            cache_dir_path=get_runtime_cache_dir_path("whisper"),
+            cache_dir_path=(
+                get_runtime_cache_dir_path("whisper") / ("vad" if use_vad else "no_vad")
+            ),
+            use_vad=use_vad,
         )
         deliniation_queryer_cls = Queryer.get_queryer_cls(deliniation_prompt_cls)
         self.deliniation_queryer = deliniation_queryer_cls(
@@ -84,6 +92,7 @@ class YueTranscriber:
         self.aligner = Aligner(
             deliniation_queryer=self.deliniation_queryer,
             punctuation_queryer=self.punctuation_queryer,
+            test_case_dir_path=self.transcription_test_case_dir_path,
         )
 
     def process_all_blocks(
@@ -159,6 +168,21 @@ class YueTranscriber:
         alignment = self.aligner.align(zhongwen_block, yuewen_block_series)
         yuewen_block_series = alignment.yuewen
 
-        self.aligner.update_all_test_cases(self.test_case_directory_path)
+        self.aligner.update_all_test_cases()
 
         return yuewen_block_series
+
+    def _get_transcription_test_case_dir_path(self, use_vad: bool) -> Path:
+        """Get the transcription test-case directory for this transcriber.
+
+        Arguments:
+            use_vad: whether Whisper VAD is enabled for transcription
+        Returns:
+            transcription test-case directory path
+        """
+        transcription_test_case_dir_path = (
+            self.test_case_directory_path / "multilang" / "yue_zho" / "transcription"
+        )
+        if not use_vad:
+            transcription_test_case_dir_path /= "no_vad"
+        return transcription_test_case_dir_path
