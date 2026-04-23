@@ -50,7 +50,6 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             / "multilang"
             / "yue_zho"
             / "transcription"
-            / "vad"
             / "deliniation"
         ).is_dir()
         assert (
@@ -58,6 +57,5 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             / "multilang"
             / "yue_zho"
             / "transcription"
-            / "vad"
             / "punctuation"
         ).is_dir()

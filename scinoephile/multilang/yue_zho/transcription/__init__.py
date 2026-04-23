@@ -49,6 +49,8 @@ class YueZhoTranscriptionKwargs(TypedDict, total=False):
 class YueZhoTranscriberKwargs(TypedDict, total=False):
     """Keyword arguments for default YueTranscriber construction."""
 
+    use_vad: bool
+    """whether Whisper VAD is enabled for transcription."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
     deliniation_test_cases: list[TestCase] | None
@@ -91,6 +93,7 @@ def get_yue_vs_zho_transcriber(
     punctuation_test_cases: list[TestCase] | None = None,
     test_case_directory_path: Path | None = None,
     provider: LLMProvider | None = None,
+    use_vad: bool = True,
     deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
     | type[YueZhoHantDeliniationPrompt] = YueZhoHansDeliniationPrompt,
     punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
@@ -103,6 +106,7 @@ def get_yue_vs_zho_transcriber(
         punctuation_test_cases: optional punctuation test cases
         test_case_directory_path: optional directory where test cases are updated
         provider: provider to use for queries
+        use_vad: whether Whisper VAD is enabled for transcription
         deliniation_prompt_cls: prompt class for alignment deliniation
         punctuation_prompt_cls: prompt class for transcription punctuation
     Returns:
@@ -133,6 +137,7 @@ def get_yue_vs_zho_transcriber(
         deliniation_test_cases=deliniation_test_cases,
         punctuation_test_cases=punctuation_test_cases,
         provider=provider,
+        use_vad=use_vad,
         deliniation_prompt_cls=deliniation_prompt_cls,
         punctuation_prompt_cls=punctuation_prompt_cls,
     )
