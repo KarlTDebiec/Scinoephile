@@ -133,11 +133,12 @@ class ScinoephileCliBase(CommandLineInterface):
         """
         if text is None:
             return ""
-        if cls.locale_name == DEFAULT_CLI_LOCALE:
+        active_locale_name = ScinoephileCliBase.locale_name
+        if active_locale_name == DEFAULT_CLI_LOCALE:
             return text
 
         canonical_text = cls._canonicalize_text(text)
-        localized_text = cls.get_localized_text().get(cls.locale_name, {})
+        localized_text = cls.get_localized_text().get(active_locale_name, {})
         translations = {
             cls._canonicalize_text(source_text): target_text
             for source_text, target_text in localized_text.items()
@@ -186,6 +187,5 @@ class ScinoephileCliBase(CommandLineInterface):
     @classmethod
     def main(cls):
         """Execute with locale detection."""
-        cls.locale_name = cls._resolve_locale()
-        ScinoephileCliBase.locale_name = cls.locale_name
+        ScinoephileCliBase.locale_name = cls._resolve_locale()
         super().main()
