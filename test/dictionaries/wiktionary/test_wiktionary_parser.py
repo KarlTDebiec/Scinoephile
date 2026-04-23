@@ -64,11 +64,11 @@ def test_parse_deduplicates_duplicate_glosses(source_jsonl_path: Path):
                 "sounds": [
                     {
                         "tags": ["Mandarin", "Pinyin", "standard"],
-                        "zh-pron": "máng",
+                        "zh_pron": "máng",
                     },
                     {
                         "tags": ["Cantonese", "Guangzhou", "Jyutping"],
-                        "zh-pron": "mong⁴",
+                        "zh_pron": "mong⁴",
                     },
                 ],
                 "senses": [
@@ -117,7 +117,7 @@ def test_parse_supports_mixed_cantonese_and_mandarin_pronunciations(
                 "sounds": [
                     {
                         "tags": ["Mandarin", "Pinyin", "standard"],
-                        "zh-pron": "háng",
+                        "zh_pron": "háng",
                     },
                     {
                         "tags": [
@@ -126,11 +126,11 @@ def test_parse_supports_mixed_cantonese_and_mandarin_pronunciations(
                             "standard",
                             "toneless-final-syllable-variant",
                         ],
-                        "zh-pron": "xíng",
+                        "zh_pron": "xíng",
                     },
                     {
                         "tags": ["Cantonese", "Guangzhou", "Jyutping"],
-                        "zh-pron": "ha⁴ng",
+                        "zh_pron": "ha⁴ng",
                     },
                 ],
                 "senses": [{"glosses": ["to go"]}],
@@ -146,3 +146,36 @@ def test_parse_supports_mixed_cantonese_and_mandarin_pronunciations(
     assert len(entries) == 2
     assert sorted(entry.pinyin for entry in entries) == ["hang2", "xing2"]
     assert all(entry.jyutping == "hang4" for entry in entries)
+
+
+def test_parse_accepts_legacy_hyphenated_pronunciation_key(source_jsonl_path: Path):
+    """Accept `zh-pron` pronunciation key for compatibility with fixtures.
+
+    Arguments:
+        source_jsonl_path: temporary Kaikki JSONL source path
+    """
+    source_jsonl_path.write_text(
+        json.dumps(
+            {
+                "word": "行",
+                "pos": "verb",
+                "sounds": [
+                    {"tags": ["Mandarin", "Pinyin", "standard"], "zh-pron": "háng"},
+                    {
+                        "tags": ["Cantonese", "Guangzhou", "Jyutping"],
+                        "zh-pron": "ha⁴ng",
+                    },
+                ],
+                "senses": [{"glosses": ["to go"]}],
+            },
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    _, entries = WiktionaryDictionaryParser().parse(source_jsonl_path=source_jsonl_path)
+
+    assert len(entries) == 1
+    assert entries[0].pinyin == "hang2"
+    assert entries[0].jyutping == "hang4"

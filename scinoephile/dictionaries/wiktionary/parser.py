@@ -217,7 +217,7 @@ class WiktionaryDictionaryParser:
             tags = tuple(sound.get("tags", []))
             if tags not in CANTONESE_JYUTPING_TAGS:
                 continue
-            romanization = str(sound.get("zh-pron", "")).strip()
+            romanization = cls._get_sound_romanization(sound)
             normalized = cls._normalize_jyutping(romanization)
             if normalized and normalized not in values:
                 values.append(normalized)
@@ -239,11 +239,24 @@ class WiktionaryDictionaryParser:
             tags = tuple(sound.get("tags", []))
             if tags not in MANDARIN_PINYIN_TAGS:
                 continue
-            romanization = str(sound.get("zh-pron", "")).strip()
+            romanization = cls._get_sound_romanization(sound)
             normalized = cls._normalize_pinyin(romanization)
             if normalized and normalized not in values:
                 values.append(normalized)
         return values
+
+    @staticmethod
+    def _get_sound_romanization(sound: dict[str, Any]) -> str:
+        """Get one pronunciation value from a Kaikki sound record.
+
+        Arguments:
+            sound: Kaikki sound record
+        Returns:
+            pronunciation string
+        """
+        if "zh_pron" in sound:
+            return str(sound.get("zh_pron", "")).strip()
+        return str(sound.get("zh-pron", "")).strip()
 
     @staticmethod
     def _fallback_jyutping(text: str) -> str:

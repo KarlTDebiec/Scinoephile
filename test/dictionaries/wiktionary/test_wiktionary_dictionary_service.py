@@ -50,11 +50,11 @@ def _write_fixture_jsonl(jsonl_path: Path):
             "sounds": [
                 {
                     "tags": ["Mandarin", "Pinyin", "standard"],
-                    "zh-pron": "xuéshēng",
+                    "zh_pron": "xuéshēng",
                 },
                 {
                     "tags": ["Cantonese", "Guangzhou", "Jyutping"],
-                    "zh-pron": "hok⁶ saang¹",
+                    "zh_pron": "hok⁶ saang¹",
                 },
             ],
             "senses": [{"glosses": ["student"]}],
@@ -65,11 +65,11 @@ def _write_fixture_jsonl(jsonl_path: Path):
             "sounds": [
                 {
                     "tags": ["Mandarin", "Pinyin", "standard"],
-                    "zh-pron": "háng",
+                    "zh_pron": "háng",
                 },
                 {
                     "tags": ["Cantonese", "Guangzhou", "Jyutping"],
-                    "zh-pron": "ha⁴ng",
+                    "zh_pron": "ha⁴ng",
                 },
             ],
             "senses": [{"glosses": ["to go"]}],
