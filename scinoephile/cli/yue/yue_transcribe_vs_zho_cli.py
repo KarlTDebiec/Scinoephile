@@ -25,9 +25,9 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
-    YueZhoHantPunctuatingPrompt,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
+    YueZhoHantPunctuationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -113,18 +113,18 @@ class YueTranscribeVsZhoCli(CommandLineInterface):
         cls, script: str
     ) -> tuple[
         type[YueZhoHansShiftingPrompt] | type[YueZhoHantShiftingPrompt],
-        type[YueZhoHansPunctuatingPrompt] | type[YueZhoHantPunctuatingPrompt],
+        type[YueZhoHansPunctuationPrompt] | type[YueZhoHantPunctuationPrompt],
     ]:
         """Get transcription prompt classes for the selected script.
 
         Arguments:
             script: selected script identifier
         Returns:
-            shifting and punctuating prompt classes
+            shifting and punctuation prompt classes
         """
         if script == "traditional":
-            return YueZhoHantShiftingPrompt, YueZhoHantPunctuatingPrompt
-        return YueZhoHansShiftingPrompt, YueZhoHansPunctuatingPrompt
+            return YueZhoHantShiftingPrompt, YueZhoHantPunctuationPrompt
+        return YueZhoHansShiftingPrompt, YueZhoHansPunctuationPrompt
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
@@ -181,12 +181,12 @@ class YueTranscribeVsZhoCli(CommandLineInterface):
                 parser.error(str(exc))
 
         # Perform operations
-        shifting_prompt_cls, punctuating_prompt_cls = (
+        shifting_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
         transcriber = get_yue_vs_zho_transcriber(
             shifting_prompt_cls=shifting_prompt_cls,
-            punctuating_prompt_cls=punctuating_prompt_cls,
+            punctuation_prompt_cls=punctuation_prompt_cls,
         )
         yuewen = get_yue_transcribed_vs_zho(
             yuewen=yuewen,

@@ -43,9 +43,9 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueZhoHansLineReviewPrompt,
     YueZhoLineReviewManager,
 )
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
-    YueZhoPunctuatingManager,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
+    YueZhoPunctuationManager,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -66,7 +66,7 @@ __all__ = [
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_from_zho_translation_test_cases",
-    "get_mlamd_yue_punctuating_test_cases",
+    "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_shifting_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
@@ -229,11 +229,11 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 
 
 @cache
-def get_mlamd_yue_punctuating_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuatingPrompt,
+def get_mlamd_yue_punctuation_test_cases(
+    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 punctuating test cases.
+    """Get MLAMD 简体粤文 punctuation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -246,11 +246,11 @@ def get_mlamd_yue_punctuating_test_cases(
         / "multilang"
         / "yue_zho"
         / "transcription"
-        / "punctuating"
+        / "punctuation"
         / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoPunctuatingManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
     )
 
 

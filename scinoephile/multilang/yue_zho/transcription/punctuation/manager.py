@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for 粤文/中文 transcription punctuating LLM classes."""
+"""Factories for 粤文/中文 transcription punctuation LLM classes."""
 
 from __future__ import annotations
 
@@ -13,16 +13,16 @@ from scinoephile.core.text import (
 )
 from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
-from .prompt import YueZhoHansPunctuatingPrompt
+from .prompt import YueZhoHansPunctuationPrompt
 
-__all__ = ["YueZhoPunctuatingManager"]
+__all__ = ["YueZhoPunctuationManager"]
 
 
-class YueZhoPunctuatingManager(DualMultiSingleManager):
-    """Factories for 粤文/中文 transcription punctuating LLM classes."""
+class YueZhoPunctuationManager(DualMultiSingleManager):
+    """Factories for 粤文/中文 transcription punctuation LLM classes."""
 
-    prompt_cls: ClassVar[type[YueZhoHansPunctuatingPrompt]] = (
-        YueZhoHansPunctuatingPrompt
+    prompt_cls: ClassVar[type[YueZhoHansPunctuationPrompt]] = (
+        YueZhoHansPunctuationPrompt
     )
     """Default prompt class."""
 
@@ -35,7 +35,7 @@ class YueZhoPunctuatingManager(DualMultiSingleManager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[YueZhoHansPunctuatingPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueZhoHansPunctuationPrompt] = getattr(model, "prompt_cls")
         min_difficulty = DualMultiSingleManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
@@ -59,7 +59,7 @@ class YueZhoPunctuatingManager(DualMultiSingleManager):
         Returns:
             validated test case
         """
-        prompt_cls: type[YueZhoHansPunctuatingPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueZhoHansPunctuationPrompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
