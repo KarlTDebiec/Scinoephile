@@ -47,7 +47,7 @@ def test_parse_uses_pronunciation_fallback_when_sounds_missing(source_jsonl_path
     assert entry.traditional == "學生"
     assert entry.simplified == "学生"
     assert entry.pinyin == "xue2 sheng1"
-    assert entry.jyutping
+    assert entry.jyutping == "hok6 saang1"
 
 
 def test_parse_deduplicates_duplicate_glosses(source_jsonl_path: Path):

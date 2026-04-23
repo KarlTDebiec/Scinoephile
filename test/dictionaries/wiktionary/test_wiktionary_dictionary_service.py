@@ -106,6 +106,34 @@ def test_build_uses_local_jsonl_data(
     assert [entry.simplified for entry in entries] == ["学生"]
 
 
+def test_build_updates_local_data_from_existing_local_jsonl(
+    database_path: Path,
+    local_data_dir_path: Path,
+    runtime_data_dir_path: Path,
+):
+    """Avoid copying a local JSONL file onto itself during build.
+
+    Arguments:
+        database_path: temporary SQLite database path
+        local_data_dir_path: local canonical data directory
+        runtime_data_dir_path: runtime canonical data directory
+    """
+    local_jsonl_path = local_data_dir_path / "entries.jsonl"
+    _write_fixture_jsonl(local_jsonl_path)
+    original_text = local_jsonl_path.read_text(encoding="utf-8")
+    service = WiktionaryDictionaryService(
+        database_path=database_path,
+        local_data_dir_path=local_data_dir_path,
+        runtime_data_dir_path=runtime_data_dir_path,
+    )
+
+    service.build(overwrite=True, update_local_data=True)
+
+    assert local_jsonl_path.read_text(encoding="utf-8") == original_text
+    entries = service.lookup("學生", limit=5)
+    assert [entry.traditional for entry in entries] == ["學生"]
+
+
 def test_build_uses_explicit_source_jsonl_path(
     database_path: Path,
     local_data_dir_path: Path,
@@ -200,6 +228,47 @@ def test_build_downloads_when_no_source_jsonl_available(
 
     entries = service.lookup("學生", limit=5)
     assert [entry.traditional for entry in entries] == ["學生"]
+
+
+def test_lookup_finds_entries_using_fallback_jyutping(
+    database_path: Path,
+    local_data_dir_path: Path,
+    runtime_data_dir_path: Path,
+):
+    """Find entries built from fallback Jyutping with normalized queries.
+
+    Arguments:
+        database_path: temporary SQLite database path
+        local_data_dir_path: local canonical data directory
+        runtime_data_dir_path: runtime canonical data directory
+    """
+    source_jsonl_path = local_data_dir_path / "entries.jsonl"
+    source_jsonl_path.write_text(
+        json.dumps(
+            {
+                "word": "學生",
+                "pos": "noun",
+                "senses": [{"glosses": ["student"]}],
+            },
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    service = WiktionaryDictionaryService(
+        database_path=database_path,
+        local_data_dir_path=local_data_dir_path,
+        runtime_data_dir_path=runtime_data_dir_path,
+    )
+
+    service.build(overwrite=True)
+
+    assert [entry.traditional for entry in service.lookup("hok6saang1", limit=5)] == [
+        "學生"
+    ]
+    assert [entry.traditional for entry in service.lookup("hok6 saang1", limit=5)] == [
+        "學生"
+    ]
 
 
 def test_build_raises_on_download_error(

@@ -273,7 +273,7 @@ class WiktionaryDictionaryParser:
         _, jyutping = romanization_items[0]
         if jyutping is None:
             return ""
-        return jyutping.lower().strip()
+        return WiktionaryDictionaryParser._normalize_jyutping(jyutping)
 
     @staticmethod
     def _fallback_pinyin(text: str) -> str:
@@ -317,7 +317,17 @@ class WiktionaryDictionaryParser:
             match = JYUTPING_NONSTANDARD_TONE_POSITION.match(normalized_token)
             if match:
                 normalized_token = f"{match.group(1)}{match.group(3)}{match.group(2)}"
-            tokens.append(normalized_token)
+            try:
+                syllables = pycantonese.parse_jyutping(normalized_token)
+            except ValueError:
+                syllables = ()
+            if syllables:
+                tokens.extend(
+                    f"{syllable.onset}{syllable.nucleus}{syllable.coda}{syllable.tone}"
+                    for syllable in syllables
+                )
+            else:
+                tokens.append(normalized_token)
         return " ".join(tokens)
 
     @staticmethod

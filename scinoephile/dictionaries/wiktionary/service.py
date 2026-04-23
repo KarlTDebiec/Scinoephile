@@ -155,7 +155,12 @@ class WiktionaryDictionaryService:
         """
         local_jsonl_path = self.local_data_dir_path / "entries.jsonl"
         self.local_data_dir_path.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source_jsonl_path, local_jsonl_path)
+        if not (
+            local_jsonl_path.exists()
+            and source_jsonl_path.exists()
+            and local_jsonl_path.samefile(source_jsonl_path)
+        ):
+            shutil.copy2(source_jsonl_path, local_jsonl_path)
         return val_input_path(local_jsonl_path)
 
     def _copy_jsonl_to_runtime(self, *, source_jsonl_path: Path) -> Path:
