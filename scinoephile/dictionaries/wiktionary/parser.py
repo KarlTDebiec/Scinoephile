@@ -46,6 +46,7 @@ class WiktionaryDictionaryParser:
     def __init__(self):
         """Initialize."""
         self.opencc_converter = opencc.OpenCC("hk2s")
+        """OpenCC converter for traditional-to-simplified headword normalization."""
 
     def parse(
         self, source_jsonl_path: Path
@@ -89,26 +90,39 @@ class WiktionaryDictionaryParser:
             )
         return WIKTIONARY_SOURCE, entries
 
-    @staticmethod
-    def _dedupe_definitions(
-        definitions: list[DictionaryDefinition],
-    ) -> list[DictionaryDefinition]:
-        """Deduplicate definitions while preserving order.
+    def _append_record_entries(
+        self,
+        *,
+        record: dict[str, Any],
+        definitions_by_key: dict[tuple[str, str, str, str], list[DictionaryDefinition]],
+    ):
+        """Append parsed record data into the aggregate entry map.
 
         Arguments:
-            definitions: raw definition list
-        Returns:
-            deduplicated definitions
+            record: Kaikki JSON object
+            definitions_by_key: aggregate definitions keyed by entry identity
         """
-        seen: set[tuple[str, str]] = set()
-        deduped: list[DictionaryDefinition] = []
-        for definition in definitions:
-            key = (definition.text, definition.label)
-            if key in seen:
-                continue
-            seen.add(key)
-            deduped.append(definition)
-        return deduped
+        traditional = str(record.get("word", "")).strip()
+        if not traditional:
+            return
+        simplified = self.opencc_converter.convert(traditional)
+
+        pinyin_values = self._extract_pinyin_values(record)
+        if not pinyin_values:
+            pinyin_values = [self._fallback_pinyin(traditional)]
+        jyutping_values = self._extract_jyutping_values(record)
+        if not jyutping_values:
+            fallback_jyutping = self._fallback_jyutping(traditional)
+            if fallback_jyutping:
+                jyutping_values = [fallback_jyutping]
+        if not jyutping_values:
+            jyutping_values = [""]
+
+        definitions = self._extract_definitions(record)
+        for pinyin in pinyin_values:
+            for jyutping in jyutping_values:
+                key = (traditional, simplified, pinyin, jyutping)
+                definitions_by_key[key].extend(definitions)
 
     @classmethod
     def _extract_definitions(cls, record: dict[str, Any]) -> list[DictionaryDefinition]:
@@ -145,61 +159,6 @@ class WiktionaryDictionaryParser:
             label = ", ".join(part for part in label_parts if part)
             definitions.append(DictionaryDefinition(text=definition_text, label=label))
         return definitions
-
-    @staticmethod
-    def _extract_relation_words(value: Any) -> list[str]:
-        """Extract related words from a Kaikki relation list.
-
-        Arguments:
-            value: relation payload such as `synonyms` or `antonyms`
-        Returns:
-            related words
-        """
-        if not isinstance(value, list):
-            return []
-        words: list[str] = []
-        for item in value:
-            if not isinstance(item, dict):
-                continue
-            word = str(item.get("word", "")).replace(" (", "").strip()
-            if not word or "／" in word:
-                continue
-            words.append(word)
-        return words
-
-    def _append_record_entries(
-        self,
-        *,
-        record: dict[str, Any],
-        definitions_by_key: dict[tuple[str, str, str, str], list[DictionaryDefinition]],
-    ):
-        """Append parsed record data into the aggregate entry map.
-
-        Arguments:
-            record: Kaikki JSON object
-            definitions_by_key: aggregate definitions keyed by entry identity
-        """
-        traditional = str(record.get("word", "")).strip()
-        if not traditional:
-            return
-        simplified = self.opencc_converter.convert(traditional)
-
-        pinyin_values = self._extract_pinyin_values(record)
-        if not pinyin_values:
-            pinyin_values = [self._fallback_pinyin(traditional)]
-        jyutping_values = self._extract_jyutping_values(record)
-        if not jyutping_values:
-            fallback_jyutping = self._fallback_jyutping(traditional)
-            if fallback_jyutping:
-                jyutping_values = [fallback_jyutping]
-        if not jyutping_values:
-            jyutping_values = [""]
-
-        definitions = self._extract_definitions(record)
-        for pinyin in pinyin_values:
-            for jyutping in jyutping_values:
-                key = (traditional, simplified, pinyin, jyutping)
-                definitions_by_key[key].extend(definitions)
 
     @classmethod
     def _extract_jyutping_values(cls, record: dict[str, Any]) -> list[str]:
@@ -244,6 +203,48 @@ class WiktionaryDictionaryParser:
             if normalized and normalized not in values:
                 values.append(normalized)
         return values
+
+    @staticmethod
+    def _dedupe_definitions(
+        definitions: list[DictionaryDefinition],
+    ) -> list[DictionaryDefinition]:
+        """Deduplicate definitions while preserving order.
+
+        Arguments:
+            definitions: raw definition list
+        Returns:
+            deduplicated definitions
+        """
+        seen: set[tuple[str, str]] = set()
+        deduped: list[DictionaryDefinition] = []
+        for definition in definitions:
+            key = (definition.text, definition.label)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped.append(definition)
+        return deduped
+
+    @staticmethod
+    def _extract_relation_words(value: Any) -> list[str]:
+        """Extract related words from a Kaikki relation list.
+
+        Arguments:
+            value: relation payload such as `synonyms` or `antonyms`
+        Returns:
+            related words
+        """
+        if not isinstance(value, list):
+            return []
+        words: list[str] = []
+        for item in value:
+            if not isinstance(item, dict):
+                continue
+            word = str(item.get("word", "")).replace(" (", "").strip()
+            if not word or "／" in word:
+                continue
+            words.append(word)
+        return words
 
     @staticmethod
     def _get_sound_romanization(sound: dict[str, Any]) -> str:

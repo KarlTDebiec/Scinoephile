@@ -51,20 +51,26 @@ class WiktionaryDictionaryService:
                 / "wiktionary.db"
             )
         self.database_path = val_output_path(database_path, exist_ok=True)
+        """SQLite database path."""
         self.auto_build_missing = auto_build_missing
+        """Whether to build Wiktionary data automatically when the DB is missing."""
         self.database = DictionarySqliteStore(database_path=self.database_path)
+        """SQLite store used for lookup and persistence."""
         self.parser = WiktionaryDictionaryParser()
+        """Parser for Kaikki Wiktionary JSONL input."""
 
         self.local_data_dir_path = (
             local_data_dir_path
             if local_data_dir_path is not None
             else WIKTIONARY_LOCAL_JSONL_PATH.parent
         )
+        """Repository-local directory for the canonical JSONL snapshot."""
         self.runtime_data_dir_path = (
             runtime_data_dir_path
             if runtime_data_dir_path is not None
             else get_runtime_cache_dir_path("dictionaries", "wiktionary", "data")
         )
+        """Runtime cache directory for downloaded or copied JSONL data."""
 
     def build(
         self,
@@ -176,18 +182,6 @@ class WiktionaryDictionaryService:
         shutil.copy2(source_jsonl_path, runtime_jsonl_path)
         return val_input_path(runtime_jsonl_path)
 
-    def _ensure_database(self):
-        """Ensure the SQLite database exists, building it if configured."""
-        if self.database_path.exists():
-            return
-        if not self.auto_build_missing:
-            raise FileNotFoundError(
-                "Wiktionary dictionary database not found. "
-                "Set auto_build_missing=True to build automatically, "
-                "or build explicitly with WiktionaryDictionaryService.build()."
-            )
-        self.build(overwrite=False)
-
     def _download_to_runtime_jsonl(self) -> Path:
         """Download Kaikki Chinese JSONL to the runtime canonical path.
 
@@ -205,6 +199,18 @@ class WiktionaryDictionaryService:
                     if chunk:
                         outfile.write(chunk)
         return val_input_path(runtime_jsonl_path)
+
+    def _ensure_database(self):
+        """Ensure the SQLite database exists, building it if configured."""
+        if self.database_path.exists():
+            return
+        if not self.auto_build_missing:
+            raise FileNotFoundError(
+                "Wiktionary dictionary database not found. "
+                "Set auto_build_missing=True to build automatically, "
+                "or build explicitly with WiktionaryDictionaryService.build()."
+            )
+        self.build(overwrite=False)
 
     def _require_source_jsonl_path(
         self,
