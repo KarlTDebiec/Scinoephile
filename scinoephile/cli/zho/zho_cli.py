@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Standard Chinese subtitle operations."""
+"""Command-line interface for standard Chinese subtitle operations."""
 
 from __future__ import annotations
 
@@ -18,20 +18,20 @@ __all__ = ["ZhoCli"]
 
 
 class ZhoCli(ScinoephileCliBase):
-    """Modify Standard Chinese subtitles."""
+    """Modify standard Chinese subtitles."""
 
     localizations = {
         "zh-hans": {
-            "command-line interface for Standard Chinese subtitle operations": (
+            "command-line interface for standard Chinese subtitle operations": (
                 "标准中文字幕操作命令行界面"
             ),
-            "modify Standard Chinese subtitles": "修改标准中文字幕",
+            "modify standard Chinese subtitles": "修改标准中文字幕",
         },
         "zh-hant": {
-            "command-line interface for Standard Chinese subtitle operations": (
+            "command-line interface for standard Chinese subtitle operations": (
                 "標準中文字幕操作命令列介面"
             ),
-            "modify Standard Chinese subtitles": "修改標準中文字幕",
+            "modify standard Chinese subtitles": "修改標準中文字幕",
         },
     }
     """Localized help text keyed by locale and English source text."""

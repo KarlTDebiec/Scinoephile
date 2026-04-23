@@ -37,8 +37,8 @@ class ScinoephileCli(ScinoephileCliBase):
                 "将两个序列合并为上下行同步字幕"
             ),
             "modify English subtitles": "修改英文字幕",
-            "modify Standard Chinese subtitles": "修改标准中文字幕",
-            "modify Written Cantonese subtitles": "修改书面粤语字幕",
+            "modify standard Chinese subtitles": "修改标准中文字幕",
+            "modify written Cantonese subtitles": "修改书面粤语字幕",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -55,8 +55,8 @@ class ScinoephileCli(ScinoephileCliBase):
                 "將兩個序列合併為上下行同步字幕"
             ),
             "modify English subtitles": "修改英文字幕",
-            "modify Standard Chinese subtitles": "修改標準中文字幕",
-            "modify Written Cantonese subtitles": "修改書面粵語字幕",
+            "modify standard Chinese subtitles": "修改標準中文字幕",
+            "modify written Cantonese subtitles": "修改書面粵語字幕",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."

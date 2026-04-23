@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Standard Chinese OCR subtitle validation."""
+"""Command-line interface for standard Chinese OCR subtitle validation."""
 
 from __future__ import annotations
 
@@ -30,12 +30,12 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "command-line interface for Standard Chinese OCR subtitle validation": (
+            "command-line interface for standard Chinese OCR subtitle validation": (
                 "标准中文 OCR 字幕校验命令行界面"
             ),
         },
         "zh-hant": {
-            "command-line interface for Standard Chinese OCR subtitle validation": (
+            "command-line interface for standard Chinese OCR subtitle validation": (
                 "標準中文 OCR 字幕驗證命令列介面"
             ),
         },

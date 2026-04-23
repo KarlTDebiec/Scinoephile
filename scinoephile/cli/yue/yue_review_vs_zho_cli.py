@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Written Cantonese review against Standard Chinese."""
+"""Command-line interface for written Cantonese review against standard Chinese."""
 
 from __future__ import annotations
 
@@ -36,56 +36,56 @@ __all__ = ["YueReviewVsZhoCli"]
 
 
 class YueReviewVsZhoCli(ScinoephileCliBase):
-    """Review Written Cantonese subtitles against Standard Chinese subtitles."""
+    """Review written Cantonese subtitles against standard Chinese subtitles."""
 
     localizations = {
         "zh-hans": {
             (
-                "command-line interface for Written Cantonese review against "
-                "Standard Chinese"
+                "command-line interface for written Cantonese review against "
+                "standard Chinese"
             ): "书面粤语对照标准中文校对命令行界面",
             (
                 "review mode (default: block): block=block-by-block review, "
                 "line=line-by-line review"
             ): "校对模式（默认：block）：block=按区块校对，line=按行校对",
-            "reviewed Written Cantonese subtitle outfile path (default: stdout)": (
+            "reviewed written Cantonese subtitle outfile path (default: stdout)": (
                 "校对后的书面粤语字幕输出文件路径（默认：标准输出）"
             ),
-            "review Written Cantonese subtitles against Standard Chinese subtitles": (
+            "review written Cantonese subtitles against standard Chinese subtitles": (
                 "校对书面粤语字幕与标准中文字幕"
             ),
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
-            'target Written Cantonese subtitle infile path or "-" for stdin': (
+            'target written Cantonese subtitle infile path or "-" for stdin': (
                 '目标书面粤语字幕输入文件路径，或使用 "-" 表示标准输入'
             ),
-            'reference Standard Chinese subtitle infile path or "-" for stdin': (
+            'reference standard Chinese subtitle infile path or "-" for stdin': (
                 '参考标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
             ),
         },
         "zh-hant": {
             (
-                "command-line interface for Written Cantonese review against "
-                "Standard Chinese"
+                "command-line interface for written Cantonese review against "
+                "standard Chinese"
             ): "書面粵語對照標準中文校對命令列介面",
             (
                 "review mode (default: block): block=block-by-block review, "
                 "line=line-by-line review"
             ): "校對模式（預設：block）：block=按區塊校對，line=按行校對",
-            "reviewed Written Cantonese subtitle outfile path (default: stdout)": (
+            "reviewed written Cantonese subtitle outfile path (default: stdout)": (
                 "校對後的書面粵語字幕輸出檔路徑（預設：標準輸出）"
             ),
-            "review Written Cantonese subtitles against Standard Chinese subtitles": (
+            "review written Cantonese subtitles against standard Chinese subtitles": (
                 "校對書面粵語字幕與標準中文字幕"
             ),
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
             ),
-            'target Written Cantonese subtitle infile path or "-" for stdin': (
+            'target written Cantonese subtitle infile path or "-" for stdin': (
                 '目標書面粵語字幕輸入檔路徑，或使用 "-" 代表標準輸入'
             ),
-            'reference Standard Chinese subtitle infile path or "-" for stdin': (
+            'reference standard Chinese subtitle infile path or "-" for stdin': (
                 '參考標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
             ),
         },
@@ -113,13 +113,13 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             "--yue-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='target Written Cantonese subtitle infile path or "-" for stdin',
+            help='target written Cantonese subtitle infile path or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='reference Standard Chinese subtitle infile path or "-" for stdin',
+            help='reference standard Chinese subtitle infile path or "-" for stdin',
         )
 
         # Operation arguments
@@ -145,7 +145,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             "--outfile",
             default=None,
             type=output_file_arg(),
-            help="reviewed Written Cantonese subtitle outfile path (default: stdout)",
+            help="reviewed written Cantonese subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",

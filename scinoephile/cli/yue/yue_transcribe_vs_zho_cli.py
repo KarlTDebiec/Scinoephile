@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Written Cantonese subtitle transcription."""
+"""Command-line interface for written Cantonese subtitle transcription."""
 
 from __future__ import annotations
 
@@ -38,11 +38,11 @@ __all__ = ["YueTranscribeVsZhoCli"]
 
 
 class YueTranscribeVsZhoCli(ScinoephileCliBase):
-    """Transcribe subtitles from audio and revise using Standard Chinese text."""
+    """Transcribe subtitles from audio and revise using standard Chinese text."""
 
     localizations = {
         "zh-hans": {
-            "command-line interface for Written Cantonese subtitle transcription": (
+            "command-line interface for written Cantonese subtitle transcription": (
                 "书面粤语字幕转写命令行界面"
             ),
             "script for prompts and output conversion (default: simplified)": (
@@ -59,7 +59,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             ),
         },
         "zh-hant": {
-            "command-line interface for Written Cantonese subtitle transcription": (
+            "command-line interface for written Cantonese subtitle transcription": (
                 "書面粵語字幕轉寫命令列介面"
             ),
             "script for prompts and output conversion (default: simplified)": (

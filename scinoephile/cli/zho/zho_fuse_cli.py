@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Standard Chinese OCR subtitle fusion."""
+"""Command-line interface for standard Chinese OCR subtitle fusion."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ class ZhoFuseCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "command-line interface for Standard Chinese OCR subtitle fusion": (
+            "command-line interface for standard Chinese OCR subtitle fusion": (
                 "标准中文 OCR 字幕融合命令行界面"
             ),
             "Standard Chinese subtitle outfile path (default: stdout)": (
@@ -41,7 +41,7 @@ class ZhoFuseCli(ScinoephileCliBase):
             ),
         },
         "zh-hant": {
-            "command-line interface for Standard Chinese OCR subtitle fusion": (
+            "command-line interface for standard Chinese OCR subtitle fusion": (
                 "標準中文 OCR 字幕融合命令列介面"
             ),
             "Standard Chinese subtitle outfile path (default: stdout)": (

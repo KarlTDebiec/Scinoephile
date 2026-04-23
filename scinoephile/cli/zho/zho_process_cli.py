@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Standard Chinese subtitle processing."""
+"""Command-line interface for standard Chinese subtitle processing."""
 
 from __future__ import annotations
 
@@ -35,16 +35,16 @@ __all__ = ["ZhoProcessCli"]
 
 
 class ZhoProcessCli(ScinoephileCliBase):
-    """Modify Standard Chinese subtitles."""
+    """Modify standard Chinese subtitles."""
 
     localizations = {
         "zh-hans": {
             "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
-            "command-line interface for Standard Chinese subtitle processing": (
+            "command-line interface for standard Chinese subtitle processing": (
                 "标准中文字幕处理命令行界面"
             ),
             "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
-            "modify Standard Chinese subtitles": "修改标准中文字幕",
+            "modify standard Chinese subtitles": "修改标准中文字幕",
             "proofread subtitles using LLM (default: simplified)": (
                 "使用大语言模型校对字幕（默认：简体）"
             ),
@@ -60,11 +60,11 @@ class ZhoProcessCli(ScinoephileCliBase):
         },
         "zh-hant": {
             "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
-            "command-line interface for Standard Chinese subtitle processing": (
+            "command-line interface for standard Chinese subtitle processing": (
                 "標準中文字幕處理命令列介面"
             ),
             "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
-            "modify Standard Chinese subtitles": "修改標準中文字幕",
+            "modify standard Chinese subtitles": "修改標準中文字幕",
             "proofread subtitles using LLM (default: simplified)": (
                 "使用大型語言模型校對字幕（預設：簡體）"
             ),

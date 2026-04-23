@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Written Cantonese subtitle processing."""
+"""Command-line interface for written Cantonese subtitle processing."""
 
 from __future__ import annotations
 
@@ -35,16 +35,16 @@ __all__ = ["YueProcessCli"]
 
 
 class YueProcessCli(ScinoephileCliBase):
-    """Modify Written Cantonese subtitles."""
+    """Modify written Cantonese subtitles."""
 
     localizations = {
         "zh-hans": {
             "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
-            "command-line interface for Written Cantonese subtitle processing": (
+            "command-line interface for written Cantonese subtitle processing": (
                 "书面粤语字幕处理命令行界面"
             ),
             "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
-            "modify Written Cantonese subtitles": "修改书面粤语字幕",
+            "modify written Cantonese subtitles": "修改书面粤语字幕",
             "proofread subtitles using LLM (default: traditional)": (
                 "使用大语言模型校对字幕（默认：繁体）"
             ),
@@ -60,11 +60,11 @@ class YueProcessCli(ScinoephileCliBase):
         },
         "zh-hant": {
             "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
-            "command-line interface for Written Cantonese subtitle processing": (
+            "command-line interface for written Cantonese subtitle processing": (
                 "書面粵語字幕處理命令列介面"
             ),
             "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
-            "modify Written Cantonese subtitles": "修改書面粵語字幕",
+            "modify written Cantonese subtitles": "修改書面粵語字幕",
             "proofread subtitles using LLM (default: traditional)": (
                 "使用大型語言模型校對字幕（預設：繁體）"
             ),

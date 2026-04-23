@@ -1,8 +1,8 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Written Cantonese translation.
+"""Command-line interface for written Cantonese translation.
 
-This command uses Standard Chinese reference subtitles.
+This command uses standard Chinese reference subtitles.
 """
 
 from __future__ import annotations
@@ -31,52 +31,52 @@ __all__ = ["YueTranslateVsZhoCli"]
 
 
 class YueTranslateVsZhoCli(ScinoephileCliBase):
-    """Translate missing subtitles using a Standard Chinese reference series."""
+    """Translate missing subtitles using a standard Chinese reference series."""
 
     localizations = {
         "zh-hans": {
-            "command-line interface for Written Cantonese translation": (
+            "command-line interface for written Cantonese translation": (
                 "书面粤语翻译命令行界面"
             ),
-            "This command uses Standard Chinese reference subtitles.": (
+            "This command uses standard Chinese reference subtitles.": (
                 "此命令使用标准中文字幕作为参考。"
             ),
-            'reference Standard Chinese subtitle infile or "-" for stdin': (
+            'reference standard Chinese subtitle infile or "-" for stdin': (
                 '参考标准中文字幕输入文件，或使用 "-" 表示标准输入'
             ),
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
-            'target Written Cantonese subtitle infile or "-" for stdin': (
+            'target written Cantonese subtitle infile or "-" for stdin': (
                 '目标书面粤语字幕输入文件，或使用 "-" 表示标准输入'
             ),
-            "translated Written Cantonese subtitle outfile path (default: stdout)": (
+            "translated written Cantonese subtitle outfile path (default: stdout)": (
                 "翻译后的书面粤语字幕输出文件路径（默认：标准输出）"
             ),
-            "translate missing subtitles using a Standard Chinese reference series": (
+            "translate missing subtitles using a standard Chinese reference series": (
                 "使用标准中文字幕参考补全缺失字幕"
             ),
         },
         "zh-hant": {
-            "command-line interface for Written Cantonese translation": (
+            "command-line interface for written Cantonese translation": (
                 "書面粵語翻譯命令列介面"
             ),
-            "This command uses Standard Chinese reference subtitles.": (
+            "This command uses standard Chinese reference subtitles.": (
                 "此命令使用標準中文字幕作為參考。"
             ),
-            'reference Standard Chinese subtitle infile or "-" for stdin': (
+            'reference standard Chinese subtitle infile or "-" for stdin': (
                 '參考標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
             ),
-            'target Written Cantonese subtitle infile or "-" for stdin': (
+            'target written Cantonese subtitle infile or "-" for stdin': (
                 '目標書面粵語字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
-            "translated Written Cantonese subtitle outfile path (default: stdout)": (
+            "translated written Cantonese subtitle outfile path (default: stdout)": (
                 "翻譯後的書面粵語字幕輸出檔路徑（預設：標準輸出）"
             ),
-            "translate missing subtitles using a Standard Chinese reference series": (
+            "translate missing subtitles using a standard Chinese reference series": (
                 "使用標準中文字幕參考補全缺失字幕"
             ),
         },
@@ -104,13 +104,13 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             "--yue-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='target Written Cantonese subtitle infile or "-" for stdin',
+            help='target written Cantonese subtitle infile or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='reference Standard Chinese subtitle infile or "-" for stdin',
+            help='reference standard Chinese subtitle infile or "-" for stdin',
         )
 
         # Operation arguments
@@ -127,7 +127,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             "--outfile",
             default=None,
             type=output_file_arg(),
-            help="translated Written Cantonese subtitle outfile path (default: stdout)",
+            help="translated written Cantonese subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
