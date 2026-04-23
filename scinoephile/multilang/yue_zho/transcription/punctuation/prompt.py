@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文/中文 transcription punctuating."""
+"""Text for LLM correspondence for 粤文/中文 transcription punctuation."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 
 __all__ = [
-    "YueZhoHansPunctuatingPrompt",
-    "YueZhoHantPunctuatingPrompt",
+    "YueZhoHansPunctuationPrompt",
+    "YueZhoHantPunctuationPrompt",
 ]
 
 
-class YueZhoHansPunctuatingPrompt(DualMultiSinglePrompt, YueHansPrompt):
-    """Text for LLM correspondence for 简体粤文/中文 transcription punctuating."""
+class YueZhoHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
+    """Text for LLM correspondence for 简体粤文/中文 transcription punctuation."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -88,8 +88,8 @@ class YueZhoHansPunctuatingPrompt(DualMultiSinglePrompt, YueHansPrompt):
         )
 
 
-class YueZhoHantPunctuatingPrompt(YueZhoHansPunctuatingPrompt):
-    """Text for LLM correspondence for 繁体粤文/中文 transcription punctuating."""
+class YueZhoHantPunctuationPrompt(YueZhoHansPunctuationPrompt):
+    """Text for LLM correspondence for 繁体粤文/中文 transcription punctuation."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config with which to convert characters from 简体中文 present in parent class."""

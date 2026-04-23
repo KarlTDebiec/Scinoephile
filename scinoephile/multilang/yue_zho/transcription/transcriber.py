@@ -22,9 +22,9 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
-    YueZhoHantPunctuatingPrompt,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
+    YueZhoHantPunctuationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.shifting import (
     YueZhoHansShiftingPrompt,
@@ -43,11 +43,11 @@ class YueTranscriber:
         self,
         test_case_directory_path: Path,
         shifting_test_cases: list[TestCase],
-        punctuating_test_cases: list[TestCase],
+        punctuation_test_cases: list[TestCase],
         shifting_prompt_cls: type[YueZhoHansShiftingPrompt]
         | type[YueZhoHantShiftingPrompt],
-        punctuating_prompt_cls: type[YueZhoHansPunctuatingPrompt]
-        | type[YueZhoHantPunctuatingPrompt],
+        punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
+        | type[YueZhoHantPunctuationPrompt],
         provider: LLMProvider | None = None,
     ):
         """Initialize.
@@ -55,10 +55,10 @@ class YueTranscriber:
         Arguments:
             test_case_directory_path: path to directory containing test cases
             shifting_test_cases: shifting test cases
-            punctuating_test_cases: punctuating test cases
+            punctuation_test_cases: punctuation test cases
             provider: provider to use for LLM queryers
             shifting_prompt_cls: prompt class for block-boundary shifting
-            punctuating_prompt_cls: prompt class for line punctuating
+            punctuation_prompt_cls: prompt class for line punctuation
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         if provider is None:
@@ -74,16 +74,16 @@ class YueTranscriber:
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
-        punctuating_queryer_cls = Queryer.get_queryer_cls(punctuating_prompt_cls)
-        self.punctuating_queryer = punctuating_queryer_cls(
-            prompt_test_cases=[tc for tc in punctuating_test_cases if tc.prompt],
-            verified_test_cases=[tc for tc in punctuating_test_cases if tc.verified],
+        punctuation_queryer_cls = Queryer.get_queryer_cls(punctuation_prompt_cls)
+        self.punctuation_queryer = punctuation_queryer_cls(
+            prompt_test_cases=[tc for tc in punctuation_test_cases if tc.prompt],
+            verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
         )
         self.aligner = Aligner(
             shifting_queryer=self.shifting_queryer,
-            punctuating_queryer=self.punctuating_queryer,
+            punctuation_queryer=self.punctuation_queryer,
         )
 
     def process_all_blocks(
