@@ -5,23 +5,61 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 from scinoephile.analysis import get_series_diff
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
 
 
-class AnalysisDiffCli(CommandLineInterface):
+class AnalysisDiffCli(ScinoephileCliBase):
     """Calculate the diff between two series."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "calculate the diff between two series": "计算两个序列之间的差异",
+            "command-line interface for subtitle diff analysis": (
+                "字幕差异分析命令行界面"
+            ),
+            "label for first series (default: one)": "第一个序列标签（默认：one）",
+            "label for second series (default: two)": "第二个序列标签（默认：two）",
+            "similarity threshold used to pair replacements (default: 0.6)": (
+                "用于配对替换项的相似度阈值（默认：0.6）"
+            ),
+            'subtitle infile for first series or "-" for stdin': (
+                '第一个序列的字幕输入文件，或用 "-" 表示标准输入'
+            ),
+            'subtitle infile for second series or "-" for stdin': (
+                '第二个序列的字幕输入文件，或用 "-" 表示标准输入'
+            ),
+        },
+        "zh-hant": {
+            "calculate the diff between two series": "計算兩個序列之間的差異",
+            "command-line interface for subtitle diff analysis": (
+                "字幕差異分析命令列介面"
+            ),
+            "label for first series (default: one)": "第一個序列標籤（預設：one）",
+            "label for second series (default: two)": "第二個序列標籤（預設：two）",
+            "similarity threshold used to pair replacements (default: 0.6)": (
+                "用於配對替換項的相似度閾值（預設：0.6）"
+            ),
+            'subtitle infile for first series or "-" for stdin': (
+                '第一個序列的字幕輸入檔，或用 "-" 表示標準輸入'
+            ),
+            'subtitle infile for second series or "-" for stdin': (
+                '第二個序列的字幕輸入檔，或用 "-" 表示標準輸入'
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

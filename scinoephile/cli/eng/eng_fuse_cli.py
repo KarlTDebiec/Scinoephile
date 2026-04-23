@@ -6,23 +6,67 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import ClassVar, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
 
 __all__ = ["EngFuseCli"]
 
 
-class EngFuseCli(CommandLineInterface):
+class EngFuseCli(ScinoephileCliBase):
     """Fuse OCR output form Google Lens and Tesseract."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "clean both OCR subtitle infiles before fusing": (
+                "在融合前清理两路 OCR 字幕输入"
+            ),
+            "command-line interface for English OCR subtitle fusion": (
+                "英文 OCR 字幕融合命令行界面"
+            ),
+            'English subtitles OCRed using Google Lens or "-" for stdin': (
+                '使用 Google Lens OCR 的英文字幕，或用 "-" 表示标准输入'
+            ),
+            'English subtitles OCRed using Tesseract or "-" for stdin': (
+                '使用 Tesseract OCR 的英文字幕，或用 "-" 表示标准输入'
+            ),
+            "English subtitle outfile path (default: stdout)": (
+                "英文字幕输出文件路径（默认：标准输出）"
+            ),
+            "fuse OCR output form Google Lens and Tesseract": (
+                "融合 Google Lens 与 Tesseract 的 OCR 输出"
+            ),
+        },
+        "zh-hant": {
+            "clean both OCR subtitle infiles before fusing": (
+                "在融合前清理兩路 OCR 字幕輸入"
+            ),
+            "command-line interface for English OCR subtitle fusion": (
+                "英文 OCR 字幕融合命令列介面"
+            ),
+            'English subtitles OCRed using Google Lens or "-" for stdin': (
+                '使用 Google Lens OCR 的英文字幕，或用 "-" 表示標準輸入'
+            ),
+            'English subtitles OCRed using Tesseract or "-" for stdin': (
+                '使用 Tesseract OCR 的英文字幕，或用 "-" 表示標準輸入'
+            ),
+            "English subtitle outfile path (default: stdout)": (
+                "英文字幕輸出檔路徑（預設：標準輸出）"
+            ),
+            "fuse OCR output form Google Lens and Tesseract": (
+                "融合 Google Lens 與 Tesseract 的 OCR 輸出"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
