@@ -13,6 +13,7 @@ from .cuhk import CuhkDictionaryService
 from .gzzj import GzzjDictionaryService
 from .kaifangcidian import KaifangcidianDictionaryService
 from .unihan import UnihanDictionaryService
+from .wiktionary import WiktionaryDictionaryService
 
 __all__ = [
     "AVAILABLE_DICTIONARY_NAMES",
@@ -20,13 +21,14 @@ __all__ = [
     "lookup_dictionary_entries",
 ]
 
-type DictionaryName = Literal["cuhk", "gzzj", "kaifangcidian", "unihan"]
+type DictionaryName = Literal["cuhk", "gzzj", "kaifangcidian", "unihan", "wiktionary"]
 
 AVAILABLE_DICTIONARY_NAMES: tuple[DictionaryName, ...] = (
     "cuhk",
     "gzzj",
     "kaifangcidian",
     "unihan",
+    "wiktionary",
 )
 """Supported dictionary selectors."""
 
@@ -35,6 +37,7 @@ _DICTIONARY_SERVICES = {
     "gzzj": GzzjDictionaryService,
     "kaifangcidian": KaifangcidianDictionaryService,
     "unihan": UnihanDictionaryService,
+    "wiktionary": WiktionaryDictionaryService,
 }
 """Dictionary service classes keyed by selector."""
 

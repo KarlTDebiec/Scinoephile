@@ -9,6 +9,7 @@ from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
 from .dictionary_build_kaifangcidian_cli import DictionaryBuildKaifangcidianCli
 from .dictionary_build_unihan_cli import DictionaryBuildUnihanCli
+from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 
 __all__ = [
     "DictionaryBuildCli",
@@ -16,4 +17,5 @@ __all__ = [
     "DictionaryBuildGzzjCli",
     "DictionaryBuildKaifangcidianCli",
     "DictionaryBuildUnihanCli",
+    "DictionaryBuildWiktionaryCli",
 ]

@@ -102,3 +102,21 @@ Terms of Use:
 Scinoephile can build from local Unihan source snapshots under
 `scinoephile/data/dictionaries/unihan/`, or by downloading and extracting
 `Unihan.zip` during `dictionary build unihan`.
+
+## Wiktionary (Kaikki) dictionary data source
+
+The Wiktionary source used by the local parser is:
+
+- Wiktionary
+- https://en.wiktionary.org/wiki/Wiktionary:Main_Page
+- Kaikki Chinese dump index:
+  - https://kaikki.org/dictionary/Chinese/
+
+Wiktionary text is available under Creative Commons Attribution-ShareAlike
+licensing:
+
+- https://en.wiktionary.org/wiki/Wiktionary:Copyrights#Creative_Commons_Attribution-ShareAlike_4.0_International_License
+
+Scinoephile can build from local Kaikki JSONL snapshots under
+`scinoephile/data/dictionaries/wiktionary/`, or from an explicit
+`--source-jsonl-path` during `dictionary build wiktionary`.
