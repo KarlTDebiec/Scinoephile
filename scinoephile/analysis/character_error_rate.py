@@ -42,6 +42,21 @@ class CharacterErrorRateResult:
     reference_length: int
     """Number of characters in the normalized reference text."""
 
+    def __str__(self) -> str:
+        """String representation.
+
+        Returns:
+            formatted character error rate summary
+        """
+        return (
+            f"CER: {self.cer}\n"
+            f"Correct: {self.correct}\n"
+            f"Substitutions: {self.substitutions}\n"
+            f"Insertions: {self.insertions}\n"
+            f"Deletions: {self.deletions}\n"
+            f"Reference length: {self.reference_length}"
+        )
+
 
 def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateResult:
     """Compute character error rate between subtitle series.

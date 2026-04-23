@@ -113,12 +113,7 @@ class AnalysisCerCli(ScinoephileCliBase):
         result = get_series_cer(reference_series, candidate_series)
 
         # Write outputs
-        print(f"CER: {result.cer}")
-        print(f"Correct: {result.correct}")
-        print(f"Substitutions: {result.substitutions}")
-        print(f"Insertions: {result.insertions}")
-        print(f"Deletions: {result.deletions}")
-        print(f"Reference length: {result.reference_length}")
+        print(result)
 
 
 if __name__ == "__main__":
