@@ -298,7 +298,7 @@ class Aligner:
             except ValidationError as exc:
                 # TODO: Consider how this could be improved
                 logger.error(
-                    f"Error punctuation sync group {sg_idx}; concatenating.\n"
+                    f"Error punctuating sync group {sg_idx}; concatenating.\n"
                     f"Test case:\n"
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
