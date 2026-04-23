@@ -105,7 +105,8 @@ class ScinoephileCliBase(CommandLineInterface):
             """Normalize locale names to supported values."""
             if locale_name is None:
                 return None
-            compact = locale_name.strip().replace(".", "_").split("@")[0].lower()
+            compact = locale_name.strip().split("@", maxsplit=1)[0]
+            compact = compact.split(".", maxsplit=1)[0].lower()
             mapped = LOCALE_ALIASES.get(compact)
             if mapped is not None:
                 return mapped

@@ -110,8 +110,22 @@ def test_locale_precedence_uses_environment_variable():
     assert "Scinoephile 命令列介面" in output
 
 
+def test_locale_precedence_uses_encoded_environment_variable():
+    """Test locale resolution handles locale encodings."""
+    with patch.dict(environ, {"LC_ALL": "zh_CN.UTF-8"}):
+        output = _run_help("--help")
+    assert "Scinoephile 命令行界面" in output
+
+
 def test_locale_precedence_prefers_lc_all():
     """Test LC_ALL locale takes precedence over LANG."""
     with patch.dict(environ, {"LC_ALL": "en_US.UTF-8", "LANG": "zh_TW.UTF-8"}):
         output = _run_help("--help")
     assert "Command-line interface for Scinoephile" in output
+
+
+def test_locale_precedence_uses_encoded_lang():
+    """Test locale resolution handles encoded LANG values."""
+    with patch.dict(environ, {"LANG": "zh_TW.UTF-8"}, clear=True):
+        output = _run_help("--help")
+    assert "Scinoephile 命令列介面" in output
