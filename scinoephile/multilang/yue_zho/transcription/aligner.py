@@ -31,8 +31,8 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
+from .deliniation import YueZhoHansDeliniationPrompt
 from .punctuation import YueZhoHansPunctuationPrompt
-from .shifting import YueZhoHansShiftingPrompt
 
 __all__ = ["Aligner"]
 
@@ -45,18 +45,18 @@ class Aligner:
 
     def __init__(
         self,
-        shifting_queryer: Queryer,
+        deliniation_queryer: Queryer,
         punctuation_queryer: Queryer,
     ):
         """Initialize.
 
         Arguments:
-            shifting_queryer: queryer for shifting
+            deliniation_queryer: queryer for deliniation
             punctuation_queryer: queryer for punctuation
         """
         self.punctuation_queryer = punctuation_queryer
         """Punctuates transcribed 粤文 text based on corresponding 中文."""
-        self.shifting_queryer = shifting_queryer
+        self.deliniation_queryer = deliniation_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
 
     def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
@@ -78,10 +78,10 @@ class Aligner:
         """
         alignment = Alignment(zhongwen_subs, yuewen_subs)
 
-        # Shifting may involve simply shifting a whole 粤文 subtitle from one sync group
-        # to another, or it may involve splitting a 粤文 subtitle into two 粤文
-        # subtitles. Each time a 粤文 subtitle is split, shifting is implicitly
-        # restarted by clearing the sync group override.
+        # Deliniation may involve moving a whole 粤文 subtitle from one sync group to
+        # another, or it may involve splitting a 粤文 subtitle into two 粤文 subtitles.
+        # Each time a 粤文 subtitle is split, deliniation is implicitly restarted by
+        # clearing the sync group override.
         shifting_in_progress = True
         while shifting_in_progress:
             shifting_in_progress = self._shift(alignment)
@@ -100,19 +100,19 @@ class Aligner:
         """
         for sg_1_idx in range(len(alignment.sync_groups) - 1):
             # Run query
-            test_case = alignment.get_shifting_test_case(sg_1_idx)
+            test_case = alignment.get_deliniation_test_case(sg_1_idx)
             if test_case is None:
                 logger.info(
                     f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文"
                 )
                 continue
             # TODO: try/expect and return original 粤文 on error (not yet encountered)
-            test_case: TestCase = self.shifting_queryer.call(test_case)
+            test_case: TestCase = self.deliniation_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
-            prompt_cls: type[YueZhoHansShiftingPrompt] = getattr(
+            prompt_cls: type[YueZhoHansDeliniationPrompt] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, None)
@@ -138,7 +138,7 @@ class Aligner:
             query: LLM query payload for the pair
             answer: LLM answer payload for the pair
         Returns:
-            whether shifting requires restarting group traversal
+            whether deliniation requires restarting group traversal
         """
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(alignment.sync_groups):
@@ -158,7 +158,7 @@ class Aligner:
         sg_2 = alignment.sync_groups[sg_2_idx]
 
         # Get 粤文
-        prompt_cls: type[YueZhoHansShiftingPrompt] = getattr(query, "prompt_cls")
+        prompt_cls: type[YueZhoHansDeliniationPrompt] = getattr(query, "prompt_cls")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
         yw_1 = getattr(query, prompt_cls.src_2_sub_1, "")
@@ -181,12 +181,12 @@ class Aligner:
 
                 # Case: A sub in 粤文 2 overlaps partialy with 中文 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
-                #   shifting must be restarted
+                #   deliniation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
                         alignment.yuewen, yw_2_idx, n_chars_remaining_to_shift
                     )
-                    # Must restart shifting after splitting a sub
+                    # Must restart deliniation after splitting a sub
                     alignment._sync_groups_override = None
                     return True
 
@@ -196,7 +196,7 @@ class Aligner:
                 nascent_sg[sg_2_idx][1].remove(yw_2_idx)
                 n_chars_remaining_to_shift -= len(yw.text)
 
-                # Case: We are done shifting
+                # Case: Deliniation is complete
                 # Action: Set sync groups and return False to indicate completion
                 if n_chars_remaining_to_shift == 0:
                     alignment._sync_groups_override = nascent_sg
@@ -215,14 +215,14 @@ class Aligner:
 
                 # Case: A sub in 粤文 1 overlaps partially with 中文 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
-                #   shifting must be restarted
+                #   deliniation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
                     alignment.yuewen = get_series_with_sub_split_at_idx(
                         alignment.yuewen,
                         yw_1_idx,
                         len(yw.text) - n_chars_remaining_to_shift,
                     )
-                    # Must restart shifting after splitting a subtitle
+                    # Must restart deliniation after splitting a subtitle
                     alignment._sync_groups_override = None
                     return True
 
@@ -232,7 +232,7 @@ class Aligner:
                 nascent_sg[sg_2_idx][1].insert(0, yw_1_idx)
                 n_chars_remaining_to_shift -= len(yw.text)
 
-                # Case: We are done shifting
+                # Case: Deliniation is complete
                 # Action: Set sync groups and return False to indicate completion
                 if n_chars_remaining_to_shift == 0:
                     alignment._sync_groups_override = nascent_sg
@@ -333,9 +333,9 @@ class Aligner:
             / "multilang"
             / "yue_zho"
             / "transcription"
-            / "shifting"
+            / "deliniation"
             / f"{backend}.json",
-            list(self.shifting_queryer.encountered_test_cases.values()),
+            list(self.deliniation_queryer.encountered_test_cases.values()),
         )
         save_test_cases_to_json(
             test_root

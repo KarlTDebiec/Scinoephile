@@ -30,7 +30,7 @@ from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_revi
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
 from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
 from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
-from test.conftest import get_mlamd_yue_shifting_test_cases
+from test.conftest import get_mlamd_yue_deliniation_test_cases
 from test.data.mlamd import get_mlamd_yue_punctuation_test_cases
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
@@ -130,7 +130,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=test_data_root / "kob",
-        shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(

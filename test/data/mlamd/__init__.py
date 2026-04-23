@@ -43,12 +43,12 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueZhoHansLineReviewPrompt,
     YueZhoLineReviewManager,
 )
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
     YueZhoPunctuationManager,
-)
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from test.helpers import test_data_root
@@ -67,7 +67,7 @@ __all__ = [
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_from_zho_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
-    "get_mlamd_yue_shifting_test_cases",
+    "get_mlamd_yue_deliniation_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_zho_hans_block_review_test_cases",
@@ -255,11 +255,11 @@ def get_mlamd_yue_punctuation_test_cases(
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
+def get_mlamd_yue_deliniation_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansDeliniationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 shifting test cases.
+    """Get MLAMD 简体粤文 deliniation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -272,7 +272,7 @@ def get_mlamd_yue_shifting_test_cases(
         / "multilang"
         / "yue_zho"
         / "transcription"
-        / "shifting"
+        / "deliniation"
         / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
