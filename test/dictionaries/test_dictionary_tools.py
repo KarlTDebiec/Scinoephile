@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of core prompt-derived dictionary tool specifications."""
+"""Tests of prompt-derived dictionary tool specifications."""
 
 from __future__ import annotations
 
@@ -19,15 +19,15 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
     DictionaryToolPrompt,
 )
-from scinoephile.core.dictionaries.dictionary_tools import (
-    get_dictionary_tools,
-    lookup_dictionary,
-)
 from scinoephile.core.dictionaries.serialization import (
     dictionary_definition_to_dict,
     dictionary_entry_to_dict,
 )
 from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
+from scinoephile.dictionaries.dictionary_tools import (
+    get_dictionary_tools,
+    lookup_dictionary,
+)
 from scinoephile.multilang.yue_zho.block_review import (
     YueHansBlockReviewPrompt,
     get_yue_vs_zho_block_reviewer,
