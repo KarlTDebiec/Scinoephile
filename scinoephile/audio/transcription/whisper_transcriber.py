@@ -36,6 +36,7 @@ class WhisperTranscriber:
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
         cache_dir_path: Path | None = None,
+        use_vad: bool = True,
     ):
         """Initialize.
 
@@ -43,11 +44,13 @@ class WhisperTranscriber:
             model_name: Name of Whisper model to use
             language: Language code for transcription
             cache_dir_path: Directory in which to cache
+            use_vad: whether to enable Whisper VAD
         """
         self.model_name = model_name
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model = whisper.load_model(model_name, device=device)
         self.language = language
+        self.use_vad = use_vad
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
@@ -87,7 +90,7 @@ class WhisperTranscriber:
                 self.model,
                 str(temp_audio_path),
                 language=self.language,
-                vad=True,
+                vad=self.use_vad,
             )
         segments = [TranscribedSegment(**s) for s in result["segments"]]
 

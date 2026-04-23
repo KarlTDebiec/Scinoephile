@@ -48,6 +48,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
+            "disable Whisper voice activity detection": "禁用 Whisper 语音活动检测",
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '标准中文字幕输入文件，或使用 "-" 表示标准输入'
             ),
@@ -65,6 +66,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
             ),
+            "disable Whisper voice activity detection": "停用 Whisper 語音活動偵測",
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
@@ -120,6 +122,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             default="simplified",
             type=str_arg(options=("simplified", "traditional")),
             help="script for prompts and output conversion (default: simplified)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--no-vad",
+            action="store_true",
+            help="disable Whisper voice activity detection",
         )
 
         # Output arguments
@@ -177,6 +184,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
         script = kwargs.pop("script")
+        use_vad = not kwargs.pop("no_vad")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if media_infile_path == "-" and zhongwen_infile_path == "-":
@@ -223,6 +231,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             cls._get_transcription_prompt_classes(script)
         )
         transcriber = get_yue_vs_zho_transcriber(
+            use_vad=use_vad,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
         )
