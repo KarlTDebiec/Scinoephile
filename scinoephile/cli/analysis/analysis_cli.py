@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis_cer_cli import AnalysisCerCli
 from .analysis_diff_cli import AnalysisDiffCli
@@ -15,8 +16,14 @@ from .analysis_diff_cli import AnalysisDiffCli
 __all__ = ["AnalysisCli"]
 
 
-class AnalysisCli(CommandLineInterface):
+class AnalysisCli(ScinoephileCliBase):
     """Analyze subtitles."""
+
+    localizations = {
+        "zh-hans": {"analyze subtitles": "分析字幕"},
+        "zh-hant": {"analyze subtitles": "分析字幕"},
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

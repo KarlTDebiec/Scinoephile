@@ -8,21 +8,35 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
 __all__ = ["SyncCli"]
 
 
-class SyncCli(CommandLineInterface):
+class SyncCli(ScinoephileCliBase):
     """Combine two series into the top and bottom of a synchronized series."""
+
+    localizations = {
+        "zh-hans": {
+            "combine two series into the top and bottom of a synchronized series": (
+                "将两个序列合并为上下行同步字幕"
+            ),
+        },
+        "zh-hant": {
+            "combine two series into the top and bottom of a synchronized series": (
+                "將兩個序列合併為上下行同步字幕"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

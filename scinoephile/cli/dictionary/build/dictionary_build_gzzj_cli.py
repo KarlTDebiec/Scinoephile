@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
@@ -21,6 +21,22 @@ logger = getLogger(__name__)
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     """Build GZZJ dictionary cache."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "build GZZJ dictionary cache": "构建 GZZJ 词典缓存",
+            "path to manually downloaded GZZJ source JSON": (
+                "手动下载的 GZZJ 源 JSON 路径"
+            ),
+        },
+        "zh-hant": {
+            "build GZZJ dictionary cache": "建立 GZZJ 詞典快取",
+            "path to manually downloaded GZZJ source JSON": (
+                "手動下載的 GZZJ 來源 JSON 路徑"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
