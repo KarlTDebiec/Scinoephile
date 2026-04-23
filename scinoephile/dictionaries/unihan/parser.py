@@ -12,7 +12,7 @@ from pathlib import Path
 from pypinyin.contrib.tone_convert import tone_to_tone3
 
 from scinoephile.common.validation import val_input_path
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,

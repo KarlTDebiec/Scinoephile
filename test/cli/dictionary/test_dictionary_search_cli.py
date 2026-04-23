@@ -18,7 +18,7 @@ from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,

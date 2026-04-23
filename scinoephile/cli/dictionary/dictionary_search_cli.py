@@ -16,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.dictionaries import DictionaryEntry
+from scinoephile.core.dictionaries import DictionaryEntry
 from scinoephile.dictionaries.lookup import (
     AVAILABLE_DICTIONARY_NAMES,
     lookup_dictionary_entries,

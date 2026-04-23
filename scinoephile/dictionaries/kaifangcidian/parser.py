@@ -8,7 +8,7 @@ import csv
 from pathlib import Path
 
 from scinoephile.common.validation import val_input_path
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
