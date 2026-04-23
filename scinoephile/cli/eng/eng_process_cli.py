@@ -8,14 +8,14 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng import (
     get_eng_block_reviewed,
     get_eng_cleaned,
@@ -25,8 +25,34 @@ from scinoephile.lang.eng import (
 __all__ = ["EngProcessCli"]
 
 
-class EngProcessCli(CommandLineInterface):
+class EngProcessCli(ScinoephileCliBase):
     """Modify English subtitles."""
+
+    localizations = {
+        "zh-hans": {
+            'English subtitle infile path or "-" for stdin': (
+                '英文字幕输入文件路径，或使用 "-" 表示标准输入'
+            ),
+            "English subtitle outfile path (default: stdout)": (
+                "英文字幕输出文件路径（默认：标准输出）"
+            ),
+            "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
+            "modify English subtitles": "修改英文字幕",
+            "proofread subtitles using LLM": "使用大语言模型校对字幕",
+        },
+        "zh-hant": {
+            'English subtitle infile path or "-" for stdin': (
+                '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+            ),
+            "English subtitle outfile path (default: stdout)": (
+                "英文字幕輸出檔路徑（預設：標準輸出）"
+            ),
+            "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
+            "modify English subtitles": "修改英文字幕",
+            "proofread subtitles using LLM": "使用大型語言模型校對字幕",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

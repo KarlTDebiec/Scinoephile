@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 中文 OCR subtitle validation."""
+"""Command-line interface for Standard Chinese OCR subtitle validation."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ from typing import Unpack
 
 from scinoephile.common import (
     CLIKwargs,
-    CommandLineInterface,
     DirectoryNotFoundError,
 )
 from scinoephile.common.argument_parsing import (
@@ -19,14 +18,29 @@ from scinoephile.common.argument_parsing import (
     output_dir_arg,
 )
 from scinoephile.common.exception import NotAFileError
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho import validate_zho_ocr
 
 __all__ = ["ZhoValidateOcrCli"]
 
 
-class ZhoValidateOcrCli(CommandLineInterface):
+class ZhoValidateOcrCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
+
+    localizations = {
+        "zh-hans": {
+            "command-line interface for Standard Chinese OCR subtitle validation": (
+                "标准中文 OCR 字幕校验命令行界面"
+            ),
+        },
+        "zh-hant": {
+            "command-line interface for Standard Chinese OCR subtitle validation": (
+                "標準中文 OCR 字幕驗證命令列介面"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -51,7 +65,7 @@ class ZhoValidateOcrCli(CommandLineInterface):
             required=True,
             type=Path,
             help=(
-                "中文 OCR image subtitle infile path "
+                "Standard Chinese OCR image subtitle infile path "
                 "(directory containing index.html and png files, or a .sup file)"
             ),
         )

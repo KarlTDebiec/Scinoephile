@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.core.cli import ScinoephileCliBase
 
 from .eng_fuse_cli import EngFuseCli
 from .eng_process_cli import EngProcessCli
@@ -16,8 +17,24 @@ from .eng_validate_ocr_cli import EngValidateOcrCli
 __all__ = ["EngCli"]
 
 
-class EngCli(CommandLineInterface):
+class EngCli(ScinoephileCliBase):
     """Modify English subtitles."""
+
+    localizations = {
+        "zh-hans": {
+            "command-line interface for English subtitle operations": (
+                "英文字幕操作命令行界面"
+            ),
+            "modify English subtitles": "修改英文字幕",
+        },
+        "zh-hant": {
+            "command-line interface for English subtitle operations": (
+                "英文字幕操作命令列介面"
+            ),
+            "modify English subtitles": "修改英文字幕",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

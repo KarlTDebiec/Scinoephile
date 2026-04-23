@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 中文 OCR subtitle fusion."""
+"""Command-line interface for Standard Chinese OCR subtitle fusion."""
 
 from __future__ import annotations
 
@@ -8,14 +8,14 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
@@ -28,8 +28,28 @@ from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 __all__ = ["ZhoFuseCli"]
 
 
-class ZhoFuseCli(CommandLineInterface):
+class ZhoFuseCli(ScinoephileCliBase):
     """Fuse OCR output from Google Lens and PaddleOCR."""
+
+    localizations = {
+        "zh-hans": {
+            "command-line interface for Standard Chinese OCR subtitle fusion": (
+                "标准中文 OCR 字幕融合命令行界面"
+            ),
+            "Standard Chinese subtitle outfile path (default: stdout)": (
+                "标准中文字幕输出文件路径（默认：标准输出）"
+            ),
+        },
+        "zh-hant": {
+            "command-line interface for Standard Chinese OCR subtitle fusion": (
+                "標準中文 OCR 字幕融合命令列介面"
+            ),
+            "Standard Chinese subtitle outfile path (default: stdout)": (
+                "標準中文字幕輸出檔路徑（預設：標準輸出）"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -52,13 +72,13 @@ class ZhoFuseCli(CommandLineInterface):
             "--lens-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='中文 subtitles ORCed using Google Lens or "-" for stdin',
+            help='Standard Chinese subtitles OCRed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='中文 subtitles OCRed using PaddleOCR or "-" for stdin',
+            help='Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin',
         )
 
         # Operation arguments
@@ -84,7 +104,7 @@ class ZhoFuseCli(CommandLineInterface):
             "--outfile",
             default=None,
             type=output_file_arg(),
-            help="中文 subtitle outfile path (default: stdout)",
+            help="Standard Chinese subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",

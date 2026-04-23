@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 中文 subtitle processing."""
+"""Command-line interface for Standard Chinese subtitle processing."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -16,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.cmn import get_cmn_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
 from scinoephile.lang.zho.block_review import (
@@ -34,8 +34,52 @@ from scinoephile.lang.zho.conversion import (
 __all__ = ["ZhoProcessCli"]
 
 
-class ZhoProcessCli(CommandLineInterface):
-    """Modify Standard Chinese (中文) subtitles."""
+class ZhoProcessCli(ScinoephileCliBase):
+    """Modify Standard Chinese subtitles."""
+
+    localizations = {
+        "zh-hans": {
+            "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
+            "command-line interface for Standard Chinese subtitle processing": (
+                "标准中文字幕处理命令行界面"
+            ),
+            "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
+            "modify Standard Chinese subtitles": "修改标准中文字幕",
+            "proofread subtitles using LLM (default: simplified)": (
+                "使用大语言模型校对字幕（默认：简体）"
+            ),
+            "script for prompts and output conversion (default: simplified)": (
+                "提示词和输出转换使用的字形（默认：简体）"
+            ),
+            'Standard Chinese subtitle infile path or "-" for stdin': (
+                '标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
+            ),
+            "Standard Chinese subtitle outfile path (default: stdout)": (
+                "标准中文字幕输出文件路径（默认：标准输出）"
+            ),
+        },
+        "zh-hant": {
+            "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
+            "command-line interface for Standard Chinese subtitle processing": (
+                "標準中文字幕處理命令列介面"
+            ),
+            "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
+            "modify Standard Chinese subtitles": "修改標準中文字幕",
+            "proofread subtitles using LLM (default: simplified)": (
+                "使用大型語言模型校對字幕（預設：簡體）"
+            ),
+            "script for prompts and output conversion (default: simplified)": (
+                "提示詞與輸出轉換使用的字形（預設：簡體）"
+            ),
+            'Standard Chinese subtitle infile path or "-" for stdin': (
+                '標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+            ),
+            "Standard Chinese subtitle outfile path (default: stdout)": (
+                "標準中文字幕輸出檔路徑（預設：標準輸出）"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -59,7 +103,7 @@ class ZhoProcessCli(CommandLineInterface):
             "--infile",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='中文 subtitle infile path or "-" for stdin',
+            help='Standard Chinese subtitle infile path or "-" for stdin',
         )
 
         # Operation arguments
@@ -102,7 +146,7 @@ class ZhoProcessCli(CommandLineInterface):
             "--outfile",
             default=None,
             type=output_file_arg(),
-            help="中文 subtitle outfile path (default: stdout)",
+            help="Standard Chinese subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
