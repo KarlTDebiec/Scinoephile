@@ -13,28 +13,28 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,
     DictionaryToolPrompt,
 )
+from scinoephile.core.dictionaries.serialization import (
+    dictionary_definition_to_dict,
+    dictionary_entry_to_dict,
+)
+from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
 from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
 )
-from scinoephile.dictionaries.serialization import (
-    dictionary_definition_to_dict,
-    dictionary_entry_to_dict,
+from scinoephile.multilang.yue_zho.block_review import (
+    YueHansBlockReviewPrompt,
+    get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.dictionaries.sqlite_store import DictionarySqliteStore
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    get_yue_vs_zho_proofreader,
-)
-from scinoephile.multilang.yue_zho.review import (
-    YueHansReviewPrompt,
-    get_yue_vs_zho_reviewer,
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    get_yue_vs_zho_line_reviewer,
 )
 from scinoephile.multilang.yue_zho.translation import (
     YueHansFromZhoTranslationPrompt,
@@ -235,8 +235,8 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
     ("prompt_cls", "factory"),
     [
         (YueHansFromZhoTranslationPrompt, get_yue_vs_zho_translator),
-        (YueHansReviewPrompt, get_yue_vs_zho_reviewer),
-        (YueZhoHansProofreadingPrompt, get_yue_vs_zho_proofreader),
+        (YueHansBlockReviewPrompt, get_yue_vs_zho_block_reviewer),
+        (YueZhoHansLineReviewPrompt, get_yue_vs_zho_line_reviewer),
     ],
 )
 def test_processors_use_prompt_dictionary_tooling(

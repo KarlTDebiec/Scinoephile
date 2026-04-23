@@ -12,18 +12,18 @@ from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.yue_zho import (
-    get_yue_proofread_vs_zho,
-    get_yue_reviewed_vs_zho,
+    get_yue_block_reviewed_vs_zho,
+    get_yue_line_reviewed_vs_zho,
     get_yue_transcribed_vs_zho,
     get_yue_translated_vs_zho,
 )
-from scinoephile.multilang.yue_zho.proofreading import get_yue_vs_zho_proofreader
-from scinoephile.multilang.yue_zho.review import get_yue_vs_zho_reviewer
+from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
+from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
 from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
 from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
 from test.data.mlamd import (
-    get_mlamd_yue_punctuating_test_cases,
-    get_mlamd_yue_shifting_test_cases,
+    get_mlamd_yue_deliniation_test_cases,
+    get_mlamd_yue_punctuation_test_cases,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
@@ -91,28 +91,28 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=test_data_root / "mlamd",
-        shifting_test_cases=get_mlamd_yue_shifting_test_cases(),
-        punctuating_test_cases=get_mlamd_yue_punctuating_test_cases(),
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )
     yue_hans = get_yue_transcribed_vs_zho(yue_hans, zho_hans, transcriber=transcriber)
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans.save(outfile_path)
 
-    # Proofread
+    # Review (line-by-line)
     yue_hans = Series.load(outfile_path)
-    proofreader = get_yue_vs_zho_proofreader(
+    line_reviewer = get_yue_vs_zho_line_reviewer(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
-        / "proofreading"
+        / "line_review"
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread = get_yue_proofread_vs_zho(
-        yue_hans, zho_hans, processor=proofreader
+    yue_hans_line_reviewed = get_yue_line_reviewed_vs_zho(
+        yue_hans, zho_hans, processor=line_reviewer
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_proofread.srt"
-    yue_hans_proofread.save(outfile_path)
+    outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
+    yue_hans_line_reviewed.save(outfile_path)
 
     # Translate
     translator = get_yue_vs_zho_translator(
@@ -123,30 +123,31 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread_translate = get_yue_translated_vs_zho(
-        yue_hans_proofread, zho_hans, translator=translator
+    yue_hans_review_translate = get_yue_translated_vs_zho(
+        yue_hans_line_reviewed, zho_hans, translator=translator
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate.srt"
-    yue_hans_proofread_translate.save(outfile_path)
+    outfile_path = output_dir / "yue-Hans_transcribe_review_translate.srt"
+    yue_hans_review_translate.save(outfile_path)
 
-    # Review
-    reviewer = get_yue_vs_zho_reviewer(
+    # Review (block-by-block)
+    reviewer = get_yue_vs_zho_block_reviewer(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
-        / "review"
+        / "block_review"
         / f"{get_backend()}.json",
         auto_verify=True,
     )
-    yue_hans_proofread_translate_review = get_yue_reviewed_vs_zho(
-        yue_hans_proofread_translate, zho_hans, reviewer=reviewer
+    yue_hans_review_translate_block_review = get_yue_block_reviewed_vs_zho(
+        yue_hans_review_translate, zho_hans, reviewer=reviewer
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
-    yue_hans_proofread_translate_review.save(outfile_path)
+    outfile_path = output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
+    yue_hans_review_translate_block_review.save(outfile_path)
 if "Bilingual 简体粤文 and English" in actions:
     process_yue_hans_eng(
         title_root,
-        yue_hans_path=output_dir / "yue-Hans_transcribe_proofread_translate_review.srt",
+        yue_hans_path=output_dir
+        / "yue-Hans_transcribe_review_translate_block_review.srt",
         eng_path=output_dir / "eng_fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )

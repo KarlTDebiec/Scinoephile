@@ -38,17 +38,17 @@ from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
-from scinoephile.multilang.yue_zho.proofreading import (
-    YueZhoHansProofreadingPrompt,
-    YueZhoProofreadingManager,
+from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
+from scinoephile.multilang.yue_zho.line_review import (
+    YueZhoHansLineReviewPrompt,
+    YueZhoLineReviewManager,
 )
-from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
-    YueZhoPunctuatingManager,
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
 )
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
+    YueZhoPunctuationManager,
 )
 from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
 from test.helpers import test_data_root
@@ -65,11 +65,11 @@ __all__ = [
     "mlamd_zho_hant_sup_path",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
+    "get_mlamd_yue_deliniation_test_cases",
     "get_mlamd_yue_from_zho_translation_test_cases",
-    "get_mlamd_yue_punctuating_test_cases",
-    "get_mlamd_yue_shifting_test_cases",
-    "get_mlamd_yue_vs_zho_proofreading_test_cases",
-    "get_mlamd_yue_vs_zho_review_test_cases",
+    "get_mlamd_yue_punctuation_test_cases",
+    "get_mlamd_yue_vs_zho_block_review_test_cases",
+    "get_mlamd_yue_vs_zho_line_review_test_cases",
     "get_mlamd_zho_hans_block_review_test_cases",
     "get_mlamd_zho_hans_ocr_fusion_test_cases",
     "get_mlamd_zho_hant_block_review_test_cases",
@@ -86,9 +86,9 @@ __all__ = [
     "mlamd_yue_hans_audio_path",
     "mlamd_yue_hans_eng",
     "mlamd_yue_hans_transcribe",
-    "mlamd_yue_hans_transcribe_proofread",
-    "mlamd_yue_hans_transcribe_proofread_translate",
-    "mlamd_yue_hans_transcribe_proofread_translate_review",
+    "mlamd_yue_hans_transcribe_review",
+    "mlamd_yue_hans_transcribe_review_translate",
+    "mlamd_yue_hans_transcribe_review_translate_block_review",
     "mlamd_zho_hans_eng",
     "mlamd_zho_hans_fuse",
     "mlamd_zho_hans_fuse_clean",
@@ -208,6 +208,32 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 
 @cache
+def get_mlamd_yue_deliniation_test_cases(
+    prompt_cls: type[DualPairPrompt] = YueZhoHansDeliniationPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 简体粤文 deliniation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "transcription"
+        / "deliniation"
+        / f"{get_backend()}.json"
+    )
+    return load_test_cases_from_json(
+        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_mlamd_yue_from_zho_translation_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
@@ -229,11 +255,11 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 
 
 @cache
-def get_mlamd_yue_punctuating_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuatingPrompt,
+def get_mlamd_yue_punctuation_test_cases(
+    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 punctuating test cases.
+    """Get MLAMD 简体粤文 punctuation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -246,64 +272,17 @@ def get_mlamd_yue_punctuating_test_cases(
         / "multilang"
         / "yue_zho"
         / "transcription"
-        / "punctuating"
+        / "punctuation"
         / f"{get_backend()}.json"
     )
     return load_test_cases_from_json(
-        path, YueZhoPunctuatingManager, prompt_cls=prompt_cls, **kwargs
+        path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_yue_shifting_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansShiftingPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 简体粤文 shifting test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        title_root
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "shifting"
-        / f"{get_backend()}.json"
-    )
-    return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_yue_vs_zho_proofreading_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoHansProofreadingPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
-) -> list[TestCase]:
-    """Get MLAMD 简体粤文 vs 简体中文 proofreading test cases.
-
-    Arguments:
-        prompt_cls: text for LLM correspondence
-        **kwargs: additional keyword arguments for load_test_cases_from_json
-    Returns:
-        test cases
-    """
-    path = (
-        title_root / "multilang" / "yue_zho" / "proofreading" / f"{get_backend()}.json"
-    )
-    return load_test_cases_from_json(
-        path, YueZhoProofreadingManager, prompt_cls=prompt_cls, **kwargs
-    )
-
-
-@cache
-def get_mlamd_yue_vs_zho_review_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueHansReviewPrompt,
+def get_mlamd_yue_vs_zho_block_review_test_cases(
+    prompt_cls: type[DualBlockPrompt] = YueHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 review test cases.
@@ -314,9 +293,32 @@ def get_mlamd_yue_vs_zho_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "multilang" / "yue_zho" / "review" / f"{get_backend()}.json"
+    path = (
+        title_root / "multilang" / "yue_zho" / "block_review" / f"{get_backend()}.json"
+    )
     return load_test_cases_from_json(
         path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
+def get_mlamd_yue_vs_zho_line_review_test_cases(
+    prompt_cls: type[DualSinglePrompt] = YueZhoHansLineReviewPrompt,
+    **kwargs: Unpack[TestCaseClsKwargs],
+) -> list[TestCase]:
+    """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = (
+        title_root / "multilang" / "yue_zho" / "line_review" / f"{get_backend()}.json"
+    )
+    return load_test_cases_from_json(
+        path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -482,22 +484,22 @@ def mlamd_yue_hans_transcribe() -> Series:
 
 
 @pytest.fixture
-def mlamd_yue_hans_transcribe_proofread() -> Series:
-    """MLAMD 简体粤文 transcribed and proofread subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_proofread.srt")
+def mlamd_yue_hans_transcribe_review() -> Series:
+    """MLAMD 简体粤文 transcribed and line reviewed subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_review.srt")
 
 
 @pytest.fixture
-def mlamd_yue_hans_transcribe_proofread_translate() -> Series:
-    """MLAMD 简体粤文 transcribed, proofread, and translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_proofread_translate.srt")
+def mlamd_yue_hans_transcribe_review_translate() -> Series:
+    """MLAMD 简体粤文 transcribed, line reviewed, and translated subtitles."""
+    return Series.load(output_dir / "yue-Hans_transcribe_review_translate.srt")
 
 
 @pytest.fixture
-def mlamd_yue_hans_transcribe_proofread_translate_review() -> Series:
-    """MLAMD 简体粤文 transcribed, proofread, translated, and reviewed subtitles."""
+def mlamd_yue_hans_transcribe_review_translate_block_review() -> Series:
+    """MLAMD 简体粤文 transcribed, line reviewed, translated, and block reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe_proofread_translate_review.srt"
+        output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     )
 
 

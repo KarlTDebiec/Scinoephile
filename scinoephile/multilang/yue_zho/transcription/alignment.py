@@ -20,12 +20,12 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 from scinoephile.llms.dual_pair import DualPairManager
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
-    YueZhoPunctuatingManager,
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
 )
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
+    YueZhoPunctuationManager,
 )
 
 __all__ = ["Alignment"]
@@ -140,8 +140,8 @@ class Alignment:
         zw_idxs = set([zw_idx for sg in self.sync_groups for zw_idx in sg[0]])
         return zw_idxs == set(range(len(self.zhongwen)))
 
-    def get_shifting_test_case(self, sg_1_idx: int) -> TestCase | None:
-        """Get shifting query for a sync group index.
+    def get_deliniation_test_case(self, sg_1_idx: int) -> TestCase | None:
+        """Get deliniation query for a sync group index.
 
         Arguments:
             sg_1_idx: Index of sync group 1
@@ -199,7 +199,7 @@ class Alignment:
         if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
             return None
         test_case_cls = DualPairManager.get_test_case_cls(
-            prompt_cls=YueZhoHansShiftingPrompt
+            prompt_cls=YueZhoHansDeliniationPrompt
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_1_sub_1: zw_1,
@@ -211,8 +211,8 @@ class Alignment:
         test_case = test_case_cls(query=test_case_cls.query_cls(**query_kwargs))
         return test_case
 
-    def get_punctuating_test_case(self, sg_idx: int) -> TestCase | None:
-        """Get punctuating query for a sync group.
+    def get_punctuation_test_case(self, sg_idx: int) -> TestCase | None:
+        """Get punctuation query for a sync group.
 
         Arguments:
             sg_idx: Index of sync group
@@ -243,8 +243,8 @@ class Alignment:
         yws = [self.yuewen[i].text for i in yw_idxs]
 
         # Return punctuate query
-        test_case_cls = YueZhoPunctuatingManager.get_test_case_cls(
-            prompt_cls=YueZhoHansPunctuatingPrompt
+        test_case_cls = YueZhoPunctuationManager.get_test_case_cls(
+            prompt_cls=YueZhoHansPunctuationPrompt
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_2: zw,

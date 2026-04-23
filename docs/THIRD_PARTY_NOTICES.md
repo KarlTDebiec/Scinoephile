@@ -63,3 +63,60 @@ The GZZJ data source used by the local parser is:
 
 Scinoephile does not distribute the upstream `B01_資料.json` file in-repository.
 Users must download it themselves before running `dictionary build gzzj`.
+
+## Kaifangcidian dictionary data source
+
+The Kaifangcidian source used by the local parser is:
+
+- 開放粵語詞典
+- https://www.kaifangcidian.com/han/yue
+- Data endpoints:
+  - https://www.kaifangcidian.com/yue/js/hzsg.js
+  - https://www.kaifangcidian.com/yue/js/jpsg.js
+  - https://www.kaifangcidian.com/yue/js/lg.js
+
+Kaifangcidian's copyright page states that site resources are licensed under
+Creative Commons Attribution 3.0 unless otherwise noted:
+
+- https://www.kaifangcidian.com/yue/cc/
+
+Scinoephile can build from local canonical CSV snapshots under
+`scinoephile/data/dictionaries/kaifangcidian/`, or by downloading the upstream
+website payloads during `dictionary build kaifangcidian`.
+
+## Unihan dictionary data source
+
+The Unihan source used by the local parser is:
+
+- Unihan Database
+- https://www.unicode.org/charts/unihan.html
+- Archive endpoint:
+  - https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip
+
+Unicode data and software are provided under the Unicode License Agreement and
+Terms of Use:
+
+- https://www.unicode.org/license.html
+- https://www.unicode.org/copyright.html
+
+Scinoephile can build from local Unihan source snapshots under
+`scinoephile/data/dictionaries/unihan/`, or by downloading and extracting
+`Unihan.zip` during `dictionary build unihan`.
+
+## Wiktionary (Kaikki) dictionary data source
+
+The Wiktionary source used by the local parser is:
+
+- Wiktionary
+- https://en.wiktionary.org/wiki/Wiktionary:Main_Page
+- Kaikki Chinese dump index:
+  - https://kaikki.org/dictionary/Chinese/
+
+Wiktionary text is available under Creative Commons Attribution-ShareAlike
+licensing:
+
+- https://en.wiktionary.org/wiki/Wiktionary:Copyrights#Creative_Commons_Attribution-ShareAlike_4.0_International_License
+
+Scinoephile can build from local Kaikki JSONL snapshots under
+`scinoephile/data/dictionaries/wiktionary/`, or from an explicit
+`--source-jsonl-path` during `dictionary build wiktionary`.

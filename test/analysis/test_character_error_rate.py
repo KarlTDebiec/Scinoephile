@@ -156,8 +156,8 @@ def test_get_text_cer(
         ),
         (
             "kob_yue_hans_timewarp_clean_flatten",
-            "kob_yue_hans_transcribe_proofread_translate_review",
-            "kob_yue_hans_transcribe_proofread_translate_review_expected_cer",
+            "kob_yue_hans_transcribe_review_translate_block_review",
+            "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
         ),
     ],
 )

@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.dictionaries import (
+from scinoephile.core.dictionaries import (
     DictionaryDefinition,
     DictionaryEntry,
     DictionarySource,

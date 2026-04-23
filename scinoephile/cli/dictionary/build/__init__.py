@@ -7,9 +7,15 @@ from __future__ import annotations
 from .dictionary_build_cli import DictionaryBuildCli
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
+from .dictionary_build_kaifangcidian_cli import DictionaryBuildKaifangcidianCli
+from .dictionary_build_unihan_cli import DictionaryBuildUnihanCli
+from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 
 __all__ = [
     "DictionaryBuildCli",
     "DictionaryBuildCuhkCli",
     "DictionaryBuildGzzjCli",
+    "DictionaryBuildKaifangcidianCli",
+    "DictionaryBuildUnihanCli",
+    "DictionaryBuildWiktionaryCli",
 ]

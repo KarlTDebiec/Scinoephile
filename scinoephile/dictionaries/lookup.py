@@ -7,9 +7,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal, cast
 
-from . import DictionaryDefinition, DictionaryEntry
+from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
+
 from .cuhk import CuhkDictionaryService
 from .gzzj import GzzjDictionaryService
+from .kaifangcidian import KaifangcidianDictionaryService
+from .unihan import UnihanDictionaryService
+from .wiktionary import WiktionaryDictionaryService
 
 __all__ = [
     "AVAILABLE_DICTIONARY_NAMES",
@@ -17,14 +21,23 @@ __all__ = [
     "lookup_dictionary_entries",
 ]
 
-type DictionaryName = Literal["cuhk", "gzzj"]
+type DictionaryName = Literal["cuhk", "gzzj", "kaifangcidian", "unihan", "wiktionary"]
 
-AVAILABLE_DICTIONARY_NAMES: tuple[DictionaryName, ...] = ("cuhk", "gzzj")
+AVAILABLE_DICTIONARY_NAMES: tuple[DictionaryName, ...] = (
+    "cuhk",
+    "gzzj",
+    "kaifangcidian",
+    "unihan",
+    "wiktionary",
+)
 """Supported dictionary selectors."""
 
 _DICTIONARY_SERVICES = {
     "cuhk": CuhkDictionaryService,
     "gzzj": GzzjDictionaryService,
+    "kaifangcidian": KaifangcidianDictionaryService,
+    "unihan": UnihanDictionaryService,
+    "wiktionary": WiktionaryDictionaryService,
 }
 """Dictionary service classes keyed by selector."""
 

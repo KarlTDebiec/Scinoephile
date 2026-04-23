@@ -15,7 +15,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.review import YueHansReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -59,13 +59,13 @@ def test_yue_review_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mlamd/output/yue-Hans_transcribe.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_proofread.srt",
+            "mlamd/output/yue-Hans_transcribe_review.srt",
             "--mode line",
         ),
         (
-            "mlamd/output/yue-Hans_transcribe_proofread_translate.srt",
+            "mlamd/output/yue-Hans_transcribe_review_translate.srt",
             "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_proofread_translate_review.srt",
+            "mlamd/output/yue-Hans_transcribe_review_translate_block_review.srt",
             "",
         ),
     ],
@@ -84,15 +84,15 @@ def test_yue_review_vs_zho_cli(
 
     with get_temp_file_path(".srt") as outfile_path:
         with patch(
-            "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_vs_zho_reviewer",
+            "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_vs_zho_block_reviewer",
             return_value="reviewer",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_reviewed_vs_zho",
+                "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_block_reviewed_vs_zho",
                 return_value=expected,
             ) as patched_review:
                 with patch(
-                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_proofread_vs_zho",
+                    "scinoephile.cli.yue.yue_review_vs_zho_cli.get_yue_line_reviewed_vs_zho",
                     return_value=expected,
                 ) as patched_line:
                     run_cli_with_args(
@@ -111,7 +111,9 @@ def test_yue_review_vs_zho_cli(
         patched_review.assert_not_called()
         patched_factory.assert_not_called()
     else:
-        assert patched_factory.call_args.kwargs["prompt_cls"] is YueHansReviewPrompt
+        assert (
+            patched_factory.call_args.kwargs["prompt_cls"] is YueHansBlockReviewPrompt
+        )
         called_kwargs = patched_review.call_args.kwargs
         assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
         assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)

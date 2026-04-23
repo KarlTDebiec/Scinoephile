@@ -12,3 +12,4 @@ scinoephile.egg-info
 /test/data/*/output/**/*.wav
 /test/data/cache/**
 /.venv/
+/scinoephile/data/dictionaries/wiktionary/entries.jsonl

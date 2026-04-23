@@ -18,11 +18,11 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.transcription.punctuating import (
-    YueZhoHansPunctuatingPrompt,
+from scinoephile.multilang.yue_zho.transcription.deliniation import (
+    YueZhoHansDeliniationPrompt,
 )
-from scinoephile.multilang.yue_zho.transcription.shifting import (
-    YueZhoHansShiftingPrompt,
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueZhoHansPunctuationPrompt,
 )
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
@@ -96,12 +96,12 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
         output_series = Series.load(outfile_path)
 
     assert (
-        patched_factory.call_args.kwargs["shifting_prompt_cls"]
-        is YueZhoHansShiftingPrompt
+        patched_factory.call_args.kwargs["deliniation_prompt_cls"]
+        is YueZhoHansDeliniationPrompt
     )
     assert (
-        patched_factory.call_args.kwargs["punctuating_prompt_cls"]
-        is YueZhoHansPunctuatingPrompt
+        patched_factory.call_args.kwargs["punctuation_prompt_cls"]
+        is YueZhoHansPunctuationPrompt
     )
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
