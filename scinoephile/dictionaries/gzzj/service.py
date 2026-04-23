@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.validation import val_input_path, val_int, val_output_path
+from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.dictionaries import DictionaryEntry, DictionarySqliteStore
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
 from scinoephile.lang.id import LanguageIDResult
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings

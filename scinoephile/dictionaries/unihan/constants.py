@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.common import package_root
-from scinoephile.dictionaries import DictionarySource
+from scinoephile.core.dictionaries import DictionarySource
 
 MAX_LOOKUP_LIMIT = 400
 

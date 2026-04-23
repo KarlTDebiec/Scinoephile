@@ -7,9 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal, cast
 
+from scinoephile.core.dictionaries import DictionaryDefinition, DictionaryEntry
+
 from .cuhk import CuhkDictionaryService
-from .dictionary_definition import DictionaryDefinition
-from .dictionary_entry import DictionaryEntry
 from .gzzj import GzzjDictionaryService
 from .kaifangcidian import KaifangcidianDictionaryService
 from .unihan import UnihanDictionaryService
