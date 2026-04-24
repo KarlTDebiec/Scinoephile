@@ -234,7 +234,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             reviewed = get_yue_line_reviewed_vs_zho(
                 yuewen=yuewen,
                 zhongwen=zhongwen,
-                processor=processor,
+                line_reviewer=processor,
             )
         else:
             prompt_cls = cls._get_block_review_prompt_cls(script)

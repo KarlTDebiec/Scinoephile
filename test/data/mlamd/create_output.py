@@ -113,7 +113,7 @@ if "简体粤文 (Transcription)" in actions:
         auto_verify=True,
     )
     yue_hans_line_reviewed = get_yue_line_reviewed_vs_zho(
-        yue_hans, zho_hans, processor=line_reviewer
+        yue_hans, zho_hans, line_reviewer=line_reviewer
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
     yue_hans_line_reviewed.save(outfile_path)

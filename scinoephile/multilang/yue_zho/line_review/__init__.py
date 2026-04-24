@@ -49,7 +49,7 @@ class YueZhoLineReviewProcessorKwargs(TypedDict, total=False):
 def get_yue_line_reviewed_vs_zho(
     yuewen: Series,
     zhongwen: Series,
-    processor: YueZhoLineReviewProcessor | None = None,
+    line_reviewer: YueZhoLineReviewProcessor | None = None,
     **kwargs: Unpack[YueZhoLineReviewProcessKwargs],
 ) -> Series:
     """Get 粤文 subtitles line reviewed against 中文 subtitles.
@@ -57,14 +57,14 @@ def get_yue_line_reviewed_vs_zho(
     Arguments:
         yuewen: 粤文 Series
         zhongwen: 中文 Series
-        processor: processor to use
+        line_reviewer: line reviewer to use
         **kwargs: additional keyword arguments for YueZhoLineReviewProcessor.process
     Returns:
         line-reviewed 粤文 subtitles
     """
-    if processor is None:
-        processor = get_yue_vs_zho_line_reviewer()
-    return processor.process(yuewen, zhongwen, **kwargs)
+    if line_reviewer is None:
+        line_reviewer = get_yue_vs_zho_line_reviewer()
+    return line_reviewer.process(yuewen, zhongwen, **kwargs)
 
 
 def get_yue_vs_zho_line_reviewer(
