@@ -4,14 +4,17 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from scinoephile.audio.subtitles import (
     AudioSeries,
     get_series_from_segments,
 )
 from scinoephile.audio.transcription import (
+    TranscribedSegment,
     WhisperTranscriber,
     get_segment_split_on_whitespace,
     get_segment_zho_converted,
@@ -24,16 +27,25 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
-    YueZhoHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
-    YueZhoHantPunctuationPrompt,
 )
 
 from .aligner import Aligner
 
+if TYPE_CHECKING:
+    from pydub import AudioSegment
+
 logger = getLogger(__name__)
+
+
+class VADMode(StrEnum):
+    """Whisper voice activity detection modes for 粤文 transcription."""
+
+    AUTO = "auto"
+    ON = "on"
+    OFF = "off"
 
 
 class YueTranscriber:
@@ -41,40 +53,42 @@ class YueTranscriber:
 
     def __init__(
         self,
+        *,
+        model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        vad_mode: VADMode = VADMode.AUTO,
+        provider: LLMProvider | None = None,
+        deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt],
+        punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt],
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
-        use_vad: bool,
-        deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
-        | type[YueZhoHantDeliniationPrompt],
-        punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
-        | type[YueZhoHantPunctuationPrompt],
-        provider: LLMProvider | None = None,
     ):
         """Initialize.
 
         Arguments:
+            model_name: Whisper model name used for transcription
+            vad_mode: Whisper VAD mode for transcription
+            provider: provider to use for LLM queryers
+            deliniation_prompt_cls: prompt class for block-boundary deliniation
+            punctuation_prompt_cls: prompt class for line punctuation
             test_case_directory_path: path to directory containing test cases
             deliniation_test_cases: deliniation test cases
             punctuation_test_cases: punctuation test cases
-            provider: provider to use for LLM queryers
-            use_vad: whether Whisper VAD is enabled for transcription
-            deliniation_prompt_cls: prompt class for block-boundary deliniation
-            punctuation_prompt_cls: prompt class for line punctuation
         """
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
+        self.model_name = model_name
+        self.vad_mode = vad_mode
         self.transcription_test_case_dir_path = (
-            self._get_transcription_test_case_dir_path(use_vad)
+            self._get_transcription_test_case_dir_path(vad_mode)
         )
         if provider is None:
             provider = get_default_provider()
-        self.transcriber = WhisperTranscriber(
-            "khleeloo/whisper-large-v3-cantonese",
-            cache_dir_path=(
-                get_runtime_cache_dir_path("whisper") / ("vad" if use_vad else "no_vad")
-            ),
-            use_vad=use_vad,
-        )
+        self.vad_transcriber = None
+        if vad_mode in (VADMode.AUTO, VADMode.ON):
+            self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
+        self.no_vad_transcriber = None
+        if vad_mode in (VADMode.AUTO, VADMode.OFF):
+            self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
         deliniation_queryer_cls = Queryer.get_queryer_cls(deliniation_prompt_cls)
         self.deliniation_queryer = deliniation_queryer_cls(
             prompt_test_cases=[tc for tc in deliniation_test_cases if tc.prompt],
@@ -117,9 +131,9 @@ class YueTranscriber:
             yuewen_block = yuewen.blocks[block_idx]
             zhongwen_block = zhongwen.blocks[block_idx]
             yuewen_block_series = self.process_block(yuewen_block, zhongwen_block)
-            logger.info("BLOCK %s:", block_idx)
-            logger.info("中文:\n%s", zhongwen_block.to_simple_string())
-            logger.info("粤文:\n%s", yuewen_block_series.to_simple_string())
+            logger.info(f"BLOCK {block_idx}:")
+            logger.info(f"中文:\n{zhongwen_block.to_simple_string()}")
+            logger.info(f"粤文:\n{yuewen_block_series.to_simple_string()}")
             all_yuewen_block_series[block_idx] = yuewen_block_series
 
         # Concatenate and return
@@ -129,7 +143,7 @@ class YueTranscriber:
                 all_events.extend(block_series.events)
         all_events.sort(key=lambda event: event.start)
         yuewen_series = AudioSeries(audio=yuewen.audio, events=all_events)
-        logger.info("Concatenated Series:\n%s", yuewen_series.to_simple_string())
+        logger.info(f"Concatenated Series:\n{yuewen_series.to_simple_string()}")
         return yuewen_series
 
     def process_block(
@@ -144,7 +158,10 @@ class YueTranscriber:
             zhongwen_block: Corresponding 中文 block
         """
         # Transcribe audio
-        segments = self.transcriber(yuewen_block.audio)
+        segments, used_vad_mode = self._transcribe_block_audio(yuewen_block.audio)
+        self.aligner.test_case_dir_path = self._get_transcription_test_case_dir_path(
+            used_vad_mode
+        )
 
         # Split segments based on pauses
         split_segments = []
@@ -172,17 +189,57 @@ class YueTranscriber:
 
         return yuewen_block_series
 
-    def _get_transcription_test_case_dir_path(self, use_vad: bool) -> Path:
+    def _get_transcription_test_case_dir_path(self, vad_mode: VADMode) -> Path:
         """Get the transcription test-case directory for this transcriber.
 
         Arguments:
-            use_vad: whether Whisper VAD is enabled for transcription
+            vad_mode: Whisper VAD mode used for transcription
         Returns:
             transcription test-case directory path
         """
         transcription_test_case_dir_path = (
             self.test_case_directory_path / "multilang" / "yue_zho" / "transcription"
         )
-        if not use_vad:
+        if vad_mode == VADMode.OFF:
             transcription_test_case_dir_path /= "no_vad"
         return transcription_test_case_dir_path
+
+    def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
+        """Build a Whisper transcriber for the requested VAD setting.
+
+        Arguments:
+            use_vad: whether Whisper VAD is enabled for transcription
+        Returns:
+            configured Whisper transcriber
+        """
+        return WhisperTranscriber(
+            model_name=self.model_name,
+            cache_dir_path=get_runtime_cache_dir_path("whisper"),
+            use_vad=use_vad,
+        )
+
+    def _transcribe_block_audio(
+        self, audio: AudioSegment
+    ) -> tuple[list[TranscribedSegment], VADMode]:
+        """Transcribe one block of audio with the configured VAD behavior.
+
+        Arguments:
+            audio: block audio to transcribe
+        Returns:
+            transcribed segments and the VAD mode that produced them
+        """
+        if self.vad_mode == VADMode.ON:
+            assert self.vad_transcriber is not None
+            return self.vad_transcriber(audio), VADMode.ON
+        if self.vad_mode == VADMode.OFF:
+            assert self.no_vad_transcriber is not None
+            return self.no_vad_transcriber(audio), VADMode.OFF
+
+        assert self.vad_transcriber is not None
+        segments = self.vad_transcriber(audio)
+        if any(segment.text.strip() for segment in segments):
+            return segments, VADMode.ON
+
+        logger.info("Retrying block transcription without VAD after empty result")
+        assert self.no_vad_transcriber is not None
+        return self.no_vad_transcriber(audio), VADMode.OFF

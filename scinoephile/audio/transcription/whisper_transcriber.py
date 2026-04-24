@@ -115,5 +115,10 @@ class WhisperTranscriber:
         if self.cache_dir_path is None:
             return None
 
-        sha256 = hashlib.sha256(audio_data).hexdigest()
-        return self.cache_dir_path / f"{sha256}.json"
+        audio_sha256 = hashlib.sha256(audio_data).hexdigest()
+        cache_key = (
+            f"{audio_sha256}_{self.model_name}_{self.language}_"
+            f"vad-{'on' if self.use_vad else 'off'}"
+        )
+        cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
+        return self.cache_dir_path / f"{cache_sha256}.json"
