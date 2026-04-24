@@ -10,12 +10,14 @@ from logging import getLogger
 
 import torch
 
+from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
 
 __all__ = [
+    "DemucsSeparator",
     "TranscribedSegment",
     "TranscribedWord",
     "WhisperTranscriber",
