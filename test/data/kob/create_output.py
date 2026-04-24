@@ -29,6 +29,7 @@ from scinoephile.multilang.yue_zho import (
 from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
 from scinoephile.multilang.yue_zho.transcription import (
+    DemucsMode,
     VADMode,
     get_yue_vs_zho_transcriber,
 )
@@ -52,10 +53,11 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    "简体粤文 (Transcription)",
+    # "简体粤文 (Transcription)",
     # "简体粤文 (Diff)",
-    "简体粤文 (Transcription Test VAD Off)",
-    "简体粤文 (Transcription Test VAD On)",
+    # "简体粤文 (Transcription Test VAD Off)",
+    # "简体粤文 (Transcription Test VAD On)",
+    "简体粤文 (Transcription Test Demucs On VAD Auto)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -249,4 +251,27 @@ if "简体粤文 (Transcription Test VAD On)" in actions:
         yue_hans_audio, zho_hans, transcriber=transcriber
     )
     print("VAD On transcription CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
+
+if "简体粤文 (Transcription Test Demucs On VAD Auto)" in actions:
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    zho_hans = Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+
+    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    transcriber = get_yue_vs_zho_transcriber(
+        test_case_directory_path=(
+            title_root / "multilang" / "yue_zho" / "transcription"
+        ),
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        demucs_mode=DemucsMode.ON,
+        vad_mode=VADMode.AUTO,
+    )
+    yue_hans_transcribe = get_yue_transcribed_vs_zho(
+        yue_hans_audio, zho_hans, transcriber=transcriber
+    )
+    print("Demucs On VAD Auto transcription CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
