@@ -7,7 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
 import torch
@@ -47,8 +47,7 @@ class WhisperTranscriber:
             use_vad: whether to enable Whisper VAD
         """
         self.model_name = model_name
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = whisper.load_model(model_name, device=device)
+        self._model: Any | None = None
         self.language = language
         self.use_vad = use_vad
         self.cache_dir_path = None
@@ -64,6 +63,18 @@ class WhisperTranscriber:
             Transcription, split into segments
         """
         return self.transcribe(audio)
+
+    @property
+    def model(self) -> Any:
+        """Get the cached Whisper model, loading it if needed.
+
+        Returns:
+            loaded Whisper model
+        """
+        if self._model is None:
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            self._model = whisper.load_model(self.model_name, device=device)
+        return self._model
 
     def transcribe(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe audio.
