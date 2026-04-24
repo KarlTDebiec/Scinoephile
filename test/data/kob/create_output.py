@@ -155,7 +155,12 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
 
     # Review (line-by-line)
-    yue_hans_transcribe = Series.load(outfile_path)
+    yue_hans_transcribe = Series(
+        events=[
+            Series.event_class(**event.as_dict())
+            for event in yue_hans_transcribe.events
+        ]
+    )
     line_reviewer = get_yue_vs_zho_line_reviewer(
         test_case_path=title_root
         / "multilang"
@@ -234,6 +239,12 @@ if "简体粤文 (Transcription Test Demucs Off VAD Auto)" in actions:
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
 
     # Review (line-by-line)
+    yue_hans_transcribe = Series(
+        events=[
+            Series.event_class(**event.as_dict())
+            for event in yue_hans_transcribe.events
+        ]
+    )
     yue_hans_transcribe_review = get_yue_line_reviewed_vs_zho(
         yue_hans_transcribe, zho_hans
     )
