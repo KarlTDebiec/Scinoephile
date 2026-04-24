@@ -10,6 +10,7 @@ from unittest.mock import ANY, Mock, patch
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
 from scinoephile.multilang.yue_zho.transcription import (
+    DemucsMode,
     VADMode,
     get_yue_vs_zho_transcriber,
 )
@@ -44,6 +45,7 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             deliniation_test_cases=deliniation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
             model_name="khleeloo/whisper-large-v3-cantonese",
+            demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
             deliniation_prompt_cls=YueZhoHansDeliniationPrompt,
             punctuation_prompt_cls=YueZhoHansPunctuationPrompt,
@@ -82,3 +84,22 @@ def test_get_yue_vs_zho_transcriber_passes_model_name():
             )
 
     assert patched_transcriber.call_args.kwargs["model_name"] == "custom/model"
+
+
+def test_get_yue_vs_zho_transcriber_passes_demucs_mode():
+    """Test transcriber factory forwards an explicit Demucs mode."""
+    deliniation_test_cases = [cast(TestCase, Mock())]
+    punctuation_test_cases = [cast(TestCase, Mock())]
+
+    with get_temp_directory_path() as temp_dir_path:
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
+        ) as patched_transcriber:
+            get_yue_vs_zho_transcriber(
+                deliniation_test_cases=deliniation_test_cases,
+                punctuation_test_cases=punctuation_test_cases,
+                test_case_directory_path=temp_dir_path,
+                demucs_mode=DemucsMode.ON,
+            )
+
+    assert patched_transcriber.call_args.kwargs["demucs_mode"] == DemucsMode.ON
