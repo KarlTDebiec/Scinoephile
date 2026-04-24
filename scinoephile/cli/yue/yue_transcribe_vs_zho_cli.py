@@ -22,6 +22,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.yue_zho.transcription import (
+    DemucsMode,
     VADMode,
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
@@ -49,6 +50,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
+            "Demucs vocal-separation mode (default: off)": (
+                "Demucs 人声分离模式（默认：off）"
+            ),
             "Whisper voice activity detection mode (default: auto)": (
                 "Whisper 语音活动检测模式（默认：auto）"
             ),
@@ -68,6 +72,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             ),
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
+            ),
+            "Demucs vocal-separation mode (default: off)": (
+                "Demucs 人聲分離模式（預設：off）"
             ),
             "Whisper voice activity detection mode (default: auto)": (
                 "Whisper 語音活動偵測模式（預設：auto）"
@@ -129,6 +136,12 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             help="script for prompts and output conversion (default: simplified)",
         )
         arg_groups["operation arguments"].add_argument(
+            "--demucs",
+            default="off",
+            type=str_arg(options=("on", "off")),
+            help="Demucs vocal-separation mode (default: off)",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--vad",
             default="auto",
             type=str_arg(options=("on", "off", "auto")),
@@ -187,6 +200,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
         script = kwargs.pop("script")
+        demucs_mode = DemucsMode(kwargs.pop("demucs"))
         vad_mode = VADMode(kwargs.pop("vad"))
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
@@ -234,6 +248,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             cls._get_transcription_prompt_classes(script)
         )
         transcriber = get_yue_vs_zho_transcriber(
+            demucs_mode=demucs_mode,
             vad_mode=vad_mode,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
