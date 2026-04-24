@@ -9,7 +9,10 @@ from unittest.mock import ANY, Mock, patch
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
-from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
+from scinoephile.multilang.yue_zho.transcription import (
+    VADMode,
+    get_yue_vs_zho_transcriber,
+)
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
 )
@@ -40,7 +43,8 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             test_case_directory_path=runtime_test_case_dir_path,
             deliniation_test_cases=deliniation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
-            use_vad=True,
+            model_name="khleeloo/whisper-large-v3-cantonese",
+            vad_mode=VADMode.AUTO,
             deliniation_prompt_cls=YueZhoHansDeliniationPrompt,
             punctuation_prompt_cls=YueZhoHansPunctuationPrompt,
             provider=ANY,
@@ -59,3 +63,22 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             / "transcription"
             / "punctuation"
         ).is_dir()
+
+
+def test_get_yue_vs_zho_transcriber_passes_model_name():
+    """Test transcriber factory forwards an explicit Whisper model name."""
+    deliniation_test_cases = [cast(TestCase, Mock())]
+    punctuation_test_cases = [cast(TestCase, Mock())]
+
+    with get_temp_directory_path() as temp_dir_path:
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
+        ) as patched_transcriber:
+            get_yue_vs_zho_transcriber(
+                deliniation_test_cases=deliniation_test_cases,
+                punctuation_test_cases=punctuation_test_cases,
+                test_case_directory_path=temp_dir_path,
+                model_name="custom/model",
+            )
+
+    assert patched_transcriber.call_args.kwargs["model_name"] == "custom/model"
