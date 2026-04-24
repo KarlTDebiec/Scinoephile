@@ -10,7 +10,6 @@ from scinoephile.analysis import get_series_cer, get_series_diff
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
-from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import (
@@ -21,7 +20,6 @@ from scinoephile.lang.eng import (
 from scinoephile.lang.eng.block_review import get_eng_block_reviewer
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
-from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.multilang.yue_zho import (
     get_yue_block_reviewed_vs_zho,
     get_yue_line_reviewed_vs_zho,
@@ -30,18 +28,10 @@ from scinoephile.multilang.yue_zho import (
 )
 from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
-from scinoephile.multilang.yue_zho.transcription import (
-    VADMode,
-    get_yue_vs_zho_transcriber,
-)
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
-    YueZhoPunctuationManager,
-)
+from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
 from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
+from test.conftest import get_mlamd_yue_deliniation_test_cases
+from test.data.mlamd import get_mlamd_yue_punctuation_test_cases
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
@@ -59,110 +49,10 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
+    "简体粤文 (Transcription)",
     "简体粤文 (Diff)",
     "简体粤文 (Transcription Test No VAD)",
-    "简体粤文 (Transcription Test Auto VAD)",
 }
-
-
-def get_yue_hans_transcription_for_vad_mode(
-    vad_mode: VADMode,
-) -> tuple[Series, Series]:
-    """Get KOB transcription output and reference for a given VAD mode.
-
-    Arguments:
-        vad_mode: Whisper VAD mode to use for transcription
-    Returns:
-        transcription output and reference series
-    """
-    zho_hans = Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
-    )
-    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
-
-    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
-    transcriber = get_yue_vs_zho_transcriber(
-        test_case_directory_path=test_data_root / "kob",
-        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
-        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-        vad_mode=vad_mode,
-    )
-    yue_hans_transcribe = get_yue_transcribed_vs_zho(
-        yue_hans_audio, zho_hans, transcriber=transcriber
-    )
-
-    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
-    return yue_hans_transcribe, yue_hans_reference
-
-
-def get_mlamd_transcription_test_case_backend_name() -> str:
-    """Get an available backend name for MLAMD transcription test cases.
-
-    Returns:
-        backend name for an existing MLAMD transcription test-case file
-    """
-    backend_name = get_backend()
-    if backend_name != "cpu":
-        return backend_name
-    if (
-        test_data_root
-        / "mlamd"
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "deliniation"
-        / "mps.json"
-    ).exists():
-        return "mps"
-    return "gpu"
-
-
-def get_mlamd_yue_deliniation_test_cases() -> list[TestCase]:
-    """Get MLAMD 简体粤文 deliniation test cases for an available backend.
-
-    Returns:
-        test cases
-    """
-    backend_name = get_mlamd_transcription_test_case_backend_name()
-    path = (
-        test_data_root
-        / "mlamd"
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "deliniation"
-        / f"{backend_name}.json"
-    )
-    return load_test_cases_from_json(
-        path,
-        DualPairManager,
-        prompt_cls=YueZhoHansDeliniationPrompt,
-    )
-
-
-def get_mlamd_yue_punctuation_test_cases() -> list[TestCase]:
-    """Get MLAMD 简体粤文 punctuation test cases for an available backend.
-
-    Returns:
-        test cases
-    """
-    backend_name = get_mlamd_transcription_test_case_backend_name()
-    path = (
-        test_data_root
-        / "mlamd"
-        / "multilang"
-        / "yue_zho"
-        / "transcription"
-        / "punctuation"
-        / f"{backend_name}.json"
-    )
-    return load_test_cases_from_json(
-        path,
-        YueZhoPunctuationManager,
-        prompt_cls=YueZhoHansPunctuationPrompt,
-    )
-
 
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
@@ -243,7 +133,7 @@ if "简体粤文 (Transcription)" in actions:
         test_case_directory_path=test_data_root / "kob",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-        vad_mode=VADMode.ON,
+        use_vad=True,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
@@ -320,23 +210,30 @@ if "简体粤文 (Diff)" in actions:
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
-    # print(diff)
+    print(diff)
     cer = get_series_cer(
         yue_hans_reference,
         yue_hans_transcribe_review_translate_block_review,
     )
     print(cer)
 if "简体粤文 (Transcription Test No VAD)" in actions:
-    yue_hans_transcribe, yue_hans_reference = get_yue_hans_transcription_for_vad_mode(
-        VADMode.OFF
+    zho_hans = Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+
+    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    transcriber = get_yue_vs_zho_transcriber(
+        test_case_directory_path=test_data_root / "kob",
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        use_vad=False,
+    )
+    yue_hans_transcribe = get_yue_transcribed_vs_zho(
+        yue_hans_audio, zho_hans, transcriber=transcriber
+    )
+
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
     cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
     print("No VAD transcription CER:")
-    print(cer)
-if "简体粤文 (Transcription Test Auto VAD)" in actions:
-    yue_hans_transcribe, yue_hans_reference = get_yue_hans_transcription_for_vad_mode(
-        VADMode.AUTO
-    )
-    cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
-    print("Auto VAD transcription CER:")
     print(cer)
