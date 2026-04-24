@@ -166,7 +166,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_line_review_prompt_cls(
         cls, script: str
-    ) -> type[YueZhoHansLineReviewPrompt] | type[YueZhoHantLineReviewPrompt]:
+    ) -> type[YueZhoHansLineReviewPrompt]:
         """Get the line-review prompt class for the selected script.
 
         Arguments:
@@ -181,7 +181,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_block_review_prompt_cls(
         cls, script: str
-    ) -> type[YueHansBlockReviewPrompt] | type[YueHantBlockReviewPrompt]:
+    ) -> type[YueHansBlockReviewPrompt]:
         """Get the block review prompt class for the selected script.
 
         Arguments:

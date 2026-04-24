@@ -148,7 +148,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_translation_prompt_cls(
         cls, script: str
-    ) -> type[YueHansFromZhoTranslationPrompt] | type[YueHantFromZhoTranslationPrompt]:
+    ) -> type[YueHansFromZhoTranslationPrompt]:
         """Get the translation prompt class for the selected script.
 
         Arguments:

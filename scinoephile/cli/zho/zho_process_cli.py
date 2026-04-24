@@ -218,7 +218,7 @@ class ZhoProcessCli(ScinoephileCliBase):
     @classmethod
     def _get_review_prompt_cls(
         cls, review_script: str
-    ) -> type[ZhoHansBlockReviewPrompt] | type[ZhoHantBlockReviewPrompt]:
+    ) -> type[ZhoHansBlockReviewPrompt]:
         """Get the block-review prompt class for the selected script.
 
         Arguments:
