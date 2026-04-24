@@ -10,13 +10,10 @@
     "query": {
       "yuewen_1": "辛苦啦！少爷",
       "zhongwen_1": "辛苦了！少爷",
-      "yuewen_2": "少爺！抹下汗啦【Note: Added a natural Cantonese subtitle for “Young master! Wipe your sweat.”】",
+      "yuewen_2": "少爺！抹個汗啦",
       "zhongwen_2": "少爷！擦个汗吧"
     },
-    "answer": {
-      "xiugai_yuewen_2": "少爺！抹下汗啦",
-      "beizhu_2": "Removed the inline English note, which is not part of the subtitle text."
-    }
+    "answer": {}
   },
   {
     "query": {
@@ -176,7 +173,7 @@
       "zhongwen_3": "我家破人亡、贫病老弱",
       "yuewen_4": "死人冧楼，妻离子散",
       "zhongwen_4": "无亲无故、妻离子散",
-      "yuewen_5": "打赏个救命钱　　搞乜鬼，死乞儿！",
+      "yuewen_5": "打赏个救命钱　　搞咩呀，死乞儿！",
       "zhongwen_5": "打赏个救命钱　　怎么搞的，死乞丐！",
       "yuewen_6": "你个王八蛋，点解嚟呢度乞食呀？",
       "zhongwen_6": "你个王八蛋，怎么到这里来讨饭？",
@@ -233,13 +230,9 @@
     },
     "answer": {
       "xiugai_yuewen_4": "无亲无故，妻离子散",
-      "beizhu_4": "Changed \"死人冧楼\" to \"无亲无故\" to match the intended line and avoid a likely mishearing.",
-      "xiugai_yuewen_13": "食饭睇戏宵夜直落叫鸡，你包？",
-      "beizhu_13": "Added the missing phrase \"你包？\" at the end, which was likely omitted and is confirmed by the following subtitle.",
-      "xiugai_yuewen_21": "好衰㗎，你有名你唔叫，叫龟婆呀？",
-      "beizhu_21": "Standardized the final question mark from half-width to full-width punctuation only.",
+      "beizhu_4": "Replaced \"死人冧楼\" with \"无亲无故\" to match the reference and fix an obvious transcription error.",
       "xiugai_yuewen_24": "你孝顶帽呀，譬如披麻戴孝噉。",
-      "beizhu_24": "Changed \"耳顶冇呀\" to \"孝顶帽呀\" to fix a likely mishearing and match the context about mourning attire."
+      "beizhu_24": "Corrected the garbled phrase \"耳顶冇呀\" to \"孝顶帽呀\", which fits the context about the hat and mourning attire."
     }
   },
   {
@@ -290,7 +283,7 @@
       "zhongwen_3": "甚么？",
       "yuewen_4": "谁咁大胆蝓你？",
       "zhongwen_4": "谁胆敢挑你？让我打她的咀",
-      "yuewen_5": "唔係用嘴。 [Note: Filled the missing line saying it was not done with the mouth.]",
+      "yuewen_5": "唔係用嘴",
       "zhongwen_5": "不是用咀",
       "yuewen_6": "不是用嘴，是用眼",
       "zhongwen_6": "是用眼睛",
@@ -324,7 +317,7 @@
       "zhongwen_20": "我知道，镇定点",
       "yuewen_21": "走吧",
       "zhongwen_21": "走吧",
-      "yuewen_22": "失陪喇，趙大人。 [Note: Filled the missing line as a polite excuse-taking leave addressed to Lord Zhao.]",
+      "yuewen_22": "失陪啦，赵大人",
       "zhongwen_22": "失陪　　赵大人",
       "yuewen_23": "如霜姑娘到了",
       "zhongwen_23": "如霜姑娘到",
@@ -333,13 +326,13 @@
     },
     "answer": {
       "xiugai_yuewen_3": "乜嘢？",
-      "beizhu_3": "Changed Mandarin-style \"什么\" to Cantonese \"乜嘢\" for consistency with the Cantonese transcription.",
-      "xiugai_yuewen_4": "谁咁大胆撩你？",
-      "beizhu_4": "Corrected the wrong character \"蝓\" to \"撩\", matching the meaning in context.",
-      "xiugai_yuewen_6": "唔係用嘴，係用眼",
-      "beizhu_6": "Changed Mandarin-style wording to Cantonese forms: \"不是\"→\"唔係\", \"是\"→\"係\".",
-      "xiugai_yuewen_18": "係佢，姐姐，",
-      "beizhu_18": "Corrected \"女姐姐\" to \"姐姐\" and standardized \"系\" to \"係\"."
+      "beizhu_3": "Changed Mandarin-style \"什么\" to Cantonese \"乜嘢\" for consistency with the surrounding Cantonese subtitles.",
+      "xiugai_yuewen_4": "谁咁大胆挑你？",
+      "beizhu_4": "Corrected the obvious typo/misrecognition \"蝓你\" to \"挑你\".",
+      "xiugai_yuewen_6": "唔係用嘴，系用眼",
+      "beizhu_6": "Changed Mandarin-style wording to Cantonese forms: \"不是\"→\"唔係\", \"是\"→\"系\".",
+      "xiugai_yuewen_18": "系佢，姐姐，",
+      "beizhu_18": "Removed the duplicated/misrecognized character in \"女姐姐\" and corrected it to \"姐姐\"."
     }
   },
   {
@@ -411,18 +404,20 @@
       "zhongwen_7": "放心，我还有很多很漂亮的姑娘",
       "yuewen_8": "龟婆，咁今晚我就靠晒你㗎",
       "zhongwen_8": "鸨母，那今晚就倚仗你了",
-      "yuewen_9": "呢件事同我无关。",
+      "yuewen_9": "呢件事同我冇关",
       "zhongwen_9": "这与我无关",
       "yuewen_10": "放肆！",
       "zhongwen_10": "大胆！放肆"
     },
     "answer": {
-      "xiugai_yuewen_4": "一定系我今日顶帽唔衬个发型",
-      "beizhu_4": "Corrected the wording to reflect that the hat does not match the hairstyle.",
-      "xiugai_yuewen_7": "你放心呀，我哋做好多好靓好省镜嘅姑娘㗎",
-      "beizhu_7": "Changed '好省' to '好省镜', the likely intended Cantonese expression.",
-      "xiugai_yuewen_9": "呢件事同我冇关。",
-      "beizhu_9": "Changed Mandarin-style '无关' to the Cantonese form '冇关'."
+      "xiugai_yuewen_1": "够坦白，我真系喜欢到非常",
+      "beizhu_1": "Changed \"喜欢得非常\" to the idiomatic Cantonese phrasing \"喜欢到非常\".",
+      "xiugai_yuewen_4": "一定系我今日頂帽唔多衬我嘅发型",
+      "beizhu_4": "Added \"我\" for the intended meaning that the hat does not match my hairstyle.",
+      "xiugai_yuewen_7": "你放心呀，我哋仲有好多好靓好省嘅姑娘㗎",
+      "beizhu_7": "Changed \"做好多\" to \"仲有好多\" to match the intended meaning \"still have many\".",
+      "xiugai_yuewen_9": "呢件事同我冇關",
+      "beizhu_9": "Standardized the character form from \"关\" to \"關\"."
     }
   },
   {
@@ -438,18 +433,16 @@
     "query": {
       "yuewen_1": "当先",
       "zhongwen_1": "先放好",
-      "yuewen_2": "鶴嘴｜Filled missing Cantonese subtitle for “鹤咀”.",
+      "yuewen_2": "鶴嘴",
       "zhongwen_2": "鹤咀",
-      "yuewen_3": "虎爪｜Filled missing Cantonese subtitle for “虎爪”.",
+      "yuewen_3": "虎爪",
       "zhongwen_3": "虎爪"
     },
     "answer": {
-      "xiugai_yuewen_1": "擋先",
-      "beizhu_1": "Corrected a likely misheard character: changed 当先 to 擋先 to match the spoken Cantonese meaning \"hold/block it first\" rather than \"first\".",
-      "xiugai_yuewen_2": "鶴嘴",
-      "beizhu_2": "Removed the English placeholder text and kept only the Cantonese subtitle term.",
-      "xiugai_yuewen_3": "虎爪",
-      "beizhu_3": "Removed the English placeholder text and kept only the Cantonese subtitle term."
+      "xiugai_yuewen_1": "擺先",
+      "beizhu_1": "Changed the first character from 当 to 擺 to match the meaning of 'put first/put it down first' in the Chinese reference.",
+      "xiugai_yuewen_2": "鶴咀",
+      "beizhu_2": "Changed 嘴 to 咀 to match the place name/reference term consistently."
     }
   },
   {
@@ -465,7 +458,7 @@
   },
   {
     "query": {
-      "yuewen_1": "好……好｜Filled the missing Cantonese subtitle for “好⋯好” as a natural written Cantonese repetition.",
+      "yuewen_1": "好⋯⋯好",
       "zhongwen_1": "好⋯好",
       "yuewen_2": "我嘅螳螂拳再破你虎鹤双形嘛",
       "zhongwen_2": "我的螳螂拳再破你的虎鹤双形",
@@ -476,10 +469,7 @@
       "yuewen_5": "唔怪你咁蠢啊",
       "zhongwen_5": "难怪比较差"
     },
-    "answer": {
-      "xiugai_yuewen_1": "好……好",
-      "beizhu_1": "Removed the accidental English editor note and kept only the Cantonese subtitle text."
-    }
+    "answer": {}
   },
   {
     "query": {
@@ -550,7 +540,7 @@
     "query": {
       "yuewen_1": "王爷嘅令牌你都敢抢？",
       "zhongwen_1": "你胆敢抢皇爷的令牌？",
-      "yuewen_2": "锁埋佢。\n[EN note: Filled the order to lock/arrest him.]",
+      "yuewen_2": "锁佢入去",
       "zhongwen_2": "把他锁起来",
       "yuewen_3": "等等！根据大清律例",
       "zhongwen_3": "等一等！根据大清律例",
@@ -582,16 +572,16 @@
       "zhongwen_16": "今天是清太祖皇后叶赫拿拉氏的忌辰",
       "yuewen_17": "身为京官，罪加一等",
       "zhongwen_17": "身为京官罪加一等",
-      "yuewen_18": "可以问斩。\n[EN note: Filled the line stating he can be sentenced to execution.]",
+      "yuewen_18": "可以问斩",
       "zhongwen_18": "可以问斩",
       "yuewen_19": "斩他，斩他…",
       "zhongwen_19": "斩他⋯斩他"
     },
     "answer": {
-      "xiugai_yuewen_7": "你呢？",
-      "beizhu_7": "Changed Mandarin-style '那你呢' to the Cantonese wording '你呢'.",
-      "xiugai_yuewen_16": "今天系先清太祖皇后叶赫那拉氏嘅忌辰",
-      "beizhu_16": "Corrected apparent transcription errors: '现清' to '先清', '拿' to '那', and added Cantonese copula/particle for consistency."
+      "xiugai_yuewen_7": "噉你呢？",
+      "beizhu_7": "Changed Mandarin-style '那你呢' to the Cantonese form '噉你呢'.",
+      "xiugai_yuewen_16": "今天系先清太祖皇后叶赫拿拉氏嘅忌辰",
+      "beizhu_16": "Corrected apparent mis-transcription '现清' to '先清' and changed the particle to Cantonese '系...嘅' for consistency with the spoken line."
     }
   },
   {
@@ -626,7 +616,7 @@
       "zhongwen_14": "我们走",
       "yuewen_15": "王爷！王爷，呢个玩唔起，见好就收喇",
       "zhongwen_15": "老爷！这个不能惹，见好就收",
-      "yuewen_16": "收手喇",
+      "yuewen_16": "收喇",
       "zhongwen_16": "收吧",
       "yuewen_17": "大事化小，小事化无",
       "zhongwen_17": "大事化小，小事化无",
@@ -634,10 +624,10 @@
       "zhongwen_18": "少爷，你的帽子"
     },
     "answer": {
-      "xiugai_yuewen_1": "根据《大清律例》",
-      "beizhu_1": "Added the missing word “例” to match the proper title of the law code.",
-      "xiugai_yuewen_9": "我今晚仲未玩过",
-      "beizhu_9": "Changed “冇玩过” to “仲未玩过” to match the intended meaning of “haven’t played yet tonight.”"
+      "xiugai_yuewen_8": "苏将军，大家玩得咁开心就算喇",
+      "beizhu_8": "Changed 去得 to 玩得 to match the intended meaning and likely spoken line.",
+      "xiugai_yuewen_9": "我今晚冇玩过喎",
+      "beizhu_9": "Added 喎 to better match the implied spoken complaint 'I haven't played tonight yet.'"
     }
   },
   {
@@ -705,15 +695,15 @@
       "zhongwen_7": "其实他为人很有情趣",
       "yuewen_8": "但是⋯",
       "zhongwen_8": "但是⋯",
-      "yuewen_9": "但系乜嘢啫，十萬両我已經攞咗",
+      "yuewen_9": "但系乜嘢，十萬両我已經攞咗",
       "zhongwen_9": "但是甚么，十万两我已拿了",
-      "yuewen_10": "我唔會還畀佢嘅",
+      "yuewen_10": "我唔會還畀佢㗎",
       "zhongwen_10": "我不会还给他的",
       "yuewen_11": "说到苏翁这份人…",
       "zhongwen_11": "说到苏翁的为人⋯",
       "yuewen_12": "廢話少講，鴇母",
       "zhongwen_12": "废话少说，鸨母",
-      "yuewen_13": "你出去先； filled missing Cantonese lines about taking the 100,000 taels, refusing to return it, telling the madam to stop talking, and asking her to leave first.",
+      "yuewen_13": "你先出去",
       "zhongwen_13": "你先出去",
       "yuewen_14": "是的…是的",
       "zhongwen_14": "是的⋯是的",
@@ -721,20 +711,10 @@
       "zhongwen_15": "七姑娘⋯　　将就一下⋯"
     },
     "answer": {
-      "xiugai_yuewen_1": "如霜姑娘，我哋又见面喇",
-      "beizhu_1": "Changed Mandarin phrasing to Cantonese: 我们→我哋, added Cantonese sentence-final particle 喇, and normalized punctuation.",
-      "xiugai_yuewen_2": "点会系你？赵大爷呢？",
-      "beizhu_2": "Changed Mandarin 怎么会是 to the Cantonese form 点会系.",
-      "xiugai_yuewen_3": "嗰粒赵大爷嘅定风珠",
-      "beizhu_3": "Corrected the mistranscribed line to refer to Zhao Daye's '定风珠'.",
-      "xiugai_yuewen_7": "实在佢好有情趣",
-      "beizhu_7": "Replaced the Mandarin adjective 很 with the Cantonese form 好.",
-      "xiugai_yuewen_11": "讲到苏翁呢份人…",
-      "beizhu_11": "Changed Mandarin 说到 to the Cantonese form 讲到.",
-      "xiugai_yuewen_13": "你出去先",
-      "beizhu_13": "Removed the obvious stray English placeholder text and kept only the actual subtitle line.",
-      "xiugai_yuewen_14": "系…系",
-      "beizhu_14": "Changed Mandarin 是的 to the Cantonese response 系."
+      "xiugai_yuewen_3": "嗰粒定風珠",
+      "beizhu_3": "Corrected a clear mistranscription: changed the garbled phrase to the intended object, 'that Dingfeng pearl.'",
+      "xiugai_yuewen_7": "實在佢好有情趣",
+      "beizhu_7": "Changed '很' to the more consistent Cantonese form '好'."
     }
   },
   {
@@ -776,7 +756,7 @@
       "zhongwen_1": "实在让我太感意外",
       "yuewen_2": "姑娘",
       "zhongwen_2": "姑娘",
-      "yuewen_3": "放手｜Added the missing Cantonese line meaning “Let go.”",
+      "yuewen_3": "放手呀",
       "zhongwen_3": "放手",
       "yuewen_4": "你居然会武功",
       "zhongwen_4": "原来你会武功",
@@ -806,8 +786,8 @@
       "zhongwen_16": "原来有人藏在这里"
     },
     "answer": {
-      "xiugai_yuewen_3": "放手",
-      "beizhu_3": "Removed the inserted English editorial note and kept only the Cantonese subtitle line."
+      "xiugai_yuewen_14": "你有冇神经病呀",
+      "beizhu_14": "Completed the truncated line by restoring the missing phrase."
     }
   },
   {
@@ -936,13 +916,10 @@
       "zhongwen_7": "莫大叔说不会降龙十八掌便打不过他",
       "yuewen_8": "噉我唔使嫁人啦？",
       "zhongwen_8": "那我岂不是嫁不出吗？",
-      "yuewen_9": "得啦！咪发姣啦",
+      "yuewen_9": "好啦，咪发姣",
       "zhongwen_9": "行吧！别发情"
     },
-    "answer": {
-      "xiugai_yuewen_6": "赵无极好好打㗎喎",
-      "beizhu_6": "Corrected the sentence-final particle from \"㖞\" to the more appropriate \"喎\"."
-    }
+    "answer": {}
   },
   {
     "query": {
@@ -956,13 +933,13 @@
       "zhongwen_4": "是的",
       "yuewen_5": "胸咁平，你对奶呢?",
       "zhongwen_5": "胸部那么平，你的奶子呢？",
-      "yuewen_6": "咁早，仲未瞓醒⋯\n[Note: Filled the line saying it was still early and the speaker had not yet fully woken up.]",
+      "yuewen_6": "咁早，仲未瞓醒⋯",
       "zhongwen_6": "那么早，还未睡醒⋯",
       "yuewen_7": "这次打你唔死，算你大命",
       "zhongwen_7": "这次没有把你打死，算是你走运",
-      "yuewen_8": "以后冇化妆就唔好周围走，知唔知呀？\n[Note: Filled the warning telling her not to walk around without makeup in the future.]",
+      "yuewen_8": "以后冇化妆唔好周围走，知唔知呀？",
       "zhongwen_8": "以后没有化妆不要四处走，知道吗？",
-      "yuewen_9": "唔会喇，唔会喇\n[Note: Filled the repeated reply saying it would not happen again.]",
+      "yuewen_9": "唔会喇，唔会喇",
       "zhongwen_9": "不会了，不会了",
       "yuewen_10": "唔会喇…你别等如霜姑娘了，佢走咗⋯",
       "zhongwen_10": "你不用等如霜姑娘了，她已经走了⋯",
@@ -970,10 +947,10 @@
       "zhongwen_11": "走了？"
     },
     "answer": {
-      "xiugai_yuewen_3": "你是鸨母？",
-      "beizhu_3": "Changed \"虔婆\" to \"鸨母\" to match the reference meaning and likely intended title consistently.",
-      "xiugai_yuewen_10": "唔会喇，唔会喇⋯你别等如霜姑娘了，佢走咗⋯",
-      "beizhu_10": "Added the repeated reply at the start to keep continuity with the previous line and avoid the obvious mismatch."
+      "xiugai_yuewen_7": "呢次打你唔死，算你大命",
+      "beizhu_7": "Changed 这次 to 呢次 for natural and consistent Cantonese wording.",
+      "xiugai_yuewen_10": "唔会喇⋯你唔使等如霜姑娘喇，佢走咗⋯",
+      "beizhu_10": "Corrected 别等 to 唔使等 and added 喇 to match the spoken Cantonese line more accurately."
     }
   },
   {
@@ -986,7 +963,7 @@
       "zhongwen_3": "京城？",
       "yuewen_4": "男儿为国家⋯",
       "zhongwen_4": "男儿为国家⋯",
-      "yuewen_5": "點样戴辫子⋯｜Filled the missing lyric about how to wear the queue.",
+      "yuewen_5": "⋯条辫点戴⋯",
       "zhongwen_5": "⋯辫子怎样戴⋯",
       "yuewen_6": "伸吓！伸吓！",
       "zhongwen_6": "挥啊！挥啊！",
@@ -1002,11 +979,11 @@
       "zhongwen_11": "爹等你说这句话，等了二十五年",
       "yuewen_12": "为咗苏察哈尔家，你应该咁做",
       "zhongwen_12": "为了苏察哈尔家，你应该这样做",
-      "yuewen_13": "咪误会，我咁样做并唔系为咗边个｜Filled the line saying “don’t misunderstand, I’m not doing this for anyone.”",
+      "yuewen_13": "咪误会，我咁做并唔系为咗边个",
       "zhongwen_13": "别误会，我这样做并不是为谁",
       "yuewen_14": "咁就唔系为咗任何人",
       "zhongwen_14": "只是为了一个女人",
-      "yuewen_15": "英雄｜Filled the single-word exclamation “hero.”",
+      "yuewen_15": "英雄",
       "zhongwen_15": "英雄",
       "yuewen_16": "英雄，为女死，为女亡，为女上京考状元",
       "zhongwen_16": "为妞死，为妞亡，为妞上京考状元",
@@ -1020,31 +997,31 @@
       "zhongwen_20": "有何不妥？",
       "yuewen_21": "品味与别不同，真系能人所不能",
       "zhongwen_21": "品味与别不同，真是能人所不能",
-      "yuewen_22": "阿爹佩服你｜Filled the father’s line expressing admiration.",
+      "yuewen_22": "阿爹佩服你",
       "zhongwen_22": "阿爹钦佩你",
       "yuewen_23": "阿爹一唔陪你，我陪你上京",
       "zhongwen_23": "我陪你上京",
-      "yuewen_24": "二、三、四、五、六｜Filled the counting line.",
+      "yuewen_24": "二、三、四、五、六",
       "zhongwen_24": "二，三，四，五，六",
-      "yuewen_25": "嚟喇，老爷｜Filled the servant’s response “Coming, master.”",
+      "yuewen_25": "嚟啦，老爷",
       "zhongwen_25": "来了，老爷",
       "yuewen_26": "少爷上京，阖家搬",
       "zhongwen_26": "少爷上京赴考，我们搬家",
       "yuewen_27": "宵夜，你哋唔好追啦",
       "zhongwen_27": "你们不要追了",
-      "yuewen_28": "呢啲鸡唔使带喇，京城多的是｜Filled the line about not needing to bring the chickens.",
+      "yuewen_28": "呢啲鸡唔使带啦，京城大把",
       "zhongwen_28": "这些鸡不带了，京城多的是",
-      "yuewen_29": "你呢个蠢材，小心啲｜Filled the scolding line telling someone to be careful.",
+      "yuewen_29": "你个蠢材，小心啲",
       "zhongwen_29": "你这个笨蛋小心点",
-      "yuewen_30": "整花咗我啲嘢，我实唔放过你｜Filled the threat about damaging belongings.",
+      "yuewen_30": "整花咗我啲嘢，我唔会放过你",
       "zhongwen_30": "弄花了我的东西，我不会放过你",
       "yuewen_31": "小心啲",
       "zhongwen_31": "小心点",
-      "yuewen_32": "阿爹，早晨｜Filled the morning greeting to father.",
+      "yuewen_32": "阿爹，早晨",
       "zhongwen_32": "老爹，早",
       "yuewen_33": "阿爹，早晨",
       "zhongwen_33": "早",
-      "yuewen_34": "真系全部都搬走？｜Filled the question asking if everything is really being moved away.",
+      "yuewen_34": "真系全部都搬走晒？",
       "zhongwen_34": "真的全部都搬走？",
       "yuewen_35": "真系乜到搬走晒，梗系啦",
       "zhongwen_35": "当然",
@@ -1060,9 +1037,9 @@
       "zhongwen_40": "小看我？",
       "yuewen_41": "系咪迟早日大过你嘅",
       "zhongwen_41": "总有一天比你大",
-      "yuewen_42": "有边个愿意除件衫落嚟畀我着一下｜Filled the comedic line asking who will lend clothes to wear.",
+      "yuewen_42": "有边个肯除件衫落嚟畀我着吓",
       "zhongwen_42": "有谁愿意脱下衣服来给我穿一下",
-      "yuewen_43": "冇眼睇｜Filled the short remark “can’t bear to look.”",
+      "yuewen_43": "冇眼睇",
       "zhongwen_43": "没眼看",
       "yuewen_44": "你哋企晒喺度做咩？你仲唔搬佢走",
       "zhongwen_44": "你们站着干嘛？还不把它搬走",
@@ -1114,56 +1091,28 @@
       "zhongwen_67": "是"
     },
     "answer": {
-      "xiugai_yuewen_5": "點样戴辫仔⋯",
-      "beizhu_5": "Changed the last word from '辫子' to the more likely sung lyric '辫仔'. Removed the English filler note.",
-      "xiugai_yuewen_7": "我抆长又弹长呢⋯",
-      "beizhu_7": "Corrected the repeated verb/object phrase from '弹弦' to '弹长' to match the lyric pattern and the Mandarin reference.",
-      "xiugai_yuewen_13": "咪误会，我咁样做并唔系为咗边个",
-      "beizhu_13": "Removed the English filler note only.",
-      "xiugai_yuewen_14": "咁就系为咗一个女人",
-      "beizhu_14": "Corrected the line to match the intended meaning: 'for a woman' instead of 'not for anyone'.",
-      "xiugai_yuewen_15": "英雄",
-      "beizhu_15": "Removed the English filler note only.",
+      "xiugai_yuewen_14": "咁就唔系为咗任何人？",
+      "beizhu_14": "Added the missing question mark to match the interrogative meaning in context.",
       "xiugai_yuewen_18": "怡红院金牌清倌人如霜姑娘",
-      "beizhu_18": "Corrected the brothel name from '而红院' to '怡红院'.",
+      "beizhu_18": "Corrected the place name from 而红院 to 怡红院.",
       "xiugai_yuewen_19": "妓女？",
-      "beizhu_19": "Corrected obvious mistranscription from '自己？' to '妓女？'.",
-      "xiugai_yuewen_22": "阿爹佩服你",
-      "beizhu_22": "Removed the English filler note only.",
-      "xiugai_yuewen_23": "阿爹又点会唔陪你，我陪你上京",
-      "beizhu_23": "Corrected the sentence to a coherent line where father says he will accompany him to the capital.",
-      "xiugai_yuewen_24": "二、三、四、五、六",
-      "beizhu_24": "Removed the English filler note only.",
-      "xiugai_yuewen_25": "嚟喇，老爷",
-      "beizhu_25": "Removed the English filler note only.",
-      "xiugai_yuewen_26": "少爷上京，阖家搬迁",
-      "beizhu_26": "Completed the phrase from '阖家搬' to '阖家搬迁'.",
-      "xiugai_yuewen_27": "少爷，你哋唔好追啦",
-      "beizhu_27": "Corrected the address from '宵夜' to '少爷'.",
-      "xiugai_yuewen_28": "呢啲鸡唔使带喇，京城多的是",
-      "beizhu_28": "Removed the English filler note only.",
-      "xiugai_yuewen_29": "你呢个蠢材，小心啲",
-      "beizhu_29": "Removed the English filler note only.",
-      "xiugai_yuewen_30": "整花咗我啲嘢，我实唔放过你",
-      "beizhu_30": "Removed the English filler note only.",
-      "xiugai_yuewen_32": "阿爹，早晨",
-      "beizhu_32": "Removed the English filler note only.",
-      "xiugai_yuewen_34": "真系全部都搬走？",
-      "beizhu_34": "Removed the English filler note only.",
+      "beizhu_19": "Corrected a likely misheard word: 自己 was changed to 妓女 to match the dialogue context.",
+      "xiugai_yuewen_23": "阿爹一于陪你，我陪你上京",
+      "beizhu_23": "Corrected 一唔 to 一于, which fits the intended meaning of deciding to accompany him.",
       "xiugai_yuewen_35": "真系乜都搬走晒，梗系啦",
-      "beizhu_35": "Corrected '乜到' to '乜都'.",
-      "xiugai_yuewen_37": "小心呀，系呀，少爷哥怕啲乜嘢呢？",
-      "beizhu_37": "Corrected the last part from '怕啲嘢呢' to '怕啲乜嘢呢' for obvious mistranscription.",
+      "beizhu_35": "Corrected 乜到 to 乜都, a likely character error in the phrase meaning 'everything'.",
+      "xiugai_yuewen_37": "小心呀，系呀，少爷哥怕乜嘢呢？",
+      "beizhu_37": "Corrected 怕啲嘢 to 怕乜嘢, which matches the line's meaning and context.",
       "xiugai_yuewen_39": "大得过我咩，家下？",
-      "beizhu_39": "Corrected '大得我咩' to '大得过我咩'.",
+      "beizhu_39": "Corrected 大得我咩 to 大得过我咩 for the proper comparative meaning.",
       "xiugai_yuewen_41": "系咪迟早一日大过你嘅",
-      "beizhu_41": "Corrected '日' to '一日' in the phrase '迟早一日'.",
-      "xiugai_yuewen_42": "有边个愿意除件衫落嚟畀我着一下",
-      "beizhu_42": "Removed the English filler note only.",
-      "xiugai_yuewen_43": "冇眼睇",
-      "beizhu_43": "Removed the English filler note only.",
-      "xiugai_yuewen_54": "家阵啦，推佢，过去推佢",
-      "beizhu_54": "Corrected '嚟' to '啦' for a more likely exhortation in context."
+      "beizhu_41": "Corrected 日 to 一日 in the fixed phrase 迟早一日.",
+      "xiugai_yuewen_53": "唔系我上到京城边有荔枝食吖？",
+      "beizhu_53": "Added the final particle 吖 and question mark to better match the spoken rhetorical question.",
+      "xiugai_yuewen_54": "家阵嚟，推佢，过去啲，推佢",
+      "beizhu_54": "Corrected the repeated phrase to 过去啲，推佢, which fits the instruction being shouted during moving.",
+      "xiugai_yuewen_56": "睇住我啲荔枝呀，衰头",
+      "beizhu_56": "Corrected 瘦头 to 衰头, a more plausible spoken insult in context."
     }
   },
   {
@@ -1181,11 +1130,11 @@
       "zhongwen_1": "微臣大胆，让皇上受惊",
       "yuewen_2": "如果呢个女子系真嘅就好",
       "zhongwen_2": "如果这个女人是真的就好了",
-      "yuewen_3": "企定！快啲\n[EN note: Filled the command telling someone to stand properly and hurry up.]",
+      "yuewen_3": "企好！快啲",
       "zhongwen_3": "站好！快点",
-      "yuewen_4": "咩事⋯咩事呀？\n[EN note: Filled a startled question asking what happened.]",
+      "yuewen_4": "咩事⋯咩事？",
       "zhongwen_4": "甚么事⋯甚么事？",
-      "yuewen_5": "嚟⋯入去\n[EN note: Filled a short line telling someone to come in.]",
+      "yuewen_5": "嚟⋯入去",
       "zhongwen_5": "来⋯进去"
     },
     "answer": {}
@@ -1364,7 +1313,7 @@
       "zhongwen_2": "今天武状元之争",
       "yuewen_3": "系由蒙古嘅博达尔多⋯",
       "zhongwen_3": "是由蒙古的博达尔多⋯",
-      "yuewen_4": "好⋯好（补上喝彩声）； Brief note: filled in the cheering line “Good… good.”",
+      "yuewen_4": "好⋯好",
       "zhongwen_4": "好⋯好",
       "yuewen_5": "对广东嘅苏察哈尔灿",
       "zhongwen_5": "⋯对广东的苏察哈尔灿",
@@ -1436,7 +1385,7 @@
       "zhongwen_38": "过来过来",
       "yuewen_39": "我第二次瞓身",
       "zhongwen_39": "我第二次全押",
-      "yuewen_40": "系呀？",
+      "yuewen_40": "系咩？",
       "zhongwen_40": "是吗？",
       "yuewen_41": "系二百万两",
       "zhongwen_41": "二百万两",
@@ -1446,7 +1395,7 @@
       "zhongwen_43": "为甚么你不下注？",
       "yuewen_44": "我落注嚟做乜嘢？嗰个我仔嚟㗎嘛",
       "zhongwen_44": "我下注干甚么？他是我的儿子",
-      "yuewen_45": "弊啦！我漏咗分析呢样嘢",
+      "yuewen_45": "弊喇！我漏咗分析呢样",
       "zhongwen_45": "糟了！我少分析了这个",
       "yuewen_46": "睇流做乜嘢？",
       "zhongwen_46": "少分析了甚么？",
@@ -1458,30 +1407,18 @@
       "zhongwen_49": "不是老郑主考吗？"
     },
     "answer": {
-      "xiugai_yuewen_4": "好⋯好",
-      "beizhu_4": "Removed the accidental English note and kept only the subtitle text.",
+      "xiugai_yuewen_10": "哗，咁睇唔起苏灿啊！",
+      "beizhu_10": "Corrected \"睇唔好\" to \"睇唔起\", which matches the intended meaning of looking down on Su Can.",
       "xiugai_yuewen_15": "举重咁叻托咩柒！",
-      "beizhu_15": "Corrected the phrase order from a likely mistranscription to the common line '托咩柒'.",
-      "xiugai_yuewen_21": "但系未出赛行两步已经颈有白汗",
-      "beizhu_21": "Corrected likely misheard wording from '行圈嘅' to '行两步' and adjusted word order for the spoken line.",
-      "xiugai_yuewen_27": "但系能够对垒决赛都系好有克服嘅",
-      "beizhu_27": "Corrected obvious mistranscribed words to match the intended spoken meaning about reaching the final matchup.",
-      "xiugai_yuewen_28": "乜，克服啊？",
-      "beizhu_28": "Changed '虾' to '克服啊' to match the preceding line being queried.",
-      "xiugai_yuewen_29": "系，洋文嚟嘅！克服即系有斗心噉解",
-      "beizhu_29": "Changed '虾' to '克服' for consistency with the preceding subtitle.",
-      "xiugai_yuewen_34": "点解？你突然间睇得佢咁好",
-      "beizhu_34": "Added '佢' for the complete spoken reference to the person being backed.",
-      "xiugai_yuewen_36": "畀你讲吓讲吓，我都觉得苏灿好似赢硬噉啊",
-      "beizhu_36": "Restored the full line that was split incorrectly; this part should continue directly into the winning remark.",
-      "xiugai_yuewen_39": "我第二次瞓身，系二百万两",
-      "beizhu_39": "Restored the full sentence; the amount belongs with this line.",
-      "xiugai_yuewen_44": "我落注嚟做乜嘢？嗰个系我仔嚟㗎嘛",
-      "beizhu_44": "Added the missing copula '系' in '嗰个系我仔'.",
+      "beizhu_15": "Corrected the phrase order to the common line \"托咩柒\", which fits the spoken Cantonese expression.",
+      "xiugai_yuewen_27": "但系老实对我，决赛都系好有克服嘅",
+      "beizhu_27": "Inserted punctuation only to reflect the spoken pause more clearly; no wording change.",
+      "xiugai_yuewen_28": "乜，吓啊？",
+      "beizhu_28": "Corrected \"虾啊\" to the interjection \"吓啊\", which matches the reaction sound.",
       "xiugai_yuewen_46": "漏咗做乜嘢？",
-      "beizhu_46": "Corrected the question to match the response 'I missed what?' rather than 'look what for?'.",
+      "beizhu_46": "Corrected \"睇流做乜嘢\" to \"漏咗做乜嘢\", matching the previous line about having missed an analysis.",
       "xiugai_yuewen_48": "系，主考到！",
-      "beizhu_48": "Added the exclamation mark; the line itself is fine."
+      "beizhu_48": "Corrected the final punctuation to an exclamation, matching the announcement tone."
     }
   },
   {
@@ -1569,17 +1506,12 @@
     "query": {
       "yuewen_1": "追返嗰局，追返嗰局",
       "zhongwen_1": "追回一局了",
-      "yuewen_2": "你張飛撕咗未｜Filled the missing Cantonese line asking whether the ticket has been torn/checked.",
+      "yuewen_2": "你張飛撕咗未",
       "zhongwen_2": "你的票撕了没有",
-      "yuewen_3": "未｜Filled the missing Cantonese reply meaning “not yet/no.”",
+      "yuewen_3": "未",
       "zhongwen_3": "没有"
     },
-    "answer": {
-      "xiugai_yuewen_2": "你张飞撕咗未",
-      "beizhu_2": "Removed the inserted English placeholder/comment and kept only the Cantonese subtitle line.",
-      "xiugai_yuewen_3": "未",
-      "beizhu_3": "Removed the inserted English placeholder/comment and kept only the Cantonese reply."
-    }
+    "answer": {}
   },
   {
     "query": {
@@ -1606,15 +1538,15 @@
   },
   {
     "query": {
-      "yuewen_1": "你用啲咁污糟嘅手段嚟攞勝利？",
+      "yuewen_1": "你用啲咁肮脏嘅手段嚟攞胜利？",
       "zhongwen_1": "你用这肮脏的手段来取得胜利？",
       "yuewen_2": "瞓醒未呀，靓仔你",
       "zhongwen_2": "小子，你睡醒了吗",
-      "yuewen_3": "好嘢呀！贏咗喇",
+      "yuewen_3": "好嘢！赢咗",
       "zhongwen_3": "好棒呀！赢了",
-      "yuewen_4": "飲茶！飲茶！",
+      "yuewen_4": "饮茶！饮茶！",
       "zhongwen_4": "喝茶！喝茶！",
-      "yuewen_5": "祝你好運",
+      "yuewen_5": "祝你好运",
       "zhongwen_5": "祝你好运",
       "yuewen_6": "梗系用個pat嘅啦，仲有第二處咩？唔係呀！",
       "zhongwen_6": "这当然要用臀啦！还有别处可用吗？",
@@ -1629,14 +1561,14 @@
     },
     "answer": {
       "xiugai_yuewen_6": "梗係用個patpat嘅啦，仲有第二處咩？唔係呀！",
-      "beizhu_6": "Corrected \"pat\" to \"patpat,\" which is the natural and intended Cantonese expression here.",
+      "beizhu_6": "Corrected \"pat\" to \"patpat\" to match the intended spoken Cantonese expression for buttocks.",
       "xiugai_yuewen_9": "例上冇說明唔准用暗器",
-      "beizhu_9": "Corrected the typo \"说明\" to the proper character form \"說明\" for consistency in the Cantonese transcript."
+      "beizhu_9": "Corrected the typo \"说明\" to the proper traditional form \"說明\"."
     }
   },
   {
     "query": {
-      "yuewen_1": "你个短命老郑，竟然够胆呃我",
+      "yuewen_1": "你个短命嘅老郑，竟然敢呃我",
       "zhongwen_1": "你个短命的老郑，竟敢骗我",
       "yuewen_2": "以后唔好畀我见到你",
       "zhongwen_2": "以后不要给我看见你",
@@ -1660,10 +1592,10 @@
       "zhongwen_11": "明明是我赢！我抗议"
     },
     "answer": {
-      "xiugai_yuewen_5": "你又点呢？",
-      "beizhu_5": "Corrected an apparent mishearing/wrong character sequence from \"你又呢？\" to the natural intended line \"你又点呢？\".",
-      "xiugai_yuewen_10": "博打懒多三局两胜，系今科武状元",
-      "beizhu_10": "Corrected the apparent typo/misrecognition \"搏打懒多\" to \"博打懒多\"; the rest is kept unchanged."
+      "xiugai_yuewen_5": "点解呢？",
+      "beizhu_5": "Corrected an obvious mis-transcription from \"你又呢？\" to \"点解呢？\" to match the meaning \"why?\".",
+      "xiugai_yuewen_10": "搏打懒多三局两胜，系今届武状元",
+      "beizhu_10": "Changed \"今科\" to \"今届\", which is the standard phrase here and fixes the apparent transcription error."
     }
   },
   {
@@ -1818,18 +1750,24 @@
       "zhongwen_16": "你两父子同谋",
       "yuewen_17": "吏部尚书按例判刑",
       "zhongwen_17": "吏部尚书按例判刑",
-      "yuewen_18": "吏部尚書，快啲出嚟！出嚟！",
+      "yuewen_18": "吏部尚書，快啲出嚟！出嚟",
       "zhongwen_18": "吏部尚书，快点出来！出来",
       "yuewen_19": "我在这里…在这里",
       "zhongwen_19": "我在这里！在这里"
     },
     "answer": {
-      "xiugai_yuewen_1": "我唔懂写",
-      "beizhu_1": "Changed Mandarin-style '不懂' to Cantonese-style '唔懂' for consistency with the Cantonese transcript.",
+      "xiugai_yuewen_1": "我唔识写",
+      "beizhu_1": "Changed Mandarin wording to natural Cantonese: \"不懂\" -> \"唔识\".",
+      "xiugai_yuewen_4": "唔好…",
+      "beizhu_4": "Changed Mandarin \"不要\" to Cantonese \"唔好\".",
+      "xiugai_yuewen_9": "对唔住，爹",
+      "beizhu_9": "Changed Mandarin \"对不起\" to Cantonese \"对唔住\".",
+      "xiugai_yuewen_10": "其实我连自己个名都唔识写",
+      "beizhu_10": "Changed Mandarin phrasing to Cantonese: \"自己的名字\" -> \"自己个名\", \"不懂写\" -> \"唔识写\".",
       "xiugai_yuewen_14": "唔系，斩我…　　皇上，我好斩啲",
-      "beizhu_14": "Changed '不是' to '唔系' and corrected '一点' to the Cantonese character '啲'.",
-      "xiugai_yuewen_15": "混帐！你哋话斩边个就斩边个吗",
-      "beizhu_15": "Corrected singular '你' to plural '你哋' and changed '谁' to Cantonese '边个' to match the intended meaning and register."
+      "beizhu_14": "Adjusted two Mandarin forms to Cantonese: \"不是\" -> \"唔系\", \"一点\" -> \"啲\".",
+      "xiugai_yuewen_18": "吏部尚书，快啲出嚟！出嚟",
+      "beizhu_18": "Unified the character form from Traditional \"書\" to Simplified \"书\" for consistency."
     }
   },
   {
@@ -1924,11 +1862,11 @@
       "zhongwen_5": "对不起，老爷",
       "yuewen_6": "我们跟你在一起这么久，蛋都没生过",
       "zhongwen_6": "我们跟你一起这么久，蛋都没有生过",
-      "yuewen_7": "唔相干，唔相干（Filled: saying it doesn't matter / is unrelated.）",
+      "yuewen_7": "唔相干，唔相干",
       "zhongwen_7": "不相干，不相干",
-      "yuewen_8": "系老爷办事不力（Filled: saying the fault is that master handled things poorly.）",
+      "yuewen_8": "係老爷办事不力",
       "zhongwen_8": "是老爷办事不力",
-      "yuewen_9": "如果老爷想要嘅话，细路多得是（Filled: saying if master wants children, there are plenty.）",
+      "yuewen_9": "如果老爷想要，细路多的是",
       "zhongwen_9": "若然老爷要的话，孩子多的是了",
       "yuewen_10": "不过老爷有阿灿一个就够了",
       "zhongwen_10": "不过老爷有阿灿一个就够了",
@@ -1948,10 +1886,10 @@
       "zhongwen_17": "太开心了"
     },
     "answer": {
-      "xiugai_yuewen_6": "我哋跟你喺一齐咁耐，蛋都冇生过",
-      "beizhu_6": "Changed Mandarin-style wording to a Cantonese form for consistency with the surrounding subtitles.",
+      "xiugai_yuewen_3": "悔不得该，惹祸⋯",
+      "beizhu_3": "Corrected an obvious transcription error: changed 惹害 to 惹祸.",
       "xiugai_yuewen_15": "安乐咗",
-      "beizhu_15": "Corrected a likely mishearing: changed \"落成咗\" to \"安乐咗\" to match the reference meaning."
+      "beizhu_15": "Changed 落成咗 to 安乐咗 to match the intended meaning in context."
     }
   },
   {
@@ -1960,7 +1898,7 @@
       "zhongwen_1": "进去，进去",
       "yuewen_2": "快点⋯",
       "zhongwen_2": "快点⋯",
-      "yuewen_3": "点解佢哋畀人抄家都仲咁开心？ (Added the line asking why they are still so happy despite having their house confiscated.)",
+      "yuewen_3": "点解佢哋畀人抄家都仲咁开心？",
       "zhongwen_3": "为什么他们给人家抄家还这样开心？",
       "yuewen_4": "笑死人了，笑死人⋯",
       "zhongwen_4": "笑死人了⋯",
@@ -1980,9 +1918,9 @@
       "zhongwen_11": "没有！你呢？",
       "yuewen_12": "我忘记了",
       "zhongwen_12": "我忘记了",
-      "yuewen_13": "死啦！我哋两个真系死得啦 (Added the line lamenting that both of them are finished.)",
+      "yuewen_13": "死得喇！我哋两个真系死得喇",
       "zhongwen_13": "完蛋了！我俩真是完蛋了",
-      "yuewen_14": "善有善报，可怜我呢个小乞儿⋯ (Added the line about karmic reward and pitying the little beggar.)",
+      "yuewen_14": "善有善报，可怜我呢个小乞儿⋯",
       "zhongwen_14": "善有善报，可怜我这个小乞丐⋯",
       "yuewen_15": "仔，睇呢样嘢又似唔似爹？",
       "zhongwen_15": "孩儿！你看这个像不像阿爹？",
@@ -1990,7 +1928,7 @@
       "zhongwen_16": "你指唱歌那个？",
       "yuewen_17": "真系⋯唔系，畀佢钱嘅",
       "zhongwen_17": "不是，是给钱的那个",
-      "yuewen_18": "佢仲衰过唱歌嗰个，仲冇良心 (Added the line saying he is even more heartless than the one singing.)",
+      "yuewen_18": "佢比唱歌嗰个仲冇良心",
       "zhongwen_18": "他比唱歌那个更没良心",
       "yuewen_19": "唔系啩！几潇洒，各花各眼啫",
       "zhongwen_19": "不是吧！多潇洒，各人眼光不同吧",
@@ -1998,9 +1936,9 @@
       "zhongwen_20": "都怪老爹不好",
       "yuewen_21": "以前常叫你乞丐仔…",
       "zhongwen_21": "以前老叫你小乞丐！小乞丐",
-      "yuewen_22": "而家就真系要做乞儿喇 (Added the line saying they now really have to become beggars.)",
+      "yuewen_22": "而家就真系要做喇",
       "zhongwen_22": "现在就真的要做了",
-      "yuewen_23": "我唔信我系咁嘅命 (Added the line rejecting this fate.)",
+      "yuewen_23": "我唔信我会系噉嘅命运",
       "zhongwen_23": "我并不相信这命运",
       "yuewen_24": "中乜嘢中，皇帝叫我哋做乞丐",
       "zhongwen_24": "皇帝要我们做乞丐",
@@ -2008,28 +1946,26 @@
       "zhongwen_25": "我们就乖乖当乞丐吗？",
       "yuewen_26": "要我这种人才、这种武艺",
       "zhongwen_26": "以我这种人才和武艺",
-      "yuewen_27": "连天都唔准我去做乞儿 (Added the line saying even heaven won’t allow him to be a beggar.)",
+      "yuewen_27": "连天都唔准我去做乞丐",
       "zhongwen_27": "天也不准我去当乞丐",
-      "yuewen_28": "咪就系啰 (Added a brief agreeing line: “Exactly.”)",
+      "yuewen_28": "咪就系啰",
       "zhongwen_28": "这就是嘛",
-      "yuewen_29": "我边度似乞儿呀？ (Added the line asking how he looks like a beggar.)",
+      "yuewen_29": "我边度似乞丐呀？",
       "zhongwen_29": "我哪里像乞丐？",
       "yuewen_30": "我有哪一份像",
       "zhongwen_30": "不像",
-      "yuewen_31": "小乞儿老乞儿，攞去买嘢食啦 (Added the line addressing little and old beggars and telling them to take it to buy something.)",
+      "yuewen_31": "小乞儿老乞儿，攞去买嘢食啦",
       "zhongwen_31": "小乞丐老乞丐，拿去买东西吧"
     },
     "answer": {
-      "xiugai_yuewen_7": "抄家喇，我舍得老豆",
-      "beizhu_7": "Corrected likely misheard words: changed \"仔\" to the exclamation \"喇\" and \"捞仔\" to \"老豆\" for consistency with the Chinese reference.",
-      "xiugai_yuewen_10": "仔，啱啱你有没有留一张半张银票傍下身？",
-      "beizhu_10": "Changed \"刚才\" to the Cantonese form \"啱啱\" for transcription consistency.",
+      "xiugai_yuewen_7": "抄家仔，我捨得老仔",
+      "beizhu_7": "Corrected likely misheard words: changed '舍得捞仔' to '捨得老仔' to match the meaning 'I miss your father terribly.'",
       "xiugai_yuewen_16": "你自己唱歌嗰个？",
-      "beizhu_16": "Corrected \"的\" to \"嗰\" in \"唱歌嗰个\" to match the intended spoken reference \"the one singing\".",
-      "xiugai_yuewen_19": "唔系啩！几潇洒，各花入各眼啫",
-      "beizhu_19": "Corrected the idiom from \"各花各眼\" to the standard form \"各花入各眼\".",
-      "xiugai_yuewen_30": "我有边一忽似",
-      "beizhu_30": "Replaced the unnatural wording \"哪一份像\" with the likely spoken Cantonese expression \"边一忽似\"."
+      "beizhu_16": "Corrected '的' to '嗰个' to match the intended reference 'the one singing.'",
+      "xiugai_yuewen_18": "佢比唱歌嗰个更冇良心",
+      "beizhu_18": "Changed '仲' to '更' to match the original meaning more accurately.",
+      "xiugai_yuewen_30": "我有边一份似",
+      "beizhu_30": "Corrected the line to a more accurate wording meaning 'Which part of me looks like one?'"
     }
   },
   {
@@ -2058,7 +1994,7 @@
       "zhongwen_4": "阿爹！不用担心",
       "yuewen_5": "想要钱我唔使问人",
       "zhongwen_5": "想要钱都不需要去讨",
-      "yuewen_6": "唔使讨，边度有钱呀？",
+      "yuewen_6": "唔使问，边度有钱呢？",
       "zhongwen_6": "不需要讨哪里有钱呢？",
       "yuewen_7": "问人哋借咪就得啦",
       "zhongwen_7": "问人家借就行了",
@@ -2075,9 +2011,11 @@
     },
     "answer": {
       "xiugai_yuewen_2": "唔该阿爹过去嗰边坐下，话唔定今晚嘅餐都有着落呢",
-      "beizhu_2": "Changed \"过嗰边\" to \"过去嗰边\" for a clear and natural directional phrase matching the Chinese reference.",
-      "xiugai_yuewen_3": "咩啫，当正自己黑衣咩",
-      "beizhu_3": "Adjusted the ending particle from \"啫\" to \"咩\" to avoid an obvious repetition/error in the line."
+      "beizhu_2": "Changed \"过嗰边\" to the more accurate \"过去嗰边\" to match the intended movement in the line.",
+      "xiugai_yuewen_3": "咩啫，当正自己黑衣呀",
+      "beizhu_3": "Adjusted the ending particle from \"啫\" to \"呀\" for consistency; kept the key wording unchanged.",
+      "xiugai_yuewen_5": "想要钱我唔使问人哋",
+      "beizhu_5": "Added \"哋\" so the object matches the borrowing line that follows: asking other people."
     }
   },
   {
@@ -2094,7 +2032,7 @@
       "zhongwen_5": "知道要给，不知道也要给",
       "yuewen_6": "唔得…都系搞清楚啲",
       "zhongwen_6": "不行不行，还是弄清楚比较好",
-      "yuewen_7": "攞嚟啦！问咁多做乜",
+      "yuewen_7": "攞嚟啦！问咁多做咩",
       "zhongwen_7": "你拿来吧！问这么多干吗",
       "yuewen_8": "放手",
       "zhongwen_8": "放手",
@@ -2104,7 +2042,7 @@
       "zhongwen_10": "强盗⋯",
       "yuewen_11": "唔系抢，我哋系乞儿啫乞…",
       "zhongwen_11": "不是抢！我们是讨饭",
-      "yuewen_12": "原来你两个衰嘢想呃我",
+      "yuewen_12": "原来你哋两个衰嘢想呃我",
       "zhongwen_12": "原来你这两个臭东西想骗我",
       "yuewen_13": "当我猪兜吗？我都知道多棒！",
       "zhongwen_13": "别当我呆子！我很聪明的！",
@@ -2143,17 +2081,31 @@
     },
     "answer": {
       "xiugai_yuewen_1": "多谢",
-      "beizhu_1": "Changed Mandarin '谢谢' to Cantonese '多谢'.",
+      "beizhu_1": "Changed Mandarin-style '谢谢' to the Cantonese subtitle form '多谢'.",
+      "xiugai_yuewen_2": "我点解要畀钱你？",
+      "beizhu_2": "Changed Mandarin wording to natural Cantonese order and diction.",
+      "xiugai_yuewen_3": "你问咁多做咩！",
+      "beizhu_3": "Changed Mandarin-style phrasing to the Cantonese line matching the context.",
+      "xiugai_yuewen_5": "知道要畀，唔知道都要畀",
+      "beizhu_5": "Replaced the Mandarin-style '也' with Cantonese '都'.",
       "xiugai_yuewen_9": "放手，噉你即系抢嘢",
-      "beizhu_9": "Replaced the unnatural ending '抢嘅' with '抢嘢' to match the meaning clearly.",
-      "xiugai_yuewen_11": "唔系抢，我哋系乞儿啫",
-      "beizhu_11": "Removed the duplicated trailing '乞…', which appears to be a transcription glitch.",
-      "xiugai_yuewen_13": "当我猪兜吗？我都知道㗎喇！",
-      "beizhu_13": "Corrected the clearly mistranscribed ending '多棒' to a natural Cantonese line meaning 'I know that too / I'm not stupid'.",
+      "beizhu_9": "Corrected the ending from the awkward '抢嘅' to '抢嘢' to fit the following line.",
+      "xiugai_yuewen_10": "抢嘢…",
+      "beizhu_10": "Changed '抢东西' to Cantonese '抢嘢' for consistency with the surrounding dialogue.",
+      "xiugai_yuewen_11": "唔系抢，我哋系乞儿啫，乞…",
+      "beizhu_11": "Inserted punctuation to clarify the broken-off repetition at the end.",
+      "xiugai_yuewen_13": "当我猪兜咩？我都知道多啲！",
+      "beizhu_13": "Corrected likely misheard words: '吗' to Cantonese '咩' and '多棒' to '多啲'.",
       "xiugai_yuewen_15": "天又翻风，个肚又空空",
       "beizhu_15": "Corrected '两肚' to '个肚', which is the proper wording here.",
-      "xiugai_yuewen_22": "我想佢会帮我哋返广州",
-      "beizhu_22": "Removed the extra '先', which conflicts with the sentence meaning and seems mistranscribed."
+      "xiugai_yuewen_16": "你想到办法未呀？",
+      "beizhu_16": "Changed Mandarin-style phrasing to Cantonese wording consistent with the context.",
+      "xiugai_yuewen_21": "系啊！如果你肯跟佢交际一下",
+      "beizhu_21": "Changed Mandarin-style '是的' to Cantonese '系啊' and aligned the pronoun with the following line.",
+      "xiugai_yuewen_22": "我想佢会帮我哋忙返广州先",
+      "beizhu_22": "Adjusted word order from '先返广州' to '返广州先' for the intended meaning.",
+      "xiugai_yuewen_29": "就喺对面灯笼下面着红衫嗰个",
+      "beizhu_29": "Changed Mandarin-style wording to Cantonese: '在/穿红衣那个' -> '喺/着红衫嗰个'."
     }
   },
   {
@@ -2183,9 +2135,9 @@
       "zhongwen_1": "阿灿，胸口碎大石我还没玩过",
       "yuewen_2": "你小心点",
       "zhongwen_2": "小心点",
-      "yuewen_3": "唔使惊，我会好小心。（I added a reassuring line saying he’s not afraid and will be very careful.）",
+      "yuewen_3": "使乜惊，我会好小心",
       "zhongwen_3": "不用怕，我会很小心",
-      "yuewen_4": "确保你冇事。（I added a line about making sure the other person is safe / unharmed.）",
+      "yuewen_4": "包你冇事",
       "zhongwen_4": "确保你没有事",
       "yuewen_5": "乜事都冇，你都想揾个钱食碗翅先嘅？",
       "zhongwen_5": "你也想赚点钱吃碗鱼翅吧？",
@@ -2196,11 +2148,16 @@
       "yuewen_8": "唔准喺度卖武",
       "zhongwen_8": "不许在这儿卖艺"
     },
-    "answer": {}
+    "answer": {
+      "xiugai_yuewen_5": "乜事都冇，你都想搵个钱食碗翅先嘅？",
+      "beizhu_5": "Corrected the typo from 「揾」 to the standard character 「搵」.",
+      "xiugai_yuewen_8": "唔准喺度卖武艺",
+      "beizhu_8": "Added 「艺」 because the intended phrase is 「卖武艺」, matching the Chinese reference meaning of street performance."
+    }
   },
   {
     "query": {
-      "yuewen_1": "大人，我哋只系想搵啲钱啫\n\nNote: Filled the missing Cantonese subtitle for pleading to earn a little money.",
+      "yuewen_1": "大人，我哋只系想赚啲钱",
       "zhongwen_1": "大人，我们只想赚点钱",
       "yuewen_2": "我哋只系想筹啲水脚返落广州啫",
       "zhongwen_2": "回广州去",
@@ -2221,7 +2178,7 @@
     },
     "answer": {
       "xiugai_yuewen_7": "我只系奉旨办事！人来",
-      "beizhu_7": "Changed 本子 to 旨, which matches the context of an imperial decree."
+      "beizhu_7": "Changed 「奉本子办事」 to 「奉旨办事」, which matches the context of an imperial decree and avoids an obvious transcription error."
     }
   },
   {
@@ -2258,9 +2215,9 @@
   },
   {
     "query": {
-      "yuewen_1": "阿燦⋯｜Filled the missing Cantonese subtitle by addressing Ah Chan with an ellipsis.",
+      "yuewen_1": "阿燦⋯",
       "zhongwen_1": "阿灿⋯",
-      "yuewen_2": "阿燦｜Filled the missing Cantonese subtitle with the name Ah Chan.",
+      "yuewen_2": "阿燦",
       "zhongwen_2": "阿灿",
       "yuewen_3": "你手脚骨骼和全身经脉，都被我打断了",
       "zhongwen_3": "你的手脚跟全身经脉都给我打断",
@@ -2276,10 +2233,14 @@
       "zhongwen_8": "走⋯没事⋯走开"
     },
     "answer": {
-      "xiugai_yuewen_1": "阿燦⋯",
-      "beizhu_1": "Removed the English filler note and kept only the subtitle text.",
-      "xiugai_yuewen_2": "阿燦",
-      "beizhu_2": "Removed the English filler note and kept only the subtitle text."
+      "xiugai_yuewen_3": "你手腳骨骼同全身經脈，都畀我打斷咗",
+      "beizhu_3": "Changed Mandarin wording to a consistent Cantonese-style transcription and fixed the aspect marker.",
+      "xiugai_yuewen_4": "你呢世都會好似死蛇爛鱔咁㗎！",
+      "beizhu_4": "Changed the sentence from Mandarin-style wording to the likely Cantonese line while keeping the original meaning and idiom.",
+      "xiugai_yuewen_6": "不過，伸手出嚟討幾個錢仲可以",
+      "beizhu_6": "Corrected Mandarin-style wording to Cantonese-style characters and phrasing.",
+      "xiugai_yuewen_7": "努力做乞兒啦",
+      "beizhu_7": "Replaced the Mandarin-style ending with a more accurate Cantonese transcription."
     }
   },
   {
@@ -2298,11 +2259,11 @@
       "zhongwen_6": "你们猜他是谁？",
       "yuewen_7": "就系僧格林参呢个混蛋",
       "zhongwen_7": "就是僧格林参这个龟儿子",
-      "yuewen_8": "呢个混蛋同我哋两父子有过节咩？ English note: Added the line asking whether this bastard had any grudge with the father and son.",
+      "yuewen_8": "呢个混蛋同我哋两父子有过节咩",
       "zhongwen_8": "这个龟儿子跟我们父子俩有过节吗",
       "yuewen_9": "一说到佢我就激死人⋯",
       "zhongwen_9": "一说到他我就气死了⋯",
-      "yuewen_10": "咪讲喇，先吸啖烟。 English note: Added a line telling him to stop talking for now and take a puff of smoke first.",
+      "yuewen_10": "咪讲喇，先食啖烟",
       "zhongwen_10": "不要说了，先吸口烟",
       "yuewen_11": "係呀…整啖烟提提神,",
       "zhongwen_11": "吸口烟提提神",
@@ -2338,26 +2299,8 @@
       "zhongwen_26": "因为做状元对我来说易如反掌"
     },
     "answer": {
-      "xiugai_yuewen_4": "嗱，咪怕…当日我同我個仔一腳踩入試場",
-      "beizhu_4": "Standardized written Cantonese characters: changed 个→個 and 脚→腳.",
-      "xiugai_yuewen_5": "抬著頭睇著試官",
-      "beizhu_5": "Standardized character forms: changed 头→頭 and 试官→試官.",
-      "xiugai_yuewen_8": "呢個混蛋同我哋兩父子有過節咩？",
-      "beizhu_8": "Removed the stray English note and standardized 个→個 and 两→兩.",
-      "xiugai_yuewen_10": "咪講喇，先吸啖煙。",
-      "beizhu_10": "Removed the stray English note and standardized character forms: 讲→講, 烟→煙.",
-      "xiugai_yuewen_11": "係呀…整啖煙提提神,",
-      "beizhu_11": "Standardized character form: changed 烟→煙.",
-      "xiugai_yuewen_13": "乜嘢混蛋，當日喺怡紅院",
-      "beizhu_13": "Corrected Mandarin-style wording to Cantonese and standardized characters: 什么→乜嘢, 在→喺, 当日→當日.",
-      "xiugai_yuewen_14": "我哋兩父子放佢一馬",
-      "beizhu_14": "Standardized character forms: changed 两→兩 and 马→馬.",
-      "xiugai_yuewen_17": "喺兵器上做咗手腳",
-      "beizhu_17": "Corrected Mandarin-style phrasing to Cantonese: 在→喺, 做了→做咗, and standardized 脚→腳.",
-      "xiugai_yuewen_19": "為咗佢武功蓋世,",
-      "beizhu_19": "Corrected apparent mistranscription: 为渠→為咗佢.",
-      "xiugai_yuewen_24": "等你做得到嘅時候，至嚟搵我",
-      "beizhu_24": "Standardized character form: changed 时候→時候."
+      "xiugai_yuewen_19": "为咗渠武功盖世,",
+      "beizhu_19": "Added the missing '咗' in '为咗' to restore the intended meaning."
     }
   },
   {
@@ -2394,7 +2337,7 @@
       "zhongwen_1": "虽然休息了两个月，手脚可以动了",
       "yuewen_2": "但未完全好得返晒",
       "zhongwen_2": "但是还没有完全好了",
-      "yuewen_3": "哈爾叔，嚟⋯｜Brief note: Added a call to Uncle Ha-yi / Har as someone says \"come...\".",
+      "yuewen_3": "哈爾叔，嚟⋯",
       "zhongwen_3": "哈尔叔，来⋯",
       "yuewen_4": "揾啲嘢返嚟今晚大家食",
       "zhongwen_4": "阿爹出去找点食物回来",
@@ -2402,7 +2345,7 @@
       "zhongwen_5": "然后煮最后一趟药给你喝",
       "yuewen_6": "爹，又去乞",
       "zhongwen_6": "爹，又去讨饭",
-      "yuewen_7": "乞食梗係要老夫出馬｜Brief note: Added line saying begging naturally requires the old man himself to take action.",
+      "yuewen_7": "乞食梗係要老夫出馬",
       "zhongwen_7": "讨饭当然要老夫出马",
       "yuewen_8": "唔通要你堂堂武状元⋯",
       "zhongwen_8": "难道要你堂堂武状元⋯",
@@ -2416,24 +2359,24 @@
       "zhongwen_12": "至少要拿个砵子！这样才有身份",
       "yuewen_13": "乞衣都讲身份㖞，衰到佢脆裂",
       "zhongwen_13": "乞丐也论身份，真混帐",
-      "yuewen_14": "快啲走｜Brief note: Added a short line urging someone to leave quickly.",
+      "yuewen_14": "快啲走啦",
       "zhongwen_14": "快点走",
       "yuewen_15": "嚟呀嚟呀",
       "zhongwen_15": "来了",
-      "yuewen_16": "再唔去就乞唔到食喇｜Brief note: Added warning that if they do not go now, they will not get any food.",
+      "yuewen_16": "再唔去就乞唔到食喇",
       "zhongwen_16": "再不去就讨不到饭了",
-      "yuewen_17": "係呀⋯｜Brief note: Added a brief affirmative response, \"yes...\".",
+      "yuewen_17": "係呀⋯",
       "zhongwen_17": "是的⋯",
-      "yuewen_18": "你以為自己仲係以前嗰個大將軍呀｜Brief note: Added sarcastic line asking if he still thinks he is the great general from before.",
+      "yuewen_18": "你以為自己仲係以前嗰個大將軍呀",
       "zhongwen_18": "你以为自己是以前的大将军"
     },
     "answer": {
-      "xiugai_yuewen_3": "哈爾叔，嚟呀⋯",
-      "beizhu_3": "Added the missing particle \"呀\" to match the spoken call more naturally and consistently with the Chinese reference \"来…\".",
-      "xiugai_yuewen_5": "顺便返嚟就煲埋最后啲劑藥畀你饮喇",
-      "beizhu_5": "Corrected the character form from simplified \"剂\" to traditional \"劑\" for consistency in the Cantonese subtitle text.",
-      "xiugai_yuewen_13": "乞兒都讲身份㖞，衰到佢脆裂",
-      "beizhu_13": "Changed \"乞衣\" to \"乞兒\" to keep the term for beggar consistent with nearby lines."
+      "xiugai_yuewen_6": "爹，又去乞食",
+      "beizhu_6": "Added the missing character '食' to match the meaning of begging for food and keep wording consistent with nearby lines.",
+      "xiugai_yuewen_9": "喂，阿灿，原来做乞儿系好难㗎喎",
+      "beizhu_9": "Changed '撩' to '难' because the original word appears to be a mis-transcription; '好难㗎喎' fits the meaning and context.",
+      "xiugai_yuewen_13": "乞儿都讲身份㖞，衰到佢脆裂",
+      "beizhu_13": "Changed '乞衣' to '乞儿' for consistency with the surrounding lines' character reference."
     }
   },
   {
@@ -2630,7 +2573,7 @@
     "query": {
       "yuewen_1": "阿爹！做乜?",
       "zhongwen_1": "阿爹！怎么呢？",
-      "yuewen_2": "阿灿！我啱啱肚饿到死呀。 (Added father saying he was starving just now.)",
+      "yuewen_2": "阿灿！我头先饿到死死下",
       "zhongwen_2": "阿灿！我刚刚饿坏了",
       "yuewen_3": "见到靓姐食紧馒头，借嚟咬咗啖咋嘛",
       "zhongwen_3": "看见小孩子吃馒头，我借来咬一口",
@@ -2659,13 +2602,11 @@
     },
     "answer": {
       "xiugai_yuewen_3": "见到靓仔食紧馒头，借嚟咬咗啖咋嘛",
-      "beizhu_3": "Changed 靓姐 to 靓仔 to match the Chinese reference meaning 'young boy' and avoid a likely mishearing.",
+      "beizhu_3": "Changed 靓姐 to 靓仔 to match the Chinese reference meaning 'little boy' and avoid a likely mishearing.",
       "xiugai_yuewen_7": "你咪状元爷？",
-      "beizhu_7": "Standardized the sentence-final question mark from ? to ？ only.",
-      "xiugai_yuewen_8": "系咪？系咪状元爷？",
-      "beizhu_8": "Corrected 撞完嘢 to 状元爷, which is a likely mishearing and matches the surrounding dialogue.",
-      "xiugai_yuewen_14": "相请不如偶遇㖞，唔知你想请我哋饮埋烧酒先呢",
-      "beizhu_14": "Changed 咪 to 你 to fix a likely character error in the subject pronoun."
+      "beizhu_7": "Standardized the sentence-final question mark from ASCII to full-width Chinese punctuation only.",
+      "xiugai_yuewen_14": "相请不如偶遇喎，唔知咪想请我哋饮埋烧酒先呢",
+      "beizhu_14": "Changed 㖞 to 喎 as the common and likely intended Cantonese sentence-final particle."
     }
   },
   {
@@ -2838,13 +2779,13 @@
       "zhongwen_5": "这两件衣服，一件给你，一件给阿灿",
       "yuewen_6": "放下它…",
       "zhongwen_6": "先把东西放下，先把东西放下",
-      "yuewen_7": "有冇散纸？\n[EN note: Added a Cantonese line asking whether there is any loose change.]",
+      "yuewen_7": "有冇散纸呀？",
       "zhongwen_7": "有没有零钱？",
       "yuewen_8": "有没有睡著?",
       "zhongwen_8": "有",
       "yuewen_9": "有，有就拿来！来…做甚么?",
       "zhongwen_9": "有就拿来！来⋯干甚么？",
-      "yuewen_10": "做乜嘢？过新年梗係要利利是是啦。\n[EN note: Added a Cantonese reply saying that during New Year, one should of course give lucky money.]",
+      "yuewen_10": "做咩呀？过新年梗係要利利是是",
       "zhongwen_10": "干甚么？过新年当然要利利是是",
       "yuewen_11": "祝你身体健康",
       "zhongwen_11": "来，祝你身体健康",
@@ -2864,7 +2805,7 @@
       "zhongwen_18": "他刚刚才睡！别把他吵醒",
       "yuewen_19": "我整啲年糕大家食",
       "zhongwen_19": "我做年糕给大家吃吧",
-      "yuewen_20": "好呀！我帮你。\n[EN note: Added a Cantonese line agreeing to help make rice cakes.]",
+      "yuewen_20": "好呀！我帮你",
       "zhongwen_20": "好！我帮你",
       "yuewen_21": "新年头仲瞓觉",
       "zhongwen_21": "新年还在睡觉",
@@ -2894,13 +2835,13 @@
       "zhongwen_33": "不行！这颗大还丹是给你治内伤用的",
       "yuewen_34": "我怎么可以吃呢？",
       "zhongwen_34": "我怎么能吃呢？",
-      "yuewen_35": "唔使担心，唔使担心。\n[EN note: Added a Cantonese reassurance not to worry.]",
+      "yuewen_35": "唔使担心，唔使担心",
       "zhongwen_35": "不用担心不用担心",
       "yuewen_36": "想找人比武可以找我儿子嘛",
       "zhongwen_36": "想找人比武可以找我儿子",
       "yuewen_37": "我儿子假假哋都係个武状元",
       "zhongwen_37": "我儿子怎么说也是一个武状元",
-      "yuewen_38": "而家⋯\n[EN note: Added the short Cantonese phrase meaning “now…”.]",
+      "yuewen_38": "而家…",
       "zhongwen_38": "现在⋯",
       "yuewen_39": "不是！曾经…",
       "zhongwen_39": "⋯不！曾经",
@@ -2917,11 +2858,13 @@
     },
     "answer": {
       "xiugai_yuewen_2": "莫大叔，恭喜发财…",
-      "beizhu_2": "Added the surname/title '莫大叔' to match the Chinese reference and later consistent address.",
-      "xiugai_yuewen_8": "有没有瞓着?",
-      "beizhu_8": "Changed '睡著' to the Cantonese wording '瞓着' for transcription consistency.",
-      "xiugai_yuewen_33": "不行！这颗大还丹是医你内伤的",
-      "beizhu_33": "Changed '医理内伤' to '医你内伤' to fix an apparent mishearing and match the intended meaning."
+      "beizhu_2": "Added '莫' to match the consistent address '莫大叔' used elsewhere.",
+      "xiugai_yuewen_8": "有冇碎纸呀?",
+      "beizhu_8": "Corrected an obvious mistranscription from '有没有睡著?' to '有冇碎纸呀?' based on the surrounding money/red-packet context.",
+      "xiugai_yuewen_13": "青春美丽　多谢",
+      "beizhu_13": "Changed '谢谢' to '多谢' for consistency with the Cantonese subtitle wording.",
+      "xiugai_yuewen_33": "唔得！呢粒大还丹系医你内伤嘅",
+      "beizhu_33": "Corrected the line to reflect that the pill is for treating the other person's internal injury."
     }
   },
   {
@@ -3062,9 +3005,9 @@
       "zhongwen_13": "帅哥，我记得你",
       "yuewen_14": "嘻嘻，靓仔，我都记得你啊",
       "zhongwen_14": "臭小子，我也记得你",
-      "yuewen_15": "少啲废话",
+      "yuewen_15": "废话少讲",
       "zhongwen_15": "废话少说",
-      "yuewen_16": "还钱畀我顶住先",
+      "yuewen_16": "还我钱畀我顶一顶",
       "zhongwen_16": "还我钱让我顶一下",
       "yuewen_17": "如果我有钱啊",
       "zhongwen_17": "如果我有钱",
@@ -3073,19 +3016,17 @@
     },
     "answer": {
       "xiugai_yuewen_2": "关你春事啊！",
-      "beizhu_2": "Added the final particle \"啊\" to match the likely spoken line and keep tone consistent.",
+      "beizhu_2": "Added the sentence-final particle to match the spoken Cantonese emphasis and maintain consistency with the line's delivery.",
       "xiugai_yuewen_5": "我以前去到度度都畀人睇得起㗎",
-      "beizhu_5": "Replaced the sentence-final particle with \"㗎\" for the natural spoken ending likely intended here.",
+      "beizhu_5": "Corrected the final particle from \"嘅\" to \"㗎\" for the intended spoken sentence ending.",
       "xiugai_yuewen_6": "而家都一样变成噉",
-      "beizhu_6": "Corrected \"今日\" to \"而家\"; the line means \"now/still ended up like this,\" not specifically \"today.\"",
+      "beizhu_6": "Changed \"今日\" to \"而家\" because the context means \"now\" rather than \"today\".",
       "xiugai_yuewen_8": "我成世人都未畀人睇得起过嘅",
-      "beizhu_8": "Added \"得\" in \"睇得起\"; the original was missing a character.",
-      "xiugai_yuewen_11": "一个傻佬喺宾馆请我食饭饮酒，叫鸡直落",
-      "beizhu_11": "Corrected the wording to a coherent sentence: changed the mistaken connection around \"广东/宾馆\" and added \"请我\" to match the meaning.",
-      "xiugai_yuewen_16": "还钱畀我顶住先啦",
-      "beizhu_16": "Added the final particle \"啦\" to better reflect the likely spoken delivery.",
-      "xiugai_yuewen_18": "我就唔使喺度捱馒头啦",
-      "beizhu_18": "Corrected the typo \"挨\" to \"捱\" in the Cantonese expression \"捱馒头\"."
+      "beizhu_8": "Added \"得\" in \"睇得起\" to correct the fixed expression.",
+      "xiugai_yuewen_11": "一个傻佬请我喺宾馆食饭饮酒，叫鸡直落",
+      "beizhu_11": "Inserted \"请我\" to fix the missing verb and make the sentence semantically complete.",
+      "xiugai_yuewen_16": "还我钱畀我顶住先",
+      "beizhu_16": "Replaced \"顶一顶\" with \"顶住先\" to match the more likely spoken wording in this context."
     }
   },
   {
@@ -3283,13 +3224,10 @@
       "zhongwen_1": "万岁！万岁！万万岁",
       "yuewen_2": "长老",
       "zhongwen_2": "长老",
-      "yuewen_3": "翻去再讲｜Added the missing Cantonese subtitle for “回去再说” as “翻去再讲”.",
+      "yuewen_3": "返去再讲",
       "zhongwen_3": "回去再说"
     },
-    "answer": {
-      "xiugai_yuewen_3": "翻去再讲",
-      "beizhu_3": "Removed the accidentally included English note after the Cantonese subtitle."
-    }
+    "answer": {}
   },
   {
     "query": {
@@ -3359,7 +3297,7 @@
   },
   {
     "query": {
-      "yuewen_1": "莫大叔…\n\n[Note: Added the missing address \"Uncle Mo\" at the start of the subtitle.]",
+      "yuewen_1": "莫大叔…",
       "zhongwen_1": "莫大叔⋯",
       "yuewen_2": "莫大叔…畀你嚇得我怕",
       "zhongwen_2": "真的被你吓我一跳",
@@ -3373,19 +3311,15 @@
       "zhongwen_6": "我们要找人上去选帮主"
     },
     "answer": {
-      "xiugai_yuewen_1": "莫大叔⋯",
-      "beizhu_1": "Removed the inserted editorial note and kept only the subtitle text.",
-      "xiugai_yuewen_2": "莫大叔⋯畀你嚇得我一跳",
-      "beizhu_2": "Corrected the last part from \"我怕\" to \"我一跳\" to match the intended meaning and likely spoken line.",
-      "xiugai_yuewen_4": "点样？家姐呢？",
-      "beizhu_4": "Replaced Mandarin-style wording with the correct Cantonese forms likely spoken here: \"怎么样\" → \"点样\" and \"姐姐\" → \"家姐\".",
-      "xiugai_yuewen_6": "我哋要搵个人上台竞选帮主",
-      "beizhu_6": "Added \"竞选\" because \"选帮主\" is incomplete/unnatural here and likely missed the intended word."
+      "xiugai_yuewen_2": "莫大叔…畀你嚇得我一跳",
+      "beizhu_2": "Corrected the last part from '我怕' to '我一跳' to match the intended meaning 'you gave me a scare / startled me'.",
+      "xiugai_yuewen_4": "点样呀？家姐呢？",
+      "beizhu_4": "Adjusted the Mandarin wording into accurate Cantonese: changed '怎么样' to '点样呀' and '姐姐' to the consistent Cantonese form '家姐'."
     }
   },
   {
     "query": {
-      "yuewen_1": "到底派边个上去呢？",
+      "yuewen_1": "到底派邊個上去呢？",
       "zhongwen_1": "到底派谁上去呢？"
     },
     "answer": {}
@@ -3560,7 +3494,7 @@
       "zhongwen_17": "这个年轻人！虽然资历低",
       "yuewen_18": "但天才横溢！聪明绝顶",
       "zhongwen_18": "但是天才横溢！聪明绝顶",
-      "yuewen_19": "仲係我洪某傳人洪日新親手提攜。\nNote: Added that he was personally nurtured by Hung Yat-san, disciple of Hung.",
+      "yuewen_19": "仲系我洪某传人洪日新亲手提携",
       "zhongwen_19": "还是我洪某的传人洪日新亲手提携",
       "yuewen_20": "谁要托付他，真系托付我",
       "zhongwen_20": "谁要对付他就是对付我",
@@ -3584,7 +3518,7 @@
       "zhongwen_29": "天有眼，我们有福",
       "yuewen_30": "这样都过得了，我果然是天才！",
       "zhongwen_30": "就这样瞒天过海，我果真是天才！",
-      "yuewen_31": "大家有飯食喇。\nNote: Added the line saying everyone will have food to eat now.",
+      "yuewen_31": "大家有饭食喇",
       "zhongwen_31": "大家有饭吃了",
       "yuewen_32": "发生什么事？",
       "zhongwen_32": "发生什么事？",
@@ -3592,33 +3526,33 @@
       "zhongwen_33": "参见帮主"
     },
     "answer": {
-      "xiugai_yuewen_5": "你哋系咪唔记得咗？",
-      "beizhu_5": "Changed Mandarin phrasing to natural Cantonese wording: '你们是不是忘记了' -> '你哋系咪唔记得咗'.",
+      "xiugai_yuewen_3": "任何弟子破咗莲花落阵",
+      "beizhu_3": "Changed to the Cantonese perfective form \"破咗\".",
+      "xiugai_yuewen_5": "你哋系咪忘记咗？",
+      "beizhu_5": "Adjusted Mandarin wording to Cantonese forms.",
       "xiugai_yuewen_8": "我洪某当年留低支打狗棍",
-      "beizhu_8": "Corrected '留下支打狗棍' to the more accurate Cantonese form '留低支打狗棍'.",
-      "xiugai_yuewen_11": "但你呢班蠢材居然当宝",
-      "beizhu_11": "Corrected likely typo/miswrite '笨才' to '蠢材'.",
-      "xiugai_yuewen_13": "五年冇帮主在位！你们惭唔惭愧？",
-      "beizhu_13": "Corrected '惨不惨愧' to '惭唔惭愧', which matches the intended meaning.",
-      "xiugai_yuewen_14": "苏灿家阵打断咗支棍",
-      "beizhu_14": "Added the classifier '支' for consistency with earlier reference to the stick.",
-      "xiugai_yuewen_19": "仲係我洪某傳人洪日新親手提攜。",
-      "beizhu_19": "Removed the stray English note and kept only the subtitle text.",
+      "beizhu_8": "Changed \"留下\" to the Cantonese wording \"留低\".",
+      "xiugai_yuewen_11": "但你呢群蠢材居然当宝",
+      "beizhu_11": "Corrected likely typo/hearing error from \"笨才\" to \"蠢材\".",
+      "xiugai_yuewen_13": "五年冇帮主在位！你们惭不惭愧？",
+      "beizhu_13": "Corrected obvious typo: \"惨不惨愧\" -> \"惭不惭愧\".",
+      "xiugai_yuewen_17": "呢个后生仔！虽然资历浅",
+      "beizhu_17": "Adjusted Mandarin-like wording to Cantonese.",
+      "xiugai_yuewen_19": "仲系我洪某传人洪日庆亲手提携",
+      "beizhu_19": "Corrected the name from \"洪日新\" to \"洪日庆\" for consistency.",
       "xiugai_yuewen_20": "谁要对付他，真系对付我",
-      "beizhu_20": "Corrected '托付' to '对付', matching the intended meaning and Chinese reference.",
-      "xiugai_yuewen_26": "喂，真定假㗎？",
-      "beizhu_26": "Adjusted Mandarin-style phrasing to idiomatic Cantonese: '真的假的' -> '真定假㗎'.",
-      "xiugai_yuewen_31": "大家有飯食喇。",
-      "beizhu_31": "Removed the stray English note and kept only the subtitle text.",
+      "beizhu_20": "Corrected likely mis-transcription from \"托付他\" to \"对付他\" based on context.",
+      "xiugai_yuewen_25": "我洪某在天之灵",
+      "beizhu_25": "Restored the preceding line to match subtitle sequence.",
+      "xiugai_yuewen_26": "最多保佑丐帮生意兴隆！千秋万世",
+      "beizhu_26": "Moved the blessing line here to match subtitle sequence.",
       "xiugai_yuewen_32": "发生咩事？",
-      "beizhu_32": "Adjusted Mandarin-style '什么事' to Cantonese '咩事'.",
-      "xiugai_yuewen_33": "参见帮主",
-      "beizhu_33": "Removed the trailing '好…', which appears incomplete and conflicts with the Chinese reference."
+      "beizhu_32": "Adjusted Mandarin phrasing \"什么事\" to Cantonese \"咩事\"."
     }
   },
   {
     "query": {
-      "yuewen_1": "很正\n[EN note: Added a short praise meaning “great/awesome.”]",
+      "yuewen_1": "好嘢",
       "zhongwen_1": "很棒",
       "yuewen_2": "莫大叔，我仔多厉害？",
       "zhongwen_2": "莫大叔！我儿子有一套吗？",
@@ -3640,17 +3574,19 @@
       "zhongwen_10": "好棒！帮主好棒！"
     },
     "answer": {
-      "xiugai_yuewen_2": "莫大叔，我仔几厉害？",
-      "beizhu_2": "Changed '多厉害' to the more accurate Cantonese phrasing '几厉害'.",
-      "xiugai_yuewen_6": "仲有《大还丹》都交畀你",
-      "beizhu_6": "Changed '还有' to Cantonese '仲有' and corrected '交你' to '交畀你'."
+      "xiugai_yuewen_2": "莫大叔，我仔几叻呀？",
+      "beizhu_2": "Corrected Mandarin-influenced wording to natural Cantonese: changed '多厉害' to '几叻呀'.",
+      "xiugai_yuewen_5": "呢本《降龙十八掌》",
+      "beizhu_5": "Changed '这本' to the Cantonese form '呢本'.",
+      "xiugai_yuewen_6": "仲有《大还丹》都交你",
+      "beizhu_6": "Changed '还有' to the Cantonese form '仲有' and added book title brackets for consistency."
     }
   },
   {
     "query": {
       "yuewen_1": "莫大叔⋯",
       "zhongwen_1": "莫大叔⋯莫大叔！你怎么呢？",
-      "yuewen_2": "莫大叔，莫大叔！你点呀？",
+      "yuewen_2": "莫大叔，莫大叔",
       "zhongwen_2": "莫大叔，莫大叔",
       "yuewen_3": "莫大叔⋯",
       "zhongwen_3": "莫大叔⋯莫大叔"
@@ -3669,9 +3605,9 @@
       "zhongwen_4": "停步处视作家乡",
       "yuewen_5": "投入命运万劫火",
       "zhongwen_5": "投入命运万劫火",
-      "yuewen_6": "那得失点样去量｜Filled the lyric line about how gains and losses cannot be easily measured.",
+      "yuewen_6": "那得失点样去量",
       "zhongwen_6": "那得失怎么去量",
-      "yuewen_7": "驰马荡江湖｜Filled the lyric line about galloping across the jianghu.",
+      "yuewen_7": "驰马荡江湖",
       "zhongwen_7": "驰马荡江湖",
       "yuewen_8": "灿哥",
       "zhongwen_8": "灿哥",
@@ -3697,36 +3633,22 @@
       "zhongwen_18": "没甚么法子了！",
       "yuewen_19": "无论如何我都要即刻出发去救如霜先",
       "zhongwen_19": "无论如何我也先出发去救如霜",
-      "yuewen_20": "迎入日月万里风｜Filled the lyric line about welcoming the sun, moon, and the boundless wind.",
+      "yuewen_20": "迎入日月万里风",
       "zhongwen_20": "迎入日月万里风",
-      "yuewen_21": "笑揖清风洗我狂｜Filled the lyric line about saluting the breeze and washing away one's wildness.",
+      "yuewen_21": "笑揖清风洗我狂",
       "zhongwen_21": "笑揖清风洗我狂",
-      "yuewen_22": "来日醉卧逍遥｜Filled the lyric line about lying drunk in carefree ease someday.",
+      "yuewen_22": "来日醉卧逍遥",
       "zhongwen_22": "来日醉卧逍遥",
-      "yuewen_23": "宁愿锈蚀我缨枪｜Filled the lyric line about rather letting one’s tasseled spear rust away.",
+      "yuewen_23": "宁愿锈蚀我缨枪",
       "zhongwen_23": "宁愿锈蚀我缨枪"
     },
     "answer": {
       "xiugai_yuewen_4": "停步处视作家乡",
-      "beizhu_4": "Added the missing character \"停\" to match the lyric line.",
-      "xiugai_yuewen_6": "那得失点样去量",
-      "beizhu_6": "Removed the accidental English filler note and kept only the lyric line.",
-      "xiugai_yuewen_7": "驰马荡江湖",
-      "beizhu_7": "Removed the accidental English filler note and kept only the lyric line.",
-      "xiugai_yuewen_10": "你咪当我流嘢就得㗎？",
-      "beizhu_10": "Corrected probable mis-transcription from \"流\" to \"流嘢\" and adjusted the sentence ending to the natural heard form.",
-      "xiugai_yuewen_14": "但系第十八式「亢龙有悔」",
-      "beizhu_14": "Corrected the move name from the mistaken \"杀龙有悔\" to \"亢龙有悔\".",
-      "xiugai_yuewen_17": "最坏莫大叔已经唔喺度，",
-      "beizhu_17": "Added the missing pause comma to reflect the incomplete line carried into the next subtitle.",
-      "xiugai_yuewen_20": "迎入日月万里风",
-      "beizhu_20": "Removed the accidental English filler note and kept only the lyric line.",
-      "xiugai_yuewen_21": "笑揖清风洗我狂",
-      "beizhu_21": "Removed the accidental English filler note and kept only the lyric line.",
-      "xiugai_yuewen_22": "来日醉卧逍遥",
-      "beizhu_22": "Removed the accidental English filler note and kept only the lyric line.",
-      "xiugai_yuewen_23": "宁愿锈蚀我缨枪",
-      "beizhu_23": "Removed the accidental English filler note and kept only the lyric line."
+      "beizhu_4": "Added the missing character \"停\" to match the intended lyric and the Chinese reference.",
+      "xiugai_yuewen_10": "你咪当我流㗎就得㗎？",
+      "beizhu_10": "Corrected the sentence-final particles from the wrong written form \"嘅\" to the Cantonese particles \"㗎\".",
+      "xiugai_yuewen_14": "但系第十八式「降龙有悔」",
+      "beizhu_14": "Corrected the move name from \"杀龙有悔\" to \"降龙有悔\"."
     }
   },
   {
@@ -3913,7 +3835,7 @@
       "zhongwen_6": "你们留下来接应其他兄弟",
       "yuewen_7": "我先上",
       "zhongwen_7": "我先上",
-      "yuewen_8": "我迟啲跟埋嚟",
+      "yuewen_8": "我迟啲跟住嚟",
       "zhongwen_8": "我稍后跟来",
       "yuewen_9": "话好系至好",
       "zhongwen_9": "真的才好",
@@ -3927,9 +3849,9 @@
       "zhongwen_13": "行！恭祝你福寿与天齐",
       "yuewen_14": "庆贺你生辰快乐",
       "zhongwen_14": "庆贺你生辰快乐",
-      "yuewen_15": "年年都有今日……",
+      "yuewen_15": "年年都有今日",
       "zhongwen_15": "年年都有今日⋯",
-      "yuewen_16": "够喇够喇",
+      "yuewen_16": "够啦够啦",
       "zhongwen_16": "够了够了",
       "yuewen_17": "够啦，够啦，未唱完㗎㖞",
       "zhongwen_17": "还没唱完",
@@ -3937,12 +3859,14 @@
       "zhongwen_18": "等我走了你再才唱，好的吗"
     },
     "answer": {
+      "xiugai_yuewen_2": "长老，喺度",
+      "beizhu_2": "Added the missing character \"度\" to match the intended Cantonese line \"I’m here / present.\"",
       "xiugai_yuewen_9": "话好事至好",
-      "beizhu_9": "Corrected a likely mis-transcription from \"系\" to \"事\" in the fixed Cantonese phrase \"话好事至好\".",
-      "xiugai_yuewen_11": "𠵱家我死紧㗎，你叫我放心去啦",
-      "beizhu_11": "Corrected the sentence to match the intended meaning and natural spoken wording: changed the mistaken question-like phrasing to \"我死紧㗎\" and restored \"你叫我放心去啦\".",
-      "xiugai_yuewen_12": "讲句老嚟啲嘅嚟听下得唔得呢？",
-      "beizhu_12": "Corrected \"老礼\" to \"老嚟\", the proper wording in the Cantonese expression meaning auspicious/j 吉利 speech."
+      "beizhu_9": "Corrected \"系\" to \"事\"; the idiomatic Cantonese phrase is \"话好事至好\".",
+      "xiugai_yuewen_11": "𠵱家我死紧㗎，你叫我放心去啦？",
+      "beizhu_11": "Corrected the line to the natural intended wording: changed the mistaken ending into the rhetorical question \"你叫我放心去啦？\" and fixed the particle to \"㗎\".",
+      "xiugai_yuewen_12": "讲句老利啲嘅嚟听下得唔得呢？",
+      "beizhu_12": "Corrected \"老礼\" to \"老利\", matching the meaning of saying something auspicious."
     }
   },
   {
@@ -4067,12 +3991,14 @@
       "zhongwen_10": "不去！难道坐在这里等死吗？走开",
       "yuewen_11": "我叫你们走开",
       "zhongwen_11": "我叫你们走开",
-      "yuewen_12": "唔好走",
+      "yuewen_12": "唔好去",
       "zhongwen_12": "不要走"
     },
     "answer": {
       "xiugai_yuewen_4": "四围营和左右护卫怎样？",
-      "beizhu_4": "Changed 「护翼」 to 「护卫」 to match the intended military role and the reference meaning."
+      "beizhu_4": "Corrected the final term from \"护翼\" to \"护卫\" to match the intended military title and the Chinese reference.",
+      "xiugai_yuewen_8": "唔好妨碍我，走开",
+      "beizhu_8": "Changed \"别\" to the Cantonese form \"唔好\" for consistency with the surrounding dialogue and reference meaning."
     }
   },
   {
@@ -4204,11 +4130,11 @@
       "zhongwen_2": "飞龙在天",
       "yuewen_3": "神龙摆尾",
       "zhongwen_3": "神龙摆尾",
-      "yuewen_4": "烏龍偷心｜Added the move name \"Black Dragon Steals the Heart\".",
+      "yuewen_4": "乌龙偷心",
       "zhongwen_4": "乌龙偷心",
-      "yuewen_5": "雙龍出海，戰龍在野｜Added the paired move names \"Two Dragons Go Out to Sea\" and \"Fighting Dragon in the Wilds\".",
+      "yuewen_5": "双龙出海，战龙在田",
       "zhongwen_5": "双龙出海，战龙在田",
-      "yuewen_6": "龍飛鳳舞，伏虎降龍⋯｜Added the move names \"Dragons Flying, Phoenixes Dancing\" and \"Subduing the Tiger, Taming the Dragon\".",
+      "yuewen_6": "龙飞凤舞，伏虎降龙⋯",
       "zhongwen_6": "龙飞凤舞，伏虎降龙⋯",
       "yuewen_7": "龙飞凤舞伏虎王龙缩龙成寸，龙蛇混杂",
       "zhongwen_7": "⋯缩龙成寸，龙蛇混杂",
@@ -4220,18 +4146,8 @@
       "zhongwen_10": "打完收工"
     },
     "answer": {
-      "xiugai_yuewen_4": "烏龍偷心",
-      "beizhu_4": "Removed the extraneous English editorial note and kept only the subtitle text.",
-      "xiugai_yuewen_5": "雙龍出海，戰龍在野",
-      "beizhu_5": "Removed the extraneous English editorial note and kept only the move names.",
-      "xiugai_yuewen_6": "龍飛鳳舞，伏虎降龍⋯",
-      "beizhu_6": "Removed the extraneous English editorial note and kept only the subtitle text.",
-      "xiugai_yuewen_7": "縮龍成寸，龍蛇混雜",
-      "beizhu_7": "Removed wrongly inserted preceding text to match the actual subtitle segment, and standardized character forms.",
-      "xiugai_yuewen_8": "龍的傳人龍鳳呈祥⋯",
-      "beizhu_8": "Standardized character forms to match the surrounding traditional Chinese subtitles.",
-      "xiugai_yuewen_9": "龍馬精神，望夫成龍⋯",
-      "beizhu_9": "Standardized character forms to match the surrounding traditional Chinese subtitles."
+      "xiugai_yuewen_7": "龙飞凤舞，伏虎降龙，缩龙成寸，龙蛇混杂",
+      "beizhu_7": "Inserted punctuation and corrected the likely misheard phrase \"伏虎王龙\" to \"伏虎降龙\" for consistency with the preceding line and common expression."
     }
   },
   {
@@ -4286,9 +4202,9 @@
       "zhongwen_2": "你看我的姿势，说有事没有？",
       "yuewen_3": "你的姿势很有型",
       "zhongwen_3": "你的姿势是很帅",
-      "yuewen_4": "不過你個樣就好有問題。 [EN: Added a line saying his look/appearance seems very problematic.]",
+      "yuewen_4": "不過你個樣就好有問題",
       "zhongwen_4": "可是你的样子很有问题",
-      "yuewen_5": "傻瓜！我冇事。 [EN: Added a line where the speaker says “Fool! I’m fine.”]",
+      "yuewen_5": "傻瓜，我冇事",
       "zhongwen_5": "傻瓜！我没事",
       "yuewen_6": "今晚洞房都仲可以",
       "zhongwen_6": "今天晚上洞房都没问题",
@@ -4296,15 +4212,15 @@
       "zhongwen_7": "这么厉害"
     },
     "answer": {
-      "xiugai_yuewen_2": "你睇我姿势，你话我有冇事？",
-      "beizhu_2": "Changed Mandarin-style wording to natural Cantonese wording: '看'→'睇', '说'→'话', '有没有'→'有冇'.",
-      "xiugai_yuewen_7": "咁犀利？",
-      "beizhu_7": "Changed Mandarin-style '这么厉害' to the Cantonese expression '咁犀利？'."
+      "xiugai_yuewen_1": "阿灿，你冇事吧？",
+      "beizhu_1": "Changed Mandarin-style '没' to Cantonese '冇'.",
+      "xiugai_yuewen_7": "咁犀利?",
+      "beizhu_7": "Changed Mandarin-style '这么厉害' to the natural Cantonese subtitle '咁犀利'."
     }
   },
   {
     "query": {
-      "yuewen_1": "阿灿……你冇事嘛？\n[Note: Filled the missing Cantonese subtitle for checking if Acan is okay.]",
+      "yuewen_1": "阿灿⋯你冇事吖嘛",
       "zhongwen_1": "阿灿⋯你没事吧",
       "yuewen_2": "阿翠，赵无极呢",
       "zhongwen_2": "赵无极呢",
@@ -4346,14 +4262,12 @@
       "zhongwen_6": "是！不过我不喜欢状元",
       "yuewen_7": "我喜欢黑衣服",
       "zhongwen_7": "我喜欢乞丐嘛",
-      "yuewen_8": "你行先！我迟啲跟上。",
+      "yuewen_8": "你行先！我一阵跟上",
       "zhongwen_8": "你先！我稍后跟上"
     },
     "answer": {
-      "xiugai_yuewen_6": "对呀！但我都唔钟意状元呀",
-      "beizhu_6": "Added the final particle \"呀\" for consistency with the apparent spoken line; no other change.",
-      "xiugai_yuewen_7": "我喜欢乞儿",
-      "beizhu_7": "Corrected a likely mistranscription from \"黑衣服\" to \"乞儿\" based on the Chinese reference and contextual contrast with \"状元\"."
+      "xiugai_yuewen_7": "我钟意乞儿衫",
+      "beizhu_7": "Changed '黑衣服' to '乞儿衫' to match the Chinese reference meaning about liking beggar's clothing, not black clothes."
     }
   },
   {
@@ -4368,7 +4282,7 @@
       "zhongwen_4": "你当乞丐很好，看你的样子很有天分",
       "yuewen_5": "明天去城隍庙报到",
       "zhongwen_5": "明天到城隍庙报到",
-      "yuewen_6": "有事报我个名就得喇",
+      "yuewen_6": "有事报我个名就得啦",
       "zhongwen_6": "有事报我的名字就行",
       "yuewen_7": "多谢帮主…关照",
       "zhongwen_7": "多谢帮主，多谢帮主关照",
@@ -4381,9 +4295,9 @@
       "xiugai_yuewen_1": "僧格林沁，你竟不分青红皂白",
       "beizhu_1": "Corrected the name from 参 to 沁 and restored 竟 to match the intended line.",
       "xiugai_yuewen_4": "你做乞儿好，看你个样有潜质",
-      "beizhu_4": "Changed 乞衣 to 乞儿; 乞衣 is a mistaken character for beggar in this context.",
+      "beizhu_4": "Corrected 乞衣 to 乞儿, since it refers to a beggar rather than clothing.",
       "xiugai_yuewen_9": "你真係冇话同朕说？",
-      "beizhu_9": "Changed 我 to 朕 for consistent royal self-reference in context."
+      "beizhu_9": "Added 朕 for consistency with the Chinese reference and imperial self-reference in context."
     }
   },
   {
@@ -4402,7 +4316,7 @@
       "zhongwen_6": "你对朕不敬，朕一样会杀了你",
       "yuewen_7": "要杀我就不用蹲下跟我说",
       "zhongwen_7": "你要杀我就不会这样跟我说话",
-      "yuewen_8": "唔好郁，否则仲碍眼",
+      "yuewen_8": "咪郁，唔係仲礙眼",
       "zhongwen_8": "不要动，否则还碍眼",
       "yuewen_9": "其实我跟你冇挠冇葛",
       "zhongwen_9": "其实我跟你没醪没葛",
@@ -4422,7 +4336,7 @@
       "zhongwen_16": "如果你真的英明神武，令到国泰民安",
       "yuewen_17": "找鬼得人做乞丐吗？",
       "zhongwen_17": "谁会愿意当乞丐？",
-      "yuewen_18": "有道理，有道理　　你好自为之啦",
+      "yuewen_18": "有道理，有道理　　你好自為之啦",
       "zhongwen_18": "有道理，有道理　　好自为之吧",
       "yuewen_19": "不过",
       "zhongwen_19": "不过",
@@ -4436,18 +4350,16 @@
       "zhongwen_23": "万岁万万岁　　平身"
     },
     "answer": {
-      "xiugai_yuewen_5": "放肆，你唔好以为救过我",
-      "beizhu_5": "Changed \"别\" to the Cantonese form \"唔好\" for consistency with the surrounding Cantonese transcription.",
-      "xiugai_yuewen_7": "要杀我就唔使揼低同我讲",
-      "beizhu_7": "Corrected an apparent mistranscription: \"蹲下跟我说\" does not fit the context; changed to \"唔使揼低同我讲\" meaning no need to lower yourself to talk to me.",
+      "xiugai_yuewen_5": "放肆，你咪以为救过我",
+      "beizhu_5": "Changed \"别\" to the Cantonese form \"咪\" for consistency with the surrounding Cantonese transcription.",
+      "xiugai_yuewen_8": "咪郁，唔係重礙眼",
+      "beizhu_8": "Corrected the likely typo \"仲\" to \"重\" in the phrase \"唔係重…\".",
       "xiugai_yuewen_9": "其实我同你冇撈冇葛",
-      "beizhu_9": "Corrected the fixed expression from the wrong characters \"挠\" to \"撈\" in \"冇撈冇葛\".",
-      "xiugai_yuewen_17": "边有人肯做乞儿呀？",
-      "beizhu_17": "Adjusted the line to a more accurate Cantonese rendering of the meaning 'who would want to be a beggar?' rather than the odd phrase \"找鬼得人\".",
-      "xiugai_yuewen_20": "噉样，你畀我一点面子吖，好等我好落台",
-      "beizhu_20": "Corrected likely mistranscribed wording to a more accurate Cantonese line: \"噉样\" and \"好落台\" fit the context better than \"咁样\" and \"好下台\".",
-      "xiugai_yuewen_21": "好",
-      "beizhu_21": "Changed \"对了\" to \"好\" to match the dialogue context and the reference meaning."
+      "beizhu_9": "Corrected likely transcription errors: changed \"跟\" to Cantonese \"同\" and fixed \"挠\" to the idiom \"撈\" in \"冇撈冇葛\".",
+      "xiugai_yuewen_17": "揾鬼得人做乞丐咩？",
+      "beizhu_17": "Adjusted to the more accurate Cantonese expression: changed \"找\" to \"揾\" and added the final particle \"咩\".",
+      "xiugai_yuewen_20": "咁样，你畀我一点面子啦，等我好下台",
+      "beizhu_20": "Corrected the sentence-final particle from \"好\" to the more likely spoken Cantonese \"啦\"."
     }
   },
   {
@@ -4464,7 +4376,7 @@
       "zhongwen_5": "乞丐就是不给！快滚",
       "yuewen_6": "唔畀唔得",
       "zhongwen_6": "不给不行",
-      "yuewen_7": "应份㗎，兄弟",
+      "yuewen_7": "應份㗎！兄弟",
       "zhongwen_7": "应份的！兄弟",
       "yuewen_8": "奉旨乞食？有没有搞错？",
       "zhongwen_8": "奉旨乞食？有没有搞错？",
@@ -4474,40 +4386,40 @@
       "zhongwen_10": "怕了你",
       "yuewen_11": "别走,",
       "zhongwen_11": "先别走",
-      "yuewen_12": "又点呀？",
+      "yuewen_12": "又點呀？",
       "zhongwen_12": "又怎么？",
-      "yuewen_13": "我仲有一家大细要养，畀多啲啦",
+      "yuewen_13": "仲有一家大細要養！畀多啲",
       "zhongwen_13": "还有一家大小的！给多点",
       "yuewen_14": "添多几百？",
       "zhongwen_14": "添多少？",
-      "yuewen_15": "冇一千都畀八百啦",
+      "yuewen_15": "冇一千都要畀八百",
       "zhongwen_15": "没有一千都给八百"
     },
     "answer": {
-      "xiugai_yuewen_5": "乞儿就系唔畀！躝开啦",
-      "beizhu_5": "Corrected the wrong character \"嗤\" to \"儿\" in the word \"乞儿\".",
+      "xiugai_yuewen_5": "乞兒就系唔畀！躝开啦",
+      "beizhu_5": "Corrected the wrong character \"嗤\" to \"兒\" in \"乞兒\".",
       "xiugai_yuewen_9": "冇搞错！爽手啲！",
-      "beizhu_9": "Removed the non-Cantonese character combination \"有\" from \"冇有\"; natural Cantonese here is \"冇搞错\".",
-      "xiugai_yuewen_11": "咪走",
-      "beizhu_11": "Replaced the Mandarin phrasing \"别走\" with the Cantonese subtitle that fits the line meaning.",
-      "xiugai_yuewen_14": "添多几多？",
-      "beizhu_14": "Corrected the likely omission by changing \"添多几百？\" to \"添多几多？\" to match the intended question."
+      "beizhu_9": "Removed the Mandarin-style character combination \"冇有\" and corrected it to the Cantonese form \"冇\".",
+      "xiugai_yuewen_11": "咪走，",
+      "beizhu_11": "Corrected the Mandarin subtitle \"别走,\" to the Cantonese form \"咪走，\".",
+      "xiugai_yuewen_15": "冇一千都要畀八百蚊",
+      "beizhu_15": "Added \"蚊\" to complete the amount expression and match the spoken meaning more naturally."
     }
   },
   {
     "query": {
-      "yuewen_1": "仲唔快啲多谢人哋？\n[EN note: Added a prompt telling someone to quickly thank the other person.]",
+      "yuewen_1": "仲唔快啲多谢人哋？",
       "zhongwen_1": "还不快谢谢人家？",
       "yuewen_2": "多谢…",
       "zhongwen_2": "谢谢",
-      "yuewen_3": "快啲食啦\n[EN note: Added a line telling someone to eat quickly.]",
+      "yuewen_3": "快啲食啦",
       "zhongwen_3": "快点吃吧",
       "yuewen_4": "跟著我⋯走啊⋯",
       "zhongwen_4": "跟着我⋯走吧⋯"
     },
     "answer": {
-      "xiugai_yuewen_4": "跟住我⋯走呀⋯",
-      "beizhu_4": "Changed Mandarin-style wording to natural Cantonese transcription: '著' to '住' and '啊' to '呀'."
+      "xiugai_yuewen_4": "跟住我⋯走啊⋯",
+      "beizhu_4": "Changed 「著」 to 「住」 in 「跟住」, which is the standard Cantonese transcription here."
     }
   }
 ]
