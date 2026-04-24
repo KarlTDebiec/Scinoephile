@@ -14,6 +14,7 @@ from scinoephile.audio.subtitles import (
     get_series_from_segments,
 )
 from scinoephile.audio.transcription import (
+    DemucsSeparator,
     TranscribedSegment,
     WhisperTranscriber,
     get_segment_split_on_whitespace,
@@ -38,11 +39,19 @@ if TYPE_CHECKING:
     from pydub import AudioSegment
 
 __all__ = [
+    "DemucsMode",
     "VADMode",
     "YueTranscriber",
 ]
 
 logger = getLogger(__name__)
+
+
+class DemucsMode(StrEnum):
+    """Demucs preprocessing modes for 粤文 transcription."""
+
+    ON = "on"
+    OFF = "off"
 
 
 class VADMode(StrEnum):
@@ -60,6 +69,7 @@ class YueTranscriber:
         self,
         *,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt],
@@ -72,6 +82,7 @@ class YueTranscriber:
 
         Arguments:
             model_name: Whisper model name used for transcription
+            demucs_mode: Demucs preprocessing mode for transcription
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
             deliniation_prompt_cls: prompt class for block-boundary deliniation
@@ -83,8 +94,12 @@ class YueTranscriber:
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.model_name = model_name
         self.vad_mode = vad_mode
+        self.demucs_mode = demucs_mode
         if provider is None:
             provider = get_default_provider()
+        self.demucs_separator = None
+        if demucs_mode == DemucsMode.ON:
+            self.demucs_separator = DemucsSeparator()
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
@@ -210,6 +225,10 @@ class YueTranscriber:
         Returns:
             transcribed segments
         """
+        if self.demucs_mode == DemucsMode.ON:
+            assert self.demucs_separator is not None
+            audio = self.demucs_separator(audio)
+
         if self.vad_mode == VADMode.ON:
             assert self.vad_transcriber is not None
             return self.vad_transcriber(audio)
