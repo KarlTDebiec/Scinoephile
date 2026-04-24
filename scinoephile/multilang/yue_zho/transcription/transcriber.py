@@ -221,13 +221,11 @@ class YueTranscriber:
             return self.no_vad_transcriber.get_cached_transcription(cache_audio)
 
         assert self.vad_transcriber is not None
-        if cached_segments := self.vad_transcriber.get_cached_transcription(
-            cache_audio
-        ):
+        cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
+        if cached_segments is not None:
             return cached_segments
 
-        assert self.no_vad_transcriber is not None
-        return self.no_vad_transcriber.get_cached_transcription(cache_audio)
+        return None
 
     def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
         """Build a Whisper transcriber for the requested VAD setting.
@@ -253,7 +251,8 @@ class YueTranscriber:
             transcribed segments
         """
         cache_audio = audio
-        if cached_segments := self._get_cached_block_transcription(cache_audio):
+        cached_segments = self._get_cached_block_transcription(cache_audio)
+        if cached_segments is not None:
             return cached_segments
 
         if self.demucs_mode == DemucsMode.ON:
