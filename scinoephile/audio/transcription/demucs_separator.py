@@ -22,13 +22,16 @@ logger = getLogger(__name__)
 class DemucsSeparator:
     """Separates vocals from audio using a Demucs model."""
 
-    def __init__(self, model_name: str = "htdemucs_ft"):
+    def __init__(self, model_name: str = "htdemucs_ft", shifts: int = 0):
         """Initialize.
 
         Arguments:
             model_name: Demucs model name used for source separation
+            shifts: number of random shift-averaging passes; set to 0 for
+                deterministic output suitable for caching
         """
         self.model_name = model_name
+        self.shifts = shifts
         self._model: Any | None = None
 
     @property
@@ -94,6 +97,7 @@ class DemucsSeparator:
                 sources = apply_model(
                     self.model,
                     waveform.unsqueeze(0).to(self.device),
+                    shifts=self.shifts,
                     device=self.device,
                 )
             except Exception as exc:

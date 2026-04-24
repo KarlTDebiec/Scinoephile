@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import Mock, patch
+
 import torch
 from pydub import AudioSegment
 
@@ -22,3 +24,24 @@ def test_get_audio_segment_restores_mono_output():
 
     assert isinstance(audio, AudioSegment)
     assert audio.channels == 1
+
+
+def test_separate_vocals_uses_deterministic_demucs_shifts():
+    """Test Demucs separation disables random shift augmentation by default."""
+    separator = DemucsSeparator()
+    separator._model = Mock(samplerate=16000, sources=["vocals"])
+    separator._model.to.return_value = separator._model
+    separator._model.eval.return_value = separator._model
+    input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
+    separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
+
+    with patch(
+        "scinoephile.audio.transcription.demucs_separator.apply_model",
+        return_value=separated_sources,
+    ) as patched_apply_model:
+        output_audio = separator.separate_vocals(input_audio)
+
+    assert isinstance(output_audio, AudioSegment)
+    assert output_audio.frame_rate == input_audio.frame_rate
+    patched_apply_model.assert_called_once()
+    assert patched_apply_model.call_args.kwargs["shifts"] == 0
