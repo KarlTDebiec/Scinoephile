@@ -57,7 +57,7 @@ actions = {
     # "简体粤文 (Diff)",
     # "简体粤文 (Transcription Test VAD Off)",
     # "简体粤文 (Transcription Test VAD On)",
-    "简体粤文 (Transcription Test Demucs On VAD Auto)",
+    "简体粤文 (Transcription Demucs On VAD Auto)",
     "简体粤文 (Transcription Test Demucs Off VAD Auto)",
 }
 
@@ -210,7 +210,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
         )
     )
 
-if "简体粤文 (Transcription Demucs Off VAD Auto)" in actions:
+if "简体粤文 (Transcription Test Demucs Off VAD Auto)" in actions:
     yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
     zho_hans = Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
