@@ -82,6 +82,26 @@ class WhisperTranscriber:
             self._model = whisper.load_model(self.model_name, device=device)
         return self._model
 
+    def get_cached_transcription(
+        self, cache_audio: AudioSegment
+    ) -> list[TranscribedSegment] | None:
+        """Get cached transcription for audio if available.
+
+        Arguments:
+            cache_audio: audio used for cache-key generation
+        Returns:
+            cached transcription, if present
+        """
+        cache_path = self._get_cache_path(cache_audio)
+        if cache_path is None or not cache_path.exists():
+            return None
+
+        logger.info(f"Loaded from cache: {cache_path}")
+        with cache_path.open("r", encoding="utf-8") as file:
+            segments = [TranscribedSegment.model_validate(s) for s in json.load(file)]
+        cache_path.touch()
+        return segments
+
     def transcribe(
         self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
     ) -> list[TranscribedSegment]:
@@ -94,17 +114,11 @@ class WhisperTranscriber:
             Transcription, split into segments
         """
         cache_audio = cache_audio or audio
-        cache_path = self._get_cache_path(cache_audio.raw_data)
-
-        # Load from cache if available
-        if cache_path is not None and cache_path.exists():
-            logger.info(f"Loaded from cache: {cache_path}")
-            with cache_path.open("r", encoding="utf-8") as f:
-                segments = [TranscribedSegment.model_validate(s) for s in json.load(f)]
-            cache_path.touch()
+        if (segments := self.get_cached_transcription(cache_audio)) is not None:
             return segments
 
         # Transcribe using Whisper
+        cache_path = self._get_cache_path(cache_audio)
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
@@ -125,18 +139,18 @@ class WhisperTranscriber:
 
         return segments
 
-    def _get_cache_path(self, audio_data: bytes) -> Path | None:
+    def _get_cache_path(self, audio: AudioSegment) -> Path | None:
         """Get cache path based on hash of audio data.
 
         Arguments:
-            audio_data: Audio data to hash
+            audio: audio used to derive the cache key
         Returns:
             Path to cache file
         """
         if self.cache_dir_path is None:
             return None
 
-        audio_sha256 = hashlib.sha256(audio_data).hexdigest()
+        audio_sha256 = hashlib.sha256(audio.raw_data).hexdigest()
         cache_key = (
             f"{audio_sha256}_{self.model_name}_{self.language}_"
             f"demucs-{'on' if self.use_demucs else 'off'}_"

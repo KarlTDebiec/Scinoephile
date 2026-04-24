@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from unittest.mock import Mock
 
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 
@@ -25,8 +26,9 @@ def test_get_cache_path_separates_vad_modes_with_shared_cache_dir():
     vad_off_transcriber.use_demucs = False
     vad_off_transcriber.use_vad = False
 
-    vad_on_cache_path = vad_on_transcriber._get_cache_path(b"audio")
-    vad_off_cache_path = vad_off_transcriber._get_cache_path(b"audio")
+    audio = Mock(raw_data=b"audio")
+    vad_on_cache_path = vad_on_transcriber._get_cache_path(audio)
+    vad_off_cache_path = vad_off_transcriber._get_cache_path(audio)
 
     assert vad_on_cache_path is not None
     assert vad_off_cache_path is not None
@@ -51,8 +53,9 @@ def test_get_cache_path_separates_models():
     transcriber_two.use_demucs = False
     transcriber_two.use_vad = True
 
-    cache_path_one = transcriber_one._get_cache_path(b"audio")
-    cache_path_two = transcriber_two._get_cache_path(b"audio")
+    audio = Mock(raw_data=b"audio")
+    cache_path_one = transcriber_one._get_cache_path(audio)
+    cache_path_two = transcriber_two._get_cache_path(audio)
 
     assert cache_path_one is not None
     assert cache_path_two is not None
@@ -68,8 +71,10 @@ def test_get_cache_path_can_use_original_audio_with_processed_input():
     transcriber.use_demucs = False
     transcriber.use_vad = True
 
-    original_cache_path = transcriber._get_cache_path(b"original-audio")
-    processed_cache_path = transcriber._get_cache_path(b"processed-audio")
+    original_audio = Mock(raw_data=b"original-audio")
+    processed_audio = Mock(raw_data=b"processed-audio")
+    original_cache_path = transcriber._get_cache_path(original_audio)
+    processed_cache_path = transcriber._get_cache_path(processed_audio)
 
     assert original_cache_path is not None
     assert processed_cache_path is not None
@@ -92,8 +97,9 @@ def test_get_cache_path_separates_demucs_modes():
     demucs_off_transcriber.use_demucs = False
     demucs_off_transcriber.use_vad = True
 
-    demucs_on_cache_path = demucs_on_transcriber._get_cache_path(b"audio")
-    demucs_off_cache_path = demucs_off_transcriber._get_cache_path(b"audio")
+    audio = Mock(raw_data=b"audio")
+    demucs_on_cache_path = demucs_on_transcriber._get_cache_path(audio)
+    demucs_off_cache_path = demucs_off_transcriber._get_cache_path(audio)
 
     assert demucs_on_cache_path is not None
     assert demucs_off_cache_path is not None
