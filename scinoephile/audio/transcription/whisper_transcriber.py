@@ -36,6 +36,7 @@ class WhisperTranscriber:
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
         language: str = "yue",
         cache_dir_path: Path | None = None,
+        use_demucs: bool = False,
         use_vad: bool = True,
     ):
         """Initialize.
@@ -44,11 +45,13 @@ class WhisperTranscriber:
             model_name: Name of Whisper model to use
             language: Language code for transcription
             cache_dir_path: Directory in which to cache
+            use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to enable Whisper VAD
         """
         self.model_name = model_name
         self._model: Any | None = None
         self.language = language
+        self.use_demucs = use_demucs
         self.use_vad = use_vad
         self.cache_dir_path = None
         if cache_dir_path is not None:
@@ -136,6 +139,7 @@ class WhisperTranscriber:
         audio_sha256 = hashlib.sha256(audio_data).hexdigest()
         cache_key = (
             f"{audio_sha256}_{self.model_name}_{self.language}_"
+            f"demucs-{'on' if self.use_demucs else 'off'}_"
             f"vad-{'on' if self.use_vad else 'off'}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()

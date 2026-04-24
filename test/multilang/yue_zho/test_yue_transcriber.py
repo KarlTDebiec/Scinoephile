@@ -37,3 +37,14 @@ def test_transcribe_block_audio_applies_demucs_before_vad_retry():
     transcriber.no_vad_transcriber.assert_called_once_with(
         separated_audio, cache_audio=input_audio
     )
+
+
+def test_get_whisper_transcriber_sets_use_demucs():
+    """Test Whisper transcriber cache keys distinguish Demucs mode."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.model_name = "custom/model"
+    transcriber.demucs_mode = DemucsMode.ON
+
+    whisper_transcriber = transcriber._get_whisper_transcriber(use_vad=True)
+
+    assert whisper_transcriber.use_demucs is True

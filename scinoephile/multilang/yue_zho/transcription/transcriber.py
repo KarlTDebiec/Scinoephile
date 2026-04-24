@@ -214,6 +214,7 @@ class YueTranscriber:
         return WhisperTranscriber(
             model_name=self.model_name,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
+            use_demucs=self.demucs_mode == DemucsMode.ON,
             use_vad=use_vad,
         )
 
