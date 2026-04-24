@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis import get_series_cer, get_series_diff
+from scinoephile.analysis import get_series_cer
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
@@ -28,7 +28,10 @@ from scinoephile.multilang.yue_zho import (
 )
 from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
-from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
+from scinoephile.multilang.yue_zho.transcription import (
+    VADMode,
+    get_yue_vs_zho_transcriber,
+)
 from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
 from test.conftest import get_mlamd_yue_deliniation_test_cases
 from test.data.mlamd import get_mlamd_yue_punctuation_test_cases
@@ -50,8 +53,9 @@ actions = {
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
     "简体粤文 (Transcription)",
-    "简体粤文 (Diff)",
-    "简体粤文 (Transcription Test No VAD)",
+    # "简体粤文 (Diff)",
+    "简体粤文 (Transcription Test VAD Off)",
+    "简体粤文 (Transcription Test VAD On)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -126,6 +130,7 @@ if "简体粤文 (Transcription)" in actions:
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
 
     # Transcribe
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
@@ -133,13 +138,15 @@ if "简体粤文 (Transcription)" in actions:
         test_case_directory_path=test_data_root / "kob",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-        use_vad=True,
+        vad_mode=VADMode.AUTO,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
     )
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans_transcribe.save(outfile_path)
+    print("VAD Auto transcription CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
 
     # Review (line-by-line)
     yue_hans_transcribe = Series.load(outfile_path)
@@ -156,6 +163,8 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
     yue_hans_transcribe_review.save(outfile_path)
+    print("VAD Auto transcription -> line review CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review))
 
     # Translate
     translator = get_yue_vs_zho_translator(
@@ -171,6 +180,8 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review_translate.srt"
     yue_hans_transcribe_review_translate.save(outfile_path)
+    print("VAD Auto transcription -> line review -> translate CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review_translate))
 
     # Review (block-by-block)
     reviewer = get_yue_vs_zho_block_reviewer(
@@ -186,37 +197,16 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     yue_hans_transcribe_review_translate_block_review.save(outfile_path)
-if "简体粤文 (Diff)" in actions:
-    # Initial transcription
-    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
-    yue_hans_transcribe = Series.load(output_dir / "yue-Hans_transcribe.srt")
-    diff = get_series_diff(
-        yue_hans_transcribe,
-        yue_hans_reference,
-        one_lbl="TRANSCRIBE",
-        two_lbl="REFERENCE",
+    print("VAD Auto transcription -> line review -> translate -> review CER:")
+    print(
+        get_series_cer(
+            yue_hans_reference, yue_hans_transcribe_review_translate_block_review
+        )
     )
-    # print(diff)
-    cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
-    print(cer)
 
-    # Revised transcription
-    yue_hans_transcribe_review_translate_block_review = Series.load(
-        output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
-    )
-    diff = get_series_diff(
-        yue_hans_transcribe_review_translate_block_review,
-        yue_hans_reference,
-        one_lbl="TRANSCRIBE",
-        two_lbl="REFERENCE",
-    )
-    print(diff)
-    cer = get_series_cer(
-        yue_hans_reference,
-        yue_hans_transcribe_review_translate_block_review,
-    )
-    print(cer)
-if "简体粤文 (Transcription Test No VAD)" in actions:
+if "简体粤文 (Transcription Test VAD Off)" in actions:
+    # Stage
+    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
     zho_hans = Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
     )
@@ -224,16 +214,31 @@ if "简体粤文 (Transcription Test No VAD)" in actions:
 
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
-        test_case_directory_path=test_data_root / "kob",
+        vad_mode=VADMode.OFF,
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-        use_vad=False,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
     )
+    print("VAD Off transcription CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
 
+if "简体粤文 (Transcription Test VAD On)" in actions:
     yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
-    cer = get_series_cer(yue_hans_reference, yue_hans_transcribe)
-    print("No VAD transcription CER:")
-    print(cer)
+    zho_hans = Series.load(
+        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
+    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+
+    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    transcriber = get_yue_vs_zho_transcriber(
+        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
+        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        vad_mode=VADMode.ON,
+    )
+    yue_hans_transcribe = get_yue_transcribed_vs_zho(
+        yue_hans_audio, zho_hans, transcriber=transcriber
+    )
+    print("VAD On transcription CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
