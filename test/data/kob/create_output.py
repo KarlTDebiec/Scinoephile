@@ -135,7 +135,9 @@ if "简体粤文 (Transcription)" in actions:
     # Transcribe
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
-        test_case_directory_path=test_data_root / "kob",
+        test_case_directory_path=(
+            title_root / "multilang" / "yue_zho" / "transcription"
+        ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
         vad_mode=VADMode.AUTO,
@@ -214,6 +216,9 @@ if "简体粤文 (Transcription Test VAD Off)" in actions:
 
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
+        test_case_directory_path=(
+            title_root / "multilang" / "yue_zho" / "transcription"
+        ),
         vad_mode=VADMode.OFF,
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
@@ -233,6 +238,9 @@ if "简体粤文 (Transcription Test VAD On)" in actions:
 
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
+        test_case_directory_path=(
+            title_root / "multilang" / "yue_zho" / "transcription"
+        ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
         vad_mode=VADMode.ON,
