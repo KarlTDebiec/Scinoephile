@@ -45,8 +45,9 @@ class YueHansFromZhoTranslationPrompt(
         如果某行已经有粤文内容，唔好改，嗰行请输出空字串。
         译文要用自然、通顺嘅书面粤语，语气同用词要尽量贴近附近已有嘅粤文字幕。
         中文字幕只系参考；译文唔需要逐字对应，但要准确表达该行意思。
-        如果你提供咗译文，请同时附上一段简短英文备注，概括你补上咗乜嘢内容。
-        如果唔需要翻译，译文同备注都必须系空字串。
+        输出内容只可以系字幕正文本身，绝对唔好附加英文、备注、解释、标签、
+        方括号内容、括号内容，或者任何译文以外嘅说明。
+        如果唔需要翻译，就输出空字串。
         """
     )
     """Base system prompt."""
@@ -68,14 +69,11 @@ class YueHansFromZhoTranslationPrompt(
     output_pfx: ClassVar[str] = "yuewen_"
     """Prefix for output fields in answer."""
 
-    output_desc_tpl: ClassVar[str] = '字幕 {idx} 译好后嘅粤文；如果唔需要翻译请输出 ""'
+    output_desc_tpl: ClassVar[str] = (
+        '字幕 {idx} 译好后嘅粤文正文；如果唔需要翻译请输出 ""。'
+        "唔好包含英文、备注、解释、标签或者括号说明。"
+    )
     """Description template for output fields in answer."""
-
-    note_pfx: ClassVar[str] = "beizhu_"
-    """Prefix for note fields in answer."""
-
-    note_desc_tpl: ClassVar[str] = '字幕 {idx} 嘅英文备注；如果冇提供翻译请输出 ""'
-    """Description template for note fields in answer."""
 
     # Test case validation errors
     output_unmodified_err_tpl: ClassVar[str] = (
@@ -83,15 +81,15 @@ class YueHansFromZhoTranslationPrompt(
     )
     """Error template when output is present but unmodified relative to source one."""
 
-    output_missing_note_present_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 冇译文，但你提供咗备注；请同样输出空字串。"
+    output_contains_note_err_tpl: ClassVar[str] = (
+        "字幕 {idx} 包含英文或者备注说明；只可以输出粤文字幕正文。"
     )
-    """Error template when output is missing but note is present."""
+    """Error template when output includes leaked note text."""
 
-    output_present_note_missing_err_tpl: ClassVar[str] = (
-        "字幕 {idx} 有译文，但冇备注；提供译文时必须一齐提供备注。"
-    )
-    """Error template when output is present but note is missing."""
+    @classmethod
+    def output_contains_note_err(cls, idx: int) -> str:
+        """Error when output includes note-like text."""
+        return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
 class YueHantFromZhoTranslationPrompt(YueHansFromZhoTranslationPrompt):

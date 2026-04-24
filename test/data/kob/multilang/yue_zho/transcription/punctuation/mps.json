@@ -39,41 +39,42 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "师爷",
-        "少爷写乜嘢呀"
+        "师爷"
       ],
       "zhongwen": "师爷，少爷写的是甚么？"
     },
     "answer": {
-      "yuewen_punctuated": "师爷，少爷写乜嘢呀？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "哗",
-        "好靓呀",
-        "原来少爷识写自己个名㖞"
-      ],
-      "zhongwen": "好棒！原来少爷会写自己的名字"
-    },
-    "answer": {
-      "yuewen_punctuated": "哗，好靓呀！原来少爷识写自己个名㖞"
+      "yuewen_punctuated": "师爷，"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "系呀",
-        "婴儿"
+        "少爷写乜嘢呀",
+        "名呀"
       ],
-      "zhongwen": "对呀"
+      "zhongwen": "名字"
     },
     "answer": {
-      "yuewen_punctuated": "系呀婴儿"
-    }
+      "yuewen_punctuated": "少爷写乜嘢呀？名呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "哗",
+        "好靓呀",
+        "原来少爷识写自己个名㖞",
+        "系呀"
+      ],
+      "zhongwen": "好棒！原来少爷会写自己的名字"
+    },
+    "answer": {
+      "yuewen_punctuated": "哗，好靓呀！原来少爷识写自己个名㖞。系呀"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -172,52 +173,51 @@
     "query": {
       "yuewen_to_punctuate": [
         "我傻",
-        "灿爷灿",
-        "我睇"
+        "灿爷灿"
       ],
       "zhongwen": "阿灿，先把它裱起来"
     },
     "answer": {
-      "yuewen_punctuated": "我傻，灿爷灿，我睇"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "表起佢好㖞",
-        "表起佢"
-      ],
-      "zhongwen": "裱起它"
-    },
-    "answer": {
-      "yuewen_punctuated": "表起佢好㖞表起佢"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "师爷",
-        "你攞佢有咁多眼挂"
-      ],
-      "zhongwen": "师爷，把它挂在最当眼的地方"
-    },
-    "answer": {
-      "yuewen_punctuated": "师爷，你攞佢有咁多眼挂"
+      "yuewen_punctuated": "我傻，灿爷灿"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "咁多眼",
+        "我睇表起佢好㖞",
+        "表起佢"
+      ],
+      "zhongwen": "裱起它"
+    },
+    "answer": {
+      "yuewen_punctuated": "我睇表起佢好㖞，表起佢"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "师爷",
+        "你攞佢有咁多眼挂咁多眼"
+      ],
+      "zhongwen": "师爷，把它挂在最当眼的地方"
+    },
+    "answer": {
+      "yuewen_punctuated": "师爷，你攞佢有咁多眼挂咁多眼"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "咁唔系",
         "师爷"
       ],
       "zhongwen": "这样吧，师爷"
     },
     "answer": {
-      "yuewen_punctuated": "咁多眼，咁唔系师爷"
+      "yuewen_punctuated": "咁唔系，师爷"
     },
     "difficulty": 1
   },
@@ -225,26 +225,14 @@
     "query": {
       "yuewen_to_punctuate": [
         "你揹住佢参夫阿国",
-        "和友伦皆威下"
+        "和友伦皆威下先"
       ],
       "zhongwen": "你先背着它簪花挂红，游行威风一下"
     },
     "answer": {
-      "yuewen_punctuated": "你揹住佢参夫阿国，和友伦皆威下"
+      "yuewen_punctuated": "你揹住佢参夫阿国和友伦皆威下先"
     },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "先",
-        "行啦"
-      ],
-      "zhongwen": "走吧"
-    },
-    "answer": {
-      "yuewen_punctuated": "先行啦"
-    }
+    "difficulty": 2
   },
   {
     "query": {
@@ -501,9 +489,9 @@
       "zhongwen": "打赏⋯打赏"
     },
     "answer": {
-      "yuewen_punctuated": "打赏⋯"
+      "yuewen_punctuated": "打赏…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -514,9 +502,9 @@
       "zhongwen": "我家破人亡、贫病老弱"
     },
     "answer": {
-      "yuewen_punctuated": "我家善人、喷病老药"
+      "yuewen_punctuated": "我家善人，喷病老药"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -527,9 +515,9 @@
       "zhongwen": "无亲无故、妻离子散"
     },
     "answer": {
-      "yuewen_punctuated": "死人塌楼、妻离子散"
+      "yuewen_punctuated": "死人塌楼，妻离子散"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -566,33 +554,33 @@
       "zhongwen": "我打⋯"
     },
     "answer": {
-      "yuewen_punctuated": "我打⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "打赏",
-        "闭小嘢"
-      ],
-      "zhongwen": "打赏　　是，少爷"
-    },
-    "answer": {
-      "yuewen_punctuated": "打赏　　闭小嘢"
+      "yuewen_punctuated": "我打…"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "有冇搞错呀?",
+        "打赏",
+        "闭小嘢",
+        "有冇搞错呀?"
+      ],
+      "zhongwen": "打赏　　是，少爷"
+    },
+    "answer": {
+      "yuewen_punctuated": "打赏　　闭小嘢，有冇搞错呀?"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "有冇钱就走呀"
       ],
       "zhongwen": "这样也有打赏？"
     },
     "answer": {
-      "yuewen_punctuated": "有冇搞错呀？有冇钱就走呀"
+      "yuewen_punctuated": "有冇钱就走呀？"
     },
     "difficulty": 1
   },
@@ -625,25 +613,25 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "我包",
-        "包包"
+        "我包"
       ],
       "zhongwen": "你包？"
     },
     "answer": {
-      "yuewen_punctuated": "我包包包？"
+      "yuewen_punctuated": "我包？"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "包包",
         "点解?催呀?"
       ],
       "zhongwen": "不可以吗？"
     },
     "answer": {
-      "yuewen_punctuated": "点解？催呀？"
+      "yuewen_punctuated": "包包，点解？催呀？"
     },
     "difficulty": 2
   },
@@ -700,13 +688,25 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "你要坦白呀?你耳顶冇呀",
+        "大家坦白啲唔好咩?"
+      ],
+      "zhongwen": "大家坦白一点不好吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "大家坦白啲唔好咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你耳顶冇呀",
         "譬如麻大孝噉,"
       ],
       "zhongwen": "你的帽子像披麻带孝似的"
     },
     "answer": {
-      "yuewen_punctuated": "你要坦白呀你耳顶冇呀，譬如麻大孝噉"
+      "yuewen_punctuated": "你耳顶冇呀，譬如麻大孝噉。"
     },
     "difficulty": 2
   },
@@ -744,8 +744,9 @@
       "zhongwen": "那就有劳皇爷在皇上面前"
     },
     "answer": {
-      "yuewen_punctuated": "今次就好希望有陆王爷喺皇上面前"
-    }
+      "yuewen_punctuated": "今次就好，希望有陆王爷喺皇上面前"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -768,15 +769,15 @@
       "zhongwen": "苏翁来了⋯"
     },
     "answer": {
-      "yuewen_punctuated": "苏翁来了⋯"
+      "yuewen_punctuated": "苏翁来了…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
         "苏翁,",
-        "恭喜发财,"
+        "恭喜发财"
       ],
       "zhongwen": "苏翁，恭喜发财"
     },
@@ -788,14 +789,15 @@
   {
     "query": {
       "yuewen_to_punctuate": [
+        ",",
         "这边…"
       ],
       "zhongwen": "这边⋯这边"
     },
     "answer": {
-      "yuewen_punctuated": "这边⋯"
+      "yuewen_punctuated": "，这边…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1053,25 +1055,13 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "是她,"
+        "是她,",
+        "女姐姐,"
       ],
       "zhongwen": "姐姐，就是他"
     },
     "answer": {
-      "yuewen_punctuated": "是她，"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "女姐姐,",
-        "杀爹的就是她"
-      ],
-      "zhongwen": "杀阿爹的人就是他"
-    },
-    "answer": {
-      "yuewen_punctuated": "女姐姐，杀爹的就是她"
+      "yuewen_punctuated": "是她，女姐姐，"
     },
     "difficulty": 2
   },
@@ -1081,24 +1071,24 @@
         "我知道,",
         "镇定点,"
       ],
-      "zhongwen": "走吧"
+      "zhongwen": "我知道，镇定点"
     },
     "answer": {
-      "yuewen_punctuated": "我知道,镇定点,"
+      "yuewen_punctuated": "我知道，镇定点"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "走"
+        "走",
+        "但"
       ],
-      "zhongwen": "失陪　　赵大人"
+      "zhongwen": "走吧"
     },
     "answer": {
-      "yuewen_punctuated": "走　　"
-    },
-    "difficulty": 1
+      "yuewen_punctuated": "走但"
+    }
   },
   {
     "query": {
@@ -1135,9 +1125,9 @@
       "zhongwen": "各位⋯真不好意思"
     },
     "answer": {
-      "yuewen_punctuated": "这么多位⋯真不好意思"
+      "yuewen_punctuated": "这么多位⋯真不好意思,"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1223,9 +1213,9 @@
       "zhongwen": "十万两你还嫌少吗，姑娘？"
     },
     "answer": {
-      "yuewen_punctuated": "十万两银通姑娘，你都钟意唔少？"
+      "yuewen_punctuated": "十万两银通姑娘你都钟意唔少？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1274,7 +1264,7 @@
       "zhongwen": "如霜姑娘看不上我，是我该死"
     },
     "answer": {
-      "yuewen_punctuated": "如霜姑娘睇我唔上眼系我，抵死呀"
+      "yuewen_punctuated": "如霜姑娘睇我唔上眼，系我抵死呀"
     },
     "difficulty": 1
   },
@@ -1312,20 +1302,32 @@
       "zhongwen": "大胆！放肆"
     },
     "answer": {
-      "yuewen_punctuated": "放肆"
+      "yuewen_punctuated": "放肆！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "螳螂拳?几似样啊",
-        "哦"
+        "螳螂拳?几似样啊"
       ],
       "zhongwen": "螳螂拳？像模像样的"
     },
     "answer": {
-      "yuewen_punctuated": "螳螂拳？几似样啊。哦"
+      "yuewen_punctuated": "螳螂拳？几似样啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "哦",
+        "周学"
+      ],
+      "zhongwen": "奏乐"
+    },
+    "answer": {
+      "yuewen_punctuated": "哦，周学"
     },
     "difficulty": 2
   },
@@ -1371,24 +1373,12 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "边个"
-      ],
-      "zhongwen": "走开⋯"
-    },
-    "answer": {
-      "yuewen_punctuated": "边个⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "兽囊欺我仔我蛋边个"
+        "边个兽囊欺我仔我蛋边个"
       ],
       "zhongwen": "谁敢欺负我的儿子，我就射谁"
     },
     "answer": {
-      "yuewen_punctuated": "兽囊欺我仔我蛋边个"
+      "yuewen_punctuated": "边个兽囊欺我仔我蛋边个"
     },
     "difficulty": 2
   },
@@ -1420,24 +1410,13 @@
     "query": {
       "yuewen_to_punctuate": [
         "死你欺",
-        "佢有几银性㗎"
+        "佢有几银性㗎",
+        "佢够唔够资格呀"
       ],
       "zhongwen": "他有多少家财？他够不够资格"
     },
     "answer": {
-      "yuewen_punctuated": "死你欺，佢有几银性㗎"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "佢够唔够资格呀"
-      ],
-      "zhongwen": "老爷！是他们"
-    },
-    "answer": {
-      "yuewen_punctuated": "佢够唔够资格呀"
+      "yuewen_punctuated": "死你欺，佢有几银性㗎？佢够唔够资格呀？"
     },
     "difficulty": 2
   },
@@ -1445,14 +1424,26 @@
     "query": {
       "yuewen_to_punctuate": [
         "老爷",
-        "系佢嘢呀"
+        "系佢"
+      ],
+      "zhongwen": "老爷！是他们"
+    },
+    "answer": {
+      "yuewen_punctuated": "老爷！系佢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "嘢呀"
       ],
       "zhongwen": "谁？"
     },
     "answer": {
-      "yuewen_punctuated": "老爷，系佢嘢呀？"
+      "yuewen_punctuated": "嘢呀？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -1520,16 +1511,15 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "抢他",
         "等等…",
         "根据大清律例"
       ],
       "zhongwen": "等一等！根据大清律例"
     },
     "answer": {
-      "yuewen_punctuated": "抢他，等等！根据大清律例"
+      "yuewen_punctuated": "等等！根据大清律例"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -1552,9 +1542,9 @@
       "zhongwen": "知法犯法，该当何罪？"
     },
     "answer": {
-      "yuewen_punctuated": "知犯犯法，该当何罪？"
+      "yuewen_punctuated": "知犯犯法该当何罪？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1597,25 +1587,25 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "来抓你",
-        "抓你"
+        "来抓你"
       ],
       "zhongwen": "来拉⋯　　拉你"
     },
     "answer": {
-      "yuewen_punctuated": "来抓你⋯　　抓你"
+      "yuewen_punctuated": "来抓你"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "抓你",
         "抓他"
       ],
       "zhongwen": "他！　　拉他"
     },
     "answer": {
-      "yuewen_punctuated": "抓他"
+      "yuewen_punctuated": "抓你　　抓他"
     },
     "difficulty": 2
   },
@@ -1627,9 +1617,9 @@
       "zhongwen": "还有⋯还有"
     },
     "answer": {
-      "yuewen_punctuated": "还有⋯"
+      "yuewen_punctuated": "还有…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1659,25 +1649,26 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "最佳等",
-        "可以问斩"
+        "身为军官",
+        "最佳等"
       ],
-      "zhongwen": "可以问斩"
+      "zhongwen": "身为京官罪加一等"
     },
     "answer": {
-      "yuewen_punctuated": "最佳等可以问斩"
-    }
+      "yuewen_punctuated": "身为军官，最佳等"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "他",
+        "可以问斩他",
         "斩他…"
       ],
       "zhongwen": "斩他⋯斩他"
     },
     "answer": {
-      "yuewen_punctuated": "他⋯斩他…"
+      "yuewen_punctuated": "可以问斩他，斩他…"
     },
     "difficulty": 2
   },
@@ -1689,9 +1680,9 @@
       "zhongwen": "那你是要⋯"
     },
     "answer": {
-      "yuewen_punctuated": "那你不就…"
+      "yuewen_punctuated": "那你不就⋯"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -1721,15 +1712,26 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "别多说了",
-        "闭嘴"
+        "别多说了"
       ],
       "zhongwen": "不用再说，斩他"
     },
     "answer": {
-      "yuewen_punctuated": "别多说了，闭嘴"
+      "yuewen_punctuated": "别多说了，"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "闭嘴"
+      ],
+      "zhongwen": "好了好了，玩完了"
+    },
+    "answer": {
+      "yuewen_punctuated": "闭嘴"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -1762,28 +1764,28 @@
       "yuewen_to_punctuate": [
         "王爷…",
         "王爷,",
-        "这个玩不起,"
+        "这个玩不起,",
+        "见不收了"
       ],
       "zhongwen": "老爷！这个不能惹，见好就收"
     },
     "answer": {
-      "yuewen_punctuated": "王爷！王爷，这个玩不起,"
+      "yuewen_punctuated": "王爷！王爷，这个玩不起，见不收了"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "不收了",
         "大事化少,",
         "小事化无"
       ],
       "zhongwen": "大事化小，小事化无"
     },
     "answer": {
-      "yuewen_punctuated": "不收了，大事化少，小事化无"
+      "yuewen_punctuated": "大事化少，小事化无"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -1895,41 +1897,28 @@
       "zhongwen": "如霜姑娘，我们又见面了"
     },
     "answer": {
-      "yuewen_punctuated": "余霜姑娘，我们又见面了"
+      "yuewen_punctuated": "余霜姑娘, 我们又见面了"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "怎么会是你"
+        "怎么会是你?",
+        "天余",
+        "赵大爷呢?"
       ],
       "zhongwen": "怎么是你？赵大爷呢？"
     },
     "answer": {
-      "yuewen_punctuated": "怎么会是你？"
+      "yuewen_punctuated": "怎么会是你？天余，赵大爷呢？"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "?",
-        "天余",
-        "赵大爷呢?",
-        "哥哥赵大爷一定疯猪"
-      ],
-      "zhongwen": "赵大爷的定风珠"
-    },
-    "answer": {
-      "yuewen_punctuated": "?天余赵大爷呢?哥哥赵大爷一定疯猪"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "但是…"
+        "但是"
       ],
       "zhongwen": "但是⋯"
     },
@@ -1941,15 +1930,16 @@
   {
     "query": {
       "yuewen_to_punctuate": [
+        "…",
         "没有但是",
         "那十万两我已经放进袋子里了"
       ],
       "zhongwen": "但是甚么，十万两我已拿了"
     },
     "answer": {
-      "yuewen_punctuated": "没有但是，那十万两我已经放进袋子里了"
+      "yuewen_punctuated": "…没有但是，那十万两我已经放进袋子里了"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -1959,32 +1949,20 @@
       "zhongwen": "说到苏翁的为人⋯"
     },
     "answer": {
-      "yuewen_punctuated": "说到苏勇这份人⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "废话可以少说了,闺婆",
-        "你先出去吧"
-      ],
-      "zhongwen": "你先出去"
-    },
-    "answer": {
-      "yuewen_punctuated": "废话可以少说了，闺婆你先出去吧"
+      "yuewen_punctuated": "说到苏勇这份人…"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "你先出去吧",
         "是的…"
       ],
       "zhongwen": "是的⋯是的"
     },
     "answer": {
-      "yuewen_punctuated": "是的…⋯"
+      "yuewen_punctuated": "你先出去吧，是的…"
     },
     "difficulty": 2
   },
@@ -2122,6 +2100,19 @@
       "yuewen_punctuated": "绝对没有！我决定要娶你"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "不是神经病吧",
+        "不是吧"
+      ],
+      "zhongwen": "不是吧"
+    },
+    "answer": {
+      "yuewen_punctuated": "不是神经病吧，不是吧"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -2475,9 +2466,9 @@
       "zhongwen": "何方妖孽？竟敢来吓我？"
     },
     "answer": {
-      "yuewen_punctuated": "何况妖孽？够胆出来欺骗本少爷？"
+      "yuewen_punctuated": "何况妖孽，够胆出来欺骗本少爷？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -2499,9 +2490,9 @@
       "zhongwen": "你是鸨母？"
     },
     "answer": {
-      "yuewen_punctuated": "你是闺婆?"
+      "yuewen_punctuated": "你是闺婆？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -2511,9 +2502,9 @@
       "zhongwen": "胸部那么平，你的奶子呢？"
     },
     "answer": {
-      "yuewen_punctuated": "胸这么平，你对奶呢？"
+      "yuewen_punctuated": "胸这么平, 你对奶呢?"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -2544,48 +2535,36 @@
       "yuewen_to_punctuate": [
         "以后没化妆不要视为闲,知道吗"
       ],
-      "zhongwen": "以后没有化妆不要四处走，知道吗？"
+      "zhongwen": "不会了，不会了"
     },
     "answer": {
-      "yuewen_punctuated": "以后没化妆不要视为闲，知道吗？"
+      "yuewen_punctuated": "以后没化妆不要视为闲，知道吗"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "不会了"
-      ],
-      "zhongwen": "不会了，不会了"
-    },
-    "answer": {
-      "yuewen_punctuated": "不会了"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "…你别等余霜姑娘了",
-        "她走了",
-        "是"
+        "不会了…你别等余霜姑娘了",
+        "她走了"
       ],
       "zhongwen": "你不用等如霜姑娘了，她已经走了⋯"
     },
     "answer": {
-      "yuewen_punctuated": "…你别等余霜姑娘了，她走了，是⋯"
+      "yuewen_punctuated": "不会了…你别等余霜姑娘了，她走了⋯"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "是",
         "走了?"
       ],
       "zhongwen": "走了？"
     },
     "answer": {
-      "yuewen_punctuated": "走了?"
+      "yuewen_punctuated": "是走了?"
     },
     "difficulty": 2
   },
@@ -2780,14 +2759,15 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "品味与别不同"
+        "品味与别不同",
+        "真系能人所不能"
       ],
       "zhongwen": "品味与别不同，真是能人所不能"
     },
     "answer": {
-      "yuewen_punctuated": "品味与别不同"
+      "yuewen_punctuated": "品味与别不同，真系能人所不能"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -2798,8 +2778,9 @@
       "zhongwen": "我陪你上京"
     },
     "answer": {
-      "yuewen_punctuated": "阿爹一唔陪你我陪你上京"
-    }
+      "yuewen_punctuated": "阿爹一唔陪你，我陪你上京"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -2818,15 +2799,27 @@
     "query": {
       "yuewen_to_punctuate": [
         "宵夜上京",
-        "反韩甲搬",
-        "宵夜"
+        "反韩甲搬"
       ],
       "zhongwen": "少爷上京赴考，我们搬家"
     },
     "answer": {
-      "yuewen_punctuated": "宵夜上京，反韩甲搬宵夜"
+      "yuewen_punctuated": "宵夜上京，反韩甲搬"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "宵夜",
+        "你哋唔好追啦"
+      ],
+      "zhongwen": "你们不要追了"
+    },
+    "answer": {
+      "yuewen_punctuated": "宵夜，你哋唔好追啦"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -2838,7 +2831,7 @@
       "zhongwen": "弄花了我的东西，我不会放过你"
     },
     "answer": {
-      "yuewen_punctuated": "你唔好声呀你揹返我啲嘢我打到你屁股开返"
+      "yuewen_punctuated": "你唔好声呀，你揹返我啲嘢，我打到你屁股开返"
     },
     "difficulty": 2
   },
@@ -2876,9 +2869,9 @@
       "zhongwen": "真的全部都搬走？"
     },
     "answer": {
-      "yuewen_punctuated": "早晨"
+      "yuewen_punctuated": "早晨？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -2910,27 +2903,39 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "大得我咩"
+        "大得我咩",
+        "家下"
       ],
       "zhongwen": "呸！比我大吗？"
     },
     "answer": {
-      "yuewen_punctuated": "大得我咩？"
+      "yuewen_punctuated": "大得我咩，家下？"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "家下",
-        "睇小木系咪"
+        "睇小木"
       ],
       "zhongwen": "小看我？"
     },
     "answer": {
-      "yuewen_punctuated": "家下，睇小木系咪？"
+      "yuewen_punctuated": "睇小木？"
     },
-    "difficulty": 2
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "系咪",
+        "迟少日大过你嘅"
+      ],
+      "zhongwen": "总有一天比你大"
+    },
+    "answer": {
+      "yuewen_punctuated": "系咪迟少日大过你嘅"
+    }
   },
   {
     "query": {
@@ -2941,9 +2946,8 @@
       "zhongwen": "有谁愿意脱下衣服来给我穿一下"
     },
     "answer": {
-      "yuewen_punctuated": "后期边个快啲随调，搬落嚟撑住"
-    },
-    "difficulty": 2
+      "yuewen_punctuated": "后期边个快啲随调搬落嚟撑住"
+    }
   },
   {
     "query": {
@@ -3058,9 +3062,9 @@
       "zhongwen": "推到那边⋯推到那边"
     },
     "answer": {
-      "yuewen_punctuated": "家阵来推佢⋯过去推佢"
+      "yuewen_punctuated": "家阵来，推佢，过去推佢"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3072,9 +3076,9 @@
       "zhongwen": "小心点⋯小心我的荔枝"
     },
     "answer": {
-      "yuewen_punctuated": "好声呀⋯好声呀睇住我啲荔枝呀"
+      "yuewen_punctuated": "好声呀⋯好声呀，睇住我啲荔枝呀"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3274,9 +3278,9 @@
       "zhongwen": "那么大？一定是小小"
     },
     "answer": {
-      "yuewen_punctuated": "咁大？一定系少少"
+      "yuewen_punctuated": "咁大，一定系少少"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3295,27 +3299,16 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "咁你系吖嘛",
-        "真系"
-      ],
-      "zhongwen": "你是大嘛"
-    },
-    "answer": {
-      "yuewen_punctuated": "咁你系吖嘛真系"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
+        "真系",
         "大肚婆都有?",
         "呃我唔到嘅,"
       ],
       "zhongwen": "怀孕的也有？骗不倒我"
     },
     "answer": {
-      "yuewen_punctuated": "大肚婆都有？呃我唔到嘅"
+      "yuewen_punctuated": "真系，大肚婆都有？呃我唔到嘅。"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3383,28 +3376,40 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "你明日考试喇㖞,"
+        "你明日考试"
       ],
-      "zhongwen": "准备好了没有？"
+      "zhongwen": "阿灿，你明天考试"
     },
     "answer": {
-      "yuewen_punctuated": "你明日考试喇㖞？"
+      "yuewen_punctuated": "你明日考试"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "啲嘢预备好晒未",
+        "喇㖞,",
+        "啲嘢预备好晒未"
+      ],
+      "zhongwen": "准备好了没有？"
+    },
+    "answer": {
+      "yuewen_punctuated": "喇㖞，啲嘢预备好晒未？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "预备咩未?赢噉嘅话",
         "乜你唔知咩"
       ],
       "zhongwen": "准备甚么？我赢定了，你不知道吗"
     },
     "answer": {
-      "yuewen_punctuated": "啲嘢预备好晒未？预备咩未？赢噉嘅话，乜你唔知咩"
+      "yuewen_punctuated": "预备咩未？赢噉嘅话，乜你唔知咩"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -3490,9 +3495,21 @@
       "zhongwen": "至于临场考弓箭、骑马"
     },
     "answer": {
-      "yuewen_punctuated": "至于到时考弓箭、骑马"
+      "yuewen_punctuated": "至于到时考弓箭、骑马、"
     },
-    "difficulty": 1
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "举石、搏击同兵器呢"
+      ],
+      "zhongwen": "举石、搏击、兵器"
+    },
+    "answer": {
+      "yuewen_punctuated": "举石、搏击同兵器呢"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -3619,9 +3636,9 @@
       "zhongwen": "⋯对广东的苏察哈尔灿"
     },
     "answer": {
-      "yuewen_punctuated": "⋯对广东嘅苏刷哈尔灿"
+      "yuewen_punctuated": "对广东嘅苏刷哈尔灿"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3652,26 +3669,26 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "一个一赔十"
+        "一个一赔十",
+        "一个一赔一"
       ],
       "zhongwen": "一个是一赔十，一个是一赔一"
     },
     "answer": {
-      "yuewen_punctuated": "一个一赔十"
+      "yuewen_punctuated": "一个一赔十，一个一赔一"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "一个一赔一",
         "哗",
         "咁睇唔好苏刷啊"
       ],
       "zhongwen": "对苏灿那么没信心！"
     },
     "answer": {
-      "yuewen_punctuated": "一个一赔一，哗，咁睇唔好苏刷啊！"
+      "yuewen_punctuated": "哗，咁睇唔好苏刷啊！"
     },
     "difficulty": 2
   },
@@ -3743,14 +3760,15 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "咁又唔系咁讲啊"
+        "咁又唔系咁讲啊",
+        "啲"
       ],
       "zhongwen": "话不是这样说　　甚么？"
     },
     "answer": {
-      "yuewen_punctuated": "咁又唔系咁讲啊　　"
+      "yuewen_punctuated": "咁又唔系咁讲啊　　啲？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -3820,13 +3838,25 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "虾",
-        "乜虾啊"
+        "但系老实对我决赛都系好有虾嘅",
+        "虾"
+      ],
+      "zhongwen": "但是能进入决赛是很困难的"
+    },
+    "answer": {
+      "yuewen_punctuated": "但系老实对我决赛都系好有虾嘅虾"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "乜",
+        "虾啊"
       ],
       "zhongwen": "甚么？"
     },
     "answer": {
-      "yuewen_punctuated": "虾，乜虾啊？"
+      "yuewen_punctuated": "乜，虾啊？"
     },
     "difficulty": 2
   },
@@ -3840,9 +3870,9 @@
       "zhongwen": "是洋文！即是有斗心"
     },
     "answer": {
-      "yuewen_punctuated": "系洋文嚟嘅！虾即系有斗心噉解"
+      "yuewen_punctuated": "系，洋文嚟嘅！虾即系有斗心噉解"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -3921,8 +3951,9 @@
       "zhongwen": "过来过来"
     },
     "answer": {
-      "yuewen_punctuated": "系系过嚟过嚟"
-    }
+      "yuewen_punctuated": "系，系，过嚟，过嚟"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -4058,8 +4089,9 @@
       "zhongwen": "他是博达尔多的叔叔"
     },
     "answer": {
-      "yuewen_punctuated": "约仔他是博达尔多的叔叔"
-    }
+      "yuewen_punctuated": "约仔，他是博达尔多的叔叔"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -4083,7 +4115,7 @@
       "zhongwen": "靶都射穿了！至少都多加两分"
     },
     "answer": {
-      "yuewen_punctuated": "哗，把都射住埋！最少都加到两分啊"
+      "yuewen_punctuated": "哗！把都射住埋，最少都加到两分啊"
     },
     "difficulty": 2
   },
@@ -4108,9 +4140,9 @@
       "zhongwen": "苏灿靶上没有箭！博达多胜"
     },
     "answer": {
-      "yuewen_punctuated": "须衬把上！"
+      "yuewen_punctuated": "须衬把上"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -4129,26 +4161,15 @@
     "query": {
       "yuewen_to_punctuate": [
         "考生上马",
-        "准备下一回合"
+        "准备下一回合",
+        "赵先生"
       ],
       "zhongwen": "考生上马！准备下一回合"
     },
     "answer": {
-      "yuewen_punctuated": "考生上马！准备下一回合"
+      "yuewen_punctuated": "考生上马！准备下一回合赵先生"
     },
     "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "赵先生",
-        "赵先生"
-      ],
-      "zhongwen": "赵先生"
-    },
-    "answer": {
-      "yuewen_punctuated": "赵先生赵先生"
-    }
   },
   {
     "query": {
@@ -4192,14 +4213,27 @@
     "query": {
       "yuewen_to_punctuate": [
         "追返嗰个",
+        "追返嗰个"
+      ],
+      "zhongwen": "追回一局了"
+    },
+    "answer": {
+      "yuewen_punctuated": "追返嗰个，追返嗰个"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "喂",
         "张飞明咩噶"
       ],
       "zhongwen": "你的票撕了没有"
     },
     "answer": {
-      "yuewen_punctuated": "追返嗰个喂张飞明咩噶"
-    }
+      "yuewen_punctuated": "喂，张飞明咩噶？"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -4286,7 +4320,7 @@
       "zhongwen": "这当然要用臀啦！还有别处可用吗？"
     },
     "answer": {
-      "yuewen_punctuated": "开嘅best，噢就梗用个pack嘅啦！仲有第二次咩？唔系呀"
+      "yuewen_punctuated": "开嘅best，噢就梗用个pack嘅啦，仲有第二次咩？唔系呀！"
     },
     "difficulty": 2
   },
@@ -4349,8 +4383,9 @@
       "zhongwen": "卑鄙无耻"
     },
     "answer": {
-      "yuewen_punctuated": "嗱卑鄙无耻"
-    }
+      "yuewen_punctuated": "嗱，卑鄙无耻"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -4419,12 +4454,24 @@
     "query": {
       "yuewen_to_punctuate": [
         "个法",
-        "系呀…"
+        "系呀"
       ],
       "zhongwen": "对⋯"
     },
     "answer": {
-      "yuewen_punctuated": "个法系呀…"
+      "yuewen_punctuated": "个法系呀⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "…"
+      ],
+      "zhongwen": "你⋯你⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "…"
     },
     "difficulty": 2
   },
@@ -4450,9 +4497,9 @@
       "zhongwen": "大人，皇上说要亲自钦点"
     },
     "answer": {
-      "yuewen_punctuated": "精明，大人，皇上说要亲自音点"
+      "yuewen_punctuated": "精明大人，皇上说要亲自音点"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -4463,7 +4510,7 @@
       "zhongwen": "武状元，我想问你几句作为朝廷纪录"
     },
     "answer": {
-      "yuewen_punctuated": "武状元…我想问你几句，作为朝廷纪录"
+      "yuewen_punctuated": "武状元…我想问你几句,作为朝廷纪录"
     },
     "difficulty": 2
   },
@@ -4577,9 +4624,9 @@
       "zhongwen": "走运了！他懂得写名字"
     },
     "answer": {
-      "yuewen_punctuated": "幸好！只写名字而已"
+      "yuewen_punctuated": "幸好…只写名字而已"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -4589,9 +4636,9 @@
       "zhongwen": "懂写名字！懂写名字"
     },
     "answer": {
-      "yuewen_punctuated": "写名字就行…"
+      "yuewen_punctuated": "写名字就行！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -4620,13 +4667,13 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "不关我儿子事,",
-        "要斩就斩我"
+        "作弊那是奴才",
+        "不关我儿子事,"
       ],
-      "zhongwen": "要斩就斩我吧"
+      "zhongwen": "不关我儿子的事"
     },
     "answer": {
-      "yuewen_punctuated": "不关我儿子事，要斩就斩我"
+      "yuewen_punctuated": "作弊那是奴才，不关我儿子事,"
     },
     "difficulty": 2
   },
@@ -4704,7 +4751,7 @@
       "zhongwen": "斩我吧　　皇上！你还是斩我吧"
     },
     "answer": {
-      "yuewen_punctuated": "不是，斩我…　　皇上！我好斩一点"
+      "yuewen_punctuated": "不是，斩我…　　皇上，我好斩一点"
     },
     "difficulty": 2
   },
@@ -4769,8 +4816,9 @@
       "zhongwen": "苏察哈爾燦两父子罪犯欺君理应问斩"
     },
     "answer": {
-      "yuewen_punctuated": "苏察哈二产两父子罪犯欺君理应问斩"
-    }
+      "yuewen_punctuated": "苏察哈二产两父子罪犯欺君，理应问斩"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -4781,9 +4829,9 @@
       "zhongwen": "念在你是功臣之后！可免一死"
     },
     "answer": {
-      "yuewen_punctuated": "我系功臣之校！可免一死"
+      "yuewen_punctuated": "我系功臣之校，可免一死"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -4935,9 +4983,9 @@
       "zhongwen": "这是我爹的神主牌位，你也要没收"
     },
     "answer": {
-      "yuewen_punctuated": "嗰个我爹神珠牌嚟㖞，都要抄呀"
+      "yuewen_punctuated": "嗰个我爹神珠牌嚟㖞，都要抄呀？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -4988,9 +5036,9 @@
       "zhongwen": "苦相思，能买不能卖⋯"
     },
     "answer": {
-      "yuewen_punctuated": "负相是，能买都唔得能买⋯"
+      "yuewen_punctuated": "负相是能买都唔得能买⋯"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5091,9 +5139,9 @@
       "zhongwen": "老爷，我们走了"
     },
     "answer": {
-      "yuewen_punctuated": "老爷，"
+      "yuewen_punctuated": "老爷"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5129,32 +5177,33 @@
       "zhongwen": "太开心了"
     },
     "answer": {
-      "yuewen_punctuated": "真的开心兴奋到"
-    }
+      "yuewen_punctuated": "真的开心，兴奋到"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "入去,"
+        "入去"
       ],
       "zhongwen": "进去，进去"
     },
     "answer": {
-      "yuewen_punctuated": "入去，"
+      "yuewen_punctuated": "入去"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "快点"
+        ",快点"
       ],
       "zhongwen": "快点⋯"
     },
     "answer": {
-      "yuewen_punctuated": "快点⋯"
+      "yuewen_punctuated": ",快点⋯"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5214,7 +5263,7 @@
       "zhongwen": "孩儿，我们被抄家，我很想哭"
     },
     "answer": {
-      "yuewen_punctuated": "抄家仔,我舍得捞仔"
+      "yuewen_punctuated": "抄家仔，我舍得捞仔"
     },
     "difficulty": 2
   },
@@ -5226,9 +5275,9 @@
       "zhongwen": "不要！千万别丢脸"
     },
     "answer": {
-      "yuewen_punctuated": "顶住！千万别在这儿失礼人"
+      "yuewen_punctuated": "顶住，千万别在这儿失礼人"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5263,7 +5312,7 @@
       "zhongwen": "完蛋了！我俩真是完蛋了"
     },
     "answer": {
-      "yuewen_punctuated": "好呀！抄家仔…"
+      "yuewen_punctuated": "好呀，抄家仔…"
     },
     "difficulty": 2
   },
@@ -5275,7 +5324,7 @@
       "zhongwen": "孩儿！你看这个像不像阿爹？"
     },
     "answer": {
-      "yuewen_punctuated": "仔，看这东西又像爹？"
+      "yuewen_punctuated": "仔,看这东西又像爹？"
     },
     "difficulty": 2
   },
@@ -5300,7 +5349,7 @@
       "zhongwen": "不是，是给钱的那个"
     },
     "answer": {
-      "yuewen_punctuated": "真是…，不是，给他钱的"
+      "yuewen_punctuated": "真是…不是,给他钱的"
     },
     "difficulty": 2
   },
@@ -5313,7 +5362,7 @@
       "zhongwen": "不是吧！多潇洒，各人眼光不同吧"
     },
     "answer": {
-      "yuewen_punctuated": "还折磨我唱歌的，不是！你真聪明，各花各眼"
+      "yuewen_punctuated": "还折磨我唱歌的，不是，你真聪明，各花各眼"
     },
     "difficulty": 2
   },
@@ -5332,15 +5381,27 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "皇帝叫我们做乞丐",
+        "中甚么中",
+        "皇帝叫我们做乞丐"
+      ],
+      "zhongwen": "皇帝要我们做乞丐"
+    },
+    "answer": {
+      "yuewen_punctuated": "中甚么中，皇帝叫我们做乞丐"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "就真的会做乞丐吗"
       ],
       "zhongwen": "我们就乖乖当乞丐吗？"
     },
     "answer": {
-      "yuewen_punctuated": "皇帝叫我们做乞丐，就真的会做乞丐吗？"
+      "yuewen_punctuated": "就真的会做乞丐吗？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -5554,34 +5615,34 @@
       "zhongwen": "不行不行，还是弄清楚比较好"
     },
     "answer": {
-      "yuewen_punctuated": "不行，还是搞清楚一点"
+      "yuewen_punctuated": "不行…还是搞清楚一点"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
         "放手",
-        "那你才抢的",
-        "抢"
+        "那你才抢的"
       ],
       "zhongwen": "你这样即是抢"
     },
     "answer": {
-      "yuewen_punctuated": "放手那你才抢的抢"
-    }
+      "yuewen_punctuated": "放手，那你才抢的"
+    },
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "东西…"
+        "抢东西…"
       ],
       "zhongwen": "强盗⋯"
     },
     "answer": {
-      "yuewen_punctuated": "东西⋯"
+      "yuewen_punctuated": "抢东西…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5592,7 +5653,7 @@
       "zhongwen": "不是抢！我们是讨饭"
     },
     "answer": {
-      "yuewen_punctuated": "不是抢！我们黑而已，黑…"
+      "yuewen_punctuated": "不是抢,我们黑而已黑…"
     },
     "difficulty": 2
   },
@@ -5605,9 +5666,9 @@
       "zhongwen": "别当我呆子！我很聪明的！"
     },
     "answer": {
-      "yuewen_punctuated": "当我猪兜吗！我都不知道多棒！"
+      "yuewen_punctuated": "当我猪兜吗？我都不知道多棒！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5617,9 +5678,9 @@
       "zhongwen": "天气越来越冷！肚子越来越饿"
     },
     "answer": {
-      "yuewen_punctuated": "天又翻风！两肚又空空"
+      "yuewen_punctuated": "天又翻风，两肚又空空"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5704,7 +5765,7 @@
       "zhongwen": "别再说了！我们去见他"
     },
     "answer": {
-      "yuewen_punctuated": "我真是很难为！你别说那么多,我们见她"
+      "yuewen_punctuated": "我真是很难为！你别说那么多,我们见她…"
     },
     "difficulty": 2
   },
@@ -5719,9 +5780,9 @@
       "zhongwen": "没问题！不过你先来，我跟在后面"
     },
     "answer": {
-      "yuewen_punctuated": "冇整蛊啊！不如你先，我后抱喂"
+      "yuewen_punctuated": "冇整蛊啊！不如你先，我后抱，喂"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5786,9 +5847,9 @@
       "zhongwen": "走开⋯走开"
     },
     "answer": {
-      "yuewen_punctuated": "好啊⋯走开走开走开走开走开走开"
+      "yuewen_punctuated": "好啊，走开，走开，走开，走开，走开，走开⋯"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -5830,27 +5891,27 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "我只系奉本子办事"
+        "我只系奉本子办事",
+        "是",
+        "引来"
       ],
       "zhongwen": "我是奉本子办事！人来"
     },
     "answer": {
-      "yuewen_punctuated": "我只系奉本子办事！"
+      "yuewen_punctuated": "我只系奉本子办事！是引来"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "是",
-        "引来",
         "有",
         "就所有嘢搬走"
       ],
       "zhongwen": "有　　将所有东西搬走"
     },
     "answer": {
-      "yuewen_punctuated": "是引来有　　就所有嘢搬走"
+      "yuewen_punctuated": "有　　就所有嘢搬走"
     },
     "difficulty": 1
   },
@@ -5871,25 +5932,14 @@
     "query": {
       "yuewen_to_punctuate": [
         "一个唔够",
-        "咪上多几个"
+        "咪上多几个啰"
       ],
       "zhongwen": "一个搬不动多上几个人"
     },
     "answer": {
-      "yuewen_punctuated": "一个唔够咪上多几个"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "啰",
-        "嗱嗱嗱"
-      ],
-      "zhongwen": "是"
+      "yuewen_punctuated": "一个唔够，咪上多几个啰"
     },
-    "answer": {
-      "yuewen_punctuated": "啰嗱嗱嗱"
-    }
+    "difficulty": 2
   },
   {
     "query": {
@@ -5912,8 +5962,9 @@
       "zhongwen": "你的手脚跟全身经脉都给我打断"
     },
     "answer": {
-      "yuewen_punctuated": "你手脚骨胶和全身经脉都被我打断了"
-    }
+      "yuewen_punctuated": "你手脚骨胶和全身经脉，都被我打断了"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -5959,7 +6010,7 @@
       "zhongwen": "走⋯没事⋯走开"
     },
     "answer": {
-      "yuewen_punctuated": "走⋯"
+      "yuewen_punctuated": "走…"
     },
     "difficulty": 2
   },
@@ -5986,21 +6037,21 @@
       "zhongwen": "不用怕，没事的⋯"
     },
     "answer": {
-      "yuewen_punctuated": "别怕，没事…"
+      "yuewen_punctuated": "别怕……没事…"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "别怕,",
         "贼",
-        "别怕…"
+        "别怕…",
+        "当日我和我儿子一脚踩入市场"
       ],
-      "zhongwen": "不用怕"
+      "zhongwen": "那天我跟我儿子踏入试场"
     },
     "answer": {
-      "yuewen_punctuated": "别怕，贼别怕…"
+      "yuewen_punctuated": "贼，别怕…当日我和我儿子一脚踩入市场"
     },
     "difficulty": 2
   },
@@ -6050,7 +6101,7 @@
       "zhongwen": "吸口烟提提神"
     },
     "answer": {
-      "yuewen_punctuated": "是呀…整胆冤提神"
+      "yuewen_punctuated": "是呀…整胆冤提神,"
     },
     "difficulty": 2
   },
@@ -6076,8 +6127,9 @@
       "zhongwen": "这个王八蛋当日在怡红院"
     },
     "answer": {
-      "yuewen_punctuated": "什么混蛋当日在怡红县"
-    }
+      "yuewen_punctuated": "什么混蛋，当日在怡红县"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -6094,26 +6146,26 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "为愧世武功,",
-        "天下无敌"
+        "为愧世武功,"
       ],
       "zhongwen": "我要他武功盖世，状元之才"
     },
     "answer": {
-      "yuewen_punctuated": "为愧世武功,天下无敌"
+      "yuewen_punctuated": "为愧世武功,"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "天下无敌",
         "益人之下,",
         "万人之上"
       ],
       "zhongwen": "一人之下，万人之上"
     },
     "answer": {
-      "yuewen_punctuated": "益人之下，万人之上"
+      "yuewen_punctuated": "天下无敌益人之下，万人之上"
     },
     "difficulty": 1
   },
@@ -6128,18 +6180,6 @@
       "yuewen_punctuated": "那你做得到吗？"
     },
     "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "做得到",
-        "好"
-      ],
-      "zhongwen": "好"
-    },
-    "answer": {
-      "yuewen_punctuated": "做得到好"
-    }
   },
   {
     "query": {
@@ -6233,65 +6273,52 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "但未完全好得返晒",
-        "呀"
-      ],
-      "zhongwen": "但是还没有完全好了"
-    },
-    "answer": {
-      "yuewen_punctuated": "但未完全好得返晒呀"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
         "呀",
-        "呀"
+        "呀",
+        "呀",
+        "爹出去"
       ],
       "zhongwen": "哈尔叔，来⋯"
     },
     "answer": {
-      "yuewen_punctuated": "呀，呀⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "爹出去揾啲嘢",
-        "返嚟"
-      ],
-      "zhongwen": "阿爹出去找点食物回来"
-    },
-    "answer": {
-      "yuewen_punctuated": "爹出去揾啲嘢返嚟"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "今晚大家食",
-        "顺便返嚟就煲埋最后啲剂药畀你饮"
-      ],
-      "zhongwen": "然后煮最后一趟药给你喝"
-    },
-    "answer": {
-      "yuewen_punctuated": "今晚大家食，顺便返嚟就煲埋最后啲剂药畀你饮"
+      "yuewen_punctuated": "呀，呀，呀，爹出去⋯"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "嚟",
+        "揾啲嘢",
+        "返嚟今晚大家食"
+      ],
+      "zhongwen": "阿爹出去找点食物回来"
+    },
+    "answer": {
+      "yuewen_punctuated": "揾啲嘢返嚟今晚大家食"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "顺便返嚟就煲埋最后啲剂药畀你饮",
+        "嚟"
+      ],
+      "zhongwen": "然后煮最后一趟药给你喝"
+    },
+    "answer": {
+      "yuewen_punctuated": "顺便返嚟就煲埋最后啲剂药畀你饮嚟"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "爹",
-        "又去乞",
-        "呢"
+        "又去乞"
       ],
       "zhongwen": "爹，又去讨饭"
     },
     "answer": {
-      "yuewen_punctuated": "嚟爹，又去乞呢"
+      "yuewen_punctuated": "爹，又去乞"
     },
     "difficulty": 1
   },
@@ -6351,13 +6378,12 @@
     "query": {
       "yuewen_to_punctuate": [
         "嚟呀",
-        "嚟呀",
-        "嚟"
+        "嚟呀"
       ],
       "zhongwen": "来了"
     },
     "answer": {
-      "yuewen_punctuated": "嚟呀嚟呀嚟"
+      "yuewen_punctuated": "嚟呀嚟呀"
     }
   },
   {
@@ -6475,9 +6501,22 @@
       "zhongwen": "你当我呆子吗？"
     },
     "answer": {
-      "yuewen_punctuated": "你当我傻的吗？"
+      "yuewen_punctuated": "你当我傻的吗?"
     },
-    "difficulty": 1
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "爹",
+        ","
+      ],
+      "zhongwen": "阿爹"
+    },
+    "answer": {
+      "yuewen_punctuated": "爹,"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -6511,7 +6550,7 @@
       "zhongwen": "好冷？糟糕了！你身体好烫"
     },
     "answer": {
-      "yuewen_punctuated": "唔系㖞！你个身好热㖞"
+      "yuewen_punctuated": "唔系㖞，你个身好热㖞！"
     },
     "difficulty": 2
   },
@@ -6530,12 +6569,12 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "冇冇,"
+        "冇冇"
       ],
       "zhongwen": "没有⋯没有"
     },
     "answer": {
-      "yuewen_punctuated": "冇冇⋯"
+      "yuewen_punctuated": "冇⋯冇"
     },
     "difficulty": 1
   },
@@ -6605,65 +6644,66 @@
     "query": {
       "yuewen_to_punctuate": [
         "饱饱饱",
-        "饱都要食呀",
-        "返啲食埋佢"
+        "饱都要食呀"
       ],
       "zhongwen": "饱⋯饱也要吃，快点吃"
     },
     "answer": {
-      "yuewen_punctuated": "饱，饱，饱，饱都要食呀，返啲食埋佢"
+      "yuewen_punctuated": "饱，饱，饱，饱都要食呀"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "返啲食埋佢",
         "唔食就算啦",
         "返家企啦"
       ],
       "zhongwen": "不吃吗！不吃就回家"
     },
     "answer": {
-      "yuewen_punctuated": "唔食就算啦！返家企啦"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "食",
-        "快啲食埋佢"
-      ],
-      "zhongwen": "吃！快点吃，吃"
-    },
-    "answer": {
-      "yuewen_punctuated": "食！快啲食埋佢"
+      "yuewen_punctuated": "返啲食埋佢！唔食就算啦，返家企啦"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "小朋友呀"
+        "食",
+        "快啲食埋佢",
+        "食啦"
       ],
-      "zhongwen": "甚么？"
+      "zhongwen": "吃！快点吃，吃"
     },
     "answer": {
-      "yuewen_punctuated": "小朋友呀？"
+      "yuewen_punctuated": "食！快啲食埋佢，食啦"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "咩呀",
+        "呀",
+        "咩呀"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_punctuated": "呀，咩呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
         "可唔可以",
         "唔可以"
       ],
       "zhongwen": "可不可以⋯　　不可以"
     },
     "answer": {
-      "yuewen_punctuated": "咩呀可唔可以⋯　　唔可以"
+      "yuewen_punctuated": "可唔可以⋯　　唔可以"
     },
     "difficulty": 1
   },
@@ -6688,7 +6728,7 @@
       "zhongwen": "可怜我这个⋯小乞丐"
     },
     "answer": {
-      "yuewen_punctuated": "可怜我呢个⋯乞儿仔啦"
+      "yuewen_punctuated": "可怜我呢个乞儿仔啦⋯"
     },
     "difficulty": 1
   },
@@ -6712,31 +6752,32 @@
       "zhongwen": "姐姐！是他"
     },
     "answer": {
-      "yuewen_punctuated": "爹！系佢啊"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "唔系佢…"
-      ],
-      "zhongwen": "不是他！不是他"
-    },
-    "answer": {
-      "yuewen_punctuated": "唔系佢…"
+      "yuewen_punctuated": "爹，系佢啊"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "唔系佢"
+      ],
+      "zhongwen": "不是他！不是他"
+    },
+    "answer": {
+      "yuewen_punctuated": "唔系佢！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "…",
         "家晶"
       ],
       "zhongwen": "姐姐⋯姐姐！苏灿"
     },
     "answer": {
-      "yuewen_punctuated": "家晶⋯"
+      "yuewen_punctuated": "…家晶！"
     },
     "difficulty": 2
   },
@@ -6876,9 +6917,9 @@
       "zhongwen": "阿灿！我刚刚饿坏了"
     },
     "answer": {
-      "yuewen_punctuated": "阿灿！我个头顶唔顺"
+      "yuewen_punctuated": "阿灿，我个头顶唔顺"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -6957,13 +6998,25 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "真系,撞完爷嚟㗎",
-        "撞完爷…"
+        "真系,撞完爷嚟㗎"
       ],
       "zhongwen": "真的！真是状元爷"
     },
     "answer": {
-      "yuewen_punctuated": "真系，撞完爷嚟㗎，撞完爷…"
+      "yuewen_punctuated": "真系！撞完爷嚟㗎"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "撞完爷…",
+        "撞完爷一定要畀面"
+      ],
+      "zhongwen": "一定给面子状元爷"
+    },
+    "answer": {
+      "yuewen_punctuated": "撞完爷…撞完爷一定要畀面"
     },
     "difficulty": 2
   },
@@ -6975,7 +7028,7 @@
       "zhongwen": "多谢⋯多谢"
     },
     "answer": {
-      "yuewen_punctuated": "哦，多谢⋯"
+      "yuewen_punctuated": "哦，多谢…"
     },
     "difficulty": 2
   },
@@ -6987,9 +7040,9 @@
       "zhongwen": "等一等！相请不如偶遇"
     },
     "answer": {
-      "yuewen_punctuated": "闭住！相请不如偶遇啊"
+      "yuewen_punctuated": "闭住，相请不如偶遇啊！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7038,9 +7091,9 @@
       "zhongwen": "阿灿！你不能吃"
     },
     "answer": {
-      "yuewen_punctuated": "阿七！别吃了"
+      "yuewen_punctuated": "阿七，别吃了"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7084,19 +7137,19 @@
     "query": {
       "yuewen_to_punctuate": [
         "爹",
-        "几惹味㖞",
-        "系"
+        "几惹味㖞"
       ],
       "zhongwen": "爹，味道不错"
     },
     "answer": {
-      "yuewen_punctuated": "爹，几惹味㖞系"
+      "yuewen_punctuated": "爹，几惹味㖞"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "系",
         "喂",
         "试下试下试下",
         "嚟嚟嚟",
@@ -7105,7 +7158,7 @@
       "zhongwen": "尝尝⋯尝尝，来⋯来"
     },
     "answer": {
-      "yuewen_punctuated": "喂，试下试下试下⋯嚟，嚟嚟，啧"
+      "yuewen_punctuated": "系，喂，试下试下试下⋯嚟嚟嚟，啧"
     },
     "difficulty": 2
   },
@@ -7169,9 +7222,9 @@
       "zhongwen": "吃吧！快点吧！"
     },
     "answer": {
-      "yuewen_punctuated": "吃完它！快点！"
+      "yuewen_punctuated": "吃完它，快点！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7207,15 +7260,14 @@
       "zhongwen": "你是⋯"
     },
     "answer": {
-      "yuewen_punctuated": "你是⋯"
+      "yuewen_punctuated": "你是…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "不如你哋两位加入我哋丐帮",
-        "好吗"
+        "不如你哋两位加入我哋丐帮好吗"
       ],
       "zhongwen": "不如你俩加入丐帮，好不好？"
     },
@@ -7239,38 +7291,39 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "好呀"
+        "好呀",
+        "丐帮系咪即系乞丐帮呀"
       ],
       "zhongwen": "丐帮是不是讨饭帮？"
     },
     "answer": {
-      "yuewen_punctuated": "好呀？"
+      "yuewen_punctuated": "好呀，丐帮系咪即系乞丐帮呀？"
     },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "丐帮系咪即系乞丐帮呀",
-        "系呀"
-      ],
-      "zhongwen": "是"
-    },
-    "answer": {
-      "yuewen_punctuated": "丐帮系咪即系乞丐帮呀系呀"
-    }
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
         "啱啦",
-        "啱啦",
-        "而家我哋就做紧乞丐"
+        "啱啦"
       ],
       "zhongwen": "正好⋯现在我们当乞丐"
     },
     "answer": {
-      "yuewen_punctuated": "啱啦⋯啱啦，而家我哋就做紧乞丐"
+      "yuewen_punctuated": "啱啦，啱啦⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "而家我哋就做紧乞丐",
+        "加入你哋丐帮而佢照应都好呀"
+      ],
+      "zhongwen": "加入你们丐帮有个照应也好"
+    },
+    "answer": {
+      "yuewen_punctuated": "而家我哋就做紧乞丐，加入你哋丐帮而佢照应都好呀"
     },
     "difficulty": 2
   },
@@ -7278,27 +7331,26 @@
     "query": {
       "yuewen_to_punctuate": [
         "阿灿呀",
-        "灿",
-        "个兽头呢"
+        "灿"
       ],
       "zhongwen": "阿灿⋯他去哪儿呢？"
     },
     "answer": {
-      "yuewen_punctuated": "阿灿呀⋯灿，个兽头呢？"
+      "yuewen_punctuated": "阿灿呀⋯灿"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "个",
+        "个兽头呢个",
         "阿灿呢",
         "喺边度呀"
       ],
       "zhongwen": "阿灿呢？在哪里？"
     },
     "answer": {
-      "yuewen_punctuated": "个阿灿呢？喺边度呀？"
+      "yuewen_punctuated": "个兽头呢个阿灿呢？喺边度呀？"
     },
     "difficulty": 1
   },
@@ -7336,7 +7388,7 @@
       "zhongwen": "如霜！恭喜发财"
     },
     "answer": {
-      "yuewen_punctuated": "余先生，恭喜发财"
+      "yuewen_punctuated": "余先生，恭喜发财…"
     },
     "difficulty": 2
   },
@@ -7348,9 +7400,9 @@
       "zhongwen": "莫大叔！恭喜发财"
     },
     "answer": {
-      "yuewen_punctuated": "大叔！恭喜发财"
+      "yuewen_punctuated": "大叔，恭喜发财…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7360,9 +7412,9 @@
       "zhongwen": "多谢！多谢"
     },
     "answer": {
-      "yuewen_punctuated": "谢谢！"
+      "yuewen_punctuated": "谢谢…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7373,9 +7425,9 @@
       "zhongwen": "这两件衣服，一件给你，一件给阿灿"
     },
     "answer": {
-      "yuewen_punctuated": "这是一件衫，送给你，这是一件送给阿灿的"
+      "yuewen_punctuated": "这是一件衫，送给你；这是一件送给阿灿的"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7393,25 +7445,25 @@
     "query": {
       "yuewen_to_punctuate": [
         "有",
-        "有就拿来,来…"
+        "有就拿来,来…",
+        "做甚么?"
       ],
       "zhongwen": "有就拿来！来⋯干甚么？"
     },
     "answer": {
-      "yuewen_punctuated": "有，有就拿来！来⋯"
+      "yuewen_punctuated": "有，有就拿来！来…做甚么?"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "做甚么?",
         "新征头嘛,当然要来来试试"
       ],
       "zhongwen": "干甚么？过新年当然要利利是是"
     },
     "answer": {
-      "yuewen_punctuated": "做甚么？新征头嘛，当然要来来试试"
+      "yuewen_punctuated": "新征头嘛，当然要来来试试"
     },
     "difficulty": 2
   },
@@ -7473,7 +7525,7 @@
       "zhongwen": "阿灿？他由年三十睡到大年初一"
     },
     "answer": {
-      "yuewen_punctuated": "阿灿？他又年三十五,睡到年初一"
+      "yuewen_punctuated": "阿灿…他又年三十五,睡到年初一"
     },
     "difficulty": 2
   },
@@ -7547,9 +7599,9 @@
       "zhongwen": "如霜⋯如霜"
     },
     "answer": {
-      "yuewen_punctuated": "余双⋯"
+      "yuewen_punctuated": "余双…"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7559,9 +7611,9 @@
       "zhongwen": "莫大叔！莲花落阵你也没把握"
     },
     "answer": {
-      "yuewen_punctuated": "莫大叔！莲花乐阵你都没把握"
+      "yuewen_punctuated": "莫大叔，莲花乐阵你都没把握！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7614,12 +7666,24 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "假的,不是,曾经…"
+        "假的"
+      ],
+      "zhongwen": "现在⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "假的⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        ",不是,曾经…"
       ],
       "zhongwen": "⋯不！曾经"
     },
     "answer": {
-      "yuewen_punctuated": "假的，不是，曾经…"
+      "yuewen_punctuated": "不是！曾经…"
     },
     "difficulty": 2
   },
@@ -7707,8 +7771,9 @@
       "zhongwen": "快打我一拳"
     },
     "answer": {
-      "yuewen_punctuated": "打嘴过嚟打呀阿灿"
-    }
+      "yuewen_punctuated": "打嘴过嚟，打呀，阿灿"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -7745,9 +7810,9 @@
       "zhongwen": "算了！不要再浪费时间"
     },
     "answer": {
-      "yuewen_punctuated": "点，算啦！唔好再浪费时间"
+      "yuewen_punctuated": "点算啦！唔好再浪费时间"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -7798,9 +7863,9 @@
       "zhongwen": "抱歉抱歉！你接好了"
     },
     "answer": {
-      "yuewen_punctuated": "抱歉抱歉！拿接住啦系"
+      "yuewen_punctuated": "抱歉，抱歉！拿接住啦系"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -7852,19 +7917,6 @@
     },
     "answer": {
       "yuewen_punctuated": "喂，黑衣呀？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "系",
-        "我都系呀"
-      ],
-      "zhongwen": "我也是"
-    },
-    "answer": {
-      "yuewen_punctuated": "系，我都系呀"
     },
     "difficulty": 2
   },
@@ -7978,13 +8030,13 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "如果我有钱啊",
-        "我就唔使喺度挨馒头啦"
+        "还返啲钱个我顶住当先",
+        "如果我有钱啊"
       ],
-      "zhongwen": "我也不用在这儿挨馒头"
+      "zhongwen": "如果我有钱"
     },
     "answer": {
-      "yuewen_punctuated": "如果我有钱啊，我就唔使喺度挨馒头啦"
+      "yuewen_punctuated": "还返啲钱个我顶住当先，如果我有钱啊"
     },
     "difficulty": 2
   },
@@ -8081,52 +8133,52 @@
     "query": {
       "yuewen_to_punctuate": [
         "乞丐之中",
-        "辈分至高"
+        "辈分至高",
+        "自好自老"
       ],
       "zhongwen": "乞丐中辈份最高，字号最老"
     },
     "answer": {
-      "yuewen_punctuated": "乞丐之中，辈分至高"
+      "yuewen_punctuated": "乞丐之中，辈分至高，自好自老"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "自好自老",
         "做乞丐有咩唔好啊"
       ],
       "zhongwen": "做乞丐有甚么不好？"
     },
     "answer": {
-      "yuewen_punctuated": "自好自老做乞丐有咩唔好啊？"
+      "yuewen_punctuated": "做乞丐有咩唔好啊？"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "想行就行"
+        "想行就行",
+        "想瞓就瞓"
       ],
       "zhongwen": "想走就走，想睡就睡"
     },
     "answer": {
-      "yuewen_punctuated": "想行就行"
+      "yuewen_punctuated": "想行就行，想瞓就瞓"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "想瞓就瞓",
         "你都可以一样嘅啫"
       ],
       "zhongwen": "你也可以一样吗？"
     },
     "answer": {
-      "yuewen_punctuated": "想瞓就瞓，你都可以一样嘅啫？"
+      "yuewen_punctuated": "你都可以一样嘅啫？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -8239,9 +8291,9 @@
       "zhongwen": "乞丐中的霸主？那是什么？"
     },
     "answer": {
-      "yuewen_punctuated": "乞衣中嘅霸主？即系咩？"
+      "yuewen_punctuated": "乞衣中嘅霸主，即系咩？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -8291,9 +8343,9 @@
       "zhongwen": "不是⋯你说要睡觉"
     },
     "answer": {
-      "yuewen_punctuated": "家贼唔系咪⋯你话瞓觉"
+      "yuewen_punctuated": "家贼，唔系咪，你话瞓觉"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -8393,9 +8445,9 @@
       "zhongwen": "苦尽甘来？"
     },
     "answer": {
-      "yuewen_punctuated": "苦尽，今来？"
+      "yuewen_punctuated": "苦尽今来？"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -8469,7 +8521,7 @@
       "zhongwen": "我们追　　不用追了！"
     },
     "answer": {
-      "yuewen_punctuated": "上水呀"
+      "yuewen_punctuated": "上水呀！"
     },
     "difficulty": 2
   },
@@ -8519,7 +8571,7 @@
       "zhongwen": "叫莫老三把打狗棒交出来"
     },
     "answer": {
-      "yuewen_punctuated": "叫莫老三交返支打狗滚出嚟，是"
+      "yuewen_punctuated": "叫莫老三交返支打狗滚出嚟。是"
     },
     "difficulty": 2
   },
@@ -8556,32 +8608,20 @@
       "zhongwen": "难道他俩有暧昧关系？"
     },
     "answer": {
-      "yuewen_punctuated": "原来他们俩有脑，是？"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "莫大叔…"
-      ],
-      "zhongwen": "莫大叔⋯"
-    },
-    "answer": {
-      "yuewen_punctuated": "莫大叔⋯"
+      "yuewen_punctuated": "原来他们俩有脑？是"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "被你嚇得我怕",
-        "以为你不回来"
+        "莫大叔…",
+        "被你嚇得我怕"
       ],
-      "zhongwen": "还以为你不会来了"
+      "zhongwen": "真的被你吓我一跳"
     },
     "answer": {
-      "yuewen_punctuated": "被你嚇得我怕，以为你不回来"
+      "yuewen_punctuated": "莫大叔…被你嚇得我怕"
     },
     "difficulty": 2
   },
@@ -8686,9 +8726,9 @@
       "zhongwen": "废话！丢他"
     },
     "answer": {
-      "yuewen_punctuated": "废话！扔他　是呀　扔他"
+      "yuewen_punctuated": "废话！扔他是呀扔他"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -8762,8 +8802,9 @@
       "zhongwen": "我赢了"
     },
     "answer": {
-      "yuewen_punctuated": "各位我赢了"
-    }
+      "yuewen_punctuated": "各位，我赢了"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -8837,9 +8878,9 @@
       "zhongwen": "他打断我们镇帮之宝！我们杀了他！"
     },
     "answer": {
-      "yuewen_punctuated": "我哋嘅阵邦之母！我哋杀咗佢！"
+      "yuewen_punctuated": "我哋嘅阵邦之母，我哋杀咗佢！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -8850,8 +8891,9 @@
       "zhongwen": "洪七公在此谁敢放肆"
     },
     "answer": {
-      "yuewen_punctuated": "洪七公在此谁敢放肆"
-    }
+      "yuewen_punctuated": "洪七公在此，谁敢放肆"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -8874,8 +8916,9 @@
       "zhongwen": "还为了争夺它弄到丐帮四分五裂"
     },
     "answer": {
-      "yuewen_punctuated": "还为了争夺他而害盖邦四分五裂"
-    }
+      "yuewen_punctuated": "还为了争夺他，而害盖邦四分五裂"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -9002,8 +9045,9 @@
       "zhongwen": "宁可信其有不可信其无"
     },
     "answer": {
-      "yuewen_punctuated": "令我信其有不可信其无"
-    }
+      "yuewen_punctuated": "令我信其有，不可信其无"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -9078,9 +9122,9 @@
       "zhongwen": "莫大叔！我儿子有一套吗？"
     },
     "answer": {
-      "yuewen_punctuated": "莫大叔！娥仔多厉害？"
+      "yuewen_punctuated": "莫大叔，娥仔多厉害？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -9111,12 +9155,24 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "莫大叔…你怎么样"
+        "莫大叔"
       ],
       "zhongwen": "莫大叔⋯莫大叔！你怎么呢？"
     },
     "answer": {
-      "yuewen_punctuated": "莫大叔…你怎么样？"
+      "yuewen_punctuated": "莫大叔⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "…你怎么样"
+      ],
+      "zhongwen": "莫大叔，莫大叔"
+    },
+    "answer": {
+      "yuewen_punctuated": "…你怎么样"
     },
     "difficulty": 2
   },
@@ -9191,8 +9247,9 @@
       "zhongwen": "降龙十八掌首十七掌我已经领会到"
     },
     "answer": {
-      "yuewen_punctuated": "杭龙十八掌嘅头十七掌我已经领回到"
-    }
+      "yuewen_punctuated": "杭龙十八掌嘅头十七掌，我已经领回到"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -9209,27 +9266,27 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "最坏莫大叔已经唔喺度",
-        "咁点算啊"
+        "最坏莫大叔已经唔喺度"
       ],
       "zhongwen": "最糟糕的是莫大叔已经不在，那怎办"
     },
     "answer": {
-      "yuewen_punctuated": "最坏莫大叔已经唔喺度，咁点算啊"
+      "yuewen_punctuated": "最坏莫大叔已经唔喺度"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "咁点算啊",
         "冇得点算㗎"
       ],
       "zhongwen": "没甚么法子了！"
     },
     "answer": {
-      "yuewen_punctuated": "冇得点算㗎！"
+      "yuewen_punctuated": "咁点算啊，冇得点算㗎！"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -9259,27 +9316,27 @@
     "query": {
       "yuewen_to_punctuate": [
         "皇上并没有召见",
-        "你无谓惊动她",
-        "仁泥"
+        "你无谓惊动她"
       ],
       "zhongwen": "皇上并没有诏见，你别惊动他"
     },
     "answer": {
-      "yuewen_punctuated": "皇上并没有召见，你无谓惊动她仁泥"
+      "yuewen_punctuated": "皇上并没有召见，你无谓惊动她"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "仁泥",
         "带这个女人进营"
       ],
       "zhongwen": "人来，带这个女人入营"
     },
     "answer": {
-      "yuewen_punctuated": "带这个女人进营"
+      "yuewen_punctuated": "仁泥，带这个女人进营"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -9427,7 +9484,7 @@
       "zhongwen": "苏察哈尔灿，你搅甚么鬼？"
     },
     "answer": {
-      "yuewen_punctuated": "苏灿、哈尔灿，你搞什么鬼？"
+      "yuewen_punctuated": "苏灿、哈尔灿,你搞什么鬼？"
     },
     "difficulty": 2
   },
@@ -9458,15 +9515,14 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "现在带人去杀皇帝",
         "你还在这里懵懵"
       ],
       "zhongwen": "你还那么傻头傻脑！"
     },
     "answer": {
-      "yuewen_punctuated": "现在带人去杀皇帝，你还在这里懵懵！"
+      "yuewen_punctuated": "你还在这里懵懵！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -9522,37 +9578,36 @@
     "query": {
       "yuewen_to_punctuate": [
         "话好",
-        "系之好",
-        "好"
+        "系之好"
       ],
       "zhongwen": "真的才好"
     },
     "answer": {
-      "yuewen_punctuated": "话好系之好好"
+      "yuewen_punctuated": "话好系之好"
     }
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "帮主啊,你放心佢啰",
-        "家"
+        "好",
+        "帮主啊,你放心佢啰"
       ],
       "zhongwen": "帮主，你放心去吧"
     },
     "answer": {
-      "yuewen_punctuated": "帮主啊，你放心佢啰家"
+      "yuewen_punctuated": "好，帮主啊，你放心佢啰"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "我死紧嘅放心佢"
+        "家我死紧嘅放心佢"
       ],
       "zhongwen": "我现在死定了？放心去吧"
     },
     "answer": {
-      "yuewen_punctuated": "我死紧嘅？放心佢"
+      "yuewen_punctuated": "家我死紧嘅？放心佢"
     },
     "difficulty": 1
   },
@@ -9584,26 +9639,16 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "年年都有今日"
-      ],
-      "zhongwen": "年年都有今日⋯"
-    },
-    "answer": {
-      "yuewen_punctuated": "年年都有今日⋯"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
         "够啦",
-        "够啦"
+        "够啦",
+        "未唱完㗎㖞"
       ],
-      "zhongwen": "够了够了"
+      "zhongwen": "还没唱完"
     },
     "answer": {
-      "yuewen_punctuated": "够啦够啦"
-    }
+      "yuewen_punctuated": "够啦，够啦，未唱完㗎㖞"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -9732,7 +9777,7 @@
       "zhongwen": "撒尿⋯撒尿⋯"
     },
     "answer": {
-      "yuewen_punctuated": "喂，饿尿呢⋯饿尿呢⋯"
+      "yuewen_punctuated": "喂，饿尿呢，饿尿呢⋯"
     },
     "difficulty": 2
   },
@@ -9772,7 +9817,7 @@
       "zhongwen": "来⋯拿着它"
     },
     "answer": {
-      "yuewen_punctuated": "嚟⋯嚟追住佢"
+      "yuewen_punctuated": "嚟嚟追住佢⋯"
     },
     "difficulty": 1
   },
@@ -9841,13 +9886,14 @@
   {
     "query": {
       "yuewen_to_punctuate": [
+        "我也来",
         "不要",
         "皇上"
       ],
       "zhongwen": "不要皇上，皇上⋯"
     },
     "answer": {
-      "yuewen_punctuated": "不要，皇上⋯"
+      "yuewen_punctuated": "我也来，不要皇上⋯"
     },
     "difficulty": 1
   },
@@ -9868,44 +9914,33 @@
     "query": {
       "yuewen_to_punctuate": [
         "太危险了",
-        "皇上",
-        "不去"
+        "皇上"
       ],
       "zhongwen": "皇上，很危险的！不要走"
     },
     "answer": {
-      "yuewen_punctuated": "太危险了，皇上！不去"
+      "yuewen_punctuated": "太危险了，皇上！"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
+        "不去",
         "别坐在这里等死",
         "走开"
       ],
       "zhongwen": "不去！难道坐在这里等死吗？走开"
     },
     "answer": {
-      "yuewen_punctuated": "别坐在这里等死？走开"
+      "yuewen_punctuated": "不去！别坐在这里等死？走开"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "我叫你们走开",
-        "皇上"
-      ],
-      "zhongwen": "我叫你们走开"
-    },
-    "answer": {
-      "yuewen_punctuated": "我叫你们走开皇上"
-    }
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
+        "皇上",
         "不要",
         "走开",
         "你们"
@@ -9913,8 +9948,9 @@
       "zhongwen": "不要走"
     },
     "answer": {
-      "yuewen_punctuated": "不要走开你们"
-    }
+      "yuewen_punctuated": "皇上，不要走开，你们"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -9956,25 +9992,12 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "我少咗个便"
+        "系"
       ],
       "zhongwen": "是吗？是"
     },
     "answer": {
-      "yuewen_punctuated": "我少咗个便？"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "然后我想攞一块番薯食",
-        "点知净系得馒头"
-      ],
-      "zhongwen": "谁知道只是馒头"
-    },
-    "answer": {
-      "yuewen_punctuated": "然后我想攞一块番薯食，点知净系得馒头"
+      "yuewen_punctuated": "系"
     },
     "difficulty": 2
   },
@@ -10046,26 +10069,26 @@
   {
     "query": {
       "yuewen_to_punctuate": [
-        "系呀"
+        "系呀",
+        "扫黑衣呀"
       ],
       "zhongwen": "是我！苏乞儿"
     },
     "answer": {
-      "yuewen_punctuated": "系呀！"
+      "yuewen_punctuated": "系呀！扫黑衣呀"
     },
     "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "扫黑衣呀",
         "扫黑衣",
         "你唔系黑衣斗到瞓觉㗎咩"
       ],
       "zhongwen": "苏乞儿？你不是在乞丐窝里睡觉吗？"
     },
     "answer": {
-      "yuewen_punctuated": "扫黑衣呀？扫黑衣，你唔系黑衣斗到瞓觉㗎咩？"
+      "yuewen_punctuated": "扫黑衣，你唔系黑衣斗到瞓觉㗎咩？"
     },
     "difficulty": 2
   },
@@ -10202,20 +10225,19 @@
     "query": {
       "yuewen_to_punctuate": [
         "双龙出海",
-        "剑龙在天",
-        "龙飞凤舞"
+        "剑龙在天"
       ],
       "zhongwen": "龙飞凤舞，伏虎降龙⋯"
     },
     "answer": {
-      "yuewen_punctuated": "双龙出海，剑龙在天，龙飞凤舞⋯"
+      "yuewen_punctuated": "双龙出海，剑龙在天⋯"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "伏",
+        "龙飞凤舞伏",
         "虎王龙",
         "缩龙成串",
         "龙蛇混杂"
@@ -10223,9 +10245,9 @@
       "zhongwen": "⋯缩龙成寸，龙蛇混杂"
     },
     "answer": {
-      "yuewen_punctuated": "伏虎王龙⋯缩龙成串，龙蛇混杂"
+      "yuewen_punctuated": "龙飞凤舞伏虎王龙缩龙成串，龙蛇混杂"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -10313,9 +10335,9 @@
       "zhongwen": "第十八掌－杀龙有悔"
     },
     "answer": {
-      "yuewen_punctuated": "低十八掌－杀龙有悔呀"
+      "yuewen_punctuated": "低十八掌，杀龙有悔呀"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -10362,7 +10384,7 @@
       "zhongwen": "今天晚上洞房都没问题"
     },
     "answer": {
-      "yuewen_punctuated": "算了什么事都没有，今晚洞房都还可以"
+      "yuewen_punctuated": "算了,什么事都没有，今晚洞房都还可以"
     },
     "difficulty": 2
   },
@@ -10375,9 +10397,9 @@
       "zhongwen": "阿灿⋯你没事吧"
     },
     "answer": {
-      "yuewen_punctuated": "木槿⋯阿东"
+      "yuewen_punctuated": "木槿…阿东"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -10440,8 +10462,9 @@
       "zhongwen": "你记不记得我们之间还有一个协议"
     },
     "answer": {
-      "yuewen_punctuated": "你记不记得我们之间还有个协议"
-    }
+      "yuewen_punctuated": "你记不记得，我们之间还有个协议"
+    },
+    "difficulty": 2
   },
   {
     "query": {
@@ -10491,9 +10514,9 @@
       "zhongwen": "你先！我稍后跟上"
     },
     "answer": {
-      "yuewen_punctuated": "你才说好"
+      "yuewen_punctuated": "你才说好！"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -10503,9 +10526,9 @@
       "zhongwen": "僧格林参，你竟不分青红皂白"
     },
     "answer": {
-      "yuewen_punctuated": "曾家南心,你见不分青红做白"
+      "yuewen_punctuated": "曾家南心，你见不分青红做白"
     },
-    "difficulty": 2
+    "difficulty": 1
   },
   {
     "query": {
@@ -10539,9 +10562,9 @@
       "zhongwen": "苏灿，你有甚么要求？"
     },
     "answer": {
-      "yuewen_punctuated": "苏灿，你有甚么要求？"
+      "yuewen_punctuated": "苏灿,你有甚么要求？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -10730,9 +10753,9 @@
       "zhongwen": "兄弟！认得我吗？"
     },
     "answer": {
-      "yuewen_punctuated": "二兄弟！认得我没有？"
+      "yuewen_punctuated": "二兄弟，认得我没有？"
     },
-    "difficulty": 1
+    "difficulty": 2
   },
   {
     "query": {
@@ -10742,32 +10765,44 @@
       "zhongwen": "化成灰也认得你！臭乞丐"
     },
     "answer": {
-      "yuewen_punctuated": "发灰营的你！大众乞丐"
-    },
-    "difficulty": 1
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
-        "背上女儿来,博痛情",
-        "是吗?私下写吧"
-      ],
-      "zhongwen": "是！施舍点吧"
-    },
-    "answer": {
-      "yuewen_punctuated": "背上女儿来,博痛情，是吗?私下写吧"
+      "yuewen_punctuated": "发灰营的你，大众乞丐！"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "都说乞丐不给,"
+        "背上女儿来,博痛情"
+      ],
+      "zhongwen": "背着女儿，博取同情？"
+    },
+    "answer": {
+      "yuewen_punctuated": "背上女儿来，博痛情？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "是吗?",
+        "私下写吧"
+      ],
+      "zhongwen": "是！施舍点吧"
+    },
+    "answer": {
+      "yuewen_punctuated": "是吗？私下写吧"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "都说乞丐不给,过主吧"
       ],
       "zhongwen": "乞丐就是不给！快滚"
     },
     "answer": {
-      "yuewen_punctuated": "都说乞丐不给！"
+      "yuewen_punctuated": "都说乞丐不给！过主吧"
     },
     "difficulty": 1
   },
@@ -10828,27 +10863,15 @@
       "zhongwen": "还不快谢谢人家？"
     },
     "answer": {
-      "yuewen_punctuated": "给我…你们还不谢谢人？"
+      "yuewen_punctuated": "给我⋯你们还不谢谢人？"
     },
     "difficulty": 2
   },
   {
     "query": {
       "yuewen_to_punctuate": [
-        "去买东西吃…",
         "给雪糕,",
-        "吃东西"
-      ],
-      "zhongwen": "快点吃吧"
-    },
-    "answer": {
-      "yuewen_punctuated": "去买东西吃…给雪糕,吃东西"
-    },
-    "difficulty": 2
-  },
-  {
-    "query": {
-      "yuewen_to_punctuate": [
+        "吃东西",
         "你跟著我走",
         "走啊",
         "快点走啊"
@@ -10856,7 +10879,7 @@
       "zhongwen": "跟着我⋯走吧⋯"
     },
     "answer": {
-      "yuewen_punctuated": "你跟著我走⋯走啊，快点走啊⋯"
+      "yuewen_punctuated": "给雪糕，吃东西，你跟著我走，走啊，快点走啊⋯"
     },
     "difficulty": 2
   }
