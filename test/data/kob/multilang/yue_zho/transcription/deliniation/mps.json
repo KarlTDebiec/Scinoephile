@@ -9515,5 +9515,324 @@
       "yuewen_2_yidong": "即系话阁下注定乞食乞咗一世唔冇乜嘢"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "还是不跟你说，我想睡一会儿",
+      "zhongwen_2": "先别走！行行出状元",
+      "yuewen_1": "都系唔同你讲住呢",
+      "yuewen_2": "我想瞓阵先冇行住"
+    },
+    "answer": {
+      "yuewen_1_yidong": "都系唔同你讲住呢我想瞓阵先",
+      "yuewen_2_yidong": "冇行住"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "先别走！行行出状元",
+      "zhongwen_2": "如果我没看错",
+      "yuewen_1": "冇行住",
+      "yuewen_2": "行行出众圆"
+    },
+    "answer": {
+      "yuewen_1_yidong": "冇行住行行出众圆"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "如果我没看错",
+      "zhongwen_2": "你会是乞丐中的霸主",
+      "yuewen_2": "如果我冇睇错嘅话你会系乞衣中嘅霸主"
+    },
+    "answer": {
+      "yuewen_1_yidong": "如果我冇睇错嘅话",
+      "yuewen_2_yidong": "你会系乞衣中嘅霸主"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你会是乞丐中的霸主",
+      "zhongwen_2": "乞丐中的霸主？那是什么？",
+      "yuewen_1": "你会系乞衣中嘅霸主",
+      "yuewen_2": "乞衣中嘅霸主即系咩嘞"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "乞丐中的霸主？那是什么？",
+      "zhongwen_2": "还是乞丐",
+      "yuewen_1": "乞衣中嘅霸主即系咩嘞",
+      "yuewen_2": "即系乞衣啰"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我不管你是甚么人，我不想再跟你说",
+      "zhongwen_2": "请你让开，不要碍着我睡觉",
+      "yuewen_1": "我唔理你系边个",
+      "yuewen_2": "我唔想再同你讲嘢请你并埋耳边唔好阻住我瞓觉"
+    },
+    "answer": {
+      "yuewen_1_yidong": "我唔理你系边个我唔想再同你讲嘢",
+      "yuewen_2_yidong": "请你并埋耳边唔好阻住我瞓觉"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "请你让开，不要碍着我睡觉",
+      "zhongwen_2": "你找死吧？",
+      "yuewen_1": "请你并埋耳边唔好阻住我瞓觉"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你找死吧？",
+      "zhongwen_2": "不是⋯你说要睡觉",
+      "yuewen_2": "顶你个肺呀家贼唔系咪"
+    },
+    "answer": {
+      "yuewen_1_yidong": "顶你个肺呀",
+      "yuewen_2_yidong": "家贼唔系咪"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "不是⋯你说要睡觉",
+      "zhongwen_2": "我只想跟你一块儿",
+      "yuewen_1": "家贼唔系咪",
+      "yuewen_2": "你话瞓觉我想同你一齐咋吧"
+    },
+    "answer": {
+      "yuewen_1_yidong": "家贼唔系咪你话瞓觉",
+      "yuewen_2_yidong": "我想同你一齐咋吧"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "我只想跟你一块儿",
+      "zhongwen_2": "神经病",
+      "yuewen_1": "我想同你一齐咋吧",
+      "yuewen_2": "芝麻筋"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "佛前金座，罗汉归位",
+      "zhongwen_2": "降龙，伏虎",
+      "yuewen_1": "佛前金座罗汉归位",
+      "yuewen_2": "康隆复古"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏灿，你享尽人间富贵",
+      "zhongwen_2": "亦尝尽人间苦楚",
+      "yuewen_1": "苏残你享尽人间富贵",
+      "yuewen_2": "亦受尽人间苦楚"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "亦尝尽人间苦楚",
+      "zhongwen_2": "如今大彻大悟",
+      "yuewen_1": "亦受尽人间苦楚",
+      "yuewen_2": "如今大切大义"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如今大彻大悟",
+      "zhongwen_2": "我就以洪七公第七代传人的身份",
+      "yuewen_1": "如今大切大义",
+      "yuewen_2": "我就以洪七公"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我就以洪七公第七代传人的身份",
+      "zhongwen_2": "封你为睡梦罗汉",
+      "yuewen_1": "我就以洪七公",
+      "yuewen_2": "第七代全人嘅身份封你为睡梦罗汉"
+    },
+    "answer": {
+      "yuewen_1_yidong": "我就以洪七公第七代全人嘅身份",
+      "yuewen_2_yidong": "封你为睡梦罗汉"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "封你为睡梦罗汉",
+      "zhongwen_2": "醉回梦生法，传授你睡梦罗汉拳",
+      "yuewen_1": "封你为睡梦罗汉",
+      "yuewen_2": "再以回梦心法传授你睡梦罗汉拳"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "醉回梦生法，传授你睡梦罗汉拳",
+      "zhongwen_2": "希望你好好利用，接招",
+      "yuewen_1": "再以回梦心法传授你睡梦罗汉拳",
+      "yuewen_2": "希望你好好利用照招喇"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "万岁！万岁！万万岁",
+      "zhongwen_2": "白羊降世，天理循环",
+      "yuewen_1": "万岁万岁万万岁",
+      "yuewen_2": "白羊江世天理循环"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "白羊降世，天理循环",
+      "zhongwen_2": "真空家乡，无生老母，赐我神通",
+      "yuewen_1": "白羊江世天理循环",
+      "yuewen_2": "真空家乡无生老母恃我神通"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "真空家乡，无生老母，赐我神通",
+      "zhongwen_2": "超渡众生",
+      "yuewen_1": "真空家乡无生老母恃我神通",
+      "yuewen_2": "超渡终生"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "皇帝明天会到成都狩猎",
+      "zhongwen_2": "我会用献上美女的理由接近他",
+      "yuewen_1": "皇帝听日会去成都狩猎",
+      "yuewen_2": "我会用献上美女嘅理由接近佢"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我会用献上美女的理由接近他",
+      "zhongwen_2": "宛玲，你明天可能要牺牲一下色相",
+      "yuewen_1": "我会用献上美女嘅理由接近佢",
+      "yuewen_2": "元凌你听日可能要牺牲一下色相"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "宛玲，你明天可能要牺牲一下色相",
+      "zhongwen_2": "是",
+      "yuewen_1": "元凌你听日可能要牺牲一下色相",
+      "yuewen_2": "系"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "是",
+      "zhongwen_2": "只要明天杀了皇帝",
+      "yuewen_1": "系",
+      "yuewen_2": "只要听日杀到皇帝"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "只要明天杀了皇帝",
+      "zhongwen_2": "天下就尽在我手",
+      "yuewen_1": "只要听日杀到皇帝",
+      "yuewen_2": "天下就喺我手"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "天下就尽在我手",
+      "zhongwen_2": "荣华富贵绝对少不了你们",
+      "yuewen_1": "天下就喺我手",
+      "yuewen_2": "荣华富贵绝对唔会少咗你哋嘅"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "万岁！万岁！万万岁",
+      "zhongwen_2": "长老",
+      "yuewen_1": "万岁万岁万万岁"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "长老",
+      "zhongwen_2": "回去再说",
+      "yuewen_2": "张老快点"
+    },
+    "answer": {
+      "yuewen_1_yidong": "张老",
+      "yuewen_2_yidong": "快点"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "长老",
+      "zhongwen_2": "我们走",
+      "yuewen_2": "长老我哋走"
+    },
+    "answer": {
+      "yuewen_1_yidong": "长老",
+      "yuewen_2_yidong": "我哋走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "我们追　　不用追了！",
+      "zhongwen_2": "皇上快要出发",
+      "yuewen_1": "上水呀",
+      "yuewen_2": "上就费会出发"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "皇上快要出发",
+      "zhongwen_2": "你杀了我的女人⋯",
+      "yuewen_1": "上就费会出发"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你杀了我的女人⋯",
+      "zhongwen_2": "⋯我要把你献给皇上",
+      "yuewen_2": "你杀咗我个女人我要将你献畀皇上"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你杀咗我个女人",
+      "yuewen_2_yidong": "我要将你献畀皇上"
+    },
+    "difficulty": 1
   }
 ]

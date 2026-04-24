@@ -8556,5 +8556,299 @@
       "yuewen_punctuated": "即系话阁下注定乞食乞咗一世，唔，冇乜嘢"
     },
     "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "都系唔同你讲住呢",
+        "我想瞓阵先"
+      ],
+      "zhongwen": "还是不跟你说，我想睡一会儿"
+    },
+    "answer": {
+      "yuewen_punctuated": "都系唔同你讲住呢，我想瞓阵先"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "冇行住",
+        "行行出众圆"
+      ],
+      "zhongwen": "先别走！行行出状元"
+    },
+    "answer": {
+      "yuewen_punctuated": "冇行住！行行出众圆"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "乞衣中嘅霸主",
+        "即系咩",
+        "嘞"
+      ],
+      "zhongwen": "乞丐中的霸主？那是什么？"
+    },
+    "answer": {
+      "yuewen_punctuated": "乞衣中嘅霸主，即系咩嘞？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我唔理你系边个",
+        "我唔想再同你讲嘢"
+      ],
+      "zhongwen": "我不管你是甚么人，我不想再跟你说"
+    },
+    "answer": {
+      "yuewen_punctuated": "我唔理你系边个，我唔想再同你讲嘢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "请你并埋耳边",
+        "唔好阻住我瞓觉"
+      ],
+      "zhongwen": "请你让开，不要碍着我睡觉"
+    },
+    "answer": {
+      "yuewen_punctuated": "请你并埋耳边，唔好阻住我瞓觉"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "顶你个肺呀"
+      ],
+      "zhongwen": "你找死吧？"
+    },
+    "answer": {
+      "yuewen_punctuated": "顶你个肺呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "家贼",
+        "唔系咪",
+        "你话瞓觉"
+      ],
+      "zhongwen": "不是⋯你说要睡觉"
+    },
+    "answer": {
+      "yuewen_punctuated": "家贼，唔系咪，你话瞓觉"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "后生仔",
+        "我哋梦中相见吓"
+      ],
+      "zhongwen": "年轻人，我们梦中相见"
+    },
+    "answer": {
+      "yuewen_punctuated": "后生仔，我哋梦中相见吓"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "佛前金座罗汉归位"
+      ],
+      "zhongwen": "佛前金座，罗汉归位"
+    },
+    "answer": {
+      "yuewen_punctuated": "佛前金座，罗汉归位"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "康隆",
+        "复古"
+      ],
+      "zhongwen": "降龙，伏虎"
+    },
+    "answer": {
+      "yuewen_punctuated": "康隆，复古"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苏残",
+        "你享尽人间富贵"
+      ],
+      "zhongwen": "苏灿，你享尽人间富贵"
+    },
+    "answer": {
+      "yuewen_punctuated": "苏残，你享尽人间富贵"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我就以洪七公",
+        "第七代全人嘅身份"
+      ],
+      "zhongwen": "我就以洪七公第七代传人的身份"
+    },
+    "answer": {
+      "yuewen_punctuated": "我就以洪七公第七代全人嘅身份"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "再以回梦心法",
+        "传授你睡梦罗汉拳"
+      ],
+      "zhongwen": "醉回梦生法，传授你睡梦罗汉拳"
+    },
+    "answer": {
+      "yuewen_punctuated": "再以回梦心法，传授你睡梦罗汉拳"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "希望你好好利用",
+        "照招喇"
+      ],
+      "zhongwen": "希望你好好利用，接招"
+    },
+    "answer": {
+      "yuewen_punctuated": "希望你好好利用，照招喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "前辈"
+      ],
+      "zhongwen": "前辈⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "前辈⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苦尽",
+        "今来"
+      ],
+      "zhongwen": "苦尽甘来？"
+    },
+    "answer": {
+      "yuewen_punctuated": "苦尽今来？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "万岁万岁万万岁"
+      ],
+      "zhongwen": "万岁！万岁！万万岁"
+    },
+    "answer": {
+      "yuewen_punctuated": "万岁！万岁！万万岁"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "白羊江世",
+        "天理循环"
+      ],
+      "zhongwen": "白羊降世，天理循环"
+    },
+    "answer": {
+      "yuewen_punctuated": "白羊江世，天理循环"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "真空家乡",
+        "无生老母",
+        "恃我神通"
+      ],
+      "zhongwen": "真空家乡，无生老母，赐我神通"
+    },
+    "answer": {
+      "yuewen_punctuated": "真空家乡，无生老母，恃我神通"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "元凌",
+        "你听日可能要牺牲一下色相"
+      ],
+      "zhongwen": "宛玲，你明天可能要牺牲一下色相"
+    },
+    "answer": {
+      "yuewen_punctuated": "元凌，你听日可能要牺牲一下色相"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "上水呀"
+      ],
+      "zhongwen": "我们追　　不用追了！"
+    },
+    "answer": {
+      "yuewen_punctuated": "上水呀！"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你杀咗我个女人"
+      ],
+      "zhongwen": "你杀了我的女人⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "你杀咗我个女人⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我要将你献畀皇上"
+      ],
+      "zhongwen": "⋯我要把你献给皇上"
+    },
+    "answer": {
+      "yuewen_punctuated": "⋯我要将你献畀皇上"
+    },
+    "difficulty": 1
   }
 ]

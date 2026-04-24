@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from unittest.mock import Mock, patch
 
@@ -60,6 +61,27 @@ def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_yue_transcribe_vs_zho_help_lists_demucs_and_vad_options():
+    """Test 粤文 transcribe-vs-zho CLI help lists Demucs and VAD options."""
+    stdout = StringIO()
+    stderr = StringIO()
+
+    with pytest.raises(SystemExit, match="0"):
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(YueTranscribeVsZhoCli, "-h")
+
+    help_text = stdout.getvalue()
+    assert stderr.getvalue() == ""
+    assert "--demucs DEMUCS" in help_text
+    assert "Demucs vocal-separation mode" in help_text
+    assert "options: on, off;" in help_text
+    assert "default: off" in help_text
+    assert "--vad VAD" in help_text
+    assert "Whisper voice activity detection mode" in help_text
+    assert "off, auto; default: auto" in help_text
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():

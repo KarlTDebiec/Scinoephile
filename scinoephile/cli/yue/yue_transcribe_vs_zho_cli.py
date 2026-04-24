@@ -50,12 +50,13 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
-            "Demucs vocal-separation mode (default: off)": (
-                "Demucs 人声分离模式（默认：off）"
+            "Demucs vocal-separation mode (options: on, off; default: off)": (
+                "Demucs 人声分离模式（选项：on、off；默认：off）"
             ),
-            "Whisper voice activity detection mode (default: auto)": (
-                "Whisper 语音活动检测模式（默认：auto）"
-            ),
+            (
+                "Whisper voice activity detection mode "
+                "(options: on, off, auto; default: auto)"
+            ): ("Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）"),
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '标准中文字幕输入文件，或使用 "-" 表示标准输入'
             ),
@@ -73,12 +74,13 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
             ),
-            "Demucs vocal-separation mode (default: off)": (
-                "Demucs 人聲分離模式（預設：off）"
+            "Demucs vocal-separation mode (options: on, off; default: off)": (
+                "Demucs 人聲分離模式（選項：on、off；預設：off）"
             ),
-            "Whisper voice activity detection mode (default: auto)": (
-                "Whisper 語音活動偵測模式（預設：auto）"
-            ),
+            (
+                "Whisper voice activity detection mode "
+                "(options: on, off, auto; default: auto)"
+            ): ("Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）"),
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
@@ -139,13 +141,16 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "--demucs",
             default="off",
             type=str_arg(options=("on", "off")),
-            help="Demucs vocal-separation mode (default: off)",
+            help="Demucs vocal-separation mode (options: on, off; default: off)",
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
             default="auto",
             type=str_arg(options=("on", "off", "auto")),
-            help="Whisper voice activity detection mode (default: auto)",
+            help=(
+                "Whisper voice activity detection mode "
+                "(options: on, off, auto; default: auto)"
+            ),
         )
 
         # Output arguments
