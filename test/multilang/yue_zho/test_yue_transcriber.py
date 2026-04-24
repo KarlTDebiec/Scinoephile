@@ -31,5 +31,9 @@ def test_transcribe_block_audio_applies_demucs_before_vad_retry():
 
     assert output == transcriber.no_vad_transcriber.return_value
     transcriber.demucs_separator.assert_called_once_with(input_audio)
-    transcriber.vad_transcriber.assert_called_once_with(separated_audio)
-    transcriber.no_vad_transcriber.assert_called_once_with(separated_audio)
+    transcriber.vad_transcriber.assert_called_once_with(
+        separated_audio, cache_audio=input_audio
+    )
+    transcriber.no_vad_transcriber.assert_called_once_with(
+        separated_audio, cache_audio=input_audio
+    )

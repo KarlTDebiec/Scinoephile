@@ -26,8 +26,8 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
-def test_separate_vocals_uses_deterministic_demucs_shifts():
-    """Test Demucs separation disables random shift augmentation by default."""
+def test_separate_vocals_uses_default_demucs_shifts():
+    """Test Demucs separation relies on library-default shift behavior."""
     separator = DemucsSeparator()
     separator._model = Mock(samplerate=16000, sources=["vocals"])
     separator._model.to.return_value = separator._model
@@ -44,4 +44,4 @@ def test_separate_vocals_uses_deterministic_demucs_shifts():
     assert isinstance(output_audio, AudioSegment)
     assert output_audio.frame_rate == input_audio.frame_rate
     patched_apply_model.assert_called_once()
-    assert patched_apply_model.call_args.kwargs["shifts"] == 0
+    assert "shifts" not in patched_apply_model.call_args.kwargs

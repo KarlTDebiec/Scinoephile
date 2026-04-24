@@ -225,22 +225,24 @@ class YueTranscriber:
         Returns:
             transcribed segments
         """
+        cache_audio = audio
         if self.demucs_mode == DemucsMode.ON:
             assert self.demucs_separator is not None
+            logger.info("Applying Demucs vocal separation before transcription")
             audio = self.demucs_separator(audio)
 
         if self.vad_mode == VADMode.ON:
             assert self.vad_transcriber is not None
-            return self.vad_transcriber(audio)
+            return self.vad_transcriber(audio, cache_audio=cache_audio)
         if self.vad_mode == VADMode.OFF:
             assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber(audio)
+            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
 
         assert self.vad_transcriber is not None
-        segments = self.vad_transcriber(audio)
+        segments = self.vad_transcriber(audio, cache_audio=cache_audio)
         if any(segment.text.strip() for segment in segments):
             return segments
 
         logger.info("Retrying block transcription without VAD after empty result")
         assert self.no_vad_transcriber is not None
-        return self.no_vad_transcriber(audio)
+        return self.no_vad_transcriber(audio, cache_audio=cache_audio)

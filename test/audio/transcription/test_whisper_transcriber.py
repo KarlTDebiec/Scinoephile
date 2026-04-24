@@ -53,3 +53,19 @@ def test_get_cache_path_separates_models():
     assert cache_path_one is not None
     assert cache_path_two is not None
     assert cache_path_one != cache_path_two
+
+
+def test_get_cache_path_can_use_original_audio_with_processed_input():
+    """Test cache path can be derived from original audio bytes."""
+    transcriber = object.__new__(WhisperTranscriber)
+    transcriber.cache_dir_path = Path("/tmp/whisper")
+    transcriber.model_name = "custom/model"
+    transcriber.language = "yue"
+    transcriber.use_vad = True
+
+    original_cache_path = transcriber._get_cache_path(b"original-audio")
+    processed_cache_path = transcriber._get_cache_path(b"processed-audio")
+
+    assert original_cache_path is not None
+    assert processed_cache_path is not None
+    assert original_cache_path != processed_cache_path

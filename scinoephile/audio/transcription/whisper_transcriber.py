@@ -54,15 +54,18 @@ class WhisperTranscriber:
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
 
-    def __call__(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def __call__(
+        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+    ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: Audio to transcribe
+            cache_audio: optional audio used for cache-key generation
         Returns:
             Transcription, split into segments
         """
-        return self.transcribe(audio)
+        return self.transcribe(audio, cache_audio=cache_audio)
 
     @property
     def model(self) -> Any:
@@ -76,15 +79,19 @@ class WhisperTranscriber:
             self._model = whisper.load_model(self.model_name, device=device)
         return self._model
 
-    def transcribe(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def transcribe(
+        self, audio: AudioSegment, *, cache_audio: AudioSegment | None = None
+    ) -> list[TranscribedSegment]:
         """Transcribe audio.
 
         Arguments:
             audio: Audio to transcribe
+            cache_audio: optional audio used for cache-key generation
         Returns:
             Transcription, split into segments
         """
-        cache_path = self._get_cache_path(audio.raw_data)
+        cache_audio = cache_audio or audio
+        cache_path = self._get_cache_path(cache_audio.raw_data)
 
         # Load from cache if available
         if cache_path is not None and cache_path.exists():
