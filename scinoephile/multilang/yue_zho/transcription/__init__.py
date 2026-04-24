@@ -20,19 +20,18 @@ from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
-    YueZhoHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
-    YueZhoHantPunctuationPrompt,
     YueZhoPunctuationManager,
 )
 
-from .transcriber import YueTranscriber
+from .transcriber import VADMode, YueTranscriber
 
 __all__ = [
     "get_yue_transcribed_vs_zho",
     "get_yue_vs_zho_transcriber",
+    "VADMode",
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
@@ -49,22 +48,22 @@ class YueZhoTranscriptionKwargs(TypedDict, total=False):
 class YueZhoTranscriberKwargs(TypedDict, total=False):
     """Keyword arguments for default YueTranscriber construction."""
 
-    use_vad: bool
-    """whether Whisper VAD is enabled for transcription."""
+    model_name: str
+    """Whisper model name used for transcription."""
+    vad_mode: VADMode
+    """Whisper VAD mode for transcription."""
+    provider: LLMProvider | None
+    """provider to use for queries."""
+    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
+    """prompt class used for alignment deliniation."""
+    punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
+    """prompt class used for transcription punctuation."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
     deliniation_test_cases: list[TestCase] | None
     """preloaded deliniation test cases used to seed the transcriber."""
     punctuation_test_cases: list[TestCase] | None
     """preloaded punctuation test cases used to seed the transcriber."""
-    deliniation_prompt_cls: (
-        type[YueZhoHansDeliniationPrompt] | type[YueZhoHantDeliniationPrompt]
-    )
-    """prompt class used for alignment deliniation."""
-    punctuation_prompt_cls: (
-        type[YueZhoHansPunctuationPrompt] | type[YueZhoHantPunctuationPrompt]
-    )
-    """prompt class used for transcription punctuation."""
 
 
 def get_yue_transcribed_vs_zho(
@@ -89,29 +88,37 @@ def get_yue_transcribed_vs_zho(
 
 
 def get_yue_vs_zho_transcriber(
+    model_name: str = "khleeloo/whisper-large-v3-cantonese",
+    vad_mode: VADMode = VADMode.AUTO,
+    provider: LLMProvider | None = None,
+    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt] = (
+        YueZhoHansDeliniationPrompt
+    ),
+    punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt] = (
+        YueZhoHansPunctuationPrompt
+    ),
+    test_case_directory_path: Path | None = None,
     deliniation_test_cases: list[TestCase] | None = None,
     punctuation_test_cases: list[TestCase] | None = None,
-    test_case_directory_path: Path | None = None,
-    provider: LLMProvider | None = None,
-    use_vad: bool = True,
-    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
-    | type[YueZhoHantDeliniationPrompt] = YueZhoHansDeliniationPrompt,
-    punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
-    | type[YueZhoHantPunctuationPrompt] = YueZhoHansPunctuationPrompt,
 ) -> YueTranscriber:
     """Get YueTranscriber with default resources when available.
 
     Arguments:
-        deliniation_test_cases: optional deliniation test cases
-        punctuation_test_cases: optional punctuation test cases
-        test_case_directory_path: optional directory where test cases are updated
+        model_name: Whisper model name used for transcription
+        vad_mode: Whisper VAD mode for transcription
         provider: provider to use for queries
-        use_vad: whether Whisper VAD is enabled for transcription
         deliniation_prompt_cls: prompt class for alignment deliniation
         punctuation_prompt_cls: prompt class for transcription punctuation
+        test_case_directory_path: optional directory where test cases are updated
+        deliniation_test_cases: optional deliniation test cases
+        punctuation_test_cases: optional punctuation test cases
     Returns:
         configured YueTranscriber
     """
+    if provider is None:
+        provider = get_default_provider()
+    if test_case_directory_path is None:
+        test_case_directory_path = _get_default_test_case_dir_path()
     if deliniation_test_cases is None:
         deliniation_test_cases = list(
             load_default_test_cases(
@@ -128,18 +135,15 @@ def get_yue_vs_zho_transcriber(
                 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
             )
         )
-    if test_case_directory_path is None:
-        test_case_directory_path = _get_default_test_case_dir_path()
-    if provider is None:
-        provider = get_default_provider()
     return YueTranscriber(
+        model_name=model_name,
+        vad_mode=vad_mode,
+        provider=provider,
+        deliniation_prompt_cls=deliniation_prompt_cls,
+        punctuation_prompt_cls=punctuation_prompt_cls,
         test_case_directory_path=test_case_directory_path,
         deliniation_test_cases=deliniation_test_cases,
         punctuation_test_cases=punctuation_test_cases,
-        provider=provider,
-        use_vad=use_vad,
-        deliniation_prompt_cls=deliniation_prompt_cls,
-        punctuation_prompt_cls=punctuation_prompt_cls,
     )
 
 

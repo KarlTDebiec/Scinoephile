@@ -22,6 +22,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.multilang.yue_zho.transcription import (
+    VADMode,
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
@@ -48,7 +49,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示词和输出转换使用的字形（默认：简体）"
             ),
-            "disable Whisper voice activity detection": "禁用 Whisper 语音活动检测",
+            "Whisper voice activity detection mode (default: auto)": (
+                "Whisper 语音活动检测模式（默认：auto）"
+            ),
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '标准中文字幕输入文件，或使用 "-" 表示标准输入'
             ),
@@ -66,7 +69,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "script for prompts and output conversion (default: simplified)": (
                 "提示詞與輸出轉換使用的字形（預設：簡體）"
             ),
-            "disable Whisper voice activity detection": "停用 Whisper 語音活動偵測",
+            "Whisper voice activity detection mode (default: auto)": (
+                "Whisper 語音活動偵測模式（預設：auto）"
+            ),
             'Standard Chinese subtitle infile or "-" for stdin': (
                 '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
@@ -124,9 +129,10 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             help="script for prompts and output conversion (default: simplified)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--no-vad",
-            action="store_true",
-            help="disable Whisper voice activity detection",
+            "--vad",
+            default="auto",
+            type=str_arg(options=("on", "off", "auto")),
+            help="Whisper voice activity detection mode (default: auto)",
         )
 
         # Output arguments
@@ -156,10 +162,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_transcription_prompt_classes(
         cls, script: str
-    ) -> tuple[
-        type[YueZhoHansDeliniationPrompt] | type[YueZhoHantDeliniationPrompt],
-        type[YueZhoHansPunctuationPrompt] | type[YueZhoHantPunctuationPrompt],
-    ]:
+    ) -> tuple[type[YueZhoHansDeliniationPrompt], type[YueZhoHansPunctuationPrompt]]:
         """Get transcription prompt classes for the selected script.
 
         Arguments:
@@ -184,7 +187,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
         script = kwargs.pop("script")
-        use_vad = not kwargs.pop("no_vad")
+        vad_mode = VADMode(kwargs.pop("vad"))
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if media_infile_path == "-" and zhongwen_infile_path == "-":
@@ -231,7 +234,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             cls._get_transcription_prompt_classes(script)
         )
         transcriber = get_yue_vs_zho_transcriber(
-            use_vad=use_vad,
+            vad_mode=vad_mode,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
         )
