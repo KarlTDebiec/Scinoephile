@@ -83,9 +83,6 @@ class YueTranscriber:
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.model_name = model_name
         self.vad_mode = vad_mode
-        self.transcription_test_case_dir_path = (
-            self._get_transcription_test_case_dir_path(vad_mode)
-        )
         if provider is None:
             provider = get_default_provider()
         self.vad_transcriber = None
@@ -111,7 +108,7 @@ class YueTranscriber:
         self.aligner = Aligner(
             deliniation_queryer=self.deliniation_queryer,
             punctuation_queryer=self.punctuation_queryer,
-            test_case_dir_path=self.transcription_test_case_dir_path,
+            test_case_dir_path=self.test_case_directory_path,
         )
 
     def process_all_blocks(
@@ -163,10 +160,7 @@ class YueTranscriber:
             zhongwen_block: Corresponding 中文 block
         """
         # Transcribe audio
-        segments, used_vad_mode = self._transcribe_block_audio(yuewen_block.audio)
-        self.aligner.test_case_dir_path = self._get_transcription_test_case_dir_path(
-            used_vad_mode
-        )
+        segments = self._transcribe_block_audio(yuewen_block.audio)
 
         # Split segments based on pauses
         split_segments = []
@@ -194,21 +188,6 @@ class YueTranscriber:
 
         return yuewen_block_series
 
-    def _get_transcription_test_case_dir_path(self, vad_mode: VADMode) -> Path:
-        """Get the transcription test-case directory for this transcriber.
-
-        Arguments:
-            vad_mode: Whisper VAD mode used for transcription
-        Returns:
-            transcription test-case directory path
-        """
-        transcription_test_case_dir_path = (
-            self.test_case_directory_path / "multilang" / "yue_zho" / "transcription"
-        )
-        if vad_mode == VADMode.OFF:
-            transcription_test_case_dir_path /= "no_vad"
-        return transcription_test_case_dir_path
-
     def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
         """Build a Whisper transcriber for the requested VAD setting.
 
@@ -223,28 +202,26 @@ class YueTranscriber:
             use_vad=use_vad,
         )
 
-    def _transcribe_block_audio(
-        self, audio: AudioSegment
-    ) -> tuple[list[TranscribedSegment], VADMode]:
+    def _transcribe_block_audio(self, audio: AudioSegment) -> list[TranscribedSegment]:
         """Transcribe one block of audio with the configured VAD behavior.
 
         Arguments:
             audio: block audio to transcribe
         Returns:
-            transcribed segments and the VAD mode that produced them
+            transcribed segments
         """
         if self.vad_mode == VADMode.ON:
             assert self.vad_transcriber is not None
-            return self.vad_transcriber(audio), VADMode.ON
+            return self.vad_transcriber(audio)
         if self.vad_mode == VADMode.OFF:
             assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber(audio), VADMode.OFF
+            return self.no_vad_transcriber(audio)
 
         assert self.vad_transcriber is not None
         segments = self.vad_transcriber(audio)
         if any(segment.text.strip() for segment in segments):
-            return segments, VADMode.ON
+            return segments
 
         logger.info("Retrying block transcription without VAD after empty result")
         assert self.no_vad_transcriber is not None
-        return self.no_vad_transcriber(audio), VADMode.OFF
+        return self.no_vad_transcriber(audio)
