@@ -45,5 +45,1456 @@
       "yuewen_2_yidong": "要"
     },
     "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "好字",
+      "zhongwen_2": "走开",
+      "yuewen_1": "好字",
+      "yuewen_2": "走开"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "走开",
+      "zhongwen_2": "好字！龙飞凤舞，苏察哈尔灿",
+      "yuewen_1": "走开",
+      "yuewen_2": "好字呀龙飞凤舞苏擦虾耳灿"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "好字！龙飞凤舞，苏察哈尔灿",
+      "zhongwen_2": "你念反了，老爷",
+      "yuewen_1": "好字呀龙飞凤舞苏擦虾耳灿",
+      "yuewen_2": "调转咗"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你念反了，老爷",
+      "zhongwen_2": "灿尔哈察苏",
+      "yuewen_1": "调转咗",
+      "yuewen_2": "老爷灿耳虾擦苏"
+    },
+    "answer": {
+      "yuewen_1_yidong": "调转咗老爷",
+      "yuewen_2_yidong": "灿耳虾擦苏"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "灿尔哈察苏",
+      "zhongwen_2": "好小子，但是别骄傲，知道吗？",
+      "yuewen_1": "灿耳虾擦苏",
+      "yuewen_2": "叻仔但事冇娇知咩"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "好小子，但是别骄傲，知道吗？",
+      "zhongwen_2": "爹，我们苏察哈尔家",
+      "yuewen_1": "叻仔但事冇娇知咩",
+      "yuewen_2": "爹爹我哋苏擦虾耳家"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "爹，我们苏察哈尔家",
+      "zhongwen_2": "自太祖皇帝到现在",
+      "yuewen_1": "爹爹我哋苏擦虾耳家"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "自太祖皇帝到现在",
+      "zhongwen_2": "都没有几个会写字的",
+      "yuewen_2": "自太祖皇帝到家阵几代"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "都没有几个会写字的",
+      "zhongwen_2": "现在可不同，我的儿子你的孙儿阿灿",
+      "yuewen_1": "自太祖皇帝到家阵几代",
+      "yuewen_2": "都冇我晓写字嘅而家唔系啦我个仔你佢孙阿灿呢"
+    },
+    "answer": {
+      "yuewen_1_yidong": "自太祖皇帝到家阵几代都冇我晓写字嘅",
+      "yuewen_2_yidong": "而家唔系啦我个仔你佢孙阿灿呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "现在可不同，我的儿子你的孙儿阿灿",
+      "zhongwen_2": "他会写自己的名字",
+      "yuewen_1": "而家唔系啦我个仔你佢孙阿灿呢",
+      "yuewen_2": "佢晓写自己个名呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "他会写自己的名字",
+      "zhongwen_2": "爹，这可是非同少可",
+      "yuewen_1": "佢晓写自己个名呀",
+      "yuewen_2": "爹呢一步非同小可"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "爹，这可是非同少可",
+      "zhongwen_2": "今天会写字",
+      "yuewen_1": "爹呢一步非同小可"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "今天会写字",
+      "zhongwen_2": "他朝必成大学士",
+      "yuewen_2": "今日晓写字啪朝就必成大学士"
+    },
+    "answer": {
+      "yuewen_1_yidong": "今日晓写字",
+      "yuewen_2_yidong": "啪朝就必成大学士"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "他朝必成大学士",
+      "zhongwen_2": "今天会写名",
+      "yuewen_1": "啪朝就必成大学士",
+      "yuewen_2": "今日晓写名"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "今天会写名",
+      "zhongwen_2": "他日一定会生子",
+      "yuewen_1": "今日晓写名",
+      "yuewen_2": "啪日生仔就必有病"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "他日一定会生子",
+      "zhongwen_2": "少爷，你真是要好好地学习写字",
+      "yuewen_1": "啪日生仔就必有病",
+      "yuewen_2": "赵爷你真系要好啲学写字"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "少爷，你真是要好好地学习写字",
+      "zhongwen_2": "阿灿，先把它裱起来",
+      "yuewen_1": "赵爷你真系要好啲学写字",
+      "yuewen_2": "我傻灿爷灿我睇表起佢好"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "阿灿，先把它裱起来",
+      "zhongwen_2": "裱起它",
+      "yuewen_1": "我傻灿爷灿我睇表起佢好"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "裱起它",
+      "zhongwen_2": "师爷，把它挂在最当眼的地方",
+      "yuewen_2": "表起佢师爷你攞佢有咁多眼挂咁多眼"
+    },
+    "answer": {
+      "yuewen_1_yidong": "表起佢",
+      "yuewen_2_yidong": "师爷你攞佢有咁多眼挂咁多眼"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "师爷，把它挂在最当眼的地方",
+      "zhongwen_2": "这样吧，师爷",
+      "yuewen_1": "师爷你攞佢有咁多眼挂咁多眼",
+      "yuewen_2": "咁唔系"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这样吧，师爷",
+      "zhongwen_2": "你先背着它簪花挂红，游行威风一下",
+      "yuewen_1": "咁唔系",
+      "yuewen_2": "师爷你揹住佢参夫阿国"
+    },
+    "answer": {
+      "yuewen_1_yidong": "咁唔系师爷",
+      "yuewen_2_yidong": "你揹住佢参夫阿国"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你先背着它簪花挂红，游行威风一下",
+      "zhongwen_2": "走吧",
+      "yuewen_1": "你揹住佢参夫阿国",
+      "yuewen_2": "和友伦皆威下先行啦"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你揹住佢参夫阿国和友伦皆威下先",
+      "yuewen_2_yidong": "行啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "走吧",
+      "zhongwen_2": "阿灿，来⋯坐⋯",
+      "yuewen_1": "行啦",
+      "yuewen_2": "灿爷灿来…坐…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "阿灿，来⋯坐⋯",
+      "zhongwen_2": "你这么争气，我也很安慰",
+      "yuewen_1": "灿爷灿来…坐…",
+      "yuewen_2": "见你咁生性我都好安慰"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你这么争气，我也很安慰",
+      "zhongwen_2": "你听我说，爹是有名的败家儿",
+      "yuewen_1": "见你咁生性我都好安慰",
+      "yuewen_2": "你听我讲爹呢书名系二世祖"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你听我说，爹是有名的败家儿",
+      "zhongwen_2": "家里的财产也败得差不多",
+      "yuewen_1": "你听我讲爹呢书名系二世祖",
+      "yuewen_2": "负身家都使得七七八八㗎喇"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "家里的财产也败得差不多",
+      "zhongwen_2": "说难听一点，日后我两脚一伸",
+      "yuewen_1": "负身家都使得七七八八㗎喇",
+      "yuewen_2": "好话唔好听但系爹两个人呢"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "说难听一点，日后我两脚一伸",
+      "zhongwen_2": "你个王八蛋，怎么到这里来讨饭？",
+      "yuewen_1": "好话唔好听但系爹两个人呢"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你个王八蛋，怎么到这里来讨饭？",
+      "zhongwen_2": "向来我都是靠自己",
+      "yuewen_2": "你真系全部都靠自己啦我不留都靠自己㗎啦"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你真系全部都靠自己啦",
+      "yuewen_2_yidong": "我不留都靠自己㗎啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "向来我都是靠自己",
+      "zhongwen_2": "十万两一张，省一点花啊",
+      "yuewen_1": "我不留都靠自己㗎啦",
+      "yuewen_2": "成十万两一张省得使呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "十万两一张，省一点花啊",
+      "zhongwen_2": "茂利，把我的西洋帽拿来",
+      "yuewen_1": "成十万两一张省得使呀",
+      "yuewen_2": "茂利"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "茂利，把我的西洋帽拿来",
+      "zhongwen_2": "你去哪，阿灿？",
+      "yuewen_1": "茂利",
+      "yuewen_2": "攞我顶西洋帽过来去边啦"
+    },
+    "answer": {
+      "yuewen_1_yidong": "茂利攞我顶西洋帽过来",
+      "yuewen_2_yidong": "去边啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你去哪，阿灿？",
+      "zhongwen_2": "今晚我做大寿",
+      "yuewen_1": "去边啦",
+      "yuewen_2": "灿今日我摆大寿"
+    },
+    "answer": {
+      "yuewen_1_yidong": "去边啦灿",
+      "yuewen_2_yidong": "今日我摆大寿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "今晚我做大寿",
+      "zhongwen_2": "你贵庚？",
+      "yuewen_1": "今日我摆大寿"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你贵庚？",
+      "zhongwen_2": "廿五岁大寿，早点到",
+      "yuewen_2": "你跪跟呀廿五岁大寿嘛早啲到呀"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你跪跟呀",
+      "yuewen_2_yidong": "廿五岁大寿嘛早啲到呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "廿五岁大寿，早点到",
+      "zhongwen_2": "做大寿你也得先把头发梳整齐",
+      "yuewen_1": "廿五岁大寿嘛早啲到呀",
+      "yuewen_2": "摆大寿你都疏领啲个头啦"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "做大寿你也得先把头发梳整齐",
+      "zhongwen_2": "老是一个乞丐的模样",
+      "yuewen_1": "摆大寿你都疏领啲个头啦",
+      "yuewen_2": "成世都好似乞儿仔噉"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "老是一个乞丐的模样",
+      "zhongwen_2": "乞丐会那么有钱？我也想当",
+      "yuewen_1": "成世都好似乞儿仔噉",
+      "yuewen_2": "客衣会咁有钱我都想做"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "乞丐会那么有钱？我也想当",
+      "zhongwen_2": "那寿头真是⋯",
+      "yuewen_1": "客衣会咁有钱我都想做",
+      "yuewen_2": "个瘦头硬事嘅真系"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "那寿头真是⋯",
+      "zhongwen_2": "过来，过来",
+      "yuewen_1": "个瘦头硬事嘅真系",
+      "yuewen_2": "过嚟…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "过来，过来",
+      "zhongwen_2": "老爷，甚么事？",
+      "yuewen_1": "过嚟…",
+      "yuewen_2": "做咩呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "老爷，甚么事？",
+      "zhongwen_2": "那臭小子的寿帖真威风",
+      "yuewen_1": "做咩呀",
+      "yuewen_2": "老爷个衰仔摆大寿胆子唔贴都嫁细个人嘅"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "那臭小子的寿帖真威风",
+      "zhongwen_2": "他日老爷做大寿，要比他威风",
+      "yuewen_1": "老爷个衰仔摆大寿胆子唔贴都嫁细个人嘅",
+      "yuewen_2": "但系老爷摆大寿呢要嫁细个佢老爷"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "皇爷，你觉得广东大戏怎样？",
+      "zhongwen_2": "地方戏曲，当然不及京戏",
+      "yuewen_1": "王爷你觉得广东嘅大戏点",
+      "yuewen_2": "地方戏曲当然比唔上惊喜"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "地方戏曲，当然不及京戏",
+      "zhongwen_2": "但也算是一种见识",
+      "yuewen_1": "地方戏曲当然比唔上惊喜",
+      "yuewen_2": "不过都算系一番见识"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "打赏⋯打赏",
+      "zhongwen_2": "恭喜苏翁生辰快乐",
+      "yuewen_1": "打赏…",
+      "yuewen_2": "恭喜苏翁生辰快乐"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "恭喜苏翁生辰快乐",
+      "zhongwen_2": "我家破人亡、贫病老弱",
+      "yuewen_1": "恭喜苏翁生辰快乐",
+      "yuewen_2": "国家散人,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我家破人亡、贫病老弱",
+      "zhongwen_2": "无亲无故、妻离子散",
+      "yuewen_1": "国家散人,",
+      "yuewen_2": "喷病老药死人倒楼,妻离子散我很可怜,"
+    },
+    "answer": {
+      "yuewen_1_yidong": "国家散人,喷病老药",
+      "yuewen_2_yidong": "死人倒楼,妻离子散我很可怜,"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "无亲无故、妻离子散",
+      "zhongwen_2": "打赏个救命钱　　怎么搞的，死乞丐！",
+      "yuewen_1": "死人倒楼,妻离子散我很可怜,",
+      "yuewen_2": "师兄我点人钱"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "打赏个救命钱　　怎么搞的，死乞丐！",
+      "zhongwen_2": "你个王八蛋，怎么到这里来讨饭？",
+      "yuewen_1": "师兄我点人钱",
+      "yuewen_2": "打错了,死客医你这个混蛋又不嫁"
+    },
+    "answer": {
+      "yuewen_1_yidong": "师兄我点人钱打错了,死客医",
+      "yuewen_2_yidong": "你这个混蛋又不嫁"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你个王八蛋，怎么到这里来讨饭？",
+      "zhongwen_2": "我打⋯",
+      "yuewen_1": "你这个混蛋又不嫁",
+      "yuewen_2": "黑色黑道来这里,我打…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我打⋯",
+      "zhongwen_2": "打赏　　是，少爷",
+      "yuewen_1": "黑色黑道来这里,我打…",
+      "yuewen_2": "打赏是,少爷"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "打赏　　是，少爷",
+      "zhongwen_2": "这样也有打赏？",
+      "yuewen_1": "打赏是,少爷",
+      "yuewen_2": "你有没有搞错?没钱就走"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这样也有打赏？",
+      "zhongwen_2": "乞丐也是人",
+      "yuewen_1": "你有没有搞错?没钱就走",
+      "yuewen_2": "客医都是人,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "乞丐也是人",
+      "zhongwen_2": "只要有钱的都可以来",
+      "yuewen_1": "客医都是人,",
+      "yuewen_2": "是人有钱都是来这里"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "只要有钱的都可以来",
+      "zhongwen_2": "你这个月来这里",
+      "yuewen_1": "是人有钱都是来这里"
+    },
+    "answer": {
+      "yuewen_1_yidong": "是人有钱都是来",
+      "yuewen_2_yidong": "这里"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "乞丐也是人",
+      "zhongwen_2": "只要有钱的都可以来",
+      "yuewen_1": "客医都是人,",
+      "yuewen_2": "是人有钱都是来"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "只要有钱的都可以来",
+      "zhongwen_2": "你这个月来这里",
+      "yuewen_1": "是人有钱都是来",
+      "yuewen_2": "这里"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你这个月来这里",
+      "zhongwen_2": "吃饭看戏宵夜嫖妓，我包",
+      "yuewen_1": "这里",
+      "yuewen_2": "你这个月在这里吃饭看你少爷直落叫鸡,"
+    },
+    "answer": {
+      "yuewen_1_yidong": "这里你这个月在这里",
+      "yuewen_2_yidong": "吃饭看你少爷直落叫鸡,"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "吃饭看戏宵夜嫖妓，我包",
+      "zhongwen_2": "你包？",
+      "yuewen_1": "吃饭看你少爷直落叫鸡,",
+      "yuewen_2": "我包"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你包？",
+      "zhongwen_2": "不可以吗？",
+      "yuewen_1": "我包",
+      "yuewen_2": "包包?催?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "不可以吗？",
+      "zhongwen_2": "可以，可以",
+      "yuewen_1": "包包?催?",
+      "yuewen_2": "唔催…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "可以，可以",
+      "zhongwen_2": "大爷进我间房吧⋯　　请你跟我来",
+      "yuewen_1": "唔催…",
+      "yuewen_2": "催紧我来唔催…"
+    },
+    "answer": {
+      "yuewen_1_yidong": "唔催…催紧我来",
+      "yuewen_2_yidong": "唔催…"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "大爷进我间房吧⋯　　请你跟我来",
+      "zhongwen_2": "苏⋯翁",
+      "yuewen_1": "唔催…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏⋯翁",
+      "zhongwen_2": "是⋯",
+      "yuewen_2": "喂,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "是⋯",
+      "zhongwen_2": "你好吗，鸨母？",
+      "yuewen_1": "喂,",
+      "yuewen_2": "点呀,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你好吗，鸨母？",
+      "zhongwen_2": "你真坏，有名字你不叫，叫我鸨母",
+      "yuewen_1": "点呀,",
+      "yuewen_2": "龟婆好衰㗎,你冇名你叫龟婆呀"
+    },
+    "answer": {
+      "yuewen_1_yidong": "点呀,龟婆",
+      "yuewen_2_yidong": "好衰㗎,你冇名你叫龟婆呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你真坏，有名字你不叫，叫我鸨母",
+      "zhongwen_2": "大家坦白一点不好吗？",
+      "yuewen_1": "好衰㗎,你冇名你叫龟婆呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "大家坦白一点不好吗？",
+      "zhongwen_2": "要坦白吗",
+      "yuewen_2": "大家坦白啲唔好咩"
+    },
+    "answer": {
+      "yuewen_1_yidong": "大家坦白啲唔好咩"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "要坦白吗",
+      "zhongwen_2": "你的帽子像披麻带孝似的",
+      "yuewen_2": "你要坦白呀?你耳顶冇呀"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你要坦白呀?",
+      "yuewen_2_yidong": "你耳顶冇呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你的帽子像披麻带孝似的",
+      "zhongwen_2": "你老爸死了吗？",
+      "yuewen_1": "你耳顶冇呀",
+      "yuewen_2": "譬如麻大孝噉,死老豆呀你"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你耳顶冇呀譬如麻大孝噉,",
+      "yuewen_2_yidong": "死老豆呀你"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你老爸死了吗？",
+      "zhongwen_2": "这样说大家才开心嘛",
+      "yuewen_1": "死老豆呀你",
+      "yuewen_2": "咁讲嘢先开心㖞,大家"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这样说大家才开心嘛",
+      "zhongwen_2": "赵先生这趟帮本官扫平长毛贼",
+      "yuewen_1": "咁讲嘢先开心㖞,大家",
+      "yuewen_2": "今次赵先生帮本官苏平长毛贼"
+    },
+    "answer": {
+      "yuewen_1_yidong": "咁讲嘢先开心㖞,",
+      "yuewen_2_yidong": "大家今次赵先生帮本官苏平长毛贼"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "赵先生这趟帮本官扫平长毛贼",
+      "zhongwen_2": "皇上一定重重有赏",
+      "yuewen_1": "大家今次赵先生帮本官苏平长毛贼",
+      "yuewen_2": "皇上一定重重有上"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "皇上一定重重有赏",
+      "zhongwen_2": "那就有劳皇爷在皇上面前",
+      "yuewen_1": "皇上一定重重有上",
+      "yuewen_2": "今次有六王爷"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "那就有劳皇爷在皇上面前",
+      "zhongwen_2": "多说几句好说话",
+      "yuewen_1": "今次有六王爷",
+      "yuewen_2": "喺皇上面前讲多几句好说话"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "多说几句好说话",
+      "zhongwen_2": "大戏做完了，请用毛巾",
+      "yuewen_1": "喺皇上面前讲多几句好说话",
+      "yuewen_2": "大喜做完,请用毛巾"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁来了⋯",
+      "zhongwen_2": "苏翁，恭喜发财",
+      "yuewen_1": "苏翁来了…",
+      "yuewen_2": "苏翁,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁，恭喜发财",
+      "zhongwen_2": "这边⋯这边",
+      "yuewen_1": "苏翁,",
+      "yuewen_2": "恭喜发财,这边…"
+    },
+    "answer": {
+      "yuewen_1_yidong": "苏翁,恭喜发财",
+      "yuewen_2_yidong": ",这边…"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "这边⋯这边",
+      "zhongwen_2": "苏翁，今天是你的好日子，很高兴吧",
+      "yuewen_1": ",这边…",
+      "yuewen_2": "苏翁,今天你好日子,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁，今天是你的好日子，很高兴吧",
+      "zhongwen_2": "我们有几位新来的姑娘，保证你满意",
+      "yuewen_1": "苏翁,今天你好日子,",
+      "yuewen_2": "开心死你了我们有几位新姑娘包你满意"
+    },
+    "answer": {
+      "yuewen_1_yidong": "苏翁,今天你好日子,开心死你了",
+      "yuewen_2_yidong": "我们有几位新姑娘包你满意"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "我们有几位新来的姑娘，保证你满意",
+      "zhongwen_2": "金鱼还是木鱼？",
+      "yuewen_1": "我们有几位新姑娘包你满意"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "金鱼还是木鱼？",
+      "zhongwen_2": "少爷，甚么金鱼、木鱼？",
+      "yuewen_2": "金鱼还是木鱼?少爷,什么金鱼还是木鱼?"
+    },
+    "answer": {
+      "yuewen_1_yidong": "金鱼还是木鱼?",
+      "yuewen_2_yidong": "少爷,什么金鱼还是木鱼?"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "少爷，甚么金鱼、木鱼？",
+      "zhongwen_2": "傻瓜，金鱼只可以看",
+      "yuewen_1": "少爷,什么金鱼还是木鱼?",
+      "yuewen_2": "傻子,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "傻瓜，金鱼只可以看",
+      "zhongwen_2": "木鱼则可以碰嘛",
+      "yuewen_1": "傻子,",
+      "yuewen_2": "金鱼只用来看,木鱼可以搏"
+    },
+    "answer": {
+      "yuewen_1_yidong": "傻子,金鱼只用来看,",
+      "yuewen_2_yidong": "木鱼可以搏"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "木鱼则可以碰嘛",
+      "zhongwen_2": "那当然要木鱼",
+      "yuewen_1": "木鱼可以搏",
+      "yuewen_2": "当然要木鱼"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "那当然要木鱼",
+      "zhongwen_2": "你们还不过来待候客人⋯",
+      "yuewen_1": "当然要木鱼",
+      "yuewen_2": "几个木鱼还不过来招呼客人"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你们还不过来待候客人⋯",
+      "zhongwen_2": "苏翁，今天是你的大日子",
+      "yuewen_1": "几个木鱼还不过来招呼客人",
+      "yuewen_2": "苏翁,今天你是自大"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁，今天是你的大日子",
+      "zhongwen_2": "你想要怎样的女人，你说就成",
+      "yuewen_1": "苏翁,今天你是自大",
+      "yuewen_2": "你想要什么女人,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你想要怎样的女人，你说就成",
+      "zhongwen_2": "随便，女人都是一样的",
+      "yuewen_1": "你想要什么女人,",
+      "yuewen_2": "你开口就行了无所谓,"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你想要什么女人,你开口就行了",
+      "yuewen_2_yidong": "无所谓,"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "随便，女人都是一样的",
+      "zhongwen_2": "没甚么特别",
+      "yuewen_1": "无所谓,",
+      "yuewen_2": "女人个个都一样,有什么特别"
+    },
+    "answer": {
+      "yuewen_1_yidong": "无所谓,女人个个都一样,",
+      "yuewen_2_yidong": "有什么特别"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁，甚么事？",
+      "zhongwen_2": "我给人挑了一下",
+      "yuewen_1": "修勇,什么事?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我给人挑了一下",
+      "zhongwen_2": "甚么？",
+      "yuewen_2": "我被人挑了"
+    },
+    "answer": {
+      "yuewen_1_yidong": "我被人挑了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "甚么？",
+      "zhongwen_2": "谁胆敢挑你？让我打她的咀",
+      "yuewen_2": "什么?谁这么大胆挑你,"
+    },
+    "answer": {
+      "yuewen_1_yidong": "什么?",
+      "yuewen_2_yidong": "谁这么大胆挑你,"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "谁胆敢挑你？让我打她的咀",
+      "zhongwen_2": "不是用咀",
+      "yuewen_1": "谁这么大胆挑你,",
+      "yuewen_2": "让我掌他的嘴"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "不是用咀",
+      "zhongwen_2": "是用眼睛",
+      "yuewen_1": "让我掌他的嘴",
+      "yuewen_2": "不是用嘴,是用眼"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "是用眼睛",
+      "zhongwen_2": "诱惑中带有煞气，这种眼神我没见过",
+      "yuewen_1": "不是用嘴,是用眼",
+      "yuewen_2": "有惑还带有杀气这只眼神我没见过"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "诱惑中带有煞气，这种眼神我没见过",
+      "zhongwen_2": "究竟是何方神圣？",
+      "yuewen_1": "有惑还带有杀气这只眼神我没见过",
+      "yuewen_2": "究竟是何方神圣?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "究竟是何方神圣？",
+      "zhongwen_2": "这位如霜姑娘是客串",
+      "yuewen_1": "究竟是何方神圣?",
+      "yuewen_2": "这位如霜姑娘你客串的"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这位如霜姑娘是客串",
+      "zhongwen_2": "赵大人有没有兴趣和她摆房？",
+      "yuewen_1": "这位如霜姑娘你客串的"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "赵大人有没有兴趣和她摆房？",
+      "zhongwen_2": "你应该先问皇爷才对",
+      "yuewen_2": "不知道赵大人有没有兴趣和他拜访呢你应该先问问王爷吧"
+    },
+    "answer": {
+      "yuewen_1_yidong": "不知道赵大人有没有兴趣和他拜访呢",
+      "yuewen_2_yidong": "你应该先问问王爷吧"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "你应该先问皇爷才对",
+      "zhongwen_2": "怎么样，皇爷？",
+      "yuewen_1": "你应该先问问王爷吧",
+      "yuewen_2": "怎么样?王爷"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "怎么样，皇爷？",
+      "zhongwen_2": "大家自己人，何必客气呢？",
+      "yuewen_1": "怎么样?王爷",
+      "yuewen_2": "大格自己人,又何必客气呢?"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "大家自己人，何必客气呢？",
+      "zhongwen_2": "赵先生，请随便",
+      "yuewen_1": "大格自己人,又何必客气呢?",
+      "yuewen_2": "赵先生请随便"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "赵先生，请随便",
+      "zhongwen_2": "那我就却之不恭了",
+      "yuewen_1": "赵先生请随便"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "那我就却之不恭了",
+      "zhongwen_2": "摆房",
+      "yuewen_2": "那我就却之不恭,拜访"
+    },
+    "answer": {
+      "yuewen_1_yidong": "那我就却之不恭,",
+      "yuewen_2_yidong": "拜访"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "摆房",
+      "zhongwen_2": "如霜，快点下来见赵大人",
+      "yuewen_1": "拜访",
+      "yuewen_2": "如霜呀,快点下来见下赵大人啦"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如霜，快点下来见赵大人",
+      "zhongwen_2": "姐姐，就是他",
+      "yuewen_1": "如霜呀,快点下来见下赵大人啦",
+      "yuewen_2": "是她,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "姐姐，就是他",
+      "zhongwen_2": "杀阿爹的人就是他",
+      "yuewen_1": "是她,",
+      "yuewen_2": "你姐姐,晒爹嗰个就系她"
+    },
+    "answer": {
+      "yuewen_1_yidong": "是她,你姐姐,",
+      "yuewen_2_yidong": "晒爹嗰个就系她"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "杀阿爹的人就是他",
+      "zhongwen_2": "我知道，镇定点",
+      "yuewen_1": "晒爹嗰个就系她"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我知道，镇定点",
+      "zhongwen_2": "走吧",
+      "yuewen_2": "我知道,镇定啲,"
+    },
+    "answer": {
+      "yuewen_1_yidong": "我知道,镇定啲,"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "走吧",
+      "zhongwen_2": "失陪　　赵大人",
+      "yuewen_2": "行"
+    },
+    "answer": {
+      "yuewen_1_yidong": "行"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "失陪　　赵大人",
+      "zhongwen_2": "如霜姑娘到",
+      "yuewen_2": "但如霜姑娘到啦"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如霜姑娘到",
+      "zhongwen_2": "小女子如霜，拜见赵大人",
+      "yuewen_1": "但如霜姑娘到啦",
+      "yuewen_2": "小女子如霜,拜见赵大人"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "果然是美人",
+      "zhongwen_2": "赵大人，那今晚⋯",
+      "yuewen_1": "果然美人",
+      "yuewen_2": "赵大人,那…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "赵大人，那今晚⋯",
+      "zhongwen_2": "银票十万两",
+      "yuewen_1": "赵大人,那…",
+      "yuewen_2": "银票十万两"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "银票十万两",
+      "zhongwen_2": "如霜姑娘今晚要陪我家少爷",
+      "yuewen_1": "银票十万两",
+      "yuewen_2": "如霜姑娘今晚要陪我们少爷摆房"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如霜姑娘今晚要陪我家少爷",
+      "zhongwen_2": "没空招呼你",
+      "yuewen_1": "如霜姑娘今晚要陪我们少爷摆房",
+      "yuewen_2": "不有空就招呼你"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "没空招呼你",
+      "zhongwen_2": "各位⋯真不好意思",
+      "yuewen_1": "不有空就招呼你",
+      "yuewen_2": "这么多位真不好意思,"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "各位⋯真不好意思",
+      "zhongwen_2": "有甚么意见吗？",
+      "yuewen_1": "这么多位真不好意思,",
+      "yuewen_2": "没什么意见吧"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "有甚么意见吗？",
+      "zhongwen_2": "让我来⋯让我说句公道话",
+      "yuewen_1": "没什么意见吧",
+      "yuewen_2": "让我来…让我讲讲你们公道的话"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "让我来⋯让我说句公道话",
+      "zhongwen_2": "只要你们谁能付超过十万两银票",
+      "yuewen_1": "让我来…让我讲讲你们公道的话",
+      "yuewen_2": "只要你们谁出得多过十万两银票"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "只要你们谁能付超过十万两银票",
+      "zhongwen_2": "如霜姑娘就陪谁",
+      "yuewen_1": "只要你们谁出得多过十万两银票",
+      "yuewen_2": "那如霜姑娘就陪谁"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如霜姑娘就陪谁",
+      "zhongwen_2": "千万不要伤和气，对不对？",
+      "yuewen_1": "那如霜姑娘就陪谁",
+      "yuewen_2": "千万不要伤了和气听听…"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "千万不要伤和气，对不对？",
+      "zhongwen_2": "这位朋友真舍得花钱",
+      "yuewen_1": "千万不要伤了和气听听…",
+      "yuewen_2": "这位朋友也很肯花钱"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这位朋友真舍得花钱",
+      "zhongwen_2": "银票实在太普通",
+      "yuewen_1": "这位朋友也很肯花钱",
+      "yuewen_2": "银票实在太普通了"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "银票实在太普通",
+      "zhongwen_2": "我有一颗朝廷大内的定风珠，无价宝",
+      "yuewen_1": "银票实在太普通了",
+      "yuewen_2": "我有粒朝廷大内的定封珠,无价的"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我还是比较喜欢珍珠",
+      "zhongwen_2": "赵大人，我回房间等你",
+      "yuewen_1": "我都系钟意珍珠多啲",
+      "yuewen_2": "赵大人呀我返房等你喇"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "赵大人，我回房间等你",
+      "zhongwen_2": "这颗珠值十万两吗？",
+      "yuewen_1": "赵大人呀我返房等你喇",
+      "yuewen_2": "呢粒珠净即十万两呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这颗珠值十万两吗？",
+      "zhongwen_2": "十万两你还嫌少吗，姑娘？",
+      "yuewen_1": "呢粒珠净即十万两呀",
+      "yuewen_2": "十万两银通姑娘你都重严少"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "十万两你还嫌少吗，姑娘？",
+      "zhongwen_2": "我也喜欢银两，只是不喜欢你",
+      "yuewen_1": "十万两银通姑娘你都重严少",
+      "yuewen_2": "我一样钟意银两不过唔钟意你啫嘛哼"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "够坦白，我真的非常喜欢",
+      "zhongwen_2": "苏翁⋯",
+      "yuewen_1": "够坦白我真系喜欢佢非常"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "苏翁⋯",
+      "zhongwen_2": "没相干",
+      "yuewen_2": "骚拥呀"
+    },
+    "answer": {
+      "yuewen_1_yidong": "骚拥呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "没相干",
+      "zhongwen_2": "一定是我今天的帽子和发型不配",
+      "yuewen_2": "冇相干一定系我今日顶冇唔多疹嘅发型"
+    },
+    "answer": {
+      "yuewen_1_yidong": "冇相干",
+      "yuewen_2_yidong": "一定系我今日顶冇唔多疹嘅发型"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "一定是我今天的帽子和发型不配",
+      "zhongwen_2": "如霜姑娘看不上我，是我该死",
+      "yuewen_1": "一定系我今日顶冇唔多疹嘅发型",
+      "yuewen_2": "如双姑娘睇我唔上眼系我抵死咋"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "如霜姑娘看不上我，是我该死",
+      "zhongwen_2": "你明白就好了",
+      "yuewen_1": "如双姑娘睇我唔上眼系我抵死咋",
+      "yuewen_2": "你明白咁就好啦"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "你明白就好了",
+      "zhongwen_2": "放心，我还有很多很漂亮的姑娘",
+      "yuewen_1": "你明白咁就好啦",
+      "yuewen_2": "你放心嘛"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "放心，我还有很多很漂亮的姑娘",
+      "zhongwen_2": "鸨母，那今晚就倚仗你了",
+      "yuewen_1": "你放心嘛",
+      "yuewen_2": "我有做好多好靓好省嘅姑娘㗎龟婆咁今晚我就靠晒你呀"
+    },
+    "answer": {
+      "yuewen_1_yidong": "你放心嘛我有做好多好靓好省嘅姑娘㗎",
+      "yuewen_2_yidong": "龟婆咁今晚我就靠晒你呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "鸨母，那今晚就倚仗你了",
+      "zhongwen_2": "这与我无关",
+      "yuewen_1": "龟婆咁今晚我就靠晒你呀"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "这与我无关",
+      "zhongwen_2": "大胆！放肆",
+      "yuewen_2": "咁放肆"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "螳螂拳？像模像样的",
+      "zhongwen_2": "奏乐",
+      "yuewen_1": "螳螂拳?几似样啊哦哦哦",
+      "yuewen_2": "周鹤"
+    },
+    "answer": {
+      "yuewen_1_yidong": "螳螂拳?几似样啊",
+      "yuewen_2_yidong": "哦哦哦周鹤"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "先放好",
+      "zhongwen_2": "鹤咀",
+      "yuewen_1": "度头先"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "鹤咀",
+      "zhongwen_2": "虎爪",
+      "yuewen_2": "学准扑昼"
+    },
+    "answer": {
+      "yuewen_1_yidong": "学准",
+      "yuewen_2_yidong": "扑昼"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "螳螂怎跟老虎斗？何况我还有一只鹤",
+      "zhongwen_2": "虎鹤双形我也会",
+      "yuewen_1": "螳螂点救老虎砌呀何况我加埋只壳",
+      "yuewen_2": "虎壳相迎我都识"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "虎鹤双形我也会",
+      "zhongwen_2": "那你试试看我的螳螂",
+      "yuewen_1": "虎壳相迎我都识",
+      "yuewen_2": "噉你就试下我只螳螂吖"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "好⋯好",
+      "zhongwen_2": "我的螳螂拳再破你的虎鹤双形",
+      "yuewen_2": "我螳螂拳再破你虎壳双形嘛"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "我的螳螂拳再破你的虎鹤双形",
+      "zhongwen_2": "原来不是虎鹤双形",
+      "yuewen_1": "我螳螂拳再破你虎壳双形嘛",
+      "yuewen_2": "哗原来唔系虎壳双形"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "原来不是虎鹤双形",
+      "zhongwen_2": "是孔雀开屏",
+      "yuewen_1": "哗原来唔系虎壳双形",
+      "yuewen_2": "系恐奖开屏"
+    },
+    "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "是孔雀开屏",
+      "zhongwen_2": "难怪比较差",
+      "yuewen_1": "系恐奖开屏",
+      "yuewen_2": "唔怪你咁嘞呀"
+    },
+    "answer": {}
   }
 ]

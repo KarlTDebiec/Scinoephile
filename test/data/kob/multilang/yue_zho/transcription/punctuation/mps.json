@@ -75,5 +75,1256 @@
       "yuewen_punctuated": "哗，好靓呀！原来少爷识写自己个名㖞。系呀"
     },
     "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "好字呀",
+        "龙飞凤舞",
+        "苏擦虾耳灿"
+      ],
+      "zhongwen": "好字！龙飞凤舞，苏察哈尔灿"
+    },
+    "answer": {
+      "yuewen_punctuated": "好字呀！龙飞凤舞，苏擦虾耳灿"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "调转咗",
+        "老爷"
+      ],
+      "zhongwen": "你念反了，老爷"
+    },
+    "answer": {
+      "yuewen_punctuated": "调转咗，老爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "叻仔",
+        "但事冇娇",
+        "知咩"
+      ],
+      "zhongwen": "好小子，但是别骄傲，知道吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "叻仔，但事冇娇，知咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "爹爹",
+        "我哋苏擦虾耳家"
+      ],
+      "zhongwen": "爹，我们苏察哈尔家"
+    },
+    "answer": {
+      "yuewen_punctuated": "爹爹，我哋苏擦虾耳家"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "自太祖皇帝到家阵几代",
+        "都冇我晓写字嘅"
+      ],
+      "zhongwen": "都没有几个会写字的"
+    },
+    "answer": {
+      "yuewen_punctuated": "自太祖皇帝到家阵几代，都冇我晓写字嘅"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "而家唔系啦",
+        "我个仔你佢孙阿灿呢"
+      ],
+      "zhongwen": "现在可不同，我的儿子你的孙儿阿灿"
+    },
+    "answer": {
+      "yuewen_punctuated": "而家唔系啦，我个仔你佢孙阿灿呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "爹",
+        "呢一步非同小可"
+      ],
+      "zhongwen": "爹，这可是非同少可"
+    },
+    "answer": {
+      "yuewen_punctuated": "爹，呢一步非同小可"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "赵爷",
+        "你真系要好啲学写字"
+      ],
+      "zhongwen": "少爷，你真是要好好地学习写字"
+    },
+    "answer": {
+      "yuewen_punctuated": "赵爷，你真系要好啲学写字"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我傻",
+        "灿爷灿",
+        "我睇表起佢好"
+      ],
+      "zhongwen": "阿灿，先把它裱起来"
+    },
+    "answer": {
+      "yuewen_punctuated": "我傻灿爷灿，我睇表起佢好"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "师爷",
+        "你攞佢有咁多眼挂咁多眼"
+      ],
+      "zhongwen": "师爷，把它挂在最当眼的地方"
+    },
+    "answer": {
+      "yuewen_punctuated": "师爷，你攞佢有咁多眼挂咁多眼"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "咁唔系",
+        "师爷"
+      ],
+      "zhongwen": "这样吧，师爷"
+    },
+    "answer": {
+      "yuewen_punctuated": "咁唔系，师爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你揹住佢参夫阿国",
+        "和友伦皆威下先"
+      ],
+      "zhongwen": "你先背着它簪花挂红，游行威风一下"
+    },
+    "answer": {
+      "yuewen_punctuated": "你揹住佢参夫阿国和友伦皆威下先"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "灿爷灿",
+        "来…坐…"
+      ],
+      "zhongwen": "阿灿，来⋯坐⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "灿爷灿，来…坐…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "见你咁生性",
+        "我都好安慰"
+      ],
+      "zhongwen": "你这么争气，我也很安慰"
+    },
+    "answer": {
+      "yuewen_punctuated": "见你咁生性，我都好安慰"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你听我讲",
+        "爹呢书名系二世祖"
+      ],
+      "zhongwen": "你听我说，爹是有名的败家儿"
+    },
+    "answer": {
+      "yuewen_punctuated": "你听我讲，爹呢书名系二世祖"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "好话唔好听",
+        "但系爹两个人呢"
+      ],
+      "zhongwen": "说难听一点，日后我两脚一伸"
+    },
+    "answer": {
+      "yuewen_punctuated": "好话唔好听，但系爹两个人呢"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你真系全部都靠自己啦"
+      ],
+      "zhongwen": "你个王八蛋，怎么到这里来讨饭？"
+    },
+    "answer": {
+      "yuewen_punctuated": "你真系全部都靠自己啦？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "成十万两一张",
+        "省得使呀"
+      ],
+      "zhongwen": "十万两一张，省一点花啊"
+    },
+    "answer": {
+      "yuewen_punctuated": "成十万两一张，省得使呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "茂利",
+        "攞我顶西洋帽过来"
+      ],
+      "zhongwen": "茂利，把我的西洋帽拿来"
+    },
+    "answer": {
+      "yuewen_punctuated": "茂利，攞我顶西洋帽过来"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "去边啦",
+        "灿"
+      ],
+      "zhongwen": "你去哪，阿灿？"
+    },
+    "answer": {
+      "yuewen_punctuated": "去边啦，灿？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你跪跟呀"
+      ],
+      "zhongwen": "你贵庚？"
+    },
+    "answer": {
+      "yuewen_punctuated": "你跪跟呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "廿五岁大寿嘛",
+        "早啲到呀"
+      ],
+      "zhongwen": "廿五岁大寿，早点到"
+    },
+    "answer": {
+      "yuewen_punctuated": "廿五岁大寿嘛，早啲到呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "客衣会咁有钱",
+        "我都想做"
+      ],
+      "zhongwen": "乞丐会那么有钱？我也想当"
+    },
+    "answer": {
+      "yuewen_punctuated": "客衣会咁有钱？我都想做"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "个瘦头硬事嘅真系"
+      ],
+      "zhongwen": "那寿头真是⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "个瘦头硬事嘅真系⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "过嚟…"
+      ],
+      "zhongwen": "过来，过来"
+    },
+    "answer": {
+      "yuewen_punctuated": "过嚟…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "做咩呀"
+      ],
+      "zhongwen": "老爷，甚么事？"
+    },
+    "answer": {
+      "yuewen_punctuated": "做咩呀？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "老爷",
+        "个衰仔摆大寿",
+        "胆子唔贴都嫁细个人嘅"
+      ],
+      "zhongwen": "那臭小子的寿帖真威风"
+    },
+    "answer": {
+      "yuewen_punctuated": "老爷，个衰仔摆大寿，胆子唔贴都嫁细个人嘅"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "但系老爷摆大寿呢",
+        "要嫁细个佢",
+        "老爷"
+      ],
+      "zhongwen": "他日老爷做大寿，要比他威风"
+    },
+    "answer": {
+      "yuewen_punctuated": "但系老爷摆大寿呢，要嫁细个佢老爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "王爷",
+        "你觉得广东嘅大戏点"
+      ],
+      "zhongwen": "皇爷，你觉得广东大戏怎样？"
+    },
+    "answer": {
+      "yuewen_punctuated": "王爷，你觉得广东嘅大戏点？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "地方戏曲当然比唔上惊喜"
+      ],
+      "zhongwen": "地方戏曲，当然不及京戏"
+    },
+    "answer": {
+      "yuewen_punctuated": "地方戏曲，当然比唔上惊喜"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "打赏…"
+      ],
+      "zhongwen": "打赏⋯打赏"
+    },
+    "answer": {
+      "yuewen_punctuated": "打赏…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "国家散人,",
+        "喷病老药"
+      ],
+      "zhongwen": "我家破人亡、贫病老弱"
+    },
+    "answer": {
+      "yuewen_punctuated": "国家散人，喷病老药"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "死人倒楼,",
+        "妻离子散",
+        "我很可怜,"
+      ],
+      "zhongwen": "无亲无故、妻离子散"
+    },
+    "answer": {
+      "yuewen_punctuated": "死人倒楼、妻离子散，我很可怜,"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "师兄我点人钱",
+        "打错了,",
+        "死客医"
+      ],
+      "zhongwen": "打赏个救命钱　　怎么搞的，死乞丐！"
+    },
+    "answer": {
+      "yuewen_punctuated": "师兄我点人钱　　打错了，死客医！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你这个混蛋又不嫁"
+      ],
+      "zhongwen": "你个王八蛋，怎么到这里来讨饭？"
+    },
+    "answer": {
+      "yuewen_punctuated": "你这个混蛋又不嫁？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "黑色黑道来这里,",
+        "我打…"
+      ],
+      "zhongwen": "我打⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "黑色黑道来这里，我打⋯"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "打赏",
+        "是,",
+        "少爷"
+      ],
+      "zhongwen": "打赏　　是，少爷"
+    },
+    "answer": {
+      "yuewen_punctuated": "打赏　　是，少爷"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你有没有搞错?",
+        "没钱就走"
+      ],
+      "zhongwen": "这样也有打赏？"
+    },
+    "answer": {
+      "yuewen_punctuated": "你有没有搞错？没钱就走"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "这里",
+        "你这个月在这里"
+      ],
+      "zhongwen": "你这个月来这里"
+    },
+    "answer": {
+      "yuewen_punctuated": "这里你这个月在这里"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "吃饭",
+        "看你少爷直落叫鸡,"
+      ],
+      "zhongwen": "吃饭看戏宵夜嫖妓，我包"
+    },
+    "answer": {
+      "yuewen_punctuated": "吃饭，看你少爷直落叫鸡,"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我包"
+      ],
+      "zhongwen": "你包？"
+    },
+    "answer": {
+      "yuewen_punctuated": "我包？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "包包?",
+        "催?"
+      ],
+      "zhongwen": "不可以吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "包包？催？"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "唔催…",
+        "催紧我来"
+      ],
+      "zhongwen": "可以，可以"
+    },
+    "answer": {
+      "yuewen_punctuated": "唔催…催紧我来"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "唔催…"
+      ],
+      "zhongwen": "大爷进我间房吧⋯　　请你跟我来"
+    },
+    "answer": {
+      "yuewen_punctuated": "唔催…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "喂,"
+      ],
+      "zhongwen": "是⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "喂⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "点呀,",
+        "龟婆"
+      ],
+      "zhongwen": "你好吗，鸨母？"
+    },
+    "answer": {
+      "yuewen_punctuated": "点呀，龟婆？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "好衰㗎,",
+        "你冇名你叫龟婆呀"
+      ],
+      "zhongwen": "你真坏，有名字你不叫，叫我鸨母"
+    },
+    "answer": {
+      "yuewen_punctuated": "好衰㗎，你冇名你叫龟婆呀"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "大家坦白啲唔好咩"
+      ],
+      "zhongwen": "大家坦白一点不好吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "大家坦白啲唔好咩？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你耳顶冇呀",
+        "譬如麻大孝噉,"
+      ],
+      "zhongwen": "你的帽子像披麻带孝似的"
+    },
+    "answer": {
+      "yuewen_punctuated": "你耳顶冇呀，譬如麻大孝噉。"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "死老豆呀你"
+      ],
+      "zhongwen": "你老爸死了吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "死老豆呀你？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "大家",
+        "今次赵先生帮本官苏平长毛贼"
+      ],
+      "zhongwen": "赵先生这趟帮本官扫平长毛贼"
+    },
+    "answer": {
+      "yuewen_punctuated": "大家，今次赵先生帮本官苏平长毛贼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "大喜做完,",
+        "请用毛巾"
+      ],
+      "zhongwen": "大戏做完了，请用毛巾"
+    },
+    "answer": {
+      "yuewen_punctuated": "大喜做完，请用毛巾"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苏翁来了…"
+      ],
+      "zhongwen": "苏翁来了⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "苏翁来了…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苏翁,",
+        "恭喜发财"
+      ],
+      "zhongwen": "苏翁，恭喜发财"
+    },
+    "answer": {
+      "yuewen_punctuated": "苏翁，恭喜发财"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        ",",
+        "这边…"
+      ],
+      "zhongwen": "这边⋯这边"
+    },
+    "answer": {
+      "yuewen_punctuated": "，这边…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苏翁,",
+        "今天你好日子,",
+        "开心死你了"
+      ],
+      "zhongwen": "苏翁，今天是你的好日子，很高兴吧"
+    },
+    "answer": {
+      "yuewen_punctuated": "苏翁，今天你好日子，开心死你了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我们有几位新姑娘包你满意"
+      ],
+      "zhongwen": "我们有几位新来的姑娘，保证你满意"
+    },
+    "answer": {
+      "yuewen_punctuated": "我们有几位新姑娘，包你满意"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "金鱼还是木鱼?"
+      ],
+      "zhongwen": "金鱼还是木鱼？"
+    },
+    "answer": {
+      "yuewen_punctuated": "金鱼还是木鱼？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "少爷,",
+        "什么金鱼还是木鱼?"
+      ],
+      "zhongwen": "少爷，甚么金鱼、木鱼？"
+    },
+    "answer": {
+      "yuewen_punctuated": "少爷，什么金鱼、还是木鱼？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "傻子,",
+        "金鱼只用来看,"
+      ],
+      "zhongwen": "傻瓜，金鱼只可以看"
+    },
+    "answer": {
+      "yuewen_punctuated": "傻子，金鱼只用来看"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "几个木鱼还不过来招呼客人"
+      ],
+      "zhongwen": "你们还不过来待候客人⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "几个木鱼还不过来招呼客人⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "苏翁,",
+        "今天你是自大"
+      ],
+      "zhongwen": "苏翁，今天是你的大日子"
+    },
+    "answer": {
+      "yuewen_punctuated": "苏翁，今天你是自大"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你想要什么女人,",
+        "你开口就行了"
+      ],
+      "zhongwen": "你想要怎样的女人，你说就成"
+    },
+    "answer": {
+      "yuewen_punctuated": "你想要什么女人，你开口就行了"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "无所谓,",
+        "女人个个都一样,"
+      ],
+      "zhongwen": "随便，女人都是一样的"
+    },
+    "answer": {
+      "yuewen_punctuated": "无所谓，女人个个都一样，"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "修勇,",
+        "什么事?"
+      ],
+      "zhongwen": "苏翁，甚么事？"
+    },
+    "answer": {
+      "yuewen_punctuated": "修勇，什么事？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "什么?"
+      ],
+      "zhongwen": "甚么？"
+    },
+    "answer": {
+      "yuewen_punctuated": "什么？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "谁这么大胆挑你,"
+      ],
+      "zhongwen": "谁胆敢挑你？让我打她的咀"
+    },
+    "answer": {
+      "yuewen_punctuated": "谁这么大胆挑你？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "不是用嘴,",
+        "是用眼"
+      ],
+      "zhongwen": "是用眼睛"
+    },
+    "answer": {
+      "yuewen_punctuated": "不是用嘴，是用眼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "有惑还带有杀气",
+        "这只眼神我没见过"
+      ],
+      "zhongwen": "诱惑中带有煞气，这种眼神我没见过"
+    },
+    "answer": {
+      "yuewen_punctuated": "有惑还带有杀气，这只眼神我没见过"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "究竟是何方神圣?"
+      ],
+      "zhongwen": "究竟是何方神圣？"
+    },
+    "answer": {
+      "yuewen_punctuated": "究竟是何方神圣？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "不知道赵大人有没有兴趣和他拜访呢"
+      ],
+      "zhongwen": "赵大人有没有兴趣和她摆房？"
+    },
+    "answer": {
+      "yuewen_punctuated": "不知道赵大人有没有兴趣和他拜访呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "怎么样?王爷"
+      ],
+      "zhongwen": "怎么样，皇爷？"
+    },
+    "answer": {
+      "yuewen_punctuated": "怎么样，王爷？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "大格自己人,",
+        "又何必客气呢?"
+      ],
+      "zhongwen": "大家自己人，何必客气呢？"
+    },
+    "answer": {
+      "yuewen_punctuated": "大格自己人，又何必客气呢？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "赵先生请随便"
+      ],
+      "zhongwen": "赵先生，请随便"
+    },
+    "answer": {
+      "yuewen_punctuated": "赵先生，请随便"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "如霜呀,",
+        "快点下来见下赵大人啦"
+      ],
+      "zhongwen": "如霜，快点下来见赵大人"
+    },
+    "answer": {
+      "yuewen_punctuated": "如霜呀，快点下来见下赵大人啦"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "是她,",
+        "你姐姐,"
+      ],
+      "zhongwen": "姐姐，就是他"
+    },
+    "answer": {
+      "yuewen_punctuated": "是她，你姐姐"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我知道,",
+        "镇定啲,"
+      ],
+      "zhongwen": "我知道，镇定点"
+    },
+    "answer": {
+      "yuewen_punctuated": "我知道，镇定啲"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "小女子如霜,",
+        "拜见赵大人"
+      ],
+      "zhongwen": "小女子如霜，拜见赵大人"
+    },
+    "answer": {
+      "yuewen_punctuated": "小女子如霜，拜见赵大人"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "赵大人,",
+        "那…"
+      ],
+      "zhongwen": "赵大人，那今晚⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "赵大人，那…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "这么多位",
+        "真不好意思,"
+      ],
+      "zhongwen": "各位⋯真不好意思"
+    },
+    "answer": {
+      "yuewen_punctuated": "这么多位⋯真不好意思,"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "没什么意见吧"
+      ],
+      "zhongwen": "有甚么意见吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "没什么意见吧？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "让我来…让我讲讲你们公道的话"
+      ],
+      "zhongwen": "让我来⋯让我说句公道话"
+    },
+    "answer": {
+      "yuewen_punctuated": "让我来⋯让我讲讲你们公道的话"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "千万不要伤了和气",
+        "听听…"
+      ],
+      "zhongwen": "千万不要伤和气，对不对？"
+    },
+    "answer": {
+      "yuewen_punctuated": "千万不要伤了和气，听听…"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我有粒朝廷大内的定封珠,",
+        "无价的"
+      ],
+      "zhongwen": "我有一颗朝廷大内的定风珠，无价宝"
+    },
+    "answer": {
+      "yuewen_punctuated": "我有粒朝廷大内的定封珠，无价的"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "赵大人呀",
+        "我返房等你喇"
+      ],
+      "zhongwen": "赵大人，我回房间等你"
+    },
+    "answer": {
+      "yuewen_punctuated": "赵大人呀，我返房等你喇"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "呢粒珠净即十万两呀"
+      ],
+      "zhongwen": "这颗珠值十万两吗？"
+    },
+    "answer": {
+      "yuewen_punctuated": "呢粒珠净即十万两呀？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "十万两银通姑娘你都重严少"
+      ],
+      "zhongwen": "十万两你还嫌少吗，姑娘？"
+    },
+    "answer": {
+      "yuewen_punctuated": "十万两银通姑娘，你都重严少？"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "我一样钟意银两",
+        "不过唔钟意你啫嘛",
+        "哼"
+      ],
+      "zhongwen": "我也喜欢银两，只是不喜欢你"
+    },
+    "answer": {
+      "yuewen_punctuated": "我一样钟意银两，不过唔钟意你啫嘛，哼"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "够坦白",
+        "我真系喜欢佢非常"
+      ],
+      "zhongwen": "够坦白，我真的非常喜欢"
+    },
+    "answer": {
+      "yuewen_punctuated": "够坦白，我真系喜欢佢非常"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "骚拥呀"
+      ],
+      "zhongwen": "苏翁⋯"
+    },
+    "answer": {
+      "yuewen_punctuated": "骚拥呀⋯"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "如双姑娘睇我唔上眼系我抵死咋"
+      ],
+      "zhongwen": "如霜姑娘看不上我，是我该死"
+    },
+    "answer": {
+      "yuewen_punctuated": "如双姑娘睇我唔上眼系我抵死咋"
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "你放心嘛",
+        "我有做好多好靓好省嘅姑娘㗎"
+      ],
+      "zhongwen": "放心，我还有很多很漂亮的姑娘"
+    },
+    "answer": {
+      "yuewen_punctuated": "你放心嘛，我有做好多好靓好省嘅姑娘㗎"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "龟婆",
+        "咁今晚我就靠晒你呀"
+      ],
+      "zhongwen": "鸨母，那今晚就倚仗你了"
+    },
+    "answer": {
+      "yuewen_punctuated": "龟婆，咁今晚我就靠晒你呀"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "咁放肆"
+      ],
+      "zhongwen": "大胆！放肆"
+    },
+    "answer": {
+      "yuewen_punctuated": "咁放肆！"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "螳螂拳?几似样啊"
+      ],
+      "zhongwen": "螳螂拳？像模像样的"
+    },
+    "answer": {
+      "yuewen_punctuated": "螳螂拳？几似样啊"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "哦哦哦",
+        "周鹤"
+      ],
+      "zhongwen": "奏乐"
+    },
+    "answer": {
+      "yuewen_punctuated": "哦哦哦周鹤"
+    }
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "螳螂点救老虎砌呀",
+        "何况我加埋只壳"
+      ],
+      "zhongwen": "螳螂怎跟老虎斗？何况我还有一只鹤"
+    },
+    "answer": {
+      "yuewen_punctuated": "螳螂点救老虎砌呀？何况我加埋只壳"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "哗",
+        "原来唔系虎壳双形"
+      ],
+      "zhongwen": "原来不是虎鹤双形"
+    },
+    "answer": {
+      "yuewen_punctuated": "哗，原来唔系虎壳双形"
+    },
+    "difficulty": 2
   }
 ]
