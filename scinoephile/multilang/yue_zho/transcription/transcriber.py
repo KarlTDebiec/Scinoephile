@@ -37,6 +37,11 @@ from .aligner import Aligner
 if TYPE_CHECKING:
     from pydub import AudioSegment
 
+__all__ = [
+    "VADMode",
+    "YueTranscriber",
+]
+
 logger = getLogger(__name__)
 
 
