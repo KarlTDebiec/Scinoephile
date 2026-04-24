@@ -18,6 +18,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.multilang.yue_zho.transcription import VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
 )
@@ -103,6 +104,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
         is YueZhoHansPunctuationPrompt
     )
+    assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
     assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
@@ -147,6 +149,37 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert output_series == expected_series
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
+    """Test 粤文 transcribe-vs-zho CLI passes through explicit VAD mode."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zhongwen-infile {zhongwen_infile_path} --vad off",
+                )
+
+    assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.OFF
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
