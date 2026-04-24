@@ -1326,5 +1326,18 @@
       "yuewen_punctuated": "哗，原来唔系虎壳双形"
     },
     "difficulty": 2
+  },
+  {
+    "query": {
+      "yuewen_to_punctuate": [
+        "后生仔",
+        "物至天高地厚"
+      ],
+      "zhongwen": "年青人，不知天高地厚"
+    },
+    "answer": {
+      "yuewen_punctuated": "后生仔，物至天高地厚"
+    },
+    "difficulty": 1
   }
 ]

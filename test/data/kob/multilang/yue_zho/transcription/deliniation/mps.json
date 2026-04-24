@@ -1496,5 +1496,26 @@
       "yuewen_2": "唔怪你咁嘞呀"
     },
     "answer": {}
+  },
+  {
+    "query": {
+      "zhongwen_1": "动作蛮快",
+      "zhongwen_2": "看来你比较像样",
+      "yuewen_2": "身形几快呀睇嚟你似样啲嘛"
+    },
+    "answer": {
+      "yuewen_1_yidong": "身形几快呀",
+      "yuewen_2_yidong": "睇嚟你似样啲嘛"
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "zhongwen_1": "看来你比较像样",
+      "zhongwen_2": "年青人，不知天高地厚",
+      "yuewen_1": "睇嚟你似样啲嘛",
+      "yuewen_2": "后生仔物至天高地厚"
+    },
+    "answer": {}
   }
 ]
