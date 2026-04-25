@@ -42,9 +42,9 @@ class WhisperTranscriber:
         """Initialize.
 
         Arguments:
-            model_name: Name of Whisper model to use
-            language: Language code for transcription
-            cache_dir_path: Directory in which to cache
+            model_name: name of Whisper model to use
+            language: language code for transcription
+            cache_dir_path: directory in which to cache
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to enable Whisper VAD
         """
@@ -63,10 +63,10 @@ class WhisperTranscriber:
         """Transcribe audio.
 
         Arguments:
-            audio: Audio to transcribe
+            audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
         Returns:
-            Transcription, split into segments
+            transcription, split into segments
         """
         return self.transcribe(audio, cache_audio=cache_audio)
 
@@ -108,10 +108,10 @@ class WhisperTranscriber:
         """Transcribe audio.
 
         Arguments:
-            audio: Audio to transcribe
+            audio: audio to transcribe
             cache_audio: optional audio used for cache-key generation
         Returns:
-            Transcription, split into segments
+            transcription, split into segments
         """
         cache_audio = cache_audio or audio
         if (segments := self.get_cached_transcription(cache_audio)) is not None:
@@ -145,7 +145,7 @@ class WhisperTranscriber:
         Arguments:
             audio: audio used to derive the cache key
         Returns:
-            Path to cache file
+            path to cache file
         """
         if self.cache_dir_path is None:
             return None

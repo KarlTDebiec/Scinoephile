@@ -37,13 +37,16 @@ class YueZhoLineReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for YueZhoLineReviewProcessor.process."""
 
     stop_at_idx: int | None
+    """block index at which to stop processing, inclusive."""
 
 
 class YueZhoLineReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for YueZhoLineReviewProcessor initialization."""
 
     test_case_path: Path | None
+    """path where review test cases are persisted."""
     auto_verify: bool
+    """whether to automatically verify updated test cases."""
 
 
 def get_yue_line_reviewed_vs_zho(
@@ -83,7 +86,7 @@ def get_yue_vs_zho_line_reviewer(
         provider: provider to use for queries
         **kwargs: additional keyword arguments for YueZhoLineReviewProcessor
     Returns:
-        YueZhoLineReviewProcessor with provided configuration
+        configured YueZhoLineReviewProcessor
     """
     if test_cases is None:
         test_cases = list(

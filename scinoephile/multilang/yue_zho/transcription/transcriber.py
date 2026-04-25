@@ -131,13 +131,13 @@ class YueTranscriber:
         yuewen: AudioSeries,
         zhongwen: Series,
         stop_at_idx: int | None = None,
-    ):
+    ) -> AudioSeries:
         """Process all blocks of audio, transcribing and aligning them with subtitles.
 
         Arguments:
-            yuewen: Nascent 粤文 subtitles
-            zhongwen: Corresponding 中文 subtitles
-            stop_at_idx: Stop after processing this block index
+            yuewen: nascent 粤文 subtitles
+            zhongwen: corresponding 中文 subtitles
+            stop_at_idx: stop after processing this block index
         """
         all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
 
@@ -171,8 +171,8 @@ class YueTranscriber:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
         Arguments:
-            yuewen_block: Nascent 粤文 block
-            zhongwen_block: Corresponding 中文 block
+            yuewen_block: nascent 粤文 block
+            zhongwen_block: corresponding 中文 block
         """
         # Transcribe audio
         segments = self._transcribe_block_audio(yuewen_block.audio)

@@ -53,11 +53,11 @@ def get_segment_zho_converted(
     """Convert 中文 between character sets.
 
     Arguments:
-        segment: Transcribed segment to convert
+        segment: transcribed segment to convert
         config: OpenCC configuration for conversion
-        apply_exclusions: Whether to apply character exclusions during conversion
+        apply_exclusions: whether to apply character exclusions during conversion
     Returns:
-        Transcribed segment with converted 中文 text
+        transcribed segment with converted 中文 text
     """
     converted_segment = deepcopy(segment)
     converted_segment.text = get_zho_text_converted(
@@ -78,9 +78,9 @@ def get_segment_merged(segments: list[TranscribedSegment]) -> TranscribedSegment
     """Merge transcribed segments into a single segment.
 
     Arguments:
-        segments: Segments to merge
+        segments: segments to merge
     Returns:
-        Merged segment
+        merged segment
     """
     if len(segments) == 1:
         return segments[0]
@@ -100,10 +100,10 @@ def get_segment_split_at_idx(
     """Split a transcribed segment into two segments at the specified index.
 
     Arguments:
-        segment: Segment to split
-        idx: Index at which to split the segment
+        segment: segment to split
+        idx: index at which to split the segment
     Returns:
-        Tuple of two new segments created by splitting the original segment
+        tuple of two new segments created by splitting the original segment
     """
     if segment.words is None or len(segment.words) == 0:
         message = "Cannot split segment without word timing data."
@@ -193,9 +193,9 @@ def get_segment_split_on_whitespace(
     """Split transcribed segment into multiple segments on whitespace.
 
     Arguments:
-        segment: Transcribed segment to split
+        segment: transcribed segment to split
     Returns:
-        Transcribed segments split on whitespace
+        transcribed segments split on whitespace
     """
     if segment.words is None or len(segment.words) == 0:
         return [segment]
