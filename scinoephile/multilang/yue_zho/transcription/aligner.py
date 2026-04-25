@@ -328,17 +328,16 @@ class Aligner:
         """Update all test cases for the specified block."""
         if self.test_case_dir_path is None:
             return
-        backend = get_torch_device()
 
         deliniation_output_path = (
-            self.test_case_dir_path / "deliniation" / f"{backend}.json"
+            self.test_case_dir_path / "deliniation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
             deliniation_output_path,
             list(self.deliniation_queryer.encountered_test_cases.values()),
         )
         punctuation_output_path = (
-            self.test_case_dir_path / "punctuation" / f"{backend}.json"
+            self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
             punctuation_output_path,

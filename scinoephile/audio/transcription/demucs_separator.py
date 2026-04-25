@@ -17,6 +17,8 @@ from pydub import AudioSegment
 from scinoephile.core import ScinoephileError
 from scinoephile.core.ml import get_torch_device
 
+__all__ = ["DemucsSeparator"]
+
 logger = getLogger(__name__)
 
 
@@ -30,8 +32,23 @@ class DemucsSeparator:
             model_name: Demucs model name used for source separation
         """
         self.model_name = model_name
+        """Demucs model name used for source separation."""
+
         self.device = get_torch_device()
+        """Torch device identifier used for inference."""
+
         self._model: Any | None = None
+        """Cached Demucs model."""
+
+    def __call__(self, audio: AudioSegment) -> AudioSegment:
+        """Separate vocals from audio.
+
+        Arguments:
+            audio: audio to separate
+        Returns:
+            vocals-only audio
+        """
+        return self.separate_vocals(audio)
 
     @property
     def model(self) -> Any:
@@ -48,16 +65,6 @@ class DemucsSeparator:
                     f"Unable to load Demucs model '{self.model_name}'."
                 ) from exc
         return self._model
-
-    def __call__(self, audio: AudioSegment) -> AudioSegment:
-        """Separate vocals from audio.
-
-        Arguments:
-            audio: audio to separate
-        Returns:
-            vocals-only audio
-        """
-        return self.separate_vocals(audio)
 
     def separate_vocals(self, audio: AudioSegment) -> AudioSegment:
         """Separate vocals from audio.
@@ -135,9 +142,8 @@ class DemucsSeparator:
             array = array[:1]
         elif array.shape[0] != channels:
             logger.warning(
-                "Demucs channel count %s differed from input channel count %s.",
-                array.shape[0],
-                channels,
+                f"Demucs channel count {array.shape[0]} differed from input "
+                f"channel count {channels}."
             )
             channels = int(array.shape[0])
 
