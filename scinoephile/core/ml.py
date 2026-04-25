@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Backend detection for audio transcription."""
+"""Machine learning helpers."""
 
 from __future__ import annotations
 
@@ -8,13 +8,15 @@ from functools import cache
 
 import torch
 
+__all__ = ["get_torch_device"]
+
 
 @cache
-def get_backend() -> str:
-    """Get Whisper / torch backend name.
+def get_torch_device() -> str:
+    """Get torch device identifier.
 
     Returns:
-        backend name
+        torch device identifier
     """
     if torch.mps.is_available():
         return "mps"

@@ -8,8 +8,8 @@ from pathlib import Path
 
 from scinoephile.analysis import get_series_cer
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import (
@@ -166,7 +166,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
         / "multilang"
         / "yue_zho"
         / "line_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review = get_yue_line_reviewed_vs_zho(
@@ -183,7 +183,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
         / "multilang"
         / "yue_zho"
         / "translation"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review_translate = get_yue_translated_vs_zho(
@@ -200,7 +200,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
         / "multilang"
         / "yue_zho"
         / "block_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review_translate_block_review = get_yue_block_reviewed_vs_zho(

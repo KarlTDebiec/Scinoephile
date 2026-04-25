@@ -14,9 +14,9 @@ import pytest
 
 from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import get_backend
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
@@ -206,7 +206,7 @@ def get_kob_yue_deliniation_test_cases(
         / "yue_zho"
         / "transcription"
         / "deliniation"
-        / f"{get_backend()}.json"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, DualPairManager, prompt_cls=prompt_cls, **kwargs
@@ -232,7 +232,7 @@ def get_kob_yue_punctuation_test_cases(
         / "yue_zho"
         / "transcription"
         / "punctuation"
-        / f"{get_backend()}.json"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
@@ -253,7 +253,11 @@ def get_kob_yue_vs_zho_line_review_test_cases(
         test cases
     """
     path = (
-        title_root / "multilang" / "yue_zho" / "line_review" / f"{get_backend()}.json"
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "line_review"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs

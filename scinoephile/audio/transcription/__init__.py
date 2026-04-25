@@ -7,7 +7,6 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 
-from scinoephile.audio.transcription.backend import get_backend
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -19,7 +18,6 @@ __all__ = [
     "TranscribedSegment",
     "TranscribedWord",
     "WhisperTranscriber",
-    "get_backend",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",

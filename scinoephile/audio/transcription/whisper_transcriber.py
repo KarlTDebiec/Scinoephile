@@ -12,10 +12,10 @@ from warnings import catch_warnings, filterwarnings
 
 import whisper_timestamped as whisper
 
-from scinoephile.audio.transcription.backend import get_backend
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
+from scinoephile.core.ml import get_torch_device
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -78,7 +78,7 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
-            self._model = whisper.load_model(self.model_name, device=get_backend())
+            self._model = whisper.load_model(self.model_name, device=get_torch_device())
         return self._model
 
     def get_cached_transcription(
