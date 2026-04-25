@@ -825,9 +825,13 @@ sdist = { url = "https://files.pythonhosted.org/packages/35/8e/d36f8880bcf18ec02
 
 [[package]]
 name = "opencc"
-version = "1.2.0"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fa/92/92f4519221b833801be1d037cde747f04c4e29e33bd7574b36b898d9e2bf/opencc-1.2.0.tar.gz", hash = "sha256:2bb913c7ed388466b26d38af4c8c4bb419ddb503235d070f0ee1b24998ef8bca", size = 3420630, upload-time = "2026-01-22T09:23:12.382Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/5a/1ce3ff524f4e1735129b9b585af2fb9278eeb5880631e7c7c82dcf0fc089/opencc-1.3.0.tar.gz", hash = "sha256:bb7105c10ee90c9ba7493a099ac5e611ceab464b895c0584bd9ef304c10950fd", size = 11679501, upload-time = "2026-04-18T16:01:24.226Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/99/79/aee359497424dc1f59fd40fa8cc8b0a077c36501bb20e4ca0f8df1cdc7dd/opencc-1.3.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:7b77e2738d21250f7a87ca9b07c6e91f4af837f8c10d78303165856c982f57f0", size = 1436134, upload-time = "2026-04-18T15:59:56.499Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/31/76588f650e3d8e4dbb145a2a2508e3d7b1c7c5d6003a0ba33c91a06d9e1c/opencc-1.3.0-cp313-cp313-manylinux2014_x86_64.whl", hash = "sha256:b9f9d459d101888919b70e50a5dc8ad404cfee8c937e51011d618a380105899f", size = 1699183, upload-time = "2026-04-18T16:01:21.253Z" },
+]
 
 [[package]]
 name = "openunmix"
@@ -1258,7 +1262,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.4.3" },
     { name = "onnxruntime", specifier = ">=1.25.0" },
     { name = "openai", specifier = ">=2.32.0" },
-    { name = "opencc", specifier = ">=1.2.0" },
+    { name = "opencc", specifier = ">=1.3.0" },
     { name = "pillow", specifier = ">=12.1.1" },
     { name = "pycantonese", specifier = ">=4.1.0" },
     { name = "pydantic", specifier = ">=2.13.2" },
