@@ -41,6 +41,56 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
 }
 """Localized text shared by CLIs that expose OpenCC conversion arguments."""
 
+OPENCC_CONFIG_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "s2t": "简体中文转繁体中文。",
+        "t2s": "繁体中文转简体中文。",
+        "s2tw": "简体中文转繁体中文（台湾标准）。",
+        "tw2s": "繁体中文（台湾标准）转简体中文。",
+        "s2hk": "简体中文转繁体中文（香港标准）。",
+        "hk2s": "繁体中文（香港标准）转简体中文。",
+        "s2twp": "简体中文转繁体中文（台湾标准，包含台湾惯用词）。",
+        "tw2sp": "繁体中文（台湾标准）转简体中文（包含大陆惯用词）。",
+        "t2tw": "繁体中文（OpenCC 标准）转台湾标准。",
+        "hk2t": "繁体中文（香港标准）转繁体中文。",
+        "t2hk": "繁体中文（OpenCC 标准）转香港标准。",
+        "t2jp": "繁体汉字（旧字体）转新字体（日本汉字）。",
+        "jp2t": "新字体（日本汉字）转繁体汉字（旧字体）。",
+        "tw2t": "繁体中文（台湾标准）转繁体中文。",
+    },
+    "zh-hant": {
+        "s2t": "簡體中文轉繁體中文。",
+        "t2s": "繁體中文轉簡體中文。",
+        "s2tw": "簡體中文轉繁體中文（臺灣標準）。",
+        "tw2s": "繁體中文（臺灣標準）轉簡體中文。",
+        "s2hk": "簡體中文轉繁體中文（香港標準）。",
+        "hk2s": "繁體中文（香港標準）轉簡體中文。",
+        "s2twp": "簡體中文轉繁體中文（臺灣標準，包含臺灣慣用詞）。",
+        "tw2sp": "繁體中文（臺灣標準）轉簡體中文（包含大陸慣用詞）。",
+        "t2tw": "繁體中文（OpenCC 標準）轉臺灣標準。",
+        "hk2t": "繁體中文（香港標準）轉繁體中文。",
+        "t2hk": "繁體中文（OpenCC 標準）轉香港標準。",
+        "t2jp": "繁體漢字（舊字體）轉新字體（日語漢字）。",
+        "jp2t": "新字體（日語漢字）轉繁體漢字（舊字體）。",
+        "tw2t": "繁體中文（臺灣標準）轉繁體中文。",
+    },
+}
+"""Localized OpenCC configuration descriptions keyed by locale and config code."""
+
+
+def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en") -> str:
+    """Get localized description for an OpenCC configuration.
+
+    Arguments:
+        config: OpenCC configuration
+        locale_name: locale name to use for description lookup
+    Returns:
+        localized description when available, otherwise English description
+    """
+    return OPENCC_CONFIG_LOCALIZATIONS.get(locale_name, {}).get(
+        config.code, config.description
+    )
+
 
 class _ListOpenCCConfigsAction(Action):
     """Print available OpenCC configurations and exit."""
@@ -79,7 +129,8 @@ class _ListOpenCCConfigsAction(Action):
         )
         lines = [heading]
         lines.extend(
-            f"  {config.value:<5} {config.description}" for config in OpenCCConfig
+            f"  {config.value:<5} {get_opencc_config_description(config, locale_name)}"
+            for config in OpenCCConfig
         )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
         parser.exit(0)

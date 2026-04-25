@@ -185,7 +185,7 @@ class YueTranscriber:
         for segment in segments:
             split_segments.extend(get_segment_split_on_whitespace(segment))
 
-        # Convert transcribed text only when requested.
+        # Convert transcribed text, if applicable
         converted_segments = split_segments
         if self.convert is not None:
             converted_segments = [
