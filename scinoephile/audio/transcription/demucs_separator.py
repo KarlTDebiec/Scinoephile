@@ -14,6 +14,7 @@ from demucs_infer.apply import apply_model
 from demucs_infer.pretrained import get_model
 from pydub import AudioSegment
 
+from scinoephile.audio.transcription.backend import get_backend
 from scinoephile.core import ScinoephileError
 
 logger = getLogger(__name__)
@@ -38,9 +39,7 @@ class DemucsSeparator:
         Returns:
             device identifier
         """
-        if torch.cuda.is_available():
-            return "cuda"
-        return "cpu"
+        return get_backend()
 
     @property
     def model(self) -> Any:

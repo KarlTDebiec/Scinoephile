@@ -5,11 +5,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from functools import cache
 from logging import getLogger
 
-import torch
-
+from scinoephile.audio.transcription.backend import get_backend
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
@@ -29,20 +27,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-
-@cache
-def get_backend() -> str:
-    """Get Whisper / torch backend name.
-
-    Returns:
-        backend name
-    """
-    if torch.mps.is_available():
-        return "mps"
-    if torch.cuda.is_available():
-        return "gpu"
-    return "cpu"
 
 
 def get_segment_zho_converted(

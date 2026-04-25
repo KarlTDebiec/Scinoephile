@@ -10,9 +10,9 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
-import torch
 import whisper_timestamped as whisper
 
+from scinoephile.audio.transcription.backend import get_backend
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -78,8 +78,7 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            self._model = whisper.load_model(self.model_name, device=device)
+            self._model = whisper.load_model(self.model_name, device=get_backend())
         return self._model
 
     def get_cached_transcription(

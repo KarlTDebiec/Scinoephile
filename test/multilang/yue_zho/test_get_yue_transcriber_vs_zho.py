@@ -113,10 +113,10 @@ def test_get_yue_vs_zho_transcriber_passes_demucs_mode():
 def test_get_yue_vs_zho_transcriber_defaults_exclude_kob_test_cases():
     """Test default transcription test-case paths exclude KOB corpora."""
     assert YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS == (
-        Path("mlamd/multilang/yue_zho/transcription/deliniation/gpu.json"),
+        Path("mlamd/multilang/yue_zho/transcription/deliniation/cuda.json"),
         Path("mlamd/multilang/yue_zho/transcription/deliniation/mps.json"),
     )
     assert YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS == (
-        Path("mlamd/multilang/yue_zho/transcription/punctuation/gpu.json"),
+        Path("mlamd/multilang/yue_zho/transcription/punctuation/cuda.json"),
         Path("mlamd/multilang/yue_zho/transcription/punctuation/mps.json"),
     )
