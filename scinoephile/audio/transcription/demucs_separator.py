@@ -30,16 +30,8 @@ class DemucsSeparator:
             model_name: Demucs model name used for source separation
         """
         self.model_name = model_name
+        self.device = get_torch_device()
         self._model: Any | None = None
-
-    @property
-    def device(self) -> str:
-        """Execution device for Demucs inference.
-
-        Returns:
-            device identifier
-        """
-        return get_torch_device()
 
     @property
     def model(self) -> Any:
