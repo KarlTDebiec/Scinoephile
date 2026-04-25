@@ -8,6 +8,10 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
+from scinoephile.cli.conversion import (
+    add_opencc_convert_argument,
+    merge_conversion_localizations,
+)
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -31,24 +35,26 @@ __all__ = ["ZhoFuseCli"]
 class ZhoFuseCli(ScinoephileCliBase):
     """Fuse OCR output from Google Lens and PaddleOCR."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for standard Chinese OCR subtitle fusion": (
-                "标准中文 OCR 字幕融合命令行界面"
-            ),
-            "Standard Chinese subtitle outfile path (default: stdout)": (
-                "标准中文字幕输出文件路径（默认：标准输出）"
-            ),
-        },
-        "zh-hant": {
-            "command-line interface for standard Chinese OCR subtitle fusion": (
-                "標準中文 OCR 字幕融合命令列介面"
-            ),
-            "Standard Chinese subtitle outfile path (default: stdout)": (
-                "標準中文字幕輸出檔路徑（預設：標準輸出）"
-            ),
-        },
-    }
+    localizations = merge_conversion_localizations(
+        {
+            "zh-hans": {
+                "command-line interface for standard Chinese OCR subtitle fusion": (
+                    "标准中文 OCR 字幕融合命令行界面"
+                ),
+                "Standard Chinese subtitle outfile path (default: stdout)": (
+                    "标准中文字幕输出文件路径（默认：标准输出）"
+                ),
+            },
+            "zh-hant": {
+                "command-line interface for standard Chinese OCR subtitle fusion": (
+                    "標準中文 OCR 字幕融合命令列介面"
+                ),
+                "Standard Chinese subtitle outfile path (default: stdout)": (
+                    "標準中文字幕輸出檔路徑（預設：標準輸出）"
+                ),
+            },
+        }
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -64,6 +70,7 @@ class ZhoFuseCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "output arguments",
+            "additional help",
             optional_arguments_name="additional arguments",
         )
 
@@ -87,15 +94,8 @@ class ZhoFuseCli(ScinoephileCliBase):
             action="store_true",
             help="clean both OCR inputs before fusion (default: disabled)",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--convert",
-            nargs="?",
-            const=OpenCCConfig.t2s,
-            type=OpenCCConfig,
-            help=(
-                "convert Chinese characters using specified OpenCC configuration"
-                " before fusion (value when provided without argument: t2s)"
-            ),
+        add_opencc_convert_argument(
+            arg_groups["operation arguments"], arg_groups["additional help"]
         )
 
         # Output arguments

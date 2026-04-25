@@ -11,6 +11,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho import (
     get_yue_block_reviewed_vs_zho,
     get_yue_line_reviewed_vs_zho,
@@ -94,6 +95,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
         vad_mode=VADMode.ON,
+        convert=OpenCCConfig.hk2s,
         test_case_directory_path=test_data_root / "mlamd",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),

@@ -10,6 +10,7 @@ from unittest.mock import ANY, Mock, patch
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
@@ -52,6 +53,7 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             model_name="khleeloo/whisper-large-v3-cantonese",
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
+            convert=None,
             deliniation_prompt_cls=YueZhoHansDeliniationPrompt,
             punctuation_prompt_cls=YueZhoHansPunctuationPrompt,
             provider=ANY,
@@ -108,6 +110,25 @@ def test_get_yue_vs_zho_transcriber_passes_demucs_mode():
             )
 
     assert patched_transcriber.call_args.kwargs["demucs_mode"] == DemucsMode.ON
+
+
+def test_get_yue_vs_zho_transcriber_passes_convert():
+    """Test transcriber factory forwards an explicit OpenCC conversion."""
+    deliniation_test_cases = [cast(TestCase, Mock())]
+    punctuation_test_cases = [cast(TestCase, Mock())]
+
+    with get_temp_directory_path() as temp_dir_path:
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
+        ) as patched_transcriber:
+            get_yue_vs_zho_transcriber(
+                deliniation_test_cases=deliniation_test_cases,
+                punctuation_test_cases=punctuation_test_cases,
+                test_case_directory_path=temp_dir_path,
+                convert=OpenCCConfig.hk2s,
+            )
+
+    assert patched_transcriber.call_args.kwargs["convert"] == OpenCCConfig.hk2s
 
 
 def test_get_yue_vs_zho_transcriber_defaults_exclude_kob_test_cases():

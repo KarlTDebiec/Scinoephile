@@ -11,6 +11,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import LLMProvider, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
@@ -57,6 +58,8 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """Whisper VAD mode for transcription."""
     provider: LLMProvider | None
     """provider to use for queries."""
+    convert: OpenCCConfig | None
+    """OpenCC configuration used for transcribed text conversion."""
     deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
     """prompt class used for alignment deliniation."""
     punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
@@ -73,6 +76,7 @@ def get_yue_transcribed_vs_zho(
     yuewen: AudioSeries,
     zhongwen: Series,
     transcriber: YueTranscriber | None = None,
+    convert: OpenCCConfig | None = None,
     **kwargs: Unpack[YueZhoTranscriptionKwargs],
 ) -> AudioSeries:
     """Get initial 粤文 transcription aligned to 中文.
@@ -81,12 +85,13 @@ def get_yue_transcribed_vs_zho(
         yuewen: nascent 粤文 audio subtitle series
         zhongwen: 中文 subtitle series
         transcriber: transcriber to use
+        convert: OpenCC configuration used for transcribed text conversion
         **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
     Returns:
         transcribed 粤文 subtitle series
     """
     if transcriber is None:
-        transcriber = get_yue_vs_zho_transcriber()
+        transcriber = get_yue_vs_zho_transcriber(convert=convert)
     return transcriber.process_all_blocks(yuewen, zhongwen, **kwargs)
 
 
@@ -95,6 +100,7 @@ def get_yue_vs_zho_transcriber(
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
+    convert: OpenCCConfig | None = None,
     deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt] = (
         YueZhoHansDeliniationPrompt
     ),
@@ -112,6 +118,7 @@ def get_yue_vs_zho_transcriber(
         demucs_mode: Demucs preprocessing mode for transcription
         vad_mode: Whisper VAD mode for transcription
         provider: provider to use for queries
+        convert: OpenCC configuration used for transcribed text conversion
         deliniation_prompt_cls: prompt class for alignment deliniation
         punctuation_prompt_cls: prompt class for transcription punctuation
         test_case_directory_path: optional directory where test cases are updated
@@ -145,6 +152,7 @@ def get_yue_vs_zho_transcriber(
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
         provider=provider,
+        convert=convert,
         deliniation_prompt_cls=deliniation_prompt_cls,
         punctuation_prompt_cls=punctuation_prompt_cls,
         test_case_directory_path=test_case_directory_path,

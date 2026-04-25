@@ -65,19 +65,19 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "mlamd/input/zho-Hans_lens.srt",
             "mlamd/input/zho-Hans_paddle.srt",
-            "--clean --convert",
+            "--clean --convert t2s",
             "mlamd/output/zho-Hans_fuse.srt",
         ),
         (
             "mnt/input/zho-Hans_lens.srt",
             "mnt/input/zho-Hans_paddle.srt",
-            "--clean --convert",
+            "--clean --convert t2s",
             "mnt/output/zho-Hans_fuse.srt",
         ),
         (
             "t/input/zho-Hans_lens.srt",
             "t/input/zho-Hans_paddle.srt",
-            "--clean --convert",
+            "--clean --convert t2s",
             "t/output/zho-Hans_fuse.srt",
         ),
     ],
@@ -119,7 +119,7 @@ def test_zho_fuse_cli(
         (
             "mnt/input/zho-Hans_lens.srt",
             "mnt/input/zho-Hans_paddle.srt",
-            "--clean --convert",
+            "--clean --convert t2s",
             "mnt/output/zho-Hans_fuse.srt",
         ),
     ],
@@ -153,3 +153,16 @@ def test_zho_fuse_cli_pipe(
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_zho_fuse_cli_rejects_bare_convert_flag():
+    """Test 中文 OCR fusion CLI requires an explicit conversion config."""
+    full_lens_path = test_data_root / "mnt/input/zho-Hans_lens.srt"
+    full_paddle_path = test_data_root / "mnt/input/zho-Hans_paddle.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            ZhoFuseCli,
+            f"--lens-infile {full_lens_path} "
+            f"--paddle-infile {full_paddle_path} --clean --convert",
+        )

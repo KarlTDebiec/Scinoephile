@@ -8,6 +8,10 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
+from scinoephile.cli.conversion import (
+    add_opencc_convert_argument,
+    merge_conversion_localizations,
+)
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -37,48 +41,54 @@ __all__ = ["YueProcessCli"]
 class YueProcessCli(ScinoephileCliBase):
     """Modify written Cantonese subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
-            "command-line interface for written Cantonese subtitle processing": (
-                "书面粤语字幕处理命令行界面"
-            ),
-            "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
-            "modify written Cantonese subtitles": "修改书面粤语字幕",
-            "proofread subtitles using LLM (default: traditional)": (
-                "使用大语言模型校对字幕（默认：繁体）"
-            ),
-            "script for prompts and output conversion (default: traditional)": (
-                "提示词和输出转换使用的字形（默认：繁体）"
-            ),
-            'Written Cantonese subtitle infile path or "-" for stdin': (
-                '书面粤语字幕输入文件路径，或使用 "-" 表示标准输入'
-            ),
-            "Written Cantonese subtitle outfile path (default: stdout)": (
-                "书面粤语字幕输出文件路径（默认：标准输出）"
-            ),
-        },
-        "zh-hant": {
-            "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
-            "command-line interface for written Cantonese subtitle processing": (
-                "書面粵語字幕處理命令列介面"
-            ),
-            "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
-            "modify written Cantonese subtitles": "修改書面粵語字幕",
-            "proofread subtitles using LLM (default: traditional)": (
-                "使用大型語言模型校對字幕（預設：繁體）"
-            ),
-            "script for prompts and output conversion (default: traditional)": (
-                "提示詞與輸出轉換使用的字形（預設：繁體）"
-            ),
-            'Written Cantonese subtitle infile path or "-" for stdin': (
-                '書面粵語字幕輸入檔路徑，或使用 "-" 代表標準輸入'
-            ),
-            "Written Cantonese subtitle outfile path (default: stdout)": (
-                "書面粵語字幕輸出檔路徑（預設：標準輸出）"
-            ),
-        },
-    }
+    localizations = merge_conversion_localizations(
+        {
+            "zh-hans": {
+                "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
+                "command-line interface for written Cantonese subtitle processing": (
+                    "书面粤语字幕处理命令行界面"
+                ),
+                "flatten multi-line subtitles into single lines": (
+                    "将多行字幕合并为单行"
+                ),
+                "modify written Cantonese subtitles": "修改书面粤语字幕",
+                "proofread subtitles using LLM (default: traditional)": (
+                    "使用大语言模型校对字幕（默认：繁体）"
+                ),
+                "script for prompts and output conversion (default: traditional)": (
+                    "提示词和输出转换使用的字形（默认：繁体）"
+                ),
+                'Written Cantonese subtitle infile path or "-" for stdin': (
+                    '书面粤语字幕输入文件路径，或使用 "-" 表示标准输入'
+                ),
+                "Written Cantonese subtitle outfile path (default: stdout)": (
+                    "书面粤语字幕输出文件路径（默认：标准输出）"
+                ),
+            },
+            "zh-hant": {
+                "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
+                "command-line interface for written Cantonese subtitle processing": (
+                    "書面粵語字幕處理命令列介面"
+                ),
+                "flatten multi-line subtitles into single lines": (
+                    "將多行字幕合併為單行"
+                ),
+                "modify written Cantonese subtitles": "修改書面粵語字幕",
+                "proofread subtitles using LLM (default: traditional)": (
+                    "使用大型語言模型校對字幕（預設：繁體）"
+                ),
+                "script for prompts and output conversion (default: traditional)": (
+                    "提示詞與輸出轉換使用的字形（預設：繁體）"
+                ),
+                'Written Cantonese subtitle infile path or "-" for stdin': (
+                    '書面粵語字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+                ),
+                "Written Cantonese subtitle outfile path (default: stdout)": (
+                    "書面粵語字幕輸出檔路徑（預設：標準輸出）"
+                ),
+            },
+        }
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -94,6 +104,7 @@ class YueProcessCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "output arguments",
+            "additional help",
             optional_arguments_name="additional arguments",
         )
 
@@ -112,20 +123,13 @@ class YueProcessCli(ScinoephileCliBase):
             action="store_true",
             help="clean subtitles of closed-caption annotations and other anomalies",
         )
+        add_opencc_convert_argument(
+            arg_groups["operation arguments"], arg_groups["additional help"]
+        )
         arg_groups["operation arguments"].add_argument(
             "--flatten",
             action="store_true",
             help="flatten multi-line subtitles into single lines",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--convert",
-            nargs="?",
-            const=OpenCCConfig.t2s,
-            type=OpenCCConfig,
-            help=(
-                "convert Chinese characters using specified OpenCC configuration"
-                " (default: t2s)"
-            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--proofread",
