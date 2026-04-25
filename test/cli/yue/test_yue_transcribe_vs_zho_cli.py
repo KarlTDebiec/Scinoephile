@@ -83,8 +83,8 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     assert "script used for transcription prompts" in help_text
     assert "--convert CONVERT" in normalized_help_text
     assert (
-        "convert transcribed Chinese characters using specified OpenCC "
-        "configuration" in normalized_help_text
+        "convert Chinese characters using specified OpenCC configuration"
+        in normalized_help_text
     )
     assert "--demucs DEMUCS" in help_text
     assert "Demucs vocal-separation mode" in help_text

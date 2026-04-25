@@ -85,7 +85,7 @@ def get_zho_converted(
 
 
 @cache
-def get_zho_converter(config: OpenCCConfig) -> OpenCC:
+def get_zho_converter(config: OpenCCConfig | str) -> OpenCC:
     """Get OpenCC converter for 中文 character set conversion.
 
     Arguments:
@@ -93,7 +93,8 @@ def get_zho_converter(config: OpenCCConfig) -> OpenCC:
     Returns:
         OpenCC converter instance, from cache if available
     """
-    return OpenCC(config)
+    config_code = config.code if isinstance(config, OpenCCConfig) else config
+    return OpenCC(config_code)
 
 
 def get_zho_text_converted(
