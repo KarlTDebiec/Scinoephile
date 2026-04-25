@@ -13,6 +13,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, LLMProvider
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
+from scinoephile.llms.providers.deepseek import DeepSeekProvider
 from scinoephile.llms.providers.openai import OpenAIProvider
 from scinoephile.llms.providers.registry import (
     get_default_provider,
@@ -59,6 +60,15 @@ def test_get_provider_constructs_openai_provider_with_kwargs():
     provider = get_provider("openai", client=client)
 
     assert isinstance(provider, OpenAIProvider)
+    assert provider.sync_client is client
+
+
+def test_get_provider_constructs_deepseek_provider_with_kwargs():
+    """Test DeepSeek provider construction forwards kwargs to the factory."""
+    client = Mock()
+    provider = get_provider("deepseek", client=client)
+
+    assert isinstance(provider, DeepSeekProvider)
     assert provider.sync_client is client
 
 

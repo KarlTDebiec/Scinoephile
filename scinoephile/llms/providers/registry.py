@@ -14,6 +14,7 @@ from typing import Any
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 
+from .deepseek import DeepSeekProvider
 from .openai import OpenAIProvider
 
 __all__ = [
@@ -24,6 +25,7 @@ __all__ = [
 
 _DEFAULT_PROVIDER_NAME = "openai"
 _PROVIDER_FACTORIES: dict[str, Callable[..., LLMProvider]] = {
+    "deepseek": DeepSeekProvider,
     _DEFAULT_PROVIDER_NAME: OpenAIProvider,
 }
 
