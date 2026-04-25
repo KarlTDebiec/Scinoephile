@@ -45,7 +45,7 @@ dev = [
     "pytest-cov>=7.1.0",
     "pytest-xdist>=3.8.0",
     "ruff>=0.15.12",
-    "ty>=0.0.31",
+    "ty>=0.0.32",
 ]
 
 [tool.pytest.ini_options]
