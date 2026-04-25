@@ -120,3 +120,11 @@ def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
     assert output == expected
+
+
+def test_yue_process_cli_rejects_bare_convert_flag():
+    """Test 粤文 processing CLI requires an explicit conversion config."""
+    full_input_path = test_data_root / "kob/output/yue-Hans_timewarp_clean_flatten.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(YueProcessCli, f"--infile {full_input_path} --convert")

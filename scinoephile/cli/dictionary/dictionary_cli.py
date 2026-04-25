@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.core.cli import ScinoephileCliBase
 
 from .build.dictionary_build_cli import DictionaryBuildCli
 from .dictionary_search_cli import DictionarySearchCli
@@ -15,8 +16,20 @@ from .dictionary_search_cli import DictionarySearchCli
 __all__ = ["DictionaryCli"]
 
 
-class DictionaryCli(CommandLineInterface):
+class DictionaryCli(ScinoephileCliBase):
     """Build or search Chinese dictionaries."""
+
+    localizations = {
+        "zh-hans": {
+            "build or search Chinese dictionaries": "构建或查询中文词典",
+            "command-line interface for dictionary operations": "词典操作命令行界面",
+        },
+        "zh-hant": {
+            "build or search Chinese dictionaries": "建置或查詢中文詞典",
+            "command-line interface for dictionary operations": "詞典操作命令列介面",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

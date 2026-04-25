@@ -9,17 +9,40 @@ from abc import ABC
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
+from typing import ClassVar
 
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
+from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["DictionaryBuildCliBase"]
 
 logger = getLogger(__name__)
 
 
-class DictionaryBuildCliBase(CommandLineInterface, ABC):
+class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
     """Base class for building a specific dictionary cache."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "base class for building a specific dictionary cache": (
+                "用于构建特定词典缓存的基类"
+            ),
+            "overwrite the existing SQLite database if it already exists": (
+                "若 SQLite 数据库已存在则覆盖"
+            ),
+            "SQLite database output path": "SQLite 数据库输出路径",
+        },
+        "zh-hant": {
+            "base class for building a specific dictionary cache": (
+                "用於建立特定詞典快取的基底類別"
+            ),
+            "overwrite the existing SQLite database if it already exists": (
+                "若 SQLite 資料庫已存在則覆寫"
+            ),
+            "SQLite database output path": "SQLite 資料庫輸出路徑",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_common_output_arguments(cls, parser: ArgumentParser):

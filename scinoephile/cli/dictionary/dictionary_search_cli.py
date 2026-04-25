@@ -9,13 +9,14 @@ from logging import getLogger
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.dictionaries import DictionaryEntry
 from scinoephile.dictionaries.lookup import (
     AVAILABLE_DICTIONARY_NAMES,
@@ -27,8 +28,34 @@ __all__ = ["DictionarySearchCli"]
 logger = getLogger(__name__)
 
 
-class DictionarySearchCli(CommandLineInterface):
+class DictionarySearchCli(ScinoephileCliBase):
     """Search dictionaries."""
+
+    localizations = {
+        "zh-hans": {
+            "dictionary to search, or all available dictionaries": (
+                "要查询的词典，或选择全部可用词典"
+            ),
+            "Mandarin or Cantonese query text": "普通话或粤语查询文本",
+            "maximum number of matches to show per dictionary": (
+                "每个词典显示的最大匹配数"
+            ),
+            "search dictionaries": "查询词典",
+            "SQLite database input path": "SQLite 数据库输入路径",
+        },
+        "zh-hant": {
+            "dictionary to search, or all available dictionaries": (
+                "要查詢的詞典，或選擇全部可用詞典"
+            ),
+            "Mandarin or Cantonese query text": "普通話或粵語查詢文字",
+            "maximum number of matches to show per dictionary": (
+                "每個詞典顯示的最大符合數"
+            ),
+            "search dictionaries": "查詢詞典",
+            "SQLite database input path": "SQLite 資料庫輸入路徑",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

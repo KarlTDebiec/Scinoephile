@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 import requests
 
@@ -23,6 +23,28 @@ logger = getLogger(__name__)
 
 class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
     """Build Kaifangcidian dictionary cache."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "build Kaifangcidian dictionary cache": "构建 Kaifangcidian 词典缓存",
+            "download fresh Kaifangcidian payloads before building": (
+                "在构建前下载最新 Kaifangcidian 数据"
+            ),
+            (
+                "update canonical CSV under scinoephile/data/dictionaries/kaifangcidian"
+            ): "更新 scinoephile/data/dictionaries/kaifangcidian 下的标准 CSV",
+        },
+        "zh-hant": {
+            "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
+            "download fresh Kaifangcidian payloads before building": (
+                "在建立前下載最新 Kaifangcidian 資料"
+            ),
+            (
+                "update canonical CSV under scinoephile/data/dictionaries/kaifangcidian"
+            ): "更新 scinoephile/data/dictionaries/kaifangcidian 下的標準 CSV",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

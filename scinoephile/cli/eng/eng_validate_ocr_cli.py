@@ -6,23 +6,50 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import ClassVar, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface, DirectoryNotFoundError
+from scinoephile.common import CLIKwargs, DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     int_arg,
     output_dir_arg,
 )
 from scinoephile.common.exception import NotAFileError
+from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng import validate_eng_ocr
 
 __all__ = ["EngValidateOcrCli"]
 
 
-class EngValidateOcrCli(CommandLineInterface):
+class EngValidateOcrCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "command-line interface for English OCR subtitle validation": (
+                "英文 OCR 字幕校验命令行界面"
+            ),
+            "directory in which to save validation image outputs": (
+                "保存校验图像输出的目录"
+            ),
+            "prompt for interactive validation decisions": "提示进行交互式校验决策",
+            "stop validation after this subtitle index": "在此字幕索引后停止校验",
+            "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
+        },
+        "zh-hant": {
+            "command-line interface for English OCR subtitle validation": (
+                "英文 OCR 字幕驗證命令列介面"
+            ),
+            "directory in which to save validation image outputs": (
+                "儲存驗證影像輸出的目錄"
+            ),
+            "prompt for interactive validation decisions": "提示進行互動式驗證決策",
+            "stop validation after this subtitle index": "在此字幕索引後停止驗證",
+            "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

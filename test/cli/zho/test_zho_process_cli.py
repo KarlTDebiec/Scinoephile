@@ -73,7 +73,7 @@ def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
         (
             "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt",
-            "--convert",
+            "--convert t2s",
             "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify.srt",
         ),
         (
@@ -141,3 +141,13 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+def test_zho_process_cli_rejects_bare_convert_flag():
+    """Test 中文 processing CLI requires an explicit conversion config."""
+    full_input_path = (
+        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt"
+    )
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")

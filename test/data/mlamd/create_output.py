@@ -8,9 +8,10 @@ from logging import info
 from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho import (
     get_yue_block_reviewed_vs_zho,
     get_yue_line_reviewed_vs_zho,
@@ -19,7 +20,10 @@ from scinoephile.multilang.yue_zho import (
 )
 from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
-from scinoephile.multilang.yue_zho.transcription import get_yue_vs_zho_transcriber
+from scinoephile.multilang.yue_zho.transcription import (
+    VADMode,
+    get_yue_vs_zho_transcriber,
+)
 from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
@@ -90,6 +94,8 @@ if "简体粤文 (Transcription)" in actions:
     # Transcribe
     yue_hans = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
+        vad_mode=VADMode.ON,
+        convert=OpenCCConfig.hk2s,
         test_case_directory_path=test_data_root / "mlamd",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
@@ -105,11 +111,11 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "line_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_line_reviewed = get_yue_line_reviewed_vs_zho(
-        yue_hans, zho_hans, processor=line_reviewer
+        yue_hans, zho_hans, line_reviewer=line_reviewer
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
     yue_hans_line_reviewed.save(outfile_path)
@@ -120,7 +126,7 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "translation"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_review_translate = get_yue_translated_vs_zho(
@@ -135,7 +141,7 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "block_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_review_translate_block_review = get_yue_block_reviewed_vs_zho(

@@ -8,6 +8,7 @@ from unittest.mock import Mock, patch
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
 
@@ -46,11 +47,12 @@ def test_get_yue_transcribed_vs_zho_constructs_default_transcriber():
         output_series = get_yue_transcribed_vs_zho(
             yuewen=yuewen_audio_series,
             zhongwen=zhongwen_series,
+            convert=OpenCCConfig.hk2s,
             stop_at_idx=2,
         )
 
     assert output_series == expected_yuewen_series
-    patched_factory.assert_called_once_with()
+    patched_factory.assert_called_once_with(convert=OpenCCConfig.hk2s)
     transcriber.process_all_blocks.assert_called_once_with(
         yuewen_audio_series,
         zhongwen_series,

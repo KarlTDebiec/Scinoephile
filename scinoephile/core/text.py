@@ -262,8 +262,8 @@ def remove_non_punc_and_whitespace(text: str) -> str:
     Returns:
         Stripped text with only punctuation and whitespace remaining
     """
-    chars_to_remove = set(text) - (half_punc_chars | full_punc_chars | whitespace_chars)
-    return re.sub(f"[{re.escape(''.join(chars_to_remove))}]", "", text)
+    chars_to_keep = half_punc_chars | full_punc_chars | whitespace_chars
+    return "".join(char for char in text if char.isspace() or char in chars_to_keep)
 
 
 def remove_punc_and_whitespace(text: str) -> str:

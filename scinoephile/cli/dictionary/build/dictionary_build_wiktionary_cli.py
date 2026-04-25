@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 import requests
 
@@ -23,6 +23,34 @@ logger = getLogger(__name__)
 
 class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
     """Build Wiktionary dictionary cache."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
+            "download fresh Kaikki JSONL before building": (
+                "在构建前下载最新 Kaikki JSONL"
+            ),
+            "path to Kaikki Chinese Wiktionary JSONL dump": (
+                "Kaikki 中文 Wiktionary JSONL 转储路径"
+            ),
+            "update source file under scinoephile/data/dictionaries/wiktionary": (
+                "更新 scinoephile/data/dictionaries/wiktionary 下的源文件"
+            ),
+        },
+        "zh-hant": {
+            "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
+            "download fresh Kaikki JSONL before building": (
+                "在建立前下載最新 Kaikki JSONL"
+            ),
+            "path to Kaikki Chinese Wiktionary JSONL dump": (
+                "Kaikki 中文 Wiktionary JSONL 傾印路徑"
+            ),
+            "update source file under scinoephile/data/dictionaries/wiktionary": (
+                "更新 scinoephile/data/dictionaries/wiktionary 下的來源檔案"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

@@ -7,7 +7,7 @@ from __future__ import annotations
 import zipfile
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 import requests
 
@@ -24,6 +24,38 @@ logger = getLogger(__name__)
 
 class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
     """Build Unihan dictionary cache."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "build Unihan dictionary cache": "构建 Unihan 词典缓存",
+            "download fresh Unihan.zip before building": (
+                "在构建前下载最新 Unihan.zip"
+            ),
+            "path to Unihan_DictionaryLikeData.txt": (
+                "Unihan_DictionaryLikeData.txt 的路径"
+            ),
+            "path to Unihan_Readings.txt": "Unihan_Readings.txt 的路径",
+            "path to Unihan_Variants.txt": "Unihan_Variants.txt 的路径",
+            "update source files under scinoephile/data/dictionaries/unihan": (
+                "更新 scinoephile/data/dictionaries/unihan 下的源文件"
+            ),
+        },
+        "zh-hant": {
+            "build Unihan dictionary cache": "建立 Unihan 詞典快取",
+            "download fresh Unihan.zip before building": (
+                "在建立前下載最新 Unihan.zip"
+            ),
+            "path to Unihan_DictionaryLikeData.txt": (
+                "Unihan_DictionaryLikeData.txt 的路徑"
+            ),
+            "path to Unihan_Readings.txt": "Unihan_Readings.txt 的路徑",
+            "path to Unihan_Variants.txt": "Unihan_Variants.txt 的路徑",
+            "update source files under scinoephile/data/dictionaries/unihan": (
+                "更新 scinoephile/data/dictionaries/unihan 下的來源檔案"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

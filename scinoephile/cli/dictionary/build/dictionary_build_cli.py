@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import ClassVar, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
+from scinoephile.core.cli import ScinoephileCliBase
 
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
 from .dictionary_build_gzzj_cli import DictionaryBuildGzzjCli
@@ -18,8 +19,20 @@ from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 __all__ = ["DictionaryBuildCli"]
 
 
-class DictionaryBuildCli(CommandLineInterface):
+class DictionaryBuildCli(ScinoephileCliBase):
     """Build dictionary caches."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            "build dictionary caches": "构建词典缓存",
+            "dictionary source": "词典来源",
+        },
+        "zh-hant": {
+            "build dictionary caches": "建立詞典快取",
+            "dictionary source": "詞典來源",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -48,7 +61,7 @@ class DictionaryBuildCli(CommandLineInterface):
         return "build"
 
     @classmethod
-    def subcommands(cls) -> dict[str, type[CommandLineInterface]]:
+    def subcommands(cls) -> dict[str, type[ScinoephileCliBase]]:
         """Names and types of build subcommands.
 
         Returns:

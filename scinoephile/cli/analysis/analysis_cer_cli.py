@@ -5,19 +5,53 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import ClassVar, Unpack
 
 from scinoephile.analysis import get_series_cer
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.common.exception import ArgumentConflictError
-from scinoephile.core.cli import read_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
 
 
-class AnalysisCerCli(CommandLineInterface):
+class AnalysisCerCli(ScinoephileCliBase):
     """Calculate the Character Error Rate (CER) of one series relative to another."""
+
+    localizations: ClassVar[dict[str, dict[str, str]]] = {
+        "zh-hans": {
+            (
+                "calculate the Character Error Rate (CER) "
+                "of one series relative to another"
+            ): "计算一个序列相对于另一个序列的字符错误率（CER）",
+            "command-line interface for character error rate analysis": (
+                "字符错误率分析命令行界面"
+            ),
+            'subtitle infile for candidate series or "-" for stdin': (
+                '候选序列的字幕输入文件，或用 "-" 表示标准输入'
+            ),
+            'subtitle infile for reference series or "-" for stdin': (
+                '参考序列的字幕输入文件，或用 "-" 表示标准输入'
+            ),
+        },
+        "zh-hant": {
+            (
+                "calculate the Character Error Rate (CER) "
+                "of one series relative to another"
+            ): "計算一個序列相對於另一個序列的字元錯誤率（CER）",
+            "command-line interface for character error rate analysis": (
+                "字元錯誤率分析命令列介面"
+            ),
+            'subtitle infile for candidate series or "-" for stdin': (
+                '候選序列的字幕輸入檔，或用 "-" 表示標準輸入'
+            ),
+            'subtitle infile for reference series or "-" for stdin': (
+                '參考序列的字幕輸入檔，或用 "-" 表示標準輸入'
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
@@ -79,12 +113,7 @@ class AnalysisCerCli(CommandLineInterface):
         result = get_series_cer(reference_series, candidate_series)
 
         # Write outputs
-        print(f"CER: {result.cer}")
-        print(f"Correct: {result.correct}")
-        print(f"Substitutions: {result.substitutions}")
-        print(f"Insertions: {result.insertions}")
-        print(f"Deletions: {result.deletions}")
-        print(f"Reference length: {result.reference_length}")
+        print(result)
 
 
 if __name__ == "__main__":

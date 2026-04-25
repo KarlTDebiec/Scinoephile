@@ -14,9 +14,9 @@ import pytest
 
 from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import get_backend
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
@@ -206,7 +206,7 @@ def get_kob_yue_deliniation_test_cases(
         / "yue_zho"
         / "transcription"
         / "deliniation"
-        / f"{get_backend()}.json"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, DualPairManager, prompt_cls=prompt_cls, **kwargs
@@ -232,7 +232,7 @@ def get_kob_yue_punctuation_test_cases(
         / "yue_zho"
         / "transcription"
         / "punctuation"
-        / f"{get_backend()}.json"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoPunctuationManager, prompt_cls=prompt_cls, **kwargs
@@ -253,7 +253,11 @@ def get_kob_yue_vs_zho_line_review_test_cases(
         test cases
     """
     path = (
-        title_root / "multilang" / "yue_zho" / "line_review" / f"{get_backend()}.json"
+        title_root
+        / "multilang"
+        / "yue_zho"
+        / "line_review"
+        / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
         path, YueZhoLineReviewManager, prompt_cls=prompt_cls, **kwargs
@@ -570,11 +574,11 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return CharacterErrorRateResult(
-        cer=0.9040239499867923,
-        substitutions=4155,
-        insertions=2835,
+        cer=0.8675706612661794,
+        substitutions=3731,
+        insertions=2845,
         deletions=3277,
-        correct=3925,
+        correct=4349,
         reference_length=11357,
     )
 
@@ -605,11 +609,11 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return CharacterErrorRateResult(
-        cer=0.6034163951747821,
-        substitutions=2789,
-        insertions=2091,
-        deletions=1973,
-        correct=6595,
+        cer=0.6570397111913358,
+        substitutions=2450,
+        insertions=2433,
+        deletions=2579,
+        correct=6328,
         reference_length=11357,
     )
 

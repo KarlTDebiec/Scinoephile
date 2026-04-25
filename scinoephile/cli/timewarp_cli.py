@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -17,14 +17,28 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import read_series, write_series
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
 __all__ = ["TimewarpCli"]
 
 
-class TimewarpCli(CommandLineInterface):
+class TimewarpCli(ScinoephileCliBase):
     """Shift and stretch the timings of one subtitle series to match another."""
+
+    localizations = {
+        "zh-hans": {
+            "shift and stretch the timings of one subtitle series to match another": (
+                "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
+            ),
+        },
+        "zh-hant": {
+            "shift and stretch the timings of one subtitle series to match another": (
+                "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

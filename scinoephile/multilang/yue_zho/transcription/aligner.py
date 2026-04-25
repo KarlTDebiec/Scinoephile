@@ -16,7 +16,6 @@ from scinoephile.audio.subtitles import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.transcription import get_backend
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
@@ -26,6 +25,7 @@ from scinoephile.core.llms import (
     TestCase,
     save_test_cases_to_json,
 )
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
@@ -47,17 +47,22 @@ class Aligner:
         self,
         deliniation_queryer: Queryer,
         punctuation_queryer: Queryer,
+        test_case_dir_path: Path | None = None,
     ):
         """Initialize.
 
         Arguments:
             deliniation_queryer: queryer for delineation
             punctuation_queryer: queryer for punctuation
+            test_case_dir_path: directory where encountered test cases are written
         """
         self.punctuation_queryer = punctuation_queryer
         """Punctuates transcribed 粤文 text based on corresponding 中文."""
         self.deliniation_queryer = deliniation_queryer
         """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
+        self.test_case_dir_path = None
+        if test_case_dir_path is not None:
+            self.test_case_dir_path = val_input_dir_path(test_case_dir_path)
 
     def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
         """Align 粤文 subtitles with 中文 subtitles.
@@ -319,30 +324,22 @@ class Aligner:
         alignment.yuewen = nascent_yw
         alignment._sync_groups_override = nascent_sg
 
-    def update_all_test_cases(self, test_root: Path | str):
-        """Update all test cases for the specified block.
+    def update_all_test_cases(self):
+        """Update all test cases for the specified block."""
+        if self.test_case_dir_path is None:
+            return
 
-        Arguments:
-            test_root: Path to root directory of test cases
-        """
-        test_root = val_input_dir_path(test_root)
-        backend = get_backend()
-
-        save_test_cases_to_json(
-            test_root
-            / "multilang"
-            / "yue_zho"
-            / "transcription"
-            / "deliniation"
-            / f"{backend}.json",
-            list(self.deliniation_queryer.encountered_test_cases.values()),
+        deliniation_output_path = (
+            self.test_case_dir_path / "deliniation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
-            test_root
-            / "multilang"
-            / "yue_zho"
-            / "transcription"
-            / "punctuation"
-            / f"{backend}.json",
+            deliniation_output_path,
+            list(self.deliniation_queryer.encountered_test_cases.values()),
+        )
+        punctuation_output_path = (
+            self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
+        )
+        save_test_cases_to_json(
+            punctuation_output_path,
             list(self.punctuation_queryer.encountered_test_cases.values()),
         )

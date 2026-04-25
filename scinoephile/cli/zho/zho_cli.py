@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for 中文 subtitle operations."""
+"""Command-line interface for standard Chinese subtitle operations."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from typing import Unpack
 
 from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.core.cli import ScinoephileCliBase
 
 from .zho_fuse_cli import ZhoFuseCli
 from .zho_process_cli import ZhoProcessCli
@@ -16,8 +17,24 @@ from .zho_validate_ocr_cli import ZhoValidateOcrCli
 __all__ = ["ZhoCli"]
 
 
-class ZhoCli(CommandLineInterface):
-    """Modify Standard Chinese (中文) subtitles."""
+class ZhoCli(ScinoephileCliBase):
+    """Modify standard Chinese subtitles."""
+
+    localizations = {
+        "zh-hans": {
+            "command-line interface for standard Chinese subtitle operations": (
+                "标准中文字幕操作命令行界面"
+            ),
+            "modify standard Chinese subtitles": "修改标准中文字幕",
+        },
+        "zh-hant": {
+            "command-line interface for standard Chinese subtitle operations": (
+                "標準中文字幕操作命令列介面"
+            ),
+            "modify standard Chinese subtitles": "修改標準中文字幕",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
 
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):

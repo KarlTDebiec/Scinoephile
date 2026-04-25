@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Shared CLI I/O helpers."""
+"""Shared CLI I/O helpers and Scinoephile CLI base class."""
 
 from __future__ import annotations
 
@@ -10,8 +10,15 @@ from sys import stdin, stdout
 
 from scinoephile.common.exception import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.core.subtitles import Series
 
-from .subtitles import Series
+from .scinoephile_cli_base import ScinoephileCliBase
+
+__all__ = [
+    "ScinoephileCliBase",
+    "read_series",
+    "write_series",
+]
 
 
 def read_series(
