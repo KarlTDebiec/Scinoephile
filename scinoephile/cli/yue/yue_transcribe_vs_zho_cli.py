@@ -21,6 +21,7 @@ from scinoephile.common.exception import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,
@@ -47,9 +48,13 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "command-line interface for written Cantonese subtitle transcription": (
                 "书面粤语字幕转写命令行界面"
             ),
-            "script for prompts and output conversion (default: simplified)": (
-                "提示词和输出转换使用的字形（默认：简体）"
+            "script used for transcription prompts (default: simplified)": (
+                "转写提示词使用的字形（默认：简体）"
             ),
+            (
+                "convert transcribed Chinese characters using specified OpenCC "
+                "configuration"
+            ): ("使用指定 OpenCC 配置转换转写结果中的中文字符"),
             "Demucs vocal-separation mode (options: on, off; default: off)": (
                 "Demucs 人声分离模式（选项：on、off；默认：off）"
             ),
@@ -71,9 +76,13 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "command-line interface for written Cantonese subtitle transcription": (
                 "書面粵語字幕轉寫命令列介面"
             ),
-            "script for prompts and output conversion (default: simplified)": (
-                "提示詞與輸出轉換使用的字形（預設：簡體）"
+            "script used for transcription prompts (default: simplified)": (
+                "轉寫提示詞使用的字形（預設：簡體）"
             ),
+            (
+                "convert transcribed Chinese characters using specified OpenCC "
+                "configuration"
+            ): ("使用指定 OpenCC 設定轉換轉寫結果中的中文字符"),
             "Demucs vocal-separation mode (options: on, off; default: off)": (
                 "Demucs 人聲分離模式（選項：on、off；預設：off）"
             ),
@@ -135,7 +144,15 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "--script",
             default="simplified",
             type=str_arg(options=("simplified", "traditional")),
-            help="script for prompts and output conversion (default: simplified)",
+            help="script used for transcription prompts (default: simplified)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--convert",
+            type=OpenCCConfig,
+            help=(
+                "convert transcribed Chinese characters using specified OpenCC "
+                "configuration"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--demucs",
@@ -205,6 +222,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         zhongwen_infile_path = kwargs.pop("zhongwen_infile")
         stream_index = kwargs.pop("stream_index")
         script = kwargs.pop("script")
+        convert = kwargs.pop("convert")
         demucs_mode = DemucsMode(kwargs.pop("demucs"))
         vad_mode = VADMode(kwargs.pop("vad"))
         outfile_path: Path | None = kwargs.pop("outfile")
@@ -255,6 +273,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         transcriber = get_yue_vs_zho_transcriber(
             demucs_mode=demucs_mode,
             vad_mode=vad_mode,
+            convert=convert,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
         )

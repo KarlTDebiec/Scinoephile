@@ -72,6 +72,7 @@ class YueTranscriber:
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
+        convert: OpenCCConfig | None = None,
         deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt],
         punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt],
         test_case_directory_path: Path,
@@ -85,6 +86,7 @@ class YueTranscriber:
             demucs_mode: Demucs preprocessing mode for transcription
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
+            convert: OpenCC configuration used to convert transcribed text
             deliniation_prompt_cls: prompt class for block-boundary deliniation
             punctuation_prompt_cls: prompt class for line punctuation
             test_case_directory_path: path to directory containing test cases
@@ -95,6 +97,7 @@ class YueTranscriber:
         self.model_name = model_name
         self.vad_mode = vad_mode
         self.demucs_mode = demucs_mode
+        self.convert = convert
         if provider is None:
             provider = get_default_provider()
         self.demucs_separator = None
@@ -182,11 +185,13 @@ class YueTranscriber:
         for segment in segments:
             split_segments.extend(get_segment_split_on_whitespace(segment))
 
-        # Simplify segments (optional)
-        converted_segments = [
-            get_segment_zho_converted(segment, OpenCCConfig.hk2s)
-            for segment in split_segments
-        ]
+        # Convert transcribed text only when requested.
+        converted_segments = split_segments
+        if self.convert is not None:
+            converted_segments = [
+                get_segment_zho_converted(segment, self.convert)
+                for segment in split_segments
+            ]
 
         # Merge segments into a series
         yuewen_block_series = get_series_from_segments(

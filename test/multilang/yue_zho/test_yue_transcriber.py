@@ -4,8 +4,11 @@
 
 from __future__ import annotations
 
-from unittest.mock import Mock
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
+from scinoephile.audio.transcription import TranscribedSegment
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription.transcriber import (
     DemucsMode,
     VADMode,
@@ -159,3 +162,82 @@ def test_get_whisper_transcriber_sets_use_demucs():
     whisper_transcriber = transcriber._get_whisper_transcriber(use_vad=True)
 
     assert whisper_transcriber.use_demucs is True
+
+
+def test_process_block_leaves_text_unchanged_without_conversion():
+    """Test process_block skips OpenCC conversion by default."""
+    transcriber = YueTranscriber.__new__(YueTranscriber)
+    transcriber.convert = None
+    transcriber.aligner = Mock()
+    expected_series = Mock()
+    transcriber.aligner.align.return_value = SimpleNamespace(yuewen=expected_series)
+    transcriber.aligner.update_all_test_cases = Mock()
+    segments = [TranscribedSegment(id=0, seek=0, start=0.0, end=1.0, text="學校")]
+    yuewen_block = Mock()
+    yuewen_block.audio = Mock()
+    yuewen_block.__getitem__ = Mock(return_value=SimpleNamespace(start=1.25))
+    zhongwen_block = Mock()
+    interim_series = Mock()
+
+    with patch.object(
+        YueTranscriber,
+        "_transcribe_block_audio",
+        return_value=segments,
+    ):
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.transcriber.get_series_from_segments",
+            return_value=interim_series,
+        ) as patched_get_series:
+            with patch(
+                "scinoephile.multilang.yue_zho.transcription.transcriber.get_segment_zho_converted"
+            ) as patched_convert:
+                output_series = transcriber.process_block(yuewen_block, zhongwen_block)
+
+    assert output_series is expected_series
+    patched_convert.assert_not_called()
+    patched_get_series.assert_called_once_with(
+        segments,
+        audio=yuewen_block.audio,
+        offset=1.25,
+    )
+    transcriber.aligner.align.assert_called_once_with(zhongwen_block, interim_series)
+    transcriber.aligner.update_all_test_cases.assert_called_once_with()
+
+
+def test_process_block_converts_text_when_requested():
+    """Test process_block applies OpenCC conversion when configured."""
+    transcriber = YueTranscriber.__new__(YueTranscriber)
+    transcriber.convert = OpenCCConfig.hk2s
+    transcriber.aligner = Mock()
+    expected_series = Mock()
+    transcriber.aligner.align.return_value = SimpleNamespace(yuewen=expected_series)
+    transcriber.aligner.update_all_test_cases = Mock()
+    segments = [TranscribedSegment(id=0, seek=0, start=0.0, end=1.0, text="學校")]
+    converted_segments = [Mock()]
+    yuewen_block = Mock()
+    yuewen_block.audio = Mock()
+    yuewen_block.__getitem__ = Mock(return_value=SimpleNamespace(start=0.5))
+    zhongwen_block = Mock()
+
+    with patch.object(
+        YueTranscriber,
+        "_transcribe_block_audio",
+        return_value=segments,
+    ):
+        with patch(
+            "scinoephile.multilang.yue_zho.transcription.transcriber.get_series_from_segments",
+            return_value=Mock(),
+        ) as patched_get_series:
+            with patch(
+                "scinoephile.multilang.yue_zho.transcription.transcriber.get_segment_zho_converted",
+                side_effect=converted_segments,
+            ) as patched_convert:
+                output_series = transcriber.process_block(yuewen_block, zhongwen_block)
+
+    assert output_series is expected_series
+    patched_convert.assert_called_once_with(segments[0], OpenCCConfig.hk2s)
+    patched_get_series.assert_called_once_with(
+        converted_segments,
+        audio=yuewen_block.audio,
+        offset=0.5,
+    )
