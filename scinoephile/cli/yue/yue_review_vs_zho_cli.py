@@ -161,7 +161,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "review"
+        return "review-vs-zho"
 
     @classmethod
     def _get_line_review_prompt_cls(

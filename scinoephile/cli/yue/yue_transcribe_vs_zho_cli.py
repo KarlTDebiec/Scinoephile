@@ -175,7 +175,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "transcribe"
+        return "transcribe-vs-zho"
 
     @classmethod
     def _get_transcription_prompt_classes(
