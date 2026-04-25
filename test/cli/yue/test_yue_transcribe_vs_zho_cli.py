@@ -19,12 +19,15 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
+    YueZhoHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoHansPunctuationPrompt,
+    YueZhoHantPunctuationPrompt,
 )
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
@@ -63,8 +66,8 @@ def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]
     assert_cli_usage(cli)
 
 
-def test_yue_transcribe_vs_zho_help_lists_demucs_and_vad_options():
-    """Test 粤文 transcribe-vs-zho CLI help lists Demucs and VAD options."""
+def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():
+    """Test 粤文 transcribe-vs-zho CLI help lists prompt and conversion options."""
     stdout = StringIO()
     stderr = StringIO()
 
@@ -74,7 +77,15 @@ def test_yue_transcribe_vs_zho_help_lists_demucs_and_vad_options():
                 run_cli_with_args(YueTranscribeVsZhoCli, "-h")
 
     help_text = stdout.getvalue()
+    normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
+    assert "--script SCRIPT" in help_text
+    assert "script used for transcription prompts" in help_text
+    assert "--convert CONVERT" in normalized_help_text
+    assert (
+        "convert Chinese characters using specified OpenCC configuration"
+        in normalized_help_text
+    )
     assert "--demucs DEMUCS" in help_text
     assert "Demucs vocal-separation mode" in help_text
     assert "options: on, off;" in help_text
@@ -126,6 +137,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
         is YueZhoHansPunctuationPrompt
     )
+    assert patched_factory.call_args.kwargs["convert"] is None
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
@@ -234,6 +246,89 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
                 )
 
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
+    """Test 粤文 transcribe-vs-zho CLI passes through explicit conversion."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zhongwen-infile {zhongwen_infile_path} --convert s2hk",
+                )
+
+    assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.s2hk
+
+
+def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
+    """Test 粤文 transcribe-vs-zho CLI requires an explicit conversion config."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranscribeVsZhoCli,
+            f"--media-infile {media_infile_path} "
+            f"--zhongwen-infile {zhongwen_infile_path} --convert",
+        )
+
+
+def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
+    """Test 粤文 transcribe-vs-zho CLI keeps prompt script separate from conversion."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zhongwen-infile {zhongwen_infile_path} "
+                    "--script traditional --convert hk2s",
+                )
+
+    assert (
+        patched_factory.call_args.kwargs["deliniation_prompt_cls"]
+        is YueZhoHantDeliniationPrompt
+    )
+    assert (
+        patched_factory.call_args.kwargs["punctuation_prompt_cls"]
+        is YueZhoHantPunctuationPrompt
+    )
+    assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.hk2s
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
