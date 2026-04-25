@@ -1,6 +1,6 @@
 # Instructions
 
-Review [docs/STYLE.md](/Users/karldebiec/Code/Scinoephile/docs/STYLE.md) before planning or coding.
+Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 
 ## Tools
 
@@ -14,7 +14,7 @@ Review [docs/STYLE.md](/Users/karldebiec/Code/Scinoephile/docs/STYLE.md) before 
 
 ### Linting
 
-* Before running `ruff` or `ty`, check changed files for compliance with [docs/STYLE.md](/Users/karldebiec/Code/Scinoephile/docs/STYLE.md).
+* Before running `ruff` or `ty`, check changed files for compliance with [docs/STYLE.md](/docs/STYLE.md).
 * Run the following checks on **only the Python files you have changed or been asked to**:
   1. `uv run ruff format`
   2. `uv run ruff check --fix`
