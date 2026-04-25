@@ -161,7 +161,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "review"
+        return "review-vs-zho"
 
     @classmethod
     def _get_line_review_prompt_cls(
@@ -230,11 +230,11 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         # Perform operations
         if mode == "line":
             prompt_cls = cls._get_line_review_prompt_cls(script)
-            processor = get_yue_vs_zho_line_reviewer(prompt_cls=prompt_cls)
+            line_reviewer = get_yue_vs_zho_line_reviewer(prompt_cls=prompt_cls)
             reviewed = get_yue_line_reviewed_vs_zho(
                 yuewen=yuewen,
                 zhongwen=zhongwen,
-                processor=processor,
+                line_reviewer=line_reviewer,
             )
         else:
             prompt_cls = cls._get_block_review_prompt_cls(script)

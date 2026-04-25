@@ -70,34 +70,30 @@ ZHO_HANT_OCR_FUSION_JSON_PATHS = (
 )
 
 YUE_ZHO_LINE_REVIEW_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/line_review/gpu.json"),
+    Path("mlamd/multilang/yue_zho/line_review/cuda.json"),
     Path("mlamd/multilang/yue_zho/line_review/cpu.json"),
     Path("mlamd/multilang/yue_zho/line_review/mps.json"),
 )
 
 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/block_review/gpu.json"),
+    Path("mlamd/multilang/yue_zho/block_review/cuda.json"),
     Path("mlamd/multilang/yue_zho/block_review/cpu.json"),
     Path("mlamd/multilang/yue_zho/block_review/mps.json"),
 )
 
 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/translation/gpu.json"),
+    Path("mlamd/multilang/yue_zho/translation/cuda.json"),
     Path("mlamd/multilang/yue_zho/translation/cpu.json"),
     Path("mlamd/multilang/yue_zho/translation/mps.json"),
 )
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
-    Path("kob/multilang/yue_zho/transcription/deliniation/gpu.json"),
-    Path("kob/multilang/yue_zho/transcription/deliniation/mps.json"),
-    Path("mlamd/multilang/yue_zho/transcription/deliniation/gpu.json"),
+    Path("mlamd/multilang/yue_zho/transcription/deliniation/cuda.json"),
     Path("mlamd/multilang/yue_zho/transcription/deliniation/mps.json"),
 )
 
 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
-    Path("kob/multilang/yue_zho/transcription/punctuation/gpu.json"),
-    Path("kob/multilang/yue_zho/transcription/punctuation/mps.json"),
-    Path("mlamd/multilang/yue_zho/transcription/punctuation/gpu.json"),
+    Path("mlamd/multilang/yue_zho/transcription/punctuation/cuda.json"),
     Path("mlamd/multilang/yue_zho/transcription/punctuation/mps.json"),
 )
 

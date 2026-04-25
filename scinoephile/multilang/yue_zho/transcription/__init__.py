@@ -26,11 +26,12 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoPunctuationManager,
 )
 
-from .transcriber import VADMode, YueTranscriber
+from .transcriber import DemucsMode, VADMode, YueTranscriber
 
 __all__ = [
     "get_yue_transcribed_vs_zho",
     "get_yue_vs_zho_transcriber",
+    "DemucsMode",
     "VADMode",
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
@@ -50,6 +51,8 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
 
     model_name: str
     """Whisper model name used for transcription."""
+    demucs_mode: DemucsMode
+    """Demucs preprocessing mode for transcription."""
     vad_mode: VADMode
     """Whisper VAD mode for transcription."""
     provider: LLMProvider | None
@@ -89,6 +92,7 @@ def get_yue_transcribed_vs_zho(
 
 def get_yue_vs_zho_transcriber(
     model_name: str = "khleeloo/whisper-large-v3-cantonese",
+    demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt] = (
@@ -105,6 +109,7 @@ def get_yue_vs_zho_transcriber(
 
     Arguments:
         model_name: Whisper model name used for transcription
+        demucs_mode: Demucs preprocessing mode for transcription
         vad_mode: Whisper VAD mode for transcription
         provider: provider to use for queries
         deliniation_prompt_cls: prompt class for alignment deliniation
@@ -137,6 +142,7 @@ def get_yue_vs_zho_transcriber(
         )
     return YueTranscriber(
         model_name=model_name,
+        demucs_mode=demucs_mode,
         vad_mode=vad_mode,
         provider=provider,
         deliniation_prompt_cls=deliniation_prompt_cls,

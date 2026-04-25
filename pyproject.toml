@@ -12,6 +12,7 @@ dependencies = [
     "aiofiles>=25.1.0",
     "audioop-lts>=0.2.2",
     "beautifulsoup4>=4.14.3",
+    "demucs-infer>=4.1.2",
     "ffmpeg-python>=0.2.0",
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",

@@ -152,7 +152,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/line_review/gpu.json",
+                "mlamd/multilang/yue_zho/line_review/cuda.json",
                 "mlamd/multilang/yue_zho/line_review/cpu.json",
                 "mlamd/multilang/yue_zho/line_review/mps.json",
             ],
@@ -165,7 +165,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/block_review/gpu.json",
+                "mlamd/multilang/yue_zho/block_review/cuda.json",
                 "mlamd/multilang/yue_zho/block_review/cpu.json",
                 "mlamd/multilang/yue_zho/block_review/mps.json",
             ],
@@ -178,7 +178,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/translation/gpu.json",
+                "mlamd/multilang/yue_zho/translation/cuda.json",
                 "mlamd/multilang/yue_zho/translation/cpu.json",
                 "mlamd/multilang/yue_zho/translation/mps.json",
             ],

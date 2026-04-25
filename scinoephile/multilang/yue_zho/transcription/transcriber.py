@@ -14,6 +14,7 @@ from scinoephile.audio.subtitles import (
     get_series_from_segments,
 )
 from scinoephile.audio.transcription import (
+    DemucsSeparator,
     TranscribedSegment,
     WhisperTranscriber,
     get_segment_split_on_whitespace,
@@ -38,11 +39,19 @@ if TYPE_CHECKING:
     from pydub import AudioSegment
 
 __all__ = [
+    "DemucsMode",
     "VADMode",
     "YueTranscriber",
 ]
 
 logger = getLogger(__name__)
+
+
+class DemucsMode(StrEnum):
+    """Demucs preprocessing modes for 粤文 transcription."""
+
+    ON = "on"
+    OFF = "off"
 
 
 class VADMode(StrEnum):
@@ -60,6 +69,7 @@ class YueTranscriber:
         self,
         *,
         model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt],
@@ -72,6 +82,7 @@ class YueTranscriber:
 
         Arguments:
             model_name: Whisper model name used for transcription
+            demucs_mode: Demucs preprocessing mode for transcription
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
             deliniation_prompt_cls: prompt class for block-boundary deliniation
@@ -83,8 +94,12 @@ class YueTranscriber:
         self.test_case_directory_path = val_input_dir_path(test_case_directory_path)
         self.model_name = model_name
         self.vad_mode = vad_mode
+        self.demucs_mode = demucs_mode
         if provider is None:
             provider = get_default_provider()
+        self.demucs_separator = None
+        if demucs_mode == DemucsMode.ON:
+            self.demucs_separator = DemucsSeparator()
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
@@ -116,13 +131,13 @@ class YueTranscriber:
         yuewen: AudioSeries,
         zhongwen: Series,
         stop_at_idx: int | None = None,
-    ):
+    ) -> AudioSeries:
         """Process all blocks of audio, transcribing and aligning them with subtitles.
 
         Arguments:
-            yuewen: Nascent 粤文 subtitles
-            zhongwen: Corresponding 中文 subtitles
-            stop_at_idx: Stop after processing this block index
+            yuewen: nascent 粤文 subtitles
+            zhongwen: corresponding 中文 subtitles
+            stop_at_idx: stop after processing this block index
         """
         all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
 
@@ -156,8 +171,8 @@ class YueTranscriber:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
         Arguments:
-            yuewen_block: Nascent 粤文 block
-            zhongwen_block: Corresponding 中文 block
+            yuewen_block: nascent 粤文 block
+            zhongwen_block: corresponding 中文 block
         """
         # Transcribe audio
         segments = self._transcribe_block_audio(yuewen_block.audio)
@@ -188,6 +203,32 @@ class YueTranscriber:
 
         return yuewen_block_series
 
+    def _get_cached_block_transcription(
+        self, cache_audio: AudioSegment
+    ) -> list[TranscribedSegment] | None:
+        """Get cached block transcription before expensive preprocessing.
+
+        Arguments:
+            cache_audio: original block audio used for cache-key generation
+        Returns:
+            cached transcription, if present
+        """
+        if self.vad_mode == VADMode.ON:
+            assert self.vad_transcriber is not None
+            return self.vad_transcriber.get_cached_transcription(cache_audio)
+        if self.vad_mode == VADMode.OFF:
+            assert self.no_vad_transcriber is not None
+            return self.no_vad_transcriber.get_cached_transcription(cache_audio)
+
+        assert self.vad_transcriber is not None
+        cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
+        if cached_segments is not None and any(
+            segment.text.strip() for segment in cached_segments
+        ):
+            return cached_segments
+
+        return None
+
     def _get_whisper_transcriber(self, use_vad: bool) -> WhisperTranscriber:
         """Build a Whisper transcriber for the requested VAD setting.
 
@@ -199,6 +240,7 @@ class YueTranscriber:
         return WhisperTranscriber(
             model_name=self.model_name,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
+            use_demucs=self.demucs_mode == DemucsMode.ON,
             use_vad=use_vad,
         )
 
@@ -210,18 +252,28 @@ class YueTranscriber:
         Returns:
             transcribed segments
         """
+        cache_audio = audio
+        cached_segments = self._get_cached_block_transcription(cache_audio)
+        if cached_segments is not None:
+            return cached_segments
+
+        if self.demucs_mode == DemucsMode.ON:
+            assert self.demucs_separator is not None
+            logger.info("Applying Demucs vocal separation before transcription")
+            audio = self.demucs_separator(audio)
+
         if self.vad_mode == VADMode.ON:
             assert self.vad_transcriber is not None
-            return self.vad_transcriber(audio)
+            return self.vad_transcriber(audio, cache_audio=cache_audio)
         if self.vad_mode == VADMode.OFF:
             assert self.no_vad_transcriber is not None
-            return self.no_vad_transcriber(audio)
+            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
 
         assert self.vad_transcriber is not None
-        segments = self.vad_transcriber(audio)
+        segments = self.vad_transcriber(audio, cache_audio=cache_audio)
         if any(segment.text.strip() for segment in segments):
             return segments
 
         logger.info("Retrying block transcription without VAD after empty result")
         assert self.no_vad_transcriber is not None
-        return self.no_vad_transcriber(audio)
+        return self.no_vad_transcriber(audio, cache_audio=cache_audio)

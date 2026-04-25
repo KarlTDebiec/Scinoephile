@@ -8,8 +8,8 @@ from pathlib import Path
 
 from scinoephile.analysis import get_series_cer
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.audio.transcription import get_backend
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
 from scinoephile.lang.eng import (
@@ -29,6 +29,7 @@ from scinoephile.multilang.yue_zho import (
 from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
 from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
 from scinoephile.multilang.yue_zho.transcription import (
+    DemucsMode,
     VADMode,
     get_yue_vs_zho_transcriber,
 )
@@ -52,10 +53,12 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    "简体粤文 (Transcription)",
+    # "简体粤文 (Transcription)",
     # "简体粤文 (Diff)",
-    "简体粤文 (Transcription Test VAD Off)",
-    "简体粤文 (Transcription Test VAD On)",
+    # "简体粤文 (Transcription Test VAD Off)",
+    # "简体粤文 (Transcription Test VAD On)",
+    "简体粤文 (Transcription Demucs On VAD Auto)",
+    "简体粤文 (Transcription Test Demucs Off VAD Auto)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -124,7 +127,7 @@ if "Bilingual 简体粤文 and English" in actions:
         eng_path=output_dir / "eng_timewarp_clean_review_flatten.srt",
         overwrite=True,
     )
-if "简体粤文 (Transcription)" in actions:
+if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     # Stage
     zho_hans = Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
@@ -140,6 +143,7 @@ if "简体粤文 (Transcription)" in actions:
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
+        demucs_mode=DemucsMode.ON,
         vad_mode=VADMode.AUTO,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
@@ -147,25 +151,30 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe.srt"
     yue_hans_transcribe.save(outfile_path)
-    print("VAD Auto transcription CER:")
+    print("Demucs On VAD Auto transcription CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
 
     # Review (line-by-line)
-    yue_hans_transcribe = Series.load(outfile_path)
+    yue_hans_transcribe = Series(
+        events=[
+            Series.event_class(**event.as_dict())
+            for event in yue_hans_transcribe.events
+        ]
+    )
     line_reviewer = get_yue_vs_zho_line_reviewer(
         test_case_path=title_root
         / "multilang"
         / "yue_zho"
         / "line_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review = get_yue_line_reviewed_vs_zho(
-        yue_hans_transcribe, zho_hans, processor=line_reviewer
+        yue_hans_transcribe, zho_hans, line_reviewer=line_reviewer
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
     yue_hans_transcribe_review.save(outfile_path)
-    print("VAD Auto transcription -> line review CER:")
+    print("Demucs On VAD Auto transcription -> line review CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review))
 
     # Translate
@@ -174,7 +183,7 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "translation"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review_translate = get_yue_translated_vs_zho(
@@ -182,7 +191,7 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review_translate.srt"
     yue_hans_transcribe_review_translate.save(outfile_path)
-    print("VAD Auto transcription -> line review -> translate CER:")
+    print("Demucs On VAD Auto transcription -> line review -> translate CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review_translate))
 
     # Review (block-by-block)
@@ -191,7 +200,7 @@ if "简体粤文 (Transcription)" in actions:
         / "multilang"
         / "yue_zho"
         / "block_review"
-        / f"{get_backend()}.json",
+        / f"{get_torch_device()}.json",
         auto_verify=True,
     )
     yue_hans_transcribe_review_translate_block_review = get_yue_block_reviewed_vs_zho(
@@ -199,37 +208,14 @@ if "简体粤文 (Transcription)" in actions:
     )
     outfile_path = output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
     yue_hans_transcribe_review_translate_block_review.save(outfile_path)
-    print("VAD Auto transcription -> line review -> translate -> review CER:")
+    print("Demucs On VAD Auto transcription -> line review -> translate -> review CER:")
     print(
         get_series_cer(
             yue_hans_reference, yue_hans_transcribe_review_translate_block_review
         )
     )
 
-if "简体粤文 (Transcription Test VAD Off)" in actions:
-    # Stage
-    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
-    zho_hans = Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
-    )
-    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
-
-    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
-    transcriber = get_yue_vs_zho_transcriber(
-        test_case_directory_path=(
-            title_root / "multilang" / "yue_zho" / "transcription"
-        ),
-        vad_mode=VADMode.OFF,
-        deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
-        punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-    )
-    yue_hans_transcribe = get_yue_transcribed_vs_zho(
-        yue_hans_audio, zho_hans, transcriber=transcriber
-    )
-    print("VAD Off transcription CER:")
-    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
-
-if "简体粤文 (Transcription Test VAD On)" in actions:
+if "简体粤文 (Transcription Test Demucs Off VAD Auto)" in actions:
     yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
     zho_hans = Series.load(
         output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
@@ -243,10 +229,44 @@ if "简体粤文 (Transcription Test VAD On)" in actions:
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
-        vad_mode=VADMode.ON,
+        demucs_mode=DemucsMode.OFF,
+        vad_mode=VADMode.AUTO,
     )
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
     )
-    print("VAD On transcription CER:")
+    print("Demucs Off VAD Auto transcription CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
+
+    # Review (line-by-line)
+    yue_hans_transcribe = Series(
+        events=[
+            Series.event_class(**event.as_dict())
+            for event in yue_hans_transcribe.events
+        ]
+    )
+    yue_hans_transcribe_review = get_yue_line_reviewed_vs_zho(
+        yue_hans_transcribe, zho_hans
+    )
+    print("Demucs Off VAD Auto transcription -> line review CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review))
+
+    # Translate
+    yue_hans_transcribe_review_translate = get_yue_translated_vs_zho(
+        yue_hans_transcribe_review, zho_hans
+    )
+    print("Demucs Off VAD Auto transcription -> line review -> translate CER:")
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review_translate))
+
+    # Review (block-by-block)
+    yue_hans_transcribe_review_translate_block_review = get_yue_block_reviewed_vs_zho(
+        yue_hans_transcribe_review_translate, zho_hans
+    )
+    print(
+        "Demucs Off VAD Auto transcription -> line review -> translate -> review CER:"
+    )
+    print(
+        get_series_cer(
+            yue_hans_reference, yue_hans_transcribe_review_translate_block_review
+        )
+    )

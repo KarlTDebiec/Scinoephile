@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from unittest.mock import Mock, patch
 
@@ -18,7 +19,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.transcription import VADMode
+from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueZhoHansDeliniationPrompt,
 )
@@ -60,6 +61,27 @@ def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_yue_transcribe_vs_zho_help_lists_demucs_and_vad_options():
+    """Test 粤文 transcribe-vs-zho CLI help lists Demucs and VAD options."""
+    stdout = StringIO()
+    stderr = StringIO()
+
+    with pytest.raises(SystemExit, match="0"):
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(YueTranscribeVsZhoCli, "-h")
+
+    help_text = stdout.getvalue()
+    assert stderr.getvalue() == ""
+    assert "--demucs DEMUCS" in help_text
+    assert "Demucs vocal-separation mode" in help_text
+    assert "options: on, off;" in help_text
+    assert "default: off" in help_text
+    assert "--vad VAD" in help_text
+    assert "Whisper voice activity detection mode" in help_text
+    assert "off, auto; default: auto" in help_text
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
@@ -104,6 +126,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
         is YueZhoHansPunctuationPrompt
     )
+    assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
@@ -180,6 +203,37 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
                 )
 
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.OFF
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
+    """Test 粤文 transcribe-vs-zho CLI passes through explicit Demucs mode."""
+    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zhongwen-infile {zhongwen_infile_path} --demucs on",
+                )
+
+    assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():

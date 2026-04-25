@@ -16,7 +16,6 @@ from scinoephile.audio.subtitles import (
     get_series_with_sub_split_at_idx,
     get_sub_merged,
 )
-from scinoephile.audio.transcription import get_backend
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import (
@@ -26,6 +25,7 @@ from scinoephile.core.llms import (
     TestCase,
     save_test_cases_to_json,
 )
+from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
@@ -328,17 +328,16 @@ class Aligner:
         """Update all test cases for the specified block."""
         if self.test_case_dir_path is None:
             return
-        backend = get_backend()
 
         deliniation_output_path = (
-            self.test_case_dir_path / "deliniation" / f"{backend}.json"
+            self.test_case_dir_path / "deliniation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
             deliniation_output_path,
             list(self.deliniation_queryer.encountered_test_cases.values()),
         )
         punctuation_output_path = (
-            self.test_case_dir_path / "punctuation" / f"{backend}.json"
+            self.test_case_dir_path / "punctuation" / f"{get_torch_device()}.json"
         )
         save_test_cases_to_json(
             punctuation_output_path,
