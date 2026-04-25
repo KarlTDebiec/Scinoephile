@@ -222,7 +222,9 @@ class YueTranscriber:
 
         assert self.vad_transcriber is not None
         cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
-        if cached_segments is not None:
+        if cached_segments is not None and any(
+            segment.text.strip() for segment in cached_segments
+        ):
             return cached_segments
 
         return None
