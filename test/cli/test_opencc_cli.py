@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from os import environ
+from unittest.mock import patch
 
 import pytest
 
@@ -46,3 +48,22 @@ def test_list_opencc_configs(cli: type[CommandLineInterface]):
     assert "  hk2s  Traditional Chinese (Hong Kong) to Simplified Chinese.\n" in listing
     assert "  s2hk  Simplified Chinese to Traditional Chinese (Hong Kong).\n" in listing
     assert "  t2s   Traditional Chinese to Simplified Chinese.\n" in listing
+
+
+def test_list_opencc_configs_uses_traditional_chinese_descriptions():
+    """Test OpenCC configuration listing localizes descriptions for zh-hant."""
+    stdout = StringIO()
+    stderr = StringIO()
+
+    with patch.dict(environ, {"LC_ALL": "zh-hant"}, clear=False):
+        with pytest.raises(SystemExit, match="0"):
+            with redirect_stdout(stdout):
+                with redirect_stderr(stderr):
+                    run_cli_with_args(ZhoProcessCli, "--list-opencc-configs")
+
+    listing = stdout.getvalue()
+    assert stderr.getvalue() == ""
+    assert listing.startswith("可用 OpenCC 設定：\n")
+    assert "  hk2s  繁體中文（香港標準）轉簡體中文。\n" in listing
+    assert "  s2hk  簡體中文轉繁體中文（香港標準）。\n" in listing
+    assert "  t2s   繁體中文轉簡體中文。\n" in listing
