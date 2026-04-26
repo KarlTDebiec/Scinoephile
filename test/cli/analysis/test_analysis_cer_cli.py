@@ -54,12 +54,12 @@ def test_analysis_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
     [
         (
             "kob/output/yue-Hans/timewarp_clean_flatten.srt",
-            "kob/output/yue-Hans_transcribe.srt",
+            "kob/output/yue-Hans_transcribe/transcribe.srt",
             "kob_yue_hans_transcribe_expected_cer",
         ),
         (
             "kob/output/yue-Hans/timewarp_clean_flatten.srt",
-            "kob/output/yue-Hans_transcribe_review_translate_block_review.srt",
+            "kob/output/yue-Hans_transcribe/transcribe_review_translate_block_review.srt",
             "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
         ),
     ],

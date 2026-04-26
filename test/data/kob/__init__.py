@@ -539,7 +539,7 @@ def kob_eng_timewarp_clean_review_flatten() -> Series:
 @pytest.fixture
 def kob_yue_hans_audio() -> AudioSeries:
     """KOB 简体粤文 audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_audio")
+    return AudioSeries.load(output_dir / "yue-Hans_transcribe" / "audio")
 
 
 @pytest.fixture
@@ -569,7 +569,7 @@ def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
 @pytest.fixture
 def kob_yue_hans_transcribe() -> Series:
     """KOB 简体粤文 transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe.srt")
+    return Series.load(output_dir / "yue-Hans_transcribe" / "transcribe.srt")
 
 
 @pytest.fixture
@@ -588,20 +588,24 @@ def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
 @pytest.fixture
 def kob_yue_hans_transcribe_review() -> Series:
     """KOB 简体粤文 transcribed and line reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_review.srt")
+    return Series.load(output_dir / "yue-Hans_transcribe" / "transcribe_review.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_transcribe_review_translate() -> Series:
     """KOB 简体粤文 transcribed/line-reviewed/translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_review_translate.srt")
+    return Series.load(
+        output_dir / "yue-Hans_transcribe" / "transcribe_review_translate.srt"
+    )
 
 
 @pytest.fixture
 def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
     """KOB 简体粤文 transcribed/line-reviewed/translated/block-reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
+        output_dir
+        / "yue-Hans_transcribe"
+        / "transcribe_review_translate_block_review.srt"
     )
 
 
