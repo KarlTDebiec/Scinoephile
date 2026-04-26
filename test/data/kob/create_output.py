@@ -71,22 +71,14 @@ actions = {
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
 if "English (OCR)" in actions:
-    reviewer_kw = dict(
-        test_case_path=eng_ocr_dir / "lang" / "eng" / "block_review.json",
-    )
-    process_eng_ocr(
-        title_root,
-        reviewer_kw=reviewer_kw,
-        overwrite_srt=True,
-        force_validation=True,
-    )
+    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "Bilingual 繁體中文 and English" in actions:
+    zho_hans_path = (
+        zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
+    eng_path = eng_ocr_dir / "fuse_clean_validate_review_flatten.srt"
     process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hant_ocr_dir
-        / "fuse_clean_validate_review_flatten_simplify_review.srt",
-        eng_path=eng_ocr_dir / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
+        title_root, zho_hans_path=zho_hans_path, eng_path=eng_path, overwrite=True
     )
 if "繁體粵文 (SRT)" in actions:
     zho_hant = Series.load(zho_hant_ocr_dir / "fuse_clean_validate_review.srt")
