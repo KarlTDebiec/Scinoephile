@@ -67,20 +67,20 @@ def test_get_zho_ocr_fused_kob(
 
 
 def test_get_zho_ocr_fused_mlamd(
-    mlamd_zho_hans_lens: Series,
-    mlamd_zho_hans_paddle: Series,
+    mlamd_zho_hans_ocr_lens: Series,
+    mlamd_zho_hans_ocr_paddle: Series,
     mlamd_zho_hans_fuse: Series,
 ):
     """Test get_zho_ocr_fused with MLAMD 中文 subtitles.
 
     Arguments:
-        mlamd_zho_hans_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
-        mlamd_zho_hans_paddle: MLAMD 中文 subtitles OCRed using PaddleOCR fixture
+        mlamd_zho_hans_ocr_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
+        mlamd_zho_hans_ocr_paddle: MLAMD 中文 subtitles OCRed using PaddleOCR fixture
         mlamd_zho_hans_fuse: Expected fused MLAMD 中文 subtitles fixture
     """
-    lens = get_zho_cleaned(mlamd_zho_hans_lens, remove_empty=False)
+    lens = get_zho_cleaned(mlamd_zho_hans_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens)
-    paddle = get_zho_cleaned(mlamd_zho_hans_paddle, remove_empty=False)
+    paddle = get_zho_cleaned(mlamd_zho_hans_ocr_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle)
     _test_get_zho_ocr_fused(lens, paddle, mlamd_zho_hans_fuse)
 

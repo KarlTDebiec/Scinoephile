@@ -63,8 +63,8 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "kob/output/eng_fuse_clean.srt",
         ),
         (
-            "mlamd/input/eng_lens.srt",
-            "mlamd/input/eng_tesseract.srt",
+            "mlamd/input/eng_ocr/lens.srt",
+            "mlamd/input/eng_ocr/tesseract.srt",
             "--clean",
             "mlamd/output/eng_fuse_clean.srt",
         ),

@@ -54,15 +54,15 @@ from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationP
 from test.helpers import test_data_root
 
 __all__ = [
-    "mlamd_eng_lens",
-    "mlamd_eng_sup_path",
-    "mlamd_eng_tesseract",
-    "mlamd_zho_hans_lens",
-    "mlamd_zho_hans_paddle",
-    "mlamd_zho_hans_sup_path",
-    "mlamd_zho_hant_lens",
-    "mlamd_zho_hant_paddle",
-    "mlamd_zho_hant_sup_path",
+    "mlamd_eng_ocr_lens",
+    "mlamd_eng_ocr_sup_path",
+    "mlamd_eng_ocr_tesseract",
+    "mlamd_zho_hans_ocr_lens",
+    "mlamd_zho_hans_ocr_paddle",
+    "mlamd_zho_hans_ocr_sup_path",
+    "mlamd_zho_hant_ocr_lens",
+    "mlamd_zho_hant_ocr_paddle",
+    "mlamd_zho_hant_ocr_sup_path",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
@@ -116,57 +116,57 @@ output_dir = title_root / "output"
 
 
 @pytest.fixture
-def mlamd_eng_lens() -> Series:
+def mlamd_eng_ocr_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_lens.srt")
+    return Series.load(input_dir / "eng_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_eng_sup_path() -> Path:
+def mlamd_eng_ocr_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
-    return input_dir / "eng.sup"
+    return input_dir / "eng_ocr" / "source.sup"
 
 
 @pytest.fixture
-def mlamd_eng_tesseract() -> Series:
+def mlamd_eng_ocr_tesseract() -> Series:
     """MLAMD English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
+    return Series.load(input_dir / "eng_ocr" / "tesseract.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_lens() -> Series:
+def mlamd_zho_hans_ocr_lens() -> Series:
     """MLAMD 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_lens.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_paddle() -> Series:
+def mlamd_zho_hans_ocr_paddle() -> Series:
     """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_paddle.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "paddle.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_sup_path() -> Path:
+def mlamd_zho_hans_ocr_sup_path() -> Path:
     """Path to MLAMD 简体中文 SUP subtitles."""
-    return input_dir / "zho-Hans.sup"
+    return input_dir / "zho-Hans_ocr" / "source.sup"
 
 
 @pytest.fixture
-def mlamd_zho_hant_lens() -> Series:
+def mlamd_zho_hant_ocr_lens() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hant_paddle() -> Series:
+def mlamd_zho_hant_ocr_paddle() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "paddle.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hant_sup_path() -> Path:
+def mlamd_zho_hant_ocr_sup_path() -> Path:
     """Path to MLAMD 繁体中文 SUP subtitles."""
-    return input_dir / "zho-Hant.sup"
+    return input_dir / "zho-Hant_ocr" / "source.sup"
 
 
 @cache
