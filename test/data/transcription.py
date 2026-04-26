@@ -10,10 +10,12 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
+from shutil import copy2
 from typing import Any
 
 from scinoephile.analysis import get_series_cer
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.core import ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho import (
@@ -42,6 +44,10 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     *,
     name: str = "Yue Hans transcription",
     reference_path: Path,
+    output_dir_path: Path | None = None,
+    audio_path: Path | None = None,
+    media_path: Path | None = None,
+    stream_index: int = 0,
     overwrite_srt: bool = False,
     transcriber_kw: dict[str, Any] | None = None,
     line_reviewer_kw: dict[str, Any] | None = None,
@@ -63,6 +69,12 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
           reference language during transcription/review/translation
         name: label printed above CER summaries
         reference_path: reference series path used to compute CER after each stage
+        output_dir_path: directory where pipeline outputs are written; defaults to
+          `title_root/output/yue-Hans_transcribe`
+        audio_path: path to the staged audio wav file; defaults to
+          `title_root/output/yue-Hans_transcribe/audio/audio.wav`
+        media_path: optional media path used to generate `audio_path` if missing
+        stream_index: audio stream index in media used when generating audio
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
@@ -73,21 +85,56 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         final block-reviewed series
     """
     output_dir = title_root / "output"
-    yue_hans_transcribe_dir_path = output_dir / "yue-Hans_transcribe"
+    yue_hans_transcribe_dir_path = (
+        output_dir / "yue-Hans_transcribe"
+        if output_dir_path is None
+        else output_dir_path
+    )
+    yue_hans_transcribe_dir_path.mkdir(parents=True, exist_ok=True)
     reference = Series.load(reference_path)
 
     device = get_torch_device()
     test_case_dir_path = yue_hans_transcribe_dir_path / "multilang" / "yue_zho"
 
+    # Ensure test-case directories exist (some constructors validate as "input dirs")
+    transcription_test_case_dir_path = test_case_dir_path / "transcription"
+    (transcription_test_case_dir_path / "deliniation").mkdir(
+        parents=True, exist_ok=True
+    )
+    (transcription_test_case_dir_path / "punctuation").mkdir(
+        parents=True, exist_ok=True
+    )
+    (test_case_dir_path / "line_review").mkdir(parents=True, exist_ok=True)
+    (test_case_dir_path / "translation").mkdir(parents=True, exist_ok=True)
+    (test_case_dir_path / "block_review").mkdir(parents=True, exist_ok=True)
+
     # Stage audio
-    audio_dir_path = yue_hans_transcribe_dir_path / "audio"
+    if audio_path is None:
+        audio_path = output_dir / "yue-Hans_transcribe" / "audio" / "audio.wav"
+    audio_dir_path = audio_path.parent
     audio_dir_path.mkdir(parents=True, exist_ok=True)
+    expected_audio_path = audio_dir_path / "audio.wav"
+    if audio_path.exists() and audio_path != expected_audio_path:
+        if not expected_audio_path.exists() or overwrite_srt:
+            copy2(audio_path, expected_audio_path)
 
     zho = Series.load(zho_path)
     audio_srt_path = audio_dir_path / "audio.srt"
     if overwrite_srt or not audio_srt_path.exists():
         zho.save(audio_srt_path)
 
+    if not expected_audio_path.exists():
+        if media_path is None:
+            raise ScinoephileError(
+                "Staged audio is missing. Provide `media_path` to generate it, or "
+                f"stage {expected_audio_path} manually."
+            )
+        yue_hans_audio = AudioSeries.load_from_media(
+            media_path=media_path,
+            subtitle_path=audio_srt_path,
+            stream_index=stream_index,
+        )
+        yue_hans_audio.save(audio_dir_path)
     yue_hans_audio = AudioSeries.load(audio_dir_path)
 
     # Transcribe
@@ -99,7 +146,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
             transcriber_kw = {}
         transcriber_kw.setdefault(
             "test_case_directory_path",
-            test_case_dir_path / "transcription",
+            transcription_test_case_dir_path,
         )
         transcriber = get_yue_vs_zho_transcriber(
             **transcriber_kw,

@@ -18,19 +18,30 @@ from scinoephile.lang.eng.block_review import get_eng_block_reviewer
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
-from scinoephile.multilang.yue_zho.line_review import YueVsZhoYueHansLineReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import (
+    YueVsZhoYueHansBlockReviewPrompt,
+    YueVsZhoYueHantBlockReviewPrompt,
+)
+from scinoephile.multilang.yue_zho.line_review import (
+    YueVsZhoYueHansLineReviewPrompt,
+    YueVsZhoYueHantLineReviewPrompt,
+)
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueVsZhoYueHansDeliniationPrompt,
+    YueVsZhoYueHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoYueHansPunctuationPrompt,
+    YueVsZhoYueHantPunctuationPrompt,
 )
-from scinoephile.multilang.yue_zho.translation import YueVsZhoYueHansTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import (
+    YueVsZhoYueHansTranslationPrompt,
+    YueVsZhoYueHantTranslationPrompt,
+)
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_yue_hans_transcription
@@ -122,22 +133,48 @@ if "简体粤文 (Transcription)" in actions:
     zho_hans_path = (
         zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    reference_path = yue_hans_dir / "timewarp_clean_flatten.srt"
-    yue_hans_transcribe_review_translate_block_review = process_yue_hans_transcription(
+    simplified_reference_path = yue_hans_dir / "timewarp_clean_flatten.srt"
+    traditional_reference_path = yue_hant_dir / "timewarp_clean_flatten.srt"
+    audio_path = yue_hans_transcribe_dir / "audio" / "yue-Hans_audio.wav"
+
+    process_yue_hans_transcription(
         title_root,
         zho_path=zho_hans_path,
-        reference_path=reference_path,
-        name="KOB transcription (Demucs ON, VAD AUTO)",
+        reference_path=simplified_reference_path,
+        output_dir_path=yue_hans_transcribe_dir / "test_simplified",
+        audio_path=audio_path,
+        name="KOB transcription test 1 (simplified)",
         transcriber_kw={
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.t2s,
+            "convert": OpenCCConfig.hk2s,
             "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
             "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
         },
         line_reviewer_kw={"prompt_cls": YueVsZhoYueHansLineReviewPrompt},
         translator_kw={"prompt_cls": YueVsZhoYueHansTranslationPrompt},
         block_reviewer_kw={"prompt_cls": YueVsZhoYueHansBlockReviewPrompt},
+        overwrite_srt=True,
+    )
+
+    process_yue_hans_transcription(
+        title_root,
+        zho_path=zh_hant_path,
+        reference_path=traditional_reference_path,
+        output_dir_path=yue_hans_transcribe_dir / "test_traditional",
+        audio_path=audio_path,
+        name="KOB transcription test 2 (traditional)",
+        transcriber_kw={
+            "model_name": "khleeloo/whisper-large-v3-cantonese",
+            "demucs_mode": DemucsMode.ON,
+            "vad_mode": VADMode.AUTO,
+            "convert": OpenCCConfig.s2hk,
+            "deliniation_prompt_cls": YueVsZhoYueHantDeliniationPrompt,
+            "punctuation_prompt_cls": YueVsZhoYueHantPunctuationPrompt,
+        },
+        line_reviewer_kw={"prompt_cls": YueVsZhoYueHantLineReviewPrompt},
+        translator_kw={"prompt_cls": YueVsZhoYueHantTranslationPrompt},
+        block_reviewer_kw={"prompt_cls": YueVsZhoYueHantBlockReviewPrompt},
         overwrite_srt=True,
     )
