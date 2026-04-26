@@ -85,17 +85,17 @@ def test_get_eng_ocr_fused_mnt(
 
 
 def test_get_eng_ocr_fused_t(
-    t_eng_lens: Series,
-    t_eng_tesseract: Series,
+    t_eng_ocr_lens: Series,
+    t_eng_ocr_tesseract: Series,
     t_eng_fuse: Series,
 ):
     """Test get_eng_ocr_fused with T English subtitles.
 
     Arguments:
-        t_eng_lens: T English subtitles OCRed using Google Lens fixture
-        t_eng_tesseract: T English subtitles OCRed using Tesseract fixture
+        t_eng_ocr_lens: T English subtitles OCRed using Google Lens fixture
+        t_eng_ocr_tesseract: T English subtitles OCRed using Tesseract fixture
         t_eng_fuse: Expected fused T English subtitles fixture
     """
-    lens = get_eng_cleaned(t_eng_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(t_eng_tesseract, remove_empty=False)
+    lens = get_eng_cleaned(t_eng_ocr_lens, remove_empty=False)
+    tesseract = get_eng_cleaned(t_eng_ocr_tesseract, remove_empty=False)
     _test_get_eng_ocr_fused(lens, tesseract, t_eng_fuse)

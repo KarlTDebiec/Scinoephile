@@ -75,8 +75,8 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/zho-Hans_fuse.srt",
         ),
         (
-            "t/input/zho-Hans_lens.srt",
-            "t/input/zho-Hans_paddle.srt",
+            "t/input/zho-Hans_ocr/lens.srt",
+            "t/input/zho-Hans_ocr/paddle.srt",
             "--clean --convert t2s",
             "t/output/zho-Hans_fuse.srt",
         ),

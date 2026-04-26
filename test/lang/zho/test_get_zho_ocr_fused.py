@@ -105,19 +105,19 @@ def test_get_zho_ocr_fused_mnt(
 
 
 def test_get_zho_ocr_fused_t(
-    t_zho_hans_lens: Series,
-    t_zho_hans_paddle: Series,
+    t_zho_hans_ocr_lens: Series,
+    t_zho_hans_ocr_paddle: Series,
     t_zho_hans_fuse: Series,
 ):
     """Test get_zho_ocr_fused with T 中文 subtitles.
 
     Arguments:
-        t_zho_hans_lens: T 中文 subtitles OCRed using Google Lens fixture
-        t_zho_hans_paddle: T 中文 subtitles OCRed using PaddleOCR fixture
+        t_zho_hans_ocr_lens: T 中文 subtitles OCRed using Google Lens fixture
+        t_zho_hans_ocr_paddle: T 中文 subtitles OCRed using PaddleOCR fixture
         t_zho_hans_fuse: Expected fused T 中文 subtitles fixture
     """
-    lens = get_zho_cleaned(t_zho_hans_lens, remove_empty=False)
+    lens = get_zho_cleaned(t_zho_hans_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens)
-    paddle = get_zho_cleaned(t_zho_hans_paddle, remove_empty=False)
+    paddle = get_zho_cleaned(t_zho_hans_ocr_paddle, remove_empty=False)
     paddle = get_zho_converted(paddle)
     _test_get_zho_ocr_fused(lens, paddle, t_zho_hans_fuse)

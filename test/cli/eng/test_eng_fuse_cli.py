@@ -75,8 +75,8 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            "t/input/eng_lens.srt",
-            "t/input/eng_tesseract.srt",
+            "t/input/eng_ocr/lens.srt",
+            "t/input/eng_ocr/tesseract.srt",
             "--clean",
             "t/output/eng_fuse_clean.srt",
         ),
