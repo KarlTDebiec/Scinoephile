@@ -60,7 +60,7 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "kob/input/eng_ocr/lens.srt",
             "kob/input/eng_ocr/tesseract.srt",
             "--clean",
-            "kob/output/eng_fuse_clean.srt",
+            "kob/output/eng_ocr/fuse_clean.srt",
         ),
         (
             "mlamd/input/eng_ocr/lens.srt",
@@ -120,7 +120,7 @@ def test_eng_fuse_cli(
             "kob/input/eng_ocr/lens.srt",
             "kob/input/eng_ocr/tesseract.srt",
             "",
-            "kob/output/eng_fuse.srt",
+            "kob/output/eng_ocr/fuse.srt",
         ),
     ],
 )

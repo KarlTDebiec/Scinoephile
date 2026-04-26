@@ -61,12 +61,12 @@ __all__ = [
     "get_kob_zho_hant_ocr_fusion_test_cases",
     "get_kob_zho_hant_simplify_block_review_test_cases",
     "kob_eng_expected_series_diff",
-    "kob_eng_fuse",
-    "kob_eng_fuse_clean",
-    "kob_eng_fuse_clean_validate",
-    "kob_eng_fuse_clean_validate_review",
-    "kob_eng_fuse_clean_validate_review_flatten",
-    "kob_eng_image",
+    "kob_eng_ocr_fuse",
+    "kob_eng_ocr_fuse_clean",
+    "kob_eng_ocr_fuse_clean_validate",
+    "kob_eng_ocr_fuse_clean_validate_review",
+    "kob_eng_ocr_fuse_clean_validate_review_flatten",
+    "kob_eng_ocr_image",
     "kob_eng_timewarp",
     "kob_eng_timewarp_clean",
     "kob_eng_timewarp_clean_review",
@@ -475,63 +475,65 @@ def kob_eng_expected_series_diff() -> list[str]:
 
 
 @pytest.fixture
-def kob_eng_fuse() -> Series:
+def kob_eng_ocr_fuse() -> Series:
     """KOB English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse.srt")
 
 
 @pytest.fixture
-def kob_eng_fuse_clean() -> Series:
+def kob_eng_ocr_fuse_clean() -> Series:
     """KOB English fused and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
-def kob_eng_fuse_clean_validate() -> Series:
+def kob_eng_ocr_fuse_clean_validate() -> Series:
     """KOB English fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
-def kob_eng_fuse_clean_validate_review() -> Series:
+def kob_eng_ocr_fuse_clean_validate_review() -> Series:
     """KOB English fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def kob_eng_fuse_clean_validate_review_flatten() -> Series:
+def kob_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
     """KOB English fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
-def kob_eng_image() -> ImageSeries:
+def kob_eng_ocr_image() -> ImageSeries:
     """KOB English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "eng_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def kob_eng_timewarp() -> Series:
     """KOB English timewarp subtitles."""
-    return Series.load(output_dir / "eng_timewarp.srt")
+    return Series.load(output_dir / "eng" / "timewarp.srt")
 
 
 @pytest.fixture
 def kob_eng_timewarp_clean() -> Series:
     """KOB English timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "eng_timewarp_clean.srt")
+    return Series.load(output_dir / "eng" / "timewarp_clean.srt")
 
 
 @pytest.fixture
 def kob_eng_timewarp_clean_review() -> Series:
     """KOB English timewarp, cleaned, and reviewed subtitles."""
-    return Series.load(output_dir / "eng_timewarp_clean_review.srt")
+    return Series.load(output_dir / "eng" / "timewarp_clean_review.srt")
 
 
 @pytest.fixture
 def kob_eng_timewarp_clean_review_flatten() -> Series:
     """KOB English timewarp, cleaned, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "eng_timewarp_clean_review_flatten.srt")
+    return Series.load(output_dir / "eng" / "timewarp_clean_review_flatten.srt")
 
 
 @pytest.fixture

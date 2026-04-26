@@ -43,7 +43,7 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
 
 def test_get_synced_series_kob(
     kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review: Series,
-    kob_eng_fuse_clean_validate_review_flatten: Series,
+    kob_eng_ocr_fuse_clean_validate_review_flatten: Series,
     kob_zho_hans_eng: Series,
 ):
     """Test get_synced_series with KOB subtitles.
@@ -51,12 +51,12 @@ def test_get_synced_series_kob(
     Arguments:
         kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review: 简体中文
           subtitle fixture
-        kob_eng_fuse_clean_validate_review_flatten: English subtitle fixture
+        kob_eng_ocr_fuse_clean_validate_review_flatten: English subtitle fixture
         kob_zho_hans_eng: expected synced subtitles fixture
     """
     _test_get_synced_series(
         kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review,
-        kob_eng_fuse_clean_validate_review_flatten,
+        kob_eng_ocr_fuse_clean_validate_review_flatten,
         kob_zho_hans_eng,
     )
 

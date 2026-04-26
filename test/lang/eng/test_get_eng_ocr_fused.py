@@ -36,18 +36,18 @@ def _test_get_eng_ocr_fused(lens: Series, tesseract: Series, expected: Series):
 def test_get_eng_ocr_fused_kob(
     kob_eng_ocr_lens: Series,
     kob_eng_ocr_tesseract: Series,
-    kob_eng_fuse: Series,
+    kob_eng_ocr_fuse: Series,
 ):
     """Test get_english_ocr_fused with KOB English subtitles.
 
     Arguments:
         kob_eng_ocr_lens: KOB English subtitles OCRed using Google Lens fixture
         kob_eng_ocr_tesseract: KOB English subtitles OCRed using Tesseract fixture
-        kob_eng_fuse: Expected fused KOB English subtitles fixture
+        kob_eng_ocr_fuse: Expected fused KOB English subtitles fixture
     """
     lens = get_eng_cleaned(kob_eng_ocr_lens, remove_empty=False)
     tesseract = get_eng_cleaned(kob_eng_ocr_tesseract, remove_empty=False)
-    _test_get_eng_ocr_fused(lens, tesseract, kob_eng_fuse)
+    _test_get_eng_ocr_fused(lens, tesseract, kob_eng_ocr_fuse)
 
 
 def test_get_eng_ocr_fused_mlamd(
