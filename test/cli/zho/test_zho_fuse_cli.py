@@ -60,7 +60,7 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "kob/input/zho-Hant_ocr/lens.srt",
             "kob/input/zho-Hant_ocr/paddle.srt",
             "--clean --convert s2t",
-            "kob/output/zho-Hant_fuse.srt",
+            "kob/output/zho-Hant_ocr/fuse.srt",
         ),
         (
             "mlamd/input/zho-Hans_ocr/lens.srt",

@@ -45,14 +45,14 @@ def _test_get_zho_ocr_fused(
 def test_get_zho_ocr_fused_kob(
     kob_zho_hant_ocr_lens: Series,
     kob_zho_hant_ocr_paddle: Series,
-    kob_zho_hant_fuse: Series,
+    kob_zho_hant_ocr_fuse: Series,
 ):
     """Test get_zho_ocr_fused with KOB 中文 subtitles.
 
     Arguments:
         kob_zho_hant_ocr_lens: KOB 中文 subtitles OCRed using Google Lens fixture
         kob_zho_hant_ocr_paddle: KOB 中文 subtitles OCRed using PaddleOCR fixture
-        kob_zho_hant_fuse: Expected fused KOB 中文 subtitles fixture
+        kob_zho_hant_ocr_fuse: Expected fused KOB 中文 subtitles fixture
     """
     lens = get_zho_cleaned(kob_zho_hant_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens, config=OpenCCConfig.s2t)
@@ -61,7 +61,7 @@ def test_get_zho_ocr_fused_kob(
     _test_get_zho_ocr_fused(
         lens,
         paddle,
-        kob_zho_hant_fuse,
+        kob_zho_hant_ocr_fuse,
         get_zho_ocr_fuser(prompt_cls=ZhoHantOcrFusionPrompt),
     )
 

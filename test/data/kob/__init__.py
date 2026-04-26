@@ -86,15 +86,15 @@ __all__ = [
     "kob_yue_hant_timewarp_clean",
     "kob_yue_hant_timewarp_clean_flatten",
     "kob_zho_hans_eng",
-    "kob_zho_hant_fuse",
-    "kob_zho_hant_fuse_clean",
-    "kob_zho_hant_fuse_clean_validate",
-    "kob_zho_hant_fuse_clean_validate_review",
-    "kob_zho_hant_fuse_clean_validate_review_flatten",
-    "kob_zho_hant_fuse_clean_validate_review_flatten_simplify",
-    "kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review",
-    "kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize",
-    "kob_zho_hant_image",
+    "kob_zho_hant_ocr_fuse",
+    "kob_zho_hant_ocr_fuse_clean",
+    "kob_zho_hant_ocr_fuse_clean_validate",
+    "kob_zho_hant_ocr_fuse_clean_validate_review",
+    "kob_zho_hant_ocr_fuse_clean_validate_review_flatten",
+    "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
+    "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
+    "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
+    "kob_zho_hant_ocr_image",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -645,62 +645,67 @@ def kob_zho_hans_eng() -> Series:
 
 
 @pytest.fixture
-def kob_zho_hant_fuse() -> Series:
+def kob_zho_hant_ocr_fuse() -> Series:
     """KOB 繁体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse.srt")
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean() -> Series:
+def kob_zho_hant_ocr_fuse_clean() -> Series:
     """KOB 繁体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate() -> Series:
+def kob_zho_hant_ocr_fuse_clean_validate() -> Series:
     """KOB 繁体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate_review() -> Series:
+def kob_zho_hant_ocr_fuse_clean_validate_review() -> Series:
     """KOB 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate_review_flatten() -> Series:
+def kob_zho_hant_ocr_fuse_clean_validate_review_flatten() -> Series:
     """KOB 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
+def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify() -> Series:
     """KOB 繁体中文 simplified fused/cleaned/validated/reviewed/flattened subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
+def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """KOB 繁体中文 simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 
 @pytest.fixture
-def kob_zho_hant_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
+def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize(  # noqa: E501
 ) -> Series:
     """KOB 简体中文 simplified/reviewed fused/cleaned romanized subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_"
-        "simplify_review_romanize.srt"
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
     )
 
 
 @pytest.fixture
-def kob_zho_hant_image() -> ImageSeries:
+def kob_zho_hant_ocr_image() -> ImageSeries:
     """KOB 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "zho-Hant_ocr" / "image", encoding="utf-8")
