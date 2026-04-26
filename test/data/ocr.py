@@ -94,9 +94,12 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
         if fuser_kw is None:
             fuser_kw = {}
+        new_test_case_path = output_dir / "eng_ocr" / "lang" / "eng" / "ocr_fusion.json"
+        if not new_test_case_path.exists():
+            new_test_case_path = title_root / "lang" / "eng" / "ocr_fusion.json"
         fuser_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "eng" / "ocr_fusion.json",
+            new_test_case_path,
         )
         fuser = get_eng_ocr_fuser(
             auto_verify=True,
@@ -155,9 +158,14 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     else:
         if reviewer_kw is None:
             reviewer_kw = {}
+        new_test_case_path = (
+            output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json"
+        )
+        if not new_test_case_path.exists():
+            new_test_case_path = title_root / "lang" / "eng" / "block_review.json"
         reviewer_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "eng" / "block_review.json",
+            new_test_case_path,
         )
         reviewer = get_eng_block_reviewer(
             auto_verify=True,
@@ -225,9 +233,16 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
         if fuser_kw is None:
             fuser_kw = {}
+        new_test_case_path = (
+            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "ocr_fusion.json"
+        )
+        if not new_test_case_path.exists():
+            new_test_case_path = (
+                title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json"
+            )
         fuser_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json",
+            new_test_case_path,
         )
         fuser = get_zho_ocr_fuser(
             auto_verify=True,
@@ -287,9 +302,16 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     else:
         if reviewer_kw is None:
             reviewer_kw = {}
+        new_test_case_path = (
+            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "block_review.json"
+        )
+        if not new_test_case_path.exists():
+            new_test_case_path = (
+                title_root / "lang" / "zho" / "block_review" / "zho-Hans.json"
+            )
         reviewer_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "block_review" / "zho-Hans.json",
+            new_test_case_path,
         )
         reviewer = get_zho_reviewer(
             auto_verify=True,
@@ -367,9 +389,16 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
         if fuser_kw is None:
             fuser_kw = {}
+        new_test_case_path = (
+            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "ocr_fusion.json"
+        )
+        if not new_test_case_path.exists():
+            new_test_case_path = (
+                title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json"
+            )
         fuser_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "ocr_fusion" / f"{lang_code}.json",
+            new_test_case_path,
         )
         fuser = get_zho_ocr_fuser(
             prompt_cls=ZhoHantOcrFusionPrompt,
@@ -430,9 +459,16 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     else:
         if reviewer_kw is None:
             reviewer_kw = {}
+        new_test_case_path = (
+            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "block_review.json"
+        )
+        if not new_test_case_path.exists():
+            new_test_case_path = (
+                title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
+            )
         reviewer_kw.setdefault(
             "test_case_path",
-            title_root / "lang" / "zho" / "block_review" / "zho-Hant.json",
+            new_test_case_path,
         )
         reviewer = get_zho_reviewer(
             prompt_cls=ZhoHantBlockReviewPrompt,

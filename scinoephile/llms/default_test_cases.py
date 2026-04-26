@@ -29,15 +29,15 @@ __all__ = [
 logger = getLogger(__name__)
 
 ENG_BLOCK_REVIEW_JSON_PATHS = (
-    Path("kob/lang/eng/block_review/eng_ocr.json"),
-    Path("kob/lang/eng/block_review/eng_srt.json"),
+    Path("kob/output/eng_ocr/lang/eng/block_review.json"),
+    Path("kob/output/eng/lang/eng/block_review.json"),
     Path("mlamd/lang/eng/block_review.json"),
     Path("mnt/lang/eng/block_review.json"),
     Path("t/lang/eng/block_review.json"),
 )
 
 ENG_OCR_FUSION_JSON_PATHS = (
-    Path("kob/lang/eng/ocr_fusion.json"),
+    Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
     Path("mlamd/lang/eng/ocr_fusion.json"),
     Path("mnt/lang/eng/ocr_fusion.json"),
     Path("t/lang/eng/ocr_fusion.json"),
@@ -50,7 +50,7 @@ ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
 )
 
 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS = (
-    Path("kob/lang/zho/block_review/zho-Hant.json"),
+    Path("kob/output/zho-Hant_ocr/lang/zho/block_review.json"),
     Path("mlamd/lang/zho/block_review/zho-Hant.json"),
     Path("mnt/lang/zho/block_review/zho-Hant.json"),
     Path("t/lang/zho/block_review/zho-Hant.json"),
@@ -63,7 +63,7 @@ ZHO_HANS_OCR_FUSION_JSON_PATHS = (
 )
 
 ZHO_HANT_OCR_FUSION_JSON_PATHS = (
-    Path("kob/lang/zho/ocr_fusion/zho-Hant.json"),
+    Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
     Path("mlamd/lang/zho/ocr_fusion/zho-Hant.json"),
     Path("mnt/lang/zho/ocr_fusion/zho-Hant.json"),
     Path("t/lang/zho/ocr_fusion/zho-Hant.json"),

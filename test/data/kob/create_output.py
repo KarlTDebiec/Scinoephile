@@ -65,7 +65,7 @@ if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
 if "English (OCR)" in actions:
     reviewer_kw = dict(
-        test_case_path=title_root / "lang" / "eng" / "block_review" / "eng_ocr.json",
+        test_case_path=output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json",
     )
     process_eng_ocr(
         title_root,
@@ -113,7 +113,7 @@ if "English (SRT)" in actions:
     eng_clean = get_eng_cleaned(eng_timewarp)
     eng_clean.save(output_dir / "eng_timewarp_clean.srt")
     eng_proofreader = get_eng_block_reviewer(
-        test_case_path=title_root / "lang" / "eng" / "block_review" / "eng_srt.json",
+        test_case_path=output_dir / "eng" / "lang" / "eng" / "block_review.json",
         auto_verify=True,
     )
     eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
@@ -139,7 +139,11 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=(
-            title_root / "multilang" / "yue_zho" / "transcription"
+            output_dir
+            / "yue-Hans_transcribe"
+            / "multilang"
+            / "yue_zho"
+            / "transcription"
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
@@ -162,7 +166,8 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
         ]
     )
     line_reviewer = get_yue_vs_zho_line_reviewer(
-        test_case_path=title_root
+        test_case_path=output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "line_review"
@@ -179,7 +184,8 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
 
     # Translate
     translator = get_yue_vs_zho_translator(
-        test_case_path=title_root
+        test_case_path=output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "translation"
@@ -196,7 +202,8 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
 
     # Review (block-by-block)
     reviewer = get_yue_vs_zho_block_reviewer(
-        test_case_path=title_root
+        test_case_path=output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "block_review"
@@ -225,7 +232,11 @@ if "简体粤文 (Transcription Test Demucs Off VAD Auto)" in actions:
     yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=(
-            title_root / "multilang" / "yue_zho" / "transcription"
+            output_dir
+            / "yue-Hans_transcribe"
+            / "multilang"
+            / "yue_zho"
+            / "transcription"
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
