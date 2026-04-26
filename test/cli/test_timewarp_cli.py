@@ -57,7 +57,7 @@ def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
             "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
             "kob/input/yue-Hant.srt",
             "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
-            "kob/output/yue-Hant_timewarp.srt",
+            "kob/output/yue-Hant/timewarp.srt",
         ),
     ],
 )
@@ -98,7 +98,7 @@ def test_timewarp_cli(
             "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
             "kob/input/yue-Hant.srt",
             "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
-            "kob/output/yue-Hant_timewarp.srt",
+            "kob/output/yue-Hant/timewarp.srt",
         ),
     ],
 )

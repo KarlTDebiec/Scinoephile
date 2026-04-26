@@ -545,25 +545,25 @@ def kob_yue_hans_audio() -> AudioSeries:
 @pytest.fixture
 def kob_yue_hans_timewarp() -> Series:
     """KOB 简体粤文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hans_timewarp.srt")
+    return Series.load(output_dir / "yue-Hans" / "timewarp.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_timewarp_clean() -> Series:
     """KOB 简体粤文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hans_timewarp_clean.srt")
+    return Series.load(output_dir / "yue-Hans" / "timewarp_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_timewarp_clean_flatten() -> Series:
     """KOB 简体粤文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    return Series.load(output_dir / "yue-Hans" / "timewarp_clean_flatten.srt")
 
 
 @pytest.fixture
 def kob_yue_hans_timewarp_clean_flatten_romanize() -> Series:
     """KOB 简体粤文 timewarp/cleaned/flattened romanized subtitles."""
-    return Series.load(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
+    return Series.load(output_dir / "yue-Hans" / "timewarp_clean_flatten_romanize.srt")
 
 
 @pytest.fixture
@@ -623,19 +623,19 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 @pytest.fixture
 def kob_yue_hant_timewarp() -> Series:
     """KOB 繁體粵文 timewarp subtitles."""
-    return Series.load(output_dir / "yue-Hant_timewarp.srt")
+    return Series.load(output_dir / "yue-Hant" / "timewarp.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_timewarp_clean() -> Series:
     """KOB 繁體粵文 timewarp and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hant_timewarp_clean.srt")
+    return Series.load(output_dir / "yue-Hant" / "timewarp_clean.srt")
 
 
 @pytest.fixture
 def kob_yue_hant_timewarp_clean_flatten() -> Series:
     """KOB 繁體粵文 timewarp, cleaned, and flattened subtitles."""
-    return Series.load(output_dir / "yue-Hant_timewarp_clean_flatten.srt")
+    return Series.load(output_dir / "yue-Hant" / "timewarp_clean_flatten.srt")
 
 
 @pytest.fixture
