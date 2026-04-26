@@ -77,13 +77,17 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         fuse = Series.load(fuse_path)
     else:
         # Lens
-        lens_path = input_dir / "eng_lens.srt"
+        lens_path = input_dir / "eng_ocr" / "lens.srt"
+        if not lens_path.exists():
+            lens_path = input_dir / "eng_lens.srt"
         lens = Series.load(lens_path)
         lens = get_eng_cleaned(lens, remove_empty=False)
         lens.save(lens_path)
 
         # Tesseract
-        tesseract_path = input_dir / "eng_tesseract.srt"
+        tesseract_path = input_dir / "eng_ocr" / "tesseract.srt"
+        if not tesseract_path.exists():
+            tesseract_path = input_dir / "eng_tesseract.srt"
         tesseract = Series.load(tesseract_path)
         tesseract = get_eng_cleaned(tesseract, remove_empty=False)
         tesseract.save(tesseract_path)

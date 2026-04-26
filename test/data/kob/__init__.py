@@ -46,12 +46,12 @@ from test.helpers import test_data_root
 
 __all__ = [
     "kob_eng",
-    "kob_eng_lens",
-    "kob_eng_tesseract",
+    "kob_eng_ocr_lens",
+    "kob_eng_ocr_tesseract",
     "kob_yue_hans",
     "kob_yue_hant",
-    "kob_zho_hant_lens",
-    "kob_zho_hant_paddle",
+    "kob_zho_hant_ocr_lens",
+    "kob_zho_hant_ocr_paddle",
     "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
@@ -109,15 +109,15 @@ def kob_eng() -> Series:
 
 
 @pytest.fixture
-def kob_eng_lens() -> Series:
+def kob_eng_ocr_lens() -> Series:
     """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_lens.srt")
+    return Series.load(input_dir / "eng_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def kob_eng_tesseract() -> Series:
+def kob_eng_ocr_tesseract() -> Series:
     """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
+    return Series.load(input_dir / "eng_ocr" / "tesseract.srt")
 
 
 @pytest.fixture
@@ -133,15 +133,15 @@ def kob_yue_hant() -> Series:
 
 
 @pytest.fixture
-def kob_zho_hant_lens() -> Series:
+def kob_zho_hant_ocr_lens() -> Series:
     """KOB 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def kob_zho_hant_paddle() -> Series:
+def kob_zho_hant_ocr_paddle() -> Series:
     """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "paddle.srt")
 
 
 @cache
@@ -574,11 +574,11 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return CharacterErrorRateResult(
-        cer=0.8675706612661794,
-        substitutions=3731,
-        insertions=2845,
-        deletions=3277,
-        correct=4349,
+        cer=1.4556661090076606,
+        substitutions=4032,
+        insertions=6149,
+        deletions=6351,
+        correct=974,
         reference_length=11357,
     )
 
@@ -609,11 +609,11 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return CharacterErrorRateResult(
-        cer=0.6570397111913358,
-        substitutions=2450,
-        insertions=2433,
-        deletions=2579,
-        correct=6328,
+        cer=0.9637228141234481,
+        substitutions=4626,
+        insertions=3101,
+        deletions=3218,
+        correct=3513,
         reference_length=11357,
     )
 

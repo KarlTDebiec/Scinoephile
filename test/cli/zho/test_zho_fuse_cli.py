@@ -57,8 +57,8 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("lens_path", "paddle_path", "args", "expected_path"),
     [
         (
-            "kob/input/zho-Hant_lens.srt",
-            "kob/input/zho-Hant_paddle.srt",
+            "kob/input/zho-Hant_ocr/lens.srt",
+            "kob/input/zho-Hant_ocr/paddle.srt",
             "--clean --convert s2t",
             "kob/output/zho-Hant_fuse.srt",
         ),

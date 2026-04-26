@@ -57,8 +57,8 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("lens_input_path", "tesseract_input_path", "args", "expected_path"),
     [
         (
-            "kob/input/eng_lens.srt",
-            "kob/input/eng_tesseract.srt",
+            "kob/input/eng_ocr/lens.srt",
+            "kob/input/eng_ocr/tesseract.srt",
             "--clean",
             "kob/output/eng_fuse_clean.srt",
         ),
@@ -117,8 +117,8 @@ def test_eng_fuse_cli(
     ("lens_input_path", "tesseract_input_path", "args", "expected_path"),
     [
         (
-            "kob/input/eng_lens.srt",
-            "kob/input/eng_tesseract.srt",
+            "kob/input/eng_ocr/lens.srt",
+            "kob/input/eng_ocr/tesseract.srt",
             "",
             "kob/output/eng_fuse.srt",
         ),
