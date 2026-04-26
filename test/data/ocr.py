@@ -70,9 +70,10 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     """
     input_dir = title_root / "input"
     output_dir = title_root / "output"
+    ocr_output_dir = output_dir / "eng_ocr"
 
     # Fuse
-    fuse_path = output_dir / "eng_fuse.srt"
+    fuse_path = ocr_output_dir / "fuse.srt"
     if fuse_path.exists() and not overwrite_srt:
         fuse = Series.load(fuse_path)
     else:
@@ -102,19 +103,19 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         fuse.save(fuse_path)
 
     # Clean
-    clean_path = output_dir / "eng_fuse_clean.srt"
+    clean_path = ocr_output_dir / "fuse_clean.srt"
     if clean_path.exists() and not overwrite_srt:
         clean = Series.load(clean_path)
     else:
         clean = get_eng_cleaned(fuse, remove_empty=False)
-        clean.save(output_dir / "eng_fuse_clean.srt")
+        clean.save(clean_path)
 
     # Validate
-    validate_path = output_dir / "eng_fuse_clean_validate.srt"
+    validate_path = ocr_output_dir / "fuse_clean_validate.srt"
     if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
-        image_path = output_dir / "eng_image"
+        image_path = ocr_output_dir / "image"
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
@@ -135,7 +136,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             for text_sub, image_sub in zip(clean, image):
                 image_sub.text = text_sub.text
             image.save(image_path)
-        image_validation_path = output_dir / "eng_validation"
+        image_validation_path = ocr_output_dir / "validation"
         validate = validate_eng_ocr(
             image,
             output_dir_path=image_validation_path,
@@ -145,7 +146,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate = Series.load(validate_path)
 
     # Block review
-    review_path = output_dir / "eng_fuse_clean_validate_review.srt"
+    review_path = ocr_output_dir / "fuse_clean_validate_review.srt"
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
@@ -163,7 +164,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         review.save(review_path)
 
     # Flatten
-    flatten_path = output_dir / "eng_fuse_clean_validate_review_flatten.srt"
+    flatten_path = ocr_output_dir / "fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -201,9 +202,10 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     input_dir = title_root / "input"
     output_dir = title_root / "output"
     lang_code = f"{lang}-Hans"
+    ocr_output_dir = output_dir / f"{lang_code}_ocr"
 
     # Fuse
-    fuse_path = output_dir / f"{lang_code}_fuse.srt"
+    fuse_path = ocr_output_dir / "fuse.srt"
     if fuse_path.exists() and not overwrite_srt:
         fuse = Series.load(fuse_path)
     else:
@@ -233,7 +235,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         fuse.save(fuse_path)
 
     # Clean
-    clean_path = output_dir / f"{lang_code}_fuse_clean.srt"
+    clean_path = ocr_output_dir / "fuse_clean.srt"
     if clean_path.exists() and not overwrite_srt:
         clean = Series.load(clean_path)
     else:
@@ -242,11 +244,11 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         clean.save(clean_path)
 
     # Validate
-    validate_path = output_dir / f"{lang_code}_fuse_clean_validate.srt"
+    validate_path = ocr_output_dir / "fuse_clean_validate.srt"
     if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
-        image_path = output_dir / f"{lang_code}_image"
+        image_path = ocr_output_dir / "image"
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
@@ -267,7 +269,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             for text_sub, image_sub in zip(clean, image):
                 image_sub.text = text_sub.text
             image.save(image_path)
-        image_validation_path = output_dir / f"{lang_code}_validation"
+        image_validation_path = ocr_output_dir / "validation"
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
@@ -277,7 +279,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate = Series.load(validate_path)
 
     # Block review
-    review_path = output_dir / f"{lang_code}_fuse_clean_validate_review.srt"
+    review_path = ocr_output_dir / "fuse_clean_validate_review.srt"
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
@@ -295,7 +297,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         review.save(review_path)
 
     # Flatten
-    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_review_flatten.srt"
+    flatten_path = ocr_output_dir / "fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -303,9 +305,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         flatten.save(flatten_path, exist_ok=True)
 
     # Romanize
-    romanize_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_romanize.srt"
-    )
+    romanize_path = ocr_output_dir / "fuse_clean_validate_review_flatten_romanize.srt"
     if not romanize_path.exists() or overwrite_srt:
         romanized = get_cmn_romanized(flatten, append=True)
         romanized.save(romanize_path, exist_ok=True)
@@ -341,9 +341,10 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     input_dir = title_root / "input"
     output_dir = title_root / "output"
     lang_code = f"{lang}-Hant"
+    ocr_output_dir = output_dir / f"{lang_code}_ocr"
 
     # Fuse
-    fuse_path = output_dir / f"{lang_code}_fuse.srt"
+    fuse_path = ocr_output_dir / "fuse.srt"
     if fuse_path.exists() and not overwrite_srt:
         fuse = Series.load(fuse_path)
     else:
@@ -376,7 +377,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         fuse.save(fuse_path)
 
     # Clean
-    clean_path = output_dir / f"{lang_code}_fuse_clean.srt"
+    clean_path = ocr_output_dir / "fuse_clean.srt"
     if clean_path.exists() and not overwrite_srt:
         clean = Series.load(clean_path)
     else:
@@ -385,11 +386,11 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         clean.save(clean_path)
 
     # Validate
-    validate_path = output_dir / f"{lang_code}_fuse_clean_validate.srt"
+    validate_path = ocr_output_dir / "fuse_clean_validate.srt"
     if validate_path.exists() and not force_validation:
         validate = Series.load(validate_path)
     else:
-        image_path = output_dir / f"{lang_code}_image"
+        image_path = ocr_output_dir / "image"
         if image_path.exists() and not overwrite_img:
             image = ImageSeries.load(image_path)
             if not any(sub.text for sub in image):
@@ -410,7 +411,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             for text_sub, image_sub in zip(clean, image):
                 image_sub.text = text_sub.text
             image.save(image_path)
-        image_validation_path = output_dir / f"{lang_code}_validation"
+        image_validation_path = ocr_output_dir / "validation"
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
@@ -420,7 +421,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         validate = Series.load(validate_path)
 
     # Block review
-    review_path = output_dir / f"{lang_code}_fuse_clean_validate_review.srt"
+    review_path = ocr_output_dir / "fuse_clean_validate_review.srt"
     if review_path.exists() and not overwrite_srt:
         review = Series.load(review_path)
     else:
@@ -439,7 +440,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         review.save(review_path)
 
     # Flatten
-    flatten_path = output_dir / f"{lang_code}_fuse_clean_validate_review_flatten.srt"
+    flatten_path = ocr_output_dir / "fuse_clean_validate_review_flatten.srt"
     if flatten_path.exists() and not overwrite_srt:
         flatten = Series.load(flatten_path)
     else:
@@ -447,9 +448,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         flatten.save(flatten_path, exist_ok=True)
 
     # Simplify
-    simplify_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_simplify.srt"
-    )
+    simplify_path = ocr_output_dir / "fuse_clean_validate_review_flatten_simplify.srt"
     if simplify_path.exists() and not overwrite_srt:
         simplify = Series.load(simplify_path)
     else:
@@ -458,8 +457,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Simplify block review
     simplify_review_path = (
-        output_dir
-        / f"{lang_code}_fuse_clean_validate_review_flatten_simplify_review.srt"
+        ocr_output_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
     if simplify_review_path.exists() and not overwrite_srt:
         simplify_review = Series.load(simplify_review_path)
@@ -478,8 +476,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
 
     # Romanize
     romanize_path = (
-        output_dir / f"{lang_code}_fuse_clean_validate_review_flatten_"
-        "simplify_review_romanize.srt"
+        ocr_output_dir
+        / "fuse_clean_validate_review_flatten_simplify_review_romanize.srt"
     )
     if not romanize_path.exists() or overwrite_srt:
         romanized = get_cmn_romanized(simplify_review, append=True)

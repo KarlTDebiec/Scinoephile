@@ -49,7 +49,7 @@ actions = {
     # "繁體中文 (OCR)",
     # "English (OCR)",
     # "Bilingual 繁體中文 and English",
-    # "繁體粵文 (SRT)",
+    "繁體粵文 (SRT)",
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
@@ -57,8 +57,8 @@ actions = {
     # "简体粤文 (Diff)",
     # "简体粤文 (Transcription Test VAD Off)",
     # "简体粤文 (Transcription Test VAD On)",
-    "简体粤文 (Transcription Demucs On VAD Auto)",
-    "简体粤文 (Transcription Test Demucs Off VAD Auto)",
+    # "简体粤文 (Transcription Demucs On VAD Auto)",
+    # "简体粤文 (Transcription Test Demucs Off VAD Auto)",
 }
 
 if "繁體中文 (OCR)" in actions:
