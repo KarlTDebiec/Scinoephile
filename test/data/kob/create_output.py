@@ -45,6 +45,13 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 set_logging_verbosity(2)
 
+eng_ocr_dir = output_dir / "eng_ocr"
+eng_dir = output_dir / "eng"
+zho_hant_ocr_dir = output_dir / "zho-Hant_ocr"
+yue_hant_dir = output_dir / "yue-Hant"
+yue_hans_dir = output_dir / "yue-Hans"
+yue_hans_transcribe_dir = output_dir / "yue-Hans_transcribe"
+
 actions = {
     # "繁體中文 (OCR)",
     # "English (OCR)",
@@ -76,74 +83,72 @@ if "English (OCR)" in actions:
 if "Bilingual 繁體中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
-        zho_hans_path=output_dir
-        / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
-        eng_path=output_dir / "eng_fuse_clean_validate_review_flatten.srt",
+        zho_hans_path=zho_hant_ocr_dir
+        / "fuse_clean_validate_review_flatten_simplify_review.srt",
+        eng_path=eng_ocr_dir / "fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )
 if "繁體粵文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
+    zho_hant = Series.load(zho_hant_ocr_dir / "fuse_clean_validate_review.srt")
     yue_hant = Series.load(input_dir / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
         zho_hant, yue_hant, one_end_idx=1421, two_end_idx=1461
     )
-    yue_hant_timewarp.save(output_dir / "yue-Hant_timewarp.srt")
+    yue_hant_timewarp.save(yue_hant_dir / "timewarp.srt")
     clean = get_zho_cleaned(yue_hant_timewarp)
-    clean.save(output_dir / "yue-Hant_timewarp_clean.srt")
+    clean.save(yue_hant_dir / "timewarp_clean.srt")
     flatten = get_zho_flattened(clean)
-    flatten.save(output_dir / "yue-Hant_timewarp_clean_flatten.srt")
+    flatten.save(yue_hant_dir / "timewarp_clean_flatten.srt")
 if "简体粤文 (SRT)" in actions:
-    zho_hant = Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
+    zho_hant = Series.load(zho_hant_ocr_dir / "fuse_clean_validate_review.srt")
     yue_hans = Series.load(input_dir / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
         zho_hant, yue_hans, one_end_idx=1421, two_end_idx=1461
     )
-    yue_hans_timewarp.save(output_dir / "yue-Hans_timewarp.srt")
+    yue_hans_timewarp.save(yue_hans_dir / "timewarp.srt")
     yue_hans_clean = get_zho_cleaned(yue_hans_timewarp)
-    yue_hans_clean.save(output_dir / "yue-Hans_timewarp_clean.srt")
+    yue_hans_clean.save(yue_hans_dir / "timewarp_clean.srt")
     yue_hans_reference = get_zho_flattened(yue_hans_clean)
-    yue_hans_reference.save(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    yue_hans_reference.save(yue_hans_dir / "timewarp_clean_flatten.srt")
     yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
-    yue_hans_romanized.save(output_dir / "yue-Hans_timewarp_clean_flatten_romanize.srt")
+    yue_hans_romanized.save(yue_hans_dir / "timewarp_clean_flatten_romanize.srt")
 if "English (SRT)" in actions:
-    eng_ocr = Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
+    eng_ocr = Series.load(eng_ocr_dir / "fuse_clean_validate_review.srt")
     eng_srt = Series.load(input_dir / "eng.srt")
     eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
-    eng_timewarp.save(output_dir / "eng_timewarp.srt")
+    eng_timewarp.save(eng_dir / "timewarp.srt")
     eng_clean = get_eng_cleaned(eng_timewarp)
-    eng_clean.save(output_dir / "eng_timewarp_clean.srt")
+    eng_clean.save(eng_dir / "timewarp_clean.srt")
     eng_proofreader = get_eng_block_reviewer(
-        test_case_path=output_dir / "eng" / "lang" / "eng" / "block_review.json",
+        test_case_path=eng_dir / "lang" / "eng" / "block_review.json",
         auto_verify=True,
     )
     eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
-    eng_proofread.save(output_dir / "eng_timewarp_clean_review.srt")
+    eng_proofread.save(eng_dir / "timewarp_clean_review.srt")
     eng_flatten = get_eng_flattened(eng_proofread)
-    eng_flatten.save(output_dir / "eng_timewarp_clean_review_flatten.srt")
+    eng_flatten.save(eng_dir / "timewarp_clean_review_flatten.srt")
 if "Bilingual 简体粤文 and English" in actions:
     process_yue_hans_eng(
         title_root,
-        yue_hans_path=output_dir / "yue-Hans_timewarp_clean_flatten.srt",
-        eng_path=output_dir / "eng_timewarp_clean_review_flatten.srt",
+        yue_hans_path=yue_hans_dir / "timewarp_clean_flatten.srt",
+        eng_path=eng_dir / "timewarp_clean_review_flatten.srt",
         overwrite=True,
     )
 if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     # Stage
     zho_hans = Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
-    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    audio_dir = yue_hans_transcribe_dir / "audio"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    zho_hans.save(audio_dir / "audio.srt")
+    yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
 
     # Transcribe
-    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    yue_hans_audio = AudioSeries.load(audio_dir)
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=(
-            output_dir
-            / "yue-Hans_transcribe"
-            / "multilang"
-            / "yue_zho"
-            / "transcription"
+            yue_hans_transcribe_dir / "multilang" / "yue_zho" / "transcription"
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
@@ -153,7 +158,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     yue_hans_transcribe = get_yue_transcribed_vs_zho(
         yue_hans_audio, zho_hans, transcriber=transcriber
     )
-    outfile_path = output_dir / "yue-Hans_transcribe.srt"
+    outfile_path = yue_hans_transcribe_dir / "transcribe.srt"
     yue_hans_transcribe.save(outfile_path)
     print("Demucs On VAD Auto transcription CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
@@ -177,7 +182,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     yue_hans_transcribe_review = get_yue_line_reviewed_vs_zho(
         yue_hans_transcribe, zho_hans, line_reviewer=line_reviewer
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_review.srt"
+    outfile_path = yue_hans_transcribe_dir / "transcribe_review.srt"
     yue_hans_transcribe_review.save(outfile_path)
     print("Demucs On VAD Auto transcription -> line review CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review))
@@ -195,7 +200,7 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     yue_hans_transcribe_review_translate = get_yue_translated_vs_zho(
         yue_hans_transcribe_review, zho_hans, translator=translator
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_review_translate.srt"
+    outfile_path = yue_hans_transcribe_dir / "transcribe_review_translate.srt"
     yue_hans_transcribe_review_translate.save(outfile_path)
     print("Demucs On VAD Auto transcription -> line review -> translate CER:")
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe_review_translate))
@@ -213,7 +218,9 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     yue_hans_transcribe_review_translate_block_review = get_yue_block_reviewed_vs_zho(
         yue_hans_transcribe_review_translate, zho_hans, reviewer=reviewer
     )
-    outfile_path = output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
+    outfile_path = (
+        yue_hans_transcribe_dir / "transcribe_review_translate_block_review.srt"
+    )
     yue_hans_transcribe_review_translate_block_review.save(outfile_path)
     print("Demucs On VAD Auto transcription -> line review -> translate -> review CER:")
     print(
@@ -223,20 +230,18 @@ if "简体粤文 (Transcription Demucs On VAD Auto)" in actions:
     )
 
 if "简体粤文 (Transcription Test Demucs Off VAD Auto)" in actions:
-    yue_hans_reference = Series.load(output_dir / "yue-Hans_timewarp_clean_flatten.srt")
+    yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
     zho_hans = Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    zho_hans.save(output_dir / "yue-Hans_audio" / "yue-Hans_audio.srt")
+    audio_dir = yue_hans_transcribe_dir / "audio"
+    audio_dir.mkdir(parents=True, exist_ok=True)
+    zho_hans.save(audio_dir / "audio.srt")
 
-    yue_hans_audio = AudioSeries.load(output_dir / "yue-Hans_audio")
+    yue_hans_audio = AudioSeries.load(audio_dir)
     transcriber = get_yue_vs_zho_transcriber(
         test_case_directory_path=(
-            output_dir
-            / "yue-Hans_transcribe"
-            / "multilang"
-            / "yue_zho"
-            / "transcription"
+            yue_hans_transcribe_dir / "multilang" / "yue_zho" / "transcription"
         ),
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
