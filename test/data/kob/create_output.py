@@ -56,7 +56,7 @@ actions = {
     # "繁體中文 (OCR)",
     # "English (OCR)",
     # "Bilingual 繁體中文 and English",
-    "繁體粵文 (SRT)",
+    # "繁體粵文 (SRT)",
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
@@ -72,7 +72,7 @@ if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
 if "English (OCR)" in actions:
     reviewer_kw = dict(
-        test_case_path=output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json",
+        test_case_path=eng_ocr_dir / "lang" / "eng" / "block_review.json",
     )
     process_eng_ocr(
         title_root,
