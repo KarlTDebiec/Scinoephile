@@ -32,14 +32,14 @@ from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.line_review import (
-    YueZhoHansLineReviewPrompt,
+    YueVsZhoYueHansLineReviewPrompt,
     YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
 from test.helpers import test_data_root
@@ -189,7 +189,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 @cache
 def get_kob_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansDeliniationPrompt,
+    prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
@@ -216,7 +216,7 @@ def get_kob_yue_deliniation_test_cases(
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuationPrompt,
+    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
@@ -243,7 +243,7 @@ def get_kob_yue_punctuation_test_cases(
 
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoHansLineReviewPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.

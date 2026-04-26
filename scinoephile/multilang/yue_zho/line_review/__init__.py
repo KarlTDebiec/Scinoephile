@@ -19,11 +19,14 @@ from scinoephile.llms.providers.registry import get_default_provider
 
 from .manager import YueZhoLineReviewManager
 from .processor import YueZhoLineReviewProcessor
-from .prompts import YueZhoHansLineReviewPrompt, YueZhoHantLineReviewPrompt
+from .prompts import (
+    YueVsZhoYueHansLineReviewPrompt,
+    YueVsZhoYueHantLineReviewPrompt,
+)
 
 __all__ = [
-    "YueZhoHansLineReviewPrompt",
-    "YueZhoHantLineReviewPrompt",
+    "YueVsZhoYueHansLineReviewPrompt",
+    "YueVsZhoYueHantLineReviewPrompt",
     "YueZhoLineReviewManager",
     "YueZhoLineReviewProcessKwargs",
     "YueZhoLineReviewProcessor",
@@ -71,7 +74,7 @@ def get_yue_line_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_line_reviewer(
-    prompt_cls: type[YueZhoHansLineReviewPrompt] = YueZhoHansLineReviewPrompt,
+    prompt_cls: type[YueVsZhoYueHansLineReviewPrompt] = YueVsZhoYueHansLineReviewPrompt,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
