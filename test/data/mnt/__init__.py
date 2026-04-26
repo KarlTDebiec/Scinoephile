@@ -32,13 +32,13 @@ from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from test.helpers import test_data_root
 
 __all__ = [
-    "mnt_eng_lens",
-    "mnt_eng_tesseract",
-    "mnt_zho_hans_lens",
-    "mnt_zho_hans_paddle",
+    "mnt_eng_ocr_lens",
+    "mnt_eng_ocr_tesseract",
+    "mnt_zho_hans_ocr_lens",
+    "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hant",
-    "mnt_zho_hant_lens",
-    "mnt_zho_hant_paddle",
+    "mnt_zho_hant_ocr_lens",
+    "mnt_zho_hant_ocr_paddle",
     "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
     "get_mnt_zho_hans_block_review_test_cases",
@@ -79,27 +79,27 @@ output_dir = title_root / "output"
 
 
 @pytest.fixture
-def mnt_eng_lens() -> Series:
+def mnt_eng_ocr_lens() -> Series:
     """MNT English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_lens.srt")
+    return Series.load(input_dir / "eng_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mnt_eng_tesseract() -> Series:
+def mnt_eng_ocr_tesseract() -> Series:
     """MNT English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
+    return Series.load(input_dir / "eng_ocr" / "tesseract.srt")
 
 
 @pytest.fixture
-def mnt_zho_hans_lens() -> Series:
+def mnt_zho_hans_ocr_lens() -> Series:
     """MNT 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_lens.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mnt_zho_hans_paddle() -> Series:
+def mnt_zho_hans_ocr_paddle() -> Series:
     """MNT 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_paddle.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "paddle.srt")
 
 
 @pytest.fixture
@@ -109,15 +109,15 @@ def mnt_zho_hant() -> Series:
 
 
 @pytest.fixture
-def mnt_zho_hant_lens() -> Series:
+def mnt_zho_hant_ocr_lens() -> Series:
     """MNT 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mnt_zho_hant_paddle() -> Series:
+def mnt_zho_hant_ocr_paddle() -> Series:
     """MNT 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "paddle.srt")
 
 
 @cache

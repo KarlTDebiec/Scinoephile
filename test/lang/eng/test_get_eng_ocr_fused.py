@@ -68,19 +68,19 @@ def test_get_eng_ocr_fused_mlamd(
 
 
 def test_get_eng_ocr_fused_mnt(
-    mnt_eng_lens: Series,
-    mnt_eng_tesseract: Series,
+    mnt_eng_ocr_lens: Series,
+    mnt_eng_ocr_tesseract: Series,
     mnt_eng_fuse: Series,
 ):
     """Test get_eng_ocr_fused with MNT English subtitles.
 
     Arguments:
-        mnt_eng_lens: MNT English subtitles OCRed using Google Lens fixture
-        mnt_eng_tesseract: MNT English subtitles OCRed using Tesseract fixture
+        mnt_eng_ocr_lens: MNT English subtitles OCRed using Google Lens fixture
+        mnt_eng_ocr_tesseract: MNT English subtitles OCRed using Tesseract fixture
         mnt_eng_fuse: Expected fused MNT English subtitles fixture
     """
-    lens = get_eng_cleaned(mnt_eng_lens, remove_empty=False)
-    tesseract = get_eng_cleaned(mnt_eng_tesseract, remove_empty=False)
+    lens = get_eng_cleaned(mnt_eng_ocr_lens, remove_empty=False)
+    tesseract = get_eng_cleaned(mnt_eng_ocr_tesseract, remove_empty=False)
     _test_get_eng_ocr_fused(lens, tesseract, mnt_eng_fuse)
 
 
