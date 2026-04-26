@@ -33,7 +33,7 @@
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.
 
-## Organization
+## Formatting
 * Within classes, sort methods in the following hierarchy:
   1. Level 1: `__init__`, other builtins, public properties, public methods, private properties, private methods
   2. Level 2: standard methods, class methods, static methods
