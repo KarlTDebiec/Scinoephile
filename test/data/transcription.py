@@ -41,7 +41,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     zho_path: Path,
     *,
     name: str = "Yue Hans transcription",
-    reference_path: Path | None = None,
+    reference_path: Path,
     overwrite_srt: bool = False,
     transcriber_kw: dict[str, Any] | None = None,
     line_reviewer_kw: dict[str, Any] | None = None,
@@ -62,8 +62,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         zho_path: Zho reference series path used for audio staging and as the
           reference language during transcription/review/translation
         name: label printed above CER summaries
-        reference_path: optional reference series path used to compute CER after each
-          stage; defaults to `output/yue-Hans/timewarp_clean_flatten.srt` when present
+        reference_path: reference series path used to compute CER after each stage
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
@@ -75,15 +74,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     """
     output_dir = title_root / "output"
     yue_hans_transcribe_dir_path = output_dir / "yue-Hans_transcribe"
-
-    if reference_path is None:
-        candidate_reference_path = (
-            output_dir / "yue-Hans" / "timewarp_clean_flatten.srt"
-        )
-        reference_path = (
-            candidate_reference_path if candidate_reference_path.exists() else None
-        )
-    reference = Series.load(reference_path) if reference_path is not None else None
+    reference = Series.load(reference_path)
 
     device = get_torch_device()
     test_case_dir_path = yue_hans_transcribe_dir_path / "multilang" / "yue_zho"

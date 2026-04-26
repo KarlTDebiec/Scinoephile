@@ -17,6 +17,7 @@ from scinoephile.lang.eng import (
 from scinoephile.lang.eng.block_review import get_eng_block_reviewer
 from scinoephile.lang.yue import get_yue_romanized
 from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
 from scinoephile.multilang.yue_zho.line_review import YueVsZhoYueHansLineReviewPrompt
 from scinoephile.multilang.yue_zho.transcription import (
@@ -117,17 +118,21 @@ if "Bilingual 简体粤文 and English" in actions:
         overwrite=True,
     )
 if "简体粤文 (Transcription)" in actions:
-    zho_path = (
+    zh_hant_path = zho_hant_ocr_dir / "fuse_clean_validate_review_flatten.srt"
+    zho_hans_path = (
         zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
+    reference_path = yue_hans_dir / "timewarp_clean_flatten.srt"
     yue_hans_transcribe_review_translate_block_review = process_yue_hans_transcription(
         title_root,
-        zho_path=zho_path,
+        zho_path=zho_hans_path,
+        reference_path=reference_path,
         name="KOB transcription (Demucs ON, VAD AUTO)",
         transcriber_kw={
             "model_name": "khleeloo/whisper-large-v3-cantonese",
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
+            "convert": OpenCCConfig.t2s,
             "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
             "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
         },
