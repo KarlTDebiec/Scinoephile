@@ -182,7 +182,7 @@ def get_mlamd_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "block_review.json"
+    path = output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -201,7 +201,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "ocr_fusion.json"
+    path = output_dir / "eng_ocr" / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -221,7 +221,8 @@ def get_mlamd_yue_deliniation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "transcription"
@@ -247,7 +248,8 @@ def get_mlamd_yue_from_zho_translation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "translation"
@@ -272,7 +274,8 @@ def get_mlamd_yue_punctuation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "transcription"
@@ -298,7 +301,8 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "block_review"
@@ -323,7 +327,8 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "line_review"
@@ -347,7 +352,7 @@ def get_mlamd_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hans.json"
+    path = output_dir / "zho-Hans_ocr" / "lang" / "zho" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -366,7 +371,7 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json"
+    path = output_dir / "zho-Hans_ocr" / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -385,7 +390,7 @@ def get_mlamd_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -404,7 +409,7 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -423,7 +428,7 @@ def get_mlamd_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant_simplify.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "simplify_block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
