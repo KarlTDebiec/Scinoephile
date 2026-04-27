@@ -7,6 +7,7 @@ from __future__ import annotations
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, TestCaseClsKwargs
+from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor
 from .prompt import Prompt
 from .query import Query
@@ -21,6 +22,7 @@ __all__ = [
     "LLMProvider",
     "LLMToolSpec",
     "Manager",
+    "OpenAIProviderBase",
     "Processor",
     "Prompt",
     "Query",
