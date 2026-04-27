@@ -16,7 +16,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.translation import (
-    YueHansFromZhoTranslationPrompt,
+    YueVsZhoYueHansTranslationPrompt,
 )
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
@@ -101,7 +101,7 @@ def test_yue_translate_vs_zho_cli(
 
     assert (
         patched_factory.call_args.kwargs["prompt_cls"]
-        is YueHansFromZhoTranslationPrompt
+        is YueVsZhoYueHansTranslationPrompt
     )
     called_kwargs = patched_translate.call_args.kwargs
     assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)

@@ -13,12 +13,14 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
 
 __all__ = [
-    "YueHansBlockReviewPrompt",
-    "YueHantBlockReviewPrompt",
+    "YueVsZhoYueHansBlockReviewPrompt",
+    "YueVsZhoYueHantBlockReviewPrompt",
 ]
 
 
-class YueHansBlockReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
+class YueVsZhoYueHansBlockReviewPrompt(
+    DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt
+):
     """Text for LLM correspondence for 简体粤文 block review against 中文."""
 
     # Dictionary tool
@@ -99,7 +101,7 @@ class YueHansBlockReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPro
     """Error template when output is present but note is missing."""
 
 
-class YueHantBlockReviewPrompt(YueHansBlockReviewPrompt):
+class YueVsZhoYueHantBlockReviewPrompt(YueVsZhoYueHansBlockReviewPrompt):
     """Text for LLM correspondence for 繁体粤文 block review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk

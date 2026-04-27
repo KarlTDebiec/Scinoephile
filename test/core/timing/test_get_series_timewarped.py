@@ -29,19 +29,19 @@ def _test_get_series_timewarped(anchor: Series, source: Series, expected: Series
 
 
 def test_get_series_timewarped_kob(
-    kob_zho_hant_fuse_clean_validate_review: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
     kob_yue_hant: Series,
     kob_yue_hant_timewarp: Series,
 ):
     """Test get_series_timewarped with KOB subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_review: 繁体中文 subtitle fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review: 繁体中文 subtitle fixture
         kob_yue_hant: 繁體粵文 subtitle fixture
         kob_yue_hant_timewarp: expected timewarp subtitle fixture
     """
     _test_get_series_timewarped(
-        kob_zho_hant_fuse_clean_validate_review,
+        kob_zho_hant_ocr_fuse_clean_validate_review,
         kob_yue_hant,
         kob_yue_hant_timewarp,
     )

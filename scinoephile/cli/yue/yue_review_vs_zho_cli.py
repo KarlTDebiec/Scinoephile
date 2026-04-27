@@ -22,13 +22,13 @@ from scinoephile.multilang.yue_zho import (
     get_yue_line_reviewed_vs_zho,
 )
 from scinoephile.multilang.yue_zho.block_review import (
-    YueHansBlockReviewPrompt,
-    YueHantBlockReviewPrompt,
+    YueVsZhoYueHansBlockReviewPrompt,
+    YueVsZhoYueHantBlockReviewPrompt,
     get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.line_review import (
-    YueZhoHansLineReviewPrompt,
-    YueZhoHantLineReviewPrompt,
+    YueVsZhoYueHansLineReviewPrompt,
+    YueVsZhoYueHantLineReviewPrompt,
     get_yue_vs_zho_line_reviewer,
 )
 
@@ -166,7 +166,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_line_review_prompt_cls(
         cls, script: str
-    ) -> type[YueZhoHansLineReviewPrompt]:
+    ) -> type[YueVsZhoYueHansLineReviewPrompt]:
         """Get the line-review prompt class for the selected script.
 
         Arguments:
@@ -175,13 +175,13 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             line-review prompt class
         """
         if script == "traditional":
-            return YueZhoHantLineReviewPrompt
-        return YueZhoHansLineReviewPrompt
+            return YueVsZhoYueHantLineReviewPrompt
+        return YueVsZhoYueHansLineReviewPrompt
 
     @classmethod
     def _get_block_review_prompt_cls(
         cls, script: str
-    ) -> type[YueHansBlockReviewPrompt]:
+    ) -> type[YueVsZhoYueHansBlockReviewPrompt]:
         """Get the block review prompt class for the selected script.
 
         Arguments:
@@ -190,8 +190,8 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             block review prompt class
         """
         if script == "traditional":
-            return YueHantBlockReviewPrompt
-        return YueHansBlockReviewPrompt
+            return YueVsZhoYueHantBlockReviewPrompt
+        return YueVsZhoYueHansBlockReviewPrompt
 
     @classmethod
     def _main(cls, **kwargs: Unpack[CLIKwargs]):
