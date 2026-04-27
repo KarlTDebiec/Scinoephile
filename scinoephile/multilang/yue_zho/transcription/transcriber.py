@@ -102,7 +102,9 @@ class YueTranscriber:
             provider = get_default_provider()
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
-            self.demucs_separator = DemucsSeparator()
+            self.demucs_separator = DemucsSeparator(
+                cache_dir_path=get_runtime_cache_dir_path("demucs")
+            )
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)

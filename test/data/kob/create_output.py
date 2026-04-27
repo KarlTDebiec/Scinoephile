@@ -137,26 +137,26 @@ if "简体粤文 (Transcription)" in actions:
     traditional_reference_path = yue_hant_dir / "timewarp_clean_flatten.srt"
     audio_path = yue_hans_transcribe_dir / "audio" / "yue-Hans_audio.wav"
 
-    process_yue_hans_transcription(
-        title_root,
-        zho_path=zho_hans_path,
-        reference_path=simplified_reference_path,
-        output_dir_path=yue_hans_transcribe_dir / "test_simplified",
-        audio_path=audio_path,
-        name="KOB transcription test 1 (simplified)",
-        transcriber_kw={
-            "model_name": "khleeloo/whisper-large-v3-cantonese",
-            "demucs_mode": DemucsMode.ON,
-            "vad_mode": VADMode.AUTO,
-            "convert": OpenCCConfig.hk2s,
-            "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
-            "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
-        },
-        line_reviewer_kw={"prompt_cls": YueVsZhoYueHansLineReviewPrompt},
-        translator_kw={"prompt_cls": YueVsZhoYueHansTranslationPrompt},
-        block_reviewer_kw={"prompt_cls": YueVsZhoYueHansBlockReviewPrompt},
-        overwrite_srt=True,
-    )
+    # process_yue_hans_transcription(
+    #     title_root,
+    #     zho_path=zho_hans_path,
+    #     reference_path=simplified_reference_path,
+    #     output_dir_path=yue_hans_transcribe_dir / "test_simplified",
+    #     audio_path=audio_path,
+    #     name="KOB transcription test 1 (simplified)",
+    #     transcriber_kw={
+    #         "model_name": "khleeloo/whisper-large-v3-cantonese",
+    #         "demucs_mode": DemucsMode.ON,
+    #         "vad_mode": VADMode.AUTO,
+    #         "convert": OpenCCConfig.hk2s,
+    #         "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
+    #         "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
+    #     },
+    #     line_reviewer_kw={"prompt_cls": YueVsZhoYueHansLineReviewPrompt},
+    #     translator_kw={"prompt_cls": YueVsZhoYueHansTranslationPrompt},
+    #     block_reviewer_kw={"prompt_cls": YueVsZhoYueHansBlockReviewPrompt},
+    #     overwrite_srt=True,
+    # )
 
     process_yue_hans_transcription(
         title_root,
