@@ -68,8 +68,8 @@ def test_transcribe_block_audio_uses_vad_cache_before_demucs():
     transcriber.vad_transcriber.assert_not_called()
 
 
-def test_transcribe_block_audio_auto_ignores_no_vad_cache_before_vad_attempt():
-    """Test AUTO mode still tries VAD before using only no-VAD cached output."""
+def test_transcribe_block_audio_auto_uses_no_vad_cache_when_vad_cache_misses():
+    """Test AUTO mode uses usable no-VAD cache after a VAD-cache miss."""
     transcriber = object.__new__(YueTranscriber)
     transcriber.vad_mode = VADMode.AUTO
     transcriber.demucs_mode = DemucsMode.OFF
@@ -86,14 +86,16 @@ def test_transcribe_block_audio_auto_ignores_no_vad_cache_before_vad_attempt():
 
     output = transcriber._transcribe_block_audio(input_audio)
 
-    assert output == transcriber.vad_transcriber.return_value
+    assert (
+        output == transcriber.no_vad_transcriber.get_cached_transcription.return_value
+    )
     transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
         input_audio
     )
-    transcriber.no_vad_transcriber.get_cached_transcription.assert_not_called()
-    transcriber.vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
+    transcriber.no_vad_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
     )
+    transcriber.vad_transcriber.assert_not_called()
     transcriber.no_vad_transcriber.assert_not_called()
 
 
@@ -121,7 +123,7 @@ def test_transcribe_block_audio_treats_cached_empty_segments_as_hit():
 
 
 def test_transcribe_block_audio_auto_retries_when_vad_cache_is_whitespace_only():
-    """Test AUTO mode ignores cached whitespace-only VAD output and retries."""
+    """Test AUTO mode uses no-VAD cache after whitespace-only VAD cache."""
     transcriber = object.__new__(YueTranscriber)
     transcriber.vad_mode = VADMode.AUTO
     transcriber.demucs_mode = DemucsMode.OFF
@@ -140,21 +142,21 @@ def test_transcribe_block_audio_auto_retries_when_vad_cache_is_whitespace_only()
 
     output = transcriber._transcribe_block_audio(input_audio)
 
-    assert output == transcriber.no_vad_transcriber.return_value
+    assert (
+        output == transcriber.no_vad_transcriber.get_cached_transcription.return_value
+    )
     transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
         input_audio
     )
-    transcriber.no_vad_transcriber.get_cached_transcription.assert_not_called()
-    transcriber.vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
+    transcriber.no_vad_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
     )
-    transcriber.no_vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
-    )
+    transcriber.vad_transcriber.assert_not_called()
+    transcriber.no_vad_transcriber.assert_not_called()
 
 
 def test_transcribe_block_audio_auto_retries_when_vad_cache_has_text_without_words():
-    """Test AUTO mode bypasses cached VAD output lacking word timings."""
+    """Test AUTO mode uses no-VAD cache after unusable cached VAD output."""
     transcriber = object.__new__(YueTranscriber)
     transcriber.vad_mode = VADMode.AUTO
     transcriber.demucs_mode = DemucsMode.OFF
@@ -173,14 +175,16 @@ def test_transcribe_block_audio_auto_retries_when_vad_cache_has_text_without_wor
 
     output = transcriber._transcribe_block_audio(input_audio)
 
-    assert output == transcriber.vad_transcriber.return_value
+    assert (
+        output == transcriber.no_vad_transcriber.get_cached_transcription.return_value
+    )
     transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
         input_audio
     )
-    transcriber.no_vad_transcriber.get_cached_transcription.assert_not_called()
-    transcriber.vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
+    transcriber.no_vad_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
     )
+    transcriber.vad_transcriber.assert_not_called()
     transcriber.no_vad_transcriber.assert_not_called()
 
 
@@ -212,6 +216,65 @@ def test_transcribe_block_audio_auto_retries_when_vad_result_has_text_without_wo
     output = transcriber._transcribe_block_audio(input_audio)
 
     assert output == transcriber.no_vad_transcriber.return_value
+    transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
+    )
+    transcriber.vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+    transcriber.no_vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+
+
+def test_transcribe_block_audio_auto_retries_when_vad_raises_segment_assertion():
+    """Test AUTO mode retries when VAD raises a Whisper assertion."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.vad_mode = VADMode.AUTO
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.demucs_separator = None
+    transcriber.vad_transcriber = Mock(
+        side_effect=AssertionError("Inconsistent number of segments: 8 != 7")
+    )
+    transcriber.no_vad_transcriber = Mock(return_value=[Mock(text="fallback")])
+    transcriber.vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.no_vad_transcriber.return_value
+    transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
+    )
+    transcriber.vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+    transcriber.no_vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+
+
+def test_transcribe_block_audio_auto_reraises_unrelated_vad_assertion():
+    """Test AUTO mode retries on VAD assertions from Whisper internals."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.vad_mode = VADMode.AUTO
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.demucs_separator = None
+    transcriber.vad_transcriber = Mock(side_effect=AssertionError("other failure"))
+    transcriber.no_vad_transcriber = Mock(return_value=[Mock(text="fallback")])
+    transcriber.vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.no_vad_transcriber.return_value
+
     transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
         input_audio
     )

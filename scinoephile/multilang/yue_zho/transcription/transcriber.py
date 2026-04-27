@@ -231,6 +231,14 @@ class YueTranscriber:
         cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
         if cached_segments is not None and self._segments_are_usable(cached_segments):
             return cached_segments
+        if self.no_vad_transcriber is not None:
+            cached_segments = self.no_vad_transcriber.get_cached_transcription(
+                cache_audio
+            )
+            if cached_segments is not None and self._segments_are_usable(
+                cached_segments
+            ):
+                return cached_segments
 
         return None
 
@@ -275,7 +283,15 @@ class YueTranscriber:
             return self.no_vad_transcriber(audio, cache_audio=cache_audio)
 
         assert self.vad_transcriber is not None
-        segments = self.vad_transcriber(audio, cache_audio=cache_audio)
+        try:
+            segments = self.vad_transcriber(audio, cache_audio=cache_audio)
+        except AssertionError as exc:
+            logger.warning(
+                f"Retrying block transcription without VAD after Whisper assertion: "
+                f"{exc}"
+            )
+            assert self.no_vad_transcriber is not None
+            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
         if self._segments_are_usable(segments):
             return segments
 
