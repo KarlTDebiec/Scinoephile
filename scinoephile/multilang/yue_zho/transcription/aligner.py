@@ -31,8 +31,10 @@ from scinoephile.core.synchronization import get_sync_groups_string
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .alignment import Alignment
-from .deliniation import YueZhoHansDeliniationPrompt as YueZhoHansDelineationPrompt
-from .punctuation import YueZhoHansPunctuationPrompt
+from .deliniation import (
+    YueVsZhoYueHansDeliniationPrompt as YueZhoHansDelineationPrompt,
+)
+from .punctuation import YueVsZhoYueHansPunctuationPrompt
 
 __all__ = ["Aligner"]
 
@@ -308,7 +310,7 @@ class Aligner:
                     f"{test_case}\n"
                     f"Exception:\n{exc}"
                 )
-            prompt_cls: type[YueZhoHansPunctuationPrompt] = getattr(
+            prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = getattr(
                 test_case, "prompt_cls"
             )
             yuewen_punctuated = getattr(test_case.answer, prompt_cls.output, None)

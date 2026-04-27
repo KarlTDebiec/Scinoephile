@@ -41,19 +41,19 @@ def _test_get_zho_block_reviewed(
 
 
 def test_get_zho_block_reviewed_kob(
-    kob_zho_hant_fuse_clean_validate: Series,
-    kob_zho_hant_fuse_clean_validate_review: Series,
+    kob_zho_hant_ocr_fuse_clean_validate: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
 ):
     """Test get_zho_block_reviewed with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_review: Expected block-reviewed KOB
+        kob_zho_hant_ocr_fuse_clean_validate: KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review: Expected block-reviewed KOB
           繁体中文 series fixture
     """
     _test_get_zho_block_reviewed(
-        kob_zho_hant_fuse_clean_validate,
-        kob_zho_hant_fuse_clean_validate_review,
+        kob_zho_hant_ocr_fuse_clean_validate,
+        kob_zho_hant_ocr_fuse_clean_validate_review,
         get_zho_reviewer(prompt_cls=ZhoHantBlockReviewPrompt),
     )
 

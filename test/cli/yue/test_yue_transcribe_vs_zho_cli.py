@@ -22,12 +22,12 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
-    YueZhoHantDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
+    YueVsZhoYueHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
-    YueZhoHantPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
+    YueVsZhoYueHantPunctuationPrompt,
 )
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
@@ -131,11 +131,11 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueZhoHansDeliniationPrompt
+        is YueVsZhoYueHansDeliniationPrompt
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueZhoHansPunctuationPrompt
+        is YueVsZhoYueHansPunctuationPrompt
     )
     assert patched_factory.call_args.kwargs["convert"] is None
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
@@ -322,11 +322,11 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueZhoHantDeliniationPrompt
+        is YueVsZhoYueHantDeliniationPrompt
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueZhoHantPunctuationPrompt
+        is YueVsZhoYueHantPunctuationPrompt
     )
     assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.hk2s
 

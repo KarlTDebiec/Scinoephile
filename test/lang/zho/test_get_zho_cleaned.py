@@ -31,16 +31,16 @@ def _test_get_zho_cleaned(series: Series, expected: Series):
 
 
 def test_get_zho_cleaned_kob(
-    kob_zho_hant_fuse: Series,
-    kob_zho_hant_fuse_clean: Series,
+    kob_zho_hant_ocr_fuse: Series,
+    kob_zho_hant_ocr_fuse_clean: Series,
 ):
     """Test get_zho_cleaned with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_zho_hant_fuse: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean: Expected cleaned KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse: KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean: Expected cleaned KOB 繁体中文 series fixture
     """
-    _test_get_zho_cleaned(kob_zho_hant_fuse, kob_zho_hant_fuse_clean)
+    _test_get_zho_cleaned(kob_zho_hant_ocr_fuse, kob_zho_hant_ocr_fuse_clean)
 
 
 def test_get_zho_cleaned_mlamd(

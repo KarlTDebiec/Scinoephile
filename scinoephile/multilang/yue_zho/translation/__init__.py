@@ -21,11 +21,14 @@ from scinoephile.llms.dual_block_gapped import (
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
+from .prompts import (
+    YueVsZhoYueHansTranslationPrompt,
+    YueVsZhoYueHantTranslationPrompt,
+)
 
 __all__ = [
-    "YueHansFromZhoTranslationPrompt",
-    "YueHantFromZhoTranslationPrompt",
+    "YueVsZhoYueHansTranslationPrompt",
+    "YueVsZhoYueHantTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
     "get_yue_translated_vs_zho",
@@ -68,7 +71,9 @@ def get_yue_translated_vs_zho(
 
 
 def get_yue_vs_zho_translator(
-    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[YueVsZhoYueHansTranslationPrompt] = (
+        YueVsZhoYueHansTranslationPrompt
+    ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,

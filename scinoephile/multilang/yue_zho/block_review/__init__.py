@@ -18,11 +18,14 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import YueHansBlockReviewPrompt, YueHantBlockReviewPrompt
+from .prompts import (
+    YueVsZhoYueHansBlockReviewPrompt,
+    YueVsZhoYueHantBlockReviewPrompt,
+)
 
 __all__ = [
-    "YueHansBlockReviewPrompt",
-    "YueHantBlockReviewPrompt",
+    "YueVsZhoYueHansBlockReviewPrompt",
+    "YueVsZhoYueHantBlockReviewPrompt",
     "YueZhoBlockReviewProcessKwargs",
     "YueZhoBlockReviewProcessorKwargs",
     "get_yue_block_reviewed_vs_zho",
@@ -65,7 +68,9 @@ def get_yue_block_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_block_reviewer(
-    prompt_cls: type[YueHansBlockReviewPrompt] = YueHansBlockReviewPrompt,
+    prompt_cls: type[YueVsZhoYueHansBlockReviewPrompt] = (
+        YueVsZhoYueHansBlockReviewPrompt
+    ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,

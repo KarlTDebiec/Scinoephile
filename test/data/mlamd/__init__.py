@@ -38,31 +38,31 @@ from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
-from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
 from scinoephile.multilang.yue_zho.line_review import (
-    YueZhoHansLineReviewPrompt,
+    YueVsZhoYueHansLineReviewPrompt,
     YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
-from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import YueVsZhoYueHansTranslationPrompt
 from test.helpers import test_data_root
 
 __all__ = [
-    "mlamd_eng_lens",
-    "mlamd_eng_sup_path",
-    "mlamd_eng_tesseract",
-    "mlamd_zho_hans_lens",
-    "mlamd_zho_hans_paddle",
-    "mlamd_zho_hans_sup_path",
-    "mlamd_zho_hant_lens",
-    "mlamd_zho_hant_paddle",
-    "mlamd_zho_hant_sup_path",
+    "mlamd_eng_ocr_lens",
+    "mlamd_eng_ocr_sup_path",
+    "mlamd_eng_ocr_tesseract",
+    "mlamd_zho_hans_ocr_lens",
+    "mlamd_zho_hans_ocr_paddle",
+    "mlamd_zho_hans_ocr_sup_path",
+    "mlamd_zho_hant_ocr_lens",
+    "mlamd_zho_hant_ocr_paddle",
+    "mlamd_zho_hant_ocr_sup_path",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
@@ -116,57 +116,57 @@ output_dir = title_root / "output"
 
 
 @pytest.fixture
-def mlamd_eng_lens() -> Series:
+def mlamd_eng_ocr_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_lens.srt")
+    return Series.load(input_dir / "eng_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_eng_sup_path() -> Path:
+def mlamd_eng_ocr_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
-    return input_dir / "eng.sup"
+    return input_dir / "eng_ocr" / "source.sup"
 
 
 @pytest.fixture
-def mlamd_eng_tesseract() -> Series:
+def mlamd_eng_ocr_tesseract() -> Series:
     """MLAMD English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_tesseract.srt")
+    return Series.load(input_dir / "eng_ocr" / "tesseract.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_lens() -> Series:
+def mlamd_zho_hans_ocr_lens() -> Series:
     """MLAMD 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_lens.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_paddle() -> Series:
+def mlamd_zho_hans_ocr_paddle() -> Series:
     """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_paddle.srt")
+    return Series.load(input_dir / "zho-Hans_ocr" / "paddle.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hans_sup_path() -> Path:
+def mlamd_zho_hans_ocr_sup_path() -> Path:
     """Path to MLAMD 简体中文 SUP subtitles."""
-    return input_dir / "zho-Hans.sup"
+    return input_dir / "zho-Hans_ocr" / "source.sup"
 
 
 @pytest.fixture
-def mlamd_zho_hant_lens() -> Series:
+def mlamd_zho_hant_ocr_lens() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "lens.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hant_paddle() -> Series:
+def mlamd_zho_hant_ocr_paddle() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+    return Series.load(input_dir / "zho-Hant_ocr" / "paddle.srt")
 
 
 @pytest.fixture
-def mlamd_zho_hant_sup_path() -> Path:
+def mlamd_zho_hant_ocr_sup_path() -> Path:
     """Path to MLAMD 繁体中文 SUP subtitles."""
-    return input_dir / "zho-Hant.sup"
+    return input_dir / "zho-Hant_ocr" / "source.sup"
 
 
 @cache
@@ -182,7 +182,7 @@ def get_mlamd_eng_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "block_review.json"
+    path = output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -201,7 +201,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "eng" / "ocr_fusion.json"
+    path = output_dir / "eng_ocr" / "lang" / "eng" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -209,7 +209,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueZhoHansDeliniationPrompt,
+    prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 deliniation test cases.
@@ -221,7 +221,8 @@ def get_mlamd_yue_deliniation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "transcription"
@@ -235,7 +236,7 @@ def get_mlamd_yue_deliniation_test_cases(
 
 @cache
 def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoYueHansTranslationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 from 简体中文 translation test cases.
@@ -247,7 +248,8 @@ def get_mlamd_yue_from_zho_translation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "translation"
@@ -260,7 +262,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueZhoHansPunctuationPrompt,
+    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 punctuation test cases.
@@ -272,7 +274,8 @@ def get_mlamd_yue_punctuation_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "transcription"
@@ -286,7 +289,7 @@ def get_mlamd_yue_punctuation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_block_review_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueHansBlockReviewPrompt,
+    prompt_cls: type[DualBlockPrompt] = YueVsZhoYueHansBlockReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 review test cases.
@@ -298,7 +301,8 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "block_review"
@@ -311,7 +315,7 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueZhoHansLineReviewPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
     **kwargs: Unpack[TestCaseClsKwargs],
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.
@@ -323,7 +327,8 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
         test cases
     """
     path = (
-        title_root
+        output_dir
+        / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
         / "line_review"
@@ -347,7 +352,7 @@ def get_mlamd_zho_hans_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hans.json"
+    path = output_dir / "zho-Hans_ocr" / "lang" / "zho" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -366,7 +371,7 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hans.json"
+    path = output_dir / "zho-Hans_ocr" / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -385,7 +390,7 @@ def get_mlamd_zho_hant_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -404,7 +409,7 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "ocr_fusion" / "zho-Hant.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "ocr_fusion.json"
     return load_test_cases_from_json(
         path, OcrFusionManager, prompt_cls=prompt_cls, **kwargs
     )
@@ -423,7 +428,7 @@ def get_mlamd_zho_hant_simplify_block_review_test_cases(
     Returns:
         test cases
     """
-    path = title_root / "lang" / "zho" / "block_review" / "zho-Hant_simplify.json"
+    path = output_dir / "zho-Hant_ocr" / "lang" / "zho" / "simplify_block_review.json"
     return load_test_cases_from_json(
         path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
     )
