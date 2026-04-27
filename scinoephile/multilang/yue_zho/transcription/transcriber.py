@@ -229,9 +229,7 @@ class YueTranscriber:
 
         assert self.vad_transcriber is not None
         cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
-        if cached_segments is not None and any(
-            segment.text.strip() for segment in cached_segments
-        ):
+        if cached_segments is not None and self._segments_are_usable(cached_segments):
             return cached_segments
 
         return None
@@ -278,9 +276,27 @@ class YueTranscriber:
 
         assert self.vad_transcriber is not None
         segments = self.vad_transcriber(audio, cache_audio=cache_audio)
-        if any(segment.text.strip() for segment in segments):
+        if self._segments_are_usable(segments):
             return segments
 
-        logger.info("Retrying block transcription without VAD after empty result")
+        logger.info(
+            "Retrying block transcription without VAD after unusable VAD result"
+        )
         assert self.no_vad_transcriber is not None
         return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+
+    @staticmethod
+    def _segments_are_usable(segments: list[TranscribedSegment]) -> bool:
+        """Determine whether transcribed segments are usable for alignment.
+
+        Arguments:
+            segments: transcribed segments to inspect
+        Returns:
+            whether the segments contain non-empty text with word timings
+        """
+        if not any(segment.text.strip() for segment in segments):
+            return False
+
+        return not any(
+            segment.text.strip() and not segment.words for segment in segments
+        )
