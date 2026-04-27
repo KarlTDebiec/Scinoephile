@@ -10,6 +10,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
+from huggingface_hub import snapshot_download
 import whisper_timestamped as whisper
 
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
@@ -78,7 +79,21 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
-            self._model = whisper.load_model(self.model_name, device=get_torch_device())
+            try:
+                self._model = whisper.load_model(
+                    self.model_name, device=get_torch_device()
+                )
+            except FileNotFoundError:
+                if "/" not in self.model_name:
+                    raise
+                logger.warning(
+                    "Whisper model load failed due to missing cache file; "
+                    "re-downloading HuggingFace snapshot and retrying."
+                )
+                snapshot_download(repo_id=self.model_name)
+                self._model = whisper.load_model(
+                    self.model_name, device=get_torch_device()
+                )
         return self._model
 
     def get_cached_transcription(
