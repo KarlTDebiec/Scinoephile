@@ -2,6 +2,13 @@
 
 Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 
+## Code
+
+* Review [docs/ARCHITECTURE.md](/docs/ARCHITECTURE.md) for package boundaries,
+  dependency direction, and how the CLI maps onto `core` and domain modules.
+* Review [docs/STYLE.md](/docs/STYLE.md) for code style and documentation conventions
+  (docstrings, typing, `__all__`, etc.).
+
 ## Tools
 
 * This repository uses a virtual environment. To activate the venv in your shell: `source .venv/bin/activate`.

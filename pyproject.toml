@@ -14,6 +14,7 @@ dependencies = [
     "beautifulsoup4>=4.14.3",
     "demucs-infer>=4.1.2",
     "ffmpeg-python>=0.2.0",
+    "huggingface-hub>=0.34.0",
     "hkscs-unicode-converter>=1.1.0",
     "jieba>=0.42.1",
     "numba>=0.64.0",

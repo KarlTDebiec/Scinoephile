@@ -7,6 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import Mock
 
+from scinoephile.audio.transcription import get_segment_split_at_idx
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 
 
@@ -104,3 +107,93 @@ def test_get_cache_path_separates_demucs_modes():
     assert demucs_on_cache_path is not None
     assert demucs_off_cache_path is not None
     assert demucs_on_cache_path != demucs_off_cache_path
+
+
+def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
+    """Test malformed empty-text and duplicate-text segments are coalesced."""
+    transcriber = object.__new__(WhisperTranscriber)
+    transcriber.model_name = "custom/model"
+    transcriber.use_vad = True
+
+    segments = [
+        TranscribedSegment(
+            id=8,
+            seek=11520,
+            start=156.4,
+            end=159.97,
+            text="",
+            tokens=[],
+            temperature=0.0,
+            avg_logprob=-1.45,
+            compression_ratio=0.0,
+            no_speech_prob=1.11e-6,
+            words=[
+                TranscribedWord(text="照", start=156.4, end=156.85, confidence=0.385),
+                TranscribedWord(
+                    text="先生",
+                    start=156.85,
+                    end=157.19,
+                    confidence=0.99,
+                ),
+                TranscribedWord(
+                    text="你就",
+                    start=157.19,
+                    end=158.31,
+                    confidence=0.686,
+                ),
+            ],
+        ),
+        TranscribedSegment(
+            id=9,
+            seek=14520,
+            start=156.4,
+            end=161.29,
+            text="照先生你就",
+            tokens=[1, 2, 3],
+            temperature=0.0,
+            avg_logprob=-0.44,
+            compression_ratio=0.76,
+            no_speech_prob=1.53e-6,
+            words=None,
+        ),
+    ]
+
+    normalized_segments = transcriber._normalize_transcription_segments(
+        segments,
+        source="cache",
+        cache_path=Path("/tmp/whisper.json"),
+    )
+
+    assert len(normalized_segments) == 1
+    assert normalized_segments[0].id == 9
+    assert normalized_segments[0].start == 156.4
+    assert normalized_segments[0].end == 161.29
+    assert normalized_segments[0].text == "照先生你就"
+    assert normalized_segments[0].words is not None
+    assert [word.text for word in normalized_segments[0].words] == [
+        "照",
+        "先生",
+        "你就",
+    ]
+
+
+def test_get_segment_split_at_idx_includes_segment_details_in_error():
+    """Test split error includes identifying segment details."""
+    segment = TranscribedSegment(
+        id=9,
+        seek=14520,
+        start=156.4,
+        end=161.29,
+        text="照先生你就展示畀朕睇下係",
+        words=None,
+    )
+
+    try:
+        get_segment_split_at_idx(segment, 3)
+    except ValueError as exc:
+        assert str(exc) == (
+            "Cannot split segment without word timing data: "
+            "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
+        )
+    else:
+        raise AssertionError("Expected ValueError")
