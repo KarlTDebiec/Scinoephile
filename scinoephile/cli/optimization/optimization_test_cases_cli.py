@@ -15,13 +15,13 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.optimization.persistence import (
-    TestCaseSqliteStore,
-    sync_test_cases_from_json_paths,
-)
 from scinoephile.optimization.persistence.operations import (
     get_operation_spec,
     operation_names,
+)
+from scinoephile.optimization.persistence.test_cases import (
+    TestCaseSqliteStore,
+    sync_test_cases_from_json_paths,
 )
 
 from .operations import ListOperationsAction
