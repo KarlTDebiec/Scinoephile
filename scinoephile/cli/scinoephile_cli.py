@@ -13,6 +13,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from .analysis import AnalysisCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
+from .optimization import OptimizationCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
 from .yue import YueCli
@@ -97,6 +98,7 @@ class ScinoephileCli(ScinoephileCliBase):
             AnalysisCli.name(): AnalysisCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            OptimizationCli.name(): OptimizationCli,
             SyncCli.name(): SyncCli,
             TimewarpCli.name(): TimewarpCli,
             YueCli.name(): YueCli,

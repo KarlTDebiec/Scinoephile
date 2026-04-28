@@ -12,6 +12,7 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
+    "ListOpenCCConfigsAction",
     "add_opencc_convert_argument",
     "merge_conversion_localizations",
     "opencc_config_arg",
@@ -92,7 +93,7 @@ def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en")
     )
 
 
-class _ListOpenCCConfigsAction(Action):
+class ListOpenCCConfigsAction(Action):
     """Print available OpenCC configurations and exit."""
 
     def __init__(self, option_strings, dest, **kwargs):
@@ -156,7 +157,7 @@ def add_opencc_convert_argument(
     )
     additional_help_arg_group.add_argument(
         "--list-opencc-configs",
-        action=_ListOpenCCConfigsAction,
+        action=ListOpenCCConfigsAction,
         help="list available OpenCC configurations and exit",
     )
 

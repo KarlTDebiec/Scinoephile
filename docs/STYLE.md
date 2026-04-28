@@ -56,6 +56,19 @@
 * Use the `logging` module rather than `print` for any user-facing output in scripts or libraries.
   * Follow the repository pattern of defining a module-level `logger = getLogger(__name__)`.
 
+## Command Line Interface
+* In CLI modules under `scinoephile/cli/`, group arguments using
+  `scinoephile.common.argument_parsing.get_arg_groups_by_name(...)`.
+  * Standard group names are:
+    * `input arguments`
+    * `operation arguments`
+    * `output arguments`
+  * Rename the default optional group to `additional arguments` via
+    `optional_arguments_name="additional arguments"`.
+* CLI modules should support localization by defining a `localizations` mapping (as used by
+  `ScinoephileCliBase.translate_text`), and writing `help`, `description`, and argument-group
+  titles using stable English strings that can be translated.
+
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.
 
