@@ -76,6 +76,7 @@
 * Include a module docstring at the top of each file.
 * Use Markdown for formatting.
 * Do **not** include any reStructuredText markup such as double backticks.
+* Do **not** use reStructuredText roles such as `:mod:` or `:class:` in docstrings.
 * Provide docstrings for all modules, classes, properties, and functions, including internal helpers prefixed with an underscore.
   * Provide docstrings for property setters as well as getters when they are defined.
   * Provide docstrings for `TypedDict` classes, enums, and other public type definitions.

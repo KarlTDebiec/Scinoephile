@@ -19,8 +19,10 @@ from scinoephile.optimization.persistence.operations import (
     get_operation_spec,
     operation_names,
 )
-from scinoephile.optimization.persistence.test_cases import (
+from scinoephile.optimization.persistence.test_cases.sqlite_store import (
     TestCaseSqliteStore,
+)
+from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
 
