@@ -5,22 +5,32 @@
 
 [English](/README.md) | [繁體中文](/docs/README.zh-hant.md) | [简体中文](/docs/README.zh-hans.md)
 
-Scinoephile is a package for working with Chinese, English, and bilingual subtitles,
-with a focus on combining separate Chinese and English subtitle tracks into a single
-synchronized bilingual subtitle file.
+Scinoephile is a package for working with Chinese, English, and bilingual subtitles.
+It includes workflows for turning messy real-world sources (OCR, audio, and imperfect
+subtitle tracks) into clean, aligned, reviewable series.
 
 ## Features
 
-- **Synchronize bilingual subtitles**: combine two subtitle series (e.g. Chinese + English)
-  into the top and bottom lines of a single time-aligned series
-- **Timing adjustments**: shift and stretch one subtitle series to match another
-- **Language-specific tools**:
-  - **English**: post-processing and editing workflows for English subtitle tracks
-  - **Standard Chinese**: post-processing and editing workflows for Standard Chinese tracks
-  - **Written Cantonese**: workflows for written Cantonese tracks, including integration
-    with Standard Chinese where helpful
-- **Dictionary tooling**: build and query Chinese dictionary assets used by downstream
-  processing
+- **Cantonese transcription (Yue vs. Zho)**: transcribe written Cantonese subtitles from
+  audio using Standard Chinese reference subtitles to guide segmentation and revision.
+  This supports a multi-stage pipeline (transcription → review → translation → review)
+  and is designed to be testable and comparable across Whisper models and prompt sets.
+- **OCR workflows**:
+  - **Validate OCR against images**: interactively validate OCR text using subtitle
+    image outputs (directory containing `index.html` + images, or `.sup` inputs).
+  - **Fuse multiple OCR sources**: combine OCR outputs (e.g. Lens + Tesseract for English,
+    Lens + PaddleOCR for Chinese) into a higher-quality subtitle series.
+- **Synchronization**:
+  - **Bilingual sync**: combine two series (e.g. Chinese + English) into the top and
+    bottom lines of a single time-aligned series.
+  - **Timewarping**: shift and stretch one subtitle series to match another using
+    anchor points.
+- **Other features**:
+  - **Language-specific processing**: clean/flatten/proofread/romanize pipelines for
+    English, Standard Chinese, and written Cantonese subtitle series.
+  - **Analysis tooling**: compute diffs and Character Error Rate (CER) between series.
+  - **Dictionary tooling**: build and query Chinese dictionary assets used by downstream
+    processing.
 
 ## Installation
 
