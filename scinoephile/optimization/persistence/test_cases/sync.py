@@ -1,0 +1,90 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""JSON ↔ SQLite synchronization for LLM test cases."""
+
+from __future__ import annotations
+
+from collections.abc import Iterable
+from pathlib import Path
+
+from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.llms import Manager, Prompt, TestCase, load_test_cases_from_json
+
+from .id import get_test_case_id
+from .persisted_test_case import PersistedTestCase
+from .sqlite_store import TestCaseSqliteStore
+from .sync_report import SyncReport
+
+__all__ = [
+    "SyncReport",
+    "sync_test_cases_from_json_paths",
+]
+
+
+def sync_test_cases_from_json_paths(
+    *,
+    database_path: Path,
+    table_name: str,
+    input_paths: Iterable[Path],
+    manager_cls: type[Manager],
+    prompt_cls: type[Prompt],
+    dry_run: bool,
+) -> SyncReport:
+    """Synchronize test cases from JSON files into SQLite.
+
+    Arguments:
+        database_path: SQLite database path
+        table_name: SQLite table name to synchronize
+        input_paths: JSON paths to import/sync
+        manager_cls: manager class used to load/validate test cases
+        prompt_cls: prompt class used to load/validate test cases
+        dry_run: if True, report planned changes without writing
+    Returns:
+        sync report
+    """
+    store = TestCaseSqliteStore(database_path)
+    store.create_schema()
+    store.ensure_table(table_name)
+
+    input_paths_tuple = tuple(input_paths)
+    insert_ids: list[str] = []
+    delete_ids: list[str] = []
+    for input_path in input_paths_tuple:
+        loaded: list[TestCase] = load_test_cases_from_json(
+            input_path,
+            manager_cls,
+            prompt_cls=prompt_cls,
+        )
+        persisted = [_persisted_from_test_case(tc) for tc in loaded]
+        to_insert, to_delete = store.sync_table_source_path(
+            table_name,
+            source_path=str(input_path),
+            desired=persisted,
+            dry_run=dry_run,
+        )
+        insert_ids.extend([tc.test_case_id for tc in to_insert])
+        delete_ids.extend(to_delete)
+
+    return SyncReport(
+        table_name=table_name,
+        input_paths=input_paths_tuple,
+        insert_ids=tuple(sorted(set(insert_ids))),
+        delete_ids=tuple(sorted(set(delete_ids))),
+    )
+
+
+def _persisted_from_test_case(test_case: TestCase) -> PersistedTestCase:
+    query_dict = test_case.query.model_dump()
+    if test_case.answer is None:
+        raise ScinoephileError("Optimization test cases must include an answer.")
+    answer_dict = test_case.answer.model_dump()
+    test_case_id = get_test_case_id(test_case.query, test_case.answer)
+    return PersistedTestCase(
+        test_case_id=test_case_id,
+        difficulty=int(test_case.difficulty),
+        prompt=bool(test_case.prompt),
+        verified=bool(test_case.verified),
+        query=query_dict,
+        answer=answer_dict,
+        source_paths=[],
+    )
