@@ -7,15 +7,17 @@ from __future__ import annotations
 from types import SimpleNamespace
 from typing import cast
 
+import pytest
 from openai import OpenAI
 
 from scinoephile.core.llms import OpenAIProviderBase
+from scinoephile.core.llms.tools import LLMTool, ToolBox
 
 
 class _DummyProvider(OpenAIProviderBase):
     """Concrete provider for exercising base logic."""
 
-    default_model = "dummy-model"
+    model = "dummy-model"
 
 
 class _ToolCallFunction:
@@ -81,6 +83,25 @@ class _DummyClient:
         )
 
 
+def _get_tool_box(handler) -> ToolBox:
+    """Build a tool box for the shared dummy tool."""
+    return ToolBox(
+        [
+            LLMTool(
+                spec={
+                    "name": "do",
+                    "description": "Do something",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {"x": {"type": "number"}},
+                    },
+                },
+                handler=handler,
+            )
+        ]
+    )
+
+
 def test_tool_call_loop_runs_handler_and_returns_final_text():
     """Test base loops over tool calls and returns a final completion string."""
     client = _DummyClient()
@@ -91,17 +112,7 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
 
     result = provider.chat_completion(
         messages=[{"role": "user", "content": "hi"}],
-        tools=[
-            {
-                "name": "do",
-                "description": "Do something",
-                "parameters": {
-                    "type": "object",
-                    "properties": {"x": {"type": "number"}},
-                },
-            }
-        ],
-        tool_handlers={"do": handler},
+        tool_box=_get_tool_box(handler),
     )
 
     assert result == "done"
@@ -112,19 +123,78 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
     )
 
 
+def test_model_override_updates_provider_model():
+    """Test provider instances may override the configured model."""
+    client = _DummyClient()
+    provider = _DummyProvider(client=cast(OpenAI, client), model="override-model")
+
+    provider.chat_completion(
+        messages=[{"role": "user", "content": "hi"}],
+        tool_box=_get_tool_box(lambda args: args),
+    )
+
+    assert cast(str, client.calls[0]["model"]) == "override-model"
+
+
 def test_build_openai_tools_enables_strict_tools_by_default():
     """Test base provider requests strict tool schemas by default."""
     provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
 
     tools = provider._build_openai_tools(
-        [
-            {
-                "name": "do",
-                "description": "Do something",
-                "parameters": {"type": "object", "properties": {}},
-            }
-        ]
+        ToolBox(
+            [
+                LLMTool(
+                    spec={
+                        "name": "do",
+                        "description": "Do something",
+                        "parameters": {"type": "object", "properties": {}},
+                    },
+                    handler=lambda args: args,
+                )
+            ]
+        )
     )
 
     function = cast(dict[str, object], tools[0]["function"])
     assert function["strict"] is True
+
+
+def test_run_tool_handler_returns_error_for_unsupported_tool():
+    """Test unknown tool names produce an error payload."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    result = provider._run_tool_handler(
+        tool_name="missing",
+        raw_arguments="{}",
+        tool_box=ToolBox(),
+    )
+
+    assert result == {"error": "Unsupported tool 'missing'."}
+
+
+def test_run_tool_handler_returns_error_for_invalid_json_arguments():
+    """Test invalid tool-call JSON produces an error payload."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    result = provider._run_tool_handler(
+        tool_name="do",
+        raw_arguments="{",
+        tool_box=_get_tool_box(lambda args: args),
+    )
+
+    assert result == {"error": "Tool 'do' arguments are not valid JSON."}
+
+
+def test_run_tool_handler_allows_handler_exceptions_to_propagate():
+    """Test tool handler failures are not swallowed by the provider."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    def handler(args):
+        raise RuntimeError(f"bad args: {args}")
+
+    with pytest.raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
+        provider._run_tool_handler(
+            tool_name="do",
+            raw_arguments='{"x": 1}',
+            tool_box=_get_tool_box(handler),
+        )

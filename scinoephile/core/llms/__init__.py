@@ -13,13 +13,14 @@ from .prompt import Prompt
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
-from .tools import LLMToolSpec, ToolHandler
+from .tools import LLMTool, LLMToolSpec, ToolBox, ToolHandler
 from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [
     "Answer",
     "ChatCompletionKwargs",
     "LLMProvider",
+    "LLMTool",
     "LLMToolSpec",
     "Manager",
     "OpenAIProviderBase",
@@ -29,6 +30,7 @@ __all__ = [
     "Queryer",
     "TestCaseClsKwargs",
     "TestCase",
+    "ToolBox",
     "ToolHandler",
     "load_test_cases_from_json",
     "save_test_cases_to_json",

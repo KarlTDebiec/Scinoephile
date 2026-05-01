@@ -16,7 +16,7 @@ from scinoephile.core import ScinoephileError
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
-from .tools import LLMToolSpec, ToolHandler
+from .tools import ToolBox
 
 __all__ = ["OpenAIProviderBase"]
 
@@ -24,25 +24,16 @@ logger = getLogger(__name__)
 
 
 class OpenAIProviderBase(LLMProvider):
-    """Shared OpenAI-SDK implementation for OpenAI-compatible providers.
+    """Shared OpenAI-SDK implementation for OpenAI-compatible providers."""
 
-    Concrete providers should typically override:
-    - `default_model`
-    - `base_url`
-    - `api_key_env_var_name`
-    """
-
-    default_model: str
-    """Default model identifier."""
-
-    base_url: str | None = None
-    """Default base URL for the OpenAI client."""
+    model: str
+    """Model identifier."""
 
     api_key_env_var_name: str | None = None
     """Environment variable name used for the API key."""
 
-    use_strict_tools: bool = True
-    """Whether function tool schemas should request strict mode by default."""
+    base_url: str | None = None
+    """Default base URL for the OpenAI client."""
 
     def __init__(
         self,
@@ -50,6 +41,7 @@ class OpenAIProviderBase(LLMProvider):
         *,
         api_key: str | None = None,
         base_url: str | None = None,
+        model: str | None = None,
     ):
         """Initialize.
 
@@ -57,29 +49,41 @@ class OpenAIProviderBase(LLMProvider):
             client: synchronous OpenAI client
             api_key: explicit API key; if omitted, env var is used if configured
             base_url: explicit base URL; if omitted, provider default is used
+            model: model identifier override
         """
         self._sync_client: OpenAI | None = client
         self._api_key: str | None = api_key
-        self._base_url_override: str | None = base_url
+        if base_url is not None:
+            self.base_url = base_url
+        if model is not None:
+            self.model = model
+
+    @property
+    def api_key(self) -> str | None:
+        """API key for the OpenAI client."""
+        if self._api_key is not None:
+            return self._api_key
+        if self.api_key_env_var_name is None:
+            return None
+        return os.environ.get(self.api_key_env_var_name)
 
     @property
     def sync_client(self) -> OpenAI:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
-            api_key = self._api_key
-            if api_key is None and self.api_key_env_var_name:
-                api_key = os.environ.get(self.api_key_env_var_name)
-            base_url = self._get_base_url()
-            self._sync_client = OpenAI(api_key=api_key, base_url=base_url)
+            self._sync_client = OpenAI(api_key=self.api_key, base_url=self.base_url)
         return self._sync_client
+
+    @property
+    def use_strict_tools(self) -> bool:
+        """Whether function tool schemas should request strict mode by default."""
+        return True
 
     def chat_completion(  # noqa: PLR0912
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str | None = None,
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
+        tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -87,9 +91,7 @@ class OpenAIProviderBase(LLMProvider):
         Arguments:
             messages: messages to send
             response_format: response format
-            tools: available function-tool definitions
-            tool_handlers: handlers for available function tools
-            model: model identifier to use; if omitted, provider default is used
+            tool_box: available tools and handlers
             **kwargs: additional keyword arguments
         Returns:
             completion text from the model
@@ -98,8 +100,8 @@ class OpenAIProviderBase(LLMProvider):
         """
         try:
             messages = [dict(message) for message in messages]
-            openai_tools = self._build_openai_tools(tools) if tools else None
-            tool_handlers = tool_handlers or {}
+            tool_box = tool_box or ToolBox()
+            openai_tools = self._build_openai_tools(tool_box) if tool_box else None
             request_kwargs: dict[str, Any] = dict(kwargs)
             if response_format:
                 request_kwargs["response_format"] = response_format
@@ -113,13 +115,13 @@ class OpenAIProviderBase(LLMProvider):
                 if response_format:
                     completion = self.sync_client.beta.chat.completions.parse(
                         messages=messages,  # ty:ignore[invalid-argument-type]
-                        model=model or self.default_model,
+                        model=self.model,
                         **request_kwargs,
                     )
                 else:
                     completion = self.sync_client.chat.completions.create(
                         messages=messages,
-                        model=model or self.default_model,
+                        model=self.model,
                         **request_kwargs,
                     )  # ty:ignore[no-matching-overload]
 
@@ -157,7 +159,7 @@ class OpenAIProviderBase(LLMProvider):
                     tool_result = self._run_tool_handler(
                         tool_name=tool_call.function.name,
                         raw_arguments=tool_call.function.arguments,
-                        tool_handlers=tool_handlers,
+                        tool_box=tool_box,
                     )
                     messages.append(
                         {
@@ -188,15 +190,14 @@ class OpenAIProviderBase(LLMProvider):
                 f"{exc}"
             ) from exc
 
-    def _build_openai_tools(self, tools: list[LLMToolSpec]) -> list[dict[str, object]]:
+    def _build_openai_tools(self, tool_box: ToolBox) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
 
         Arguments:
-            tools: local tool specifications
+            tool_box: local tools and handlers
         Returns:
             OpenAI-compatible function-tool payloads
         """
-        use_strict_tools = self._should_use_strict_tools()
         return [
             {
                 "type": "function",
@@ -204,25 +205,42 @@ class OpenAIProviderBase(LLMProvider):
                     "name": tool["name"],
                     "description": tool["description"],
                     "parameters": tool["parameters"],
-                    "strict": use_strict_tools,
+                    "strict": self.use_strict_tools,
                 },
             }
-            for tool in tools
+            for tool in tool_box.specs
         ]
 
-    def _get_base_url(self) -> str | None:
-        """Return the effective base URL for this provider instance."""
-        return self._base_url_override or self.base_url
-
-    def _should_use_strict_tools(self) -> bool:
-        """Return whether this provider should request strict tool schemas."""
-        return self.use_strict_tools
-
-    @staticmethod
-    def _parse_tool_arguments(
+    def _run_tool_handler(
+        self,
         tool_name: str,
         raw_arguments: str,
-    ) -> dict[str, Any]:
+        tool_box: ToolBox,
+    ) -> object:
+        """Execute one local tool handler with parsed arguments.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+            tool_box: registered tools and handlers
+        Returns:
+            tool result payload
+        """
+        handler = tool_box.get_handler(tool_name)
+        if handler is None:
+            return {"error": f"Unsupported tool '{tool_name}'."}
+
+        parsed_arguments = self._parse_tool_arguments(
+            tool_name=tool_name,
+            raw_arguments=raw_arguments,
+        )
+        if isinstance(parsed_arguments, dict) and "error" in parsed_arguments:
+            return parsed_arguments
+
+        return handler(parsed_arguments)
+
+    @staticmethod
+    def _parse_tool_arguments(tool_name: str, raw_arguments: str) -> dict[str, Any]:
         """Parse tool arguments from model-produced JSON.
 
         Arguments:
@@ -242,38 +260,6 @@ class OpenAIProviderBase(LLMProvider):
             }
 
         return parsed_arguments
-
-    @staticmethod
-    def _run_tool_handler(
-        tool_name: str,
-        raw_arguments: str,
-        tool_handlers: dict[str, ToolHandler],
-    ) -> object:
-        """Execute one local tool handler with parsed arguments.
-
-        Arguments:
-            tool_name: requested tool name
-            raw_arguments: JSON argument payload from model tool call
-            tool_handlers: registered tool handlers
-        Returns:
-            tool result payload
-        """
-        handler = tool_handlers.get(tool_name)
-        if handler is None:
-            return {"error": f"Unsupported tool '{tool_name}'."}
-
-        parsed_arguments = OpenAIProviderBase._parse_tool_arguments(
-            tool_name=tool_name,
-            raw_arguments=raw_arguments,
-        )
-        if isinstance(parsed_arguments, dict) and "error" in parsed_arguments:
-            return parsed_arguments
-
-        try:
-            return handler(parsed_arguments)
-        except Exception:
-            logger.exception("Tool '%s' failed during execution.", tool_name)
-            return {"error": f"Tool '{tool_name}' failed."}
 
     @staticmethod
     def _serialize_tool_result(result: object) -> str:

@@ -14,8 +14,8 @@ from typing import Any
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 
-from .deepseek import DeepSeekProvider
-from .openai import OpenAIProvider
+from .deepseek_provider import DeepSeekProvider
+from .openai_provider import OpenAIProvider
 
 __all__ = [
     "get_default_provider",

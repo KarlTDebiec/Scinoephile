@@ -12,9 +12,9 @@ import pytest
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, LLMProvider
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
-from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
-from scinoephile.llms.providers.deepseek import DeepSeekProvider
-from scinoephile.llms.providers.openai import OpenAIProvider
+from scinoephile.core.llms.tools import ToolBox
+from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
+from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
     get_default_provider,
     get_provider,
@@ -37,13 +37,11 @@ class _DummyProvider(LLMProvider):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str | None = None,
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
+        tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return a fixed completion value."""
-        _ = (messages, response_format, model, tools, tool_handlers, kwargs)
+        _ = (messages, response_format, tool_box, kwargs)
         return "{}"
 
 

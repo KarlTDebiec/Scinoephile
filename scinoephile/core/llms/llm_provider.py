@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Unpack
 
 from .answer import Answer
-from .tools import LLMToolSpec, ToolHandler
+from .tools import ToolBox
 
 __all__ = [
     "ChatCompletionKwargs",
@@ -39,9 +39,7 @@ class LLMProvider(ABC):
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
-        model: str | None = None,
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
+        tool_box: ToolBox | None = None,
         **kwargs: Unpack[ChatCompletionKwargs],
     ) -> str:
         """Return chat completion text synchronously.
@@ -49,9 +47,7 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
-            model: model identifier to use; if omitted, provider default is used
-            tools: available function-tool definitions
-            tool_handlers: handlers for available function tools
+            tool_box: available tools and handlers
             **kwargs: provider-specific keyword arguments
         Returns:
             completion text from the model

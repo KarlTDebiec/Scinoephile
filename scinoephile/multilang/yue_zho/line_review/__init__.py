@@ -99,17 +99,15 @@ def get_yue_vs_zho_line_reviewer(
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return YueZhoLineReviewProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )
