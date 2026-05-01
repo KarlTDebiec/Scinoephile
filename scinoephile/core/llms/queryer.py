@@ -23,7 +23,7 @@ from .llm_provider import LLMProvider
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
-from .tools import ToolBox
+from .tool_box import ToolBox
 
 __all__ = ["Queryer"]
 
@@ -64,7 +64,7 @@ class Queryer[
             auto_verify: automatically mark test cases as verified if no changes
             tool_box: available tools and handlers
         """
-        self._provider = provider
+        self.provider = provider
 
         self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or []}
         """Test cases included in the prompt for few-shot learning."""
@@ -96,16 +96,6 @@ class Queryer[
             test case including LLM's answer
         """
         return self.call(test_case)
-
-    @property
-    def provider(self) -> LLMProvider:
-        """LLM Provider to use for queries."""
-        return self._provider
-
-    @provider.setter
-    def provider(self, value: LLMProvider):
-        """Set LLM Provider to use for queries."""
-        self._provider = value
 
     def call(self, test_case: TTestCase) -> TTestCase:
         """Query LLM synchronously.
@@ -139,9 +129,7 @@ class Queryer[
             # Get answer from provider
             try:
                 content = self.provider.chat_completion(
-                    messages,
-                    test_case.answer_cls,
-                    tool_box=self.tool_box,
+                    messages, test_case.answer_cls, self.tool_box
                 )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")

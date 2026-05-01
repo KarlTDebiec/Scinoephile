@@ -13,7 +13,8 @@ from .prompt import Prompt
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
-from .tools import Tool, ToolBox
+from .tool import Tool
+from .tool_box import ToolBox
 from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [

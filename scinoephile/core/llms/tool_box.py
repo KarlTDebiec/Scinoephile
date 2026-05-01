@@ -1,34 +1,16 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tool-related types for LLM interactions."""
+"""Collection of LLM-callable tools."""
 
 from __future__ import annotations
 
 import json
 from collections.abc import Callable, Iterable, Iterator
-from dataclasses import dataclass
-from typing import Any, cast
+from typing import Any
 
-__all__ = [
-    "Tool",
-    "ToolBox",
-]
+from .tool import Tool
 
-
-@dataclass(frozen=True)
-class Tool:
-    """One LLM-callable tool definition and its local handler."""
-
-    spec: dict[str, object]
-    """Tool schema exposed to the model."""
-
-    handler: Callable[[dict[str, Any]], object]
-    """Local handler for executing the tool."""
-
-    @property
-    def name(self) -> str:
-        """Tool name."""
-        return cast(str, self.spec["name"])
+__all__ = ["ToolBox"]
 
 
 class ToolBox:

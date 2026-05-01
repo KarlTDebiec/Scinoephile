@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Unpack
 
 from .answer import Answer
-from .tools import ToolBox
+from .tool_box import ToolBox
 
 __all__ = [
     "ChatCompletionKwargs",
@@ -60,7 +60,7 @@ class LLMProvider(ABC):
         Arguments:
             messages: messages to send
             response_format: response format
-            tool_box: available tools and handlers
+            tool_box: available tools
             **kwargs: provider-specific keyword arguments
         Returns:
             completion text from the model

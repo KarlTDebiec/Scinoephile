@@ -15,7 +15,7 @@ from .manager import Manager
 from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
-from .tools import ToolBox
+from .tool_box import ToolBox
 from .utils import load_test_cases_from_json
 
 __all__ = ["Processor"]

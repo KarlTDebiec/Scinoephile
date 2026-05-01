@@ -8,7 +8,8 @@ from logging import getLogger
 
 from scinoephile.core.dictionaries import DictionaryLookupResponse, DictionaryToolPrompt
 from scinoephile.core.dictionaries.serialization import dictionary_entry_to_dict
-from scinoephile.core.llms.tools import Tool, ToolBox
+from scinoephile.core.llms.tool import Tool
+from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.dictionaries.lookup import lookup_dictionary_entries
 
 __all__ = [

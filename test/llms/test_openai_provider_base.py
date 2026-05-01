@@ -11,7 +11,8 @@ import pytest
 from openai import OpenAI
 
 from scinoephile.core.llms import OpenAIProviderBase
-from scinoephile.core.llms.tools import Tool, ToolBox
+from scinoephile.core.llms.tool import Tool
+from scinoephile.core.llms.tool_box import ToolBox
 
 
 class _DummyProvider(OpenAIProviderBase):

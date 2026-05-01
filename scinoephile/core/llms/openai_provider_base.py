@@ -16,7 +16,7 @@ from scinoephile.core import ScinoephileError
 
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
-from .tools import ToolBox
+from .tool_box import ToolBox
 
 __all__ = ["OpenAIProviderBase"]
 

@@ -8,7 +8,8 @@ from types import SimpleNamespace
 from typing import cast
 
 from scinoephile.core.llms import openai_provider_base
-from scinoephile.core.llms.tools import Tool, ToolBox
+from scinoephile.core.llms.tool import Tool
+from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 
 
