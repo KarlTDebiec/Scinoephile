@@ -134,23 +134,25 @@ class OpenAIProviderBase(LLMProvider):
                         )
                     return content
 
-                messages.append(
-                    {
-                        "role": "assistant",
-                        "content": message.content,
-                        "tool_calls": [
-                            {
-                                "id": tool_call.id,
-                                "type": "function",
-                                "function": {
-                                    "name": tool_call.function.name,
-                                    "arguments": tool_call.function.arguments,
-                                },
-                            }
-                            for tool_call in tool_calls
-                        ],
-                    }
-                )
+                assistant_message: dict[str, Any] = {
+                    "role": "assistant",
+                    "content": message.content,
+                    "tool_calls": [
+                        {
+                            "id": tool_call.id,
+                            "type": "function",
+                            "function": {
+                                "name": tool_call.function.name,
+                                "arguments": tool_call.function.arguments,
+                            },
+                        }
+                        for tool_call in tool_calls
+                    ],
+                }
+                reasoning_content = getattr(message, "reasoning_content", None)
+                if reasoning_content:
+                    assistant_message["reasoning_content"] = reasoning_content
+                messages.append(assistant_message)
                 for tool_call in tool_calls:
                     tool_result = self._run_tool_handler(
                         tool_name=tool_call.function.name,

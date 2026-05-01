@@ -37,9 +37,15 @@ class _ToolCall:
 class _Message:
     """Message fixture."""
 
-    def __init__(self, content: str | None, tool_calls: list[_ToolCall] | None = None):
+    def __init__(
+        self,
+        content: str | None,
+        tool_calls: list[_ToolCall] | None = None,
+        reasoning_content: str | None = None,
+    ):
         self.content = content
         self.tool_calls = tool_calls
+        self.reasoning_content = reasoning_content
 
 
 class _Completion:
@@ -64,6 +70,7 @@ class _DummyClient:
                     _Message(
                         content=None,
                         tool_calls=[_ToolCall("tool-1", "do", '{"x": 1}')],
+                        reasoning_content="Need tool output before answering.",
                     )
                 )
             return _Completion(_Message(content="done", tool_calls=[]))
@@ -99,6 +106,10 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
 
     assert result == "done"
     assert len(client.calls) == 2
+    second_call_messages = cast(list[dict[str, object]], client.calls[1]["messages"])
+    assert second_call_messages[1]["reasoning_content"] == (
+        "Need tool output before answering."
+    )
 
 
 def test_build_openai_tools_enables_strict_tools_by_default():

@@ -27,8 +27,8 @@ class OpenAIProvider(OpenAIProviderBase):
         """
         super().__init__(client=client)
 
-    @override
     @property
+    @override
     def sync_client(self) -> OpenAI:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
