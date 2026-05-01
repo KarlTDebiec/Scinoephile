@@ -7,9 +7,10 @@ from __future__ import annotations
 import os
 from logging import getLogger
 from time import sleep
-from typing import Any, Unpack
+from typing import Any, Unpack, cast
 
 from openai import OpenAI, OpenAIError
+from openai.types.chat import ChatCompletionMessageFunctionToolCall
 
 from scinoephile.core import ScinoephileError
 
@@ -78,7 +79,7 @@ class OpenAIProviderBase(LLMProvider):
         """Whether function tool schemas should request strict mode by default."""
         return True
 
-    def chat_completion(  # noqa: PLR0912
+    def chat_completion(
         self,
         messages: list[dict[str, Any]],
         response_format: type[Answer] | None = None,
@@ -98,35 +99,26 @@ class OpenAIProviderBase(LLMProvider):
             ScinoephileError: Error during chat completion
         """
         try:
+            # Organize arguments
             messages = [dict(message) for message in messages]
             tool_box = tool_box or ToolBox()
             openai_tools = self._build_openai_tools(tool_box) if tool_box else None
-            request_kwargs: dict[str, Any] = dict(kwargs)
-            if response_format:
-                request_kwargs["response_format"] = response_format
-            if openai_tools is not None:
-                request_kwargs.setdefault("tool_choice", "auto")
-                request_kwargs.setdefault("parallel_tool_calls", False)
-                request_kwargs["tools"] = openai_tools
+            request_kwargs = self._build_request_kwargs(
+                response_format, openai_tools, kwargs
+            )
 
+            # Query provider, process tool calls if applicable, and return
             max_tool_rounds = 8
-            for round_idx in range(max_tool_rounds):
-                if response_format:
-                    completion = self.sync_client.beta.chat.completions.parse(
-                        messages=messages,  # ty:ignore[invalid-argument-type]
-                        model=self.model,
-                        **request_kwargs,
-                    )
-                else:
-                    completion = self.sync_client.chat.completions.create(
-                        messages=messages,
-                        model=self.model,
-                        **request_kwargs,
-                    )  # ty:ignore[no-matching-overload]
-
+            for _ in range(max_tool_rounds):
+                # Query provider
+                completion = self._query(messages, response_format, request_kwargs)
                 message = completion.choices[0].message
-                tool_calls = message.tool_calls or []
+                tool_calls = cast(
+                    list[ChatCompletionMessageFunctionToolCall],
+                    message.tool_calls or [],
+                )
 
+                # If no tool calls requested, return
                 if not tool_calls:
                     content = message.content
                     if content is None:
@@ -135,47 +127,20 @@ class OpenAIProviderBase(LLMProvider):
                         )
                     return content
 
-                assistant_message: dict[str, Any] = {
-                    "role": "assistant",
-                    "content": message.content,
-                    "tool_calls": [
-                        {
-                            "id": tool_call.id,
-                            "type": "function",
-                            "function": {
-                                "name": tool_call.function.name,
-                                "arguments": tool_call.function.arguments,
-                            },
-                        }
-                        for tool_call in tool_calls
-                    ],
-                }
-                reasoning_content = getattr(message, "reasoning_content", None)
-                if reasoning_content:
-                    assistant_message["reasoning_content"] = reasoning_content
-                messages.append(assistant_message)
-                for tool_call in tool_calls:
-                    tool_result = tool_box.run(
-                        tool_name=tool_call.function.name,
-                        raw_arguments=tool_call.function.arguments,
-                    )
-                    messages.append(
-                        {
-                            "role": "tool",
-                            "tool_call_id": tool_call.id,
-                            "content": tool_box.serialize_result(tool_result),
-                        }
-                    )
-
+                # If tool call requested without tools available, raise Exception
                 if openai_tools is None:
                     raise ScinoephileError(
                         "OpenAI-compatible API returned tool calls even though no "
                         "tools were provided."
                     )
 
+                # Call tool
+                messages.extend(self._call_tool(message, tool_calls, tool_box))
+
+            # The provider never produced a final answer within the allowed rounds.
             raise ScinoephileError(
-                "Tool-calling did not reach a final response after "
-                f"{round_idx + 1} rounds."
+                f"Tool-calling did not reach a final response after {max_tool_rounds} "
+                "rounds."
             )
         except OpenAIError as exc:
             exc_code = getattr(exc, "code", None)
@@ -212,3 +177,104 @@ class OpenAIProviderBase(LLMProvider):
             }
             for tool in tool_box.specs
         ]
+
+    def _query(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer] | None,
+        request_kwargs: dict[str, Any],
+    ) -> Any:
+        """Query provider for completion.
+
+        Arguments:
+            messages: messages to send
+            response_format: structured response format, if any
+            request_kwargs: OpenAI SDK request keyword arguments
+        Returns:
+            completion response object
+        """
+        if response_format:
+            return self.sync_client.beta.chat.completions.parse(
+                messages=messages,  # ty:ignore[invalid-argument-type]
+                model=self.model,
+                **request_kwargs,
+            )
+        return self.sync_client.chat.completions.create(
+            messages=messages,
+            model=self.model,
+            **request_kwargs,
+        )  # ty:ignore[no-matching-overload]
+
+    @staticmethod
+    def _call_tool(
+        message: Any,
+        tool_calls: list[ChatCompletionMessageFunctionToolCall],
+        tool_box: ToolBox,
+    ) -> list[dict[str, Any]]:
+        """Call a tool.
+
+        Arguments:
+            message: assistant message returned by the provider
+            tool_calls: tool calls requested by the provider
+            tool_box: available tools and handlers
+        Returns:
+            messages to append to the conversation history
+        """
+        # Prepare assistant message to precede tool call results
+        assistant_message: dict[str, Any] = {
+            "role": "assistant",
+            "content": message.content,
+            "tool_calls": [
+                {
+                    "id": tool_call.id,
+                    "type": "function",
+                    "function": {
+                        "name": tool_call.function.name,
+                        "arguments": tool_call.function.arguments,
+                    },
+                }
+                for tool_call in tool_calls
+            ],
+        }
+        reasoning_content = getattr(message, "reasoning_content", None)
+        if reasoning_content:
+            assistant_message["reasoning_content"] = reasoning_content
+        tool_messages: list[dict[str, Any]] = [assistant_message]
+
+        # Execute each requested tool and append response
+        for tool_call in tool_calls:
+            tool_result = tool_box.run(
+                tool_call.function.name, tool_call.function.arguments
+            )
+            tool_messages.append(
+                {
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "content": tool_box.serialize_result(tool_result),
+                }
+            )
+        return tool_messages
+
+    @staticmethod
+    def _build_request_kwargs(
+        response_format: type[Answer] | None,
+        openai_tools: list[dict[str, object]] | None,
+        kwargs: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Build request kwargs for one completion call.
+
+        Arguments:
+            response_format: structured response format, if any
+            openai_tools: serialized OpenAI tool payload
+            kwargs: caller-supplied completion kwargs
+        Returns:
+            request kwargs for the OpenAI SDK call
+        """
+        request_kwargs: dict[str, Any] = dict(kwargs)
+        if response_format:
+            request_kwargs["response_format"] = response_format
+        if openai_tools is not None:
+            request_kwargs.setdefault("tool_choice", "auto")
+            request_kwargs.setdefault("parallel_tool_calls", False)
+            request_kwargs["tools"] = openai_tools
+        return request_kwargs
