@@ -86,6 +86,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "--infile",
             required=True,
             nargs="+",
+            dest="infile_paths",
             type=input_file_arg(),
             help="one or more input JSON paths",
         )
