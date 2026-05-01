@@ -97,6 +97,28 @@ class ToolBox:
             return None
         return tool.handler
 
+    def run(self, tool_name: str, raw_arguments: str) -> object:
+        """Execute one tool from model-produced JSON arguments.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+        Returns:
+            tool result payload
+        """
+        handler = self.get_handler(tool_name)
+        if handler is None:
+            return {"error": f"Unsupported tool '{tool_name}'."}
+
+        parsed_arguments = self._parse_arguments(
+            tool_name=tool_name,
+            raw_arguments=raw_arguments,
+        )
+        if isinstance(parsed_arguments, dict) and "error" in parsed_arguments:
+            return parsed_arguments
+
+        return handler(parsed_arguments)
+
     def to_json(self) -> str:
         """Return a deterministic JSON representation of configured tools."""
         if not self:
@@ -109,3 +131,39 @@ class ToolBox:
             ensure_ascii=False,
             sort_keys=True,
         )
+
+    @staticmethod
+    def serialize_result(result: object) -> str:
+        """Serialize tool-call result for tool response message content.
+
+        Arguments:
+            result: tool execution result
+        Returns:
+            serialized JSON content
+        """
+        try:
+            return json.dumps(result, ensure_ascii=False)
+        except TypeError:
+            return json.dumps({"result": str(result)}, ensure_ascii=False)
+
+    @staticmethod
+    def _parse_arguments(tool_name: str, raw_arguments: str) -> dict[str, Any]:
+        """Parse tool arguments from model-produced JSON.
+
+        Arguments:
+            tool_name: requested tool name
+            raw_arguments: JSON argument payload from model tool call
+        Returns:
+            parsed arguments, or an error payload
+        """
+        try:
+            parsed_arguments = json.loads(raw_arguments or "{}")
+        except json.JSONDecodeError:
+            return {"error": f"Tool '{tool_name}' arguments are not valid JSON."}
+
+        if not isinstance(parsed_arguments, dict):
+            return {
+                "error": f"Tool '{tool_name}' arguments must decode to a JSON object."
+            }
+
+        return parsed_arguments

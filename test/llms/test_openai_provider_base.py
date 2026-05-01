@@ -159,42 +159,34 @@ def test_build_openai_tools_enables_strict_tools_by_default():
     assert function["strict"] is True
 
 
-def test_run_tool_handler_returns_error_for_unsupported_tool():
+def test_tool_box_run_returns_error_for_unsupported_tool():
     """Test unknown tool names produce an error payload."""
-    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
-
-    result = provider._run_tool_handler(
+    result = ToolBox().run(
         tool_name="missing",
         raw_arguments="{}",
-        tool_box=ToolBox(),
     )
 
     assert result == {"error": "Unsupported tool 'missing'."}
 
 
-def test_run_tool_handler_returns_error_for_invalid_json_arguments():
+def test_tool_box_run_returns_error_for_invalid_json_arguments():
     """Test invalid tool-call JSON produces an error payload."""
-    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
-
-    result = provider._run_tool_handler(
+    result = _get_tool_box(lambda args: args).run(
         tool_name="do",
         raw_arguments="{",
-        tool_box=_get_tool_box(lambda args: args),
     )
 
     assert result == {"error": "Tool 'do' arguments are not valid JSON."}
 
 
-def test_run_tool_handler_allows_handler_exceptions_to_propagate():
-    """Test tool handler failures are not swallowed by the provider."""
-    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+def test_tool_box_run_allows_handler_exceptions_to_propagate():
+    """Test tool handler failures are not swallowed by the tool box."""
 
     def handler(args):
         raise RuntimeError(f"bad args: {args}")
 
     with pytest.raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
-        provider._run_tool_handler(
+        _get_tool_box(handler).run(
             tool_name="do",
             raw_arguments='{"x": 1}',
-            tool_box=_get_tool_box(handler),
         )

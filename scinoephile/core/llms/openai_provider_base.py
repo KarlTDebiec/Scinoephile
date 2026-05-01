@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 from logging import getLogger
 from time import sleep
@@ -156,16 +155,15 @@ class OpenAIProviderBase(LLMProvider):
                     assistant_message["reasoning_content"] = reasoning_content
                 messages.append(assistant_message)
                 for tool_call in tool_calls:
-                    tool_result = self._run_tool_handler(
+                    tool_result = tool_box.run(
                         tool_name=tool_call.function.name,
                         raw_arguments=tool_call.function.arguments,
-                        tool_box=tool_box,
                     )
                     messages.append(
                         {
                             "role": "tool",
                             "tool_call_id": tool_call.id,
-                            "content": self._serialize_tool_result(tool_result),
+                            "content": tool_box.serialize_result(tool_result),
                         }
                     )
 
@@ -184,6 +182,10 @@ class OpenAIProviderBase(LLMProvider):
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
             if exc_code == "rate_limit_exceeded":
+                logger.error(
+                    f"OpenAI-compatible API rate limit exceeded "
+                    f"({exc_code=}, {exc_type=} {exc_param=}): {exc}"
+                )
                 sleep(1)
             raise ScinoephileError(
                 f"OpenAI-compatible API error ({exc_code=}, {exc_type=} {exc_param=}): "
@@ -210,67 +212,3 @@ class OpenAIProviderBase(LLMProvider):
             }
             for tool in tool_box.specs
         ]
-
-    def _run_tool_handler(
-        self,
-        tool_name: str,
-        raw_arguments: str,
-        tool_box: ToolBox,
-    ) -> object:
-        """Execute one local tool handler with parsed arguments.
-
-        Arguments:
-            tool_name: requested tool name
-            raw_arguments: JSON argument payload from model tool call
-            tool_box: registered tools and handlers
-        Returns:
-            tool result payload
-        """
-        handler = tool_box.get_handler(tool_name)
-        if handler is None:
-            return {"error": f"Unsupported tool '{tool_name}'."}
-
-        parsed_arguments = self._parse_tool_arguments(
-            tool_name=tool_name,
-            raw_arguments=raw_arguments,
-        )
-        if isinstance(parsed_arguments, dict) and "error" in parsed_arguments:
-            return parsed_arguments
-
-        return handler(parsed_arguments)
-
-    @staticmethod
-    def _parse_tool_arguments(tool_name: str, raw_arguments: str) -> dict[str, Any]:
-        """Parse tool arguments from model-produced JSON.
-
-        Arguments:
-            tool_name: requested tool name
-            raw_arguments: JSON argument payload from model tool call
-        Returns:
-            parsed arguments, or an error payload
-        """
-        try:
-            parsed_arguments = json.loads(raw_arguments or "{}")
-        except json.JSONDecodeError:
-            return {"error": f"Tool '{tool_name}' arguments are not valid JSON."}
-
-        if not isinstance(parsed_arguments, dict):
-            return {
-                "error": f"Tool '{tool_name}' arguments must decode to a JSON object."
-            }
-
-        return parsed_arguments
-
-    @staticmethod
-    def _serialize_tool_result(result: object) -> str:
-        """Serialize tool-call result for tool response message content.
-
-        Arguments:
-            result: tool execution result
-        Returns:
-            serialized JSON content
-        """
-        try:
-            return json.dumps(result, ensure_ascii=False)
-        except TypeError:
-            return json.dumps({"result": str(result)}, ensure_ascii=False)
