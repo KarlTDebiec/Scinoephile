@@ -36,19 +36,19 @@ def _test_get_zho_flattened(series: Series, expected: Series):
 
 
 def test_get_zho_flattened_kob(
-    kob_zho_hant_fuse_clean_validate_review: Series,
-    kob_zho_hant_fuse_clean_validate_review_flatten: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_zho_flattened with KOB 繁体中文 subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_review: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_review_flatten: Expected flattened KOB
+        kob_zho_hant_ocr_fuse_clean_validate_review: KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Expected flattened KOB
           繁体中文 series fixture
     """
     _test_get_zho_flattened(
-        kob_zho_hant_fuse_clean_validate_review,
-        kob_zho_hant_fuse_clean_validate_review_flatten,
+        kob_zho_hant_ocr_fuse_clean_validate_review,
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
     )
 
 

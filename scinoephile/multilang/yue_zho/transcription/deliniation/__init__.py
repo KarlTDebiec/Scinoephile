@@ -4,9 +4,12 @@
 
 from __future__ import annotations
 
-from .prompt import YueZhoHansDeliniationPrompt, YueZhoHantDeliniationPrompt
+from .prompt import (
+    YueVsZhoYueHansDeliniationPrompt,
+    YueVsZhoYueHantDeliniationPrompt,
+)
 
 __all__ = [
-    "YueZhoHansDeliniationPrompt",
-    "YueZhoHantDeliniationPrompt",
+    "YueVsZhoYueHansDeliniationPrompt",
+    "YueVsZhoYueHantDeliniationPrompt",
 ]

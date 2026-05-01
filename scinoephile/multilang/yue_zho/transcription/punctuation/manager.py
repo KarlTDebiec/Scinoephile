@@ -13,7 +13,7 @@ from scinoephile.core.text import (
 )
 from scinoephile.llms.dual_multi_single import DualMultiSingleManager
 
-from .prompt import YueZhoHansPunctuationPrompt
+from .prompt import YueVsZhoYueHansPunctuationPrompt
 
 __all__ = ["YueZhoPunctuationManager"]
 
@@ -21,8 +21,8 @@ __all__ = ["YueZhoPunctuationManager"]
 class YueZhoPunctuationManager(DualMultiSingleManager):
     """Factories for 粤文/中文 transcription punctuation LLM classes."""
 
-    prompt_cls: ClassVar[type[YueZhoHansPunctuationPrompt]] = (
-        YueZhoHansPunctuationPrompt
+    prompt_cls: ClassVar[type[YueVsZhoYueHansPunctuationPrompt]] = (
+        YueVsZhoYueHansPunctuationPrompt
     )
     """Default prompt class."""
 
@@ -35,7 +35,9 @@ class YueZhoPunctuationManager(DualMultiSingleManager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[YueZhoHansPunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = getattr(
+            model, "prompt_cls"
+        )
         min_difficulty = DualMultiSingleManager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
@@ -59,7 +61,9 @@ class YueZhoPunctuationManager(DualMultiSingleManager):
         Returns:
             validated test case
         """
-        prompt_cls: type[YueZhoHansPunctuationPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = getattr(
+            model, "prompt_cls"
+        )
         if model.answer is None:
             return model
 

@@ -21,11 +21,14 @@ from scinoephile.llms.dual_block_gapped import (
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
+from .prompts import (
+    YueVsZhoYueHansTranslationPrompt,
+    YueVsZhoYueHantTranslationPrompt,
+)
 
 __all__ = [
-    "YueHansFromZhoTranslationPrompt",
-    "YueHantFromZhoTranslationPrompt",
+    "YueVsZhoYueHansTranslationPrompt",
+    "YueVsZhoYueHantTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
     "get_yue_translated_vs_zho",
@@ -68,7 +71,9 @@ def get_yue_translated_vs_zho(
 
 
 def get_yue_vs_zho_translator(
-    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[YueVsZhoYueHansTranslationPrompt] = (
+        YueVsZhoYueHansTranslationPrompt
+    ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
@@ -93,17 +98,15 @@ def get_yue_vs_zho_translator(
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )

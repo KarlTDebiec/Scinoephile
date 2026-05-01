@@ -38,19 +38,19 @@ def _test_get_eng_flattened(series: Series, expected: Series):
 
 
 def test_get_eng_flattened_kob(
-    kob_eng_fuse_clean_validate_review: Series,
-    kob_eng_fuse_clean_validate_review_flatten: Series,
+    kob_eng_ocr_fuse_clean_validate_review: Series,
+    kob_eng_ocr_fuse_clean_validate_review_flatten: Series,
 ):
     """Test get_eng_flattened with KOB English subtitles.
 
     Arguments:
-        kob_eng_fuse_clean_validate_review: KOB English series fixture
-        kob_eng_fuse_clean_validate_review_flatten: Expected flattened KOB English
+        kob_eng_ocr_fuse_clean_validate_review: KOB English series fixture
+        kob_eng_ocr_fuse_clean_validate_review_flatten: Expected flattened KOB English
           series fixture
     """
     _test_get_eng_flattened(
-        kob_eng_fuse_clean_validate_review,
-        kob_eng_fuse_clean_validate_review_flatten,
+        kob_eng_ocr_fuse_clean_validate_review,
+        kob_eng_ocr_fuse_clean_validate_review_flatten,
     )
 
 

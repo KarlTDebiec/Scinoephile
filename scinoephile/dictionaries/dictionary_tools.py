@@ -8,7 +8,8 @@ from logging import getLogger
 
 from scinoephile.core.dictionaries import DictionaryLookupResponse, DictionaryToolPrompt
 from scinoephile.core.dictionaries.serialization import dictionary_entry_to_dict
-from scinoephile.core.llms.tools import LLMToolSpec, ToolHandler
+from scinoephile.core.llms.tool import Tool
+from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.dictionaries.lookup import lookup_dictionary_entries
 
 __all__ = [
@@ -21,31 +22,14 @@ logger = getLogger(__name__)
 
 def get_dictionary_tools(
     prompt_cls: type[DictionaryToolPrompt],
-) -> tuple[list[LLMToolSpec], dict[str, ToolHandler]]:
+) -> ToolBox:
     """Get dictionary tool definitions and handlers for LLM providers.
 
     Arguments:
         prompt_cls: prompt class providing dictionary tool text
     Returns:
-        tool definitions and corresponding tool handlers
+        tool box containing dictionary tooling
     """
-    tools: list[LLMToolSpec] = [
-        {
-            "name": prompt_cls.dictionary_tool_name,
-            "description": prompt_cls.dictionary_tool_description,
-            "parameters": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["query"],
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": prompt_cls.dictionary_tool_query_description,
-                    },
-                },
-            },
-        }
-    ]
 
     def lookup_dictionary_from_args(
         arguments: dict[str, object],
@@ -71,10 +55,30 @@ def get_dictionary_tools(
         query = str(arguments.get("query", "")).strip()
         return lookup_dictionary(query=query, auto_build_missing=False)
 
-    handlers: dict[str, ToolHandler] = {
-        prompt_cls.dictionary_tool_name: lookup_dictionary_from_args,
-    }
-    return tools, handlers
+    return ToolBox(
+        [
+            Tool(
+                spec={
+                    "name": prompt_cls.dictionary_tool_name,
+                    "description": prompt_cls.dictionary_tool_description,
+                    "parameters": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "required": ["query"],
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": (
+                                    prompt_cls.dictionary_tool_query_description
+                                ),
+                            },
+                        },
+                    },
+                },
+                handler=lookup_dictionary_from_args,
+            )
+        ]
+    )
 
 
 def lookup_dictionary(

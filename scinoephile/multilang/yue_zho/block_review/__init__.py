@@ -18,11 +18,14 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import YueHansBlockReviewPrompt, YueHantBlockReviewPrompt
+from .prompts import (
+    YueVsZhoYueHansBlockReviewPrompt,
+    YueVsZhoYueHantBlockReviewPrompt,
+)
 
 __all__ = [
-    "YueHansBlockReviewPrompt",
-    "YueHantBlockReviewPrompt",
+    "YueVsZhoYueHansBlockReviewPrompt",
+    "YueVsZhoYueHantBlockReviewPrompt",
     "YueZhoBlockReviewProcessKwargs",
     "YueZhoBlockReviewProcessorKwargs",
     "get_yue_block_reviewed_vs_zho",
@@ -65,7 +68,9 @@ def get_yue_block_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_block_reviewer(
-    prompt_cls: type[YueHansBlockReviewPrompt] = YueHansBlockReviewPrompt,
+    prompt_cls: type[YueVsZhoYueHansBlockReviewPrompt] = (
+        YueVsZhoYueHansBlockReviewPrompt
+    ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
@@ -90,17 +95,15 @@ def get_yue_vs_zho_block_reviewer(
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )

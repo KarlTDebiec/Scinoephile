@@ -11,7 +11,7 @@ from functools import cache
 from json import JSONDecodeError
 from logging import getLogger
 from pathlib import Path
-from typing import Any, ClassVar, Self, cast
+from typing import ClassVar, Self, cast
 
 from pydantic import ValidationError
 
@@ -23,7 +23,7 @@ from .llm_provider import LLMProvider
 from .prompt import Prompt
 from .query import Query
 from .test_case import TestCase
-from .tools import LLMToolSpec, ToolHandler
+from .tool_box import ToolBox
 
 __all__ = ["Queryer"]
 
@@ -50,8 +50,7 @@ class Queryer[
         cache_dir_path: str | None = None,
         max_attempts: int = 5,
         auto_verify: bool = False,
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
+        tool_box: ToolBox | None = None,
     ):
         """Initialize.
 
@@ -63,10 +62,9 @@ class Queryer[
             cache_dir_path: directory in which to cache
             max_attempts: maximum number of attempts
             auto_verify: automatically mark test cases as verified if no changes
-            tools: available function-tool definitions
-            tool_handlers: handlers for available function tools
+            tool_box: available tools and handlers
         """
-        self._provider = provider
+        self.provider = provider
 
         self.prompt_test_cases = {tc.query.key: tc for tc in prompt_test_cases or []}
         """Test cases included in the prompt for few-shot learning."""
@@ -86,10 +84,8 @@ class Queryer[
         """Maximum number of query attempts."""
         self.auto_verify = auto_verify
         """Automatically verify test cases if they meet selected criteria."""
-        self.tools = tools or []
-        """Available function-tool definitions."""
-        self.tool_handlers = tool_handlers or {}
-        """Handlers for available function tools."""
+        self.tool_box = tool_box or ToolBox()
+        """Available tools and handlers."""
 
     def __call__(self, test_case: TTestCase) -> TTestCase:
         """Query LLM.
@@ -100,16 +96,6 @@ class Queryer[
             test case including LLM's answer
         """
         return self.call(test_case)
-
-    @property
-    def provider(self) -> LLMProvider:
-        """LLM Provider to use for queries."""
-        return self._provider
-
-    @provider.setter
-    def provider(self, value: LLMProvider):
-        """Set LLM Provider to use for queries."""
-        self._provider = value
 
     def call(self, test_case: TTestCase) -> TTestCase:
         """Query LLM synchronously.
@@ -125,7 +111,7 @@ class Queryer[
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
-        tools_json = self._get_tools_json()
+        tools_json = self.tool_box.to_json()
         if cached_test_case := self._get_cached_test_case(
             system_prompt, tools_json, test_case
         ):
@@ -143,10 +129,7 @@ class Queryer[
             # Get answer from provider
             try:
                 content = self.provider.chat_completion(
-                    messages,
-                    test_case.answer_cls,
-                    tools=self.tools,
-                    tool_handlers=self.tool_handlers,
+                    messages, test_case.answer_cls, self.tool_box
                 )
             except ScinoephileError as exc:
                 logger.error(f"Attempt {attempt} failed: {type(exc).__name__}: {exc}")
@@ -338,25 +321,6 @@ class Queryer[
         system_prompt += f"\n\n{self.prompt_cls.schema_intro}\n{schema_json}\n"
 
         return system_prompt
-
-    def _get_tools_json(self) -> str:
-        """Get a deterministic JSON representation of configured tools.
-
-        Returns:
-            serialized JSON for tools and handlers
-        """
-        if not self.tools and not self.tool_handlers:
-            return ""
-
-        sorted_tools = sorted(
-            self.tools,
-            key=lambda tool: json.dumps(tool, ensure_ascii=False, sort_keys=True),
-        )
-        tools_payload: dict[str, Any] = {
-            "handler_names": sorted(self.tool_handlers),
-            "tools": sorted_tools,
-        }
-        return json.dumps(tools_payload, ensure_ascii=False, sort_keys=True)
 
     def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
         """Get verified test case for the given query if available.

@@ -12,12 +12,12 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 
 __all__ = [
-    "YueZhoHansPunctuationPrompt",
-    "YueZhoHantPunctuationPrompt",
+    "YueVsZhoYueHansPunctuationPrompt",
+    "YueVsZhoYueHantPunctuationPrompt",
 ]
 
 
-class YueZhoHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
+class YueVsZhoYueHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
     """Text for LLM correspondence for 简体粤文/中文 transcription punctuation."""
 
     # Prompt
@@ -88,7 +88,7 @@ class YueZhoHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
         )
 
 
-class YueZhoHantPunctuationPrompt(YueZhoHansPunctuationPrompt):
+class YueVsZhoYueHantPunctuationPrompt(YueVsZhoYueHansPunctuationPrompt):
     """Text for LLM correspondence for 繁体粤文/中文 transcription punctuation."""
 
     opencc_config = OpenCCConfig.s2hk

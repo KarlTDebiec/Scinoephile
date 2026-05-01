@@ -55,7 +55,7 @@ def test_eng_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("input_path",),
     [
         ("mlamd/output/eng_image",),
-        ("mlamd/input/eng.sup",),
+        ("mlamd/input/eng_ocr/source.sup",),
     ],
 )
 def test_eng_validate_ocr_cli(input_path: str):

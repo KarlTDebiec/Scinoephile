@@ -13,12 +13,12 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
 
 __all__ = [
-    "YueHansFromZhoTranslationPrompt",
-    "YueHantFromZhoTranslationPrompt",
+    "YueVsZhoYueHansTranslationPrompt",
+    "YueVsZhoYueHantTranslationPrompt",
 ]
 
 
-class YueHansFromZhoTranslationPrompt(
+class YueVsZhoYueHansTranslationPrompt(
     DictionaryToolPrompt, DualBlockGappedPrompt, YueHansPrompt
 ):
     """Text for LLM correspondence for translation of 简体粤文 from 中文."""
@@ -92,7 +92,7 @@ class YueHansFromZhoTranslationPrompt(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueHantFromZhoTranslationPrompt(YueHansFromZhoTranslationPrompt):
+class YueVsZhoYueHantTranslationPrompt(YueVsZhoYueHansTranslationPrompt):
     """Text for LLM correspondence for translation of 繁体粤文 from 中文."""
 
     opencc_config = OpenCCConfig.s2hk
