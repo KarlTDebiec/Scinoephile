@@ -121,7 +121,7 @@ class Queryer[
 
         # Load from cache if available
         system_prompt = self._get_system_prompt(test_case.answer_cls)
-        tools_json = self._get_tools_json()
+        tools_json = self.tool_box.to_json()
         if cached_test_case := self._get_cached_test_case(
             system_prompt, tools_json, test_case
         ):
@@ -333,14 +333,6 @@ class Queryer[
         system_prompt += f"\n\n{self.prompt_cls.schema_intro}\n{schema_json}\n"
 
         return system_prompt
-
-    def _get_tools_json(self) -> str:
-        """Get a deterministic JSON representation of configured tools.
-
-        Returns:
-            serialized JSON for configured tools
-        """
-        return self.tool_box.to_json()
 
     def _get_verified_test_case(self, query: TQuery) -> TTestCase | None:
         """Get verified test case for the given query if available.

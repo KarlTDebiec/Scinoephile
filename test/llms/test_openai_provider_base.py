@@ -11,7 +11,7 @@ import pytest
 from openai import OpenAI
 
 from scinoephile.core.llms import OpenAIProviderBase
-from scinoephile.core.llms.tools import LLMTool, ToolBox
+from scinoephile.core.llms.tools import Tool, ToolBox
 
 
 class _DummyProvider(OpenAIProviderBase):
@@ -87,7 +87,7 @@ def _get_tool_box(handler) -> ToolBox:
     """Build a tool box for the shared dummy tool."""
     return ToolBox(
         [
-            LLMTool(
+            Tool(
                 spec={
                     "name": "do",
                     "description": "Do something",
@@ -143,7 +143,7 @@ def test_build_openai_tools_enables_strict_tools_by_default():
     tools = provider._build_openai_tools(
         ToolBox(
             [
-                LLMTool(
+                Tool(
                     spec={
                         "name": "do",
                         "description": "Do something",

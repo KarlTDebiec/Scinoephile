@@ -7,54 +7,40 @@ from __future__ import annotations
 import json
 from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
-from typing import Any, TypedDict
+from typing import Any, cast
 
 __all__ = [
-    "LLMTool",
-    "LLMToolSpec",
+    "Tool",
     "ToolBox",
-    "ToolHandler",
 ]
 
 
-class LLMToolSpec(TypedDict):
-    """Specification for one LLM-callable function tool."""
-
-    name: str
-    description: str
-    parameters: dict[str, object]
-
-
-type ToolHandler = Callable[[dict[str, Any]], object]
-"""Function that executes one tool call from parsed JSON arguments."""
-
-
 @dataclass(frozen=True)
-class LLMTool:
+class Tool:
     """One LLM-callable tool definition and its local handler."""
 
-    spec: LLMToolSpec
+    spec: dict[str, object]
     """Tool schema exposed to the model."""
 
-    handler: ToolHandler
+    handler: Callable[[dict[str, Any]], object]
     """Local handler for executing the tool."""
 
     @property
     def name(self) -> str:
         """Tool name."""
-        return self.spec["name"]
+        return cast(str, self.spec["name"])
 
 
 class ToolBox:
     """Collection of LLM-callable tools."""
 
-    def __init__(self, tools: Iterable[LLMTool] = ()):
+    def __init__(self, tools: Iterable[Tool] = ()):
         """Initialize.
 
         Arguments:
             tools: tools to include in this tool box
         """
-        self._tools_by_name: dict[str, LLMTool] = {}
+        self._tools_by_name: dict[str, Tool] = {}
         for tool in tools:
             self.add(tool)
 
@@ -62,7 +48,7 @@ class ToolBox:
         """Return whether this tool box contains any tools."""
         return bool(self._tools_by_name)
 
-    def __iter__(self) -> Iterator[LLMTool]:
+    def __iter__(self) -> Iterator[Tool]:
         """Iterate over contained tools."""
         return iter(self._tools_by_name.values())
 
@@ -72,7 +58,7 @@ class ToolBox:
         return sorted(self._tools_by_name)
 
     @property
-    def specs(self) -> list[LLMToolSpec]:
+    def specs(self) -> list[dict[str, object]]:
         """Deterministically ordered tool specs."""
         return [
             tool.spec
@@ -86,7 +72,7 @@ class ToolBox:
             )
         ]
 
-    def add(self, tool: LLMTool):
+    def add(self, tool: Tool):
         """Add one tool.
 
         Arguments:
@@ -98,7 +84,7 @@ class ToolBox:
             raise ValueError(f"Tool '{tool.name}' is already registered.")
         self._tools_by_name[tool.name] = tool
 
-    def get_handler(self, tool_name: str) -> ToolHandler | None:
+    def get_handler(self, tool_name: str) -> Callable[[dict[str, Any]], object] | None:
         """Get a handler by tool name.
 
         Arguments:

@@ -8,7 +8,7 @@ from types import SimpleNamespace
 from typing import cast
 
 from scinoephile.core.llms import openai_provider_base
-from scinoephile.core.llms.tools import LLMTool, ToolBox
+from scinoephile.core.llms.tools import Tool, ToolBox
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 
 
@@ -28,7 +28,7 @@ def _get_tool_box() -> ToolBox:
     """Build a tool box for one lookup tool."""
     return ToolBox(
         [
-            LLMTool(
+            Tool(
                 spec={
                     "name": "lookup",
                     "description": "Lookup something",
