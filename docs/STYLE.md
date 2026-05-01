@@ -1,7 +1,7 @@
 # Style Guide
 
 ## Python Version
-* Target **Python 3.14** features where applicable; do not worry about compatibility with earlier versions.
+* Target **Python 3.13** features where applicable; do not worry about compatibility with earlier versions.
 
 ## Copyright
 * Include the standard copyright header at the top of the file.

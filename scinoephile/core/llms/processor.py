@@ -15,7 +15,7 @@ from .manager import Manager
 from .prompt import Prompt
 from .queryer import Queryer
 from .test_case import TestCase
-from .tools import LLMToolSpec, ToolHandler
+from .tool_box import ToolBox
 from .utils import load_test_cases_from_json
 
 __all__ = ["Processor"]
@@ -38,8 +38,7 @@ class Processor(ABC):
         *,
         provider: LLMProvider,
         auto_verify: bool = False,
-        tools: list[LLMToolSpec] | None = None,
-        tool_handlers: dict[str, ToolHandler] | None = None,
+        tool_box: ToolBox | None = None,
     ):
         """Initialize.
 
@@ -49,8 +48,7 @@ class Processor(ABC):
             test_case_path: path to file containing test cases
             provider: provider to use for queries
             auto_verify: automatically verify test cases if they meet selected criteria
-            tools: available function-tool definitions
-            tool_handlers: handlers for available function tools
+            tool_box: available tools and handlers
         """
         self.prompt_cls = prompt_cls
         if self.manager_cls is None:
@@ -79,7 +77,6 @@ class Processor(ABC):
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
             auto_verify=auto_verify,
-            tools=tools,
-            tool_handlers=tool_handlers,
+            tool_box=tool_box,
         )
         """LLM queryer."""

@@ -3,3 +3,11 @@
 """Provider composition layer for LLM integrations outside `scinoephile.core`."""
 
 from __future__ import annotations
+
+from .deepseek_provider import DeepSeekProvider
+from .openai_provider import OpenAIProvider
+
+__all__ = [
+    "DeepSeekProvider",
+    "OpenAIProvider",
+]

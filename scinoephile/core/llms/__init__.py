@@ -7,27 +7,30 @@ from __future__ import annotations
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, TestCaseClsKwargs
+from .openai_provider_base import OpenAIProviderBase
 from .processor import Processor
 from .prompt import Prompt
 from .query import Query
 from .queryer import Queryer
 from .test_case import TestCase
-from .tools import LLMToolSpec, ToolHandler
+from .tool import Tool
+from .tool_box import ToolBox
 from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [
     "Answer",
     "ChatCompletionKwargs",
     "LLMProvider",
-    "LLMToolSpec",
     "Manager",
+    "OpenAIProviderBase",
     "Processor",
     "Prompt",
     "Query",
     "Queryer",
     "TestCaseClsKwargs",
     "TestCase",
-    "ToolHandler",
+    "Tool",
+    "ToolBox",
     "load_test_cases_from_json",
     "save_test_cases_to_json",
 ]

@@ -175,19 +175,20 @@ def test_dictionary_entry_to_dict():
 
 def test_get_dictionary_tools_uses_prompt_text():
     """Build the tool spec from the prompt-provided text."""
-    tools, handlers = get_dictionary_tools(StubDictionaryToolPrompt)
+    tool_box = get_dictionary_tools(StubDictionaryToolPrompt)
 
-    assert [tool["name"] for tool in tools] == [
+    assert [tool["name"] for tool in tool_box.specs] == [
         StubDictionaryToolPrompt.dictionary_tool_name
     ]
-    assert sorted(handlers) == [StubDictionaryToolPrompt.dictionary_tool_name]
+    assert tool_box.handler_names == [StubDictionaryToolPrompt.dictionary_tool_name]
 
-    parameters = tools[0]["parameters"]
+    parameters = tool_box.specs[0]["parameters"]
     properties = cast(dict[str, object], parameters["properties"])
     query_schema = cast(dict[str, object], properties["query"])
 
     assert (
-        tools[0]["description"] == StubDictionaryToolPrompt.dictionary_tool_description
+        tool_box.specs[0]["description"]
+        == StubDictionaryToolPrompt.dictionary_tool_description
     )
     assert query_schema["description"] == (
         StubDictionaryToolPrompt.dictionary_tool_query_description
@@ -246,7 +247,7 @@ def test_processors_use_prompt_dictionary_tooling(
     """Wire dictionary tooling from the selected prompt class."""
     processor = factory(prompt_cls=prompt_cls, test_cases=[])
 
-    assert [tool["name"] for tool in processor.queryer.tools] == [
+    assert [tool["name"] for tool in processor.queryer.tool_box.specs] == [
         prompt_cls.dictionary_tool_name
     ]
-    assert sorted(processor.queryer.tool_handlers) == [prompt_cls.dictionary_tool_name]
+    assert processor.queryer.tool_box.handler_names == [prompt_cls.dictionary_tool_name]
