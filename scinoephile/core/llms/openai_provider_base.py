@@ -41,6 +41,9 @@ class OpenAIProviderBase(LLMProvider):
     api_key_env_var_name: str | None = None
     """Environment variable name used for the API key."""
 
+    use_strict_tools: bool = True
+    """Whether function tool schemas should request strict mode by default."""
+
     def __init__(
         self,
         client: OpenAI | None = None,
@@ -66,7 +69,7 @@ class OpenAIProviderBase(LLMProvider):
             api_key = self._api_key
             if api_key is None and self.api_key_env_var_name:
                 api_key = os.environ.get(self.api_key_env_var_name)
-            base_url = self._base_url_override or self.base_url
+            base_url = self._get_base_url()
             self._sync_client = OpenAI(api_key=api_key, base_url=base_url)
         return self._sync_client
 
@@ -183,8 +186,7 @@ class OpenAIProviderBase(LLMProvider):
                 f"{exc}"
             ) from exc
 
-    @staticmethod
-    def _build_openai_tools(tools: list[LLMToolSpec]) -> list[dict[str, object]]:
+    def _build_openai_tools(self, tools: list[LLMToolSpec]) -> list[dict[str, object]]:
         """Build OpenAI tool payload from local tool specs.
 
         Arguments:
@@ -192,6 +194,7 @@ class OpenAIProviderBase(LLMProvider):
         Returns:
             OpenAI-compatible function-tool payloads
         """
+        use_strict_tools = self._should_use_strict_tools()
         return [
             {
                 "type": "function",
@@ -199,11 +202,19 @@ class OpenAIProviderBase(LLMProvider):
                     "name": tool["name"],
                     "description": tool["description"],
                     "parameters": tool["parameters"],
-                    "strict": True,
+                    "strict": use_strict_tools,
                 },
             }
             for tool in tools
         ]
+
+    def _get_base_url(self) -> str | None:
+        """Return the effective base URL for this provider instance."""
+        return self._base_url_override or self.base_url
+
+    def _should_use_strict_tools(self) -> bool:
+        """Return whether this provider should request strict tool schemas."""
+        return self.use_strict_tools
 
     @staticmethod
     def _parse_tool_arguments(

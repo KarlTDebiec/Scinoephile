@@ -47,3 +47,39 @@ def test_deepseek_api_key_override_wins_over_env(monkeypatch):
     client = cast(_DummyOpenAI, provider.sync_client)
 
     assert client.kwargs["api_key"] == "explicit"
+
+
+def test_deepseek_default_base_url_disables_strict_tools():
+    """Test DeepSeek default endpoint does not enable strict tool schemas."""
+    provider = DeepSeekProvider()
+
+    tools = provider._build_openai_tools(
+        [
+            {
+                "name": "lookup",
+                "description": "Lookup something",
+                "parameters": {"type": "object", "properties": {}},
+            }
+        ]
+    )
+
+    function = cast(dict[str, object], tools[0]["function"])
+    assert function["strict"] is False
+
+
+def test_deepseek_beta_base_url_enables_strict_tools():
+    """Test DeepSeek beta endpoint enables strict tool schemas."""
+    provider = DeepSeekProvider(base_url="https://api.deepseek.com/beta")
+
+    tools = provider._build_openai_tools(
+        [
+            {
+                "name": "lookup",
+                "description": "Lookup something",
+                "parameters": {"type": "object", "properties": {}},
+            }
+        ]
+    )
+
+    function = cast(dict[str, object], tools[0]["function"])
+    assert function["strict"] is True

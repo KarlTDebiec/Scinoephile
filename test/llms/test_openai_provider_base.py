@@ -99,3 +99,21 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
 
     assert result == "done"
     assert len(client.calls) == 2
+
+
+def test_build_openai_tools_enables_strict_tools_by_default():
+    """Test base provider requests strict tool schemas by default."""
+    provider = _DummyProvider(client=cast(OpenAI, _DummyClient()))
+
+    tools = provider._build_openai_tools(
+        [
+            {
+                "name": "do",
+                "description": "Do something",
+                "parameters": {"type": "object", "properties": {}},
+            }
+        ]
+    )
+
+    function = cast(dict[str, object], tools[0]["function"])
+    assert function["strict"] is True

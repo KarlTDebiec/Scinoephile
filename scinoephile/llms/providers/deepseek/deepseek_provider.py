@@ -38,3 +38,8 @@ class DeepSeekProvider(OpenAIProviderBase):
             base_url: DeepSeek base URL override
         """
         super().__init__(client=client, api_key=api_key, base_url=base_url)
+
+    def _should_use_strict_tools(self) -> bool:
+        """Return whether DeepSeek strict tool schemas should be enabled."""
+        base_url = self._get_base_url()
+        return bool(base_url and base_url.rstrip("/").endswith("/beta"))
