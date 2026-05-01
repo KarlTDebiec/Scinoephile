@@ -23,12 +23,25 @@ class ChatCompletionKwargs(TypedDict, total=False):
     """
 
     temperature: float
+    """Sampling temperature."""
+
     max_tokens: int
+    """Maximum number of tokens to generate."""
+
     top_p: float
+    """Nucleus sampling cutoff."""
+
     frequency_penalty: float
+    """Penalty for repeated token frequency."""
+
     presence_penalty: float
+    """Penalty for repeated token presence."""
+
     stop: str | list[str]
+    """Stop sequence or sequences."""
+
     seed: int
+    """Deterministic sampling seed."""
 
 
 class LLMProvider(ABC):
