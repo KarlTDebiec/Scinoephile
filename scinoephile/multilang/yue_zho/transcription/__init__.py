@@ -20,10 +20,10 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
 
@@ -60,9 +60,9 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """provider to use for queries."""
     convert: OpenCCConfig | None
     """OpenCC configuration used for transcribed text conversion."""
-    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt]
+    deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt]
     """prompt class used for alignment deliniation."""
-    punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt]
+    punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt]
     """prompt class used for transcription punctuation."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
@@ -101,11 +101,11 @@ def get_yue_vs_zho_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
-    deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt] = (
-        YueZhoHansDeliniationPrompt
+    deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt] = (
+        YueVsZhoYueHansDeliniationPrompt
     ),
-    punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt] = (
-        YueZhoHansPunctuationPrompt
+    punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = (
+        YueVsZhoYueHansPunctuationPrompt
     ),
     test_case_directory_path: Path | None = None,
     deliniation_test_cases: list[TestCase] | None = None,

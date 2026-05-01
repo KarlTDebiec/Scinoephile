@@ -55,7 +55,7 @@ def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("input_path",),
     [
         ("mlamd/output/zho-Hans_image",),
-        ("mlamd/input/zho-Hans.sup",),
+        ("mlamd/input/zho-Hans_ocr/source.sup",),
     ],
 )
 def test_zho_validate_ocr_cli(input_path: str):

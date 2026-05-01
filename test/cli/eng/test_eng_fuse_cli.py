@@ -57,26 +57,26 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("lens_input_path", "tesseract_input_path", "args", "expected_path"),
     [
         (
-            "kob/input/eng_lens.srt",
-            "kob/input/eng_tesseract.srt",
+            "kob/input/eng_ocr/lens.srt",
+            "kob/input/eng_ocr/tesseract.srt",
             "--clean",
-            "kob/output/eng_fuse_clean.srt",
+            "kob/output/eng_ocr/fuse_clean.srt",
         ),
         (
-            "mlamd/input/eng_lens.srt",
-            "mlamd/input/eng_tesseract.srt",
+            "mlamd/input/eng_ocr/lens.srt",
+            "mlamd/input/eng_ocr/tesseract.srt",
             "--clean",
             "mlamd/output/eng_fuse_clean.srt",
         ),
         (
-            "mnt/input/eng_lens.srt",
-            "mnt/input/eng_tesseract.srt",
+            "mnt/input/eng_ocr/lens.srt",
+            "mnt/input/eng_ocr/tesseract.srt",
             "--clean",
             "mnt/output/eng_fuse_clean.srt",
         ),
         (
-            "t/input/eng_lens.srt",
-            "t/input/eng_tesseract.srt",
+            "t/input/eng_ocr/lens.srt",
+            "t/input/eng_ocr/tesseract.srt",
             "--clean",
             "t/output/eng_fuse_clean.srt",
         ),
@@ -117,10 +117,10 @@ def test_eng_fuse_cli(
     ("lens_input_path", "tesseract_input_path", "args", "expected_path"),
     [
         (
-            "kob/input/eng_lens.srt",
-            "kob/input/eng_tesseract.srt",
+            "kob/input/eng_ocr/lens.srt",
+            "kob/input/eng_ocr/tesseract.srt",
             "",
-            "kob/output/eng_fuse.srt",
+            "kob/output/eng_ocr/fuse.srt",
         ),
     ],
 )

@@ -12,12 +12,12 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_pair import DualPairPrompt
 
 __all__ = [
-    "YueZhoHansDeliniationPrompt",
-    "YueZhoHantDeliniationPrompt",
+    "YueVsZhoYueHansDeliniationPrompt",
+    "YueVsZhoYueHantDeliniationPrompt",
 ]
 
 
-class YueZhoHansDeliniationPrompt(DualPairPrompt, EngPrompt):
+class YueVsZhoYueHansDeliniationPrompt(DualPairPrompt, EngPrompt):
     """Text for LLM correspondence for 简体粤文 deliniation."""
 
     # Prompt
@@ -107,7 +107,7 @@ class YueZhoHansDeliniationPrompt(DualPairPrompt, EngPrompt):
         )
 
 
-class YueZhoHantDeliniationPrompt(YueZhoHansDeliniationPrompt):
+class YueVsZhoYueHantDeliniationPrompt(YueVsZhoYueHansDeliniationPrompt):
     """Text for LLM correspondence for 繁体粤文 deliniation."""
 
     opencc_config = OpenCCConfig.s2hk

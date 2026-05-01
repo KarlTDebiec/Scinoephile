@@ -37,10 +37,10 @@ from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_block.manager import MonoBlockManager
-from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
-from scinoephile.multilang.yue_zho.line_review import YueZhoHansLineReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
+from scinoephile.multilang.yue_zho.line_review import YueVsZhoYueHansLineReviewPrompt
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
-from scinoephile.multilang.yue_zho.translation import YueHansFromZhoTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import YueVsZhoYueHansTranslationPrompt
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
@@ -71,11 +71,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 MonoBlockManager, EngBlockReviewPrompt, ENG_BLOCK_REVIEW_JSON_PATHS
             ),
             [
-                "kob/lang/eng/block_review/eng_ocr.json",
-                "kob/lang/eng/block_review/eng_srt.json",
-                "mlamd/lang/eng/block_review.json",
-                "mnt/lang/eng/block_review.json",
-                "t/lang/eng/block_review.json",
+                "kob/output/eng_ocr/lang/eng/block_review.json",
+                "kob/output/eng/lang/eng/block_review.json",
+                "mlamd/output/eng_ocr/lang/eng/block_review.json",
+                "mnt/output/eng_ocr/lang/eng/block_review.json",
+                "t/output/eng_ocr/lang/eng/block_review.json",
             ],
         ),
         (
@@ -84,10 +84,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 OcrFusionManager, EngOcrFusionPrompt, ENG_OCR_FUSION_JSON_PATHS
             ),
             [
-                "kob/lang/eng/ocr_fusion.json",
-                "mlamd/lang/eng/ocr_fusion.json",
-                "mnt/lang/eng/ocr_fusion.json",
-                "t/lang/eng/ocr_fusion.json",
+                "kob/output/eng_ocr/lang/eng/ocr_fusion.json",
+                "mlamd/output/eng_ocr/lang/eng/ocr_fusion.json",
+                "mnt/output/eng_ocr/lang/eng/ocr_fusion.json",
+                "t/output/eng_ocr/lang/eng/ocr_fusion.json",
             ],
         ),
         (
@@ -98,9 +98,9 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/lang/zho/block_review/zho-Hans.json",
-                "mnt/lang/zho/block_review/zho-Hans.json",
-                "t/lang/zho/block_review/zho-Hans.json",
+                "mlamd/output/zho-Hans_ocr/lang/zho/block_review.json",
+                "mnt/output/zho-Hans_ocr/lang/zho/block_review.json",
+                "t/output/zho-Hans_ocr/lang/zho/block_review.json",
             ],
         ),
         (
@@ -111,10 +111,10 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "kob/lang/zho/block_review/zho-Hant.json",
-                "mlamd/lang/zho/block_review/zho-Hant.json",
-                "mnt/lang/zho/block_review/zho-Hant.json",
-                "t/lang/zho/block_review/zho-Hant.json",
+                "kob/output/zho-Hant_ocr/lang/zho/block_review.json",
+                "mlamd/output/zho-Hant_ocr/lang/zho/block_review.json",
+                "mnt/output/zho-Hant_ocr/lang/zho/block_review.json",
+                "t/output/zho-Hant_ocr/lang/zho/block_review.json",
             ],
         ),
         (
@@ -125,9 +125,9 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 ZHO_HANS_OCR_FUSION_JSON_PATHS,
             ),
             [
-                "mlamd/lang/zho/ocr_fusion/zho-Hans.json",
-                "mnt/lang/zho/ocr_fusion/zho-Hans.json",
-                "t/lang/zho/ocr_fusion/zho-Hans.json",
+                "mlamd/output/zho-Hans_ocr/lang/zho/ocr_fusion.json",
+                "mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json",
+                "t/output/zho-Hans_ocr/lang/zho/ocr_fusion.json",
             ],
         ),
         (
@@ -138,49 +138,49 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 ZHO_HANT_OCR_FUSION_JSON_PATHS,
             ),
             [
-                "kob/lang/zho/ocr_fusion/zho-Hant.json",
-                "mlamd/lang/zho/ocr_fusion/zho-Hant.json",
-                "mnt/lang/zho/ocr_fusion/zho-Hant.json",
-                "t/lang/zho/ocr_fusion/zho-Hant.json",
+                "kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json",
+                "mlamd/output/zho-Hant_ocr/lang/zho/ocr_fusion.json",
+                "mnt/output/zho-Hant_ocr/lang/zho/ocr_fusion.json",
+                "t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json",
             ],
         ),
         (
             "yue_zho_line_review",
             lambda: load_default_test_cases(
                 YueZhoLineReviewManager,
-                YueZhoHansLineReviewPrompt,
+                YueVsZhoYueHansLineReviewPrompt,
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/line_review/cuda.json",
-                "mlamd/multilang/yue_zho/line_review/cpu.json",
-                "mlamd/multilang/yue_zho/line_review/mps.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cuda.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cpu.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/mps.json",
             ],
         ),
         (
             "yue_zho_block_review",
             lambda: load_default_test_cases(
                 DualBlockManager,
-                YueHansBlockReviewPrompt,
+                YueVsZhoYueHansBlockReviewPrompt,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/block_review/cuda.json",
-                "mlamd/multilang/yue_zho/block_review/cpu.json",
-                "mlamd/multilang/yue_zho/block_review/mps.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cuda.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cpu.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/mps.json",
             ],
         ),
         (
             "yue_from_zho_translation",
             lambda: load_default_test_cases(
                 DualBlockGappedManager,
-                YueHansFromZhoTranslationPrompt,
+                YueVsZhoYueHansTranslationPrompt,
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
             [
-                "mlamd/multilang/yue_zho/translation/cuda.json",
-                "mlamd/multilang/yue_zho/translation/cpu.json",
-                "mlamd/multilang/yue_zho/translation/mps.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cuda.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cpu.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/mps.json",
             ],
         ),
     ],

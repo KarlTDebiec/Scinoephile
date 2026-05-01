@@ -13,12 +13,14 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
-    "YueZhoHansLineReviewPrompt",
-    "YueZhoHantLineReviewPrompt",
+    "YueVsZhoYueHansLineReviewPrompt",
+    "YueVsZhoYueHantLineReviewPrompt",
 ]
 
 
-class YueZhoHansLineReviewPrompt(DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt):
+class YueVsZhoYueHansLineReviewPrompt(
+    DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt
+):
     """Text for LLM correspondence for 简体粤文 line review against 中文."""
 
     # Dictionary tool
@@ -100,7 +102,7 @@ class YueZhoHansLineReviewPrompt(DictionaryToolPrompt, DualSinglePrompt, YueHans
     """Error when output and note fields are both missing from answer."""
 
 
-class YueZhoHantLineReviewPrompt(YueZhoHansLineReviewPrompt):
+class YueVsZhoYueHantLineReviewPrompt(YueVsZhoYueHansLineReviewPrompt):
     """Text for LLM correspondence for 繁体粤文 line review against 中文."""
 
     opencc_config = OpenCCConfig.s2hk

@@ -27,10 +27,10 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
 )
 
 from .aligner import Aligner
@@ -73,8 +73,8 @@ class YueTranscriber:
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
-        deliniation_prompt_cls: type[YueZhoHansDeliniationPrompt],
-        punctuation_prompt_cls: type[YueZhoHansPunctuationPrompt],
+        deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt],
+        punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt],
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],
