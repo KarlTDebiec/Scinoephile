@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
-from scinoephile.analysis.alignment import AlignmentOp, AlignmentPolicy, align_chars
+from scinoephile.analysis.line_alignment import (
+    AlignmentOperation,
+    get_aligned_chars,
+)
 from scinoephile.analysis.line_diff import LineDiff
 from scinoephile.analysis.line_diff_kind import LineDiffKind
 
@@ -13,32 +16,32 @@ __all__ = []
 
 def test_align_chars_match():
     """Test that exact matches align without edits."""
-    alignment = align_chars("abc", "abc", policy=AlignmentPolicy.HUMAN)
-    assert [c.op for c in alignment] == [AlignmentOp.MATCH] * 3
+    alignment = get_aligned_chars("abc", "abc")
+    assert [c.operation for c in alignment] == [AlignmentOperation.MATCH] * 3
 
 
 def test_align_chars_insert():
     """Test a single insertion alignment."""
-    alignment = align_chars("abc", "abxc", policy=AlignmentPolicy.HUMAN)
-    ops = [c.op for c in alignment]
-    assert ops.count(AlignmentOp.INSERT) == 1
-    assert ops.count(AlignmentOp.MATCH) == 3
+    alignment = get_aligned_chars("abc", "abxc")
+    ops = [c.operation for c in alignment]
+    assert ops.count(AlignmentOperation.INSERT) == 1
+    assert ops.count(AlignmentOperation.MATCH) == 3
 
 
 def test_align_chars_delete():
     """Test a single deletion alignment."""
-    alignment = align_chars("abc", "ac", policy=AlignmentPolicy.HUMAN)
-    ops = [c.op for c in alignment]
-    assert ops.count(AlignmentOp.DELETE) == 1
-    assert ops.count(AlignmentOp.MATCH) == 2
+    alignment = get_aligned_chars("abc", "ac")
+    ops = [c.operation for c in alignment]
+    assert ops.count(AlignmentOperation.DELETE) == 1
+    assert ops.count(AlignmentOperation.MATCH) == 2
 
 
 def test_align_chars_substitute():
     """Test a single substitution alignment."""
-    alignment = align_chars("abc", "axc", policy=AlignmentPolicy.HUMAN)
-    ops = [c.op for c in alignment]
-    assert ops.count(AlignmentOp.SUBSTITUTE) == 1
-    assert ops.count(AlignmentOp.MATCH) == 2
+    alignment = get_aligned_chars("abc", "axc")
+    ops = [c.operation for c in alignment]
+    assert ops.count(AlignmentOperation.SUBSTITUTE) == 1
+    assert ops.count(AlignmentOperation.MATCH) == 2
 
 
 def test_line_diff_get_stacked_str_no_color_full_width_placeholder():

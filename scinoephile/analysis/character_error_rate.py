@@ -9,8 +9,8 @@ from math import inf
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
 
-from .alignment import AlignmentPolicy, align_chars, count_edits
 from .character_error_rate_result import CharacterErrorRateResult
+from .line_alignment import count_edits, get_aligned_chars
 from .line_diff_kind import LineDiffKind
 from .series_diff import SeriesDiff
 
@@ -79,11 +79,7 @@ def get_text_cer(reference: str, candidate: str) -> CharacterErrorRateResult:
     """
     normalized_reference = remove_punc_and_whitespace(reference)
     normalized_candidate = remove_punc_and_whitespace(candidate)
-    alignment = align_chars(
-        normalized_reference,
-        normalized_candidate,
-        policy=AlignmentPolicy.CER_LEGACY,
-    )
+    alignment = get_aligned_chars(normalized_reference, normalized_candidate)
     substitutions, insertions, deletions, correct = count_edits(alignment)
     reference_length = len(normalized_reference)
 
