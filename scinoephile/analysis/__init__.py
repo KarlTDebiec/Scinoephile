@@ -9,7 +9,3 @@ Hierarchy within module (lower may import from higher):
 * diff
 * character_error_rate
 """
-
-from __future__ import annotations
-
-__all__: list[str] = []

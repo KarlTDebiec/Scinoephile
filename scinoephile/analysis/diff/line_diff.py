@@ -19,12 +19,25 @@ class LineDiff:
     """Represents a line-level difference."""
 
     kind: LineDiffKind
+    """Kind of difference represented by this record."""
+
     one_lbl: str | None = None
+    """Display label for the first side of the diff."""
+
     two_lbl: str | None = None
+    """Display label for the second side of the diff."""
+
     one_idxs: list[int] | None = None
+    """Zero-based line indices from the first side of the diff."""
+
     two_idxs: list[int] | None = None
+    """Zero-based line indices from the second side of the diff."""
+
     one_texts: list[str] | None = None
+    """Text lines from the first side of the diff."""
+
     two_texts: list[str] | None = None
+    """Text lines from the second side of the diff."""
 
     def __str__(self) -> str:
         """Format the diff as a display string.
