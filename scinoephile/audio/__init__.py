@@ -8,5 +8,3 @@ Hierarchy within module (lower may import from higher)::
 * transcription
 * subtitles
 """
-
-__all__: list[str] = []

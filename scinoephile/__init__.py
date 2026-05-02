@@ -11,5 +11,3 @@ Module hierarchy (modules may import from any above):
 * multilang
 * cli
 """
-
-__all__: list[str] = []
