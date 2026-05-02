@@ -55,8 +55,6 @@ class SeriesDiff:
             one_lbl: label for first series in messages
             two_lbl: label for second series in messages
             similarity_cutoff: similarity cutoff for pairing replacements
-        Returns:
-            None.
         """
         self.one_lbl = one_lbl
         self.two_lbl = two_lbl
@@ -71,8 +69,6 @@ class SeriesDiff:
     def __iter__(self) -> Iterator[LineDiff]:
         """Iterate over line-level diff messages.
 
-        Arguments:
-            None.
         Returns:
             iterator over diff messages
         """
@@ -81,8 +77,6 @@ class SeriesDiff:
     def __str__(self) -> str:
         """Format the diff for human-readable display.
 
-        Arguments:
-            None.
         Returns:
             formatted multi-line diff representation
         """
@@ -107,8 +101,6 @@ class SeriesDiff:
     def _diff(self) -> list[LineDiff]:
         """Compare subtitle series by line content.
 
-        Arguments:
-            None.
         Returns:
             list of difference messages
         """
@@ -137,8 +129,6 @@ class SeriesDiff:
         Arguments:
             one_start: start index for the delete block
             one_end: end index for the delete block
-        Returns:
-            None.
         """
         for idx in range(one_start, one_end):
             message = LineDiff(
@@ -156,8 +146,6 @@ class SeriesDiff:
         Arguments:
             two_start: start index for the insert block
             two_end: end index for the insert block
-        Returns:
-            None.
         """
         for idx in range(two_start, two_end):
             message = LineDiff(
@@ -179,8 +167,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_blk = list(range(one_start, one_end))
         two_blk = list(range(two_start, two_end))
@@ -195,8 +181,6 @@ class SeriesDiff:
         Arguments:
             one_blk: indices for the first block
             two_blk: indices for the second block
-        Returns:
-            None.
         """
         # Prefer a delete+split when the first line is missing but the second merges.
         if len(one_blk) == 2 and len(two_blk) == 2:
@@ -253,8 +237,6 @@ class SeriesDiff:
         Arguments:
             one_blk: indices for the first block
             two_blk: indices for the second block
-        Returns:
-            None.
         """
         cursor = ReplaceCursor(one_blk=one_blk, two_blk=two_blk)
         handlers: tuple[Callable[[ReplaceCursor], bool], ...] = (
