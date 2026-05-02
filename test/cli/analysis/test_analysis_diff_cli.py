@@ -10,6 +10,7 @@ from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
+from scinoephile.common.testing import run_cli_with_args
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -106,17 +107,11 @@ def test_analysis_diff_cli(
     two_infile_path = test_data_root / two_path
     expected_edits: list[str] = request.getfixturevalue(expected_fixture_name)
 
-    parser = AnalysisDiffCli.argparser()
-    parsed_args = parser.parse_args(
-        (
-            f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
-            f"--one-label {one_lbl} --two-label {two_lbl}"
-        ).split()
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
+        f"--one-label {one_lbl} --two-label {two_lbl}",
     )
-    kwargs = vars(parsed_args)
-    kwargs["one_infile_path"] = kwargs.pop("one_infile")
-    kwargs["two_infile_path"] = kwargs.pop("two_infile")
-    AnalysisDiffCli._main(**kwargs)
     output = capsys.readouterr().out
 
     for expected_edit in expected_edits:

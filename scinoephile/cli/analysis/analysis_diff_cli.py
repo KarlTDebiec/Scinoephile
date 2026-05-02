@@ -131,8 +131,8 @@ class AnalysisDiffCli(ScinoephileCliBase):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        one_infile_path = kwargs.pop("one_infile_path")
-        two_infile_path = kwargs.pop("two_infile_path")
+        one_infile_path = kwargs.pop("one_infile")
+        two_infile_path = kwargs.pop("two_infile")
         similarity_cutoff = kwargs.pop("similarity_cutoff")
         one_label = kwargs.pop("one_label")
         two_label = kwargs.pop("two_label")
