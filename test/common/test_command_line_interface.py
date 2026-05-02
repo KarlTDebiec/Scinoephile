@@ -7,19 +7,49 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import ClassVar, TypedDict, Unpack
 from unittest.mock import patch
 
 import pytest
 from common.command_line_interface import (  # ty:ignore[unresolved-import]
     CommandLineInterface,
 )
+from common.testing import run_cli_with_args  # ty:ignore[unresolved-import]
 
 
 class CliTestKwargs(TypedDict, total=False):
     """Keyword arguments for TestCli _main method."""
 
     pass
+
+
+class ArgsCaptureCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ArgsCaptureCli _main method."""
+
+    name: str
+
+
+class ArgsCaptureCli(CommandLineInterface):
+    """Test CLI that captures parsed string arguments."""
+
+    captured: ClassVar[dict[str, str]] = {}
+    """Most recently captured keyword arguments."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add arguments to a nascent argument parser.
+
+        Arguments:
+            parser: nascent argument parser
+        """
+        super().add_arguments_to_argparser(parser)
+        parser.add_argument("--name", type=str, required=True)
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[ArgsCaptureCliKwargs]):
+        """Execute test CLI."""
+        if (name := kwargs.get("name")) is not None:
+            cls.captured["name"] = name
 
 
 class TestCli(CommandLineInterface):
@@ -209,3 +239,10 @@ def test_abstract_main():
     with pytest.raises(TypeError):
         # Cannot instantiate ABC without implementing abstract method
         CommandLineInterface()
+
+
+def test_run_cli_with_args_quoted_values():
+    """Test that run_cli_with_args preserves quoted arguments as single values."""
+    ArgsCaptureCli.captured.clear()
+    run_cli_with_args(ArgsCaptureCli, '--name "value with spaces"')
+    assert ArgsCaptureCli.captured.get("name") == "value with spaces"
