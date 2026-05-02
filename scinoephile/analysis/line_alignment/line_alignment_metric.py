@@ -31,8 +31,6 @@ class LineAlignmentMetric:
     def comparison_key(self) -> tuple[int, ...]:
         """Return lexicographic comparison key for this metric.
 
-        Arguments:
-            None.
         Returns:
             lexicographic key used to compare candidates
         """
