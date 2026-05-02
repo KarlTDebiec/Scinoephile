@@ -39,9 +39,10 @@
   * use `*_name` for bare names and `*_stem` for stems, not for full paths
   * prefer `*_dir_path` over `*_directory` when the value is a path
 
-## Strings
+## Style
 * Exclusively use f-strings for string interpolation.
 * Where possible, classes should implement `__repr__` methods such that they may be reconstructed from its `repr` output.
+* Avoid ternary expressions; prefer explicit `if`/`else` statements for readability.
 
 ## Type Annotations
 * Include type annotations for all function and method signatures, with the following exception:
