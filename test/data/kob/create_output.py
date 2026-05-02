@@ -6,6 +6,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.analysis import (
+    format_colored_series_diff,
+    get_series_cer,
+    get_series_diff,
+)
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
@@ -26,10 +31,7 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoYueHansLineReviewPrompt,
     YueVsZhoYueHantLineReviewPrompt,
 )
-from scinoephile.multilang.yue_zho.transcription import (
-    DemucsMode,
-    VADMode,
-)
+from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueVsZhoYueHansDeliniationPrompt,
     YueVsZhoYueHantDeliniationPrompt,
@@ -67,7 +69,8 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    "简体粤文 (Transcription)",
+    # "简体粤文 (Transcription)",
+    "简体粤文 (Diff)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -178,3 +181,19 @@ if "简体粤文 (Transcription)" in actions:
         block_reviewer_kw={"prompt_cls": YueVsZhoYueHantBlockReviewPrompt},
         overwrite_srt=True,
     )
+if "简体粤文 (Diff)" in actions:
+    yue_hans_transcribe = Series.load(
+        yue_hans_transcribe_dir
+        / "test_simplified"
+        / "transcribe_review_translate_block_review.srt"
+    )
+    yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
+    diff = get_series_diff(
+        yue_hans_transcribe,
+        yue_hans_reference,
+        one_lbl="TRANSCRIBE",
+        two_lbl="REFERENCE",
+    )
+    print(diff)
+    print(format_colored_series_diff(diff))
+    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
