@@ -12,9 +12,4 @@ Hierarchy within module (lower may import from higher)::
 
 from __future__ import annotations
 
-from .diff import LineDiff, SeriesDiff
-
-__all__ = [
-    "LineDiff",
-    "SeriesDiff",
-]
+__all__: list[str] = []

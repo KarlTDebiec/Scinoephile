@@ -5,50 +5,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
 
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
-from scinoephile.core.text import full_punc_chars, get_char_type
+from scinoephile.core.text import AnsiColor, colorize, is_full_width_char
 
 from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]
-
-
-class _Ansi(Enum):
-    """ANSI escape codes used by stacked diff rendering."""
-
-    RESET = "\x1b[0m"
-    GREEN = "\x1b[32m"
-    RED = "\x1b[31m"
-    BLUE = "\x1b[34m"
-    PURPLE = "\x1b[35m"
-
-
-def _colorize(text: str, color: _Ansi, *, color_enabled: bool) -> str:
-    """Colorize text with an ANSI escape.
-
-    Arguments:
-        text: input text
-        color: ANSI color escape
-        color_enabled: whether to emit ANSI escapes
-    Returns:
-        colorized or raw text
-    """
-    if not color_enabled:
-        return text
-    return f"{color.value}{text}{_Ansi.RESET.value}"
-
-
-def _is_full_width_char(char: str) -> bool:
-    """Return whether a character should occupy a full-width column.
-
-    Arguments:
-        char: character to classify
-    Returns:
-        whether the character should use full-width spacing
-    """
-    return char in full_punc_chars or get_char_type(char) == "full"
 
 
 def _placeholder_for(char: str) -> str:
@@ -59,7 +22,9 @@ def _placeholder_for(char: str) -> str:
     Returns:
         ASCII or ideographic space placeholder
     """
-    return "\u3000" if _is_full_width_char(char) else " "
+    if is_full_width_char(char):
+        return "\u3000"
+    return " "
 
 
 def _choose_joiner(prev_char: str | None, next_char: str | None) -> str:
@@ -71,9 +36,9 @@ def _choose_joiner(prev_char: str | None, next_char: str | None) -> str:
     Returns:
         ASCII or ideographic space joiner
     """
-    if prev_char is not None and _is_full_width_char(prev_char):
+    if prev_char is not None and is_full_width_char(prev_char):
         return "\u3000"
-    if next_char is not None and _is_full_width_char(next_char):
+    if next_char is not None and is_full_width_char(next_char):
         return "\u3000"
     return " "
 
@@ -93,8 +58,12 @@ def _join_texts(texts: list[str]) -> str:
     chunks: list[str] = [texts[0]]
     for next_text in texts[1:]:
         previous_text = chunks[-1]
-        previous_char = previous_text[-1] if previous_text else None
-        next_char = next_text[0] if next_text else None
+        previous_char = None
+        if previous_text:
+            previous_char = previous_text[-1]
+        next_char = None
+        if next_text:
+            next_char = next_text[0]
         chunks.append(_choose_joiner(previous_char, next_char))
         chunks.append(next_text)
     return "".join(chunks)
@@ -115,8 +84,6 @@ class LineDiff:
     def __str__(self) -> str:
         """Format the diff as a display string.
 
-        Arguments:
-            None.
         Returns:
             formatted diff string
         """
@@ -133,8 +100,12 @@ class LineDiff:
         one_texts = self.one_texts or []
         two_texts = self.two_texts or []
         use_list_repr = len(one_idxs) != 1 or len(two_idxs) != 1
-        one_text_repr = repr(one_texts) if use_list_repr else repr(one_texts[0])
-        two_text_repr = repr(two_texts) if use_list_repr else repr(two_texts[0])
+        if use_list_repr:
+            one_text_repr = repr(one_texts)
+            two_text_repr = repr(two_texts)
+        else:
+            one_text_repr = repr(one_texts[0])
+            two_text_repr = repr(two_texts[0])
         return (
             f"{self.kind.value}: "
             f"{self.one_lbl}[{self._format_idxs(one_idxs)}] -> "
@@ -154,18 +125,42 @@ class LineDiff:
         two_range = self._format_idxs_or_empty(self.two_idxs)
 
         if self.kind == LineDiffKind.DELETE:
-            header = f"{one_range} |"
-            one_text = _join_texts(self.one_texts or [])
-            colored_one = _colorize(one_text, _Ansi.RED, color_enabled=color)
-            return f"{header}\n{colored_one}\n\n"
+            return self._get_delete_stacked_str(one_range=one_range, color=color)
 
         if self.kind == LineDiffKind.INSERT:
-            insert_idxs, insert_texts = self._get_insert_side()
-            header = f"| {self._format_idxs_or_empty(insert_idxs)}"
-            two_text = _join_texts(insert_texts)
-            colored_two = _colorize(two_text, _Ansi.BLUE, color_enabled=color)
-            return f"{header}\n\n{colored_two}\n"
+            return self._get_insert_stacked_str(color=color)
 
+        return self._get_edit_stacked_str(
+            one_range=one_range, two_range=two_range, color=color
+        )
+
+    def _get_delete_stacked_str(self, *, one_range: str, color: bool) -> str:
+        """Format a delete diff as stacked output.
+
+        Arguments:
+            one_range: formatted index range for the first side
+            color: whether to emit ANSI color escapes
+        Returns:
+            formatted delete diff chunk
+        """
+        header = f"{one_range} |"
+        one_text = _join_texts(self.one_texts or [])
+        if color:
+            one_text = colorize(one_text, AnsiColor.RED)
+        return f"{header}\n{one_text}\n\n"
+
+    def _get_edit_stacked_str(
+        self, *, one_range: str, two_range: str, color: bool
+    ) -> str:
+        """Format an edit-like diff as stacked output.
+
+        Arguments:
+            one_range: formatted index range for the first side
+            two_range: formatted index range for the second side
+            color: whether to emit ANSI color escapes
+        Returns:
+            formatted edit diff chunk
+        """
         one_text = _join_texts(self.one_texts or [])
         two_text = _join_texts(self.two_texts or [])
         header = f"{one_range} {two_range}".rstrip()
@@ -175,34 +170,57 @@ class LineDiff:
         two_out: list[str] = []
         for column in alignment:
             if column.operation == LineAlignmentOperation.MATCH:
-                one_out.append(
-                    _colorize(column.one or "", _Ansi.GREEN, color_enabled=color)
-                )
-                two_out.append(
-                    _colorize(column.two or "", _Ansi.GREEN, color_enabled=color)
-                )
+                one_text = column.one or ""
+                two_text = column.two or ""
+                if color:
+                    one_text = colorize(one_text, AnsiColor.GREEN)
+                    two_text = colorize(two_text, AnsiColor.GREEN)
+                one_out.append(one_text)
+                two_out.append(two_text)
                 continue
 
             if column.operation == LineAlignmentOperation.SUBSTITUTE:
-                one_out.append(
-                    _colorize(column.one or "", _Ansi.PURPLE, color_enabled=color)
-                )
-                two_out.append(
-                    _colorize(column.two or "", _Ansi.PURPLE, color_enabled=color)
-                )
+                one_text = column.one or ""
+                two_text = column.two or ""
+                if color:
+                    one_text = colorize(one_text, AnsiColor.PURPLE)
+                    two_text = colorize(two_text, AnsiColor.PURPLE)
+                one_out.append(one_text)
+                two_out.append(two_text)
                 continue
 
             if column.operation == LineAlignmentOperation.DELETE:
                 assert column.one is not None
-                one_out.append(_colorize(column.one, _Ansi.RED, color_enabled=color))
+                one_text = column.one
+                if color:
+                    one_text = colorize(one_text, AnsiColor.RED)
+                one_out.append(one_text)
                 two_out.append(_placeholder_for(column.one))
                 continue
 
             assert column.two is not None
             one_out.append(_placeholder_for(column.two))
-            two_out.append(_colorize(column.two, _Ansi.BLUE, color_enabled=color))
+            two_text = column.two
+            if color:
+                two_text = colorize(two_text, AnsiColor.BLUE)
+            two_out.append(two_text)
 
         return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
+
+    def _get_insert_stacked_str(self, *, color: bool) -> str:
+        """Format an insert diff as stacked output.
+
+        Arguments:
+            color: whether to emit ANSI color escapes
+        Returns:
+            formatted insert diff chunk
+        """
+        insert_idxs, insert_texts = self._get_insert_side()
+        header = f"| {self._format_idxs_or_empty(insert_idxs)}"
+        two_text = _join_texts(insert_texts)
+        if color:
+            two_text = colorize(two_text, AnsiColor.BLUE)
+        return f"{header}\n\n{two_text}\n"
 
     @staticmethod
     def _format_idxs(idxs: list[int]) -> str:
@@ -233,8 +251,6 @@ class LineDiff:
     def _get_insert_side(self) -> tuple[list[int], list[str]]:
         """Return the inserted indices and texts for an insert diff.
 
-        Arguments:
-            None.
         Returns:
             inserted indices and texts
         """

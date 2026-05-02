@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis import SeriesDiff
 from scinoephile.analysis.character_error_rate import SeriesCERResult
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped

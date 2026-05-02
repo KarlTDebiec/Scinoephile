@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import ClassVar, Unpack
 
-from scinoephile.analysis import SeriesDiff
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,

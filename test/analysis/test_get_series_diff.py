@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.analysis import SeriesDiff
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 
 
