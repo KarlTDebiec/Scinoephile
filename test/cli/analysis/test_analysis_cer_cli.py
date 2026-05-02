@@ -6,13 +6,17 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.cli.analysis.analysis_cer_cli import AnalysisCerCli
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    SeriesCERResult,
+    assert_cli_help,
+    assert_cli_usage,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(

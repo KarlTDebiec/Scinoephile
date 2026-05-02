@@ -9,8 +9,8 @@ from math import inf
 import pytest
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
-from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.core.subtitles import Series
+from test.helpers import SeriesCERResult
 
 
 @pytest.mark.parametrize(

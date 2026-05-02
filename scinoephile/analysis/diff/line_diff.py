@@ -27,16 +27,16 @@ class LineDiff:
     two_lbl: str | None = None
     """Display label for the second side of the diff."""
 
-    one_idxs: list[int] | None = None
+    one_idxs: tuple[int, ...] | None = None
     """Zero-based line indices from the first side of the diff."""
 
-    two_idxs: list[int] | None = None
+    two_idxs: tuple[int, ...] | None = None
     """Zero-based line indices from the second side of the diff."""
 
-    one_texts: list[str] | None = None
+    one_texts: tuple[str, ...] | None = None
     """Text lines from the first side of the diff."""
 
-    two_texts: list[str] | None = None
+    two_texts: tuple[str, ...] | None = None
     """Text lines from the second side of the diff."""
 
     def __str__(self) -> str:
@@ -53,17 +53,29 @@ class LineDiff:
                 f"{self.one_lbl}[{missing_idx + 1}] "
                 f"{missing_text!r} not present in {self.two_lbl}"
             )
-        one_idxs = self.one_idxs or []
-        two_idxs = self.two_idxs or []
-        one_texts = self.one_texts or []
-        two_texts = self.two_texts or []
-        use_list_repr = len(one_idxs) != 1 or len(two_idxs) != 1
-        if use_list_repr:
-            one_text_repr = repr(one_texts)
-            two_text_repr = repr(two_texts)
+        if self.two_idxs and self.two_texts and self.one_idxs is None:
+            missing_idx = self.two_idxs[0]
+            missing_text = self.two_texts[0]
+            return (
+                f"{self.kind.value}: "
+                f"{self.two_lbl}[{missing_idx + 1}] "
+                f"{missing_text!r} not present in {self.one_lbl}"
+            )
+        one_idxs = self.one_idxs or ()
+        two_idxs = self.two_idxs or ()
+        one_texts = self.one_texts or ()
+        two_texts = self.two_texts or ()
+        if (
+            len(one_idxs) == 1
+            and len(two_idxs) == 1
+            and len(one_texts) == 1
+            and len(two_texts) == 1
+        ):
+            one_text_repr = self._format_texts(one_texts)
+            two_text_repr = self._format_texts(two_texts)
         else:
-            one_text_repr = repr(one_texts[0])
-            two_text_repr = repr(two_texts[0])
+            one_text_repr = repr(list(one_texts))
+            two_text_repr = repr(list(two_texts))
         return (
             f"{self.kind.value}: "
             f"{self.one_lbl}[{self._format_idxs(one_idxs)}] -> "
@@ -85,38 +97,27 @@ class LineDiff:
         if self.kind == LineDiffKind.DELETE:
             return self._get_delete_stacked_str(
                 one_range=one_range,
-                one_texts=self.one_texts or [],
+                one_texts=self.one_texts or (),
                 color=color,
             )
 
         if self.kind == LineDiffKind.INSERT:
-            insert_idxs, insert_texts = self._get_insert_side()
             return self._get_insert_stacked_str(
-                insert_idxs=insert_idxs,
-                insert_texts=insert_texts,
+                insert_idxs=self.two_idxs or (),
+                insert_texts=self.two_texts or (),
                 color=color,
             )
 
         return self._get_edit_stacked_str(
             one_range=one_range,
             two_range=two_range,
-            one_texts=self.one_texts or [],
-            two_texts=self.two_texts or [],
+            one_texts=self.one_texts or (),
+            two_texts=self.two_texts or (),
             color=color,
         )
 
-    def _get_insert_side(self) -> tuple[list[int], list[str]]:
-        """Return the inserted indices and texts for an insert diff.
-
-        Returns:
-            inserted indices and texts
-        """
-        if self.two_idxs or self.two_texts:
-            return self.two_idxs or [], self.two_texts or []
-        return self.one_idxs or [], self.one_texts or []
-
     @staticmethod
-    def _format_idxs(idxs: list[int]) -> str:
+    def _format_idxs(idxs: tuple[int, ...]) -> str:
         """Format indices for display.
 
         Arguments:
@@ -129,7 +130,7 @@ class LineDiff:
         return f"{idxs[0] + 1}-{idxs[-1] + 1}"
 
     @staticmethod
-    def _format_idxs_or_empty(idxs: list[int] | None) -> str:
+    def _format_idxs_or_empty(idxs: tuple[int, ...] | None) -> str:
         """Format indices for display or return an empty string.
 
         Arguments:
@@ -142,8 +143,23 @@ class LineDiff:
         return LineDiff._format_idxs(idxs)
 
     @staticmethod
+    def _format_texts(texts: tuple[str, ...]) -> str:
+        """Format text values for single-line or multi-line display.
+
+        Arguments:
+            texts: text lines to format
+        Returns:
+            representation of one text line or the whole text tuple
+        """
+        match texts:
+            case (text,):
+                return repr(text)
+            case _:
+                return repr(texts)
+
+    @staticmethod
     def _get_delete_stacked_str(
-        *, one_range: str, one_texts: list[str], color: bool
+        *, one_range: str, one_texts: tuple[str, ...], color: bool
     ) -> str:
         """Format a delete diff as stacked output.
 
@@ -165,8 +181,8 @@ class LineDiff:
         *,
         one_range: str,
         two_range: str,
-        one_texts: list[str],
-        two_texts: list[str],
+        one_texts: tuple[str, ...],
+        two_texts: tuple[str, ...],
         color: bool,
     ) -> str:
         """Format an edit-like diff as stacked output.
@@ -228,7 +244,7 @@ class LineDiff:
 
     @staticmethod
     def _get_insert_stacked_str(
-        *, insert_idxs: list[int], insert_texts: list[str], color: bool
+        *, insert_idxs: tuple[int, ...], insert_texts: tuple[str, ...], color: bool
     ) -> str:
         """Format an insert diff as stacked output.
 
@@ -275,7 +291,7 @@ class LineDiff:
         return " "
 
     @staticmethod
-    def _join_texts(texts: list[str]) -> str:
+    def _join_texts(texts: tuple[str, ...]) -> str:
         """Join a list of subtitle lines into a single string.
 
         Arguments:

@@ -77,7 +77,7 @@ class SeriesCER:
             if message.kind == LineDiffKind.DELETE:
                 chunk_result = LineCER("".join(message.one_texts or []), "")
             elif message.kind == LineDiffKind.INSERT:
-                chunk_result = LineCER("", "".join(message.one_texts or []))
+                chunk_result = LineCER("", "".join(message.two_texts or []))
             else:
                 chunk_result = LineCER(
                     "".join(message.one_texts or []),

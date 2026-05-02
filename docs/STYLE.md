@@ -10,13 +10,16 @@
 * Allow `ruff format` to manage code formatting details.
 
 ## Imports
-* Include `from __future__ import annotations`, unless the file is empty.
+* Include `from __future__ import annotations` in Python modules that contain
+  imports, exports, type annotations, functions, or classes. Pure package
+  marker files that contain only a module docstring do not need it.
 * For imports within the same directory, use relative imports (for example, `from .foo import bar`).
 * Do not use relative imports for imports from parent or sibling directories (for example, `from ..foo import bar` or `from .. import foo`).
 * Allow `ruff` to manage import sorting.
 
 ## Exports
-* Include `__all__` in all files.
+* Include `__all__` in Python modules that export public names. Pure package
+  marker files that intentionally export nothing do not need it.
 * If `__all__` contains multiple entries, include a trailing comma after the last entry so `ruff` formats it as one item per line.
 * `__all__` should list the **intended public API** for the module.
   * Do not include internal helpers (names prefixed with an underscore).

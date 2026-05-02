@@ -135,8 +135,8 @@ class SeriesDiff:
                 kind=LineDiffKind.DELETE,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
-                one_idxs=[idx],
-                one_texts=[self.one_lines[idx]],
+                one_idxs=(idx,),
+                one_texts=(self.one_lines[idx],),
             )
             self.messages.append(message)
 
@@ -150,10 +150,10 @@ class SeriesDiff:
         for idx in range(two_start, two_end):
             message = LineDiff(
                 kind=LineDiffKind.INSERT,
-                one_lbl=self.two_lbl,
-                two_lbl=self.one_lbl,
-                one_idxs=[idx],
-                one_texts=[self.two_lines[idx]],
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                two_idxs=(idx,),
+                two_texts=(self.two_lines[idx],),
             )
             self.messages.append(message)
 
@@ -795,10 +795,10 @@ class SeriesDiff:
                 kind=LineDiffKind.EDIT,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
-                one_idxs=[one_idx],
-                two_idxs=[two_idx],
-                one_texts=[self.one_lines[one_idx]],
-                two_texts=[self.two_lines[two_idx]],
+                one_idxs=(one_idx,),
+                two_idxs=(two_idx,),
+                one_texts=(self.one_lines[one_idx],),
+                two_texts=(self.two_lines[two_idx],),
             )
         )
 
@@ -813,16 +813,16 @@ class SeriesDiff:
             two_start: start index for the second block
             two_end: end index for the second block
         """
-        one_slc = list(range(one_start, one_end))
-        two_slc = list(range(two_start, two_end))
+        one_slc = tuple(range(one_start, one_end))
+        two_slc = tuple(range(two_start, two_end))
         message = LineDiff(
             kind=LineDiffKind.MERGE,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
             one_idxs=one_slc,
             two_idxs=two_slc,
-            one_texts=[self.one_lines[idx] for idx in one_slc],
-            two_texts=[self.two_lines[idx] for idx in two_slc],
+            one_texts=tuple(self.one_lines[idx] for idx in one_slc),
+            two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 
@@ -837,16 +837,16 @@ class SeriesDiff:
             two_start: start index for the second block
             two_end: end index for the second block
         """
-        one_slc = list(range(one_start, one_end))
-        two_slc = list(range(two_start, two_end))
+        one_slc = tuple(range(one_start, one_end))
+        two_slc = tuple(range(two_start, two_end))
         message = LineDiff(
             kind=LineDiffKind.MERGE_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
             one_idxs=one_slc,
             two_idxs=two_slc,
-            one_texts=[self.one_lines[idx] for idx in one_slc],
-            two_texts=[self.two_lines[idx] for idx in two_slc],
+            one_texts=tuple(self.one_lines[idx] for idx in one_slc),
+            two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 
@@ -861,16 +861,16 @@ class SeriesDiff:
             two_start: start index for the second block
             two_end: end index for the second block
         """
-        one_slc = list(range(one_start, one_end))
-        two_slc = list(range(two_start, two_end))
+        one_slc = tuple(range(one_start, one_end))
+        two_slc = tuple(range(two_start, two_end))
         message = LineDiff(
             kind=LineDiffKind.SHIFT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
             one_idxs=one_slc,
             two_idxs=two_slc,
-            one_texts=[self.one_lines[idx] for idx in one_slc],
-            two_texts=[self.two_lines[idx] for idx in two_slc],
+            one_texts=tuple(self.one_lines[idx] for idx in one_slc),
+            two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 
@@ -885,16 +885,16 @@ class SeriesDiff:
             two_start: start index for the second block
             two_end: end index for the second block
         """
-        one_slc = list(range(one_start, one_end))
-        two_slc = list(range(two_start, two_end))
+        one_slc = tuple(range(one_start, one_end))
+        two_slc = tuple(range(two_start, two_end))
         message = LineDiff(
             kind=LineDiffKind.SPLIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
             one_idxs=one_slc,
             two_idxs=two_slc,
-            one_texts=[self.one_lines[idx] for idx in one_slc],
-            two_texts=[self.two_lines[idx] for idx in two_slc],
+            one_texts=tuple(self.one_lines[idx] for idx in one_slc),
+            two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 
@@ -909,16 +909,16 @@ class SeriesDiff:
             two_start: start index for the second block
             two_end: end index for the second block
         """
-        one_slc = list(range(one_start, one_end))
-        two_slc = list(range(two_start, two_end))
+        one_slc = tuple(range(one_start, one_end))
+        two_slc = tuple(range(two_start, two_end))
         message = LineDiff(
             kind=LineDiffKind.SPLIT_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
             one_idxs=one_slc,
             two_idxs=two_slc,
-            one_texts=[self.one_lines[idx] for idx in one_slc],
-            two_texts=[self.two_lines[idx] for idx in two_slc],
+            one_texts=tuple(self.one_lines[idx] for idx in one_slc),
+            two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 

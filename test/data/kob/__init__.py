@@ -12,7 +12,6 @@ from typing import Unpack
 
 import pytest
 
-from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
@@ -42,7 +41,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
-from test.helpers import test_data_root
+from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
     "kob_eng",

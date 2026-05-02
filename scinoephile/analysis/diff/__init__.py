@@ -6,12 +6,10 @@ from __future__ import annotations
 
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
-from .replace_cursor import ReplaceCursor
 from .series_diff import SeriesDiff
 
 __all__ = [
     "LineDiff",
     "LineDiffKind",
-    "ReplaceCursor",
     "SeriesDiff",
 ]

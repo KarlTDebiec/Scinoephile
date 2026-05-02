@@ -51,10 +51,10 @@ def test_line_diff_get_stacked_str_no_color_full_width_placeholder():
         kind=LineDiffKind.EDIT,
         one_lbl="one",
         two_lbl="two",
-        one_idxs=[0],
-        two_idxs=[0],
-        one_texts=["廣東話"],
-        two_texts=["廣東　話"],
+        one_idxs=(0,),
+        two_idxs=(0,),
+        one_texts=("廣東話",),
+        two_texts=("廣東　話",),
     )
     rendered = msg.get_stacked_str(color=False)
     lines = rendered.splitlines()
@@ -69,8 +69,8 @@ def test_line_diff_get_stacked_str_delete_header_marker():
         kind=LineDiffKind.DELETE,
         one_lbl="one",
         two_lbl="two",
-        one_idxs=[4],
-        one_texts=["abc"],
+        one_idxs=(4,),
+        one_texts=("abc",),
     )
     rendered = msg.get_stacked_str(color=False)
     assert rendered.splitlines()[0] == "5 |"
@@ -82,10 +82,10 @@ def test_line_diff_get_stacked_str_full_width_punctuation_placeholder():
         kind=LineDiffKind.EDIT,
         one_lbl="one",
         two_lbl="two",
-        one_idxs=[0],
-        two_idxs=[0],
-        one_texts=["。"],
-        two_texts=[""],
+        one_idxs=(0,),
+        two_idxs=(0,),
+        one_texts=("。",),
+        two_texts=("",),
     )
     rendered = msg.get_stacked_str(color=False)
     assert rendered.splitlines()[2] == "　"
@@ -97,8 +97,8 @@ def test_line_diff_get_stacked_str_insert_uses_public_insert_side():
         kind=LineDiffKind.INSERT,
         one_lbl="one",
         two_lbl="two",
-        two_idxs=[2],
-        two_texts=["xyz"],
+        two_idxs=(2,),
+        two_texts=("xyz",),
     )
     rendered = msg.get_stacked_str(color=False)
     lines = rendered.splitlines()
@@ -113,10 +113,10 @@ def test_line_diff_get_stacked_str_joiner_uses_full_width_punctuation():
         kind=LineDiffKind.EDIT,
         one_lbl="one",
         two_lbl="two",
-        one_idxs=[0, 1],
-        two_idxs=[0, 1],
-        one_texts=["甲。", "乙"],
-        two_texts=["甲。", "乙"],
+        one_idxs=(0, 1),
+        two_idxs=(0, 1),
+        one_texts=("甲。", "乙"),
+        two_texts=("甲。", "乙"),
     )
     rendered = msg.get_stacked_str(color=False)
     lines = rendered.splitlines()
