@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.analysis.character_error_rate import SeriesCERResult
+from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.cli.analysis.analysis_cer_cli import AnalysisCerCli
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli

@@ -12,7 +12,7 @@ from typing import Unpack
 
 import pytest
 
-from scinoephile.analysis.character_error_rate import SeriesCERResult
+from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs

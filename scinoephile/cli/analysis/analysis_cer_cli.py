@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import ClassVar, Unpack
 
-from scinoephile.analysis.character_error_rate import SeriesCERResult
+from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.common.exception import ArgumentConflictError
@@ -110,7 +110,7 @@ class AnalysisCerCli(ScinoephileCliBase):
         candidate_series = read_series(parser, candidate_infile_path, allow_stdin=True)
 
         # Perform operations
-        result = SeriesCERResult(reference_series, candidate_series)
+        result = SeriesCER(reference_series, candidate_series)
 
         # Write outputs
         print(result)

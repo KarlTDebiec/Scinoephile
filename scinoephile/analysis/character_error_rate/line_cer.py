@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Line-level character error rate result."""
+"""Line-level character error rate."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from math import inf
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
 from scinoephile.core.text import remove_punc_and_whitespace
 
-__all__ = ["LineCERResult"]
+__all__ = ["LineCER"]
 
 
-class LineCERResult:
-    """Character error rate result for one pair of text strings."""
+class LineCER:
+    """Character error rate for one pair of text strings."""
 
     reference: str
     """Original reference text."""

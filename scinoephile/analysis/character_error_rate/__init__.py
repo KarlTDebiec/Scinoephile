@@ -4,10 +4,10 @@
 
 from __future__ import annotations
 
-from .line_cer_result import LineCERResult
-from .series_cer_result import SeriesCERResult
+from .line_cer import LineCER
+from .series_cer import SeriesCER
 
 __all__ = [
-    "LineCERResult",
-    "SeriesCERResult",
+    "LineCER",
+    "SeriesCER",
 ]

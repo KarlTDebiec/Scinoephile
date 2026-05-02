@@ -8,7 +8,8 @@ from math import inf
 
 import pytest
 
-from scinoephile.analysis.character_error_rate import LineCERResult, SeriesCERResult
+from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
+from scinoephile.analysis.character_error_rate.series_cer_result import SeriesCERResult
 from scinoephile.core.subtitles import Series
 
 
@@ -125,7 +126,7 @@ from scinoephile.core.subtitles import Series
         ),
     ],
 )
-def test_line_cer_result(
+def test_line_cer(
     reference: str,
     candidate: str,
     expected: SeriesCERResult,
@@ -137,7 +138,7 @@ def test_line_cer_result(
         candidate: candidate text
         expected: expected CER result
     """
-    result = LineCERResult(reference, candidate)
+    result = LineCER(reference, candidate)
 
     assert result.cer == expected.cer
     assert result.substitutions == expected.substitutions
@@ -187,7 +188,7 @@ def test_series_cer_result_str():
         ),
     ],
 )
-def test_series_cer_result(
+def test_series_cer(
     reference_series_fixture_name: str,
     candidate_series_fixture_name: str,
     expected_fixture_name: str,
@@ -205,6 +206,11 @@ def test_series_cer_result(
     candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
     expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
-    result = SeriesCERResult(reference_series, candidate_series)
+    result = SeriesCER(reference_series, candidate_series)
 
-    assert result == expected
+    assert result.cer == expected.cer
+    assert result.substitutions == expected.substitutions
+    assert result.insertions == expected.insertions
+    assert result.deletions == expected.deletions
+    assert result.correct == expected.correct
+    assert result.reference_length == expected.reference_length

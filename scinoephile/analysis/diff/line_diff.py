@@ -14,61 +14,6 @@ from .line_diff_kind import LineDiffKind
 __all__ = ["LineDiff"]
 
 
-def _placeholder_for(char: str) -> str:
-    """Return placeholder for a missing character.
-
-    Arguments:
-        char: present character whose width class determines placeholder
-    Returns:
-        ASCII or ideographic space placeholder
-    """
-    if is_full_width_char(char):
-        return "\u3000"
-    return " "
-
-
-def _choose_joiner(prev_char: str | None, next_char: str | None) -> str:
-    """Choose a joiner for concatenating lines.
-
-    Arguments:
-        prev_char: trailing character of previous chunk
-        next_char: leading character of next chunk
-    Returns:
-        ASCII or ideographic space joiner
-    """
-    if prev_char is not None and is_full_width_char(prev_char):
-        return "\u3000"
-    if next_char is not None and is_full_width_char(next_char):
-        return "\u3000"
-    return " "
-
-
-def _join_texts(texts: list[str]) -> str:
-    """Join a list of subtitle lines into a single string.
-
-    Arguments:
-        texts: text lines to join
-    Returns:
-        joined text
-    """
-    if not texts:
-        return ""
-    if len(texts) == 1:
-        return texts[0]
-    chunks: list[str] = [texts[0]]
-    for next_text in texts[1:]:
-        previous_text = chunks[-1]
-        previous_char = None
-        if previous_text:
-            previous_char = previous_text[-1]
-        next_char = None
-        if next_text:
-            next_char = next_text[0]
-        chunks.append(_choose_joiner(previous_char, next_char))
-        chunks.append(next_text)
-    return "".join(chunks)
-
-
 @dataclass(frozen=True)
 class LineDiff:
     """Represents a line-level difference."""
@@ -125,44 +70,105 @@ class LineDiff:
         two_range = self._format_idxs_or_empty(self.two_idxs)
 
         if self.kind == LineDiffKind.DELETE:
-            return self._get_delete_stacked_str(one_range=one_range, color=color)
+            return self._get_delete_stacked_str(
+                one_range=one_range,
+                one_texts=self.one_texts or [],
+                color=color,
+            )
 
         if self.kind == LineDiffKind.INSERT:
-            return self._get_insert_stacked_str(color=color)
+            insert_idxs, insert_texts = self._get_insert_side()
+            return self._get_insert_stacked_str(
+                insert_idxs=insert_idxs,
+                insert_texts=insert_texts,
+                color=color,
+            )
 
         return self._get_edit_stacked_str(
-            one_range=one_range, two_range=two_range, color=color
+            one_range=one_range,
+            two_range=two_range,
+            one_texts=self.one_texts or [],
+            two_texts=self.two_texts or [],
+            color=color,
         )
 
-    def _get_delete_stacked_str(self, *, one_range: str, color: bool) -> str:
+    def _get_insert_side(self) -> tuple[list[int], list[str]]:
+        """Return the inserted indices and texts for an insert diff.
+
+        Returns:
+            inserted indices and texts
+        """
+        if self.two_idxs or self.two_texts:
+            return self.two_idxs or [], self.two_texts or []
+        return self.one_idxs or [], self.one_texts or []
+
+    @staticmethod
+    def _format_idxs(idxs: list[int]) -> str:
+        """Format indices for display.
+
+        Arguments:
+            idxs: indices to format
+        Returns:
+            formatted index range
+        """
+        if len(idxs) == 1:
+            return str(idxs[0] + 1)
+        return f"{idxs[0] + 1}-{idxs[-1] + 1}"
+
+    @staticmethod
+    def _format_idxs_or_empty(idxs: list[int] | None) -> str:
+        """Format indices for display or return an empty string.
+
+        Arguments:
+            idxs: indices to format
+        Returns:
+            formatted index range or empty string
+        """
+        if not idxs:
+            return ""
+        return LineDiff._format_idxs(idxs)
+
+    @staticmethod
+    def _get_delete_stacked_str(
+        *, one_range: str, one_texts: list[str], color: bool
+    ) -> str:
         """Format a delete diff as stacked output.
 
         Arguments:
             one_range: formatted index range for the first side
+            one_texts: deleted text lines
             color: whether to emit ANSI color escapes
         Returns:
             formatted delete diff chunk
         """
         header = f"{one_range} |"
-        one_text = _join_texts(self.one_texts or [])
+        one_text = LineDiff._join_texts(one_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.RED)
         return f"{header}\n{one_text}\n\n"
 
+    @staticmethod
     def _get_edit_stacked_str(
-        self, *, one_range: str, two_range: str, color: bool
+        *,
+        one_range: str,
+        two_range: str,
+        one_texts: list[str],
+        two_texts: list[str],
+        color: bool,
     ) -> str:
         """Format an edit-like diff as stacked output.
 
         Arguments:
             one_range: formatted index range for the first side
             two_range: formatted index range for the second side
+            one_texts: first-side text lines
+            two_texts: second-side text lines
             color: whether to emit ANSI color escapes
         Returns:
             formatted edit diff chunk
         """
-        one_text = _join_texts(self.one_texts or [])
-        two_text = _join_texts(self.two_texts or [])
+        one_text = LineDiff._join_texts(one_texts)
+        two_text = LineDiff._join_texts(two_texts)
         header = f"{one_range} {two_range}".rstrip()
         alignment = LineAlignment(one_text, two_text).alignment_pairs
 
@@ -195,11 +201,11 @@ class LineDiff:
                 if color:
                     one_text = colorize(one_text, AnsiColor.RED)
                 one_out.append(one_text)
-                two_out.append(_placeholder_for(column.one))
+                two_out.append(LineDiff._get_placeholder(column.one))
                 continue
 
             assert column.two is not None
-            one_out.append(_placeholder_for(column.two))
+            one_out.append(LineDiff._get_placeholder(column.two))
             two_text = column.two
             if color:
                 two_text = colorize(two_text, AnsiColor.BLUE)
@@ -207,53 +213,76 @@ class LineDiff:
 
         return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
 
-    def _get_insert_stacked_str(self, *, color: bool) -> str:
+    @staticmethod
+    def _get_insert_stacked_str(
+        *, insert_idxs: list[int], insert_texts: list[str], color: bool
+    ) -> str:
         """Format an insert diff as stacked output.
 
         Arguments:
+            insert_idxs: inserted line indices
+            insert_texts: inserted text lines
             color: whether to emit ANSI color escapes
         Returns:
             formatted insert diff chunk
         """
-        insert_idxs, insert_texts = self._get_insert_side()
-        header = f"| {self._format_idxs_or_empty(insert_idxs)}"
-        two_text = _join_texts(insert_texts)
+        header = f"| {LineDiff._format_idxs_or_empty(insert_idxs)}"
+        two_text = LineDiff._join_texts(insert_texts)
         if color:
             two_text = colorize(two_text, AnsiColor.BLUE)
         return f"{header}\n\n{two_text}\n"
 
     @staticmethod
-    def _format_idxs(idxs: list[int]) -> str:
-        """Format indices for display.
+    def _get_joiner(prev_char: str | None, next_char: str | None) -> str:
+        """Get joiner for concatenating lines.
 
         Arguments:
-            idxs: indices to format
+            prev_char: trailing character of previous chunk
+            next_char: leading character of next chunk
         Returns:
-            formatted index range
+            ASCII or ideographic space joiner
         """
-        if len(idxs) == 1:
-            return str(idxs[0] + 1)
-        return f"{idxs[0] + 1}-{idxs[-1] + 1}"
+        if prev_char is not None and is_full_width_char(prev_char):
+            return "\u3000"
+        if next_char is not None and is_full_width_char(next_char):
+            return "\u3000"
+        return " "
 
-    @classmethod
-    def _format_idxs_or_empty(cls, idxs: list[int] | None) -> str:
-        """Format indices for display or return an empty string.
+    @staticmethod
+    def _get_placeholder(char: str) -> str:
+        """Get placeholder for a missing character.
 
         Arguments:
-            idxs: indices to format
+            char: present character whose width class determines placeholder
         Returns:
-            formatted index range or empty string
+            ASCII or ideographic space placeholder
         """
-        if not idxs:
+        if is_full_width_char(char):
+            return "\u3000"
+        return " "
+
+    @staticmethod
+    def _join_texts(texts: list[str]) -> str:
+        """Join a list of subtitle lines into a single string.
+
+        Arguments:
+            texts: text lines to join
+        Returns:
+            joined text
+        """
+        if not texts:
             return ""
-        return cls._format_idxs(idxs)
-
-    def _get_insert_side(self) -> tuple[list[int], list[str]]:
-        """Return the inserted indices and texts for an insert diff.
-
-        Returns:
-            inserted indices and texts
-        """
-        if self.two_idxs or self.two_texts:
-            return self.two_idxs or [], self.two_texts or []
-        return self.one_idxs or [], self.one_texts or []
+        if len(texts) == 1:
+            return texts[0]
+        chunks: list[str] = [texts[0]]
+        for next_text in texts[1:]:
+            previous_text = chunks[-1]
+            previous_char = None
+            if previous_text:
+                previous_char = previous_text[-1]
+            next_char = None
+            if next_text:
+                next_char = next_text[0]
+            chunks.append(LineDiff._get_joiner(previous_char, next_char))
+            chunks.append(next_text)
+        return "".join(chunks)
