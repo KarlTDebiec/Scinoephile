@@ -48,8 +48,7 @@ class ArgsCaptureCli(CommandLineInterface):
     @classmethod
     def _main(cls, **kwargs: Unpack[ArgsCaptureCliKwargs]):
         """Execute test CLI."""
-        for key, value in kwargs.items():
-            cls.captured[key] = str(value)
+        cls.captured.update(kwargs)  # ty:ignore[no-matching-overload]
 
 
 class TestCli(CommandLineInterface):
