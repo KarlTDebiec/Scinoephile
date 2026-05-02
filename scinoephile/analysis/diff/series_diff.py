@@ -461,16 +461,18 @@ class SeriesDiff:
         merged_ratio_rev = difflib.SequenceMatcher(
             None, self.one_normlines[cursor.one_idx], two_joined_rev, autojunk=False
         ).ratio()
-        best_joined = two_joined_rev if merged_ratio_rev > merged_ratio else two_joined
+        if merged_ratio_rev > merged_ratio:
+            best_joined = two_joined_rev
+        else:
+            best_joined = two_joined
         if max(merged_ratio, merged_ratio_rev) < self.similarity_cutoff:
             return False
 
         # Emit split vs split_edit based on exact normalized equality.
-        diff_type = (
-            LineDiffKind.SPLIT
-            if self.one_normlines[cursor.one_idx] == best_joined
-            else LineDiffKind.SPLIT_EDIT
-        )
+        if self.one_normlines[cursor.one_idx] == best_joined:
+            diff_type = LineDiffKind.SPLIT
+        else:
+            diff_type = LineDiffKind.SPLIT_EDIT
         if diff_type == LineDiffKind.SPLIT:
             self._process_split(
                 cursor.one_idx,
@@ -528,11 +530,10 @@ class SeriesDiff:
             return False
 
         # Emit split vs split_edit based on exact normalized equality.
-        diff_type = (
-            LineDiffKind.SPLIT
-            if self.one_normlines[cursor.one_idx] == two_joined
-            else LineDiffKind.SPLIT_EDIT
-        )
+        if self.one_normlines[cursor.one_idx] == two_joined:
+            diff_type = LineDiffKind.SPLIT
+        else:
+            diff_type = LineDiffKind.SPLIT_EDIT
         if diff_type == LineDiffKind.SPLIT:
             self._process_split(
                 cursor.one_idx,
@@ -697,11 +698,10 @@ class SeriesDiff:
             return False
 
         # Emit split vs split_edit based on exact normalized equality.
-        diff_type = (
-            LineDiffKind.SPLIT
-            if one_joined == self.two_normlines[cursor.two_idx]
-            else LineDiffKind.SPLIT_EDIT
-        )
+        if one_joined == self.two_normlines[cursor.two_idx]:
+            diff_type = LineDiffKind.SPLIT
+        else:
+            diff_type = LineDiffKind.SPLIT_EDIT
         if diff_type == LineDiffKind.SPLIT:
             self._process_split(
                 cursor.one_blk[cursor.i],
@@ -729,8 +729,6 @@ class SeriesDiff:
             two_blk: indices for the second block
             i: current index within the first block
             j: current index within the second block
-        Returns:
-            None.
         """
         if i < len(one_blk) and j < len(two_blk):
             one_slc = one_blk[i:]
@@ -742,17 +740,14 @@ class SeriesDiff:
                 " ".join(self.two_lines[idx] for idx in two_slc)
             )
             if len(one_slc) < len(two_slc):
-                diff_type = (
-                    LineDiffKind.SPLIT
-                    if one_joined == two_joined
-                    else LineDiffKind.SPLIT_EDIT
-                )
+                if one_joined == two_joined:
+                    diff_type = LineDiffKind.SPLIT
+                else:
+                    diff_type = LineDiffKind.SPLIT_EDIT
+            elif one_joined == two_joined:
+                diff_type = LineDiffKind.MERGE
             else:
-                diff_type = (
-                    LineDiffKind.MERGE
-                    if one_joined == two_joined
-                    else LineDiffKind.MERGE_EDIT
-                )
+                diff_type = LineDiffKind.MERGE_EDIT
             if diff_type == LineDiffKind.SPLIT:
                 self._process_split(
                     one_slc[0],
@@ -794,8 +789,6 @@ class SeriesDiff:
         Arguments:
             one_idx: index for the first series
             two_idx: index for the second series
-        Returns:
-            None.
         """
         self.messages.append(
             LineDiff(
@@ -819,8 +812,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
@@ -845,8 +836,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
@@ -871,8 +860,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
@@ -897,8 +884,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
@@ -923,8 +908,6 @@ class SeriesDiff:
             one_end: end index for the first block
             two_start: start index for the second block
             two_end: end index for the second block
-        Returns:
-            None.
         """
         one_slc = list(range(one_start, one_end))
         two_slc = list(range(two_start, two_end))
