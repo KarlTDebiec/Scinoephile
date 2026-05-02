@@ -14,12 +14,36 @@ import pytest
 from common.command_line_interface import (  # ty:ignore[unresolved-import]
     CommandLineInterface,
 )
+from common.testing import run_cli_with_args  # ty:ignore[unresolved-import]
 
 
 class CliTestKwargs(TypedDict, total=False):
     """Keyword arguments for TestCli _main method."""
 
     pass
+
+
+class ArgsCaptureCli(CommandLineInterface):
+    """Test CLI that captures parsed string arguments."""
+
+    captured: dict[str, str] = {}
+    """Most recently captured keyword arguments."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add arguments to a nascent argument parser.
+
+        Arguments:
+            parser: nascent argument parser
+        """
+        super().add_arguments_to_argparser(parser)
+        parser.add_argument("--name", type=str, required=True)
+
+    @classmethod
+    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+        """Execute test CLI."""
+        for key, value in kwargs.items():
+            cls.captured[key] = str(value)
 
 
 class TestCli(CommandLineInterface):
@@ -209,3 +233,10 @@ def test_abstract_main():
     with pytest.raises(TypeError):
         # Cannot instantiate ABC without implementing abstract method
         CommandLineInterface()
+
+
+def test_run_cli_with_args_quoted_values():
+    """Test that run_cli_with_args preserves quoted arguments as single values."""
+    ArgsCaptureCli.captured.clear()
+    run_cli_with_args(ArgsCaptureCli, '--name "value with spaces"')
+    assert ArgsCaptureCli.captured.get("name") == "value with spaces"

@@ -6,17 +6,20 @@ from __future__ import annotations
 
 import sys
 from inspect import getfile
+from shlex import split
 from unittest.mock import patch
+
+from .command_line_interface import CommandLineInterface
 
 __all__ = ["run_cli_with_args"]
 
 
-def run_cli_with_args(cli, args: str = ""):
+def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):
     """Run CommandLineInterface as if from shell with provided args.
 
     Arguments:
         cli: CommandLineInterface to run
         args: Arguments to pass
     """
-    with patch.object(sys, "argv", [getfile(cli)] + args.split()):
+    with patch.object(sys, "argv", [getfile(cli)] + split(args)):
         cli.main()
