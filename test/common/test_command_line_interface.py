@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import ClassVar, TypedDict, Unpack
 from unittest.mock import patch
 
 import pytest
@@ -23,10 +23,16 @@ class CliTestKwargs(TypedDict, total=False):
     pass
 
 
+class ArgsCaptureCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ArgsCaptureCli _main method."""
+
+    name: str
+
+
 class ArgsCaptureCli(CommandLineInterface):
     """Test CLI that captures parsed string arguments."""
 
-    captured: dict[str, str] = {}
+    captured: ClassVar[dict[str, str]] = {}
     """Most recently captured keyword arguments."""
 
     @classmethod
@@ -40,7 +46,7 @@ class ArgsCaptureCli(CommandLineInterface):
         parser.add_argument("--name", type=str, required=True)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls, **kwargs: Unpack[ArgsCaptureCliKwargs]):
         """Execute test CLI."""
         for key, value in kwargs.items():
             cls.captured[key] = str(value)
