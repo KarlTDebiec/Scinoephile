@@ -7,6 +7,7 @@ from __future__ import annotations
 import difflib
 import re
 from collections.abc import Callable, Iterator
+from dataclasses import dataclass
 from typing import TypedDict
 
 from scinoephile.core import ScinoephileError
@@ -35,6 +36,20 @@ class SeriesDiffKwargs(TypedDict, total=False):
     """Similarity threshold used when pairing replacement blocks."""
 
 
+@dataclass(frozen=True)
+class _SeriesDiffLineRecord:
+    """One flattened subtitle text line with its global line index."""
+
+    idx: int
+    """Zero-based global line index."""
+
+    text: str
+    """Raw text line."""
+
+    norm: str
+    """Normalized text line used for matching."""
+
+
 class SeriesDiff:
     """Compute line-level differences between subtitle series."""
 
@@ -59,12 +74,14 @@ class SeriesDiff:
         self.one_lbl = one_lbl
         self.two_lbl = two_lbl
         self.similarity_cutoff = similarity_cutoff
-        self.one_lines = self._get_series_text_lines(one)
-        self.two_lines = self._get_series_text_lines(two)
-        self.one_normlines = [self._normalize_line(line) for line in self.one_lines]
-        self.two_normlines = [self._normalize_line(line) for line in self.two_lines]
+        self.one_line_idxs: list[int] = []
+        self.two_line_idxs: list[int] = []
+        self.one_lines: list[str] = []
+        self.two_lines: list[str] = []
+        self.one_normlines: list[str] = []
+        self.two_normlines: list[str] = []
         self.messages: list[LineDiff] = []
-        self._diff()
+        self._diff(one, two)
 
     def __iter__(self) -> Iterator[LineDiff]:
         """Iterate over line-level diff messages.
@@ -98,12 +115,32 @@ class SeriesDiff:
         """
         return "\n".join(message.get_stacked_str(color=color) for message in self)
 
-    def _diff(self) -> list[LineDiff]:
-        """Compare subtitle series by line content.
+    def _diff(self, one: Series, two: Series) -> list[LineDiff]:
+        """Compare subtitle series by pause-delimited blocks.
+
+        Arguments:
+            one: first subtitle series
+            two: second subtitle series
 
         Returns:
             list of difference messages
         """
+        one_line_records = self._get_series_event_line_records(one)
+        two_line_records = self._get_series_event_line_records(two)
+        block_pairs = self._get_block_event_index_pairs_by_pause(one, two)
+        for one_event_idxs, two_event_idxs in block_pairs:
+            self._init_block_lines(
+                one_event_idxs=one_event_idxs,
+                two_event_idxs=two_event_idxs,
+                one_line_records=one_line_records,
+                two_line_records=two_line_records,
+            )
+            self._diff_block()
+
+        return self.messages
+
+    def _diff_block(self):
+        """Compare the current subtitle block by line content."""
         matcher = difflib.SequenceMatcher(
             None, self.one_normlines, self.two_normlines, autojunk=False
         )
@@ -121,7 +158,38 @@ class SeriesDiff:
                 continue
             raise ScinoephileError(f"Unhandled opcode: {tag}")
 
-        return self.messages
+    def _init_block_lines(
+        self,
+        *,
+        one_event_idxs: tuple[int, ...],
+        two_event_idxs: tuple[int, ...],
+        one_line_records: list[tuple[_SeriesDiffLineRecord, ...]],
+        two_line_records: list[tuple[_SeriesDiffLineRecord, ...]],
+    ):
+        """Initialize current line block from subtitle event indices.
+
+        Arguments:
+            one_event_idxs: event indices from the first series
+            two_event_idxs: event indices from the second series
+            one_line_records: flattened line records for each first-series event
+            two_line_records: flattened line records for each second-series event
+        """
+        one_records = [
+            record
+            for event_idx in one_event_idxs
+            for record in one_line_records[event_idx]
+        ]
+        two_records = [
+            record
+            for event_idx in two_event_idxs
+            for record in two_line_records[event_idx]
+        ]
+        self.one_line_idxs = [record.idx for record in one_records]
+        self.two_line_idxs = [record.idx for record in two_records]
+        self.one_lines = [record.text for record in one_records]
+        self.two_lines = [record.text for record in two_records]
+        self.one_normlines = [record.norm for record in one_records]
+        self.two_normlines = [record.norm for record in two_records]
 
     def _process_delete(self, one_start: int, one_end: int):
         """Process delete opcode block.
@@ -135,7 +203,7 @@ class SeriesDiff:
                 kind=LineDiffKind.DELETE,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
-                one_idxs=(idx,),
+                one_idxs=(self.one_line_idxs[idx],),
                 one_texts=(self.one_lines[idx],),
             )
             self.messages.append(message)
@@ -152,7 +220,7 @@ class SeriesDiff:
                 kind=LineDiffKind.INSERT,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
-                two_idxs=(idx,),
+                two_idxs=(self.two_line_idxs[idx],),
                 two_texts=(self.two_lines[idx],),
             )
             self.messages.append(message)
@@ -795,8 +863,8 @@ class SeriesDiff:
                 kind=LineDiffKind.EDIT,
                 one_lbl=self.one_lbl,
                 two_lbl=self.two_lbl,
-                one_idxs=(one_idx,),
-                two_idxs=(two_idx,),
+                one_idxs=(self.one_line_idxs[one_idx],),
+                two_idxs=(self.two_line_idxs[two_idx],),
                 one_texts=(self.one_lines[one_idx],),
                 two_texts=(self.two_lines[two_idx],),
             )
@@ -819,8 +887,8 @@ class SeriesDiff:
             kind=LineDiffKind.MERGE,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slc,
-            two_idxs=two_slc,
+            one_idxs=tuple(self.one_line_idxs[idx] for idx in one_slc),
+            two_idxs=tuple(self.two_line_idxs[idx] for idx in two_slc),
             one_texts=tuple(self.one_lines[idx] for idx in one_slc),
             two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
@@ -843,8 +911,8 @@ class SeriesDiff:
             kind=LineDiffKind.MERGE_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slc,
-            two_idxs=two_slc,
+            one_idxs=tuple(self.one_line_idxs[idx] for idx in one_slc),
+            two_idxs=tuple(self.two_line_idxs[idx] for idx in two_slc),
             one_texts=tuple(self.one_lines[idx] for idx in one_slc),
             two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
@@ -867,8 +935,8 @@ class SeriesDiff:
             kind=LineDiffKind.SHIFT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slc,
-            two_idxs=two_slc,
+            one_idxs=tuple(self.one_line_idxs[idx] for idx in one_slc),
+            two_idxs=tuple(self.two_line_idxs[idx] for idx in two_slc),
             one_texts=tuple(self.one_lines[idx] for idx in one_slc),
             two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
@@ -891,8 +959,8 @@ class SeriesDiff:
             kind=LineDiffKind.SPLIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slc,
-            two_idxs=two_slc,
+            one_idxs=tuple(self.one_line_idxs[idx] for idx in one_slc),
+            two_idxs=tuple(self.two_line_idxs[idx] for idx in two_slc),
             one_texts=tuple(self.one_lines[idx] for idx in one_slc),
             two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
@@ -915,30 +983,105 @@ class SeriesDiff:
             kind=LineDiffKind.SPLIT_EDIT,
             one_lbl=self.one_lbl,
             two_lbl=self.two_lbl,
-            one_idxs=one_slc,
-            two_idxs=two_slc,
+            one_idxs=tuple(self.one_line_idxs[idx] for idx in one_slc),
+            two_idxs=tuple(self.two_line_idxs[idx] for idx in two_slc),
             one_texts=tuple(self.one_lines[idx] for idx in one_slc),
             two_texts=tuple(self.two_lines[idx] for idx in two_slc),
         )
         self.messages.append(message)
 
     @staticmethod
-    def _get_series_text_lines(series: Series) -> list[str]:
-        """Extract raw text lines from a subtitle series.
+    def _get_block_event_index_pairs_by_pause(
+        one: Series,
+        two: Series,
+        pause_length: int = 3000,
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Split a pair of series into event-index blocks using pauses.
+
+        This mirrors synchronization block splitting while preserving original
+        series indices for diff output.
 
         Arguments:
-            series: subtitle series to extract text lines from
+            one: first subtitle series
+            two: second subtitle series
+            pause_length: split whenever a pause of this length is encountered
         Returns:
-            list of text lines
+            pairs of event-index blocks
         """
-        lines: list[str] = []
+        blocks = []
+        source_one = list(range(len(one.events)))
+        source_two = list(range(len(two.events)))
+
+        def get_nascent_block_cutoff() -> int:
+            """Get latest acceptable start for the nascent block."""
+            cutoff = 0
+            if nascent_block_one:
+                cutoff = max(cutoff, one.events[nascent_block_one[-1]].end)
+            if nascent_block_two:
+                cutoff = max(cutoff, two.events[nascent_block_two[-1]].end)
+            return cutoff + pause_length
+
+        while source_one or source_two:
+            nascent_block_one: list[int] = []
+            nascent_block_two: list[int] = []
+            if source_one and source_two:
+                if one.events[source_one[0]].start <= two.events[source_two[0]].start:
+                    nascent_block_one.append(source_one.pop(0))
+                else:
+                    nascent_block_two.append(source_two.pop(0))
+            elif source_one:
+                nascent_block_one.append(source_one.pop(0))
+            else:
+                nascent_block_two.append(source_two.pop(0))
+
+            changed = True
+            while changed:
+                changed = False
+                while (
+                    source_one
+                    and one.events[source_one[0]].start < get_nascent_block_cutoff()
+                ):
+                    nascent_block_one.append(source_one.pop(0))
+                    changed = True
+                while (
+                    source_two
+                    and two.events[source_two[0]].start < get_nascent_block_cutoff()
+                ):
+                    nascent_block_two.append(source_two.pop(0))
+                    changed = True
+
+            blocks.append((tuple(nascent_block_one), tuple(nascent_block_two)))
+
+        return blocks
+
+    @staticmethod
+    def _get_series_event_line_records(
+        series: Series,
+    ) -> list[tuple[_SeriesDiffLineRecord, ...]]:
+        """Extract text line records grouped by subtitle event.
+
+        Arguments:
+            series: subtitle series to extract lines from
+        Returns:
+            text line records grouped by subtitle event
+        """
+        event_records = []
+        line_idx = 0
         for subtitle in series:
-            text = subtitle.text_with_newline
-            for line in text.splitlines():
+            records = []
+            for line in subtitle.text_with_newline.splitlines():
                 stripped = line.strip()
                 if stripped:
-                    lines.append(stripped)
-        return lines
+                    records.append(
+                        _SeriesDiffLineRecord(
+                            idx=line_idx,
+                            text=stripped,
+                            norm=SeriesDiff._normalize_line(stripped),
+                        )
+                    )
+                    line_idx += 1
+            event_records.append(tuple(records))
+        return event_records
 
     @staticmethod
     def _normalize_line(text: str) -> str:
