@@ -68,9 +68,9 @@ class LineCER:
         self.insertions = 0
         self.deletions = 0
         self.correct = 0
-        self._populate_edits()
+        self._init_edits()
         self.reference_length = len(self.normalized_reference)
-        self._populate_cer()
+        self._init_cer()
 
     def __repr__(self) -> str:
         """Return a reconstructable representation of this result.
@@ -95,7 +95,7 @@ class LineCER:
             f"Reference length: {self.reference_length}"
         )
 
-    def _populate_cer(self):
+    def _init_cer(self):
         """Calculate character error rate."""
         if self.reference_length == 0:
             if self.insertions == 0:
@@ -107,7 +107,7 @@ class LineCER:
                 self.substitutions + self.insertions + self.deletions
             ) / self.reference_length
 
-    def _populate_edits(self):
+    def _init_edits(self):
         """Count edit operations in this alignment."""
         for pair in self.alignment.alignment_pairs:
             if pair.operation == LineAlignmentOperation.MATCH:

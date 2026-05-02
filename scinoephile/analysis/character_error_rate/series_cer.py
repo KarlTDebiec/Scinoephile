@@ -41,7 +41,7 @@ class SeriesCER:
             reference: reference subtitle series
             candidate: candidate subtitle series
         """
-        self._init(reference, candidate)
+        self._init_metrics(reference, candidate)
 
     def __str__(self) -> str:
         """String representation.
@@ -58,7 +58,7 @@ class SeriesCER:
             f"Reference length: {self.reference_length}"
         )
 
-    def _init(self, reference: Series, candidate: Series):
+    def _init_metrics(self, reference: Series, candidate: Series):
         """Initialize metrics by comparing subtitle series.
 
         Arguments:
