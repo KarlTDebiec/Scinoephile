@@ -19,7 +19,6 @@ __all__ = [
     "AlignedChar",
     "align_chars",
     "count_edits",
-    "metric_t",
 ]
 
 
@@ -48,7 +47,7 @@ class AlignedChar:
     op: AlignmentOp
 
 
-metric_t = tuple[int, int, int, int, int]
+_metric_t = tuple[int, int, int, int, int]
 """Internal DP metric tuple.
 
 Order: (distance, gap_runs, ins, dels, subs)
@@ -81,7 +80,7 @@ def _op_pref(op: AlignmentOp, *, policy: AlignmentPolicy) -> int:
     }[op]
 
 
-def _rank(metric: metric_t, *, policy: AlignmentPolicy) -> tuple[int, ...]:
+def _rank(metric: _metric_t, *, policy: AlignmentPolicy) -> tuple[int, ...]:
     """Return tuple used to rank candidate DP states.
 
     Arguments:
@@ -99,7 +98,7 @@ def _rank(metric: metric_t, *, policy: AlignmentPolicy) -> tuple[int, ...]:
 def _init_tables(
     one: str, two: str
 ) -> tuple[
-    list[list[metric_t]],
+    list[list[_metric_t]],
     list[list[tuple[int, int, AlignmentOp] | None]],
     list[list[AlignmentOp | None]],
 ]:
@@ -113,7 +112,7 @@ def _init_tables(
     """
     rows = len(one) + 1
     cols = len(two) + 1
-    dp: list[list[metric_t]] = [
+    dp: list[list[_metric_t]] = [
         [(0, 0, 0, 0, 0) for _ in range(cols)] for _ in range(rows)
     ]
     back: list[list[tuple[int, int, AlignmentOp] | None]] = [
@@ -128,7 +127,7 @@ def _init_tables(
 def _initialize_edges(
     one: str,
     two: str,
-    dp: list[list[metric_t]],
+    dp: list[list[_metric_t]],
     back: list[list[tuple[int, int, AlignmentOp] | None]],
     last_gap: list[list[AlignmentOp | None]],
 ) -> None:
@@ -166,7 +165,7 @@ def _fill_tables(
     two: str,
     *,
     policy: AlignmentPolicy,
-    dp: list[list[metric_t]],
+    dp: list[list[_metric_t]],
     back: list[list[tuple[int, int, AlignmentOp] | None]],
     last_gap: list[list[AlignmentOp | None]],
 ) -> None:

@@ -71,3 +71,51 @@ def test_format_colored_line_diff_delete_header_marker():
     )
     rendered = format_colored_line_diff(msg, use_color=False)
     assert rendered.splitlines()[0] == "5 |"
+
+
+def test_format_colored_line_diff_full_width_punctuation_placeholder():
+    """Test full-width punctuation uses an ideographic placeholder."""
+    msg = LineDiff(
+        kind=LineDiffKind.EDIT,
+        one_lbl="one",
+        two_lbl="two",
+        one_idxs=[0],
+        two_idxs=[0],
+        one_texts=["。"],
+        two_texts=[""],
+    )
+    rendered = format_colored_line_diff(msg, use_color=False)
+    assert rendered.splitlines()[2] == "　"
+
+
+def test_format_colored_line_diff_insert_uses_public_insert_side():
+    """Test insert rendering uses the inserted side of a public `LineDiff`."""
+    msg = LineDiff(
+        kind=LineDiffKind.INSERT,
+        one_lbl="one",
+        two_lbl="two",
+        two_idxs=[2],
+        two_texts=["xyz"],
+    )
+    rendered = format_colored_line_diff(msg, use_color=False)
+    lines = rendered.splitlines()
+    assert lines[0] == "| 3"
+    assert lines[1] == ""
+    assert lines[2] == "xyz"
+
+
+def test_format_colored_line_diff_joiner_uses_full_width_punctuation():
+    """Test joining near full-width punctuation uses an ideographic space."""
+    msg = LineDiff(
+        kind=LineDiffKind.EDIT,
+        one_lbl="one",
+        two_lbl="two",
+        one_idxs=[0, 1],
+        two_idxs=[0, 1],
+        one_texts=["甲。", "乙"],
+        two_texts=["甲。", "乙"],
+    )
+    rendered = format_colored_line_diff(msg, use_color=False)
+    lines = rendered.splitlines()
+    assert lines[1] == "甲。　乙"
+    assert lines[2] == "甲。　乙"

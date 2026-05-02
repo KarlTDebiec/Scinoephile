@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from scinoephile.core.text import get_char_type
+from scinoephile.core.text import full_punc_chars, get_char_type
 
 from .alignment import AlignmentOp, AlignmentPolicy, align_chars
 from .line_diff import LineDiff
@@ -53,7 +53,18 @@ def _placeholder_for(char: str) -> str:
         ASCII or ideographic space placeholder
     """
     # get_char_type returns "full", "half", or "punc"
-    return "\u3000" if get_char_type(char) == "full" else " "
+    return "\u3000" if _is_full_width_char(char) else " "
+
+
+def _is_full_width_char(char: str) -> bool:
+    """Return whether a character should occupy a full-width column.
+
+    Arguments:
+        char: character to classify
+    Returns:
+        whether the character should use full-width spacing
+    """
+    return char in full_punc_chars or get_char_type(char) == "full"
 
 
 def _choose_joiner(prev_char: str | None, next_char: str | None) -> str:
@@ -65,9 +76,9 @@ def _choose_joiner(prev_char: str | None, next_char: str | None) -> str:
     Returns:
         ASCII or ideographic space joiner
     """
-    if prev_char is not None and get_char_type(prev_char) == "full":
+    if prev_char is not None and _is_full_width_char(prev_char):
         return "\u3000"
-    if next_char is not None and get_char_type(next_char) == "full":
+    if next_char is not None and _is_full_width_char(next_char):
         return "\u3000"
     return " "
 
@@ -109,6 +120,19 @@ def _format_range(idxs: list[int] | None) -> str:
     return f"{idxs[0] + 1}-{idxs[-1] + 1}"
 
 
+def _get_insert_side(message: LineDiff) -> tuple[list[int], list[str]]:
+    """Return the inserted indices and texts for an insert diff.
+
+    Arguments:
+        message: line-level diff message
+    Returns:
+        inserted indices and texts
+    """
+    if message.two_idxs or message.two_texts:
+        return message.two_idxs or [], message.two_texts or []
+    return message.one_idxs or [], message.one_texts or []
+
+
 def format_colored_line_diff(message: LineDiff, *, use_color: bool = True) -> str:
     """Format a `LineDiff` as a colored, character-aligned diff.
 
@@ -129,9 +153,10 @@ def format_colored_line_diff(message: LineDiff, *, use_color: bool = True) -> st
         return f"{header}\n{colored_one}\n{two_text}\n"
 
     if message.kind == LineDiffKind.INSERT:
-        header = f"| {one_range}"
+        insert_idxs, insert_texts = _get_insert_side(message)
+        header = f"| {_format_range(insert_idxs)}"
         one_text = ""
-        two_text = _join_texts(message.one_texts or [])
+        two_text = _join_texts(insert_texts)
         colored_two = _colorize(two_text, _Ansi.BLUE, use_color=use_color)
         return f"{header}\n{one_text}\n{colored_two}\n"
 
