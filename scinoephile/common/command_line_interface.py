@@ -16,17 +16,17 @@ from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
 from pathlib import Path
 from sys import argv
-from typing import TypedDict, Unpack
+from typing import Any, Unpack
+
+from typing_extensions import TypedDict
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
 logger = getLogger(__name__)
 
 
-class CLIKwargs(TypedDict, total=False):
+class CLIKwargs(TypedDict, total=False, extra_items=Any):
     """Keyword arguments for command-line interface _main methods."""
-
-    pass
 
 
 class CommandLineInterface(ABC):
