@@ -25,6 +25,8 @@ if TYPE_CHECKING:
         filterwarnings("ignore", category=RuntimeWarning)
         from pydub import AudioSegment
 
+__all__ = ["WhisperTranscriber"]
+
 logger = getLogger(__name__)
 
 

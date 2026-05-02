@@ -8,6 +8,8 @@ from pydantic import BaseModel, Field
 
 from .transcribed_word import TranscribedWord
 
+__all__ = ["TranscribedSegment"]
+
 
 class TranscribedSegment(BaseModel):
     """Transcribed segment."""
