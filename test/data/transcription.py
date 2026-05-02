@@ -13,7 +13,7 @@ from pathlib import Path
 from shutil import copy2
 from typing import Any
 
-from scinoephile.analysis import get_series_cer
+from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
 from scinoephile.core.ml import get_torch_device
@@ -158,7 +158,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription CER:")
-        print(get_series_cer(reference, transcribe))
+        print(SeriesCER(reference, transcribe))
 
     # Review (line-by-line)
     line_review_path = yue_hans_transcribe_dir_path / "transcribe_review.srt"
@@ -186,7 +186,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review CER:")
-        print(get_series_cer(reference, line_review))
+        print(SeriesCER(reference, line_review))
 
     # Translate
     translate_path = yue_hans_transcribe_dir_path / "transcribe_review_translate.srt"
@@ -206,7 +206,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review → translate CER:")
-        print(get_series_cer(reference, translate))
+        print(SeriesCER(reference, translate))
 
     # Review (block-by-block)
     block_review_path = (
@@ -228,7 +228,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review → translate → block review CER:")
-        print(get_series_cer(reference, block_review))
+        print(SeriesCER(reference, block_review))
 
     logger.info(f"Saved Yue transcription outputs under {yue_hans_transcribe_dir_path}")
     return block_review

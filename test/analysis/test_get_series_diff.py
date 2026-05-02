@@ -1,13 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.analysis.get_series_diff."""
+"""Tests of `SeriesDiff`."""
 
 from __future__ import annotations
 
 import pytest
 
-from scinoephile.analysis import get_series_diff
-from scinoephile.analysis.series_diff import SeriesDiff
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 
 
@@ -64,7 +63,7 @@ def _assert_expected_differences(differences: SeriesDiff, expected: list[str]):
         ),
     ],
 )
-def test_get_series_diff(
+def test_series_diff(
     one_series_fixture_name: str,
     two_series_fixture_name: str,
     one_lbl: str,
@@ -72,7 +71,7 @@ def test_get_series_diff(
     expected_fixture_name: str,
     request: pytest.FixtureRequest,
 ):
-    """Test get_series_diff for subtitle fixture pairs.
+    """Test `SeriesDiff` for subtitle fixture pairs.
 
     Arguments:
         one_series_fixture_name: fixture name for first subtitle series
@@ -86,7 +85,7 @@ def test_get_series_diff(
     two_series: Series = request.getfixturevalue(two_series_fixture_name)
     expected: list[str] = request.getfixturevalue(expected_fixture_name)
 
-    differences = get_series_diff(
+    differences = SeriesDiff(
         one_series,
         two_series,
         one_lbl=one_lbl,

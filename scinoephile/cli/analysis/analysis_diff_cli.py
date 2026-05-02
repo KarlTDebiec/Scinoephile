@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from typing import ClassVar, Unpack
 
-from scinoephile.analysis import get_series_diff
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
@@ -149,7 +149,7 @@ class AnalysisDiffCli(ScinoephileCliBase):
         two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
 
         # Perform operations
-        diff = get_series_diff(
+        diff = SeriesDiff(
             one_subtitle_series,
             two_subtitle_series,
             one_lbl=one_label,

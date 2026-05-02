@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from enum import Enum
 from functools import cache
 from textwrap import dedent
 
@@ -23,11 +24,25 @@ __all__ = [
     "RE_HANZI",
     "RE_PRIVATE_USE_AREA_BMP",
     "RE_WESTERN",
+    "AnsiColor",
+    "colorize",
     "dedent_and_compact",
     "get_char_type",
+    "is_full_width_char",
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
+
+
+class AnsiColor(Enum):
+    """ANSI escape codes for terminal text coloring."""
+
+    RESET = "\x1b[0m"
+    GREEN = "\x1b[32m"
+    RED = "\x1b[31m"
+    BLUE = "\x1b[34m"
+    PURPLE = "\x1b[35m"
+
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
 # See https://en.wikipedia.org/wiki/CJK_Symbols_and_Punctuation
@@ -201,6 +216,18 @@ def dedent_and_compact(text: str) -> str:
     return text
 
 
+def colorize(text: str, color: AnsiColor) -> str:
+    """Colorize text with an ANSI escape.
+
+    Arguments:
+        text: input text
+        color: ANSI color escape
+    Returns:
+        colorized text
+    """
+    return f"{color.value}{text}{AnsiColor.RESET.value}"
+
+
 @cache
 def get_char_type(char: str) -> str:
     """Return character type.
@@ -252,6 +279,19 @@ def get_char_type(char: str) -> str:
     raise ScinoephileError(
         f"Unrecognized char type for '{char}' of name {unicodedata.name(char)}"
     )
+
+
+def is_full_width_char(char: str) -> bool:
+    """Return whether a character should occupy a full-width display column.
+
+    Arguments:
+        char: character to classify
+    Returns:
+        whether the character should use full-width spacing
+    """
+    if char in full_punc_chars:
+        return True
+    return get_char_type(char) == "full"
 
 
 def remove_non_punc_and_whitespace(text: str) -> str:

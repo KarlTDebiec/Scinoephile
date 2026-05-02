@@ -10,13 +10,16 @@
 * Allow `ruff format` to manage code formatting details.
 
 ## Imports
-* Include `from __future__ import annotations`, unless the file is empty.
+* Include `from __future__ import annotations` in Python modules that contain
+  imports, exports, type annotations, functions, or classes. Pure package
+  marker files that contain only a module docstring do not need it.
 * For imports within the same directory, use relative imports (for example, `from .foo import bar`).
 * Do not use relative imports for imports from parent or sibling directories (for example, `from ..foo import bar` or `from .. import foo`).
 * Allow `ruff` to manage import sorting.
 
 ## Exports
-* Include `__all__` in all files.
+* Include `__all__` in Python modules that export public names. Pure package
+  marker files that intentionally export nothing do not need it.
 * If `__all__` contains multiple entries, include a trailing comma after the last entry so `ruff` formats it as one item per line.
 * `__all__` should list the **intended public API** for the module.
   * Do not include internal helpers (names prefixed with an underscore).
@@ -39,9 +42,10 @@
   * use `*_name` for bare names and `*_stem` for stems, not for full paths
   * prefer `*_dir_path` over `*_directory` when the value is a path
 
-## Strings
+## Style
 * Exclusively use f-strings for string interpolation.
 * Where possible, classes should implement `__repr__` methods such that they may be reconstructed from its `repr` output.
+* Avoid ternary expressions; prefer explicit `if`/`else` statements for readability.
 
 ## Type Annotations
 * Include type annotations for all function and method signatures, with the following exception:
@@ -69,6 +73,8 @@
 * Document class attributes using triple-quoted strings immediately below each instead of relying only on an `Attributes` section in the class docstring.
 * Format docstrings using Google style, with the following tweaks:
   * Use `Arguments:` instead of `Args:`.
-  * Do not include a blank line between the `Arguments:` and `Returns:` sections.
+  * Do not include an `Arguments:` section for functions or methods that take no arguments.
   * In argument descriptions, the first word after the colon should be lowercase unless it is a type name.
+  * Do not include a blank line between the `Arguments:` and `Returns:` sections.
+  * Do not include an `Returns:` section for functions or methods that return None.
   * In the `Returns:` section, the first word should be lowercase unless it is a type name.

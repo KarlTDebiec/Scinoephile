@@ -33,8 +33,6 @@ class ReplaceCursor:
     def one_idx(self) -> int:
         """Current index in the first block.
 
-        Arguments:
-            None.
         Returns:
             current index in the first block
         """
@@ -44,8 +42,6 @@ class ReplaceCursor:
     def one_has_next(self) -> bool:
         """Whether another item exists in the first block.
 
-        Arguments:
-            None.
         Returns:
             whether another item exists in the first block
         """
@@ -55,8 +51,6 @@ class ReplaceCursor:
     def one_remaining(self) -> int:
         """Number of remaining items in the first block.
 
-        Arguments:
-            None.
         Returns:
             number of remaining items in the first block
         """
@@ -66,8 +60,6 @@ class ReplaceCursor:
     def two_idx(self) -> int:
         """Current index in the second block.
 
-        Arguments:
-            None.
         Returns:
             current index in the second block
         """
@@ -77,8 +69,6 @@ class ReplaceCursor:
     def two_has_next(self) -> bool:
         """Whether another item exists in the second block.
 
-        Arguments:
-            None.
         Returns:
             whether another item exists in the second block
         """
@@ -88,8 +78,6 @@ class ReplaceCursor:
     def two_has_pair(self) -> bool:
         """Whether a two-item pair exists in the second block.
 
-        Arguments:
-            None.
         Returns:
             whether a two-item pair exists in the second block
         """
@@ -99,8 +87,6 @@ class ReplaceCursor:
     def two_remaining(self) -> int:
         """Number of remaining items in the second block.
 
-        Arguments:
-            None.
         Returns:
             number of remaining items in the second block
         """
@@ -113,8 +99,6 @@ class ReplaceCursor:
             n_one: number of indices to advance in the first block
             n_two: number of indices to advance in the second block
             last_was_split: updated split state when provided
-        Returns:
-            None.
         """
         self.i += n_one
         self.j += n_two

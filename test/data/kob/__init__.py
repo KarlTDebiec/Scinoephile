@@ -12,7 +12,6 @@ from typing import Unpack
 
 import pytest
 
-from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
 from scinoephile.core.llms.manager import TestCaseClsKwargs
@@ -42,7 +41,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
-from test.helpers import test_data_root
+from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
     "kob_eng",
@@ -461,8 +460,9 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[1312] -> SRT[1352]: 'Yes. Look at you, you are like beggar too' -> 'Yes. Look at you, you are like a beggar too'",
         "edit: OCR[1313] -> SRT[1353]: 'Are you interested to join us?' -> 'Are you interested in joining us?'",
         'edit: OCR[1334] -> SRT[1374]: "I\'ve got it. Just mix the 17 stances," -> "I\'ve got it Just mix the 17 stances,"',
-        "edit: OCR[1344] -> SRT[1384]: 'You are great!' -> 'Sister!'",
-        "edit: OCR[1345] -> SRT[1385]: 'Chan! Are you okay?' -> 'Tracy!'",
+        "delete: OCR[1344] 'You are great!' not present in SRT",
+        "edit: OCR[1345] -> SRT[1384]: 'Chan! Are you okay?' -> 'Sister!'",
+        "insert: SRT[1385] 'Tracy!' not present in OCR",
         'edit: OCR[1352] -> SRT[1392]: "Chiu\'s fellows have all been caught by us" -> "Chiu\'s fellows are all caught by us"',
         "edit: OCR[1356] -> SRT[1396]: 'Yes, be the top of all' -> 'Yes, be the top of all.'",
         'edit: OCR[1359] -> SRT[1399]: "But I don\'t like Scholar at all" -> "But I don\'t like Scholar at all."',
@@ -576,14 +576,14 @@ def kob_yue_hans_transcribe() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
+def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
-    return CharacterErrorRateResult(
-        cer=1.4556661090076606,
-        substitutions=4032,
-        insertions=6149,
-        deletions=6351,
-        correct=974,
+    return SeriesCERResult(
+        cer=0.872589592321916,
+        substitutions=5516,
+        insertions=2096,
+        deletions=2298,
+        correct=3543,
         reference_length=11357,
     )
 
@@ -614,15 +614,15 @@ def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
 
 @pytest.fixture
 def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
-    CharacterErrorRateResult
+    SeriesCERResult
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
-    return CharacterErrorRateResult(
-        cer=0.9637228141234481,
-        substitutions=4626,
-        insertions=3101,
-        deletions=3218,
-        correct=3513,
+    return SeriesCERResult(
+        cer=0.6131901030201637,
+        substitutions=4397,
+        insertions=1225,
+        deletions=1342,
+        correct=5618,
         reference_length=11357,
     )
 

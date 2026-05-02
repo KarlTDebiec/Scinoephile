@@ -4,42 +4,8 @@
 
 This module may import from: common, core
 
-Hierarchy within module (lower may import from higher)::
+Hierarchy within module (lower may import from higher):
+* line_alignment
+* diff
 * character_error_rate
-* line_diff_kind / replace_cursor
-* line_diff
-* series_diff
 """
-
-from __future__ import annotations
-
-from typing import Unpack
-
-from scinoephile.core.subtitles import Series
-
-from .character_error_rate import CharacterErrorRateResult, get_series_cer, get_text_cer
-from .series_diff import SeriesDiff, SeriesDiffKwargs
-
-__all__ = [
-    "CharacterErrorRateResult",
-    "get_series_cer",
-    "get_series_diff",
-    "get_text_cer",
-]
-
-
-def get_series_diff(
-    one: Series,
-    two: Series,
-    **kwargs: Unpack[SeriesDiffKwargs],
-) -> SeriesDiff:
-    """Compare two subtitle series by line content.
-
-    Arguments:
-        one: first subtitle series
-        two: second subtitle series
-        **kwargs: additional keyword arguments for SeriesDiff
-    Returns:
-        series diff
-    """
-    return SeriesDiff(one, two, **kwargs)
