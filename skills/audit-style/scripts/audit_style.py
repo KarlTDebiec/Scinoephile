@@ -415,8 +415,7 @@ def _audit_nomenclature(
         notes: notes keyed by POSIX path
     """
     if isinstance(node, ast.arg):
-        annotation = ast.unparse(node.annotation) if node.annotation is not None else ""
-        if "Path" in annotation and not (
+        if _is_path_annotation(node.annotation) and not (
             node.arg.endswith("_path") or node.arg.endswith("_paths")
         ):
             _add_note(
@@ -428,16 +427,12 @@ def _audit_nomenclature(
             )
     elif isinstance(node, ast.Assign | ast.AnnAssign):
         targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-        annotation = (
-            ast.unparse(node.annotation)
-            if isinstance(node, ast.AnnAssign) and node.annotation
-            else ""
-        )
+        annotation = node.annotation if isinstance(node, ast.AnnAssign) else None
         for target in targets:
             if not isinstance(target, ast.Name):
                 continue
             name = target.id
-            if "Path" in annotation and not (
+            if _is_path_annotation(annotation) and not (
                 name.endswith("_path") or name.endswith("_paths")
             ):
                 _add_note(
@@ -684,6 +679,39 @@ def _has_docstring(
         whether a docstring is present
     """
     return ast.get_docstring(node, clean=False) is not None
+
+
+def _is_path_annotation(annotation: ast.expr | None) -> bool:
+    """Check whether an annotation includes a `Path` type.
+
+    Arguments:
+        annotation: annotation expression
+    Returns:
+        whether the annotation contains `Path` as a type node
+    """
+    is_path = False
+    if annotation is None:
+        pass
+    elif isinstance(annotation, ast.Name):
+        is_path = annotation.id == "Path"
+    elif isinstance(annotation, ast.Attribute):
+        is_path = annotation.attr == "Path"
+    elif isinstance(annotation, ast.BinOp) and isinstance(annotation.op, ast.BitOr):
+        is_path = _is_path_annotation(annotation.left) or _is_path_annotation(
+            annotation.right
+        )
+    elif isinstance(annotation, ast.Constant) and isinstance(annotation.value, str):
+        try:
+            parsed = ast.parse(annotation.value, mode="eval")
+        except SyntaxError:
+            pass
+        else:
+            is_path = _is_path_annotation(parsed.body)
+    elif isinstance(annotation, ast.Subscript):
+        is_path = _is_path_annotation(annotation.slice)
+    elif isinstance(annotation, ast.Tuple):
+        is_path = any(_is_path_annotation(element) for element in annotation.elts)
+    return is_path
 
 
 def _module_name_for(file_path: Path) -> str:
