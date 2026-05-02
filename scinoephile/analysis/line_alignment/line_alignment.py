@@ -66,53 +66,56 @@ class LineAlignment:
 
     def _populate_alignment_pairs(self):
         """Populate alignment pairs by backtracing DP pointers."""
-        i = len(self.one)
-        j = len(self.two)
+        # Start from the cell representing the full `one` and `two` strings.
+        one_idx = len(self.one)
+        two_idx = len(self.two)
+
+        # Follow backpointers until both prefixes have been consumed
         self.alignment_pairs = []
-        while i != 0 or j != 0:
-            backpointer = self.backpointers[i][j]
+        while one_idx != 0 or two_idx != 0:
+            backpointer = self.backpointers[one_idx][two_idx]
             if backpointer is None:
                 break
             operation = backpointer.operation
+
+            # Match and substitute operations consume one character from each string
             if operation in (
                 LineAlignmentOperation.MATCH,
                 LineAlignmentOperation.SUBSTITUTE,
             ):
-                self.alignment_pairs.append(
-                    LineAlignmentPair(
-                        one=self.one[i - 1], two=self.two[j - 1], operation=operation
-                    )
+                pair = LineAlignmentPair(
+                    self.one[one_idx - 1], self.two[two_idx - 1], operation
                 )
+            # Insert operations consume one character from `two` only
             elif operation == LineAlignmentOperation.INSERT:
-                self.alignment_pairs.append(
-                    LineAlignmentPair(
-                        one=None, two=self.two[j - 1], operation=operation
-                    )
-                )
+                pair = LineAlignmentPair(None, self.two[two_idx - 1], operation)
+            # Delete operations consume one character from `one` only
             else:
-                self.alignment_pairs.append(
-                    LineAlignmentPair(
-                        one=self.one[i - 1], two=None, operation=operation
-                    )
-                )
-            i = backpointer.previous_i
-            j = backpointer.previous_j
+                pair = LineAlignmentPair(self.one[one_idx - 1], None, operation)
+            self.alignment_pairs.append(pair)
+
+            # Move to the previous prefix selected by dynamic programming
+            one_idx = backpointer.previous_i
+            two_idx = backpointer.previous_j
+
+        # Backtrace emits pairs from the end of the strings to the beginning
         self.alignment_pairs.reverse()
 
     def _fill_tables(self):
         """Fill DP tables for alignment."""
-        rows = len(self.one) + 1
-        cols = len(self.two) + 1
+        # Fill each interior cell from the filled cells to the left and above
+        for one_idx in range(1, len(self.one) + 1):
+            for two_idx in range(1, len(self.two) + 1):
+                previous_metric = self.metrics[one_idx - 1][two_idx - 1]
 
-        for i in range(1, rows):
-            for j in range(1, cols):
-                previous_metric = self.metrics[i - 1][j - 1]
-                if self.one[i - 1] == self.two[j - 1]:
+                # Start with the diagonal candidate: a free match when the
+                # current characters agree, otherwise one substitution
+                if self.one[one_idx - 1] == self.two[two_idx - 1]:
                     best = (
                         previous_metric,
                         LineAlignmentBackpointer(
-                            previous_i=i - 1,
-                            previous_j=j - 1,
+                            previous_i=one_idx - 1,
+                            previous_j=two_idx - 1,
                             operation=LineAlignmentOperation.MATCH,
                         ),
                         None,
@@ -127,48 +130,52 @@ class LineAlignment:
                             substitutions=previous_metric.substitutions + 1,
                         ),
                         LineAlignmentBackpointer(
-                            previous_i=i - 1,
-                            previous_j=j - 1,
+                            previous_i=one_idx - 1,
+                            previous_j=two_idx - 1,
                             operation=LineAlignmentOperation.SUBSTITUTE,
                         ),
                         None,
                     )
 
-                insert_candidate = self._get_insert_candidate(i, j)
-                if self._is_better_candidate(
-                    candidate_metric=insert_candidate[0],
-                    candidate_operation=insert_candidate[1].operation,
-                    best_metric=best[0],
-                    best_operation=best[1].operation,
-                ):
+                # Compare the candidate that inserts the current character from `two`
+                insert_candidate = self._get_insert_candidate(one_idx, two_idx)
+                if self._is_better_candidate(insert_candidate, best):
                     best = insert_candidate
 
-                delete_candidate = self._get_delete_candidate(i, j)
-                if self._is_better_candidate(
-                    candidate_metric=delete_candidate[0],
-                    candidate_operation=delete_candidate[1].operation,
-                    best_metric=best[0],
-                    best_operation=best[1].operation,
-                ):
+                # Compare the candidate that deletes the current character from `one`
+                delete_candidate = self._get_delete_candidate(one_idx, two_idx)
+                if self._is_better_candidate(delete_candidate, best):
                     best = delete_candidate
 
-                self.metrics[i][j] = best[0]
-                self.backpointers[i][j] = best[1]
-                self.last_gap_operations[i][j] = best[2]
+                # Persist the winning candidate
+                self.metrics[one_idx][two_idx] = best[0]
+                self.backpointers[one_idx][two_idx] = best[1]
+                self.last_gap_operations[one_idx][two_idx] = best[2]
 
-    def _get_delete_candidate(self, i: int, j: int) -> _LineAlignmentCandidate:
+    def _get_delete_candidate(
+        self,
+        one_idx: int,
+        two_idx: int,
+    ) -> _LineAlignmentCandidate:
         """Build the candidate produced by deleting a character from `one`.
 
         Arguments:
-            i: current row index
-            j: current column index
+            one_idx: current index in `one`
+            two_idx: current index in `two`
         Returns:
             metric, backpointer, and trailing gap operation for the candidate
         """
-        previous_metric = self.metrics[i - 1][j]
+        previous_metric = self.metrics[one_idx - 1][two_idx]
+
+        # Starting a delete after a non-delete operation begins a new gap run
         add_run = 0
-        if self.last_gap_operations[i - 1][j] != LineAlignmentOperation.DELETE:
+        if (
+            self.last_gap_operations[one_idx - 1][two_idx]
+            != LineAlignmentOperation.DELETE
+        ):
             add_run = 1
+
+        # Deleting consumes one character from `one` and leaves `two` unchanged
         return (
             LineAlignmentMetric(
                 distance=previous_metric.distance + 1,
@@ -178,26 +185,37 @@ class LineAlignment:
                 substitutions=previous_metric.substitutions,
             ),
             LineAlignmentBackpointer(
-                previous_i=i - 1,
-                previous_j=j,
+                previous_i=one_idx - 1,
+                previous_j=two_idx,
                 operation=LineAlignmentOperation.DELETE,
             ),
             LineAlignmentOperation.DELETE,
         )
 
-    def _get_insert_candidate(self, i: int, j: int) -> _LineAlignmentCandidate:
+    def _get_insert_candidate(
+        self,
+        one_idx: int,
+        two_idx: int,
+    ) -> _LineAlignmentCandidate:
         """Build the candidate produced by inserting a character from `two`.
 
         Arguments:
-            i: current row index
-            j: current column index
+            one_idx: current index in `one`
+            two_idx: current index in `two`
         Returns:
             metric, backpointer, and trailing gap operation for the candidate
         """
-        previous_metric = self.metrics[i][j - 1]
+        previous_metric = self.metrics[one_idx][two_idx - 1]
+
+        # Starting an insert after a non-insert operation begins a new gap run
         add_run = 0
-        if self.last_gap_operations[i][j - 1] != LineAlignmentOperation.INSERT:
+        if (
+            self.last_gap_operations[one_idx][two_idx - 1]
+            != LineAlignmentOperation.INSERT
+        ):
             add_run = 1
+
+        # Inserting consumes one character from `two` and leaves `one` unchanged
         return (
             LineAlignmentMetric(
                 distance=previous_metric.distance + 1,
@@ -207,41 +225,29 @@ class LineAlignment:
                 substitutions=previous_metric.substitutions,
             ),
             LineAlignmentBackpointer(
-                previous_i=i,
-                previous_j=j - 1,
+                previous_i=one_idx,
+                previous_j=two_idx - 1,
                 operation=LineAlignmentOperation.INSERT,
             ),
             LineAlignmentOperation.INSERT,
         )
 
     def _init_edges(self):
-        """Initialize DP boundary conditions before filling interior cells.
+        """Initialize DP boundary conditions before filling interior cells."""
+        # Initialize the left edge: only deletes can consume `one` when `two` is empty
+        for one_idx in range(1, len(self.one) + 1):
+            previous_metric = self.metrics[one_idx - 1][0]
 
-        The DP grid compares prefixes of `one` and `two`. Cell `(0, 0)` is the
-        empty-prefix base case created in `_init_tables()`. Before the interior
-        of the grid can be filled, the top row and left column need explicit
-        values:
-
-        - the left column represents aligning a non-empty prefix of `one`
-          against an empty prefix of `two`, which can only be reached by deletes
-        - the top row represents aligning an empty prefix of `one` against a
-          non-empty prefix of `two`, which can only be reached by inserts
-
-        This function writes those forced edge paths into the metric,
-        backpointer, and trailing-gap tables.
-        """
-        # Initialize the left edge: only deletes can consume `one` when `two`
-        # is empty.
-        for i in range(1, len(self.one) + 1):
-            previous_metric = self.metrics[i - 1][0]
-
-            # The first delete starts a gap run; consecutive deletes continue it.
+            # The first delete starts a gap run; consecutive deletes continue it
             add_run = 0
-            if self.last_gap_operations[i - 1][0] != LineAlignmentOperation.DELETE:
+            if (
+                self.last_gap_operations[one_idx - 1][0]
+                != LineAlignmentOperation.DELETE
+            ):
                 add_run = 1
 
-            # Extend the previous prefix by one forced delete.
-            self.metrics[i][0] = LineAlignmentMetric(
+            # Extend the previous prefix by one forced delete
+            self.metrics[one_idx][0] = LineAlignmentMetric(
                 distance=previous_metric.distance + 1,
                 gap_runs=previous_metric.gap_runs + add_run,
                 insertions=previous_metric.insertions,
@@ -249,28 +255,30 @@ class LineAlignment:
                 substitutions=previous_metric.substitutions,
             )
 
-            # Backtrace from this edge cell to the previous prefix of `one`.
-            self.backpointers[i][0] = LineAlignmentBackpointer(
-                previous_i=i - 1,
+            # Backtrace from this edge cell to the previous prefix of `one`
+            self.backpointers[one_idx][0] = LineAlignmentBackpointer(
+                previous_i=one_idx - 1,
                 previous_j=0,
                 operation=LineAlignmentOperation.DELETE,
             )
 
             # Mark this edge cell as ending in a delete gap.
-            self.last_gap_operations[i][0] = LineAlignmentOperation.DELETE
+            self.last_gap_operations[one_idx][0] = LineAlignmentOperation.DELETE
 
-        # Initialize the top edge: only inserts can consume `two` when `one`
-        # is empty.
-        for j in range(1, len(self.two) + 1):
-            previous_metric = self.metrics[0][j - 1]
+        # Initialize the top edge: only inserts can consume `two` when `one` is empty
+        for two_idx in range(1, len(self.two) + 1):
+            previous_metric = self.metrics[0][two_idx - 1]
 
-            # The first insert starts a gap run; consecutive inserts continue it.
+            # The first insert starts a gap run; consecutive inserts continue it
             add_run = 0
-            if self.last_gap_operations[0][j - 1] != LineAlignmentOperation.INSERT:
+            if (
+                self.last_gap_operations[0][two_idx - 1]
+                != LineAlignmentOperation.INSERT
+            ):
                 add_run = 1
 
-            # Extend the previous prefix by one forced insert.
-            self.metrics[0][j] = LineAlignmentMetric(
+            # Extend the previous prefix by one forced insert
+            self.metrics[0][two_idx] = LineAlignmentMetric(
                 distance=previous_metric.distance + 1,
                 gap_runs=previous_metric.gap_runs + add_run,
                 insertions=previous_metric.insertions + 1,
@@ -278,15 +286,15 @@ class LineAlignment:
                 substitutions=previous_metric.substitutions,
             )
 
-            # Backtrace from this edge cell to the previous prefix of `two`.
-            self.backpointers[0][j] = LineAlignmentBackpointer(
+            # Backtrace from this edge cell to the previous prefix of `two`
+            self.backpointers[0][two_idx] = LineAlignmentBackpointer(
                 previous_i=0,
-                previous_j=j - 1,
+                previous_j=two_idx - 1,
                 operation=LineAlignmentOperation.INSERT,
             )
 
-            # Mark this edge cell as ending in an insert gap.
-            self.last_gap_operations[0][j] = LineAlignmentOperation.INSERT
+            # Mark this edge cell as ending in an insert gap
+            self.last_gap_operations[0][two_idx] = LineAlignmentOperation.INSERT
 
     def _init_tables(self):
         """Initialize DP tables for alignment."""
@@ -307,26 +315,21 @@ class LineAlignment:
 
     @staticmethod
     def _is_better_candidate(
-        *,
-        candidate_metric: LineAlignmentMetric,
-        candidate_operation: LineAlignmentOperation,
-        best_metric: LineAlignmentMetric,
-        best_operation: LineAlignmentOperation,
+        candidate: _LineAlignmentCandidate,
+        best: _LineAlignmentCandidate,
     ) -> bool:
         """Check whether one candidate should replace another.
 
         Arguments:
-            candidate_metric: candidate alignment metric
-            candidate_operation: candidate alignment operation
-            best_metric: current best alignment metric
-            best_operation: current best alignment operation
+            candidate: candidate alignment step
+            best: current best alignment step
         Returns:
             whether the candidate is preferred
         """
-        candidate_key = candidate_metric.comparison_key()
-        best_key = best_metric.comparison_key()
+        candidate_key = candidate[0].comparison_key()
+        best_key = best[0].comparison_key()
         if candidate_key < best_key:
             return True
-        if candidate_key == best_key and candidate_operation < best_operation:
+        if candidate_key == best_key and candidate[1].operation < best[1].operation:
             return True
         return False
