@@ -1,17 +1,17 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Character error rate result record."""
+"""Series-level character error rate result record."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = ["CharacterErrorRateResult"]
+__all__ = ["SeriesCERResult"]
 
 
 @dataclass(frozen=True)
-class CharacterErrorRateResult:
-    """Aggregate character error rate results."""
+class SeriesCERResult:
+    """Series-level character error rate results."""
 
     cer: float
     """Character error rate."""

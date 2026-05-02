@@ -9,18 +9,18 @@ from scinoephile.analysis.series_diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
 
-from .character_error_rate_result import CharacterErrorRateResult
 from .line_cer_result import LineCERResult
+from .series_cer_result import SeriesCERResult
 
 __all__ = [
-    "CharacterErrorRateResult",
     "LineCERResult",
+    "SeriesCERResult",
     "get_series_cer",
     "get_text_cer",
 ]
 
 
-def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateResult:
+def get_series_cer(reference: Series, candidate: Series) -> SeriesCERResult:
     """Compute character error rate between subtitle series.
 
     Arguments:
@@ -61,7 +61,7 @@ def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateRe
     else:
         cer = (substitutions + insertions + deletions) / reference_length
 
-    return CharacterErrorRateResult(
+    return SeriesCERResult(
         cer=cer,
         substitutions=substitutions,
         insertions=insertions,

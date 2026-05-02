@@ -8,7 +8,8 @@ from math import inf
 
 import pytest
 
-from scinoephile.analysis import CharacterErrorRateResult, get_series_cer, get_text_cer
+from scinoephile.analysis import get_series_cer, get_text_cer
+from scinoephile.analysis.character_error_rate import SeriesCERResult
 from scinoephile.core.subtitles import Series
 
 
@@ -18,7 +19,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "abc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -30,7 +31,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "axc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=1,
                 insertions=0,
@@ -42,7 +43,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "abxc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=1,
@@ -54,7 +55,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "ac",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=0,
@@ -66,7 +67,7 @@ from scinoephile.core.subtitles import Series
         (
             "a b",
             "ab",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -78,7 +79,7 @@ from scinoephile.core.subtitles import Series
         (
             "a,b!",
             "ab",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -90,7 +91,7 @@ from scinoephile.core.subtitles import Series
         (
             "廣東話",
             "广东话",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1.0,
                 substitutions=3,
                 insertions=0,
@@ -102,7 +103,7 @@ from scinoephile.core.subtitles import Series
         (
             "",
             "",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -114,7 +115,7 @@ from scinoephile.core.subtitles import Series
         (
             "",
             "abc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=inf,
                 substitutions=0,
                 insertions=3,
@@ -128,7 +129,7 @@ from scinoephile.core.subtitles import Series
 def test_get_text_cer(
     reference: str,
     candidate: str,
-    expected: CharacterErrorRateResult,
+    expected: SeriesCERResult,
 ):
     """Test text-level character error rate calculations.
 
@@ -147,9 +148,9 @@ def test_get_text_cer(
     assert result.reference_length == expected.reference_length
 
 
-def test_character_error_rate_result_str():
-    """Test string formatting for character error rate results."""
-    result = CharacterErrorRateResult(
+def test_series_cer_result_str():
+    """Test string formatting for series-level CER results."""
+    result = SeriesCERResult(
         cer=0.25,
         substitutions=1,
         insertions=2,
@@ -203,7 +204,7 @@ def test_get_series_cer(
     """
     reference_series: Series = request.getfixturevalue(reference_series_fixture_name)
     candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
-    expected: CharacterErrorRateResult = request.getfixturevalue(expected_fixture_name)
+    expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
     result = get_series_cer(reference_series, candidate_series)
 
