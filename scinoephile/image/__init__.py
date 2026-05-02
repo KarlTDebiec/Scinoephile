@@ -10,3 +10,5 @@ Hierarchy within module (lower may import from higher)::
 * subtitles
 * ocr
 """
+
+__all__: list[str] = []

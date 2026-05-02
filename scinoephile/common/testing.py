@@ -8,6 +8,8 @@ import sys
 from inspect import getfile
 from unittest.mock import patch
 
+__all__ = ["run_cli_with_args"]
+
 
 def run_cli_with_args(cli, args: str = ""):
     """Run CommandLineInterface as if from shell with provided args.

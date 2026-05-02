@@ -9,3 +9,5 @@ Hierarchy within module (lower may import from higher)::
 * dual_block / dual_block_gapped / dual_multi_single / dual_pair / dual_single
   / mono_block
 """
+
+__all__: list[str] = []

@@ -4,6 +4,12 @@
 
 from __future__ import annotations
 
+__all__ = [
+    "DEFAULT_CLI_LOCALE",
+    "LOCALE_ALIASES",
+    "SUPPORTED_CLI_LOCALES",
+]
+
 DEFAULT_CLI_LOCALE = "en"
 SUPPORTED_CLI_LOCALES = ("en", "zh-hans", "zh-hant")
 
