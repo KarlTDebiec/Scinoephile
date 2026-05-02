@@ -15,6 +15,8 @@ from scinoephile.common import CommandLineInterface
 
 from .constants import DEFAULT_CLI_LOCALE, LOCALE_ALIASES
 
+__all__ = ["ScinoephileCliBase"]
+
 
 class ScinoephileCliBase(CommandLineInterface):
     """Scinoephile CLI base class."""

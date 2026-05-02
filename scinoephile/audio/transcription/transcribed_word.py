@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+__all__ = ["TranscribedWord"]
+
 
 class TranscribedWord(BaseModel):
     """Single word within a transcribed segment."""

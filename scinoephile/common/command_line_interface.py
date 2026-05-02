@@ -20,6 +20,11 @@ from typing import TypedDict, Unpack
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
+__all__ = [
+    "CLIKwargs",
+    "CommandLineInterface",
+]
+
 logger = getLogger(__name__)
 
 
