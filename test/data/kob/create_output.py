@@ -7,9 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.analysis import (
-    format_colored_series_diff,
+    SeriesDiff,
     get_series_cer,
-    get_series_diff,
 )
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
@@ -188,12 +187,12 @@ if "简体粤文 (Diff)" in actions:
         / "transcribe_review_translate_block_review.srt"
     )
     yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
-    diff = get_series_diff(
+    diff = SeriesDiff(
         yue_hans_transcribe,
         yue_hans_reference,
         one_lbl="TRANSCRIBE",
         two_lbl="REFERENCE",
     )
     print(diff)
-    print(format_colored_series_diff(diff))
+    print(diff.get_stacked_str())
     print(get_series_cer(yue_hans_reference, yue_hans_transcribe))

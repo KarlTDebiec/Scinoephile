@@ -94,6 +94,16 @@ class SeriesDiff:
         )
         return f"[\n{formatted_messages}\n]"
 
+    def get_stacked_str(self, *, color: bool = True) -> str:
+        """Format the diff as stacked, character-aligned output.
+
+        Arguments:
+            color: whether to emit ANSI color escapes
+        Returns:
+            formatted multi-line diff string
+        """
+        return "\n".join(message.get_stacked_str(color=color) for message in self)
+
     def _diff(self) -> list[LineDiff]:
         """Compare subtitle series by line content.
 
