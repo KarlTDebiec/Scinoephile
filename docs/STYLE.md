@@ -69,6 +69,8 @@
 * Document class attributes using triple-quoted strings immediately below each instead of relying only on an `Attributes` section in the class docstring.
 * Format docstrings using Google style, with the following tweaks:
   * Use `Arguments:` instead of `Args:`.
-  * Do not include a blank line between the `Arguments:` and `Returns:` sections.
+  * Do not include an `Arguments:` section for functions or methods that take no arguments.
   * In argument descriptions, the first word after the colon should be lowercase unless it is a type name.
+  * Do not include a blank line between the `Arguments:` and `Returns:` sections.
+  * Do not include an `Returns:` section for functions or methods that return None.
   * In the `Returns:` section, the first word should be lowercase unless it is a type name.
