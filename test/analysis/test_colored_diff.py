@@ -4,12 +4,11 @@
 
 from __future__ import annotations
 
+from scinoephile.analysis.diff import LineDiff, LineDiffKind
 from scinoephile.analysis.line_alignment import (
     LineAlignment,
     LineAlignmentOperation,
 )
-from scinoephile.analysis.line_diff import LineDiff
-from scinoephile.analysis.line_diff_kind import LineDiffKind
 
 __all__ = []
 

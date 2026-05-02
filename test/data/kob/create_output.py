@@ -6,10 +6,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis import (
-    SeriesDiff,
-    get_series_cer,
-)
+from scinoephile.analysis import SeriesDiff
+from scinoephile.analysis.character_error_rate import SeriesCERResult
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
@@ -195,4 +193,4 @@ if "简体粤文 (Diff)" in actions:
     )
     print(diff)
     print(diff.get_stacked_str())
-    print(get_series_cer(yue_hans_reference, yue_hans_transcribe))
+    print(SeriesCERResult(yue_hans_reference, yue_hans_transcribe))

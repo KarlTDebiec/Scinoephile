@@ -8,8 +8,7 @@ from math import inf
 
 import pytest
 
-from scinoephile.analysis import get_series_cer, get_text_cer
-from scinoephile.analysis.character_error_rate import SeriesCERResult
+from scinoephile.analysis.character_error_rate import LineCERResult, SeriesCERResult
 from scinoephile.core.subtitles import Series
 
 
@@ -126,19 +125,19 @@ from scinoephile.core.subtitles import Series
         ),
     ],
 )
-def test_get_text_cer(
+def test_line_cer_result(
     reference: str,
     candidate: str,
     expected: SeriesCERResult,
 ):
-    """Test text-level character error rate calculations.
+    """Test line-level character error rate calculations.
 
     Arguments:
         reference: reference text
         candidate: candidate text
         expected: expected CER result
     """
-    result = get_text_cer(reference, candidate)
+    result = LineCERResult(reference, candidate)
 
     assert result.cer == expected.cer
     assert result.substitutions == expected.substitutions
@@ -188,7 +187,7 @@ def test_series_cer_result_str():
         ),
     ],
 )
-def test_get_series_cer(
+def test_series_cer_result(
     reference_series_fixture_name: str,
     candidate_series_fixture_name: str,
     expected_fixture_name: str,
@@ -206,6 +205,6 @@ def test_get_series_cer(
     candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
     expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
-    result = get_series_cer(reference_series, candidate_series)
+    result = SeriesCERResult(reference_series, candidate_series)
 
     assert result == expected

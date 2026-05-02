@@ -7,9 +7,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
 from scinoephile.core.text import full_punc_chars, get_char_type
 
-from .line_alignment import LineAlignment, LineAlignmentOperation
 from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]

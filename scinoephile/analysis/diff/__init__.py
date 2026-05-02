@@ -1,20 +1,17 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Analysis code for comparing subtitle series.
-
-This module may import from: common, core
-
-Hierarchy within module (lower may import from higher)::
-* line_alignment
-* diff
-* character_error_rate
-"""
+"""Diff classes for comparing subtitle text and series."""
 
 from __future__ import annotations
 
-from .diff import LineDiff, SeriesDiff
+from .line_diff import LineDiff
+from .line_diff_kind import LineDiffKind
+from .replace_cursor import ReplaceCursor
+from .series_diff import SeriesDiff
 
 __all__ = [
     "LineDiff",
+    "LineDiffKind",
+    "ReplaceCursor",
     "SeriesDiff",
 ]
