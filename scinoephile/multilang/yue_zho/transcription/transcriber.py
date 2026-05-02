@@ -102,7 +102,9 @@ class YueTranscriber:
             provider = get_default_provider()
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
-            self.demucs_separator = DemucsSeparator()
+            self.demucs_separator = DemucsSeparator(
+                cache_dir_path=get_runtime_cache_dir_path("demucs")
+            )
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
@@ -227,10 +229,16 @@ class YueTranscriber:
 
         assert self.vad_transcriber is not None
         cached_segments = self.vad_transcriber.get_cached_transcription(cache_audio)
-        if cached_segments is not None and any(
-            segment.text.strip() for segment in cached_segments
-        ):
+        if cached_segments is not None and self._segments_are_usable(cached_segments):
             return cached_segments
+        if self.no_vad_transcriber is not None:
+            cached_segments = self.no_vad_transcriber.get_cached_transcription(
+                cache_audio
+            )
+            if cached_segments is not None and self._segments_are_usable(
+                cached_segments
+            ):
+                return cached_segments
 
         return None
 
@@ -275,10 +283,36 @@ class YueTranscriber:
             return self.no_vad_transcriber(audio, cache_audio=cache_audio)
 
         assert self.vad_transcriber is not None
-        segments = self.vad_transcriber(audio, cache_audio=cache_audio)
-        if any(segment.text.strip() for segment in segments):
+        try:
+            segments = self.vad_transcriber(audio, cache_audio=cache_audio)
+        except AssertionError as exc:
+            logger.warning(
+                f"Retrying block transcription without VAD after Whisper assertion: "
+                f"{exc}"
+            )
+            assert self.no_vad_transcriber is not None
+            return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+        if self._segments_are_usable(segments):
             return segments
 
-        logger.info("Retrying block transcription without VAD after empty result")
+        logger.info(
+            "Retrying block transcription without VAD after unusable VAD result"
+        )
         assert self.no_vad_transcriber is not None
         return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+
+    @staticmethod
+    def _segments_are_usable(segments: list[TranscribedSegment]) -> bool:
+        """Determine whether transcribed segments are usable for alignment.
+
+        Arguments:
+            segments: transcribed segments to inspect
+        Returns:
+            whether the segments contain non-empty text with word timings
+        """
+        if not any(segment.text.strip() for segment in segments):
+            return False
+
+        return not any(
+            segment.text.strip() and not segment.words for segment in segments
+        )

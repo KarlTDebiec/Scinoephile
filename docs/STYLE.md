@@ -16,7 +16,7 @@
 * Allow `ruff` to manage import sorting.
 
 ## Exports
-* Include `__all__` in all files.
+* Include `__all__` in all Python files, excluding test modules.
 * If `__all__` contains multiple entries, include a trailing comma after the last entry so `ruff` formats it as one item per line.
 * `__all__` should list the **intended public API** for the module.
   * Do not include internal helpers (names prefixed with an underscore).

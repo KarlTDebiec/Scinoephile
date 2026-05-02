@@ -196,7 +196,7 @@ class Alignment:
         yw_2 = "".join([self.yuewen[i].text for i in sg_2_yw_idxs])
 
         # Return
-        if len(sg_1_yw_idxs) == 0 and len(sg_2_yw_idxs) == 0:
+        if len(yw_1) == 0 and len(yw_2) == 0:
             return None
         test_case_cls = DualPairManager.get_test_case_cls(
             prompt_cls=YueVsZhoYueHansDeliniationPrompt

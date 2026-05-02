@@ -88,7 +88,11 @@ def get_segment_split_at_idx(
         tuple of two new segments created by splitting the original segment
     """
     if segment.words is None or len(segment.words) == 0:
-        message = "Cannot split segment without word timing data."
+        message = (
+            "Cannot split segment without word timing data: "
+            f"id={segment.id} start={segment.start} end={segment.end} "
+            f"text={segment.text!r} text_len={len(segment.text)}."
+        )
         logger.error(message)
         raise ValueError(message)
     if idx <= 0 or idx >= len(segment.text):
