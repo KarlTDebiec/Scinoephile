@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = ["AlignmentMetric"]
+__all__ = ["LineAlignmentMetric"]
 
 
 @dataclass(frozen=True)
-class AlignmentMetric:
+class LineAlignmentMetric:
     """Dynamic-programming metric state for one alignment cell."""
 
     distance: int

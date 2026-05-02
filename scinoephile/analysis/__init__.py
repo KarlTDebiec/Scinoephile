@@ -13,13 +13,18 @@ Hierarchy within module (lower may import from higher)::
 
 from __future__ import annotations
 
-from .character_error_rate import get_series_cer, get_text_cer
-from .character_error_rate_result import CharacterErrorRateResult
+from .character_error_rate import (
+    CharacterErrorRateResult,
+    LineCERResult,
+    get_series_cer,
+    get_text_cer,
+)
 from .line_diff import LineDiff
 from .series_diff import SeriesDiff
 
 __all__ = [
     "CharacterErrorRateResult",
+    "LineCERResult",
     "LineDiff",
     "SeriesDiff",
     "get_series_cer",

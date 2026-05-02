@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .alignment_operation import AlignmentOperation
+from .line_alignment_operation import LineAlignmentOperation
 
-__all__ = ["AlignmentPair"]
+__all__ = ["LineAlignmentPair"]
 
 
 @dataclass(frozen=True)
-class AlignmentPair:
+class LineAlignmentPair:
     """A single aligned output column."""
 
     one: str | None
@@ -21,5 +21,5 @@ class AlignmentPair:
     two: str | None
     """Character from the second string, if present."""
 
-    operation: AlignmentOperation
+    operation: LineAlignmentOperation
     """Alignment operation describing this output column."""

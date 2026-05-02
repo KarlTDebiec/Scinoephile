@@ -139,7 +139,12 @@ def test_get_text_cer(
     """
     result = get_text_cer(reference, candidate)
 
-    assert result == expected
+    assert result.cer == expected.cer
+    assert result.substitutions == expected.substitutions
+    assert result.insertions == expected.insertions
+    assert result.deletions == expected.deletions
+    assert result.correct == expected.correct
+    assert result.reference_length == expected.reference_length
 
 
 def test_character_error_rate_result_str():

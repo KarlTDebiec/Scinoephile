@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .alignment_operation import AlignmentOperation
+from .line_alignment_operation import LineAlignmentOperation
 
-__all__ = ["AlignmentBackpointer"]
+__all__ = ["LineAlignmentBackpointer"]
 
 
 @dataclass(frozen=True)
-class AlignmentBackpointer:
+class LineAlignmentBackpointer:
     """Backpointer to a previous dynamic-programming cell."""
 
     previous_i: int
@@ -21,5 +21,5 @@ class AlignmentBackpointer:
     previous_j: int
     """Previous column index in the metric table."""
 
-    operation: AlignmentOperation
+    operation: LineAlignmentOperation
     """Alignment operation used to reach the current cell."""

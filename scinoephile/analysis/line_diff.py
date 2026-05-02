@@ -9,7 +9,7 @@ from enum import Enum
 
 from scinoephile.core.text import full_punc_chars, get_char_type
 
-from .line_alignment import AlignmentOperation, get_aligned_chars
+from .line_alignment import LineAlignment, LineAlignmentOperation
 from .line_diff_kind import LineDiffKind
 
 __all__ = ["LineDiff"]
@@ -169,12 +169,12 @@ class LineDiff:
         one_text = _join_texts(self.one_texts or [])
         two_text = _join_texts(self.two_texts or [])
         header = f"{one_range} {two_range}".rstrip()
-        alignment = get_aligned_chars(one_text, two_text)
+        alignment = LineAlignment(one_text, two_text).alignment_pairs
 
         one_out: list[str] = []
         two_out: list[str] = []
         for column in alignment:
-            if column.operation == AlignmentOperation.MATCH:
+            if column.operation == LineAlignmentOperation.MATCH:
                 one_out.append(
                     _colorize(column.one or "", _Ansi.GREEN, color_enabled=color)
                 )
@@ -183,7 +183,7 @@ class LineDiff:
                 )
                 continue
 
-            if column.operation == AlignmentOperation.SUBSTITUTE:
+            if column.operation == LineAlignmentOperation.SUBSTITUTE:
                 one_out.append(
                     _colorize(column.one or "", _Ansi.PURPLE, color_enabled=color)
                 )
@@ -192,7 +192,7 @@ class LineDiff:
                 )
                 continue
 
-            if column.operation == AlignmentOperation.DELETE:
+            if column.operation == LineAlignmentOperation.DELETE:
                 assert column.one is not None
                 one_out.append(_colorize(column.one, _Ansi.RED, color_enabled=color))
                 two_out.append(_placeholder_for(column.one))

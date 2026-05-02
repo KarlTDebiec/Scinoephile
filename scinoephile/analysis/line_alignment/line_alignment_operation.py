@@ -1,15 +1,15 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Alignment operations for line alignment."""
+"""Operations for line alignment."""
 
 from __future__ import annotations
 
 from enum import IntEnum
 
-__all__ = ["AlignmentOperation"]
+__all__ = ["LineAlignmentOperation"]
 
 
-class AlignmentOperation(IntEnum):
+class LineAlignmentOperation(IntEnum):
     """Alignment operation for a single output column."""
 
     MATCH = 0

@@ -4,17 +4,17 @@
 
 from __future__ import annotations
 
-from math import inf
-
+from scinoephile.analysis.line_diff_kind import LineDiffKind
+from scinoephile.analysis.series_diff import SeriesDiff
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import remove_punc_and_whitespace
 
 from .character_error_rate_result import CharacterErrorRateResult
-from .line_alignment import count_edits, get_aligned_chars
-from .line_diff_kind import LineDiffKind
-from .series_diff import SeriesDiff
+from .line_cer_result import LineCERResult
 
 __all__ = [
+    "CharacterErrorRateResult",
+    "LineCERResult",
     "get_series_cer",
     "get_text_cer",
 ]
@@ -54,7 +54,10 @@ def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateRe
     reference_length = len(reference_text)
     correct = reference_length - substitutions - deletions
     if reference_length == 0:
-        cer = 0.0 if insertions == 0 else inf
+        if insertions == 0:
+            cer = 0.0
+        else:
+            cer = float("inf")
     else:
         cer = (substitutions + insertions + deletions) / reference_length
 
@@ -68,7 +71,7 @@ def get_series_cer(reference: Series, candidate: Series) -> CharacterErrorRateRe
     )
 
 
-def get_text_cer(reference: str, candidate: str) -> CharacterErrorRateResult:
+def get_text_cer(reference: str, candidate: str) -> LineCERResult:
     """Compute character error rate between text strings.
 
     Arguments:
@@ -77,22 +80,4 @@ def get_text_cer(reference: str, candidate: str) -> CharacterErrorRateResult:
     Returns:
         character error rate results
     """
-    normalized_reference = remove_punc_and_whitespace(reference)
-    normalized_candidate = remove_punc_and_whitespace(candidate)
-    alignment = get_aligned_chars(normalized_reference, normalized_candidate)
-    substitutions, insertions, deletions, correct = count_edits(alignment)
-    reference_length = len(normalized_reference)
-
-    if reference_length == 0:
-        cer = 0.0 if len(normalized_candidate) == 0 else inf
-    else:
-        cer = (substitutions + insertions + deletions) / reference_length
-
-    return CharacterErrorRateResult(
-        cer=cer,
-        substitutions=substitutions,
-        insertions=insertions,
-        deletions=deletions,
-        correct=correct,
-        reference_length=reference_length,
-    )
+    return LineCERResult(reference, candidate)
