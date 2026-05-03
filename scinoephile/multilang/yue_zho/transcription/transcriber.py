@@ -13,13 +13,13 @@ from scinoephile.audio.subtitles import (
     AudioSeries,
     get_series_from_segments,
 )
-from scinoephile.audio.transcription import (
-    DemucsSeparator,
-    TranscribedSegment,
-    WhisperTranscriber,
+from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+from scinoephile.audio.transcription.segment_tools import (
     get_segment_split_on_whitespace,
     get_segment_zho_converted,
 )
+from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
