@@ -9,8 +9,10 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
+    float_arg,
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
@@ -33,6 +35,10 @@ class _SyncCliKwargs(TypedDict, total=False):
     """Synchronized subtitle outfile path."""
     overwrite: bool
     """Whether to overwrite an existing outfile."""
+    sync_cutoff: float
+    """Initial overlap cutoff for sync group computation."""
+    pause_length: int
+    """Pause length in milliseconds used for block segmentation."""
 
 
 class SyncCli(ScinoephileCliBase):
@@ -63,6 +69,7 @@ class SyncCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -79,6 +86,28 @@ class SyncCli(ScinoephileCliBase):
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for bottom line or "-" for stdin',
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--sync-cutoff",
+            default=0.16,
+            type=float_arg(min_value=0.0, max_value=1.0),
+            metavar="CUTOFF",
+            help=(
+                "initial overlap cutoff for sync group computation "
+                "(default: 0.16, range: 0.0-1.0)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--pause-length",
+            default=3000,
+            type=int_arg(min_value=1),
+            metavar="MS",
+            help=(
+                "pause length in milliseconds used for block segmentation "
+                "(default: 3000, min: 1)"
+            ),
         )
 
         # Output arguments
@@ -109,6 +138,8 @@ class SyncCli(ScinoephileCliBase):
         bottom_infile_path = kwargs.pop("bottom_infile")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
+        sync_cutoff: float = kwargs.pop("sync_cutoff")
+        pause_length: int = kwargs.pop("pause_length")
         if top_infile_path == "-" and bottom_infile_path == "-":
             try:
                 raise ArgumentConflictError(
@@ -129,7 +160,9 @@ class SyncCli(ScinoephileCliBase):
         bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
 
         # Perform operations
-        synced = get_synced_series(top, bottom)
+        synced = get_synced_series(
+            top, bottom, cutoff=sync_cutoff, pause_length=pause_length
+        )
 
         # Write outputs
         write_series(

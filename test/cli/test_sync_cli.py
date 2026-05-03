@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from unittest.mock import patch
 
@@ -57,6 +58,24 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
             "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
             "",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+        (
+            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
+            "--sync-cutoff 0.16",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+        (
+            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
+            "--pause-length 3000",
+            "mlamd/output/zho-Hans_eng.srt",
+        ),
+        (
+            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
+            "--sync-cutoff 0.16 --pause-length 3000",
             "mlamd/output/zho-Hans_eng.srt",
         ),
     ],
@@ -124,3 +143,41 @@ def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+@pytest.mark.parametrize(
+    ("arg", "value"),
+    [
+        ("--sync-cutoff", "-0.1"),
+        ("--sync-cutoff", "1.1"),
+        ("--sync-cutoff", "abc"),
+        ("--pause-length", "0"),
+        ("--pause-length", "-1"),
+        ("--pause-length", "abc"),
+    ],
+)
+def test_sync_cli_invalid_args(arg: str, value: str):
+    """Test sync CLI rejects invalid argument values.
+
+    Arguments:
+        arg: argument flag
+        value: invalid value to supply
+    """
+    top_path = (
+        test_data_root / "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"
+    )
+    bottom_path = (
+        test_data_root / "mlamd/output/eng_fuse_clean_validate_review_flatten.srt"
+    )
+
+    stdout_stream = StringIO()
+    stderr_stream = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout_stream):
+            with redirect_stderr(stderr_stream):
+                run_cli_with_args(
+                    SyncCli,
+                    f"--top-infile {top_path} --bottom-infile {bottom_path} "
+                    f"{arg} {value}",
+                )
+    assert excinfo.value.code == 2
