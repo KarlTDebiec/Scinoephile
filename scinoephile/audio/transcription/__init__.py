@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from importlib import import_module
 from logging import getLogger
+from typing import Any
 
-from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
 
 __all__ = [
@@ -25,6 +25,29 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+
+def __getattr__(name: str) -> Any:
+    """Load optional transcription classes lazily.
+
+    Arguments:
+        name: attribute name to load
+    Returns:
+        lazily imported attribute
+    """
+    if name == "DemucsSeparator":
+        attribute = getattr(
+            import_module("scinoephile.audio.transcription.demucs_separator"), name
+        )
+        globals()[name] = attribute
+        return attribute
+    if name == "WhisperTranscriber":
+        attribute = getattr(
+            import_module("scinoephile.audio.transcription.whisper_transcriber"), name
+        )
+        globals()[name] = attribute
+        return attribute
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def get_segment_zho_converted(
