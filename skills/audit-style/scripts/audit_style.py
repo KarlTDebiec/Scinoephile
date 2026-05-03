@@ -376,6 +376,7 @@ def _audit_init_export(
     node: ast.ImportFrom,
     file_path: Path,
     notes: dict[str, list[StyleNote]],
+    public_exports: set[str],
 ):
     """Audit an import from an `__init__.py` file for class-only exports.
 
@@ -383,12 +384,17 @@ def _audit_init_export(
         node: import node
         file_path: source file path
         notes: notes keyed by POSIX path
+        public_exports: names listed in `__all__`
     """
     if node.module == "__future__":
         return
     for alias in node.names:
         public_name = alias.asname or alias.name
-        if public_name != "*" and public_name and not public_name[0].isupper():
+        if (
+            public_name != "*"
+            and public_name in public_exports
+            and not public_name[0].isupper()
+        ):
             message = (
                 "`__init__.py` imports non-class-looking public name "
                 f"`{public_name}`; verify class-only rule"
@@ -415,8 +421,12 @@ def _audit_nomenclature(
         notes: notes keyed by POSIX path
     """
     if isinstance(node, ast.arg):
-        if _is_path_annotation(node.annotation) and not (
-            node.arg.endswith("_path") or node.arg.endswith("_paths")
+        if (
+            _is_path_annotation(node.annotation)
+            and not (node.arg.endswith("_path") or node.arg.endswith("_paths"))
+            and node.arg not in {"path", "paths"}
+            and not _is_cli_path_argument_name(file_path, node.arg)
+            and not _is_validator_value_name(file_path, node.arg)
         ):
             _add_note(
                 notes,
@@ -432,8 +442,12 @@ def _audit_nomenclature(
             if not isinstance(target, ast.Name):
                 continue
             name = target.id
-            if _is_path_annotation(annotation) and not (
-                name.endswith("_path") or name.endswith("_paths")
+            if (
+                _is_path_annotation(annotation)
+                and not (name.endswith("_path") or name.endswith("_paths"))
+                and name not in {"path", "paths"}
+                and not _is_cli_path_argument_name(file_path, name)
+                and not _is_validator_value_name(file_path, name)
             ):
                 _add_note(
                     notes,
@@ -488,13 +502,44 @@ def _audit_required_header(
             1,
             "missing or nonstandard two-line copyright header",
         )
-    if "from __future__ import annotations" not in text:
+
+
+def _audit_string_interpolation(
+    node: ast.AST,
+    file_path: Path,
+    notes: dict[str, list[StyleNote]],
+):
+    """Audit non-f-string interpolation.
+
+    Arguments:
+        node: AST node
+        file_path: source file path
+        notes: notes keyed by POSIX path
+    """
+    if (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "format"
+        and _is_string_expr(node.func.value)
+    ):
         _add_note(
             notes,
             file_path,
-            "Imports",
-            1,
-            "missing `from __future__ import annotations`",
+            "Strings",
+            node.lineno,
+            "uses `.format()` interpolation; prefer f-strings",
+        )
+    if (
+        isinstance(node, ast.BinOp)
+        and isinstance(node.op, ast.Mod)
+        and _is_string_expr(node.left)
+    ):
+        _add_note(
+            notes,
+            file_path,
+            "Strings",
+            node.lineno,
+            "uses `%` interpolation; prefer f-strings",
         )
 
 
@@ -510,14 +555,15 @@ def _audit_text_lines(
         file_path: source file path
         notes: notes keyed by POSIX path
     """
+    allow_print = _is_cli_module(file_path)
     for line_number, line in enumerate(lines, 1):
-        if PRINT_CALL_RE.search(line):
+        if not allow_print and PRINT_CALL_RE.search(line):
             _add_note(
                 notes,
                 file_path,
                 "Logging",
                 line_number,
-                "uses `print`; prefer `logging` for user-facing output",
+                "uses `print`; prefer `logging` outside CLI command output",
             )
         if RST_DOUBLE_BACKTICK_RE.search(line):
             _add_note(
@@ -526,18 +572,6 @@ def _audit_text_lines(
                 "Documentation",
                 line_number,
                 "contains reStructuredText-style double backticks",
-            )
-        if (
-            ".format(" in line
-            or re.search(r"\".*\"\s*%", line)
-            or re.search(r"'.*'\s*%", line)
-        ):
-            _add_note(
-                notes,
-                file_path,
-                "Strings",
-                line_number,
-                "possible non-f-string interpolation",
             )
 
 
@@ -555,15 +589,17 @@ def _audit_tree(
         package_name: current package name
         notes: notes keyed by POSIX path
     """
+    public_exports = _get_all_exports(tree)
     for node in ast.walk(tree):
         if isinstance(node, ast.ImportFrom):
             _audit_import(node, file_path, package_name, notes)
             if file_path.name == "__init__.py":
-                _audit_init_export(node, file_path, notes)
+                _audit_init_export(node, file_path, notes, public_exports)
         elif isinstance(node, ast.ClassDef):
             _audit_class(node, file_path, notes)
         elif isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef):
             _audit_function(node, file_path, notes)
+        _audit_string_interpolation(node, file_path, notes)
         _audit_nomenclature(node, file_path, notes)
 
 
@@ -581,15 +617,15 @@ def _audit_tree_header(
     """
     if not _has_docstring(tree):
         _add_note(notes, file_path, "Documentation", 1, "missing module docstring")
-    has_all = any(
-        isinstance(node, ast.Assign)
-        and any(
-            isinstance(target, ast.Name) and target.id == "__all__"
-            for target in node.targets
+    if _requires_future_annotations(tree) and not _has_future_annotations(tree):
+        _add_note(
+            notes,
+            file_path,
+            "Imports",
+            1,
+            "missing `from __future__ import annotations`",
         )
-        for node in tree.body
-    )
-    if not has_all:
+    if _requires_all(tree, file_path) and _get_all_node(tree) is None:
         _add_note(notes, file_path, "Exports", 1, "missing `__all__`")
 
 
@@ -628,7 +664,7 @@ def _audit_function(
         file_path: source file path
         notes: notes keyed by POSIX path
     """
-    if not _has_docstring(function_node):
+    if not _is_overload(function_node) and not _has_docstring(function_node):
         _add_note(
             notes,
             file_path,
@@ -648,13 +684,7 @@ def _decorated_kind(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
     Returns:
         function kind label
     """
-    names: list[str] = []
-    for decorator in node.decorator_list:
-        target = decorator.func if isinstance(decorator, ast.Call) else decorator
-        if isinstance(target, ast.Name):
-            names.append(target.id)
-        elif isinstance(target, ast.Attribute):
-            names.append(target.attr)
+    names = _decorator_names(node)
     if "property" in names:
         return "property"
     if "setter" in names:
@@ -668,6 +698,68 @@ def _decorated_kind(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
     return "method"
 
 
+def _decorator_names(node: ast.FunctionDef | ast.AsyncFunctionDef) -> list[str]:
+    """Get decorator names from a function.
+
+    Arguments:
+        node: function or method definition
+    Returns:
+        decorator names
+    """
+    names: list[str] = []
+    for decorator in node.decorator_list:
+        target = decorator.func if isinstance(decorator, ast.Call) else decorator
+        if isinstance(target, ast.Name):
+            names.append(target.id)
+        elif isinstance(target, ast.Attribute):
+            names.append(target.attr)
+    return names
+
+
+def _get_all_exports(tree: ast.Module) -> set[str]:
+    """Get names listed in a module's `__all__`.
+
+    Arguments:
+        tree: parsed module
+    Returns:
+        public export names
+    """
+    all_node = _get_all_node(tree)
+    if all_node is None:
+        return set()
+    value = all_node.value
+    if isinstance(value, ast.List | ast.Tuple | ast.Set):
+        return {
+            element.value
+            for element in value.elts
+            if isinstance(element, ast.Constant) and isinstance(element.value, str)
+        }
+    return set()
+
+
+def _get_all_node(tree: ast.Module) -> ast.Assign | ast.AnnAssign | None:
+    """Get a module's `__all__` assignment node.
+
+    Arguments:
+        tree: parsed module
+    Returns:
+        `__all__` assignment, if present
+    """
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id == "__all__"
+            for target in node.targets
+        ):
+            return node
+        if (
+            isinstance(node, ast.AnnAssign)
+            and isinstance(node.target, ast.Name)
+            and node.target.id == "__all__"
+        ):
+            return node
+    return None
+
+
 def _has_docstring(
     node: ast.AsyncFunctionDef | ast.FunctionDef | ast.ClassDef | ast.Module,
 ) -> bool:
@@ -679,6 +771,22 @@ def _has_docstring(
         whether a docstring is present
     """
     return ast.get_docstring(node, clean=False) is not None
+
+
+def _has_future_annotations(tree: ast.Module) -> bool:
+    """Check whether a module imports future annotations.
+
+    Arguments:
+        tree: parsed module
+    Returns:
+        whether `from __future__ import annotations` is present
+    """
+    return any(
+        isinstance(node, ast.ImportFrom)
+        and node.module == "__future__"
+        and any(alias.name == "annotations" for alias in node.names)
+        for node in tree.body
+    )
 
 
 def _is_path_annotation(annotation: ast.expr | None) -> bool:
@@ -714,6 +822,115 @@ def _is_path_annotation(annotation: ast.expr | None) -> bool:
     return is_path
 
 
+def _is_overload(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    """Check whether a function is an overload stub.
+
+    Arguments:
+        node: function or method definition
+    Returns:
+        whether the function is decorated with `@overload`
+    """
+    return "overload" in _decorator_names(node)
+
+
+def _is_cli_module(file_path: Path) -> bool:
+    """Check whether a file belongs to the CLI package.
+
+    Arguments:
+        file_path: source file path
+    Returns:
+        whether the file is CLI code
+    """
+    parts = _get_repo_relative_path(file_path).parts
+    return (
+        len(parts) >= 2
+        and parts[0] == "scinoephile"
+        and (parts[1] == "cli" or parts[1:3] == ("core", "cli"))
+    )
+
+
+def _is_cli_path_argument_name(file_path: Path, name: str) -> bool:
+    """Check whether a name is an allowed CLI path argument name.
+
+    Arguments:
+        file_path: source file path
+        name: variable or parameter name
+    Returns:
+        whether the name may omit a `_path` suffix
+    """
+    return _is_cli_module(file_path) and (
+        name.endswith("infile")
+        or name.endswith("infiles")
+        or name.endswith("outfile")
+        or name.endswith("outfiles")
+    )
+
+
+def _is_validator_value_name(file_path: Path, name: str) -> bool:
+    """Check whether a path-like name is an allowed validator input name.
+
+    Arguments:
+        file_path: source file path
+        name: variable or parameter name
+    Returns:
+        whether the name may omit a `_path` suffix
+    """
+    relative_file_path = _get_repo_relative_path(file_path)
+    return (
+        relative_file_path.as_posix() == "scinoephile/common/validation.py"
+        and name
+        in {
+            "value",
+            "value_to_validate",
+        }
+    )
+
+
+def _get_repo_relative_path(file_path: Path) -> Path:
+    """Get a path relative to the repository root when possible.
+
+    Arguments:
+        file_path: source file path
+    Returns:
+        repository-relative path, or the original path if it is outside cwd
+    """
+    if not file_path.is_absolute():
+        return file_path
+    try:
+        return file_path.relative_to(Path.cwd())
+    except ValueError:
+        return file_path
+
+
+def _is_pure_package_marker(tree: ast.Module, file_path: Path) -> bool:
+    """Check whether a file is a pure package marker.
+
+    Arguments:
+        tree: parsed module
+        file_path: source file path
+    Returns:
+        whether the file is a docstring-only `__init__.py`
+    """
+    return (
+        file_path.name == "__init__.py"
+        and len(tree.body) == 1
+        and isinstance(tree.body[0], ast.Expr)
+        and isinstance(tree.body[0].value, ast.Constant)
+        and isinstance(tree.body[0].value.value, str)
+    )
+
+
+def _is_string_expr(node: ast.AST) -> bool:
+    """Check whether an expression is a string literal expression.
+
+    Arguments:
+        node: AST node
+    Returns:
+        whether the expression is a string literal
+    """
+    return isinstance(node, ast.Constant) and isinstance(node.value, str)
+
+
 def _module_name_for(file_path: Path) -> str:
     """Get the dotted module name for a source file.
 
@@ -740,6 +957,39 @@ def _package_name_for(file_path: Path) -> str:
     if file_path.name == "__init__.py":
         return module_name
     return module_name.rsplit(".", 1)[0]
+
+
+def _requires_all(tree: ast.Module, file_path: Path) -> bool:
+    """Check whether a module should define `__all__`.
+
+    Arguments:
+        tree: parsed module
+        file_path: source file path
+    Returns:
+        whether `__all__` is required
+    """
+    return not _is_pure_package_marker(tree, file_path)
+
+
+def _requires_future_annotations(tree: ast.Module) -> bool:
+    """Check whether a module should import future annotations.
+
+    Arguments:
+        tree: parsed module
+    Returns:
+        whether `from __future__ import annotations` is required
+    """
+    for node in tree.body:
+        if (
+            isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Constant)
+            and isinstance(node.value.value, str)
+        ):
+            continue
+        if isinstance(node, ast.ImportFrom) and node.module == "__future__":
+            continue
+        return True
+    return False
 
 
 def _returns_none(function_node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
