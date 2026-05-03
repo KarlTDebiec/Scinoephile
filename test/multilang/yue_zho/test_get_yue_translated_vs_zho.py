@@ -16,8 +16,9 @@ def test_get_yue_translated_vs_zho_mlamd(
     """Test get_yue_translated_vs_zho with MLAMD subtitles.
 
     Arguments:
-        mlamd_yue_hans_transcribe_review: input 粤文 subtitles
-        mlamd_zho_hans_fuse_clean_validate_review_flatten: input 中文 subtitles
+        mlamd_yue_hans_transcribe_review: input written Cantonese subtitles
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: input standard
+          Chinese subtitles
         mlamd_yue_hans_transcribe_review_translate: expected output subtitles
     """
     zhongwen = get_series_with_subs_merged(

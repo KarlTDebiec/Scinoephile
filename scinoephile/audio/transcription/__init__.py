@@ -33,14 +33,14 @@ def get_segment_zho_converted(
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
 ) -> TranscribedSegment:
-    """Convert 中文 between character sets.
+    """Convert standard Chinese between character sets.
 
     Arguments:
         segment: transcribed segment to convert
         config: OpenCC configuration for conversion
         apply_exclusions: whether to apply character exclusions during conversion
     Returns:
-        transcribed segment with converted 中文 text
+        transcribed segment with converted standard Chinese text
     """
     converted_segment = deepcopy(segment)
     converted_segment.text = get_zho_text_converted(

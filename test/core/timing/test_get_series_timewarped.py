@@ -36,8 +36,9 @@ def test_get_series_timewarped_kob(
     """Test get_series_timewarped with KOB subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review: 繁体中文 subtitle fixture
-        kob_yue_hant: 繁體粵文 subtitle fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review: traditional standard Chinese
+          subtitle fixture
+        kob_yue_hant: traditional written Cantonese subtitle fixture
         kob_yue_hant_timewarp: expected timewarp subtitle fixture
     """
     _test_get_series_timewarped(

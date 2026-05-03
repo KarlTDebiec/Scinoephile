@@ -28,7 +28,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 fuse CLI help output.
+    """Test standard Chinese fuse CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,7 +45,7 @@ def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 fuse CLI usage output.
+    """Test standard Chinese fuse CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -88,7 +88,7 @@ def test_zho_fuse_cli(
     args: str,
     expected_path: str,
 ):
-    """Test 中文 OCR fusion CLI processing with file output.
+    """Test standard Chinese OCR fusion CLI processing with file output.
 
     Arguments:
         lens_path: path to Google Lens subtitle fixture
@@ -130,7 +130,7 @@ def test_zho_fuse_cli_pipe(
     args: str,
     expected_path: str,
 ):
-    """Test 中文 OCR fusion CLI processing with stdout output.
+    """Test standard Chinese OCR fusion CLI processing with stdout output.
 
     Arguments:
         lens_path: path to Google Lens subtitle fixture
@@ -156,7 +156,7 @@ def test_zho_fuse_cli_pipe(
 
 
 def test_zho_fuse_cli_rejects_bare_convert_flag():
-    """Test 中文 OCR fusion CLI requires an explicit conversion config."""
+    """Test standard Chinese OCR fusion CLI requires an explicit conversion config."""
     full_lens_path = test_data_root / "mnt/input/zho-Hans_ocr/lens.srt"
     full_paddle_path = test_data_root / "mnt/input/zho-Hans_ocr/paddle.srt"
 

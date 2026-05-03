@@ -28,7 +28,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_yue_process_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 processing CLI help output.
+    """Test written Cantonese processing CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,7 +45,7 @@ def test_yue_process_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_yue_process_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 processing CLI usage output.
+    """Test written Cantonese processing CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -68,7 +68,7 @@ def test_yue_process_cli(
     args: str,
     expected_path: str,
 ):
-    """Test 粤文 processing CLI with file arguments.
+    """Test written Cantonese processing CLI with file arguments.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -100,7 +100,7 @@ def test_yue_process_cli(
     ],
 )
 def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
-    """Test 粤文 processing CLI via stdin/stdout.
+    """Test written Cantonese processing CLI via stdin/stdout.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -123,7 +123,7 @@ def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
 
 def test_yue_process_cli_rejects_bare_convert_flag():
-    """Test 粤文 processing CLI requires an explicit conversion config."""
+    """Test written Cantonese processing CLI requires an explicit conversion config."""
     full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"
 
     with pytest.raises(SystemExit, match="2"):

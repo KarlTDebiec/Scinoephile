@@ -44,12 +44,13 @@ def test_get_zho_block_reviewed_kob(
     kob_zho_hant_ocr_fuse_clean_validate: Series,
     kob_zho_hant_ocr_fuse_clean_validate_review: Series,
 ):
-    """Test get_zho_block_reviewed with KOB 繁体中文 subtitles.
+    """Test get_zho_block_reviewed with KOB traditional standard Chinese subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate: KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean_validate: KOB traditional standard Chinese
+          series fixture
         kob_zho_hant_ocr_fuse_clean_validate_review: Expected block-reviewed KOB
-          繁体中文 series fixture
+          traditional standard Chinese series fixture
     """
     _test_get_zho_block_reviewed(
         kob_zho_hant_ocr_fuse_clean_validate,
@@ -62,12 +63,13 @@ def test_get_zho_block_reviewed_mlamd(
     mlamd_zho_hans_fuse_clean_validate: Series,
     mlamd_zho_hans_fuse_clean_validate_review: Series,
 ):
-    """Test get_zho_block_reviewed with MLAMD 简体中文 subtitles.
+    """Test get_zho_block_reviewed with MLAMD simplified standard Chinese subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_clean_validate: MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_clean_validate: MLAMD simplified standard Chinese
+          series fixture
         mlamd_zho_hans_fuse_clean_validate_review: Expected block-reviewed MLAMD
-          简体中文 series fixture
+          simplified standard Chinese series fixture
     """
     _test_get_zho_block_reviewed(
         mlamd_zho_hans_fuse_clean_validate,
@@ -79,12 +81,12 @@ def test_get_zho_block_reviewed_mnt(
     mnt_zho_hans_fuse_clean_validate: Series,
     mnt_zho_hans_fuse_clean_validate_review: Series,
 ):
-    """Test get_zho_block_reviewed with MNT 简体中文 subtitles.
+    """Test get_zho_block_reviewed with MNT simplified standard Chinese subtitles.
 
     Arguments:
-        mnt_zho_hans_fuse_clean_validate: MNT 简体中文 series fixture
+        mnt_zho_hans_fuse_clean_validate: MNT simplified standard Chinese series fixture
         mnt_zho_hans_fuse_clean_validate_review: Expected block-reviewed MNT
-          简体中文 series fixture
+          simplified standard Chinese series fixture
     """
     _test_get_zho_block_reviewed(
         mnt_zho_hans_fuse_clean_validate,
@@ -96,12 +98,12 @@ def test_get_zho_block_reviewed_t(
     t_zho_hans_fuse_clean_validate: Series,
     t_zho_hans_fuse_clean_validate_review: Series,
 ):
-    """Test get_zho_block_reviewed with T 简体中文 subtitles.
+    """Test get_zho_block_reviewed with T simplified standard Chinese subtitles.
 
     Arguments:
-        t_zho_hans_fuse_clean_validate: T 简体中文 series fixture
+        t_zho_hans_fuse_clean_validate: T simplified standard Chinese series fixture
         t_zho_hans_fuse_clean_validate_review: Expected block-reviewed T
-          简体中文 series fixture
+          simplified standard Chinese series fixture
     """
     _test_get_zho_block_reviewed(
         t_zho_hans_fuse_clean_validate,

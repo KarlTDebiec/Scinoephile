@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to translation of 粤文 from 中文."""
+"""Code related to translation of written Cantonese from standard Chinese."""
 
 from __future__ import annotations
 
@@ -58,15 +58,15 @@ def get_yue_translated_vs_zho(
     translator: DualBlockGappedProcessor | None = None,
     **kwargs: Unpack[YueFromZhoTranslationProcessKwargs],
 ) -> Series:
-    """Get 粤文 subtitles translated from 中文 subtitles.
+    """Get written Cantonese subtitles translated from standard Chinese subtitles.
 
     Arguments:
-        yuewen: 粤文 Series
-        zhongwen: 中文 Series
+        yuewen: written Cantonese Series
+        zhongwen: standard Chinese Series
         translator: processor to use
         **kwargs: additional arguments for DualBlockGappedProcessor.process
     Returns:
-        粤文 translated from 中文
+        written Cantonese translated from standard Chinese
     """
     if translator is None:
         translator = get_yue_vs_zho_translator()

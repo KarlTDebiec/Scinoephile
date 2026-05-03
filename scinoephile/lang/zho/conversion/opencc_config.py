@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""OpenCC configuration names for 中文 character set conversion."""
+"""OpenCC configuration names for standard Chinese character set conversion."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ __all__ = ["OpenCCConfig"]
 
 
 class OpenCCConfig(Enum):
-    """OpenCC configuration names for 中文 character set conversion."""
+    """OpenCC configuration names for standard Chinese character set conversion."""
 
     _description: str
 

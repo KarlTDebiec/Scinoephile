@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for 粤文/中文 transcription punctuation LLM classes."""
+"""Factories for written Cantonese/standard Chinese punctuation LLM classes."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ __all__ = ["YueZhoPunctuationManager"]
 
 
 class YueZhoPunctuationManager(DualMultiSingleManager):
-    """Factories for 粤文/中文 transcription punctuation LLM classes."""
+    """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
 
     prompt_cls: ClassVar[type[YueVsZhoYueHansPunctuationPrompt]] = (
         YueVsZhoYueHansPunctuationPrompt
