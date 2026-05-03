@@ -5,15 +5,22 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .build.dictionary_build_cli import DictionaryBuildCli
 from .dictionary_search_cli import DictionarySearchCli
 
 __all__ = ["DictionaryCli"]
+
+
+class _DictionaryCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryCli."""
+
+    dictionary_subcommand: str
+    """Selected dictionary subcommand."""
 
 
 class DictionaryCli(ScinoephileCliBase):
@@ -62,7 +69,7 @@ class DictionaryCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

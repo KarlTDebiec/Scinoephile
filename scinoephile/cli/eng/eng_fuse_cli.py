@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import ClassVar, TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -19,6 +19,23 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
 
 __all__ = ["EngFuseCli"]
+
+
+class _EngFuseCliKwargs(TypedDict, total=False):
+    """Keyword arguments for EngFuseCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    lens_infile: Path | str
+    """English subtitles OCRed using Google Lens or stdin sentinel."""
+    tesseract_infile: Path | str
+    """English subtitles OCRed using Tesseract or stdin sentinel."""
+    clean: bool
+    """Whether to clean both OCR subtitle infiles before fusing."""
+    outfile: Path | None
+    """English subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class EngFuseCli(ScinoephileCliBase):
@@ -131,7 +148,7 @@ class EngFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[_EngFuseCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

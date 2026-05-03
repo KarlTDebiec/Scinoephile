@@ -5,15 +5,26 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
 from scinoephile.analysis.character_error_rate import SeriesCER
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
+
+
+class _AnalysisCerCliKwargs(TypedDict, total=False):
+    """Keyword arguments for AnalysisCerCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    reference_infile: Path | str
+    """Subtitle infile for reference series or stdin sentinel."""
+    candidate_infile: Path | str
+    """Subtitle infile for candidate series or stdin sentinel."""
 
 
 class AnalysisCerCli(ScinoephileCliBase):
@@ -87,7 +98,7 @@ class AnalysisCerCli(ScinoephileCliBase):
         return "cer"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_AnalysisCerCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

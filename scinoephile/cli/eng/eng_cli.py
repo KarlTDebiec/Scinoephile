@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .eng_fuse_cli import EngFuseCli
@@ -15,6 +15,13 @@ from .eng_process_cli import EngProcessCli
 from .eng_validate_ocr_cli import EngValidateOcrCli
 
 __all__ = ["EngCli"]
+
+
+class _EngCliKwargs(TypedDict, total=False):
+    """Keyword arguments for EngCli."""
+
+    eng_subcommand: str
+    """Selected English subtitle subcommand."""
 
 
 class EngCli(ScinoephileCliBase):
@@ -68,7 +75,7 @@ class EngCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_EngCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

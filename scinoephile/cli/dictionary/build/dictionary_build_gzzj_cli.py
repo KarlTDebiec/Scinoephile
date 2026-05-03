@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import Any, ClassVar, Unpack, cast
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
 from scinoephile.dictionaries.gzzj.constants import GZZJ_SOURCE
@@ -18,6 +18,17 @@ from .dictionary_build_cli_base import DictionaryBuildCliBase
 __all__ = ["DictionaryBuildGzzjCli"]
 
 logger = getLogger(__name__)
+
+
+class _DictionaryBuildGzzjCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildGzzjCli."""
+
+    database_path: Path | None
+    """SQLite database output path."""
+    overwrite: bool
+    """Whether to overwrite the existing SQLite database."""
+    source_json_path: Path | None
+    """Path to manually downloaded GZZJ source JSON."""
 
 
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
@@ -75,16 +86,15 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildGzzjCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
             **kwargs: keyword arguments
         """
-        kwargs_dict = cast(dict[str, Any], kwargs)
-        database_path = kwargs_dict.pop("database_path")
-        overwrite = kwargs_dict.pop("overwrite")
-        source_json_path = kwargs_dict.pop("source_json_path")
+        database_path = kwargs.pop("database_path")
+        overwrite = kwargs.pop("overwrite")
+        source_json_path = kwargs.pop("source_json_path")
 
         service = GzzjDictionaryService(
             database_path=database_path,
