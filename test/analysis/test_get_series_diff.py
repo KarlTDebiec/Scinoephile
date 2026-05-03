@@ -61,6 +61,40 @@ def test_series_diff_reports_split():
     assert messages[0].two_idxs == (0, 1)
 
 
+def test_series_diff_reports_split_edit():
+    """Test one-to-many split with edited text."""
+    diff = SeriesDiff(_get_series("alpha beta"), _get_series("alpha", "betx"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SPLIT_EDIT
+    assert messages[0].one_idxs == (0,)
+    assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_reports_merge_edit():
+    """Test many-to-one merge with edited text."""
+    diff = SeriesDiff(_get_series("alpha", "beta"), _get_series("alpha betx"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.MERGE_EDIT
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0,)
+
+
+def test_series_diff_reports_shift():
+    """Test many-to-many shifted text."""
+    diff = SeriesDiff(
+        _get_series("alpha", "beta"),
+        _get_series("beta", "alpha"),
+        similarity_cutoff=0.4,
+    )
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.SHIFT
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0, 1)
+
+
 def test_series_diff_get_stacked_str_appends_third_series():
     """Test stacked diff output can include an unaligned third series."""
     one = _get_series("alpha beta")

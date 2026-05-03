@@ -79,3 +79,38 @@ def test_analysis_diff_cli(
     output = capsys.readouterr().out
 
     assert output == ("edit: TRANSCRIBE[1] -> REFERENCE[1]: '靠你了' -> '靠你喇！'\n")
+
+
+def test_analysis_diff_cli_multiline_split_edit(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test analysis diff CLI output for multi-line alignment.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    one_infile_path = tmp_path / "one.srt"
+    two_infile_path = tmp_path / "two.srt"
+    one_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:02,000\nalpha beta\n",
+        encoding="utf-8",
+    )
+    two_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\nalpha\n\n"
+        "2\n00:00:01,000 --> 00:00:02,000\nbetx\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
+        "--one-label TRANSCRIBE --two-label REFERENCE",
+    )
+    output = capsys.readouterr().out
+
+    assert output == (
+        "split_edit: TRANSCRIBE[1] -> REFERENCE[1-2]: "
+        "['alpha beta'] -> ['alpha', 'betx']\n"
+    )

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, Unpack
 
 import pytest
 
@@ -100,6 +100,10 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
+class _KobTestCaseKwargs(TypedDict, total=False):
+    """Keyword arguments forwarded to KOB test case loading helpers."""
+
+
 @pytest.fixture
 def kob_eng() -> Series:
     """KOB English subtitles."""
@@ -145,7 +149,7 @@ def kob_zho_hant_ocr_paddle() -> Series:
 @cache
 def get_kob_eng_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English block review test cases.
 
@@ -169,7 +173,7 @@ def get_kob_eng_block_review_test_cases(
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
@@ -188,7 +192,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 @cache
 def get_kob_yue_deliniation_test_cases(
     prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
 
@@ -215,7 +219,7 @@ def get_kob_yue_deliniation_test_cases(
 @cache
 def get_kob_yue_punctuation_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
 
@@ -242,7 +246,7 @@ def get_kob_yue_punctuation_test_cases(
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
 
@@ -268,7 +272,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
 @cache
 def get_kob_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 block review test cases.
 
@@ -287,7 +291,7 @@ def get_kob_zho_hant_block_review_test_cases(
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.
 
@@ -306,7 +310,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_kob_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Any,
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 simplification block review test cases.
 
@@ -578,11 +582,11 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.5615919697103108,
-        substitutions=4941,
-        insertions=616,
-        deletions=821,
-        correct=5595,
+        cer=0.5683719292066567,
+        substitutions=4949,
+        insertions=661,
+        deletions=845,
+        correct=5563,
         reference_length=11357,
     )
 
@@ -617,11 +621,11 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.45029497226380205,
-        substitutions=3880,
-        insertions=558,
-        deletions=676,
-        correct=6801,
+        cer=0.45751518887030024,
+        substitutions=3898,
+        insertions=581,
+        deletions=717,
+        correct=6742,
         reference_length=11357,
     )
 

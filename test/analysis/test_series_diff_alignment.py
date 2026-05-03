@@ -202,3 +202,109 @@ def test_series_diff_pairs_one_sided_punctuation_with_context_line():
     ]
     assert messages[1].one_idxs == (1,)
     assert messages[1].two_idxs == (1,)
+
+
+def test_series_diff_does_not_tag_neighbor_for_line_insert():
+    """Test an inserted middle line does not tag unchanged neighbors."""
+    diff = SeriesDiff(_get_series("a", "b"), _get_series("a", "x", "b"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.INSERT
+    assert messages[0].two_idxs == (1,)
+    assert messages[0].two_texts == ("x",)
+
+
+def test_series_diff_does_not_tag_neighbor_for_line_delete():
+    """Test a deleted middle line does not tag unchanged neighbors."""
+    diff = SeriesDiff(_get_series("a", "x", "b"), _get_series("a", "b"))
+    messages = list(diff)
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.DELETE
+    assert messages[0].one_idxs == (1,)
+    assert messages[0].one_texts == ("x",)
+
+
+def test_series_diff_does_not_pair_dissimilar_bracketed_span():
+    """Test positional fallback does not pair dissimilar one-sided spans."""
+    one = _get_series("editA", "qqqq", "editB")
+    two = _get_series("editZ", "real insert", "editY")
+    diff = SeriesDiff(one, two)
+    one_side = diff._get_block_side(
+        (0, 1, 2),
+        diff._get_series_event_line_records(one),
+    )
+    two_side = diff._get_block_side(
+        (0, 1, 2),
+        diff._get_series_event_line_records(two),
+    )
+
+    paired = diff._pair_bracketed_one_sided_spans(
+        [((0,), (0,)), ((), (1,)), ((2,), (2,))],
+        one_side,
+        two_side,
+    )
+
+    assert paired == [((0,), (0,)), ((), (1,)), ((2,), (2,))]
+
+
+def test_series_diff_does_not_merge_sparse_one_sided_spans():
+    """Test one-sided spans separated by unchanged lines are not merged."""
+    one = _get_series("start", "alpha", "same1", "same2", "end")
+    two = _get_series("start", "same1", "same2", "alpha!", "end")
+    diff = SeriesDiff(one, two)
+    one_side = diff._get_block_side(
+        (0, 1, 2, 3, 4),
+        diff._get_series_event_line_records(one),
+    )
+    two_side = diff._get_block_side(
+        (0, 1, 2, 3, 4),
+        diff._get_series_event_line_records(two),
+    )
+
+    should_merge = diff._should_merge_adjacent_one_sided_spans(
+        one_side,
+        two_side,
+        (1,),
+        (),
+        (),
+        (3,),
+    )
+
+    assert should_merge is False
+
+
+def test_series_diff_merges_adjacent_one_sided_spans():
+    """Test nearby similar one-sided spans still merge."""
+    one = _get_series("靠你了", "莫大叔！莲花落阵你都冇有把握")
+    two = _get_series("靠你喇！", "莫大叔呀！莲花落阵你都冇把握")
+    diff = SeriesDiff(one, two)
+    one_side = diff._get_block_side(
+        (0, 1),
+        diff._get_series_event_line_records(one),
+    )
+    two_side = diff._get_block_side(
+        (0, 1),
+        diff._get_series_event_line_records(two),
+    )
+
+    should_merge = diff._should_merge_adjacent_one_sided_spans(
+        one_side,
+        two_side,
+        (1,),
+        (),
+        (),
+        (1,),
+    )
+
+    assert should_merge is True
+
+
+def test_series_diff_large_block_falls_back_to_line_alignment():
+    """Test large blocks use bounded line-level fallback alignment."""
+    diff = SeriesDiff(
+        _get_series("editA", "real delete", "same", "editB"),
+        _get_series("editZ", "same", "real insert", "editY"),
+        max_alignment_cells=1,
+    )
+    messages = list(diff)
+    assert messages
