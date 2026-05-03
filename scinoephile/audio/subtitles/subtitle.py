@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import TYPE_CHECKING, Unpack, cast, override
+from typing import TYPE_CHECKING, Unpack, override
 from warnings import catch_warnings, filterwarnings
 
 from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
         filterwarnings("ignore", category=RuntimeWarning)
         from pydub import AudioSegment
 
-    from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+    from scinoephile.audio.transcription import TranscribedSegment
 
 __all__ = ["AudioSubtitle"]
 
@@ -39,10 +39,7 @@ class AudioSubtitle(Subtitle):
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
-        super_kwargs = cast(
-            "SubtitleKwargs",
-            {k: v for k, v in kwargs.items() if k in super_field_names},
-        )
+        super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
         super().__init__(**super_kwargs)
 
         self._audio = audio

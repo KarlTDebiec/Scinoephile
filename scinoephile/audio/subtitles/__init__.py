@@ -7,11 +7,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from warnings import catch_warnings, filterwarnings
 
-from scinoephile.audio.transcription.segment_tools import (
+from scinoephile.audio.transcription import (
+    TranscribedSegment,
     get_segment_merged,
     get_segment_split_at_idx,
 )
-from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle

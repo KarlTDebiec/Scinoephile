@@ -7,7 +7,7 @@ from __future__ import annotations
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
+from scinoephile.audio.transcription import TranscribedSegment
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription.transcriber import (
     DemucsMode,
