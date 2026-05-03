@@ -7,8 +7,9 @@ from __future__ import annotations
 from typing import Literal
 
 import pytest
-from common.exception import ArgumentConflictError  # ty:ignore[unresolved-import]
-from common.validation import val_literal  # ty:ignore[unresolved-import]
+
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.validation import val_literal
 
 type Color = Literal["red", "green", "blue"]
 type Level = Literal[1, 2, 3]

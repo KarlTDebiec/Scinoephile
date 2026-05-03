@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 import pytest
-from common.csv import (  # ty:ignore[unresolved-import]
+
+from scinoephile.common.csv import (
     parse_csv_int_list,
     parse_csv_str_list,
 )
