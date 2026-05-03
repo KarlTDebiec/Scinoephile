@@ -205,7 +205,7 @@ def get_synced_series(
     cutoff: float = 0.16,
     pause_length: int = 3000,
 ) -> Series:
-    """Compile synchonized subtitles from two series.
+    """Compile synchronized subtitles from two series.
 
     Arguments:
         one: First Series
@@ -213,7 +213,8 @@ def get_synced_series(
         cutoff: initial overlap cutoff for sync group computation
         pause_length: pause length in milliseconds used for block segmentation
     Returns:
-        Synchonized subtitles
+        series containing synchronized subtitle blocks combining text from both
+        input series
     """
     logger.debug(f"Sync parameters: cutoff={cutoff:.4f}, pause_length={pause_length}")
     synced_blocks = []
