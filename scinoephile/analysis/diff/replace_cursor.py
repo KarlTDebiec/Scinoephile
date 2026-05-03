@@ -23,11 +23,22 @@ class ReplaceCursor:
     """
 
     one_blk: list[int]
+    """Indices for the first block."""
+
     two_blk: list[int]
+    """Indices for the second block."""
+
     i: int = 0
+    """Current index within the first block."""
+
     j: int = 0
+    """Current index within the second block."""
+
     last_was_split: bool = False
+    """Whether the last action was a split."""
+
     should_return: bool = False
+    """Whether the outer loop should return early."""
 
     @property
     def one_idx(self) -> int:

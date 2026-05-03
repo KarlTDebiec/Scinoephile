@@ -13,11 +13,28 @@ class LineDiffKind(Enum):
     """Types of line-level differences."""
 
     DELETE = "delete"
+    """Line deleted from the second sequence."""
+
     EDIT = "edit"
+    """Line edited between sequences."""
+
     EQUAL = "equal"
+    """Line equal between sequences."""
+
     INSERT = "insert"
+    """Line inserted into the second sequence."""
+
     MERGE = "merge"
+    """Multiple lines merged into one line."""
+
     MERGE_EDIT = "merge_edit"
+    """Multiple lines merged into one edited line."""
+
     SHIFT = "shift"
+    """Line shifted within the sequence."""
+
     SPLIT = "split"
+    """One line split into multiple lines."""
+
     SPLIT_EDIT = "split_edit"
+    """One line split into multiple edited lines."""

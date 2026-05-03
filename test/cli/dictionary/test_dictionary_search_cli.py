@@ -8,6 +8,7 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from os import environ
 from pathlib import Path
+from shlex import quote
 from unittest.mock import patch
 
 import pytest
@@ -199,7 +200,7 @@ def test_dictionary_search_cli(
                 f"--log-file {log_file_path} "
                 "--dictionary-name cuhk "
                 f"--database-path {database_path} "
-                f"--limit 3 {query}",
+                f"--limit 3 {quote(query)}",
             )
         output = log_file_path.read_text(encoding="utf-8")
 
