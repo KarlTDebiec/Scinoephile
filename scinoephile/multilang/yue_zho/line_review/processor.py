@@ -8,7 +8,8 @@ from logging import getLogger
 
 import numpy as np
 
-from scinoephile.core.llms import Processor, TestCase, save_test_cases_to_json
+from scinoephile.core.llms import Processor, TestCase
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix

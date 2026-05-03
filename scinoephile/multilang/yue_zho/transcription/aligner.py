@@ -23,8 +23,8 @@ from scinoephile.core.llms import (
     Query,
     Queryer,
     TestCase,
-    save_test_cases_to_json,
 )
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
@@ -99,7 +99,7 @@ class Aligner:
         # Return final alignment
         return alignment
 
-    def _delineate(self, alignment) -> bool:
+    def _delineate(self, alignment: Alignment) -> bool:
         """Delineate 粤文 text.
 
         Arguments:
@@ -119,6 +119,10 @@ class Aligner:
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
+            if answer is None:
+                message = "Delineation query returned no answer."
+                logger.error(message)
+                raise ScinoephileError(message)
             prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(
                 test_case, "prompt_cls"
             )

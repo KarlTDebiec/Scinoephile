@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho import get_zho_cleaned
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 
 
 def _test_get_zho_cleaned(series: Series, expected: Series):

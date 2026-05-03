@@ -38,10 +38,15 @@ class AnsiColor(Enum):
     """ANSI escape codes for terminal text coloring."""
 
     RESET = "\x1b[0m"
+    """Reset terminal text styling."""
     GREEN = "\x1b[32m"
+    """Green terminal text."""
     RED = "\x1b[31m"
+    """Red terminal text."""
     BLUE = "\x1b[34m"
+    """Blue terminal text."""
     PURPLE = "\x1b[35m"
+    """Purple terminal text."""
 
 
 # See https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)

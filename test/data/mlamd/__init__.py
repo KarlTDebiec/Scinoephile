@@ -8,13 +8,13 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import Any
 
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import TestCase, load_test_cases_from_json
-from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
@@ -172,7 +172,7 @@ def mlamd_zho_hant_ocr_sup_path() -> Path:
 @cache
 def get_mlamd_eng_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD English block review test cases.
 
@@ -191,7 +191,7 @@ def get_mlamd_eng_block_review_test_cases(
 @cache
 def get_mlamd_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD English OCR fusion test cases.
 
@@ -210,7 +210,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 @cache
 def get_mlamd_yue_deliniation_test_cases(
     prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 deliniation test cases.
 
@@ -237,7 +237,7 @@ def get_mlamd_yue_deliniation_test_cases(
 @cache
 def get_mlamd_yue_from_zho_translation_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoYueHansTranslationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 from 简体中文 translation test cases.
 
@@ -263,7 +263,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
 @cache
 def get_mlamd_yue_punctuation_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 punctuation test cases.
 
@@ -290,7 +290,7 @@ def get_mlamd_yue_punctuation_test_cases(
 @cache
 def get_mlamd_yue_vs_zho_block_review_test_cases(
     prompt_cls: type[DualBlockPrompt] = YueVsZhoYueHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 review test cases.
 
@@ -316,7 +316,7 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
 @cache
 def get_mlamd_yue_vs_zho_line_review_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.
 
@@ -342,7 +342,7 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
 @cache
 def get_mlamd_zho_hans_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体中文 block review test cases.
 
@@ -361,7 +361,7 @@ def get_mlamd_zho_hans_block_review_test_cases(
 @cache
 def get_mlamd_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体中文 OCR fusion test cases.
 
@@ -380,7 +380,7 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
 @cache
 def get_mlamd_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 block review test cases.
 
@@ -399,7 +399,7 @@ def get_mlamd_zho_hant_block_review_test_cases(
 @cache
 def get_mlamd_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 OCR fusion test cases.
 
@@ -418,7 +418,7 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_mlamd_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 simplification block review test cases.
 

@@ -20,13 +20,9 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 from scinoephile.llms.dual_pair import DualPairManager
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueZhoPunctuationManager,
-)
+
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
 
 __all__ = ["Alignment"]
 
@@ -46,7 +42,7 @@ class Alignment:
 
         self._sync_groups_override = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         zhongwen_str, yuewen_str = get_pair_strings(self.zhongwen, self.yuewen)
         string = f"MANDARIN:\n{zhongwen_str}"

@@ -37,13 +37,16 @@ class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_ocr_fused(

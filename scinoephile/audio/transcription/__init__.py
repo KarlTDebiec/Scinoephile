@@ -7,11 +7,12 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 
-from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
-from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
-from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
+
+from .demucs_separator import DemucsSeparator
+from .transcribed_segment import TranscribedSegment
+from .transcribed_word import TranscribedWord
+from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "DemucsSeparator",

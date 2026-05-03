@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.yue import is_accented_yale
+from scinoephile.lang.yue.romanization import is_accented_yale
 from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
 

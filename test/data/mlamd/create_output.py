@@ -12,19 +12,23 @@ from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho import (
+from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
-    get_yue_line_reviewed_vs_zho,
-    get_yue_transcribed_vs_zho,
-    get_yue_translated_vs_zho,
+    get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
-from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
+from scinoephile.multilang.yue_zho.line_review import (
+    get_yue_line_reviewed_vs_zho,
+    get_yue_vs_zho_line_reviewer,
+)
 from scinoephile.multilang.yue_zho.transcription import (
     VADMode,
+    get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
+from scinoephile.multilang.yue_zho.translation import (
+    get_yue_translated_vs_zho,
+    get_yue_vs_zho_translator,
+)
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
     get_mlamd_yue_punctuation_test_cases,

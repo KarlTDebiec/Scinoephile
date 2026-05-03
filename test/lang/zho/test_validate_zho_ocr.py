@@ -11,7 +11,7 @@ import logging
 import pytest
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
 
 

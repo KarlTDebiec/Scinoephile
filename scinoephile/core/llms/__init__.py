@@ -15,7 +15,6 @@ from .queryer import Queryer
 from .test_case import TestCase
 from .tool import Tool
 from .tool_box import ToolBox
-from .utils import load_test_cases_from_json, save_test_cases_to_json
 
 __all__ = [
     "Answer",
@@ -31,6 +30,4 @@ __all__ = [
     "TestCase",
     "Tool",
     "ToolBox",
-    "load_test_cases_from_json",
-    "save_test_cases_to_json",
 ]

@@ -13,7 +13,8 @@ from typing import TypedDict, Unpack
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import TestCase, load_test_cases_from_json
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries

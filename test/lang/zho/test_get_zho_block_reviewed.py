@@ -7,9 +7,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho import get_zho_block_reviewed
 from scinoephile.lang.zho.block_review import (
     ZhoHantBlockReviewPrompt,
+    get_zho_block_reviewed,
     get_zho_reviewer,
 )
 from scinoephile.llms.mono_block import MonoBlockProcessor

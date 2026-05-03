@@ -13,7 +13,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 

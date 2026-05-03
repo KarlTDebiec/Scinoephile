@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import TypedDict, Unpack, override
+from typing import Any, TypedDict, Unpack, override
 
 from pysubs2 import SSAEvent
 from pysubs2.time import ms_to_str
@@ -23,16 +23,27 @@ class SubtitleKwargs(TypedDict, total=False):
     """
 
     start: int
+    """Start time in milliseconds."""
     end: int
+    """End time in milliseconds."""
     text: str
+    """Subtitle text."""
     style: str
+    """Subtitle style name."""
     name: str
+    """Speaker or actor name."""
     marked: bool
+    """Whether the event is marked."""
     effect: str
+    """ASS effect field."""
     layer: int
+    """ASS layer field."""
     margin_l: int
+    """Left margin override."""
     margin_r: int
+    """Right margin override."""
     margin_v: int
+    """Vertical margin override."""
 
 
 class Subtitle(SSAEvent):
@@ -51,7 +62,9 @@ class Subtitle(SSAEvent):
             **kwargs: additional keyword arguments
         """
         super_field_names = {f.name for f in fields(SSAEvent)}
-        super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
+        super_kwargs: dict[str, Any] = {
+            k: v for k, v in kwargs.items() if k in super_field_names
+        }
         super().__init__(**super_kwargs)
 
     @override

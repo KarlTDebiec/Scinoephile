@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import Any
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -17,18 +16,16 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.multilang.yue_zho import (
-    get_yue_block_reviewed_vs_zho,
-    get_yue_line_reviewed_vs_zho,
-)
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoYueHansBlockReviewPrompt,
     YueVsZhoYueHantBlockReviewPrompt,
+    get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoYueHansLineReviewPrompt,
     YueVsZhoYueHantLineReviewPrompt,
+    get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
 )
 
@@ -194,7 +191,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansBlockReviewPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:

@@ -11,15 +11,16 @@ from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng import (
+from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
-    get_eng_cleaned,
-    get_eng_flattened,
+    get_eng_block_reviewer,
 )
-from scinoephile.lang.eng.block_review import get_eng_block_reviewer
-from scinoephile.lang.yue import get_yue_romanized
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.lang.yue.romanization import get_yue_romanized
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoYueHansBlockReviewPrompt,
     YueVsZhoYueHantBlockReviewPrompt,
