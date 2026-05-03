@@ -8,7 +8,6 @@ import hashlib
 import json
 from logging import getLogger
 from typing import TYPE_CHECKING, Any
-from warnings import catch_warnings, filterwarnings
 
 import whisper_timestamped as whisper
 
@@ -21,10 +20,7 @@ from .transcribed_segment import TranscribedSegment
 if TYPE_CHECKING:
     from pathlib import Path
 
-    with catch_warnings():
-        filterwarnings("ignore", category=SyntaxWarning)
-        filterwarnings("ignore", category=RuntimeWarning)
-        from pydub import AudioSegment
+    from pydub import AudioSegment
 
 __all__ = ["WhisperTranscriber"]
 
