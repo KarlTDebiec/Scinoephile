@@ -8,11 +8,12 @@ from pathlib import Path
 from platform import system
 
 import pytest
-from common.exception import (  # ty:ignore[unresolved-import]
+
+from scinoephile.common.exception import (
     ExecutableNotFoundError,
     UnsupportedPlatformError,
 )
-from common.validation import val_executable  # ty:ignore[unresolved-import]
+from scinoephile.common.validation import val_executable
 
 
 def test_val_executable_valid():

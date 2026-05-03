@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from common.argument_parsing import (  # ty:ignore[unresolved-import]
+from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
