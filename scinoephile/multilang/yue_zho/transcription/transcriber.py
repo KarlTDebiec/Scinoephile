@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from importlib import import_module
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -14,9 +15,7 @@ from scinoephile.audio.subtitles import (
     get_series_from_segments,
 )
 from scinoephile.audio.transcription import (
-    DemucsSeparator,
     TranscribedSegment,
-    WhisperTranscriber,
     get_segment_split_on_whitespace,
     get_segment_zho_converted,
 )
@@ -37,6 +36,9 @@ from .aligner import Aligner
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
+
+    from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+    from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "DemucsMode",
@@ -102,7 +104,7 @@ class YueTranscriber:
             provider = get_default_provider()
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
-            self.demucs_separator = DemucsSeparator()
+            self.demucs_separator = _get_demucs_separator_cls()()
         self.vad_transcriber = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
@@ -242,7 +244,8 @@ class YueTranscriber:
         Returns:
             configured Whisper transcriber
         """
-        return WhisperTranscriber(
+        whisper_transcriber_cls = _get_whisper_transcriber_cls()
+        return whisper_transcriber_cls(
             model_name=self.model_name,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),
             use_demucs=self.demucs_mode == DemucsMode.ON,
@@ -282,3 +285,25 @@ class YueTranscriber:
         logger.info("Retrying block transcription without VAD after empty result")
         assert self.no_vad_transcriber is not None
         return self.no_vad_transcriber(audio, cache_audio=cache_audio)
+
+
+def _get_demucs_separator_cls() -> type[DemucsSeparator]:
+    """Load the Demucs separator class on demand.
+
+    Returns:
+        Demucs separator class
+    """
+    return import_module(
+        "scinoephile.audio.transcription.demucs_separator"
+    ).DemucsSeparator
+
+
+def _get_whisper_transcriber_cls() -> type[WhisperTranscriber]:
+    """Load the Whisper transcriber class on demand.
+
+    Returns:
+        Whisper transcriber class
+    """
+    return import_module(
+        "scinoephile.audio.transcription.whisper_transcriber"
+    ).WhisperTranscriber
