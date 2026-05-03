@@ -11,7 +11,7 @@ from os.path import defpath, expanduser, expandvars
 from pathlib import Path
 from platform import system
 from shutil import which
-from typing import Any, overload
+from typing import Any, TypeAliasType, get_args, overload
 
 from .exception import (
     ArgumentConflictError,
@@ -27,6 +27,7 @@ __all__ = [
     "val_input_dir_path",
     "val_input_path",
     "val_int",
+    "val_literal",
     "val_output_dir_path",
     "val_output_path",
     "val_str",
@@ -68,7 +69,7 @@ def val_executable(
 
 @overload
 def val_float(
-    value: float,
+    value: float | int | str,
     *,
     n_values: int | None = None,
     min_value: float | None = None,
@@ -87,7 +88,7 @@ def val_float(
 
 
 def val_float(
-    value: float | Iterable[Any],
+    value: float | int | str | Iterable[Any],
     *,
     n_values: int | None = None,
     min_value: float | None = None,
@@ -271,7 +272,7 @@ def val_input_path(
 
 @overload
 def val_int(
-    value: int,
+    value: float | int | str,
     *,
     n_values: int | None = None,
     min_value: int | None = None,
@@ -292,7 +293,7 @@ def val_int(
 
 
 def val_int(
-    value: int | Iterable[Any],
+    value: float | int | str | Iterable[Any],
     *,
     n_values: int | None = None,
     min_value: int | None = None,
@@ -518,7 +519,34 @@ def val_output_path(
     return [_val_output_path(value_to_validate) for value_to_validate in value]
 
 
-def val_str(value: Any, options: Iterable[str]) -> str:
+def val_literal[LiteralValue](value: LiteralValue, literal_type: Any) -> LiteralValue:
+    """Validate a value against a Literal type or type alias.
+
+    Arguments:
+        value: input value to validate
+        literal_type: Literal type or type alias with Literal value options
+    Returns:
+        value if it is one of the Literal options
+    Raises:
+        ArgumentConflictError: If literal_type does not resolve to Literal options
+        ValueError: If value is not one of the provided Literal options
+    """
+    literal_value = (
+        literal_type.__value__
+        if isinstance(literal_type, TypeAliasType)
+        else literal_type
+    )
+    options = get_args(literal_value)
+    if not options:
+        raise ArgumentConflictError(
+            f"'{literal_type}' does not contain Literal options"
+        ) from None
+    if value not in options:
+        raise ValueError(f"'{value}' is not one of options '{options}'") from None
+    return value
+
+
+def val_str(value: Any, options: Iterable[Any]) -> str:
     """Validate a str.
 
     Arguments:
