@@ -9,10 +9,9 @@ from pprint import pformat
 
 import numpy as np
 
-from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
-
+from .exceptions import ScinoephileError
 from .pairs import get_block_pairs_by_pause, get_pair_strings
+from .subtitles import Series, Subtitle, get_concatenated_series
 
 __all__ = [
     "SyncGroup",

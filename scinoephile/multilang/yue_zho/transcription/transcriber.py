@@ -26,14 +26,10 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-)
 
 from .aligner import Aligner
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
@@ -51,15 +47,20 @@ class DemucsMode(StrEnum):
     """Demucs preprocessing modes for 粤文 transcription."""
 
     ON = "on"
+    """Run Demucs preprocessing."""
     OFF = "off"
+    """Skip Demucs preprocessing."""
 
 
 class VADMode(StrEnum):
     """Whisper voice activity detection modes for 粤文 transcription."""
 
     AUTO = "auto"
+    """Use VAD automatically when needed."""
     ON = "on"
+    """Always use VAD."""
     OFF = "off"
+    """Never use VAD."""
 
 
 class YueTranscriber:

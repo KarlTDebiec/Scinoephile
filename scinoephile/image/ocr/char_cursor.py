@@ -24,9 +24,13 @@ class CharCursor:
     """
 
     sub: ImageSubtitle
+    """Subtitle being validated."""
     sub_idx: int
+    """Subtitle index for logging."""
     char_idx: int = 0
+    """Current character index."""
     bbox_idx: int = 0
+    """Current bbox index."""
 
     @property
     def char(self) -> str:
@@ -57,7 +61,9 @@ class CharCursor:
         Returns:
             bbox group
         """
-        return self.sub.bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        return bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
 
     def char_grp(self, n_chars: int) -> str:
         """Current character group.

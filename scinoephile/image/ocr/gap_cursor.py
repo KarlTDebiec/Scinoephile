@@ -36,17 +36,29 @@ class GapCursor:
     """
 
     sub: ImageSubtitle
+    """Subtitle being validated."""
     sub_idx: int
+    """Subtitle index for logging."""
     char_1_idx: int = 0
+    """First character index."""
     char_2_idx: int = 0
+    """Second character index."""
     bbox_1_idx: int = 0
+    """First bbox index."""
     bbox_2_idx: int = 0
+    """Second bbox index."""
     char_1: str = ""
+    """First character."""
     char_2: str = ""
+    """Second character."""
     bbox_1: Bbox | None = None
+    """First bbox."""
     bbox_2: Bbox | None = None
+    """Second bbox."""
     gap: int = 0
+    """Gap size."""
     gap_chars: str = ""
+    """Observed gap characters."""
 
     @property
     def bbox_1_current(self) -> Bbox | None:
@@ -55,9 +67,11 @@ class GapCursor:
         Returns:
             bbox_1 or None if out of range
         """
-        if self.bbox_1_idx >= len(self.sub.bboxes):
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        if self.bbox_1_idx >= len(bboxes):
             return None
-        return self.sub.bboxes[self.bbox_1_idx]
+        return bboxes[self.bbox_1_idx]
 
     @property
     def bbox_2_current(self) -> Bbox | None:
@@ -67,9 +81,11 @@ class GapCursor:
             bbox_2 or None if out of range
         """
         self.bbox_2_idx = self.bbox_1_idx + 1
-        if self.bbox_2_idx >= len(self.sub.bboxes):
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        if self.bbox_2_idx >= len(bboxes):
             return None
-        return self.sub.bboxes[self.bbox_2_idx]
+        return bboxes[self.bbox_2_idx]
 
     @property
     def char_pair(self) -> tuple[str, str]:
@@ -130,7 +146,9 @@ class GapCursor:
         Returns:
             bbox group
         """
-        return self.sub.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        return bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
 
     def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
         """Prepare gap by seeking characters and bboxes.

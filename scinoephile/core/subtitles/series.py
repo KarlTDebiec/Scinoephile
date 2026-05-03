@@ -166,7 +166,9 @@ class Series(SSAFile):
         ]
         return sliced
 
-    def to_simple_string(self, start: int | None = None, duration: int | None = None):
+    def to_simple_string(
+        self, start: int | None = None, duration: int | None = None
+    ) -> str:
         """Convert series to a simple string representation.
 
         Arguments:

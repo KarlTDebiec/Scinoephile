@@ -37,13 +37,16 @@ class YueZhoBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class YueZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_yue_block_reviewed_vs_zho(

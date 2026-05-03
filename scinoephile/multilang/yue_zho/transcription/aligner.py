@@ -99,7 +99,7 @@ class Aligner:
         # Return final alignment
         return alignment
 
-    def _delineate(self, alignment) -> bool:
+    def _delineate(self, alignment: Alignment) -> bool:
         """Delineate 粤文 text.
 
         Arguments:
@@ -119,6 +119,10 @@ class Aligner:
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
+            if answer is None:
+                message = "Delineation query returned no answer."
+                logger.error(message)
+                raise ScinoephileError(message)
             prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(
                 test_case, "prompt_cls"
             )

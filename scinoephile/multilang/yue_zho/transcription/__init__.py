@@ -19,14 +19,9 @@ from scinoephile.llms.default_test_cases import (
 )
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueZhoPunctuationManager,
-)
 
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
 from .transcriber import DemucsMode, VADMode, YueTranscriber
 
 __all__ = [

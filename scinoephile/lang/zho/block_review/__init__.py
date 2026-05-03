@@ -34,13 +34,16 @@ class ZhoBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_block_reviewed(

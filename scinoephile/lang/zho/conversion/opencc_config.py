@@ -15,33 +15,47 @@ class OpenCCConfig(Enum):
     _description: str
 
     s2t = ("s2t", "Simplified Chinese to Traditional Chinese.")
+    """Simplified Chinese to Traditional Chinese."""
     t2s = ("t2s", "Traditional Chinese to Simplified Chinese.")
+    """Traditional Chinese to Simplified Chinese."""
     s2tw = ("s2tw", "Simplified Chinese to Traditional Chinese (Taiwan).")
+    """Simplified Chinese to Traditional Chinese for Taiwan."""
     tw2s = ("tw2s", "Traditional Chinese (Taiwan) to Simplified Chinese.")
+    """Traditional Chinese for Taiwan to Simplified Chinese."""
     s2hk = ("s2hk", "Simplified Chinese to Traditional Chinese (Hong Kong).")
+    """Simplified Chinese to Traditional Chinese for Hong Kong."""
     hk2s = ("hk2s", "Traditional Chinese (Hong Kong) to Simplified Chinese.")
+    """Traditional Chinese for Hong Kong to Simplified Chinese."""
     s2twp = (
         "s2twp",
         "Simplified Chinese to Traditional Chinese (Taiwan) with Taiwanese idiom.",
     )
+    """Simplified Chinese to Traditional Chinese for Taiwan with Taiwanese idiom."""
     tw2sp = (
         "tw2sp",
         "Traditional Chinese (Taiwan) to Simplified Chinese with Mainland idiom.",
     )
+    """Traditional Chinese for Taiwan to Simplified Chinese with Mainland idiom."""
     t2tw = ("t2tw", "Traditional Chinese (OpenCC) to Taiwan Standard.")
+    """Traditional Chinese in OpenCC standard to Taiwan standard."""
     hk2t = ("hk2t", "Traditional Chinese (Hong Kong) to Traditional Chinese.")
+    """Traditional Chinese for Hong Kong to Traditional Chinese."""
     t2hk = ("t2hk", "Traditional Chinese (OpenCC) to Hong Kong variant.")
+    """Traditional Chinese in OpenCC standard to Hong Kong variant."""
     t2jp = (
         "t2jp",
         "Traditional Chinese Characters (Kyujitai) to New Japanese Kanji (Shinjitai).",
     )
+    """Traditional Chinese characters to new Japanese kanji."""
     jp2t = (
         "jp2t",
         "New Japanese Kanji (Shinjitai) to Traditional Chinese Characters (Kyujitai).",
     )
+    """New Japanese kanji to traditional Chinese characters."""
     tw2t = ("tw2t", "Traditional Chinese (Taiwan) to Traditional Chinese.")
+    """Traditional Chinese for Taiwan to Traditional Chinese."""
 
-    def __new__(cls, code: str, description: str):
+    def __new__(cls, code: str, description: str) -> OpenCCConfig:
         """Create enum member with attached description metadata.
 
         Arguments:

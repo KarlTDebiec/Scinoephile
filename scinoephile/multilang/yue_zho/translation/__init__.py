@@ -40,13 +40,16 @@ class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockGappedProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockGappedProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_yue_translated_vs_zho(

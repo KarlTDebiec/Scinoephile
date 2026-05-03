@@ -63,11 +63,17 @@ class CuhkDictionaryScraperKwargs(TypedDict, total=False):
     """Keyword arguments for CuhkDictionaryScraper initialization."""
 
     cache_dir_path: Path | None
+    """Cache directory path for CUHK scrape artifacts."""
     min_delay_seconds: float
+    """Minimum delay between HTTP requests."""
     max_delay_seconds: float
+    """Maximum delay between HTTP requests."""
     request_timeout_seconds: float
+    """Per-request timeout in seconds."""
     max_retries: int
+    """Maximum attempts for failed requests."""
     session: requests.Session | None
+    """Requests session for dependency injection."""
 
 
 class CuhkDictionaryScraper:
