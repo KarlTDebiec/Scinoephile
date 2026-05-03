@@ -9,15 +9,9 @@ from logging import getLogger
 from os import PathLike
 from pathlib import Path
 from typing import Any, Self, TypedDict, override
-from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
-
+from pydub import AudioSegment
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
