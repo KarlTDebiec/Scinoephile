@@ -483,12 +483,13 @@ class SeriesDiff:
         one_line_pos = 0
         two_line_pos = 0
         for one_local_idxs, two_local_idxs in spans:
-            one_line_stop = one_line_pos
+            one_line_stop = one_local_idxs[0] if one_local_idxs else one_line_pos
+            two_line_stop = two_local_idxs[0] if two_local_idxs else two_line_pos
             if one_local_idxs:
-                one_line_stop = one_local_idxs[0]
-            two_line_stop = two_line_pos
-            if two_local_idxs:
-                two_line_stop = two_local_idxs[0]
+                if not two_local_idxs:
+                    two_line_stop = two_line_pos + (one_line_stop - one_line_pos)
+            elif two_local_idxs:
+                one_line_stop = one_line_pos + (two_line_stop - two_line_pos)
             one_line_pos, two_line_pos = self._add_equal_messages_until(
                 one_side=one_side,
                 two_side=two_side,

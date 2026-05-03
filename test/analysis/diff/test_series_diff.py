@@ -267,6 +267,41 @@ def test_series_diff_get_stacked_str_can_include_equal_lines():
     ]
 
 
+@pytest.mark.parametrize(
+    ("one_texts", "two_texts", "expected_lines"),
+    [
+        (
+            ("a", "b"),
+            ("a", "x", "b"),
+            ["1 1", "a", "a", "", "| 2", "", "x", "", "2 3", "b", "b"],
+        ),
+        (
+            ("a", "x", "b"),
+            ("a", "b"),
+            ["1 1", "a", "a", "", "2 |", "x", "", "", "3 2", "b", "b"],
+        ),
+    ],
+)
+def test_series_diff_get_stacked_str_keeps_equal_lines_around_one_sided_changes(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_lines: list[str],
+):
+    """Test equal stacked lines stay aligned around inserts and deletes.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_lines: expected stacked output lines
+    """
+    rendered = SeriesDiff(
+        _get_series(*one_texts),
+        _get_series(*two_texts),
+    ).get_stacked_str(color=False, include_equal=True)
+
+    assert rendered.splitlines() == expected_lines
+
+
 def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
     """Test third-series output is blank for second-side-only inserts."""
     one = _get_series()

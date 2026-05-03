@@ -841,7 +841,7 @@ def _is_cli_module(file_path: Path) -> bool:
     Returns:
         whether the file is CLI code
     """
-    parts = file_path.parts
+    parts = _get_repo_relative_path(file_path).parts
     return (
         len(parts) >= 2
         and parts[0] == "scinoephile"
@@ -875,10 +875,31 @@ def _is_validator_value_name(file_path: Path, name: str) -> bool:
     Returns:
         whether the name may omit a `_path` suffix
     """
-    return file_path.as_posix() == "scinoephile/common/validation.py" and name in {
-        "value",
-        "value_to_validate",
-    }
+    relative_file_path = _get_repo_relative_path(file_path)
+    return (
+        relative_file_path.as_posix() == "scinoephile/common/validation.py"
+        and name
+        in {
+            "value",
+            "value_to_validate",
+        }
+    )
+
+
+def _get_repo_relative_path(file_path: Path) -> Path:
+    """Get a path relative to the repository root when possible.
+
+    Arguments:
+        file_path: source file path
+    Returns:
+        repository-relative path, or the original path if it is outside cwd
+    """
+    if not file_path.is_absolute():
+        return file_path
+    try:
+        return file_path.relative_to(Path.cwd())
+    except ValueError:
+        return file_path
 
 
 def _is_pure_package_marker(tree: ast.Module, file_path: Path) -> bool:

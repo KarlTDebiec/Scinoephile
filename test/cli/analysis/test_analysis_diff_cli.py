@@ -13,7 +13,7 @@ from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage
+from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
 @pytest.mark.parametrize(
@@ -114,3 +114,84 @@ def test_analysis_diff_cli_multiline_split_edit(
         "split_edit: TRANSCRIBE[1] -> REFERENCE[1-2]: "
         "['alpha beta'] -> ['alpha', 'betx']\n"
     )
+
+
+@pytest.mark.parametrize(
+    (
+        "one_path",
+        "two_path",
+        "one_label",
+        "two_label",
+        "expected_fixture_name",
+    ),
+    [
+        (
+            Path("kob/output/eng_ocr/fuse_clean_validate_review_flatten.srt"),
+            Path("kob/output/eng/timewarp_clean_review_flatten.srt"),
+            "OCR",
+            "SRT",
+            "kob_eng_expected_series_diff",
+        ),
+        (
+            Path("mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "mlamd/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
+            "SIMP",
+            "TRAD",
+            "mlamd_zho_simplify_expected_series_diff",
+        ),
+        (
+            Path("mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "mnt/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
+            "SIMP",
+            "TRAD",
+            "mnt_zho_simplify_expected_series_diff",
+        ),
+        (
+            Path("t/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "t/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
+            "SIMP",
+            "TRAD",
+            "t_zho_simplify_expected_series_diff",
+        ),
+    ],
+)
+def test_analysis_diff_cli_matches_expected_fixture(
+    one_path: Path,
+    two_path: Path,
+    one_label: str,
+    two_label: str,
+    expected_fixture_name: str,
+    capsys: pytest.CaptureFixture,
+    request: pytest.FixtureRequest,
+):
+    """Test analysis diff CLI output against real subtitle fixtures.
+
+    Arguments:
+        one_path: first subtitle path relative to test data root
+        two_path: second subtitle path relative to test data root
+        one_label: label for the first subtitle series
+        two_label: label for the second subtitle series
+        expected_fixture_name: fixture name containing expected diff strings
+        capsys: pytest stdout/stderr capture fixture
+        request: pytest fixture request object
+    """
+    expected: list[str] = request.getfixturevalue(expected_fixture_name)
+
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {test_data_root / one_path} "
+        f"--two-infile {test_data_root / two_path} "
+        f"--one-label {one_label} --two-label {two_label}",
+    )
+    output = capsys.readouterr().out
+
+    assert output.splitlines() == expected
