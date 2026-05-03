@@ -11,6 +11,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis import AnalysisCli
+from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
 from .sync_cli import SyncCli
@@ -102,6 +103,7 @@ class ScinoephileCli(ScinoephileCliBase):
         """
         return {
             AnalysisCli.name(): AnalysisCli,
+            CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
             SyncCli.name(): SyncCli,
