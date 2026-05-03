@@ -24,5 +24,7 @@ Review [docs/STYLE.md](/docs/STYLE.md) before planning or coding.
 ### Testing
 
 * Run the tests as follows:
-  * `cd test && uv run pytest`
+  * `cd test && UV_CACHE_DIR=/tmp/uv-cache uv run pytest -n auto`
+* To reproduce order-sensitive failures, run tests serially:
+  * `cd test && UV_CACHE_DIR=/tmp/uv-cache uv run pytest`
 * You may run pytest with a timeout of up to 10 minutes without asking the user.

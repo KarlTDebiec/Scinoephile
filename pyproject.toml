@@ -30,7 +30,7 @@ dependencies = [
     "requests>=2.33.1",
     "setuptools>=82.0.1",
     "torch>=2.10.0",
-    "torchaudio>=2.11.0",
+    "torchaudio>=2.10.0,<2.11.0",
     "transformers>=5.7.0",
     "typing-extensions>=4.15.0",
     "whisper-timestamped>=1.15.9",
@@ -51,6 +51,10 @@ dev = [
 [tool.pytest.ini_options]
 log_cli = true
 log_cli_level = "INFO"
+filterwarnings = [
+    "ignore:invalid escape sequence:SyntaxWarning:pydub\\.utils",
+    "ignore:Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work:RuntimeWarning:pydub\\.utils",
+]
 
 [tool.ruff]
 line-length = 88

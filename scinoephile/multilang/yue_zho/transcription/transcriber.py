@@ -7,7 +7,8 @@ from __future__ import annotations
 from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
+
+from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import (
     AudioSeries,
@@ -30,9 +31,6 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .aligner import Aligner
 from .deliniation import YueVsZhoYueHansDeliniationPrompt
 from .punctuation import YueVsZhoYueHansPunctuationPrompt
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
 
 __all__ = [
     "DemucsMode",
