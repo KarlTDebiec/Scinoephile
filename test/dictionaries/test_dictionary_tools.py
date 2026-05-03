@@ -182,7 +182,7 @@ def test_get_dictionary_tools_uses_prompt_text():
     ]
     assert tool_box.handler_names == [StubDictionaryToolPrompt.dictionary_tool_name]
 
-    parameters = tool_box.specs[0]["parameters"]
+    parameters = cast(dict[str, object], tool_box.specs[0]["parameters"])
     properties = cast(dict[str, object], parameters["properties"])
     query_schema = cast(dict[str, object], properties["query"])
 

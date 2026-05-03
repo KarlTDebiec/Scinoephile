@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, Unpack, cast
 
 from pydantic import Field, create_model
 
@@ -144,6 +144,7 @@ class MonoBlockManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
+        prompt_cls = cast(type[MonoBlockPrompt], prompt_cls)
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)

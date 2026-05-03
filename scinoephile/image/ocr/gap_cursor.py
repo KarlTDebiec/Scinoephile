@@ -61,17 +61,22 @@ class GapCursor:
     """Observed gap characters."""
 
     @property
+    def bboxes(self) -> list[Bbox]:
+        """Subtitle bboxes after OCR extraction."""
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        return bboxes
+
+    @property
     def bbox_1_current(self) -> Bbox | None:
         """Get the current bbox_1.
 
         Returns:
             bbox_1 or None if out of range
         """
-        bboxes = self.sub.bboxes
-        assert bboxes is not None
-        if self.bbox_1_idx >= len(bboxes):
+        if self.bbox_1_idx >= len(self.bboxes):
             return None
-        return bboxes[self.bbox_1_idx]
+        return self.bboxes[self.bbox_1_idx]
 
     @property
     def bbox_2_current(self) -> Bbox | None:
@@ -81,11 +86,9 @@ class GapCursor:
             bbox_2 or None if out of range
         """
         self.bbox_2_idx = self.bbox_1_idx + 1
-        bboxes = self.sub.bboxes
-        assert bboxes is not None
-        if self.bbox_2_idx >= len(bboxes):
+        if self.bbox_2_idx >= len(self.bboxes):
             return None
-        return bboxes[self.bbox_2_idx]
+        return self.bboxes[self.bbox_2_idx]
 
     @property
     def char_pair(self) -> tuple[str, str]:
@@ -146,9 +149,7 @@ class GapCursor:
         Returns:
             bbox group
         """
-        bboxes = self.sub.bboxes
-        assert bboxes is not None
-        return bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
+        return self.bboxes[self.bbox_1_idx : self.bbox_1_idx + n_bboxes]
 
     def prepare_gap(self) -> tuple[Bbox, Bbox] | None:
         """Prepare gap by seeking characters and bboxes.

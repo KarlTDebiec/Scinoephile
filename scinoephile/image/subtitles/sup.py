@@ -119,7 +119,7 @@ def read_sup_palette(bytes_: np.ndarray) -> np.ndarray:
 
 
 @nb.jit(nopython=True, nogil=True, cache=True, fastmath=True)
-def read_sup_series(
+def read_sup_series(  # noqa: PLR0912, PLR0915
     bytes_: np.ndarray,
 ) -> tuple[list[float], list[float], list[np.ndarray]]:
     """Read subtitle images and times from a block of bytes.

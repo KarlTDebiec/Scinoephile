@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.common import package_root
 from scinoephile.core.text import whitespace_chars
+from scinoephile.image.bbox import Bbox
 from scinoephile.image.bboxes import get_bboxes, get_merged_bbox
 from scinoephile.image.drawing import get_img_with_bboxes
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -100,8 +101,9 @@ class ValidationManager:
         for sub_idx, sub in enumerate(series.events):
             if sub_idx > stop_at_idx:
                 break
-            messages.extend(self._validate_sub(sub, sub_idx, interactive))
-            annotated_img = get_img_with_bboxes(sub.img, sub.bboxes)
+            sub_messages, bboxes = self._validate_sub(sub, sub_idx, interactive)
+            messages.extend(sub_messages)
+            annotated_img = get_img_with_bboxes(sub.img, bboxes)
             events.append(
                 ImageSubtitle(
                     img=annotated_img,
@@ -117,7 +119,7 @@ class ValidationManager:
 
     def _validate_sub(
         self, sub: ImageSubtitle, sub_idx: int, interactive: bool = True
-    ) -> list[str]:
+    ) -> tuple[list[str], list[Bbox]]:
         """Validate per-character bboxes for a subtitle.
 
         Arguments:
@@ -125,17 +127,18 @@ class ValidationManager:
             sub_idx: subtitle index for logging
             interactive: whether to prompt user for confirmations
         Returns:
-            list of validation messages
+            validation messages and validated bboxes
         """
         sub.bboxes = get_bboxes(sub.img)
+        bboxes = sub.bboxes
 
         char_messages = self._validate_chars(sub, sub_idx, interactive)
         if len(char_messages) > 0:
-            return char_messages
+            return char_messages, bboxes
 
         gap_messages = self._validate_gaps(sub, sub_idx, interactive)
 
-        return char_messages + gap_messages
+        return char_messages + gap_messages, bboxes
 
     def _validate_chars(
         self,
@@ -162,7 +165,7 @@ class ValidationManager:
                 continue
 
             # Cannot validate without bboxes
-            if cursor.bbox_idx >= len(sub.bboxes):
+            if cursor.bbox_idx >= len(cursor.bboxes):
                 messages.append(
                     f"{cursor.intro_msg} | ran out of bboxes at '{cursor.char}'"
                 )
@@ -196,10 +199,10 @@ class ValidationManager:
             messages.append(f"{cursor.intro_msg} | unexpected state at '{cursor.char}'")
 
         # Cannot have leftover bboxes
-        if cursor.bbox_idx != len(sub.bboxes):
+        if cursor.bbox_idx != len(cursor.bboxes):
             messages.append(
                 f"{cursor.intro_msg} | "
-                f"{len(sub.bboxes) - cursor.bbox_idx} leftover bboxes"
+                f"{len(cursor.bboxes) - cursor.bbox_idx} leftover bboxes"
             )
 
         return messages
@@ -218,7 +221,7 @@ class ValidationManager:
             char_grp = cursor.char_grp(n_chars)
             if any(c in whitespace_chars for c in char_grp) or "\n" in char_grp:
                 continue
-            dims = get_dims_tuple(cursor.sub.bboxes[cursor.bbox_idx])
+            dims = get_dims_tuple(cursor.bboxes[cursor.bbox_idx])
             ok_dims = self.char_grp_dims_by_n[n_chars].get(char_grp, set())
 
             # Exact match
@@ -245,7 +248,7 @@ class ValidationManager:
             whether a match was found
         """
         for n_bboxes in self.char_dims_by_n.keys():
-            if cursor.bbox_idx + n_bboxes > len(cursor.sub.bboxes):
+            if cursor.bbox_idx + n_bboxes > len(cursor.bboxes):
                 break
             dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
             ok_dims = self.char_dims_by_n[n_bboxes].get(cursor.char, set())
@@ -254,7 +257,7 @@ class ValidationManager:
             if dims in ok_dims:
                 bbox_grp = cursor.bbox_grp(n_bboxes)
                 merged_bbox = get_merged_bbox(bbox_grp)
-                cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                     merged_bbox
                 ]
                 cursor.advance(n_chars=1, n_bboxes=1)
@@ -267,7 +270,7 @@ class ValidationManager:
                 if max_diff <= 2:
                     bbox_grp = cursor.bbox_grp(n_bboxes)
                     merged_bbox = get_merged_bbox(bbox_grp)
-                    cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                    cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                         merged_bbox
                     ]
                     self._update_char_dims(cursor.char, dims)
@@ -286,7 +289,7 @@ class ValidationManager:
         messages: list[str] = []
 
         for n_bboxes in self.char_dims_by_n.keys():
-            if cursor.bbox_idx + n_bboxes > len(cursor.sub.bboxes):
+            if cursor.bbox_idx + n_bboxes > len(cursor.bboxes):
                 break
             dims = get_dims_tuple(cursor.bbox_grp(n_bboxes))
 
@@ -312,7 +315,7 @@ class ValidationManager:
             if extend:
                 bbox_grp = cursor.bbox_grp(n_bboxes)
                 merged_bbox = get_merged_bbox(bbox_grp)
-                cursor.sub.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
+                cursor.bboxes[cursor.bbox_idx : cursor.bbox_idx + n_bboxes] = [
                     merged_bbox
                 ]
                 self._update_char_dims(cursor.char, dims)
@@ -361,11 +364,11 @@ class ValidationManager:
         while cursor.char_1_idx < len(sub.text_with_newline) - 1:
             prepared = cursor.prepare_gap()
             if prepared is None:
-                if cursor.bbox_1_idx >= len(sub.bboxes) and cursor.char_1:
+                if cursor.bbox_1_idx >= len(cursor.bboxes) and cursor.char_1:
                     messages.append(
                         f"{cursor.intro_msg} | ran out of bboxes at '{cursor.char_1}'"
                     )
-                elif cursor.bbox_2_idx >= len(sub.bboxes) and cursor.char_2:
+                elif cursor.bbox_2_idx >= len(cursor.bboxes) and cursor.char_2:
                     messages.append(
                         f"{cursor.intro_msg} | "
                         f"Ran out of bboxes when checking gap between "
