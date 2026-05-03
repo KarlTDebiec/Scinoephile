@@ -14,8 +14,6 @@ from pathlib import Path
 from shlex import split
 from unittest.mock import patch
 
-import pytest
-
 from .command_line_interface import CommandLineInterface
 
 CliTuple = tuple[type[CommandLineInterface], ...]
@@ -36,6 +34,8 @@ def assert_cli_help(cli: CliTuple):
     Arguments:
         cli: CLI class tuple with optional subcommands
     """
+    import pytest  # noqa: PLC0415
+
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
@@ -54,6 +54,8 @@ def assert_cli_usage(cli: CliTuple):
     Arguments:
         cli: CLI class tuple with optional subcommands
     """
+    import pytest  # noqa: PLC0415
+
     subcommands = build_subcommands(cli)
     stdout = StringIO()
     stderr = StringIO()
