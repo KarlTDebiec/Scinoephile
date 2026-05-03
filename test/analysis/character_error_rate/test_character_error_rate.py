@@ -9,8 +9,24 @@ from math import inf
 import pytest
 
 from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
-from scinoephile.core.subtitles import Series
+from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import SeriesCERResult
+
+
+def _get_series(*texts: str) -> Series:
+    """Build a compact subtitle series for CER tests.
+
+    Arguments:
+        *texts: subtitle event texts
+    Returns:
+        subtitle series with one event per text
+    """
+    return Series(
+        events=[
+            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
+            for idx, text in enumerate(texts)
+        ]
+    )
 
 
 @pytest.mark.parametrize(
@@ -148,25 +164,24 @@ def test_line_cer(
     assert result.reference_length == expected.reference_length
 
 
-def test_series_cer_result_str():
-    """Test string formatting for series-level CER results."""
-    result = SeriesCERResult(
-        cer=0.25,
-        substitutions=1,
-        insertions=2,
-        deletions=3,
-        correct=4,
-        reference_length=8,
-    )
+@pytest.mark.parametrize(
+    ("reference", "candidate"),
+    [
+        (_get_series("你", "好"), _get_series("你好")),
+        (_get_series("ab"), _get_series("a", "b")),
+    ],
+)
+def test_series_cer_ignores_separator_only_line_wrapping(
+    reference: Series,
+    candidate: Series,
+):
+    """Test separator-only line wrapping does not affect series CER."""
+    result = SeriesCER(reference, candidate)
 
-    assert str(result) == (
-        "CER: 0.25\n"
-        "Correct: 4\n"
-        "Substitutions: 1\n"
-        "Insertions: 2\n"
-        "Deletions: 3\n"
-        "Reference length: 8"
-    )
+    assert result.cer == 0.0
+    assert result.substitutions == 0
+    assert result.insertions == 0
+    assert result.deletions == 0
 
 
 @pytest.mark.parametrize(

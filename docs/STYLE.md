@@ -39,6 +39,9 @@
 ## Nomenclature
 * Use explicit path nomenclature:
   * variables or parameters holding `Path` objects should end in `_path` (for example, `file_path`, `dir_path`, `cache_dir_path`)
+  * bare `path` or `paths` parameters are acceptable for small path-focused helpers where no more specific role name applies
+  * CLI-facing argument names may use conventional command-line terms such as `infile` and `outfile` without a `_path` suffix
+  * generic validator inputs may use `value` or `value_to_validate`, even when the accepted type includes paths
   * use `*_name` for bare names and `*_stem` for stems, not for full paths
   * prefer `*_dir_path` over `*_directory` when the value is a path
 
@@ -58,6 +61,7 @@
 
 ## Logging
 * Use the `logging` module rather than `print` for any user-facing output in scripts or libraries.
+  * CLI tools may use `print` for intentional command output written to stdout.
   * Follow the repository pattern of defining a module-level `logger = getLogger(__name__)`.
 
 ## Testing
@@ -70,6 +74,7 @@
 * Provide docstrings for all modules, classes, properties, and functions, including internal helpers prefixed with an underscore.
   * Provide docstrings for property setters as well as getters when they are defined.
   * Provide docstrings for `TypedDict` classes, enums, and other public type definitions.
+  * `@overload` stubs do not need docstrings when the concrete implementation is documented.
 * Document class attributes using triple-quoted strings immediately below each instead of relying only on an `Attributes` section in the class docstring.
 * Format docstrings using Google style, with the following tweaks:
   * Use `Arguments:` instead of `Args:`.

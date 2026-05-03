@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from pathlib import Path
 from typing import ClassVar, Unpack
 
 from scinoephile.analysis.diff import SeriesDiff
@@ -18,6 +19,28 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
+
+
+class _AnalysisDiffCliKwargs(CLIKwargs, total=False):
+    """Keyword arguments for AnalysisDiffCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+
+    one_infile: Path | str
+    """Subtitle infile for first series or stdin sentinel."""
+
+    two_infile: Path | str
+    """Subtitle infile for second series or stdin sentinel."""
+
+    similarity_cutoff: float
+    """Similarity cutoff for replacement pairing."""
+
+    one_label: str
+    """Label for first series."""
+
+    two_label: str
+    """Label for second series."""
 
 
 class AnalysisDiffCli(ScinoephileCliBase):
@@ -123,7 +146,7 @@ class AnalysisDiffCli(ScinoephileCliBase):
         return "diff"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_AnalysisDiffCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
