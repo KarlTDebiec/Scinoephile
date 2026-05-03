@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to flattening 中文 text."""
+"""Code related to flattening standard Chinese text."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ __all__ = [
 
 
 def get_zho_flattened(series: Series) -> Series:
-    """Get multi-line 中文 series flattened to single lines.
+    """Get multi-line standard Chinese series flattened to single lines.
 
     Arguments:
         series: Series to flatten
@@ -29,7 +29,7 @@ def get_zho_flattened(series: Series) -> Series:
 
 
 def _get_zho_text_flattened(text: str) -> str:
-    """Get multi-line 中文 text flattened to a single line.
+    """Get multi-line standard Chinese text flattened to a single line.
 
     Accounts for dashes ('﹣') used for dialogue from multiple sources.
 

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 block review."""
+"""Code related to standard Chinese block review."""
 
 from __future__ import annotations
 
@@ -51,7 +51,7 @@ def get_zho_block_reviewed(
     processor: MonoBlockProcessor | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessKwargs],
 ) -> Series:
-    """Get 中文 series block reviewed.
+    """Get standard Chinese series block reviewed.
 
     Arguments:
         series: Series to block review

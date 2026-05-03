@@ -16,8 +16,9 @@ def test_get_yue_block_reviewed_vs_zho_mlamd(
     """Test get_yue_block_reviewed_vs_zho with MLAMD subtitles.
 
     Arguments:
-        mlamd_yue_hans_transcribe_review_translate: input 粤文 subtitles
-        mlamd_zho_hans_fuse_clean_validate_review_flatten: input 中文 subtitles
+        mlamd_yue_hans_transcribe_review_translate: input written Cantonese subtitles
+        mlamd_zho_hans_fuse_clean_validate_review_flatten: input standard
+          Chinese subtitles
         mlamd_yue_hans_transcribe_review_translate_block_review: expected output
             subtitles
     """

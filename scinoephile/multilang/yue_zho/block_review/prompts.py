@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 block review against 中文."""
+"""Text for written Cantonese block review against standard Chinese."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = [
 class YueVsZhoYueHansBlockReviewPrompt(
     DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt
 ):
-    """Text for LLM correspondence for 简体粤文 block review against 中文."""
+    """Text for simplified written Cantonese block review against standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -102,7 +102,7 @@ class YueVsZhoYueHansBlockReviewPrompt(
 
 
 class YueVsZhoYueHantBlockReviewPrompt(YueVsZhoYueHansBlockReviewPrompt):
-    """Text for LLM correspondence for 繁体粤文 block review against 中文."""
+    """Text for traditional written Cantonese block review against standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

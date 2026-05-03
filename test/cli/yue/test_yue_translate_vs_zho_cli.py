@@ -30,7 +30,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_yue_translate_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 translate-vs-zho CLI help output.
+    """Test written Cantonese translate-vs-zho CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -47,7 +47,7 @@ def test_yue_translate_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 translate-vs-zho CLI usage output.
+    """Test written Cantonese translate-vs-zho CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -70,11 +70,11 @@ def test_yue_translate_vs_zho_cli(
     zho_input_path: str,
     expected_path: str,
 ):
-    """Test 粤文 translate-vs-zho CLI with file arguments.
+    """Test written Cantonese translate-vs-zho CLI with file arguments.
 
     Arguments:
-        yue_input_path: path to input 粤文 subtitle fixture
-        zho_input_path: path to input 中文 subtitle fixture
+        yue_input_path: path to input written Cantonese subtitle fixture
+        zho_input_path: path to input standard Chinese subtitle fixture
         expected_path: path to expected output subtitle fixture
     """
     full_yue_input_path = test_data_root / yue_input_path
