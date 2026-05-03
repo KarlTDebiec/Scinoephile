@@ -6,14 +6,13 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -25,6 +24,7 @@ from scinoephile.common.exception import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,
@@ -41,6 +41,31 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
 )
 
 __all__ = ["YueTranscribeVsZhoCli"]
+
+
+class _YueTranscribeVsZhoCliKwargs(TypedDict, total=False):
+    """Keyword arguments for YueTranscribeVsZhoCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    media_infile: str
+    """Video or audio media input path used for transcription."""
+    zhongwen_infile: Path | str
+    """Standard Chinese subtitle infile or stdin sentinel."""
+    stream_index: int
+    """Audio stream index in media input."""
+    script: str
+    """Selected prompt script."""
+    convert: OpenCCConfig | None
+    """OpenCC conversion configuration."""
+    demucs: str
+    """Demucs vocal-separation mode."""
+    vad: str
+    """Whisper voice activity detection mode."""
+    outfile: Path | None
+    """Written Cantonese subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class YueTranscribeVsZhoCli(ScinoephileCliBase):
@@ -205,7 +230,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansDeliniationPrompt, YueVsZhoYueHansPunctuationPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_YueTranscribeVsZhoCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

@@ -5,15 +5,22 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis_cer_cli import AnalysisCerCli
 from .analysis_diff_cli import AnalysisDiffCli
 
 __all__ = ["AnalysisCli"]
+
+
+class _AnalysisCliKwargs(TypedDict, total=False):
+    """Keyword arguments for AnalysisCli."""
+
+    analysis_subcommand: str
+    """Selected analysis subcommand."""
 
 
 class AnalysisCli(ScinoephileCliBase):
@@ -56,7 +63,7 @@ class AnalysisCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_AnalysisCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

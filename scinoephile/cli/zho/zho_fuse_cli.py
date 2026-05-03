@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
+from typing import TypedDict, Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
@@ -34,6 +34,25 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 __all__ = ["ZhoFuseCli"]
+
+
+class _ZhoFuseCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ZhoFuseCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    lens_infile: Path | str
+    """Standard Chinese subtitles OCRed using Google Lens or stdin sentinel."""
+    paddle_infile: Path | str
+    """Standard Chinese subtitles OCRed using PaddleOCR or stdin sentinel."""
+    clean: bool
+    """Whether to clean both OCR inputs before fusion."""
+    convert: OpenCCConfig | None
+    """OpenCC conversion configuration."""
+    outfile: Path | None
+    """Standard Chinese subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class ZhoFuseCli(ScinoephileCliBase):
@@ -127,7 +146,7 @@ class ZhoFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[_ZhoFuseCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

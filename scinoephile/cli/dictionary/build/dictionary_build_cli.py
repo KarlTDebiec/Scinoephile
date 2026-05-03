@@ -5,9 +5,8 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import ClassVar, Unpack
+from typing import ClassVar, TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .dictionary_build_cuhk_cli import DictionaryBuildCuhkCli
@@ -17,6 +16,13 @@ from .dictionary_build_unihan_cli import DictionaryBuildUnihanCli
 from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 
 __all__ = ["DictionaryBuildCli"]
+
+
+class _DictionaryBuildCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildCli."""
+
+    dictionary_build_subcommand: str
+    """Selected dictionary build subcommand."""
 
 
 class DictionaryBuildCli(ScinoephileCliBase):
@@ -76,7 +82,7 @@ class DictionaryBuildCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

@@ -6,10 +6,9 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar, Unpack
+from typing import ClassVar, TypedDict, Unpack
 
 from scinoephile.analysis.diff import SeriesDiff
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -21,7 +20,7 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series
 __all__ = ["AnalysisDiffCli"]
 
 
-class _AnalysisDiffCliKwargs(CLIKwargs, total=False):
+class _AnalysisDiffCliKwargs(TypedDict, total=False):
     """Keyword arguments for AnalysisDiffCli."""
 
     _parser: ArgumentParser

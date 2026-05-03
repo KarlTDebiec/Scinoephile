@@ -7,9 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import Any, ClassVar, Unpack, cast
+from typing import ClassVar, TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -24,6 +23,27 @@ from .dictionary_build_cli_base import DictionaryBuildCliBase
 __all__ = ["DictionaryBuildCuhkCli"]
 
 logger = getLogger(__name__)
+
+
+class _DictionaryBuildCuhkCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildCuhkCli."""
+
+    cache_dir: Path | None
+    """Cache directory for scraped HTML and link data."""
+    database_path: Path | None
+    """SQLite database output path."""
+    max_words: int | None
+    """Maximum number of discovered words to build."""
+    overwrite: bool
+    """Whether to overwrite the existing SQLite database."""
+    min_delay_seconds: float
+    """Minimum delay between HTTP requests."""
+    max_delay_seconds: float
+    """Maximum delay between HTTP requests."""
+    max_retries: int
+    """Maximum retries per HTTP request."""
+    request_timeout_seconds: float
+    """Per-request timeout in seconds."""
 
 
 class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
@@ -158,21 +178,20 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             logger.info(f"Building at most {max_words} discovered CUHK words")
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildCuhkCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
             **kwargs: keyword arguments
         """
-        kwargs_dict = cast(dict[str, Any], kwargs)
-        cache_dir_path = kwargs_dict.pop("cache_dir")
-        database_path = kwargs_dict.pop("database_path")
-        max_words = kwargs_dict.pop("max_words", None)
-        overwrite = kwargs_dict.pop("overwrite")
-        min_delay_seconds = kwargs_dict.pop("min_delay_seconds")
-        max_delay_seconds = kwargs_dict.pop("max_delay_seconds")
-        max_retries = kwargs_dict.pop("max_retries")
-        request_timeout_seconds = kwargs_dict.pop("request_timeout_seconds")
+        cache_dir_path = kwargs.pop("cache_dir")
+        database_path = kwargs.pop("database_path")
+        max_words = kwargs.pop("max_words", None)
+        overwrite = kwargs.pop("overwrite")
+        min_delay_seconds = kwargs.pop("min_delay_seconds")
+        max_delay_seconds = kwargs.pop("max_delay_seconds")
+        max_retries = kwargs.pop("max_retries")
+        request_timeout_seconds = kwargs.pop("request_timeout_seconds")
 
         service = CuhkDictionaryService(
             database_path=database_path,

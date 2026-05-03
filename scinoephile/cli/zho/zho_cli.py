@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .zho_fuse_cli import ZhoFuseCli
@@ -15,6 +15,13 @@ from .zho_process_cli import ZhoProcessCli
 from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
 __all__ = ["ZhoCli"]
+
+
+class _ZhoCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ZhoCli."""
+
+    zho_subcommand: str
+    """Selected standard Chinese subtitle subcommand."""
 
 
 class ZhoCli(ScinoephileCliBase):
@@ -69,7 +76,7 @@ class ZhoCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_ZhoCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

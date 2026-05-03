@@ -16,22 +16,15 @@ from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
 from pathlib import Path
 from sys import argv
-from typing import Any, Unpack
-
-from typing_extensions import TypedDict
+from typing import Any
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
 __all__ = [
-    "CLIKwargs",
     "CommandLineInterface",
 ]
 
 logger = getLogger(__name__)
-
-
-class CLIKwargs(TypedDict, total=False, extra_items=Any):
-    """Keyword arguments for command-line interface _main methods."""
 
 
 class CommandLineInterface(ABC):
@@ -153,6 +146,6 @@ class CommandLineInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments."""
         raise NotImplementedError()

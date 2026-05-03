@@ -7,9 +7,8 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -26,6 +25,19 @@ from scinoephile.dictionaries.lookup import (
 __all__ = ["DictionarySearchCli"]
 
 logger = getLogger(__name__)
+
+
+class _DictionarySearchCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionarySearchCli."""
+
+    database_path: Path | None
+    """SQLite database input path."""
+    dictionary_name: str
+    """Dictionary selector."""
+    query: str
+    """Lookup query."""
+    limit: int
+    """Maximum number of matches to show per dictionary."""
 
 
 class DictionarySearchCli(ScinoephileCliBase):
@@ -135,7 +147,7 @@ class DictionarySearchCli(ScinoephileCliBase):
                 logger.info(f"   - {label_prefix}{definition.text}")
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionarySearchCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
