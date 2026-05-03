@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.analysis.character_error_rate import SeriesCER
-from scinoephile.analysis.diff import SeriesDiff
+from scinoephile.analysis.diff import AlignmentSeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
@@ -179,13 +179,16 @@ if "简体粤文 (Transcription)" in actions:
         overwrite_srt=True,
     )
 if "简体粤文 (Diff)" in actions:
+    # yue_hans_transcribe = Series.load(
+    #     yue_hans_transcribe_dir / "test_simplified" / "transcribe.srt"
+    # )
     yue_hans_transcribe = Series.load(
         yue_hans_transcribe_dir
         / "test_simplified"
         / "transcribe_review_translate_block_review.srt"
     )
     yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
-    diff = SeriesDiff(
+    diff = AlignmentSeriesDiff(
         yue_hans_transcribe,
         yue_hans_reference,
         one_lbl="TRANSCRIBE",

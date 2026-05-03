@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
@@ -116,3 +118,29 @@ def test_analysis_diff_cli(
 
     for expected_edit in expected_edits:
         assert expected_edit in output
+
+
+def test_analysis_diff_cli_alignment_experiment(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test analysis diff CLI experimental alignment output.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    one_infile_path = tmp_path / "one.srt"
+    two_infile_path = tmp_path / "two.srt"
+    srt_text = "1\n00:00:00,000 --> 00:00:01,000\nalpha\n"
+    one_infile_path.write_text(srt_text, encoding="utf-8")
+    two_infile_path.write_text(srt_text, encoding="utf-8")
+
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
+        "--alignment-experiment",
+    )
+    output = capsys.readouterr().out
+
+    assert output == "Current diff:\n\nAlignment experiment diff:\n"
