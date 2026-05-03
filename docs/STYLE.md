@@ -64,6 +64,19 @@
   * CLI tools may use `print` for intentional command output written to stdout.
   * Follow the repository pattern of defining a module-level `logger = getLogger(__name__)`.
 
+## Command Line Interface
+* In CLI modules under `scinoephile/cli/`, group arguments using
+  `scinoephile.common.argument_parsing.get_arg_groups_by_name(...)`.
+  * Standard group names are:
+    * `input arguments`
+    * `operation arguments`
+    * `output arguments`
+  * Rename the default optional group to `additional arguments` via
+    `optional_arguments_name="additional arguments"`.
+* CLI modules should support localization by defining a `localizations` mapping (as used by
+  `ScinoephileCliBase.translate_text`), and writing `help`, `description`, and argument-group
+  titles using stable English strings that can be translated.
+
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.
 
@@ -71,6 +84,7 @@
 * Include a module docstring at the top of each file.
 * Use Markdown for formatting.
 * Do **not** include any reStructuredText markup such as double backticks.
+* Do **not** use reStructuredText roles such as `:mod:` or `:class:` in docstrings.
 * Provide docstrings for all modules, classes, properties, and functions, including internal helpers prefixed with an underscore.
   * Provide docstrings for property setters as well as getters when they are defined.
   * Provide docstrings for `TypedDict` classes, enums, and other public type definitions.
