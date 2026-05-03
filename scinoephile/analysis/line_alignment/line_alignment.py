@@ -4,11 +4,19 @@
 
 from __future__ import annotations
 
-from .line_alignment_metric import LineAlignmentMetric
 from .line_alignment_operation import LineAlignmentOperation
 from .line_alignment_pair import LineAlignmentPair
 
 __all__ = ["LineAlignment"]
+
+_OPERATION_NONE = 255
+_OPERATION_MATCH = LineAlignmentOperation.MATCH.value
+_OPERATION_SUBSTITUTE = LineAlignmentOperation.SUBSTITUTE.value
+_OPERATION_DELETE = LineAlignmentOperation.DELETE.value
+_OPERATION_INSERT = LineAlignmentOperation.INSERT.value
+_GAP_NONE = -1
+
+type _MetricKey = tuple[int, int, int, int, int]
 
 
 class LineAlignment:
@@ -49,7 +57,7 @@ class LineAlignment:
 
     def _get_operation_table(  # noqa: PLR0915
         self,
-    ) -> list[list[LineAlignmentOperation | None]]:
+    ) -> list[bytearray]:
         """Get the compact dynamic-programming operation table.
 
         Returns:
@@ -62,30 +70,26 @@ class LineAlignment:
         # previous and current rows, but every chosen operation must be retained
         # so the final alignment can be reconstructed from bottom-right to top-left.
         operation_table = [
-            [None for _ in range(two_length + 1)] for _ in range(one_length + 1)
+            bytearray([_OPERATION_NONE]) * (two_length + 1)
+            for _ in range(one_length + 1)
         ]
         if two_length > 0:
-            operation_table[0][1:] = [
-                LineAlignmentOperation.INSERT for _ in range(two_length)
-            ]
+            operation_table[0][1:] = bytearray([_OPERATION_INSERT]) * two_length
 
         # The top edge aligns an empty first string with prefixes of `two`, so
         # every non-origin cell is reached by one contiguous insert run.
         previous_metrics = [
-            LineAlignmentMetric.for_inserts(two_idx)
-            for two_idx in range(two_length + 1)
+            self._get_insert_metric(two_idx) for two_idx in range(two_length + 1)
         ]
-        previous_gaps: list[LineAlignmentOperation | None] = [None]
-        previous_gaps.extend(LineAlignmentOperation.INSERT for _ in range(two_length))
+        previous_gaps = [_GAP_NONE]
+        previous_gaps.extend(_OPERATION_INSERT for _ in range(two_length))
 
         for one_idx in range(1, one_length + 1):
             # The left edge aligns prefixes of `one` with an empty second string,
             # so each row starts with one contiguous delete run.
-            operation_table[one_idx][0] = LineAlignmentOperation.DELETE
-            current_metrics = [LineAlignmentMetric.for_deletes(one_idx)]
-            current_gaps: list[LineAlignmentOperation | None] = [
-                LineAlignmentOperation.DELETE
-            ]
+            operation_table[one_idx][0] = _OPERATION_DELETE
+            current_metrics = [self._get_delete_metric(one_idx)]
+            current_gaps = [_OPERATION_DELETE]
             one_char = self.one[one_idx - 1]
             operation_row = operation_table[one_idx]
 
@@ -96,80 +100,59 @@ class LineAlignment:
                 # It is free for a match and costs one substitution otherwise.
                 previous_diagonal = previous_metrics[two_idx - 1]
                 if one_char == two_char:
-                    best_metric = previous_diagonal
-                    best_key = (
-                        previous_diagonal.distance,
-                        previous_diagonal.gap_runs,
-                        previous_diagonal.substitutions,
-                        previous_diagonal.deletions,
-                        previous_diagonal.insertions,
-                    )
-                    best_operation = LineAlignmentOperation.MATCH
-                    best_gap = None
+                    best_key = previous_diagonal
+                    best_operation = _OPERATION_MATCH
+                    best_gap = _GAP_NONE
                 else:
-                    best_metric = None
                     best_key = (
-                        previous_diagonal.distance + 1,
-                        previous_diagonal.gap_runs,
-                        previous_diagonal.substitutions + 1,
-                        previous_diagonal.deletions,
-                        previous_diagonal.insertions,
+                        previous_diagonal[0] + 1,
+                        previous_diagonal[1],
+                        previous_diagonal[2] + 1,
+                        previous_diagonal[3],
+                        previous_diagonal[4],
                     )
-                    best_operation = LineAlignmentOperation.SUBSTITUTE
-                    best_gap = None
+                    best_operation = _OPERATION_SUBSTITUTE
+                    best_gap = _GAP_NONE
 
                 # The left candidate consumes the next character from `two`.
                 # Starting a new insert run is worse than extending an existing one.
                 previous_insert = current_metrics[two_idx - 1]
-                insert_gap_runs = previous_insert.gap_runs
-                if current_gaps[two_idx - 1] != LineAlignmentOperation.INSERT:
+                insert_gap_runs = previous_insert[1]
+                if current_gaps[two_idx - 1] != _OPERATION_INSERT:
                     insert_gap_runs += 1
                 insert_key = (
-                    previous_insert.distance + 1,
+                    previous_insert[0] + 1,
                     insert_gap_runs,
-                    previous_insert.substitutions,
-                    previous_insert.deletions,
-                    previous_insert.insertions + 1,
+                    previous_insert[2],
+                    previous_insert[3],
+                    previous_insert[4] + 1,
                 )
                 if insert_key < best_key:
-                    best_metric = None
                     best_key = insert_key
-                    best_operation = LineAlignmentOperation.INSERT
-                    best_gap = LineAlignmentOperation.INSERT
+                    best_operation = _OPERATION_INSERT
+                    best_gap = _OPERATION_INSERT
 
                 # The upper candidate consumes the next character from `one`.
                 # Ties are resolved by operation enum order to match prior behavior.
                 previous_delete = previous_metrics[two_idx]
-                delete_gap_runs = previous_delete.gap_runs
-                if previous_gaps[two_idx] != LineAlignmentOperation.DELETE:
+                delete_gap_runs = previous_delete[1]
+                if previous_gaps[two_idx] != _OPERATION_DELETE:
                     delete_gap_runs += 1
                 delete_key = (
-                    previous_delete.distance + 1,
+                    previous_delete[0] + 1,
                     delete_gap_runs,
-                    previous_delete.substitutions,
-                    previous_delete.deletions + 1,
-                    previous_delete.insertions,
+                    previous_delete[2],
+                    previous_delete[3] + 1,
+                    previous_delete[4],
                 )
-                if self._is_better_candidate(
-                    delete_key,
-                    LineAlignmentOperation.DELETE,
-                    best_key,
-                    best_operation,
+                if delete_key < best_key or (
+                    delete_key == best_key and _OPERATION_DELETE < best_operation
                 ):
-                    best_metric = None
                     best_key = delete_key
-                    best_operation = LineAlignmentOperation.DELETE
-                    best_gap = LineAlignmentOperation.DELETE
+                    best_operation = _OPERATION_DELETE
+                    best_gap = _OPERATION_DELETE
 
-                if best_metric is None:
-                    best_metric = LineAlignmentMetric(
-                        best_key[0],
-                        best_key[1],
-                        best_key[2],
-                        best_key[3],
-                        best_key[4],
-                    )
-                current_metrics.append(best_metric)
+                current_metrics.append(best_key)
                 current_gaps.append(best_gap)
                 operation_row[two_idx] = best_operation
 
@@ -179,31 +162,34 @@ class LineAlignment:
         return operation_table
 
     @staticmethod
-    def _is_better_candidate(
-        candidate_key: tuple[int, ...],
-        candidate_operation: LineAlignmentOperation,
-        best_key: tuple[int, ...],
-        best_operation: LineAlignmentOperation,
-    ) -> bool:
-        """Check whether one candidate should replace another.
+    def _get_delete_metric(count: int) -> _MetricKey:
+        """Build an edge metric for forced deletes.
 
         Arguments:
-            candidate_key: candidate alignment metric comparison key
-            candidate_operation: operation used by the candidate
-            best_key: current best metric comparison key
-            best_operation: operation used by the current best
+            count: number of deleted characters
         Returns:
-            whether the candidate is preferred
+            metric for a prefix aligned only by deletes
         """
-        if candidate_key < best_key:
-            return True
-        if candidate_key == best_key and candidate_operation < best_operation:
-            return True
-        return False
+        if count == 0:
+            return (0, 0, 0, 0, 0)
+        return (count, 1, 0, count, 0)
+
+    @staticmethod
+    def _get_insert_metric(count: int) -> _MetricKey:
+        """Build an edge metric for forced inserts.
+
+        Arguments:
+            count: number of inserted characters
+        Returns:
+            metric for a prefix aligned only by inserts
+        """
+        if count == 0:
+            return (0, 0, 0, 0, 0)
+        return (count, 1, 0, 0, count)
 
     def _populate_alignment_pairs(
         self,
-        operation_table: list[list[LineAlignmentOperation | None]],
+        operation_table: list[bytearray],
     ):
         """Populate alignment pairs by backtracing DP operations.
 
@@ -214,9 +200,10 @@ class LineAlignment:
         two_idx = len(self.two)
         self.alignment_pairs = []
         while one_idx != 0 or two_idx != 0:
-            operation = operation_table[one_idx][two_idx]
-            if operation is None:
+            operation_value = operation_table[one_idx][two_idx]
+            if operation_value == _OPERATION_NONE:
                 break
+            operation = LineAlignmentOperation(operation_value)
 
             if operation in (
                 LineAlignmentOperation.MATCH,
