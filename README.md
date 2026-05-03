@@ -9,31 +9,6 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
-## Synchronization
-
-Use `scinoephile sync` to combine two subtitle files into synchronized bilingual
-subtitles:
-
-```shell
-scinoephile sync \
-  --top-infile top.srt \
-  --bottom-infile bottom.srt \
-  --outfile synced.srt
-```
-
-For difficult subtitle sets, `--sync-cutoff` adjusts the initial overlap threshold
-used when grouping subtitles, and `--pause-length` adjusts the pause in milliseconds
-used to split long subtitle streams into blocks:
-
-```shell
-scinoephile sync \
-  --top-infile top.srt \
-  --bottom-infile bottom.srt \
-  --outfile synced.srt \
-  --sync-cutoff 0.16 \
-  --pause-length 3000
-```
-
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in
