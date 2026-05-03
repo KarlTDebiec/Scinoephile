@@ -52,7 +52,7 @@ dev = [
 log_cli = true
 log_cli_level = "INFO"
 filterwarnings = [
-    "ignore:invalid escape sequence:SyntaxWarning:pydub\\.utils",
+    'ignore:invalid escape sequence .*\\\(:SyntaxWarning',
     "ignore:Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work:RuntimeWarning:pydub\\.utils",
 ]
 
