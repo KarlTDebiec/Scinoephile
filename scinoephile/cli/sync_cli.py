@@ -9,8 +9,10 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
+    float_arg,
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
@@ -29,6 +31,10 @@ class _SyncCliKwargs(TypedDict, total=False):
     """Subtitle infile for top line or stdin sentinel."""
     bottom_infile: Path | str
     """Subtitle infile for bottom line or stdin sentinel."""
+    sync_cutoff: float
+    """Initial overlap cutoff used to form sync groups."""
+    pause_length: int
+    """Pause length in milliseconds used to split subtitle blocks."""
     outfile: Path | None
     """Synchronized subtitle outfile path."""
     overwrite: bool
@@ -63,6 +69,7 @@ class SyncCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -79,6 +86,23 @@ class SyncCli(ScinoephileCliBase):
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for bottom line or "-" for stdin',
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--sync-cutoff",
+            default=0.16,
+            type=float_arg(min_value=0.0, max_value=1.0),
+            help="initial overlap cutoff used to form sync groups (default: 0.16)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--pause-length",
+            default=3000,
+            type=int_arg(min_value=1),
+            help=(
+                "pause length in milliseconds used to split subtitle blocks "
+                "(default: 3000)"
+            ),
         )
 
         # Output arguments
@@ -107,6 +131,8 @@ class SyncCli(ScinoephileCliBase):
         parser = kwargs.pop("_parser", cls.argparser())
         top_infile_path = kwargs.pop("top_infile")
         bottom_infile_path = kwargs.pop("bottom_infile")
+        sync_cutoff = kwargs.pop("sync_cutoff")
+        pause_length = kwargs.pop("pause_length")
         outfile_path: Path | None = kwargs.pop("outfile")
         overwrite = kwargs.pop("overwrite")
         if top_infile_path == "-" and bottom_infile_path == "-":
@@ -129,7 +155,12 @@ class SyncCli(ScinoephileCliBase):
         bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
 
         # Perform operations
-        synced = get_synced_series(top, bottom)
+        synced = get_synced_series(
+            top,
+            bottom,
+            sync_cutoff=sync_cutoff,
+            pause_length=pause_length,
+        )
 
         # Write outputs
         write_series(

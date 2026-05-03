@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stderr
 from io import StringIO
 from unittest.mock import patch
 
@@ -124,3 +125,91 @@ def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
     expected = Series.load(full_expected_path)
 
     assert output == expected
+
+
+@pytest.mark.parametrize(
+    ("args", "expected_sync_cutoff", "expected_pause_length"),
+    [
+        ("", 0.16, 3000),
+        ("--sync-cutoff 0.25 --pause-length 5000", 0.25, 5000),
+    ],
+)
+def test_sync_cli_passes_tuning_options(
+    args: str,
+    expected_sync_cutoff: float,
+    expected_pause_length: int,
+):
+    """Test sync CLI passes synchronization tuning options.
+
+    Arguments:
+        args: extra command-line arguments
+        expected_sync_cutoff: expected sync cutoff passed to synchronization
+        expected_pause_length: expected pause length passed to synchronization
+    """
+    top_path = (
+        test_data_root / "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"
+    )
+    bottom_path = (
+        test_data_root / "mlamd/output/eng_fuse_clean_validate_review_flatten.srt"
+    )
+    top_series = Series()
+    bottom_series = Series()
+    synced_series = Series()
+
+    with patch(
+        "scinoephile.cli.sync_cli.read_series",
+        side_effect=[top_series, bottom_series],
+    ):
+        with patch("scinoephile.cli.sync_cli.write_series"):
+            with patch(
+                "scinoephile.cli.sync_cli.get_synced_series",
+                return_value=synced_series,
+            ) as get_synced_series:
+                run_cli_with_args(
+                    SyncCli,
+                    f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
+                )
+
+    get_synced_series.assert_called_once_with(
+        top_series,
+        bottom_series,
+        sync_cutoff=expected_sync_cutoff,
+        pause_length=expected_pause_length,
+    )
+
+
+@pytest.mark.parametrize(
+    ("args", "expected_error"),
+    [
+        ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),
+        ("--sync-cutoff 1.01", "1.01 is greater than maximum value of 1.0"),
+        ("--pause-length 0", "0 is less than minimum value of 1"),
+    ],
+)
+def test_sync_cli_rejects_invalid_tuning_options(
+    args: str,
+    expected_error: str,
+):
+    """Test sync CLI rejects invalid synchronization tuning options.
+
+    Arguments:
+        args: extra command-line arguments
+        expected_error: expected error message
+    """
+    top_path = (
+        test_data_root / "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"
+    )
+    bottom_path = (
+        test_data_root / "mlamd/output/eng_fuse_clean_validate_review_flatten.srt"
+    )
+
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stderr(stderr):
+            run_cli_with_args(
+                SyncCli,
+                f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
+            )
+
+    assert excinfo.value.code == 2
+    assert expected_error in stderr.getvalue()
