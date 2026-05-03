@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to block review of 粤文 against 中文."""
+"""Code related to block review of written Cantonese against standard Chinese."""
 
 from __future__ import annotations
 
@@ -37,13 +37,16 @@ class YueZhoBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class YueZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_yue_block_reviewed_vs_zho(
@@ -52,15 +55,15 @@ def get_yue_block_reviewed_vs_zho(
     reviewer: DualBlockProcessor | None = None,
     **kwargs: Unpack[YueZhoBlockReviewProcessKwargs],
 ) -> Series:
-    """Get 粤文 subtitles block reviewed against 中文 subtitles.
+    """Get written Cantonese block reviewed against standard Chinese subtitles.
 
     Arguments:
-        yuewen: 粤文 Series
-        zhongwen: 中文 Series
+        yuewen: written Cantonese Series
+        zhongwen: standard Chinese Series
         reviewer: processor to use
         **kwargs: additional arguments for DualBlockProcessor.process
     Returns:
-        粤文 block reviewed against 中文
+        written Cantonese block reviewed against standard Chinese
     """
     if reviewer is None:
         reviewer = get_yue_vs_zho_block_reviewer()
@@ -95,17 +98,15 @@ def get_yue_vs_zho_block_reviewer(
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return DualBlockProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )

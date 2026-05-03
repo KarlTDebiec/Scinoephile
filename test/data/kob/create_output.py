@@ -6,18 +6,21 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.analysis.character_error_rate import SeriesCER
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
-from scinoephile.lang.eng import (
+from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
-    get_eng_cleaned,
-    get_eng_flattened,
+    get_eng_block_reviewer,
 )
-from scinoephile.lang.eng.block_review import get_eng_block_reviewer
-from scinoephile.lang.yue import get_yue_romanized
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.lang.yue.romanization import get_yue_romanized
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoYueHansBlockReviewPrompt,
     YueVsZhoYueHantBlockReviewPrompt,
@@ -26,10 +29,7 @@ from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoYueHansLineReviewPrompt,
     YueVsZhoYueHantLineReviewPrompt,
 )
-from scinoephile.multilang.yue_zho.transcription import (
-    DemucsMode,
-    VADMode,
-)
+from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueVsZhoYueHansDeliniationPrompt,
     YueVsZhoYueHantDeliniationPrompt,
@@ -67,7 +67,8 @@ actions = {
     # "简体粤文 (SRT)",
     # "English (SRT)",
     # "Bilingual 简体粤文 and English",
-    "简体粤文 (Transcription)",
+    # "简体粤文 (Transcription)",
+    "简体粤文 (Diff)",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -178,3 +179,25 @@ if "简体粤文 (Transcription)" in actions:
         block_reviewer_kw={"prompt_cls": YueVsZhoYueHantBlockReviewPrompt},
         overwrite_srt=True,
     )
+if "简体粤文 (Diff)" in actions:
+    # yue_hans_transcribe = Series.load(
+    #     yue_hans_transcribe_dir / "test_simplified" / "transcribe.srt"
+    # )
+    yue_hans_transcribe = Series.load(
+        yue_hans_transcribe_dir
+        / "test_simplified"
+        / "transcribe_review_translate_block_review.srt"
+    )
+    yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
+    zho_hans_reference = Series.load(
+        zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
+    diff = SeriesDiff(
+        yue_hans_transcribe,
+        yue_hans_reference,
+        one_lbl="TRANSCRIBE",
+        two_lbl="REFERENCE",
+    )
+    print(diff)
+    print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
+    print(SeriesCER(yue_hans_reference, yue_hans_transcribe))

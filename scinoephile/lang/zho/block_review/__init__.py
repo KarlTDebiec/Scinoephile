@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 block review."""
+"""Code related to standard Chinese block review."""
 
 from __future__ import annotations
 
@@ -34,13 +34,16 @@ class ZhoBlockReviewProcessKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for MonoBlockProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_block_reviewed(
@@ -48,7 +51,7 @@ def get_zho_block_reviewed(
     processor: MonoBlockProcessor | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessKwargs],
 ) -> Series:
-    """Get 中文 series block reviewed.
+    """Get standard Chinese series block reviewed.
 
     Arguments:
         series: Series to block review

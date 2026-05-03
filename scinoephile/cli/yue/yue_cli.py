@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .yue_process_cli import YueProcessCli
@@ -16,6 +16,13 @@ from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = ["YueCli"]
+
+
+class _YueCliKwargs(TypedDict, total=False):
+    """Keyword arguments for YueCli."""
+
+    yue_subcommand: str
+    """Selected written Cantonese subtitle subcommand."""
 
 
 class YueCli(ScinoephileCliBase):
@@ -71,7 +78,7 @@ class YueCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_YueCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

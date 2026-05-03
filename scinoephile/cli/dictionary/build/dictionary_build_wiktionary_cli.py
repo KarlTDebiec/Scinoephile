@@ -6,13 +6,14 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
 import requests
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
+from scinoephile.dictionaries.wiktionary.constants import WIKTIONARY_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -21,12 +22,34 @@ __all__ = ["DictionaryBuildWiktionaryCli"]
 logger = getLogger(__name__)
 
 
+class _DictionaryBuildWiktionaryCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildWiktionaryCli."""
+
+    database_path: Path | None
+    """SQLite database output path."""
+    overwrite: bool
+    """Whether to overwrite the existing SQLite database."""
+    force_download: bool
+    """Whether to download fresh Kaikki JSONL before building."""
+    source_jsonl_path: Path | None
+    """Path to Kaikki Chinese Wiktionary JSONL dump."""
+    update_local_data: bool
+    """Whether to update the source file under package data."""
+
+
 class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
     """Build Wiktionary dictionary cache."""
+
+    source = WIKTIONARY_SOURCE
+    """Dictionary source built by this CLI."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
+            (
+                "Data derived from Kaikki JSONL exports of Chinese entries from "
+                "Wiktionary."
+            ): "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
             "download fresh Kaikki JSONL before building": (
                 "在构建前下载最新 Kaikki JSONL"
             ),
@@ -39,6 +62,10 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
+            (
+                "Data derived from Kaikki JSONL exports of Chinese entries from "
+                "Wiktionary."
+            ): "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
             "download fresh Kaikki JSONL before building": (
                 "在建立前下載最新 Kaikki JSONL"
             ),
@@ -90,7 +117,7 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildWiktionaryCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

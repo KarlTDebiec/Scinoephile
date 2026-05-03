@@ -9,9 +9,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -28,6 +27,23 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 
 __all__ = ["YueTranslateVsZhoCli"]
+
+
+class _YueTranslateVsZhoCliKwargs(TypedDict, total=False):
+    """Keyword arguments for YueTranslateVsZhoCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    yue_infile: Path | str
+    """Target written Cantonese subtitle infile or stdin sentinel."""
+    zho_infile: Path | str
+    """Reference standard Chinese subtitle infile or stdin sentinel."""
+    script: str
+    """Selected prompt script."""
+    outfile: Path | None
+    """Translated written Cantonese subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class YueTranslateVsZhoCli(ScinoephileCliBase):
@@ -161,7 +177,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansTranslationPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_YueTranslateVsZhoCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

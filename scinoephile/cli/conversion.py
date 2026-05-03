@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import sys
 from argparse import Action, ArgumentParser, Namespace, _ArgumentGroup  # noqa: PLC2701
+from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.lang.zho.conversion import OpenCCConfig
@@ -96,7 +97,7 @@ def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en")
 class ListOpenCCConfigsAction(Action):
     """Print available OpenCC configurations and exit."""
 
-    def __init__(self, option_strings, dest, **kwargs):
+    def __init__(self, option_strings: list[str], dest: str, **kwargs: Any):
         """Initialize.
 
         Arguments:
@@ -111,7 +112,7 @@ class ListOpenCCConfigsAction(Action):
         self,
         parser: ArgumentParser,
         namespace: Namespace,
-        values,
+        values: Any,
         option_string: str | None = None,
     ):
         """Handle the action.

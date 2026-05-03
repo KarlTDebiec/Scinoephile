@@ -6,12 +6,9 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import (
-    CLIKwargs,
-    DirectoryNotFoundError,
-)
+from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     int_arg,
@@ -20,9 +17,26 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exception import NotAFileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 
 __all__ = ["ZhoValidateOcrCli"]
+
+
+class _ZhoValidateOcrCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ZhoValidateOcrCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    infile: Path
+    """Standard Chinese OCR image subtitle infile path."""
+    stop_at_idx: int | None
+    """Subtitle index after which validation should stop."""
+    interactive: bool
+    """Whether to prompt for interactive validation decisions."""
+    outfile: Path
+    """Directory in which to save validation image outputs."""
+    overwrite: bool
+    """Whether to overwrite the outfile directory."""
 
 
 class ZhoValidateOcrCli(ScinoephileCliBase):
@@ -107,7 +121,7 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
         return "validate-ocr"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_ZhoValidateOcrCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

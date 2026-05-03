@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -19,6 +18,21 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
 __all__ = ["SyncCli"]
+
+
+class _SyncCliKwargs(TypedDict, total=False):
+    """Keyword arguments for SyncCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    top_infile: Path | str
+    """Subtitle infile for top line or stdin sentinel."""
+    bottom_infile: Path | str
+    """Subtitle infile for bottom line or stdin sentinel."""
+    outfile: Path | None
+    """Synchronized subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class SyncCli(ScinoephileCliBase):
@@ -83,7 +97,7 @@ class SyncCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_SyncCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

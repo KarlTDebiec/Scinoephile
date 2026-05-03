@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import locale
 import re
-from argparse import ArgumentParser
+from argparse import ArgumentParser, _SubParsersAction  # noqa: PLC2701
 from inspect import cleandoc
 from os import getenv
 from typing import ClassVar
@@ -15,11 +15,14 @@ from scinoephile.common import CommandLineInterface
 
 from .constants import DEFAULT_CLI_LOCALE, LOCALE_ALIASES
 
+__all__ = ["ScinoephileCliBase"]
+
 
 class ScinoephileCliBase(CommandLineInterface):
     """Scinoephile CLI base class."""
 
-    locale_name = DEFAULT_CLI_LOCALE
+    locale_name: ClassVar[str] = DEFAULT_CLI_LOCALE
+    """Active CLI locale name."""
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "additional arguments": "附加参数",
@@ -179,7 +182,9 @@ class ScinoephileCliBase(CommandLineInterface):
                     action.help = cls.translate_text(action.help)
 
     @classmethod
-    def argparser(cls, *, subparsers=None) -> ArgumentParser:
+    def argparser(
+        cls, *, subparsers: _SubParsersAction | None = None
+    ) -> ArgumentParser:
         """Construct localized argument parser."""
         parser = super().argparser(subparsers=subparsers)
         cls.localize_parser(parser)

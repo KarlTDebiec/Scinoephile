@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho import is_traditional
+from scinoephile.lang.zho.conversion import is_traditional
 from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
 

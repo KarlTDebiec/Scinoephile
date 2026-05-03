@@ -6,13 +6,12 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -21,21 +20,46 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.yue import get_yue_romanized
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
+from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
+    get_zho_converted,
 )
+from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = ["YueProcessCli"]
+
+
+class _YueProcessCliKwargs(TypedDict, total=False):
+    """Keyword arguments for YueProcessCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    infile: Path | str
+    """Written Cantonese subtitle infile path or stdin sentinel."""
+    outfile: Path | None
+    """Written Cantonese subtitle outfile path."""
+    clean: bool
+    """Whether to clean subtitles."""
+    flatten: bool
+    """Whether to flatten multi-line subtitles."""
+    convert: OpenCCConfig | None
+    """OpenCC conversion configuration."""
+    proofread: str | None
+    """Selected proofreading script."""
+    romanize: bool
+    """Whether to append Cantonese romanization."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class YueProcessCli(ScinoephileCliBase):
@@ -169,7 +193,7 @@ class YueProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_YueProcessCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

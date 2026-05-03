@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Cantonese transcription tooling for 粤文/中文 workflows."""
+"""Cantonese transcription tooling for written Cantonese/standard Chinese workflows."""
 
 from __future__ import annotations
 
@@ -19,14 +19,9 @@ from scinoephile.llms.default_test_cases import (
 )
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueZhoPunctuationManager,
-)
 
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
 from .transcriber import DemucsMode, VADMode, YueTranscriber
 
 __all__ = [
@@ -79,16 +74,16 @@ def get_yue_transcribed_vs_zho(
     convert: OpenCCConfig | None = None,
     **kwargs: Unpack[YueZhoTranscriptionKwargs],
 ) -> AudioSeries:
-    """Get initial 粤文 transcription aligned to 中文.
+    """Get initial written Cantonese transcription aligned to standard Chinese.
 
     Arguments:
-        yuewen: nascent 粤文 audio subtitle series
-        zhongwen: 中文 subtitle series
+        yuewen: nascent written Cantonese audio subtitle series
+        zhongwen: standard Chinese subtitle series
         transcriber: transcriber to use
         convert: OpenCC configuration used for transcribed text conversion
         **kwargs: additional keyword arguments for YueTranscriber.process_all_blocks
     Returns:
-        transcribed 粤文 subtitle series
+        transcribed written Cantonese subtitle series
     """
     if transcriber is None:
         transcriber = get_yue_vs_zho_transcriber(convert=convert)

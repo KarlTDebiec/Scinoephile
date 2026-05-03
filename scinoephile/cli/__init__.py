@@ -4,6 +4,6 @@
 
 from __future__ import annotations
 
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from .scinoephile_cli import ScinoephileCli
 
 __all__ = ["ScinoephileCli"]

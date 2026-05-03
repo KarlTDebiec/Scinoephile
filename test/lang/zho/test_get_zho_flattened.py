@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho import get_zho_flattened
+from scinoephile.lang.zho.flattening import get_zho_flattened
 
 # noinspection PyProtectedMember
 
@@ -39,12 +39,13 @@ def test_get_zho_flattened_kob(
     kob_zho_hant_ocr_fuse_clean_validate_review: Series,
     kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
 ):
-    """Test get_zho_flattened with KOB 繁体中文 subtitles.
+    """Test get_zho_flattened with KOB traditional standard Chinese subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_fuse_clean_validate_review: KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review: KOB traditional standard
+          Chinese series fixture
         kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Expected flattened KOB
-          繁体中文 series fixture
+          traditional standard Chinese series fixture
     """
     _test_get_zho_flattened(
         kob_zho_hant_ocr_fuse_clean_validate_review,
@@ -56,12 +57,13 @@ def test_get_zho_flattened_mlamd(
     mlamd_zho_hans_fuse_clean_validate_review: Series,
     mlamd_zho_hans_fuse_clean_validate_review_flatten: Series,
 ):
-    """Test get_zho_flattened with MLAMD 简体中文 subtitles.
+    """Test get_zho_flattened with MLAMD simplified standard Chinese subtitles.
 
     Arguments:
-        mlamd_zho_hans_fuse_clean_validate_review: MLAMD 简体中文 series fixture
+        mlamd_zho_hans_fuse_clean_validate_review: MLAMD simplified standard
+          Chinese series fixture
         mlamd_zho_hans_fuse_clean_validate_review_flatten: Expected flattened
-          MLAMD 简体中文 series fixture
+          MLAMD simplified standard Chinese series fixture
     """
     _test_get_zho_flattened(
         mlamd_zho_hans_fuse_clean_validate_review,
@@ -73,12 +75,13 @@ def test_get_zho_flattened_mnt(
     mnt_zho_hant_fuse_clean_validate_review: Series,
     mnt_zho_hant_fuse_clean_validate_review_flatten: Series,
 ):
-    """Test get_zho_flattened with MNT 繁体中文 subtitles.
+    """Test get_zho_flattened with MNT traditional standard Chinese subtitles.
 
     Arguments:
-        mnt_zho_hant_fuse_clean_validate_review: MNT 繁体中文 series fixture
+        mnt_zho_hant_fuse_clean_validate_review: MNT traditional standard Chinese
+          series fixture
         mnt_zho_hant_fuse_clean_validate_review_flatten: Expected flattened MNT
-          繁体中文 series fixture
+          traditional standard Chinese series fixture
     """
     _test_get_zho_flattened(
         mnt_zho_hant_fuse_clean_validate_review,
@@ -90,12 +93,13 @@ def test_get_zho_flattened_t(
     t_zho_hans_fuse_clean_validate_review: Series,
     t_zho_hans_fuse_clean_validate_review_flatten: Series,
 ):
-    """Test get_zho_flattened with T 简体中文 subtitles.
+    """Test get_zho_flattened with T simplified standard Chinese subtitles.
 
     Arguments:
-        t_zho_hans_fuse_clean_validate_review: T 简体中文 series fixture
+        t_zho_hans_fuse_clean_validate_review: T simplified standard Chinese
+          series fixture
         t_zho_hans_fuse_clean_validate_review_flatten: Expected flattened T
-          简体中文 series fixture
+          simplified standard Chinese series fixture
     """
     _test_get_zho_flattened(
         t_zho_hans_fuse_clean_validate_review,

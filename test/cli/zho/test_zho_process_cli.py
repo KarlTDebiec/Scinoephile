@@ -28,7 +28,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 processing CLI help output.
+    """Test standard Chinese processing CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,7 +45,7 @@ def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 processing CLI usage output.
+    """Test standard Chinese processing CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -88,7 +88,7 @@ def test_zho_process_cli(
     args: str,
     expected_path: str,
 ):
-    """Test 中文 processing CLI with file arguments.
+    """Test standard Chinese processing CLI with file arguments.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -120,7 +120,7 @@ def test_zho_process_cli(
     ],
 )
 def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
-    """Test 中文 processing CLI via stdin/stdout.
+    """Test standard Chinese processing CLI via stdin/stdout.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -144,7 +144,7 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
 
 def test_zho_process_cli_rejects_bare_convert_flag():
-    """Test 中文 processing CLI requires an explicit conversion config."""
+    """Test standard Chinese processing CLI requires an explicit conversion config."""
     full_input_path = (
         test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt"
     )

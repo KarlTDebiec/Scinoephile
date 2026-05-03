@@ -7,13 +7,14 @@ from __future__ import annotations
 import zipfile
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
 import requests
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
+from scinoephile.dictionaries.unihan.constants import UNIHAN_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -22,12 +23,38 @@ __all__ = ["DictionaryBuildUnihanCli"]
 logger = getLogger(__name__)
 
 
+class _DictionaryBuildUnihanCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildUnihanCli."""
+
+    database_path: Path | None
+    """SQLite database output path."""
+    overwrite: bool
+    """Whether to overwrite the existing SQLite database."""
+    force_download: bool
+    """Whether to download fresh Unihan data before building."""
+    update_local_data: bool
+    """Whether to update source files under package data."""
+    source_dictionary_like_data_path: Path | None
+    """Path to Unihan_DictionaryLikeData.txt."""
+    source_readings_path: Path | None
+    """Path to Unihan_Readings.txt."""
+    source_variants_path: Path | None
+    """Path to Unihan_Variants.txt."""
+
+
 class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
     """Build Unihan dictionary cache."""
+
+    source = UNIHAN_SOURCE
+    """Dictionary source built by this CLI."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build Unihan dictionary cache": "构建 Unihan 词典缓存",
+            (
+                "Data derived from Unicode Unihan files for variants, readings, and "
+                "dictionary-like metadata."
+            ): "由 Unicode Unihan 文件中的异体字、读音和类词典元数据整理而成的数据。",
             "download fresh Unihan.zip before building": (
                 "在构建前下载最新 Unihan.zip"
             ),
@@ -42,6 +69,10 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build Unihan dictionary cache": "建立 Unihan 詞典快取",
+            (
+                "Data derived from Unicode Unihan files for variants, readings, and "
+                "dictionary-like metadata."
+            ): "由 Unicode Unihan 檔案中的異體字、讀音和類詞典後設資料整理而成的資料。",
             "download fresh Unihan.zip before building": (
                 "在建立前下載最新 Unihan.zip"
             ),
@@ -107,7 +138,7 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildUnihanCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

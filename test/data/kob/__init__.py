@@ -8,14 +8,13 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
 import pytest
 
-from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import TestCase, load_test_cases_from_json
-from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
@@ -42,7 +41,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoYueHansPunctuationPrompt,
     YueZhoPunctuationManager,
 )
-from test.helpers import test_data_root
+from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
     "kob_eng",
@@ -102,6 +101,10 @@ input_dir = title_root / "input"
 output_dir = title_root / "output"
 
 
+class _KobTestCaseKwargs(TypedDict, total=False):
+    """Keyword arguments forwarded to KOB test case loading helpers."""
+
+
 @pytest.fixture
 def kob_eng() -> Series:
     """KOB English subtitles."""
@@ -147,7 +150,7 @@ def kob_zho_hant_ocr_paddle() -> Series:
 @cache
 def get_kob_eng_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English block review test cases.
 
@@ -171,7 +174,7 @@ def get_kob_eng_block_review_test_cases(
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
@@ -190,7 +193,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 @cache
 def get_kob_yue_deliniation_test_cases(
     prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
 
@@ -217,7 +220,7 @@ def get_kob_yue_deliniation_test_cases(
 @cache
 def get_kob_yue_punctuation_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
 
@@ -244,7 +247,7 @@ def get_kob_yue_punctuation_test_cases(
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
 
@@ -270,7 +273,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
 @cache
 def get_kob_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 block review test cases.
 
@@ -289,7 +292,7 @@ def get_kob_zho_hant_block_review_test_cases(
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.
 
@@ -308,7 +311,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_kob_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 simplification block review test cases.
 
@@ -346,7 +349,7 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[249] -> SRT[260]: 'About the personality of Mr So…' -> 'About the personality of Mr. So…'",
         "edit: OCR[251] -> SRT[262]: 'Leave here first' -> 'Leave here first.'",
         "edit: OCR[252] -> SRT[263]: 'Yes, you are right' -> 'Yes, you are right.'",
-        "merge_edit: OCR[253] -> SRT[264-265]: ['- Miss Seven…    - Just accept this'] -> ['Miss Seven…', 'Just accept this.']",
+        "split_edit: OCR[253] -> SRT[264-265]: ['- Miss Seven…    - Just accept this'] -> ['Miss Seven…', 'Just accept this.']",
         "edit: OCR[256] -> SRT[268]: 'Miss, first of all, I have good news for you' -> 'Miss, first of all, I have a good news for you'",
         "edit: OCR[258] -> SRT[270]: 'To me, this is a bad news' -> 'To me, this is bad news'",
         "shift: OCR[285-286] -> SRT[297-298]: ['- Witness?    - Yes', 'I swear in front of your sword'] -> ['Witness?', 'Yes, I swear in front of your sword']",
@@ -359,6 +362,7 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[428] -> SRT[440]: 'I wanted to trick you actually, you are really smart' -> 'I wanted to trick you actually, you are really smart.'",
         "split: OCR[477] -> SRT[489-490]: [\"- You shouldn't put it that way    - What?\"] -> [\"You shouldn't put it that way\", 'What?']",
         "insert: SRT[530] 'Bravo…' not present in OCR",
+        "insert: SRT[531] 'They should add 2 more marks for that powerful shoot' not present in OCR",
         "split: OCR[539] -> SRT[553-554]: ['What did you say?'] -> ['What did', 'you say?']",
         "split: OCR[544] -> SRT[559-560]: ['Damn you Cheng! You betrayed me!'] -> ['Damn you Cheng!', 'You betrayed me!']",
         "delete: OCR[562] 'You… You…' not present in SRT",
@@ -399,10 +403,10 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[780] -> SRT[807]: 'But he framed us in return' -> 'But he framed us in return.'",
         "edit: OCR[782] -> SRT[809]: 'during the examination' -> 'during the examination.'",
         "insert: SRT[811] 'He finally won the race' not present in OCR",
+        "insert: SRT[812] 'To be the greatest Kung-fu fighter, invincible' not present in OCR",
         "edit: OCR[791] -> SRT[819]: 'Because being the scholar is too simple for me' -> 'Because being the scholar is too simple to me'",
         "split: OCR[797] -> SRT[825-826]: [\"Although you have taken 2 months' rest,\"] -> ['Although you have taken', \"2 months' rest,\"]",
-        "edit: OCR[798] -> SRT[827]: 'your legs and hands have not been totally recovered' -> 'your legs and hands have not been totally recovered.'",
-        "edit: OCR[799] -> SRT[828]: '- Mr. Ha Yee    - Coming' -> 'Coming'",
+        "split_edit: OCR[799] -> SRT[827-828]: ['- Mr. Ha Yee    - Coming'] -> ['your legs and hands have not been totally recovered.', 'Coming']",
         "split: OCR[801] -> SRT[830-831]: ['I will make the last herbal tea for you later'] -> ['I will make the last herbal tea', 'for you later']",
         'edit: OCR[812] -> SRT[842]: "We can\'t beg for food if we are late!" -> "We can\'t beg for good if we are late!"',
         'delete: OCR[814] "You\'re not a master now." not present in SRT',
@@ -448,8 +452,7 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[1162] -> SRT[1199]: 'They are easily to be cheated, I am really a genius!' -> 'They are easily cheated, I am really a genius!'",
         'edit: OCR[1163] -> SRT[1200]: "We\'ll have better living" -> "We\'ll have a better living"',
         "edit: OCR[1166] -> SRT[1203]: 'Bravo…' -> 'You should have faith, you won, bravo…'",
-        "delete: OCR[1179] 'Chan,' not present in SRT",
-        "split: OCR[1180] -> SRT[1216-1217]: ['do you understand everything written in this book?'] -> ['Do you understand everything', 'written in this book?']",
+        "shift: OCR[1179-1180] -> SRT[1216-1217]: ['Chan,', 'do you understand everything written in this book?'] -> ['Do you understand everything', 'written in this book?']",
         "edit: OCR[1182] -> SRT[1219]: 'After getting the help of Taiwan Pill' -> 'After getting the help of Taiwan Pill,'",
         "edit: OCR[1186] -> SRT[1223]: 'there is no picture or description of it' -> 'there is no picture or description of it.'",
         'edit: OCR[1187] -> SRT[1224]: "I can\'t understand at all" -> "I can\'t understand it at all"',
@@ -461,8 +464,8 @@ def kob_eng_expected_series_diff() -> list[str]:
         "edit: OCR[1312] -> SRT[1352]: 'Yes. Look at you, you are like beggar too' -> 'Yes. Look at you, you are like a beggar too'",
         "edit: OCR[1313] -> SRT[1353]: 'Are you interested to join us?' -> 'Are you interested in joining us?'",
         'edit: OCR[1334] -> SRT[1374]: "I\'ve got it. Just mix the 17 stances," -> "I\'ve got it Just mix the 17 stances,"',
-        "edit: OCR[1344] -> SRT[1384]: 'You are great!' -> 'Sister!'",
-        "edit: OCR[1345] -> SRT[1385]: 'Chan! Are you okay?' -> 'Tracy!'",
+        "delete: OCR[1344] 'You are great!' not present in SRT",
+        "split_edit: OCR[1345] -> SRT[1384-1385]: ['Chan! Are you okay?'] -> ['Sister!', 'Tracy!']",
         'edit: OCR[1352] -> SRT[1392]: "Chiu\'s fellows have all been caught by us" -> "Chiu\'s fellows are all caught by us"',
         "edit: OCR[1356] -> SRT[1396]: 'Yes, be the top of all' -> 'Yes, be the top of all.'",
         'edit: OCR[1359] -> SRT[1399]: "But I don\'t like Scholar at all" -> "But I don\'t like Scholar at all."',
@@ -576,14 +579,14 @@ def kob_yue_hans_transcribe() -> Series:
 
 
 @pytest.fixture
-def kob_yue_hans_transcribe_expected_cer() -> CharacterErrorRateResult:
+def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
-    return CharacterErrorRateResult(
-        cer=1.4556661090076606,
-        substitutions=4032,
-        insertions=6149,
-        deletions=6351,
-        correct=974,
+    return SeriesCERResult(
+        cer=0.5691643920049309,
+        substitutions=4937,
+        insertions=663,
+        deletions=864,
+        correct=5556,
         reference_length=11357,
     )
 
@@ -614,15 +617,15 @@ def kob_yue_hans_transcribe_review_translate_block_review() -> Series:
 
 @pytest.fixture
 def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
-    CharacterErrorRateResult
+    SeriesCERResult
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
-    return CharacterErrorRateResult(
-        cer=0.9637228141234481,
-        substitutions=4626,
-        insertions=3101,
-        deletions=3218,
-        correct=3513,
+    return SeriesCERResult(
+        cer=0.4607730914854275,
+        substitutions=3866,
+        insertions=611,
+        deletions=756,
+        correct=6735,
         reference_length=11357,
     )
 

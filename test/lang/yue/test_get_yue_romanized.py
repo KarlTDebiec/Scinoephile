@@ -7,11 +7,11 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.yue import get_yue_romanized
 
 # noinspection PyProtectedMember
 from scinoephile.lang.yue.romanization import (
     _get_yue_text_romanized,
+    get_yue_romanized,
 )
 
 

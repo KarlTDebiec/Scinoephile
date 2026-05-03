@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import sqlite3
 from collections.abc import Generator
+from contextlib import closing
 from pathlib import Path
 
 import pytest
@@ -99,7 +100,7 @@ def test_sqlite_store_preserves_expected_schema(
     store = DictionarySqliteStore(database_path=database_path)
     store.persist((sample_source, sample_entries))
 
-    with sqlite3.connect(database_path) as connection:
+    with closing(sqlite3.connect(database_path)) as connection:
         table_names = {
             row[0]
             for row in connection.execute(

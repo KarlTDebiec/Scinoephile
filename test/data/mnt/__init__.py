@@ -8,12 +8,12 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import Any
 
 import pytest
 
-from scinoephile.core.llms import TestCase, load_test_cases_from_json
-from scinoephile.core.llms.manager import TestCaseClsKwargs
+from scinoephile.core.llms import TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
@@ -123,7 +123,7 @@ def mnt_zho_hant_ocr_paddle() -> Series:
 @cache
 def get_mnt_eng_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English block review test cases.
 
@@ -142,7 +142,7 @@ def get_mnt_eng_block_review_test_cases(
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
 
@@ -161,7 +161,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 @cache
 def get_mnt_zho_hans_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 block review test cases.
 
@@ -180,7 +180,7 @@ def get_mnt_zho_hans_block_review_test_cases(
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 OCR fusion test cases.
 
@@ -199,7 +199,7 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 @cache
 def get_mnt_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 block review test cases.
 
@@ -218,7 +218,7 @@ def get_mnt_zho_hant_block_review_test_cases(
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 OCR fusion test cases.
 
@@ -237,7 +237,7 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_mnt_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 simplification block review test cases.
 
@@ -422,16 +422,20 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[87] -> TRAD[87]: '甚么？' -> '咦？'",
         "edit: SIMP[88] -> TRAD[88]: '甚么？' -> '咦？'",
         "edit: SIMP[89] -> TRAD[89]: '甚么？' -> '咦？'",
-        "shift: SIMP[100-101] -> TRAD[100-101]: ['那真是太棒了', '爸爸从小就梦想\\u3000能够住在鬼屋里面'] -> ['那真是太好了', '爸爸从小就梦想能够住在鬼屋里面']",
+        "edit: SIMP[100] -> TRAD[100]: '那真是太棒了' -> '那真是太好了'",
+        "edit: SIMP[101] -> TRAD[101]: '爸爸从小就梦想\\u3000能够住在鬼屋里面' -> '爸爸从小就梦想能够住在鬼屋里面'",
         "edit: SIMP[127] -> TRAD[127]: '〝哇啦哇啦〞的乱跑啊' -> '「哇啦哇啦」的乱跑啊'",
-        "shift: SIMP[140-141] -> TRAD[140-141]: ['可是要是来这么一大堆\\u3000该怎么办？', '人家才不怕那些'] -> ['可是要是来这么一大堆，该怎么办？', '小美才不怕那些']",
+        "edit: SIMP[140] -> TRAD[140]: '可是要是来这么一大堆\\u3000该怎么办？' -> '可是要是来这么一大堆，该怎么办？'",
+        "edit: SIMP[141] -> TRAD[141]: '人家才不怕那些' -> '小美才不怕那些'",
         "edit: SIMP[143] -> TRAD[143]: '那以后晚上\\u3000姐姐就不陪妳上厕所' -> '那以后晚上，姐姐就不陪妳上厕所'",
         "edit: SIMP[147] -> TRAD[147]: '人家也要去' -> '小美也要去'",
         "edit: SIMP[154] -> TRAD[154]: '你不是刚刚那个吗？\\u3000有事吗' -> '你不是刚刚那个吗？有事吗'",
         "edit: SIMP[163] -> TRAD[163]: '不过\\u3000婆婆这个糯米团很好吃' -> '不过婆婆这个糯米团很好吃'",
-        "edit: SIMP[165] -> TRAD[165]: '婆婆，谢谢您的糯米团' -> '谢谢您'",
+        "delete: SIMP[165] '婆婆，谢谢您的糯米团' not present in TRAD",
         "edit: SIMP[168] -> TRAD[168]: '爸爸，我们家\\u3000破破烂烂的会否倒下来' -> '爸爸，我们家破破烂烂的会否倒下来'",
-        "shift: SIMP[172-174] -> TRAD[172-174]: ['人家才不怕呢！', '人家才不怕呢！', '一、二、一、二、一、二'] -> ['小美才不怕呢！', '小美才不怕呢！', '一，二，一，二，一，二']",
+        "edit: SIMP[172] -> TRAD[172]: '人家才不怕呢！' -> '小美才不怕呢！'",
+        "edit: SIMP[173] -> TRAD[173]: '人家才不怕呢！' -> '小美才不怕呢！'",
+        "edit: SIMP[174] -> TRAD[174]: '一、二、一、二、一、二' -> '一，二，一，二，一，二'",
         "edit: SIMP[177] -> TRAD[177]: '好了\\u3000衣服都洗好了' -> '好了，衣服都洗好了'",
         "edit: SIMP[185] -> TRAD[185]: '替我帮妳们妈妈问好' -> '替我帮你们妈妈问好'",
         "edit: SIMP[191] -> TRAD[191]: '小美妳也来啦' -> '小美妳也来啦！'",
@@ -443,19 +447,22 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[226] -> TRAD[226]: '因为妳跟妈妈最像了' -> '因为你跟妈妈最像了'",
         "edit: SIMP[229] -> TRAD[229]: '医生也说\\u3000再过不久就可以出院了' -> '医生也说，再过不久就可以出院了'",
         "edit: SIMP[231] -> TRAD[231]: '妳什么都是明天' -> '你什么都是明天'",
-        "shift: SIMP[233-234] -> TRAD[233-234]: ['可是人家好想要跟妈妈一起睡', '妳不是说妳已经长大\\u3000要自己一个人睡的吗？'] -> ['妈妈说想跟小美一起睡', '你不是说你已经长大，要自己一个人睡的吗？']",
+        "edit: SIMP[233] -> TRAD[233]: '可是人家好想要跟妈妈一起睡' -> '妈妈说想跟小美一起睡'",
+        "edit: SIMP[234] -> TRAD[234]: '妳不是说妳已经长大\\u3000要自己一个人睡的吗？' -> '你不是说你已经长大，要自己一个人睡的吗？'",
         "edit: SIMP[251] -> TRAD[251]: '糟了，来啊' -> '糟了，来啊！'",
         "edit: SIMP[253] -> TRAD[253]: '叫得很真亲密呢' -> '叫得很真亲密呢。'",
         "edit: SIMP[259] -> TRAD[259]: '早，赶快走吧\\u3000好' -> '﹣早，赶快走吧\\u3000\\u3000﹣好。'",
         "edit: SIMP[287] -> TRAD[287]: '爸爸！\\u3000小美的帽子掉在这里' -> '爸爸！小美的帽子掉在这里'",
-        "shift: SIMP[298-299] -> TRAD[298-299]: ['它的名字叫做大龙猫啊', '它的毛好多啊'] -> ['牠的名字叫做大龙猫啊', '牠的毛好多啊']",
+        "edit: SIMP[298] -> TRAD[298]: '它的名字叫做大龙猫啊' -> '牠的名字叫做大龙猫啊'",
+        "edit: SIMP[299] -> TRAD[299]: '它的毛好多啊' -> '牠的毛好多啊'",
         "edit: SIMP[313] -> TRAD[313]: '它刚才\\u3000睡在一棵很大的树里面' -> '牠刚才睡在一棵很大的树下面'",
         "edit: SIMP[321] -> TRAD[321]: '人家没有骗你们' -> '我没有骗你们'",
         "edit: SIMP[324] -> TRAD[324]: '小美刚才一定是\\u3000遇到了森林的主人' -> '小美刚才一定是遇到了森林的主人'",
         "edit: SIMP[327] -> TRAD[327]: '来，我们去跟它打个招呼吧' -> '对了，我们还没有跟它打招呼'",
         "edit: SIMP[340] -> TRAD[340]: '那不是想看\\u3000随时就能看到的' -> '那不是想看，随时就能看到的'",
         "edit: SIMP[351] -> TRAD[351]: '而且知道\\u3000妈妈一定也会喜欢这里' -> '而且知道，妈妈一定也会喜欢这里'",
-        "shift: SIMP[354-355] -> TRAD[354-355]: ['对了\\u3000我跟小满约好要到她家去', '人家也要去'] -> ['对了，我跟小满约好要到她家去', '小美也要去']",
+        "edit: SIMP[354] -> TRAD[354]: '对了\\u3000我跟小满约好要到她家去' -> '对了，我跟小满约好要到她家去'",
+        "edit: SIMP[355] -> TRAD[355]: '人家也要去' -> '小美也要去'",
         "edit: SIMP[360] -> TRAD[360]: '我们比赛看谁先到家' -> '比赛跑回家'",
         "edit: SIMP[362] -> TRAD[362]: '等人家嘛' -> '等等'",
         "edit: SIMP[364] -> TRAD[364]: '等人家嘛' -> '等等嘛'",
@@ -464,11 +471,13 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[369] -> TRAD[369]: '再不快点就要迟到了\\u3000嗯' -> '﹣再不快点就要迟到了\\u3000﹣嗯'",
         "delete: SIMP[374] '你们看，你们看，她妹妹' not present in TRAD",
         "edit: SIMP[375] -> TRAD[374]: '婆婆、小美？' -> '婆婆，小美？'",
-        "shift: SIMP[382-383] -> TRAD[381-382]: ['你要在婆婆家\\u3000乖乖等姊姊放学的吗？', '姊姊还要再上两个小时的课'] -> ['你要在婆婆家\\u3000乖乖等姐姐放学的吗？', '姐姐还要再上两个小时的课']",
+        "edit: SIMP[382] -> TRAD[381]: '你要在婆婆家\\u3000乖乖等姊姊放学的吗？' -> '你要在婆婆家\\u3000乖乖等姐姐放学的吗？'",
+        "edit: SIMP[383] -> TRAD[382]: '姊姊还要再上两个小时的课' -> '姐姐还要再上两个小时的课'",
         "edit: SIMP[390] -> TRAD[389]: '好、好' -> '是的'",
         "edit: SIMP[402] -> TRAD[401]: '人家都没有哭，棒不棒？\\u3000嗯' -> '-小美都没有哭，了不起。 -嗯'",
         "edit: SIMP[404] -> TRAD[403]: '土地公爷爷\\u3000请您让我们躲一下雨' -> '土地公爷爷，请您让我们躲一下雨'",
-        "shift: SIMP[406-407] -> TRAD[405-406]: ['姊姊，有伞子真棒啊', '可是伞子顶破了一个大洞'] -> ['姐姐，有伞子真好啊', '伞子破了好多洞洞']",
+        "edit: SIMP[406] -> TRAD[405]: '姊姊，有伞子真棒啊' -> '姐姐，有伞子真好啊'",
+        "edit: SIMP[407] -> TRAD[406]: '可是伞子顶破了一个大洞' -> '伞子破了好多洞洞'",
         "edit: SIMP[409] -> TRAD[408]: '人家也要去接爸爸' -> '小美也要去接爸爸'",
         "edit: SIMP[412] -> TRAD[411]: '竟然还会傻得忘了带伞\\u3000你骗鬼啊！' -> '竟然还会傻得忘了带伞，你骗鬼啊！'",
         "edit: SIMP[414] -> TRAD[413]: '我看啊\\u3000你八成是把伞子弄坏了' -> '我看啊，你八成是把伞弄坏了'",
@@ -476,7 +485,8 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[423] -> TRAD[422]: '这么破的伞子真不好意思' -> '这么破的伞真不好意思'",
         "edit: SIMP[453] -> TRAD[452]: '快点啊\\u3000小美快要掉下来了啦' -> '快点啊，小美快要掉下来了啦'",
         "edit: SIMP[462] -> TRAD[461]: '出现了，爸爸\\u3000真的出现了' -> '出现了，爸爸真的出现了'",
-        "shift: SIMP[467-468] -> TRAD[466-467]: ['看到了！\\u3000我看到大龙猫了！', '好棒啊'] -> ['看到了！我看到大龙猫了！', '太好了！']",
+        "edit: SIMP[467] -> TRAD[466]: '看到了！\\u3000我看到大龙猫了！' -> '看到了！我看到大龙猫了！'",
+        "edit: SIMP[468] -> TRAD[467]: '好棒啊' -> '太好了！'",
         "edit: SIMP[473] -> TRAD[472]: '而且大龙猫送给我们的礼物\\u3000实在是太棒了' -> '而且大龙猫送给我们的礼物\\u3000实在是妙极了'",
         "edit: SIMP[478] -> TRAD[477]: '我们想家里院子\\u3000变成森林的话一定很棒' -> '我们想家里院子变成森林的话一定很精彩'",
         "edit: SIMP[484] -> TRAD[483]: '就好像猴子螃蟹大战\\u3000里面那个螃蟹一样啊' -> '就好像猴子蟹大战里面那个螃蟹一样啊'",
@@ -515,23 +525,28 @@ def mnt_zho_simplify_expected_series_diff() -> list[str]:
         "edit: SIMP[649] -> TRAD[647]: '不过\\u3000好像没有看到那样的小孩' -> '不过好像没有看到那样的小孩'",
         "edit: SIMP[651] -> TRAD[649]: '她从哪里来的？' -> '妳从哪里来的？'",
         "edit: SIMP[655] -> TRAD[653]: '就是啊' -> '再见啰'",
-        "shift: SIMP[669-670] -> TRAD[667-668]: ['喃呒阿弥陀佛', '池那边泥比较深一点\\u3000从那边开始啊'] -> ['南无阿弥陀佛', '池那边泥比较深一点，从那边开始啊']",
+        "edit: SIMP[669] -> TRAD[667]: '喃呒阿弥陀佛' -> '南无阿弥陀佛'",
+        "edit: SIMP[670] -> TRAD[668]: '池那边泥比较深一点\\u3000从那边开始啊' -> '池那边泥比较深一点，从那边开始啊'",
         "edit: SIMP[672] -> TRAD[670]: '喃呒阿弥陀佛\\u3000婆婆，小月来了' -> '婆婆，小月来了'",
         "edit: SIMP[677] -> TRAD[675]: '我还以\\u3000这是小美的' -> '我还以为这是小美的'",
         "edit: SIMP[683] -> TRAD[681]: '不好意思啊' -> '大家，不好意思啊'",
         "edit: SIMP[684] -> TRAD[682]: '大家辛苦你们\\u3000再回头去找找好了' -> '麻烦再分开找找'",
-        "split_edit: SIMP[697] -> TRAD[695-696]: ['大家都看不到它'] -> ['大家都看不到牠', '「小美」']",
+        "edit: SIMP[697] -> TRAD[695]: '大家都看不到它' -> '大家都看不到牠'",
+        "insert: TRAD[696] '「小美」' not present in SIMP",
         "edit: SIMP[701] -> TRAD[700]: '姊姊' -> '姐姐'",
         "edit: SIMP[702] -> TRAD[701]: '姊姊' -> '姐姐'",
         "edit: SIMP[705] -> TRAD[704]: '姊姊' -> '姐姐'",
-        "shift: SIMP[708-709] -> TRAD[707-708]: ['妳是不是想要把粟米\\u3000送去医院给妈妈？', '〝七国山医院〞'] -> ['妳是不是想要把粟米送去医院给妈妈？', '「七国山医院」']",
+        "edit: SIMP[708] -> TRAD[707]: '妳是不是想要把粟米\\u3000送去医院给妈妈？' -> '妳是不是想要把粟米送去医院给妈妈？'",
+        "edit: SIMP[709] -> TRAD[708]: '〝七国山医院〞' -> '「七国山医院」'",
         "edit: SIMP[713] -> TRAD[712]: '医院就擅自决定\\u3000发电报给家里了' -> '医院就擅自决定，发电报给家里了'",
         "edit: SIMP[720] -> TRAD[719]: '她们表面好像没事\\u3000可是心里一定很难过' -> '她们表面好像没事，可是心里一定很难过'",
         "edit: SIMP[721] -> TRAD[720]: '小月越是懂事\\u3000就越教人于心不忍' -> '小月越是懂事，就越教人于心不忍'",
-        "shift: SIMP[723-724] -> TRAD[722-723]: ['出院以后我一定要好好疼她们', '让她们尽情耍耍小脾气'] -> ['出院以后我要好好疼疼她们，让她们尽情耍耍小脾气', '妳呀']",
+        "merge_edit: SIMP[723-724] -> TRAD[722]: ['出院以后我一定要好好疼她们', '让她们尽情耍耍小脾气'] -> ['出院以后我要好好疼疼她们，让她们尽情耍耍小脾气']",
+        "insert: TRAD[723] '妳呀' not present in SIMP",
         "edit: SIMP[733] -> TRAD[732]: '妳看' -> '你看'",
         "edit: SIMP[734] -> TRAD[733]: '〝送给妈妈〞' -> '「送给妈妈」'",
-        "edit: SIMP[735] -> TRAD[734]: '谢谢观看' -> '「送给妈妈」'",
+        "insert: TRAD[734] '「送给妈妈」' not present in SIMP",
         "insert: TRAD[735] '「送给妈妈」' not present in SIMP",
+        "delete: SIMP[735] '谢谢观看' not present in TRAD",
         "insert: TRAD[736] '完' not present in SIMP",
     ]

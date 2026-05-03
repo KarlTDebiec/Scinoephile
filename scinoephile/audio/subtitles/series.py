@@ -9,15 +9,9 @@ from logging import getLogger
 from os import PathLike
 from pathlib import Path
 from typing import Any, Self, TypedDict, override
-from warnings import catch_warnings, filterwarnings
 
 import ffmpeg
-
-with catch_warnings():
-    filterwarnings("ignore", category=SyntaxWarning)
-    filterwarnings("ignore", category=RuntimeWarning)
-    from pydub import AudioSegment
-
+from pydub import AudioSegment
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.validation import (
@@ -445,24 +439,24 @@ class AudioSeries(Series):
 
         self._blocks = blocks
 
-    def _save_wav(self, fp: Path):
+    def _save_wav(self, output_dir_path: Path):
         """Save series to directory of wav files.
 
         Arguments:
-            fp: Path to output directory
+            output_dir_path: path to output directory
         """
         # Prepare empty directory, deleting existing files if needed
-        if fp.exists() and fp.is_dir():
-            for file in fp.iterdir():
+        if output_dir_path.exists() and output_dir_path.is_dir():
+            for file in output_dir_path.iterdir():
                 if file.is_file() or file.is_symlink():
                     file.unlink()
                     logger.info(f"Deleted {file}")
         else:
-            fp.mkdir(parents=True)
-            logger.info(f"Created directory {fp}")
+            output_dir_path.mkdir(parents=True)
+            logger.info(f"Created directory {output_dir_path}")
 
         # Save audio
-        outfile_path = fp / f"{fp.stem}.wav"
+        outfile_path = output_dir_path / f"{output_dir_path.stem}.wav"
         self.audio.export(outfile_path, format="wav")
         logger.info(f"Saved full audio to {outfile_path}")
 
@@ -474,12 +468,12 @@ class AudioSeries(Series):
             current_idx = end_idx
 
             outfile_path = (
-                fp / f"{start_idx + 1:04d}-{end_idx:04d}_"
+                output_dir_path / f"{start_idx + 1:04d}-{end_idx:04d}_"
                 f"{block.buffered_start:08d}-{block.buffered_end:08d}.wav"
             )
             block.audio.export(outfile_path, format="wav")
             logger.info(f"Saved block audio to {outfile_path}")
 
         # Save text
-        outfile_path = fp / f"{fp.stem}.srt"
+        outfile_path = output_dir_path / f"{output_dir_path.stem}.srt"
         super().save(outfile_path, format_="srt")

@@ -6,13 +6,17 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.analysis import CharacterErrorRateResult
 from scinoephile.cli.analysis.analysis_cer_cli import AnalysisCerCli
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    SeriesCERResult,
+    assert_cli_help,
+    assert_cli_usage,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -82,9 +86,7 @@ def test_analysis_cer_cli(
     """
     reference_infile_path = test_data_root / reference_path
     candidate_infile_path = test_data_root / candidate_path
-    expected_result: CharacterErrorRateResult = request.getfixturevalue(
-        expected_fixture_name
-    )
+    expected_result: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
     run_cli_with_args(
         AnalysisCerCli,

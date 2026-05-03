@@ -5,10 +5,10 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
-from scinoephile.analysis import get_series_diff
-from scinoephile.common import CLIKwargs
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
@@ -18,6 +18,28 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
+
+
+class _AnalysisDiffCliKwargs(TypedDict, total=False):
+    """Keyword arguments for AnalysisDiffCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+
+    one_infile: Path | str
+    """Subtitle infile for first series or stdin sentinel."""
+
+    two_infile: Path | str
+    """Subtitle infile for second series or stdin sentinel."""
+
+    similarity_cutoff: float
+    """Similarity cutoff for replacement pairing."""
+
+    one_label: str
+    """Label for first series."""
+
+    two_label: str
+    """Label for second series."""
 
 
 class AnalysisDiffCli(ScinoephileCliBase):
@@ -123,7 +145,7 @@ class AnalysisDiffCli(ScinoephileCliBase):
         return "diff"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_AnalysisDiffCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:
@@ -131,8 +153,8 @@ class AnalysisDiffCli(ScinoephileCliBase):
         """
         # Validate arguments
         parser = kwargs.pop("_parser", cls.argparser())
-        one_infile_path = kwargs.pop("one_infile_path")
-        two_infile_path = kwargs.pop("two_infile_path")
+        one_infile_path = kwargs.pop("one_infile")
+        two_infile_path = kwargs.pop("two_infile")
         similarity_cutoff = kwargs.pop("similarity_cutoff")
         one_label = kwargs.pop("one_label")
         two_label = kwargs.pop("two_label")
@@ -149,7 +171,7 @@ class AnalysisDiffCli(ScinoephileCliBase):
         two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
 
         # Perform operations
-        diff = get_series_diff(
+        diff = SeriesDiff(
             one_subtitle_series,
             two_subtitle_series,
             one_lbl=one_label,

@@ -4,12 +4,15 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
+from scinoephile.common.testing import run_cli_with_args
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -47,77 +50,148 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
+def test_analysis_diff_cli(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test analysis diff CLI output.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    one_infile_path = tmp_path / "one.srt"
+    two_infile_path = tmp_path / "two.srt"
+    one_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n",
+        encoding="utf-8",
+    )
+    two_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n靠你喇！\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
+        "--one-label TRANSCRIBE --two-label REFERENCE",
+    )
+    output = capsys.readouterr().out
+
+    assert output == ("edit: TRANSCRIBE[1] -> REFERENCE[1]: '靠你了' -> '靠你喇！'\n")
+
+
+def test_analysis_diff_cli_multiline_split_edit(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test analysis diff CLI output for multi-line alignment.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    one_infile_path = tmp_path / "one.srt"
+    two_infile_path = tmp_path / "two.srt"
+    one_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:02,000\nalpha beta\n",
+        encoding="utf-8",
+    )
+    two_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\nalpha\n\n"
+        "2\n00:00:01,000 --> 00:00:02,000\nbetx\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
+        "--one-label TRANSCRIBE --two-label REFERENCE",
+    )
+    output = capsys.readouterr().out
+
+    assert output == (
+        "split_edit: TRANSCRIBE[1] -> REFERENCE[1-2]: "
+        "['alpha beta'] -> ['alpha', 'betx']\n"
+    )
+
+
 @pytest.mark.parametrize(
-    ("one_path", "two_path", "one_lbl", "two_lbl", "expected_fixture_name"),
+    (
+        "one_path",
+        "two_path",
+        "one_label",
+        "two_label",
+        "expected_fixture_name",
+    ),
     [
         (
-            "kob/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
-            "kob/output/eng/timewarp_clean_review_flatten.srt",
+            Path("kob/output/eng_ocr/fuse_clean_validate_review_flatten.srt"),
+            Path("kob/output/eng/timewarp_clean_review_flatten.srt"),
             "OCR",
             "SRT",
             "kob_eng_expected_series_diff",
         ),
         (
-            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
-            "review.srt",
+            Path("mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "mlamd/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
             "SIMP",
             "TRAD",
             "mlamd_zho_simplify_expected_series_diff",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_"
-            "review.srt",
+            Path("mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "mnt/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
             "SIMP",
             "TRAD",
             "mnt_zho_simplify_expected_series_diff",
         ),
         (
-            "t/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "t/output/zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt",
+            Path("t/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path(
+                "t/output/"
+                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+            ),
             "SIMP",
             "TRAD",
             "t_zho_simplify_expected_series_diff",
         ),
     ],
 )
-def test_analysis_diff_cli(
-    one_path: str,
-    two_path: str,
-    one_lbl: str,
-    two_lbl: str,
+def test_analysis_diff_cli_matches_expected_fixture(
+    one_path: Path,
+    two_path: Path,
+    one_label: str,
+    two_label: str,
     expected_fixture_name: str,
-    request: pytest.FixtureRequest,
     capsys: pytest.CaptureFixture,
+    request: pytest.FixtureRequest,
 ):
-    """Test analysis diff CLI output against expected differences.
+    """Test analysis diff CLI output against real subtitle fixtures.
 
     Arguments:
-        one_path: path to first subtitle fixture
-        two_path: path to second subtitle fixture
-        one_lbl: label for first subtitle stream in diff output
-        two_lbl: label for second subtitle stream in diff output
+        one_path: first subtitle path relative to test data root
+        two_path: second subtitle path relative to test data root
+        one_label: label for the first subtitle series
+        two_label: label for the second subtitle series
         expected_fixture_name: fixture name containing expected diff strings
-        request: pytest fixture request object
         capsys: pytest stdout/stderr capture fixture
+        request: pytest fixture request object
     """
-    one_infile_path = test_data_root / one_path
-    two_infile_path = test_data_root / two_path
-    expected_edits: list[str] = request.getfixturevalue(expected_fixture_name)
+    expected: list[str] = request.getfixturevalue(expected_fixture_name)
 
-    parser = AnalysisDiffCli.argparser()
-    parsed_args = parser.parse_args(
-        (
-            f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
-            f"--one-label {one_lbl} --two-label {two_lbl}"
-        ).split()
+    run_cli_with_args(
+        AnalysisDiffCli,
+        f"--one-infile {test_data_root / one_path} "
+        f"--two-infile {test_data_root / two_path} "
+        f"--one-label {one_label} --two-label {two_label}",
     )
-    kwargs = vars(parsed_args)
-    kwargs["one_infile_path"] = kwargs.pop("one_infile")
-    kwargs["two_infile_path"] = kwargs.pop("two_infile")
-    AnalysisDiffCli._main(**kwargs)
     output = capsys.readouterr().out
 
-    for expected_edit in expected_edits:
-        assert expected_edit in output
+    assert output.splitlines() == expected

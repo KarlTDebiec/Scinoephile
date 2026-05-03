@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -21,6 +20,29 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
 __all__ = ["TimewarpCli"]
+
+
+class _TimewarpCliKwargs(TypedDict, total=False):
+    """Keyword arguments for TimewarpCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    anchor_infile: Path | str
+    """Subtitle infile used as anchor timing reference or stdin sentinel."""
+    mobile_infile: Path | str
+    """Mobile subtitle infile to be timewarped or stdin sentinel."""
+    one_start_idx: int | None
+    """One-based start index in anchor series."""
+    one_end_idx: int | None
+    """One-based end index in anchor series."""
+    two_start_idx: int | None
+    """One-based start index in moving series."""
+    two_end_idx: int | None
+    """One-based end index in moving series."""
+    outfile: Path | None
+    """Timewarped subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class TimewarpCli(ScinoephileCliBase):
@@ -112,7 +134,7 @@ class TimewarpCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_TimewarpCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

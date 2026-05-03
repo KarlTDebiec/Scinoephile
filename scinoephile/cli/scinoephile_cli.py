@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis import AnalysisCli
@@ -20,6 +20,13 @@ from .yue import YueCli
 from .zho import ZhoCli
 
 __all__ = ["ScinoephileCli"]
+
+
+class _ScinoephileCliKwargs(TypedDict, total=False):
+    """Keyword arguments for ScinoephileCli."""
+
+    subcommand: str
+    """Selected top-level subcommand."""
 
 
 class ScinoephileCli(ScinoephileCliBase):
@@ -106,7 +113,7 @@ class ScinoephileCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_ScinoephileCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

@@ -7,9 +7,13 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
+from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHantOcrFusionPrompt,
+    get_zho_ocr_fused,
+    get_zho_ocr_fuser,
+)
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 
@@ -47,12 +51,14 @@ def test_get_zho_ocr_fused_kob(
     kob_zho_hant_ocr_paddle: Series,
     kob_zho_hant_ocr_fuse: Series,
 ):
-    """Test get_zho_ocr_fused with KOB 中文 subtitles.
+    """Test get_zho_ocr_fused with KOB standard Chinese subtitles.
 
     Arguments:
-        kob_zho_hant_ocr_lens: KOB 中文 subtitles OCRed using Google Lens fixture
-        kob_zho_hant_ocr_paddle: KOB 中文 subtitles OCRed using PaddleOCR fixture
-        kob_zho_hant_ocr_fuse: Expected fused KOB 中文 subtitles fixture
+        kob_zho_hant_ocr_lens: KOB standard Chinese subtitles OCRed using
+          Google Lens fixture
+        kob_zho_hant_ocr_paddle: KOB standard Chinese subtitles OCRed using
+          PaddleOCR fixture
+        kob_zho_hant_ocr_fuse: Expected fused KOB standard Chinese subtitles fixture
     """
     lens = get_zho_cleaned(kob_zho_hant_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens, config=OpenCCConfig.s2t)
@@ -71,12 +77,14 @@ def test_get_zho_ocr_fused_mlamd(
     mlamd_zho_hans_ocr_paddle: Series,
     mlamd_zho_hans_fuse: Series,
 ):
-    """Test get_zho_ocr_fused with MLAMD 中文 subtitles.
+    """Test get_zho_ocr_fused with MLAMD standard Chinese subtitles.
 
     Arguments:
-        mlamd_zho_hans_ocr_lens: MLAMD 中文 subtitles OCRed using Google Lens fixture
-        mlamd_zho_hans_ocr_paddle: MLAMD 中文 subtitles OCRed using PaddleOCR fixture
-        mlamd_zho_hans_fuse: Expected fused MLAMD 中文 subtitles fixture
+        mlamd_zho_hans_ocr_lens: MLAMD standard Chinese subtitles OCRed using
+          Google Lens fixture
+        mlamd_zho_hans_ocr_paddle: MLAMD standard Chinese subtitles OCRed using
+          PaddleOCR fixture
+        mlamd_zho_hans_fuse: Expected fused MLAMD standard Chinese subtitles fixture
     """
     lens = get_zho_cleaned(mlamd_zho_hans_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens)
@@ -90,12 +98,14 @@ def test_get_zho_ocr_fused_mnt(
     mnt_zho_hans_ocr_paddle: Series,
     mnt_zho_hans_fuse: Series,
 ):
-    """Test get_zho_ocr_fused with MNT 中文 subtitles.
+    """Test get_zho_ocr_fused with MNT standard Chinese subtitles.
 
     Arguments:
-        mnt_zho_hans_ocr_lens: MNT 中文 subtitles OCRed using Google Lens fixture
-        mnt_zho_hans_ocr_paddle: MNT 中文 subtitles OCRed using PaddleOCR fixture
-        mnt_zho_hans_fuse: Expected fused MNT 中文 subtitles fixture
+        mnt_zho_hans_ocr_lens: MNT standard Chinese subtitles OCRed using
+          Google Lens fixture
+        mnt_zho_hans_ocr_paddle: MNT standard Chinese subtitles OCRed using
+          PaddleOCR fixture
+        mnt_zho_hans_fuse: Expected fused MNT standard Chinese subtitles fixture
     """
     lens = get_zho_cleaned(mnt_zho_hans_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens)
@@ -109,12 +119,14 @@ def test_get_zho_ocr_fused_t(
     t_zho_hans_ocr_paddle: Series,
     t_zho_hans_fuse: Series,
 ):
-    """Test get_zho_ocr_fused with T 中文 subtitles.
+    """Test get_zho_ocr_fused with T standard Chinese subtitles.
 
     Arguments:
-        t_zho_hans_ocr_lens: T 中文 subtitles OCRed using Google Lens fixture
-        t_zho_hans_ocr_paddle: T 中文 subtitles OCRed using PaddleOCR fixture
-        t_zho_hans_fuse: Expected fused T 中文 subtitles fixture
+        t_zho_hans_ocr_lens: T standard Chinese subtitles OCRed using Google
+          Lens fixture
+        t_zho_hans_ocr_paddle: T standard Chinese subtitles OCRed using
+          PaddleOCR fixture
+        t_zho_hans_fuse: Expected fused T standard Chinese subtitles fixture
     """
     lens = get_zho_cleaned(t_zho_hans_ocr_lens, remove_empty=False)
     lens = get_zho_converted(lens)

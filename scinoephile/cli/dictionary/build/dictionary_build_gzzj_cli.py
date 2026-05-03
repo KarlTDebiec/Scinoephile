@@ -6,11 +6,12 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar, TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.gzzj import GzzjDictionaryService
+from scinoephile.dictionaries.gzzj.constants import GZZJ_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -19,18 +20,40 @@ __all__ = ["DictionaryBuildGzzjCli"]
 logger = getLogger(__name__)
 
 
+class _DictionaryBuildGzzjCliKwargs(TypedDict, total=False):
+    """Keyword arguments for DictionaryBuildGzzjCli."""
+
+    database_path: Path | None
+    """SQLite database output path."""
+    overwrite: bool
+    """Whether to overwrite the existing SQLite database."""
+    source_json_path: Path | None
+    """Path to manually downloaded GZZJ source JSON."""
+
+
 class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
     """Build GZZJ dictionary cache."""
+
+    source = GZZJ_SOURCE
+    """Dictionary source built by this CLI."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build GZZJ dictionary cache": "构建 GZZJ 词典缓存",
+            (
+                "Digital data derived from the 2004 second edition of "
+                "《廣州話正音字典》."
+            ): "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
             "path to manually downloaded GZZJ source JSON": (
                 "手动下载的 GZZJ 源 JSON 路径"
             ),
         },
         "zh-hant": {
             "build GZZJ dictionary cache": "建立 GZZJ 詞典快取",
+            (
+                "Digital data derived from the 2004 second edition of "
+                "《廣州話正音字典》."
+            ): "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
             "path to manually downloaded GZZJ source JSON": (
                 "手動下載的 GZZJ 來源 JSON 路徑"
             ),
@@ -63,7 +86,7 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_DictionaryBuildGzzjCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

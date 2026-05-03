@@ -7,10 +7,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.cmn import get_cmn_romanized
 
 # noinspection PyProtectedMember
-from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized
+from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized, get_cmn_romanized
 
 
 def _test_get_cmn_romanized(series: Series, expected: Series):

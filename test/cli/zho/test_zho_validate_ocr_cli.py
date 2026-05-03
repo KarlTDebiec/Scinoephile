@@ -13,7 +13,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -26,7 +26,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 validate-ocr CLI help output.
+    """Test standard Chinese validate-ocr CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -43,7 +43,7 @@ def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 validate-ocr CLI usage output.
+    """Test standard Chinese validate-ocr CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -59,7 +59,7 @@ def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_validate_ocr_cli(input_path: str):
-    """Test 中文 validate-ocr CLI processing with directory output.
+    """Test standard Chinese validate-ocr CLI processing with directory output.
 
     Arguments:
         input_path: path to input image subtitle fixture

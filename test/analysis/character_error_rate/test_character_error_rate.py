@@ -8,8 +8,25 @@ from math import inf
 
 import pytest
 
-from scinoephile.analysis import CharacterErrorRateResult, get_series_cer, get_text_cer
-from scinoephile.core.subtitles import Series
+from scinoephile.analysis.character_error_rate import LineCER, SeriesCER
+from scinoephile.core.subtitles import Series, Subtitle
+from test.helpers import SeriesCERResult
+
+
+def _get_series(*texts: str) -> Series:
+    """Build a compact subtitle series for CER tests.
+
+    Arguments:
+        *texts: subtitle event texts
+    Returns:
+        subtitle series with one event per text
+    """
+    return Series(
+        events=[
+            Subtitle(start=idx * 1000, end=idx * 1000 + 500, text=text)
+            for idx, text in enumerate(texts)
+        ]
+    )
 
 
 @pytest.mark.parametrize(
@@ -18,7 +35,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "abc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -30,7 +47,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "axc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=1,
                 insertions=0,
@@ -42,7 +59,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "abxc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=1,
@@ -54,7 +71,7 @@ from scinoephile.core.subtitles import Series
         (
             "abc",
             "ac",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1 / 3,
                 substitutions=0,
                 insertions=0,
@@ -66,7 +83,7 @@ from scinoephile.core.subtitles import Series
         (
             "a b",
             "ab",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -78,7 +95,7 @@ from scinoephile.core.subtitles import Series
         (
             "a,b!",
             "ab",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -90,7 +107,7 @@ from scinoephile.core.subtitles import Series
         (
             "廣東話",
             "广东话",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=1.0,
                 substitutions=3,
                 insertions=0,
@@ -102,7 +119,7 @@ from scinoephile.core.subtitles import Series
         (
             "",
             "",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=0.0,
                 substitutions=0,
                 insertions=0,
@@ -114,7 +131,7 @@ from scinoephile.core.subtitles import Series
         (
             "",
             "abc",
-            CharacterErrorRateResult(
+            SeriesCERResult(
                 cer=inf,
                 substitutions=0,
                 insertions=3,
@@ -125,42 +142,46 @@ from scinoephile.core.subtitles import Series
         ),
     ],
 )
-def test_get_text_cer(
+def test_line_cer(
     reference: str,
     candidate: str,
-    expected: CharacterErrorRateResult,
+    expected: SeriesCERResult,
 ):
-    """Test text-level character error rate calculations.
+    """Test line-level character error rate calculations.
 
     Arguments:
         reference: reference text
         candidate: candidate text
         expected: expected CER result
     """
-    result = get_text_cer(reference, candidate)
+    result = LineCER(reference, candidate)
 
-    assert result == expected
+    assert result.cer == expected.cer
+    assert result.substitutions == expected.substitutions
+    assert result.insertions == expected.insertions
+    assert result.deletions == expected.deletions
+    assert result.correct == expected.correct
+    assert result.reference_length == expected.reference_length
 
 
-def test_character_error_rate_result_str():
-    """Test string formatting for character error rate results."""
-    result = CharacterErrorRateResult(
-        cer=0.25,
-        substitutions=1,
-        insertions=2,
-        deletions=3,
-        correct=4,
-        reference_length=8,
-    )
+@pytest.mark.parametrize(
+    ("reference", "candidate"),
+    [
+        (_get_series("你", "好"), _get_series("你好")),
+        (_get_series("ab"), _get_series("a", "b")),
+    ],
+)
+def test_series_cer_ignores_separator_only_line_wrapping(
+    reference: Series,
+    candidate: Series,
+):
+    """Test separator-only line wrapping does not affect series CER."""
+    result = SeriesCER(reference, candidate)
 
-    assert str(result) == (
-        "CER: 0.25\n"
-        "Correct: 4\n"
-        "Substitutions: 1\n"
-        "Insertions: 2\n"
-        "Deletions: 3\n"
-        "Reference length: 8"
-    )
+    assert result.cer == 0.0
+    assert result.substitutions == 0
+    assert result.insertions == 0
+    assert result.deletions == 0
 
 
 @pytest.mark.parametrize(
@@ -182,7 +203,7 @@ def test_character_error_rate_result_str():
         ),
     ],
 )
-def test_get_series_cer(
+def test_series_cer(
     reference_series_fixture_name: str,
     candidate_series_fixture_name: str,
     expected_fixture_name: str,
@@ -198,8 +219,13 @@ def test_get_series_cer(
     """
     reference_series: Series = request.getfixturevalue(reference_series_fixture_name)
     candidate_series: Series = request.getfixturevalue(candidate_series_fixture_name)
-    expected: CharacterErrorRateResult = request.getfixturevalue(expected_fixture_name)
+    expected: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
-    result = get_series_cer(reference_series, candidate_series)
+    result = SeriesCER(reference_series, candidate_series)
 
-    assert result == expected
+    assert result.cer == expected.cer
+    assert result.substitutions == expected.substitutions
+    assert result.insertions == expected.insertions
+    assert result.deletions == expected.deletions
+    assert result.correct == expected.correct
+    assert result.reference_length == expected.reference_length

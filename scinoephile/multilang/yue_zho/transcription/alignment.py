@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Nascent alignment between 中文 and 粤文 subtitles."""
+"""Nascent alignment between standard Chinese and written Cantonese subtitles."""
 
 from __future__ import annotations
 
@@ -20,33 +20,29 @@ from scinoephile.core.synchronization import (
     get_sync_overlap_matrix,
 )
 from scinoephile.llms.dual_pair import DualPairManager
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueZhoPunctuationManager,
-)
+
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
 
 __all__ = ["Alignment"]
 
 
 class Alignment:
-    """Nascent alignment between 中文 and 粤文 subtitles."""
+    """Nascent alignment between standard Chinese and written Cantonese subtitles."""
 
     def __init__(self, zhongwen: Series, yuewen: AudioSeries):
         """Initialize.
 
         Arguments:
-            zhongwen: 中文 subs
-            yuewen: 粤文 subs
+            zhongwen: standard Chinese subs
+            yuewen: written Cantonese subs
         """
         self._zhongwen = zhongwen
         self._yuewen = yuewen
 
         self._sync_groups_override = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         """String representation."""
         zhongwen_str, yuewen_str = get_pair_strings(self.zhongwen, self.yuewen)
         string = f"MANDARIN:\n{zhongwen_str}"
@@ -62,13 +58,13 @@ class Alignment:
 
     @property
     def overlap(self) -> np.ndarray:
-        """Overlap matrix between 中文 and 粤文."""
+        """Overlap matrix between standard Chinese and written Cantonese."""
         overlap = get_sync_overlap_matrix(self.zhongwen, self.yuewen)
         return overlap
 
     @property
     def scaled_overlap(self) -> np.ndarray:
-        """Scaled overlap matrix between 中文 and 粤文."""
+        """Scaled overlap matrix between standard Chinese and written Cantonese."""
         scaled_overlap = self.overlap.copy()
         column_maxes = scaled_overlap.max(axis=0)
         column_maxes[column_maxes == 0] = 1
@@ -77,17 +73,19 @@ class Alignment:
 
     @property
     def sync_groups(self) -> list[SyncGroup]:
-        """Sync groups between 中文 and 粤文."""
+        """Sync groups between standard Chinese and written Cantonese."""
         if self._sync_groups_override:
             # TODO: Validate that override is consistent with current series
             # TODO: Consider clearing automatically when zhongwen or yuewen change
             # TODO: Make public setter for _sync_groups_override
             return self._sync_groups_override
 
-        # Each sync group must be one 中文 and zero or more 粤文.
+        # Each sync group must be one standard Chinese sub and zero or more written
+        # Cantonese subs.
         nascent_sync_groups = [([i], []) for i, _ in enumerate(self.zhongwen)]
 
-        # For each 粤文, find the corresponding 中文 and add it to the sync group.
+        # For each written Cantonese sub, find the corresponding standard Chinese sub
+        # and add it to the sync group.
         for yw_idx in range(len(self.yuewen)):
             sg_idx = np.argmax(self.overlap[:, yw_idx])
             nascent_sync_groups[sg_idx][1].append(yw_idx)
@@ -96,47 +94,47 @@ class Alignment:
 
     @property
     def yuewen(self) -> AudioSeries:
-        """粤文 series."""
+        """Written Cantonese series."""
         return self._yuewen
 
     @yuewen.setter
     def yuewen(self, value: AudioSeries):
-        """Set 粤文 series and clear cached values.
+        """Set written Cantonese series and clear cached values.
 
         Arguments:
-            value: 粤文 series
+            value: written Cantonese series
         """
         self._yuewen = value
 
     @property
     def yuewen_all_assigned_to_sync_groups(self) -> bool:
-        """Whether all 粤文 subs are assigned to sync groups."""
+        """Whether all written Cantonese subs are assigned to sync groups."""
         yw_idxs = set([yw_idx for sg in self.sync_groups for yw_idx in sg[1]])
         return yw_idxs == set(range(len(self.yuewen)))
 
     @property
     def yuewen_to_distribute(self) -> list[int]:
-        """粤文 indices in need of distribution."""
+        """Written Cantonese indices in need of distribution."""
         yw_idxs = set([yw_idx for sg in self.sync_groups for yw_idx in sg[1]])
         return sorted(set(range(len(self.yuewen))) - yw_idxs)
 
     @property
     def zhongwen(self) -> AudioSeries | Series:
-        """中文 series."""
+        """Standard Chinese series."""
         return self._zhongwen
 
     @zhongwen.setter
     def zhongwen(self, value: AudioSeries | Series):
-        """Set 中文 series and clear cached values.
+        """Set standard Chinese series and clear cached values.
 
         Arguments:
-            value: 中文 series
+            value: standard Chinese series
         """
         self._zhongwen = value
 
     @property
     def zhongwen_all_assigned_to_sync_groups(self) -> bool:
-        """Whether all 中文 subs are assigned to sync groups."""
+        """Whether all standard Chinese subs are assigned to sync groups."""
         zw_idxs = set([zw_idx for sg in self.sync_groups for zw_idx in sg[0]])
         return zw_idxs == set(range(len(self.zhongwen)))
 
@@ -146,7 +144,7 @@ class Alignment:
         Arguments:
             sg_1_idx: Index of sync group 1
         Returns:
-            Query, or None if there are no 粤文 to shift
+            Query, or None if there are no written Cantonese subs to shift
         """
         # Get sync group 1
         if sg_1_idx < 0 or sg_1_idx >= len(self.sync_groups):
@@ -165,33 +163,36 @@ class Alignment:
             )
         sg_2 = self.sync_groups[sg_2_idx]
 
-        # Get 中文 1
+        # Get standard Chinese 1
         sg_1_zw_idxs = sg_1[0]
         if len(sg_1_zw_idxs) != 1:
             raise ScinoephileError(
-                f"Sync group {sg_1_idx} has {len(sg_1_zw_idxs)} 中文 subs, expected 1."
+                f"Sync group {sg_1_idx} has {len(sg_1_zw_idxs)} "
+                "standard Chinese subs, expected 1."
             )
         sg_1_zw_idx = sg_1[0][0]
         zw_1 = self.zhongwen[sg_1_zw_idx].text
 
-        # Get 中文 2
+        # Get standard Chinese 2
         sg_2_zw_idxs = sg_2[0]
         if len(sg_2[0]) != 1:
             raise ScinoephileError(
-                f"Sync group {sg_2_idx} has {len(sg_2_zw_idxs)} 中文 subs, expected 1."
+                f"Sync group {sg_2_idx} has {len(sg_2_zw_idxs)} "
+                "standard Chinese subs, expected 1."
             )
         sg_2_zw_idx = sg_2[0][0]
         if sg_1_zw_idx + 1 != sg_2_zw_idx:
             raise ScinoephileError(
-                f"中文 indexes {sg_1_zw_idx} and {sg_2_zw_idx} are not consecutive."
+                f"standard Chinese indexes {sg_1_zw_idx} and {sg_2_zw_idx} "
+                "are not consecutive."
             )
         zw_2 = self.zhongwen[sg_2_zw_idx].text
 
-        # Get 粤文 1
+        # Get written Cantonese 1
         sg_1_yw_idxs = sg_1[1]
         yw_1 = "".join([self.yuewen[i].text for i in sg_1_yw_idxs])
 
-        # Get 粤文 2
+        # Get written Cantonese 2
         sg_2_yw_idxs = sg_2[1]
         yw_2 = "".join([self.yuewen[i].text for i in sg_2_yw_idxs])
 
@@ -217,7 +218,7 @@ class Alignment:
         Arguments:
             sg_idx: Index of sync group
         Returns:
-            test case, or None if there are no 粤文 to punctuate
+            test case, or None if there are no written Cantonese subs to punctuate
         """
         # Get sync group
         if sg_idx < 0 or sg_idx >= len(self.sync_groups):
@@ -227,16 +228,17 @@ class Alignment:
             )
         sg = self.sync_groups[sg_idx]
 
-        # Get 中文
+        # Get standard Chinese
         zw_idxs = sg[0]
         if len(zw_idxs) != 1:
             raise ScinoephileError(
-                f"Sync group {sg_idx} has {len(zw_idxs)} 中文 subs, expected 1."
+                f"Sync group {sg_idx} has {len(zw_idxs)} "
+                "standard Chinese subs, expected 1."
             )
         zw_idx = sg[0][0]
         zw = self.zhongwen[zw_idx].text
 
-        # Get 粤文
+        # Get written Cantonese
         yw_idxs = sg[1]
         if len(yw_idxs) == 0:
             return None

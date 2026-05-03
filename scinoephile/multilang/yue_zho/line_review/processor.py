@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes 粤文 vs. 中文 line review."""
+"""Processes written Cantonese vs. standard Chinese line review."""
 
 from __future__ import annotations
 
@@ -8,7 +8,8 @@ from logging import getLogger
 
 import numpy as np
 
-from scinoephile.core.llms import Processor, TestCase, save_test_cases_to_json
+from scinoephile.core.llms import Processor, TestCase
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
@@ -23,7 +24,7 @@ logger = getLogger(__name__)
 
 
 class YueZhoLineReviewProcessor(Processor):
-    """Processes 粤文 vs. 中文 line review."""
+    """Processes written Cantonese vs. standard Chinese line review."""
 
     prompt_cls: type[YueVsZhoYueHansLineReviewPrompt]
     """Text for LLM correspondence."""
@@ -37,14 +38,14 @@ class YueZhoLineReviewProcessor(Processor):
         source_two: Series,
         stop_at_idx: int | None = None,
     ) -> Series:
-        """Line review 粤文 against 中文 with tolerant alignment.
+        """Review written Cantonese against standard Chinese with tolerant alignment.
 
         Arguments:
-            source_one: 粤文 subtitles (may omit some 中文 lines)
-            source_two: 中文 reference subtitles
+            source_one: written Cantonese subtitles, possibly omitting standard Chinese
+            source_two: standard Chinese reference subtitles
             stop_at_idx: stop processing at this block index
         Returns:
-            line-reviewed 粤文 subtitles
+            line-reviewed written Cantonese subtitles
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)

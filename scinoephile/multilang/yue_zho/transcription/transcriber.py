@@ -7,7 +7,8 @@ from __future__ import annotations
 from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING
+
+from pydub import AudioSegment
 
 from scinoephile.audio.subtitles import (
     AudioSeries,
@@ -26,17 +27,10 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
-from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-)
-from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-)
 
 from .aligner import Aligner
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
+from .deliniation import YueVsZhoYueHansDeliniationPrompt
+from .punctuation import YueVsZhoYueHansPunctuationPrompt
 
 __all__ = [
     "DemucsMode",
@@ -48,22 +42,27 @@ logger = getLogger(__name__)
 
 
 class DemucsMode(StrEnum):
-    """Demucs preprocessing modes for 粤文 transcription."""
+    """Demucs preprocessing modes for written Cantonese transcription."""
 
     ON = "on"
+    """Run Demucs preprocessing."""
     OFF = "off"
+    """Skip Demucs preprocessing."""
 
 
 class VADMode(StrEnum):
-    """Whisper voice activity detection modes for 粤文 transcription."""
+    """Whisper voice activity detection modes for written Cantonese transcription."""
 
     AUTO = "auto"
+    """Use VAD automatically when needed."""
     ON = "on"
+    """Always use VAD."""
     OFF = "off"
+    """Never use VAD."""
 
 
 class YueTranscriber:
-    """Class for transcribing and aligning 粤文 audio."""
+    """Class for transcribing and aligning written Cantonese audio."""
 
     def __init__(
         self,
@@ -138,8 +137,8 @@ class YueTranscriber:
         """Process all blocks of audio, transcribing and aligning them with subtitles.
 
         Arguments:
-            yuewen: nascent 粤文 subtitles
-            zhongwen: corresponding 中文 subtitles
+            yuewen: nascent written Cantonese subtitles
+            zhongwen: corresponding standard Chinese subtitles
             stop_at_idx: stop after processing this block index
         """
         all_yuewen_block_series: list | None = [None] * len(yuewen.blocks)
@@ -174,8 +173,8 @@ class YueTranscriber:
         """Process a single block of audio, transcribing and aligning it with subtitles.
 
         Arguments:
-            yuewen_block: nascent 粤文 block
-            zhongwen_block: corresponding 中文 block
+            yuewen_block: nascent written Cantonese block
+            zhongwen_block: corresponding standard Chinese block
         """
         # Transcribe audio
         segments = self._transcribe_block_audio(yuewen_block.audio)
@@ -200,7 +199,7 @@ class YueTranscriber:
             offset=yuewen_block[0].start,
         )
 
-        # Sync segments with the corresponding 中文 subtitles
+        # Sync segments with the corresponding standard Chinese subtitles
         alignment = self.aligner.align(zhongwen_block, yuewen_block_series)
         yuewen_block_series = alignment.yuewen
 

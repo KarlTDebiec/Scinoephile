@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -17,22 +16,39 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.multilang.yue_zho import (
-    get_yue_block_reviewed_vs_zho,
-    get_yue_line_reviewed_vs_zho,
-)
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoYueHansBlockReviewPrompt,
     YueVsZhoYueHantBlockReviewPrompt,
+    get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoYueHansLineReviewPrompt,
     YueVsZhoYueHantLineReviewPrompt,
+    get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
 )
 
 __all__ = ["YueReviewVsZhoCli"]
+
+
+class _YueReviewVsZhoCliKwargs(TypedDict, total=False):
+    """Keyword arguments for YueReviewVsZhoCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    yue_infile: Path | str
+    """Target written Cantonese subtitle infile path or stdin sentinel."""
+    zho_infile: Path | str
+    """Reference standard Chinese subtitle infile path or stdin sentinel."""
+    mode: str
+    """Selected review mode."""
+    script: str
+    """Selected prompt script."""
+    outfile: Path | None
+    """Reviewed written Cantonese subtitle outfile path."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class YueReviewVsZhoCli(ScinoephileCliBase):
@@ -194,7 +210,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansBlockReviewPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_YueReviewVsZhoCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

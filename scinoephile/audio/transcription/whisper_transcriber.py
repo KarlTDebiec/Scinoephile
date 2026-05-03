@@ -7,23 +7,19 @@ from __future__ import annotations
 import hashlib
 import json
 from logging import getLogger
-from typing import TYPE_CHECKING, Any
-from warnings import catch_warnings, filterwarnings
+from pathlib import Path
+from typing import Any
 
 import whisper_timestamped as whisper
+from pydub import AudioSegment
 
-from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.ml import get_torch_device
 
-if TYPE_CHECKING:
-    from pathlib import Path
+from .transcribed_segment import TranscribedSegment
 
-    with catch_warnings():
-        filterwarnings("ignore", category=SyntaxWarning)
-        filterwarnings("ignore", category=RuntimeWarning)
-        from pydub import AudioSegment
+__all__ = ["WhisperTranscriber"]
 
 logger = getLogger(__name__)
 

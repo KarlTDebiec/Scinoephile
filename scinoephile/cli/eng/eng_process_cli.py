@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import TypedDict, Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -16,13 +15,30 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.eng import (
-    get_eng_block_reviewed,
-    get_eng_cleaned,
-    get_eng_flattened,
-)
+from scinoephile.lang.eng.block_review import get_eng_block_reviewed
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
 
 __all__ = ["EngProcessCli"]
+
+
+class _EngProcessCliKwargs(TypedDict, total=False):
+    """Keyword arguments for EngProcessCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    infile: Path | str
+    """English subtitle infile path or stdin sentinel."""
+    outfile: Path | None
+    """English subtitle outfile path."""
+    clean: bool
+    """Whether to clean subtitles."""
+    flatten: bool
+    """Whether to flatten multi-line subtitles."""
+    proofread: bool
+    """Whether to proofread subtitles."""
+    overwrite: bool
+    """Whether to overwrite an existing outfile."""
 
 
 class EngProcessCli(ScinoephileCliBase):
@@ -121,7 +137,7 @@ class EngProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Unpack[_EngProcessCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

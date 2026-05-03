@@ -128,7 +128,7 @@ class Series(SSAFile):
         fps: float | None = None,
         errors: str | None = None,
         **kwargs: Any,
-    ) -> None:
+    ):
         """Save series to an output file.
 
         Arguments:
@@ -166,7 +166,9 @@ class Series(SSAFile):
         ]
         return sliced
 
-    def to_simple_string(self, start: int | None = None, duration: int | None = None):
+    def to_simple_string(
+        self, start: int | None = None, duration: int | None = None
+    ) -> str:
         """Convert series to a simple string representation.
 
         Arguments:
