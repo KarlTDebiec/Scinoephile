@@ -11,7 +11,9 @@ from dataclasses import dataclass
 from typing import TypedDict
 
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.core.synchronization import are_series_one_to_one
 
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
@@ -41,6 +43,9 @@ class _SeriesDiffLineRecord:
 
     idx: int
     """Zero-based global line index."""
+
+    event_idx: int
+    """Zero-based subtitle event index."""
 
     text: str
     """Raw text line."""
@@ -94,6 +99,9 @@ class SeriesDiff:
         self.two_lbl = two_lbl
         self.similarity_cutoff = similarity_cutoff
         self.messages: list[LineDiff] = []
+        self._stacked_messages: list[LineDiff] = []
+        self._one = one
+        self._one_line_event_idxs: tuple[int, ...] = ()
         self._diff(one, two)
 
     def __iter__(self) -> Iterator[LineDiff]:
@@ -118,15 +126,43 @@ class SeriesDiff:
         )
         return f"[\n{formatted_messages}\n]"
 
-    def get_stacked_str(self, *, color: bool = True) -> str:
+    def get_stacked_str(
+        self,
+        *,
+        color: bool = True,
+        three: Series | None = None,
+        include_equal: bool = False,
+    ) -> str:
         """Format the diff as stacked, character-aligned output.
 
         Arguments:
             color: whether to emit ANSI color escapes
+            three: optional third subtitle series to append below first-side matches
+            include_equal: whether to include unchanged aligned subtitles
         Returns:
             formatted multi-line diff string
+        Raises:
+            ScinoephileError: if one and three are not one-to-one matched
         """
-        return "\n".join(message.get_stacked_str(color=color) for message in self)
+        messages = self._stacked_messages if include_equal else self.messages
+        if three is None:
+            return "\n".join(
+                message.get_stacked_str(color=color) for message in messages
+            )
+
+        if not are_series_one_to_one(self._one, three):
+            raise ScinoephileError(
+                "Third subtitle series must be one-to-one matched with the first "
+                "subtitle series"
+            )
+
+        return "\n".join(
+            message.get_stacked_str(
+                color=color,
+                three_texts=self._get_third_texts(message, three),
+            )
+            for message in messages
+        )
 
     def _add_changed_span(
         self,
@@ -164,6 +200,67 @@ class SeriesDiff:
             two_local_idxs,
         )
 
+    def _add_equal_message(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_local_idxs: tuple[int, ...],
+        two_local_idxs: tuple[int, ...],
+    ):
+        """Add an equal message for stacked display.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_local_idxs: local line indices on the first side
+            two_local_idxs: local line indices on the second side
+        """
+        self._stacked_messages.append(
+            LineDiff(
+                kind=LineDiffKind.EQUAL,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=tuple(one_side.line_idxs[idx] for idx in one_local_idxs),
+                two_idxs=tuple(two_side.line_idxs[idx] for idx in two_local_idxs),
+                one_texts=tuple(one_side.lines[idx] for idx in one_local_idxs),
+                two_texts=tuple(two_side.lines[idx] for idx in two_local_idxs),
+            )
+        )
+
+    def _add_equal_messages_until(
+        self,
+        *,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_line_pos: int,
+        two_line_pos: int,
+        one_line_stop: int,
+        two_line_stop: int,
+    ) -> tuple[int, int]:
+        """Add equal stacked-display messages before a changed span.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_line_pos: current first-side local line index
+            two_line_pos: current second-side local line index
+            one_line_stop: first-side local line index at which to stop
+            two_line_stop: second-side local line index at which to stop
+        Returns:
+            updated first- and second-side local line positions
+        """
+        while one_line_pos < one_line_stop and two_line_pos < two_line_stop:
+            self._add_equal_message(
+                one_side=one_side,
+                two_side=two_side,
+                one_local_idxs=(one_line_pos,),
+                two_local_idxs=(two_line_pos,),
+            )
+            one_line_pos += 1
+            two_line_pos += 1
+
+        return one_line_pos, two_line_pos
+
     def _add_delete_messages(
         self,
         one_side: _SeriesDiffBlockSide,
@@ -176,15 +273,15 @@ class SeriesDiff:
             one_local_idxs: local line indices touched on the first side
         """
         for one_local_idx in one_local_idxs:
-            self.messages.append(
-                LineDiff(
-                    kind=LineDiffKind.DELETE,
-                    one_lbl=self.one_lbl,
-                    two_lbl=self.two_lbl,
-                    one_idxs=(one_side.line_idxs[one_local_idx],),
-                    one_texts=(one_side.lines[one_local_idx],),
-                )
+            message = LineDiff(
+                kind=LineDiffKind.DELETE,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                one_idxs=(one_side.line_idxs[one_local_idx],),
+                one_texts=(one_side.lines[one_local_idx],),
             )
+            self.messages.append(message)
+            self._stacked_messages.append(message)
 
     def _add_insert_messages(
         self,
@@ -198,15 +295,15 @@ class SeriesDiff:
             two_local_idxs: local line indices touched on the second side
         """
         for two_local_idx in two_local_idxs:
-            self.messages.append(
-                LineDiff(
-                    kind=LineDiffKind.INSERT,
-                    one_lbl=self.one_lbl,
-                    two_lbl=self.two_lbl,
-                    two_idxs=(two_side.line_idxs[two_local_idx],),
-                    two_texts=(two_side.lines[two_local_idx],),
-                )
+            message = LineDiff(
+                kind=LineDiffKind.INSERT,
+                one_lbl=self.one_lbl,
+                two_lbl=self.two_lbl,
+                two_idxs=(two_side.line_idxs[two_local_idx],),
+                two_texts=(two_side.lines[two_local_idx],),
             )
+            self.messages.append(message)
+            self._stacked_messages.append(message)
 
     def _add_message(
         self,
@@ -225,17 +322,17 @@ class SeriesDiff:
             one_local_idxs: local line indices touched on the first side
             two_local_idxs: local line indices touched on the second side
         """
-        self.messages.append(
-            LineDiff(
-                kind=kind,
-                one_lbl=self.one_lbl,
-                two_lbl=self.two_lbl,
-                one_idxs=tuple(one_side.line_idxs[idx] for idx in one_local_idxs),
-                two_idxs=tuple(two_side.line_idxs[idx] for idx in two_local_idxs),
-                one_texts=tuple(one_side.lines[idx] for idx in one_local_idxs),
-                two_texts=tuple(two_side.lines[idx] for idx in two_local_idxs),
-            )
+        message = LineDiff(
+            kind=kind,
+            one_lbl=self.one_lbl,
+            two_lbl=self.two_lbl,
+            one_idxs=tuple(one_side.line_idxs[idx] for idx in one_local_idxs),
+            two_idxs=tuple(two_side.line_idxs[idx] for idx in two_local_idxs),
+            one_texts=tuple(one_side.lines[idx] for idx in one_local_idxs),
+            two_texts=tuple(two_side.lines[idx] for idx in two_local_idxs),
         )
+        self.messages.append(message)
+        self._stacked_messages.append(message)
 
     def _diff(self, one: Series, two: Series) -> list[LineDiff]:
         """Compare subtitle series by aligning joined pause-delimited blocks.
@@ -249,6 +346,11 @@ class SeriesDiff:
         """
         one_line_records = self._get_series_event_line_records(one)
         two_line_records = self._get_series_event_line_records(two)
+        self._one_line_event_idxs = tuple(
+            record.event_idx
+            for event_line_records in one_line_records
+            for record in event_line_records
+        )
         block_pairs = self._get_block_event_index_pairs_by_pause(one, two)
         for one_event_idxs, two_event_idxs in block_pairs:
             one_side = self._get_block_side(one_event_idxs, one_line_records)
@@ -298,6 +400,24 @@ class SeriesDiff:
                     one_changed.update(one_side.char_line_idxs[one_pos])
                 if column.two is not None:
                     two_changed.update(two_side.char_line_idxs[two_pos])
+                if column.operation == LineAlignmentOperation.DELETE:
+                    two_changed.update(
+                        self._get_context_line_idxs(
+                            source_side=one_side,
+                            target_side=two_side,
+                            source_pos=one_pos,
+                            target_pos=two_pos,
+                        )
+                    )
+                if column.operation == LineAlignmentOperation.INSERT:
+                    one_changed.update(
+                        self._get_context_line_idxs(
+                            source_side=two_side,
+                            target_side=one_side,
+                            source_pos=two_pos,
+                            target_pos=one_pos,
+                        )
+                    )
 
             if column.one is not None:
                 one_pos += 1
@@ -312,13 +432,56 @@ class SeriesDiff:
             two_side,
         )
         spans = self._pair_bracketed_one_sided_spans(spans)
+        self._add_block_messages(one_side, two_side, spans)
+
+    def _add_block_messages(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+    ):
+        """Add equal and changed messages for a diffed block.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            spans: changed spans in block order
+        """
+        one_line_pos = 0
+        two_line_pos = 0
         for one_local_idxs, two_local_idxs in spans:
+            one_line_stop = one_line_pos
+            if one_local_idxs:
+                one_line_stop = one_local_idxs[0]
+            two_line_stop = two_line_pos
+            if two_local_idxs:
+                two_line_stop = two_local_idxs[0]
+            one_line_pos, two_line_pos = self._add_equal_messages_until(
+                one_side=one_side,
+                two_side=two_side,
+                one_line_pos=one_line_pos,
+                two_line_pos=two_line_pos,
+                one_line_stop=one_line_stop,
+                two_line_stop=two_line_stop,
+            )
             self._add_changed_span(
                 one_side,
                 two_side,
                 one_local_idxs,
                 two_local_idxs,
             )
+            if one_local_idxs:
+                one_line_pos = one_local_idxs[-1] + 1
+            if two_local_idxs:
+                two_line_pos = two_local_idxs[-1] + 1
+        self._add_equal_messages_until(
+            one_side=one_side,
+            two_side=two_side,
+            one_line_pos=one_line_pos,
+            two_line_pos=two_line_pos,
+            one_line_stop=len(one_side.lines),
+            two_line_stop=len(two_side.lines),
+        )
 
     def _get_changed_span_kind(
         self,
@@ -365,6 +528,52 @@ class SeriesDiff:
                 kind = LineDiffKind.EDIT
 
         return kind
+
+    def _get_context_line_idxs(
+        self,
+        *,
+        source_side: _SeriesDiffBlockSide,
+        target_side: _SeriesDiffBlockSide,
+        source_pos: int,
+        target_pos: int,
+    ) -> tuple[int, ...]:
+        """Get similar target-side context lines for a one-sided character edit.
+
+        Arguments:
+            source_side: side containing the one-sided edited character
+            target_side: side from which to borrow an aligned context line
+            source_pos: character position on the source side
+            target_pos: current character position on the target side
+        Returns:
+            target-side local line indices similar to the edited source line
+        """
+        source_line_idxs = source_side.char_line_idxs[source_pos]
+        if len(source_line_idxs) != 1:
+            return ()
+
+        candidates = []
+        if target_pos > 0:
+            candidates.extend(target_side.char_line_idxs[target_pos - 1])
+        if target_pos < len(target_side.char_line_idxs):
+            candidates.extend(target_side.char_line_idxs[target_pos])
+
+        source_idx = source_line_idxs[0]
+        source_text = source_side.normlines[source_idx]
+        context_idxs = []
+        for candidate_idx in candidates:
+            if candidate_idx in context_idxs:
+                continue
+            candidate_text = target_side.normlines[candidate_idx]
+            ratio = difflib.SequenceMatcher(
+                None,
+                source_text,
+                candidate_text,
+                autojunk=False,
+            ).ratio()
+            if ratio >= self.similarity_cutoff:
+                context_idxs.append(candidate_idx)
+
+        return tuple(context_idxs)
 
     def _merge_adjacent_one_sided_spans(
         self,
@@ -571,7 +780,7 @@ class SeriesDiff:
         """
         event_records = []
         line_idx = 0
-        for subtitle in series:
+        for event_idx, subtitle in enumerate(series.events):
             records = []
             for line in subtitle.text_with_newline.splitlines():
                 stripped = line.strip()
@@ -579,6 +788,7 @@ class SeriesDiff:
                     records.append(
                         _SeriesDiffLineRecord(
                             idx=line_idx,
+                            event_idx=event_idx,
                             text=stripped,
                             norm=SeriesDiff._normalize_line(stripped),
                         )
@@ -586,6 +796,39 @@ class SeriesDiff:
                     line_idx += 1
             event_records.append(tuple(records))
         return event_records
+
+    def _get_third_texts(self, message: LineDiff, three: Series) -> tuple[str, ...]:
+        """Get third-side texts corresponding to a diff message's first-side events.
+
+        Arguments:
+            message: diff message for which to get third-side text
+            three: one-to-one third subtitle series
+        Returns:
+            third-side subtitle texts in first-side event order
+        """
+        if not message.one_idxs:
+            return ()
+
+        event_idxs = []
+        for line_idx in message.one_idxs:
+            event_idx = self._one_line_event_idxs[line_idx]
+            if event_idxs and event_idxs[-1] == event_idx:
+                continue
+            event_idxs.append(event_idx)
+
+        texts = []
+        for event_idx in event_idxs:
+            event_texts = []
+            for line in three.events[event_idx].text_with_newline.splitlines():
+                stripped = line.strip()
+                if stripped:
+                    event_texts.append(stripped)
+            if event_texts:
+                texts.extend(event_texts)
+            else:
+                texts.append("")
+
+        return tuple(texts)
 
     @staticmethod
     def _join_normlines(
@@ -705,17 +948,8 @@ class SeriesDiff:
         Returns:
             whether the spans should be merged before message creation
         """
-        prev_one_set = set(prev_one)
-        prev_two_set = set(prev_two)
-        next_one_set = set(next_one)
-        next_two_set = set(next_two)
-
-        if prev_one_set & next_one_set:
+        if set(prev_one) & set(next_one):
             return True
-        if prev_two_set & next_two_set:
-            return True
-        if prev_one_set & next_two_set:
-            return True
-        if prev_two_set & next_one_set:
+        if set(prev_two) & set(next_two):
             return True
         return False

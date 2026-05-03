@@ -14,6 +14,7 @@ class LineDiffKind(Enum):
 
     DELETE = "delete"
     EDIT = "edit"
+    EQUAL = "equal"
     INSERT = "insert"
     MERGE = "merge"
     MERGE_EDIT = "merge_edit"

@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
+import pytest
+
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
+from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 
 
@@ -56,3 +59,70 @@ def test_series_diff_reports_split():
     assert messages[0].kind == LineDiffKind.SPLIT
     assert messages[0].one_idxs == (0,)
     assert messages[0].two_idxs == (0, 1)
+
+
+def test_series_diff_get_stacked_str_appends_third_series():
+    """Test stacked diff output can include an unaligned third series."""
+    one = _get_series("alpha beta")
+    two = _get_series("alpha", "beta")
+    three = _get_series("source alpha beta")
+
+    rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
+
+    assert rendered.splitlines() == [
+        "1 1-2",
+        "alpha beta",
+        "alpha beta",
+        "source alpha beta",
+    ]
+
+
+def test_series_diff_get_stacked_str_can_include_equal_lines():
+    """Test stacked diff output can include unchanged aligned lines."""
+    one = _get_series("same", "before", "changed")
+    two = _get_series("same", "before", "edited")
+    three = _get_series("source same", "source before", "source changed")
+
+    rendered = SeriesDiff(one, two).get_stacked_str(
+        color=False,
+        three=three,
+        include_equal=True,
+    )
+
+    assert rendered.splitlines() == [
+        "1 1",
+        "same",
+        "same",
+        "source same",
+        "",
+        "2 2",
+        "before",
+        "before",
+        "source before",
+        "",
+        "3 3",
+        "changed",
+        " edited",
+        "source changed",
+    ]
+
+
+def test_series_diff_get_stacked_str_appends_blank_third_line_for_insert():
+    """Test third-series output is blank for second-side-only inserts."""
+    one = _get_series()
+    two = _get_series("extra")
+    three = _get_series()
+
+    rendered = SeriesDiff(one, two).get_stacked_str(color=False, three=three)
+
+    assert rendered.splitlines() == ["| 1", "", "extra", ""]
+
+
+def test_series_diff_get_stacked_str_rejects_non_one_to_one_third_series():
+    """Test stacked diff output rejects a third series not matched with one."""
+    one = _get_series("alpha beta")
+    two = _get_series("alpha", "beta")
+    three = _get_series("source alpha beta", "extra")
+
+    with pytest.raises(ScinoephileError, match="one-to-one matched"):
+        SeriesDiff(one, two).get_stacked_str(color=False, three=three)

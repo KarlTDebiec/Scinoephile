@@ -83,22 +83,36 @@ class LineDiff:
             f"{one_text_repr} -> {two_text_repr}"
         )
 
-    def get_stacked_str(self, *, color: bool = True) -> str:
+    def get_stacked_str(
+        self, *, color: bool = True, three_texts: tuple[str, ...] | None = None
+    ) -> str:
         """Format the diff as a stacked, character-aligned display.
 
         Arguments:
             color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
         Returns:
             formatted, multi-line diff chunk
         """
         one_range = self._format_idxs_or_empty(self.one_idxs)
         two_range = self._format_idxs_or_empty(self.two_idxs)
 
+        if self.kind == LineDiffKind.EQUAL:
+            return self._get_equal_stacked_str(
+                one_range=one_range,
+                two_range=two_range,
+                one_texts=self.one_texts or (),
+                two_texts=self.two_texts or (),
+                color=color,
+                three_texts=three_texts,
+            )
+
         if self.kind == LineDiffKind.DELETE:
             return self._get_delete_stacked_str(
                 one_range=one_range,
                 one_texts=self.one_texts or (),
                 color=color,
+                three_texts=three_texts,
             )
 
         if self.kind == LineDiffKind.INSERT:
@@ -106,6 +120,7 @@ class LineDiff:
                 insert_idxs=self.two_idxs or (),
                 insert_texts=self.two_texts or (),
                 color=color,
+                three_texts=three_texts,
             )
 
         return self._get_edit_stacked_str(
@@ -114,6 +129,7 @@ class LineDiff:
             one_texts=self.one_texts or (),
             two_texts=self.two_texts or (),
             color=color,
+            three_texts=three_texts,
         )
 
     @staticmethod
@@ -159,7 +175,11 @@ class LineDiff:
 
     @staticmethod
     def _get_delete_stacked_str(
-        *, one_range: str, one_texts: tuple[str, ...], color: bool
+        *,
+        one_range: str,
+        one_texts: tuple[str, ...],
+        color: bool,
+        three_texts: tuple[str, ...] | None,
     ) -> str:
         """Format a delete diff as stacked output.
 
@@ -167,6 +187,7 @@ class LineDiff:
             one_range: formatted index range for the first side
             one_texts: deleted text lines
             color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
         Returns:
             formatted delete diff chunk
         """
@@ -174,7 +195,43 @@ class LineDiff:
         one_text = LineDiff._join_texts(one_texts)
         if color:
             one_text = colorize(one_text, AnsiColor.RED)
-        return f"{header}\n{one_text}\n\n"
+        if three_texts is None:
+            return f"{header}\n{one_text}\n\n"
+        three_text = LineDiff._join_texts(three_texts)
+        return f"{header}\n{one_text}\n\n{three_text}\n"
+
+    @staticmethod
+    def _get_equal_stacked_str(
+        *,
+        one_range: str,
+        two_range: str,
+        one_texts: tuple[str, ...],
+        two_texts: tuple[str, ...],
+        color: bool,
+        three_texts: tuple[str, ...] | None,
+    ) -> str:
+        """Format an equal diff as stacked output.
+
+        Arguments:
+            one_range: formatted index range for the first side
+            two_range: formatted index range for the second side
+            one_texts: first-side text lines
+            two_texts: second-side text lines
+            color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
+        Returns:
+            formatted equal diff chunk
+        """
+        one_text = LineDiff._join_texts(one_texts)
+        two_text = LineDiff._join_texts(two_texts)
+        if color:
+            one_text = colorize(one_text, AnsiColor.GREEN)
+            two_text = colorize(two_text, AnsiColor.GREEN)
+        header = f"{one_range} {two_range}".rstrip()
+        if three_texts is None:
+            return f"{header}\n{one_text}\n{two_text}\n"
+        three_text = LineDiff._join_texts(three_texts)
+        return f"{header}\n{one_text}\n{two_text}\n{three_text}\n"
 
     @staticmethod
     def _get_edit_stacked_str(
@@ -184,6 +241,7 @@ class LineDiff:
         one_texts: tuple[str, ...],
         two_texts: tuple[str, ...],
         color: bool,
+        three_texts: tuple[str, ...] | None,
     ) -> str:
         """Format an edit-like diff as stacked output.
 
@@ -193,6 +251,7 @@ class LineDiff:
             one_texts: first-side text lines
             two_texts: second-side text lines
             color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
         Returns:
             formatted edit diff chunk
         """
@@ -240,11 +299,18 @@ class LineDiff:
                 two_text = colorize(two_text, AnsiColor.BLUE)
             two_out.append(two_text)
 
-        return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
+        if three_texts is None:
+            return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n"
+        three_text = LineDiff._join_texts(three_texts)
+        return f"{header}\n{''.join(one_out)}\n{''.join(two_out)}\n{three_text}\n"
 
     @staticmethod
     def _get_insert_stacked_str(
-        *, insert_idxs: tuple[int, ...], insert_texts: tuple[str, ...], color: bool
+        *,
+        insert_idxs: tuple[int, ...],
+        insert_texts: tuple[str, ...],
+        color: bool,
+        three_texts: tuple[str, ...] | None,
     ) -> str:
         """Format an insert diff as stacked output.
 
@@ -252,6 +318,7 @@ class LineDiff:
             insert_idxs: inserted line indices
             insert_texts: inserted text lines
             color: whether to emit ANSI color escapes
+            three_texts: optional unaligned third-side text lines
         Returns:
             formatted insert diff chunk
         """
@@ -259,7 +326,10 @@ class LineDiff:
         two_text = LineDiff._join_texts(insert_texts)
         if color:
             two_text = colorize(two_text, AnsiColor.BLUE)
-        return f"{header}\n\n{two_text}\n"
+        if three_texts is None:
+            return f"{header}\n\n{two_text}\n"
+        three_text = LineDiff._join_texts(three_texts)
+        return f"{header}\n\n{two_text}\n{three_text}\n"
 
     @staticmethod
     def _get_joiner(prev_char: str | None, next_char: str | None) -> str:

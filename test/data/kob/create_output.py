@@ -188,6 +188,9 @@ if "简体粤文 (Diff)" in actions:
         / "transcribe_review_translate_block_review.srt"
     )
     yue_hans_reference = Series.load(yue_hans_dir / "timewarp_clean_flatten.srt")
+    zho_hans_reference = Series.load(
+        zho_hant_ocr_dir / "fuse_clean_validate_review_flatten_simplify_review.srt"
+    )
     diff = SeriesDiff(
         yue_hans_transcribe,
         yue_hans_reference,
@@ -195,5 +198,5 @@ if "简体粤文 (Diff)" in actions:
         two_lbl="REFERENCE",
     )
     print(diff)
-    print(diff.get_stacked_str())
+    print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
     print(SeriesCER(yue_hans_reference, yue_hans_transcribe))

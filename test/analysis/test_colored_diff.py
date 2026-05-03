@@ -122,3 +122,20 @@ def test_line_diff_get_stacked_str_joiner_uses_full_width_punctuation():
     lines = rendered.splitlines()
     assert lines[1] == "甲。　乙"
     assert lines[2] == "甲。　乙"
+
+
+def test_line_diff_get_stacked_str_equal_is_green_when_colored():
+    """Test equal stacked output colors the aligned lines green."""
+    msg = LineDiff(
+        kind=LineDiffKind.EQUAL,
+        one_lbl="one",
+        two_lbl="two",
+        one_idxs=(0,),
+        two_idxs=(0,),
+        one_texts=("same",),
+        two_texts=("same",),
+    )
+    rendered = msg.get_stacked_str(color=True)
+    lines = rendered.splitlines()
+    assert lines[1] == "\x1b[32msame\x1b[0m"
+    assert lines[2] == "\x1b[32msame\x1b[0m"

@@ -159,3 +159,46 @@ def test_series_diff_pairs_bracketed_insert():
     ]
     assert messages[1].one_idxs == (1,)
     assert messages[1].two_idxs == (1,)
+
+
+def test_series_diff_does_not_merge_cross_side_index_matches():
+    """Test same-numbered first- and second-side indices remain independent."""
+    diff = SeriesDiff(
+        _get_series(
+            "你听我讲，爹哋出名系二世祖",
+            "副身家都洗到七七八八㗎喇",
+            "好话唔好听，但系第日我两个脚一伸呢",
+            "你个王八蛋，点解嚟呢度讨饭呀？",
+            "我不嬲都靠自己㗎啦",
+        ),
+        _get_series(
+            "你听我讲，阿爹出咗名系二世祖",
+            "副身家都洗到七七八八喇",
+            "好话唔好听，第日阿爹两脚一伸呢",
+            "你就冚扮烂都要靠自己喇",
+        ),
+    )
+    messages = list(diff)
+    assert [message.kind for message in messages] == [
+        LineDiffKind.EDIT,
+        LineDiffKind.EDIT,
+        LineDiffKind.EDIT,
+        LineDiffKind.MERGE_EDIT,
+    ]
+    assert messages[1].one_idxs == (1,)
+    assert messages[1].two_idxs == (1,)
+
+
+def test_series_diff_pairs_one_sided_punctuation_with_context_line():
+    """Test one-sided punctuation edits include the matching opposite line."""
+    diff = SeriesDiff(
+        _get_series("辛苦啦！少爷", "抹汗啦，少爷！"),
+        _get_series("辛苦喇！少爷", "抹汗啦，少爷"),
+    )
+    messages = list(diff)
+    assert [message.kind for message in messages] == [
+        LineDiffKind.EDIT,
+        LineDiffKind.EDIT,
+    ]
+    assert messages[1].one_idxs == (1,)
+    assert messages[1].two_idxs == (1,)
