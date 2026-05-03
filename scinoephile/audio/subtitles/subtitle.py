@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import TYPE_CHECKING, Unpack, cast, override
+from typing import Unpack, cast, override
 
+from pydub import AudioSegment
+
+from scinoephile.audio.transcription import TranscribedSegment
 from scinoephile.core.subtitles import Subtitle, SubtitleKwargs
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
-
-    from scinoephile.audio.transcription import TranscribedSegment
 
 __all__ = ["AudioSubtitle"]
 

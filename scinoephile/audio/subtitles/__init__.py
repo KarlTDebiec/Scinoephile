@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from pydub import AudioSegment
 
 from scinoephile.audio.transcription import (
     TranscribedSegment,
@@ -14,9 +14,6 @@ from scinoephile.audio.transcription import (
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
 
 __all__ = [
     "AudioSeries",
