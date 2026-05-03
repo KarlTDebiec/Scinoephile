@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import ClassVar, Unpack
 
-from scinoephile.analysis.diff import AlignmentSeriesDiff, SeriesDiff
+from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
@@ -36,9 +36,6 @@ class _AnalysisDiffCliKwargs(CLIKwargs, total=False):
     similarity_cutoff: float
     """Similarity cutoff for replacement pairing."""
 
-    alignment_experiment: bool
-    """Whether to print experimental alignment-derived diff output."""
-
     one_label: str
     """Label for first series."""
 
@@ -57,9 +54,6 @@ class AnalysisDiffCli(ScinoephileCliBase):
             ),
             "label for first series (default: one)": "第一个序列标签（默认：one）",
             "label for second series (default: two)": "第二个序列标签（默认：two）",
-            "print current diff and experimental alignment-derived diff": (
-                "打印当前差异和实验性对齐派生差异"
-            ),
             "similarity threshold used to pair replacements (default: 0.6)": (
                 "用于配对替换项的相似度阈值（默认：0.6）"
             ),
@@ -77,9 +71,6 @@ class AnalysisDiffCli(ScinoephileCliBase):
             ),
             "label for first series (default: one)": "第一個序列標籤（預設：one）",
             "label for second series (default: two)": "第二個序列標籤（預設：two）",
-            "print current diff and experimental alignment-derived diff": (
-                "列印目前差異和實驗性對齊衍生差異"
-            ),
             "similarity threshold used to pair replacements (default: 0.6)": (
                 "用於配對替換項的相似度閾值（預設：0.6）"
             ),
@@ -130,11 +121,6 @@ class AnalysisDiffCli(ScinoephileCliBase):
             type=float_arg(min_value=0.0, max_value=1.0),
             help="similarity threshold used to pair replacements (default: 0.6)",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--alignment-experiment",
-            action="store_true",
-            help="print current diff and experimental alignment-derived diff",
-        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -171,7 +157,6 @@ class AnalysisDiffCli(ScinoephileCliBase):
         one_infile_path = kwargs.pop("one_infile")
         two_infile_path = kwargs.pop("two_infile")
         similarity_cutoff = kwargs.pop("similarity_cutoff")
-        alignment_experiment = kwargs.pop("alignment_experiment")
         one_label = kwargs.pop("one_label")
         two_label = kwargs.pop("two_label")
         if one_infile_path == "-" and two_infile_path == "-":
@@ -196,22 +181,8 @@ class AnalysisDiffCli(ScinoephileCliBase):
         )
 
         # Write outputs
-        if alignment_experiment:
-            print("Current diff:")
         for line_diff in diff:
             print(line_diff)
-        if alignment_experiment:
-            print()
-            print("Alignment experiment diff:")
-            alignment_diff = AlignmentSeriesDiff(
-                one_subtitle_series,
-                two_subtitle_series,
-                one_lbl=one_label,
-                two_lbl=two_label,
-                similarity_cutoff=similarity_cutoff,
-            )
-            for line_diff in alignment_diff:
-                print(line_diff)
 
 
 if __name__ == "__main__":

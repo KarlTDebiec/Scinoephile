@@ -8,13 +8,12 @@ from __future__ import annotations
 
 from functools import cache
 from pathlib import Path
-from typing import Unpack
+from typing import Any
 
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import TestCase, load_test_cases_from_json
-from scinoephile.core.llms.manager import TestCaseClsKwargs
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
@@ -146,7 +145,7 @@ def kob_zho_hant_ocr_paddle() -> Series:
 @cache
 def get_kob_eng_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB English block review test cases.
 
@@ -170,7 +169,7 @@ def get_kob_eng_block_review_test_cases(
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
 
@@ -189,7 +188,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 @cache
 def get_kob_yue_deliniation_test_cases(
     prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
 
@@ -216,7 +215,7 @@ def get_kob_yue_deliniation_test_cases(
 @cache
 def get_kob_yue_punctuation_test_cases(
     prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
 
@@ -243,7 +242,7 @@ def get_kob_yue_punctuation_test_cases(
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
     prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
 
@@ -269,7 +268,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
 @cache
 def get_kob_zho_hant_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 繁体中文 block review test cases.
 
@@ -288,7 +287,7 @@ def get_kob_zho_hant_block_review_test_cases(
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
     prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.
 
@@ -307,7 +306,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 @cache
 def get_kob_zho_hant_simplify_block_review_test_cases(
     prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
-    **kwargs: Unpack[TestCaseClsKwargs],
+    **kwargs: Any,
 ) -> list[TestCase]:
     """Get KOB 繁体中文 simplification block review test cases.
 
@@ -579,11 +578,11 @@ def kob_yue_hans_transcribe() -> Series:
 def kob_yue_hans_transcribe_expected_cer() -> SeriesCERResult:
     """Expected CER for KOB transcribed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.872589592321916,
-        substitutions=5516,
-        insertions=2096,
-        deletions=2298,
-        correct=3543,
+        cer=0.5683719292066567,
+        substitutions=4949,
+        insertions=629,
+        deletions=877,
+        correct=5531,
         reference_length=11357,
     )
 
@@ -618,11 +617,11 @@ def kob_yue_hans_transcribe_review_translate_block_review_expected_cer() -> (
 ):
     """Expected CER for KOB reviewed subtitles against flattened reference."""
     return SeriesCERResult(
-        cer=0.6131901030201637,
-        substitutions=4397,
-        insertions=1225,
-        deletions=1342,
-        correct=5618,
+        cer=0.46781720524786474,
+        substitutions=3886,
+        insertions=645,
+        deletions=782,
+        correct=6689,
         reference_length=11357,
     )
 

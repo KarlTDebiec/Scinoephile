@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of experimental alignment-derived series diffing."""
+"""Tests of alignment-derived series diffing."""
 
 from __future__ import annotations
 
-from scinoephile.analysis.diff import AlignmentSeriesDiff, LineDiffKind
+from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core.subtitles import Series, Subtitle
 
 
@@ -24,9 +24,9 @@ def _get_series(*texts: str) -> Series:
     )
 
 
-def test_alignment_series_diff_delete():
+def test_series_diff_delete():
     """Test alignment-derived deletion."""
-    diff = AlignmentSeriesDiff(_get_series("alpha"), _get_series())
+    diff = SeriesDiff(_get_series("alpha"), _get_series())
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.DELETE
@@ -34,9 +34,9 @@ def test_alignment_series_diff_delete():
     assert messages[0].one_texts == ("alpha",)
 
 
-def test_alignment_series_diff_edit():
+def test_series_diff_edit():
     """Test alignment-derived one-to-one edit."""
-    diff = AlignmentSeriesDiff(_get_series("alpha"), _get_series("alps"))
+    diff = SeriesDiff(_get_series("alpha"), _get_series("alps"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.EDIT
@@ -44,9 +44,9 @@ def test_alignment_series_diff_edit():
     assert messages[0].two_idxs == (0,)
 
 
-def test_alignment_series_diff_insert():
+def test_series_diff_insert():
     """Test alignment-derived insertion."""
-    diff = AlignmentSeriesDiff(_get_series(), _get_series("alpha"))
+    diff = SeriesDiff(_get_series(), _get_series("alpha"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.INSERT
@@ -54,9 +54,9 @@ def test_alignment_series_diff_insert():
     assert messages[0].two_texts == ("alpha",)
 
 
-def test_alignment_series_diff_merge():
+def test_series_diff_merge():
     """Test alignment-derived exact merge."""
-    diff = AlignmentSeriesDiff(_get_series("alpha", "beta"), _get_series("alpha beta"))
+    diff = SeriesDiff(_get_series("alpha", "beta"), _get_series("alpha beta"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.MERGE
@@ -64,9 +64,9 @@ def test_alignment_series_diff_merge():
     assert messages[0].two_idxs == (0,)
 
 
-def test_alignment_series_diff_split():
+def test_series_diff_split():
     """Test alignment-derived exact split."""
-    diff = AlignmentSeriesDiff(_get_series("alpha beta"), _get_series("alpha", "beta"))
+    diff = SeriesDiff(_get_series("alpha beta"), _get_series("alpha", "beta"))
     messages = list(diff)
     assert len(messages) == 1
     assert messages[0].kind == LineDiffKind.SPLIT
@@ -74,9 +74,9 @@ def test_alignment_series_diff_split():
     assert messages[0].two_idxs == (0, 1)
 
 
-def test_alignment_series_diff_does_not_duplicate_line_delete():
+def test_series_diff_does_not_duplicate_line_delete():
     """Test one changed line is not emitted as both edit and delete."""
-    diff = AlignmentSeriesDiff(
+    diff = SeriesDiff(
         _get_series("第十八掌——降龙有悔啊", "阿灿,你没事　吧?"),
         _get_series("第十八掌──杀龙有悔　", "阿灿，你冇事呀嘛？"),
     )
@@ -89,9 +89,9 @@ def test_alignment_series_diff_does_not_duplicate_line_delete():
     assert messages[0].two_idxs == (0,)
 
 
-def test_alignment_series_diff_pairs_same_position_delete_insert():
+def test_series_diff_pairs_same_position_delete_insert():
     """Test same-position delete and insert spans merge into one edit."""
-    diff = AlignmentSeriesDiff(
+    diff = SeriesDiff(
         _get_series(
             "阿灿,你没事　吧?",
             "你睇我姿势，你话我有冇事？",
@@ -113,9 +113,9 @@ def test_alignment_series_diff_pairs_same_position_delete_insert():
     assert messages[1].two_idxs == (1,)
 
 
-def test_alignment_series_diff_pairs_adjacent_similar_insert_delete():
+def test_series_diff_pairs_adjacent_similar_insert_delete():
     """Test adjacent similar insert and delete spans merge into one edit."""
-    diff = AlignmentSeriesDiff(
+    diff = SeriesDiff(
         _get_series(
             "靠你了",
             "莫大叔！莲花落阵你都冇有把握",
@@ -137,9 +137,9 @@ def test_alignment_series_diff_pairs_adjacent_similar_insert_delete():
     assert messages[1].two_idxs == (1,)
 
 
-def test_alignment_series_diff_pairs_bracketed_insert():
+def test_series_diff_pairs_bracketed_insert():
     """Test target-only edits pair with a bracketed source line."""
-    diff = AlignmentSeriesDiff(
+    diff = SeriesDiff(
         _get_series(
             "以我现在打狗棒法的功力",
             "我又点可以打低三位长老做帮主？",

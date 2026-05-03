@@ -4,13 +4,11 @@
 
 from __future__ import annotations
 
-from .alignment_series_diff import AlignmentSeriesDiff
 from .line_diff import LineDiff
 from .line_diff_kind import LineDiffKind
 from .series_diff import SeriesDiff
 
 __all__ = [
-    "AlignmentSeriesDiff",
     "LineDiff",
     "LineDiffKind",
     "SeriesDiff",
