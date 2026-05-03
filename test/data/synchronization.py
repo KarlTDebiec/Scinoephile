@@ -8,8 +8,10 @@ from pathlib import Path
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_flattened
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_flattened
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
+from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = [
     "process_yue_hans_eng",

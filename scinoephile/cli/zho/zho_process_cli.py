@@ -21,19 +21,21 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.cmn import get_cmn_romanized
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
+from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
+    get_zho_converted,
 )
+from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = ["ZhoProcessCli"]
 

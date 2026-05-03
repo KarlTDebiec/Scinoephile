@@ -25,7 +25,7 @@ from scinoephile.core.dictionaries import (
     DictionarySource,
 )
 from scinoephile.core.paths import get_runtime_cache_dir_path
-from scinoephile.lang.yue import get_yue_converted
+from scinoephile.lang.yue.conversion import get_yue_converted
 
 from .constants import (
     BASE_URL,

@@ -17,18 +17,16 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.multilang.yue_zho import (
-    get_yue_block_reviewed_vs_zho,
-    get_yue_line_reviewed_vs_zho,
-)
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoYueHansBlockReviewPrompt,
     YueVsZhoYueHantBlockReviewPrompt,
+    get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoYueHansLineReviewPrompt,
     YueVsZhoYueHantLineReviewPrompt,
+    get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
 )
 

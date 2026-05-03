@@ -16,11 +16,9 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.eng import (
-    get_eng_block_reviewed,
-    get_eng_cleaned,
-    get_eng_flattened,
-)
+from scinoephile.lang.eng.block_review import get_eng_block_reviewed
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
 
 __all__ = ["EngProcessCli"]
 

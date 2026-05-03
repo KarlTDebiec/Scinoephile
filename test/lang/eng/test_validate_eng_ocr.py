@@ -9,7 +9,7 @@ import logging
 from pytest import LogCaptureFixture
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng import validate_eng_ocr
+from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
 
 

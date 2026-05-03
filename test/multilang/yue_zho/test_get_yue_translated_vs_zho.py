@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.multilang.yue_zho import get_yue_translated_vs_zho
+from scinoephile.multilang.yue_zho.translation import get_yue_translated_vs_zho
 
 
 def test_get_yue_translated_vs_zho_mlamd(

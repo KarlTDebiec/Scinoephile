@@ -23,8 +23,8 @@ from scinoephile.core.llms import (
     Query,
     Queryer,
     TestCase,
-    save_test_cases_to_json,
 )
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string

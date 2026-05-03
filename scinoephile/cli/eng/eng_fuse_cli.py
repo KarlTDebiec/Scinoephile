@@ -16,7 +16,8 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.eng import get_eng_cleaned, get_eng_ocr_fused
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
 
 __all__ = ["EngFuseCli"]
 

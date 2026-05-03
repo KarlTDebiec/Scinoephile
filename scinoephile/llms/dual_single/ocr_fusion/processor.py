@@ -7,7 +7,8 @@ from __future__ import annotations
 from logging import getLogger
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Processor, save_test_cases_to_json
+from scinoephile.core.llms import Processor
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import are_series_one_to_one
 
@@ -50,7 +51,9 @@ class OcrFusionProcessor(Processor):
         # Process subtitles
         output_subtitles = []
         stop_at_idx = stop_at_idx or len(source_one)
-        for sub_idx, (sub_one, sub_two) in enumerate(zip(source_one, source_two)):
+        for sub_idx, (sub_one, sub_two) in enumerate(
+            zip(source_one.events, source_two.events)
+        ):
             if sub_idx >= stop_at_idx:
                 break
             text_one = sub_one.text

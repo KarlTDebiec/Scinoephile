@@ -17,7 +17,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exception import NotAFileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng import validate_eng_ocr
+from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 
 __all__ = ["EngValidateOcrCli"]
 

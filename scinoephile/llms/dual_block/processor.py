@@ -7,7 +7,8 @@ from __future__ import annotations
 from logging import getLogger
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import Processor, save_test_cases_to_json
+from scinoephile.core.llms import Processor
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.synchronization import are_series_one_to_one
 
@@ -72,10 +73,10 @@ class DualBlockProcessor(Processor):
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
                 one_key = self.prompt_cls.src_1(sub_idx + 1)
-                one_val = one_blk[sub_idx].text_with_newline.strip()
+                one_val = one_blk.events[sub_idx].text_with_newline.strip()
                 query_kwargs[one_key] = one_val
                 two_key = self.prompt_cls.src_2(sub_idx + 1)
-                two_val = two_blk[sub_idx].text_with_newline.strip()
+                two_val = two_blk.events[sub_idx].text_with_newline.strip()
                 query_kwargs[two_key] = two_val
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)

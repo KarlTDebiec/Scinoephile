@@ -11,32 +11,30 @@ from typing import Any
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.cmn import get_cmn_romanized
-from scinoephile.lang.eng import (
-    get_eng_cleaned,
-    get_eng_flattened,
-    validate_eng_ocr,
-)
+from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
     get_eng_block_reviewer,
 )
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
-from scinoephile.lang.zho import (
-    get_zho_cleaned,
-    get_zho_converted,
-    get_zho_flattened,
-    get_zho_ocr_fused,
-    validate_zho_ocr,
-)
+from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
+from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHantOcrFusionPrompt,
+    get_zho_ocr_fused,
+    get_zho_ocr_fuser,
+)
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 
 __all__ = [
     "process_eng_ocr",

@@ -9,7 +9,7 @@ from contextlib import nullcontext
 import pytest
 
 from scinoephile.core import UnsupportedCharacterError
-from scinoephile.lang.yue import get_yue_converted
+from scinoephile.lang.yue.conversion import get_yue_converted
 
 
 @pytest.mark.parametrize(

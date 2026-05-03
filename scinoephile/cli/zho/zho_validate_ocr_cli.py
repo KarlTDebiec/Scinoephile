@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exception import NotAFileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 
 __all__ = ["ZhoValidateOcrCli"]
 
