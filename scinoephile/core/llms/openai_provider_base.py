@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping
 from logging import getLogger
 from time import sleep
 from typing import Any, Unpack, cast
@@ -259,7 +260,7 @@ class OpenAIProviderBase(LLMProvider):
     def _build_request_kwargs(
         response_format: type[Answer] | None,
         openai_tools: list[dict[str, object]] | None,
-        kwargs: dict[str, Any],
+        kwargs: Mapping[str, Any],
     ) -> dict[str, Any]:
         """Build request kwargs for one completion call.
 

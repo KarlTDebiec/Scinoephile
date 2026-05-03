@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, Unpack, cast
 
 from pydantic import Field, create_model
 
@@ -146,6 +146,7 @@ class DualBlockManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
+        prompt_cls = cast(type[DualBlockPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_1_pfx))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
 

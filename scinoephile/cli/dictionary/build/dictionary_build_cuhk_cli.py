@@ -28,7 +28,7 @@ logger = getLogger(__name__)
 class _DictionaryBuildCuhkCliKwargs(TypedDict, total=False):
     """Keyword arguments for DictionaryBuildCuhkCli."""
 
-    cache_dir: Path | None
+    cache_dir_path: Path | None
     """Cache directory for scraped HTML and link data."""
     database_path: Path | None
     """SQLite database output path."""
@@ -109,6 +109,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
+            dest="cache_dir_path",
             default=None,
             type=output_dir_arg(),
             help="cache directory for scraped HTML and link data",
@@ -184,7 +185,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         Arguments:
             **kwargs: keyword arguments
         """
-        cache_dir_path = kwargs.pop("cache_dir")
+        cache_dir_path = kwargs.pop("cache_dir_path")
         database_path = kwargs.pop("database_path")
         max_words = kwargs.pop("max_words", None)
         overwrite = kwargs.pop("overwrite")

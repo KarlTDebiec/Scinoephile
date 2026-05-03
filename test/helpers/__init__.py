@@ -15,7 +15,7 @@ from typing import Any
 import pytest
 from pytest import fixture, mark
 
-from scinoephile.common import package_root
+from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
 
 from .series_cer_result import SeriesCERResult
@@ -38,7 +38,7 @@ __all__ = [
 test_data_root = package_root.parent / "test" / "data"
 
 
-def assert_cli_help(cli: tuple[type, ...]):
+def assert_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     """Assert that a CLI tuple shows help text.
 
     Arguments:
@@ -56,7 +56,7 @@ def assert_cli_help(cli: tuple[type, ...]):
     assert stderr.getvalue() == ""
 
 
-def assert_cli_usage(cli: tuple[type, ...]):
+def assert_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
     """Assert that a CLI tuple shows usage on missing args.
 
     Arguments:
@@ -92,7 +92,7 @@ def assert_expected_warnings(warnings: list[str], expected: list[str], label: st
         )
 
 
-def build_subcommands(cli: tuple[type, ...]) -> str:
+def build_subcommands(cli: tuple[type[CommandLineInterface], ...]) -> str:
     """Build subcommand string for a CLI tuple.
 
     Arguments:
@@ -103,7 +103,7 @@ def build_subcommands(cli: tuple[type, ...]) -> str:
     return " ".join(f"{command.name()}" for command in cli[1:])
 
 
-def get_usage_prefix(cli: tuple[type, ...]) -> str:
+def get_usage_prefix(cli: tuple[type[CommandLineInterface], ...]) -> str:
     """Get expected usage prefix for a CLI tuple.
 
     Arguments:

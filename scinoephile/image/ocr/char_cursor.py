@@ -33,6 +33,13 @@ class CharCursor:
     """Current bbox index."""
 
     @property
+    def bboxes(self) -> list[Bbox]:
+        """Subtitle bboxes after OCR extraction."""
+        bboxes = self.sub.bboxes
+        assert bboxes is not None
+        return bboxes
+
+    @property
     def char(self) -> str:
         """Current character."""
         return self.sub.text_with_newline[self.char_idx]
@@ -61,9 +68,7 @@ class CharCursor:
         Returns:
             bbox group
         """
-        bboxes = self.sub.bboxes
-        assert bboxes is not None
-        return bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
+        return self.bboxes[self.bbox_idx : self.bbox_idx + n_bboxes]
 
     def char_grp(self, n_chars: int) -> str:
         """Current character group.
