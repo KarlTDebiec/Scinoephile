@@ -8,7 +8,8 @@ from collections.abc import Iterable
 from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import Manager, Prompt, TestCase, load_test_cases_from_json
+from scinoephile.core.llms import Manager, Prompt, TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 
 from .id import get_test_case_id
 from .persisted_test_case import PersistedTestCase

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 
 from scinoephile.optimization.persistence.test_cases.persisted_test_case import (
@@ -37,6 +38,17 @@ def test_store_upsert_and_fetch(tmp_path: Path):
     assert loaded.query == {"q": 1}
     assert loaded.answer == {"a": 2}
     assert "x.json" in loaded.source_paths
+
+    with sqlite3.connect(db_path) as connection:
+        columns = {
+            str(row[1])
+            for row in connection.execute(f"PRAGMA table_info({table_name})")
+        }
+    assert "query" not in columns
+    assert "answer" not in columns
+    assert "source_paths" not in columns
+    assert "query__q" in columns
+    assert "answer__a" in columns
 
 
 def test_store_source_path_index(tmp_path: Path):

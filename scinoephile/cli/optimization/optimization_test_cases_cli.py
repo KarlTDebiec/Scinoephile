@@ -5,9 +5,8 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import Any
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -127,7 +126,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         return "sync-test-cases"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments."""
         # Validate arguments
         infile_paths = kwargs.pop("infile_paths")

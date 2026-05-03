@@ -25,7 +25,7 @@ class TestCaseSqliteStore:
     __test__ = False
     """Inform pytest not to collect this class as a test."""
 
-    schema_version = 1
+    schema_version = 2
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -88,15 +88,8 @@ class TestCaseSqliteStore:
             connection.row_factory = sqlite3.Row
             try:
                 row = connection.execute(
-                    f"""SELECT
-                            test_case_id,
-                            difficulty,
-                            prompt,
-                            verified,
-                            query,
-                            answer,
-                            source_paths
-                        FROM {table_name}
+                    f"""SELECT *
+                        FROM {_quote_identifier(table_name)}
                         WHERE test_case_id = ?""",
                     (test_case_id,),
                 ).fetchone()
@@ -104,7 +97,7 @@ class TestCaseSqliteStore:
                 return None
             if row is None:
                 return None
-            return self._row_to_test_case(row)
+            return self._row_to_test_case(connection, table_name, row)
 
     def get_test_cases_by_source_path(
         self,
@@ -122,15 +115,8 @@ class TestCaseSqliteStore:
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(
-                f"""SELECT
-                        t.test_case_id,
-                        t.difficulty,
-                        t.prompt,
-                        t.verified,
-                        t.query,
-                        t.answer,
-                        t.source_paths
-                    FROM {table_name} AS t
+                f"""SELECT t.*
+                    FROM {_quote_identifier(table_name)} AS t
                     JOIN test_case_sources AS s
                       ON s.table_name = ?
                      AND s.test_case_id = t.test_case_id
@@ -138,7 +124,7 @@ class TestCaseSqliteStore:
                    ORDER BY t.test_case_id""",
                 (table_name, source_path),
             ).fetchall()
-        return [self._row_to_test_case(r) for r in rows]
+            return [self._row_to_test_case(connection, table_name, r) for r in rows]
 
     def list_tables(self) -> list[str]:
         """List tables currently present in the database."""
@@ -187,10 +173,12 @@ class TestCaseSqliteStore:
             number of rows inserted or updated
         """
         self.create_schema()
+        test_cases = list(test_cases)
         touched = 0
         with sqlite3.connect(self.database_path) as connection:
             cursor = connection.cursor()
             self._create_test_case_table(cursor, table_name)
+            self._ensure_test_case_columns(cursor, table_name, test_cases)
 
             for tc in test_cases:
                 existing = self._get_source_paths(cursor, table_name, tc.test_case_id)
@@ -199,40 +187,29 @@ class TestCaseSqliteStore:
                     merged_sources.append(source_path)
                 merged_sources = sorted(set(merged_sources))
 
+                payload: dict[str, object] = {
+                    "test_case_id": tc.test_case_id,
+                    "difficulty": int(tc.difficulty),
+                    "prompt": 1 if tc.prompt else 0,
+                    "verified": 1 if tc.verified else 0,
+                }
+                payload.update(_prefixed_payload("query", tc.query))
+                payload.update(_prefixed_payload("answer", tc.answer))
+                columns = tuple(payload)
+                placeholders = ", ".join("?" for _ in columns)
+                quoted_columns = ", ".join(_quote_identifier(c) for c in columns)
+                updates = ", ".join(
+                    f"{_quote_identifier(c)}=excluded.{_quote_identifier(c)}"
+                    for c in columns
+                    if c != "test_case_id"
+                )
                 cursor.execute(
-                    f"""INSERT INTO {table_name}(
-                           test_case_id,
-                           difficulty,
-                           prompt,
-                           verified,
-                           query,
-                           answer,
-                           source_paths
-                       ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    f"""INSERT INTO {_quote_identifier(table_name)}(
+                           {quoted_columns}
+                       ) VALUES ({placeholders})
                        ON CONFLICT(test_case_id) DO UPDATE SET
-                           difficulty=excluded.difficulty,
-                           prompt=excluded.prompt,
-                           verified=excluded.verified,
-                           query=excluded.query,
-                           answer=excluded.answer,
-                           source_paths=excluded.source_paths""",
-                    (
-                        tc.test_case_id,
-                        int(tc.difficulty),
-                        1 if tc.prompt else 0,
-                        1 if tc.verified else 0,
-                        json.dumps(tc.query, ensure_ascii=False, separators=(",", ":")),
-                        json.dumps(
-                            tc.answer,
-                            ensure_ascii=False,
-                            separators=(",", ":"),
-                        ),
-                        json.dumps(
-                            merged_sources,
-                            ensure_ascii=False,
-                            separators=(",", ":"),
-                        ),
-                    ),
+                           {updates}""",
+                    tuple(payload.values()),
                 )
                 touched += 1
 
@@ -321,33 +298,19 @@ class TestCaseSqliteStore:
 
                 for test_case_id in to_delete_ids:
                     row = cursor.execute(
-                        f"SELECT source_paths FROM {table_name} WHERE test_case_id = ?",
-                        (test_case_id,),
-                    ).fetchone()
-                    if row is None or row[0] is None:
-                        continue
-                    paths = json.loads(str(row[0]))
-                    if isinstance(paths, list):
-                        paths = [str(x) for x in paths if str(x) != source_path]
-                    else:
-                        paths = []
+                        """SELECT source_path
+                           FROM test_case_sources
+                           WHERE table_name = ?
+                             AND test_case_id = ?
+                           ORDER BY source_path""",
+                        (table_name, test_case_id),
+                    ).fetchall()
+                    paths = [str(r[0]) for r in row]
                     if not paths:
                         cursor.execute(
-                            f"DELETE FROM {table_name} WHERE test_case_id = ?",
-                            (test_case_id,),
-                        )
-                    else:
-                        cursor.execute(
-                            f"UPDATE {table_name} SET source_paths = ? "
+                            f"DELETE FROM {_quote_identifier(table_name)} "
                             "WHERE test_case_id = ?",
-                            (
-                                json.dumps(
-                                    paths,
-                                    ensure_ascii=False,
-                                    separators=(",", ":"),
-                                ),
-                                test_case_id,
-                            ),
+                            (test_case_id,),
                         )
                 connection.commit()
 
@@ -356,16 +319,35 @@ class TestCaseSqliteStore:
     @staticmethod
     def _create_test_case_table(cursor: sqlite3.Cursor, table_name: str):
         cursor.execute(
-            f"""CREATE TABLE IF NOT EXISTS {table_name}(
+            f"""CREATE TABLE IF NOT EXISTS {_quote_identifier(table_name)}(
                     test_case_id TEXT PRIMARY KEY,
                     difficulty INTEGER NOT NULL,
                     prompt INTEGER NOT NULL,
-                    verified INTEGER NOT NULL,
-                    query TEXT NOT NULL,
-                    answer TEXT NOT NULL,
-                    source_paths TEXT NOT NULL
+                    verified INTEGER NOT NULL
                 )"""
         )
+
+    @staticmethod
+    def _ensure_test_case_columns(
+        cursor: sqlite3.Cursor,
+        table_name: str,
+        test_cases: Iterable[PersistedTestCase],
+    ):
+        existing_columns = {
+            str(row[1])
+            for row in cursor.execute(
+                f"PRAGMA table_info({_quote_identifier(table_name)})"
+            ).fetchall()
+        }
+        desired_columns = set[str]()
+        for test_case in test_cases:
+            desired_columns.update(_prefixed_payload("query", test_case.query))
+            desired_columns.update(_prefixed_payload("answer", test_case.answer))
+        for column in sorted(desired_columns - existing_columns):
+            cursor.execute(
+                f"ALTER TABLE {_quote_identifier(table_name)} "
+                f"ADD COLUMN {_quote_identifier(column)}"
+            )
 
     @staticmethod
     def _get_source_paths(
@@ -375,20 +357,35 @@ class TestCaseSqliteStore:
     ) -> list[str]:
         try:
             row = cursor.execute(
-                f"SELECT source_paths FROM {table_name} WHERE test_case_id = ?",
-                (test_case_id,),
-            ).fetchone()
+                """SELECT source_path
+                   FROM test_case_sources
+                   WHERE table_name = ?
+                     AND test_case_id = ?
+                   ORDER BY source_path""",
+                (table_name, test_case_id),
+            ).fetchall()
         except sqlite3.OperationalError:
             return []
-        if row is None or row[0] is None:
-            return []
+        return [str(r[0]) for r in row]
+
+    @staticmethod
+    def _get_source_paths_for_row(
+        connection: sqlite3.Connection,
+        table_name: str,
+        test_case_id: str,
+    ) -> list[str]:
         try:
-            parsed = json.loads(str(row[0]))
-        except json.JSONDecodeError:
+            rows = connection.execute(
+                """SELECT source_path
+                   FROM test_case_sources
+                   WHERE table_name = ?
+                     AND test_case_id = ?
+                   ORDER BY source_path""",
+                (table_name, test_case_id),
+            ).fetchall()
+        except sqlite3.OperationalError:
             return []
-        if not isinstance(parsed, list):
-            return []
-        return [str(x) for x in parsed]
+        return [str(row["source_path"]) for row in rows]
 
     @staticmethod
     def _merge_source_paths(existing: list[str], incoming: list[str]) -> list[str]:
@@ -397,10 +394,13 @@ class TestCaseSqliteStore:
         return sorted(merged)
 
     @staticmethod
-    def _row_to_test_case(row: sqlite3.Row) -> PersistedTestCase:
-        query = json.loads(str(row["query"]))
-        answer = json.loads(str(row["answer"]))
-        source_paths = json.loads(str(row["source_paths"]))
+    def _row_to_test_case(
+        connection: sqlite3.Connection,
+        table_name: str,
+        row: sqlite3.Row,
+    ) -> PersistedTestCase:
+        query = _unprefixed_payload(row, "query")
+        answer = _unprefixed_payload(row, "answer")
         return PersistedTestCase(
             test_case_id=str(row["test_case_id"]),
             difficulty=int(row["difficulty"]),
@@ -408,5 +408,49 @@ class TestCaseSqliteStore:
             verified=bool(row["verified"]),
             query=query,
             answer=answer,
-            source_paths=[str(x) for x in source_paths],
+            source_paths=TestCaseSqliteStore._get_source_paths_for_row(
+                connection,
+                table_name,
+                str(row["test_case_id"]),
+            ),
         )
+
+
+def _deserialize_value(value: object) -> object:
+    """Deserialize a value loaded from SQLite."""
+    if isinstance(value, str) and value.startswith(("[", "{")):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return value
+    return value
+
+
+def _prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
+    """Get a flat payload using table-column prefixes."""
+    return {
+        f"{prefix}__{key}": _serialize_value(value)
+        for key, value in sorted(payload.items())
+    }
+
+
+def _quote_identifier(identifier: str) -> str:
+    """Quote a SQLite identifier."""
+    return '"' + identifier.replace('"', '""') + '"'
+
+
+def _serialize_value(value: object) -> object:
+    """Serialize a value for storage in SQLite."""
+    if isinstance(value, dict | list):
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    return value
+
+
+def _unprefixed_payload(row: sqlite3.Row, prefix: str) -> dict:
+    """Get a nested payload from row columns matching a prefix."""
+    column_prefix = f"{prefix}__"
+    return {
+        key.removeprefix(column_prefix): _deserialize_value(row[key])
+        for key in row.keys()
+        if key.startswith(column_prefix) and row[key] is not None
+    }
