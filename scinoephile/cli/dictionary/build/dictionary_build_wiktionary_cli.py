@@ -6,13 +6,14 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from typing import Any, ClassVar, Unpack, cast
 
 import requests
 
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.wiktionary import WiktionaryDictionaryService
+from scinoephile.dictionaries.wiktionary.constants import WIKTIONARY_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -24,9 +25,16 @@ logger = getLogger(__name__)
 class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
     """Build Wiktionary dictionary cache."""
 
+    source = WIKTIONARY_SOURCE
+    """Dictionary source built by this CLI."""
+
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build Wiktionary dictionary cache": "构建 Wiktionary 词典缓存",
+            (
+                "Data derived from Kaikki JSONL exports of Chinese entries from "
+                "Wiktionary."
+            ): "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
             "download fresh Kaikki JSONL before building": (
                 "在构建前下载最新 Kaikki JSONL"
             ),
@@ -39,6 +47,10 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build Wiktionary dictionary cache": "建立 Wiktionary 詞典快取",
+            (
+                "Data derived from Kaikki JSONL exports of Chinese entries from "
+                "Wiktionary."
+            ): "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
             "download fresh Kaikki JSONL before building": (
                 "在建立前下載最新 Kaikki JSONL"
             ),
@@ -96,11 +108,12 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         Arguments:
             **kwargs: keyword arguments
         """
-        database_path = kwargs.pop("database_path")
-        overwrite = kwargs.pop("overwrite")
-        force_download = kwargs.pop("force_download")
-        source_jsonl_path = kwargs.pop("source_jsonl_path")
-        update_local_data = kwargs.pop("update_local_data")
+        kwargs_dict = cast(dict[str, Any], kwargs)
+        database_path = kwargs_dict.pop("database_path")
+        overwrite = kwargs_dict.pop("overwrite")
+        force_download = kwargs_dict.pop("force_download")
+        source_jsonl_path = kwargs_dict.pop("source_jsonl_path")
+        update_local_data = kwargs_dict.pop("update_local_data")
 
         service = WiktionaryDictionaryService(database_path=database_path)
         cls.log_config(

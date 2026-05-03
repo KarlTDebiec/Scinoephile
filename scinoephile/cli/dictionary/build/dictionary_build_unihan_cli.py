@@ -7,13 +7,14 @@ from __future__ import annotations
 import zipfile
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from typing import Any, ClassVar, Unpack, cast
 
 import requests
 
 from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.dictionaries.unihan import UnihanDictionaryService
+from scinoephile.dictionaries.unihan.constants import UNIHAN_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -25,9 +26,16 @@ logger = getLogger(__name__)
 class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
     """Build Unihan dictionary cache."""
 
+    source = UNIHAN_SOURCE
+    """Dictionary source built by this CLI."""
+
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build Unihan dictionary cache": "构建 Unihan 词典缓存",
+            (
+                "Data derived from Unicode Unihan files for variants, readings, and "
+                "dictionary-like metadata."
+            ): "由 Unicode Unihan 文件中的异体字、读音和类词典元数据整理而成的数据。",
             "download fresh Unihan.zip before building": (
                 "在构建前下载最新 Unihan.zip"
             ),
@@ -42,6 +50,10 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build Unihan dictionary cache": "建立 Unihan 詞典快取",
+            (
+                "Data derived from Unicode Unihan files for variants, readings, and "
+                "dictionary-like metadata."
+            ): "由 Unicode Unihan 檔案中的異體字、讀音和類詞典後設資料整理而成的資料。",
             "download fresh Unihan.zip before building": (
                 "在建立前下載最新 Unihan.zip"
             ),
@@ -113,15 +125,16 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         Arguments:
             **kwargs: keyword arguments
         """
-        database_path = kwargs.pop("database_path")
-        overwrite = kwargs.pop("overwrite")
-        force_download = kwargs.pop("force_download")
-        update_local_data = kwargs.pop("update_local_data")
-        source_dictionary_like_data_path = kwargs.pop(
+        kwargs_dict = cast(dict[str, Any], kwargs)
+        database_path = kwargs_dict.pop("database_path")
+        overwrite = kwargs_dict.pop("overwrite")
+        force_download = kwargs_dict.pop("force_download")
+        update_local_data = kwargs_dict.pop("update_local_data")
+        source_dictionary_like_data_path = kwargs_dict.pop(
             "source_dictionary_like_data_path"
         )
-        source_readings_path = kwargs.pop("source_readings_path")
-        source_variants_path = kwargs.pop("source_variants_path")
+        source_readings_path = kwargs_dict.pop("source_readings_path")
+        source_variants_path = kwargs_dict.pop("source_variants_path")
 
         service = UnihanDictionaryService(database_path=database_path)
         cls.log_config(

@@ -15,23 +15,131 @@ from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
 
 
-def _run_help(args: str) -> str:
-    """Run CLI help and return stdout text.
+@pytest.mark.parametrize(
+    ("locale_name", "subcommand", "expected_fragment"),
+    [
+        (
+            "en",
+            "dictionary build cuhk",
+            "Comparative Database of Modern Standard Chinese and Cantonese",
+        ),
+        (
+            "zh-hans",
+            "dictionary build cuhk",
+            "香港中文大学现代标准汉语与粤语对照数据库。",
+        ),
+        (
+            "zh-hant",
+            "dictionary build cuhk",
+            "香港中文大學現代標準漢語與粵語對照資料庫。",
+        ),
+        (
+            "en",
+            "dictionary build gzzj",
+            "Digital data derived from the 2004 second edition",
+        ),
+        (
+            "zh-hans",
+            "dictionary build gzzj",
+            "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
+        ),
+        (
+            "zh-hant",
+            "dictionary build gzzj",
+            "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
+        ),
+        (
+            "en",
+            "dictionary build kaifangcidian",
+            "Data derived from Kaifangcidian website dictionary JavaScript payloads.",
+        ),
+        (
+            "zh-hans",
+            "dictionary build kaifangcidian",
+            "由 Kaifangcidian 网站词典 JavaScript 载荷整理而成的数据。",
+        ),
+        (
+            "zh-hant",
+            "dictionary build kaifangcidian",
+            "由 Kaifangcidian 網站詞典 JavaScript 載荷整理而成的資料。",
+        ),
+        (
+            "en",
+            "dictionary build unihan",
+            "Data derived from Unicode Unihan files for variants, readings",
+        ),
+        (
+            "zh-hans",
+            "dictionary build unihan",
+            "由 Unicode Unihan 文件中的异体字、读音和类词典元数据整理而成的数据。",
+        ),
+        (
+            "zh-hant",
+            "dictionary build unihan",
+            "由 Unicode Unihan 檔案中的異體字、讀音和類詞典後設資料整理而成的資料。",
+        ),
+        (
+            "en",
+            "dictionary build wiktionary",
+            (
+                "Data derived from Kaikki JSONL exports of Chinese entries from "
+                "Wiktionary."
+            ),
+        ),
+        (
+            "zh-hans",
+            "dictionary build wiktionary",
+            "由 Kaikki 导出的 Wiktionary 中文词条 JSONL 整理而成的数据。",
+        ),
+        (
+            "zh-hant",
+            "dictionary build wiktionary",
+            "由 Kaikki 匯出的 Wiktionary 中文詞條 JSONL 整理而成的資料。",
+        ),
+    ],
+)
+def test_dictionary_build_source_description_help_localized(
+    locale_name: str, subcommand: str, expected_fragment: str
+):
+    """Test dictionary build source descriptions in each locale.
 
     Arguments:
-        args: arguments to pass to root CLI
-    Returns:
-        help text written to stdout
+        locale_name: CLI locale
+        subcommand: subcommand path
+        expected_fragment: phrase expected in help output
     """
-    stdout = StringIO()
-    stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
-        with redirect_stdout(stdout):
-            with redirect_stderr(stderr):
-                run_cli_with_args(ScinoephileCli, args)
-    assert excinfo.value.code == 0
-    assert stderr.getvalue() == ""
-    return stdout.getvalue()
+    locale_env = {"LC_ALL": locale_name}
+    with patch.dict(environ, locale_env):
+        output = _run_help(f"{subcommand} --help")
+    assert expected_fragment in output
+
+
+def test_locale_precedence_prefers_lc_all():
+    """Test LC_ALL locale takes precedence over LANG."""
+    with patch.dict(environ, {"LC_ALL": "en_US.UTF-8", "LANG": "zh_TW.UTF-8"}):
+        output = _run_help("--help")
+    assert "Command-line interface for Scinoephile" in output
+
+
+def test_locale_precedence_uses_encoded_environment_variable():
+    """Test locale resolution handles locale encodings."""
+    with patch.dict(environ, {"LC_ALL": "zh_CN.UTF-8"}):
+        output = _run_help("--help")
+    assert "Scinoephile 命令行界面" in output
+
+
+def test_locale_precedence_uses_encoded_lang():
+    """Test locale resolution handles encoded LANG values."""
+    with patch.dict(environ, {"LANG": "zh_TW.UTF-8"}, clear=True):
+        output = _run_help("--help")
+    assert "Scinoephile 命令列介面" in output
+
+
+def test_locale_precedence_uses_environment_variable():
+    """Test locale resolution falls back to environment variable."""
+    with patch.dict(environ, {"LC_ALL": "zh-hant"}):
+        output = _run_help("--help")
+    assert "Scinoephile 命令列介面" in output
 
 
 @pytest.mark.parametrize(
@@ -103,29 +211,20 @@ def test_subcommand_help_localized(
     assert expected_fragment in output
 
 
-def test_locale_precedence_uses_environment_variable():
-    """Test locale resolution falls back to environment variable."""
-    with patch.dict(environ, {"LC_ALL": "zh-hant"}):
-        output = _run_help("--help")
-    assert "Scinoephile 命令列介面" in output
+def _run_help(args: str) -> str:
+    """Run CLI help and return stdout text.
 
-
-def test_locale_precedence_uses_encoded_environment_variable():
-    """Test locale resolution handles locale encodings."""
-    with patch.dict(environ, {"LC_ALL": "zh_CN.UTF-8"}):
-        output = _run_help("--help")
-    assert "Scinoephile 命令行界面" in output
-
-
-def test_locale_precedence_prefers_lc_all():
-    """Test LC_ALL locale takes precedence over LANG."""
-    with patch.dict(environ, {"LC_ALL": "en_US.UTF-8", "LANG": "zh_TW.UTF-8"}):
-        output = _run_help("--help")
-    assert "Command-line interface for Scinoephile" in output
-
-
-def test_locale_precedence_uses_encoded_lang():
-    """Test locale resolution handles encoded LANG values."""
-    with patch.dict(environ, {"LANG": "zh_TW.UTF-8"}, clear=True):
-        output = _run_help("--help")
-    assert "Scinoephile 命令列介面" in output
+    Arguments:
+        args: arguments to pass to root CLI
+    Returns:
+        help text written to stdout
+    """
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(ScinoephileCli, args)
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    return stdout.getvalue()
