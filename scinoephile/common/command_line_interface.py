@@ -33,43 +33,6 @@ logger = getLogger(__name__)
 class CLIKwargs(TypedDict, total=False, extra_items=Any):
     """Keyword arguments for command-line interface _main methods."""
 
-    _parser: ArgumentParser
-    """Argument parser used for user-facing errors."""
-    clean: bool
-    """Whether to clean subtitles."""
-    convert: Any
-    """Conversion configuration."""
-    flatten: bool
-    """Whether to flatten subtitles."""
-    infile: Any
-    """Input file path."""
-    interactive: bool
-    """Whether to run interactively."""
-    lens_infile: Any
-    """Google Lens OCR input file path."""
-    mode: str
-    """Processing mode."""
-    outfile: Any
-    """Output file path."""
-    overwrite: bool
-    """Whether existing output files may be overwritten."""
-    paddle_infile: Any
-    """PaddleOCR input file path."""
-    proofread: Any
-    """Whether to proofread subtitles."""
-    romanize: bool
-    """Whether to romanize subtitles."""
-    script: str
-    """Requested written script."""
-    stop_at_idx: int | None
-    """Index at which to stop processing."""
-    tesseract_infile: Any
-    """Tesseract OCR input file path."""
-    yue_infile: Any
-    """Cantonese input file path."""
-    zho_infile: Any
-    """Standard Chinese input file path."""
-
 
 class CommandLineInterface(ABC):
     """ABC for command-line interfaces."""

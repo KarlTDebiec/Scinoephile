@@ -6,13 +6,12 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
+from typing import Any
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -171,7 +170,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:

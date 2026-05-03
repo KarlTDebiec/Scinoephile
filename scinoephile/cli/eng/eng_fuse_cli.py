@@ -6,9 +6,8 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar, Unpack
+from typing import Any, ClassVar
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -132,7 +131,7 @@ class EngFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    def _main(cls, **kwargs: Any):
         """Execute with provided keyword arguments.
 
         Arguments:
