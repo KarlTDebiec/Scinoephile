@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import sqlite3
+from contextlib import closing
 from logging import getLogger
 from pathlib import Path
 
@@ -175,34 +176,34 @@ class DictionarySqliteStore:
             logger.info(f"Deleting existing SQLite database: {self.database_path}")
             self.database_path.unlink()
 
-        with sqlite3.connect(self.database_path) as connection:
-            cursor = connection.cursor()
+        with closing(sqlite3.connect(self.database_path)) as connection:
+            with connection:
+                cursor = connection.cursor()
 
-            self._write_database_version(cursor)
-            self._drop_tables(cursor)
-            self._create_tables(cursor)
+                self._write_database_version(cursor)
+                self._drop_tables(cursor)
+                self._create_tables(cursor)
 
-            source_id = self._insert_source(cursor, source)
-            for entry in entries:
-                entry_id = self._insert_entry(
-                    cursor,
-                    entry.traditional,
-                    entry.simplified,
-                    entry.pinyin,
-                    entry.jyutping,
-                    entry.frequency,
-                )
-                for definition in entry.definitions:
-                    self._insert_definition(
+                source_id = self._insert_source(cursor, source)
+                for entry in entries:
+                    entry_id = self._insert_entry(
                         cursor,
-                        definition.text,
-                        definition.label,
-                        entry_id,
-                        source_id,
+                        entry.traditional,
+                        entry.simplified,
+                        entry.pinyin,
+                        entry.jyutping,
+                        entry.frequency,
                     )
+                    for definition in entry.definitions:
+                        self._insert_definition(
+                            cursor,
+                            definition.text,
+                            definition.label,
+                            entry_id,
+                            source_id,
+                        )
 
-            self._generate_indices(cursor)
-            connection.commit()
+                self._generate_indices(cursor)
 
         return self.database_path
 
@@ -451,7 +452,7 @@ class DictionarySqliteStore:
                 END,
                 d.definition_id
         """
-        with sqlite3.connect(self.database_path) as connection:
+        with closing(sqlite3.connect(self.database_path)) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
 
@@ -648,7 +649,7 @@ class DictionarySqliteStore:
         Returns:
             ordered entry identifiers
         """
-        with sqlite3.connect(self.database_path) as connection:
+        with closing(sqlite3.connect(self.database_path)) as connection:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(sql, params).fetchall()
         return [int(row["entry_id"]) for row in rows]
