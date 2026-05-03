@@ -93,7 +93,6 @@ class SyncCli(ScinoephileCliBase):
             "--sync-cutoff",
             default=0.16,
             type=float_arg(min_value=0.0, max_value=1.0),
-            metavar="CUTOFF",
             help=(
                 "initial overlap cutoff for sync group computation "
                 "(default: 0.16, range: 0.0-1.0)"
@@ -103,7 +102,6 @@ class SyncCli(ScinoephileCliBase):
             "--pause-length",
             default=3000,
             type=int_arg(min_value=1),
-            metavar="MS",
             help=(
                 "pause length in milliseconds used for block segmentation "
                 "(default: 3000, min: 1)"
@@ -136,10 +134,10 @@ class SyncCli(ScinoephileCliBase):
         parser = kwargs.pop("_parser", cls.argparser())
         top_infile_path = kwargs.pop("top_infile")
         bottom_infile_path = kwargs.pop("bottom_infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
         sync_cutoff: float = kwargs.pop("sync_cutoff")
         pause_length: int = kwargs.pop("pause_length")
+        outfile_path: Path | None = kwargs.pop("outfile")
+        overwrite = kwargs.pop("overwrite")
         if top_infile_path == "-" and bottom_infile_path == "-":
             try:
                 raise ArgumentConflictError(
