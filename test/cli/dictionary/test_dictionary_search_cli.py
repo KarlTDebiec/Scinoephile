@@ -8,6 +8,7 @@ from collections.abc import Generator
 from contextlib import AbstractContextManager, nullcontext
 from os import environ
 from pathlib import Path
+from shlex import quote
 from unittest.mock import patch
 
 import pytest
@@ -192,6 +193,7 @@ def test_dictionary_search_cli(
         / "cuhk.db"
     )
     with get_temp_file_path(".log") as log_file_path:
+        quoted_query = quote(query)
         with expectation:
             run_cli_with_args(
                 DictionarySearchCli,
@@ -199,7 +201,7 @@ def test_dictionary_search_cli(
                 f"--log-file {log_file_path} "
                 "--dictionary-name cuhk "
                 f"--database-path {database_path} "
-                f"--limit 3 {query}",
+                f"--limit 3 {quoted_query}",
             )
         output = log_file_path.read_text(encoding="utf-8")
 
