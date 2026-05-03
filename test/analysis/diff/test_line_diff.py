@@ -1,48 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of color-coded diff rendering and alignment."""
+"""Tests of line diff rendering."""
 
 from __future__ import annotations
 
 from scinoephile.analysis.diff import LineDiff, LineDiffKind
-from scinoephile.analysis.line_alignment import (
-    LineAlignment,
-    LineAlignmentOperation,
-)
-
-__all__ = []
-
-
-def test_align_chars_match():
-    """Test that exact matches align without edits."""
-    alignment = LineAlignment("abc", "abc")
-    assert [c.operation for c in alignment.alignment_pairs] == [
-        LineAlignmentOperation.MATCH
-    ] * 3
-
-
-def test_align_chars_insert():
-    """Test a single insertion alignment."""
-    alignment = LineAlignment("abc", "abxc")
-    ops = [c.operation for c in alignment.alignment_pairs]
-    assert ops.count(LineAlignmentOperation.INSERT) == 1
-    assert ops.count(LineAlignmentOperation.MATCH) == 3
-
-
-def test_align_chars_delete():
-    """Test a single deletion alignment."""
-    alignment = LineAlignment("abc", "ac")
-    ops = [c.operation for c in alignment.alignment_pairs]
-    assert ops.count(LineAlignmentOperation.DELETE) == 1
-    assert ops.count(LineAlignmentOperation.MATCH) == 2
-
-
-def test_align_chars_substitute():
-    """Test a single substitution alignment."""
-    alignment = LineAlignment("abc", "axc")
-    ops = [c.operation for c in alignment.alignment_pairs]
-    assert ops.count(LineAlignmentOperation.SUBSTITUTE) == 1
-    assert ops.count(LineAlignmentOperation.MATCH) == 2
 
 
 def test_line_diff_get_stacked_str_no_color_full_width_placeholder():

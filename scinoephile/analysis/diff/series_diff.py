@@ -389,22 +389,33 @@ class SeriesDiff:
         two_pos = 0
         one_changed: set[int] = set()
         two_changed: set[int] = set()
+        changed_columns: list[tuple[LineAlignmentOperation, int, int]] = []
         spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
 
         def flush_changed():
             """Record the current changed span."""
             if not one_changed and not two_changed:
                 return
-            one_local_idxs = tuple(sorted(one_changed))
-            two_local_idxs = tuple(sorted(two_changed))
-            spans.append((one_local_idxs, two_local_idxs))
+            separator_span = self._get_separator_only_changed_span(
+                one_side,
+                two_side,
+                changed_columns,
+            )
+            if separator_span is None:
+                one_local_idxs = tuple(sorted(one_changed))
+                two_local_idxs = tuple(sorted(two_changed))
+                spans.append((one_local_idxs, two_local_idxs))
+            else:
+                spans.append(separator_span)
             one_changed.clear()
             two_changed.clear()
+            changed_columns.clear()
 
         for column in LineAlignment(one_side.text, two_side.text).alignment_pairs:
             if column.operation == LineAlignmentOperation.MATCH:
                 flush_changed()
             else:
+                changed_columns.append((column.operation, one_pos, two_pos))
                 if column.one is not None:
                     one_changed.update(
                         self._get_changed_line_idxs(
@@ -453,6 +464,7 @@ class SeriesDiff:
             two_side,
         )
         spans = self._pair_bracketed_one_sided_spans(spans, one_side, two_side)
+        spans = self._split_uncovered_multiline_spans(spans, one_side, two_side)
         self._add_block_messages(one_side, two_side, spans)
 
     def _add_block_messages(
@@ -649,6 +661,516 @@ class SeriesDiff:
         }:
             return (line_idxs[-1],)
         return line_idxs
+
+    def _get_separator_only_changed_span(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        changed_columns: list[tuple[LineAlignmentOperation, int, int]],
+    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+        """Get changed line spans for a changed separator-only run.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            changed_columns: changed alignment columns in the current run
+        Returns:
+            line spans if the run is only an inserted/deleted separator newline
+        """
+        if len(changed_columns) != 1:
+            return None
+
+        span = self._get_separator_span(one_side, two_side, changed_columns[0])
+        if span is None:
+            return None
+        one_local_idxs, two_local_idxs = span
+        if not self._is_separator_span_valid(
+            one_side,
+            two_side,
+            one_local_idxs,
+            two_local_idxs,
+        ):
+            return None
+
+        return span
+
+    def _is_separator_span_valid(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_local_idxs: tuple[int, ...],
+        two_local_idxs: tuple[int, ...],
+    ) -> bool:
+        """Check whether a separator-only changed span should be paired.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_local_idxs: local line indices touched on the first side
+            two_local_idxs: local line indices touched on the second side
+        Returns:
+            whether the separator-only span should be paired
+        """
+        if not one_local_idxs or not two_local_idxs:
+            return False
+        if not self._are_lines_similar(
+            one_side,
+            two_side,
+            one_local_idxs,
+            two_local_idxs,
+        ):
+            return False
+        if len(one_local_idxs) > len(two_local_idxs):
+            target_text = SeriesDiff._join_normlines(two_side, two_local_idxs)
+            if not self._are_separator_lines_covered(
+                one_side,
+                one_local_idxs,
+                target_text,
+            ):
+                return False
+        elif len(two_local_idxs) > len(one_local_idxs):
+            target_text = SeriesDiff._join_normlines(one_side, one_local_idxs)
+            if not self._are_separator_lines_covered(
+                two_side,
+                two_local_idxs,
+                target_text,
+            ):
+                return False
+
+        return True
+
+    @staticmethod
+    def _get_separator_span(
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        changed_column: tuple[LineAlignmentOperation, int, int],
+    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+        """Get line spans for one changed separator column.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            changed_column: changed alignment column
+        Returns:
+            line spans if the column is an inserted/deleted separator newline
+        """
+        operation, one_pos, two_pos = changed_column
+        if operation == LineAlignmentOperation.DELETE:
+            return SeriesDiff._get_separator_delete_span(
+                one_side,
+                two_side,
+                one_pos,
+                two_pos,
+            )
+        if operation == LineAlignmentOperation.INSERT:
+            return SeriesDiff._get_separator_insert_span(
+                one_side,
+                two_side,
+                one_pos,
+                two_pos,
+            )
+        return None
+
+    @staticmethod
+    def _get_separator_delete_span(
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_pos: int,
+        two_pos: int,
+    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+        """Get line spans for a deleted separator newline.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_pos: first-side character position
+            two_pos: second-side character position
+        Returns:
+            line spans if the deleted character is a line separator
+        """
+        if one_side.text[one_pos] != "\n":
+            return None
+        one_local_idxs = one_side.char_line_idxs[one_pos]
+        if len(one_local_idxs) != 2:
+            return None
+        two_local_idxs = SeriesDiff._get_separator_target_line_idxs(
+            two_side,
+            two_pos,
+        )
+        return (one_local_idxs, two_local_idxs)
+
+    @staticmethod
+    def _get_separator_insert_span(
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_pos: int,
+        two_pos: int,
+    ) -> tuple[tuple[int, ...], tuple[int, ...]] | None:
+        """Get line spans for an inserted separator newline.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_pos: first-side character position
+            two_pos: second-side character position
+        Returns:
+            line spans if the inserted character is a line separator
+        """
+        if two_side.text[two_pos] != "\n":
+            return None
+        one_local_idxs = SeriesDiff._get_separator_target_line_idxs(
+            one_side,
+            one_pos,
+        )
+        two_local_idxs = two_side.char_line_idxs[two_pos]
+        if len(two_local_idxs) != 2:
+            return None
+        return (one_local_idxs, two_local_idxs)
+
+    @staticmethod
+    def _get_separator_target_line_idxs(
+        side: _SeriesDiffBlockSide,
+        target_pos: int,
+    ) -> tuple[int, ...]:
+        """Get the target line bridged by a removed or inserted separator.
+
+        Arguments:
+            side: target side without the changed separator
+            target_pos: target-side character position opposite the separator
+        Returns:
+            local line index bridged by the separator
+        """
+        if target_pos <= 0 or target_pos >= len(side.char_line_idxs):
+            return ()
+
+        previous_line_idxs = side.char_line_idxs[target_pos - 1]
+        next_line_idxs = side.char_line_idxs[target_pos]
+        bridged_line_idxs = tuple(
+            line_idx for line_idx in previous_line_idxs if line_idx in next_line_idxs
+        )
+        if len(bridged_line_idxs) != 1:
+            return ()
+        return bridged_line_idxs
+
+    def _are_separator_lines_covered(
+        self,
+        side: _SeriesDiffBlockSide,
+        local_idxs: tuple[int, ...],
+        target_text: str,
+    ) -> bool:
+        """Check whether each separator-side line is covered by target text.
+
+        Arguments:
+            side: side containing the inserted or deleted separator
+            local_idxs: local line indices touched by the separator
+            target_text: joined text on the opposite side
+        Returns:
+            whether every touched line is mostly represented in target text
+        """
+        target_compact = re.sub(r"\s+", "", target_text)
+        coverage_cutoff = max(self.similarity_cutoff, 0.75)
+        for local_idx in local_idxs:
+            line_compact = re.sub(r"\s+", "", side.normlines[local_idx])
+            if not line_compact:
+                continue
+            best_ratio = self._get_best_substring_similarity(
+                line_compact,
+                target_compact,
+            )
+            if best_ratio < coverage_cutoff:
+                return False
+
+        return True
+
+    @staticmethod
+    def _get_best_substring_similarity(needle: str, haystack: str) -> float:
+        """Get the best same-length substring similarity for a text span.
+
+        Arguments:
+            needle: text to search for
+            haystack: text that may contain the needle text
+        Returns:
+            best similarity against a same-length haystack substring
+        """
+        if not needle or not haystack:
+            return 0.0
+
+        if len(haystack) <= len(needle):
+            return difflib.SequenceMatcher(
+                None,
+                needle,
+                haystack,
+                autojunk=False,
+            ).ratio()
+
+        best_ratio = 0.0
+        for start_idx in range(len(haystack) - len(needle) + 1):
+            candidate = haystack[start_idx : start_idx + len(needle)]
+            ratio = difflib.SequenceMatcher(
+                None,
+                needle,
+                candidate,
+                autojunk=False,
+            ).ratio()
+            best_ratio = max(best_ratio, ratio)
+
+        return best_ratio
+
+    def _split_uncovered_multiline_spans(
+        self,
+        spans: list[tuple[tuple[int, ...], tuple[int, ...]]],
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Split unrelated extra lines out of one-to-many changed spans.
+
+        Arguments:
+            spans: changed spans
+            one_side: first side of the current block
+            two_side: second side of the current block
+        Returns:
+            changed spans with unrelated extra lines separated
+        """
+        split_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        for one_idxs, two_idxs in spans:
+            if len(one_idxs) == 1 and len(two_idxs) > 1:
+                split_spans.extend(
+                    self._split_uncovered_one_to_many_span(
+                        one_side,
+                        two_side,
+                        one_idxs[0],
+                        two_idxs,
+                    )
+                )
+            elif len(two_idxs) == 1 and len(one_idxs) > 1:
+                split_spans.extend(
+                    self._split_uncovered_many_to_one_span(
+                        one_side,
+                        two_side,
+                        one_idxs,
+                        two_idxs[0],
+                    )
+                )
+            else:
+                split_spans.append((one_idxs, two_idxs))
+
+        return split_spans
+
+    def _split_uncovered_many_to_one_span(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_idxs: tuple[int, ...],
+        two_idx: int,
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Split unrelated first-side lines out of a many-to-one span.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_idxs: first-side local line indices in the current span
+            two_idx: second-side local line index in the current span
+        Returns:
+            one or more changed spans
+        """
+        target_text = SeriesDiff._join_normlines(two_side, (two_idx,))
+        first_one_idx = one_idxs[0]
+        remaining_one_idxs = one_idxs[1:]
+        if self._should_split_uncovered_multiline_span(
+            one_side,
+            two_side,
+            first_one_idx,
+            two_idx,
+            remaining_one_idxs,
+            target_text,
+        ):
+            return self._get_split_many_to_one_spans(
+                one_side,
+                two_side,
+                first_one_idx,
+                two_idx,
+                remaining_one_idxs,
+                prefix=True,
+            )
+
+        last_one_idx = one_idxs[-1]
+        remaining_one_idxs = one_idxs[:-1]
+        if self._should_split_uncovered_multiline_span(
+            one_side,
+            two_side,
+            last_one_idx,
+            two_idx,
+            remaining_one_idxs,
+            target_text,
+        ):
+            return self._get_split_many_to_one_spans(
+                one_side,
+                two_side,
+                last_one_idx,
+                two_idx,
+                remaining_one_idxs,
+                prefix=False,
+            )
+
+        return [(one_idxs, (two_idx,))]
+
+    def _split_uncovered_one_to_many_span(
+        self,
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_idx: int,
+        two_idxs: tuple[int, ...],
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Split unrelated second-side lines out of a one-to-many span.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_idx: first-side local line index in the current span
+            two_idxs: second-side local line indices in the current span
+        Returns:
+            one or more changed spans
+        """
+        target_text = SeriesDiff._join_normlines(one_side, (one_idx,))
+        first_two_idx = two_idxs[0]
+        remaining_two_idxs = two_idxs[1:]
+        if self._should_split_uncovered_multiline_span(
+            two_side,
+            one_side,
+            first_two_idx,
+            one_idx,
+            remaining_two_idxs,
+            target_text,
+        ):
+            return self._get_split_one_to_many_spans(
+                one_side,
+                two_side,
+                one_idx,
+                first_two_idx,
+                remaining_two_idxs,
+                prefix=True,
+            )
+
+        last_two_idx = two_idxs[-1]
+        remaining_two_idxs = two_idxs[:-1]
+        if self._should_split_uncovered_multiline_span(
+            two_side,
+            one_side,
+            last_two_idx,
+            one_idx,
+            remaining_two_idxs,
+            target_text,
+        ):
+            return self._get_split_one_to_many_spans(
+                one_side,
+                two_side,
+                one_idx,
+                last_two_idx,
+                remaining_two_idxs,
+                prefix=False,
+            )
+
+        return [((one_idx,), two_idxs)]
+
+    def _should_split_uncovered_multiline_span(
+        self,
+        multi_side: _SeriesDiffBlockSide,
+        single_side: _SeriesDiffBlockSide,
+        paired_multi_idx: int,
+        single_idx: int,
+        remaining_multi_idxs: tuple[int, ...],
+        target_text: str,
+    ) -> bool:
+        """Check whether extra multiline span lines should be split out.
+
+        Arguments:
+            multi_side: side with multiple changed lines
+            single_side: side with one changed line
+            paired_multi_idx: multi-side line index paired with the single line
+            single_idx: single-side line index
+            remaining_multi_idxs: other multi-side line indices
+            target_text: joined single-side text
+        Returns:
+            whether to split the remaining multi-side lines out
+        """
+        if not remaining_multi_idxs:
+            return False
+        if not self._are_lines_similar(
+            single_side,
+            multi_side,
+            (single_idx,),
+            (paired_multi_idx,),
+        ):
+            return False
+        return not self._are_separator_lines_covered(
+            multi_side,
+            remaining_multi_idxs,
+            target_text,
+        )
+
+    @staticmethod
+    def _get_split_many_to_one_spans(
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        paired_one_idx: int,
+        two_idx: int,
+        remaining_one_idxs: tuple[int, ...],
+        *,
+        prefix: bool,
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Build split spans for a many-to-one span with unrelated lines.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            paired_one_idx: first-side line paired with the second-side line
+            two_idx: second-side local line index
+            remaining_one_idxs: unrelated first-side local line indices
+            prefix: whether the paired line is before the unrelated lines
+        Returns:
+            changed spans
+        """
+        paired_span = ((paired_one_idx,), (two_idx,))
+        if one_side.normlines[paired_one_idx] == two_side.normlines[two_idx]:
+            paired_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        else:
+            paired_spans = [paired_span]
+        remaining_span = (remaining_one_idxs, ())
+        if prefix:
+            return [*paired_spans, remaining_span]
+        return [remaining_span, *paired_spans]
+
+    @staticmethod
+    def _get_split_one_to_many_spans(
+        one_side: _SeriesDiffBlockSide,
+        two_side: _SeriesDiffBlockSide,
+        one_idx: int,
+        paired_two_idx: int,
+        remaining_two_idxs: tuple[int, ...],
+        *,
+        prefix: bool,
+    ) -> list[tuple[tuple[int, ...], tuple[int, ...]]]:
+        """Build split spans for a one-to-many span with unrelated lines.
+
+        Arguments:
+            one_side: first side of the current block
+            two_side: second side of the current block
+            one_idx: first-side local line index
+            paired_two_idx: second-side line paired with the first-side line
+            remaining_two_idxs: unrelated second-side local line indices
+            prefix: whether the paired line is before the unrelated lines
+        Returns:
+            changed spans
+        """
+        paired_span = ((one_idx,), (paired_two_idx,))
+        if one_side.normlines[one_idx] == two_side.normlines[paired_two_idx]:
+            paired_spans: list[tuple[tuple[int, ...], tuple[int, ...]]] = []
+        else:
+            paired_spans = [paired_span]
+        remaining_span = ((), remaining_two_idxs)
+        if prefix:
+            return [*paired_spans, remaining_span]
+        return [remaining_span, *paired_spans]
 
     def _merge_adjacent_one_sided_spans(
         self,

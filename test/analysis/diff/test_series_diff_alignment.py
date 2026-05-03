@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from scinoephile.analysis.diff import LineDiffKind, SeriesDiff
 from scinoephile.core.subtitles import Series, Subtitle
 
@@ -204,24 +206,41 @@ def test_series_diff_pairs_one_sided_punctuation_with_context_line():
     assert messages[1].two_idxs == (1,)
 
 
-def test_series_diff_does_not_tag_neighbor_for_line_insert():
-    """Test an inserted middle line does not tag unchanged neighbors."""
-    diff = SeriesDiff(_get_series("a", "b"), _get_series("a", "x", "b"))
+@pytest.mark.parametrize(
+    (
+        "one_texts",
+        "two_texts",
+        "expected_kind",
+        "expected_one_idxs",
+        "expected_two_idxs",
+    ),
+    [
+        (("a", "b"), ("a", "x", "b"), LineDiffKind.INSERT, None, (1,)),
+        (("a", "x", "b"), ("a", "b"), LineDiffKind.DELETE, (1,), None),
+    ],
+)
+def test_series_diff_does_not_tag_neighbor_for_line_insert_or_delete(
+    one_texts: tuple[str, ...],
+    two_texts: tuple[str, ...],
+    expected_kind: LineDiffKind,
+    expected_one_idxs: tuple[int, ...] | None,
+    expected_two_idxs: tuple[int, ...] | None,
+):
+    """Test an inserted or deleted middle line does not tag unchanged neighbors.
+
+    Arguments:
+        one_texts: first subtitle series texts
+        two_texts: second subtitle series texts
+        expected_kind: expected diff kind
+        expected_one_idxs: expected first-side line indices
+        expected_two_idxs: expected second-side line indices
+    """
+    diff = SeriesDiff(_get_series(*one_texts), _get_series(*two_texts))
     messages = list(diff)
     assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.INSERT
-    assert messages[0].two_idxs == (1,)
-    assert messages[0].two_texts == ("x",)
-
-
-def test_series_diff_does_not_tag_neighbor_for_line_delete():
-    """Test a deleted middle line does not tag unchanged neighbors."""
-    diff = SeriesDiff(_get_series("a", "x", "b"), _get_series("a", "b"))
-    messages = list(diff)
-    assert len(messages) == 1
-    assert messages[0].kind == LineDiffKind.DELETE
-    assert messages[0].one_idxs == (1,)
-    assert messages[0].one_texts == ("x",)
+    assert messages[0].kind == expected_kind
+    assert messages[0].one_idxs == expected_one_idxs
+    assert messages[0].two_idxs == expected_two_idxs
 
 
 def test_series_diff_does_not_pair_dissimilar_bracketed_span():
