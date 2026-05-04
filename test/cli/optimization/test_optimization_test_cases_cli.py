@@ -19,8 +19,8 @@ from scinoephile.cli.optimization.optimization_test_cases_cli import (
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core.optimization import TestCaseSqliteStore
 from scinoephile.optimization.operations import OPERATIONS
+from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 from test.helpers import assert_cli_help, assert_cli_usage
 
 

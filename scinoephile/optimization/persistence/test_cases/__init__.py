@@ -4,11 +4,9 @@
 
 from __future__ import annotations
 
-from scinoephile.core.optimization import (
-    PersistedTestCase,
-    SyncReport,
-    TestCaseSqliteStore,
-)
+from .persisted_test_case import PersistedTestCase
+from .sqlite_store import TestCaseSqliteStore
+from .sync_report import SyncReport
 
 __all__ = [
     "PersistedTestCase",

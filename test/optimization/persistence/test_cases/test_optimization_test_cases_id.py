@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
-from scinoephile.core.optimization import get_test_case_id
 from scinoephile.llms.mono_block.manager import MonoBlockManager
 from scinoephile.llms.mono_block.prompt import MonoBlockPrompt
+from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 
 
 def test_get_test_case_id_stable_for_same_payload():

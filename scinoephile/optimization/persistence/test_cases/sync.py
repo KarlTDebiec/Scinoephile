@@ -9,11 +9,10 @@ from pathlib import Path
 
 from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
-from scinoephile.core.optimization import (
-    PersistedTestCase,
-    SyncReport,
-    TestCaseSqliteStore,
-)
+
+from .persisted_test_case import PersistedTestCase
+from .sqlite_store import TestCaseSqliteStore
+from .sync_report import SyncReport
 
 __all__ = [
     "SyncReport",

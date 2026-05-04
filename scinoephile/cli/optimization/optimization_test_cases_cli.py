@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import OperationSpec
-from scinoephile.core.optimization import TestCaseSqliteStore
+from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
