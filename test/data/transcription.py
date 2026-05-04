@@ -35,15 +35,13 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_vs_zho_translator,
 )
 
-__all__ = [
-    "process_yue_hans_transcription",
-]
+__all__ = ["process_yue_hans_transcription"]
 
 logger = getLogger(__name__)
 
 
 def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
-    title_root: Path,
+    title_root_path: Path,
     zho_path: Path,
     *,
     name: str = "Yue Hans transcription",
@@ -68,15 +66,15 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     - Block review
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         zho_path: Zho reference series path used for audio staging and as the
           reference language during transcription/review/translation
         name: label printed above CER summaries
         reference_path: reference series path used to compute CER after each stage
         output_dir_path: directory where pipeline outputs are written; defaults to
-          `title_root/output/yue-Hans_transcribe`
+          `title_root_path/output/yue-Hans_transcribe`
         audio_path: path to the staged audio wav file; defaults to
-          `title_root/output/yue-Hans_transcribe/audio/audio.wav`
+          `title_root_path/output/yue-Hans_transcribe/audio/audio.wav`
         media_path: optional media path used to generate `audio_path` if missing
         stream_index: audio stream index in media used when generating audio
         overwrite_srt: whether to overwrite subtitle outputs
@@ -88,7 +86,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     Returns:
         final block-reviewed series
     """
-    output_dir = title_root / "output"
+    output_dir = title_root_path / "output"
     yue_hans_transcribe_dir_path = (
         output_dir / "yue-Hans_transcribe"
         if output_dir_path is None

@@ -52,6 +52,10 @@
 ## Type Annotations
 * Include type annotations for all function and method signatures, with the following exception:
   * If a function always returns `None`, omit the return type annotation.
+* Use `object` when a value may be any type but must be inspected or narrowed
+  before type-specific use; use `Any` only for intentionally unchecked
+  passthrough values, and use a narrower type, protocol, `TypedDict`, or alias
+  when the shape is known.
 
 ## Exceptions
 * Prefer repository-specific exceptions from for domain-specific errors that should be user-facing.
@@ -64,17 +68,17 @@
   * Follow the repository pattern of defining a module-level `logger = getLogger(__name__)`.
 
 ## Command Line Interface
-* In CLI modules under `scinoephile/cli/`, group arguments using
-  `scinoephile.common.argument_parsing.get_arg_groups_by_name(...)`.
+* In CLI modules, group arguments using the repository's standard
+  `get_arg_groups_by_name(...)` helper when one is available.
   * Standard group names are:
     * `input arguments`
     * `operation arguments`
     * `output arguments`
   * Rename the default optional group to `additional arguments` via
     `optional_arguments_name="additional arguments"`.
-* CLI modules should support localization by defining a `localizations` mapping (as used by
-  `ScinoephileCliBase.translate_text`), and writing `help`, `description`, and argument-group
-  titles using stable English strings that can be translated.
+* CLI modules should support localization by defining a `localizations` mapping when
+  the repository's CLI base supports it, and writing `help`, `description`, and
+  argument-group titles using stable English strings that can be translated.
 
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.

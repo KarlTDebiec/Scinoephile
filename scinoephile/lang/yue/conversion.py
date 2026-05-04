@@ -9,9 +9,7 @@ from hkscs_unicode_converter.converter import convert_string
 from scinoephile.core import UnsupportedCharacterError
 from scinoephile.core.text import RE_PRIVATE_USE_AREA_BMP
 
-__all__ = [
-    "get_yue_converted",
-]
+__all__ = ["get_yue_converted"]
 
 
 def get_yue_converted(text: str) -> str:

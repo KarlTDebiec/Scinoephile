@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Audit dependency-aware ordering for package-level ``__init__.py`` hierarchy docs.
+"""Audit dependency-aware ordering for package-level `__init__.py` hierarchy docs.
 
 This script analyzes sibling imports and prints "bubble up" levels:
 dependencies first, dependents later. It also reports cycles as SCC groups.
@@ -13,7 +13,26 @@ import ast
 from collections import defaultdict
 from dataclasses import dataclass
 from functools import cache
+from logging import INFO, basicConfig, info
 from pathlib import Path
+
+__all__ = [
+    "PackageAuditResult",
+    "audit_one_package",
+    "format_group",
+    "get_child_names",
+    "get_imported_sibling_from_import",
+    "get_imported_sibling_from_import_from",
+    "get_levels",
+    "get_sibling_import_edges",
+    "get_top_owner_name",
+    "iter_package_dirs",
+    "main",
+    "parse_args",
+    "print_result",
+    "tarjan_scc",
+    "to_dotted_name",
+]
 
 
 @dataclass(frozen=True)
@@ -27,8 +46,11 @@ class PackageAuditResult:
     """
 
     package_dir_path: Path
+    """Package directory analyzed."""
     levels: dict[int, list[list[str]]]
+    """Map of hierarchy level to grouped sibling names."""
     cycles: list[list[str]]
+    """Strongly connected sibling groups with two or more members."""
 
 
 def parse_args() -> argparse.Namespace:
@@ -116,15 +138,15 @@ def get_sibling_import_edges(
     edges: dict[str, set[str]] = {name: set() for name in child_names}
     package_prefix_parts = package_dotted.split(".")
 
-    candidate_files: list[Path] = []
+    candidate_file_paths: list[Path] = []
     for child_name in child_names:
         child_path = package_dir_path / child_name
         if child_path.is_dir():
-            candidate_files.extend(child_path.rglob("*.py"))
+            candidate_file_paths.extend(child_path.rglob("*.py"))
         else:
-            candidate_files.append(package_dir_path / f"{child_name}.py")
+            candidate_file_paths.append(package_dir_path / f"{child_name}.py")
 
-    for file_path in candidate_files:
+    for file_path in candidate_file_paths:
         owner_name = get_top_owner_name(package_dir_path, file_path)
         if owner_name is None or owner_name not in edges:
             continue
@@ -236,6 +258,11 @@ def tarjan_scc(nodes: list[str], edges: dict[str, set[str]]) -> list[list[str]]:
     components: list[list[str]] = []
 
     def strong_connect(node_name: str):
+        """Visit one graph node while maintaining Tarjan state.
+
+        Arguments:
+            node_name: graph node to visit
+        """
         index_of[node_name] = next_index[0]
         lowlink_of[node_name] = next_index[0]
         next_index[0] += 1
@@ -294,6 +321,13 @@ def get_levels(
 
     @cache
     def level_for_component(component_id: int) -> int:
+        """Get dependency depth for one SCC component.
+
+        Arguments:
+            component_id: SCC component index
+        Returns:
+            dependency depth level
+        """
         imported_components = component_edges.get(component_id, set())
         if not imported_components:
             return 1
@@ -388,20 +422,21 @@ def print_result(result: PackageAuditResult, target_dir_path: Path):
     package_label = (
         target_dir_path.name if str(package_relative) == "." else str(package_relative)
     )
-    print(f"[{package_label}]")
+    info(f"[{package_label}]")
     for level, groups in result.levels.items():
         level_text = " | ".join(format_group(group) for group in groups)
-        print(f"  L{level}: {level_text}")
+        info(f"  L{level}: {level_text}")
     if result.cycles:
         cycle_text = "; ".join(format_group(group) for group in result.cycles)
-        print(f"  CYCLES: {cycle_text}")
+        info(f"  CYCLES: {cycle_text}")
     else:
-        print("  CYCLES: none")
-    print()
+        info("  CYCLES: none")
+    info("")
 
 
 def main():
     """Run hierarchy audit for selected package directory."""
+    basicConfig(format="%(message)s", level=INFO)
     args = parse_args()
     target_dir_path = Path(args.target).resolve()
     if not target_dir_path.exists():

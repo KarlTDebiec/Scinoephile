@@ -6,6 +6,4 @@ from __future__ import annotations
 
 from .service import UnihanDictionaryService
 
-__all__ = [
-    "UnihanDictionaryService",
-]
+__all__ = ["UnihanDictionaryService"]

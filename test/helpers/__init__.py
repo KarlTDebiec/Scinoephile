@@ -129,7 +129,7 @@ def get_warning_messages(records: list[Any]) -> list[str]:
     return [record.getMessage() for record in records]
 
 
-def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
+def parametrized_fixture(cls: type, params: list[dict[str, Any]]) -> Any:
     """Decorator for parametrized test fixtures which provides clearer test output.
 
     Arguments:
@@ -139,8 +139,14 @@ def parametrized_fixture(cls: type, params: list[dict[str, Any]]):
         fixture with provided params and clear ids
     """
 
-    def get_name(args):
-        """Build pytest parameter id for fixture output."""
+    def get_name(args: dict[str, Any]) -> str:
+        """Build pytest parameter id for fixture output.
+
+        Arguments:
+            args: fixture parameter mapping
+        Returns:
+            pytest parameter id
+        """
         return f"{cls.__name__}({','.join(map(str, args.values()))})"
 
     return partial(fixture, params=params, ids=get_name)

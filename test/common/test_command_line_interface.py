@@ -28,6 +28,7 @@ class ArgsCaptureCliKwargs(TypedDict, total=False):
     """Keyword arguments for ArgsCaptureCli _main method."""
 
     name: str
+    """Name argument."""
 
 
 class ArgsCaptureCli(CommandLineInterface):

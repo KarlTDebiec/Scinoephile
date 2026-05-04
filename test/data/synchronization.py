@@ -20,7 +20,7 @@ __all__ = [
 
 
 def process_yue_hans_eng(
-    title_root: Path,
+    title_root_path: Path,
     yue_hans_path: Path | None = None,
     eng_path: Path | None = None,
     overwrite: bool = False,
@@ -28,14 +28,14 @@ def process_yue_hans_eng(
     """Process bilingual 简体粤文 and English subtitles into a synced series.
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         yue_hans_path: optional 简体粤文 subtitle path
         eng_path: optional English subtitle path
         overwrite: whether to overwrite subtitle outputs
     Returns:
         processed series
     """
-    output_dir = title_root / "output"
+    output_dir = title_root_path / "output"
 
     yue_hans_eng_path = output_dir / "yue-Hans_eng.srt"
     if yue_hans_eng_path.exists() and not overwrite:
@@ -60,7 +60,7 @@ def process_yue_hans_eng(
 
 
 def process_zho_hans_eng(
-    title_root: Path,
+    title_root_path: Path,
     zho_hans_path: Path | None = None,
     eng_path: Path | None = None,
     overwrite: bool = False,
@@ -68,14 +68,14 @@ def process_zho_hans_eng(
     """Process bilingual 简体中文 and English subtitles into a synced series.
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         zho_hans_path: optional 简体中文 subtitle path
         eng_path: optional English subtitle path
         overwrite: whether to overwrite subtitle outputs
     Returns:
         processed series
     """
-    output_dir = title_root / "output"
+    output_dir = title_root_path / "output"
 
     zho_hans_eng_path = output_dir / "zho-Hans_eng.srt"
     if zho_hans_eng_path.exists() and not overwrite:

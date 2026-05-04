@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from os import environ
 from pathlib import Path
 from typing import Any, ClassVar, cast
@@ -24,6 +24,7 @@ from scinoephile.core.dictionaries.serialization import (
     dictionary_entry_to_dict,
 )
 from scinoephile.core.dictionaries.sqlite_store import DictionarySqliteStore
+from scinoephile.core.llms import Processor
 from scinoephile.dictionaries.dictionary_tools import (
     get_dictionary_tools,
     lookup_dictionary,
@@ -242,7 +243,7 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 )
 def test_processors_use_prompt_dictionary_tooling(
     prompt_cls: type[DictionaryToolPrompt],
-    factory,
+    factory: Callable[..., Processor],
 ):
     """Wire dictionary tooling from the selected prompt class."""
     processor = factory(prompt_cls=prompt_cls, test_cases=[])

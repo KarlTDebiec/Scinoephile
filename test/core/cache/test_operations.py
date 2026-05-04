@@ -12,7 +12,7 @@ from time import time
 import pytest
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cache import (
+from scinoephile.core.cache.operations import (
     clear_cache,
     discover_cache_namespaces,
     get_cache_entries,
