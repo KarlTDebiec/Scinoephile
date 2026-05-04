@@ -26,6 +26,7 @@ class TestCaseSqliteStore:
     """Inform pytest not to collect this class as a test."""
 
     schema_version = 2
+    """SQLite schema version."""
 
     def __init__(self, database_path: Path):
         """Initialize.
@@ -318,6 +319,12 @@ class TestCaseSqliteStore:
 
     @staticmethod
     def _create_test_case_table(cursor: sqlite3.Cursor, table_name: str):
+        """Create a test-case table if it does not exist.
+
+        Arguments:
+            cursor: SQLite cursor
+            table_name: SQLite table name
+        """
         cursor.execute(
             f"""CREATE TABLE IF NOT EXISTS {_quote_identifier(table_name)}(
                     test_case_id TEXT PRIMARY KEY,
@@ -333,6 +340,13 @@ class TestCaseSqliteStore:
         table_name: str,
         test_cases: Iterable[PersistedTestCase],
     ):
+        """Ensure query and answer payload columns exist.
+
+        Arguments:
+            cursor: SQLite cursor
+            table_name: SQLite table name
+            test_cases: test cases whose payload fields should be represented
+        """
         existing_columns = {
             str(row[1])
             for row in cursor.execute(
@@ -355,6 +369,15 @@ class TestCaseSqliteStore:
         table_name: str,
         test_case_id: str,
     ) -> list[str]:
+        """Get source paths associated with a test case.
+
+        Arguments:
+            cursor: SQLite cursor
+            table_name: SQLite table name
+            test_case_id: test case identifier
+        Returns:
+            source paths associated with the test case
+        """
         try:
             row = cursor.execute(
                 """SELECT source_path
@@ -374,6 +397,15 @@ class TestCaseSqliteStore:
         table_name: str,
         test_case_id: str,
     ) -> list[str]:
+        """Get source paths associated with a row.
+
+        Arguments:
+            connection: SQLite connection
+            table_name: SQLite table name
+            test_case_id: test case identifier
+        Returns:
+            source paths associated with the row
+        """
         try:
             rows = connection.execute(
                 """SELECT source_path
@@ -389,6 +421,14 @@ class TestCaseSqliteStore:
 
     @staticmethod
     def _merge_source_paths(existing: list[str], incoming: list[str]) -> list[str]:
+        """Merge two source path lists.
+
+        Arguments:
+            existing: source paths already recorded
+            incoming: source paths to add
+        Returns:
+            sorted merged source paths
+        """
         merged = set(existing)
         merged.update(incoming)
         return sorted(merged)
@@ -399,6 +439,15 @@ class TestCaseSqliteStore:
         table_name: str,
         row: sqlite3.Row,
     ) -> PersistedTestCase:
+        """Convert a SQLite row to a persisted test case.
+
+        Arguments:
+            connection: SQLite connection
+            table_name: SQLite table name
+            row: SQLite row
+        Returns:
+            persisted test case
+        """
         query = _unprefixed_payload(row, "query")
         answer = _unprefixed_payload(row, "answer")
         return PersistedTestCase(

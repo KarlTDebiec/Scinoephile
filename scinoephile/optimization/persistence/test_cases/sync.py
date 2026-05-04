@@ -75,6 +75,13 @@ def sync_test_cases_from_json_paths(
 
 
 def _persisted_from_test_case(test_case: TestCase) -> PersistedTestCase:
+    """Convert a loaded test case to its persisted representation.
+
+    Arguments:
+        test_case: loaded test case
+    Returns:
+        persisted test case
+    """
     query_dict = test_case.query.model_dump()
     if test_case.answer is None:
         raise ScinoephileError("Optimization test cases must include an answer.")

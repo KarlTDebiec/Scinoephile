@@ -48,9 +48,13 @@ class OperationSpec:
     """Specification for syncing a family of test-case JSONs."""
 
     operation: str
+    """Operation name exposed through the CLI."""
     table_name: str
+    """SQLite table name used to persist cases for this operation."""
     manager_cls: type[Manager]
+    """Manager class used to load and validate cases for this operation."""
     prompt_cls: type[Prompt]
+    """Prompt class used to load and validate cases for this operation."""
 
 
 _OPERATIONS: dict[str, OperationSpec] = {

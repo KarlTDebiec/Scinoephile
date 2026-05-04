@@ -6,19 +6,24 @@ from __future__ import annotations
 
 import sys
 from argparse import Action, ArgumentParser, Namespace
+from collections.abc import Sequence
+from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.optimization.persistence.operations import operation_names
 
-__all__ = [
-    "ListOperationsAction",
-]
+__all__ = ["ListOperationsAction"]
 
 
 class ListOperationsAction(Action):
     """Print available operations and exit."""
 
-    def __init__(self, option_strings, dest, **kwargs):
+    def __init__(
+        self,
+        option_strings: Sequence[str],
+        dest: str,
+        **kwargs: Any,
+    ):
         """Initialize.
 
         Arguments:
@@ -33,7 +38,7 @@ class ListOperationsAction(Action):
         self,
         parser: ArgumentParser,
         namespace: Namespace,
-        values,
+        values: object,
         option_string: str | None = None,
     ):
         """Handle the action.
