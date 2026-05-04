@@ -5,14 +5,22 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Any
+from typing import TypedDict, Unpack
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .optimization_list_operations_cli import OptimizationListOperationsCli
 from .optimization_test_cases_cli import OptimizationSyncTestCasesCli
 
 __all__ = ["OptimizationCli"]
+
+
+class _OptimizationCliKwargs(TypedDict, total=False):
+    """Keyword arguments for OptimizationCli."""
+
+    optimization_subcommand: str
+    """Selected optimization subcommand."""
 
 
 class OptimizationCli(ScinoephileCliBase):
@@ -44,11 +52,12 @@ class OptimizationCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            OptimizationListOperationsCli.name(): OptimizationListOperationsCli,
             OptimizationSyncTestCasesCli.name(): OptimizationSyncTestCasesCli,
         }
 
     @classmethod
-    def _main(cls, **kwargs: Any):
+    def _main(cls, **kwargs: Unpack[_OptimizationCliKwargs]):
         """Execute with provided keyword arguments.
 
         Arguments:

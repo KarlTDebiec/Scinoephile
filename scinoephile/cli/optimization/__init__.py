@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from .operations import ListOperationsAction
 from .optimization_cli import OptimizationCli
+from .optimization_list_operations_cli import OptimizationListOperationsCli
 from .optimization_test_cases_cli import OptimizationSyncTestCasesCli
 
 __all__ = [
     "OptimizationCli",
+    "OptimizationListOperationsCli",
     "OptimizationSyncTestCasesCli",
-    "ListOperationsAction",
 ]

@@ -13,6 +13,9 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.optimization.optimization_cli import OptimizationCli
+from scinoephile.cli.optimization.optimization_list_operations_cli import (
+    OptimizationListOperationsCli,
+)
 from scinoephile.cli.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
@@ -65,15 +68,32 @@ def test_optimization_sync_test_cases_usage(
 @pytest.mark.parametrize(
     "cli",
     [
-        (OptimizationSyncTestCasesCli,),
-        (OptimizationCli, OptimizationSyncTestCasesCli),
-        (ScinoephileCli, OptimizationCli, OptimizationSyncTestCasesCli),
+        (OptimizationListOperationsCli,),
+        (OptimizationCli, OptimizationListOperationsCli),
+        (ScinoephileCli, OptimizationCli, OptimizationListOperationsCli),
     ],
 )
-def test_optimization_sync_test_cases_list_operations(
+def test_optimization_list_operations_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test optimization list-operations CLI help output.
+
+    Arguments:
+        cli: CLI class tuple with optional subcommands
+    """
+    assert_cli_help(cli)
+
+
+@pytest.mark.parametrize(
+    "cli",
+    [
+        (OptimizationListOperationsCli,),
+        (OptimizationCli, OptimizationListOperationsCli),
+        (ScinoephileCli, OptimizationCli, OptimizationListOperationsCli),
+    ],
+)
+def test_optimization_list_operations(
     cli: tuple[type[CommandLineInterface], ...],
 ):
-    """Test optimization sync-test-cases CLI lists operations.
+    """Test optimization list-operations CLI lists operations.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -81,11 +101,9 @@ def test_optimization_sync_test_cases_list_operations(
     subcommands = " ".join(command.name() for command in cli[1:])
     stdout = StringIO()
     stderr = StringIO()
-    with pytest.raises(SystemExit) as excinfo:
-        with redirect_stdout(stdout):
-            with redirect_stderr(stderr):
-                run_cli_with_args(cli[0], f"{subcommands} --list-operations".strip())
-    assert excinfo.value.code == 0
+    with redirect_stdout(stdout):
+        with redirect_stderr(stderr):
+            run_cli_with_args(cli[0], subcommands)
     assert "Available operations:" in stdout.getvalue()
     assert "eng-block-review" in stdout.getvalue()
     assert stderr.getvalue() == ""

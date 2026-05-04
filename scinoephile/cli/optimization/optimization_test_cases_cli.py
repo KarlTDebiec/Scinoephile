@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Any
+from pathlib import Path
+from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -25,9 +26,22 @@ from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
 
-from .operations import ListOperationsAction
-
 __all__ = ["OptimizationSyncTestCasesCli"]
+
+
+class _OptimizationSyncTestCasesCliKwargs(TypedDict, total=False):
+    """Keyword arguments for OptimizationSyncTestCasesCli."""
+
+    _parser: ArgumentParser
+    """Argument parser."""
+    infile_paths: list[Path]
+    """Input JSON file paths."""
+    operation: str
+    """Optimization operation name."""
+    dry_run: bool
+    """Whether to preview changes without writing."""
+    outfile: Path
+    """SQLite database output file path."""
 
 
 class OptimizationSyncTestCasesCli(ScinoephileCliBase):
@@ -35,9 +49,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "additional help": "附加帮助",
-            "Available operations:": "可用操作：",
-            "list available operations and exit": "列出可用操作并退出",
             "SQLite database outfile path": "SQLite 数据库输出路径",
             "operation to which test case JSON file(s) correspond": (
                 "测试用例 JSON 文件对应的操作"
@@ -48,9 +59,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             ),
         },
         "zh-hant": {
-            "additional help": "附加說明",
-            "Available operations:": "可用操作：",
-            "list available operations and exit": "列出可用操作並結束",
             "SQLite database outfile path": "SQLite 資料庫輸出路徑",
             "operation to which test case JSON file(s) correspond": (
                 "測試用例 JSON 檔對應的操作"
@@ -76,7 +84,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "output arguments",
-            "additional help",
             optional_arguments_name="additional arguments",
         )
 
@@ -111,23 +118,26 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             help="SQLite database outfile path",
         )
 
-        # Additional help
-        arg_groups["additional help"].add_argument(
-            "--list-operations",
-            action=ListOperationsAction,
-            help="list available operations and exit",
-        )
-
         parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
-        """Subcommand name."""
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
         return "sync-test-cases"
 
     @classmethod
-    def _main(cls, **kwargs: Any):
-        """Execute with provided keyword arguments."""
+    def _main(cls, **kwargs: Unpack[_OptimizationSyncTestCasesCliKwargs]):
+        """Execute with provided keyword arguments.
+
+        Arguments:
+            **kwargs: keyword arguments
+        """
+        kwargs.pop("_parser", None)
+
         # Validate arguments
         infile_paths = kwargs.pop("infile_paths")
         outfile_path = kwargs.pop("outfile")
