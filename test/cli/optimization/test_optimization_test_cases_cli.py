@@ -19,9 +19,11 @@ from scinoephile.cli.optimization.optimization_test_cases_cli import (
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.optimization.persistence.operations import get_operation_spec
-from scinoephile.optimization.persistence.test_cases.sqlite_store import (
+from scinoephile.optimization.persistence.test_cases import (
     TestCaseSqliteStore,
+)
+from scinoephile.optimization.persistence.test_cases.operations import (
+    get_operation_spec,
 )
 from test.helpers import assert_cli_help, assert_cli_usage
 
@@ -101,6 +103,7 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
     row = ast.literal_eval(lines[0])
     assert row["action"] == "insert"
     assert len(row["test_case_id"]) == 64
+    assert not db_path.exists()
 
     # Apply the sync; should insert the row and link to the source path.
     run_cli_with_args(

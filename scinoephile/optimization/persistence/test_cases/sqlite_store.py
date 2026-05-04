@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-import json
 import sqlite3
 from collections.abc import Iterable
 from logging import getLogger
@@ -13,6 +12,7 @@ from pathlib import Path
 from scinoephile.common.validation import val_output_path
 
 from .persisted_test_case import PersistedTestCase
+from .serialization import get_prefixed_payload, get_unprefixed_payload
 
 __all__ = ["TestCaseSqliteStore"]
 
@@ -194,8 +194,8 @@ class TestCaseSqliteStore:
                     "prompt": 1 if tc.prompt else 0,
                     "verified": 1 if tc.verified else 0,
                 }
-                payload.update(_prefixed_payload("query", tc.query))
-                payload.update(_prefixed_payload("answer", tc.answer))
+                payload.update(get_prefixed_payload("query", tc.query))
+                payload.update(get_prefixed_payload("answer", tc.answer))
                 columns = tuple(payload)
                 placeholders = ", ".join("?" for _ in columns)
                 quoted_columns = ", ".join(_quote_identifier(c) for c in columns)
@@ -254,23 +254,14 @@ class TestCaseSqliteStore:
               - to_delete_ids are test_case_id values whose link to this source would be
                 removed
         """
-        self.create_schema()
-        self.ensure_table(table_name)
-
         desired_list = list(desired)
         desired_by_id = {tc.test_case_id: tc for tc in desired_list}
         desired_ids = set(desired_by_id)
 
-        with sqlite3.connect(self.database_path) as connection:
-            connection.row_factory = sqlite3.Row
-            existing_ids_rows = connection.execute(
-                """SELECT test_case_id
-                   FROM test_case_sources
-                   WHERE table_name = ?
-                     AND source_path = ?""",
-                (table_name, source_path),
-            ).fetchall()
-            existing_ids = {str(r["test_case_id"]) for r in existing_ids_rows}
+        if not dry_run:
+            self.create_schema()
+            self.ensure_table(table_name)
+        existing_ids = self._get_existing_source_test_case_ids(table_name, source_path)
 
         to_insert_ids = sorted(desired_ids - existing_ids)
         to_delete_ids = sorted(existing_ids - desired_ids)
@@ -317,6 +308,35 @@ class TestCaseSqliteStore:
 
         return (to_insert, to_delete_ids)
 
+    def _get_existing_source_test_case_ids(
+        self,
+        table_name: str,
+        source_path: str,
+    ) -> set[str]:
+        """Get test case IDs currently linked to a source path.
+
+        Arguments:
+            table_name: SQLite table name
+            source_path: source JSON path group
+        Returns:
+            test case IDs
+        """
+        if not self.database_path.exists():
+            return set()
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            try:
+                rows = connection.execute(
+                    """SELECT test_case_id
+                       FROM test_case_sources
+                       WHERE table_name = ?
+                         AND source_path = ?""",
+                    (table_name, source_path),
+                ).fetchall()
+            except sqlite3.OperationalError:
+                return set()
+        return {str(row["test_case_id"]) for row in rows}
+
     @staticmethod
     def _create_test_case_table(cursor: sqlite3.Cursor, table_name: str):
         """Create a test-case table if it does not exist.
@@ -355,8 +375,8 @@ class TestCaseSqliteStore:
         }
         desired_columns = set[str]()
         for test_case in test_cases:
-            desired_columns.update(_prefixed_payload("query", test_case.query))
-            desired_columns.update(_prefixed_payload("answer", test_case.answer))
+            desired_columns.update(get_prefixed_payload("query", test_case.query))
+            desired_columns.update(get_prefixed_payload("answer", test_case.answer))
         for column in sorted(desired_columns - existing_columns):
             cursor.execute(
                 f"ALTER TABLE {_quote_identifier(table_name)} "
@@ -448,8 +468,8 @@ class TestCaseSqliteStore:
         Returns:
             persisted test case
         """
-        query = _unprefixed_payload(row, "query")
-        answer = _unprefixed_payload(row, "answer")
+        query = get_unprefixed_payload(row, "query")
+        answer = get_unprefixed_payload(row, "answer")
         return PersistedTestCase(
             test_case_id=str(row["test_case_id"]),
             difficulty=int(row["difficulty"]),
@@ -465,41 +485,12 @@ class TestCaseSqliteStore:
         )
 
 
-def _deserialize_value(value: object) -> object:
-    """Deserialize a value loaded from SQLite."""
-    if isinstance(value, str) and value.startswith(("[", "{")):
-        try:
-            return json.loads(value)
-        except json.JSONDecodeError:
-            return value
-    return value
-
-
-def _prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
-    """Get a flat payload using table-column prefixes."""
-    return {
-        f"{prefix}__{key}": _serialize_value(value)
-        for key, value in sorted(payload.items())
-    }
-
-
 def _quote_identifier(identifier: str) -> str:
-    """Quote a SQLite identifier."""
+    """Quote a SQLite identifier.
+
+    Arguments:
+        identifier: SQLite identifier
+    Returns:
+        quoted identifier
+    """
     return '"' + identifier.replace('"', '""') + '"'
-
-
-def _serialize_value(value: object) -> object:
-    """Serialize a value for storage in SQLite."""
-    if isinstance(value, dict | list):
-        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
-    return value
-
-
-def _unprefixed_payload(row: sqlite3.Row, prefix: str) -> dict:
-    """Get a nested payload from row columns matching a prefix."""
-    column_prefix = f"{prefix}__"
-    return {
-        key.removeprefix(column_prefix): _deserialize_value(row[key])
-        for key in row.keys()
-        if key.startswith(column_prefix) and row[key] is not None
-    }

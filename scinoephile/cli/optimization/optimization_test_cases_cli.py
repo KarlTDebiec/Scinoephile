@@ -14,12 +14,10 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.optimization.persistence.operations import (
+from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
+from scinoephile.optimization.persistence.test_cases.operations import (
     get_operation_spec,
     operation_names,
-)
-from scinoephile.optimization.persistence.test_cases.sqlite_store import (
-    TestCaseSqliteStore,
 )
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
@@ -129,27 +127,26 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Read inputs
         spec = get_operation_spec(operation)
-        table_name = spec.table_name
-        manager_cls = spec.manager_cls
-        prompt_cls = spec.prompt_cls
 
         # Perform operations
         report = sync_test_cases_from_json_paths(
             database_path=outfile,
-            table_name=table_name,
+            table_name=spec.table_name,
             input_paths=infile_paths,
-            manager_cls=manager_cls,
-            prompt_cls=prompt_cls,
+            manager_cls=spec.manager_cls,
+            prompt_cls=spec.prompt_cls,
             dry_run=dry_run,
         )
 
         # Write outputs
         if dry_run:
-            store = TestCaseSqliteStore(outfile)
-            store.create_schema()
-            store.ensure_table(table_name)
+            store = None
+            if outfile.exists():
+                store = TestCaseSqliteStore(outfile)
             for test_case_id in report.insert_ids:
-                tc = store.get_test_case(table_name, test_case_id)
+                tc = None
+                if store is not None:
+                    tc = store.get_test_case(spec.table_name, test_case_id)
                 # The row may not exist yet in dry-run; print an ID-only stub if so.
                 print(
                     {"action": "insert", "test_case_id": test_case_id}
