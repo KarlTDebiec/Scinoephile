@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -21,6 +21,7 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import ZhoHansBlockReviewPrompt, ZhoHantBlockReviewPrompt
 
 __all__ = [
+    "ZHO_BLOCK_REVIEW_OPERATION_SPEC",
     "ZhoBlockReviewProcessKwargs",
     "ZhoBlockReviewProcessorKwargs",
     "ZhoHansBlockReviewPrompt",
@@ -28,6 +29,14 @@ __all__ = [
     "get_zho_block_reviewed",
     "get_zho_reviewer",
 ]
+
+ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
+    operation="zho-block-review",
+    test_case_table_name="test_cases__zho__block_review",
+    manager_cls=MonoBlockManager,
+    prompt_cls=ZhoHansBlockReviewPrompt,
+)
+"""Operation specification for standard Chinese block review."""
 
 
 class ZhoBlockReviewProcessKwargs(TypedDict, total=False):

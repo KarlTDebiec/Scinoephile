@@ -11,14 +11,15 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
-    str_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.optimization.operations import get_operation_spec, operation_names
+from scinoephile.core.llms import OperationSpec
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
+
+from .argument_types import operation_arg
 
 __all__ = ["OptimizationSyncTestCasesCli"]
 
@@ -86,7 +87,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--operation",
             required=True,
-            type=str_arg(options=operation_names),
+            type=operation_arg,
             help="operation to which test case JSON file(s) correspond",
         )
         arg_groups["operation arguments"].add_argument(
@@ -117,18 +118,15 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         cls,
         *,
         infile_paths: list[Path],
-        operation: str,
+        operation: OperationSpec,
         dry_run: bool,
         outfile: Path,
     ):
         """Execute with provided keyword arguments."""
-        # Read inputs
-        spec = get_operation_spec(operation)
-
         # Perform operations
         report = sync_test_cases_from_json_paths(
             database_path=outfile,
-            operation_spec=spec,
+            operation_spec=operation,
             input_paths=infile_paths,
             dry_run=dry_run,
         )
@@ -142,7 +140,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                 tc = None
                 if store is not None:
                     tc = store.get_test_case(
-                        spec.test_case_table_name,
+                        operation.test_case_table_name,
                         test_case_id,
                     )
                 # The row may not exist yet in dry-run; print an ID-only stub if so.
