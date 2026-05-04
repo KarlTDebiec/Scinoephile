@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from datetime import datetime, timedelta
-from typing import TypedDict, Unpack
+from pathlib import Path
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.core import ScinoephileError
@@ -17,23 +17,6 @@ from .argument_types import cache_dir_path_arg, duration_arg
 from .output import print_entries
 
 __all__ = ["CachePruneCli"]
-
-
-class _CachePruneCliKwargs(TypedDict, total=False):
-    """Keyword arguments for CachePruneCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    cache_dir_path: str | None
-    """Cache root directory path."""
-    older_than: timedelta
-    """Entry age threshold."""
-    namespace: str | None
-    """Cache namespace filter."""
-    dry_run: bool
-    """Whether to preview deletion."""
-    yes: bool
-    """Whether deletion is confirmed."""
 
 
 class CachePruneCli(ScinoephileCliBase):
@@ -56,9 +39,10 @@ class CachePruneCli(ScinoephileCliBase):
 
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
-            default=None,
+            default=cache_dir_path_arg(None),
             dest="cache_dir_path",
-            help="cache root directory to inspect",
+            type=cache_dir_path_arg,
+            help="cache root directory to inspect (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--older-than",
@@ -93,18 +77,18 @@ class CachePruneCli(ScinoephileCliBase):
         return "prune"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_CachePruneCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        parser = kwargs.pop("_parser", cls.argparser())
-        cache_dir_path = cache_dir_path_arg(kwargs.pop("cache_dir_path"))
-        older_than = kwargs.pop("older_than")
-        namespace = kwargs.pop("namespace")
-        dry_run = kwargs.pop("dry_run")
-        yes = kwargs.pop("yes")
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        cache_dir_path: Path,
+        older_than: timedelta,
+        namespace: str | None,
+        dry_run: bool,
+        yes: bool,
+    ):
+        """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
 

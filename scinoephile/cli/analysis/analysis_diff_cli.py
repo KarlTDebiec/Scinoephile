@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar, TypedDict, Unpack
+from typing import ClassVar
 
 from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.argument_parsing import (
@@ -18,28 +18,6 @@ from scinoephile.common.exception import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
-
-
-class _AnalysisDiffCliKwargs(TypedDict, total=False):
-    """Keyword arguments for AnalysisDiffCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-
-    one_infile: Path | str
-    """Subtitle infile for first series or stdin sentinel."""
-
-    two_infile: Path | str
-    """Subtitle infile for second series or stdin sentinel."""
-
-    similarity_cutoff: float
-    """Similarity cutoff for replacement pairing."""
-
-    one_label: str
-    """Label for first series."""
-
-    two_label: str
-    """Label for second series."""
 
 
 class AnalysisDiffCli(ScinoephileCliBase):
@@ -102,12 +80,14 @@ class AnalysisDiffCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--one-infile",
+            dest="one_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for first series or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--two-infile",
+            dest="two_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for second series or "-" for stdin',
@@ -145,19 +125,19 @@ class AnalysisDiffCli(ScinoephileCliBase):
         return "diff"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_AnalysisDiffCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        one_infile_path: Path | str,
+        two_infile_path: Path | str,
+        similarity_cutoff: float,
+        one_label: str,
+        two_label: str,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        one_infile_path = kwargs.pop("one_infile")
-        two_infile_path = kwargs.pop("two_infile")
-        similarity_cutoff = kwargs.pop("similarity_cutoff")
-        one_label = kwargs.pop("one_label")
-        two_label = kwargs.pop("two_label")
+        parser = _parser or cls.argparser()
         if one_infile_path == "-" and two_infile_path == "-":
             try:
                 raise ArgumentConflictError(

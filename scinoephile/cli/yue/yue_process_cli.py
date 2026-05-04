@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
@@ -38,31 +37,6 @@ from scinoephile.lang.zho.conversion import (
 from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = ["YueProcessCli"]
-
-
-class _YueProcessCliKwargs(TypedDict, total=False):
-    """Keyword arguments for YueProcessCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    infile: Path | str
-    """Written Cantonese subtitle infile path or stdin sentinel."""
-    outfile: Path | None
-    """Written Cantonese subtitle outfile path."""
-    clean: bool
-    """Whether to clean subtitles."""
-    flatten: bool
-    """Whether to flatten multi-line subtitles."""
-    convert: OpenCCConfig | None
-    """OpenCC conversion configuration."""
-    proofread: str | None
-    """Selected proofreading script."""
-    romanize: bool
-    """Whether to append Cantonese romanization."""
-    offset: int
-    """Timing offset in milliseconds."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class YueProcessCli(ScinoephileCliBase):
@@ -145,6 +119,7 @@ class YueProcessCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
+            dest="infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Written Cantonese subtitle infile path or "-" for stdin',
@@ -166,6 +141,7 @@ class YueProcessCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--proofread",
+            dest="review_script",
             nargs="?",
             const="traditional",
             type=str_arg(options=("simplified", "traditional")),
@@ -188,6 +164,7 @@ class YueProcessCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="Written Cantonese subtitle outfile path (default: stdout)",
         )
@@ -208,23 +185,23 @@ class YueProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_YueProcessCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        infile_path: Path | str,
+        outfile_path: Path | None,
+        clean: bool,
+        flatten: bool,
+        convert: OpenCCConfig | None,
+        review_script: str | None,
+        romanize: bool,
+        offset: int,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        infile_path = kwargs.pop("infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        convert = kwargs.pop("convert")
-        review_script = kwargs.pop("proofread")
-        romanize = kwargs.pop("romanize")
-        offset = kwargs.pop("offset")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
 
         if not (clean or flatten or convert or review_script or romanize or offset):
             parser.error("At least one operation required")

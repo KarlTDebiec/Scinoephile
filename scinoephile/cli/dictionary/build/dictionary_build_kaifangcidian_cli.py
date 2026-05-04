@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar, TypedDict, Unpack
+from typing import ClassVar
 
 import requests
 
@@ -20,19 +20,6 @@ from .dictionary_build_cli_base import DictionaryBuildCliBase
 __all__ = ["DictionaryBuildKaifangcidianCli"]
 
 logger = getLogger(__name__)
-
-
-class _DictionaryBuildKaifangcidianCliKwargs(TypedDict, total=False):
-    """Keyword arguments for DictionaryBuildKaifangcidianCli."""
-
-    database_path: Path | None
-    """SQLite database output path."""
-    overwrite: bool
-    """Whether to overwrite the existing SQLite database."""
-    force_download: bool
-    """Whether to download fresh Kaifangcidian payloads before building."""
-    update_local_data: bool
-    """Whether to update the canonical CSV under package data."""
 
 
 class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
@@ -102,17 +89,15 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_DictionaryBuildKaifangcidianCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        database_path = kwargs.pop("database_path")
-        overwrite = kwargs.pop("overwrite")
-        force_download = kwargs.pop("force_download")
-        update_local_data = kwargs.pop("update_local_data")
-
+    def _main(
+        cls,
+        *,
+        database_path: Path | None,
+        overwrite: bool,
+        force_download: bool,
+        update_local_data: bool,
+    ):
+        """Execute with provided keyword arguments."""
         service = KaifangcidianDictionaryService(database_path=database_path)
         cls.log_config(
             cache_dir_path=service.runtime_data_dir_path,

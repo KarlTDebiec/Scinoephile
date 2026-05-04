@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     float_arg,
@@ -20,25 +19,6 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
 __all__ = ["SyncCli"]
-
-
-class _SyncCliKwargs(TypedDict, total=False):
-    """Keyword arguments for SyncCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    top_infile: Path | str
-    """Subtitle infile for top line or stdin sentinel."""
-    bottom_infile: Path | str
-    """Subtitle infile for bottom line or stdin sentinel."""
-    sync_cutoff: float
-    """Initial overlap cutoff used to form sync groups."""
-    pause_length: int
-    """Pause length in milliseconds used to split subtitle blocks."""
-    outfile: Path | None
-    """Synchronized subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class SyncCli(ScinoephileCliBase):
@@ -77,12 +57,14 @@ class SyncCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--top-infile",
+            dest="top_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for top line or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--bottom-infile",
+            dest="bottom_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for bottom line or "-" for stdin',
@@ -110,6 +92,7 @@ class SyncCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="synchronized subtitle outfile path (default: stdout)",
         )
@@ -121,20 +104,20 @@ class SyncCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_SyncCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        top_infile_path: Path | str,
+        bottom_infile_path: Path | str,
+        sync_cutoff: float,
+        pause_length: int,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        top_infile_path = kwargs.pop("top_infile")
-        bottom_infile_path = kwargs.pop("bottom_infile")
-        sync_cutoff = kwargs.pop("sync_cutoff")
-        pause_length = kwargs.pop("pause_length")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if top_infile_path == "-" and bottom_infile_path == "-":
             try:
                 raise ArgumentConflictError(

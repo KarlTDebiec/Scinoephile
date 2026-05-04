@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import ClassVar, TypedDict, Unpack
+from typing import Any, ClassVar
 
 from scinoephile.core.cli import ScinoephileCliBase
 
@@ -16,13 +16,6 @@ from .dictionary_build_unihan_cli import DictionaryBuildUnihanCli
 from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 
 __all__ = ["DictionaryBuildCli"]
-
-
-class _DictionaryBuildCliKwargs(TypedDict, total=False):
-    """Keyword arguments for DictionaryBuildCli."""
-
-    dictionary_build_subcommand: str
-    """Selected dictionary build subcommand."""
 
 
 class DictionaryBuildCli(ScinoephileCliBase):
@@ -50,7 +43,7 @@ class DictionaryBuildCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="dictionary_build_subcommand",
+            dest="dictionary_build_subcommand_name",
             help="dictionary source",
             required=True,
         )
@@ -82,14 +75,14 @@ class DictionaryBuildCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_DictionaryBuildCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("dictionary_build_subcommand")
-        cls.subcommands()[subcommand_name]._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        dictionary_build_subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[dictionary_build_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

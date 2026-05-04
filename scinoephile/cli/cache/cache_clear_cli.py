@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import TypedDict, Unpack
+from pathlib import Path
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.core import ScinoephileError
@@ -16,23 +16,6 @@ from .argument_types import cache_dir_path_arg
 from .output import print_entries
 
 __all__ = ["CacheClearCli"]
-
-
-class _CacheClearCliKwargs(TypedDict, total=False):
-    """Keyword arguments for CacheClearCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    cache_dir_path: str | None
-    """Cache root directory path."""
-    namespace: str | None
-    """Cache namespace filter."""
-    all_namespaces: bool
-    """Whether to clear every namespace."""
-    dry_run: bool
-    """Whether to preview deletion."""
-    yes: bool
-    """Whether deletion is confirmed."""
 
 
 class CacheClearCli(ScinoephileCliBase):
@@ -55,9 +38,10 @@ class CacheClearCli(ScinoephileCliBase):
 
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
-            default=None,
+            default=cache_dir_path_arg(None),
             dest="cache_dir_path",
-            help="cache root directory to inspect",
+            type=cache_dir_path_arg,
+            help="cache root directory to inspect (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--namespace",
@@ -92,18 +76,18 @@ class CacheClearCli(ScinoephileCliBase):
         return "clear"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_CacheClearCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        parser = kwargs.pop("_parser", cls.argparser())
-        cache_dir_path = cache_dir_path_arg(kwargs.pop("cache_dir_path"))
-        namespace = kwargs.pop("namespace")
-        all_namespaces = kwargs.pop("all_namespaces")
-        dry_run = kwargs.pop("dry_run")
-        yes = kwargs.pop("yes")
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        cache_dir_path: Path,
+        namespace: str | None,
+        all_namespaces: bool,
+        dry_run: bool,
+        yes: bool,
+    ):
+        """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
         if namespace is not None and all_namespaces:

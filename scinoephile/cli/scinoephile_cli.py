@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import TypedDict, Unpack
+from typing import Any
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
@@ -20,13 +20,6 @@ from .yue import YueCli
 from .zho import ZhoCli
 
 __all__ = ["ScinoephileCli"]
-
-
-class _ScinoephileCliKwargs(TypedDict, total=False):
-    """Keyword arguments for ScinoephileCli."""
-
-    subcommand: str
-    """Selected top-level subcommand."""
 
 
 class ScinoephileCli(ScinoephileCliBase):
@@ -88,7 +81,7 @@ class ScinoephileCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="subcommand",
+            dest="subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -115,15 +108,14 @@ class ScinoephileCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_ScinoephileCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":
