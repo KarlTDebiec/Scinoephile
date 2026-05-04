@@ -10,7 +10,6 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .optimization_list_operations_cli import OptimizationListOperationsCli
 from .optimization_test_cases_cli import OptimizationSyncTestCasesCli
 
 __all__ = ["OptimizationCli"]
@@ -57,7 +56,6 @@ class OptimizationCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            OptimizationListOperationsCli.name(): OptimizationListOperationsCli,
             OptimizationSyncTestCasesCli.name(): OptimizationSyncTestCasesCli,
         }
 

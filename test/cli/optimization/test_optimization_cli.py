@@ -7,9 +7,6 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.cli.optimization.optimization_cli import OptimizationCli
-from scinoephile.cli.optimization.optimization_list_operations_cli import (
-    OptimizationListOperationsCli,
-)
 from scinoephile.cli.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
@@ -52,5 +49,4 @@ def test_optimization_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 def test_optimization_subcommand_help():
     """Test optimization subcommand help output."""
-    for cli_class in (OptimizationListOperationsCli, OptimizationSyncTestCasesCli):
-        assert_cli_help((OptimizationCli, cli_class))
+    assert_cli_help((OptimizationCli, OptimizationSyncTestCasesCli))
