@@ -63,7 +63,7 @@ def test_val_output_dir_path_without_create_rejects_file_ancestor(tmp_path: Path
 
 def test_val_output_dir_path_nested_dirs(tmp_path: Path):
     """Test that nested directories are created."""
-    test_dir = tmp_path / "dir1" / "dir2" / "dir3"
+    test_dir = tmp_path / "dir1/dir2/dir3"
     assert not test_dir.exists()
 
     result = val_output_dir_path(test_dir)

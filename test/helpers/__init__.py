@@ -35,7 +35,7 @@ __all__ = [
 ]
 
 
-test_data_root = package_root.parent / "test" / "data"
+test_data_root = package_root.parent / "test/data"
 
 
 def assert_cli_help(cli: tuple[type[CommandLineInterface], ...]):

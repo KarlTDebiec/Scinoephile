@@ -58,21 +58,21 @@ actions = {
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
-        input_path / "zho-Hant_ocr" / "source.sup",
+        input_path / "zho-Hant_ocr/source.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
-        input_path / "zho-Hans_ocr" / "source.sup",
+        input_path / "zho-Hans_ocr/source.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
-        input_path / "eng_ocr" / "source.sup",
+        input_path / "eng_ocr/source.sup",
         overwrite_srt=True,
         force_validation=True,
     )
@@ -104,7 +104,7 @@ if "简体粤文 (Transcription)" in actions:
     transcriber = get_yue_vs_zho_transcriber(
         vad_mode=VADMode.ON,
         convert=OpenCCConfig.hk2s,
-        test_case_directory_path=yue_hans_transcribe_path / "multilang" / "yue_zho",
+        test_case_directory_path=yue_hans_transcribe_path / "multilang/yue_zho",
         deliniation_test_cases=get_mlamd_yue_deliniation_test_cases(),
         punctuation_test_cases=get_mlamd_yue_punctuation_test_cases(),
     )

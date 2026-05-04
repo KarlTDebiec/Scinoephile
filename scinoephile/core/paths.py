@@ -24,11 +24,9 @@ def get_runtime_cache_dir_path(*parts: str) -> Path:
     if configured_cache_dir_path := getenv("SCINOEPHILE_CACHE_DIR"):
         cache_root_path = Path(configured_cache_dir_path)
     elif system() == "Darwin":
-        cache_root_path = Path.home() / "Library" / "Caches"
+        cache_root_path = Path.home() / "Library/Caches"
     elif system() == "Windows":
-        cache_root_path = Path(
-            getenv("LOCALAPPDATA") or Path.home() / "AppData" / "Local"
-        )
+        cache_root_path = Path(getenv("LOCALAPPDATA") or Path.home() / "AppData/Local")
     else:
         cache_root_path = Path(getenv("XDG_CACHE_HOME") or Path.home() / ".cache")
 

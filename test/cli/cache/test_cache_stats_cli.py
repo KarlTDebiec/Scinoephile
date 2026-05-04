@@ -20,7 +20,7 @@ def test_cache_stats_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    _write_cache_file(tmp_path / "llm" / "one.json", "one")
+    _write_cache_file(tmp_path / "llm/one.json", "one")
 
     run_cli_with_args(CacheStatsCli, f"--cache-dir {tmp_path} --format json")
 
@@ -37,8 +37,8 @@ def test_cache_stats_namespace(tmp_path: Path, capsys: pytest.CaptureFixture[str
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
-    _write_cache_file(tmp_path / "whisper" / "two.json")
+    _write_cache_file(tmp_path / "llm/one.json")
+    _write_cache_file(tmp_path / "whisper/two.json")
 
     run_cli_with_args(CacheStatsCli, f"--cache-dir {tmp_path} --namespace whisper")
 

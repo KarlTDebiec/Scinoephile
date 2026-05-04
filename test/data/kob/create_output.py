@@ -117,7 +117,7 @@ if "English (SRT)" in actions:
     eng_clean = get_eng_cleaned(eng_timewarp)
     eng_clean.save(eng_path / "timewarp_clean.srt")
     eng_proofreader = get_eng_block_reviewer(
-        test_case_path=eng_path / "lang" / "eng" / "block_review.json",
+        test_case_path=eng_path / "lang/eng/block_review.json",
         auto_verify=True,
     )
     eng_proofread = get_eng_block_reviewed(eng_clean, eng_proofreader)
@@ -138,7 +138,7 @@ if "简体粤文 (Transcription)" in actions:
     )
     simplified_reference_path = yue_hans_path / "timewarp_clean_flatten.srt"
     traditional_reference_path = yue_hant_path / "timewarp_clean_flatten.srt"
-    audio_path = yue_hans_transcribe_path / "audio" / "yue-Hans_audio.wav"
+    audio_path = yue_hans_transcribe_path / "audio/yue-Hans_audio.wav"
 
     process_yue_hans_transcription(
         title_root,
@@ -183,7 +183,7 @@ if "简体粤文 (Transcription)" in actions:
     )
 if "简体粤文 (Diff)" in actions:
     # yue_hans_transcribe = Series.load(
-    #     yue_hans_transcribe_path / "test_simplified" / "transcribe.srt"
+    #     yue_hans_transcribe_path / "test_simplified/transcribe.srt"
     # )
     yue_hans_transcribe = Series.load(
         yue_hans_transcribe_path

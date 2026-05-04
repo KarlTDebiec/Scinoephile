@@ -67,7 +67,7 @@ def test_store_upsert_and_fetch(tmp_path: Path):
 
 def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
     """Initializing a store should not create parent directories."""
-    db_path = tmp_path / "missing" / "test_cases.sqlite"
+    db_path = tmp_path / "missing/test_cases.sqlite"
     store = TestCaseSqliteStore(db_path)
 
     assert not db_path.parent.exists()

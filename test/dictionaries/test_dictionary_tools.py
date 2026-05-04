@@ -60,9 +60,9 @@ class StubDictionaryToolPrompt(DictionaryToolPrompt):
 def dictionary_cache_dir_path() -> Generator[Path]:
     """Provide deterministic CUHK and GZZJ cache databases."""
     with get_temp_directory_path() as temp_dir_path:
-        cache_dir_path = temp_dir_path / "scinoephile" / "dictionaries"
-        cuhk_database_path = cache_dir_path / "cuhk" / "cuhk.db"
-        gzzj_database_path = cache_dir_path / "gzzj" / "gzzj.db"
+        cache_dir_path = temp_dir_path / "scinoephile/dictionaries"
+        cuhk_database_path = cache_dir_path / "cuhk/cuhk.db"
+        gzzj_database_path = cache_dir_path / "gzzj/gzzj.db"
 
         DictionarySqliteStore(database_path=cuhk_database_path).persist(
             (
@@ -218,8 +218,8 @@ def test_lookup_dictionary_returns_compact_error_for_no_available_dictionaries(
 ):
     """Return an error when no local dictionaries are available."""
     for database_path in (
-        dictionary_cache_dir_path / "scinoephile" / "dictionaries" / "cuhk" / "cuhk.db",
-        dictionary_cache_dir_path / "scinoephile" / "dictionaries" / "gzzj" / "gzzj.db",
+        dictionary_cache_dir_path / "scinoephile/dictionaries/cuhk/cuhk.db",
+        dictionary_cache_dir_path / "scinoephile/dictionaries/gzzj/gzzj.db",
     ):
         database_path.unlink()
 

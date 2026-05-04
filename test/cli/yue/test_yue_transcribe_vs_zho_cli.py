@@ -100,7 +100,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
 
     Also verifies dependency dispatch.
     """
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -154,7 +154,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
 
 def test_yue_transcribe_vs_zho_cli_writes_stdout():
     """Test written Cantonese transcribe-vs-zho CLI writes stdout output."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -188,7 +188,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
     """Test written Cantonese transcribe-vs-zho CLI passes through explicit VAD mode."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -219,7 +219,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
     """Test written Cantonese CLI passes through explicit Demucs mode."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -250,7 +250,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
     """Test written Cantonese CLI passes through explicit conversion."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -281,7 +281,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
 
 def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
     """Test written Cantonese CLI requires an explicit conversion config."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
@@ -293,7 +293,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
 
 def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
     """Test written Cantonese CLI keeps prompt script separate from conversion."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -333,7 +333,7 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
     """Test written Cantonese transcribe-vs-zho CLI rejects negative stream indexes."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
@@ -345,7 +345,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
 
 def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
     """Test written Cantonese transcribe-vs-zho CLI surfaces stream-selection errors."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
@@ -374,7 +374,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
 
 def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
     """Test written Cantonese transcribe-vs-zho CLI surfaces missing media infiles."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/missing_media.mp4"
 
     with pytest.raises(SystemExit, match="2"):
@@ -387,7 +387,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
 
 def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
     """Test written Cantonese transcribe-vs-zho CLI allows stdin subtitle input."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -437,7 +437,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
 
 def test_yue_transcribe_vs_zho_cli_rejects_overwrite_without_outfile():
     """Test written Cantonese CLI rejects overwrite when writing to stdout."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
 
     with pytest.raises(SystemExit, match="2"):
