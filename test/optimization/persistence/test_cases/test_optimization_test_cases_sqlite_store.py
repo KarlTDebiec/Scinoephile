@@ -7,10 +7,26 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+from scinoephile.core.llms import OperationSpec
+from scinoephile.multilang.yue_zho.transcription.punctuation import (
+    YueVsZhoYueHansPunctuationPrompt,
+    YueZhoPunctuationManager,
+)
 from scinoephile.optimization.persistence.test_cases import (
     PersistedTestCase,
     TestCaseSqliteStore,
 )
+
+
+def get_punctuation_operation_spec() -> OperationSpec:
+    """Get operation spec with a split written Cantonese query list."""
+    return OperationSpec(
+        operation="unit-punctuation",
+        test_case_table_name="test_cases__unit__punctuation",
+        manager_cls=YueZhoPunctuationManager,
+        prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+        list_fields={"query.yuewen_to_punctuate": 10},
+    )
 
 
 def test_store_upsert_and_fetch(tmp_path: Path):
@@ -138,6 +154,81 @@ def test_store_preserves_json_looking_strings(tmp_path: Path):
     assert loaded.query["literal_object"] == "{}"
     assert loaded.answer["literal_array"] == "[]"
     assert loaded.answer["literal_object"] == "{}"
+
+
+def test_store_splits_configured_list_fields(tmp_path: Path):
+    """Configured list fields should persist as numbered scalar columns."""
+    db_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(
+        db_path,
+        operation_spec=get_punctuation_operation_spec(),
+    )
+    table_name = "test_cases__unit__punctuation"
+
+    tc = PersistedTestCase(
+        test_case_id="abc",
+        difficulty=1,
+        prompt=False,
+        verified=True,
+        query={
+            "yuewen_to_punctuate": ["噉我哋", "而家开始"],
+            "zhongwen": "那我们现在开始。",
+        },
+        answer={"yuewen_punctuated": "噉我哋，而家开始。"},
+        source_paths=["x.json"],
+    )
+    store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
+
+    loaded = store.get_test_case(table_name, "abc")
+    assert loaded is not None
+    assert loaded.query == tc.query
+
+    with sqlite3.connect(db_path) as connection:
+        row = connection.execute(
+            f"""SELECT query__yuewen_to_punctuate_01,
+                       query__yuewen_to_punctuate_02,
+                       query__yuewen_to_punctuate_03
+                FROM {table_name}
+                WHERE test_case_id = ?""",
+            ("abc",),
+        ).fetchone()
+        columns = {
+            str(column[1])
+            for column in connection.execute(f"PRAGMA table_info({table_name})")
+        }
+    assert row == ("噉我哋", "而家开始", None)
+    assert "query__yuewen_to_punctuate" not in columns
+    assert "query__yuewen_to_punctuate_10" in columns
+
+
+def test_store_rejects_configured_list_fields_over_max(tmp_path: Path):
+    """Configured list fields should fail clearly when they exceed max width."""
+    db_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(
+        db_path,
+        operation_spec=get_punctuation_operation_spec(),
+    )
+    table_name = "test_cases__unit__punctuation"
+
+    tc = PersistedTestCase(
+        test_case_id="abc",
+        difficulty=1,
+        prompt=False,
+        verified=True,
+        query={
+            "yuewen_to_punctuate": [str(idx) for idx in range(11)],
+            "zhongwen": "那我们现在开始。",
+        },
+        answer={"yuewen_punctuated": "噉我哋，而家开始。"},
+        source_paths=["x.json"],
+    )
+
+    try:
+        store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
+    except ValueError as err:
+        assert "supports at most 10 items" in str(err)
+    else:
+        raise AssertionError("Expected ValueError for oversized list field.")
 
 
 def test_store_source_path_index(tmp_path: Path):

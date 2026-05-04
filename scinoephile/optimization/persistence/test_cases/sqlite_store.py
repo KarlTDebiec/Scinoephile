@@ -10,6 +10,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
+from scinoephile.core.llms.operation_spec import OperationSpec
 from scinoephile.core.optimization import (
     get_prefixed_payload,
     get_unprefixed_payload,
@@ -32,17 +33,25 @@ class TestCaseSqliteStore:
     schema_version = 2
     """SQLite schema version."""
 
-    def __init__(self, database_path: Path):
+    def __init__(
+        self,
+        database_path: Path,
+        *,
+        operation_spec: OperationSpec | None = None,
+    ):
         """Initialize.
 
         Arguments:
             database_path: SQLite database path
+            operation_spec: operation specification for operation-shaped payloads
         """
         self.database_path = val_output_path(
             database_path,
             exist_ok=True,
             create=False,
         )
+        self.operation_spec = operation_spec
+        self.list_fields = dict(operation_spec.list_fields if operation_spec else {})
 
     def create_schema(self):
         """Create SQLite schema if needed."""
@@ -292,8 +301,8 @@ class TestCaseSqliteStore:
                     "prompt": 1 if tc.prompt else 0,
                     "verified": 1 if tc.verified else 0,
                 }
-                payload.update(get_prefixed_payload("query", tc.query))
-                payload.update(get_prefixed_payload("answer", tc.answer))
+                payload.update(self._get_prefixed_payload("query", tc.query))
+                payload.update(self._get_prefixed_payload("answer", tc.answer))
                 columns = tuple(payload)
                 placeholders = ", ".join("?" for _ in columns)
                 quoted_columns = ", ".join(quote_identifier(c) for c in columns)
@@ -405,8 +414,8 @@ class TestCaseSqliteStore:
                 )"""
         )
 
-    @staticmethod
     def _ensure_test_case_columns(
+        self,
         cursor: sqlite3.Cursor,
         table_name: str,
         test_cases: Iterable[PersistedTestCase],
@@ -426,8 +435,10 @@ class TestCaseSqliteStore:
         }
         desired_columns = set[str]()
         for test_case in test_cases:
-            desired_columns.update(get_prefixed_payload("query", test_case.query))
-            desired_columns.update(get_prefixed_payload("answer", test_case.answer))
+            desired_columns.update(self._get_prefixed_payload("query", test_case.query))
+            desired_columns.update(
+                self._get_prefixed_payload("answer", test_case.answer)
+            )
         for column in sorted(desired_columns - existing_columns):
             cursor.execute(
                 f"ALTER TABLE {quote_identifier(table_name)} "
@@ -489,6 +500,41 @@ class TestCaseSqliteStore:
         return [
             test_case_id for test_case_id in ids if test_case_id not in remaining_ids
         ]
+
+    def _get_prefixed_payload(self, prefix: str, payload: dict) -> dict[str, object]:
+        """Get a flat payload using table-column prefixes.
+
+        Arguments:
+            prefix: column prefix
+            payload: payload to flatten
+        Returns:
+            flattened payload
+        """
+        flattened = get_prefixed_payload(prefix, payload)
+        for list_field, max_items in sorted(self.list_fields.items()):
+            list_prefix, field_name = self._parse_list_field(list_field)
+            if list_prefix != prefix:
+                continue
+
+            value = payload.get(field_name)
+            if not isinstance(value, list):
+                raise TypeError(
+                    f"Configured list field {list_field} must contain a list."
+                )
+            if len(value) > max_items:
+                raise ValueError(
+                    f"Configured list field {list_field} supports at most "
+                    f"{max_items} items, received {len(value)}."
+                )
+
+            flattened.pop(f"{prefix}__{field_name}", None)
+            for idx in range(max_items):
+                column = self._get_split_column_name(prefix, field_name, idx)
+                if idx < len(value):
+                    flattened[column] = value[idx]
+                else:
+                    flattened[column] = None
+        return flattened
 
     @staticmethod
     def _get_source_paths(
@@ -561,6 +607,51 @@ class TestCaseSqliteStore:
         return f"{quoted_column}=excluded.{quoted_column}"
 
     @staticmethod
+    def _get_split_column_name(prefix: str, field_name: str, idx: int) -> str:
+        """Get a column name for a split list item.
+
+        Arguments:
+            prefix: column prefix
+            field_name: list field name
+            idx: zero-based list item index
+        Returns:
+            split column name
+        """
+        return f"{prefix}__{field_name}_{idx + 1:02d}"
+
+    def _get_unprefixed_payload(self, row: sqlite3.Row, prefix: str) -> dict:
+        """Get a nested payload from row columns matching a prefix.
+
+        Arguments:
+            row: SQLite row
+            prefix: column prefix
+        Returns:
+            nested payload
+        """
+        payload = get_unprefixed_payload(row, prefix)
+        row_keys = set(row.keys())
+        for list_field, max_items in sorted(self.list_fields.items()):
+            list_prefix, field_name = self._parse_list_field(list_field)
+            if list_prefix != prefix:
+                continue
+
+            split_columns = [
+                self._get_split_column_name(prefix, field_name, idx)
+                for idx in range(max_items)
+            ]
+            if not any(column in row_keys for column in split_columns):
+                continue
+
+            values: list[object] = []
+            for idx in range(max_items):
+                split_key = f"{field_name}_{idx + 1:02d}"
+                value = payload.pop(split_key, None)
+                if value is not None:
+                    values.append(value)
+            payload[field_name] = values
+        return payload
+
+    @staticmethod
     def _merge_source_paths(existing: list[str], incoming: list[str]) -> list[str]:
         """Merge two source path lists.
 
@@ -574,8 +665,8 @@ class TestCaseSqliteStore:
         merged.update(incoming)
         return sorted(merged)
 
-    @staticmethod
     def _row_to_test_case(
+        self,
         connection: sqlite3.Connection,
         table_name: str,
         row: sqlite3.Row,
@@ -589,8 +680,8 @@ class TestCaseSqliteStore:
         Returns:
             persisted test case
         """
-        query = get_unprefixed_payload(row, "query")
-        answer = get_unprefixed_payload(row, "answer")
+        query = self._get_unprefixed_payload(row, "query")
+        answer = self._get_unprefixed_payload(row, "answer")
         source_paths = TestCaseSqliteStore._get_source_paths_for_row(
             connection,
             table_name,
@@ -605,3 +696,20 @@ class TestCaseSqliteStore:
             answer=answer,
             source_paths=source_paths,
         )
+
+    @staticmethod
+    def _parse_list_field(list_field: str) -> tuple[str, str]:
+        """Parse a configured list field path.
+
+        Arguments:
+            list_field: configured list field path
+        Returns:
+            payload prefix and field name
+        """
+        parts = list_field.split(".", maxsplit=1)
+        if len(parts) != 2 or parts[0] not in {"query", "answer"} or not parts[1]:
+            raise ValueError(
+                "Configured list fields must be formatted like "
+                "'query.field_name' or 'answer.field_name'."
+            )
+        return (parts[0], parts[1])

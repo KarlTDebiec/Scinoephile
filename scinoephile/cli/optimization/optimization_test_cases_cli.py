@@ -137,13 +137,12 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         if dry_run:
             store = None
             if outfile.exists():
-                store = TestCaseSqliteStore(outfile)
+                store = TestCaseSqliteStore(outfile, operation_spec=operation)
             for test_case_id in report.insert_ids:
                 tc = None
                 if store is not None:
                     tc = store.get_test_case(
-                        operation.test_case_table_name,
-                        test_case_id,
+                        operation.test_case_table_name, test_case_id
                     )
                 if tc is None:
                     print({"action": "insert", "test_case_id": test_case_id})

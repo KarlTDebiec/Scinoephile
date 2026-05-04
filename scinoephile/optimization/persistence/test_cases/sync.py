@@ -34,7 +34,7 @@ def sync_test_cases_from_json_paths(
     Returns:
         sync report
     """
-    store = TestCaseSqliteStore(database_path)
+    store = TestCaseSqliteStore(database_path, operation_spec=operation_spec)
 
     input_paths_tuple = tuple(input_path.resolve() for input_path in input_paths)
     insert_ids: list[str] = []

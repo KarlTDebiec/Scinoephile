@@ -49,6 +49,7 @@ YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
     test_case_table_name="test_cases__yue_zho__transcription_punctuation",
     manager_cls=YueZhoPunctuationManager,
     prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+    list_fields={"query.yuewen_to_punctuate": 10},
 )
 """Operation specification for written Cantonese transcription punctuation."""
 
