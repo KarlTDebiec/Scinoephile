@@ -57,29 +57,29 @@ def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
-            "mnt/output/zho-Hans_fuse_clean.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_review.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review.srt",
             "--flatten",
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
             "--romanize",
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten_romanize.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt",
         ),
         (
-            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt",
             "--convert t2s",
-            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt",
         ),
         (
-            "mnt/output/zho-Hant_fuse_clean_validate.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt",
             "--proofread traditional",
-            "mnt/output/zho-Hant_fuse_clean_validate_review.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
         ),
     ],
 )
@@ -113,9 +113,9 @@ def test_zho_process_cli(
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
-            "mnt/output/zho-Hans_fuse_clean.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean.srt",
         ),
     ],
 )
@@ -145,7 +145,7 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
 def test_zho_process_cli_offsets_timing():
     """Test standard Chinese processing CLI can offset subtitle timings."""
-    full_input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
+    full_input_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
@@ -162,7 +162,8 @@ def test_zho_process_cli_offsets_timing():
 def test_zho_process_cli_rejects_bare_convert_flag():
     """Test standard Chinese processing CLI requires an explicit conversion config."""
     full_input_path = (
-        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt"
+        test_data_root
+        / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
     with pytest.raises(SystemExit, match="2"):

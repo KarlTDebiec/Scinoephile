@@ -133,30 +133,33 @@ def test_analysis_diff_cli_multiline_split_edit(
             "kob_eng_expected_series_diff",
         ),
         (
-            Path("mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path("mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
             Path(
                 "mlamd/output/"
-                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+                "zho-Hant_ocr/"
+                "fuse_clean_validate_review_flatten_simplify_review.srt"
             ),
             "SIMP",
             "TRAD",
             "mlamd_zho_simplify_expected_series_diff",
         ),
         (
-            Path("mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path("mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
             Path(
                 "mnt/output/"
-                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+                "zho-Hant_ocr/"
+                "fuse_clean_validate_review_flatten_simplify_review.srt"
             ),
             "SIMP",
             "TRAD",
             "mnt_zho_simplify_expected_series_diff",
         ),
         (
-            Path("t/output/zho-Hans_fuse_clean_validate_review_flatten.srt"),
+            Path("t/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
             Path(
                 "t/output/"
-                "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+                "zho-Hant_ocr/"
+                "fuse_clean_validate_review_flatten_simplify_review.srt"
             ),
             "SIMP",
             "TRAD",

@@ -54,7 +54,7 @@ def test_eng_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     ("input_path",),
     [
-        ("mlamd/output/eng_image",),
+        ("mlamd/output/eng_ocr/image",),
         ("mlamd/input/eng_ocr/source.sup",),
     ],
 )

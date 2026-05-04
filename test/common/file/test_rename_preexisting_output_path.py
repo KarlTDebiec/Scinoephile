@@ -72,7 +72,7 @@ def test_rename_preexisting_output_path_preserves_extension(tmp_path: Path):
 
 def test_rename_preexisting_output_path_resolves_path(tmp_path: Path):
     """Test that relative paths are resolved."""
-    output_path = tmp_path / "subdir" / ".." / "output.txt"
+    output_path = tmp_path / "subdir/../output.txt"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("content")
 

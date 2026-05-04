@@ -27,8 +27,8 @@ def test_discover_cache_namespaces(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
-    _write_cache_file(tmp_path / "whisper" / "two.json")
+    _write_cache_file(tmp_path / "llm/one.json")
+    _write_cache_file(tmp_path / "whisper/two.json")
     _write_cache_file(tmp_path / "root.json")
 
     assert discover_cache_namespaces(tmp_path) == ["llm", "whisper"]
@@ -40,8 +40,8 @@ def test_get_cache_entries_filters_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json", "one")
-    _write_cache_file(tmp_path / "whisper" / "two.json", "two")
+    _write_cache_file(tmp_path / "llm/one.json", "one")
+    _write_cache_file(tmp_path / "whisper/two.json", "two")
 
     entries = get_cache_entries(tmp_path, namespace="llm")
 
@@ -66,7 +66,7 @@ def test_get_cache_entries_invalid_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
+    _write_cache_file(tmp_path / "llm/one.json")
 
     with pytest.raises(ScinoephileError, match="was not found"):
         get_cache_entries(tmp_path, namespace="ocr")
@@ -78,9 +78,9 @@ def test_get_cache_stats(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json", "one")
-    _write_cache_file(tmp_path / "llm" / "two.json", "two")
-    _write_cache_file(tmp_path / "whisper" / "three.json", "three")
+    _write_cache_file(tmp_path / "llm/one.json", "one")
+    _write_cache_file(tmp_path / "llm/two.json", "two")
+    _write_cache_file(tmp_path / "whisper/three.json", "three")
 
     stats_by_namespace = get_cache_stats(tmp_path)
     stats = {
@@ -101,8 +101,8 @@ def test_prune_cache(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    old_path = _write_cache_file(tmp_path / "llm" / "old.json")
-    new_path = _write_cache_file(tmp_path / "llm" / "new.json")
+    old_path = _write_cache_file(tmp_path / "llm/old.json")
+    new_path = _write_cache_file(tmp_path / "llm/new.json")
     old_timestamp = time() - 60 * 60 * 24 * 40
     old_path.touch()
     new_path.touch()
@@ -121,8 +121,8 @@ def test_clear_cache_namespace(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
-    whisper_path = _write_cache_file(tmp_path / "whisper" / "two.json")
+    _write_cache_file(tmp_path / "llm/one.json")
+    whisper_path = _write_cache_file(tmp_path / "whisper/two.json")
 
     deleted_entries = clear_cache(tmp_path, namespace="llm")
 

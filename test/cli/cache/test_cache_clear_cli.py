@@ -19,7 +19,7 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str])
         tmp_path: temporary directory
         capsys: pytest capture fixture
     """
-    cache_path = _write_cache_file(tmp_path / "llm" / "one.json")
+    cache_path = _write_cache_file(tmp_path / "llm/one.json")
 
     run_cli_with_args(
         CacheClearCli, f"--cache-dir {tmp_path} --namespace llm --dry-run"
@@ -35,8 +35,8 @@ def test_cache_clear_namespace_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
-    whisper_path = _write_cache_file(tmp_path / "whisper" / "two.json")
+    _write_cache_file(tmp_path / "llm/one.json")
+    whisper_path = _write_cache_file(tmp_path / "whisper/two.json")
 
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --namespace llm --yes")
 
@@ -50,8 +50,8 @@ def test_cache_clear_all_confirmed(tmp_path: Path):
     Arguments:
         tmp_path: temporary directory
     """
-    _write_cache_file(tmp_path / "llm" / "one.json")
-    _write_cache_file(tmp_path / "whisper" / "two.json")
+    _write_cache_file(tmp_path / "llm/one.json")
+    _write_cache_file(tmp_path / "whisper/two.json")
 
     run_cli_with_args(CacheClearCli, f"--cache-dir {tmp_path} --all --yes")
 

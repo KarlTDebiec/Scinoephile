@@ -122,7 +122,7 @@ def load_default_test_cases(
     Returns:
         loaded test cases
     """
-    test_data_root = package_root.parent / "test" / "data"
+    test_data_root = package_root.parent / "test/data"
     if not test_data_root.is_dir():
         logger.info(f"Test data root {test_data_root} does not exist.")
         return tuple()

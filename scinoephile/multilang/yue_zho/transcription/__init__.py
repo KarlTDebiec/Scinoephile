@@ -182,10 +182,10 @@ def _get_default_test_case_dir_path() -> Path:
         writable runtime test-case root with transcription subdirectories present
     """
     test_case_dir_path = get_runtime_cache_dir_path("test_cases")
-    (
-        test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "deliniation"
-    ).mkdir(parents=True, exist_ok=True)
-    (
-        test_case_dir_path / "multilang" / "yue_zho" / "transcription" / "punctuation"
-    ).mkdir(parents=True, exist_ok=True)
+    (test_case_dir_path / "multilang/yue_zho/transcription/deliniation").mkdir(
+        parents=True, exist_ok=True
+    )
+    (test_case_dir_path / "multilang/yue_zho/transcription/punctuation").mkdir(
+        parents=True, exist_ok=True
+    )
     return test_case_dir_path

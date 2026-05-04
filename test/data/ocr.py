@@ -76,13 +76,13 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         fuse = Series.load(fuse_path)
     else:
         # Lens
-        lens_path = input_dir / "eng_ocr" / "lens.srt"
+        lens_path = input_dir / "eng_ocr/lens.srt"
         lens = Series.load(lens_path)
         lens = get_eng_cleaned(lens, remove_empty=False)
         lens.save(lens_path)
 
         # Tesseract
-        tesseract_path = input_dir / "eng_ocr" / "tesseract.srt"
+        tesseract_path = input_dir / "eng_ocr/tesseract.srt"
         tesseract = Series.load(tesseract_path)
         tesseract = get_eng_cleaned(tesseract, remove_empty=False)
         tesseract.save(tesseract_path)
@@ -91,7 +91,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
-            output_dir / "eng_ocr" / "lang" / "eng" / "ocr_fusion.json",
+            output_dir / "eng_ocr/lang/eng/ocr_fusion.json",
         )
         fuser = get_eng_ocr_fuser(
             auto_verify=True,
@@ -152,7 +152,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
             reviewer_kw = {}
         reviewer_kw.setdefault(
             "test_case_path",
-            output_dir / "eng_ocr" / "lang" / "eng" / "block_review.json",
+            output_dir / "eng_ocr/lang/eng/block_review.json",
         )
         reviewer = get_eng_block_reviewer(
             auto_verify=True,
@@ -208,13 +208,13 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         fuse = Series.load(fuse_path)
     else:
         # Lens
-        lens_path = input_dir / f"{lang_code}_ocr" / "lens.srt"
+        lens_path = input_dir / f"{lang_code}_ocr/lens.srt"
         lens = Series.load(lens_path)
         lens = get_zho_cleaned(lens, remove_empty=False)
         lens.save(lens_path)
 
         # Paddle
-        paddle_path = input_dir / f"{lang_code}_ocr" / "paddle.srt"
+        paddle_path = input_dir / f"{lang_code}_ocr/paddle.srt"
         paddle = Series.load(paddle_path)
         paddle = get_zho_cleaned(paddle, remove_empty=False)
         paddle.save(paddle_path)
@@ -223,7 +223,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
-            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "ocr_fusion.json",
+            output_dir / f"{lang_code}_ocr/lang/zho/ocr_fusion.json",
         )
         fuser = get_zho_ocr_fuser(
             auto_verify=True,
@@ -285,7 +285,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
             reviewer_kw = {}
         reviewer_kw.setdefault(
             "test_case_path",
-            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "block_review.json",
+            output_dir / f"{lang_code}_ocr/lang/zho/block_review.json",
         )
         reviewer = get_zho_reviewer(
             auto_verify=True,
@@ -347,14 +347,14 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         fuse = Series.load(fuse_path)
     else:
         # Lens
-        lens_path = input_dir / f"{lang_code}_ocr" / "lens.srt"
+        lens_path = input_dir / f"{lang_code}_ocr/lens.srt"
         lens = Series.load(lens_path)
         lens = get_zho_cleaned(lens, remove_empty=False)
         # lens = get_zho_converted(lens, OpenCCConfig.s2t)
         lens.save(lens_path)
 
         # PaddleOCR
-        paddle_path = input_dir / f"{lang_code}_ocr" / "paddle.srt"
+        paddle_path = input_dir / f"{lang_code}_ocr/paddle.srt"
         paddle = Series.load(paddle_path)
         paddle = get_zho_cleaned(paddle, remove_empty=False)
         # paddle = get_zho_converted(paddle, OpenCCConfig.s2t)
@@ -364,7 +364,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             fuser_kw = {}
         fuser_kw.setdefault(
             "test_case_path",
-            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "ocr_fusion.json",
+            output_dir / f"{lang_code}_ocr/lang/zho/ocr_fusion.json",
         )
         fuser = get_zho_ocr_fuser(
             prompt_cls=ZhoHantOcrFusionPrompt,
@@ -427,7 +427,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             reviewer_kw = {}
         reviewer_kw.setdefault(
             "test_case_path",
-            output_dir / f"{lang_code}_ocr" / "lang" / "zho" / "block_review.json",
+            output_dir / f"{lang_code}_ocr/lang/zho/block_review.json",
         )
         reviewer = get_zho_reviewer(
             prompt_cls=ZhoHantBlockReviewPrompt,

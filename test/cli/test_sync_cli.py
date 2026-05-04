@@ -55,8 +55,8 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("top_path", "bottom_path", "args", "expected_path"),
     [
         (
-            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
             "",
             "mlamd/output/zho-Hans_eng.srt",
         ),
@@ -96,8 +96,8 @@ def test_sync_cli(
     ("top_path", "bottom_path", "expected_path"),
     [
         (
-            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/eng_fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
             "mlamd/output/zho-Hans_eng.srt",
         ),
     ],
@@ -147,10 +147,11 @@ def test_sync_cli_passes_tuning_options(
         expected_pause_length: expected pause length passed to synchronization
     """
     top_path = (
-        test_data_root / "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"
+        test_data_root
+        / "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
     bottom_path = (
-        test_data_root / "mlamd/output/eng_fuse_clean_validate_review_flatten.srt"
+        test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt"
     )
     top_series = Series()
     bottom_series = Series()
@@ -197,10 +198,11 @@ def test_sync_cli_rejects_invalid_tuning_options(
         expected_error: expected error message
     """
     top_path = (
-        test_data_root / "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt"
+        test_data_root
+        / "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
     bottom_path = (
-        test_data_root / "mlamd/output/eng_fuse_clean_validate_review_flatten.srt"
+        test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
     stderr = StringIO()

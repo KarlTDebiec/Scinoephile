@@ -66,19 +66,19 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mlamd/input/zho-Hans_ocr/lens.srt",
             "mlamd/input/zho-Hans_ocr/paddle.srt",
             "--clean --convert t2s",
-            "mlamd/output/zho-Hans_fuse.srt",
+            "mlamd/output/zho-Hans_ocr/fuse.srt",
         ),
         (
             "mnt/input/zho-Hans_ocr/lens.srt",
             "mnt/input/zho-Hans_ocr/paddle.srt",
             "--clean --convert t2s",
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
         ),
         (
             "t/input/zho-Hans_ocr/lens.srt",
             "t/input/zho-Hans_ocr/paddle.srt",
             "--clean --convert t2s",
-            "t/output/zho-Hans_fuse.srt",
+            "t/output/zho-Hans_ocr/fuse.srt",
         ),
     ],
 )
@@ -120,7 +120,7 @@ def test_zho_fuse_cli(
             "mnt/input/zho-Hans_ocr/lens.srt",
             "mnt/input/zho-Hans_ocr/paddle.srt",
             "--clean --convert t2s",
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
         ),
     ],
 )

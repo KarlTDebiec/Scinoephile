@@ -96,7 +96,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     reference = Series.load(reference_path)
 
     device = get_torch_device()
-    test_case_dir_path = yue_hans_transcribe_dir_path / "multilang" / "yue_zho"
+    test_case_dir_path = yue_hans_transcribe_dir_path / "multilang/yue_zho"
 
     # Ensure test-case directories exist (some constructors validate as "input dirs")
     transcription_test_case_dir_path = test_case_dir_path / "transcription"
@@ -112,7 +112,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     # Stage audio
     if audio_path is None:
-        audio_path = output_dir / "yue-Hans_transcribe" / "audio" / "audio.wav"
+        audio_path = output_dir / "yue-Hans_transcribe/audio/audio.wav"
     audio_dir_path = audio_path.parent
     audio_dir_path.mkdir(parents=True, exist_ok=True)
     expected_audio_path = audio_dir_path / "audio.wav"

@@ -653,14 +653,14 @@ class ValidationManager:
     @staticmethod
     def _char_dims_path(n: int) -> Path:
         """Path to character dimensions csv file."""
-        return package_root / "data" / "ocr" / f"char_dims_{n}.csv"
+        return package_root / "data/ocr" / f"char_dims_{n}.csv"
 
     @staticmethod
     def _char_grp_dims_path() -> Path:
         """Path to character group dimensions csv file."""
-        return package_root / "data" / "ocr" / "char_grp_dims.csv"
+        return package_root / "data/ocr/char_grp_dims.csv"
 
     @staticmethod
     def _char_pair_gaps_path() -> Path:
         """Path to character pair gap csv file."""
-        return package_root / "data" / "ocr" / "char_pair_gaps.csv"
+        return package_root / "data/ocr/char_pair_gaps.csv"
