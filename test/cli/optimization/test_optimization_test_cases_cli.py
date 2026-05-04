@@ -19,11 +19,9 @@ from scinoephile.cli.optimization.optimization_test_cases_cli import (
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.optimization.operations import get_operation_spec
 from scinoephile.optimization.persistence.test_cases import (
     TestCaseSqliteStore,
-)
-from scinoephile.optimization.persistence.test_cases.operations import (
-    get_operation_spec,
 )
 from test.helpers import assert_cli_help, assert_cli_usage
 
@@ -111,7 +109,7 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
         f"--infile {infile_path} --operation {operation} --outfile {db_path}",
     )
     store = TestCaseSqliteStore(db_path)
-    loaded = store.get_test_case(spec.table_name, row["test_case_id"])
+    loaded = store.get_test_case(spec.test_case_table_name, row["test_case_id"])
     assert loaded is not None
     assert loaded.query == {"subtitle_1": "Hello."}
     assert loaded.answer == {"revised_1": "", "note_1": ""}

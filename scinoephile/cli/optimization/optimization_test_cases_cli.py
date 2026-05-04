@@ -14,11 +14,8 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.optimization.operations import get_operation_spec, operation_names
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
-from scinoephile.optimization.persistence.test_cases.operations import (
-    get_operation_spec,
-    operation_names,
-)
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
@@ -131,10 +128,8 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         # Perform operations
         report = sync_test_cases_from_json_paths(
             database_path=outfile,
-            table_name=spec.table_name,
+            operation_spec=spec,
             input_paths=infile_paths,
-            manager_cls=spec.manager_cls,
-            prompt_cls=spec.prompt_cls,
             dry_run=dry_run,
         )
 
@@ -146,7 +141,10 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             for test_case_id in report.insert_ids:
                 tc = None
                 if store is not None:
-                    tc = store.get_test_case(spec.table_name, test_case_id)
+                    tc = store.get_test_case(
+                        spec.test_case_table_name,
+                        test_case_id,
+                    )
                 # The row may not exist yet in dry-run; print an ID-only stub if so.
                 print(
                     {"action": "insert", "test_case_id": test_case_id}

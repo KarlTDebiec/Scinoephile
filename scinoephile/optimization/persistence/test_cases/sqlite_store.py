@@ -10,9 +10,12 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
+from scinoephile.core.llms.serialization import (
+    get_prefixed_payload,
+    get_unprefixed_payload,
+)
 
 from .persisted_test_case import PersistedTestCase
-from .serialization import get_prefixed_payload, get_unprefixed_payload
 
 __all__ = ["TestCaseSqliteStore"]
 

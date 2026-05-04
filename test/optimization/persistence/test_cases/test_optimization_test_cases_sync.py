@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from scinoephile.core.llms import OperationSpec
 from scinoephile.llms.mono_block.manager import MonoBlockManager
 from scinoephile.llms.mono_block.prompt import MonoBlockPrompt
 from scinoephile.optimization.persistence.test_cases.sync import (
@@ -19,7 +20,12 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
     db_path = Path("test_cases.sqlite")
-    table_name = "test_cases__unit__mono_block"
+    operation_spec = OperationSpec(
+        operation="unit-mono-block",
+        test_case_table_name="test_cases__unit__mono_block",
+        manager_cls=MonoBlockManager,
+        prompt_cls=MonoBlockPrompt,
+    )
 
     src1 = Path("src1.json")
     data1_v1 = [
@@ -40,10 +46,8 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
 
     report1 = sync_test_cases_from_json_paths(
         database_path=db_path,
-        table_name=table_name,
+        operation_spec=operation_spec,
         input_paths=[src1],
-        manager_cls=MonoBlockManager,
-        prompt_cls=MonoBlockPrompt,
         dry_run=False,
     )
     assert len(report1.insert_ids) == 2
@@ -63,10 +67,8 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
 
     report2 = sync_test_cases_from_json_paths(
         database_path=db_path,
-        table_name=table_name,
+        operation_spec=operation_spec,
         input_paths=[src1],
-        manager_cls=MonoBlockManager,
-        prompt_cls=MonoBlockPrompt,
         dry_run=False,
     )
     assert report2.delete_ids != ()

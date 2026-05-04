@@ -8,7 +8,7 @@ from collections.abc import Iterable
 from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.llms import Manager, Prompt, TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 
 from .id import get_test_case_id
@@ -25,20 +25,16 @@ __all__ = [
 def sync_test_cases_from_json_paths(
     *,
     database_path: Path,
-    table_name: str,
+    operation_spec: OperationSpec,
     input_paths: Iterable[Path],
-    manager_cls: type[Manager],
-    prompt_cls: type[Prompt],
     dry_run: bool,
 ) -> SyncReport:
     """Synchronize test cases from JSON files into SQLite.
 
     Arguments:
         database_path: SQLite database path
-        table_name: SQLite table name to synchronize
+        operation_spec: operation specification
         input_paths: JSON paths to import/sync
-        manager_cls: manager class used to load/validate test cases
-        prompt_cls: prompt class used to load/validate test cases
         dry_run: if True, report planned changes without writing
     Returns:
         sync report
@@ -51,12 +47,12 @@ def sync_test_cases_from_json_paths(
     for input_path in input_paths_tuple:
         loaded: list[TestCase] = load_test_cases_from_json(
             input_path,
-            manager_cls,
-            prompt_cls=prompt_cls,
+            operation_spec.manager_cls,
+            prompt_cls=operation_spec.prompt_cls,
         )
         persisted = [_persisted_from_test_case(tc) for tc in loaded]
         to_insert, to_delete = store.sync_table_source_path(
-            table_name,
+            operation_spec.test_case_table_name,
             source_path=str(input_path),
             desired=persisted,
             dry_run=dry_run,
@@ -65,7 +61,7 @@ def sync_test_cases_from_json_paths(
         delete_ids.extend(to_delete)
 
     return SyncReport(
-        table_name=table_name,
+        table_name=operation_spec.test_case_table_name,
         input_paths=input_paths_tuple,
         insert_ids=tuple(sorted(set(insert_ids))),
         delete_ids=tuple(sorted(set(delete_ids))),
