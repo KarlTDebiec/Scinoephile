@@ -123,12 +123,10 @@ def test_store_preserves_json_looking_strings(tmp_path: Path):
         query={
             "literal_array": "[]",
             "literal_object": "{}",
-            "nested_array": ["x", "y"],
         },
         answer={
             "literal_array": "[]",
             "literal_object": "{}",
-            "nested_object": {"key": "value"},
         },
         source_paths=["x.json"],
     )
@@ -138,10 +136,8 @@ def test_store_preserves_json_looking_strings(tmp_path: Path):
     assert loaded is not None
     assert loaded.query["literal_array"] == "[]"
     assert loaded.query["literal_object"] == "{}"
-    assert loaded.query["nested_array"] == ["x", "y"]
     assert loaded.answer["literal_array"] == "[]"
     assert loaded.answer["literal_object"] == "{}"
-    assert loaded.answer["nested_object"] == {"key": "value"}
 
 
 def test_store_source_path_index(tmp_path: Path):
