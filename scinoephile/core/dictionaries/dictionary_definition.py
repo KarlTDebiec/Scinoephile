@@ -6,9 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = [
-    "DictionaryDefinition",
-]
+__all__ = ["DictionaryDefinition"]
 
 
 @dataclass(frozen=True)

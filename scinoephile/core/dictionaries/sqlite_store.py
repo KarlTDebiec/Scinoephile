@@ -15,9 +15,7 @@ from .dictionary_definition import DictionaryDefinition
 from .dictionary_entry import DictionaryEntry
 from .dictionary_source import DictionarySource
 
-__all__ = [
-    "DictionarySqliteStore",
-]
+__all__ = ["DictionarySqliteStore"]
 
 logger = getLogger(__name__)
 

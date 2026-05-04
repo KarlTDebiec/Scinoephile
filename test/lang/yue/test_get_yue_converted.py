@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from contextlib import nullcontext
+from contextlib import AbstractContextManager, nullcontext
 
 import pytest
 
@@ -32,7 +32,7 @@ from scinoephile.lang.yue.conversion import get_yue_converted
 def test_get_yue_converted(
     text: str,
     expected: str | None,
-    expectation,
+    expectation: AbstractContextManager[object],
 ):
     """Test get_yue_converted converts or rejects HKSCS characters.
 

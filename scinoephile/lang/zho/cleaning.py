@@ -10,9 +10,7 @@ from copy import deepcopy
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import half_to_full_punc
 
-__all__ = [
-    "get_zho_cleaned",
-]
+__all__ = ["get_zho_cleaned"]
 
 
 def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:

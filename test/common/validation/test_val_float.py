@@ -4,9 +4,12 @@
 
 from __future__ import annotations
 
+from typing import Any, cast
+
 import pytest
-from common.exception import ArgumentConflictError  # ty:ignore[unresolved-import]
-from common.validation import val_float  # ty:ignore[unresolved-import]
+
+from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.validation import val_float
 
 
 def test_val_float_single_valid():
@@ -33,7 +36,7 @@ def test_val_float_single_from_string():
 def test_val_float_single_invalid_type():
     """Test validation with invalid type."""
     with pytest.raises(TypeError):
-        val_float(None)
+        val_float(cast(Any, None))
     with pytest.raises(TypeError):
         val_float("invalid_string")
 

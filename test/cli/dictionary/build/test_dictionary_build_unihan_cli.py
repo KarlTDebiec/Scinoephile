@@ -7,6 +7,7 @@ from __future__ import annotations
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -82,7 +83,7 @@ def test_dictionary_build_unihan_exits_cleanly_on_missing_archive_member(
     stdout = StringIO()
     stderr = StringIO()
 
-    def _mock_build(self, **kwargs) -> Path:
+    def _mock_build(self, **kwargs: Any) -> Path:
         """Simulate a service-level extraction failure.
 
         Arguments:

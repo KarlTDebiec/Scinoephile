@@ -199,24 +199,36 @@ def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
     return overlap
 
 
-def get_synced_series(one: Series, two: Series) -> Series:
+def get_synced_series(
+    one: Series,
+    two: Series,
+    sync_cutoff: float = 0.16,
+    pause_length: int = 3000,
+) -> Series:
     """Compile synchonized subtitles from two series.
 
     Arguments:
         one: First Series
         two: Second Series
+        sync_cutoff: Initial overlap cutoff used to form sync groups
+        pause_length: Pause length in milliseconds used to split subtitle blocks
     Returns:
         Synchonized subtitles
     """
     synced_blocks = []
 
-    block_pairs = get_block_pairs_by_pause(one, two)
+    logger.info(
+        f"Synchronizing series with sync_cutoff={sync_cutoff} "
+        f"and pause_length={pause_length}"
+    )
+
+    block_pairs = get_block_pairs_by_pause(one, two, pause_length=pause_length)
     for one_block, two_block in block_pairs:
         one_str, two_str = get_pair_strings(one_block, two_block)
         logger.debug(f"ONE:\n{one_str}")
         logger.debug(f"TWO:\n{two_str}")
 
-        groups = get_sync_groups(one_block, two_block)
+        groups = get_sync_groups(one_block, two_block, cutoff=sync_cutoff)
         logger.info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
 
         synced_block = get_synced_series_from_groups(one_block, two_block, groups)

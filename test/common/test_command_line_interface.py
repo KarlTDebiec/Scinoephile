@@ -11,10 +11,11 @@ from typing import ClassVar, TypedDict, Unpack
 from unittest.mock import patch
 
 import pytest
-from common.command_line_interface import (  # ty:ignore[unresolved-import]
+
+from scinoephile.common.command_line_interface import (
     CommandLineInterface,
 )
-from common.testing import run_cli_with_args  # ty:ignore[unresolved-import]
+from scinoephile.common.testing import run_cli_with_args
 
 
 class CliTestKwargs(TypedDict, total=False):
@@ -27,6 +28,7 @@ class ArgsCaptureCliKwargs(TypedDict, total=False):
     """Keyword arguments for ArgsCaptureCli _main method."""
 
     name: str
+    """Name argument."""
 
 
 class ArgsCaptureCli(CommandLineInterface):
@@ -183,8 +185,12 @@ def test_argparser_with_subparsers():
 
 def test_log_command_line():
     """Test log_command_line() logs the command line."""
-    with patch("common.command_line_interface.argv", ["script.py", "arg1", "arg2"]):
-        with patch("common.command_line_interface.logger.info") as mock_info:
+    with patch(
+        "scinoephile.common.command_line_interface.argv", ["script.py", "arg1", "arg2"]
+    ):
+        with patch(
+            "scinoephile.common.command_line_interface.logger.info"
+        ) as mock_info:
             TestCli.log_command_line()
             mock_info.assert_called_once()
             call_args = mock_info.call_args[0][0]

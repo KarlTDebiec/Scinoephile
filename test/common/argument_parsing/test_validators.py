@@ -4,10 +4,12 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentTypeError
 from pathlib import Path
 
 import pytest
-from common.argument_parsing import (  # ty:ignore[unresolved-import]
+
+from scinoephile.common.argument_parsing import (
     float_arg,
     input_dir_arg,
     input_file_arg,
@@ -16,7 +18,7 @@ from common.argument_parsing import (  # ty:ignore[unresolved-import]
     output_file_arg,
     str_arg,
 )
-from common.exception import DirectoryNotFoundError  # ty:ignore[unresolved-import]
+from scinoephile.common.exception import DirectoryNotFoundError
 
 
 def test_float_arg():
@@ -25,8 +27,7 @@ def test_float_arg():
 
     assert validator("5.5") == 5.5
 
-    # ValueError is not caught by get_validator, only TypeError
-    with pytest.raises(ValueError):
+    with pytest.raises(ArgumentTypeError, match="less than minimum value"):
         validator("-1.0")
 
 
@@ -36,8 +37,7 @@ def test_int_arg():
 
     assert validator("5") == 5
 
-    # ValueError is not caught by get_validator, only TypeError
-    with pytest.raises(ValueError):
+    with pytest.raises(ArgumentTypeError, match="less than minimum value"):
         validator("-1")
 
 
@@ -48,8 +48,7 @@ def test_str_arg():
     assert validator("option1") == "option1"
     assert validator("OPTION1") == "option1"
 
-    # ValueError is not caught by get_validator, only TypeError
-    with pytest.raises(ValueError):
+    with pytest.raises(ArgumentTypeError, match="is not one of options"):
         validator("invalid")
 
 

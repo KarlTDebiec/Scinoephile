@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from types import SimpleNamespace
-from typing import cast
+from typing import Any, cast
 
 import pytest
 from openai import OpenAI
@@ -19,12 +20,19 @@ class _DummyProvider(OpenAIProviderBase):
     """Concrete provider for exercising base logic."""
 
     model = "dummy-model"
+    """Dummy model name."""
 
 
 class _ToolCallFunction:
     """Tool call function payload fixture."""
 
     def __init__(self, name: str, arguments: str):
+        """Initialize tool call function payload.
+
+        Arguments:
+            name: tool function name
+            arguments: serialized tool arguments
+        """
         self.name = name
         self.arguments = arguments
 
@@ -33,6 +41,13 @@ class _ToolCall:
     """Tool call fixture."""
 
     def __init__(self, tool_id: str, name: str, arguments: str):
+        """Initialize tool call fixture.
+
+        Arguments:
+            tool_id: tool call identifier
+            name: tool function name
+            arguments: serialized tool arguments
+        """
         self.id = tool_id
         self.function = _ToolCallFunction(name=name, arguments=arguments)
 
@@ -46,6 +61,13 @@ class _Message:
         tool_calls: list[_ToolCall] | None = None,
         reasoning_content: str | None = None,
     ):
+        """Initialize message fixture.
+
+        Arguments:
+            content: message content
+            tool_calls: tool calls requested by the model
+            reasoning_content: model reasoning content
+        """
         self.content = content
         self.tool_calls = tool_calls
         self.reasoning_content = reasoning_content
@@ -55,6 +77,11 @@ class _Completion:
     """Completion fixture matching the minimal OpenAI SDK surface."""
 
     def __init__(self, message: _Message):
+        """Initialize completion fixture.
+
+        Arguments:
+            message: completion message
+        """
         self.choices = [SimpleNamespace(message=message)]
 
 
@@ -62,10 +89,25 @@ class _DummyClient:
     """Dummy client that returns tool calls once then a final response."""
 
     def __init__(self):
+        """Initialize dummy client state and completion surface."""
         self.calls: list[dict[str, object]] = []
         self._round = 0
 
-        def create(*, messages, model, **kwargs):
+        def create(
+            *,
+            messages: list[dict[str, object]],
+            model: str,
+            **kwargs: Any,
+        ) -> _Completion:
+            """Create one dummy chat completion.
+
+            Arguments:
+                messages: OpenAI chat messages
+                model: model name
+                **kwargs: additional completion keyword arguments
+            Returns:
+                dummy completion
+            """
             self.calls.append({"messages": messages, "model": model, "kwargs": kwargs})
             if self._round == 0:
                 self._round += 1
@@ -84,7 +126,7 @@ class _DummyClient:
         )
 
 
-def _get_tool_box(handler) -> ToolBox:
+def _get_tool_box(handler: Callable[[dict[str, object]], object]) -> ToolBox:
     """Build a tool box for the shared dummy tool."""
     return ToolBox(
         [
@@ -108,7 +150,14 @@ def test_tool_call_loop_runs_handler_and_returns_final_text():
     client = _DummyClient()
     provider = _DummyProvider(client=cast(OpenAI, client))
 
-    def handler(args):
+    def handler(args: dict[str, object]) -> dict[str, object]:
+        """Return a deterministic tool payload.
+
+        Arguments:
+            args: parsed tool arguments
+        Returns:
+            tool result payload
+        """
         return {"ok": True, "args": args}
 
     result = provider.chat_completion(
@@ -183,7 +232,14 @@ def test_tool_box_run_returns_error_for_invalid_json_arguments():
 def test_tool_box_run_allows_handler_exceptions_to_propagate():
     """Test tool handler failures are not swallowed by the tool box."""
 
-    def handler(args):
+    def handler(args: dict[str, object]):
+        """Raise for parsed tool arguments.
+
+        Arguments:
+            args: parsed tool arguments
+        Raises:
+            RuntimeError: always
+        """
         raise RuntimeError(f"bad args: {args}")
 
     with pytest.raises(RuntimeError, match=r"bad args: \{'x': 1\}"):
