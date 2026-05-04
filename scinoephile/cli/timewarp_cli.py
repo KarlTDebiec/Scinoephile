@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -20,29 +19,6 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
 __all__ = ["TimewarpCli"]
-
-
-class _TimewarpCliKwargs(TypedDict, total=False):
-    """Keyword arguments for TimewarpCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    anchor_infile: Path | str
-    """Subtitle infile used as anchor timing reference or stdin sentinel."""
-    mobile_infile: Path | str
-    """Mobile subtitle infile to be timewarped or stdin sentinel."""
-    one_start_idx: int | None
-    """One-based start index in anchor series."""
-    one_end_idx: int | None
-    """One-based end index in anchor series."""
-    two_start_idx: int | None
-    """One-based start index in moving series."""
-    two_end_idx: int | None
-    """One-based end index in moving series."""
-    outfile: Path | None
-    """Timewarped subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class TimewarpCli(ScinoephileCliBase):
@@ -81,12 +57,14 @@ class TimewarpCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--anchor-infile",
+            dest="anchor_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile used as anchor timing reference or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--mobile-infile",
+            dest="mobile_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='mobile subtitle infile to be timewarped or "-" for stdin',
@@ -123,6 +101,7 @@ class TimewarpCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="timewarped subtitle outfile path (default: stdout)",
         )
@@ -134,22 +113,22 @@ class TimewarpCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_TimewarpCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        anchor_infile_path: Path | str,
+        mobile_infile_path: Path | str,
+        one_start_idx: int | None,
+        one_end_idx: int | None,
+        two_start_idx: int | None,
+        two_end_idx: int | None,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        anchor_infile_path = kwargs.pop("anchor_infile")
-        mobile_infile_path = kwargs.pop("mobile_infile")
-        one_start_idx = kwargs.pop("one_start_idx")
-        one_end_idx = kwargs.pop("one_end_idx")
-        two_start_idx = kwargs.pop("two_start_idx")
-        two_end_idx = kwargs.pop("two_end_idx")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":
             try:
                 raise ArgumentConflictError(

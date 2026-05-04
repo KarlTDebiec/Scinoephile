@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import TypedDict, Unpack
+from typing import Any
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
@@ -14,13 +14,6 @@ from .optimization_list_operations_cli import OptimizationListOperationsCli
 from .optimization_test_cases_cli import OptimizationSyncTestCasesCli
 
 __all__ = ["OptimizationCli"]
-
-
-class _OptimizationCliKwargs(TypedDict, total=False):
-    """Keyword arguments for OptimizationCli."""
-
-    optimization_subcommand: str
-    """Selected optimization subcommand."""
 
 
 class OptimizationCli(ScinoephileCliBase):
@@ -48,7 +41,7 @@ class OptimizationCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="optimization_subcommand",
+            dest="optimization_subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -69,15 +62,14 @@ class OptimizationCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_OptimizationCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("optimization_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        optimization_subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[optimization_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

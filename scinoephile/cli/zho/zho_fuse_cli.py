@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
@@ -34,25 +33,6 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 __all__ = ["ZhoFuseCli"]
-
-
-class _ZhoFuseCliKwargs(TypedDict, total=False):
-    """Keyword arguments for ZhoFuseCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    lens_infile: Path | str
-    """Standard Chinese subtitles OCRed using Google Lens or stdin sentinel."""
-    paddle_infile: Path | str
-    """Standard Chinese subtitles OCRed using PaddleOCR or stdin sentinel."""
-    clean: bool
-    """Whether to clean both OCR inputs before fusion."""
-    convert: OpenCCConfig | None
-    """OpenCC conversion configuration."""
-    outfile: Path | None
-    """Standard Chinese subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class ZhoFuseCli(ScinoephileCliBase):
@@ -100,12 +80,14 @@ class ZhoFuseCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
+            dest="lens_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Standard Chinese subtitles OCRed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
+            dest="paddle_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin',
@@ -126,6 +108,7 @@ class ZhoFuseCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="Standard Chinese subtitle outfile path (default: stdout)",
         )
@@ -146,20 +129,20 @@ class ZhoFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_ZhoFuseCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        lens_infile_path: Path | str,
+        paddle_infile_path: Path | str,
+        clean: bool,
+        convert: OpenCCConfig | None,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        lens_infile_path = kwargs.pop("lens_infile")
-        paddle_infile_path = kwargs.pop("paddle_infile")
-        clean = kwargs.pop("clean")
-        convert = kwargs.pop("convert")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if lens_infile_path == "-" and paddle_infile_path == "-":
             try:
                 raise ArgumentConflictError(

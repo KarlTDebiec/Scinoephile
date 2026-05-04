@@ -5,7 +5,13 @@
 from __future__ import annotations
 
 import sys
-from argparse import Action, ArgumentParser, Namespace, _ArgumentGroup  # noqa: PLC2701
+from argparse import (  # noqa: PLC2701
+    SUPPRESS,
+    Action,
+    ArgumentParser,
+    Namespace,
+    _ArgumentGroup,
+)
 from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
@@ -13,7 +19,6 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
-    "ListOpenCCConfigsAction",
     "add_opencc_convert_argument",
     "merge_conversion_localizations",
     "opencc_config_arg",
@@ -94,7 +99,7 @@ def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en")
     )
 
 
-class ListOpenCCConfigsAction(Action):
+class _ListOpenCCConfigsAction(Action):
     """Print available OpenCC configurations and exit."""
 
     def __init__(self, option_strings: list[str], dest: str, **kwargs: Any):
@@ -158,7 +163,8 @@ def add_opencc_convert_argument(
     )
     additional_help_arg_group.add_argument(
         "--list-opencc-configs",
-        action=ListOpenCCConfigsAction,
+        action=_ListOpenCCConfigsAction,
+        default=SUPPRESS,
         help="list available OpenCC configurations and exit",
     )
 

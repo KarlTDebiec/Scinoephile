@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar, TypedDict, Unpack
+from typing import ClassVar
 from unittest.mock import patch
 
 import pytest
@@ -16,19 +16,6 @@ from scinoephile.common.command_line_interface import (
     CommandLineInterface,
 )
 from scinoephile.common.testing import run_cli_with_args
-
-
-class CliTestKwargs(TypedDict, total=False):
-    """Keyword arguments for TestCli _main method."""
-
-    pass
-
-
-class ArgsCaptureCliKwargs(TypedDict, total=False):
-    """Keyword arguments for ArgsCaptureCli _main method."""
-
-    name: str
-    """Name argument."""
 
 
 class ArgsCaptureCli(CommandLineInterface):
@@ -48,10 +35,13 @@ class ArgsCaptureCli(CommandLineInterface):
         parser.add_argument("--name", type=str, required=True)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[ArgsCaptureCliKwargs]):
+    def _main(
+        cls,
+        *,
+        name: str,
+    ):
         """Execute test CLI."""
-        if (name := kwargs.get("name")) is not None:
-            cls.captured["name"] = name
+        cls.captured["name"] = name
 
 
 class TestCli(CommandLineInterface):
@@ -62,7 +52,7 @@ class TestCli(CommandLineInterface):
     """
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -71,7 +61,7 @@ class TestCliWithoutDoc(CommandLineInterface):
     """Test CLI without detailed documentation."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -80,7 +70,7 @@ class AnotherTestCli(CommandLineInterface):
     """Another test CLI."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -117,7 +107,7 @@ def test_description_no_docstring():
         __doc__ = None
 
         @classmethod
-        def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+        def _main(cls):
             """Execute test CLI."""
             pass
 

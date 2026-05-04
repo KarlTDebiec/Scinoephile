@@ -76,6 +76,18 @@
     * `output arguments`
   * Rename the default optional group to `additional arguments` via
     `optional_arguments_name="additional arguments"`.
+* Define CLI implementation methods with explicit keyword-only `_main`
+  signatures whose parameters match the names produced by `argparse`; do not
+  add per-CLI `TypedDict` classes just to type parsed kwargs.
+* Use `dest=...` when command-line names should parse to Python-facing names
+  such as `infile_path`, `outfile_path`, or `cache_dir_path`.
+* Use argument `type=` validators, including `enum_arg(...)`, so `_main`
+  receives the type it expects instead of reparsing strings.
+  * Cache directory arguments should parse to `cache_dir_path` and include
+    `(default: %(default)s)` in the help text.
+* Base command CLIs that dispatch to subcommands should call the selected
+  subcommand directly, such as
+  `cls.subcommands()[subcommand_name]._main(**kwargs)`.
 * CLI modules should support localization by defining a `localizations` mapping when
   the repository's CLI base supports it, and writing `help`, `description`, and
   argument-group titles using stable English strings that can be translated.

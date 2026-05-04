@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -27,19 +26,6 @@ from scinoephile.optimization.persistence.test_cases.sync import (
 )
 
 __all__ = ["OptimizationSyncTestCasesCli"]
-
-
-class _OptimizationSyncTestCasesCliKwargs(TypedDict, total=False):
-    """Keyword arguments for OptimizationSyncTestCasesCli."""
-
-    infile_paths: list[Path]
-    """Input JSON file paths."""
-    operation: str
-    """Optimization operation name."""
-    dry_run: bool
-    """Whether to preview changes without writing."""
-    outfile: Path
-    """SQLite database output file path."""
 
 
 class OptimizationSyncTestCasesCli(ScinoephileCliBase):
@@ -132,18 +118,15 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         return "sync-test-cases"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_OptimizationSyncTestCasesCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        # Validate arguments
-        infile_paths = kwargs.pop("infile_paths")
-        outfile_path = kwargs.pop("outfile")
-        operation = str(kwargs.pop("operation"))
-        dry_run = bool(kwargs.pop("dry_run"))
-
+    def _main(
+        cls,
+        *,
+        infile_paths: list[Path],
+        operation: str,
+        dry_run: bool,
+        outfile: Path,
+    ):
+        """Execute with provided keyword arguments."""
         # Read inputs
         spec = get_operation_spec(operation)
         table_name = spec.table_name
@@ -152,7 +135,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
 
         # Perform operations
         report = sync_test_cases_from_json_paths(
-            database_path=outfile_path,
+            database_path=outfile,
             table_name=table_name,
             input_paths=infile_paths,
             manager_cls=manager_cls,
@@ -162,7 +145,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
 
         # Write outputs
         if dry_run:
-            store = TestCaseSqliteStore(outfile_path)
+            store = TestCaseSqliteStore(outfile)
             store.create_schema()
             store.ensure_table(table_name)
             for test_case_id in report.insert_ids:
