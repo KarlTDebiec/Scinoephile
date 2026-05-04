@@ -256,130 +256,136 @@ def get_mnt_zho_hant_simplify_block_review_test_cases(
 @pytest.fixture
 def mnt_eng_fuse() -> Series:
     """MNT English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mnt_eng_fuse_clean() -> Series:
     """MNT English fused and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mnt_eng_fuse_clean_validate() -> Series:
     """MNT English fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mnt_eng_fuse_clean_validate_review() -> Series:
     """MNT English fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mnt_eng_fuse_clean_validate_review_flatten() -> Series:
     """MNT English fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mnt_eng_image() -> ImageSeries:
     """MNT English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "eng_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mnt_eng_image_path() -> Path:
     """Path to MNT English image subtitles."""
-    return output_dir / "eng_image"
+    return output_dir / "eng_ocr" / "image"
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse() -> Series:
     """MNT 简体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse_clean() -> Series:
     """MNT 简体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse_clean_validate() -> Series:
     """MNT 简体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse_clean_validate_review() -> Series:
     """MNT 简体中文 fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten() -> Series:
     """MNT 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mnt_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
     """MNT 简体中文 fused/cleaned/validated/reviewed/flattened romanized subtitles."""
     return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_review_flatten_romanize.srt"
+        output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten_romanize.srt"
     )
 
 
 @pytest.fixture
 def mnt_zho_hans_image() -> ImageSeries:
     """MNT 简体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hans_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "zho-Hans_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mnt_zho_hans_image_path() -> Path:
     """Path to MNT 简体中文 image subtitles."""
-    return output_dir / "zho-Hans_image"
+    return output_dir / "zho-Hans_ocr" / "image"
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse() -> Series:
     """MNT 繁体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse_clean() -> Series:
     """MNT 繁体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse_clean_validate() -> Series:
     """MNT 繁体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse_clean_validate_review() -> Series:
     """MNT 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten() -> Series:
     """MNT 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
     """MNT 繁体中文 fused/cleaned/validated/reviewed/flattened/simplified subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
@@ -387,20 +393,22 @@ def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 def mnt_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """MNT 繁体中文 simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 
 @pytest.fixture
 def mnt_zho_hant_image() -> ImageSeries:
     """MNT 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "zho-Hant_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mnt_zho_hant_image_path() -> Path:
     """Path to MNT 繁体中文 image subtitles."""
-    return output_dir / "zho-Hant_image"
+    return output_dir / "zho-Hant_ocr" / "image"
 
 
 @pytest.fixture

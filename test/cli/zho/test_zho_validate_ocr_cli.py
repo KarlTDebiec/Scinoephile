@@ -54,7 +54,7 @@ def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     ("input_path",),
     [
-        ("mlamd/output/zho-Hans_image",),
+        ("mlamd/output/zho-Hans_ocr/image",),
         ("mlamd/input/zho-Hans_ocr/source.sup",),
     ],
 )

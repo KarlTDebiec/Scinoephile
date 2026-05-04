@@ -437,55 +437,57 @@ def get_mlamd_zho_hant_simplify_block_review_test_cases(
 @pytest.fixture
 def mlamd_eng_fuse() -> Series:
     """MLAMD English fused subtitles."""
-    return Series.load(output_dir / "eng_fuse.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mlamd_eng_fuse_clean() -> Series:
     """MLAMD English fused and cleaned subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mlamd_eng_fuse_clean_validate() -> Series:
     """MLAMD English fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mlamd_eng_fuse_clean_validate_review() -> Series:
     """MLAMD English fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "eng_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mlamd_eng_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD English fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "eng_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "eng_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mlamd_eng_image() -> ImageSeries:
     """MLAMD English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "eng_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mlamd_eng_image_path() -> Path:
     """Path to MLAMD English image subtitles."""
-    return output_dir / "eng_image"
+    return output_dir / "eng_ocr" / "image"
 
 
 @pytest.fixture
 def mlamd_yue_hans_audio() -> AudioSeries:
     """MLAMD 简体粤文 audio subtitles."""
-    return AudioSeries.load(output_dir / "yue-Hans_audio")
+    return AudioSeries.load(output_dir / "yue-Hans_transcribe" / "audio")
 
 
 @pytest.fixture
 def mlamd_yue_hans_audio_path() -> Path:
     """Path to MLAMD 简体粤文 audio subtitles."""
-    return output_dir / "yue-Hans_audio"
+    return output_dir / "yue-Hans_transcribe" / "audio"
 
 
 @pytest.fixture
@@ -497,26 +499,30 @@ def mlamd_yue_hans_eng() -> Series:
 @pytest.fixture
 def mlamd_yue_hans_transcribe() -> Series:
     """MLAMD 简体粤文 transcribed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe.srt")
+    return Series.load(output_dir / "yue-Hans_transcribe" / "transcribe.srt")
 
 
 @pytest.fixture
 def mlamd_yue_hans_transcribe_review() -> Series:
     """MLAMD 简体粤文 transcribed and line reviewed subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_review.srt")
+    return Series.load(output_dir / "yue-Hans_transcribe" / "transcribe_review.srt")
 
 
 @pytest.fixture
 def mlamd_yue_hans_transcribe_review_translate() -> Series:
     """MLAMD 简体粤文 transcribed, line reviewed, and translated subtitles."""
-    return Series.load(output_dir / "yue-Hans_transcribe_review_translate.srt")
+    return Series.load(
+        output_dir / "yue-Hans_transcribe" / "transcribe_review_translate.srt"
+    )
 
 
 @pytest.fixture
 def mlamd_yue_hans_transcribe_review_translate_block_review() -> Series:
     """MLAMD 简体粤文 transcribed, line reviewed, translated, and block reviewed subtitles."""
     return Series.load(
-        output_dir / "yue-Hans_transcribe_review_translate_block_review.srt"
+        output_dir
+        / "yue-Hans_transcribe"
+        / "transcribe_review_translate_block_review.srt"
     )
 
 
@@ -529,88 +535,92 @@ def mlamd_zho_hans_eng() -> Series:
 @pytest.fixture
 def mlamd_zho_hans_fuse() -> Series:
     """MLAMD 简体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hans_fuse_clean() -> Series:
     """MLAMD 简体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hans_fuse_clean_validate() -> Series:
     """MLAMD 简体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hans_fuse_clean_validate_review() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hans_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD 简体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hans_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mlamd_zho_hans_fuse_clean_validate_review_flatten_romanize() -> Series:
     """MLAMD 简体中文 fused/cleaned/validated/reviewed/flattened romanized subs."""
     return Series.load(
-        output_dir / "zho-Hans_fuse_clean_validate_review_flatten_romanize.srt"
+        output_dir / "zho-Hans_ocr" / "fuse_clean_validate_review_flatten_romanize.srt"
     )
 
 
 @pytest.fixture
 def mlamd_zho_hans_image() -> ImageSeries:
     """MLAMD 简体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hans_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "zho-Hans_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mlamd_zho_hans_image_path() -> Path:
     """Path to MLAMD 简体中文 image subtitles."""
-    return output_dir / "zho-Hans_image"
+    return output_dir / "zho-Hans_ocr" / "image"
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse() -> Series:
     """MLAMD 繁体中文 fused subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse_clean() -> Series:
     """MLAMD 繁体中文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse_clean_validate() -> Series:
     """MLAMD 繁体中文 fused, cleaned, and validated subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse_clean_validate_review() -> Series:
     """MLAMD 繁体中文 fused, cleaned, validated, and reviewed subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review.srt")
+    return Series.load(output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review.srt")
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse_clean_validate_review_flatten() -> Series:
     """MLAMD 繁体中文 fused, cleaned, validated, reviewed, and flattened subtitles."""
-    return Series.load(output_dir / "zho-Hant_fuse_clean_validate_review_flatten.srt")
+    return Series.load(
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten.srt"
+    )
 
 
 @pytest.fixture
 def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
     """MLAMD 繁体中文 simplified fused/cleaned/validated/reviewed/flattened subs."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify.srt"
+        output_dir / "zho-Hant_ocr" / "fuse_clean_validate_review_flatten_simplify.srt"
     )
 
 
@@ -618,20 +628,22 @@ def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify() -> Series:
 def mlamd_zho_hant_fuse_clean_validate_review_flatten_simplify_review() -> Series:
     """MLAMD 繁体中文 simplified/reviewed fused/cleaned subtitles."""
     return Series.load(
-        output_dir / "zho-Hant_fuse_clean_validate_review_flatten_simplify_review.srt"
+        output_dir
+        / "zho-Hant_ocr"
+        / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
 
 
 @pytest.fixture
 def mlamd_zho_hant_image() -> ImageSeries:
     """MLAMD 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_image", encoding="utf-8")
+    return ImageSeries.load(output_dir / "zho-Hant_ocr" / "image", encoding="utf-8")
 
 
 @pytest.fixture
 def mlamd_zho_hant_image_path() -> Path:
     """Path to MLAMD 繁体中文 image subtitles."""
-    return output_dir / "zho-Hant_image"
+    return output_dir / "zho-Hant_ocr" / "image"
 
 
 @pytest.fixture

@@ -57,19 +57,19 @@ def test_eng_process_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/eng_fuse.srt",
+            "mnt/output/eng_ocr/fuse.srt",
             "--clean",
-            "mnt/output/eng_fuse_clean.srt",
+            "mnt/output/eng_ocr/fuse_clean.srt",
         ),
         (
-            "mnt/output/eng_fuse_clean_validate_review.srt",
+            "mnt/output/eng_ocr/fuse_clean_validate_review.srt",
             "--flatten",
-            "mnt/output/eng_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
         ),
         (
-            "mnt/output/eng_fuse_clean_validate.srt",
+            "mnt/output/eng_ocr/fuse_clean_validate.srt",
             "--proofread",
-            "mnt/output/eng_fuse_clean_validate_review.srt",
+            "mnt/output/eng_ocr/fuse_clean_validate_review.srt",
         ),
     ],
 )
@@ -103,9 +103,9 @@ def test_eng_process_cli(
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/eng_fuse.srt",
+            "mnt/output/eng_ocr/fuse.srt",
             "--clean",
-            "mnt/output/eng_fuse_clean.srt",
+            "mnt/output/eng_ocr/fuse_clean.srt",
         ),
     ],
 )
@@ -135,7 +135,7 @@ def test_eng_process_cli_pipe(input_path: str, args: str, expected_path: str):
 
 def test_eng_process_cli_offsets_timing():
     """Test English processing CLI can offset subtitle timings."""
-    full_input_path = test_data_root / "mnt/output/eng_fuse.srt"
+    full_input_path = test_data_root / "mnt/output/eng_ocr/fuse.srt"
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
