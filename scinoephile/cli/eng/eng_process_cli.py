@@ -11,6 +11,7 @@ from typing import TypedDict, Unpack
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
 )
 from scinoephile.common.exception import ArgumentConflictError
@@ -37,6 +38,8 @@ class _EngProcessCliKwargs(TypedDict, total=False):
     """Whether to flatten multi-line subtitles."""
     proofread: bool
     """Whether to proofread subtitles."""
+    offset: int
+    """Timing offset in milliseconds."""
     overwrite: bool
     """Whether to overwrite an existing outfile."""
 
@@ -54,6 +57,9 @@ class EngProcessCli(ScinoephileCliBase):
             ),
             "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
             "modify English subtitles": "修改英文字幕",
+            "shift subtitle timings by this many milliseconds": (
+                "按指定毫秒数平移字幕时间"
+            ),
             "proofread subtitles using LLM": "使用大语言模型校对字幕",
         },
         "zh-hant": {
@@ -65,6 +71,9 @@ class EngProcessCli(ScinoephileCliBase):
             ),
             "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
             "modify English subtitles": "修改英文字幕",
+            "shift subtitle timings by this many milliseconds": (
+                "依指定毫秒數平移字幕時間"
+            ),
             "proofread subtitles using LLM": "使用大型語言模型校對字幕",
         },
     }
@@ -111,6 +120,12 @@ class EngProcessCli(ScinoephileCliBase):
             action="store_true",
             help="proofread subtitles using LLM",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--offset",
+            default=0,
+            type=int_arg(),
+            help="shift subtitle timings by this many milliseconds",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -150,9 +165,10 @@ class EngProcessCli(ScinoephileCliBase):
         clean = kwargs.pop("clean")
         flatten = kwargs.pop("flatten")
         proofread = kwargs.pop("proofread")
+        offset = kwargs.pop("offset")
         overwrite = kwargs.pop("overwrite")
 
-        if not (clean or flatten or proofread):
+        if not (clean or flatten or proofread or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
@@ -172,6 +188,8 @@ class EngProcessCli(ScinoephileCliBase):
             series = get_eng_flattened(series)
         if proofread:
             series = get_eng_block_reviewed(series)
+        if offset:
+            series.shift(ms=offset)
 
         # Write output
         write_series(
