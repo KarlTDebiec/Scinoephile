@@ -7,14 +7,13 @@ from __future__ import annotations
 from collections.abc import Iterable
 from pathlib import Path
 
-from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
-
-from .id import get_test_case_id
-from .persisted_test_case import PersistedTestCase
-from .sqlite_store import TestCaseSqliteStore
-from .sync_report import SyncReport
+from scinoephile.core.optimization import (
+    PersistedTestCase,
+    SyncReport,
+    TestCaseSqliteStore,
+)
 
 __all__ = [
     "SyncReport",
@@ -50,7 +49,7 @@ def sync_test_cases_from_json_paths(
             operation_spec.manager_cls,
             prompt_cls=operation_spec.prompt_cls,
         )
-        persisted = [_persisted_from_test_case(tc) for tc in loaded]
+        persisted = [PersistedTestCase.from_test_case(tc) for tc in loaded]
         to_insert, to_delete = store.sync_table_source_path(
             operation_spec.test_case_table_name,
             source_path=str(input_path),
@@ -65,28 +64,4 @@ def sync_test_cases_from_json_paths(
         input_paths=input_paths_tuple,
         insert_ids=tuple(sorted(set(insert_ids))),
         delete_ids=tuple(sorted(set(delete_ids))),
-    )
-
-
-def _persisted_from_test_case(test_case: TestCase) -> PersistedTestCase:
-    """Convert a loaded test case to its persisted representation.
-
-    Arguments:
-        test_case: loaded test case
-    Returns:
-        persisted test case
-    """
-    query_dict = test_case.query.model_dump()
-    if test_case.answer is None:
-        raise ScinoephileError("Optimization test cases must include an answer.")
-    answer_dict = test_case.answer.model_dump()
-    test_case_id = get_test_case_id(test_case.query, test_case.answer)
-    return PersistedTestCase(
-        test_case_id=test_case_id,
-        difficulty=int(test_case.difficulty),
-        prompt=bool(test_case.prompt),
-        verified=bool(test_case.verified),
-        query=query_dict,
-        answer=answer_dict,
-        source_paths=[],
     )

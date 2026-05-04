@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.llms import OperationSpec
-from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
+from scinoephile.core.optimization import TestCaseSqliteStore
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
@@ -143,19 +143,19 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                         operation.test_case_table_name,
                         test_case_id,
                     )
-                # The row may not exist yet in dry-run; print an ID-only stub if so.
-                print(
-                    {"action": "insert", "test_case_id": test_case_id}
-                    if tc is None
-                    else {
-                        "action": "insert",
-                        "test_case_id": tc.test_case_id,
-                        "difficulty": tc.difficulty,
-                        "prompt": tc.prompt,
-                        "verified": tc.verified,
-                        "query": tc.query,
-                        "answer": tc.answer,
-                    }
-                )
+                if tc is None:
+                    print({"action": "insert", "test_case_id": test_case_id})
+                else:
+                    print(
+                        {
+                            "action": "insert",
+                            "test_case_id": tc.test_case_id,
+                            "difficulty": tc.difficulty,
+                            "prompt": tc.prompt,
+                            "verified": tc.verified,
+                            "query": tc.query,
+                            "answer": tc.answer,
+                        }
+                    )
             for test_case_id in report.delete_ids:
                 print({"action": "delete", "test_case_id": test_case_id})

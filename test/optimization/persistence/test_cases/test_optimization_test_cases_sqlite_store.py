@@ -7,11 +7,9 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
-from scinoephile.optimization.persistence.test_cases import (
-    TestCaseSqliteStore,
-)
-from scinoephile.optimization.persistence.test_cases.persisted_test_case import (
+from scinoephile.core.optimization import (
     PersistedTestCase,
+    TestCaseSqliteStore,
 )
 
 

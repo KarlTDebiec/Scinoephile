@@ -1,25 +1,90 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""SQLite schema and persistence for LLM test cases."""
+"""Core optimization persistence utilities."""
 
 from __future__ import annotations
 
+import hashlib
+import json
 import sqlite3
 from collections.abc import Iterable
+from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core.optimization.serialization import (
-    get_prefixed_payload,
-    get_unprefixed_payload,
-)
 
-from .persisted_test_case import PersistedTestCase
+from .exceptions import ScinoephileError
+from .llms import Answer, Query, TestCase
 
-__all__ = ["TestCaseSqliteStore"]
+__all__ = [
+    "PersistedTestCase",
+    "SyncReport",
+    "TestCaseSqliteStore",
+    "get_prefixed_payload",
+    "get_test_case_id",
+    "get_unprefixed_payload",
+]
 
 logger = getLogger(__name__)
+
+
+@dataclass(frozen=True, slots=True)
+class PersistedTestCase:
+    """A persisted test case row loaded from SQLite."""
+
+    test_case_id: str
+    """Deterministic identifier derived from query+answer JSON."""
+    difficulty: int
+    """Difficulty level for filtering and prioritization."""
+    prompt: bool
+    """Whether the test case is included in the prompt."""
+    verified: bool
+    """Whether the test case answer has been verified."""
+    query: dict
+    """Query JSON."""
+    answer: dict
+    """Answer JSON."""
+    source_paths: list[str]
+    """Source JSON paths that contributed this test case."""
+
+    @staticmethod
+    def from_test_case(test_case: TestCase) -> PersistedTestCase:
+        """Convert a loaded test case to its persisted representation.
+
+        Arguments:
+            test_case: loaded test case
+        Returns:
+            persisted test case
+        """
+        query_dict = test_case.query.model_dump()
+        if test_case.answer is None:
+            raise ScinoephileError("Optimization test cases must include an answer.")
+        answer_dict = test_case.answer.model_dump()
+        test_case_id = get_test_case_id(test_case.query, test_case.answer)
+        return PersistedTestCase(
+            test_case_id=test_case_id,
+            difficulty=int(test_case.difficulty),
+            prompt=bool(test_case.prompt),
+            verified=bool(test_case.verified),
+            query=query_dict,
+            answer=answer_dict,
+            source_paths=[],
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class SyncReport:
+    """Summary of a sync operation."""
+
+    table_name: str
+    """SQLite table name that was synchronized."""
+    input_paths: tuple[Path, ...]
+    """Input JSON paths included in the sync run."""
+    insert_ids: tuple[str, ...]
+    """Test case identifiers that would be inserted/updated."""
+    delete_ids: tuple[str, ...]
+    """Test case identifiers whose link to an input path would be removed."""
 
 
 class TestCaseSqliteStore:
@@ -130,16 +195,6 @@ class TestCaseSqliteStore:
             ).fetchall()
             return [self._row_to_test_case(connection, table_name, r) for r in rows]
 
-    def list_tables(self) -> list[str]:
-        """List tables currently present in the database."""
-        if not self.database_path.exists():
-            return []
-        with sqlite3.connect(self.database_path) as connection:
-            rows = connection.execute(
-                "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
-            ).fetchall()
-        return [str(row[0]) for row in rows]
-
     def list_source_paths(self, table_name: str) -> list[str]:
         """List source paths recorded for a table.
 
@@ -159,6 +214,94 @@ class TestCaseSqliteStore:
                 (table_name,),
             ).fetchall()
         return [str(row[0]) for row in rows]
+
+    def list_tables(self) -> list[str]:
+        """List tables currently present in the database.
+
+        Returns:
+            ordered table names
+        """
+        if not self.database_path.exists():
+            return []
+        with sqlite3.connect(self.database_path) as connection:
+            rows = connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+            ).fetchall()
+        return [str(row[0]) for row in rows]
+
+    def sync_table_source_path(
+        self,
+        table_name: str,
+        *,
+        source_path: str,
+        desired: Iterable[PersistedTestCase],
+        dry_run: bool,
+    ) -> tuple[list[PersistedTestCase], list[str]]:
+        """Synchronize a single source path group for a table.
+
+        This enforces that the set of test cases associated with `source_path` in SQLite
+        matches `desired`, by inserting missing rows/links and removing obsolete links.
+        Rows that become orphaned are deleted.
+
+        Arguments:
+            table_name: SQLite table name
+            source_path: source JSON path group to synchronize
+            desired: desired test cases from this JSON file
+            dry_run: if True, do not write; only compute planned changes
+        Returns:
+            to-insert rows and to-delete test case IDs
+        """
+        desired_list = list(desired)
+        desired_by_id = {tc.test_case_id: tc for tc in desired_list}
+        desired_ids = set(desired_by_id)
+
+        if not dry_run:
+            self.create_schema()
+            self.ensure_table(table_name)
+        existing_ids = self._get_existing_source_test_case_ids(table_name, source_path)
+
+        to_insert_ids = sorted(desired_ids - existing_ids)
+        to_delete_ids = sorted(existing_ids - desired_ids)
+
+        to_insert = [desired_by_id[i] for i in to_insert_ids]
+        if dry_run:
+            return (to_insert, to_delete_ids)
+
+        self.upsert_table_test_cases(table_name, desired_list, source_path=source_path)
+
+        if to_delete_ids:
+            with sqlite3.connect(self.database_path) as connection:
+                cursor = connection.cursor()
+                cursor.executemany(
+                    """DELETE FROM test_case_sources
+                       WHERE table_name = ?
+                         AND source_path = ?
+                         AND test_case_id = ?""",
+                    [
+                        (table_name, source_path, test_case_id)
+                        for test_case_id in to_delete_ids
+                    ],
+                )
+
+                for test_case_id in to_delete_ids:
+                    row = cursor.execute(
+                        """SELECT source_path
+                           FROM test_case_sources
+                           WHERE table_name = ?
+                             AND test_case_id = ?
+                           ORDER BY source_path""",
+                        (table_name, test_case_id),
+                    ).fetchall()
+                    paths = [str(r[0]) for r in row]
+                    if not paths:
+                        cursor.execute(
+                            f"DELETE FROM {_quote_identifier(table_name)} "
+                            "WHERE test_case_id = ?",
+                            (test_case_id,),
+                        )
+                connection.commit()
+
+        return (to_insert, to_delete_ids)
 
     def upsert_table_test_cases(
         self,
@@ -230,86 +373,6 @@ class TestCaseSqliteStore:
             connection.commit()
         logger.info(f"Upserted {touched} rows into {table_name}")
         return touched
-
-    def sync_table_source_path(
-        self,
-        table_name: str,
-        *,
-        source_path: str,
-        desired: Iterable[PersistedTestCase],
-        dry_run: bool,
-    ) -> tuple[list[PersistedTestCase], list[str]]:
-        """Synchronize a single source path group for a table.
-
-        This enforces that the set of test cases associated with `source_path` in SQLite
-        matches `desired`, by inserting missing rows/links and removing obsolete links.
-        Rows that become orphaned are deleted.
-
-        Arguments:
-            table_name: SQLite table name
-            source_path: source JSON path group to synchronize
-            desired: desired test cases from this JSON file
-            dry_run: if True, do not write; only compute planned changes
-        Returns:
-            (to_insert, to_delete_ids) where:
-              - to_insert are rows that would be inserted/updated to add this source
-                link
-              - to_delete_ids are test_case_id values whose link to this source would be
-                removed
-        """
-        desired_list = list(desired)
-        desired_by_id = {tc.test_case_id: tc for tc in desired_list}
-        desired_ids = set(desired_by_id)
-
-        if not dry_run:
-            self.create_schema()
-            self.ensure_table(table_name)
-        existing_ids = self._get_existing_source_test_case_ids(table_name, source_path)
-
-        to_insert_ids = sorted(desired_ids - existing_ids)
-        to_delete_ids = sorted(existing_ids - desired_ids)
-
-        to_insert = [desired_by_id[i] for i in to_insert_ids]
-        if dry_run:
-            return (to_insert, to_delete_ids)
-
-        # Apply inserts/updates (also ensures source link present)
-        self.upsert_table_test_cases(table_name, desired_list, source_path=source_path)
-
-        # Apply deletions: remove source link, then prune orphaned rows.
-        if to_delete_ids:
-            with sqlite3.connect(self.database_path) as connection:
-                cursor = connection.cursor()
-                cursor.executemany(
-                    """DELETE FROM test_case_sources
-                       WHERE table_name = ?
-                         AND source_path = ?
-                         AND test_case_id = ?""",
-                    [
-                        (table_name, source_path, test_case_id)
-                        for test_case_id in to_delete_ids
-                    ],
-                )
-
-                for test_case_id in to_delete_ids:
-                    row = cursor.execute(
-                        """SELECT source_path
-                           FROM test_case_sources
-                           WHERE table_name = ?
-                             AND test_case_id = ?
-                           ORDER BY source_path""",
-                        (table_name, test_case_id),
-                    ).fetchall()
-                    paths = [str(r[0]) for r in row]
-                    if not paths:
-                        cursor.execute(
-                            f"DELETE FROM {_quote_identifier(table_name)} "
-                            "WHERE test_case_id = ?",
-                            (test_case_id,),
-                        )
-                connection.commit()
-
-        return (to_insert, to_delete_ids)
 
     def _get_existing_source_test_case_ids(
         self,
@@ -488,6 +551,79 @@ class TestCaseSqliteStore:
         )
 
 
+def get_prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
+    """Get a flat payload using table-column prefixes.
+
+    Arguments:
+        prefix: column prefix
+        payload: payload to flatten
+    Returns:
+        flattened payload
+    """
+    return {
+        f"{prefix}__{key}": _serialize_value(value)
+        for key, value in sorted(payload.items())
+    }
+
+
+def get_test_case_id(query: Query, answer: Answer) -> str:
+    """Compute canonical identifier for a test case.
+
+    Arguments:
+        query: query payload
+        answer: answer payload
+    Returns:
+        deterministic hexadecimal identifier
+    """
+    query_json = json.dumps(
+        query.model_dump(),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    answer_json = json.dumps(
+        answer.model_dump(),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    digest = hashlib.sha256(f"{query_json}\n{answer_json}".encode()).hexdigest()
+    return digest
+
+
+def get_unprefixed_payload(row: sqlite3.Row, prefix: str) -> dict:
+    """Get a nested payload from row columns matching a prefix.
+
+    Arguments:
+        row: SQLite row
+        prefix: column prefix
+    Returns:
+        nested payload
+    """
+    column_prefix = f"{prefix}__"
+    return {
+        key.removeprefix(column_prefix): _deserialize_value(row[key])
+        for key in row.keys()
+        if key.startswith(column_prefix) and row[key] is not None
+    }
+
+
+def _deserialize_value(value: object) -> object:
+    """Deserialize a value loaded from SQLite.
+
+    Arguments:
+        value: value loaded from SQLite
+    Returns:
+        deserialized value
+    """
+    if isinstance(value, str) and value.startswith(("[", "{")):
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return value
+    return value
+
+
 def _quote_identifier(identifier: str) -> str:
     """Quote a SQLite identifier.
 
@@ -497,3 +633,16 @@ def _quote_identifier(identifier: str) -> str:
         quoted identifier
     """
     return '"' + identifier.replace('"', '""') + '"'
+
+
+def _serialize_value(value: object) -> object:
+    """Serialize a value for storage in SQLite.
+
+    Arguments:
+        value: value to serialize
+    Returns:
+        serialized value
+    """
+    if isinstance(value, dict | list):
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    return value
