@@ -1,6 +1,6 @@
 ---
 name: audit-style
-description: Audit Python files in scinoephile for compliance with docs/STYLE.md and write conservative markdown notes, typically to local/style_nodes.md. Use when asked to review repository style compliance without automatically modifying source files.
+description: Audit Python files in a repository for compliance with docs/STYLE.md and write conservative markdown notes, typically to local/style_notes.md. Use when asked to review repository style compliance without automatically modifying source files.
 ---
 
 # Audit `docs/STYLE.md` Compliance
@@ -11,7 +11,7 @@ Use this workflow to review Python source files against `docs/STYLE.md` and writ
 
 1. Read `docs/STYLE.md`.
 2. Run the helper script:
-   - `UV_CACHE_DIR=/tmp/uv-cache uv run python skills/audit-style/scripts/audit_style.py --target scinoephile --output local/style_nodes.md`
+   - `UV_CACHE_DIR=/tmp/uv-cache uv run python skills/audit-style/scripts/audit_style.py --target . --output local/style_notes.md`
 3. Review the generated markdown report.
 4. If asked to fix issues, edit source files separately and validate only changed Python files:
    - `UV_CACHE_DIR=/tmp/uv-cache uv run ruff format <changed_files>`

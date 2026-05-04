@@ -44,7 +44,7 @@ __all__ = [
 
 
 def process_eng_ocr(  # noqa: PLR0912, PLR0915
-    title_root: Path,
+    title_root_path: Path,
     sup_path: Path | None = None,
     *,
     fuser_kw: Any | None = None,
@@ -56,7 +56,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     """Process English OCR subtitles into validated output.
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
@@ -66,8 +66,8 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     Returns:
         processed series
     """
-    input_dir = title_root / "input"
-    output_dir = title_root / "output"
+    input_dir = title_root_path / "input"
+    output_dir = title_root_path / "output"
     ocr_output_dir = output_dir / "eng_ocr"
 
     # Fuse
@@ -173,7 +173,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
 
 
 def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
-    title_root: Path,
+    title_root_path: Path,
     sup_path: Path | None = None,
     *,
     lang: str = "zho",
@@ -186,7 +186,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     """Process 简体中文 OCR subtitles into validated output.
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         sup_path: subtitle image input path
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
@@ -197,8 +197,8 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     Returns:
         processed series
     """
-    input_dir = title_root / "input"
-    output_dir = title_root / "output"
+    input_dir = title_root_path / "input"
+    output_dir = title_root_path / "output"
     lang_code = f"{lang}-Hans"
     ocr_output_dir = output_dir / f"{lang_code}_ocr"
 
@@ -312,7 +312,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
 
 
 def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
-    title_root: Path,
+    title_root_path: Path,
     sup_path: Path | None = None,
     *,
     lang: str = "zho",
@@ -325,7 +325,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     """Process 繁体中文 OCR subtitles into validated output.
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         sup_path: subtitle image input path
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
@@ -336,8 +336,8 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     Returns:
         processed series
     """
-    input_dir = title_root / "input"
-    output_dir = title_root / "output"
+    input_dir = title_root_path / "input"
+    output_dir = title_root_path / "output"
     lang_code = f"{lang}-Hant"
     ocr_output_dir = output_dir / f"{lang_code}_ocr"
 

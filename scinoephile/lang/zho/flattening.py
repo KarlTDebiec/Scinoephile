@@ -9,9 +9,7 @@ from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
 
-__all__ = [
-    "get_zho_flattened",
-]
+__all__ = ["get_zho_flattened"]
 
 
 def get_zho_flattened(series: Series) -> Series:

@@ -8,7 +8,7 @@ from datetime import timedelta
 
 import pytest
 
-from scinoephile.core.cache import parse_duration
+from scinoephile.core.cache.duration import parse_duration
 
 
 @pytest.mark.parametrize(

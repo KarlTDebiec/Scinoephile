@@ -3,5 +3,3 @@
 """Dictionary services, parsers, and lookup workflows."""
 
 from __future__ import annotations
-
-__all__: list[str] = []

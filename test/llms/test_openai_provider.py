@@ -5,7 +5,9 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from typing import cast
+from typing import Any, cast
+
+import pytest
 
 from scinoephile.core.llms import openai_provider_base
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
@@ -14,7 +16,7 @@ from scinoephile.llms.providers.openai_provider import OpenAIProvider
 class _DummyOpenAI:
     """Dummy OpenAI client capturing constructor kwargs."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         """Initialize and capture kwargs."""
         self.kwargs = kwargs
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=None))
@@ -23,7 +25,9 @@ class _DummyOpenAI:
         )
 
 
-def test_openai_constructs_client_with_explicit_api_key_and_base_url(monkeypatch):
+def test_openai_constructs_client_with_explicit_api_key_and_base_url(
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test OpenAIProvider forwards explicit client overrides to OpenAI."""
     monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
 
@@ -38,7 +42,9 @@ def test_openai_constructs_client_with_explicit_api_key_and_base_url(monkeypatch
     assert client.kwargs["base_url"] == "https://example.invalid/v1"
 
 
-def test_openai_constructs_client_without_overrides(monkeypatch):
+def test_openai_constructs_client_without_overrides(
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test OpenAIProvider uses SDK defaults when no overrides are supplied."""
     monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
 

@@ -5,7 +5,9 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from typing import cast
+from typing import Any, cast
+
+import pytest
 
 from scinoephile.core.llms import openai_provider_base
 from scinoephile.core.llms.tool import Tool
@@ -16,7 +18,7 @@ from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 class _DummyOpenAI:
     """Dummy OpenAI client capturing constructor kwargs."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any):
         """Initialize and capture kwargs."""
         self.kwargs = kwargs
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=None))
@@ -41,7 +43,9 @@ def _get_tool_box() -> ToolBox:
     )
 
 
-def test_deepseek_constructs_client_with_base_url_and_env_api_key(monkeypatch):
+def test_deepseek_constructs_client_with_base_url_and_env_api_key(
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "dummy")
 
@@ -55,7 +59,9 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(monkeypatch):
     assert client.kwargs["api_key"] == "dummy"
 
 
-def test_deepseek_api_key_override_wins_over_env(monkeypatch):
+def test_deepseek_api_key_override_wins_over_env(
+    monkeypatch: pytest.MonkeyPatch,
+):
     """Test explicit api_key overrides the environment variable."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")
 

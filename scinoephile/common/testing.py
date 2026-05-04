@@ -13,9 +13,7 @@ from unittest.mock import patch
 
 from .command_line_interface import CommandLineInterface
 
-__all__ = [
-    "run_cli_with_args",
-]
+__all__ = ["run_cli_with_args"]
 
 
 def run_cli_with_args(cli: type[CommandLineInterface], args: str = ""):

@@ -8,7 +8,7 @@ from argparse import ArgumentTypeError
 from datetime import timedelta
 from pathlib import Path
 
-from scinoephile.core.cache import parse_duration
+from scinoephile.core.cache.duration import parse_duration
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = [

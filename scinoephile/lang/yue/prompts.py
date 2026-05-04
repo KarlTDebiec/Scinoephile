@@ -9,9 +9,7 @@ from typing import ClassVar
 
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
 
-__all__ = [
-    "YueHansPrompt",
-]
+__all__ = ["YueHansPrompt"]
 
 
 class YueHansPrompt(ZhoHansPrompt, ABC):

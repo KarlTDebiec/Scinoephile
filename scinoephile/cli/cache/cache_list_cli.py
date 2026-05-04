@@ -9,7 +9,7 @@ from typing import Literal, TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cache import get_cache_entries
+from scinoephile.core.cache.operations import get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .argument_types import cache_dir_path_arg

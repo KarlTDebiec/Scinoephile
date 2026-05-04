@@ -8,9 +8,7 @@ from dataclasses import dataclass, field
 
 from .dictionary_definition import DictionaryDefinition
 
-__all__ = [
-    "DictionaryEntry",
-]
+__all__ = ["DictionaryEntry"]
 
 
 @dataclass(frozen=True)

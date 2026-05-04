@@ -14,7 +14,7 @@ from scinoephile.lang.zho.conversion import (
 )
 
 
-def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):
+def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
     """Test get_zho_converted.
 
     Arguments:

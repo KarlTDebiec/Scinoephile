@@ -25,33 +25,46 @@ class _Prompt(Prompt):
     """Prompt fixture for provider-injection tests."""
 
     base_system_prompt = "System prompt"
+    """Base system prompt."""
     schema_intro = "Schema"
+    """Schema intro text."""
     few_shot_intro = "Few shot"
+    """Few-shot intro text."""
     few_shot_query_intro = "Query"
+    """Few-shot query intro text."""
     few_shot_answer_intro = "Answer"
+    """Few-shot answer intro text."""
     answer_invalid_pre = "Invalid answer pre"
+    """Text before an invalid answer."""
     answer_invalid_post = "Invalid answer post"
+    """Text after an invalid answer."""
     test_case_invalid_pre = "Invalid test-case pre"
+    """Text before an invalid test case."""
     test_case_invalid_post = "Invalid test-case post"
+    """Text after an invalid test case."""
 
 
 class _Query(Query):
     """Query fixture for provider-injection tests."""
 
     text: str
+    """Query text."""
 
 
 class _Answer(Answer):
     """Answer fixture for provider-injection tests."""
 
     output: str
+    """Answer output."""
 
 
 class _TestCase(TestCase):
     """Test-case fixture for provider-injection tests."""
 
     query: _Query
+    """Query fixture."""
     answer: _Answer | None = None
+    """Optional answer fixture."""
 
 
 _Query.prompt_cls = _Prompt
@@ -81,6 +94,7 @@ class _Processor(Processor):
     """Processor fixture for provider-injection tests."""
 
     manager_cls = _Manager
+    """Manager fixture class."""
 
 
 def test_queryer_uses_injected_provider():

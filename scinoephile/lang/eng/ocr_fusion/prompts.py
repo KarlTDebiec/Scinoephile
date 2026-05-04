@@ -10,9 +10,7 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import EngPrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
 
-__all__ = [
-    "EngOcrFusionPrompt",
-]
+__all__ = ["EngOcrFusionPrompt"]
 
 
 class EngOcrFusionPrompt(OcrFusionPrompt, EngPrompt):
