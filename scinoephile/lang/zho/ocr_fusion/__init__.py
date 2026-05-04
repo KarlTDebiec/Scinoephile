@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -24,6 +24,7 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
 __all__ = [
+    "ZHO_OCR_FUSION_OPERATION_SPEC",
     "ZhoHansOcrFusionPrompt",
     "ZhoHantOcrFusionPrompt",
     "ZhoOcrFusionProcessKwargs",
@@ -31,6 +32,14 @@ __all__ = [
     "get_zho_ocr_fuser",
     "get_zho_ocr_fused",
 ]
+
+ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
+    operation="zho-ocr-fusion",
+    test_case_table_name="test_cases__zho__ocr_fusion",
+    manager_cls=OcrFusionManager,
+    prompt_cls=ZhoHansOcrFusionPrompt,
+)
+"""Operation specification for standard Chinese OCR fusion."""
 
 
 class ZhoOcrFusionProcessKwargs(TypedDict, total=False):

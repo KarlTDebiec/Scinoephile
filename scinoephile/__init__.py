@@ -9,5 +9,6 @@ Module hierarchy (modules may import from any above):
 * lang
 * audio / dictionaries
 * multilang
+* optimization
 * cli
 """

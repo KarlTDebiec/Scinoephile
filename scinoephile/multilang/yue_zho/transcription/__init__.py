@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.core.llms import LLMProvider, TestCase
+from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
@@ -25,6 +25,8 @@ from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationMana
 from .transcriber import DemucsMode, VADMode, YueTranscriber
 
 __all__ = [
+    "YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC",
+    "YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC",
     "get_yue_transcribed_vs_zho",
     "get_yue_vs_zho_transcriber",
     "DemucsMode",
@@ -33,6 +35,23 @@ __all__ = [
     "YueZhoTranscriberKwargs",
     "YueZhoTranscriptionKwargs",
 ]
+
+YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
+    operation="yue-zho-transcription-deliniation",
+    test_case_table_name="test_cases__yue_zho__transcription_deliniation",
+    manager_cls=DualPairManager,
+    prompt_cls=YueVsZhoYueHansDeliniationPrompt,
+)
+"""Operation specification for written Cantonese transcription deliniation."""
+
+YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
+    operation="yue-zho-transcription-punctuation",
+    test_case_table_name="test_cases__yue_zho__transcription_punctuation",
+    manager_cls=YueZhoPunctuationManager,
+    prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+    list_fields={"query.yuewen_to_punctuate": 10},
+)
+"""Operation specification for written Cantonese transcription punctuation."""
 
 
 class YueZhoTranscriptionKwargs(TypedDict, total=False):

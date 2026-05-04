@@ -21,9 +21,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
-__all__ = [
-    "CommandLineInterface",
-]
+__all__ = ["CommandLineInterface"]
 
 logger = getLogger(__name__)
 

@@ -75,6 +75,8 @@ class OutputPathValidatorKwargs(TypedDict, total=False):
 
     exist_ok: bool
     """whether existing output files are accepted."""
+    create: bool
+    """whether missing parent directories should be created."""
 
 
 class OutputDirValidatorKwargs(TypedDict, total=False):

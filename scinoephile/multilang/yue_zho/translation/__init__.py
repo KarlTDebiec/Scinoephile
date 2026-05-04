@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
@@ -27,6 +27,7 @@ from .prompts import (
 )
 
 __all__ = [
+    "YUE_ZHO_TRANSLATION_OPERATION_SPEC",
     "YueVsZhoYueHansTranslationPrompt",
     "YueVsZhoYueHantTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
@@ -34,6 +35,14 @@ __all__ = [
     "get_yue_translated_vs_zho",
     "get_yue_vs_zho_translator",
 ]
+
+YUE_ZHO_TRANSLATION_OPERATION_SPEC = OperationSpec(
+    operation="yue-zho-translation",
+    test_case_table_name="test_cases__yue_zho__translation",
+    manager_cls=DualBlockGappedManager,
+    prompt_cls=YueVsZhoYueHansTranslationPrompt,
+)
+"""Operation specification for written Cantonese translation."""
 
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):

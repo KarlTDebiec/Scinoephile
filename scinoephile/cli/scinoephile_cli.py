@@ -14,6 +14,7 @@ from .analysis import AnalysisCli
 from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
+from .optimization import OptimizationCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
 from .yue import YueCli
@@ -41,6 +42,7 @@ class ScinoephileCli(ScinoephileCliBase):
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改标准中文字幕",
             "modify written Cantonese subtitles": "修改书面粤语字幕",
+            "prompt optimization utilities and persistence": "提示词优化工具与持久化",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -60,6 +62,7 @@ class ScinoephileCli(ScinoephileCliBase):
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改標準中文字幕",
             "modify written Cantonese subtitles": "修改書面粵語字幕",
+            "prompt optimization utilities and persistence": "提示詞最佳化工具與持久化",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -101,6 +104,7 @@ class ScinoephileCli(ScinoephileCliBase):
             CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            OptimizationCli.name(): OptimizationCli,
             SyncCli.name(): SyncCli,
             TimewarpCli.name(): TimewarpCli,
             YueCli.name(): YueCli,
