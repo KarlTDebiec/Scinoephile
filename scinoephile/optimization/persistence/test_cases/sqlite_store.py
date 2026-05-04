@@ -10,7 +10,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common.validation import val_output_path
-from scinoephile.core.llms.serialization import (
+from scinoephile.core.optimization.serialization import (
     get_prefixed_payload,
     get_unprefixed_payload,
 )
