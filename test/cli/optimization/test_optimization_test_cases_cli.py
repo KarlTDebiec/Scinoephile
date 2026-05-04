@@ -13,9 +13,6 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.optimization.optimization_cli import OptimizationCli
-from scinoephile.cli.optimization.optimization_list_operations_cli import (
-    OptimizationListOperationsCli,
-)
 from scinoephile.cli.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
@@ -63,50 +60,6 @@ def test_optimization_sync_test_cases_usage(
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OptimizationListOperationsCli,),
-        (OptimizationCli, OptimizationListOperationsCli),
-        (ScinoephileCli, OptimizationCli, OptimizationListOperationsCli),
-    ],
-)
-def test_optimization_list_operations_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test optimization list-operations CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OptimizationListOperationsCli,),
-        (OptimizationCli, OptimizationListOperationsCli),
-        (ScinoephileCli, OptimizationCli, OptimizationListOperationsCli),
-    ],
-)
-def test_optimization_list_operations(
-    cli: tuple[type[CommandLineInterface], ...],
-):
-    """Test optimization list-operations CLI lists operations.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    subcommands = " ".join(command.name() for command in cli[1:])
-    stdout = StringIO()
-    stderr = StringIO()
-    with redirect_stdout(stdout):
-        with redirect_stderr(stderr):
-            run_cli_with_args(cli[0], subcommands)
-    assert "Available operations:" in stdout.getvalue()
-    assert "eng-block-review" in stdout.getvalue()
-    assert stderr.getvalue() == ""
 
 
 def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):

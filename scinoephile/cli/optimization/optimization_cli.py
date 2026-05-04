@@ -26,6 +26,18 @@ class _OptimizationCliKwargs(TypedDict, total=False):
 class OptimizationCli(ScinoephileCliBase):
     """Prompt optimization utilities and persistence."""
 
+    localizations = {
+        "zh-hans": {
+            "optimization-related tools": "优化相关工具",
+            "prompt optimization utilities and persistence": "提示词优化工具与持久化",
+        },
+        "zh-hant": {
+            "optimization-related tools": "最佳化相關工具",
+            "prompt optimization utilities and persistence": "提示詞最佳化工具與持久化",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
+
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.

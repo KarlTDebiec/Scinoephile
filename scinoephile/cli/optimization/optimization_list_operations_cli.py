@@ -22,9 +22,11 @@ class OptimizationListOperationsCli(ScinoephileCliBase):
     localizations = {
         "zh-hans": {
             "Available operations:": "可用操作：",
+            "list available optimization operations": "列出可用优化操作",
         },
         "zh-hant": {
             "Available operations:": "可用操作：",
+            "list available optimization operations": "列出可用最佳化操作",
         },
     }
     """Localized help text keyed by locale and English source text."""

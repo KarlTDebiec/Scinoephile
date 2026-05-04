@@ -32,8 +32,6 @@ __all__ = ["OptimizationSyncTestCasesCli"]
 class _OptimizationSyncTestCasesCliKwargs(TypedDict, total=False):
     """Keyword arguments for OptimizationSyncTestCasesCli."""
 
-    _parser: ArgumentParser
-    """Argument parser."""
     infile_paths: list[Path]
     """Input JSON file paths."""
     operation: str
@@ -53,6 +51,9 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "operation to which test case JSON file(s) correspond": (
                 "测试用例 JSON 文件对应的操作"
             ),
+            "list rows that would be inserted or deleted without writing": (
+                "列出将插入或删除的行而不写入"
+            ),
             "one or more input JSON paths": "一个或多个输入 JSON 路径",
             "synchronize persisted LLM test cases from JSON into SQLite": (
                 "将 JSON 测试用例同步到 SQLite"
@@ -62,6 +63,9 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "SQLite database outfile path": "SQLite 資料庫輸出路徑",
             "operation to which test case JSON file(s) correspond": (
                 "測試用例 JSON 檔對應的操作"
+            ),
+            "list rows that would be inserted or deleted without writing": (
+                "列出將插入或刪除的列而不寫入"
             ),
             "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
             "synchronize persisted LLM test cases from JSON into SQLite": (
@@ -118,8 +122,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             help="SQLite database outfile path",
         )
 
-        parser.set_defaults(_parser=parser)
-
     @classmethod
     def name(cls) -> str:
         """Name of this tool used to define it when it is a subparser.
@@ -136,8 +138,6 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         Arguments:
             **kwargs: keyword arguments
         """
-        kwargs.pop("_parser", None)
-
         # Validate arguments
         infile_paths = kwargs.pop("infile_paths")
         outfile_path = kwargs.pop("outfile")
