@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Literal, TypedDict, Unpack
+from pathlib import Path
+from typing import Literal
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
@@ -16,25 +17,6 @@ from .argument_types import cache_dir_path_arg
 from .output import print_entries, sort_entries
 
 __all__ = ["CacheListCli"]
-
-
-class _CacheListCliKwargs(TypedDict, total=False):
-    """Keyword arguments for CacheListCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    cache_dir_path: str | None
-    """Cache root directory path."""
-    namespace: str | None
-    """Cache namespace filter."""
-    output_format: Literal["text", "json", "jsonl"]
-    """Output format."""
-    limit: int | None
-    """Maximum number of entries to show."""
-    sort: Literal["name", "size", "mtime", "atime"]
-    """Sort field."""
-    reverse: bool
-    """Whether to reverse sort order."""
 
 
 class CacheListCli(ScinoephileCliBase):
@@ -57,9 +39,10 @@ class CacheListCli(ScinoephileCliBase):
 
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
-            default=None,
+            default=cache_dir_path_arg(None),
             dest="cache_dir_path",
-            help="cache root directory to inspect",
+            type=cache_dir_path_arg,
+            help="cache root directory to inspect (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--namespace",
@@ -102,19 +85,19 @@ class CacheListCli(ScinoephileCliBase):
         return "list"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_CacheListCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        parser = kwargs.pop("_parser", cls.argparser())
-        cache_dir_path = cache_dir_path_arg(kwargs.pop("cache_dir_path"))
-        namespace = kwargs.pop("namespace")
-        output_format = kwargs.pop("output_format")
-        limit = kwargs.pop("limit")
-        sort = kwargs.pop("sort")
-        reverse = kwargs.pop("reverse")
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        cache_dir_path: Path,
+        namespace: str | None,
+        output_format: Literal["text", "json", "jsonl"],
+        limit: int | None,
+        sort: Literal["name", "size", "mtime", "atime"],
+        reverse: bool,
+    ):
+        """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
 
         try:
             entries = get_cache_entries(cache_dir_path, namespace=namespace)

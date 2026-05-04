@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar, TypedDict, Unpack
+from typing import ClassVar
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -19,23 +19,6 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
 
 __all__ = ["EngFuseCli"]
-
-
-class _EngFuseCliKwargs(TypedDict, total=False):
-    """Keyword arguments for EngFuseCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    lens_infile: Path | str
-    """English subtitles OCRed using Google Lens or stdin sentinel."""
-    tesseract_infile: Path | str
-    """English subtitles OCRed using Tesseract or stdin sentinel."""
-    clean: bool
-    """Whether to clean both OCR subtitle infiles before fusing."""
-    outfile: Path | None
-    """English subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class EngFuseCli(ScinoephileCliBase):
@@ -104,12 +87,14 @@ class EngFuseCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
+            dest="lens_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitles OCRed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--tesseract-infile",
+            dest="tesseract_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitles OCRed using Tesseract or "-" for stdin',
@@ -128,6 +113,7 @@ class EngFuseCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="English subtitle outfile path (default: stdout)",
         )
@@ -148,19 +134,19 @@ class EngFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_EngFuseCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        lens_infile_path: Path | str,
+        tesseract_infile_path: Path | str,
+        clean: bool,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        lens_infile_path = kwargs.pop("lens_infile")
-        tesseract_infile_path = kwargs.pop("tesseract_infile")
-        clean = kwargs.pop("clean")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if lens_infile_path == "-" and tesseract_infile_path == "-":
             try:
                 raise ArgumentConflictError(

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -30,25 +29,6 @@ from scinoephile.multilang.yue_zho.line_review import (
 )
 
 __all__ = ["YueReviewVsZhoCli"]
-
-
-class _YueReviewVsZhoCliKwargs(TypedDict, total=False):
-    """Keyword arguments for YueReviewVsZhoCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    yue_infile: Path | str
-    """Target written Cantonese subtitle infile path or stdin sentinel."""
-    zho_infile: Path | str
-    """Reference standard Chinese subtitle infile path or stdin sentinel."""
-    mode: str
-    """Selected review mode."""
-    script: str
-    """Selected prompt script."""
-    outfile: Path | None
-    """Reviewed written Cantonese subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class YueReviewVsZhoCli(ScinoephileCliBase):
@@ -127,12 +107,14 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--yue-infile",
+            dest="yue_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='target written Cantonese subtitle infile path or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
+            dest="zho_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='reference standard Chinese subtitle infile path or "-" for stdin',
@@ -160,6 +142,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="reviewed written Cantonese subtitle outfile path (default: stdout)",
         )
@@ -210,20 +193,20 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansBlockReviewPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_YueReviewVsZhoCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        yue_infile_path: Path | str,
+        zho_infile_path: Path | str,
+        mode: str,
+        script: str,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        yue_infile_path = kwargs.pop("yue_infile")
-        zho_infile_path = kwargs.pop("zho_infile")
-        mode = kwargs.pop("mode")
-        script = kwargs.pop("script")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if yue_infile_path == "-" and zho_infile_path == "-":
             try:
                 raise ArgumentConflictError(

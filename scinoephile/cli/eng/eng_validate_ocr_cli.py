@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar, TypedDict, Unpack
+from typing import ClassVar
 
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
@@ -20,23 +20,6 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 
 __all__ = ["EngValidateOcrCli"]
-
-
-class _EngValidateOcrCliKwargs(TypedDict, total=False):
-    """Keyword arguments for EngValidateOcrCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    infile: Path
-    """English OCR image subtitle infile path."""
-    stop_at_idx: int | None
-    """Subtitle index after which validation should stop."""
-    interactive: bool
-    """Whether to prompt for interactive validation decisions."""
-    outfile: Path
-    """Directory in which to save validation image outputs."""
-    overwrite: bool
-    """Whether to overwrite the outfile directory."""
 
 
 class EngValidateOcrCli(ScinoephileCliBase):
@@ -88,6 +71,7 @@ class EngValidateOcrCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
+            dest="infile_path",
             required=True,
             type=Path,
             help=(
@@ -112,6 +96,7 @@ class EngValidateOcrCli(ScinoephileCliBase):
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
+            dest="outfile_path",
             required=True,
             type=output_dir_arg(create=False),
             help="directory in which to save validation image outputs",
@@ -133,19 +118,19 @@ class EngValidateOcrCli(ScinoephileCliBase):
         return "validate-ocr"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_EngValidateOcrCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        infile_path: Path,
+        stop_at_idx: int | None,
+        interactive: bool,
+        outfile_path: Path,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        infile_path = kwargs.pop("infile")
-        stop_at_idx = kwargs.pop("stop_at_idx")
-        interactive = kwargs.pop("interactive")
-        outfile_path: Path = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 

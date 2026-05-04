@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.conversion import (
@@ -14,6 +13,7 @@ from scinoephile.cli.conversion import (
     merge_conversion_localizations,
 )
 from scinoephile.common.argument_parsing import (
+    enum_arg,
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
@@ -41,31 +41,6 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
 )
 
 __all__ = ["YueTranscribeVsZhoCli"]
-
-
-class _YueTranscribeVsZhoCliKwargs(TypedDict, total=False):
-    """Keyword arguments for YueTranscribeVsZhoCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    media_infile: str
-    """Video or audio media input path used for transcription."""
-    zhongwen_infile: Path | str
-    """Standard Chinese subtitle infile or stdin sentinel."""
-    stream_index: int
-    """Audio stream index in media input."""
-    script: str
-    """Selected prompt script."""
-    convert: OpenCCConfig | None
-    """OpenCC conversion configuration."""
-    demucs: str
-    """Demucs vocal-separation mode."""
-    vad: str
-    """Whisper voice activity detection mode."""
-    outfile: Path | None
-    """Written Cantonese subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class YueTranscribeVsZhoCli(ScinoephileCliBase):
@@ -145,6 +120,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--media-infile",
+            dest="media_infile_path",
             required=True,
             type=str,
             help="video or audio media input path used for transcription",
@@ -157,6 +133,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         )
         arg_groups["input arguments"].add_argument(
             "--zhongwen-infile",
+            dest="zhongwen_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Standard Chinese subtitle infile or "-" for stdin',
@@ -165,14 +142,14 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--demucs",
-            default="off",
-            type=str_arg(options=("on", "off")),
+            default=DemucsMode.OFF,
+            type=enum_arg(DemucsMode),
             help="Demucs vocal-separation mode (options: on, off; default: off)",
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
-            default="auto",
-            type=str_arg(options=("on", "off", "auto")),
+            default=VADMode.AUTO,
+            type=enum_arg(VADMode),
             help=(
                 "Whisper voice activity detection mode "
                 "(options: on, off, auto; default: auto)"
@@ -193,6 +170,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="Written Cantonese subtitle outfile path (default: stdout)",
         )
@@ -230,23 +208,23 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansDeliniationPrompt, YueVsZhoYueHansPunctuationPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_YueTranscribeVsZhoCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        media_infile_path: str,
+        zhongwen_infile_path: Path | str,
+        stream_index: int,
+        script: str,
+        convert: OpenCCConfig | None,
+        demucs: DemucsMode,
+        vad: VADMode,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        media_infile_path = kwargs.pop("media_infile")
-        zhongwen_infile_path = kwargs.pop("zhongwen_infile")
-        stream_index = kwargs.pop("stream_index")
-        script = kwargs.pop("script")
-        convert = kwargs.pop("convert")
-        demucs_mode = DemucsMode(kwargs.pop("demucs"))
-        vad_mode = VADMode(kwargs.pop("vad"))
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if media_infile_path == "-" and zhongwen_infile_path == "-":
             try:
                 raise ArgumentConflictError(
@@ -291,8 +269,8 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             cls._get_transcription_prompt_classes(script)
         )
         transcriber = get_yue_vs_zho_transcriber(
-            demucs_mode=demucs_mode,
-            vad_mode=vad_mode,
+            demucs_mode=demucs,
+            vad_mode=vad,
             convert=convert,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,

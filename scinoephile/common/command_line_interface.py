@@ -11,27 +11,21 @@ from argparse import (
     RawDescriptionHelpFormatter,
     _SubParsersAction,  # noqa pylint
 )
+from collections.abc import Callable
 from datetime import datetime
 from inspect import cleandoc
 from logging import FileHandler, Formatter, getLogger
 from pathlib import Path
 from sys import argv
-from typing import TypedDict, Unpack
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from .logs import DEFAULT_LOG_FORMAT, configure_logging
 
 __all__ = [
-    "CLIKwargs",
     "CommandLineInterface",
 ]
 
 logger = getLogger(__name__)
-
-
-class CLIKwargs(TypedDict, total=False):
-    """Keyword arguments for command-line interface _main methods."""
-
-    pass
 
 
 class CommandLineInterface(ABC):
@@ -151,8 +145,13 @@ class CommandLineInterface(ABC):
         command_line = " ".join(args)
         logger.info(f"Run with command line: {command_line}")
 
-    @classmethod
-    @abstractmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
+    if TYPE_CHECKING:
+        _main: ClassVar[Callable[..., None]]
         """Execute with provided keyword arguments."""
-        raise NotImplementedError()
+    else:
+
+        @classmethod
+        @abstractmethod
+        def _main(cls, **kwargs: Any):
+            """Execute with provided keyword arguments."""
+            raise NotImplementedError()

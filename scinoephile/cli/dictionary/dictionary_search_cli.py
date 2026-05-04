@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -25,19 +24,6 @@ from scinoephile.dictionaries.lookup import (
 __all__ = ["DictionarySearchCli"]
 
 logger = getLogger(__name__)
-
-
-class _DictionarySearchCliKwargs(TypedDict, total=False):
-    """Keyword arguments for DictionarySearchCli."""
-
-    database_path: Path | None
-    """SQLite database input path."""
-    dictionary_name: str
-    """Dictionary selector."""
-    query: str
-    """Lookup query."""
-    limit: int
-    """Maximum number of matches to show per dictionary."""
 
 
 class DictionarySearchCli(ScinoephileCliBase):
@@ -147,17 +133,15 @@ class DictionarySearchCli(ScinoephileCliBase):
                 logger.info(f"   - {label_prefix}{definition.text}")
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_DictionarySearchCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        database_path = kwargs.pop("database_path")
-        dictionary_name = kwargs.pop("dictionary_name")
-        query = kwargs.pop("query")
-        limit = kwargs.pop("limit")
-
+    def _main(
+        cls,
+        *,
+        database_path: Path | None,
+        dictionary_name: str,
+        query: str,
+        limit: int,
+    ):
+        """Execute with provided keyword arguments."""
         try:
             if dictionary_name == "all" and database_path is not None:
                 raise ArgumentConflictError(

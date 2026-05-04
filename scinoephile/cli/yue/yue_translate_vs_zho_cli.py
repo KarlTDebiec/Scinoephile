@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -27,23 +26,6 @@ from scinoephile.multilang.yue_zho.translation import (
 )
 
 __all__ = ["YueTranslateVsZhoCli"]
-
-
-class _YueTranslateVsZhoCliKwargs(TypedDict, total=False):
-    """Keyword arguments for YueTranslateVsZhoCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    yue_infile: Path | str
-    """Target written Cantonese subtitle infile or stdin sentinel."""
-    zho_infile: Path | str
-    """Reference standard Chinese subtitle infile or stdin sentinel."""
-    script: str
-    """Selected prompt script."""
-    outfile: Path | None
-    """Translated written Cantonese subtitle outfile path."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class YueTranslateVsZhoCli(ScinoephileCliBase):
@@ -118,12 +100,14 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--yue-infile",
+            dest="yue_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='target written Cantonese subtitle infile or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
+            dest="zho_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='reference standard Chinese subtitle infile or "-" for stdin',
@@ -142,6 +126,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="translated written Cantonese subtitle outfile path (default: stdout)",
         )
@@ -177,19 +162,19 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         return YueVsZhoYueHansTranslationPrompt
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_YueTranslateVsZhoCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        yue_infile_path: Path | str,
+        zho_infile_path: Path | str,
+        script: str,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        yue_infile_path = kwargs.pop("yue_infile")
-        zho_infile_path = kwargs.pop("zho_infile")
-        script = kwargs.pop("script")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if yue_infile_path == "-" and zho_infile_path == "-":
             try:
                 raise ArgumentConflictError(

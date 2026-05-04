@@ -5,7 +5,13 @@
 from __future__ import annotations
 
 import sys
-from argparse import Action, ArgumentParser, Namespace, _ArgumentGroup  # noqa: PLC2701
+from argparse import (  # noqa: PLC2701
+    SUPPRESS,
+    Action,
+    ArgumentParser,
+    Namespace,
+    _ArgumentGroup,
+)
 from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
@@ -158,6 +164,7 @@ def add_opencc_convert_argument(
     additional_help_arg_group.add_argument(
         "--list-opencc-configs",
         action=_ListOpenCCConfigsAction,
+        default=SUPPRESS,
         help="list available OpenCC configurations and exit",
     )
 

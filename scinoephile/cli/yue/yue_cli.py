@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import TypedDict, Unpack
+from typing import Any
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
@@ -16,13 +16,6 @@ from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
 from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = ["YueCli"]
-
-
-class _YueCliKwargs(TypedDict, total=False):
-    """Keyword arguments for YueCli."""
-
-    yue_subcommand: str
-    """Selected written Cantonese subtitle subcommand."""
 
 
 class YueCli(ScinoephileCliBase):
@@ -55,7 +48,7 @@ class YueCli(ScinoephileCliBase):
 
         # Subcommands
         subparsers = parser.add_subparsers(
-            dest="yue_subcommand",
+            dest="yue_subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -78,15 +71,14 @@ class YueCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_YueCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("yue_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        yue_subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[yue_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypedDict, Unpack
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -21,27 +20,6 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 
 __all__ = ["EngProcessCli"]
-
-
-class _EngProcessCliKwargs(TypedDict, total=False):
-    """Keyword arguments for EngProcessCli."""
-
-    _parser: ArgumentParser
-    """Argument parser."""
-    infile: Path | str
-    """English subtitle infile path or stdin sentinel."""
-    outfile: Path | None
-    """English subtitle outfile path."""
-    clean: bool
-    """Whether to clean subtitles."""
-    flatten: bool
-    """Whether to flatten multi-line subtitles."""
-    proofread: bool
-    """Whether to proofread subtitles."""
-    offset: int
-    """Timing offset in milliseconds."""
-    overwrite: bool
-    """Whether to overwrite an existing outfile."""
 
 
 class EngProcessCli(ScinoephileCliBase):
@@ -99,6 +77,7 @@ class EngProcessCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
+            dest="infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitle infile path or "-" for stdin',
@@ -132,6 +111,7 @@ class EngProcessCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="English subtitle outfile path (default: stdout)",
         )
@@ -152,21 +132,21 @@ class EngProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_EngProcessCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        infile_path: Path | str,
+        outfile_path: Path | None,
+        clean: bool,
+        flatten: bool,
+        proofread: bool,
+        offset: int,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        infile_path = kwargs.pop("infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        proofread = kwargs.pop("proofread")
-        offset = kwargs.pop("offset")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
 
         if not (clean or flatten or proofread or offset):
             parser.error("At least one operation required")

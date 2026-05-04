@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import TypedDict, Unpack
+from typing import Any
 
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
@@ -15,13 +15,6 @@ from .zho_process_cli import ZhoProcessCli
 from .zho_validate_ocr_cli import ZhoValidateOcrCli
 
 __all__ = ["ZhoCli"]
-
-
-class _ZhoCliKwargs(TypedDict, total=False):
-    """Keyword arguments for ZhoCli."""
-
-    zho_subcommand: str
-    """Selected standard Chinese subtitle subcommand."""
 
 
 class ZhoCli(ScinoephileCliBase):
@@ -54,7 +47,7 @@ class ZhoCli(ScinoephileCliBase):
 
         # Subcommands
         subparsers = parser.add_subparsers(
-            dest="zho_subcommand",
+            dest="zho_subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -76,15 +69,14 @@ class ZhoCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[_ZhoCliKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("zho_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        zho_subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[zho_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":
