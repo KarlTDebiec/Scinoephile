@@ -13,6 +13,9 @@ __all__ = [
     "quote_identifier",
 ]
 
+_JSON_PREFIX = "__scinoephile_json__:"
+_STRING_PREFIX = "__scinoephile_string__:"
+
 
 def get_prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
     """Get a flat payload using table-column prefixes.
@@ -65,11 +68,13 @@ def _deserialize_value(value: object) -> object:
     Returns:
         deserialized value
     """
-    if isinstance(value, str) and value.startswith(("[", "{")):
+    if isinstance(value, str) and value.startswith(_JSON_PREFIX):
         try:
-            return json.loads(value)
+            return json.loads(value.removeprefix(_JSON_PREFIX))
         except json.JSONDecodeError:
             return value
+    if isinstance(value, str) and value.startswith(_STRING_PREFIX):
+        return value.removeprefix(_STRING_PREFIX)
     return value
 
 
@@ -82,5 +87,9 @@ def _serialize_value(value: object) -> object:
         serialized value
     """
     if isinstance(value, dict | list):
-        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+        return _JSON_PREFIX + json.dumps(
+            value, ensure_ascii=False, separators=(",", ":")
+        )
+    if isinstance(value, str) and value.startswith((_JSON_PREFIX, _STRING_PREFIX)):
+        return _STRING_PREFIX + value
     return value

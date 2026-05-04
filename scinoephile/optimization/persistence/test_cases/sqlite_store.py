@@ -38,11 +38,15 @@ class TestCaseSqliteStore:
         Arguments:
             database_path: SQLite database path
         """
-        self.database_path = val_output_path(database_path, exist_ok=True)
+        self.database_path = val_output_path(
+            database_path,
+            exist_ok=True,
+            create=False,
+        )
 
     def create_schema(self):
         """Create SQLite schema if needed."""
-        self.database_path.parent.mkdir(parents=True, exist_ok=True)
+        self.database_path = val_output_path(self.database_path, exist_ok=True)
         with sqlite3.connect(self.database_path) as connection:
             cursor = connection.cursor()
             cursor.execute(f"PRAGMA user_version={self.schema_version}")
@@ -70,7 +74,7 @@ class TestCaseSqliteStore:
         Arguments:
             table_name: SQLite table name
         """
-        self.database_path.parent.mkdir(parents=True, exist_ok=True)
+        self.create_schema()
         with sqlite3.connect(self.database_path) as connection:
             cursor = connection.cursor()
             self._create_test_case_table(cursor, table_name)
@@ -89,6 +93,8 @@ class TestCaseSqliteStore:
         Returns:
             persisted test case, if present
         """
+        if not self.database_path.exists():
+            return None
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             try:
@@ -117,18 +123,23 @@ class TestCaseSqliteStore:
         Returns:
             persisted test cases
         """
+        if not self.database_path.exists():
+            return []
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
-            rows = connection.execute(
-                f"""SELECT t.*
-                    FROM {quote_identifier(table_name)} AS t
-                    JOIN test_case_sources AS s
-                      ON s.table_name = ?
-                     AND s.test_case_id = t.test_case_id
-                   WHERE s.source_path = ?
-                   ORDER BY t.test_case_id""",
-                (table_name, source_path),
-            ).fetchall()
+            try:
+                rows = connection.execute(
+                    f"""SELECT t.*
+                        FROM {quote_identifier(table_name)} AS t
+                        JOIN test_case_sources AS s
+                          ON s.table_name = ?
+                         AND s.test_case_id = t.test_case_id
+                       WHERE s.source_path = ?
+                       ORDER BY t.test_case_id""",
+                    (table_name, source_path),
+                ).fetchall()
+            except sqlite3.OperationalError:
+                return []
             return [self._row_to_test_case(connection, table_name, r) for r in rows]
 
     def list_source_paths(self, table_name: str) -> list[str]:
@@ -172,7 +183,7 @@ class TestCaseSqliteStore:
         source_path: str,
         desired: Iterable[PersistedTestCase],
         dry_run: bool,
-    ) -> tuple[list[PersistedTestCase], list[str]]:
+    ) -> tuple[list[PersistedTestCase], list[PersistedTestCase], list[str]]:
         """Synchronize a single source path group for a table.
 
         This enforces that the set of test cases associated with `source_path` in SQLite
@@ -185,25 +196,36 @@ class TestCaseSqliteStore:
             desired: desired test cases from this JSON file
             dry_run: if True, do not write; only compute planned changes
         Returns:
-            to-insert rows and to-delete test case IDs
+            to-insert rows, to-update rows, and to-delete test case IDs
         """
         desired_list = list(desired)
         desired_by_id = {tc.test_case_id: tc for tc in desired_list}
         desired_ids = set(desired_by_id)
 
-        if not dry_run:
-            self.create_schema()
-            self.ensure_table(table_name)
         existing_ids = self._get_existing_source_test_case_ids(table_name, source_path)
+        existing_by_id = self._get_test_cases_by_ids(table_name, desired_ids)
 
         to_insert_ids = sorted(desired_ids - existing_ids)
+        to_update_ids = sorted(
+            test_case_id
+            for test_case_id in desired_ids
+            if test_case_id in existing_by_id
+            and self._get_merged_test_case(
+                existing_by_id[test_case_id], desired_by_id[test_case_id]
+            )
+            != existing_by_id[test_case_id]
+        )
         to_delete_ids = sorted(existing_ids - desired_ids)
 
         to_insert = [desired_by_id[i] for i in to_insert_ids]
+        to_update = [desired_by_id[i] for i in to_update_ids]
         if dry_run:
-            return (to_insert, to_delete_ids)
+            return (to_insert, to_update, to_delete_ids)
 
-        self.upsert_table_test_cases(table_name, desired_list, source_path=source_path)
+        if desired_list:
+            self.upsert_table_test_cases(
+                table_name, desired_list, source_path=source_path
+            )
 
         if to_delete_ids:
             with sqlite3.connect(self.database_path) as connection:
@@ -219,25 +241,19 @@ class TestCaseSqliteStore:
                     ],
                 )
 
-                for test_case_id in to_delete_ids:
-                    row = cursor.execute(
-                        """SELECT source_path
-                           FROM test_case_sources
-                           WHERE table_name = ?
-                             AND test_case_id = ?
-                           ORDER BY source_path""",
-                        (table_name, test_case_id),
-                    ).fetchall()
-                    paths = [str(r[0]) for r in row]
-                    if not paths:
-                        cursor.execute(
-                            f"DELETE FROM {quote_identifier(table_name)} "
-                            "WHERE test_case_id = ?",
-                            (test_case_id,),
-                        )
+                orphaned_ids = self._get_orphaned_test_case_ids(
+                    cursor,
+                    table_name,
+                    to_delete_ids,
+                )
+                cursor.executemany(
+                    f"DELETE FROM {quote_identifier(table_name)} "
+                    "WHERE test_case_id = ?",
+                    [(test_case_id,) for test_case_id in orphaned_ids],
+                )
                 connection.commit()
 
-        return (to_insert, to_delete_ids)
+        return (to_insert, to_update, to_delete_ids)
 
     def upsert_table_test_cases(
         self,
@@ -282,7 +298,7 @@ class TestCaseSqliteStore:
                 placeholders = ", ".join("?" for _ in columns)
                 quoted_columns = ", ".join(quote_identifier(c) for c in columns)
                 updates = ", ".join(
-                    f"{quote_identifier(c)}=excluded.{quote_identifier(c)}"
+                    self._get_upsert_update_clause(c)
                     for c in columns
                     if c != "test_case_id"
                 )
@@ -339,6 +355,39 @@ class TestCaseSqliteStore:
                 return set()
         return {str(row["test_case_id"]) for row in rows}
 
+    def _get_test_cases_by_ids(
+        self,
+        table_name: str,
+        test_case_ids: Iterable[str],
+    ) -> dict[str, PersistedTestCase]:
+        """Get existing test cases by ID.
+
+        Arguments:
+            table_name: SQLite table name
+            test_case_ids: test case identifiers
+        Returns:
+            mapping of test case IDs to persisted test cases
+        """
+        ids = tuple(sorted(set(test_case_ids)))
+        if not ids or not self.database_path.exists():
+            return {}
+        placeholders = ", ".join("?" for _ in ids)
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            try:
+                rows = connection.execute(
+                    f"""SELECT *
+                        FROM {quote_identifier(table_name)}
+                        WHERE test_case_id IN ({placeholders})""",
+                    ids,
+                ).fetchall()
+            except sqlite3.OperationalError:
+                return {}
+            test_cases = [
+                self._row_to_test_case(connection, table_name, r) for r in rows
+            ]
+        return {tc.test_case_id: tc for tc in test_cases}
+
     @staticmethod
     def _create_test_case_table(cursor: sqlite3.Cursor, table_name: str):
         """Create a test-case table if it does not exist.
@@ -384,6 +433,62 @@ class TestCaseSqliteStore:
                 f"ALTER TABLE {quote_identifier(table_name)} "
                 f"ADD COLUMN {quote_identifier(column)}"
             )
+
+    @staticmethod
+    def _get_merged_test_case(
+        existing: PersistedTestCase,
+        incoming: PersistedTestCase,
+    ) -> PersistedTestCase:
+        """Merge incoming metadata into an existing persisted test case.
+
+        Arguments:
+            existing: persisted test case already stored
+            incoming: persisted test case being upserted
+        Returns:
+            merged persisted test case
+        """
+        return PersistedTestCase(
+            test_case_id=existing.test_case_id,
+            difficulty=max(existing.difficulty, incoming.difficulty),
+            prompt=existing.prompt or incoming.prompt,
+            verified=existing.verified or incoming.verified,
+            query=incoming.query,
+            answer=incoming.answer,
+            source_paths=TestCaseSqliteStore._merge_source_paths(
+                existing.source_paths, incoming.source_paths
+            ),
+        )
+
+    @staticmethod
+    def _get_orphaned_test_case_ids(
+        cursor: sqlite3.Cursor,
+        table_name: str,
+        test_case_ids: Iterable[str],
+    ) -> list[str]:
+        """Get test case IDs that no longer have source path links.
+
+        Arguments:
+            cursor: SQLite cursor
+            table_name: SQLite table name
+            test_case_ids: candidate test case identifiers
+        Returns:
+            orphaned test case identifiers
+        """
+        ids = tuple(sorted(set(test_case_ids)))
+        if not ids:
+            return []
+        placeholders = ", ".join("?" for _ in ids)
+        rows = cursor.execute(
+            f"""SELECT DISTINCT test_case_id
+                FROM test_case_sources
+                WHERE table_name = ?
+                  AND test_case_id IN ({placeholders})""",
+            (table_name, *ids),
+        ).fetchall()
+        remaining_ids = {str(row[0]) for row in rows}
+        return [
+            test_case_id for test_case_id in ids if test_case_id not in remaining_ids
+        ]
 
     @staticmethod
     def _get_source_paths(
@@ -440,6 +545,20 @@ class TestCaseSqliteStore:
         except sqlite3.OperationalError:
             return []
         return [str(row["source_path"]) for row in rows]
+
+    @staticmethod
+    def _get_upsert_update_clause(column: str) -> str:
+        """Get an update clause for a SQLite upsert column.
+
+        Arguments:
+            column: SQLite column name
+        Returns:
+            update clause for a SQLite upsert
+        """
+        quoted_column = quote_identifier(column)
+        if column in {"difficulty", "prompt", "verified"}:
+            return f"{quoted_column}=max({quoted_column}, excluded.{quoted_column})"
+        return f"{quoted_column}=excluded.{quoted_column}"
 
     @staticmethod
     def _merge_source_paths(existing: list[str], incoming: list[str]) -> list[str]:

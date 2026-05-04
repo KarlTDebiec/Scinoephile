@@ -33,8 +33,8 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "operation to which test case JSON file(s) correspond": (
                 "测试用例 JSON 文件对应的操作"
             ),
-            "list rows that would be inserted or deleted without writing": (
-                "列出将插入或删除的行而不写入"
+            "list rows that would be inserted, updated, or deleted without writing": (
+                "列出将插入、更新或删除的行而不写入"
             ),
             "one or more input JSON paths": "一个或多个输入 JSON 路径",
             "synchronize persisted LLM test cases from JSON into SQLite": (
@@ -46,8 +46,8 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "operation to which test case JSON file(s) correspond": (
                 "測試用例 JSON 檔對應的操作"
             ),
-            "list rows that would be inserted or deleted without writing": (
-                "列出將插入或刪除的列而不寫入"
+            "list rows that would be inserted, updated, or deleted without writing": (
+                "列出將插入、更新或刪除的列而不寫入"
             ),
             "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
             "synchronize persisted LLM test cases from JSON into SQLite": (
@@ -93,7 +93,9 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--dry-run",
             action="store_true",
-            help="list rows that would be inserted or deleted without writing",
+            help=(
+                "list rows that would be inserted, updated, or deleted without writing"
+            ),
         )
 
         # Output arguments
@@ -157,5 +159,7 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
                             "answer": tc.answer,
                         }
                     )
+            for test_case_id in report.update_ids:
+                print({"action": "update", "test_case_id": test_case_id})
             for test_case_id in report.delete_ids:
                 print({"action": "delete", "test_case_id": test_case_id})

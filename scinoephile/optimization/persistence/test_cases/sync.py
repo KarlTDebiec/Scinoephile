@@ -36,8 +36,9 @@ def sync_test_cases_from_json_paths(
     """
     store = TestCaseSqliteStore(database_path)
 
-    input_paths_tuple = tuple(input_paths)
+    input_paths_tuple = tuple(input_path.resolve() for input_path in input_paths)
     insert_ids: list[str] = []
+    update_ids: list[str] = []
     delete_ids: list[str] = []
     for input_path in input_paths_tuple:
         loaded: list[TestCase] = load_test_cases_from_json(
@@ -46,18 +47,20 @@ def sync_test_cases_from_json_paths(
             prompt_cls=operation_spec.prompt_cls,
         )
         persisted = [PersistedTestCase.from_test_case(tc) for tc in loaded]
-        to_insert, to_delete = store.sync_table_source_path(
+        to_insert, to_update, to_delete = store.sync_table_source_path(
             operation_spec.test_case_table_name,
             source_path=str(input_path),
             desired=persisted,
             dry_run=dry_run,
         )
         insert_ids.extend([tc.test_case_id for tc in to_insert])
+        update_ids.extend([tc.test_case_id for tc in to_update])
         delete_ids.extend(to_delete)
 
     return SyncReport(
         table_name=operation_spec.test_case_table_name,
         input_paths=input_paths_tuple,
         insert_ids=tuple(sorted(set(insert_ids))),
+        update_ids=tuple(sorted(set(update_ids))),
         delete_ids=tuple(sorted(set(delete_ids))),
     )

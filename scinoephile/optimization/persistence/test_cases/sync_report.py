@@ -19,6 +19,8 @@ class SyncReport:
     input_paths: tuple[Path, ...]
     """Input JSON paths included in the sync run."""
     insert_ids: tuple[str, ...]
-    """Test case identifiers that would be inserted/updated."""
+    """Test case identifiers whose row or source link would be inserted."""
+    update_ids: tuple[str, ...]
+    """Test case identifiers whose row metadata or payload would be updated."""
     delete_ids: tuple[str, ...]
     """Test case identifiers whose link to an input path would be removed."""

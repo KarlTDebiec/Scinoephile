@@ -76,7 +76,7 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
         {
             "query": {"subtitle_1": "Hello."},
             "answer": {"revised_1": "", "note_1": ""},
-            "verified": True,
+            "verified": False,
         }
     ]
     infile_path.write_text(
@@ -111,3 +111,21 @@ def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):
     assert loaded is not None
     assert loaded.query == {"subtitle_1": "Hello."}
     assert loaded.answer == {"revised_1": "", "note_1": ""}
+
+    data[0]["verified"] = True
+    infile_path.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    stdout = StringIO()
+    stderr = StringIO()
+    with redirect_stdout(stdout):
+        with redirect_stderr(stderr):
+            run_cli_with_args(
+                OptimizationSyncTestCasesCli,
+                f"--infile {infile_path} --operation {operation} "
+                f"--outfile {db_path} --dry-run",
+            )
+    assert stderr.getvalue() == ""
+    lines = [ln for ln in stdout.getvalue().splitlines() if ln.strip()]
+    rows = [ast.literal_eval(line) for line in lines]
+    assert {"action": "update", "test_case_id": row["test_case_id"]} in rows

@@ -453,27 +453,33 @@ def val_output_dir_path(
 
 @overload
 def val_output_path(
-    value: Path | str | PathLike[Any], exist_ok: bool = False
+    value: Path | str | PathLike[Any],
+    exist_ok: bool = False,
+    create: bool = True,
 ) -> Path: ...
 
 
 @overload
 def val_output_path(
-    value: Iterable[Path | str | PathLike[Any]], exist_ok: bool = False
+    value: Iterable[Path | str | PathLike[Any]],
+    exist_ok: bool = False,
+    create: bool = True,
 ) -> list[Path]: ...
 
 
 def val_output_path(
     value: Path | str | PathLike[Any] | Iterable[Path | str | PathLike[Any]],
     exist_ok: bool = False,
+    create: bool = True,
 ) -> Path | list[Path]:
     """Validate output file path(s) and make them absolute.
 
     Arguments:
         value: Path or paths to output files
-        exist_ok: Whether to allow output files to already exist
+        exist_ok: whether to allow output files to already exist
+        create: whether to create missing parent directories
     Returns:
-        Validated path or paths
+        validated path or paths
     Raises:
         FileExistsError: If the file exists and exist_ok is False
         NotAFileError: If a path exists and is not a file
@@ -486,7 +492,7 @@ def val_output_path(
         Arguments:
             value_to_validate: Path to validate
         Returns:
-            Validated path
+            validated path
         Raises:
             FileExistsError: If file exists and exist_ok is False
             NotAFileError: If path exists and is not a file
@@ -506,7 +512,7 @@ def val_output_path(
             raise NotAFileError(f"{validated_value} is not a file")
         if exists and not exist_ok:
             raise FileExistsError(f"Output file {validated_value} already exists")
-        if not validated_value.parent.exists():
+        if create and not validated_value.parent.exists():
             validated_value.parent.mkdir(parents=True)
             logger.info(f"Created directory {validated_value.parent}")
         return validated_value

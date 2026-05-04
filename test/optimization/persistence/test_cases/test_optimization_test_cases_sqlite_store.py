@@ -49,6 +49,101 @@ def test_store_upsert_and_fetch(tmp_path: Path):
     assert "answer__a" in columns
 
 
+def test_store_does_not_create_parent_dir_on_init(tmp_path: Path):
+    """Initializing a store should not create parent directories."""
+    db_path = tmp_path / "missing" / "test_cases.sqlite"
+    store = TestCaseSqliteStore(db_path)
+
+    assert not db_path.parent.exists()
+    assert store.get_test_case("test_cases__unit__basic", "abc") is None
+    assert store.list_tables() == []
+    assert not db_path.parent.exists()
+
+
+def test_store_merges_duplicate_id_metadata_without_downgrading(tmp_path: Path):
+    """Duplicate IDs from different sources should preserve curated metadata."""
+    db_path = tmp_path / "test_cases.sqlite"
+    table_name = "test_cases__unit__basic"
+    query = {"q": "same"}
+    answer = {"a": "same"}
+
+    low_metadata = PersistedTestCase(
+        test_case_id="same",
+        difficulty=1,
+        prompt=False,
+        verified=False,
+        query=query,
+        answer=answer,
+        source_paths=["low.json"],
+    )
+    high_metadata = PersistedTestCase(
+        test_case_id="same",
+        difficulty=3,
+        prompt=True,
+        verified=True,
+        query=query,
+        answer=answer,
+        source_paths=["high.json"],
+    )
+
+    store = TestCaseSqliteStore(db_path)
+    store.upsert_table_test_cases(table_name, [low_metadata], source_path="low.json")
+    store.upsert_table_test_cases(table_name, [high_metadata], source_path="high.json")
+    loaded = store.get_test_case(table_name, "same")
+    assert loaded is not None
+    assert loaded.difficulty == 3
+    assert loaded.prompt
+    assert loaded.verified
+
+    reversed_store = TestCaseSqliteStore(tmp_path / "reversed.sqlite")
+    reversed_store.upsert_table_test_cases(
+        table_name, [high_metadata], source_path="high.json"
+    )
+    reversed_store.upsert_table_test_cases(
+        table_name, [low_metadata], source_path="low.json"
+    )
+    reversed_loaded = reversed_store.get_test_case(table_name, "same")
+    assert reversed_loaded is not None
+    assert reversed_loaded.difficulty == 3
+    assert reversed_loaded.prompt
+    assert reversed_loaded.verified
+
+
+def test_store_preserves_json_looking_strings(tmp_path: Path):
+    """JSON-looking string fields should round-trip as strings."""
+    db_path = tmp_path / "test_cases.sqlite"
+    store = TestCaseSqliteStore(db_path)
+    table_name = "test_cases__unit__basic"
+
+    tc = PersistedTestCase(
+        test_case_id="abc",
+        difficulty=1,
+        prompt=False,
+        verified=True,
+        query={
+            "literal_array": "[]",
+            "literal_object": "{}",
+            "nested_array": ["x", "y"],
+        },
+        answer={
+            "literal_array": "[]",
+            "literal_object": "{}",
+            "nested_object": {"key": "value"},
+        },
+        source_paths=["x.json"],
+    )
+    store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
+
+    loaded = store.get_test_case(table_name, "abc")
+    assert loaded is not None
+    assert loaded.query["literal_array"] == "[]"
+    assert loaded.query["literal_object"] == "{}"
+    assert loaded.query["nested_array"] == ["x", "y"]
+    assert loaded.answer["literal_array"] == "[]"
+    assert loaded.answer["literal_object"] == "{}"
+    assert loaded.answer["nested_object"] == {"key": "value"}
+
+
 def test_store_source_path_index(tmp_path: Path):
     """`test_case_sources` should support lookup by source path."""
     db_path = tmp_path / "test_cases.sqlite"
