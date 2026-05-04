@@ -15,6 +15,7 @@ from scinoephile.cli.conversion import (
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
     str_arg,
 )
@@ -58,6 +59,8 @@ class _YueProcessCliKwargs(TypedDict, total=False):
     """Selected proofreading script."""
     romanize: bool
     """Whether to append Cantonese romanization."""
+    offset: int
+    """Timing offset in milliseconds."""
     overwrite: bool
     """Whether to overwrite an existing outfile."""
 
@@ -82,6 +85,9 @@ class YueProcessCli(ScinoephileCliBase):
                 "script for prompts and output conversion (default: traditional)": (
                     "提示词和输出转换使用的字形（默认：繁体）"
                 ),
+                "shift subtitle timings by this many milliseconds": (
+                    "按指定毫秒数平移字幕时间"
+                ),
                 'Written Cantonese subtitle infile path or "-" for stdin': (
                     '书面粤语字幕输入文件路径，或使用 "-" 表示标准输入'
                 ),
@@ -103,6 +109,9 @@ class YueProcessCli(ScinoephileCliBase):
                 ),
                 "script for prompts and output conversion (default: traditional)": (
                     "提示詞與輸出轉換使用的字形（預設：繁體）"
+                ),
+                "shift subtitle timings by this many milliseconds": (
+                    "依指定毫秒數平移字幕時間"
                 ),
                 'Written Cantonese subtitle infile path or "-" for stdin': (
                     '書面粵語字幕輸入檔路徑，或使用 "-" 代表標準輸入'
@@ -167,6 +176,12 @@ class YueProcessCli(ScinoephileCliBase):
             action="store_true",
             help="append Cantonese romanization to subtitles",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--offset",
+            default=0,
+            type=int_arg(),
+            help="shift subtitle timings by this many milliseconds",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -208,9 +223,10 @@ class YueProcessCli(ScinoephileCliBase):
         convert = kwargs.pop("convert")
         review_script = kwargs.pop("proofread")
         romanize = kwargs.pop("romanize")
+        offset = kwargs.pop("offset")
         overwrite = kwargs.pop("overwrite")
 
-        if not (clean or flatten or convert or review_script or romanize):
+        if not (clean or flatten or convert or review_script or romanize or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
@@ -237,6 +253,8 @@ class YueProcessCli(ScinoephileCliBase):
             series = get_zho_block_reviewed(series, processor=proofreader)
         if romanize:
             series = get_yue_romanized(series, append=True)
+        if offset:
+            series.shift(ms=offset)
 
         # Write output
         write_series(
