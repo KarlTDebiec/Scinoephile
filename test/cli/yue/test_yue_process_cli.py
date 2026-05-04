@@ -122,6 +122,22 @@ def test_yue_process_cli_pipe(input_path: str, args: str, expected_path: str):
     assert output == expected
 
 
+def test_yue_process_cli_offsets_timing():
+    """Test written Cantonese processing CLI can offset subtitle timings."""
+    full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            YueProcessCli,
+            f"--infile {full_input_path} --offset 1250 --outfile {output_path}",
+        )
+        output = Series.load(output_path)
+
+    expected = Series.load(full_input_path)
+    expected.shift(ms=1250)
+    assert output == expected
+
+
 def test_yue_process_cli_rejects_bare_convert_flag():
     """Test written Cantonese processing CLI requires an explicit conversion config."""
     full_input_path = test_data_root / "kob/output/yue-Hans/timewarp_clean_flatten.srt"

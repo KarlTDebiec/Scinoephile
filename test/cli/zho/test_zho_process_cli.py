@@ -143,6 +143,22 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
     assert output == expected
 
 
+def test_zho_process_cli_offsets_timing():
+    """Test standard Chinese processing CLI can offset subtitle timings."""
+    full_input_path = test_data_root / "mnt/output/zho-Hans_fuse.srt"
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            ZhoProcessCli,
+            f"--infile {full_input_path} --offset 1250 --outfile {output_path}",
+        )
+        output = Series.load(output_path)
+
+    expected = Series.load(full_input_path)
+    expected.shift(ms=1250)
+    assert output == expected
+
+
 def test_zho_process_cli_rejects_bare_convert_flag():
     """Test standard Chinese processing CLI requires an explicit conversion config."""
     full_input_path = (
