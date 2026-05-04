@@ -14,10 +14,7 @@ from .persisted_test_case import PersistedTestCase
 from .sqlite_store import TestCaseSqliteStore
 from .sync_report import SyncReport
 
-__all__ = [
-    "SyncReport",
-    "sync_test_cases_from_json_paths",
-]
+__all__ = ["sync_test_cases_from_json_paths"]
 
 
 def sync_test_cases_from_json_paths(

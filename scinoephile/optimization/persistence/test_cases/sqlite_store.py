@@ -472,6 +472,11 @@ class TestCaseSqliteStore:
         """
         query = get_unprefixed_payload(row, "query")
         answer = get_unprefixed_payload(row, "answer")
+        source_paths = TestCaseSqliteStore._get_source_paths_for_row(
+            connection,
+            table_name,
+            str(row["test_case_id"]),
+        )
         return PersistedTestCase(
             test_case_id=str(row["test_case_id"]),
             difficulty=int(row["difficulty"]),
@@ -479,9 +484,5 @@ class TestCaseSqliteStore:
             verified=bool(row["verified"]),
             query=query,
             answer=answer,
-            source_paths=TestCaseSqliteStore._get_source_paths_for_row(
-                connection,
-                table_name,
-                str(row["test_case_id"]),
-            ),
+            source_paths=source_paths,
         )
