@@ -12,7 +12,6 @@ from sqlalchemy import (
     Column,
     Float,
     ForeignKey,
-    Index,
     Integer,
     MetaData,
     Table,
@@ -107,7 +106,6 @@ class DictionarySqliteStore:
             "fk_source_id",
             sqlite_on_conflict="IGNORE",
         ),
-        Index("fk_entry_id_index", "fk_entry_id"),
     )
     """Dictionary definition table."""
 
@@ -540,6 +538,9 @@ class DictionarySqliteStore:
                 )
             else:
                 raise
+        connection.execute(
+            text("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
+        )
 
     @staticmethod
     def _insert_definition(
