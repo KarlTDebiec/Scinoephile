@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from sys import stdin, stdout
 
-from scinoephile.common.exception import NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 
