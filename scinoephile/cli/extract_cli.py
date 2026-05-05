@@ -94,7 +94,7 @@ class ExtractCli(ScinoephileCliBase):
             "--output-dir",
             dest="output_dir_path",
             default=None,
-            type=output_dir_arg(),
+            type=output_dir_arg(create=False),
             help="directory to which matching subtitles will be extracted or mapped",
         )
         arg_groups["output arguments"].add_argument(
@@ -131,6 +131,8 @@ class ExtractCli(ScinoephileCliBase):
             parser.error("--extract-sup requires --export")
         if overwrite and not export:
             parser.error("--overwrite requires --export")
+        if export and output_dir_path is not None:
+            output_dir_path.mkdir(parents=True, exist_ok=True)
         language_codes = set(languages)
 
         # Perform operations
@@ -244,15 +246,16 @@ class ExtractCli(ScinoephileCliBase):
 
         # Determine output path
         outfile_path = output_dir_path / infile_path.name
+        outfile_is_infile = outfile_path.resolve() == infile_path.resolve()
 
         # Output, if applicable
         if outfile_path.exists():
-            if overwrite:
+            if overwrite and not outfile_is_infile:
                 copy2(infile_path, outfile_path)
             print(f"[x] {stream.description} -> {outfile_path}")
         else:
             print(f"[ ] {stream.description} -> {outfile_path}")
-            if export:
+            if export and not outfile_is_infile:
                 copy2(infile_path, outfile_path)
                 print(f"[x] {stream.description} -> {outfile_path}")
 

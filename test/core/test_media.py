@@ -7,6 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+import pytest
+
+from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
@@ -95,3 +98,18 @@ def test_extract_subtitle_stream_runs_ffmpeg(tmp_path: Path):
         map="0:2",
         **{"c:s": "subrip"},
     )
+
+
+def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
+    """Test single-stream extraction rejects unknown subtitle codecs."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    outfile_path = tmp_path / "subtitles" / "eng-2.srt"
+    outfile_path.parent.mkdir()
+
+    with pytest.raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
+        extract_subtitle_stream(
+            infile_path=infile_path,
+            stream=SubtitleStream(index=2, language="eng", codec_name="unknown"),
+            outfile_path=outfile_path,
+        )

@@ -7,6 +7,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from scinoephile.core.exceptions import ScinoephileError
+
 from .constants import SUBTITLE_CODEC_OUTPUTS
 
 __all__ = ["SubtitleStream"]
@@ -57,7 +59,9 @@ class SubtitleStream:
     @property
     def extension(self) -> str:
         """File extension to use for extracted subtitles."""
-        return SUBTITLE_CODEC_OUTPUTS.get(self.codec_name, ("srt", "copy"))[0]
+        if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
+            raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
+        return SUBTITLE_CODEC_OUTPUTS[self.codec_name][0]
 
     @property
     def outfile_filename(self) -> str:
@@ -75,7 +79,9 @@ class SubtitleStream:
     @property
     def output_codec(self) -> str:
         """Ffmpeg subtitle codec to use for extracted subtitles."""
-        return SUBTITLE_CODEC_OUTPUTS.get(self.codec_name, ("srt", "copy"))[1]
+        if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
+            raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
+        return SUBTITLE_CODEC_OUTPUTS[self.codec_name][1]
 
     @classmethod
     def from_ffprobe_stream(cls, stream: dict[str, Any]) -> SubtitleStream | None:

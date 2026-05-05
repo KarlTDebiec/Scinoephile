@@ -132,6 +132,30 @@ def test_extract_cli_lists_with_output_dir(tmp_path: Path):
     extract.assert_not_called()
 
 
+def test_extract_cli_lists_with_missing_output_dir_without_creating_it(tmp_path: Path):
+    """Test extract CLI lists missing output paths without creating output dir."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+
+    with (
+        patch(
+            "scinoephile.cli.extract_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(index=2, language="eng", codec_name="subrip"),
+            ],
+        ),
+        patch("scinoephile.cli.extract_cli.extract_subtitle_stream") as extract,
+    ):
+        run_cli_with_args(
+            ExtractCli,
+            f"--infile {infile_path} --languages eng -o {output_dir_path}",
+        )
+
+    assert not output_dir_path.exists()
+    extract.assert_not_called()
+
+
 def test_extract_cli_overwrites_existing_file(tmp_path: Path):
     """Test extract CLI overwrite exports existing matching streams."""
     infile_path = tmp_path / "video.mkv"
@@ -230,6 +254,39 @@ def test_extract_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
         infile_path.resolve(),
         output_dir_path.resolve() / "source.sup",
     )
+
+
+def test_extract_cli_extracts_sup_file_to_image_dir_in_place(tmp_path: Path):
+    """Test extract CLI converts SUP input files in place without self-copying."""
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+    image_series = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.extract_cli.ImageSeries.load",
+            return_value=image_series,
+        ) as load,
+        patch("scinoephile.cli.extract_cli.copy2") as copy,
+        patch(
+            "scinoephile.cli.extract_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=0,
+                    language=None,
+                    codec_name="hdmv_pgs_subtitle",
+                ),
+            ],
+        ),
+    ):
+        run_cli_with_args(
+            ExtractCli,
+            f"--infile {infile_path} -o {tmp_path} --export --extract-sup --overwrite",
+        )
+
+    copy.assert_not_called()
+    load.assert_called_once_with(infile_path.resolve())
+    image_series.save.assert_called_once_with(tmp_path.resolve() / "source")
 
 
 def test_extract_cli_rejects_sup_file_without_subtitle_streams(tmp_path: Path):
