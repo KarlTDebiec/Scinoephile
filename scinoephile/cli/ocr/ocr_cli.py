@@ -18,6 +18,16 @@ __all__ = ["OcrCli"]
 class OcrCli(ScinoephileCliBase):
     """Recognize text from image-based subtitles."""
 
+    localizations = {
+        "zh-hans": {
+            "Recognize text from image-based subtitles.": "识别图像字幕中的文本。",
+        },
+        "zh-hant": {
+            "Recognize text from image-based subtitles.": "識別影像字幕中的文字。",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
+
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.
