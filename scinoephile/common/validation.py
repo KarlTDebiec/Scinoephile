@@ -13,7 +13,7 @@ from platform import system
 from shutil import which
 from typing import Any, TypeAliasType, get_args, overload
 
-from .exception import (
+from .exceptions import (
     ArgumentConflictError,
     DirectoryNotFoundError,
     ExecutableNotFoundError,

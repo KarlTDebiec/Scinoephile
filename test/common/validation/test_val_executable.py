@@ -9,7 +9,7 @@ from platform import system
 
 import pytest
 
-from scinoephile.common.exception import (
+from scinoephile.common.exceptions import (
     ExecutableNotFoundError,
     UnsupportedPlatformError,
 )
