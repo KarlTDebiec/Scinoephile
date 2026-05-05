@@ -29,7 +29,7 @@ def test_get_subtitle_streams(tmp_path: Path):
                     "index": 2,
                     "codec_type": "subtitle",
                     "codec_name": "subrip",
-                    "tags": {"language": "eng", "title": "English"},
+                    "tags": {"language": "ENG", "title": "English"},
                     "disposition": {"forced": 0, "hearing_impaired": 1},
                     "nb_read_packets": "123",
                 },
@@ -47,6 +47,10 @@ def test_get_subtitle_streams(tmp_path: Path):
     assert streams[0].subtitle_count == 123
     assert streams[0].extension == "srt"
     assert streams[0].output_codec == "subrip"
+    assert streams[0].description == (
+        "Stream #0:2(eng): Subtitle: subrip "
+        "(extension=srt, title=English, sdh, subtitles=123)"
+    )
 
 
 def test_extract_subtitles_filters_languages_and_runs_ffmpeg(tmp_path: Path):

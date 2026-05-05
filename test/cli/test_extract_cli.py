@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -160,6 +160,69 @@ def test_extract_cli_overwrites_existing_file(tmp_path: Path):
     assert extract.call_args.args[2] == outfile_path.resolve()
 
 
+def test_extract_cli_extracts_sup_streams_to_image_dirs(tmp_path: Path):
+    """Test extract CLI converts SUP streams and extracts non-SUP streams."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+    image_series = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.extract_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(index=2, language="eng", codec_name="subrip"),
+                SubtitleStream(index=3, language="zho", codec_name="hdmv_pgs_subtitle"),
+            ],
+        ),
+        patch("scinoephile.cli.extract_cli.extract_subtitle_stream") as extract,
+        patch(
+            "scinoephile.cli.extract_cli.ImageSeries.load",
+            return_value=image_series,
+        ) as load,
+    ):
+        run_cli_with_args(
+            ExtractCli,
+            f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
+            "--export --extract-sup",
+        )
+
+    assert extract.call_count == 2
+    assert extract.call_args_list[0].args[2] == output_dir_path.resolve() / "eng-2.srt"
+    assert extract.call_args_list[1].args[2] == output_dir_path.resolve() / "zho-3.sup"
+    load.assert_called_once_with(output_dir_path.resolve() / "zho-3.sup")
+    image_series.save.assert_called_once_with(output_dir_path.resolve() / "zho-3")
+
+
+def test_extract_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
+    """Test extract CLI converts SUP input files and copies the source."""
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+    image_series = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.extract_cli.ImageSeries.load",
+            return_value=image_series,
+        ) as load,
+        patch("scinoephile.cli.extract_cli.copy2") as copy,
+        patch("scinoephile.cli.extract_cli.get_subtitle_streams") as get_streams,
+    ):
+        run_cli_with_args(
+            ExtractCli,
+            f"--infile {infile_path} -o {output_dir_path} --export --extract-sup",
+        )
+
+    get_streams.assert_not_called()
+    load.assert_called_once_with(infile_path.resolve())
+    image_series.save.assert_called_once_with(output_dir_path.resolve() / "source")
+    copy.assert_called_once_with(
+        infile_path.resolve(),
+        output_dir_path.resolve() / "source.sup",
+    )
+
+
 def test_extract_cli_export_requires_output_dir(tmp_path: Path):
     """Test extract CLI rejects export without output directory."""
     infile_path = tmp_path / "video.mkv"
@@ -167,6 +230,21 @@ def test_extract_cli_export_requires_output_dir(tmp_path: Path):
 
     with pytest.raises(SystemExit) as excinfo:
         run_cli_with_args(ExtractCli, f"--infile {infile_path} --export")
+
+    assert excinfo.value.code == 2
+
+
+def test_extract_cli_extract_sup_requires_export(tmp_path: Path):
+    """Test extract CLI rejects SUP extraction without export."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+
+    with pytest.raises(SystemExit) as excinfo:
+        run_cli_with_args(
+            ExtractCli,
+            f"--infile {infile_path} -o {output_dir_path} --extract-sup",
+        )
 
     assert excinfo.value.code == 2
 

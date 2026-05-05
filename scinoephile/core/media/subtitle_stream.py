@@ -31,6 +31,29 @@ class SubtitleStream:
     subtitle_count: int | None = None
     """Number of subtitle packets in stream, when available."""
 
+    def __post_init__(self):
+        """Normalize stream metadata."""
+        if self.language is not None:
+            object.__setattr__(self, "language", self.language.lower())
+
+    @property
+    def description(self) -> str:
+        """Human-readable stream description."""
+        description = (
+            f"Stream #0:{self.index}({self.language or 'und'}): Subtitle: "
+            f"{self.codec_name}"
+        )
+        details = [f"extension={self.extension}"]
+        if self.title is not None:
+            details.append(f"title={self.title}")
+        if self.forced:
+            details.append("forced")
+        if self.sdh:
+            details.append("sdh")
+        if self.subtitle_count is not None:
+            details.append(f"subtitles={self.subtitle_count}")
+        return f"{description} ({', '.join(details)})"
+
     @property
     def extension(self) -> str:
         """File extension to use for extracted subtitles."""
