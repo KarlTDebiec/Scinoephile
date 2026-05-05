@@ -14,6 +14,7 @@ from .analysis import AnalysisCli
 from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
+from .ocr import OcrCli
 from .optimization import OptimizationCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
@@ -104,6 +105,7 @@ class ScinoephileCli(ScinoephileCliBase):
             CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            OcrCli.name(): OcrCli,
             OptimizationCli.name(): OptimizationCli,
             SyncCli.name(): SyncCli,
             TimewarpCli.name(): TimewarpCli,

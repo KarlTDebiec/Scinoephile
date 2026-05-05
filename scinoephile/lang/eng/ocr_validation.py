@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.image.ocr import ValidationManager
+from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["validate_eng_ocr"]
