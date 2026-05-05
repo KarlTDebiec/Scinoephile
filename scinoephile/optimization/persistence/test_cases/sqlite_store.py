@@ -29,37 +29,13 @@ from sqlalchemy.exc import OperationalError
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.llms.operation_spec import OperationSpec
-from scinoephile.core.optimization import (
-    get_prefixed_payload,
-    get_unprefixed_payload,
-)
+from scinoephile.core.optimization import get_prefixed_payload, get_unprefixed_payload
 
 from .persisted_test_case import PersistedTestCase
 
 __all__ = ["TestCaseSqliteStore"]
 
 logger = getLogger(__name__)
-
-
-_metadata = MetaData()
-"""SQLAlchemy Core metadata for optimization test case persistence."""
-
-_test_case_sources = Table(
-    "test_case_sources",
-    _metadata,
-    Column("table_name", Text, nullable=False),
-    Column("test_case_id", Text, nullable=False),
-    Column("source_path", Text, nullable=False),
-    UniqueConstraint(
-        "table_name",
-        "test_case_id",
-        "source_path",
-        sqlite_on_conflict="IGNORE",
-    ),
-    Index("test_case_sources_source_path", "source_path"),
-    Index("test_case_sources_table_name", "table_name"),
-)
-"""SQLAlchemy Core table for test case source links."""
 
 
 class TestCaseSqliteStore:
@@ -70,6 +46,26 @@ class TestCaseSqliteStore:
 
     schema_version = 2
     """SQLite schema version."""
+
+    _metadata = MetaData()
+    """SQLAlchemy Core metadata for this store's fixed schema objects."""
+
+    _test_case_sources = Table(
+        "test_case_sources",
+        _metadata,
+        Column("table_name", Text, nullable=False),
+        Column("test_case_id", Text, nullable=False),
+        Column("source_path", Text, nullable=False),
+        UniqueConstraint(
+            "table_name",
+            "test_case_id",
+            "source_path",
+            sqlite_on_conflict="IGNORE",
+        ),
+        Index("test_case_sources_source_path", "source_path"),
+        Index("test_case_sources_table_name", "table_name"),
+    )
+    """Source-link table shared by all dynamic test case tables."""
 
     def __init__(
         self,
@@ -100,7 +96,7 @@ class TestCaseSqliteStore:
         self.database_path = val_output_path(self.database_path, exist_ok=True)
         with self.engine.begin() as connection:
             connection.execute(text(f"PRAGMA user_version={self.schema_version}"))
-            _test_case_sources.create(connection, checkfirst=True)
+            self._test_case_sources.create(connection, checkfirst=True)
 
     def ensure_table(self, table_name: str):
         """Ensure a test case table exists.
@@ -165,14 +161,14 @@ class TestCaseSqliteStore:
                     connection.execute(
                         select(table)
                         .join(
-                            _test_case_sources,
-                            (_test_case_sources.c.table_name == table_name)
+                            self._test_case_sources,
+                            (self._test_case_sources.c.table_name == table_name)
                             & (
-                                _test_case_sources.c.test_case_id
+                                self._test_case_sources.c.test_case_id
                                 == table.c.test_case_id
                             ),
                         )
-                        .where(_test_case_sources.c.source_path == source_path)
+                        .where(self._test_case_sources.c.source_path == source_path)
                         .order_by(table.c.test_case_id)
                     )
                     .mappings()
@@ -196,10 +192,10 @@ class TestCaseSqliteStore:
             try:
                 rows = (
                     connection.execute(
-                        select(_test_case_sources.c.source_path)
+                        select(self._test_case_sources.c.source_path)
                         .distinct()
-                        .where(_test_case_sources.c.table_name == table_name)
-                        .order_by(_test_case_sources.c.source_path)
+                        .where(self._test_case_sources.c.table_name == table_name)
+                        .order_by(self._test_case_sources.c.source_path)
                     )
                     .scalars()
                     .all()
@@ -273,10 +269,10 @@ class TestCaseSqliteStore:
             table = self._get_test_case_table(table_name)
             with self.engine.begin() as connection:
                 connection.execute(
-                    _test_case_sources.delete().where(
-                        (_test_case_sources.c.table_name == table_name)
-                        & (_test_case_sources.c.source_path == source_path)
-                        & (_test_case_sources.c.test_case_id.in_(to_delete_ids))
+                    self._test_case_sources.delete().where(
+                        (self._test_case_sources.c.table_name == table_name)
+                        & (self._test_case_sources.c.source_path == source_path)
+                        & (self._test_case_sources.c.test_case_id.in_(to_delete_ids))
                     )
                 )
                 orphaned_ids = self._get_orphaned_test_case_ids(
@@ -342,7 +338,7 @@ class TestCaseSqliteStore:
 
                 for sp in merged_sources:
                     connection.execute(
-                        sqlite_insert(_test_case_sources)
+                        sqlite_insert(self._test_case_sources)
                         .values(
                             table_name=table_name,
                             test_case_id=tc.test_case_id,
@@ -372,9 +368,9 @@ class TestCaseSqliteStore:
             try:
                 rows = (
                     connection.execute(
-                        select(_test_case_sources.c.test_case_id).where(
-                            (_test_case_sources.c.table_name == table_name)
-                            & (_test_case_sources.c.source_path == source_path)
+                        select(self._test_case_sources.c.test_case_id).where(
+                            (self._test_case_sources.c.table_name == table_name)
+                            & (self._test_case_sources.c.source_path == source_path)
                         )
                     )
                     .scalars()
@@ -494,11 +490,11 @@ class TestCaseSqliteStore:
             return []
         rows = (
             connection.execute(
-                select(_test_case_sources.c.test_case_id)
+                select(TestCaseSqliteStore._test_case_sources.c.test_case_id)
                 .distinct()
                 .where(
-                    (_test_case_sources.c.table_name == table_name)
-                    & (_test_case_sources.c.test_case_id.in_(ids))
+                    (TestCaseSqliteStore._test_case_sources.c.table_name == table_name)
+                    & (TestCaseSqliteStore._test_case_sources.c.test_case_id.in_(ids))
                 )
             )
             .scalars()
@@ -638,12 +634,18 @@ class TestCaseSqliteStore:
         try:
             rows = (
                 connection.execute(
-                    select(_test_case_sources.c.source_path)
+                    select(TestCaseSqliteStore._test_case_sources.c.source_path)
                     .where(
-                        (_test_case_sources.c.table_name == table_name)
-                        & (_test_case_sources.c.test_case_id == test_case_id)
+                        (
+                            TestCaseSqliteStore._test_case_sources.c.table_name
+                            == table_name
+                        )
+                        & (
+                            TestCaseSqliteStore._test_case_sources.c.test_case_id
+                            == test_case_id
+                        )
                     )
-                    .order_by(_test_case_sources.c.source_path)
+                    .order_by(TestCaseSqliteStore._test_case_sources.c.source_path)
                 )
                 .scalars()
                 .all()

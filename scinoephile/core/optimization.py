@@ -6,6 +6,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+_DatabaseValue = str | int | float | bytes | None
+"""Scalar value loaded from a SQL database row."""
+
 __all__ = [
     "get_prefixed_payload",
     "get_unprefixed_payload",
@@ -25,7 +28,7 @@ def get_prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
     return {f"{prefix}__{key}": value for key, value in sorted(payload.items())}
 
 
-def get_unprefixed_payload(row: Mapping[str, object], prefix: str) -> dict:
+def get_unprefixed_payload(row: Mapping[str, _DatabaseValue], prefix: str) -> dict:
     """Get a nested payload from row columns matching a prefix.
 
     Arguments:
