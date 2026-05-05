@@ -18,7 +18,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exception import DirectoryNotFoundError
+from scinoephile.common.exceptions import DirectoryNotFoundError
 
 
 def test_float_arg():

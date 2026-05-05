@@ -13,7 +13,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_dir_arg,
 )
-from scinoephile.common.exception import NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.ocr_validation import validate_zho_ocr

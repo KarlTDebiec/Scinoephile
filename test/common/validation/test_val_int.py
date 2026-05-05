@@ -8,7 +8,7 @@ from typing import Any, cast
 
 import pytest
 
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.common.validation import val_int
 
 

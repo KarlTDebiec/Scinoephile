@@ -14,7 +14,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
-from .exception import NotAFileError
+from .exceptions import NotAFileError
 from .validation import (
     val_float,
     val_input_dir_path,

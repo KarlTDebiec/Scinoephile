@@ -18,7 +18,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.common.exception import DirectoryNotFoundError
+from scinoephile.common.exceptions import DirectoryNotFoundError
 from scinoephile.common.validation import val_input_dir_path
 
 
