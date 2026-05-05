@@ -24,8 +24,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.sqlite import Insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
-from sqlalchemy.engine import Connection, RowMapping
+from sqlalchemy.engine import URL, Connection, RowMapping
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.pool import NullPool
 
 from scinoephile.common.validation import val_output_path
 from scinoephile.core.llms.operation_spec import OperationSpec
@@ -89,7 +90,11 @@ class TestCaseSqliteStore:
             self.list_fields = dict(operation_spec.list_fields)
         else:
             self.list_fields = {}
-        self.engine = create_engine(f"sqlite:///{self.database_path}", future=True)
+        self.engine = create_engine(
+            URL.create("sqlite", database=str(self.database_path)),
+            future=True,
+            poolclass=NullPool,
+        )
 
     def create_schema(self):
         """Create SQLite schema if needed."""
@@ -331,7 +336,9 @@ class TestCaseSqliteStore:
                 connection.execute(
                     insert_statement.on_conflict_do_update(
                         index_elements=[table.c.test_case_id],
-                        set_=self._get_upsert_update_values(table, insert_statement),
+                        set_=self._get_upsert_update_values(
+                            table, insert_statement, payload
+                        ),
                     )
                 )
                 touched += 1
@@ -702,19 +709,25 @@ class TestCaseSqliteStore:
         return table
 
     @staticmethod
-    def _get_upsert_update_values(table: Table, insert_statement: Insert) -> dict:
+    def _get_upsert_update_values(
+        table: Table,
+        insert_statement: Insert,
+        payload: dict[str, object],
+    ) -> dict:
         """Get update values for a SQLite upsert.
 
         Arguments:
             table: SQLAlchemy Core table
             insert_statement: SQLite insert statement
+            payload: payload being inserted
         Returns:
             update value mapping
         """
         update_values = {}
-        for column in table.c:
-            if column.name == "test_case_id":
+        for column_name in payload:
+            if column_name == "test_case_id":
                 continue
+            column = table.c[column_name]
             if column.name in {"difficulty", "prompt", "verified"}:
                 update_values[column.name] = func.max(
                     column, insert_statement.excluded[column.name]
