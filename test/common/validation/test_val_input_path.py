@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.common.exception import NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path
 
 

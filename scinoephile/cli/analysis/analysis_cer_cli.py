@@ -10,7 +10,7 @@ from typing import ClassVar
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
