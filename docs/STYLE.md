@@ -91,6 +91,9 @@
 * CLI modules should support localization by defining a `localizations` mapping when
   the repository's CLI base supports it, and writing `help`, `description`, and
   argument-group titles using stable English strings that can be translated.
+  * User-facing CLI help for the full command tree must have both `zh-hans`
+    (`zho-Hans`) and `zh-hant` (`zho-Hant`) translations; do not leave new
+    descriptions, argument help, or group titles to fall back to English.
 
 ## Testing
 * Test modules do **not** need `__init__.py` files. Pytest can discover tests without them.

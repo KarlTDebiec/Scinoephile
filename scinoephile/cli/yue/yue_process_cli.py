@@ -46,6 +46,9 @@ class YueProcessCli(ScinoephileCliBase):
         {
             "zh-hans": {
                 "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隐藏字幕标注及其他异常"
+                ),
                 "command-line interface for written Cantonese subtitle processing": (
                     "书面粤语字幕处理命令行界面"
                 ),
@@ -71,6 +74,9 @@ class YueProcessCli(ScinoephileCliBase):
             },
             "zh-hant": {
                 "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隱藏字幕標註及其他異常"
+                ),
                 "command-line interface for written Cantonese subtitle processing": (
                     "書面粵語字幕處理命令列介面"
                 ),

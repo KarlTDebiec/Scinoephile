@@ -74,15 +74,14 @@ class ScinoephileCliBase(CommandLineInterface):
         Returns:
             locale to source/target text mapping
         """
-        if cls is ScinoephileCliBase:
-            return cls.localizations
-        merged: dict[str, dict[str, str]] = {
-            locale_name: dict(locale_text)
-            for locale_name, locale_text in ScinoephileCliBase.localizations.items()
-        }
-        for locale_name, locale_text in cls.localizations.items():
-            merged.setdefault(locale_name, {})
-            merged[locale_name].update(locale_text)
+        merged: dict[str, dict[str, str]] = {}
+        for base_cls in reversed(cls.mro()):
+            if not issubclass(base_cls, ScinoephileCliBase):
+                continue
+            localizations = base_cls.__dict__.get("localizations", {})
+            for locale_name, locale_text in localizations.items():
+                merged.setdefault(locale_name, {})
+                merged[locale_name].update(locale_text)
         return merged
 
     @classmethod

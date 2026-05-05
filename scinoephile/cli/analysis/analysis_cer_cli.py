@@ -61,7 +61,11 @@ class AnalysisCerCli(ScinoephileCliBase):
             parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
-        arg_groups = get_arg_groups_by_name(parser, "input arguments")
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "input arguments",
+            optional_arguments_name="additional arguments",
+        )
 
         # Input arguments
         arg_groups["input arguments"].add_argument(

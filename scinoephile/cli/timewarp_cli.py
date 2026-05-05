@@ -26,13 +26,55 @@ class TimewarpCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
+            "1-based end index in anchor series (default: final subtitle)": (
+                "锚定序列中的结束索引，从 1 开始（默认：最后一条字幕）"
+            ),
+            "1-based end index in moving series (default: final subtitle)": (
+                "待调整序列中的结束索引，从 1 开始（默认：最后一条字幕）"
+            ),
+            "1-based start index in anchor series (default: 1)": (
+                "锚定序列中的起始索引，从 1 开始（默认：1）"
+            ),
+            "1-based start index in moving series (default: 1)": (
+                "待调整序列中的起始索引，从 1 开始（默认：1）"
+            ),
+            'mobile subtitle infile to be timewarped or "-" for stdin': (
+                '要调整时间轴的移动字幕输入文件，或使用 "-" 表示标准输入'
+            ),
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
             ),
+            'subtitle infile used as anchor timing reference or "-" for stdin': (
+                '作为锚定时间参考的字幕输入文件，或使用 "-" 表示标准输入'
+            ),
+            "timewarped subtitle outfile path (default: stdout)": (
+                "时间轴调整后字幕输出文件路径（默认：标准输出）"
+            ),
         },
         "zh-hant": {
+            "1-based end index in anchor series (default: final subtitle)": (
+                "錨定序列中的結束索引，從 1 開始（預設：最後一條字幕）"
+            ),
+            "1-based end index in moving series (default: final subtitle)": (
+                "待調整序列中的結束索引，從 1 開始（預設：最後一條字幕）"
+            ),
+            "1-based start index in anchor series (default: 1)": (
+                "錨定序列中的起始索引，從 1 開始（預設：1）"
+            ),
+            "1-based start index in moving series (default: 1)": (
+                "待調整序列中的起始索引，從 1 開始（預設：1）"
+            ),
+            'mobile subtitle infile to be timewarped or "-" for stdin': (
+                '要調整時間軸的移動字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
+            ),
+            'subtitle infile used as anchor timing reference or "-" for stdin': (
+                '作為錨定時間參考的字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
+            "timewarped subtitle outfile path (default: stdout)": (
+                "時間軸調整後字幕輸出檔路徑（預設：標準輸出）"
             ),
         },
     }
