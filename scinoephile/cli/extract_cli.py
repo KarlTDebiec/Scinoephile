@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from logging import getLogger
 from pathlib import Path
 from shutil import copy2
 
@@ -21,14 +20,11 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
-    get_subtitle_output_path,
     get_subtitle_streams,
 )
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["ExtractCli"]
-
-logger = getLogger(__name__)
 
 
 class ExtractCli(ScinoephileCliBase):
@@ -139,22 +135,32 @@ class ExtractCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            # SUP file inputs are converted directly to the requested output directory
-            if infile_path.suffix.lower() == ".sup" and extract_sup:
-                assert output_dir_path is not None
-                cls._extract_sup_file(infile_path, output_dir_path, overwrite)
+            if infile_path.suffix.lower() == ".sup":
+                streams = get_subtitle_streams(infile_path, counts=details)
+                if not streams:
+                    raise ScinoephileError(
+                        f"No subtitle streams found in {infile_path}"
+                    )
+                stream = streams[0]
+                cls._handle_sup(
+                    infile_path,
+                    stream,
+                    export,
+                    output_dir_path,
+                    extract_sup,
+                    overwrite,
+                )
                 return
 
             for stream in get_subtitle_streams(infile_path, counts=details):
-                # Stream language is missing or not requested
-                if stream.language is None or stream.language not in language_codes:
+                if stream.language not in language_codes:
                     continue
 
                 cls._handle_stream(
                     infile_path,
-                    output_dir_path,
                     stream,
                     export,
+                    output_dir_path,
                     extract_sup,
                     overwrite,
                 )
@@ -162,37 +168,11 @@ class ExtractCli(ScinoephileCliBase):
             parser.error(str(exc))
 
     @staticmethod
-    def _extract_sup_file(
-        infile_path: Path,
-        output_dir_path: Path,
-        overwrite: bool,
-    ):
-        """Convert a SUP file to an image subtitle directory and copy the source.
-
-        Arguments:
-            infile_path: SUP input file
-            output_dir_path: output image subtitle directory
-            overwrite: whether to overwrite existing outputs
-        """
-        output_sup_path = output_dir_path / infile_path.name
-        output_image_dir_path = output_dir_path / infile_path.stem
-        output_exists = output_sup_path.exists()
-        output_exists = output_exists or output_image_dir_path.exists()
-        if output_exists and not overwrite:
-            print(f"[x] SUP: {infile_path} -> {output_image_dir_path}")
-            return
-
-        ImageSeries.load(infile_path).save(output_image_dir_path)
-        copy2(infile_path, output_sup_path)
-        logger.info(f"Saved SUP to {output_sup_path}")
-        print(f"[ ] SUP: {infile_path} -> {output_image_dir_path}")
-
-    @staticmethod
     def _handle_stream(
         infile_path: Path,
-        output_dir_path: Path | None,
         stream: SubtitleStream,
         export: bool,
+        output_dir_path: Path | None,
         extract_sup: bool,
         overwrite: bool,
     ):
@@ -200,43 +180,94 @@ class ExtractCli(ScinoephileCliBase):
 
         Arguments:
             infile_path: media input file
-            output_dir_path: output subtitle directory, if provided
             stream: subtitle stream to extract
             export: whether to extract subtitles
-            extract_sup: whether to convert SUP subtitles to image directories
+            output_dir_path: output directory, if provided
+            extract_sup: whether to extract SUP subtitles
             overwrite: whether to overwrite existing outputs
         """
-        description = stream.description
-
+        # Not extracting anything
         if output_dir_path is None:
-            print(f"[ ] {description}")
+            print(f"[ ] {stream.description}")
             return
 
-        outfile_path = get_subtitle_output_path(output_dir_path, stream)
-        output_image_dir_path = None
-        if stream.extension == "sup":
+        # Determine output path
+        outfile_path = output_dir_path / stream.outfile_filename
+
+        # Output, if applicable
+        if outfile_path.exists():
+            if overwrite:
+                extract_subtitle_stream(infile_path, stream, outfile_path)
+            print(f"[x] {stream.description} -> {outfile_path}")
+        else:
+            print(f"[ ] {stream.description} -> {outfile_path}")
+            if export:
+                extract_subtitle_stream(infile_path, stream, outfile_path)
+                print(f"[x] {stream.description} -> {outfile_path}")
+
+        # Output directory, if applicable
+        if stream.extension == "sup" and extract_sup:
             output_image_dir_path = outfile_path.with_suffix("")
-        # Matching stream was already extracted
-        if outfile_path.exists() and not overwrite:
-            print(f"[x] {description} -> {outfile_path}")
-            return
-        if (
-            output_image_dir_path is not None
-            and output_image_dir_path.exists()
-            and not overwrite
-        ):
-            print(f"[x] {description} -> {outfile_path}")
+            if output_image_dir_path.exists():
+                if overwrite:
+                    ImageSeries.load(outfile_path).save(output_image_dir_path)
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+            else:
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+                if export:
+                    ImageSeries.load(outfile_path).save(output_image_dir_path)
+                    print(f"[x] {stream.description} -> {output_image_dir_path}")
+
+    @staticmethod
+    def _handle_sup(
+        infile_path: Path,
+        stream: SubtitleStream,
+        export: bool,
+        output_dir_path: Path | None,
+        extract_sup: bool,
+        overwrite: bool,
+    ):
+        """Handle sup file.
+
+        Arguments:
+            infile_path: media input file
+            stream: subtitle stream to extract
+            export: whether to extract subtitles
+            output_dir_path: output directory, if provided
+            extract_sup: whether to extract SUP subtitles
+            overwrite: whether to overwrite existing outputs
+        """
+        # Not extracting anything
+        if output_dir_path is None:
+            print(f"[ ] {stream.description}")
             return
 
-        # Matching stream should be extracted
-        print(f"[ ] {description} -> {outfile_path}")
-        if not export:
-            return
+        # Determine output path
+        outfile_path = output_dir_path / infile_path.name
 
-        extract_subtitle_stream(infile_path, stream, outfile_path)
-        if extract_sup and output_image_dir_path is not None:
-            ImageSeries.load(outfile_path).save(output_image_dir_path)
-            print(f"[ ] SUP: {outfile_path} -> {output_image_dir_path}")
+        # Output, if applicable
+        if outfile_path.exists():
+            if overwrite:
+                copy2(infile_path, outfile_path)
+            print(f"[x] {stream.description} -> {outfile_path}")
+        else:
+            print(f"[ ] {stream.description} -> {outfile_path}")
+            if export:
+                copy2(infile_path, outfile_path)
+                print(f"[x] {stream.description} -> {outfile_path}")
+
+        # Output directory, if applicable
+        if stream.extension == "sup" and extract_sup:
+            output_image_dir_path = output_dir_path / infile_path.stem
+            if output_image_dir_path.exists():
+                if overwrite:
+                    ImageSeries.load(outfile_path).save(output_image_dir_path)
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+            else:
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+                if export:
+                    ImageSeries.load(outfile_path).save(output_image_dir_path)
+                    print(f"[x] {stream.description} -> {output_image_dir_path}")
 
 
 if __name__ == "__main__":

@@ -207,20 +207,46 @@ def test_extract_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
             return_value=image_series,
         ) as load,
         patch("scinoephile.cli.extract_cli.copy2") as copy,
-        patch("scinoephile.cli.extract_cli.get_subtitle_streams") as get_streams,
+        patch(
+            "scinoephile.cli.extract_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=0,
+                    language=None,
+                    codec_name="hdmv_pgs_subtitle",
+                ),
+            ],
+        ) as get_streams,
     ):
         run_cli_with_args(
             ExtractCli,
             f"--infile {infile_path} -o {output_dir_path} --export --extract-sup",
         )
 
-    get_streams.assert_not_called()
-    load.assert_called_once_with(infile_path.resolve())
+    get_streams.assert_called_once_with(infile_path.resolve(), counts=False)
+    load.assert_called_once_with(output_dir_path.resolve() / "source.sup")
     image_series.save.assert_called_once_with(output_dir_path.resolve() / "source")
     copy.assert_called_once_with(
         infile_path.resolve(),
         output_dir_path.resolve() / "source.sup",
     )
+
+
+def test_extract_cli_rejects_sup_file_without_subtitle_streams(tmp_path: Path):
+    """Test extract CLI rejects SUP input files without subtitle streams."""
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.cli.extract_cli.get_subtitle_streams",
+            return_value=[],
+        ),
+        pytest.raises(SystemExit) as excinfo,
+    ):
+        run_cli_with_args(ExtractCli, f"--infile {infile_path}")
+
+    assert excinfo.value.code == 2
 
 
 def test_extract_cli_export_requires_output_dir(tmp_path: Path):

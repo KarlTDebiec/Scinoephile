@@ -60,6 +60,19 @@ class SubtitleStream:
         return SUBTITLE_CODEC_OUTPUTS.get(self.codec_name, ("srt", "copy"))[0]
 
     @property
+    def outfile_filename(self) -> str:
+        """Filename to use when extracting this subtitle stream.
+
+        Raises:
+            ValueError: if the stream has no language tag
+        """
+        if self.language is None:
+            raise ValueError(
+                "Subtitle stream must have a language to build output path"
+            )
+        return f"{self.language}-{self.index}.{self.extension}"
+
+    @property
     def output_codec(self) -> str:
         """Ffmpeg subtitle codec to use for extracted subtitles."""
         return SUBTITLE_CODEC_OUTPUTS.get(self.codec_name, ("srt", "copy"))[1]
@@ -96,6 +109,12 @@ class SubtitleStream:
         if not isinstance(title, str):
             title = None
 
+        subtitle_count = stream.get("nb_read_packets")
+        if isinstance(subtitle_count, int | str):
+            subtitle_count = int(subtitle_count)
+        else:
+            subtitle_count = None
+
         return cls(
             index=int(stream["index"]),
             language=language,
@@ -103,18 +122,5 @@ class SubtitleStream:
             title=title,
             forced=bool(disposition.get("forced")),
             sdh=bool(disposition.get("hearing_impaired")),
-            subtitle_count=cls._get_optional_int(stream.get("nb_read_packets")),
+            subtitle_count=subtitle_count,
         )
-
-    @staticmethod
-    def _get_optional_int(value: object) -> int | None:
-        """Get an integer value if one is present.
-
-        Arguments:
-            value: value to inspect
-        Returns:
-            integer or None
-        """
-        if isinstance(value, int | str):
-            return int(value)
-        return None

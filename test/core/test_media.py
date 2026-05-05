@@ -10,7 +10,6 @@ from unittest.mock import Mock, patch
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
-    extract_subtitles,
     get_subtitle_streams,
 )
 
@@ -53,65 +52,23 @@ def test_get_subtitle_streams(tmp_path: Path):
     )
 
 
-def test_extract_subtitles_filters_languages_and_runs_ffmpeg(tmp_path: Path):
-    """Test subtitle extraction filters by language and maps matching streams."""
-    infile_path = tmp_path / "video.mkv"
-    infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
-    ffmpeg_input = Mock()
+def test_subtitle_stream_outfile_filename():
+    """Test subtitle stream output filename generation."""
+    stream = SubtitleStream(index=2, language="eng", codec_name="subrip")
 
-    with (
-        patch(
-            "scinoephile.core.media.subtitles.ffmpeg.probe",
-            return_value={
-                "streams": [
-                    {
-                        "index": 2,
-                        "codec_type": "subtitle",
-                        "codec_name": "subrip",
-                        "tags": {"language": "eng"},
-                    },
-                    {
-                        "index": 3,
-                        "codec_type": "subtitle",
-                        "codec_name": "ass",
-                        "tags": {"language": "jpn"},
-                    },
-                    {
-                        "index": 4,
-                        "codec_type": "subtitle",
-                        "codec_name": "hdmv_pgs_subtitle",
-                        "tags": {"language": "zho"},
-                    },
-                ],
-            },
-        ),
-        patch(
-            "scinoephile.core.media.subtitles.ffmpeg.input",
-            return_value=ffmpeg_input,
-        ),
-    ):
-        extracted_paths = extract_subtitles(
-            infile_path=infile_path,
-            languages=["eng", "zho"],
-            output_dir_path=output_dir_path,
-        )
+    assert stream.outfile_filename == "eng-2.srt"
 
-    assert extracted_paths == [
-        output_dir_path / "eng-2.srt",
-        output_dir_path / "zho-4.sup",
-    ]
-    ffmpeg_input.output.assert_any_call(
-        str(output_dir_path / "eng-2.srt"),
-        map="0:2",
-        **{"c:s": "subrip"},
-    )
-    ffmpeg_input.output.assert_any_call(
-        str(output_dir_path / "zho-4.sup"),
-        map="0:4",
-        **{"c:s": "copy"},
-    )
-    assert ffmpeg_input.output.return_value.run.call_count == 2
+
+def test_subtitle_stream_outfile_filename_requires_language():
+    """Test subtitle stream output filename rejects missing language."""
+    stream = SubtitleStream(index=2, language=None, codec_name="subrip")
+
+    try:
+        stream.outfile_filename
+    except ValueError as exc:
+        assert str(exc) == "Subtitle stream must have a language to build output path"
+    else:
+        raise AssertionError("Expected ValueError")
 
 
 def test_extract_subtitle_stream_runs_ffmpeg(tmp_path: Path):
