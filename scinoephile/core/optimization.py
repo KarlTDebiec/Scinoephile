@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-import sqlite3
+from collections.abc import Mapping
 
 __all__ = [
     "get_prefixed_payload",
@@ -25,11 +25,11 @@ def get_prefixed_payload(prefix: str, payload: dict) -> dict[str, object]:
     return {f"{prefix}__{key}": value for key, value in sorted(payload.items())}
 
 
-def get_unprefixed_payload(row: sqlite3.Row, prefix: str) -> dict:
+def get_unprefixed_payload(row: Mapping[str, object], prefix: str) -> dict:
     """Get a nested payload from row columns matching a prefix.
 
     Arguments:
-        row: SQLite row
+        row: database row mapping
         prefix: column prefix
     Returns:
         nested payload
