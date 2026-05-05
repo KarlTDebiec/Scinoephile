@@ -21,6 +21,34 @@ __all__ = ["CacheClearCli"]
 class CacheClearCli(ScinoephileCliBase):
     """Clear cache entries."""
 
+    localizations = {
+        "zh-hans": {
+            "cache namespace to clear": "要清除的缓存命名空间",
+            "cache root directory to inspect (default: %(default)s)": (
+                "要检查的缓存根目录（默认：%(default)s）"
+            ),
+            "clear cache entries": "清除缓存条目",
+            "clear every discovered namespace": "清除所有发现的命名空间",
+            "confirm destructive deletion": "确认破坏性删除",
+            "show what would be deleted without deleting files": (
+                "显示将删除的内容但不删除文件"
+            ),
+        },
+        "zh-hant": {
+            "cache namespace to clear": "要清除的快取命名空間",
+            "cache root directory to inspect (default: %(default)s)": (
+                "要檢查的快取根目錄（預設：%(default)s）"
+            ),
+            "clear cache entries": "清除快取條目",
+            "clear every discovered namespace": "清除所有發現的命名空間",
+            "confirm destructive deletion": "確認破壞性刪除",
+            "show what would be deleted without deleting files": (
+                "顯示將刪除的內容但不刪除檔案"
+            ),
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
+
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.

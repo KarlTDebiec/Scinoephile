@@ -21,6 +21,12 @@ __all__ = ["CacheCli"]
 class CacheCli(ScinoephileCliBase):
     """Inspect and invalidate local caches."""
 
+    localizations = {
+        "zh-hans": {"inspect and invalidate local caches": "检查并清除本地缓存"},
+        "zh-hant": {"inspect and invalidate local caches": "檢查並清除本機快取"},
+    }
+    """Localized help text keyed by locale and English source text."""
+
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.

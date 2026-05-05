@@ -12,7 +12,41 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core.cli import ScinoephileCliBase
+
+
+def test_all_cli_help_text_has_chinese_localizations():
+    """Test every CLI help path has Simplified and Traditional localizations."""
+    missing: set[tuple[str, str, str]] = set()
+    original_translate_text = ScinoephileCliBase.translate_text.__func__
+
+    def recording_translate_text(
+        cls: type[ScinoephileCliBase], text: str | None
+    ) -> str:
+        """Record untranslated help text while preserving normal localization."""
+        translated = original_translate_text(cls, text)
+        if (
+            text
+            and ScinoephileCliBase.locale_name != "en"
+            and translated == text
+            and _is_translatable_help_text(text)
+        ):
+            missing.add((cls.__name__, ScinoephileCliBase.locale_name, text))
+        return translated
+
+    with patch.object(
+        ScinoephileCliBase,
+        "translate_text",
+        classmethod(recording_translate_text),
+    ):
+        for locale_name in ("zh-hans", "zh-hant"):
+            with patch.dict(environ, {"LC_ALL": locale_name}):
+                for subcommand in _get_help_subcommands(ScinoephileCli):
+                    _run_help(f"{subcommand} --help".strip())
+
+    assert sorted(missing) == []
 
 
 @pytest.mark.parametrize(
@@ -228,3 +262,37 @@ def _run_help(args: str) -> str:
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     return stdout.getvalue()
+
+
+def _get_help_subcommands(
+    cli: type[CommandLineInterface], prefix: tuple[str, ...] = ()
+) -> list[str]:
+    """Get every subcommand path that exposes help text.
+
+    Arguments:
+        cli: CLI class to inspect
+        prefix: subcommand path leading to the CLI class
+    Returns:
+        CLI subcommand paths, with an empty string for the root command
+    """
+    subcommands = getattr(cli, "subcommands", None)
+    if subcommands is None:
+        return [" ".join(prefix)]
+
+    help_subcommands = [" ".join(prefix)]
+    for name, subcommand in sorted(subcommands().items()):
+        help_subcommands.extend(_get_help_subcommands(subcommand, (*prefix, name)))
+    return help_subcommands
+
+
+def _is_translatable_help_text(text: str) -> bool:
+    """Return whether help text should have a locale-specific translation.
+
+    Arguments:
+        text: help text under translation
+    Returns:
+        whether the text is user-facing prose or a help group title
+    """
+    return any(
+        character.isascii() and character.isalpha() for character in text
+    ) and not any("\u4e00" <= character <= "\u9fff" for character in text)

@@ -41,16 +41,40 @@ class ZhoFuseCli(ScinoephileCliBase):
     localizations = merge_conversion_localizations(
         {
             "zh-hans": {
+                "clean both OCR inputs before fusion (default: disabled)": (
+                    "融合前清理两个 OCR 输入（默认：禁用）"
+                ),
                 "command-line interface for standard Chinese OCR subtitle fusion": (
                     "标准中文 OCR 字幕融合命令行界面"
+                ),
+                "Fuse OCR output from Google Lens and PaddleOCR": (
+                    "融合 Google Lens 与 PaddleOCR 的 OCR 输出"
+                ),
+                'Standard Chinese subtitles OCRed using Google Lens or "-" for stdin': (
+                    '使用 Google Lens 识别的标准中文字幕，或使用 "-" 表示标准输入'
+                ),
+                'Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin': (
+                    '使用 PaddleOCR 识别的标准中文字幕，或使用 "-" 表示标准输入'
                 ),
                 "Standard Chinese subtitle outfile path (default: stdout)": (
                     "标准中文字幕输出文件路径（默认：标准输出）"
                 ),
             },
             "zh-hant": {
+                "clean both OCR inputs before fusion (default: disabled)": (
+                    "融合前清理兩個 OCR 輸入（預設：停用）"
+                ),
                 "command-line interface for standard Chinese OCR subtitle fusion": (
                     "標準中文 OCR 字幕融合命令列介面"
+                ),
+                "Fuse OCR output from Google Lens and PaddleOCR": (
+                    "融合 Google Lens 與 PaddleOCR 的 OCR 輸出"
+                ),
+                'Standard Chinese subtitles OCRed using Google Lens or "-" for stdin': (
+                    '使用 Google Lens 識別的標準中文字幕，或使用 "-" 代表標準輸入'
+                ),
+                'Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin': (
+                    '使用 PaddleOCR 識別的標準中文字幕，或使用 "-" 代表標準輸入'
                 ),
                 "Standard Chinese subtitle outfile path (default: stdout)": (
                     "標準中文字幕輸出檔路徑（預設：標準輸出）"

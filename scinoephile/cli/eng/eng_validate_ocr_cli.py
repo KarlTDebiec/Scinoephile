@@ -33,6 +33,12 @@ class EngValidateOcrCli(ScinoephileCliBase):
             "directory in which to save validation image outputs": (
                 "保存校验图像输出的目录"
             ),
+            "English OCR image subtitle infile path (directory containing index.html "
+            "and png files, or a .sup file)": (
+                "英文 OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 "
+                ".sup 文件）"
+            ),
+            "overwrite outfile directory if it exists": "若输出目录已存在则覆盖",
             "prompt for interactive validation decisions": "提示进行交互式校验决策",
             "stop validation after this subtitle index": "在此字幕索引后停止校验",
             "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
@@ -44,6 +50,12 @@ class EngValidateOcrCli(ScinoephileCliBase):
             "directory in which to save validation image outputs": (
                 "儲存驗證影像輸出的目錄"
             ),
+            "English OCR image subtitle infile path (directory containing index.html "
+            "and png files, or a .sup file)": (
+                "英文 OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 "
+                ".sup 檔）"
+            ),
+            "overwrite outfile directory if it exists": "若輸出目錄已存在則覆寫",
             "prompt for interactive validation decisions": "提示進行互動式驗證決策",
             "stop validation after this subtitle index": "在此字幕索引後停止驗證",
             "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
