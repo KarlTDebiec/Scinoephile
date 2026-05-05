@@ -49,6 +49,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     localizations = merge_conversion_localizations(
         {
             "zh-hans": {
+                "audio stream index in media input (default: 0)": (
+                    "媒体输入中的音频流索引（默认：0）"
+                ),
                 "command-line interface for written Cantonese subtitle transcription": (
                     "书面粤语字幕转写命令行界面"
                 ),
@@ -71,8 +74,15 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 "Written Cantonese subtitle outfile path (default: stdout)": (
                     "书面粤语字幕输出文件路径（默认：标准输出）"
                 ),
+                (
+                    "Transcribe subtitles from audio and revise using standard "
+                    "Chinese text"
+                ): "从音频转录字幕，并使用标准中文文本修订",
             },
             "zh-hant": {
+                "audio stream index in media input (default: 0)": (
+                    "媒體輸入中的音訊流索引（預設：0）"
+                ),
                 "command-line interface for written Cantonese subtitle transcription": (
                     "書面粵語字幕轉寫命令列介面"
                 ),
@@ -95,6 +105,10 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 "Written Cantonese subtitle outfile path (default: stdout)": (
                     "書面粵語字幕輸出檔路徑（預設：標準輸出）"
                 ),
+                (
+                    "Transcribe subtitles from audio and revise using standard "
+                    "Chinese text"
+                ): "從音訊轉錄字幕，並使用標準中文文字修訂",
             },
         }
     )

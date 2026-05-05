@@ -4,10 +4,30 @@
 
 from __future__ import annotations
 
-import sqlite3
-from contextlib import closing
 from logging import getLogger
 from pathlib import Path
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    Float,
+    ForeignKey,
+    Integer,
+    MetaData,
+    Table,
+    Text,
+    UniqueConstraint,
+    case,
+    create_engine,
+    func,
+    select,
+    text,
+)
+from sqlalchemy.dialects.sqlite import insert as sqlite_insert
+from sqlalchemy.engine import URL, Connection, RowMapping
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.pool import NullPool
+from sqlalchemy.sql import Select
 
 from scinoephile.common.validation import val_output_path
 
@@ -23,6 +43,164 @@ logger = getLogger(__name__)
 class DictionarySqliteStore:
     """SQLite schema, persistence, and lookup for dictionary data."""
 
+    schema_version = 3
+    """SQLite schema version."""
+
+    _metadata = MetaData()
+    """SQLAlchemy Core metadata for dictionary tables."""
+
+    _entries = Table(
+        "entries",
+        _metadata,
+        Column("entry_id", Integer, primary_key=True),
+        Column("traditional", Text),
+        Column("simplified", Text),
+        Column("pinyin", Text),
+        Column("jyutping", Text),
+        Column("frequency", Float),
+        UniqueConstraint(
+            "traditional",
+            "simplified",
+            "pinyin",
+            "jyutping",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Dictionary entry table."""
+
+    _sources = Table(
+        "sources",
+        _metadata,
+        Column("source_id", Integer, primary_key=True),
+        Column("sourcename", Text, unique=True, sqlite_on_conflict_unique="ABORT"),
+        Column("sourceshortname", Text),
+        Column("version", Text),
+        Column("description", Text),
+        Column("legal", Text),
+        Column("link", Text),
+        Column("update_url", Text),
+        Column("other", Text),
+    )
+    """Dictionary source metadata table."""
+
+    _definitions = Table(
+        "definitions",
+        _metadata,
+        Column("definition_id", Integer, primary_key=True),
+        Column("definition", Text),
+        Column("label", Text),
+        Column(
+            "fk_entry_id",
+            Integer,
+            ForeignKey("entries.entry_id", onupdate="CASCADE"),
+        ),
+        Column(
+            "fk_source_id",
+            Integer,
+            ForeignKey("sources.source_id", ondelete="CASCADE"),
+        ),
+        UniqueConstraint(
+            "definition",
+            "label",
+            "fk_entry_id",
+            "fk_source_id",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Dictionary definition table."""
+
+    _chinese_sentences = Table(
+        "chinese_sentences",
+        _metadata,
+        Column(
+            "chinese_sentence_id",
+            Integer,
+            primary_key=True,
+            sqlite_on_conflict_primary_key="IGNORE",
+        ),
+        Column("traditional", Text),
+        Column("simplified", Text),
+        Column("pinyin", Text),
+        Column("jyutping", Text),
+        Column("language", Text),
+        UniqueConstraint(
+            "traditional",
+            "simplified",
+            "pinyin",
+            "jyutping",
+            "language",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Chinese sentence compatibility table."""
+
+    _nonchinese_sentences = Table(
+        "nonchinese_sentences",
+        _metadata,
+        Column(
+            "non_chinese_sentence_id",
+            Integer,
+            primary_key=True,
+            sqlite_on_conflict_primary_key="IGNORE",
+        ),
+        Column("sentence", Text),
+        Column("language", Text),
+        UniqueConstraint(
+            "non_chinese_sentence_id",
+            "sentence",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Non-Chinese sentence compatibility table."""
+
+    _sentence_links = Table(
+        "sentence_links",
+        _metadata,
+        Column(
+            "fk_chinese_sentence_id",
+            Integer,
+            ForeignKey("chinese_sentences.chinese_sentence_id"),
+        ),
+        Column(
+            "fk_non_chinese_sentence_id",
+            Integer,
+            ForeignKey("nonchinese_sentences.non_chinese_sentence_id"),
+        ),
+        Column(
+            "fk_source_id",
+            Integer,
+            ForeignKey("sources.source_id", ondelete="CASCADE"),
+        ),
+        Column("direct", Boolean),
+        UniqueConstraint(
+            "fk_chinese_sentence_id",
+            "fk_non_chinese_sentence_id",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Sentence-link compatibility table."""
+
+    _definitions_chinese_sentences_links = Table(
+        "definitions_chinese_sentences_links",
+        _metadata,
+        Column(
+            "fk_definition_id",
+            Integer,
+            ForeignKey("definitions.definition_id", ondelete="CASCADE"),
+        ),
+        Column(
+            "fk_chinese_sentence_id",
+            Integer,
+            ForeignKey("chinese_sentences.chinese_sentence_id"),
+        ),
+        UniqueConstraint(
+            "fk_definition_id",
+            "fk_chinese_sentence_id",
+            sqlite_on_conflict="IGNORE",
+        ),
+    )
+    """Definition-to-sentence compatibility table."""
+
     def __init__(self, database_path: Path):
         """Initialize.
 
@@ -30,6 +208,11 @@ class DictionarySqliteStore:
             database_path: SQLite database path
         """
         self.database_path = val_output_path(database_path, exist_ok=True)
+        self.engine = create_engine(
+            URL.create("sqlite", database=str(self.database_path)),
+            future=True,
+            poolclass=NullPool,
+        )
 
     def lookup_by_jyutping(self, query: str, limit: int) -> list[DictionaryEntry]:
         """Lookup entries by Jyutping.
@@ -41,30 +224,21 @@ class DictionarySqliteStore:
             dictionary entries
         """
         like_query = f"%{self._get_escaped_query(query)}%"
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.jyutping = ?
-               OR e.jyutping LIKE ? ESCAPE '\\'
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.jyutping = ? THEN 0
-                    ELSE 1
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            like_query,
-            query,
-            limit,
+        statement = (
+            select(self._entries.c.entry_id)
+            .where(
+                (self._entries.c.jyutping == query)
+                | self._entries.c.jyutping.like(like_query, escape="\\")
+            )
+            .group_by(self._entries.c.entry_id)
+            .order_by(
+                case((self._entries.c.jyutping == query, 0), else_=1),
+                func.length(self._entries.c.traditional),
+                self._entries.c.entry_id,
+            )
+            .limit(limit)
         )
-        entry_ids = self._select_entry_ids(sql, params)
+        entry_ids = self._select_entry_ids(statement)
         return self._fetch_entries(entry_ids)
 
     def lookup_by_pinyin(self, query: str, limit: int) -> list[DictionaryEntry]:
@@ -77,30 +251,21 @@ class DictionarySqliteStore:
             dictionary entries
         """
         like_query = f"%{self._get_escaped_query(query)}%"
-
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.pinyin = ?
-               OR e.pinyin LIKE ? ESCAPE '\\'
-            GROUP BY e.entry_id
-            ORDER BY
-                CASE
-                    WHEN e.pinyin = ? THEN 0
-                    ELSE 1
-                END,
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            like_query,
-            query,
-            limit,
+        statement = (
+            select(self._entries.c.entry_id)
+            .where(
+                (self._entries.c.pinyin == query)
+                | self._entries.c.pinyin.like(like_query, escape="\\")
+            )
+            .group_by(self._entries.c.entry_id)
+            .order_by(
+                case((self._entries.c.pinyin == query, 0), else_=1),
+                func.length(self._entries.c.traditional),
+                self._entries.c.entry_id,
+            )
+            .limit(limit)
         )
-        entry_ids = self._select_entry_ids(sql, params)
+        entry_ids = self._select_entry_ids(statement)
         return self._fetch_entries(entry_ids)
 
     def lookup_by_simplified(self, query: str, limit: int) -> list[DictionaryEntry]:
@@ -112,22 +277,16 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.simplified = ?
-            GROUP BY e.entry_id
-            ORDER BY
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            limit,
+        statement = (
+            select(self._entries.c.entry_id)
+            .where(self._entries.c.simplified == query)
+            .group_by(self._entries.c.entry_id)
+            .order_by(
+                func.length(self._entries.c.traditional), self._entries.c.entry_id
+            )
+            .limit(limit)
         )
-        entry_ids = self._select_entry_ids(sql, params)
+        entry_ids = self._select_entry_ids(statement)
         return self._fetch_entries(entry_ids)
 
     def lookup_by_traditional(self, query: str, limit: int) -> list[DictionaryEntry]:
@@ -139,22 +298,16 @@ class DictionarySqliteStore:
         Returns:
             dictionary entries
         """
-        sql = """
-            SELECT
-                e.entry_id
-            FROM entries AS e
-            WHERE e.traditional = ?
-            GROUP BY e.entry_id
-            ORDER BY
-                LENGTH(e.traditional),
-                e.entry_id
-            LIMIT ?
-        """
-        params: tuple[str | int, ...] = (
-            query,
-            limit,
+        statement = (
+            select(self._entries.c.entry_id)
+            .where(self._entries.c.traditional == query)
+            .group_by(self._entries.c.entry_id)
+            .order_by(
+                func.length(self._entries.c.traditional), self._entries.c.entry_id
+            )
+            .limit(limit)
         )
-        entry_ids = self._select_entry_ids(sql, params)
+        entry_ids = self._select_entry_ids(statement)
         return self._fetch_entries(entry_ids)
 
     def persist(
@@ -174,39 +327,23 @@ class DictionarySqliteStore:
             logger.info(f"Deleting existing SQLite database: {self.database_path}")
             self.database_path.unlink()
 
-        with closing(sqlite3.connect(self.database_path)) as connection:
-            with connection:
-                cursor = connection.cursor()
+        with self.engine.begin() as connection:
+            self._write_database_version(connection)
+            self._drop_tables(connection)
+            self._create_tables(connection)
 
-                self._write_database_version(cursor)
-                self._drop_tables(cursor)
-                self._create_tables(cursor)
+            source_id = self._insert_source(connection, source)
+            for entry in entries:
+                entry_id = self._insert_entry(connection, entry)
+                for definition in entry.definitions:
+                    self._insert_definition(connection, definition, entry_id, source_id)
 
-                source_id = self._insert_source(cursor, source)
-                for entry in entries:
-                    entry_id = self._insert_entry(
-                        cursor,
-                        entry.traditional,
-                        entry.simplified,
-                        entry.pinyin,
-                        entry.jyutping,
-                        entry.frequency,
-                    )
-                    for definition in entry.definitions:
-                        self._insert_definition(
-                            cursor,
-                            definition.text,
-                            definition.label,
-                            entry_id,
-                            source_id,
-                        )
-
-                self._generate_indices(cursor)
+            self._generate_indices(connection)
 
         return self.database_path
 
     @staticmethod
-    def _aggregate_rows(rows: list[sqlite3.Row]) -> list[DictionaryEntry]:
+    def _aggregate_rows(rows: list[RowMapping]) -> list[DictionaryEntry]:
         """Aggregate joined rows into dictionary entries.
 
         Arguments:
@@ -265,29 +402,18 @@ class DictionarySqliteStore:
         """
         return query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 
-    def _create_tables(self, cursor: sqlite3.Cursor):
+    def _create_tables(self, connection: Connection):
         """Create dictionary tables.
 
         Arguments:
-            cursor: sqlite cursor
+            connection: SQLAlchemy connection
         """
-        cursor.execute(
-            """CREATE TABLE entries(
-                    entry_id INTEGER PRIMARY KEY,
-                    traditional TEXT,
-                    simplified TEXT,
-                    pinyin TEXT,
-                    jyutping TEXT,
-                    frequency REAL,
-                    UNIQUE(traditional, simplified, pinyin, jyutping)
-                        ON CONFLICT IGNORE
-                )"""
-        )
+        self._metadata.create_all(connection)
         try:
-            cursor.execute(
-                "CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)"
+            connection.execute(
+                text("CREATE VIRTUAL TABLE entries_fts USING fts5(pinyin, jyutping)")
             )
-        except sqlite3.OperationalError as exc:
+        except OperationalError as exc:
             if self._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; continuing without "
@@ -296,41 +422,14 @@ class DictionarySqliteStore:
             else:
                 raise
 
-        cursor.execute(
-            """CREATE TABLE sources(
-                    source_id INTEGER PRIMARY KEY,
-                    sourcename TEXT UNIQUE ON CONFLICT ABORT,
-                    sourceshortname TEXT,
-                    version TEXT,
-                    description TEXT,
-                    legal TEXT,
-                    link TEXT,
-                    update_url TEXT,
-                    other TEXT
-                )"""
-        )
-
-        cursor.execute(
-            """CREATE TABLE definitions(
-                    definition_id INTEGER PRIMARY KEY,
-                    definition TEXT,
-                    label TEXT,
-                    fk_entry_id INTEGER,
-                    fk_source_id INTEGER,
-                    FOREIGN KEY(fk_entry_id) REFERENCES entries(entry_id)
-                        ON UPDATE CASCADE,
-                    FOREIGN KEY(fk_source_id) REFERENCES sources(source_id)
-                        ON DELETE CASCADE,
-                    UNIQUE(definition, label, fk_entry_id, fk_source_id)
-                        ON CONFLICT IGNORE
-                )"""
-        )
         try:
-            cursor.execute(
-                """CREATE VIRTUAL TABLE definitions_fts
-                   USING fts5(fk_entry_id UNINDEXED, definition)"""
+            connection.execute(
+                text(
+                    """CREATE VIRTUAL TABLE definitions_fts
+                       USING fts5(fk_entry_id UNINDEXED, definition)"""
+                )
             )
-        except sqlite3.OperationalError as exc:
+        except OperationalError as exc:
             if self._is_missing_fts5(exc):
                 logger.warning(
                     "SQLite FTS5 unavailable; "
@@ -339,75 +438,27 @@ class DictionarySqliteStore:
             else:
                 raise
 
-        # The following tables are retained for schema-compatibility with jyut-dict.
-        cursor.execute(
-            """CREATE TABLE chinese_sentences(
-                    chinese_sentence_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
-                    traditional TEXT,
-                    simplified TEXT,
-                    pinyin TEXT,
-                    jyutping TEXT,
-                    language TEXT,
-                    UNIQUE(traditional, simplified, pinyin, jyutping, language)
-                        ON CONFLICT IGNORE
-                )"""
-        )
-        cursor.execute(
-            """CREATE TABLE nonchinese_sentences(
-                    non_chinese_sentence_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
-                    sentence TEXT,
-                    language TEXT,
-                    UNIQUE(non_chinese_sentence_id, sentence)
-                        ON CONFLICT IGNORE
-                )"""
-        )
-        cursor.execute(
-            """CREATE TABLE sentence_links(
-                    fk_chinese_sentence_id INTEGER,
-                    fk_non_chinese_sentence_id INTEGER,
-                    fk_source_id INTEGER,
-                    direct BOOLEAN,
-                    FOREIGN KEY(fk_chinese_sentence_id)
-                        REFERENCES chinese_sentences(chinese_sentence_id),
-                    FOREIGN KEY(fk_non_chinese_sentence_id)
-                        REFERENCES nonchinese_sentences(non_chinese_sentence_id),
-                    FOREIGN KEY(fk_source_id)
-                        REFERENCES sources(source_id) ON DELETE CASCADE,
-                    UNIQUE(fk_chinese_sentence_id, fk_non_chinese_sentence_id)
-                        ON CONFLICT IGNORE
-                )"""
-        )
-        cursor.execute(
-            """CREATE TABLE definitions_chinese_sentences_links(
-                    fk_definition_id INTEGER,
-                    fk_chinese_sentence_id INTEGER,
-                    FOREIGN KEY(fk_definition_id)
-                        REFERENCES definitions(definition_id) ON DELETE CASCADE,
-                    FOREIGN KEY(fk_chinese_sentence_id)
-                        REFERENCES chinese_sentences(chinese_sentence_id),
-                    UNIQUE(fk_definition_id, fk_chinese_sentence_id)
-                        ON CONFLICT IGNORE
-                )"""
-        )
-
-    def _drop_tables(self, cursor: sqlite3.Cursor):
+    @staticmethod
+    def _drop_tables(connection: Connection):
         """Drop dictionary tables.
 
         Arguments:
-            cursor: sqlite cursor
+            connection: SQLAlchemy connection
         """
-        cursor.execute("DROP TABLE IF EXISTS entries")
-        cursor.execute("DROP TABLE IF EXISTS entries_fts")
-        cursor.execute("DROP TABLE IF EXISTS sources")
-        cursor.execute("DROP TABLE IF EXISTS definitions")
-        cursor.execute("DROP TABLE IF EXISTS definitions_fts")
-        cursor.execute("DROP INDEX IF EXISTS fk_entry_id_index")
+        connection.execute(text("DROP TABLE IF EXISTS entries_fts"))
+        connection.execute(text("DROP TABLE IF EXISTS definitions_fts"))
+        connection.execute(text("DROP INDEX IF EXISTS fk_entry_id_index"))
 
-        cursor.execute("DROP TABLE IF EXISTS chinese_sentences")
-        cursor.execute("DROP TABLE IF EXISTS nonchinese_sentences")
-        cursor.execute("DROP TABLE IF EXISTS sentence_links")
+        connection.execute(
+            text("DROP TABLE IF EXISTS definitions_chinese_sentences_links")
+        )
+        connection.execute(text("DROP TABLE IF EXISTS sentence_links"))
+        connection.execute(text("DROP TABLE IF EXISTS definitions"))
+        connection.execute(text("DROP TABLE IF EXISTS entries"))
+        connection.execute(text("DROP TABLE IF EXISTS sources"))
 
-        cursor.execute("DROP TABLE IF EXISTS definitions_chinese_sentences_links")
+        connection.execute(text("DROP TABLE IF EXISTS chinese_sentences"))
+        connection.execute(text("DROP TABLE IF EXISTS nonchinese_sentences"))
 
     def _fetch_entries(
         self,
@@ -423,52 +474,49 @@ class DictionarySqliteStore:
         if not entry_ids:
             return []
 
-        in_placeholders = ", ".join("?" for _ in entry_ids)
-        case_clauses = " ".join(
-            f"WHEN ? THEN {rank}" for rank, _ in enumerate(entry_ids)
+        rank_by_id = {entry_id: rank for rank, entry_id in enumerate(entry_ids)}
+        statement = (
+            select(
+                self._entries.c.entry_id,
+                self._entries.c.traditional,
+                self._entries.c.simplified,
+                self._entries.c.pinyin,
+                self._entries.c.jyutping,
+                self._entries.c.frequency,
+                self._definitions.c.label,
+                self._definitions.c.definition,
+            )
+            .outerjoin(
+                self._definitions,
+                self._definitions.c.fk_entry_id == self._entries.c.entry_id,
+            )
+            .where(self._entries.c.entry_id.in_(entry_ids))
+            .order_by(
+                case(rank_by_id, value=self._entries.c.entry_id, else_=len(entry_ids)),
+                self._definitions.c.definition_id,
+            )
         )
-        params = tuple([*entry_ids, *entry_ids])
+        with self.engine.connect() as connection:
+            rows = connection.execute(statement).mappings().all()
 
-        sql = f"""
-            SELECT
-                e.entry_id,
-                e.traditional,
-                e.simplified,
-                e.pinyin,
-                e.jyutping,
-                e.frequency,
-                d.label,
-                d.definition
-            FROM entries AS e
-            LEFT JOIN definitions AS d
-                ON d.fk_entry_id = e.entry_id
-            WHERE e.entry_id IN ({in_placeholders})
-            ORDER BY
-                CASE e.entry_id
-                    {case_clauses}
-                    ELSE {len(entry_ids)}
-                END,
-                d.definition_id
-        """
-        with closing(sqlite3.connect(self.database_path)) as connection:
-            connection.row_factory = sqlite3.Row
-            rows = connection.execute(sql, params).fetchall()
+        return self._aggregate_rows(list(rows))
 
-        return self._aggregate_rows(rows)
-
-    def _generate_indices(self, cursor: sqlite3.Cursor):
+    @staticmethod
+    def _generate_indices(connection: Connection):
         """Generate search indices for dictionary tables.
 
         Arguments:
-            cursor: sqlite cursor
+            connection: SQLAlchemy connection
         """
         try:
-            cursor.execute(
-                """INSERT INTO entries_fts (rowid, pinyin, jyutping)
-                   SELECT rowid, pinyin, jyutping FROM entries"""
+            connection.execute(
+                text(
+                    """INSERT INTO entries_fts (rowid, pinyin, jyutping)
+                       SELECT rowid, pinyin, jyutping FROM entries"""
+                )
             )
-        except sqlite3.OperationalError as exc:
-            if self._is_missing_fts5(exc):
+        except OperationalError as exc:
+            if DictionarySqliteStore._is_missing_fts5(exc):
                 logger.warning(
                     "Skipping entries_fts population because FTS5 is "
                     f"unavailable: {exc}"
@@ -476,160 +524,141 @@ class DictionarySqliteStore:
             else:
                 raise
         try:
-            cursor.execute(
-                """INSERT INTO definitions_fts (rowid, fk_entry_id, definition)
-                   SELECT rowid, fk_entry_id, definition FROM definitions"""
+            connection.execute(
+                text(
+                    """INSERT INTO definitions_fts (rowid, fk_entry_id, definition)
+                       SELECT rowid, fk_entry_id, definition FROM definitions"""
+                )
             )
-        except sqlite3.OperationalError as exc:
-            if self._is_missing_fts5(exc):
+        except OperationalError as exc:
+            if DictionarySqliteStore._is_missing_fts5(exc):
                 logger.warning(
                     "Skipping definitions_fts population because "
                     f"FTS5 is unavailable: {exc}"
                 )
             else:
                 raise
-        cursor.execute("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
+        connection.execute(
+            text("CREATE INDEX fk_entry_id_index ON definitions(fk_entry_id)")
+        )
 
     @staticmethod
     def _insert_definition(
-        cursor: sqlite3.Cursor,
-        definition: str,
-        label: str,
+        connection: Connection,
+        definition: DictionaryDefinition,
         entry_id: int,
         source_id: int,
     ) -> int:
         """Insert a dictionary definition and return its identifier.
 
         Arguments:
-            cursor: sqlite cursor
+            connection: SQLAlchemy connection
             definition: definition text
-            label: definition label
             entry_id: related entry identifier
             source_id: related source identifier
         Returns:
             definition identifier
         """
-        cursor.execute(
-            """INSERT INTO definitions (
-                   definition,
-                   label,
-                   fk_entry_id,
-                   fk_source_id
-               ) VALUES (?, ?, ?, ?)""",
-            (definition, label, entry_id, source_id),
+        result = connection.execute(
+            sqlite_insert(DictionarySqliteStore._definitions)
+            .values(
+                definition=definition.text,
+                label=definition.label,
+                fk_entry_id=entry_id,
+                fk_source_id=source_id,
+            )
+            .on_conflict_do_nothing()
         )
-        if cursor.rowcount == 1:
-            definition_id = cursor.lastrowid
-            if definition_id is None:
+        if result.rowcount == 1:
+            inserted_primary_key = result.inserted_primary_key
+            if not inserted_primary_key:
                 raise RuntimeError("Failed to insert definition")
-            return int(definition_id)
+            return int(inserted_primary_key[0])
 
-        cursor.execute(
-            """SELECT definition_id FROM definitions
-               WHERE definition = ?
-                 AND label = ?
-                 AND fk_entry_id = ?
-                 AND fk_source_id = ?""",
-            (definition, label, entry_id, source_id),
-        )
-        row = cursor.fetchone()
+        row = connection.execute(
+            select(DictionarySqliteStore._definitions.c.definition_id).where(
+                (DictionarySqliteStore._definitions.c.definition == definition.text)
+                & (DictionarySqliteStore._definitions.c.label == definition.label)
+                & (DictionarySqliteStore._definitions.c.fk_entry_id == entry_id)
+                & (DictionarySqliteStore._definitions.c.fk_source_id == source_id)
+            )
+        ).first()
         if row is None:
             raise RuntimeError("Failed to insert or load existing definition")
         return int(row[0])
 
     @staticmethod
-    def _insert_entry(
-        cursor: sqlite3.Cursor,
-        traditional: str,
-        simplified: str,
-        pinyin: str,
-        jyutping: str,
-        frequency: float,
-    ) -> int:
+    def _insert_entry(connection: Connection, entry: DictionaryEntry) -> int:
         """Insert a dictionary entry and return its identifier.
 
         Arguments:
-            cursor: sqlite cursor
-            traditional: traditional Chinese text
-            simplified: simplified Chinese text
-            pinyin: pinyin pronunciation
-            jyutping: jyutping pronunciation
-            frequency: frequency score
+            connection: SQLAlchemy connection
+            entry: dictionary entry
         Returns:
             entry identifier
         """
-        cursor.execute(
-            """INSERT INTO entries (
-                   traditional,
-                   simplified,
-                   pinyin,
-                   jyutping,
-                   frequency
-               ) VALUES (?, ?, ?, ?, ?)""",
-            (traditional, simplified, pinyin, jyutping, frequency),
+        result = connection.execute(
+            sqlite_insert(DictionarySqliteStore._entries)
+            .values(
+                traditional=entry.traditional,
+                simplified=entry.simplified,
+                pinyin=entry.pinyin,
+                jyutping=entry.jyutping,
+                frequency=entry.frequency,
+            )
+            .on_conflict_do_nothing()
         )
-        if cursor.rowcount == 1:
-            entry_id = cursor.lastrowid
-            if entry_id is None:
+        if result.rowcount == 1:
+            inserted_primary_key = result.inserted_primary_key
+            if not inserted_primary_key:
                 raise RuntimeError("Failed to insert entry")
-            return int(entry_id)
+            return int(inserted_primary_key[0])
 
-        cursor.execute(
-            """SELECT entry_id FROM entries
-               WHERE traditional = ?
-                 AND simplified = ?
-                 AND pinyin = ?
-                 AND jyutping = ?""",
-            (traditional, simplified, pinyin, jyutping),
-        )
-        row = cursor.fetchone()
+        row = connection.execute(
+            select(DictionarySqliteStore._entries.c.entry_id).where(
+                (DictionarySqliteStore._entries.c.traditional == entry.traditional)
+                & (DictionarySqliteStore._entries.c.simplified == entry.simplified)
+                & (DictionarySqliteStore._entries.c.pinyin == entry.pinyin)
+                & (DictionarySqliteStore._entries.c.jyutping == entry.jyutping)
+            )
+        ).first()
         if row is None:
             raise RuntimeError("Failed to insert or load existing entry")
         return int(row[0])
 
     @staticmethod
-    def _insert_source(cursor: sqlite3.Cursor, source: DictionarySource) -> int:
+    def _insert_source(connection: Connection, source: DictionarySource) -> int:
         """Insert a source and return its identifier.
 
         Arguments:
-            cursor: sqlite cursor
+            connection: SQLAlchemy connection
             source: source metadata
         Returns:
             source identifier
         """
-        cursor.execute(
-            """INSERT INTO sources (
-                   sourcename,
-                   sourceshortname,
-                   version,
-                   description,
-                   legal,
-                   link,
-                   update_url,
-                   other
-               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                source.name,
-                source.shortname,
-                source.version,
-                source.description,
-                source.legal,
-                source.link,
-                source.update_url,
-                source.other,
+        result = connection.execute(
+            DictionarySqliteStore._sources.insert().values(
+                sourcename=source.name,
+                sourceshortname=source.shortname,
+                version=source.version,
+                description=source.description,
+                legal=source.legal,
+                link=source.link,
+                update_url=source.update_url,
+                other=source.other,
             ),
         )
-        source_id = cursor.lastrowid
-        if source_id is None:
+        inserted_primary_key = result.inserted_primary_key
+        if not inserted_primary_key:
             raise RuntimeError("Failed to insert source")
-        return int(source_id)
+        return int(inserted_primary_key[0])
 
     @staticmethod
-    def _is_missing_fts5(exc: sqlite3.OperationalError) -> bool:
-        """Check whether an OperationalError indicates unavailable FTS5 support.
+    def _is_missing_fts5(exc: OperationalError) -> bool:
+        """Check whether an operational error indicates unavailable FTS5 support.
 
         Arguments:
-            exc: sqlite operational error
+            exc: SQLAlchemy operational error
         Returns:
             whether error indicates missing FTS5 support
         """
@@ -638,26 +667,22 @@ class DictionarySqliteStore:
             return True
         return "no such table" in message and "_fts" in message
 
-    def _select_entry_ids(self, sql: str, params: tuple[str | int, ...]) -> list[int]:
+    def _select_entry_ids(self, statement: Select[tuple[int]]) -> list[int]:
         """Run entry selection query.
 
         Arguments:
-            sql: SQL query that returns entry_id
-            params: SQL parameters
+            statement: SQLAlchemy query that returns entry identifiers
         Returns:
             ordered entry identifiers
         """
-        with closing(sqlite3.connect(self.database_path)) as connection:
-            connection.row_factory = sqlite3.Row
-            rows = connection.execute(sql, params).fetchall()
-        return [int(row["entry_id"]) for row in rows]
+        with self.engine.connect() as connection:
+            rows = connection.execute(statement).scalars().all()
+        return [int(row) for row in rows]
 
-    @staticmethod
-    def _write_database_version(cursor: sqlite3.Cursor, version: int = 3):
+    def _write_database_version(self, connection: Connection):
         """Write schema version.
 
         Arguments:
-            cursor: sqlite cursor
-            version: schema version integer
+            connection: SQLAlchemy connection
         """
-        cursor.execute(f"PRAGMA user_version={version}")
+        connection.execute(text(f"PRAGMA user_version={self.schema_version}"))

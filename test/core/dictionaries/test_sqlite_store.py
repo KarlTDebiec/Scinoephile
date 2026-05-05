@@ -121,3 +121,71 @@ def test_sqlite_store_preserves_expected_schema(
         "sources",
     }.issubset(table_names)
     assert user_version == 3
+
+
+def test_sqlite_store_literal_like_lookups(
+    database_path: Path,
+    sample_source: DictionarySource,
+):
+    """Test literal matching of LIKE wildcard characters in romanization."""
+    entries = [
+        DictionaryEntry(
+            traditional="百分號",
+            simplified="百分号",
+            pinyin="percent% sign",
+            jyutping="percent% sign",
+            definitions=[DictionaryDefinition(text="percent sign")],
+        ),
+        DictionaryEntry(
+            traditional="底線",
+            simplified="底线",
+            pinyin="under_score",
+            jyutping="under_score",
+            definitions=[DictionaryDefinition(text="underscore")],
+        ),
+        DictionaryEntry(
+            traditional="反斜線",
+            simplified="反斜线",
+            pinyin=r"back\\slash",
+            jyutping=r"back\\slash",
+            definitions=[DictionaryDefinition(text="backslash")],
+        ),
+    ]
+    store = DictionarySqliteStore(database_path=database_path)
+    store.persist((sample_source, entries))
+
+    assert store.lookup_by_pinyin("%", limit=5) == [entries[0]]
+    assert store.lookup_by_pinyin("_", limit=5) == [entries[1]]
+    assert store.lookup_by_pinyin("\\", limit=5) == [entries[2]]
+    assert store.lookup_by_jyutping("%", limit=5) == [entries[0]]
+    assert store.lookup_by_jyutping("_", limit=5) == [entries[1]]
+    assert store.lookup_by_jyutping("\\", limit=5) == [entries[2]]
+
+
+def test_sqlite_store_collapses_duplicate_entries_and_definitions(
+    database_path: Path,
+    sample_source: DictionarySource,
+):
+    """Test duplicate entries and definitions collapse through uniqueness rules."""
+    definition = DictionaryDefinition(text="duplicate definition", label="noun")
+    duplicate = DictionaryEntry(
+        traditional="重複",
+        simplified="重复",
+        pinyin="chong2 fu4",
+        jyutping="cung4 fuk1",
+        frequency=1.0,
+        definitions=[definition, definition],
+    )
+    store = DictionarySqliteStore(database_path=database_path)
+    store.persist((sample_source, [duplicate, duplicate]))
+
+    assert store.lookup_by_traditional("重複", limit=5) == [
+        DictionaryEntry(
+            traditional="重複",
+            simplified="重复",
+            pinyin="chong2 fu4",
+            jyutping="cung4 fuk1",
+            frequency=1.0,
+            definitions=[definition],
+        )
+    ]

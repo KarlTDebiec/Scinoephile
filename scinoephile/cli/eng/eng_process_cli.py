@@ -27,6 +27,9 @@ class EngProcessCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
+            "clean subtitles of closed-caption annotations and other anomalies": (
+                "清理字幕中的隐藏字幕标注及其他异常"
+            ),
             'English subtitle infile path or "-" for stdin': (
                 '英文字幕输入文件路径，或使用 "-" 表示标准输入'
             ),
@@ -41,6 +44,9 @@ class EngProcessCli(ScinoephileCliBase):
             "proofread subtitles using LLM": "使用大语言模型校对字幕",
         },
         "zh-hant": {
+            "clean subtitles of closed-caption annotations and other anomalies": (
+                "清理字幕中的隱藏字幕標註及其他異常"
+            ),
             'English subtitle infile path or "-" for stdin': (
                 '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
             ),

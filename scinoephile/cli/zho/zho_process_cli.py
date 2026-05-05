@@ -46,6 +46,9 @@ class ZhoProcessCli(ScinoephileCliBase):
         {
             "zh-hans": {
                 "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隐藏字幕标注及其他异常"
+                ),
                 "command-line interface for standard Chinese subtitle processing": (
                     "标准中文字幕处理命令行界面"
                 ),
@@ -71,6 +74,9 @@ class ZhoProcessCli(ScinoephileCliBase):
             },
             "zh-hant": {
                 "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隱藏字幕標註及其他異常"
+                ),
                 "command-line interface for standard Chinese subtitle processing": (
                     "標準中文字幕處理命令列介面"
                 ),

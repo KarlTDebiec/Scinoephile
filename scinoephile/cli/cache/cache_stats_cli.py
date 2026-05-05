@@ -22,6 +22,26 @@ __all__ = ["CacheStatsCli"]
 class CacheStatsCli(ScinoephileCliBase):
     """Show cache statistics."""
 
+    localizations = {
+        "zh-hans": {
+            "cache namespace to inspect": "要检查的缓存命名空间",
+            "cache root directory to inspect (default: %(default)s)": (
+                "要检查的缓存根目录（默认：%(default)s）"
+            ),
+            "output format": "输出格式",
+            "show cache statistics": "显示缓存统计信息",
+        },
+        "zh-hant": {
+            "cache namespace to inspect": "要檢查的快取命名空間",
+            "cache root directory to inspect (default: %(default)s)": (
+                "要檢查的快取根目錄（預設：%(default)s）"
+            ),
+            "output format": "輸出格式",
+            "show cache statistics": "顯示快取統計資訊",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
+
     @classmethod
     def add_arguments_to_argparser(cls, parser: ArgumentParser):
         """Add arguments to a nascent argument parser.
