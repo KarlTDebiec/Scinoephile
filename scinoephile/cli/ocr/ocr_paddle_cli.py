@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Any
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -14,10 +15,11 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrPaddleCli"]
+
+ocr_image_series_with_paddle: Any | None = None
 
 
 class OcrPaddleCli(ScinoephileCliBase):
@@ -148,6 +150,14 @@ class OcrPaddleCli(ScinoephileCliBase):
 
         # Perform operations
         try:
+            global ocr_image_series_with_paddle  # noqa: PLW0603
+            if ocr_image_series_with_paddle is None:
+                from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
+                    ocr_image_series_with_paddle as imported_ocr,
+                )
+
+                ocr_image_series_with_paddle = imported_ocr
+
             image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_paddle(
                 image_series,
@@ -156,6 +166,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         except (
             FileNotFoundError,
             NotADirectoryError,
+            ImportError,
             ScinoephileError,
             ValueError,
         ) as exc:

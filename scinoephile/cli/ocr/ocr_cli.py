@@ -10,8 +10,6 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .ocr_paddle_cli import OcrPaddleCli
-
 __all__ = ["OcrCli"]
 
 
@@ -53,6 +51,8 @@ class OcrCli(ScinoephileCliBase):
         Returns:
             mapping of subcommand names to CLI classes
         """
+        from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
+
         return {OcrPaddleCli.name(): OcrPaddleCli}
 
     @classmethod

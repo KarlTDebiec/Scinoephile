@@ -5,9 +5,17 @@
 from __future__ import annotations
 
 from .ocr_cli import OcrCli
-from .ocr_paddle_cli import OcrPaddleCli
 
 __all__ = [
     "OcrCli",
     "OcrPaddleCli",
 ]
+
+
+def __getattr__(name: str):
+    """Lazily import heavy OCR command implementations."""
+    if name == "OcrPaddleCli":
+        from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
+
+        return OcrPaddleCli
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
