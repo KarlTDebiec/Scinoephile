@@ -55,6 +55,7 @@ from test.helpers import test_data_root
 
 __all__ = [
     "mlamd_eng_ocr_lens",
+    "mlamd_eng_ocr_paddle",
     "mlamd_eng_ocr_sup_path",
     "mlamd_eng_ocr_tesseract",
     "mlamd_zho_hans_ocr_lens",
@@ -119,6 +120,12 @@ output_dir = title_root / "output"
 def mlamd_eng_ocr_lens() -> Series:
     """MLAMD English subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "eng_ocr/lens.srt")
+
+
+@pytest.fixture
+def mlamd_eng_ocr_paddle() -> Series:
+    """MLAMD English subtitles OCRed using PaddleOCR."""
+    return Series.load(input_dir / "eng_ocr/paddle.srt")
 
 
 @pytest.fixture
