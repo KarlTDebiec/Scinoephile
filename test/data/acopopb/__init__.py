@@ -38,37 +38,37 @@ def acopopb_eng() -> Series:
 @pytest.fixture
 def acopopb_yue_hans_lens() -> Series:
     """ACOPOPB 简体粤文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "yue-Hans_lens.srt")
+    return Series.load(input_dir / "yue-Hans_ocr/lens.srt")
 
 
 @pytest.fixture
 def acopopb_yue_hans_paddle() -> Series:
     """ACOPOPB 简体粤文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "yue-Hans_paddle.srt")
+    return Series.load(input_dir / "yue-Hans_ocr/paddle.srt")
 
 
 @pytest.fixture
 def acopopb_yue_hant_lens() -> Series:
     """ACOPOPB 繁體粵文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "yue-Hant_lens.srt")
+    return Series.load(input_dir / "yue-Hant_ocr/lens.srt")
 
 
 @pytest.fixture
 def acopopb_yue_hant_paddle() -> Series:
     """ACOPOPB 繁體粵文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "yue-Hant_paddle.srt")
+    return Series.load(input_dir / "yue-Hant_ocr/paddle.srt")
 
 
 @pytest.fixture
 def acopopb_zho_hans_lens() -> Series:
     """ACOPOPB 简体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hans_lens.srt")
+    return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
 
 
 @pytest.fixture
 def acopopb_zho_hans_paddle() -> Series:
     """ACOPOPB 简体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hans_paddle.srt")
+    return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
 
 
 @pytest.fixture
@@ -86,10 +86,10 @@ def acopopb_zho_hant() -> Series:
 @pytest.fixture
 def acopopb_zho_hant_lens() -> Series:
     """ACOPOPB 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_lens.srt")
+    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
 
 
 @pytest.fixture
 def acopopb_zho_hant_paddle() -> Series:
     """ACOPOPB 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_paddle.srt")
+    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")

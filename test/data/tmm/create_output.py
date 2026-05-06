@@ -14,6 +14,12 @@ from test.helpers import test_data_root
 title_root = test_data_root / Path(__file__).parent.name
 input_dir = title_root / "input"
 output_dir = title_root / "output"
+source_dir_path = (
+    Path("/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data")
+    / "The Mad Monk (1993)"
+    / "input"
+    / "bd"
+)
 output_dir.mkdir(parents=True, exist_ok=True)
 set_logging_verbosity(2)
 
@@ -30,9 +36,7 @@ actions = {
 if "繁體粵文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
-        sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-3.sup"
-        ),
+        sup_path=source_dir_path / "zho-3.sup",
         lang="yue",
         overwrite_srt=True,
         force_validation=True,
@@ -40,9 +44,7 @@ if "繁體粵文 (OCR)" in actions:
 if "简体粤文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
-        sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-4.sup"
-        ),
+        sup_path=source_dir_path / "zho-4.sup",
         lang="yue",
         overwrite_srt=True,
         force_validation=True,
@@ -50,27 +52,21 @@ if "简体粤文 (OCR)" in actions:
 if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
-        sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-7.sup"
-        ),
+        sup_path=source_dir_path / "zho-7.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
-        sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/zho-6.sup"
-        ),
+        sup_path=source_dir_path / "zho-6.sup",
         overwrite_srt=True,
         force_validation=True,
     )
 if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
-        sup_path=Path(
-            "/Users/karldebiec/Code/ScinoephileProjects/scinoephile_projects/data/The Mad Monk (1993)/input/bd/eng-5.sup"
-        ),
+        sup_path=source_dir_path / "eng-5.sup",
         overwrite_srt=True,
         force_validation=True,
     )
@@ -84,7 +80,7 @@ if "Bilingual 简体中文 and English" in actions:
 if "Bilingual 简体粤文 and English" in actions:
     process_yue_hans_eng(
         title_root,
-        yue_hans_path=input_dir / "yue-Hans_lens.srt",
-        eng_path=input_dir / "eng_lens.srt",
+        yue_hans_path=input_dir / "yue-Hans_ocr/lens.srt",
+        eng_path=input_dir / "eng_ocr/lens.srt",
         overwrite=True,
     )

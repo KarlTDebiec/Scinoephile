@@ -38,7 +38,7 @@ if "Bilingual 简体中文 and English (SRT)" in actions:
 if "Bilingual 简体粤文 and English (SRT)" in actions:
     process_yue_hans_eng(
         title_root,
-        yue_hans_path=input_dir / "yue-Hans_lens.srt",
+        yue_hans_path=input_dir / "yue-Hans_ocr/lens.srt",
         eng_path=input_dir / "eng.srt",
         overwrite=True,
     )
