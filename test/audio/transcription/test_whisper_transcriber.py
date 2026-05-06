@@ -109,6 +109,23 @@ def test_get_cache_path_separates_demucs_modes():
     assert demucs_on_cache_path != demucs_off_cache_path
 
 
+def test_model_name_is_huggingface_repo_id_rejects_local_paths():
+    """Test HuggingFace retry is skipped for local filesystem paths."""
+    transcriber = object.__new__(WhisperTranscriber)
+    transcriber.model_name = "khleeloo/whisper-large-v3-cantonese"
+
+    assert transcriber._model_name_is_huggingface_repo_id()
+
+    transcriber.model_name = "models/whisper.pt"
+    assert not transcriber._model_name_is_huggingface_repo_id()
+
+    transcriber.model_name = "/opt/models/whisper"
+    assert not transcriber._model_name_is_huggingface_repo_id()
+
+    transcriber.model_name = "large-v3"
+    assert not transcriber._model_name_is_huggingface_repo_id()
+
+
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():
     """Test malformed empty-text and duplicate-text segments are coalesced."""
     transcriber = object.__new__(WhisperTranscriber)

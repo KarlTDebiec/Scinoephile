@@ -14,6 +14,7 @@ from warnings import catch_warnings, filterwarnings
 
 import whisper_timestamped as whisper
 from huggingface_hub import snapshot_download
+from huggingface_hub.utils import HFValidationError, validate_repo_id
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -87,7 +88,7 @@ class WhisperTranscriber:
                     self.model_name, device=get_torch_device()
                 )
             except FileNotFoundError:
-                if "/" not in self.model_name:
+                if not self._model_name_is_huggingface_repo_id():
                     raise
                 logger.warning(
                     "Whisper model load failed due to missing cache file; "
@@ -165,6 +166,26 @@ class WhisperTranscriber:
                 logger.info(f"Saved transcription to cache: {cache_path}")
 
         return segments
+
+    def _model_name_is_huggingface_repo_id(self) -> bool:
+        """Determine whether model name looks like a HuggingFace repo ID.
+
+        Returns:
+            whether the model name should be passed to HuggingFace Hub
+        """
+        model_path = Path(self.model_name)
+        model_path_parts = model_path.parts
+        if (
+            model_path.is_absolute()
+            or model_path.suffix
+            or (len(model_path_parts) > 0 and model_path_parts[0] in (".", "..", "~"))
+        ):
+            return False
+        try:
+            validate_repo_id(self.model_name)
+        except HFValidationError:
+            return False
+        return "/" in self.model_name
 
     def _normalize_transcription_segments(
         self,
