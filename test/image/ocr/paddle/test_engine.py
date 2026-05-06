@@ -83,7 +83,7 @@ def test_paddle_ocr_recognizer_uses_server_models(
             observed_kwargs.update(kwargs)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.engine.PaddleOCR",
+        "scinoephile.image.ocr.paddle.paddle_ocr_recognizer.PaddleOCR",
         FakePaddleOCR,
     )
 

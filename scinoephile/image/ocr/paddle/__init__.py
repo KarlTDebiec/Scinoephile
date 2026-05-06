@@ -11,7 +11,7 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .engine import PaddleOcrRecognizer
+from .paddle_ocr_recognizer import PaddleOcrRecognizer
 from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = [
