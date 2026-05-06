@@ -7,10 +7,9 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng import get_eng_flattened
 
 # noinspection PyProtectedMember
-from scinoephile.lang.eng.flattening import _get_eng_text_flattened
+from scinoephile.lang.eng.flattening import _get_eng_text_flattened, get_eng_flattened
 
 
 def _test_get_eng_flattened(series: Series, expected: Series):

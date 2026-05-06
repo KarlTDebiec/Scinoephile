@@ -12,12 +12,11 @@ from test.data.synchronization import process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
-input_dir = title_root / "input"
-output_dir = title_root / "output"
+output_path = title_root / "output"
 set_logging_verbosity(2)
 
-eng_ocr_dir = output_dir / "eng_ocr"
-zho_hans_ocr_dir = output_dir / "zho-Hans_ocr"
+eng_ocr_path = output_path / "eng_ocr"
+zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 
 actions = {
     "繁體中文 (OCR)",
@@ -35,7 +34,7 @@ if "English (OCR)" in actions:
 if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
-        zho_hans_path=zho_hans_ocr_dir / "fuse_clean_validate_review_flatten.srt",
-        eng_path=eng_ocr_dir / "fuse_clean_validate_review_flatten.srt",
+        zho_hans_path=zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt",
+        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )

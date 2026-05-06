@@ -6,15 +6,15 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
+    float_arg,
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
@@ -29,10 +29,38 @@ class SyncCli(ScinoephileCliBase):
             "combine two series into the top and bottom of a synchronized series": (
                 "将两个序列合并为上下行同步字幕"
             ),
+            "initial overlap cutoff used to form sync groups (default: 0.16)": (
+                "用于形成同步组的初始重叠阈值（默认：0.16）"
+            ),
+            "pause length in milliseconds used to split subtitle blocks "
+            "(default: 3000)": ("用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"),
+            'subtitle infile for bottom line or "-" for stdin': (
+                '底行字幕输入文件，或使用 "-" 表示标准输入'
+            ),
+            'subtitle infile for top line or "-" for stdin': (
+                '顶行字幕输入文件，或使用 "-" 表示标准输入'
+            ),
+            "synchronized subtitle outfile path (default: stdout)": (
+                "同步字幕输出文件路径（默认：标准输出）"
+            ),
         },
         "zh-hant": {
             "combine two series into the top and bottom of a synchronized series": (
                 "將兩個序列合併為上下行同步字幕"
+            ),
+            "initial overlap cutoff used to form sync groups (default: 0.16)": (
+                "用於形成同步組的初始重疊閾值（預設：0.16）"
+            ),
+            "pause length in milliseconds used to split subtitle blocks "
+            "(default: 3000)": ("用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"),
+            'subtitle infile for bottom line or "-" for stdin': (
+                '底行字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
+            'subtitle infile for top line or "-" for stdin': (
+                '頂行字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
+            "synchronized subtitle outfile path (default: stdout)": (
+                "同步字幕輸出檔路徑（預設：標準輸出）"
             ),
         },
     }
@@ -49,6 +77,7 @@ class SyncCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             "output arguments",
             optional_arguments_name="additional arguments",
         )
@@ -56,15 +85,34 @@ class SyncCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--top-infile",
+            dest="top_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for top line or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--bottom-infile",
+            dest="bottom_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for bottom line or "-" for stdin',
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--sync-cutoff",
+            default=0.16,
+            type=float_arg(min_value=0.0, max_value=1.0),
+            help="initial overlap cutoff used to form sync groups (default: 0.16)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--pause-length",
+            default=3000,
+            type=int_arg(min_value=1),
+            help=(
+                "pause length in milliseconds used to split subtitle blocks "
+                "(default: 3000)"
+            ),
         )
 
         # Output arguments
@@ -72,6 +120,7 @@ class SyncCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="synchronized subtitle outfile path (default: stdout)",
         )
@@ -83,18 +132,20 @@ class SyncCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        top_infile_path: Path | str,
+        bottom_infile_path: Path | str,
+        sync_cutoff: float,
+        pause_length: int,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        top_infile_path = kwargs.pop("top_infile")
-        bottom_infile_path = kwargs.pop("bottom_infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if top_infile_path == "-" and bottom_infile_path == "-":
             try:
                 raise ArgumentConflictError(
@@ -115,7 +166,12 @@ class SyncCli(ScinoephileCliBase):
         bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
 
         # Perform operations
-        synced = get_synced_series(top, bottom)
+        synced = get_synced_series(
+            top,
+            bottom,
+            sync_cutoff=sync_cutoff,
+            pause_length=pause_length,
+        )
 
         # Write outputs
         write_series(

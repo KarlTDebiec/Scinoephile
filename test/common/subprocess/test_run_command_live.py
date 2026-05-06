@@ -9,7 +9,8 @@ from subprocess import TimeoutExpired
 from time import monotonic
 
 import pytest
-from common.subprocess import run_command_live  # ty:ignore[unresolved-import]
+
+from scinoephile.common.subprocess import run_command_live
 
 
 def test_run_command_live_success_list():
@@ -90,7 +91,7 @@ def test_run_command_live_with_quotes():
 def test_run_command_live_with_stderr():
     """Test running a command with live stderr output."""
     exitcode, stdout, stderr = run_command_live(
-        ["python3", "-c", "import sys; sys.stderr.write('error message')"],
+        [sys.executable, "-c", "import sys; sys.stderr.write('error message')"],
         acceptable_exitcodes=[0],
     )
 
@@ -101,13 +102,14 @@ def test_run_command_live_with_stderr():
 def test_run_command_live_failure_default():
     """Test running a command that fails with default acceptable exitcodes."""
     with pytest.raises(ValueError, match="failed with exit code"):
-        run_command_live(["sh", "-c", "exit 1"])
+        run_command_live([sys.executable, "-c", "import sys; sys.exit(1)"])
 
 
 def test_run_command_live_failure_custom_acceptable():
     """Test running a command with custom acceptable exitcodes."""
     exitcode, stdout, stderr = run_command_live(
-        ["sh", "-c", "exit 42"], acceptable_exitcodes=[42]
+        [sys.executable, "-c", "import sys; sys.exit(42)"],
+        acceptable_exitcodes=[42],
     )
 
     assert exitcode == 42
@@ -116,7 +118,7 @@ def test_run_command_live_failure_custom_acceptable():
 def test_run_command_live_multiple_lines():
     """Test command with multiple lines of output."""
     exitcode, stdout, stderr = run_command_live(
-        ["sh", "-c", "echo 'line1'; echo 'line2'"]
+        [sys.executable, "-c", "print('line1'); print('line2')"]
     )
 
     assert exitcode == 0
@@ -126,7 +128,7 @@ def test_run_command_live_multiple_lines():
 
 def test_run_command_live_empty_output():
     """Test command with no output using live streaming."""
-    exitcode, stdout, stderr = run_command_live(["true"])
+    exitcode, stdout, stderr = run_command_live([sys.executable, "-c", ""])
 
     assert exitcode == 0
     assert stdout == ""
@@ -135,7 +137,7 @@ def test_run_command_live_empty_output():
 
 def test_run_command_live_with_path():
     """Test command with executable specified by full path."""
-    exitcode, stdout, stderr = run_command_live(["/bin/echo", "test"])
+    exitcode, stdout, stderr = run_command_live([sys.executable, "-c", "print('test')"])
 
     assert exitcode == 0
     assert "test" in stdout

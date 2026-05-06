@@ -7,8 +7,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from common.exception import NotAFileError  # ty:ignore[unresolved-import]
-from common.validation import val_output_path  # ty:ignore[unresolved-import]
+
+from scinoephile.common.exceptions import NotAFileError
+from scinoephile.common.validation import val_output_path
 
 
 def test_val_output_path_valid(tmp_path: Path):
@@ -31,16 +32,25 @@ def test_val_output_path_from_string(tmp_path: Path):
 
 def test_val_output_path_creates_parent_dir(tmp_path: Path):
     """Test that parent directory is created if it doesn't exist."""
-    test_file = tmp_path / "subdir" / "output.txt"
+    test_file = tmp_path / "subdir/output.txt"
 
     result = val_output_path(test_file)
     assert result.parent.exists()
     assert result.parent.is_dir()
 
 
+def test_val_output_path_create_false_does_not_create_parent_dir(tmp_path: Path):
+    """Test that parent directory is not created when create is False."""
+    test_file = tmp_path / "subdir/output.txt"
+
+    result = val_output_path(test_file, create=False)
+    assert result == test_file.resolve()
+    assert not result.parent.exists()
+
+
 def test_val_output_path_nested_parent_dirs(tmp_path: Path):
     """Test that nested parent directories are created."""
-    test_file = tmp_path / "dir1" / "dir2" / "dir3" / "output.txt"
+    test_file = tmp_path / "dir1/dir2/dir3/output.txt"
 
     result = val_output_path(test_file)
     assert result.parent.exists()
@@ -148,7 +158,7 @@ def test_val_output_path_expands_user(tmp_path: Path, monkeypatch: pytest.Monkey
             return str(tmp_path / "output.txt")
         return path
 
-    monkeypatch.setattr("common.validation.expanduser", mock_expanduser)
+    monkeypatch.setattr("scinoephile.common.validation.expanduser", mock_expanduser)
 
     result = val_output_path("~/output.txt")
     assert result.parent.exists()

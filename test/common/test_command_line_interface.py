@@ -7,19 +7,41 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import ClassVar
 from unittest.mock import patch
 
 import pytest
-from common.command_line_interface import (  # ty:ignore[unresolved-import]
+
+from scinoephile.common.command_line_interface import (
     CommandLineInterface,
 )
+from scinoephile.common.testing import run_cli_with_args
 
 
-class CliTestKwargs(TypedDict, total=False):
-    """Keyword arguments for TestCli _main method."""
+class ArgsCaptureCli(CommandLineInterface):
+    """Test CLI that captures parsed string arguments."""
 
-    pass
+    captured: ClassVar[dict[str, str]] = {}
+    """Most recently captured keyword arguments."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add arguments to a nascent argument parser.
+
+        Arguments:
+            parser: nascent argument parser
+        """
+        super().add_arguments_to_argparser(parser)
+        parser.add_argument("--name", type=str, required=True)
+
+    @classmethod
+    def _main(
+        cls,
+        *,
+        name: str,
+    ):
+        """Execute test CLI."""
+        cls.captured["name"] = name
 
 
 class TestCli(CommandLineInterface):
@@ -30,7 +52,7 @@ class TestCli(CommandLineInterface):
     """
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -39,7 +61,7 @@ class TestCliWithoutDoc(CommandLineInterface):
     """Test CLI without detailed documentation."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -48,7 +70,7 @@ class AnotherTestCli(CommandLineInterface):
     """Another test CLI."""
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+    def _main(cls):
         """Execute test CLI."""
         pass
 
@@ -85,7 +107,7 @@ def test_description_no_docstring():
         __doc__ = None
 
         @classmethod
-        def _main(cls, **kwargs: Unpack[CliTestKwargs]):
+        def _main(cls):
             """Execute test CLI."""
             pass
 
@@ -153,8 +175,12 @@ def test_argparser_with_subparsers():
 
 def test_log_command_line():
     """Test log_command_line() logs the command line."""
-    with patch("common.command_line_interface.argv", ["script.py", "arg1", "arg2"]):
-        with patch("common.command_line_interface.logger.info") as mock_info:
+    with patch(
+        "scinoephile.common.command_line_interface.argv", ["script.py", "arg1", "arg2"]
+    ):
+        with patch(
+            "scinoephile.common.command_line_interface.logger.info"
+        ) as mock_info:
             TestCli.log_command_line()
             mock_info.assert_called_once()
             call_args = mock_info.call_args[0][0]
@@ -209,3 +235,10 @@ def test_abstract_main():
     with pytest.raises(TypeError):
         # Cannot instantiate ABC without implementing abstract method
         CommandLineInterface()
+
+
+def test_run_cli_with_args_quoted_values():
+    """Test that run_cli_with_args preserves quoted arguments as single values."""
+    ArgsCaptureCli.captured.clear()
+    run_cli_with_args(ArgsCaptureCli, '--name "value with spaces"')
+    assert ArgsCaptureCli.captured.get("name") == "value with spaces"

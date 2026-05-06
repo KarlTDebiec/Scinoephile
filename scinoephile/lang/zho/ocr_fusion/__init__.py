@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 中文 OCR fusion."""
+"""Code related to standard Chinese OCR fusion."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -24,6 +24,7 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
 
 __all__ = [
+    "ZHO_OCR_FUSION_OPERATION_SPEC",
     "ZhoHansOcrFusionPrompt",
     "ZhoHantOcrFusionPrompt",
     "ZhoOcrFusionProcessKwargs",
@@ -32,18 +33,29 @@ __all__ = [
     "get_zho_ocr_fused",
 ]
 
+ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
+    operation="zho-ocr-fusion",
+    test_case_table_name="test_cases__zho__ocr_fusion",
+    manager_cls=OcrFusionManager,
+    prompt_cls=ZhoHansOcrFusionPrompt,
+)
+"""Operation specification for standard Chinese OCR fusion."""
+
 
 class ZhoOcrFusionProcessKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class ZhoOcrFusionProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_zho_ocr_fused(
@@ -52,7 +64,7 @@ def get_zho_ocr_fused(
     processor: OcrFusionProcessor | None = None,
     **kwargs: Unpack[ZhoOcrFusionProcessKwargs],
 ) -> Series:
-    """Get 中文 series fused from Google Lens and PaddleOCR outputs.
+    """Get standard Chinese series fused from Google Lens and PaddleOCR outputs.
 
     Arguments:
         lens: subtitles OCRed using Google Lens

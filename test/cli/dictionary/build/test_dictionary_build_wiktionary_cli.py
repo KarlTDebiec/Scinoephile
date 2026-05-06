@@ -7,6 +7,7 @@ from __future__ import annotations
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
+from typing import Any
 
 import pytest
 import requests
@@ -91,7 +92,7 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_missing_source(
     stdout = StringIO()
     stderr = StringIO()
 
-    def _mock_build(self, **kwargs) -> Path:
+    def _mock_build(self, **kwargs: Any) -> Path:
         """Simulate a service-level missing-source failure.
 
         Arguments:
@@ -124,7 +125,7 @@ def test_dictionary_build_wiktionary_exits_cleanly_on_download_error(
     stdout = StringIO()
     stderr = StringIO()
 
-    def _mock_build(self, **kwargs) -> Path:
+    def _mock_build(self, **kwargs: Any) -> Path:
         """Simulate a service-level download failure.
 
         Arguments:

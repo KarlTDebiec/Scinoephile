@@ -6,27 +6,30 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_ocr_fused
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
+    get_zho_converted,
 )
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt, get_zho_ocr_fuser
+from scinoephile.lang.zho.ocr_fusion import (
+    ZhoHantOcrFusionPrompt,
+    get_zho_ocr_fused,
+    get_zho_ocr_fuser,
+)
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
 
 __all__ = ["ZhoFuseCli"]
@@ -38,16 +41,40 @@ class ZhoFuseCli(ScinoephileCliBase):
     localizations = merge_conversion_localizations(
         {
             "zh-hans": {
+                "clean both OCR inputs before fusion (default: disabled)": (
+                    "融合前清理两个 OCR 输入（默认：禁用）"
+                ),
                 "command-line interface for standard Chinese OCR subtitle fusion": (
                     "标准中文 OCR 字幕融合命令行界面"
+                ),
+                "Fuse OCR output from Google Lens and PaddleOCR": (
+                    "融合 Google Lens 与 PaddleOCR 的 OCR 输出"
+                ),
+                'Standard Chinese subtitles OCRed using Google Lens or "-" for stdin': (
+                    '使用 Google Lens 识别的标准中文字幕，或使用 "-" 表示标准输入'
+                ),
+                'Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin': (
+                    '使用 PaddleOCR 识别的标准中文字幕，或使用 "-" 表示标准输入'
                 ),
                 "Standard Chinese subtitle outfile path (default: stdout)": (
                     "标准中文字幕输出文件路径（默认：标准输出）"
                 ),
             },
             "zh-hant": {
+                "clean both OCR inputs before fusion (default: disabled)": (
+                    "融合前清理兩個 OCR 輸入（預設：停用）"
+                ),
                 "command-line interface for standard Chinese OCR subtitle fusion": (
                     "標準中文 OCR 字幕融合命令列介面"
+                ),
+                "Fuse OCR output from Google Lens and PaddleOCR": (
+                    "融合 Google Lens 與 PaddleOCR 的 OCR 輸出"
+                ),
+                'Standard Chinese subtitles OCRed using Google Lens or "-" for stdin': (
+                    '使用 Google Lens 識別的標準中文字幕，或使用 "-" 代表標準輸入'
+                ),
+                'Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin': (
+                    '使用 PaddleOCR 識別的標準中文字幕，或使用 "-" 代表標準輸入'
                 ),
                 "Standard Chinese subtitle outfile path (default: stdout)": (
                     "標準中文字幕輸出檔路徑（預設：標準輸出）"
@@ -77,12 +104,14 @@ class ZhoFuseCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
+            dest="lens_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Standard Chinese subtitles OCRed using Google Lens or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--paddle-infile",
+            dest="paddle_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Standard Chinese subtitles OCRed using PaddleOCR or "-" for stdin',
@@ -103,6 +132,7 @@ class ZhoFuseCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="Standard Chinese subtitle outfile path (default: stdout)",
         )
@@ -123,20 +153,20 @@ class ZhoFuseCli(ScinoephileCliBase):
         return "fuse"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        lens_infile_path: Path | str,
+        paddle_infile_path: Path | str,
+        clean: bool,
+        convert: OpenCCConfig | None,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        lens_infile_path = kwargs.pop("lens_infile")
-        paddle_infile_path = kwargs.pop("paddle_infile")
-        clean = kwargs.pop("clean")
-        convert = kwargs.pop("convert")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if lens_infile_path == "-" and paddle_infile_path == "-":
             try:
                 raise ArgumentConflictError(

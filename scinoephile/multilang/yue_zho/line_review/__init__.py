@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 粤文 vs. 中文 line review."""
+"""Code related to written Cantonese vs. standard Chinese line review."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
@@ -25,6 +25,7 @@ from .prompts import (
 )
 
 __all__ = [
+    "YUE_ZHO_LINE_REVIEW_OPERATION_SPEC",
     "YueVsZhoYueHansLineReviewPrompt",
     "YueVsZhoYueHantLineReviewPrompt",
     "YueZhoLineReviewManager",
@@ -34,6 +35,14 @@ __all__ = [
     "get_yue_line_reviewed_vs_zho",
     "get_yue_vs_zho_line_reviewer",
 ]
+
+YUE_ZHO_LINE_REVIEW_OPERATION_SPEC = OperationSpec(
+    operation="yue-zho-line-review",
+    test_case_table_name="test_cases__yue_zho__line_review",
+    manager_cls=YueZhoLineReviewManager,
+    prompt_cls=YueVsZhoYueHansLineReviewPrompt,
+)
+"""Operation specification for written Cantonese line review."""
 
 
 class YueZhoLineReviewProcessKwargs(TypedDict, total=False):
@@ -58,15 +67,15 @@ def get_yue_line_reviewed_vs_zho(
     line_reviewer: YueZhoLineReviewProcessor | None = None,
     **kwargs: Unpack[YueZhoLineReviewProcessKwargs],
 ) -> Series:
-    """Get 粤文 subtitles line reviewed against 中文 subtitles.
+    """Get written Cantonese subtitles line reviewed against standard Chinese subtitles.
 
     Arguments:
-        yuewen: 粤文 Series
-        zhongwen: 中文 Series
+        yuewen: written Cantonese Series
+        zhongwen: standard Chinese Series
         line_reviewer: line reviewer to use
         **kwargs: additional keyword arguments for YueZhoLineReviewProcessor.process
     Returns:
-        line-reviewed 粤文 subtitles
+        line-reviewed written Cantonese subtitles
     """
     if line_reviewer is None:
         line_reviewer = get_yue_vs_zho_line_reviewer()
@@ -99,17 +108,15 @@ def get_yue_vs_zho_line_reviewer(
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return YueZhoLineReviewProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )

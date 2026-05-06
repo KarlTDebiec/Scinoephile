@@ -7,15 +7,13 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.dictionaries import DictionaryEntry
 from scinoephile.dictionaries.lookup import (
@@ -135,17 +133,15 @@ class DictionarySearchCli(ScinoephileCliBase):
                 logger.info(f"   - {label_prefix}{definition.text}")
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        database_path = kwargs.pop("database_path")
-        dictionary_name = kwargs.pop("dictionary_name")
-        query = kwargs.pop("query")
-        limit = kwargs.pop("limit")
-
+    def _main(
+        cls,
+        *,
+        database_path: Path | None,
+        dictionary_name: str,
+        query: str,
+        limit: int,
+    ):
+        """Execute with provided keyword arguments."""
         try:
             if dictionary_name == "all" and database_path is not None:
                 raise ArgumentConflictError(

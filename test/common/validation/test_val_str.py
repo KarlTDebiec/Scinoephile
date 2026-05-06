@@ -5,7 +5,8 @@
 from __future__ import annotations
 
 import pytest
-from common.validation import val_str  # ty:ignore[unresolved-import]
+
+from scinoephile.common.validation import val_str
 
 
 def test_val_str_valid():

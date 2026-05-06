@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 中文 OCR fusion."""
+"""Text for LLM correspondence for standard Chinese OCR fusion."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 class ZhoHansOcrFusionPrompt(OcrFusionPrompt, ZhoHansPrompt):
-    """Text for LLM correspondence for 简体中文 OCR fusion."""
+    """Text for LLM correspondence for simplified standard Chinese OCR fusion."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -76,7 +76,7 @@ class ZhoHansOcrFusionPrompt(OcrFusionPrompt, ZhoHansPrompt):
 
 
 class ZhoHantOcrFusionPrompt(ZhoHansOcrFusionPrompt):
-    """Text for LLM correspondence for 繁体中文 OCR fusion."""
+    """Text for LLM correspondence for traditional standard Chinese OCR fusion."""
 
     opencc_config = OpenCCConfig.s2t
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

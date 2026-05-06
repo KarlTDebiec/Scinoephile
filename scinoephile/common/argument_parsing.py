@@ -10,10 +10,11 @@ from argparse import (
     _ArgumentGroup,  # noqa pylint
 )
 from collections.abc import Callable, Collection
+from enum import Enum
 from pathlib import Path
 from typing import Any, TypedDict, Unpack
 
-from .exception import NotAFileError
+from .exceptions import NotAFileError
 from .validation import (
     val_float,
     val_input_dir_path,
@@ -30,6 +31,7 @@ __all__ = [
     "OutputDirValidatorKwargs",
     "OutputPathValidatorKwargs",
     "StrValidatorKwargs",
+    "enum_arg",
     "float_arg",
     "get_arg_groups_by_name",
     "get_optional_args_group",
@@ -73,6 +75,8 @@ class OutputPathValidatorKwargs(TypedDict, total=False):
 
     exist_ok: bool
     """whether existing output files are accepted."""
+    create: bool
+    """whether missing parent directories should be created."""
 
 
 class OutputDirValidatorKwargs(TypedDict, total=False):
@@ -193,12 +197,12 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
         Returns:
             Validated value
         Raises:
-            ArgumentTypeError: If TypeError is raised by wrapped function
+            ArgumentTypeError: If TypeError or ValueError is raised by wrapped function
         """
         try:
             return function(value, **kwargs)
-        except TypeError as exc:
-            raise ArgumentTypeError from exc
+        except (TypeError, ValueError) as exc:
+            raise ArgumentTypeError(str(exc)) from exc
 
     return wrapped
 
@@ -214,6 +218,36 @@ def float_arg(
         value validator function
     """
     return get_validator(val_float, **kwargs)
+
+
+def enum_arg[T: Enum](enum_type: type[T]) -> Callable[[Any], T]:
+    """Validate an enum argument.
+
+    Arguments:
+        enum_type: enum class to parse
+    Returns:
+        value validator function
+    """
+
+    def wrapped(value: Any) -> T:
+        """Validate an enum argument.
+
+        Arguments:
+            value: value to validate
+        Returns:
+            validated enum value
+        Raises:
+            ArgumentTypeError: if value is not a valid enum value
+        """
+        try:
+            return enum_type(value)
+        except ValueError as exc:
+            options = ", ".join(str(member.value) for member in enum_type)
+            raise ArgumentTypeError(
+                f"{value!r} is not one of the supported values: {options}"
+            ) from exc
+
+    return wrapped
 
 
 def input_dir_arg() -> Callable[[Any], Path | list[Path]]:

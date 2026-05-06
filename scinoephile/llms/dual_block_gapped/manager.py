@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from functools import cache
-from typing import Any, ClassVar, Unpack
+from typing import Any, ClassVar, Unpack, cast
 
 from pydantic import Field, create_model
 
@@ -183,6 +183,7 @@ class DualBlockGappedManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
+        prompt_cls = cast(type[DualBlockGappedPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [
             int(key.removeprefix(prompt_cls.src_1_pfx)) - 1

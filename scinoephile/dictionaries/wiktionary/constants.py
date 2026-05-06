@@ -16,7 +16,7 @@ WIKTIONARY_KAIKKI_JSONL_URL = (
 )
 WIKTIONARY_LICENSE_URL = "https://en.wiktionary.org/wiki/Wiktionary:Copyrights#Creative_Commons_Attribution-ShareAlike_4.0_International_License"
 
-WIKTIONARY_LOCAL_DATA_DIR_PATH = package_root / "data" / "dictionaries" / "wiktionary"
+WIKTIONARY_LOCAL_DATA_DIR_PATH = package_root / "data/dictionaries/wiktionary"
 WIKTIONARY_LOCAL_JSONL_PATH = WIKTIONARY_LOCAL_DATA_DIR_PATH / "entries.jsonl"
 
 WIKTIONARY_SOURCE = DictionarySource(

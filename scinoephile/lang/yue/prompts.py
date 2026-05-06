@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for 粤文."""
+"""LLM correspondence text for written Cantonese."""
 
 from __future__ import annotations
 
@@ -9,13 +9,11 @@ from typing import ClassVar
 
 from scinoephile.lang.zho.prompts import ZhoHansPrompt
 
-__all__ = [
-    "YueHansPrompt",
-]
+__all__ = ["YueHansPrompt"]
 
 
 class YueHansPrompt(ZhoHansPrompt, ABC):
-    """LLM correspondence text for 粤文."""
+    """LLM correspondence text for written Cantonese."""
 
     # Prompt
     schema_intro: ClassVar[str] = "你嘅回覆一定要系一个有以下结构嘅 JSON 物件："

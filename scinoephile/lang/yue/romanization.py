@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to 粤文 text romanization."""
+"""Code related to written Cantonese text romanization."""
 
 from __future__ import annotations
 
@@ -203,6 +203,13 @@ def _get_yale_chunk_variants(chunk: str) -> list[tuple[str, ...]]:
 
     @cache
     def _parse_chunk(remaining: str) -> tuple[tuple[str, ...], ...]:
+        """Parse remaining Yale text into shortest Jyutping syllable variants.
+
+        Arguments:
+            remaining: Yale text remaining to parse
+        Returns:
+            shortest candidate Jyutping syllable tuples
+        """
         if not remaining:
             return ((),)
 
@@ -325,7 +332,7 @@ def _jyutping_to_yale(jyutping: str) -> str | None:
     Arguments:
         jyutping: numbered Jyutping
     Returns:
-        Yale romanization or ``None`` if conversion fails
+        Yale romanization or None if conversion fails
     """
     normalized = _normalize_yue_romanization_query_text(jyutping)
     if not normalized:

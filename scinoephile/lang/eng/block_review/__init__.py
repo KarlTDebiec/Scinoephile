@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -20,12 +20,21 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import EngBlockReviewPrompt
 
 __all__ = [
+    "ENG_BLOCK_REVIEW_OPERATION_SPEC",
     "EngBlockReviewProcessKwargs",
     "EngBlockReviewProcessorKwargs",
     "EngBlockReviewPrompt",
     "get_eng_block_reviewed",
     "get_eng_block_reviewer",
 ]
+
+ENG_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
+    operation="eng-block-review",
+    test_case_table_name="test_cases__eng__block_review",
+    manager_cls=MonoBlockManager,
+    prompt_cls=EngBlockReviewPrompt,
+)
+"""Operation specification for English block review."""
 
 
 class EngBlockReviewProcessKwargs(TypedDict, total=False):

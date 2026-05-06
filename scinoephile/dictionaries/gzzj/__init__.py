@@ -6,6 +6,4 @@ from __future__ import annotations
 
 from .service import GzzjDictionaryService
 
-__all__ = [
-    "GzzjDictionaryService",
-]
+__all__ = ["GzzjDictionaryService"]

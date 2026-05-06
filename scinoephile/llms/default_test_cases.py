@@ -9,7 +9,8 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
-from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
+from scinoephile.core.llms import Manager, TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 
 __all__ = [
     "ENG_BLOCK_REVIEW_JSON_PATHS",
@@ -121,7 +122,7 @@ def load_default_test_cases(
     Returns:
         loaded test cases
     """
-    test_data_root = package_root.parent / "test" / "data"
+    test_data_root = package_root.parent / "test/data"
     if not test_data_root.is_dir():
         logger.info(f"Test data root {test_data_root} does not exist.")
         return tuple()

@@ -51,7 +51,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
     Returns:
         expected number of test cases
     """
-    test_data_root = package_root.parent / "test" / "data"
+    test_data_root = package_root.parent / "test/data"
     count = 0
     for relative_path in relative_paths:
         path = test_data_root / relative_path

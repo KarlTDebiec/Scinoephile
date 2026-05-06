@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Core code related to 中文 text conversion."""
+"""Core code related to standard Chinese text conversion."""
 
 from __future__ import annotations
 
@@ -67,7 +67,7 @@ def get_zho_converted(
     config: OpenCCConfig = OpenCCConfig.t2s,
     apply_exclusions: bool = True,
 ) -> Series:
-    """Get 中文 converted between character sets.
+    """Get standard Chinese converted between character sets.
 
     Arguments:
         series: Series to convert
@@ -86,7 +86,7 @@ def get_zho_converted(
 
 @cache
 def get_zho_converter(config: OpenCCConfig | str) -> OpenCC:
-    """Get OpenCC converter for 中文 character set conversion.
+    """Get OpenCC converter for standard Chinese character set conversion.
 
     Arguments:
         config: OpenCC configuration
@@ -100,7 +100,7 @@ def get_zho_converter(config: OpenCCConfig | str) -> OpenCC:
 def get_zho_text_converted(
     text: str, config: OpenCCConfig, apply_exclusions: bool = True
 ) -> str:
-    """Get 中文 text converted between character sets.
+    """Get standard Chinese text converted between character sets.
 
     Arguments:
         text: text to convert

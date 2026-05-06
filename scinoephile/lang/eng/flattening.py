@@ -12,9 +12,7 @@ from logging import getLogger
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 
-__all__ = [
-    "get_eng_flattened",
-]
+__all__ = ["get_eng_flattened"]
 
 
 logger = getLogger(__name__)

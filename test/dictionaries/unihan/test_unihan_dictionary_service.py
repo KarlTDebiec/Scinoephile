@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from pathlib import Path
+from types import TracebackType
 
 import pytest
 import requests
@@ -182,6 +183,7 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
         """Mock requests response."""
 
         content = b"placeholder zip bytes"
+        """Response payload bytes."""
 
         @staticmethod
         def raise_for_status():
@@ -191,9 +193,28 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
         """Mock zip member reader."""
 
         def __enter__(self) -> _ArchiveSource:
+            """Enter the archive source context.
+
+            Returns:
+                mock archive source
+            """
             return self
 
-        def __exit__(self, exc_type, exc, traceback):
+        def __exit__(
+            self,
+            exc_type: type[BaseException] | None,
+            exc: BaseException | None,
+            traceback: TracebackType | None,
+        ) -> bool:
+            """Exit the archive source context.
+
+            Arguments:
+                exc_type: exception type, if raised
+                exc: exception instance, if raised
+                traceback: traceback object, if raised
+            Returns:
+                whether an exception was handled
+            """
             return False
 
         @staticmethod
@@ -205,9 +226,28 @@ def test_download_and_extract_raises_file_not_found_for_missing_archive_member(
         """Mock zip archive with one missing member."""
 
         def __enter__(self) -> _Archive:
+            """Enter the archive context.
+
+            Returns:
+                mock archive
+            """
             return self
 
-        def __exit__(self, exc_type, exc, traceback):
+        def __exit__(
+            self,
+            exc_type: type[BaseException] | None,
+            exc: BaseException | None,
+            traceback: TracebackType | None,
+        ) -> bool:
+            """Exit the archive context.
+
+            Arguments:
+                exc_type: exception type, if raised
+                exc: exception instance, if raised
+                traceback: traceback object, if raised
+            Returns:
+                whether an exception was handled
+            """
             return False
 
         @staticmethod

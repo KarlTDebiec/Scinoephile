@@ -7,16 +7,17 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar, Unpack
+from typing import ClassVar
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     int_arg,
     output_dir_arg,
 )
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
+from scinoephile.dictionaries.cuhk.constants import CUHK_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -28,12 +29,19 @@ logger = getLogger(__name__)
 class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
     """Build CUHK dictionary cache."""
 
+    source = CUHK_SOURCE
+    """Dictionary source built by this CLI."""
+
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build CUHK dictionary cache": "构建 CUHK 词典缓存",
-            "cache directory for scraped HTML and link data": (
-                "抓取 HTML 与链接数据的缓存目录"
+            ("cache directory for scraped HTML and link data (default: %(default)s)"): (
+                "抓取 HTML 与链接数据的缓存目录（默认：%(default)s）"
             ),
+            (
+                "Comparative Database of Modern Standard Chinese and Cantonese "
+                "(Chinese University of Hong Kong)."
+            ): "香港中文大学现代标准汉语与粤语对照数据库。",
             "maximum delay between HTTP requests": "HTTP 请求之间的最大延迟",
             "maximum retries per HTTP request": "每个 HTTP 请求的最大重试次数",
             "minimum delay between HTTP requests": "HTTP 请求之间的最小延迟",
@@ -44,9 +52,13 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build CUHK dictionary cache": "建立 CUHK 詞典快取",
-            "cache directory for scraped HTML and link data": (
-                "擷取 HTML 與連結資料的快取目錄"
+            ("cache directory for scraped HTML and link data (default: %(default)s)"): (
+                "擷取 HTML 與連結資料的快取目錄（預設：%(default)s）"
             ),
+            (
+                "Comparative Database of Modern Standard Chinese and Cantonese "
+                "(Chinese University of Hong Kong)."
+            ): "香港中文大學現代標準漢語與粵語對照資料庫。",
             "maximum delay between HTTP requests": "HTTP 請求之間的最大延遲",
             "maximum retries per HTTP request": "每個 HTTP 請求的最大重試次數",
             "minimum delay between HTTP requests": "HTTP 請求之間的最小延遲",
@@ -77,9 +89,12 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
-            default=None,
+            dest="cache_dir_path",
+            default=get_runtime_cache_dir_path("dictionaries", "cuhk"),
             type=output_dir_arg(),
-            help="cache directory for scraped HTML and link data",
+            help=(
+                "cache directory for scraped HTML and link data (default: %(default)s)"
+            ),
         )
 
         # Operation arguments
@@ -146,21 +161,19 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
             logger.info(f"Building at most {max_words} discovered CUHK words")
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        cache_dir_path = kwargs.pop("cache_dir")
-        database_path = kwargs.pop("database_path")
-        max_words = kwargs.pop("max_words", None)
-        overwrite = kwargs.pop("overwrite")
-        min_delay_seconds = kwargs.pop("min_delay_seconds")
-        max_delay_seconds = kwargs.pop("max_delay_seconds")
-        max_retries = kwargs.pop("max_retries")
-        request_timeout_seconds = kwargs.pop("request_timeout_seconds")
-
+    def _main(
+        cls,
+        *,
+        cache_dir_path: Path | None,
+        database_path: Path | None,
+        max_words: int | None,
+        overwrite: bool,
+        min_delay_seconds: float,
+        max_delay_seconds: float,
+        max_retries: int,
+        request_timeout_seconds: float,
+    ):
+        """Execute with provided keyword arguments."""
         service = CuhkDictionaryService(
             database_path=database_path,
             scraper_kwargs={

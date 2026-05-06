@@ -28,7 +28,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 processing CLI help output.
+    """Test standard Chinese processing CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,7 +45,7 @@ def test_zho_process_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 processing CLI usage output.
+    """Test standard Chinese processing CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -57,29 +57,29 @@ def test_zho_process_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
-            "mnt/output/zho-Hans_fuse_clean.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_review.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review.srt",
             "--flatten",
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
         ),
         (
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
             "--romanize",
-            "mnt/output/zho-Hans_fuse_clean_validate_review_flatten_romanize.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten_romanize.srt",
         ),
         (
-            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt",
             "--convert t2s",
-            "mnt/output/zho-Hant_fuse_clean_validate_review_flatten_simplify.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten_simplify.srt",
         ),
         (
-            "mnt/output/zho-Hant_fuse_clean_validate.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt",
             "--proofread traditional",
-            "mnt/output/zho-Hant_fuse_clean_validate_review.srt",
+            "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
         ),
     ],
 )
@@ -88,7 +88,7 @@ def test_zho_process_cli(
     args: str,
     expected_path: str,
 ):
-    """Test 中文 processing CLI with file arguments.
+    """Test standard Chinese processing CLI with file arguments.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -113,14 +113,14 @@ def test_zho_process_cli(
     ("input_path", "args", "expected_path"),
     [
         (
-            "mnt/output/zho-Hans_fuse.srt",
+            "mnt/output/zho-Hans_ocr/fuse.srt",
             "--clean",
-            "mnt/output/zho-Hans_fuse_clean.srt",
+            "mnt/output/zho-Hans_ocr/fuse_clean.srt",
         ),
     ],
 )
 def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
-    """Test 中文 processing CLI via stdin/stdout.
+    """Test standard Chinese processing CLI via stdin/stdout.
 
     Arguments:
         input_path: path to input subtitle fixture
@@ -143,10 +143,27 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
     assert output == expected
 
 
+def test_zho_process_cli_offsets_timing():
+    """Test standard Chinese processing CLI can offset subtitle timings."""
+    full_input_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            ZhoProcessCli,
+            f"--infile {full_input_path} --offset 1250 --outfile {output_path}",
+        )
+        output = Series.load(output_path)
+
+    expected = Series.load(full_input_path)
+    expected.shift(ms=1250)
+    assert output == expected
+
+
 def test_zho_process_cli_rejects_bare_convert_flag():
-    """Test 中文 processing CLI requires an explicit conversion config."""
+    """Test standard Chinese processing CLI requires an explicit conversion config."""
     full_input_path = (
-        test_data_root / "mnt/output/zho-Hant_fuse_clean_validate_review_flatten.srt"
+        test_data_root
+        / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review_flatten.srt"
     )
 
     with pytest.raises(SystemExit, match="2"):

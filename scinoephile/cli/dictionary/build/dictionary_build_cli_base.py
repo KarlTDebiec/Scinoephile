@@ -13,6 +13,7 @@ from typing import ClassVar
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, output_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.dictionaries import DictionarySource
 
 __all__ = ["DictionaryBuildCliBase"]
 
@@ -21,6 +22,9 @@ logger = getLogger(__name__)
 
 class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
     """Base class for building a specific dictionary cache."""
+
+    source: ClassVar[DictionarySource | None] = None
+    """Dictionary source built by this CLI."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
@@ -69,6 +73,14 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
             action="store_true",
             help="overwrite the existing SQLite database if it already exists",
         )
+
+    @classmethod
+    def description(cls) -> str:
+        """Long description of this tool displayed below usage."""
+        description = super().description()
+        if cls.source is None:
+            return description
+        return f"{description}\n\n{cls.translate_text(cls.source.description)}"
 
     @classmethod
     def log_config(

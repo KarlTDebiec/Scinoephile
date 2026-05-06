@@ -11,17 +11,17 @@ import logging
 import pytest
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho import validate_zho_ocr
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import assert_expected_warnings, get_warning_messages
 
 
 def test_validate_zho_ocr_mlamd_hans(
     mlamd_zho_hans_image: ImageSeries, caplog: pytest.LogCaptureFixture
 ):
-    """Test validate_zho_ocr with MLAMD 简体中文 image subtitles.
+    """Test validate_zho_ocr with MLAMD simplified standard Chinese image subtitles.
 
     Arguments:
-        mlamd_zho_hans_image: MLAMD 简体中文 image subtitles
+        mlamd_zho_hans_image: MLAMD simplified standard Chinese image subtitles
         caplog: pytest log capture fixture
     """
     caplog.set_level(logging.WARNING)
@@ -67,10 +67,10 @@ def test_validate_zho_ocr_mlamd_hans(
 def test_validate_zho_ocr_mlamd_hant(
     mlamd_zho_hant_image: ImageSeries, caplog: pytest.LogCaptureFixture
 ):
-    """Test validate_zho_ocr with MLAMD 繁体中文 image subtitles.
+    """Test validate_zho_ocr with MLAMD traditional standard Chinese image subtitles.
 
     Arguments:
-        mlamd_zho_hant_image: MLAMD 繁体中文 image subtitles
+        mlamd_zho_hant_image: MLAMD traditional standard Chinese image subtitles
         caplog: pytest log capture fixture
     """
     caplog.set_level(logging.WARNING)

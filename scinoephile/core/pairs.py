@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from scinoephile.core import ScinoephileError
-from scinoephile.core.subtitles import Series
+from .exceptions import ScinoephileError
+from .subtitles import Series
 
 __all__ = [
     "get_block_pairs_by_pause",
@@ -34,7 +34,7 @@ def get_block_pairs_by_pause(
     source_one = deepcopy(one.events)
     source_two = deepcopy(two.events)
 
-    def get_nascent_block_cutoff():
+    def get_nascent_block_cutoff() -> int:
         """Get latest acceptable start for an event to be added to the nascent block."""
         cutoff = 0
         if nascent_block_one:

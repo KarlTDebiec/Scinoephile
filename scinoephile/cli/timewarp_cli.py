@@ -6,16 +6,14 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
@@ -28,13 +26,55 @@ class TimewarpCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
+            "1-based end index in anchor series (default: final subtitle)": (
+                "锚定序列中的结束索引，从 1 开始（默认：最后一条字幕）"
+            ),
+            "1-based end index in moving series (default: final subtitle)": (
+                "待调整序列中的结束索引，从 1 开始（默认：最后一条字幕）"
+            ),
+            "1-based start index in anchor series (default: 1)": (
+                "锚定序列中的起始索引，从 1 开始（默认：1）"
+            ),
+            "1-based start index in moving series (default: 1)": (
+                "待调整序列中的起始索引，从 1 开始（默认：1）"
+            ),
+            'mobile subtitle infile to be timewarped or "-" for stdin': (
+                '要调整时间轴的移动字幕输入文件，或使用 "-" 表示标准输入'
+            ),
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
             ),
+            'subtitle infile used as anchor timing reference or "-" for stdin': (
+                '作为锚定时间参考的字幕输入文件，或使用 "-" 表示标准输入'
+            ),
+            "timewarped subtitle outfile path (default: stdout)": (
+                "时间轴调整后字幕输出文件路径（默认：标准输出）"
+            ),
         },
         "zh-hant": {
+            "1-based end index in anchor series (default: final subtitle)": (
+                "錨定序列中的結束索引，從 1 開始（預設：最後一條字幕）"
+            ),
+            "1-based end index in moving series (default: final subtitle)": (
+                "待調整序列中的結束索引，從 1 開始（預設：最後一條字幕）"
+            ),
+            "1-based start index in anchor series (default: 1)": (
+                "錨定序列中的起始索引，從 1 開始（預設：1）"
+            ),
+            "1-based start index in moving series (default: 1)": (
+                "待調整序列中的起始索引，從 1 開始（預設：1）"
+            ),
+            'mobile subtitle infile to be timewarped or "-" for stdin': (
+                '要調整時間軸的移動字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
+            ),
+            'subtitle infile used as anchor timing reference or "-" for stdin': (
+                '作為錨定時間參考的字幕輸入檔，或使用 "-" 代表標準輸入'
+            ),
+            "timewarped subtitle outfile path (default: stdout)": (
+                "時間軸調整後字幕輸出檔路徑（預設：標準輸出）"
             ),
         },
     }
@@ -59,12 +99,14 @@ class TimewarpCli(ScinoephileCliBase):
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--anchor-infile",
+            dest="anchor_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile used as anchor timing reference or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--mobile-infile",
+            dest="mobile_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='mobile subtitle infile to be timewarped or "-" for stdin',
@@ -101,6 +143,7 @@ class TimewarpCli(ScinoephileCliBase):
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="timewarped subtitle outfile path (default: stdout)",
         )
@@ -112,22 +155,22 @@ class TimewarpCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        anchor_infile_path: Path | str,
+        mobile_infile_path: Path | str,
+        one_start_idx: int | None,
+        one_end_idx: int | None,
+        two_start_idx: int | None,
+        two_end_idx: int | None,
+        outfile_path: Path | None,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        anchor_infile_path = kwargs.pop("anchor_infile")
-        mobile_infile_path = kwargs.pop("mobile_infile")
-        one_start_idx = kwargs.pop("one_start_idx")
-        one_end_idx = kwargs.pop("one_end_idx")
-        two_start_idx = kwargs.pop("two_start_idx")
-        two_end_idx = kwargs.pop("two_end_idx")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":
             try:
                 raise ArgumentConflictError(

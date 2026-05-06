@@ -20,7 +20,7 @@ UNIHAN_REQUIRED_SOURCE_FILENAMES: tuple[str, str, str] = (
     "Unihan_Variants.txt",
 )
 
-UNIHAN_LOCAL_DATA_DIR_PATH = package_root / "data" / "dictionaries" / "unihan"
+UNIHAN_LOCAL_DATA_DIR_PATH = package_root / "data/dictionaries/unihan"
 
 UNIHAN_SOURCE = DictionarySource(
     name="Unihan Database",

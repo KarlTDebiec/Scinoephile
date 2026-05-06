@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 
-from common.argument_parsing import (  # ty:ignore[unresolved-import]
+from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     get_optional_args_group,
     get_required_args_group,

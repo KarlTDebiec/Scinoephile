@@ -66,19 +66,19 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
             "mlamd/input/eng_ocr/lens.srt",
             "mlamd/input/eng_ocr/tesseract.srt",
             "--clean",
-            "mlamd/output/eng_fuse_clean.srt",
+            "mlamd/output/eng_ocr/fuse_clean.srt",
         ),
         (
             "mnt/input/eng_ocr/lens.srt",
             "mnt/input/eng_ocr/tesseract.srt",
             "--clean",
-            "mnt/output/eng_fuse_clean.srt",
+            "mnt/output/eng_ocr/fuse_clean.srt",
         ),
         (
             "t/input/eng_ocr/lens.srt",
             "t/input/eng_ocr/tesseract.srt",
             "--clean",
-            "t/output/eng_fuse_clean.srt",
+            "t/output/eng_ocr/fuse_clean.srt",
         ),
     ],
 )

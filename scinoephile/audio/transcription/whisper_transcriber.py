@@ -15,10 +15,11 @@ from warnings import catch_warnings, filterwarnings
 import whisper_timestamped as whisper
 from huggingface_hub import snapshot_download
 
-from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.ml import get_torch_device
+
+from .transcribed_segment import TranscribedSegment
 
 __all__ = ["WhisperTranscriber"]
 

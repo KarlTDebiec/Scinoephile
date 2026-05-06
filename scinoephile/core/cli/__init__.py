@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from sys import stdin, stdout
 
-from scinoephile.common.exception import NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.subtitles import Series
 
@@ -46,7 +46,12 @@ def read_series(
     return Series.load(infile_path)
 
 
-def write_series(parser: ArgumentParser, series: Series, outfile: str, overwrite: bool):
+def write_series(
+    parser: ArgumentParser,
+    series: Series,
+    outfile: str | Path,
+    overwrite: bool,
+):
     """Write a subtitle series to stdout or a file.
 
     Arguments:
@@ -55,7 +60,7 @@ def write_series(parser: ArgumentParser, series: Series, outfile: str, overwrite
         outfile: output path or "-"
         overwrite: whether existing files may be overwritten
     """
-    if outfile == "-":
+    if str(outfile) == "-":
         stdout.write(series.to_string(format_="srt"))
         return
 

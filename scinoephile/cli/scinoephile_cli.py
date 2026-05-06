@@ -5,14 +5,17 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import Any
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis import AnalysisCli
+from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
+from .extract_cli import ExtractCli
+from .optimization import OptimizationCli
 from .sync_cli import SyncCli
 from .timewarp_cli import TimewarpCli
 from .yue import YueCli
@@ -36,9 +39,14 @@ class ScinoephileCli(ScinoephileCliBase):
             "combine two series into the top and bottom of a synchronized series": (
                 "将两个序列合并为上下行同步字幕"
             ),
+            "extract matching subtitle streams from a video file": (
+                "从视频文件提取匹配的字幕流"
+            ),
+            "inspect and invalidate local caches": "检查并清除本地缓存",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改标准中文字幕",
             "modify written Cantonese subtitles": "修改书面粤语字幕",
+            "prompt optimization utilities and persistence": "提示词优化工具与持久化",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -54,9 +62,14 @@ class ScinoephileCli(ScinoephileCliBase):
             "combine two series into the top and bottom of a synchronized series": (
                 "將兩個序列合併為上下行同步字幕"
             ),
+            "extract matching subtitle streams from a video file": (
+                "從影片檔提取匹配的字幕流"
+            ),
+            "inspect and invalidate local caches": "檢查並清除本機快取",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改標準中文字幕",
             "modify written Cantonese subtitles": "修改書面粵語字幕",
+            "prompt optimization utilities and persistence": "提示詞最佳化工具與持久化",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -78,7 +91,7 @@ class ScinoephileCli(ScinoephileCliBase):
         super().add_arguments_to_argparser(parser)
 
         subparsers = parser.add_subparsers(
-            dest="subcommand",
+            dest="subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -95,8 +108,11 @@ class ScinoephileCli(ScinoephileCliBase):
         """
         return {
             AnalysisCli.name(): AnalysisCli,
+            CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
+            ExtractCli.name(): ExtractCli,
+            OptimizationCli.name(): OptimizationCli,
             SyncCli.name(): SyncCli,
             TimewarpCli.name(): TimewarpCli,
             YueCli.name(): YueCli,
@@ -104,15 +120,14 @@ class ScinoephileCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

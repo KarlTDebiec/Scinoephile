@@ -24,10 +24,10 @@ def _test_get_block_pairs_by_pause(
 
 # get_block_pairs_by_pause
 def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
-    """Test get_block_pairs_by_pause with KOB 简体粤文 and English subtitles.
+    """Test get_block_pairs_by_pause with KOB simplified written Cantonese.
 
     Arguments:
-        kob_yue_hans: KOB 简体粤文 series fixture
+        kob_yue_hans: KOB simplified written Cantonese series fixture
         kob_eng: KOB English series fixture
     """
     _test_get_block_pairs_by_pause(
@@ -41,10 +41,11 @@ def test_get_block_pairs_by_pause_mnt(
     mnt_zho_hans_fuse_clean_validate_review_flatten: Series,
     mnt_eng_fuse_clean_validate_review_flatten: Series,
 ):
-    """Test get_block_pairs_by_pause with MNT 繁体中文 and English subtitles.
+    """Test get_block_pairs_by_pause with MNT traditional standard Chinese.
 
     Arguments:
-        mnt_zho_hans_fuse_clean_validate_review_flatten: MNT 繁体中文 series fixture
+        mnt_zho_hans_fuse_clean_validate_review_flatten: MNT traditional standard
+          Chinese series fixture
         mnt_eng_fuse_clean_validate_review_flatten: MNT English series fixture
     """
     _test_get_block_pairs_by_pause(
@@ -55,10 +56,10 @@ def test_get_block_pairs_by_pause_mnt(
 
 
 def test_get_block_pairs_by_pause_t(t_zho_hans: Series, t_eng: Series):
-    """Test get_block_pairs_by_pause with T 简体中文 and English subtitles.
+    """Test get_block_pairs_by_pause with T simplified standard Chinese.
 
     Arguments:
-        t_zho_hans: T 简体中文 series fixture
+        t_zho_hans: T simplified standard Chinese series fixture
         t_eng: T English series fixture
     """
     _test_get_block_pairs_by_pause(

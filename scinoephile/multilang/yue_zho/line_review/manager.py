@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for 粤文 vs. 中文 line-review LLM classes."""
+"""Factories for written Cantonese vs. standard Chinese line-review LLM classes."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ __all__ = ["YueZhoLineReviewManager"]
 
 
 class YueZhoLineReviewManager(DualSingleManager):
-    """Factories for 粤文 vs. 中文 line-review LLM classes."""
+    """Factories for written Cantonese vs. standard Chinese line-review LLM classes."""
 
     prompt_cls: ClassVar[type[YueVsZhoYueHansLineReviewPrompt]] = (
         YueVsZhoYueHansLineReviewPrompt

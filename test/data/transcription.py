@@ -13,33 +13,35 @@ from pathlib import Path
 from shutil import copy2
 from typing import Any
 
-from scinoephile.analysis import get_series_cer
+from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core import ScinoephileError
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho import (
+from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
-    get_yue_line_reviewed_vs_zho,
-    get_yue_transcribed_vs_zho,
-    get_yue_translated_vs_zho,
+    get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.block_review import get_yue_vs_zho_block_reviewer
-from scinoephile.multilang.yue_zho.line_review import get_yue_vs_zho_line_reviewer
+from scinoephile.multilang.yue_zho.line_review import (
+    get_yue_line_reviewed_vs_zho,
+    get_yue_vs_zho_line_reviewer,
+)
 from scinoephile.multilang.yue_zho.transcription import (
+    get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
 )
-from scinoephile.multilang.yue_zho.translation import get_yue_vs_zho_translator
+from scinoephile.multilang.yue_zho.translation import (
+    get_yue_translated_vs_zho,
+    get_yue_vs_zho_translator,
+)
 
-__all__ = [
-    "process_yue_hans_transcription",
-]
+__all__ = ["process_yue_hans_transcription"]
 
 logger = getLogger(__name__)
 
 
 def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
-    title_root: Path,
+    title_root_path: Path,
     zho_path: Path,
     *,
     name: str = "Yue Hans transcription",
@@ -64,15 +66,15 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     - Block review
 
     Arguments:
-        title_root: title root directory
+        title_root_path: title root directory
         zho_path: Zho reference series path used for audio staging and as the
           reference language during transcription/review/translation
         name: label printed above CER summaries
         reference_path: reference series path used to compute CER after each stage
         output_dir_path: directory where pipeline outputs are written; defaults to
-          `title_root/output/yue-Hans_transcribe`
+          `title_root_path/output/yue-Hans_transcribe`
         audio_path: path to the staged audio wav file; defaults to
-          `title_root/output/yue-Hans_transcribe/audio/audio.wav`
+          `title_root_path/output/yue-Hans_transcribe/audio/audio.wav`
         media_path: optional media path used to generate `audio_path` if missing
         stream_index: audio stream index in media used when generating audio
         overwrite_srt: whether to overwrite subtitle outputs
@@ -84,7 +86,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     Returns:
         final block-reviewed series
     """
-    output_dir = title_root / "output"
+    output_dir = title_root_path / "output"
     yue_hans_transcribe_dir_path = (
         output_dir / "yue-Hans_transcribe"
         if output_dir_path is None
@@ -94,7 +96,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     reference = Series.load(reference_path)
 
     device = get_torch_device()
-    test_case_dir_path = yue_hans_transcribe_dir_path / "multilang" / "yue_zho"
+    test_case_dir_path = yue_hans_transcribe_dir_path / "multilang/yue_zho"
 
     # Ensure test-case directories exist (some constructors validate as "input dirs")
     transcription_test_case_dir_path = test_case_dir_path / "transcription"
@@ -110,7 +112,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     # Stage audio
     if audio_path is None:
-        audio_path = output_dir / "yue-Hans_transcribe" / "audio" / "audio.wav"
+        audio_path = output_dir / "yue-Hans_transcribe/audio/audio.wav"
     audio_dir_path = audio_path.parent
     audio_dir_path.mkdir(parents=True, exist_ok=True)
     expected_audio_path = audio_dir_path / "audio.wav"
@@ -158,7 +160,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription CER:")
-        print(get_series_cer(reference, transcribe))
+        print(SeriesCER(reference, transcribe))
 
     # Review (line-by-line)
     line_review_path = yue_hans_transcribe_dir_path / "transcribe_review.srt"
@@ -186,7 +188,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review CER:")
-        print(get_series_cer(reference, line_review))
+        print(SeriesCER(reference, line_review))
 
     # Translate
     translate_path = yue_hans_transcribe_dir_path / "transcribe_review_translate.srt"
@@ -206,7 +208,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review → translate CER:")
-        print(get_series_cer(reference, translate))
+        print(SeriesCER(reference, translate))
 
     # Review (block-by-block)
     block_review_path = (
@@ -228,7 +230,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
 
     if reference is not None:
         print(f"{name} — transcription → line review → translate → block review CER:")
-        print(get_series_cer(reference, block_review))
+        print(SeriesCER(reference, block_review))
 
     logger.info(f"Saved Yue transcription outputs under {yue_hans_transcribe_dir_path}")
     return block_review

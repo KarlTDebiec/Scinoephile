@@ -1,0 +1,132 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Subtitle stream metadata."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
+from scinoephile.core.exceptions import ScinoephileError
+
+from .constants import SUBTITLE_CODEC_OUTPUTS
+
+__all__ = ["SubtitleStream"]
+
+
+@dataclass(frozen=True)
+class SubtitleStream:
+    """Subtitle stream metadata needed for extraction."""
+
+    index: int
+    """Absolute ffmpeg stream index."""
+    language: str | None
+    """ISO 639 language code from stream tags, when available."""
+    codec_name: str
+    """ffmpeg codec name."""
+    title: str | None = None
+    """Stream title from metadata, when available."""
+    forced: bool = False
+    """Whether stream is marked as forced."""
+    sdh: bool = False
+    """Whether stream is marked as hearing impaired."""
+    subtitle_count: int | None = None
+    """Number of subtitle packets in stream, when available."""
+
+    def __post_init__(self):
+        """Normalize stream metadata."""
+        if self.language is not None:
+            object.__setattr__(self, "language", self.language.lower())
+
+    @property
+    def description(self) -> str:
+        """Human-readable stream description."""
+        description = (
+            f"Stream #0:{self.index}({self.language or 'und'}): Subtitle: "
+            f"{self.codec_name}"
+        )
+        details = [f"extension={self.extension}"]
+        if self.title is not None:
+            details.append(f"title={self.title}")
+        if self.forced:
+            details.append("forced")
+        if self.sdh:
+            details.append("sdh")
+        if self.subtitle_count is not None:
+            details.append(f"subtitles={self.subtitle_count}")
+        return f"{description} ({', '.join(details)})"
+
+    @property
+    def extension(self) -> str:
+        """File extension to use for extracted subtitles."""
+        if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
+            raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
+        return SUBTITLE_CODEC_OUTPUTS[self.codec_name][0]
+
+    @property
+    def outfile_filename(self) -> str:
+        """Filename to use when extracting this subtitle stream.
+
+        Raises:
+            ValueError: if the stream has no language tag
+        """
+        if self.language is None:
+            raise ValueError(
+                "Subtitle stream must have a language to build output path"
+            )
+        return f"{self.language}-{self.index}.{self.extension}"
+
+    @property
+    def output_codec(self) -> str:
+        """Ffmpeg subtitle codec to use for extracted subtitles."""
+        if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
+            raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
+        return SUBTITLE_CODEC_OUTPUTS[self.codec_name][1]
+
+    @classmethod
+    def from_ffprobe_stream(cls, stream: dict[str, Any]) -> SubtitleStream | None:
+        """Parse a probed ffmpeg stream into subtitle metadata when applicable.
+
+        Arguments:
+            stream: ffprobe stream object
+        Returns:
+            subtitle stream metadata, or None for non-subtitle streams
+        """
+        if stream.get("codec_type") != "subtitle":
+            return None
+
+        codec_name = stream.get("codec_name")
+        if not isinstance(codec_name, str) or not codec_name:
+            codec_name = "subtitle"
+
+        tags = stream.get("tags")
+        if not isinstance(tags, dict):
+            tags = {}
+
+        disposition = stream.get("disposition")
+        if not isinstance(disposition, dict):
+            disposition = {}
+
+        language = tags.get("language")
+        if not isinstance(language, str):
+            language = None
+
+        title = tags.get("title")
+        if not isinstance(title, str):
+            title = None
+
+        subtitle_count = stream.get("nb_read_packets")
+        if isinstance(subtitle_count, int | str):
+            subtitle_count = int(subtitle_count)
+        else:
+            subtitle_count = None
+
+        return cls(
+            index=int(stream["index"]),
+            language=language,
+            codec_name=codec_name,
+            title=title,
+            forced=bool(disposition.get("forced")),
+            sdh=bool(disposition.get("hearing_impaired")),
+            subtitle_count=subtitle_count,
+        )

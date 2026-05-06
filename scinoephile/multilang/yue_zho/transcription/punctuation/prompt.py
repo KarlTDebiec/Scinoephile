@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文/中文 transcription punctuation."""
+"""Text for written Cantonese/standard Chinese transcription punctuation."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 class YueVsZhoYueHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
-    """Text for LLM correspondence for 简体粤文/中文 transcription punctuation."""
+    """Text for simplified written Cantonese/standard Chinese punctuation."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -66,20 +66,20 @@ class YueVsZhoYueHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
 
     # Test case validation errors
     yuewen_chars_changed_err_tpl: ClassVar[str] = (
-        "Answer's 粤文 subtitle stripped of punctuation and whitespace does not match "
-        "query's 粤文 subtitle concatenated:\n"
+        "Answer's written Cantonese subtitle stripped of punctuation and whitespace "
+        "does not match query's written Cantonese subtitle concatenated:\n"
         "Expected: {expected}\n"
         "Received: {received}"
     )
-    """Error template when punctuated 粤文 characters do not match original."""
+    """Error when punctuated written Cantonese characters do not match original."""
 
     @classmethod
     def yuewen_chars_changed_err(cls, expected: str, received: str) -> str:
-        """Error when punctuated 粤文 characters do not match original.
+        """Error when punctuated written Cantonese characters do not match original.
 
         Arguments:
-            expected: expected 粤文 characters
-            received: received 粤文 characters
+            expected: expected written Cantonese characters
+            received: received written Cantonese characters
         Returns:
             error message
         """
@@ -89,7 +89,7 @@ class YueVsZhoYueHansPunctuationPrompt(DualMultiSinglePrompt, YueHansPrompt):
 
 
 class YueVsZhoYueHantPunctuationPrompt(YueVsZhoYueHansPunctuationPrompt):
-    """Text for LLM correspondence for 繁体粤文/中文 transcription punctuation."""
+    """Text for traditional written Cantonese/standard Chinese punctuation."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

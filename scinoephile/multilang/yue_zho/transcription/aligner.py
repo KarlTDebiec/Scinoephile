@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Aligns transcribed 粤文 subs with official 中文 subs."""
+"""Aligns transcribed written Cantonese subs with official standard Chinese subs."""
 
 from __future__ import annotations
 
@@ -23,8 +23,8 @@ from scinoephile.core.llms import (
     Query,
     Queryer,
     TestCase,
-    save_test_cases_to_json,
 )
+from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_sync_groups_string
@@ -43,7 +43,7 @@ logger = getLogger(__name__)
 
 
 class Aligner:
-    """Aligns transcribed 粤文 subs with official 中文 subs."""
+    """Aligns transcribed written Cantonese subs with official standard Chinese subs."""
 
     def __init__(
         self,
@@ -59,48 +59,54 @@ class Aligner:
             test_case_dir_path: directory where encountered test cases are written
         """
         self.punctuation_queryer = punctuation_queryer
-        """Punctuates transcribed 粤文 text based on corresponding 中文."""
+        """Punctuates written Cantonese from corresponding standard Chinese."""
         self.deliniation_queryer = deliniation_queryer
-        """Shifts 粤文 text between adjacent subtitles based on corresponding 中文."""
+        """Shifts written Cantonese between adjacent subtitles from standard Chinese."""
         self.test_case_dir_path = None
         if test_case_dir_path is not None:
             self.test_case_dir_path = val_input_dir_path(test_case_dir_path)
 
     def align(self, zhongwen_subs: Series, yuewen_subs: AudioSeries) -> Alignment:
-        """Align 粤文 subtitles with 中文 subtitles.
+        """Align written Cantonese subtitles with standard Chinese subtitles.
 
         Presently, this does the following:
-          * Assigns 粤文 subtitles to sync groups with 中文 subtitles based on overlap
-          * If a 粤文 subtitle overlaps with two 中文 subtitles, asks LLM to distribute
-          * At the end of this, each sync group should have one 中文 subtitle and
-          * zero or more 粤文 subtitles
-          * Combines and punctuates 粤文 subtitles using LLM to match 中文
-            punctuation and spacing
+          * Assigns written Cantonese subtitles to sync groups with standard Chinese
+            subtitles based on overlap
+          * If a written Cantonese subtitle overlaps with two standard Chinese
+            subtitles, asks LLM to distribute
+          * At the end of this, each sync group should have one standard Chinese
+            subtitle and zero or more written Cantonese subtitles
+          * Combines and punctuates written Cantonese subtitles using LLM to match
+            standard Chinese punctuation and spacing
         It needs to also do the following:
-          * If there is a discrepancy in the length of the 中文 and concatenated 粤文
-            subtitles, prompt the LLM with one known 中文 subtitle and two known 粤文
-            subtitles and ask whether 粤文 should be shifted.
-          * If a 中文 subtitle has no partner 粤文 subtitle, prompt LLM with preceding
-            and following 粤文 subtitles and ask whether they should be shifted.
+          * If there is a discrepancy in the length of the standard Chinese and
+            concatenated written Cantonese subtitles, prompt the LLM with one known
+            standard Chinese subtitle and two known written Cantonese subtitles and ask
+            whether written Cantonese should be shifted.
+          * If a standard Chinese subtitle has no partner written Cantonese subtitle,
+            prompt LLM with preceding and following written Cantonese subtitles and ask
+            whether they should be shifted.
         """
         alignment = Alignment(zhongwen_subs, yuewen_subs)
 
-        # Delineation may involve moving a whole 粤文 subtitle from one sync group to
-        # another, or it may involve splitting a 粤文 subtitle into two 粤文 subtitles.
-        # Each time a 粤文 subtitle is split, delineation is implicitly restarted by
-        # clearing the sync group override.
+        # Delineation may involve moving a whole written Cantonese subtitle from one
+        # sync group to another, or it may involve splitting a written Cantonese
+        # subtitle into two written Cantonese subtitles. Each time a written
+        # Cantonese subtitle is split, delineation is implicitly restarted by
+        # clearing the sync-group override.
         delineation_in_progress = True
         while delineation_in_progress:
             delineation_in_progress = self._delineate(alignment)
 
-        # Punctuate 粤文 subtitles to match 中文 punctuation and spacing
+        # Punctuate written Cantonese subtitles to match standard Chinese punctuation
+        # and spacing.
         self._punctuate(alignment)
 
         # Return final alignment
         return alignment
 
-    def _delineate(self, alignment) -> bool:
-        """Delineate 粤文 text.
+    def _delineate(self, alignment: Alignment) -> bool:
+        """Delineate written Cantonese text.
 
         Arguments:
             alignment: Nascent alignment
@@ -110,15 +116,21 @@ class Aligner:
             test_case = alignment.get_deliniation_test_case(sg_1_idx)
             if test_case is None:
                 logger.info(
-                    f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} with no 粤文"
+                    f"Skipping sync groups {sg_1_idx} and {sg_1_idx + 1} "
+                    "with no written Cantonese"
                 )
                 continue
-            # TODO: try/expect and return original 粤文 on error (not yet encountered)
+            # TODO: try/except and return original written Cantonese on error
+            # (not yet encountered).
             test_case: TestCase = self.deliniation_queryer.call(test_case)
 
             # If there is no change, continue
             query = test_case.query
             answer = test_case.answer
+            if answer is None:
+                message = "Delineation query returned no answer."
+                logger.error(message)
+                raise ScinoephileError(message)
             prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(
                 test_case, "prompt_cls"
             )
@@ -164,7 +176,7 @@ class Aligner:
             )
         sg_2 = alignment.sync_groups[sg_2_idx]
 
-        # Get 粤文
+        # Get written Cantonese
         prompt_cls: type[YueZhoHansDelineationPrompt] = getattr(query, "prompt_cls")
         yw_1_idxs = sg_1[1]
         yw_2_idxs = sg_2[1]
@@ -173,10 +185,11 @@ class Aligner:
         yw_1_shifted = getattr(answer, prompt_cls.src_2_sub_1_shifted, "")
         yw_2_shifted = getattr(answer, prompt_cls.src_2_sub_2_shifted, "")
 
-        # Shift 粤文
+        # Shift written Cantonese
         nascent_sg = deepcopy(alignment.sync_groups)
 
-        # Case: 粤文 text needs to be shifted from 中文 2 to 中文 1
+        # Case: written Cantonese text needs to be shifted from standard Chinese 2
+        # to standard Chinese 1
         if len(yw_1) < len(yw_1_shifted):
             # Calculate the number of characters we need to shift from 2 to 1
             text_to_shift_from_2_to_1 = yw_1_shifted[len(yw_1) :]
@@ -186,7 +199,8 @@ class Aligner:
             for yw_2_idx in yw_2_idxs:
                 yw = alignment.yuewen[yw_2_idx]
 
-                # Case: A sub in 粤文 2 overlaps partially with 中文 1 and 2
+                # Case: A sub in written Cantonese 2 overlaps partially with standard
+                # Chinese 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
                 #   delineation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
@@ -197,7 +211,8 @@ class Aligner:
                     alignment._sync_groups_override = None
                     return True
 
-                # Case: A sub in 粤文 2 overlaps with 中文 1 and not 中文 2
+                # Case: A sub in written Cantonese 2 overlaps with standard Chinese 1
+                # and not standard Chinese 2
                 # Action: Shift sub from sync group 2 to 1
                 nascent_sg[sg_1_idx][1].append(yw_2_idx)
                 nascent_sg[sg_2_idx][1].remove(yw_2_idx)
@@ -209,8 +224,9 @@ class Aligner:
                     alignment._sync_groups_override = nascent_sg
                     return False
 
-        # Case: 粤文 text needs to be shifted from 中文 1 to 中文 2
-        # Action: Shift 粤文 text from sync group 1 to sync group 2
+        # Case: written Cantonese text needs to be shifted from standard Chinese 1
+        # to standard Chinese 2
+        # Action: Shift written Cantonese text from sync group 1 to sync group 2
         if len(yw_2) < len(yw_2_shifted):
             # Calculate the number of characters we need to shift from 1 to 2
             text_to_shift_from_1_to_2 = yw_2_shifted[: len(yw_2_shifted) - len(yw_2)]
@@ -220,7 +236,8 @@ class Aligner:
             for yw_1_idx in reversed(yw_1_idxs):
                 yw = alignment.yuewen[yw_1_idx]
 
-                # Case: A sub in 粤文 1 overlaps partially with 中文 1 and 2
+                # Case: A sub in written Cantonese 1 overlaps partially with standard
+                # Chinese 1 and 2
                 # Action: Split sub into two subs, and return True to indicate that
                 #   delineation must be restarted
                 if len(yw.text) > n_chars_remaining_to_shift:
@@ -233,7 +250,8 @@ class Aligner:
                     alignment._sync_groups_override = None
                     return True
 
-                # Case: A sub in 粤文 1 overlaps with 中文 2 and not 中文 1
+                # Case: A sub in written Cantonese 1 overlaps with standard Chinese 2
+                # and not standard Chinese 1
                 # Action: Shift sub from sync group 1 to 2
                 nascent_sg[sg_1_idx][1].remove(yw_1_idx)
                 nascent_sg[sg_2_idx][1].insert(0, yw_1_idx)
@@ -250,19 +268,19 @@ class Aligner:
         )
 
     def _punctuate(self, alignment: Alignment):
-        """Punctuate 粤文 subs.
+        """Punctuate written Cantonese subs.
 
         Arguments:
             alignment: Nascent alignment
         """
         if not alignment.zhongwen_all_assigned_to_sync_groups:
             raise ScinoephileError(
-                f"Not all 中文 subtitles are in a sync group:\n"
+                f"Not all standard Chinese subtitles are in a sync group:\n"
                 f"SYNC GROUPS:\n{get_sync_groups_string(alignment.sync_groups)}"
             )
         if not alignment.yuewen_all_assigned_to_sync_groups:
             raise ScinoephileError(
-                f"Not all 粤文 subtitles are in a sync group:\n"
+                f"Not all written Cantonese subtitles are in a sync group:\n"
                 f"SYNC GROUPS:\n{get_sync_groups_string(alignment.sync_groups)}"
             )
 
@@ -272,12 +290,12 @@ class Aligner:
             # Get sync group
             sg = alignment.sync_groups[sg_idx]
 
-            # Get 中文
+            # Get standard Chinese
             zw_idxs = sg[0]
             zw_idx = zw_idxs[0]
             zw = alignment.zhongwen[zw_idx]
 
-            # Get 粤文
+            # Get written Cantonese
             yw_idxs = sg[1]
             yws: list[AudioSubtitle] = [
                 alignment.yuewen.events[yw_i] for yw_i in yw_idxs
@@ -285,8 +303,8 @@ class Aligner:
 
             # If there is no punctuation, whitespace, or ambiguity, just copy over
             if zw.text == remove_punc_and_whitespace(zw.text) and len(yws) == 1:
-                # If the 中文 subtitle has no punctuation, and there is only one 粤文
-                # subtitle, just copy it over
+                # If the standard Chinese subtitle has no punctuation, and there is only
+                # one written Cantonese subtitle, just copy it over.
                 yw = yws[0]
                 yw.start = zw.start
                 yw.end = zw.end
@@ -294,10 +312,12 @@ class Aligner:
                 nascent_sg.append(([zw_idx], [len(nascent_yw) - 1]))
                 continue
 
-            # Query for 粤文 punctuation
+            # Query for written Cantonese punctuation
             test_case = alignment.get_punctuation_test_case(sg_idx)
             if test_case is None:
-                logger.info(f"Skipping sync group {sg_idx} with no 粤文 subtitles")
+                logger.info(
+                    f"Skipping sync group {sg_idx} with no written Cantonese subtitles"
+                )
                 nascent_sg.append(([zw_idx], []))
                 continue
             try:

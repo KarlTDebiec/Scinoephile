@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import fields
-from typing import Unpack, override
+from typing import Unpack, cast, override
 
 import numpy as np
 from PIL import Image
@@ -34,7 +34,10 @@ class ImageSubtitle(Subtitle):
             **kwargs: Additional keyword arguments
         """
         super_field_names = {f.name for f in fields(Subtitle)}
-        super_kwargs = {k: v for k, v in kwargs.items() if k in super_field_names}
+        super_kwargs = cast(
+            SubtitleKwargs,
+            {k: v for k, v in kwargs.items() if k in super_field_names},
+        )
         super().__init__(**super_kwargs)
 
         self.img = img

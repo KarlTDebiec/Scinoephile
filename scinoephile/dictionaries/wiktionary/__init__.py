@@ -6,6 +6,4 @@ from __future__ import annotations
 
 from .service import WiktionaryDictionaryService
 
-__all__ = [
-    "WiktionaryDictionaryService",
-]
+__all__ = ["WiktionaryDictionaryService"]
