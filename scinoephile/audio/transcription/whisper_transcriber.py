@@ -24,6 +24,8 @@ from .transcribed_segment import TranscribedSegment
 
 __all__ = ["WhisperTranscriber"]
 
+_LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
+
 if TYPE_CHECKING:
     with catch_warnings():
         filterwarnings("ignore", category=SyntaxWarning)
@@ -178,7 +180,10 @@ class WhisperTranscriber:
         if (
             model_path.is_absolute()
             or model_path.suffix
-            or (len(model_path_parts) > 0 and model_path_parts[0] in (".", "..", "~"))
+            or (
+                len(model_path_parts) > 0
+                and model_path_parts[0] in {".", "..", "~", *_LOCAL_MODEL_PATH_PREFIXES}
+            )
         ):
             return False
         try:

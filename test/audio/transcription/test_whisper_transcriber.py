@@ -119,6 +119,9 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths():
     transcriber.model_name = "models/whisper.pt"
     assert not transcriber._model_name_is_huggingface_repo_id()
 
+    transcriber.model_name = "models/whisper"
+    assert not transcriber._model_name_is_huggingface_repo_id()
+
     transcriber.model_name = "/opt/models/whisper"
     assert not transcriber._model_name_is_huggingface_repo_id()
 
