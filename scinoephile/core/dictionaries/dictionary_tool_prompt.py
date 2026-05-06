@@ -6,9 +6,7 @@ from __future__ import annotations
 
 from typing import ClassVar, Protocol
 
-__all__ = [
-    "DictionaryToolPrompt",
-]
+__all__ = ["DictionaryToolPrompt"]
 
 
 class DictionaryToolPrompt(Protocol):

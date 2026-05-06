@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to cleaning 中文 text."""
+"""Code related to cleaning standard Chinese text."""
 
 from __future__ import annotations
 
@@ -10,13 +10,11 @@ from copy import deepcopy
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import half_to_full_punc
 
-__all__ = [
-    "get_zho_cleaned",
-]
+__all__ = ["get_zho_cleaned"]
 
 
 def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
-    """Get 中文 series cleaned.
+    """Get standard Chinese series cleaned.
 
     Arguments:
         series: Series to clean
@@ -37,7 +35,7 @@ def get_zho_cleaned(series: Series, remove_empty: bool = True) -> Series:
 
 
 def _get_zho_text_cleaned(text: str) -> str | None:
-    """Get 中文 text cleaned.
+    """Get standard Chinese text cleaned.
 
     Arguments:
         text: text to clean

@@ -9,9 +9,7 @@ from copy import deepcopy
 
 from scinoephile.core.subtitles import Series
 
-__all__ = [
-    "get_eng_cleaned",
-]
+__all__ = ["get_eng_cleaned"]
 
 
 def get_eng_cleaned(series: Series, remove_empty: bool = True) -> Series:

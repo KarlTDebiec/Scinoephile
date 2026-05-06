@@ -20,7 +20,7 @@ from test.helpers import assert_cli_help, assert_cli_usage
     ],
 )
 def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI help output.
+    """Test standard Chinese CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -36,7 +36,7 @@ def test_zho_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 中文 CLI usage output.
+    """Test standard Chinese CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands

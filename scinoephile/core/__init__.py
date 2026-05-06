@@ -5,10 +5,9 @@
 This module may import from: common
 
 Hierarchy within module (lower may import from higher):
-* exceptions / text
-* paths / pairs
-* subtitles / llms
-* timing / cli
+* cache / cli / dictionaries / exceptions / llms / media / ml / optimization
+  / paths / subtitles
+* pairs / text / timing
 * synchronization
 """
 

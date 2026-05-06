@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 block review against 中文."""
+"""Text for written Cantonese block review against standard Chinese."""
 
 from __future__ import annotations
 
@@ -13,13 +13,15 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block import DualBlockPrompt
 
 __all__ = [
-    "YueHansBlockReviewPrompt",
-    "YueHantBlockReviewPrompt",
+    "YueVsZhoYueHansBlockReviewPrompt",
+    "YueVsZhoYueHantBlockReviewPrompt",
 ]
 
 
-class YueHansBlockReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt):
-    """Text for LLM correspondence for 简体粤文 block review against 中文."""
+class YueVsZhoYueHansBlockReviewPrompt(
+    DictionaryToolPrompt, DualBlockPrompt, YueHansPrompt
+):
+    """Text for simplified written Cantonese block review against standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -99,8 +101,8 @@ class YueHansBlockReviewPrompt(DictionaryToolPrompt, DualBlockPrompt, YueHansPro
     """Error template when output is present but note is missing."""
 
 
-class YueHantBlockReviewPrompt(YueHansBlockReviewPrompt):
-    """Text for LLM correspondence for 繁体粤文 block review against 中文."""
+class YueVsZhoYueHantBlockReviewPrompt(YueVsZhoYueHansBlockReviewPrompt):
+    """Text for traditional written Cantonese block review against standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

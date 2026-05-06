@@ -9,7 +9,8 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
-from scinoephile.core.llms import Manager, TestCase, load_test_cases_from_json
+from scinoephile.core.llms import Manager, TestCase
+from scinoephile.core.llms.utils import load_test_cases_from_json
 
 __all__ = [
     "ENG_BLOCK_REVIEW_JSON_PATHS",
@@ -29,72 +30,80 @@ __all__ = [
 logger = getLogger(__name__)
 
 ENG_BLOCK_REVIEW_JSON_PATHS = (
-    Path("kob/lang/eng/block_review/eng_ocr.json"),
-    Path("kob/lang/eng/block_review/eng_srt.json"),
-    Path("mlamd/lang/eng/block_review.json"),
-    Path("mnt/lang/eng/block_review.json"),
-    Path("t/lang/eng/block_review.json"),
+    Path("kob/output/eng_ocr/lang/eng/block_review.json"),
+    Path("kob/output/eng/lang/eng/block_review.json"),
+    Path("mlamd/output/eng_ocr/lang/eng/block_review.json"),
+    Path("mnt/output/eng_ocr/lang/eng/block_review.json"),
+    Path("t/output/eng_ocr/lang/eng/block_review.json"),
 )
 
 ENG_OCR_FUSION_JSON_PATHS = (
-    Path("kob/lang/eng/ocr_fusion.json"),
-    Path("mlamd/lang/eng/ocr_fusion.json"),
-    Path("mnt/lang/eng/ocr_fusion.json"),
-    Path("t/lang/eng/ocr_fusion.json"),
+    Path("kob/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mlamd/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("mnt/output/eng_ocr/lang/eng/ocr_fusion.json"),
+    Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
 )
 
 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
-    Path("mlamd/lang/zho/block_review/zho-Hans.json"),
-    Path("mnt/lang/zho/block_review/zho-Hans.json"),
-    Path("t/lang/zho/block_review/zho-Hans.json"),
+    Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
+    Path("mnt/output/zho-Hans_ocr/lang/zho/block_review.json"),
+    Path("t/output/zho-Hans_ocr/lang/zho/block_review.json"),
 )
 
 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS = (
-    Path("kob/lang/zho/block_review/zho-Hant.json"),
-    Path("mlamd/lang/zho/block_review/zho-Hant.json"),
-    Path("mnt/lang/zho/block_review/zho-Hant.json"),
-    Path("t/lang/zho/block_review/zho-Hant.json"),
+    Path("kob/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("mlamd/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("mnt/output/zho-Hant_ocr/lang/zho/block_review.json"),
+    Path("t/output/zho-Hant_ocr/lang/zho/block_review.json"),
 )
 
 ZHO_HANS_OCR_FUSION_JSON_PATHS = (
-    Path("mlamd/lang/zho/ocr_fusion/zho-Hans.json"),
-    Path("mnt/lang/zho/ocr_fusion/zho-Hans.json"),
-    Path("t/lang/zho/ocr_fusion/zho-Hans.json"),
+    Path("mlamd/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hans_ocr/lang/zho/ocr_fusion.json"),
 )
 
 ZHO_HANT_OCR_FUSION_JSON_PATHS = (
-    Path("kob/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("mlamd/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("mnt/lang/zho/ocr_fusion/zho-Hant.json"),
-    Path("t/lang/zho/ocr_fusion/zho-Hant.json"),
+    Path("kob/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mlamd/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("mnt/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
+    Path("t/output/zho-Hant_ocr/lang/zho/ocr_fusion.json"),
 )
 
 YUE_ZHO_LINE_REVIEW_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/line_review/cuda.json"),
-    Path("mlamd/multilang/yue_zho/line_review/cpu.json"),
-    Path("mlamd/multilang/yue_zho/line_review/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/line_review/mps.json"),
 )
 
 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/block_review/cuda.json"),
-    Path("mlamd/multilang/yue_zho/block_review/cpu.json"),
-    Path("mlamd/multilang/yue_zho/block_review/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/mps.json"),
 )
 
 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/translation/cuda.json"),
-    Path("mlamd/multilang/yue_zho/translation/cpu.json"),
-    Path("mlamd/multilang/yue_zho/translation/mps.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cuda.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cpu.json"),
+    Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/mps.json"),
 )
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/transcription/deliniation/cuda.json"),
-    Path("mlamd/multilang/yue_zho/transcription/deliniation/mps.json"),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/deliniation/cuda.json"
+    ),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/deliniation/mps.json"
+    ),
 )
 
 YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS = (
-    Path("mlamd/multilang/yue_zho/transcription/punctuation/cuda.json"),
-    Path("mlamd/multilang/yue_zho/transcription/punctuation/mps.json"),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/punctuation/cuda.json"
+    ),
+    Path(
+        "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/punctuation/mps.json"
+    ),
 )
 
 
@@ -113,7 +122,7 @@ def load_default_test_cases(
     Returns:
         loaded test cases
     """
-    test_data_root = package_root.parent / "test" / "data"
+    test_data_root = package_root.parent / "test/data"
     if not test_data_root.is_dir():
         logger.info(f"Test data root {test_data_root} does not exist.")
         return tuple()

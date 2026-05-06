@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for translation of 粤文 from 中文."""
+"""Text for translating written Cantonese from standard Chinese."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
 
 __all__ = [
-    "YueHansFromZhoTranslationPrompt",
-    "YueHantFromZhoTranslationPrompt",
+    "YueVsZhoYueHansTranslationPrompt",
+    "YueVsZhoYueHantTranslationPrompt",
 ]
 
 
-class YueHansFromZhoTranslationPrompt(
+class YueVsZhoYueHansTranslationPrompt(
     DictionaryToolPrompt, DualBlockGappedPrompt, YueHansPrompt
 ):
-    """Text for LLM correspondence for translation of 简体粤文 from 中文."""
+    """Text for translating simplified written Cantonese from standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -92,8 +92,8 @@ class YueHansFromZhoTranslationPrompt(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueHantFromZhoTranslationPrompt(YueHansFromZhoTranslationPrompt):
-    """Text for LLM correspondence for translation of 繁体粤文 from 中文."""
+class YueVsZhoYueHantTranslationPrompt(YueVsZhoYueHansTranslationPrompt):
+    """Text for translating traditional written Cantonese from standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

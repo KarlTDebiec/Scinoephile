@@ -7,11 +7,14 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho import get_zho_converted
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converter
+from scinoephile.lang.zho.conversion import (
+    OpenCCConfig,
+    get_zho_converted,
+    get_zho_converter,
+)
 
 
-def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):
+def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
     """Test get_zho_converted.
 
     Arguments:
@@ -34,20 +37,22 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected):
 
 
 def test_get_zho_converted_kob(
-    kob_zho_hant_fuse_clean_validate_review_flatten: Series,
-    kob_zho_hant_fuse_clean_validate_review_flatten_simplify: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review_flatten: Series,
+    kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify: Series,
 ):
-    """Test get_zho_converted with KOB 繁体中文 subtitles.
+    """Test get_zho_converted with KOB traditional standard Chinese subtitles.
 
     Arguments:
-        kob_zho_hant_fuse_clean_validate_review_flatten: KOB 繁体中文 series fixture
-        kob_zho_hant_fuse_clean_validate_review_flatten_simplify: Expected simplified
-          KOB 繁体中文 series fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten: KOB traditional
+          standard Chinese series fixture
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify: Expected
+          simplified
+          KOB traditional standard Chinese series fixture
     """
     _test_get_zho_converted(
-        kob_zho_hant_fuse_clean_validate_review_flatten,
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten,
         OpenCCConfig.t2s,
-        kob_zho_hant_fuse_clean_validate_review_flatten_simplify,
+        kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify,
     )
 
 

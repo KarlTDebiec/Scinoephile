@@ -9,9 +9,7 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = [
-    "EngPrompt",
-]
+__all__ = ["EngPrompt"]
 
 
 class EngPrompt(Prompt, ABC):

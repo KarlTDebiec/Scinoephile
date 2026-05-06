@@ -4,8 +4,12 @@
 
 from __future__ import annotations
 
+import sys
+from time import monotonic
+
 import pytest
-from common.subprocess import run_command  # ty:ignore[unresolved-import]
+
+from scinoephile.common.subprocess import run_command
 
 
 def test_run_command_success_list():
@@ -87,7 +91,7 @@ def test_run_command_with_stderr():
     """Test running a command that writes to stderr."""
     # Use Python to write to stderr.
     exitcode, stdout, stderr = run_command(
-        ["python3", "-c", "import sys; sys.stderr.write('error message')"],
+        [sys.executable, "-c", "import sys; sys.stderr.write('error message')"],
         acceptable_exitcodes=[0],
     )
 
@@ -98,13 +102,14 @@ def test_run_command_with_stderr():
 def test_run_command_failure_default():
     """Test running a command that fails with default acceptable exitcodes."""
     with pytest.raises(ValueError, match="failed with exit code"):
-        run_command(["sh", "-c", "exit 1"])
+        run_command([sys.executable, "-c", "import sys; sys.exit(1)"])
 
 
 def test_run_command_failure_custom_acceptable():
     """Test running a command with custom acceptable exitcodes."""
     exitcode, stdout, stderr = run_command(
-        ["sh", "-c", "exit 42"], acceptable_exitcodes=[42]
+        [sys.executable, "-c", "import sys; sys.exit(42)"],
+        acceptable_exitcodes=[42],
     )
 
     assert exitcode == 42
@@ -112,14 +117,16 @@ def test_run_command_failure_custom_acceptable():
 
 def test_run_command_timeout():
     """Test command timeout behavior."""
-    # Command that sleeps longer than timeout. The command will be killed and
-    # return a negative exit code.
+    start_time = monotonic()
     exitcode, stdout, stderr = run_command(
-        ["sleep", "10"], timeout=1, acceptable_exitcodes=[-9, -15]
+        [sys.executable, "-c", "import time; time.sleep(10)"],
+        timeout=1,
+        acceptable_exitcodes=[-9, -15, 1],
     )
+    elapsed = monotonic() - start_time
 
-    # Command should be killed, exitcode is negative (signal).
-    assert exitcode in [-9, -15]  # SIGKILL or SIGTERM
+    assert exitcode != 0
+    assert elapsed < 2.0
 
 
 def test_run_command_unicode_output():
@@ -132,7 +139,9 @@ def test_run_command_unicode_output():
 
 def test_run_command_multiple_lines():
     """Test command with multiple lines of output."""
-    exitcode, stdout, stderr = run_command(["sh", "-c", "echo 'line1'; echo 'line2'"])
+    exitcode, stdout, stderr = run_command(
+        [sys.executable, "-c", "print('line1'); print('line2')"]
+    )
 
     assert exitcode == 0
     assert "line1" in stdout
@@ -141,7 +150,7 @@ def test_run_command_multiple_lines():
 
 def test_run_command_empty_output():
     """Test command with no output."""
-    exitcode, stdout, stderr = run_command(["true"])
+    exitcode, stdout, stderr = run_command([sys.executable, "-c", ""])
 
     assert exitcode == 0
     assert stdout == ""
@@ -150,7 +159,7 @@ def test_run_command_empty_output():
 
 def test_run_command_with_path():
     """Test command with executable specified by full path."""
-    exitcode, stdout, stderr = run_command(["/bin/echo", "test"])
+    exitcode, stdout, stderr = run_command([sys.executable, "-c", "print('test')"])
 
     assert exitcode == 0
     assert "test" in stdout

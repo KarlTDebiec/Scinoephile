@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for 中文 block review."""
+"""LLM correspondence text for standard Chinese block review."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ __all__ = [
 
 
 class ZhoHansBlockReviewPrompt(MonoBlockPrompt, ZhoHansPrompt):
-    """LLM correspondence text for 简体中文 block review."""
+    """LLM correspondence text for simplified standard Chinese block review."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -69,7 +69,7 @@ class ZhoHansBlockReviewPrompt(MonoBlockPrompt, ZhoHansPrompt):
 
 
 class ZhoHantBlockReviewPrompt(ZhoHansBlockReviewPrompt):
-    """LLM correspondence text for 繁体中文 block review."""
+    """LLM correspondence text for traditional standard Chinese block review."""
 
     opencc_config = OpenCCConfig.s2t
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

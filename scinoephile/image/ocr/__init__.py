@@ -6,6 +6,4 @@ from __future__ import annotations
 
 from .validation_manager import ValidationManager
 
-__all__ = [
-    "ValidationManager",
-]
+__all__ = ["ValidationManager"]

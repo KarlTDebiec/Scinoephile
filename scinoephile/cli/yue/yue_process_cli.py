@@ -6,34 +6,35 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
 
 from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.yue import get_yue_romanized
-from scinoephile.lang.zho import get_zho_cleaned, get_zho_converted, get_zho_flattened
+from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
     ZhoHansBlockReviewPrompt,
     ZhoHantBlockReviewPrompt,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
+    get_zho_converted,
 )
+from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = ["YueProcessCli"]
 
@@ -45,6 +46,9 @@ class YueProcessCli(ScinoephileCliBase):
         {
             "zh-hans": {
                 "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隐藏字幕标注及其他异常"
+                ),
                 "command-line interface for written Cantonese subtitle processing": (
                     "书面粤语字幕处理命令行界面"
                 ),
@@ -58,6 +62,9 @@ class YueProcessCli(ScinoephileCliBase):
                 "script for prompts and output conversion (default: traditional)": (
                     "提示词和输出转换使用的字形（默认：繁体）"
                 ),
+                "shift subtitle timings by this many milliseconds": (
+                    "按指定毫秒数平移字幕时间"
+                ),
                 'Written Cantonese subtitle infile path or "-" for stdin': (
                     '书面粤语字幕输入文件路径，或使用 "-" 表示标准输入'
                 ),
@@ -67,6 +74,9 @@ class YueProcessCli(ScinoephileCliBase):
             },
             "zh-hant": {
                 "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
+                    "清理字幕中的隱藏字幕標註及其他異常"
+                ),
                 "command-line interface for written Cantonese subtitle processing": (
                     "書面粵語字幕處理命令列介面"
                 ),
@@ -79,6 +89,9 @@ class YueProcessCli(ScinoephileCliBase):
                 ),
                 "script for prompts and output conversion (default: traditional)": (
                     "提示詞與輸出轉換使用的字形（預設：繁體）"
+                ),
+                "shift subtitle timings by this many milliseconds": (
+                    "依指定毫秒數平移字幕時間"
                 ),
                 'Written Cantonese subtitle infile path or "-" for stdin': (
                     '書面粵語字幕輸入檔路徑，或使用 "-" 代表標準輸入'
@@ -112,6 +125,7 @@ class YueProcessCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
+            dest="infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='Written Cantonese subtitle infile path or "-" for stdin',
@@ -133,6 +147,7 @@ class YueProcessCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--proofread",
+            dest="review_script",
             nargs="?",
             const="traditional",
             type=str_arg(options=("simplified", "traditional")),
@@ -143,12 +158,19 @@ class YueProcessCli(ScinoephileCliBase):
             action="store_true",
             help="append Cantonese romanization to subtitles",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--offset",
+            default=0,
+            type=int_arg(),
+            help="shift subtitle timings by this many milliseconds",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="Written Cantonese subtitle outfile path (default: stdout)",
         )
@@ -169,24 +191,25 @@ class YueProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        infile_path: Path | str,
+        outfile_path: Path | None,
+        clean: bool,
+        flatten: bool,
+        convert: OpenCCConfig | None,
+        review_script: str | None,
+        romanize: bool,
+        offset: int,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        infile_path = kwargs.pop("infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        convert = kwargs.pop("convert")
-        review_script = kwargs.pop("proofread")
-        romanize = kwargs.pop("romanize")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
 
-        if not (clean or flatten or convert or review_script or romanize):
+        if not (clean or flatten or convert or review_script or romanize or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
@@ -213,6 +236,8 @@ class YueProcessCli(ScinoephileCliBase):
             series = get_zho_block_reviewed(series, processor=proofreader)
         if romanize:
             series = get_yue_romanized(series, append=True)
+        if offset:
+            series.shift(ms=offset)
 
         # Write output
         write_series(

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""LLM correspondence text for 中文."""
+"""LLM correspondence text for standard Chinese."""
 
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ __all__ = ["ZhoHansPrompt"]
 
 
 class ZhoHansPrompt(Prompt, ABC):
-    """LLM correspondence text for 简体中文."""
+    """LLM correspondence text for simplified standard Chinese."""
 
     opencc_config: ClassVar[OpenCCConfig | None] = None
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""
 
     # Prompt
     schema_intro: ClassVar[str] = "你的回复必须是一个具有以下结构的 JSON 对象："

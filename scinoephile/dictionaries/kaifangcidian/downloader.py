@@ -19,9 +19,7 @@ from .constants import (
     KAIFANGCIDIAN_JPSG_URL,
 )
 
-__all__ = [
-    "KaifangcidianDownloader",
-]
+__all__ = ["KaifangcidianDownloader"]
 
 logger = getLogger(__name__)
 

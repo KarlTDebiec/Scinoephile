@@ -28,7 +28,9 @@ class TestCaseClsKwargs(TypedDict, total=False):
     """Keyword arguments for Manager.get_test_case_cls_from_data."""
 
     prompt_cls: type[Prompt]
+    """Prompt class used to construct the test case."""
     manager_cls: type[Manager]
+    """Manager class used to construct the test case."""
 
 
 class Manager(ABC):

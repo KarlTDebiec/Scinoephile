@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .command_line_interface import CLIKwargs, CommandLineInterface
-from .exception import (
+from .command_line_interface import CommandLineInterface
+from .exceptions import (
     ArgumentConflictError,
     DirectoryExistsError,
     DirectoryNotFoundError,
@@ -31,7 +31,6 @@ If this file is '/path/to/package/common/__init__.py', the value is
 
 __all__ = [
     "ArgumentConflictError",
-    "CLIKwargs",
     "CommandLineInterface",
     "DirectoryExistsError",
     "DirectoryNotFoundError",

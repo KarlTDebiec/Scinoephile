@@ -16,9 +16,7 @@ KAIFANGCIDIAN_HZSG_URL = f"{KAIFANGCIDIAN_BASE_URL}/hzsg.js"
 KAIFANGCIDIAN_JPSG_URL = f"{KAIFANGCIDIAN_BASE_URL}/jpsg.js"
 KAIFANGCIDIAN_LG_URL = f"{KAIFANGCIDIAN_BASE_URL}/lg.js"
 
-KAIFANGCIDIAN_LOCAL_DATA_DIR_PATH = (
-    package_root / "data" / "dictionaries" / "kaifangcidian"
-)
+KAIFANGCIDIAN_LOCAL_DATA_DIR_PATH = package_root / "data/dictionaries/kaifangcidian"
 KAIFANGCIDIAN_LOCAL_CSV_PATH = KAIFANGCIDIAN_LOCAL_DATA_DIR_PATH / "entries.csv"
 
 KAIFANGCIDIAN_SOURCE = DictionarySource(

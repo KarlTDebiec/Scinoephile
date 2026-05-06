@@ -6,11 +6,17 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
+__all__ = ["TranscribedWord"]
+
 
 class TranscribedWord(BaseModel):
     """Single word within a transcribed segment."""
 
     text: str = Field(..., description="Word's transcription.")
+    """Word transcription."""
     start: float = Field(..., description="Start time of word in seconds.")
+    """Start time of the word in seconds."""
     end: float = Field(..., description="End time of word in seconds.")
+    """End time of the word in seconds."""
     confidence: float = Field(..., description="Confidence of transcription.")
+    """Transcription confidence."""

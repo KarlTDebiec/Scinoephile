@@ -13,9 +13,9 @@ from scinoephile.image.subtitles import ImageSeries
 @pytest.mark.parametrize(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
-        ("mlamd_eng_sup_path", 942, (953, 63)),
-        ("mlamd_zho_hans_sup_path", 932, (773, 73)),
-        ("mlamd_zho_hant_sup_path", 932, (775, 73)),
+        ("mlamd_eng_ocr_sup_path", 942, (953, 63)),
+        ("mlamd_zho_hans_ocr_sup_path", 932, (773, 73)),
+        ("mlamd_zho_hant_ocr_sup_path", 932, (775, 73)),
     ],
 )
 def test_load_sup(

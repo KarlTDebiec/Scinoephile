@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 粤文 line review against 中文."""
+"""Text for written Cantonese line review against standard Chinese."""
 
 from __future__ import annotations
 
@@ -13,13 +13,15 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_single import DualSinglePrompt
 
 __all__ = [
-    "YueZhoHansLineReviewPrompt",
-    "YueZhoHantLineReviewPrompt",
+    "YueVsZhoYueHansLineReviewPrompt",
+    "YueVsZhoYueHantLineReviewPrompt",
 ]
 
 
-class YueZhoHansLineReviewPrompt(DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt):
-    """Text for LLM correspondence for 简体粤文 line review against 中文."""
+class YueVsZhoYueHansLineReviewPrompt(
+    DictionaryToolPrompt, DualSinglePrompt, YueHansPrompt
+):
+    """Text for simplified written Cantonese line review against standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -100,8 +102,8 @@ class YueZhoHansLineReviewPrompt(DictionaryToolPrompt, DualSinglePrompt, YueHans
     """Error when output and note fields are both missing from answer."""
 
 
-class YueZhoHantLineReviewPrompt(YueZhoHansLineReviewPrompt):
-    """Text for LLM correspondence for 繁体粤文 line review against 中文."""
+class YueVsZhoYueHantLineReviewPrompt(YueVsZhoYueHansLineReviewPrompt):
+    """Text for traditional written Cantonese line review against standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

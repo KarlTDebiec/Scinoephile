@@ -15,7 +15,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.block_review import YueHansBlockReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
 
@@ -28,7 +28,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_yue_review_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 review-vs-zho CLI help output.
+    """Test written Cantonese review-vs-zho CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,7 +45,7 @@ def test_yue_review_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_yue_review_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 review-vs-zho CLI usage output.
+    """Test written Cantonese review-vs-zho CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -57,15 +57,15 @@ def test_yue_review_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
     ("yue_input_path", "zho_input_path", "expected_path", "args"),
     [
         (
-            "mlamd/output/yue-Hans_transcribe.srt",
-            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_review.srt",
+            "mlamd/output/yue-Hans_transcribe/transcribe.srt",
+            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/yue-Hans_transcribe/transcribe_review.srt",
             "--mode line",
         ),
         (
-            "mlamd/output/yue-Hans_transcribe_review_translate.srt",
-            "mlamd/output/zho-Hans_fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe_review_translate_block_review.srt",
+            "mlamd/output/yue-Hans_transcribe/transcribe_review_translate.srt",
+            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
+            "mlamd/output/yue-Hans_transcribe/transcribe_review_translate_block_review.srt",
             "",
         ),
     ],
@@ -76,7 +76,7 @@ def test_yue_review_vs_zho_cli(
     expected_path: str,
     args: str,
 ):
-    """Test 粤文 review-vs-zho CLI with file arguments."""
+    """Test written Cantonese review-vs-zho CLI with file arguments."""
     full_yue_input_path = test_data_root / yue_input_path
     full_zho_input_path = test_data_root / zho_input_path
     full_expected_path = test_data_root / expected_path
@@ -112,7 +112,8 @@ def test_yue_review_vs_zho_cli(
         patched_factory.assert_not_called()
     else:
         assert (
-            patched_factory.call_args.kwargs["prompt_cls"] is YueHansBlockReviewPrompt
+            patched_factory.call_args.kwargs["prompt_cls"]
+            is YueVsZhoYueHansBlockReviewPrompt
         )
         called_kwargs = patched_review.call_args.kwargs
         assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)

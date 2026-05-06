@@ -6,21 +6,18 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Unpack
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
+    int_arg,
     output_file_arg,
 )
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.lang.eng import (
-    get_eng_block_reviewed,
-    get_eng_cleaned,
-    get_eng_flattened,
-)
+from scinoephile.lang.eng.block_review import get_eng_block_reviewed
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.lang.eng.flattening import get_eng_flattened
 
 __all__ = ["EngProcessCli"]
 
@@ -30,6 +27,9 @@ class EngProcessCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
+            "clean subtitles of closed-caption annotations and other anomalies": (
+                "清理字幕中的隐藏字幕标注及其他异常"
+            ),
             'English subtitle infile path or "-" for stdin': (
                 '英文字幕输入文件路径，或使用 "-" 表示标准输入'
             ),
@@ -38,9 +38,15 @@ class EngProcessCli(ScinoephileCliBase):
             ),
             "flatten multi-line subtitles into single lines": "将多行字幕合并为单行",
             "modify English subtitles": "修改英文字幕",
+            "shift subtitle timings by this many milliseconds": (
+                "按指定毫秒数平移字幕时间"
+            ),
             "proofread subtitles using LLM": "使用大语言模型校对字幕",
         },
         "zh-hant": {
+            "clean subtitles of closed-caption annotations and other anomalies": (
+                "清理字幕中的隱藏字幕標註及其他異常"
+            ),
             'English subtitle infile path or "-" for stdin': (
                 '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
             ),
@@ -49,6 +55,9 @@ class EngProcessCli(ScinoephileCliBase):
             ),
             "flatten multi-line subtitles into single lines": "將多行字幕合併為單行",
             "modify English subtitles": "修改英文字幕",
+            "shift subtitle timings by this many milliseconds": (
+                "依指定毫秒數平移字幕時間"
+            ),
             "proofread subtitles using LLM": "使用大型語言模型校對字幕",
         },
     }
@@ -74,6 +83,7 @@ class EngProcessCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "-i",
             "--infile",
+            dest="infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='English subtitle infile path or "-" for stdin',
@@ -95,12 +105,19 @@ class EngProcessCli(ScinoephileCliBase):
             action="store_true",
             help="proofread subtitles using LLM",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--offset",
+            default=0,
+            type=int_arg(),
+            help="shift subtitle timings by this many milliseconds",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
             default=None,
+            dest="outfile_path",
             type=output_file_arg(),
             help="English subtitle outfile path (default: stdout)",
         )
@@ -121,22 +138,23 @@ class EngProcessCli(ScinoephileCliBase):
         return "process"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        infile_path: Path | str,
+        outfile_path: Path | None,
+        clean: bool,
+        flatten: bool,
+        proofread: bool,
+        offset: int,
+        overwrite: bool,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        infile_path = kwargs.pop("infile")
-        outfile_path: Path | None = kwargs.pop("outfile")
-        clean = kwargs.pop("clean")
-        flatten = kwargs.pop("flatten")
-        proofread = kwargs.pop("proofread")
-        overwrite = kwargs.pop("overwrite")
+        parser = _parser or cls.argparser()
 
-        if not (clean or flatten or proofread):
+        if not (clean or flatten or proofread or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
             try:
@@ -156,6 +174,8 @@ class EngProcessCli(ScinoephileCliBase):
             series = get_eng_flattened(series)
         if proofread:
             series = get_eng_block_reviewed(series)
+        if offset:
+            series.shift(ms=offset)
 
         # Write output
         write_series(

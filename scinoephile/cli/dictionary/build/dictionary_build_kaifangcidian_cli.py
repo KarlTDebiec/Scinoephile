@@ -6,13 +6,14 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from logging import getLogger
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar
 
 import requests
 
-from scinoephile.common import CLIKwargs
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.dictionaries.kaifangcidian import KaifangcidianDictionaryService
+from scinoephile.dictionaries.kaifangcidian.constants import KAIFANGCIDIAN_SOURCE
 
 from .dictionary_build_cli_base import DictionaryBuildCliBase
 
@@ -24,9 +25,16 @@ logger = getLogger(__name__)
 class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
     """Build Kaifangcidian dictionary cache."""
 
+    source = KAIFANGCIDIAN_SOURCE
+    """Dictionary source built by this CLI."""
+
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "build Kaifangcidian dictionary cache": "构建 Kaifangcidian 词典缓存",
+            (
+                "Data derived from Kaifangcidian website dictionary JavaScript "
+                "payloads."
+            ): "由 Kaifangcidian 网站词典 JavaScript 载荷整理而成的数据。",
             "download fresh Kaifangcidian payloads before building": (
                 "在构建前下载最新 Kaifangcidian 数据"
             ),
@@ -36,6 +44,10 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
         },
         "zh-hant": {
             "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
+            (
+                "Data derived from Kaifangcidian website dictionary JavaScript "
+                "payloads."
+            ): "由 Kaifangcidian 網站詞典 JavaScript 載荷整理而成的資料。",
             "download fresh Kaifangcidian payloads before building": (
                 "在建立前下載最新 Kaifangcidian 資料"
             ),
@@ -77,17 +89,15 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
         cls.add_common_output_arguments(parser)
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        database_path = kwargs.pop("database_path")
-        overwrite = kwargs.pop("overwrite")
-        force_download = kwargs.pop("force_download")
-        update_local_data = kwargs.pop("update_local_data")
-
+    def _main(
+        cls,
+        *,
+        database_path: Path | None,
+        overwrite: bool,
+        force_download: bool,
+        update_local_data: bool,
+    ):
+        """Execute with provided keyword arguments."""
         service = KaifangcidianDictionaryService(database_path=database_path)
         cls.log_config(
             cache_dir_path=service.runtime_data_dir_path,

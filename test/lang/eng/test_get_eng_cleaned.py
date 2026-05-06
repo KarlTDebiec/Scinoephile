@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng import get_eng_cleaned
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
 
 # noinspection PyProtectedMember
 
@@ -33,16 +33,16 @@ def _test_get_eng_cleaned(series: Series, expected: Series):
 
 
 def test_get_eng_cleaned_kob(
-    kob_eng_fuse: Series,
-    kob_eng_fuse_clean: Series,
+    kob_eng_ocr_fuse: Series,
+    kob_eng_ocr_fuse_clean: Series,
 ):
     """Test get_eng_cleaned with KOB English subtitles.
 
     Arguments:
-        kob_eng_fuse: KOB English series fixture
-        kob_eng_fuse_clean: Expected cleaned KOB English series fixture
+        kob_eng_ocr_fuse: KOB English series fixture
+        kob_eng_ocr_fuse_clean: Expected cleaned KOB English series fixture
     """
-    _test_get_eng_cleaned(kob_eng_fuse, kob_eng_fuse_clean)
+    _test_get_eng_cleaned(kob_eng_ocr_fuse, kob_eng_ocr_fuse_clean)
 
 
 def test_get_eng_cleaned_mlamd(

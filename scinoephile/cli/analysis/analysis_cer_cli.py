@@ -5,12 +5,12 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import ClassVar, Unpack
+from pathlib import Path
+from typing import ClassVar
 
-from scinoephile.analysis import get_series_cer
-from scinoephile.common import CLIKwargs
+from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.common.exception import ArgumentConflictError
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
@@ -61,17 +61,23 @@ class AnalysisCerCli(ScinoephileCliBase):
             parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
-        arg_groups = get_arg_groups_by_name(parser, "input arguments")
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "input arguments",
+            optional_arguments_name="additional arguments",
+        )
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
             "--reference-infile",
+            dest="reference_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for reference series or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--candidate-infile",
+            dest="candidate_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
             help='subtitle infile for candidate series or "-" for stdin',
@@ -87,16 +93,16 @@ class AnalysisCerCli(ScinoephileCliBase):
         return "cer"
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        reference_infile_path: Path | str,
+        candidate_infile_path: Path | str,
+    ):
+        """Execute with provided keyword arguments."""
         # Validate arguments
-        parser = kwargs.pop("_parser", cls.argparser())
-        reference_infile_path = kwargs.pop("reference_infile")
-        candidate_infile_path = kwargs.pop("candidate_infile")
+        parser = _parser or cls.argparser()
         if reference_infile_path == "-" and candidate_infile_path == "-":
             try:
                 raise ArgumentConflictError(
@@ -110,7 +116,7 @@ class AnalysisCerCli(ScinoephileCliBase):
         candidate_series = read_series(parser, candidate_infile_path, allow_stdin=True)
 
         # Perform operations
-        result = get_series_cer(reference_series, candidate_series)
+        result = SeriesCER(reference_series, candidate_series)
 
         # Write outputs
         print(result)

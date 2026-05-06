@@ -21,10 +21,10 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_vs_zho_transcriber,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
 )
 
 
@@ -54,8 +54,8 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
             convert=None,
-            deliniation_prompt_cls=YueZhoHansDeliniationPrompt,
-            punctuation_prompt_cls=YueZhoHansPunctuationPrompt,
+            deliniation_prompt_cls=YueVsZhoYueHansDeliniationPrompt,
+            punctuation_prompt_cls=YueVsZhoYueHansPunctuationPrompt,
             provider=ANY,
         )
         assert (
@@ -134,10 +134,18 @@ def test_get_yue_vs_zho_transcriber_passes_convert():
 def test_get_yue_vs_zho_transcriber_defaults_exclude_kob_test_cases():
     """Test default transcription test-case paths exclude KOB corpora."""
     assert YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS == (
-        Path("mlamd/multilang/yue_zho/transcription/deliniation/cuda.json"),
-        Path("mlamd/multilang/yue_zho/transcription/deliniation/mps.json"),
+        Path(
+            "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/deliniation/cuda.json"
+        ),
+        Path(
+            "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/deliniation/mps.json"
+        ),
     )
     assert YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS == (
-        Path("mlamd/multilang/yue_zho/transcription/punctuation/cuda.json"),
-        Path("mlamd/multilang/yue_zho/transcription/punctuation/mps.json"),
+        Path(
+            "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/punctuation/cuda.json"
+        ),
+        Path(
+            "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/transcription/punctuation/mps.json"
+        ),
     )

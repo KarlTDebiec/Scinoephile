@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
@@ -20,6 +20,7 @@ from scinoephile.llms.providers.registry import get_default_provider
 from .prompts import EngOcrFusionPrompt
 
 __all__ = [
+    "ENG_OCR_FUSION_OPERATION_SPEC",
     "EngOcrFusionPrompt",
     "EngOcrFusionProcessKwargs",
     "EngOcrFusionProcessorKwargs",
@@ -27,18 +28,29 @@ __all__ = [
     "get_eng_ocr_fused",
 ]
 
+ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
+    operation="eng-ocr-fusion",
+    test_case_table_name="test_cases__eng__ocr_fusion",
+    manager_cls=OcrFusionManager,
+    prompt_cls=EngOcrFusionPrompt,
+)
+"""Operation specification for English OCR fusion."""
+
 
 class EngOcrFusionProcessKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class EngOcrFusionProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for OcrFusionProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_eng_ocr_fused(

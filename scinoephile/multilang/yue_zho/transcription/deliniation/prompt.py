@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for 简体粤文 deliniation."""
+"""Text for LLM correspondence for simplified written Cantonese deliniation."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_pair import DualPairPrompt
 
 __all__ = [
-    "YueZhoHansDeliniationPrompt",
-    "YueZhoHantDeliniationPrompt",
+    "YueVsZhoYueHansDeliniationPrompt",
+    "YueVsZhoYueHantDeliniationPrompt",
 ]
 
 
-class YueZhoHansDeliniationPrompt(DualPairPrompt, EngPrompt):
-    """Text for LLM correspondence for 简体粤文 deliniation."""
+class YueVsZhoYueHansDeliniationPrompt(DualPairPrompt, EngPrompt):
+    """Text for LLM correspondence for simplified written Cantonese deliniation."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
@@ -107,8 +107,8 @@ class YueZhoHansDeliniationPrompt(DualPairPrompt, EngPrompt):
         )
 
 
-class YueZhoHantDeliniationPrompt(YueZhoHansDeliniationPrompt):
-    """Text for LLM correspondence for 繁体粤文 deliniation."""
+class YueVsZhoYueHantDeliniationPrompt(YueVsZhoYueHansDeliniationPrompt):
+    """Text for LLM correspondence for traditional written Cantonese deliniation."""
 
     opencc_config = OpenCCConfig.s2hk
-    """Config with which to convert characters from 简体中文 present in parent class."""
+    """Config for converting simplified Chinese characters from the parent class."""

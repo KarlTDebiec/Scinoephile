@@ -20,7 +20,7 @@ from test.helpers import assert_cli_help, assert_cli_usage
     ],
 )
 def test_yue_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 CLI help output.
+    """Test written Cantonese CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -36,7 +36,7 @@ def test_yue_help(cli: tuple[type[CommandLineInterface], ...]):
     ],
 )
 def test_yue_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 CLI usage output.
+    """Test written Cantonese CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands

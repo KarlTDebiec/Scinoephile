@@ -5,9 +5,9 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Unpack
+from typing import Any
 
-from scinoephile.common import CLIKwargs, CommandLineInterface
+from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .zho_fuse_cli import ZhoFuseCli
@@ -47,7 +47,7 @@ class ZhoCli(ScinoephileCliBase):
 
         # Subcommands
         subparsers = parser.add_subparsers(
-            dest="zho_subcommand",
+            dest="zho_subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -69,15 +69,14 @@ class ZhoCli(ScinoephileCliBase):
         }
 
     @classmethod
-    def _main(cls, **kwargs: Unpack[CLIKwargs]):
-        """Execute with provided keyword arguments.
-
-        Arguments:
-            **kwargs: keyword arguments
-        """
-        subcommand_name = kwargs.pop("zho_subcommand")
-        subcommand_cli_class = cls.subcommands()[subcommand_name]
-        subcommand_cli_class._main(**kwargs)
+    def _main(
+        cls,
+        *,
+        zho_subcommand_name: str,
+        **kwargs: Any,
+    ):
+        """Execute with provided keyword arguments."""
+        cls.subcommands()[zho_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":

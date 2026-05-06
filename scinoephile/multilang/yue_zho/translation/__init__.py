@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to translation of 粤文 from 中文."""
+"""Code related to translation of written Cantonese from standard Chinese."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import TypedDict, Unpack
 
-from scinoephile.core.llms import TestCase
+from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.dictionaries.dictionary_tools import get_dictionary_tools
@@ -21,29 +21,44 @@ from scinoephile.llms.dual_block_gapped import (
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import YueHansFromZhoTranslationPrompt, YueHantFromZhoTranslationPrompt
+from .prompts import (
+    YueVsZhoYueHansTranslationPrompt,
+    YueVsZhoYueHantTranslationPrompt,
+)
 
 __all__ = [
-    "YueHansFromZhoTranslationPrompt",
-    "YueHantFromZhoTranslationPrompt",
+    "YUE_ZHO_TRANSLATION_OPERATION_SPEC",
+    "YueVsZhoYueHansTranslationPrompt",
+    "YueVsZhoYueHantTranslationPrompt",
     "YueFromZhoTranslationProcessKwargs",
     "YueFromZhoTranslationProcessorKwargs",
     "get_yue_translated_vs_zho",
     "get_yue_vs_zho_translator",
 ]
 
+YUE_ZHO_TRANSLATION_OPERATION_SPEC = OperationSpec(
+    operation="yue-zho-translation",
+    test_case_table_name="test_cases__yue_zho__translation",
+    manager_cls=DualBlockGappedManager,
+    prompt_cls=YueVsZhoYueHansTranslationPrompt,
+)
+"""Operation specification for written Cantonese translation."""
+
 
 class YueFromZhoTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockGappedProcessor.process."""
 
     stop_at_idx: int | None
+    """Subtitle index at which to stop processing, inclusive."""
 
 
 class YueFromZhoTranslationProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for DualBlockGappedProcessor initialization."""
 
     test_case_path: Path | None
+    """Path where encountered test cases are persisted."""
     auto_verify: bool
+    """Whether generated test cases should be marked verified automatically."""
 
 
 def get_yue_translated_vs_zho(
@@ -52,15 +67,15 @@ def get_yue_translated_vs_zho(
     translator: DualBlockGappedProcessor | None = None,
     **kwargs: Unpack[YueFromZhoTranslationProcessKwargs],
 ) -> Series:
-    """Get 粤文 subtitles translated from 中文 subtitles.
+    """Get written Cantonese subtitles translated from standard Chinese subtitles.
 
     Arguments:
-        yuewen: 粤文 Series
-        zhongwen: 中文 Series
+        yuewen: written Cantonese Series
+        zhongwen: standard Chinese Series
         translator: processor to use
         **kwargs: additional arguments for DualBlockGappedProcessor.process
     Returns:
-        粤文 translated from 中文
+        written Cantonese translated from standard Chinese
     """
     if translator is None:
         translator = get_yue_vs_zho_translator()
@@ -68,7 +83,9 @@ def get_yue_translated_vs_zho(
 
 
 def get_yue_vs_zho_translator(
-    prompt_cls: type[YueHansFromZhoTranslationPrompt] = YueHansFromZhoTranslationPrompt,
+    prompt_cls: type[YueVsZhoYueHansTranslationPrompt] = (
+        YueVsZhoYueHansTranslationPrompt
+    ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
@@ -93,17 +110,15 @@ def get_yue_vs_zho_translator(
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             )
         )
-    tools = None
-    tool_handlers = None
+    tool_box = None
     if use_dictionary_tool:
-        tools, tool_handlers = get_dictionary_tools(prompt_cls)
+        tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
     return DualBlockGappedProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,
-        tools=tools,
-        tool_handlers=tool_handlers,
+        tool_box=tool_box,
         **kwargs,
     )

@@ -22,12 +22,12 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueZhoHansDeliniationPrompt,
-    YueZhoHantDeliniationPrompt,
+    YueVsZhoYueHansDeliniationPrompt,
+    YueVsZhoYueHantDeliniationPrompt,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueZhoHansPunctuationPrompt,
-    YueZhoHantPunctuationPrompt,
+    YueVsZhoYueHansPunctuationPrompt,
+    YueVsZhoYueHantPunctuationPrompt,
 )
 from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 
@@ -41,7 +41,7 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     ],
 )
 def test_yue_transcribe_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 transcribe-vs-zho CLI help output.
+    """Test written Cantonese transcribe-vs-zho CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -58,7 +58,7 @@ def test_yue_transcribe_vs_zho_help(cli: tuple[type[CommandLineInterface], ...])
     ],
 )
 def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test 粤文 transcribe-vs-zho CLI usage output.
+    """Test written Cantonese transcribe-vs-zho CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -67,7 +67,7 @@ def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]
 
 
 def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():
-    """Test 粤文 transcribe-vs-zho CLI help lists prompt and conversion options."""
+    """Test written Cantonese CLI help lists prompt and conversion options."""
     stdout = StringIO()
     stderr = StringIO()
 
@@ -96,11 +96,11 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
-    """Test 粤文 transcribe-vs-zho CLI writes file output.
+    """Test written Cantonese transcribe-vs-zho CLI writes file output.
 
     Also verifies dependency dispatch.
     """
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -131,11 +131,11 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueZhoHansDeliniationPrompt
+        is YueVsZhoYueHansDeliniationPrompt
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueZhoHansPunctuationPrompt
+        is YueVsZhoYueHansPunctuationPrompt
     )
     assert patched_factory.call_args.kwargs["convert"] is None
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
@@ -153,8 +153,8 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
 
 
 def test_yue_transcribe_vs_zho_cli_writes_stdout():
-    """Test 粤文 transcribe-vs-zho CLI writes stdout output."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI writes stdout output."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -187,8 +187,8 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
-    """Test 粤文 transcribe-vs-zho CLI passes through explicit VAD mode."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI passes through explicit VAD mode."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -218,8 +218,8 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
-    """Test 粤文 transcribe-vs-zho CLI passes through explicit Demucs mode."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese CLI passes through explicit Demucs mode."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -249,8 +249,8 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
-    """Test 粤文 transcribe-vs-zho CLI passes through explicit conversion."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese CLI passes through explicit conversion."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -280,8 +280,8 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
-    """Test 粤文 transcribe-vs-zho CLI requires an explicit conversion config."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese CLI requires an explicit conversion config."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
@@ -292,8 +292,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
 
 
 def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
-    """Test 粤文 transcribe-vs-zho CLI keeps prompt script separate from conversion."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese CLI keeps prompt script separate from conversion."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -322,18 +322,18 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
 
     assert (
         patched_factory.call_args.kwargs["deliniation_prompt_cls"]
-        is YueZhoHantDeliniationPrompt
+        is YueVsZhoYueHantDeliniationPrompt
     )
     assert (
         patched_factory.call_args.kwargs["punctuation_prompt_cls"]
-        is YueZhoHantPunctuationPrompt
+        is YueVsZhoYueHantPunctuationPrompt
     )
     assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.hk2s
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
-    """Test 粤文 transcribe-vs-zho CLI rejects negative stream indexes."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI rejects negative stream indexes."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
@@ -344,8 +344,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
 
 
 def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
-    """Test 粤文 transcribe-vs-zho CLI surfaces stream-selection errors."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI surfaces stream-selection errors."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
@@ -360,7 +360,7 @@ def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
-    """Test 粤文 transcribe-vs-zho CLI surfaces missing subtitle infiles."""
+    """Test written Cantonese CLI surfaces missing subtitle infiles."""
     media_infile_path = "/tmp/test_media.mp4"
     zhongwen_infile_path = "/tmp/missing_subtitles.srt"
 
@@ -373,8 +373,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
-    """Test 粤文 transcribe-vs-zho CLI surfaces missing media infiles."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI surfaces missing media infiles."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/missing_media.mp4"
 
     with pytest.raises(SystemExit, match="2"):
@@ -386,8 +386,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
 
 
 def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
-    """Test 粤文 transcribe-vs-zho CLI allows stdin subtitle input."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese transcribe-vs-zho CLI allows stdin subtitle input."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
     expected_series = Series.from_string(
         "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
@@ -427,7 +427,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
-    """Test 粤文 transcribe-vs-zho CLI rejects stdin for both inputs."""
+    """Test written Cantonese transcribe-vs-zho CLI rejects stdin for both inputs."""
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
@@ -436,8 +436,8 @@ def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_overwrite_without_outfile():
-    """Test 粤文 transcribe-vs-zho CLI rejects overwrite when writing to stdout."""
-    zhongwen_infile_path = test_data_root / "mnt" / "output" / "zho-Hans_fuse.srt"
+    """Test written Cantonese CLI rejects overwrite when writing to stdout."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
 
     with pytest.raises(SystemExit, match="2"):

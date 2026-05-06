@@ -16,9 +16,7 @@ from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 from .constants import MAX_LOOKUP_LIMIT
 from .scraper import CuhkDictionaryScraper, CuhkDictionaryScraperKwargs
 
-__all__ = [
-    "CuhkDictionaryService",
-]
+__all__ = ["CuhkDictionaryService"]
 
 
 class CuhkDictionaryService:
