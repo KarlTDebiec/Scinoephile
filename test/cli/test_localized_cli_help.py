@@ -7,6 +7,7 @@ from __future__ import annotations
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from os import environ
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -47,6 +48,24 @@ def test_all_cli_help_text_has_chinese_localizations():
                     _run_help(f"{subcommand} --help".strip())
 
     assert sorted(missing) == []
+
+
+def test_all_cli_help_paths_do_not_create_default_cache_dir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """Test CLI help construction does not create default cache directories.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        monkeypatch: pytest monkeypatch fixture
+    """
+    cache_dir_path = tmp_path / "cache"
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(cache_dir_path))
+
+    for subcommand in _get_help_subcommands(ScinoephileCli):
+        _run_help(f"{subcommand} --help".strip())
+
+    assert not cache_dir_path.exists()
 
 
 @pytest.mark.parametrize(

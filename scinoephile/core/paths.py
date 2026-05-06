@@ -13,11 +13,12 @@ from scinoephile.common.validation import val_output_dir_path
 __all__ = ["get_runtime_cache_dir_path"]
 
 
-def get_runtime_cache_dir_path(*parts: str) -> Path:
+def get_runtime_cache_dir_path(*parts: str, create: bool = True) -> Path:
     """Get runtime cache directory path for Scinoephile.
 
     Arguments:
         *parts: optional path components beneath the cache root
+        create: whether to create the directory if it does not exist
     Returns:
         cache directory path
     """
@@ -30,4 +31,7 @@ def get_runtime_cache_dir_path(*parts: str) -> Path:
     else:
         cache_root_path = Path(getenv("XDG_CACHE_HOME") or Path.home() / ".cache")
 
-    return val_output_dir_path(cache_root_path / "scinoephile" / Path(*parts))
+    return val_output_dir_path(
+        cache_root_path / "scinoephile" / Path(*parts),
+        create=create,
+    )
