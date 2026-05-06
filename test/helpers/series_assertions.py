@@ -4,18 +4,21 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series
+from pysubs2 import SSAFile
 
 __all__ = ["assert_series_equal"]
 
 
-def assert_series_equal(actual: Series, expected: Series):
+def assert_series_equal(actual: SSAFile, expected: SSAFile):
     """Assert that subtitle series match, with mismatch details.
 
     Arguments:
         actual: actual subtitle series
         expected: expected subtitle series
     """
+    _assert_subtitle_series(actual, "actual")
+    _assert_subtitle_series(expected, "expected")
+
     if len(actual) != len(expected):
         raise AssertionError(
             "Subtitle series length mismatch.\n"
@@ -41,4 +44,17 @@ def assert_series_equal(actual: Series, expected: Series):
             f"text={actual_text!r}\n"
             f"Expected: start={expected_event.start}, end={expected_event.end}, "
             f"text={expected_text!r}"
+        )
+
+
+def _assert_subtitle_series(value: object, label: str):
+    """Assert that a value is a subtitle series.
+
+    Arguments:
+        value: value to validate
+        label: name of the validated value
+    """
+    if not isinstance(value, SSAFile):
+        raise AssertionError(
+            f"{label} is not a subtitle series: {type(value).__name__}"
         )
