@@ -4,32 +4,53 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import cast
 
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.paths import (
+    get_runtime_cache_dir_path as _get_runtime_cache_dir_path,
+)
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .bounding_box import PaddleOcrBoundingBox
 from .engine import PaddleOcrRecognizer
-from .preprocessing import preprocess_paddle_ocr_image
-from .result import format_paddle_ocr_text
-from .text_result import PaddleOcrTextResult
+from .preprocessing import preprocess_paddle_ocr_image as _preprocess_paddle_ocr_image
 
 __all__ = [
-    "PaddleOcrBoundingBox",
     "PaddleOcrRecognizer",
-    "PaddleOcrTextResult",
-    "format_paddle_ocr_text",
+    "get_paddle_ocr_recognizer",
     "ocr_image_series_with_paddle",
-    "preprocess_paddle_ocr_image",
 ]
+
+
+def get_paddle_ocr_recognizer(
+    *,
+    cache_dir_path: Path | None = None,
+    language: str = "en",
+    min_confidence: float = 0.0,
+) -> PaddleOcrRecognizer:
+    """Get PaddleOCR recognizer with provided configuration.
+
+    Arguments:
+        cache_dir_path: directory in which to cache OCR results
+        language: PaddleOCR language code
+        min_confidence: minimum confidence to include
+    Returns:
+        PaddleOCR recognizer
+    """
+    if cache_dir_path is None:
+        cache_dir_path = _get_runtime_cache_dir_path("paddleocr")
+    return PaddleOcrRecognizer(
+        cache_dir_path=cache_dir_path,
+        language=language,
+        min_confidence=min_confidence,
+    )
 
 
 def ocr_image_series_with_paddle(
     image_series: ImageSeries,
     *,
-    recognizer: object | None = None,
+    recognizer: PaddleOcrRecognizer | None = None,
     language: str = "en",
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.
@@ -42,17 +63,14 @@ def ocr_image_series_with_paddle(
         text subtitle series
     """
     if recognizer is None:
-        paddle_recognizer = PaddleOcrRecognizer(
-            cache_dir_path=get_runtime_cache_dir_path("paddleocr"),
-            language=language,
-        )
+        paddle_recognizer = get_paddle_ocr_recognizer(language=language)
     else:
-        paddle_recognizer = cast(PaddleOcrRecognizer, recognizer)
+        paddle_recognizer = recognizer
 
     events = []
     for subtitle in image_series:
         image_subtitle = cast(ImageSubtitle, subtitle)
-        preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
+        preprocessed_image = _preprocess_paddle_ocr_image(image_subtitle.img)
         text = paddle_recognizer.recognize_image(preprocessed_image)
         events.append(
             Subtitle(

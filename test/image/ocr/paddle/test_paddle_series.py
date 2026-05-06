@@ -9,11 +9,14 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
+from scinoephile.image.ocr.paddle import (
+    PaddleOcrRecognizer,
+    ocr_image_series_with_paddle,
+)
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-class FakeRecognizer:
+class FakeRecognizer(PaddleOcrRecognizer):
     """Fake PaddleOCR recognizer for tests."""
 
     def __init__(self, texts: list[str]):
@@ -83,18 +86,25 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
     class FakeDefaultRecognizer(FakeRecognizer):
         """Fake default recognizer with cache directory tracking."""
 
-        def __init__(self, *, language: str, cache_dir_path: Path | None = None):
+        def __init__(
+            self,
+            *,
+            language: str,
+            cache_dir_path: Path | None = None,
+            min_confidence: float = 0.0,
+        ):
             """Initialize.
 
             Arguments:
                 language: PaddleOCR language code
                 cache_dir_path: directory in which to cache OCR results
+                min_confidence: minimum confidence to include
             """
             super().__init__([language])
             observed_cache_dir_paths.append(cache_dir_path)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.get_runtime_cache_dir_path",
+        "scinoephile.image.ocr.paddle._get_runtime_cache_dir_path",
         lambda *parts: cache_dir_path,
     )
     monkeypatch.setattr(

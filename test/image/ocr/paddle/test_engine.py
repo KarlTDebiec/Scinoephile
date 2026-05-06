@@ -4,9 +4,7 @@
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
-from types import SimpleNamespace
 from typing import Any
 
 import numpy as np
@@ -14,7 +12,6 @@ import pytest
 from PIL import Image
 
 from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
-from scinoephile.image.ocr.paddle.engine import _normalize_paddle_ocr_results
 
 
 class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
@@ -75,7 +72,7 @@ def test_paddle_ocr_recognizer_uses_server_models(
     class FakePaddleOCR:
         """Fake PaddleOCR implementation."""
 
-        def __init__(self, **kwargs: Any):
+        def __init__(self, **kwargs: str | bool):
             """Initialize.
 
             Arguments:
@@ -83,10 +80,9 @@ def test_paddle_ocr_recognizer_uses_server_models(
             """
             observed_kwargs.update(kwargs)
 
-    monkeypatch.setitem(
-        sys.modules,
-        "paddleocr",
-        SimpleNamespace(PaddleOCR=FakePaddleOCR),
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.paddle.engine.PaddleOCR",
+        FakePaddleOCR,
     )
 
     PaddleOcrRecognizer(language="ch")
@@ -116,7 +112,7 @@ def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
         }
     ]
 
-    results = _normalize_paddle_ocr_results(raw_results)
+    results = PaddleOcrRecognizer._normalize_paddle_ocr_results(raw_results)
 
     assert [(result.text, result.confidence) for result in results] == [
         ("left", 0.95),

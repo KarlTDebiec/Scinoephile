@@ -4,11 +4,9 @@
 
 from __future__ import annotations
 
-from scinoephile.image.ocr.paddle import (
-    PaddleOcrBoundingBox,
-    PaddleOcrTextResult,
-    format_paddle_ocr_text,
-)
+from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
+from scinoephile.image.ocr.paddle.result import format_paddle_ocr_text
+from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 
 
 def test_format_paddle_ocr_text_orders_results_into_lines():

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from PIL import Image
 
-from scinoephile.image.ocr.paddle import preprocess_paddle_ocr_image
+from scinoephile.image.ocr.paddle.preprocessing import preprocess_paddle_ocr_image
 
 
 def test_preprocess_paddle_ocr_image_adds_subtitleedit_double_border():
