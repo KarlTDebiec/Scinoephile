@@ -70,13 +70,13 @@ def tmm_yue_hant_paddle() -> Series:
 @pytest.fixture
 def tmm_yue_hant_fuse() -> Series:
     """TMM 繁體粵文 fused subtitles."""
-    return Series.load(output_dir / "yue-Hant_fuse.srt")
+    return Series.load(output_dir / "yue-Hant_ocr/fuse.srt")
 
 
 @pytest.fixture
 def tmm_yue_hant_fuse_clean() -> Series:
     """TMM 繁體粵文 fused and cleaned subtitles."""
-    return Series.load(output_dir / "yue-Hant_fuse_clean.srt")
+    return Series.load(output_dir / "yue-Hant_ocr/fuse_clean.srt")
 
 
 @pytest.fixture
