@@ -16,7 +16,12 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    assert_cli_help,
+    assert_cli_usage,
+    assert_series_equal,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -106,8 +111,8 @@ def test_yue_review_vs_zho_cli(
 
     if args == "--mode line":
         called_kwargs = patched_line.call_args.kwargs
-        assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
-        assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+        assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))
+        assert_series_equal(called_kwargs["zhongwen"], Series.load(full_zho_input_path))
         patched_review.assert_not_called()
         patched_factory.assert_not_called()
     else:
@@ -116,8 +121,8 @@ def test_yue_review_vs_zho_cli(
             is YueVsZhoYueHansBlockReviewPrompt
         )
         called_kwargs = patched_review.call_args.kwargs
-        assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
-        assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+        assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))
+        assert_series_equal(called_kwargs["zhongwen"], Series.load(full_zho_input_path))
         assert called_kwargs["reviewer"] == "reviewer"
         patched_line.assert_not_called()
-    assert output == expected
+    assert_series_equal(output, expected)

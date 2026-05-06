@@ -29,7 +29,12 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoYueHansPunctuationPrompt,
     YueVsZhoYueHantPunctuationPrompt,
 )
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    assert_cli_help,
+    assert_cli_usage,
+    assert_series_equal,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -142,14 +147,14 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
-    assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zhongwen_infile_path))
     assert called_kwargs["transcriber"] == "transcriber"
     patched_loader.assert_called_once_with(
         media_path=media_infile_path,
         subtitle_path=zhongwen_infile_path,
         stream_index=1,
     )
-    assert output_series == expected_series
+    assert_series_equal(output_series, expected_series)
 
 
 def test_yue_transcribe_vs_zho_cli_writes_stdout():
@@ -183,7 +188,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
                     )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    assert output_series == expected_series
+    assert_series_equal(output_series, expected_series)
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
@@ -418,12 +423,12 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
 
     called_kwargs = patched_transcribe.call_args.kwargs
     assert called_kwargs["yuewen"] == yuewen_audio_series
-    assert called_kwargs["zhongwen"] == Series.load(zhongwen_infile_path)
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zhongwen_infile_path))
     patched_loader.assert_called_once()
     assert patched_loader.call_args.kwargs["media_path"] == media_infile_path
     assert patched_loader.call_args.kwargs["subtitle_path"] != "-"
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    assert output_series == expected_series
+    assert_series_equal(output_series, expected_series)
 
 
 def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():

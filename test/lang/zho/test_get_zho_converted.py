@@ -12,6 +12,7 @@ from scinoephile.lang.zho.conversion import (
     get_zho_converted,
     get_zho_converter,
 )
+from test.helpers import assert_series_equal
 
 
 def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
@@ -24,16 +25,7 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Seri
     """
     output = get_zho_converted(series, config)
     assert len(series) == len(output)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+    assert_series_equal(output, expected)
 
 
 def test_get_zho_converted_kob(

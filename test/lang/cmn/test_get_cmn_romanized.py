@@ -10,6 +10,7 @@ from scinoephile.core.subtitles import Series
 
 # noinspection PyProtectedMember
 from scinoephile.lang.cmn.romanization import _get_cmn_text_romanized, get_cmn_romanized
+from test.helpers import assert_series_equal
 
 
 def _test_get_cmn_romanized(series: Series, expected: Series):
@@ -20,7 +21,7 @@ def _test_get_cmn_romanized(series: Series, expected: Series):
         expected: Expected output series
     """
     output = get_cmn_romanized(series, append=True)
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(

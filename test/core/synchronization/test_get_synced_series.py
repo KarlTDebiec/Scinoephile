@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series
 from scinoephile.core.synchronization import get_synced_series
+from test.helpers import assert_series_equal
 
 
 def _test_get_synced_series(one: Series, two: Series, expected: Series):
@@ -19,26 +18,7 @@ def _test_get_synced_series(one: Series, two: Series, expected: Series):
         expected: expected output series
     """
     output = get_synced_series(one, two)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+    assert_series_equal(output, expected)
 
 
 def test_get_synced_series_kob(

@@ -13,6 +13,7 @@ from scinoephile.lang.yue.romanization import (
     _get_yue_text_romanized,
     get_yue_romanized,
 )
+from test.helpers import assert_series_equal
 
 
 def _test_get_yue_romanized(series: Series, expected: Series):
@@ -23,7 +24,7 @@ def _test_get_yue_romanized(series: Series, expected: Series):
         expected: Expected output series
     """
     output = get_yue_romanized(series, append=True)
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(

@@ -18,7 +18,12 @@ from scinoephile.core.subtitles import Series
 from scinoephile.multilang.yue_zho.translation import (
     YueVsZhoYueHansTranslationPrompt,
 )
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    assert_cli_help,
+    assert_cli_usage,
+    assert_series_equal,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -104,7 +109,7 @@ def test_yue_translate_vs_zho_cli(
         is YueVsZhoYueHansTranslationPrompt
     )
     called_kwargs = patched_translate.call_args.kwargs
-    assert called_kwargs["yuewen"] == Series.load(full_yue_input_path)
-    assert called_kwargs["zhongwen"] == Series.load(full_zho_input_path)
+    assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(full_zho_input_path))
     assert called_kwargs["translator"] == "translator"
-    assert output == expected
+    assert_series_equal(output, expected)

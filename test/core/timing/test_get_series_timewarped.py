@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
+from test.helpers import assert_series_equal
 
 
 def _test_get_series_timewarped(anchor: Series, source: Series, expected: Series):
@@ -25,7 +26,7 @@ def _test_get_series_timewarped(anchor: Series, source: Series, expected: Series
         two_end_idx=1461,
     )
 
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 def test_get_series_timewarped_kob(
