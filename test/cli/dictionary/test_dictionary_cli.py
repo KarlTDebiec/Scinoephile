@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
@@ -42,3 +44,20 @@ def test_dictionary_usage(cli: tuple[type[CommandLineInterface], ...]):
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_dictionary_usage_does_not_create_default_cache_dir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """Test dictionary usage output does not create default cache directories.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        monkeypatch: pytest monkeypatch fixture
+    """
+    cache_dir_path = tmp_path / "cache"
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(cache_dir_path))
+
+    assert_cli_usage((DictionaryCli,))
+
+    assert not cache_dir_path.exists()
