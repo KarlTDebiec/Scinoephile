@@ -6,10 +6,7 @@ from __future__ import annotations
 
 from .text_result import PaddleOcrTextResult
 
-__all__ = [
-    "format_paddle_ocr_text",
-    "group_paddle_ocr_text_results",
-]
+__all__ = ["format_paddle_ocr_text"]
 
 
 def format_paddle_ocr_text(
@@ -28,11 +25,11 @@ def format_paddle_ocr_text(
     filtered_results = [
         result for result in results if result.confidence >= min_confidence
     ]
-    lines = group_paddle_ocr_text_results(filtered_results)
+    lines = _group_paddle_ocr_text_results(filtered_results)
     return "\\N".join(" ".join(result.text for result in line) for line in lines)
 
 
-def group_paddle_ocr_text_results(
+def _group_paddle_ocr_text_results(
     results: list[PaddleOcrTextResult],
 ) -> list[list[PaddleOcrTextResult]]:
     """Group PaddleOCR results into text lines.

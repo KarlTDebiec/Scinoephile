@@ -30,8 +30,9 @@ class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
         self.min_confidence = 0.0
         self.cache_dir_path = cache_dir_path
         self.predict_count = 0
+        self._ocr = self
 
-    def _predict(self, array: np.ndarray) -> Any:
+    def predict(self, array: np.ndarray) -> list[dict[str, Any]]:
         """Run fake PaddleOCR prediction.
 
         Arguments:

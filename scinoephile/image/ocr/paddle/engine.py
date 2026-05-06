@@ -7,7 +7,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from collections.abc import Callable
 from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
@@ -116,13 +115,13 @@ class PaddleOcrRecognizer:
                     results, min_confidence=self.min_confidence
                 )
 
-            raw_results = self._predict(array)
+            raw_results = self._ocr.predict(array)
             results = _normalize_paddle_ocr_results(raw_results)
             _save_paddle_ocr_results(results, cache_path)
             logger.info(f"Saved PaddleOCR result to cache: {cache_path}")
             return format_paddle_ocr_text(results, min_confidence=self.min_confidence)
 
-        raw_results = self._predict(array)
+        raw_results = self._ocr.predict(array)
         results = _normalize_paddle_ocr_results(raw_results)
         return format_paddle_ocr_text(results, min_confidence=self.min_confidence)
 
@@ -148,22 +147,6 @@ class PaddleOcrRecognizer:
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
 
-    def _predict(self, array: np.ndarray) -> Any:
-        """Run PaddleOCR prediction.
-
-        Arguments:
-            array: RGB image array
-        Returns:
-            raw PaddleOCR results
-        """
-        predict = getattr(self._ocr, "predict", None)
-        if isinstance(predict, Callable):
-            return predict(array)
-        ocr = getattr(self._ocr, "ocr")
-        if isinstance(ocr, Callable):
-            return ocr(array)
-        raise ScinoephileError("PaddleOCR object does not expose a prediction method.")
-
 
 def _load_paddle_ocr_results(cache_path: Path) -> list[PaddleOcrTextResult]:
     """Load normalized PaddleOCR results from cache.
@@ -175,7 +158,34 @@ def _load_paddle_ocr_results(cache_path: Path) -> list[PaddleOcrTextResult]:
     """
     with cache_path.open("r", encoding="utf-8") as file:
         raw_results = json.load(file)
-    return [_parse_cached_paddle_ocr_result(result) for result in raw_results]
+    results = []
+    for result in raw_results:
+        bounding_box = result["bounding_box"]
+        results.append(
+            PaddleOcrTextResult(
+                text=result["text"],
+                confidence=float(result["confidence"]),
+                bounding_box=PaddleOcrBoundingBox(
+                    top_left=(
+                        float(bounding_box["top_left"][0]),
+                        float(bounding_box["top_left"][1]),
+                    ),
+                    top_right=(
+                        float(bounding_box["top_right"][0]),
+                        float(bounding_box["top_right"][1]),
+                    ),
+                    bottom_right=(
+                        float(bounding_box["bottom_right"][0]),
+                        float(bounding_box["bottom_right"][1]),
+                    ),
+                    bottom_left=(
+                        float(bounding_box["bottom_left"][0]),
+                        float(bounding_box["bottom_left"][1]),
+                    ),
+                ),
+            )
+        )
+    return results
 
 
 def _normalize_paddle_ocr_results(raw_results: Any) -> list[PaddleOcrTextResult]:
@@ -208,43 +218,28 @@ def _normalize_paddle_ocr_results(raw_results: Any) -> list[PaddleOcrTextResult]
         for text, score, polygon in zip(texts, scores, polygons, strict=False):
             if not isinstance(text, str):
                 continue
-            result = _build_result(text, score, polygon)
-            if result is not None:
-                results.append(result)
+            try:
+                confidence = float(score)
+                normalized_points = tuple(
+                    (float(point[0]), float(point[1])) for point in polygon
+                )
+            except (TypeError, ValueError, IndexError):
+                continue
+            if len(normalized_points) != 4:
+                continue
+            results.append(
+                PaddleOcrTextResult(
+                    text=text,
+                    confidence=confidence,
+                    bounding_box=PaddleOcrBoundingBox(
+                        top_left=normalized_points[0],
+                        top_right=normalized_points[1],
+                        bottom_right=normalized_points[2],
+                        bottom_left=normalized_points[3],
+                    ),
+                )
+            )
     return results
-
-
-def _parse_cached_paddle_ocr_result(value: dict[str, Any]) -> PaddleOcrTextResult:
-    """Parse one normalized PaddleOCR result from cache.
-
-    Arguments:
-        value: cached result dictionary
-    Returns:
-        normalized PaddleOCR result
-    """
-    bounding_box = value["bounding_box"]
-    return PaddleOcrTextResult(
-        text=value["text"],
-        confidence=float(value["confidence"]),
-        bounding_box=PaddleOcrBoundingBox(
-            top_left=(
-                float(bounding_box["top_left"][0]),
-                float(bounding_box["top_left"][1]),
-            ),
-            top_right=(
-                float(bounding_box["top_right"][0]),
-                float(bounding_box["top_right"][1]),
-            ),
-            bottom_right=(
-                float(bounding_box["bottom_right"][0]),
-                float(bounding_box["bottom_right"][1]),
-            ),
-            bottom_left=(
-                float(bounding_box["bottom_left"][0]),
-                float(bounding_box["bottom_left"][1]),
-            ),
-        ),
-    )
 
 
 def _save_paddle_ocr_results(results: list[PaddleOcrTextResult], cache_path: Path):
@@ -257,34 +252,3 @@ def _save_paddle_ocr_results(results: list[PaddleOcrTextResult], cache_path: Pat
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     with cache_path.open("w", encoding="utf-8") as file:
         json.dump([asdict(result) for result in results], file, ensure_ascii=False)
-
-
-def _build_result(text: str, score: Any, points: Any) -> PaddleOcrTextResult | None:
-    """Build a normalized PaddleOCR result.
-
-    Arguments:
-        text: recognized text
-        score: recognition score
-        points: raw bounding points
-    Returns:
-        normalized result, if raw data is valid
-    """
-    try:
-        confidence = float(score)
-        normalized_points = tuple(
-            (float(point[0]), float(point[1])) for point in points
-        )
-    except (TypeError, ValueError, IndexError):
-        return None
-    if len(normalized_points) != 4:
-        return None
-    return PaddleOcrTextResult(
-        text=text,
-        confidence=confidence,
-        bounding_box=PaddleOcrBoundingBox(
-            top_left=normalized_points[0],
-            top_right=normalized_points[1],
-            bottom_right=normalized_points[2],
-            bottom_left=normalized_points[3],
-        ),
-    )

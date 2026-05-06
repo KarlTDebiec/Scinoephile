@@ -13,10 +13,7 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from .bounding_box import PaddleOcrBoundingBox
 from .engine import PaddleOcrRecognizer
 from .preprocessing import preprocess_paddle_ocr_image
-from .result import (
-    format_paddle_ocr_text,
-    group_paddle_ocr_text_results,
-)
+from .result import format_paddle_ocr_text
 from .text_result import PaddleOcrTextResult
 
 __all__ = [
@@ -24,7 +21,6 @@ __all__ = [
     "PaddleOcrRecognizer",
     "PaddleOcrTextResult",
     "format_paddle_ocr_text",
-    "group_paddle_ocr_text_results",
     "ocr_image_series_with_paddle",
     "preprocess_paddle_ocr_image",
 ]
