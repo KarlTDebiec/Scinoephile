@@ -62,13 +62,11 @@ def test_paddle_ocr_recognizer_caches_results_by_image(tmp_path: Path):
 
 def test_paddle_ocr_recognizer_uses_server_models(
     monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
 ):
     """Test PaddleOCR recognizer hardcodes PP-OCRv5 server models.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary path fixture
     """
     observed_kwargs = {}
 
@@ -89,10 +87,16 @@ def test_paddle_ocr_recognizer_uses_server_models(
         SimpleNamespace(PaddleOCR=FakePaddleOCR),
     )
 
-    PaddleOcrRecognizer(language="ch", model_root_dir_path=tmp_path)
+    PaddleOcrRecognizer(language="ch")
 
     assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
+
+
+def test_paddle_ocr_recognizer_rejects_unsupported_languages():
+    """Test PaddleOCR recognizer only supports English and Chinese."""
+    with pytest.raises(ValueError, match="PaddleOCR language must be one of"):
+        PaddleOcrRecognizer(language="korean")
 
 
 def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():

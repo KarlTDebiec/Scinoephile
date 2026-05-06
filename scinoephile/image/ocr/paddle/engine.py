@@ -11,7 +11,7 @@ from collections.abc import Callable
 from dataclasses import asdict
 from logging import getLogger
 from pathlib import Path
-from typing import Any, Protocol, override
+from typing import Any, override
 
 import numpy as np
 from PIL import Image
@@ -26,112 +26,14 @@ from .result import (
     format_paddle_ocr_text,
 )
 
-__all__ = [
-    "PaddleOcrRecognizer",
-    "PaddleOcrRecognizerProtocol",
-]
+__all__ = ["PaddleOcrRecognizer"]
 
 logger = getLogger(__name__)
 
-_SUBTITLEEDIT_MODEL_ROOT_PATH = (
-    Path.home()
-    / "Library"
-    / "Application Support"
-    / "Subtitle Edit"
-    / "OCR"
-    / "PaddleOCR3-1"
-    / "models"
-)
-
-_ARABIC_LANGUAGE_CODES = {"ar", "fa", "ug", "ur"}
-_CYRILLIC_LANGUAGE_CODES = {
-    "rs_cyrillic",
-    "bg",
-    "mn",
-    "abq",
-    "ady",
-    "kbd",
-    "ava",
-    "dar",
-    "inh",
-    "che",
-    "lbe",
-    "lez",
-    "tab",
-}
-_DEVANAGARI_LANGUAGE_CODES = {
-    "hi",
-    "mr",
-    "ne",
-    "bh",
-    "mai",
-    "ang",
-    "bho",
-    "mah",
-    "sck",
-    "new",
-    "gom",
-    "bgc",
-    "sa",
-}
-_ESLAV_LANGUAGE_CODES = {"ru", "be", "uk"}
-_LATIN_LANGUAGE_CODES = {
-    "af",
-    "az",
-    "bs",
-    "cs",
-    "cy",
-    "da",
-    "de",
-    "es",
-    "et",
-    "fr",
-    "ga",
-    "hr",
-    "hu",
-    "id",
-    "is",
-    "it",
-    "ku",
-    "la",
-    "lt",
-    "lv",
-    "mi",
-    "ms",
-    "mt",
-    "nl",
-    "no",
-    "oc",
-    "pi",
-    "pl",
-    "pt",
-    "ro",
-    "rs_latin",
-    "sk",
-    "sl",
-    "sq",
-    "sv",
-    "sw",
-    "tl",
-    "tr",
-    "uz",
-    "vi",
-    "french",
-    "german",
-}
-
-
-class PaddleOcrRecognizerProtocol(Protocol):
-    """Protocol for PaddleOCR-compatible image recognizers."""
-
-    def recognize_image(self, image: Image.Image) -> str:
-        """Recognize text from an image.
-
-        Arguments:
-            image: input image
-        Returns:
-            recognized text
-        """
+_SUPPORTED_LANGUAGES = {"ch", "chinese_cht", "en"}
+_TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
+_TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
+_TEXTLINE_ORIENTATION_MODEL_NAME = "PP-LCNet_x1_0_textline_ori"
 
 
 class PaddleOcrRecognizer:
@@ -143,7 +45,6 @@ class PaddleOcrRecognizer:
         cache_dir_path: Path | None = None,
         language: str = "en",
         min_confidence: float = 0.0,
-        model_root_dir_path: Path | None = None,
     ):
         """Initialize.
 
@@ -151,10 +52,15 @@ class PaddleOcrRecognizer:
             cache_dir_path: directory in which to cache OCR results
             language: PaddleOCR language code
             min_confidence: minimum confidence to include
-            model_root_dir_path: optional root containing SubtitleEdit PaddleOCR models
         Raises:
             ScinoephileError: if PaddleOCR is unavailable
+            ValueError: if language is unsupported
         """
+        if language not in _SUPPORTED_LANGUAGES:
+            raise ValueError(
+                "PaddleOCR language must be one of: "
+                f"{', '.join(sorted(_SUPPORTED_LANGUAGES))}"
+            )
         os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
         try:
             from paddleocr import PaddleOCR  # noqa: PLC0415
@@ -166,13 +72,12 @@ class PaddleOcrRecognizer:
 
         self.language = language
         self.min_confidence = min_confidence
-        self.model_root_dir_path = model_root_dir_path
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.text_detection_model_name = _get_text_detection_model_name(language)
-        self.text_recognition_model_name = _get_text_recognition_model_name(language)
-        self.textline_orientation_model_name = "PP-LCNet_x1_0_textline_ori"
+        self.text_detection_model_name = _TEXT_DETECTION_MODEL_NAME
+        self.text_recognition_model_name = _TEXT_RECOGNITION_MODEL_NAME
+        self.textline_orientation_model_name = _TEXTLINE_ORIENTATION_MODEL_NAME
 
         kwargs = {
             "lang": language,
@@ -183,16 +88,6 @@ class PaddleOcrRecognizer:
             "text_recognition_model_name": self.text_recognition_model_name,
             "textline_orientation_model_name": self.textline_orientation_model_name,
         }
-        model_root_dir_path = model_root_dir_path or _get_subtitleedit_model_root()
-        if model_root_dir_path is not None:
-            kwargs.update(
-                _get_model_dir_kwargs(
-                    model_root_dir_path,
-                    text_detection_model_name=self.text_detection_model_name,
-                    text_recognition_model_name=self.text_recognition_model_name,
-                    textline_orientation_model_name=self.textline_orientation_model_name,
-                )
-            )
 
         self._ocr = PaddleOCR(**kwargs)
 
@@ -203,8 +98,7 @@ class PaddleOcrRecognizer:
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
             f"language={self.language!r}, "
-            f"min_confidence={self.min_confidence!r}, "
-            f"model_root_dir_path={self.model_root_dir_path!r})"
+            f"min_confidence={self.min_confidence!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -285,128 +179,6 @@ def _load_paddle_ocr_results(cache_path: Path) -> list[PaddleOcrTextResult]:
     with cache_path.open("r", encoding="utf-8") as file:
         raw_results = json.load(file)
     return [_parse_cached_paddle_ocr_result(result) for result in raw_results]
-
-
-def _get_model_dir_kwargs(
-    model_root_dir_path: Path,
-    *,
-    text_detection_model_name: str,
-    text_recognition_model_name: str,
-    textline_orientation_model_name: str,
-) -> dict[str, str]:
-    """Get PaddleOCR model directory keyword arguments.
-
-    Arguments:
-        model_root_dir_path: root directory containing SubtitleEdit PaddleOCR models
-        text_detection_model_name: text detection model name
-        text_recognition_model_name: text recognition model name
-        textline_orientation_model_name: textline orientation model name
-    Returns:
-        keyword arguments for model directories that exist locally
-    """
-    candidates = {
-        "text_detection_model_dir": (
-            model_root_dir_path / "det",
-            text_detection_model_name,
-        ),
-        "text_recognition_model_dir": (
-            model_root_dir_path / "rec",
-            text_recognition_model_name,
-        ),
-        "textline_orientation_model_dir": (
-            model_root_dir_path / "cls",
-            textline_orientation_model_name,
-        ),
-    }
-    kwargs = {}
-    for key, (parent_dir_path, model_name) in candidates.items():
-        model_dir_path = _find_model_dir_path(parent_dir_path, model_name)
-        if model_dir_path is not None:
-            kwargs[key] = str(model_dir_path)
-    return kwargs
-
-
-def _get_subtitleedit_model_root() -> Path | None:
-    """Get SubtitleEdit's local PaddleOCR model root path, if present.
-
-    Returns:
-        SubtitleEdit model root path, if available
-    """
-    model_root_dir_path = Path(
-        os.environ.get(
-            "SCINOEPHILE_PADDLEOCR_MODEL_ROOT",
-            str(_SUBTITLEEDIT_MODEL_ROOT_PATH),
-        )
-    )
-    if model_root_dir_path.exists():
-        return model_root_dir_path
-    return None
-
-
-def _get_text_detection_model_name(language: str) -> str:
-    """Get SubtitleEdit-compatible PaddleOCR text detection model name.
-
-    Arguments:
-        language: PaddleOCR language code
-    Returns:
-        text detection model name
-    """
-    if language in {
-        "ch",
-        "chinese_cht",
-        "en",
-        "japan",
-        "korean",
-        *_ESLAV_LANGUAGE_CODES,
-        *_LATIN_LANGUAGE_CODES,
-    }:
-        return "PP-OCRv5_server_det"
-    return "PP-OCRv3_mobile_det"
-
-
-def _get_text_recognition_model_name(language: str) -> str:
-    """Get SubtitleEdit-compatible PaddleOCR text recognition model name.
-
-    Arguments:
-        language: PaddleOCR language code
-    Returns:
-        text recognition model name
-    """
-    model_name = "latin_PP-OCRv5_mobile_rec"
-    if language in {"ch", "chinese_cht", "en", "japan"}:
-        model_name = "PP-OCRv5_server_rec"
-    elif language in _ARABIC_LANGUAGE_CODES:
-        model_name = "arabic_PP-OCRv3_mobile_rec"
-    elif language in _ESLAV_LANGUAGE_CODES:
-        model_name = "eslav_PP-OCRv5_mobile_rec"
-    elif language in _CYRILLIC_LANGUAGE_CODES:
-        model_name = "cyrillic_PP-OCRv3_mobile_rec"
-    elif language in _DEVANAGARI_LANGUAGE_CODES:
-        model_name = "devanagari_PP-OCRv3_mobile_rec"
-    elif language == "korean":
-        model_name = "korean_PP-OCRv5_mobile_rec"
-    return model_name
-
-
-def _find_model_dir_path(parent_dir_path: Path, model_name: str) -> Path | None:
-    """Find a model directory under SubtitleEdit's support-file layout.
-
-    Arguments:
-        parent_dir_path: parent directory for one model type
-        model_name: model name to find
-    Returns:
-        directory containing model files, if present
-    """
-    direct_model_dir_path = parent_dir_path / model_name
-    for model_dir_path in [direct_model_dir_path, *direct_model_dir_path.glob("**/*")]:
-        if not model_dir_path.is_dir() or model_dir_path.name != model_name:
-            continue
-        if any(
-            (model_dir_path / file_name).exists()
-            for file_name in ("inference.json", "inference.pdmodel", "config.json")
-        ):
-            return model_dir_path
-    return None
 
 
 def _normalize_paddle_ocr_results(raw_results: Any) -> list[PaddleOcrTextResult]:

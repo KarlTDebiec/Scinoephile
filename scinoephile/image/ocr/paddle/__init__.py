@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from .engine import PaddleOcrRecognizer, PaddleOcrRecognizerProtocol
+from .engine import PaddleOcrRecognizer
 from .preprocessing import preprocess_paddle_ocr_image
 from .result import (
     PaddleOcrBoundingBox,
@@ -19,7 +19,6 @@ __all__ = [
     "PaddleOcrBoundingBox",
     "PaddleOcrPoint",
     "PaddleOcrRecognizer",
-    "PaddleOcrRecognizerProtocol",
     "PaddleOcrTextResult",
     "format_paddle_ocr_text",
     "group_paddle_ocr_text_results",

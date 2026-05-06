@@ -10,7 +10,7 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-from .engine import PaddleOcrRecognizer, PaddleOcrRecognizerProtocol
+from .engine import PaddleOcrRecognizer
 from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = ["ocr_image_series_with_paddle"]
@@ -19,7 +19,7 @@ __all__ = ["ocr_image_series_with_paddle"]
 def ocr_image_series_with_paddle(
     image_series: ImageSeries,
     *,
-    recognizer: PaddleOcrRecognizerProtocol | None = None,
+    recognizer: PaddleOcrRecognizer | None = None,
     language: str = "en",
 ) -> Series:
     """OCR an image subtitle series with PaddleOCR.

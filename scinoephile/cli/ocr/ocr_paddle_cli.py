@@ -98,6 +98,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
+            choices=("ch", "chinese_cht", "en"),
             default="en",
             help=(
                 "PaddleOCR language code: en (English), ch (simplified Chinese "
