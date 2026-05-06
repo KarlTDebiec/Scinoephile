@@ -8,6 +8,7 @@ import pytest
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from test.helpers import assert_series_equal
 
 # noinspection PyProtectedMember
 
@@ -23,16 +24,15 @@ def _test_get_zho_flattened(series: Series, expected: Series):
     assert len(series) == len(output)
 
     errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
+    for i, event in enumerate(output, 1):
         if event.text.count("\n") != 0:
             errors.append(f"Subtitle {i} contains newline")
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
 
     if errors:
         for error in errors:
             print(error)
         pytest.fail(f"Found {len(errors)} discrepancies")
+    assert_series_equal(output, expected)
 
 
 def test_get_zho_flattened_kob(

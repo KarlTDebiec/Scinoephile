@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from test.helpers import assert_series_equal
 
 # noinspection PyProtectedMember
 
@@ -20,16 +19,7 @@ def _test_get_eng_cleaned(series: Series, expected: Series):
         expected: Expected output series
     """
     output = get_eng_cleaned(series, remove_empty=False)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies")
+    assert_series_equal(output, expected)
 
 
 def test_get_eng_cleaned_kob(

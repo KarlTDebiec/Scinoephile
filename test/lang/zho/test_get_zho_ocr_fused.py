@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
@@ -15,6 +13,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fuser,
 )
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+from test.helpers import assert_series_equal
 
 
 def _test_get_zho_ocr_fused(
@@ -34,16 +33,7 @@ def _test_get_zho_ocr_fused(
     output = get_zho_ocr_fused(lens, paddle, processor=processor)
 
     assert len(output) == len(expected)
-
-    errors = []
-    for i, (event, expected_event) in enumerate(zip(output, expected), 1):
-        if event != expected_event:
-            errors.append(f"Subtitle {i} does not match: {event} != {expected_event}")
-
-    if errors:
-        for error in errors:
-            print(error)
-        pytest.fail(f"Found {len(errors)} discrepancies:\n" + "\n".join(errors))
+    assert_series_equal(output, expected)
 
 
 def test_get_zho_ocr_fused_kob(

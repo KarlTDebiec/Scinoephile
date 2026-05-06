@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
 from scinoephile.multilang.yue_zho.block_review import get_yue_block_reviewed_vs_zho
+from test.helpers import assert_series_equal
 
 
 def test_get_yue_block_reviewed_vs_zho_mlamd(
@@ -28,4 +29,4 @@ def test_get_yue_block_reviewed_vs_zho_mlamd(
     output = get_yue_block_reviewed_vs_zho(
         mlamd_yue_hans_transcribe_review_translate, zhongwen
     )
-    assert output == mlamd_yue_hans_transcribe_review_translate_block_review
+    assert_series_equal(output, mlamd_yue_hans_transcribe_review_translate_block_review)
