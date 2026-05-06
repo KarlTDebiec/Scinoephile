@@ -64,7 +64,7 @@ def test_ocr_image_series_with_paddle_preserves_timings_and_sets_text():
         (1000, 2000, "first"),
         (3000, 4000, "second"),
     ]
-    assert [image.size for image in recognizer.images] == [(30, 28), (32, 29)]
+    assert [image.size for image in recognizer.images] == [(50, 48), (52, 49)]
 
 
 def test_ocr_image_series_with_paddle_uses_runtime_cache(

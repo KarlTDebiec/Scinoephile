@@ -4,13 +4,17 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import numpy as np
+import pytest
 from PIL import Image
 
 from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
+from scinoephile.image.ocr.paddle.engine import _normalize_paddle_ocr_results
 
 
 class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
@@ -54,3 +58,62 @@ def test_paddle_ocr_recognizer_caches_results_by_image(tmp_path: Path):
 
     assert recognizer.predict_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_paddle_ocr_recognizer_uses_server_models(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test PaddleOCR recognizer hardcodes PP-OCRv5 server models.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    observed_kwargs = {}
+
+    class FakePaddleOCR:
+        """Fake PaddleOCR implementation."""
+
+        def __init__(self, **kwargs: Any):
+            """Initialize.
+
+            Arguments:
+                **kwargs: PaddleOCR keyword arguments
+            """
+            observed_kwargs.update(kwargs)
+
+    monkeypatch.setitem(
+        sys.modules,
+        "paddleocr",
+        SimpleNamespace(PaddleOCR=FakePaddleOCR),
+    )
+
+    PaddleOcrRecognizer(language="ch", model_root_dir_path=tmp_path)
+
+    assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
+    assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
+
+
+def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
+    """Test PaddleOCR 3 result dictionaries are normalized."""
+    raw_results = [
+        {
+            "rec_texts": ["left", "right"],
+            "rec_scores": [0.95, 0.9],
+            "rec_polys": np.array(
+                [
+                    [[0, 0], [40, 0], [40, 20], [0, 20]],
+                    [[50, 0], [90, 0], [90, 20], [50, 20]],
+                ]
+            ),
+        }
+    ]
+
+    results = _normalize_paddle_ocr_results(raw_results)
+
+    assert [(result.text, result.confidence) for result in results] == [
+        ("left", 0.95),
+        ("right", 0.9),
+    ]
+    assert results[1].bounding_box.top_left.x == 50

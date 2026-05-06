@@ -23,10 +23,20 @@ def preprocess_paddle_ocr_image(image: Image.Image, border: int = 10) -> Image.I
         return rgba_image
 
     # Border preprocessing is adapted from SubtitleEdit's PaddleOCR workflow.
+    total_border = border * 2
     preprocessed = Image.new(
         "RGBA",
-        (rgba_image.width + 2 * border, rgba_image.height + 2 * border),
+        (
+            rgba_image.width + 2 * total_border,
+            rgba_image.height + 2 * total_border,
+        ),
         (0, 0, 0, 0),
     )
-    preprocessed.paste(rgba_image, (border, border), rgba_image)
+    inner_border = Image.new(
+        "RGBA",
+        (preprocessed.width - 2 * border, preprocessed.height - 2 * border),
+        (0, 0, 0, 255),
+    )
+    preprocessed.paste(inner_border, (border, border))
+    preprocessed.paste(rgba_image, (total_border, total_border), rgba_image)
     return preprocessed
