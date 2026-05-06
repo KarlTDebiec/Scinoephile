@@ -93,6 +93,7 @@ class OcrPaddleCli(ScinoephileCliBase):
                 "(directory containing index.html and png files, or a .sup file)"
             ),
         )
+
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
@@ -138,11 +139,12 @@ class OcrPaddleCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
-
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 
+        # Perform operations
         try:
             image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_paddle(
@@ -156,6 +158,8 @@ class OcrPaddleCli(ScinoephileCliBase):
             ValueError,
         ) as exc:
             parser.error(str(exc))
+
+        # Write outputs
         text_series.save(outfile_path, format_="srt")
 
 
