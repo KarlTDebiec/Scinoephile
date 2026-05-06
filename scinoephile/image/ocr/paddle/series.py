@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import cast
 
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -32,7 +33,10 @@ def ocr_image_series_with_paddle(
     """
     paddle_recognizer = recognizer
     if paddle_recognizer is None:
-        paddle_recognizer = PaddleOcrRecognizer(language=language)
+        paddle_recognizer = PaddleOcrRecognizer(
+            cache_dir_path=get_runtime_cache_dir_path("paddleocr"),
+            language=language,
+        )
 
     events = []
     for subtitle in image_series:

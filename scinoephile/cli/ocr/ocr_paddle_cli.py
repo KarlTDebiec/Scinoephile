@@ -9,6 +9,7 @@ from pathlib import Path
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
+    input_file_or_dir_arg,
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
@@ -87,7 +88,7 @@ class OcrPaddleCli(ScinoephileCliBase):
             "--infile",
             dest="infile_path",
             required=True,
-            type=Path,
+            type=input_file_or_dir_arg(),
             help=(
                 "image subtitle infile path "
                 "(directory containing index.html and png files, or a .sup file)"
