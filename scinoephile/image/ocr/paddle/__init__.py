@@ -7,14 +7,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import cast
 
-from scinoephile.core.paths import (
-    get_runtime_cache_dir_path as _get_runtime_cache_dir_path,
-)
+from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .engine import PaddleOcrRecognizer
-from .preprocessing import preprocess_paddle_ocr_image as _preprocess_paddle_ocr_image
+from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = [
     "PaddleOcrRecognizer",
@@ -39,7 +37,7 @@ def get_paddle_ocr_recognizer(
         PaddleOCR recognizer
     """
     if cache_dir_path is None:
-        cache_dir_path = _get_runtime_cache_dir_path("paddleocr")
+        cache_dir_path = get_runtime_cache_dir_path("paddleocr")
     return PaddleOcrRecognizer(
         cache_dir_path=cache_dir_path,
         language=language,
@@ -70,7 +68,7 @@ def ocr_image_series_with_paddle(
     events = []
     for subtitle in image_series:
         image_subtitle = cast(ImageSubtitle, subtitle)
-        preprocessed_image = _preprocess_paddle_ocr_image(image_subtitle.img)
+        preprocessed_image = preprocess_paddle_ocr_image(image_subtitle.img)
         text = paddle_recognizer.recognize_image(preprocessed_image)
         events.append(
             Subtitle(

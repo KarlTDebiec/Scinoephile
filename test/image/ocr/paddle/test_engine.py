@@ -12,6 +12,8 @@ import pytest
 from PIL import Image
 
 from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
+from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
+from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
 
 
 class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
@@ -97,6 +99,20 @@ def test_paddle_ocr_recognizer_rejects_unsupported_languages():
         PaddleOcrRecognizer(language="korean")
 
 
+def test_format_paddle_ocr_text_orders_results_into_lines():
+    """Test OCR result formatting orders text top-to-bottom and left-to-right."""
+    results = [
+        _result("Bottom right", 80, 80),
+        _result("Top right", 80, 10),
+        _result("Bottom left", 10, 80),
+        _result("Top left", 10, 10),
+    ]
+
+    text = PaddleOcrRecognizer._format_paddle_ocr_text(results)
+
+    assert text == "Top left Top right\\NBottom left Bottom right"
+
+
 def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
     """Test PaddleOCR 3 result dictionaries are normalized."""
     raw_results = [
@@ -119,3 +135,25 @@ def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
         ("right", 0.9),
     ]
     assert results[1].bounding_box.top_left[0] == 50
+
+
+def _result(text: str, left: float, top: float) -> PaddleOcrTextResult:
+    """Build a Paddle OCR text result.
+
+    Arguments:
+        text: recognized text
+        left: left coordinate
+        top: top coordinate
+    Returns:
+        text result
+    """
+    return PaddleOcrTextResult(
+        text=text,
+        confidence=0.95,
+        bounding_box=PaddleOcrBoundingBox(
+            top_left=(left, top),
+            top_right=(left + 40, top),
+            bottom_right=(left + 40, top + 20),
+            bottom_left=(left, top + 20),
+        ),
+    )

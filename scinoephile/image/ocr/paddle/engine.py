@@ -19,7 +19,6 @@ from PIL import Image
 from scinoephile.common.validation import val_output_dir_path
 
 from .bounding_box import PaddleOcrBoundingBox
-from .result import format_paddle_ocr_text
 from .text_result import PaddleOcrTextResult
 
 __all__ = ["PaddleOcrRecognizer"]
@@ -98,7 +97,7 @@ class PaddleOcrRecognizer:
                 results = self._load_paddle_ocr_results(cache_path)
                 cache_path.touch()
                 logger.info(f"Loaded PaddleOCR result from cache: {cache_path}")
-                return format_paddle_ocr_text(
+                return self._format_paddle_ocr_text(
                     results, min_confidence=self.min_confidence
                 )
 
@@ -106,11 +105,13 @@ class PaddleOcrRecognizer:
             results = self._normalize_paddle_ocr_results(raw_results)
             self._save_paddle_ocr_results(results, cache_path)
             logger.info(f"Saved PaddleOCR result to cache: {cache_path}")
-            return format_paddle_ocr_text(results, min_confidence=self.min_confidence)
+            return self._format_paddle_ocr_text(
+                results, min_confidence=self.min_confidence
+            )
 
         raw_results = self._ocr.predict(array)
         results = self._normalize_paddle_ocr_results(raw_results)
-        return format_paddle_ocr_text(results, min_confidence=self.min_confidence)
+        return self._format_paddle_ocr_text(results, min_confidence=self.min_confidence)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
         """Get cache path based on hash of image data and OCR configuration.
@@ -133,6 +134,62 @@ class PaddleOcrRecognizer:
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
+
+    @staticmethod
+    def _format_paddle_ocr_text(
+        results: list[PaddleOcrTextResult],
+        *,
+        min_confidence: float = 0.0,
+    ) -> str:
+        """Format PaddleOCR results as subtitle text.
+
+        Arguments:
+            results: PaddleOCR text results
+            min_confidence: minimum confidence to include
+        Returns:
+            subtitle text with ASS/SRT newline escapes
+        """
+        filtered_results = [
+            result for result in results if result.confidence >= min_confidence
+        ]
+        if not filtered_results:
+            return ""
+
+        average_height = sum(
+            result.bounding_box.height for result in filtered_results
+        ) / len(filtered_results)
+        sorted_results = sorted(
+            filtered_results,
+            key=lambda result: result.bounding_box.center[1],
+        )
+        lines: list[list[PaddleOcrTextResult]] = []
+        line: list[PaddleOcrTextResult] = []
+        previous_result: PaddleOcrTextResult | None = None
+
+        for result in sorted_results:
+            if previous_result is not None and (
+                result.bounding_box.center[1]
+                > previous_result.bounding_box.top_left[1] + average_height
+            ):
+                lines.append(
+                    sorted(
+                        line,
+                        key=lambda line_result: line_result.bounding_box.top_left[0],
+                    )
+                )
+                line = []
+            line.append(result)
+            previous_result = result
+
+        if line:
+            lines.append(
+                sorted(
+                    line,
+                    key=lambda line_result: line_result.bounding_box.top_left[0],
+                )
+            )
+
+        return "\\N".join(" ".join(result.text for result in line) for line in lines)
 
     @staticmethod
     def _load_paddle_ocr_results(cache_path: Path) -> list[PaddleOcrTextResult]:
