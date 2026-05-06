@@ -82,6 +82,7 @@ class OcrPaddleCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--infile",
             dest="infile_path",
@@ -92,6 +93,7 @@ class OcrPaddleCli(ScinoephileCliBase):
                 "(directory containing index.html and png files, or a .sup file)"
             ),
         )
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
             default="en",
@@ -100,6 +102,8 @@ class OcrPaddleCli(ScinoephileCliBase):
                 "and English), chinese_cht (traditional Chinese)"
             ),
         )
+
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "--outfile",
             dest="outfile_path",
