@@ -41,10 +41,11 @@ class CountingPaddleOcrRecognizer(PaddleOcrRecognizer):
         """
         self.predict_count += 1
         return [
-            [
-                [[0, 0], [80, 0], [80, 20], [0, 20]],
-                ("cached text", 0.95),
-            ]
+            {
+                "rec_texts": ["cached text"],
+                "rec_scores": [0.95],
+                "rec_polys": np.array([[[0, 0], [80, 0], [80, 20], [0, 20]]]),
+            }
         ]
 
 
@@ -120,4 +121,4 @@ def test_normalize_paddle_ocr_results_parses_paddleocr3_result_dict():
         ("left", 0.95),
         ("right", 0.9),
     ]
-    assert results[1].bounding_box.top_left.x == 50
+    assert results[1].bounding_box.top_left[0] == 50

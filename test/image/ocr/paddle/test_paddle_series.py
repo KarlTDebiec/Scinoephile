@@ -94,11 +94,11 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
             observed_cache_dir_paths.append(cache_dir_path)
 
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.series.get_runtime_cache_dir_path",
+        "scinoephile.image.ocr.paddle.get_runtime_cache_dir_path",
         lambda *parts: cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.series.PaddleOcrRecognizer",
+        "scinoephile.image.ocr.paddle.PaddleOcrRecognizer",
         FakeDefaultRecognizer,
     )
     image_series = ImageSeries(

@@ -19,12 +19,9 @@ from PIL import Image
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
 
-from .result import (
-    PaddleOcrBoundingBox,
-    PaddleOcrPoint,
-    PaddleOcrTextResult,
-    format_paddle_ocr_text,
-)
+from .bounding_box import PaddleOcrBoundingBox
+from .result import format_paddle_ocr_text
+from .text_result import PaddleOcrTextResult
 
 __all__ = ["PaddleOcrRecognizer"]
 
@@ -190,7 +187,30 @@ def _normalize_paddle_ocr_results(raw_results: Any) -> list[PaddleOcrTextResult]
         normalized text results
     """
     results: list[PaddleOcrTextResult] = []
-    _collect_paddle_ocr_results(raw_results, results)
+    if not isinstance(raw_results, list | tuple):
+        return results
+
+    for raw_result in raw_results:
+        if not isinstance(raw_result, dict):
+            continue
+        texts = raw_result.get("rec_texts")
+        scores = raw_result.get("rec_scores")
+        polygons = raw_result.get("rec_polys")
+        if polygons is None:
+            polygons = raw_result.get("dt_polys")
+        if not isinstance(texts, list | tuple):
+            continue
+        if not isinstance(scores, list | tuple):
+            continue
+        if not isinstance(polygons, list | tuple | np.ndarray):
+            continue
+
+        for text, score, polygon in zip(texts, scores, polygons, strict=False):
+            if not isinstance(text, str):
+                continue
+            result = _build_result(text, score, polygon)
+            if result is not None:
+                results.append(result)
     return results
 
 
@@ -207,23 +227,24 @@ def _parse_cached_paddle_ocr_result(value: dict[str, Any]) -> PaddleOcrTextResul
         text=value["text"],
         confidence=float(value["confidence"]),
         bounding_box=PaddleOcrBoundingBox(
-            top_left=_parse_cached_paddle_ocr_point(bounding_box["top_left"]),
-            top_right=_parse_cached_paddle_ocr_point(bounding_box["top_right"]),
-            bottom_right=_parse_cached_paddle_ocr_point(bounding_box["bottom_right"]),
-            bottom_left=_parse_cached_paddle_ocr_point(bounding_box["bottom_left"]),
+            top_left=(
+                float(bounding_box["top_left"][0]),
+                float(bounding_box["top_left"][1]),
+            ),
+            top_right=(
+                float(bounding_box["top_right"][0]),
+                float(bounding_box["top_right"][1]),
+            ),
+            bottom_right=(
+                float(bounding_box["bottom_right"][0]),
+                float(bounding_box["bottom_right"][1]),
+            ),
+            bottom_left=(
+                float(bounding_box["bottom_left"][0]),
+                float(bounding_box["bottom_left"][1]),
+            ),
         ),
     )
-
-
-def _parse_cached_paddle_ocr_point(value: dict[str, Any]) -> PaddleOcrPoint:
-    """Parse one normalized PaddleOCR point from cache.
-
-    Arguments:
-        value: cached point dictionary
-    Returns:
-        normalized PaddleOCR point
-    """
-    return PaddleOcrPoint(float(value["x"]), float(value["y"]))
 
 
 def _save_paddle_ocr_results(results: list[PaddleOcrTextResult], cache_path: Path):
@@ -238,107 +259,6 @@ def _save_paddle_ocr_results(results: list[PaddleOcrTextResult], cache_path: Pat
         json.dump([asdict(result) for result in results], file, ensure_ascii=False)
 
 
-def _collect_paddle_ocr_results(
-    value: Any,
-    results: list[PaddleOcrTextResult],
-):
-    """Collect PaddleOCR text results recursively.
-
-    Arguments:
-        value: raw PaddleOCR value
-        results: collected normalized results
-    """
-    if isinstance(value, dict):
-        parsed_results = _parse_paddle_ocr_result_dict(value)
-        if parsed_results:
-            results.extend(parsed_results)
-            return
-        parsed = _parse_paddle_ocr_dict(value)
-        if parsed is not None:
-            results.append(parsed)
-        for nested_value in value.values():
-            _collect_paddle_ocr_results(nested_value, results)
-        return
-
-    if isinstance(value, list | tuple):
-        parsed = _parse_paddle_ocr_sequence(value)
-        if parsed is not None:
-            results.append(parsed)
-            return
-        for nested_value in value:
-            _collect_paddle_ocr_results(nested_value, results)
-
-
-def _parse_paddle_ocr_result_dict(
-    value: dict[Any, Any],
-) -> list[PaddleOcrTextResult]:
-    """Parse a PaddleOCR 3 result dictionary.
-
-    Arguments:
-        value: raw PaddleOCR result dictionary
-    Returns:
-        normalized text results
-    """
-    texts = value.get("rec_texts")
-    scores = value.get("rec_scores")
-    polygons = value.get("rec_polys")
-    if polygons is None:
-        polygons = value.get("dt_polys")
-    if not isinstance(texts, list | tuple):
-        return []
-    if not isinstance(scores, list | tuple):
-        return []
-    if not isinstance(polygons, list | tuple | np.ndarray):
-        return []
-
-    results = []
-    for text, score, polygon in zip(texts, scores, polygons, strict=False):
-        if not isinstance(text, str):
-            continue
-        result = _build_result(text, score, polygon)
-        if result is not None:
-            results.append(result)
-    return results
-
-
-def _parse_paddle_ocr_dict(value: dict[Any, Any]) -> PaddleOcrTextResult | None:
-    """Parse one PaddleOCR result dictionary.
-
-    Arguments:
-        value: raw result dictionary
-    Returns:
-        normalized result, if recognized
-    """
-    text = value.get("text") or value.get("rec_text")
-    score = value.get("confidence") or value.get("score") or value.get("rec_score")
-    points = value.get("points") or value.get("dt_polys") or value.get("bbox")
-    if isinstance(text, str) and score is not None and points is not None:
-        return _build_result(text, score, points)
-    return None
-
-
-def _parse_paddle_ocr_sequence(value: Any) -> PaddleOcrTextResult | None:
-    """Parse one PaddleOCR result sequence.
-
-    Arguments:
-        value: raw result sequence
-    Returns:
-        normalized result, if recognized
-    """
-    if not isinstance(value, list | tuple) or len(value) < 2:
-        return None
-
-    points = value[0]
-    text_and_score = value[1]
-    if (
-        isinstance(text_and_score, list | tuple)
-        and len(text_and_score) >= 2
-        and isinstance(text_and_score[0], str)
-    ):
-        return _build_result(text_and_score[0], text_and_score[1], points)
-    return None
-
-
 def _build_result(text: str, score: Any, points: Any) -> PaddleOcrTextResult | None:
     """Build a normalized PaddleOCR result.
 
@@ -349,12 +269,14 @@ def _build_result(text: str, score: Any, points: Any) -> PaddleOcrTextResult | N
     Returns:
         normalized result, if raw data is valid
     """
-    normalized_points = _normalize_points(points)
-    if normalized_points is None:
-        return None
     try:
         confidence = float(score)
-    except (TypeError, ValueError):
+        normalized_points = tuple(
+            (float(point[0]), float(point[1])) for point in points
+        )
+    except (TypeError, ValueError, IndexError):
+        return None
+    if len(normalized_points) != 4:
         return None
     return PaddleOcrTextResult(
         text=text,
@@ -366,22 +288,3 @@ def _build_result(text: str, score: Any, points: Any) -> PaddleOcrTextResult | N
             bottom_left=normalized_points[3],
         ),
     )
-
-
-def _normalize_points(points: Any) -> tuple[PaddleOcrPoint, ...] | None:
-    """Normalize raw PaddleOCR points.
-
-    Arguments:
-        points: raw points
-    Returns:
-        four normalized points, if raw data is valid
-    """
-    try:
-        normalized = tuple(
-            PaddleOcrPoint(float(point[0]), float(point[1])) for point in points
-        )
-    except (TypeError, ValueError, IndexError):
-        return None
-    if len(normalized) != 4:
-        return None
-    return normalized

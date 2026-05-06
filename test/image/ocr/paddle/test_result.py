@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from scinoephile.image.ocr.paddle import (
     PaddleOcrBoundingBox,
-    PaddleOcrPoint,
     PaddleOcrTextResult,
     format_paddle_ocr_text,
 )
@@ -40,9 +39,9 @@ def _result(text: str, left: float, top: float) -> PaddleOcrTextResult:
         text=text,
         confidence=0.95,
         bounding_box=PaddleOcrBoundingBox(
-            top_left=PaddleOcrPoint(left, top),
-            top_right=PaddleOcrPoint(left + 40, top),
-            bottom_right=PaddleOcrPoint(left + 40, top + 20),
-            bottom_left=PaddleOcrPoint(left, top + 20),
+            top_left=(left, top),
+            top_right=(left + 40, top),
+            bottom_right=(left + 40, top + 20),
+            bottom_left=(left, top + 20),
         ),
     )
