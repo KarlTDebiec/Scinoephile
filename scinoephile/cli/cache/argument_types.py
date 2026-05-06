@@ -26,7 +26,7 @@ def cache_dir_path_arg(value: str | None) -> Path:
         resolved cache directory path
     """
     if value is None:
-        return get_runtime_cache_dir_path()
+        return get_runtime_cache_dir_path(create=False)
     return Path(value).expanduser().resolve()
 
 

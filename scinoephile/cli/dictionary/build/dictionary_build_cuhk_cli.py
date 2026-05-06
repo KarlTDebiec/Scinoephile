@@ -90,7 +90,7 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             dest="cache_dir_path",
-            default=get_runtime_cache_dir_path("dictionaries", "cuhk"),
+            default=get_runtime_cache_dir_path("dictionaries", "cuhk", create=False),
             type=output_dir_arg(),
             help=(
                 "cache directory for scraped HTML and link data (default: %(default)s)"
