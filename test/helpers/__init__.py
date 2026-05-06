@@ -18,6 +18,7 @@ from pytest import fixture, mark
 from scinoephile.common import CommandLineInterface, package_root
 from scinoephile.common.testing import run_cli_with_args
 
+from .series_assertions import assert_series_equal
 from .series_cer_result import SeriesCERResult
 
 __all__ = [
@@ -25,6 +26,7 @@ __all__ = [
     "assert_cli_help",
     "assert_cli_usage",
     "assert_expected_warnings",
+    "assert_series_equal",
     "build_subcommands",
     "get_warning_messages",
     "get_usage_prefix",

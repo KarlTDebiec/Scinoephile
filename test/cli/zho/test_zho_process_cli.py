@@ -16,7 +16,12 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    assert_cli_help,
+    assert_cli_usage,
+    assert_series_equal,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -106,7 +111,7 @@ def test_zho_process_cli(
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
 
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 @pytest.mark.parametrize(
@@ -140,7 +145,7 @@ def test_zho_process_cli_pipe(input_path: str, args: str, expected_path: str):
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     expected = Series.load(full_expected_path)
 
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 def test_zho_process_cli_offsets_timing():
@@ -156,7 +161,7 @@ def test_zho_process_cli_offsets_timing():
 
     expected = Series.load(full_input_path)
     expected.shift(ms=1250)
-    assert output == expected
+    assert_series_equal(output, expected)
 
 
 def test_zho_process_cli_rejects_bare_convert_flag():

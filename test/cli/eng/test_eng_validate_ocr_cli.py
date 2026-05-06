@@ -14,7 +14,12 @@ from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
+from test.helpers import (
+    assert_cli_help,
+    assert_cli_usage,
+    assert_series_equal,
+    test_data_root,
+)
 
 
 @pytest.mark.parametrize(
@@ -79,6 +84,6 @@ def test_eng_validate_ocr_cli(input_path: str):
         )
 
         output = ImageSeries.load(outfile_path)
-        assert output == expected
+        assert_series_equal(output, expected)
         assert (outfile_path / "index.html").exists()
         assert any(outfile_path.glob("*.png"))
