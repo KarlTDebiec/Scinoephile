@@ -20,6 +20,7 @@ from scinoephile.core.subtitles import Series, Subtitle
 from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
+    assert_series_equal,
     skip_if_ci,
     test_data_root,
 )
@@ -175,4 +176,4 @@ def test_ocr_paddle_cli_matches_mlamd_sup_ocr_fixtures(
         output = Series.load(output_path)
         expected = Series.load(full_expected_path)
 
-    assert output == expected
+    assert_series_equal(output, expected)
