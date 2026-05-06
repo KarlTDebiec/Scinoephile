@@ -71,7 +71,17 @@ def assert_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
                 run_cli_with_args(cli[0], subcommands)
     assert excinfo.value.code == 2
     assert stdout.getvalue() == ""
-    assert stderr.getvalue().startswith(get_usage_prefix(cli))
+    expected_usage_prefix = get_usage_prefix(cli)
+    actual_stdout = stdout.getvalue()
+    actual_stderr = stderr.getvalue()
+    assert actual_stderr.startswith(expected_usage_prefix), (
+        "Expected stderr to start with:\n"
+        f"{expected_usage_prefix!r}\n"
+        "Actual stderr:\n"
+        f"{actual_stderr!r}\n"
+        "Actual stdout:\n"
+        f"{actual_stdout!r}"
+    )
 
 
 def assert_expected_warnings(warnings: list[str], expected: list[str], label: str):
