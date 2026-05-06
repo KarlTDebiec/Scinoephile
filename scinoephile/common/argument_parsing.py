@@ -18,6 +18,7 @@ from .exceptions import NotAFileError
 from .validation import (
     val_float,
     val_input_dir_path,
+    val_input_file_or_dir_path,
     val_input_path,
     val_int,
     val_output_dir_path,
@@ -38,6 +39,7 @@ __all__ = [
     "get_required_args_group",
     "get_validator",
     "input_dir_arg",
+    "input_file_or_dir_arg",
     "input_file_arg",
     "int_arg",
     "output_dir_arg",
@@ -257,6 +259,15 @@ def input_dir_arg() -> Callable[[Any], Path | list[Path]]:
         value validator function
     """
     return get_validator(val_input_dir_path)
+
+
+def input_file_or_dir_arg() -> Callable[[Any], Path | list[Path]]:
+    """Validate an input file or directory path argument.
+
+    Returns:
+        value validator function
+    """
+    return get_validator(val_input_file_or_dir_path)
 
 
 def input_file_arg(

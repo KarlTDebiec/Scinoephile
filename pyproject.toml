@@ -38,6 +38,12 @@ dependencies = [
     "whisper-timestamped>=1.15.9",
 ]
 
+[project.optional-dependencies]
+ocr = [
+    "paddleocr>=3.1.0",
+    "paddlepaddle>=3.3.1; (platform_machine == 'arm64' and sys_platform == 'darwin') or (platform_machine == 'x86_64' and sys_platform == 'linux') or (platform_machine == 'AMD64' and sys_platform == 'win32')",
+]
+
 [project.scripts]
 scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 

@@ -13,6 +13,7 @@ from scinoephile.common.argument_parsing import (
     float_arg,
     input_dir_arg,
     input_file_arg,
+    input_file_or_dir_arg,
     int_arg,
     output_dir_arg,
     output_file_arg,
@@ -66,6 +67,22 @@ def test_input_file_arg(tmp_path: Path):
     # FileNotFoundError is not caught by get_validator
     with pytest.raises(FileNotFoundError):
         validator(str(tmp_path / "nonexistent.txt"))
+
+
+def test_input_file_or_dir_arg(tmp_path: Path):
+    """Test input_file_or_dir_arg validator."""
+    test_file = tmp_path / "test.txt"
+    test_file.write_text("test content")
+    test_dir = tmp_path / "testdir"
+    test_dir.mkdir()
+
+    validator = input_file_or_dir_arg()
+
+    assert validator(str(test_file)) == test_file.resolve()
+    assert validator(str(test_dir)) == test_dir.resolve()
+
+    with pytest.raises(FileNotFoundError):
+        validator(str(tmp_path / "nonexistent"))
 
 
 def test_input_dir_arg(tmp_path: Path):
