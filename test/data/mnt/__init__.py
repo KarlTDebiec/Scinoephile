@@ -36,9 +36,11 @@ __all__ = [
     "mnt_eng_ocr_tesseract",
     "mnt_zho_hans_ocr_lens",
     "mnt_zho_hans_ocr_paddle",
+    "mnt_zho_hans_ocr_paddle_new",
     "mnt_zho_hant",
     "mnt_zho_hant_ocr_lens",
     "mnt_zho_hant_ocr_paddle",
+    "mnt_zho_hant_ocr_paddle_new",
     "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
     "get_mnt_zho_hans_block_review_test_cases",
@@ -103,6 +105,12 @@ def mnt_zho_hans_ocr_paddle() -> Series:
 
 
 @pytest.fixture
+def mnt_zho_hans_ocr_paddle_new() -> Series:
+    """MNT 简体中文 subtitles OCRed using internal PaddleOCR."""
+    return Series.load(input_dir / "zho-Hans_ocr/paddle_new.srt")
+
+
+@pytest.fixture
 def mnt_zho_hant() -> Series:
     """MNT 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
@@ -118,6 +126,12 @@ def mnt_zho_hant_ocr_lens() -> Series:
 def mnt_zho_hant_ocr_paddle() -> Series:
     """MNT 繁体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def mnt_zho_hant_ocr_paddle_new() -> Series:
+    """MNT 繁体中文 subtitles OCRed using internal PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
 
 
 @cache
