@@ -56,13 +56,16 @@ from test.helpers import test_data_root
 __all__ = [
     "mlamd_eng_ocr_lens",
     "mlamd_eng_ocr_paddle",
+    "mlamd_eng_ocr_paddle_new",
     "mlamd_eng_ocr_sup_path",
     "mlamd_eng_ocr_tesseract",
     "mlamd_zho_hans_ocr_lens",
     "mlamd_zho_hans_ocr_paddle",
+    "mlamd_zho_hans_ocr_paddle_new",
     "mlamd_zho_hans_ocr_sup_path",
     "mlamd_zho_hant_ocr_lens",
     "mlamd_zho_hant_ocr_paddle",
+    "mlamd_zho_hant_ocr_paddle_new",
     "mlamd_zho_hant_ocr_sup_path",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
@@ -129,6 +132,12 @@ def mlamd_eng_ocr_paddle() -> Series:
 
 
 @pytest.fixture
+def mlamd_eng_ocr_paddle_new() -> Series:
+    """MLAMD English subtitles OCRed using internal PaddleOCR."""
+    return Series.load(input_dir / "eng_ocr/paddle_new.srt")
+
+
+@pytest.fixture
 def mlamd_eng_ocr_sup_path() -> Path:
     """Path to MLAMD English SUP subtitles."""
     return input_dir / "eng_ocr/source.sup"
@@ -153,6 +162,12 @@ def mlamd_zho_hans_ocr_paddle() -> Series:
 
 
 @pytest.fixture
+def mlamd_zho_hans_ocr_paddle_new() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using internal PaddleOCR."""
+    return Series.load(input_dir / "zho-Hans_ocr/paddle_new.srt")
+
+
+@pytest.fixture
 def mlamd_zho_hans_ocr_sup_path() -> Path:
     """Path to MLAMD 简体中文 SUP subtitles."""
     return input_dir / "zho-Hans_ocr/source.sup"
@@ -168,6 +183,12 @@ def mlamd_zho_hant_ocr_lens() -> Series:
 def mlamd_zho_hant_ocr_paddle() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_paddle_new() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using internal PaddleOCR."""
+    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
 
 
 @pytest.fixture
