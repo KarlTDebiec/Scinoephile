@@ -139,6 +139,8 @@ def get_arg_groups_by_name(
 
     Groups will be ordered by the order in which they are specified, with additional
     groups whose names were not included in names appearing after the specified groups.
+    A group named "additional help" is placed after the renamed optional arguments
+    group so help-only actions follow standard optional arguments.
 
     For example, if names = ("input arguments", "operation arguments",
     "output arguments"), groups by these names will be created, yielding the final order
@@ -175,8 +177,20 @@ def get_arg_groups_by_name(
         if ag.title:
             additional_groups[ag.title] = ag
 
-    action_groups.extend(specified_groups.values())
+    leading_groups = {
+        name: group
+        for name, group in specified_groups.items()
+        if name != "additional help"
+    }
+    trailing_groups = {
+        name: group
+        for name, group in specified_groups.items()
+        if name == "additional help"
+    }
+
+    action_groups.extend(leading_groups.values())
     action_groups.extend(additional_groups.values())
+    action_groups.extend(trailing_groups.values())
 
     return {**specified_groups, **additional_groups}
 
