@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import sys
 from argparse import Action, ArgumentParser, Namespace
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from textwrap import fill
 from typing import Any
 
@@ -21,7 +21,7 @@ class ListAllCommandsAction(Action):
     help_position = 24
     """Column at which command descriptions begin."""
     width = 80
-    """Maximum output width."""
+    """Maximum width for wrapped descriptions."""
     root_cli_class: type[CommandLineInterface]
     """CLI class whose subcommand hierarchy should be listed."""
 
@@ -76,10 +76,13 @@ class ListAllCommandsAction(Action):
             formatted command hierarchy
         """
         rows = list(ListAllCommandsAction.iter_command_rows(root_cli_class))
-        command_width = max(len(command_name) for command_name, _ in rows)
         heading = ListAllCommandsAction.translate_text(
             root_cli_class, "Available subcommands:"
         )
+        if len(rows) == 0:
+            return heading
+
+        command_width = max(len(command_name) for command_name, _ in rows)
         lines = [heading, ""]
         lines.extend(
             ListAllCommandsAction.format_command_row(
@@ -88,35 +91,6 @@ class ListAllCommandsAction(Action):
             for command_name, description in rows
         )
         return "\n".join(lines)
-
-    @staticmethod
-    def iter_command_rows(
-        cli: type[CommandLineInterface],
-        level: int = 0,
-    ) -> list[tuple[str, str]]:
-        """Get all command names and descriptions below a CLI.
-
-        Arguments:
-            cli: CLI class to inspect
-            level: indentation level of subcommands below the CLI
-        Returns:
-            command names paired with short descriptions
-        """
-        rows: list[tuple[str, str]] = []
-        subcommands = getattr(cli, "subcommands", None)
-        if subcommands is None:
-            return rows
-
-        for name, subcommand in sorted(subcommands().items()):
-            command_name = f"{' ' * (4 * level)}{name}"
-            rows.append(
-                (
-                    command_name,
-                    ListAllCommandsAction.format_command_description(subcommand.help()),
-                )
-            )
-            rows.extend(ListAllCommandsAction.iter_command_rows(subcommand, level + 1))
-        return rows
 
     @staticmethod
     def format_command_description(description: str) -> str:
@@ -137,7 +111,7 @@ class ListAllCommandsAction(Action):
     def format_command_row(
         command_name: str,
         description: str,
-        command_width: int,
+        command_width: int,  # noqa: ARG004
     ) -> str:
         """Format one command row with wrapped description text.
 
@@ -148,27 +122,62 @@ class ListAllCommandsAction(Action):
         Returns:
             formatted command row
         """
-        command_column_width = max(
-            command_width,
-            ListAllCommandsAction.help_position - 2,
-        )
+        command_column_width = ListAllCommandsAction.help_position - 2
         if len(command_name) > command_column_width:
-            command_line = command_name
-            description_indent = " " * ListAllCommandsAction.help_position
             description_lines = fill(
                 description,
                 width=ListAllCommandsAction.width,
-                initial_indent=description_indent,
-                subsequent_indent=description_indent,
+                initial_indent=" " * ListAllCommandsAction.help_position,
+                subsequent_indent=" " * ListAllCommandsAction.help_position,
             )
-            return f"{command_line}\n{description_lines}"
+            return f"{command_name}\n{description_lines}"
 
         return fill(
             description,
             width=ListAllCommandsAction.width,
             initial_indent=f"{command_name:<{command_column_width}}  ",
-            subsequent_indent=" " * ListAllCommandsAction.help_position,
+            subsequent_indent=" " * (command_column_width + 2),
         )
+
+    @staticmethod
+    def iter_command_rows(
+        cli: type[CommandLineInterface],
+        level: int = 0,
+    ) -> list[tuple[str, str]]:
+        """Get all command names and descriptions below a CLI.
+
+        Arguments:
+            cli: CLI class to inspect
+            level: indentation level of subcommands below the CLI
+        Returns:
+            command names paired with short descriptions
+        """
+        rows: list[tuple[str, str]] = []
+        subcommands = getattr(cli, "subcommands", None)
+        if not isinstance(subcommands, Callable):
+            return rows
+
+        subcommands_by_name = subcommands()
+        if not isinstance(subcommands_by_name, Mapping):
+            return rows
+
+        for name, subcommand in sorted(
+            subcommands_by_name.items(), key=lambda item: str(item[0])
+        ):
+            if not isinstance(subcommand, type):
+                continue
+            if not issubclass(subcommand, CommandLineInterface):
+                continue
+
+            command_name = f"{' ' * (4 * level)}{name}"
+            rows.append(
+                (
+                    command_name,
+                    ListAllCommandsAction.format_command_description(subcommand.help()),
+                )
+            )
+            rows.extend(ListAllCommandsAction.iter_command_rows(subcommand, level + 1))
+        return rows
 
     @staticmethod
     def translate_text(root_cli_class: type[CommandLineInterface], text: str) -> str:

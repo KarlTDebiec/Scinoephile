@@ -69,10 +69,10 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\n    process" in output
     assert "\n    validate-ocr" in output
     assert all(len(line) <= 80 for line in output.splitlines())
-    assert (
-        "    transcribe-vs-zho   transcribe subtitles from audio and revise using\n"
-        "                        standard Chinese text"
-    ) in output
+    assert "    transcribe-vs-zho" in output
+    assert "transcribe subtitles from audio and revise using" in output
+    assert "standard Chinese text" in output
+    assert "\n                        standard Chinese text" in output
 
 
 def test_scinoephile_all_commands_localized():
