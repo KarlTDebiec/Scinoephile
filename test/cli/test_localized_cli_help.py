@@ -199,8 +199,8 @@ def test_locale_precedence_uses_environment_variable():
     ("locale_name", "expected_fragments"),
     [
         ("en", ("Command-line interface for Scinoephile", "subcommand")),
-        ("zh-hans", ("Scinoephile 命令行界面", "子命令", "选项")),
-        ("zh-hant", ("Scinoephile 命令列介面", "子命令", "選項")),
+        ("zh-hans", ("Scinoephile 命令行界面", "子命令", "附加参数")),
+        ("zh-hant", ("Scinoephile 命令列介面", "子命令", "附加參數")),
     ],
 )
 def test_scinoephile_help_localized(
