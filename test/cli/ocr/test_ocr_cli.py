@@ -131,17 +131,17 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         (
             "mlamd/input/eng_ocr/source.sup",
             "en",
-            "mlamd/input/eng_ocr/paddle.srt",
+            "mlamd/input/eng_ocr/paddle_new.srt",
         ),
         (
             "mlamd/input/zho-Hans_ocr/source.sup",
             "ch",
-            "mlamd/input/zho-Hans_ocr/paddle.srt",
+            "mlamd/input/zho-Hans_ocr/paddle_new.srt",
         ),
         (
             "mlamd/input/zho-Hant_ocr/source.sup",
             "chinese_cht",
-            "mlamd/input/zho-Hant_ocr/paddle.srt",
+            "mlamd/input/zho-Hant_ocr/paddle_new.srt",
         ),
     ],
 )
