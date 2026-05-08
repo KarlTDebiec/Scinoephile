@@ -24,10 +24,10 @@ from scinoephile.core.media.subtitles import (
 )
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = ["ExtractCli"]
+__all__ = ["MediaExtractSubsCli"]
 
 
-class ExtractCli(ScinoephileCliBase):
+class MediaExtractSubsCli(ScinoephileCliBase):
     """Extract matching subtitle streams from a video file."""
 
     localizations = {
@@ -138,6 +138,15 @@ class ExtractCli(ScinoephileCliBase):
             help="overwrite extracted subtitle files if they exist",
         )
         parser.set_defaults(_parser=parser)
+
+    @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "extract_subs"
 
     @classmethod
     def _main(
@@ -304,4 +313,4 @@ class ExtractCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    ExtractCli.main()
+    MediaExtractSubsCli.main()
