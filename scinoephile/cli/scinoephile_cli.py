@@ -16,7 +16,7 @@ from .analysis import AnalysisCli
 from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
-from .extract_cli import ExtractCli
+from .media import MediaCli
 from .ocr import OcrCli
 from .optimization import OptimizationCli
 from .sync_cli import SyncCli
@@ -44,10 +44,8 @@ class ScinoephileCli(ScinoephileCliBase):
             "combine two series into the top and bottom of a synchronized series": (
                 "将两个序列合并为上下行同步字幕"
             ),
-            "extract matching subtitle streams from a video file": (
-                "从视频文件提取匹配的字幕流"
-            ),
             "inspect and invalidate local caches": "检查并清除本地缓存",
+            "inspect and extract media streams": "检查并提取媒体流",
             "list all subcommands and exit": "列出所有子命令并退出",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改标准中文字幕",
@@ -70,10 +68,8 @@ class ScinoephileCli(ScinoephileCliBase):
             "combine two series into the top and bottom of a synchronized series": (
                 "將兩個序列合併為上下行同步字幕"
             ),
-            "extract matching subtitle streams from a video file": (
-                "從影片檔提取匹配的字幕流"
-            ),
             "inspect and invalidate local caches": "檢查並清除本機快取",
+            "inspect and extract media streams": "檢查並提取媒體流",
             "list all subcommands and exit": "列出所有子命令並結束",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改標準中文字幕",
@@ -133,7 +129,7 @@ class ScinoephileCli(ScinoephileCliBase):
             CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
-            ExtractCli.name(): ExtractCli,
+            MediaCli.name(): MediaCli,
             OcrCli.name(): OcrCli,
             OptimizationCli.name(): OptimizationCli,
             SyncCli.name(): SyncCli,
