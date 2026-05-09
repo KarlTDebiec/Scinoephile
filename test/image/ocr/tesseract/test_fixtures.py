@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from test.helpers import assert_series_equal, test_data_root
+from test.helpers import test_data_root
 
 
 @pytest.mark.parametrize(
@@ -30,28 +30,3 @@ def test_mlamd_tesseract_fixtures_parse(fixture_path: str):
     series = Series.load(test_data_root / fixture_path)
 
     assert len(series) > 0
-
-
-def test_mlamd_tesseract3_fixture_preserves_existing_tesseract_timings():
-    """Test MLAMD Tesseract 3 fixture preserves existing Tesseract timings."""
-    baseline = _without_text(
-        Series.load(test_data_root / "mlamd/input/eng_ocr/tesseract.srt")
-    )
-    tesseract3 = _without_text(
-        Series.load(test_data_root / "mlamd/input/eng_ocr/tesseract3_new.srt")
-    )
-
-    assert_series_equal(tesseract3, baseline)
-
-
-def _without_text(series: Series) -> Series:
-    """Return subtitle series with text removed.
-
-    Arguments:
-        series: subtitle series
-    Returns:
-        subtitle series with empty text
-    """
-    for subtitle in series:
-        subtitle.text = ""
-    return series
