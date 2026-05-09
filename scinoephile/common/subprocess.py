@@ -4,11 +4,11 @@
 
 from __future__ import annotations
 
+import sys
 from collections.abc import Iterable
 from os import read
 from queue import Empty, Queue
 from subprocess import PIPE, Popen, TimeoutExpired
-from sys import stderr, stdout
 from threading import Thread
 from time import monotonic
 from typing import IO
@@ -234,11 +234,11 @@ def _write_live_output(stream_name: str, chunk: bytes):
     """
     output = _decode_output(chunk)
     if stream_name == "stderr":
-        stderr.write(output)
-        stderr.flush()
+        sys.stderr.write(output)
+        sys.stderr.flush()
     else:
-        stdout.write(output)
-        stdout.flush()
+        sys.stdout.write(output)
+        sys.stdout.flush()
 
 
 __all__ = [
