@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.block_review import (
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
@@ -45,7 +45,7 @@ def test_get_zho_block_reviewed_kob(
     _test_get_zho_block_reviewed(
         kob_zho_hant_ocr_fuse_clean_validate,
         kob_zho_hant_ocr_fuse_clean_validate_review,
-        get_zho_reviewer(prompt_cls=ZhoHantBlockReviewPrompt),
+        get_zho_reviewer(prompt_cls=BlockReviewPromptZhoHant),
     )
 
 

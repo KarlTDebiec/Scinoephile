@@ -16,14 +16,14 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.yue_zho.block_review import (
-    YueVsZhoYueHansBlockReviewPrompt,
-    YueVsZhoYueHantBlockReviewPrompt,
+    YueVsZhoBlockReviewPromptYueHans,
+    YueVsZhoBlockReviewPromptYueHant,
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
-    YueVsZhoYueHantLineReviewPrompt,
+    YueVsZhoLineReviewPromptYueHans,
+    YueVsZhoLineReviewPromptYueHant,
     get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
 )
@@ -165,7 +165,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_line_review_prompt_cls(
         cls, script: str
-    ) -> type[YueVsZhoYueHansLineReviewPrompt]:
+    ) -> type[YueVsZhoLineReviewPromptYueHans]:
         """Get the line-review prompt class for the selected script.
 
         Arguments:
@@ -174,13 +174,13 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             line-review prompt class
         """
         if script == "traditional":
-            return YueVsZhoYueHantLineReviewPrompt
-        return YueVsZhoYueHansLineReviewPrompt
+            return YueVsZhoLineReviewPromptYueHant
+        return YueVsZhoLineReviewPromptYueHans
 
     @classmethod
     def _get_block_review_prompt_cls(
         cls, script: str
-    ) -> type[YueVsZhoYueHansBlockReviewPrompt]:
+    ) -> type[YueVsZhoBlockReviewPromptYueHans]:
         """Get the block review prompt class for the selected script.
 
         Arguments:
@@ -189,8 +189,8 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
             block review prompt class
         """
         if script == "traditional":
-            return YueVsZhoYueHantBlockReviewPrompt
-        return YueVsZhoYueHansBlockReviewPrompt
+            return YueVsZhoBlockReviewPromptYueHant
+        return YueVsZhoBlockReviewPromptYueHans
 
     @classmethod
     def _main(

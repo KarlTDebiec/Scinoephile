@@ -19,8 +19,8 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoYueHansTranslationPrompt,
-    YueVsZhoYueHantTranslationPrompt,
+    YueVsZhoTranslationPromptYueHans,
+    YueVsZhoTranslationPromptYueHant,
     get_yue_translated_vs_zho,
     get_yue_vs_zho_translator,
 )
@@ -149,7 +149,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_translation_prompt_cls(
         cls, script: str
-    ) -> type[YueVsZhoYueHansTranslationPrompt]:
+    ) -> type[YueVsZhoTranslationPromptYueHans]:
         """Get the translation prompt class for the selected script.
 
         Arguments:
@@ -158,8 +158,8 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             translation prompt class
         """
         if script == "traditional":
-            return YueVsZhoYueHantTranslationPrompt
-        return YueVsZhoYueHansTranslationPrompt
+            return YueVsZhoTranslationPromptYueHant
+        return YueVsZhoTranslationPromptYueHans
 
     @classmethod
     def _main(

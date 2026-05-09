@@ -21,8 +21,8 @@ from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
@@ -30,7 +30,7 @@ from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
@@ -367,7 +367,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             output_dir / f"{lang_code}_ocr/lang/zho/ocr_fusion.json",
         )
         fuser = get_zho_ocr_fuser(
-            prompt_cls=ZhoHantOcrFusionPrompt,
+            prompt_cls=OcrFusionPromptZhoHant,
             auto_verify=True,
             **fuser_kw,
         )
@@ -430,7 +430,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             output_dir / f"{lang_code}_ocr/lang/zho/block_review.json",
         )
         reviewer = get_zho_reviewer(
-            prompt_cls=ZhoHantBlockReviewPrompt,
+            prompt_cls=BlockReviewPromptZhoHant,
             auto_verify=True,
             **reviewer_kw,
         )
@@ -461,7 +461,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         simplify_review = Series.load(simplify_review_path)
     else:
         simplify_reviewer = get_zho_reviewer(
-            prompt_cls=ZhoHansBlockReviewPrompt,
+            prompt_cls=BlockReviewPromptZhoHans,
             test_case_path=output_dir
             / f"{lang_code}_ocr"
             / "lang"

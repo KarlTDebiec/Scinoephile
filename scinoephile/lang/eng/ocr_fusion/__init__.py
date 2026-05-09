@@ -17,11 +17,11 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import EngOcrFusionPrompt
+from .prompts import OcrFusionPromptEng
 
 __all__ = [
     "ENG_OCR_FUSION_OPERATION_SPEC",
-    "EngOcrFusionPrompt",
+    "OcrFusionPromptEng",
     "EngOcrFusionProcessKwargs",
     "EngOcrFusionProcessorKwargs",
     "get_eng_ocr_fuser",
@@ -32,7 +32,7 @@ ENG_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="eng-ocr-fusion",
     test_case_table_name="test_cases__eng__ocr_fusion",
     manager_cls=OcrFusionManager,
-    prompt_cls=EngOcrFusionPrompt,
+    prompt_cls=OcrFusionPromptEng,
 )
 """Operation specification for English OCR fusion."""
 
@@ -75,7 +75,7 @@ def get_eng_ocr_fused(
 
 
 def get_eng_ocr_fuser(
-    prompt_cls: type[EngOcrFusionPrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[OcrFusionPromptEng] = OcrFusionPromptEng,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[EngOcrFusionProcessorKwargs],
