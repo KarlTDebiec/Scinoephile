@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from logging import getLogger
+from os import read
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
 from time import monotonic
@@ -100,21 +101,8 @@ def run_command_live(
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
 
-    stdout_lines = []
-    stderr_lines = []
-
-    def read_stream(stream: IO[bytes], lines: list[str]):
-        """Read subprocess stream line-by-line and mirror to logs.
-
-        Arguments:
-            stream: stream to read from
-            lines: list that collects the stream content
-        """
-        for line in iter(stream.readline, b""):
-            decoded_line = _decode_output(line)
-            logger.info(decoded_line.rstrip())
-            lines.append(decoded_line)
-        stream.close()
+    stdout_chunks = []
+    stderr_chunks = []
 
     with Popen(
         command,
@@ -124,53 +112,23 @@ def run_command_live(
     ) as child:
         assert child.stdout is not None
         assert child.stderr is not None
-        stdout_thread = Thread(target=read_stream, args=(child.stdout, stdout_lines))
-        stderr_thread = Thread(target=read_stream, args=(child.stderr, stderr_lines))
+        stdout_thread = Thread(target=_read_stream, args=(child.stdout, stdout_chunks))
+        stderr_thread = Thread(target=_read_stream, args=(child.stderr, stderr_chunks))
         stdout_thread.start()
         stderr_thread.start()
 
-        if timeout is None:
-            exitcode = child.wait()
-        else:
-            deadline = monotonic() + timeout
-            try:
-                exitcode = child.wait(timeout=max(0.0, deadline - monotonic()))
-            except TimeoutExpired as exception:
-                child.kill()
-                child.wait()
-                stdout_thread.join()
-                stderr_thread.join()
-                stdout_str = "".join(stdout_lines)
-                stderr_str = "".join(stderr_lines)
-                raise TimeoutExpired(
-                    command,
-                    timeout,
-                    output=stdout_str,
-                    stderr=stderr_str,
-                ) from exception
+        exitcode = _wait_for_live_process(
+            child,
+            command,
+            timeout,
+            stdout_thread,
+            stderr_thread,
+            stdout_chunks,
+            stderr_chunks,
+        )
 
-            stdout_thread.join(timeout=max(0.0, deadline - monotonic()))
-            stderr_thread.join(timeout=max(0.0, deadline - monotonic()))
-            if stdout_thread.is_alive() or stderr_thread.is_alive():
-                child.kill()
-                child.wait()
-                stdout_thread.join()
-                stderr_thread.join()
-                stdout_str = "".join(stdout_lines)
-                stderr_str = "".join(stderr_lines)
-                raise TimeoutExpired(
-                    command,
-                    timeout,
-                    output=stdout_str,
-                    stderr=stderr_str,
-                )
-
-        if timeout is None:
-            stdout_thread.join()
-            stderr_thread.join()
-
-        stdout_str = "".join(stdout_lines)
-        stderr_str = "".join(stderr_lines)
+        stdout_str = _decode_output(b"".join(stdout_chunks))
+        stderr_str = _decode_output(b"".join(stderr_chunks))
 
         if exitcode not in acceptable_exitcodes:
             command_str = " ".join(command)
@@ -185,6 +143,135 @@ def run_command_live(
             )
 
     return exitcode, stdout_str, stderr_str
+
+
+def _handle_live_timeout(
+    child: Popen[bytes],
+    command: list[str],
+    timeout: int,
+    stdout_thread: Thread,
+    stderr_thread: Thread,
+    stdout_chunks: list[bytes],
+    stderr_chunks: list[bytes],
+):
+    """Handle live subprocess timeout.
+
+    Arguments:
+        child: child process
+        command: command run by the child process
+        timeout: timeout that was exceeded
+        stdout_thread: thread reading standard output
+        stderr_thread: thread reading standard error
+        stdout_chunks: standard output chunks read so far
+        stderr_chunks: standard error chunks read so far
+    """
+    child.kill()
+    child.wait()
+    stdout_thread.join()
+    stderr_thread.join()
+    raise TimeoutExpired(
+        command,
+        timeout,
+        output=_decode_output(b"".join(stdout_chunks)),
+        stderr=_decode_output(b"".join(stderr_chunks)),
+    )
+
+
+def _log_live_records(output: bytes) -> bytes:
+    """Log complete live output records and return any incomplete remainder.
+
+    Arguments:
+        output: output bytes to log
+    Returns:
+        incomplete trailing output
+    """
+    record_start = 0
+    for index, character in enumerate(output):
+        if character not in {10, 13}:
+            continue
+        record = output[record_start:index]
+        if record:
+            logger.info(_decode_output(record))
+        record_start = index + 1
+    return output[record_start:]
+
+
+def _read_stream(stream: IO[bytes], chunks: list[bytes]):
+    """Read subprocess stream chunks and mirror records to logs.
+
+    Arguments:
+        stream: stream to read from
+        chunks: list that collects the stream content
+    """
+    pending = b""
+    try:
+        while chunk := read(stream.fileno(), 4096):
+            chunks.append(chunk)
+            pending = _log_live_records(pending + chunk)
+        if pending:
+            logger.info(_decode_output(pending))
+    finally:
+        stream.close()
+
+
+def _wait_for_live_process(
+    child: Popen[bytes],
+    command: list[str],
+    timeout: int | None,
+    stdout_thread: Thread,
+    stderr_thread: Thread,
+    stdout_chunks: list[bytes],
+    stderr_chunks: list[bytes],
+) -> int:
+    """Wait for a live subprocess and its stream reader threads.
+
+    Arguments:
+        child: child process
+        command: command run by the child process
+        timeout: maximum time to await command's completion
+        stdout_thread: thread reading standard output
+        stderr_thread: thread reading standard error
+        stdout_chunks: standard output chunks read so far
+        stderr_chunks: standard error chunks read so far
+    Returns:
+        exitcode
+    """
+    if timeout is None:
+        exitcode = child.wait()
+        stdout_thread.join()
+        stderr_thread.join()
+        return exitcode
+
+    deadline = monotonic() + timeout
+    try:
+        exitcode = child.wait(timeout=max(0.0, deadline - monotonic()))
+    except TimeoutExpired as exception:
+        try:
+            _handle_live_timeout(
+                child,
+                command,
+                timeout,
+                stdout_thread,
+                stderr_thread,
+                stdout_chunks,
+                stderr_chunks,
+            )
+        except TimeoutExpired as timeout_exception:
+            raise timeout_exception from exception
+
+    stdout_thread.join(timeout=max(0.0, deadline - monotonic()))
+    stderr_thread.join(timeout=max(0.0, deadline - monotonic()))
+    if stdout_thread.is_alive() or stderr_thread.is_alive():
+        _handle_live_timeout(
+            child,
+            command,
+            timeout,
+            stdout_thread,
+            stderr_thread,
+            stdout_chunks,
+            stderr_chunks,
+        )
+    return exitcode
 
 
 __all__ = [
