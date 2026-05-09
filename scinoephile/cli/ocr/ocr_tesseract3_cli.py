@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for Tesseract 4 OCR."""
+"""Command-line interface for Tesseract 3 OCR."""
 
 from __future__ import annotations
 
@@ -17,18 +17,18 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = ["OcrTesseract4Cli"]
+__all__ = ["OcrTesseract3Cli"]
 
-ocr_image_series_with_tesseract4: Any | None = None
+ocr_image_series_with_tesseract3: Any | None = None
 
 
-class OcrTesseract4Cli(ScinoephileCliBase):
-    """Recognize image subtitles with Tesseract 4 OCR."""
+class OcrTesseract3Cli(ScinoephileCliBase):
+    """Recognize image subtitles with Tesseract 3 OCR."""
 
     localizations = {
         "zh-hans": {
-            "Recognize image subtitles with Tesseract 4 OCR.": (
-                "使用 Tesseract 4 OCR 识别图像字幕。"
+            "Recognize image subtitles with Tesseract 3 OCR.": (
+                "使用 Tesseract 3 OCR 识别图像字幕。"
             ),
             "Tesseract language code (default: %(default)s)": (
                 "Tesseract 语言代码（默认：%(default)s）"
@@ -43,8 +43,8 @@ class OcrTesseract4Cli(ScinoephileCliBase):
             "recognized subtitle outfile path": "识别后字幕输出文件路径",
         },
         "zh-hant": {
-            "Recognize image subtitles with Tesseract 4 OCR.": (
-                "使用 Tesseract 4 OCR 識別影像字幕。"
+            "Recognize image subtitles with Tesseract 3 OCR.": (
+                "使用 Tesseract 3 OCR 識別影像字幕。"
             ),
             "Tesseract language code (default: %(default)s)": (
                 "Tesseract 語言代碼（預設：%(default)s）"
@@ -118,7 +118,7 @@ class OcrTesseract4Cli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "tesseract4"
+        return "tesseract3"
 
     @classmethod
     def _main(
@@ -138,16 +138,16 @@ class OcrTesseract4Cli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            global ocr_image_series_with_tesseract4  # noqa: PLW0603
-            if ocr_image_series_with_tesseract4 is None:
+            global ocr_image_series_with_tesseract3  # noqa: PLW0603
+            if ocr_image_series_with_tesseract3 is None:
                 from scinoephile.image.ocr.tesseract import (  # noqa: PLC0415
-                    ocr_image_series_with_tesseract4 as imported_ocr,
+                    ocr_image_series_with_tesseract3 as imported_ocr,
                 )
 
-                ocr_image_series_with_tesseract4 = imported_ocr
+                ocr_image_series_with_tesseract3 = imported_ocr
 
             image_series = ImageSeries.load(infile_path)
-            text_series = ocr_image_series_with_tesseract4(
+            text_series = ocr_image_series_with_tesseract3(
                 image_series,
                 language=language,
             )
@@ -165,4 +165,4 @@ class OcrTesseract4Cli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    OcrTesseract4Cli.main()
+    OcrTesseract3Cli.main()

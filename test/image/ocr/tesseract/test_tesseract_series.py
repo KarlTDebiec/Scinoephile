@@ -10,16 +10,16 @@ import pytest
 from PIL import Image
 
 from scinoephile.image.ocr.tesseract import (
-    Tesseract4OcrRecognizer,
+    Tesseract3OcrRecognizer,
     Tesseract5OcrRecognizer,
-    ocr_image_series_with_tesseract4,
+    ocr_image_series_with_tesseract3,
     ocr_image_series_with_tesseract5,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
-class FakeTesseract4Recognizer(Tesseract4OcrRecognizer):
-    """Fake Tesseract 4 recognizer for tests."""
+class FakeTesseract3Recognizer(Tesseract3OcrRecognizer):
+    """Fake Tesseract 3 recognizer for tests."""
 
     def __init__(self, texts: list[str]):
         """Initialize.
@@ -66,8 +66,8 @@ class FakeTesseract5Recognizer(Tesseract5OcrRecognizer):
         return self.texts.pop(0)
 
 
-def test_ocr_image_series_with_tesseract4_preserves_timings_and_sets_text():
-    """Test Tesseract 4 image series processing preserves timings and text."""
+def test_ocr_image_series_with_tesseract3_preserves_timings_and_sets_text():
+    """Test Tesseract 3 image series processing preserves timings and text."""
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -82,9 +82,9 @@ def test_ocr_image_series_with_tesseract4_preserves_timings_and_sets_text():
             ),
         ]
     )
-    recognizer = FakeTesseract4Recognizer(["first", "second"])
+    recognizer = FakeTesseract3Recognizer(["first", "second"])
 
-    text_series = ocr_image_series_with_tesseract4(
+    text_series = ocr_image_series_with_tesseract3(
         image_series,
         recognizer=recognizer,
     )
@@ -126,11 +126,11 @@ def test_ocr_image_series_with_tesseract5_preserves_timings_and_sets_text():
     assert [image.size for image in recognizer.images] == [(10, 8), (12, 9)]
 
 
-def test_ocr_image_series_with_tesseract4_uses_runtime_cache(
+def test_ocr_image_series_with_tesseract3_uses_runtime_cache(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
 ):
-    """Test Tesseract 4 image series processing uses runtime cache by default.
+    """Test Tesseract 3 image series processing uses runtime cache by default.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -140,7 +140,7 @@ def test_ocr_image_series_with_tesseract4_uses_runtime_cache(
     observed_cache_dir_paths = []
     observed_cache_namespaces = []
 
-    class FakeDefaultRecognizer(FakeTesseract4Recognizer):
+    class FakeDefaultRecognizer(FakeTesseract3Recognizer):
         """Fake default recognizer with cache directory tracking."""
 
         def __init__(
@@ -183,7 +183,7 @@ def test_ocr_image_series_with_tesseract4_uses_runtime_cache(
         lambda *parts: observed_cache_namespaces.extend(parts) or cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.image.ocr.tesseract.Tesseract4OcrRecognizer",
+        "scinoephile.image.ocr.tesseract.Tesseract3OcrRecognizer",
         FakeDefaultRecognizer,
     )
     image_series = ImageSeries(
@@ -196,11 +196,11 @@ def test_ocr_image_series_with_tesseract4_uses_runtime_cache(
         ]
     )
 
-    text_series = ocr_image_series_with_tesseract4(image_series, language="eng")
+    text_series = ocr_image_series_with_tesseract3(image_series, language="eng")
 
     assert [event.text for event in text_series] == ["eng"]
     assert observed_cache_dir_paths == [cache_dir_path]
-    assert observed_cache_namespaces == ["tesseract4"]
+    assert observed_cache_namespaces == ["tesseract3"]
 
 
 def test_ocr_image_series_with_tesseract5_uses_runtime_cache(

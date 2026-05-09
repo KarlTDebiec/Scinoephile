@@ -24,7 +24,7 @@ from .hocr import parse_tesseract_hocr
 from .preprocessing import preprocess_tesseract_ocr_image
 
 __all__ = [
-    "Tesseract4OcrRecognizer",
+    "Tesseract3OcrRecognizer",
     "Tesseract5OcrRecognizer",
     "TesseractOcrRecognizer",
 ]
@@ -44,7 +44,7 @@ class TesseractOcrRecognizer:
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         language: str = "eng",
-        oem: int = 3,
+        oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
         skip_executable_validation: bool = False,
@@ -56,7 +56,7 @@ class TesseractOcrRecognizer:
             cache_dir_path: directory in which to cache OCR results
             executable_path: Tesseract executable path or command name
             language: Tesseract language code
-            oem: Tesseract OCR engine mode
+            oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation
@@ -133,10 +133,10 @@ class TesseractOcrRecognizer:
             self.language,
             "--psm",
             str(self.psm),
-            "--oem",
-            str(self.oem),
             "hocr",
         ]
+        if self.oem is not None:
+            command[-1:-1] = ["--oem", str(self.oem)]
         if self.tessdata_dir_path is not None:
             command.extend(["--tessdata-dir", str(self.tessdata_dir_path)])
         return command
@@ -245,10 +245,10 @@ class TesseractOcrRecognizer:
             json.dump({"text": text}, file, ensure_ascii=False)
 
 
-class Tesseract4OcrRecognizer(TesseractOcrRecognizer):
-    """Tesseract 4 recognizer for image subtitles."""
+class Tesseract3OcrRecognizer(TesseractOcrRecognizer):
+    """Tesseract 3 recognizer for image subtitles."""
 
-    engine_version = "4"
+    engine_version = "3"
     """Tesseract major version label used for cache namespacing."""
 
     def __init__(
@@ -257,7 +257,7 @@ class Tesseract4OcrRecognizer(TesseractOcrRecognizer):
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         language: str = "eng",
-        oem: int = 1,
+        oem: int | None = None,
         psm: int = 6,
         scale: int = 2,
         skip_executable_validation: bool = False,
@@ -269,7 +269,7 @@ class Tesseract4OcrRecognizer(TesseractOcrRecognizer):
             cache_dir_path: directory in which to cache OCR results
             executable_path: Tesseract executable path or command name
             language: Tesseract language code
-            oem: Tesseract OCR engine mode
+            oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation
@@ -299,7 +299,7 @@ class Tesseract5OcrRecognizer(TesseractOcrRecognizer):
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
         language: str = "eng",
-        oem: int = 3,
+        oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
         skip_executable_validation: bool = False,
@@ -311,7 +311,7 @@ class Tesseract5OcrRecognizer(TesseractOcrRecognizer):
             cache_dir_path: directory in which to cache OCR results
             executable_path: Tesseract executable path or command name
             language: Tesseract language code
-            oem: Tesseract OCR engine mode
+            oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
             skip_executable_validation: whether to skip executable validation

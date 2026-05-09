@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseract4Cli, OcrTesseract5Cli
+from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseract3Cli, OcrTesseract5Cli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -31,10 +31,10 @@ from test.helpers import (
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseract4Cli),
+        (OcrCli, OcrTesseract3Cli),
         (OcrCli, OcrTesseract5Cli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseract4Cli),
+        (ScinoephileCli, OcrCli, OcrTesseract3Cli),
         (ScinoephileCli, OcrCli, OcrTesseract5Cli),
     ],
 )
@@ -52,10 +52,10 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseract4Cli),
+        (OcrCli, OcrTesseract3Cli),
         (OcrCli, OcrTesseract5Cli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseract4Cli),
+        (ScinoephileCli, OcrCli, OcrTesseract3Cli),
         (ScinoephileCli, OcrCli, OcrTesseract5Cli),
     ],
 )
@@ -87,7 +87,7 @@ def test_ocr_paddle_cli_help_lists_language_codes():
 
 @pytest.mark.parametrize(
     "cli",
-    [OcrTesseract4Cli, OcrTesseract5Cli],
+    [OcrTesseract3Cli, OcrTesseract5Cli],
 )
 def test_ocr_tesseract_cli_help_lists_default_language(
     cli: type[CommandLineInterface],
@@ -153,9 +153,9 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     ("cli", "module_name", "function_name"),
     [
         (
-            OcrTesseract4Cli,
-            "scinoephile.cli.ocr.ocr_tesseract4_cli",
-            "ocr_image_series_with_tesseract4",
+            OcrTesseract3Cli,
+            "scinoephile.cli.ocr.ocr_tesseract3_cli",
+            "ocr_image_series_with_tesseract3",
         ),
         (
             OcrTesseract5Cli,

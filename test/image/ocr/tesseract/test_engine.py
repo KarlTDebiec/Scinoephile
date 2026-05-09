@@ -10,7 +10,7 @@ import pytest
 from PIL import Image
 
 from scinoephile.image.ocr.tesseract import (
-    Tesseract4OcrRecognizer,
+    Tesseract3OcrRecognizer,
     Tesseract5OcrRecognizer,
 )
 
@@ -78,9 +78,9 @@ def test_tesseract5_ocr_recognizer_caches_by_configuration(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 2
 
 
-def test_tesseract4_and_tesseract5_use_distinct_defaults():
+def test_tesseract3_and_tesseract5_use_distinct_defaults():
     """Test Tesseract version recognizers use distinct default OCR engine modes."""
-    tesseract4 = Tesseract4OcrRecognizer(
+    tesseract3 = Tesseract3OcrRecognizer(
         executable_path=Path("tesseract"),
         skip_executable_validation=True,
     )
@@ -89,10 +89,32 @@ def test_tesseract4_and_tesseract5_use_distinct_defaults():
         skip_executable_validation=True,
     )
 
-    assert tesseract4.engine_version == "4"
-    assert tesseract4.oem == 1
+    assert tesseract3.engine_version == "3"
+    assert tesseract3.oem is None
     assert tesseract5.engine_version == "5"
     assert tesseract5.oem == 3
+
+
+def test_tesseract3_command_omits_default_oem():
+    """Test Tesseract 3 command omits default OCR engine mode."""
+    recognizer = Tesseract3OcrRecognizer(
+        executable_path=Path("tesseract"),
+        skip_executable_validation=True,
+    )
+
+    command = recognizer._build_command(Path("input.png"), Path("output"))
+
+    assert "--oem" not in command
+    assert command == [
+        "tesseract",
+        "input.png",
+        "output",
+        "-l",
+        "eng",
+        "--psm",
+        "6",
+        "hocr",
+    ]
 
 
 def test_tesseract5_command_includes_hocr_tessdata_and_language(tmp_path: Path):

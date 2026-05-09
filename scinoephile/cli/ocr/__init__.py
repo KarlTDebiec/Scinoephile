@@ -9,7 +9,7 @@ from .ocr_cli import OcrCli
 __all__ = [
     "OcrCli",
     "OcrPaddleCli",
-    "OcrTesseract4Cli",
+    "OcrTesseract3Cli",
     "OcrTesseract5Cli",
 ]
 
@@ -20,10 +20,10 @@ def __getattr__(name: str):
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
 
         return OcrPaddleCli
-    if name == "OcrTesseract4Cli":
-        from .ocr_tesseract4_cli import OcrTesseract4Cli  # noqa: PLC0415
+    if name == "OcrTesseract3Cli":
+        from .ocr_tesseract3_cli import OcrTesseract3Cli  # noqa: PLC0415
 
-        return OcrTesseract4Cli
+        return OcrTesseract3Cli
     if name == "OcrTesseract5Cli":
         from .ocr_tesseract5_cli import OcrTesseract5Cli  # noqa: PLC0415
 
