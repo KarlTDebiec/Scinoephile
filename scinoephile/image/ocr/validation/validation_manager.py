@@ -62,7 +62,7 @@ class ValidationManager:
       * Lower bound for 'tab' characters
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0912
         self,
         *,
         cache_dir_path: Path | str | None = None,
@@ -88,6 +88,14 @@ class ValidationManager:
         else:
             self.repo_data_dir_path = val_input_dir_path(repo_data_dir_path)
 
+        if self.dev:
+            active_data_dir_path = self.repo_data_dir_path
+        else:
+            active_data_dir_path = self.cache_dir_path
+        data_dir_paths = [self.repo_data_dir_path]
+        if active_data_dir_path != self.repo_data_dir_path:
+            data_dir_paths.append(active_data_dir_path)
+
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
@@ -95,21 +103,29 @@ class ValidationManager:
         # Initialize char_dims_by_n
         for n in range(1, 6):
             self.char_dims_by_n[n] = {}
-            for file_path in self._seed_and_active_data_paths(f"char_dims_{n}.csv"):
+            char_dims_filename = f"char_dims_{n}.csv"
+            for data_dir_path in data_dir_paths:
+                file_path = data_dir_path / char_dims_filename
                 if file_path.exists():
-                    self._merge_char_dims(
-                        self.char_dims_by_n[n], load_char_dims(file_path)
-                    )
+                    for char, dims_set in load_char_dims(file_path).items():
+                        self.char_dims_by_n[n].setdefault(char, set()).update(dims_set)
 
         # Initialize char_grp_dims_by_n
-        for file_path in self._seed_and_active_data_paths("char_grp_dims.csv"):
+        for data_dir_path in data_dir_paths:
+            file_path = data_dir_path / "char_grp_dims.csv"
             if file_path.exists():
-                self._merge_char_grp_dims(
-                    self.char_grp_dims_by_n, load_char_grp_dims(file_path)
-                )
+                for group_size, char_grp_dims in load_char_grp_dims(file_path).items():
+                    target_char_grp_dims = self.char_grp_dims_by_n.setdefault(
+                        group_size, {}
+                    )
+                    for char_grp, dims_set in char_grp_dims.items():
+                        target_char_grp_dims.setdefault(char_grp, set()).update(
+                            dims_set
+                        )
 
         # Initialize char_pair_gaps
-        for file_path in self._seed_and_active_data_paths("char_pair_gaps.csv"):
+        for data_dir_path in data_dir_paths:
+            file_path = data_dir_path / "char_pair_gaps.csv"
             if file_path.exists():
                 self.char_pair_gaps.update(load_char_pair_gaps(file_path))
 
@@ -684,16 +700,6 @@ class ValidationManager:
         logger.info(f"Added ({char_pair}, {cutoffs})")
         save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
 
-    def _active_data_dir_path(self) -> Path:
-        """Get validation data directory from which active data should be read.
-
-        Returns:
-            active validation data directory
-        """
-        if self.dev:
-            return self.repo_data_dir_path
-        return self.cache_dir_path
-
     def _char_dims_path(self, n: int) -> Path:
         """Path to character dimensions csv file."""
         return self._write_data_dir_path() / f"char_dims_{n}.csv"
@@ -705,50 +711,6 @@ class ValidationManager:
     def _char_pair_gaps_path(self) -> Path:
         """Path to character pair gap csv file."""
         return self._write_data_dir_path() / "char_pair_gaps.csv"
-
-    @staticmethod
-    def _merge_char_dims(
-        target: dict[str, set[tuple[int, ...]]],
-        source: dict[str, set[tuple[int, ...]]],
-    ):
-        """Merge character dimensions into a target dict.
-
-        Arguments:
-            target: character dimensions to update
-            source: character dimensions to merge
-        """
-        for char, dims_set in source.items():
-            target.setdefault(char, set()).update(dims_set)
-
-    @classmethod
-    def _merge_char_grp_dims(
-        cls,
-        target: dict[int, dict[str, set[tuple[int, ...]]]],
-        source: dict[int, dict[str, set[tuple[int, ...]]]],
-    ):
-        """Merge character group dimensions into a target dict.
-
-        Arguments:
-            target: character group dimensions to update
-            source: character group dimensions to merge
-        """
-        for group_size, char_grp_dims in source.items():
-            target_char_grp_dims = target.setdefault(group_size, {})
-            cls._merge_char_dims(target_char_grp_dims, char_grp_dims)
-
-    def _seed_and_active_data_paths(self, filename: str) -> tuple[Path, ...]:
-        """Get seed and active data paths for a validation data file.
-
-        Arguments:
-            filename: validation data filename
-        Returns:
-            repo seed path followed by active data path, if different
-        """
-        seed_path = self.repo_data_dir_path / filename
-        active_path = self._active_data_dir_path() / filename
-        if seed_path == active_path:
-            return (seed_path,)
-        return seed_path, active_path
 
     def _write_data_dir_path(self) -> Path:
         """Get validation data directory to which updates should be written.
