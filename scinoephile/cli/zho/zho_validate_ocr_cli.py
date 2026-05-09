@@ -41,6 +41,9 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
             ),
             "stop validation after this subtitle index": "校验到此字幕索引后停止",
             "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
+            "write validation data updates to repo data": (
+                "将校验数据更新写入仓库数据"
+            ),
         },
         "zh-hant": {
             "command-line interface for standard Chinese OCR subtitle validation": (
@@ -58,6 +61,9 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
             ),
             "stop validation after this subtitle index": "驗證到此字幕索引後停止",
             "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
+            "write validation data updates to repo data": (
+                "將驗證資料更新寫入儲存庫資料"
+            ),
         },
     }
     """Localized help text keyed by locale and English source text."""
@@ -102,6 +108,11 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
             action="store_true",
             help="prompt for interactive validation decisions",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--dev",
+            action="store_true",
+            help="write validation data updates to repo data",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -136,6 +147,7 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
         infile_path: Path,
         stop_at_idx: int | None,
         interactive: bool,
+        dev: bool,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -162,6 +174,7 @@ class ZhoValidateOcrCli(ScinoephileCliBase):
             series,
             stop_at_idx=stop_at_idx,
             interactive=interactive,
+            dev=dev,
         )
 
         # Write output

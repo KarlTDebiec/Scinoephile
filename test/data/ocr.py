@@ -49,6 +49,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     *,
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -60,6 +61,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to rerun validation if output exists
@@ -138,6 +140,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_eng_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -179,6 +182,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     lang: str = "zho",
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -191,6 +195,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -271,6 +276,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -318,6 +324,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     lang: str = "zho",
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -330,6 +337,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -413,6 +421,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)

@@ -17,6 +17,7 @@ def validate_zho_ocr(
     stop_at_idx: int | None = None,
     interactive: bool = False,
     output_dir_path: Path | str | None = None,
+    dev: bool = False,
 ) -> ImageSeries:
     """Validate OCR text against image series images.
 
@@ -25,8 +26,9 @@ def validate_zho_ocr(
         stop_at_idx: stop processing at this index
         interactive: whether to prompt user for confirmations
         output_dir_path: directory in which to save validation images
+        dev: whether to write validation data updates to the repo
     """
-    validation_mgr = ValidationManager()
+    validation_mgr = ValidationManager(dev=dev)
     output_series = validation_mgr.validate(series, stop_at_idx, interactive)
 
     if output_dir_path is not None:
