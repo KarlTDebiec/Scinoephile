@@ -8,6 +8,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
+from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bbox import Bbox
@@ -83,9 +84,9 @@ class ValidationManager:
             self.cache_dir_path = Path(cache_dir_path).resolve()
         self.dev = dev
         if repo_data_dir_path is None:
-            self.repo_data_dir_path = package_root / "data/ocr"
+            self.repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
         else:
-            self.repo_data_dir_path = Path(repo_data_dir_path).resolve()
+            self.repo_data_dir_path = val_input_dir_path(repo_data_dir_path)
 
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
@@ -94,21 +95,21 @@ class ValidationManager:
         # Initialize char_dims_by_n
         for n in range(1, 6):
             self.char_dims_by_n[n] = {}
-            for file_path in self._char_dims_paths(n):
+            for file_path in self._seed_and_active_data_paths(f"char_dims_{n}.csv"):
                 if file_path.exists():
                     self._merge_char_dims(
                         self.char_dims_by_n[n], load_char_dims(file_path)
                     )
 
         # Initialize char_grp_dims_by_n
-        for file_path in self._char_grp_dims_paths():
+        for file_path in self._seed_and_active_data_paths("char_grp_dims.csv"):
             if file_path.exists():
                 self._merge_char_grp_dims(
                     self.char_grp_dims_by_n, load_char_grp_dims(file_path)
                 )
 
         # Initialize char_pair_gaps
-        for file_path in self._char_pair_gaps_paths():
+        for file_path in self._seed_and_active_data_paths("char_pair_gaps.csv"):
             if file_path.exists():
                 self.char_pair_gaps.update(load_char_pair_gaps(file_path))
 
@@ -683,29 +684,27 @@ class ValidationManager:
         logger.info(f"Added ({char_pair}, {cutoffs})")
         save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
 
+    def _active_data_dir_path(self) -> Path:
+        """Get validation data directory from which active data should be read.
+
+        Returns:
+            active validation data directory
+        """
+        if self.dev:
+            return self.repo_data_dir_path
+        return self.cache_dir_path
+
     def _char_dims_path(self, n: int) -> Path:
         """Path to character dimensions csv file."""
         return self._write_data_dir_path() / f"char_dims_{n}.csv"
-
-    def _char_dims_paths(self, n: int) -> tuple[Path, ...]:
-        """Paths to character dimensions csv files."""
-        return self._read_data_paths(f"char_dims_{n}.csv")
 
     def _char_grp_dims_path(self) -> Path:
         """Path to character group dimensions csv file."""
         return self._write_data_dir_path() / "char_grp_dims.csv"
 
-    def _char_grp_dims_paths(self) -> tuple[Path, ...]:
-        """Paths to character group dimensions csv files."""
-        return self._read_data_paths("char_grp_dims.csv")
-
     def _char_pair_gaps_path(self) -> Path:
         """Path to character pair gap csv file."""
         return self._write_data_dir_path() / "char_pair_gaps.csv"
-
-    def _char_pair_gaps_paths(self) -> tuple[Path, ...]:
-        """Paths to character pair gap csv files."""
-        return self._read_data_paths("char_pair_gaps.csv")
 
     @staticmethod
     def _merge_char_dims(
@@ -737,19 +736,19 @@ class ValidationManager:
             target_char_grp_dims = target.setdefault(group_size, {})
             cls._merge_char_dims(target_char_grp_dims, char_grp_dims)
 
-    def _read_data_paths(self, filename: str) -> tuple[Path, ...]:
-        """Get repo and cache data paths for a validation data file.
+    def _seed_and_active_data_paths(self, filename: str) -> tuple[Path, ...]:
+        """Get seed and active data paths for a validation data file.
 
         Arguments:
             filename: validation data filename
         Returns:
-            repo path followed by cache path
+            repo seed path followed by active data path, if different
         """
-        repo_path = self.repo_data_dir_path / filename
-        cache_path = self.cache_dir_path / filename
-        if repo_path == cache_path:
-            return (repo_path,)
-        return repo_path, cache_path
+        seed_path = self.repo_data_dir_path / filename
+        active_path = self._active_data_dir_path() / filename
+        if seed_path == active_path:
+            return (seed_path,)
+        return seed_path, active_path
 
     def _write_data_dir_path(self) -> Path:
         """Get validation data directory to which updates should be written.

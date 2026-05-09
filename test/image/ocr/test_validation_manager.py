@@ -50,6 +50,49 @@ def test_validation_manager_layers_cache_data_over_repo_data(tmp_path):
     }
 
 
+def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path):
+    """Test dev mode loads active OCR validation data from the repo."""
+    repo_data_dir_path = tmp_path / "repo" / "ocr"
+    repo_data_dir_path.mkdir(parents=True)
+    cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    cache_dir_path.mkdir(parents=True)
+
+    (repo_data_dir_path / "char_dims_1.csv").write_text(
+        "A,10,20\nB,30,40\n", encoding="utf-8"
+    )
+    (cache_dir_path / "char_dims_1.csv").write_text("A,11,21\n", encoding="utf-8")
+    (repo_data_dir_path / "char_grp_dims.csv").write_text(
+        "AB,50,20\n", encoding="utf-8"
+    )
+    (cache_dir_path / "char_grp_dims.csv").write_text("CD,60,20\n", encoding="utf-8")
+    (repo_data_dir_path / "char_pair_gaps.csv").write_text(
+        "A,B,1,2,3,4\nB,C,5,6,7,8\n", encoding="utf-8"
+    )
+    (cache_dir_path / "char_pair_gaps.csv").write_text(
+        "A,B,9,10,11,12\n", encoding="utf-8"
+    )
+
+    manager = ValidationManager(
+        cache_dir_path=cache_dir_path,
+        dev=True,
+        repo_data_dir_path=repo_data_dir_path,
+    )
+
+    assert manager.char_dims_by_n[1] == {
+        "A": {(10, 20)},
+        "B": {(30, 40)},
+    }
+    assert manager.char_grp_dims_by_n == {
+        2: {
+            "AB": {(50, 20)},
+        }
+    }
+    assert manager.char_pair_gaps == {
+        ("A", "B"): (1, 2, 3, 4),
+        ("B", "C"): (5, 6, 7, 8),
+    }
+
+
 def test_validation_manager_writes_updates_to_cache_by_default(tmp_path):
     """Test OCR validation data updates write to the cache by default."""
     repo_data_dir_path = tmp_path / "repo" / "ocr"

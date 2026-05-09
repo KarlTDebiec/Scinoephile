@@ -59,6 +59,7 @@ if "繁體中文 (OCR)" in actions:
     process_zho_hant_ocr(
         title_root,
         input_path / "zho-Hant_ocr/source.sup",
+        dev=True,
         overwrite_srt=True,
         force_validation=True,
     )
@@ -66,6 +67,7 @@ if "简体中文 (OCR)" in actions:
     process_zho_hans_ocr(
         title_root,
         input_path / "zho-Hans_ocr/source.sup",
+        dev=True,
         overwrite_srt=True,
         force_validation=True,
     )
@@ -73,6 +75,7 @@ if "English (OCR)" in actions:
     process_eng_ocr(
         title_root,
         input_path / "eng_ocr/source.sup",
+        dev=True,
         overwrite_srt=True,
         force_validation=True,
     )
