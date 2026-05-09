@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr import OcrCli, OcrPaddleCli
+from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseract4Cli, OcrTesseract5Cli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -31,7 +31,11 @@ from test.helpers import (
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
+        (OcrCli, OcrTesseract4Cli),
+        (OcrCli, OcrTesseract5Cli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
+        (ScinoephileCli, OcrCli, OcrTesseract4Cli),
+        (ScinoephileCli, OcrCli, OcrTesseract5Cli),
     ],
 )
 def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -48,7 +52,11 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
+        (OcrCli, OcrTesseract4Cli),
+        (OcrCli, OcrTesseract5Cli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
+        (ScinoephileCli, OcrCli, OcrTesseract4Cli),
+        (ScinoephileCli, OcrCli, OcrTesseract5Cli),
     ],
 )
 def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -75,6 +83,31 @@ def test_ocr_paddle_cli_help_lists_language_codes():
     assert "en (English)" in help_text
     assert "ch (simplified Chinese and English)" in help_text
     assert "chinese_cht (traditional Chinese)" in help_text
+
+
+@pytest.mark.parametrize(
+    "cli",
+    [OcrTesseract4Cli, OcrTesseract5Cli],
+)
+def test_ocr_tesseract_cli_help_lists_default_language(
+    cli: type[CommandLineInterface],
+):
+    """Test Tesseract OCR CLI help lists default language code.
+
+    Arguments:
+        cli: Tesseract OCR CLI class
+    """
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(cli, "-h")
+
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    help_text = " ".join(stdout.getvalue().split())
+    assert "Tesseract language code (default: eng)" in help_text
 
 
 def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
@@ -107,6 +140,67 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         output_path = output_dir_path / "ocr.srt"
         run_cli_with_args(
             OcrPaddleCli,
+            f"--infile {input_path} --outfile {output_path}",
+        )
+
+        output = Series.load(output_path)
+        assert [(event.start, event.end, event.text) for event in output] == [
+            (1000, 2000, "recognized")
+        ]
+
+
+@pytest.mark.parametrize(
+    ("cli", "module_name", "function_name"),
+    [
+        (
+            OcrTesseract4Cli,
+            "scinoephile.cli.ocr.ocr_tesseract4_cli",
+            "ocr_image_series_with_tesseract4",
+        ),
+        (
+            OcrTesseract5Cli,
+            "scinoephile.cli.ocr.ocr_tesseract5_cli",
+            "ocr_image_series_with_tesseract5",
+        ),
+    ],
+)
+def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
+    monkeypatch: pytest.MonkeyPatch,
+    cli: type[CommandLineInterface],
+    module_name: str,
+    function_name: str,
+):
+    """Test Tesseract OCR CLI writes OCR output to SRT.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        cli: Tesseract OCR CLI class
+        module_name: Tesseract OCR CLI module name
+        function_name: Tesseract OCR function name
+    """
+    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+
+    def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
+        """Fake Tesseract OCR image series processing.
+
+        Arguments:
+            *args: positional arguments
+            **kwargs: keyword arguments
+        Returns:
+            text subtitle series
+        """
+        assert kwargs == {"language": "eng"}
+        return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
+
+    monkeypatch.setattr(
+        f"{module_name}.{function_name}",
+        fake_ocr_image_series_with_tesseract,
+    )
+
+    with get_temp_directory_path() as output_dir_path:
+        output_path = output_dir_path / "ocr.srt"
+        run_cli_with_args(
+            cli,
             f"--infile {input_path} --outfile {output_path}",
         )
 
