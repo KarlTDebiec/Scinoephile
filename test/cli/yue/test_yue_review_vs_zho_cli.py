@@ -15,7 +15,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
 from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
@@ -118,7 +118,7 @@ def test_yue_review_vs_zho_cli(
     else:
         assert (
             patched_factory.call_args.kwargs["prompt_cls"]
-            is YueVsZhoYueHansBlockReviewPrompt
+            is YueVsZhoBlockReviewPromptYueHans
         )
         called_kwargs = patched_review.call_args.kwargs
         assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))

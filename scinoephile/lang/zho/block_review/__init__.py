@@ -18,14 +18,14 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import ZhoHansBlockReviewPrompt, ZhoHantBlockReviewPrompt
+from .prompts import BlockReviewPromptZhoHans, BlockReviewPromptZhoHant
 
 __all__ = [
     "ZHO_BLOCK_REVIEW_OPERATION_SPEC",
     "ZhoBlockReviewProcessKwargs",
     "ZhoBlockReviewProcessorKwargs",
-    "ZhoHansBlockReviewPrompt",
-    "ZhoHantBlockReviewPrompt",
+    "BlockReviewPromptZhoHans",
+    "BlockReviewPromptZhoHant",
     "get_zho_block_reviewed",
     "get_zho_reviewer",
 ]
@@ -34,7 +34,7 @@ ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="zho-block-review",
     test_case_table_name="test_cases__zho__block_review",
     manager_cls=MonoBlockManager,
-    prompt_cls=ZhoHansBlockReviewPrompt,
+    prompt_cls=BlockReviewPromptZhoHans,
 )
 """Operation specification for standard Chinese block review."""
 
@@ -75,7 +75,7 @@ def get_zho_block_reviewed(
 
 
 def get_zho_reviewer(
-    prompt_cls: type[ZhoHansBlockReviewPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[BlockReviewPromptZhoHans] = BlockReviewPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ZhoBlockReviewProcessorKwargs],
@@ -91,7 +91,7 @@ def get_zho_reviewer(
         MonoBlockProcessor with provided configuration
     """
     if test_cases is None:
-        if prompt_cls is ZhoHantBlockReviewPrompt:
+        if prompt_cls is BlockReviewPromptZhoHant:
             test_cases = list(
                 load_default_test_cases(
                     MonoBlockManager,

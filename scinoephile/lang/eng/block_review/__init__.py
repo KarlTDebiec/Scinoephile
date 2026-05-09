@@ -17,13 +17,13 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import EngBlockReviewPrompt
+from .prompts import BlockReviewPromptEng
 
 __all__ = [
     "ENG_BLOCK_REVIEW_OPERATION_SPEC",
     "EngBlockReviewProcessKwargs",
     "EngBlockReviewProcessorKwargs",
-    "EngBlockReviewPrompt",
+    "BlockReviewPromptEng",
     "get_eng_block_reviewed",
     "get_eng_block_reviewer",
 ]
@@ -32,7 +32,7 @@ ENG_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="eng-block-review",
     test_case_table_name="test_cases__eng__block_review",
     manager_cls=MonoBlockManager,
-    prompt_cls=EngBlockReviewPrompt,
+    prompt_cls=BlockReviewPromptEng,
 )
 """Operation specification for English block review."""
 
@@ -73,7 +73,7 @@ def get_eng_block_reviewed(
 
 
 def get_eng_block_reviewer(
-    prompt_cls: type[EngBlockReviewPrompt] = EngBlockReviewPrompt,
+    prompt_cls: type[BlockReviewPromptEng] = BlockReviewPromptEng,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[EngBlockReviewProcessorKwargs],

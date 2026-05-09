@@ -11,15 +11,15 @@ import pytest
 
 from scinoephile.common import package_root
 from scinoephile.core.llms import TestCase
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHans,
+    OcrFusionPromptZhoHant,
 )
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
@@ -37,10 +37,10 @@ from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_block.manager import MonoBlockManager
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoYueHansBlockReviewPrompt
-from scinoephile.multilang.yue_zho.line_review import YueVsZhoYueHansLineReviewPrompt
+from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.line_review import YueVsZhoLineReviewPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
-from scinoephile.multilang.yue_zho.translation import YueVsZhoYueHansTranslationPrompt
+from scinoephile.multilang.yue_zho.translation import YueVsZhoTranslationPromptYueHans
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
@@ -68,7 +68,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "eng_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager, EngBlockReviewPrompt, ENG_BLOCK_REVIEW_JSON_PATHS
+                MonoBlockManager, BlockReviewPromptEng, ENG_BLOCK_REVIEW_JSON_PATHS
             ),
             [
                 "kob/output/eng_ocr/lang/eng/block_review.json",
@@ -81,7 +81,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "eng_ocr_fusion",
             lambda: load_default_test_cases(
-                OcrFusionManager, EngOcrFusionPrompt, ENG_OCR_FUSION_JSON_PATHS
+                OcrFusionManager, OcrFusionPromptEng, ENG_OCR_FUSION_JSON_PATHS
             ),
             [
                 "kob/output/eng_ocr/lang/eng/ocr_fusion.json",
@@ -94,7 +94,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hans_block_review",
             lambda: load_default_test_cases(
                 MonoBlockManager,
-                ZhoHansBlockReviewPrompt,
+                BlockReviewPromptZhoHans,
                 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -107,7 +107,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hant_block_review",
             lambda: load_default_test_cases(
                 MonoBlockManager,
-                ZhoHantBlockReviewPrompt,
+                BlockReviewPromptZhoHant,
                 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -121,7 +121,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hans_ocr_fusion",
             lambda: load_default_test_cases(
                 OcrFusionManager,
-                ZhoHansOcrFusionPrompt,
+                OcrFusionPromptZhoHans,
                 ZHO_HANS_OCR_FUSION_JSON_PATHS,
             ),
             [
@@ -134,7 +134,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "zho_hant_ocr_fusion",
             lambda: load_default_test_cases(
                 OcrFusionManager,
-                ZhoHantOcrFusionPrompt,
+                OcrFusionPromptZhoHant,
                 ZHO_HANT_OCR_FUSION_JSON_PATHS,
             ),
             [
@@ -148,7 +148,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_zho_line_review",
             lambda: load_default_test_cases(
                 YueZhoLineReviewManager,
-                YueVsZhoYueHansLineReviewPrompt,
+                YueVsZhoLineReviewPromptYueHans,
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
@@ -161,7 +161,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_zho_block_review",
             lambda: load_default_test_cases(
                 DualBlockManager,
-                YueVsZhoYueHansBlockReviewPrompt,
+                YueVsZhoBlockReviewPromptYueHans,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -174,7 +174,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_from_zho_translation",
             lambda: load_default_test_cases(
                 DualBlockGappedManager,
-                YueVsZhoYueHansTranslationPrompt,
+                YueVsZhoTranslationPromptYueHans,
                 YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
             ),
             [

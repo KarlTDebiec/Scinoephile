@@ -7,12 +7,12 @@ from __future__ import annotations
 from abc import ABC
 from typing import ClassVar
 
-from scinoephile.lang.zho.prompts import ZhoHansPrompt
+from scinoephile.lang.zho.prompts import PromptZhoHans
 
-__all__ = ["YueHansPrompt"]
+__all__ = ["PromptYueHans"]
 
 
-class YueHansPrompt(ZhoHansPrompt, ABC):
+class PromptYueHans(PromptZhoHans, ABC):
     """LLM correspondence text for written Cantonese."""
 
     # Prompt

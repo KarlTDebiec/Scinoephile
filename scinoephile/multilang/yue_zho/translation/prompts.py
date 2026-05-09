@@ -8,18 +8,18 @@ from typing import ClassVar
 
 from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.yue.prompts import YueHansPrompt
+from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
 
 __all__ = [
-    "YueVsZhoYueHansTranslationPrompt",
-    "YueVsZhoYueHantTranslationPrompt",
+    "YueVsZhoTranslationPromptYueHans",
+    "YueVsZhoTranslationPromptYueHant",
 ]
 
 
-class YueVsZhoYueHansTranslationPrompt(
-    DictionaryToolPrompt, DualBlockGappedPrompt, YueHansPrompt
+class YueVsZhoTranslationPromptYueHans(
+    DictionaryToolPrompt, DualBlockGappedPrompt, PromptYueHans
 ):
     """Text for translating simplified written Cantonese from standard Chinese."""
 
@@ -92,7 +92,7 @@ class YueVsZhoYueHansTranslationPrompt(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueVsZhoYueHantTranslationPrompt(YueVsZhoYueHansTranslationPrompt):
+class YueVsZhoTranslationPromptYueHant(YueVsZhoTranslationPromptYueHans):
     """Text for translating traditional written Cantonese from standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
