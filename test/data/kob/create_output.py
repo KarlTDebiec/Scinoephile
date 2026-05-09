@@ -72,11 +72,9 @@ actions = {
 }
 
 if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(
-        title_root, dev=True, overwrite_srt=False, force_validation=False
-    )
+    process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
 if "English (OCR)" in actions:
-    process_eng_ocr(title_root, dev=True, overwrite_srt=True, force_validation=True)
+    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "Bilingual 繁體中文 and English" in actions:
     zho_hans_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"

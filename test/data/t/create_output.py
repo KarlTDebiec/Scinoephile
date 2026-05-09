@@ -26,15 +26,11 @@ actions = {
 }
 
 if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(
-        title_root, dev=True, overwrite_srt=True, force_validation=True
-    )
+    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "简体中文 (OCR)" in actions:
-    process_zho_hans_ocr(
-        title_root, dev=True, overwrite_srt=True, force_validation=True
-    )
+    process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "English (OCR)" in actions:
-    process_eng_ocr(title_root, dev=True, overwrite_srt=True, force_validation=True)
+    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
 if "Bilingual 简体中文 and English" in actions:
     process_zho_hans_eng(
         title_root,
