@@ -45,8 +45,9 @@ SOFTWARE.
 
 ## SubtitleEdit (adapted OCR preprocessing and grouping logic)
 
-Scinoephile's PaddleOCR preprocessing and text grouping code is informed by and
-partially adapted from the `SubtitleEdit` project:
+Scinoephile's PaddleOCR preprocessing and text grouping code, and Tesseract OCR
+preprocessing and hOCR parsing code, are informed by and partially adapted from
+the `SubtitleEdit` project:
 
 - Project: https://github.com/SubtitleEdit/subtitleedit
 - License: MIT
