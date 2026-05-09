@@ -4,13 +4,15 @@
 
 from __future__ import annotations
 
-from scinoephile.image.ocr.validation import ValidationManager
+from scinoephile.image.ocr.validation import ValidationManager, validation_manager
 
 
-def test_validation_manager_layers_cache_data_over_repo_data(tmp_path):
+def test_validation_manager_layers_cache_data_over_repo_data(tmp_path, monkeypatch):
     """Test loading OCR validation data from repo and cache directories."""
-    repo_data_dir_path = tmp_path / "repo" / "ocr"
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
     cache_dir_path.mkdir(parents=True)
 
@@ -31,7 +33,6 @@ def test_validation_manager_layers_cache_data_over_repo_data(tmp_path):
 
     manager = ValidationManager(
         cache_dir_path=cache_dir_path,
-        repo_data_dir_path=repo_data_dir_path,
     )
 
     assert manager.char_dims_by_n[1] == {
@@ -50,10 +51,12 @@ def test_validation_manager_layers_cache_data_over_repo_data(tmp_path):
     }
 
 
-def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path):
+def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path, monkeypatch):
     """Test dev mode loads active OCR validation data from the repo."""
-    repo_data_dir_path = tmp_path / "repo" / "ocr"
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
     cache_dir_path.mkdir(parents=True)
 
@@ -75,7 +78,6 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path):
     manager = ValidationManager(
         cache_dir_path=cache_dir_path,
         dev=True,
-        repo_data_dir_path=repo_data_dir_path,
     )
 
     assert manager.char_dims_by_n[1] == {
@@ -93,16 +95,17 @@ def test_validation_manager_uses_only_repo_data_in_dev_mode(tmp_path):
     }
 
 
-def test_validation_manager_writes_updates_to_cache_by_default(tmp_path):
+def test_validation_manager_writes_updates_to_cache_by_default(tmp_path, monkeypatch):
     """Test OCR validation data updates write to the cache by default."""
-    repo_data_dir_path = tmp_path / "repo" / "ocr"
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
     cache_dir_path.mkdir(parents=True)
 
     manager = ValidationManager(
         cache_dir_path=cache_dir_path,
-        repo_data_dir_path=repo_data_dir_path,
     )
 
     manager._update_char_dims("A", (10, 20))
@@ -113,16 +116,17 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path):
     assert not (repo_data_dir_path / "char_dims_1.csv").exists()
 
 
-def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path):
+def test_validation_manager_writes_updates_to_repo_in_dev_mode(tmp_path, monkeypatch):
     """Test dev mode writes OCR validation data updates to repo data."""
-    repo_data_dir_path = tmp_path / "repo" / "ocr"
+    repo_root_path = tmp_path / "repo"
+    repo_data_dir_path = repo_root_path / "data" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
+    monkeypatch.setattr(validation_manager, "package_root", repo_root_path)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
 
     manager = ValidationManager(
         cache_dir_path=cache_dir_path,
         dev=True,
-        repo_data_dir_path=repo_data_dir_path,
     )
 
     manager._update_char_dims("A", (10, 20))

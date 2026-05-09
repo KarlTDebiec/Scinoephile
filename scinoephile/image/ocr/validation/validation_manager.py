@@ -67,20 +67,15 @@ class ValidationManager:
         *,
         cache_dir_path: Path | str | None = None,
         dev: bool = False,
-        repo_data_dir_path: Path | str | None = None,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: cache directory for local OCR validation data
             dev: whether validation data updates should write to repo data
-            repo_data_dir_path: repository OCR validation data directory
         """
         self.dev = dev
-        if repo_data_dir_path is None:
-            self.repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
-        else:
-            self.repo_data_dir_path = val_input_dir_path(repo_data_dir_path)
+        self.repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
 
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
