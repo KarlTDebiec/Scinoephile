@@ -32,12 +32,12 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_vs_zho_transcriber,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-    YueVsZhoYueHantDeliniationPrompt,
+    YueVsZhoDeliniationPromptYueHans,
+    YueVsZhoDeliniationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueVsZhoYueHantPunctuationPrompt,
+    YueVsZhoPunctuationPromptYueHans,
+    YueVsZhoPunctuationPromptYueHant,
 )
 
 __all__ = ["YueTranscribeVsZhoCli"]
@@ -208,7 +208,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
     def _get_transcription_prompt_classes(
         cls, script: str
     ) -> tuple[
-        type[YueVsZhoYueHansDeliniationPrompt], type[YueVsZhoYueHansPunctuationPrompt]
+        type[YueVsZhoDeliniationPromptYueHans], type[YueVsZhoPunctuationPromptYueHans]
     ]:
         """Get transcription prompt classes for the selected script.
 
@@ -218,8 +218,8 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             deliniation and punctuation prompt classes
         """
         if script == "traditional":
-            return YueVsZhoYueHantDeliniationPrompt, YueVsZhoYueHantPunctuationPrompt
-        return YueVsZhoYueHansDeliniationPrompt, YueVsZhoYueHansPunctuationPrompt
+            return YueVsZhoDeliniationPromptYueHant, YueVsZhoPunctuationPromptYueHant
+        return YueVsZhoDeliniationPromptYueHans, YueVsZhoPunctuationPromptYueHans
 
     @classmethod
     def _main(

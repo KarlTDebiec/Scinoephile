@@ -18,27 +18,27 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
-from scinoephile.lang.zho.ocr_fusion import ZhoHantOcrFusionPrompt
+from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
+    YueVsZhoLineReviewPromptYueHans,
     YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
+    YueVsZhoDeliniationPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
+    YueVsZhoPunctuationPromptYueHans,
     YueZhoPunctuationManager,
 )
 from test.helpers import SeriesCERResult, test_data_root
@@ -163,7 +163,7 @@ def kob_zho_hant_ocr_paddle_new() -> Series:
 
 @cache
 def get_kob_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English block review test cases.
@@ -187,7 +187,7 @@ def get_kob_eng_block_review_test_cases(
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
@@ -206,7 +206,7 @@ def get_kob_eng_ocr_fusion_test_cases(
 
 @cache
 def get_kob_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueVsZhoYueHansDeliniationPrompt,
+    prompt_cls: type[DualPairPrompt] = YueVsZhoDeliniationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 deliniation test cases.
@@ -233,7 +233,7 @@ def get_kob_yue_deliniation_test_cases(
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoYueHansPunctuationPrompt,
+    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoPunctuationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.
@@ -260,7 +260,7 @@ def get_kob_yue_punctuation_test_cases(
 
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueVsZhoYueHansLineReviewPrompt,
+    prompt_cls: type[DualSinglePrompt] = YueVsZhoLineReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
@@ -286,7 +286,7 @@ def get_kob_yue_vs_zho_line_review_test_cases(
 
 @cache
 def get_kob_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 block review test cases.
@@ -305,7 +305,7 @@ def get_kob_zho_hant_block_review_test_cases(
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.
@@ -324,7 +324,7 @@ def get_kob_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_kob_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 simplification block review test cases.

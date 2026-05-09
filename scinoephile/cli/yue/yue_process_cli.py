@@ -22,8 +22,8 @@ from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
@@ -247,7 +247,7 @@ class YueProcessCli(ScinoephileCliBase):
     @classmethod
     def _get_review_prompt_cls(
         cls, review_script: str
-    ) -> type[ZhoHansBlockReviewPrompt]:
+    ) -> type[BlockReviewPromptZhoHans]:
         """Get the block-review prompt class for the selected script.
 
         Arguments:
@@ -256,8 +256,8 @@ class YueProcessCli(ScinoephileCliBase):
             block-review prompt class
         """
         if review_script == "traditional":
-            return ZhoHantBlockReviewPrompt
-        return ZhoHansBlockReviewPrompt
+            return BlockReviewPromptZhoHant
+        return BlockReviewPromptZhoHans
 
     @classmethod
     def _get_script_for_conversion(cls, convert: OpenCCConfig) -> str | None:

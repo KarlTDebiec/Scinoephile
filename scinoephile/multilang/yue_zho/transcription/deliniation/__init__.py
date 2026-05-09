@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from .prompt import (
-    YueVsZhoYueHansDeliniationPrompt,
-    YueVsZhoYueHantDeliniationPrompt,
+    YueVsZhoDeliniationPromptYueHans,
+    YueVsZhoDeliniationPromptYueHant,
 )
 
 __all__ = [
-    "YueVsZhoYueHansDeliniationPrompt",
-    "YueVsZhoYueHantDeliniationPrompt",
+    "YueVsZhoDeliniationPromptYueHans",
+    "YueVsZhoDeliniationPromptYueHant",
 ]

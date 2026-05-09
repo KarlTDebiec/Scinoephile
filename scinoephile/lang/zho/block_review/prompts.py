@@ -8,16 +8,16 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.lang.zho.prompts import ZhoHansPrompt
+from scinoephile.lang.zho.prompts import PromptZhoHans
 from scinoephile.llms.mono_block import MonoBlockPrompt
 
 __all__ = [
-    "ZhoHansBlockReviewPrompt",
-    "ZhoHantBlockReviewPrompt",
+    "BlockReviewPromptZhoHans",
+    "BlockReviewPromptZhoHant",
 ]
 
 
-class ZhoHansBlockReviewPrompt(MonoBlockPrompt, ZhoHansPrompt):
+class BlockReviewPromptZhoHans(MonoBlockPrompt, PromptZhoHans):
     """LLM correspondence text for simplified standard Chinese block review."""
 
     # Prompt
@@ -68,7 +68,7 @@ class ZhoHansBlockReviewPrompt(MonoBlockPrompt, ZhoHansPrompt):
     """Error template when output is missing for a note."""
 
 
-class ZhoHantBlockReviewPrompt(ZhoHansBlockReviewPrompt):
+class BlockReviewPromptZhoHant(BlockReviewPromptZhoHans):
     """LLM correspondence text for traditional standard Chinese block review."""
 
     opencc_config = OpenCCConfig.s2t

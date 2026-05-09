@@ -20,8 +20,8 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_pair import DualPairManager
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .deliniation import YueVsZhoYueHansDeliniationPrompt
-from .punctuation import YueVsZhoYueHansPunctuationPrompt, YueZhoPunctuationManager
+from .deliniation import YueVsZhoDeliniationPromptYueHans
+from .punctuation import YueVsZhoPunctuationPromptYueHans, YueZhoPunctuationManager
 from .transcriber import DemucsMode, VADMode, YueTranscriber
 
 __all__ = [
@@ -40,7 +40,7 @@ YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",
     test_case_table_name="test_cases__yue_zho__transcription_deliniation",
     manager_cls=DualPairManager,
-    prompt_cls=YueVsZhoYueHansDeliniationPrompt,
+    prompt_cls=YueVsZhoDeliniationPromptYueHans,
 )
 """Operation specification for written Cantonese transcription deliniation."""
 
@@ -48,7 +48,7 @@ YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-punctuation",
     test_case_table_name="test_cases__yue_zho__transcription_punctuation",
     manager_cls=YueZhoPunctuationManager,
-    prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+    prompt_cls=YueVsZhoPunctuationPromptYueHans,
     list_fields={"query.yuewen_to_punctuate": 10},
 )
 """Operation specification for written Cantonese transcription punctuation."""
@@ -74,9 +74,9 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
     """provider to use for queries."""
     convert: OpenCCConfig | None
     """OpenCC configuration used for transcribed text conversion."""
-    deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt]
+    deliniation_prompt_cls: type[YueVsZhoDeliniationPromptYueHans]
     """prompt class used for alignment deliniation."""
-    punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt]
+    punctuation_prompt_cls: type[YueVsZhoPunctuationPromptYueHans]
     """prompt class used for transcription punctuation."""
     test_case_directory_path: Path | None
     """directory where encountered transcription test cases are persisted."""
@@ -115,11 +115,11 @@ def get_yue_vs_zho_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
-    deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt] = (
-        YueVsZhoYueHansDeliniationPrompt
+    deliniation_prompt_cls: type[YueVsZhoDeliniationPromptYueHans] = (
+        YueVsZhoDeliniationPromptYueHans
     ),
-    punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt] = (
-        YueVsZhoYueHansPunctuationPrompt
+    punctuation_prompt_cls: type[YueVsZhoPunctuationPromptYueHans] = (
+        YueVsZhoPunctuationPromptYueHans
     ),
     test_case_directory_path: Path | None = None,
     deliniation_test_cases: list[TestCase] | None = None,

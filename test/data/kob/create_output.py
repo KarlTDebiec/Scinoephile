@@ -22,25 +22,25 @@ from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.multilang.yue_zho.block_review import (
-    YueVsZhoYueHansBlockReviewPrompt,
-    YueVsZhoYueHantBlockReviewPrompt,
+    YueVsZhoBlockReviewPromptYueHans,
+    YueVsZhoBlockReviewPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoYueHansLineReviewPrompt,
-    YueVsZhoYueHantLineReviewPrompt,
+    YueVsZhoLineReviewPromptYueHans,
+    YueVsZhoLineReviewPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoYueHansDeliniationPrompt,
-    YueVsZhoYueHantDeliniationPrompt,
+    YueVsZhoDeliniationPromptYueHans,
+    YueVsZhoDeliniationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueVsZhoYueHantPunctuationPrompt,
+    YueVsZhoPunctuationPromptYueHans,
+    YueVsZhoPunctuationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoYueHansTranslationPrompt,
-    YueVsZhoYueHantTranslationPrompt,
+    YueVsZhoTranslationPromptYueHans,
+    YueVsZhoTranslationPromptYueHant,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
@@ -152,12 +152,12 @@ if "简体粤文 (Transcription)" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.hk2s,
-            "deliniation_prompt_cls": YueVsZhoYueHansDeliniationPrompt,
-            "punctuation_prompt_cls": YueVsZhoYueHansPunctuationPrompt,
+            "deliniation_prompt_cls": YueVsZhoDeliniationPromptYueHans,
+            "punctuation_prompt_cls": YueVsZhoPunctuationPromptYueHans,
         },
-        line_reviewer_kw={"prompt_cls": YueVsZhoYueHansLineReviewPrompt},
-        translator_kw={"prompt_cls": YueVsZhoYueHansTranslationPrompt},
-        block_reviewer_kw={"prompt_cls": YueVsZhoYueHansBlockReviewPrompt},
+        line_reviewer_kw={"prompt_cls": YueVsZhoLineReviewPromptYueHans},
+        translator_kw={"prompt_cls": YueVsZhoTranslationPromptYueHans},
+        block_reviewer_kw={"prompt_cls": YueVsZhoBlockReviewPromptYueHans},
         overwrite_srt=True,
     )
 
@@ -173,12 +173,12 @@ if "简体粤文 (Transcription)" in actions:
             "demucs_mode": DemucsMode.ON,
             "vad_mode": VADMode.AUTO,
             "convert": OpenCCConfig.s2hk,
-            "deliniation_prompt_cls": YueVsZhoYueHantDeliniationPrompt,
-            "punctuation_prompt_cls": YueVsZhoYueHantPunctuationPrompt,
+            "deliniation_prompt_cls": YueVsZhoDeliniationPromptYueHant,
+            "punctuation_prompt_cls": YueVsZhoPunctuationPromptYueHant,
         },
-        line_reviewer_kw={"prompt_cls": YueVsZhoYueHantLineReviewPrompt},
-        translator_kw={"prompt_cls": YueVsZhoYueHantTranslationPrompt},
-        block_reviewer_kw={"prompt_cls": YueVsZhoYueHantBlockReviewPrompt},
+        line_reviewer_kw={"prompt_cls": YueVsZhoLineReviewPromptYueHant},
+        translator_kw={"prompt_cls": YueVsZhoTranslationPromptYueHant},
+        block_reviewer_kw={"prompt_cls": YueVsZhoBlockReviewPromptYueHant},
         overwrite_srt=True,
     )
 if "简体粤文 (Diff)" in actions:
