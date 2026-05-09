@@ -74,14 +74,10 @@ class ValidationManager:
             cache_dir_path: cache directory for local OCR validation data
             dev: whether validation data updates should write to repo data
         """
-        self.dev = dev
         repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
 
-        self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
-        self.char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
-
         # Initialize char_dims_by_n
+        self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         for n in range(1, 6):
             self.char_dims_by_n[n] = {}
             file_path = repo_data_dir_path / f"char_dims_{n}.csv"
@@ -89,15 +85,19 @@ class ValidationManager:
                 self.char_dims_by_n[n] = load_char_dims(file_path)
 
         # Initialize char_grp_dims_by_n
+        self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         file_path = repo_data_dir_path / "char_grp_dims.csv"
         if file_path.exists():
             self.char_grp_dims_by_n = load_char_grp_dims(file_path)
 
         # Initialize char_pair_gaps
+        self.char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
         file_path = repo_data_dir_path / "char_pair_gaps.csv"
         if file_path.exists():
             self.char_pair_gaps = load_char_pair_gaps(file_path)
 
+        # If not in dev mode, updates are written to cache directory instead of repo
+        self.dev = dev
         if not self.dev:
             if cache_dir_path is None:
                 self.cache_dir_path = get_runtime_cache_dir_path(
@@ -106,12 +106,14 @@ class ValidationManager:
             else:
                 self.cache_dir_path = val_input_dir_path(cache_dir_path)
 
+            # Initialize char_dims_by_n
             for n in range(1, 6):
                 file_path = self.cache_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
                     for char, dims_set in load_char_dims(file_path).items():
                         self.char_dims_by_n[n].setdefault(char, set()).update(dims_set)
 
+            # Initialize char_grp_dims_by_n
             file_path = self.cache_dir_path / "char_grp_dims.csv"
             if file_path.exists():
                 for group_size, char_grp_dims in load_char_grp_dims(file_path).items():
@@ -123,6 +125,7 @@ class ValidationManager:
                             dims_set
                         )
 
+            # Initialize char_pair_gaps
             file_path = self.cache_dir_path / "char_pair_gaps.csv"
             if file_path.exists():
                 self.char_pair_gaps.update(load_char_pair_gaps(file_path))
@@ -700,23 +703,26 @@ class ValidationManager:
 
     def _char_dims_path(self, n: int) -> Path:
         """Path to character dimensions csv file."""
-        return self._write_data_dir_path() / f"char_dims_{n}.csv"
+        return self._data_output_dir_path() / f"char_dims_{n}.csv"
 
     def _char_grp_dims_path(self) -> Path:
         """Path to character group dimensions csv file."""
-        return self._write_data_dir_path() / "char_grp_dims.csv"
+        return self._data_output_dir_path() / "char_grp_dims.csv"
 
     def _char_pair_gaps_path(self) -> Path:
         """Path to character pair gap csv file."""
-        return self._write_data_dir_path() / "char_pair_gaps.csv"
+        return self._data_output_dir_path() / "char_pair_gaps.csv"
 
-    def _write_data_dir_path(self) -> Path:
+    def _data_output_dir_path(self) -> Path:
         """Get validation data directory to which updates should be written.
 
         Returns:
             validation data directory
         """
+        # If in dev mode, write directly into repo
         if self.dev:
             return val_input_dir_path(package_root / "data/ocr")
+
+        # Otherwise write to cache
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         return self.cache_dir_path
