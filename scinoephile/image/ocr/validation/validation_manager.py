@@ -8,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.common import package_root
-from scinoephile.common.validation import val_input_dir_path
+from scinoephile.common.validation import val_input_dir_path, val_output_dir_path
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.text import whitespace_chars
 from scinoephile.image.bbox import Bbox
@@ -98,25 +98,31 @@ class ValidationManager:
 
         # If not in dev mode, updates are written to cache directory instead of repo
         self.dev = dev
+        self.cache_char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+        self.cache_char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
+        self.cache_char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
         if not self.dev:
             if cache_dir_path is None:
                 self.cache_dir_path = get_runtime_cache_dir_path(
                     "ocr_validation", create=False
                 )
             else:
-                self.cache_dir_path = val_input_dir_path(cache_dir_path)
+                self.cache_dir_path = val_output_dir_path(cache_dir_path, create=False)
 
             # Initialize char_dims_by_n
             for n in range(1, 6):
+                self.cache_char_dims_by_n[n] = {}
                 file_path = self.cache_dir_path / f"char_dims_{n}.csv"
                 if file_path.exists():
-                    for char, dims_set in load_char_dims(file_path).items():
+                    self.cache_char_dims_by_n[n] = load_char_dims(file_path)
+                    for char, dims_set in self.cache_char_dims_by_n[n].items():
                         self.char_dims_by_n[n].setdefault(char, set()).update(dims_set)
 
             # Initialize char_grp_dims_by_n
             file_path = self.cache_dir_path / "char_grp_dims.csv"
             if file_path.exists():
-                for group_size, char_grp_dims in load_char_grp_dims(file_path).items():
+                self.cache_char_grp_dims_by_n = load_char_grp_dims(file_path)
+                for group_size, char_grp_dims in self.cache_char_grp_dims_by_n.items():
                     target_char_grp_dims = self.char_grp_dims_by_n.setdefault(
                         group_size, {}
                     )
@@ -128,7 +134,8 @@ class ValidationManager:
             # Initialize char_pair_gaps
             file_path = self.cache_dir_path / "char_pair_gaps.csv"
             if file_path.exists():
-                self.char_pair_gaps.update(load_char_pair_gaps(file_path))
+                self.cache_char_pair_gaps = load_char_pair_gaps(file_path)
+                self.char_pair_gaps.update(self.cache_char_pair_gaps)
 
     def validate(
         self,
@@ -669,7 +676,12 @@ class ValidationManager:
             return
         dims_set.add(dims)
         logger.info(f"Added ({char}, {dims})")
-        save_char_dims(self.char_dims_by_n[n], self._char_dims_path(n))
+        if self.dev:
+            output_char_dims = self.char_dims_by_n[n]
+        else:
+            output_char_dims = self.cache_char_dims_by_n.setdefault(n, {})
+            output_char_dims.setdefault(char, set()).add(dims)
+        save_char_dims(output_char_dims, self._char_dims_path(n))
 
     def _update_char_grp_dims(self, group: str, dims: tuple[int, ...]):
         """Update char group dims and save.
@@ -684,7 +696,12 @@ class ValidationManager:
             return
         dims_set.add(dims)
         logger.info(f"Added ({group}, {dims})")
-        save_char_grp_dims(self.char_grp_dims_by_n, self._char_grp_dims_path())
+        if self.dev:
+            output_char_grp_dims = self.char_grp_dims_by_n
+        else:
+            output_char_grp_dims = self.cache_char_grp_dims_by_n
+            output_char_grp_dims.setdefault(n, {}).setdefault(group, set()).add(dims)
+        save_char_grp_dims(output_char_grp_dims, self._char_grp_dims_path())
 
     def _update_pair_gaps(
         self, char_pair: tuple[str, str], cutoffs: tuple[int, int, int, int]
@@ -699,7 +716,12 @@ class ValidationManager:
             return
         self.char_pair_gaps[char_pair] = cutoffs
         logger.info(f"Added ({char_pair}, {cutoffs})")
-        save_char_pair_gaps(self.char_pair_gaps, self._char_pair_gaps_path())
+        if self.dev:
+            output_char_pair_gaps = self.char_pair_gaps
+        else:
+            self.cache_char_pair_gaps[char_pair] = cutoffs
+            output_char_pair_gaps = self.cache_char_pair_gaps
+        save_char_pair_gaps(output_char_pair_gaps, self._char_pair_gaps_path())
 
     def _char_dims_path(self, n: int) -> Path:
         """Path to character dimensions csv file."""
