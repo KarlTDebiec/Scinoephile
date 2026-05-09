@@ -15,7 +15,7 @@ from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
 from .manager import YueZhoLineReviewManager
-from .prompts import YueVsZhoYueHansLineReviewPrompt
+from .prompts import YueVsZhoLineReviewPromptYueHans
 
 __all__ = ["YueZhoLineReviewProcessor"]
 
@@ -26,7 +26,7 @@ logger = getLogger(__name__)
 class YueZhoLineReviewProcessor(Processor):
     """Processes written Cantonese vs. standard Chinese line review."""
 
-    prompt_cls: type[YueVsZhoYueHansLineReviewPrompt]
+    prompt_cls: type[YueVsZhoLineReviewPromptYueHans]
     """Text for LLM correspondence."""
 
     manager_cls = YueZhoLineReviewManager

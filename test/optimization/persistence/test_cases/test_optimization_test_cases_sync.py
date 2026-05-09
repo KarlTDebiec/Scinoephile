@@ -11,7 +11,7 @@ from scinoephile.core.llms import OperationSpec
 from scinoephile.llms.mono_block.manager import MonoBlockManager
 from scinoephile.llms.mono_block.prompt import MonoBlockPrompt
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoYueHansPunctuationPrompt,
+    YueVsZhoPunctuationPromptYueHans,
     YueZhoPunctuationManager,
 )
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
@@ -200,7 +200,7 @@ def test_sync_uses_operation_list_fields(tmp_path: Path, monkeypatch):
         operation="unit-punctuation",
         test_case_table_name="test_cases__unit__punctuation",
         manager_cls=YueZhoPunctuationManager,
-        prompt_cls=YueVsZhoYueHansPunctuationPrompt,
+        prompt_cls=YueVsZhoPunctuationPromptYueHans,
         list_fields={"query.yuewen_to_punctuate": 10},
     )
 
