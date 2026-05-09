@@ -4,14 +4,28 @@
 
 from __future__ import annotations
 
-import sys
 from collections.abc import Iterable
-from os import read
-from queue import Empty, Queue
+from logging import getLogger
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
 from time import monotonic
 from typing import IO
+
+logger = getLogger(__name__)
+
+
+def _decode_output(content: bytes) -> str:
+    """Decode subprocess output bytes with UTF-8 fallback.
+
+    Arguments:
+        content: bytes to decode
+    Returns:
+        decoded text
+    """
+    try:
+        return content.decode("utf-8")
+    except UnicodeDecodeError:
+        return content.decode("ISO-8859-1")
 
 
 def run_command(
@@ -69,7 +83,7 @@ def run_command(
 
 def run_command_live(
     command: list[str],
-    timeout: int | None = 43200,
+    timeout: int | None = 86400,
     acceptable_exitcodes: Iterable[int] | None = None,
 ) -> tuple[int, str, str]:
     """Run a provided command and stream output live.
@@ -86,8 +100,21 @@ def run_command_live(
     if acceptable_exitcodes is None:
         acceptable_exitcodes = [0]
 
-    chunks: dict[str, list[bytes]] = {"stdout": [], "stderr": []}
-    output_queue: Queue[tuple[str, bytes | None]] = Queue()
+    stdout_lines = []
+    stderr_lines = []
+
+    def read_stream(stream: IO[bytes], lines: list[str]):
+        """Read subprocess stream line-by-line and mirror to logs.
+
+        Arguments:
+            stream: stream to read from
+            lines: list that collects the stream content
+        """
+        for line in iter(stream.readline, b""):
+            decoded_line = _decode_output(line)
+            logger.info(decoded_line.rstrip())
+            lines.append(decoded_line)
+        stream.close()
 
     with Popen(
         command,
@@ -97,32 +124,53 @@ def run_command_live(
     ) as child:
         assert child.stdout is not None
         assert child.stderr is not None
-
-        stdout_thread = Thread(
-            target=_read_stream, args=(child.stdout, "stdout", output_queue)
-        )
-        stderr_thread = Thread(
-            target=_read_stream, args=(child.stderr, "stderr", output_queue)
-        )
+        stdout_thread = Thread(target=read_stream, args=(child.stdout, stdout_lines))
+        stderr_thread = Thread(target=read_stream, args=(child.stderr, stderr_lines))
         stdout_thread.start()
         stderr_thread.start()
 
-        timed_out = _monitor_live_output(child, timeout, output_queue, chunks)
-        stdout_thread.join()
-        stderr_thread.join()
+        if timeout is None:
+            exitcode = child.wait()
+        else:
+            deadline = monotonic() + timeout
+            try:
+                exitcode = child.wait(timeout=max(0.0, deadline - monotonic()))
+            except TimeoutExpired as exception:
+                child.kill()
+                child.wait()
+                stdout_thread.join()
+                stderr_thread.join()
+                stdout_str = "".join(stdout_lines)
+                stderr_str = "".join(stderr_lines)
+                raise TimeoutExpired(
+                    command,
+                    timeout,
+                    output=stdout_str,
+                    stderr=stderr_str,
+                ) from exception
 
-        stdout_str = _decode_output(b"".join(chunks["stdout"]))
-        stderr_str = _decode_output(b"".join(chunks["stderr"]))
+            stdout_thread.join(timeout=max(0.0, deadline - monotonic()))
+            stderr_thread.join(timeout=max(0.0, deadline - monotonic()))
+            if stdout_thread.is_alive() or stderr_thread.is_alive():
+                child.kill()
+                child.wait()
+                stdout_thread.join()
+                stderr_thread.join()
+                stdout_str = "".join(stdout_lines)
+                stderr_str = "".join(stderr_lines)
+                raise TimeoutExpired(
+                    command,
+                    timeout,
+                    output=stdout_str,
+                    stderr=stderr_str,
+                )
 
-        exitcode = child.returncode
-        assert exitcode is not None
-        if timed_out and timeout is not None:
-            raise TimeoutExpired(
-                command,
-                timeout,
-                output=stdout_str,
-                stderr=stderr_str,
-            )
+        if timeout is None:
+            stdout_thread.join()
+            stderr_thread.join()
+
+        stdout_str = "".join(stdout_lines)
+        stderr_str = "".join(stderr_lines)
 
         if exitcode not in acceptable_exitcodes:
             command_str = " ".join(command)
@@ -137,108 +185,6 @@ def run_command_live(
             )
 
     return exitcode, stdout_str, stderr_str
-
-
-def _decode_output(content: bytes) -> str:
-    """Decode subprocess output bytes with UTF-8 fallback.
-
-    Arguments:
-        content: bytes to decode
-    Returns:
-        decoded text
-    """
-    try:
-        return content.decode("utf-8")
-    except UnicodeDecodeError:
-        return content.decode("ISO-8859-1")
-
-
-def _monitor_live_output(
-    child: Popen[bytes],
-    timeout: int | None,
-    output_queue: Queue[tuple[str, bytes | None]],
-    chunks: dict[str, list[bytes]],
-) -> bool:
-    """Monitor subprocess output and return whether it timed out.
-
-    Arguments:
-        child: child process to monitor
-        timeout: maximum idle time since the last output
-        output_queue: queue containing stream output chunks
-        chunks: collected output chunks by stream name
-    Returns:
-        whether the process timed out
-    """
-    last_output_time = monotonic()
-    open_stream_names = {"stdout", "stderr"}
-    timed_out = False
-
-    while open_stream_names or child.poll() is None:
-        if timeout is None or child.poll() is not None:
-            queue_timeout = 0.1
-        else:
-            queue_timeout = max(0.0, timeout - (monotonic() - last_output_time))
-
-        try:
-            stream_name, chunk = output_queue.get(timeout=queue_timeout)
-        except Empty:
-            if timeout is not None and child.poll() is None:
-                timed_out = True
-                child.kill()
-                child.wait()
-            continue
-
-        if chunk is None:
-            open_stream_names.discard(stream_name)
-            continue
-
-        chunks[stream_name].append(chunk)
-        _write_live_output(stream_name, chunk)
-        last_output_time = monotonic()
-
-    while not output_queue.empty():
-        stream_name, chunk = output_queue.get_nowait()
-        if chunk is not None:
-            chunks[stream_name].append(chunk)
-            _write_live_output(stream_name, chunk)
-
-    child.wait()
-    return timed_out
-
-
-def _read_stream(
-    stream: IO[bytes],
-    stream_name: str,
-    output_queue: Queue[tuple[str, bytes | None]],
-):
-    """Read subprocess stream chunks into the output queue.
-
-    Arguments:
-        stream: stream to read from
-        stream_name: name of stream being read
-        output_queue: queue that receives stream output chunks
-    """
-    try:
-        while chunk := read(stream.fileno(), 4096):
-            output_queue.put((stream_name, chunk))
-    finally:
-        output_queue.put((stream_name, None))
-
-
-def _write_live_output(stream_name: str, chunk: bytes):
-    """Write subprocess output chunk to the matching parent stream.
-
-    Arguments:
-        stream_name: name of stream that produced the chunk
-        chunk: output chunk to write
-    """
-    output = _decode_output(chunk)
-    if stream_name == "stderr":
-        sys.stderr.write(output)
-        sys.stderr.flush()
-    else:
-        sys.stdout.write(output)
-        sys.stdout.flush()
 
 
 __all__ = [
