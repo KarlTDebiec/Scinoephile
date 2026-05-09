@@ -9,7 +9,7 @@ __all__ = [
     "SUBTITLE_CODEC_OUTPUTS",
 ]
 
-DEFAULT_SUBTITLE_LANGUAGES = ("chi", "eng", "zho", "yue")
+DEFAULT_SUBTITLE_LANGUAGES = ("chi", "eng", "yue", "zho")
 """Default ISO 639 language codes for subtitle extraction."""
 
 SUBTITLE_CODEC_OUTPUTS = {

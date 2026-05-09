@@ -47,8 +47,8 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 "从视频文件提取匹配的字幕流"
             ),
             "include additional subtitle stream details": "包含更多字幕流详细信息",
-            "ISO 639 language codes to extract (default: chi eng zho yue)": (
-                "要提取的 ISO 639 语言代码（默认：chi eng zho yue）"
+            "ISO 639 language codes to extract (default: chi eng yue zho)": (
+                "要提取的 ISO 639 语言代码（默认：chi eng yue zho）"
             ),
             "overwrite extracted subtitle files if they exist": (
                 "若提取的字幕文件已存在则覆盖"
@@ -67,8 +67,8 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 "從影片檔提取匹配的字幕流"
             ),
             "include additional subtitle stream details": "包含更多字幕流詳細資訊",
-            "ISO 639 language codes to extract (default: chi eng zho yue)": (
-                "要提取的 ISO 639 語言代碼（預設：chi eng zho yue）"
+            "ISO 639 language codes to extract (default: chi eng yue zho)": (
+                "要提取的 ISO 639 語言代碼（預設：chi eng yue zho）"
             ),
             "overwrite extracted subtitle files if they exist": (
                 "若提取的字幕檔已存在則覆寫"
@@ -109,7 +109,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             default=list(DEFAULT_SUBTITLE_LANGUAGES),
             nargs="+",
             type=language_arg,
-            help=("ISO 639 language codes to extract (default: chi eng zho yue)"),
+            help=("ISO 639 language codes to extract (default: chi eng yue zho)"),
         )
         arg_groups["operation arguments"].add_argument(
             "--details",
@@ -181,7 +181,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         # Perform operations
         try:
             if infile_path.suffix.lower() == ".sup":
-                streams = get_subtitle_streams(infile_path, counts=details)
+                streams = get_subtitle_streams(infile_path, counts=False)
                 if not streams:
                     raise ScinoephileError(
                         f"No subtitle streams found in {infile_path}"
@@ -202,7 +202,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
 
             streams = [
                 stream
-                for stream in get_subtitle_streams(infile_path, counts=details)
+                for stream in get_subtitle_streams(infile_path, counts=False)
                 if stream.language in language_codes
             ]
             if export:

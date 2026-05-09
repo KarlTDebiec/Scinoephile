@@ -168,8 +168,8 @@ def test_media_extract_subs_cli_export_caches_matching_streams_together(
     assert [stream.index for stream in cache.call_args.args[1]] == [2, 3]
 
 
-def test_media_extract_subs_cli_lists_without_output_dir(tmp_path: Path):
-    """Test media extract_subs CLI lists matching streams without output directory."""
+def test_media_extract_subs_cli_details_uses_plain_probe(tmp_path: Path):
+    """Test media extract_subs CLI details mode avoids ffprobe packet counts."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -197,7 +197,7 @@ def test_media_extract_subs_cli_lists_without_output_dir(tmp_path: Path):
             f"--infile {infile_path} --languages ENG --details",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve(), counts=True)
+    get_streams.assert_called_once_with(infile_path.resolve(), counts=False)
     extract.assert_not_called()
 
 
