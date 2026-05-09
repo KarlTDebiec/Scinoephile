@@ -98,6 +98,7 @@ def test_validation_manager_writes_updates_to_cache_by_default(tmp_path):
     repo_data_dir_path = tmp_path / "repo" / "ocr"
     repo_data_dir_path.mkdir(parents=True)
     cache_dir_path = tmp_path / "cache" / "ocr_validation"
+    cache_dir_path.mkdir(parents=True)
 
     manager = ValidationManager(
         cache_dir_path=cache_dir_path,
