@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from scinoephile.core import ScinoephileError
-from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
     get_subtitle_streams,
@@ -52,6 +52,71 @@ def test_get_subtitle_streams(tmp_path: Path):
     assert streams[0].description == (
         "Stream #0:2(eng): Subtitle: subrip "
         "(extension=srt, title=English, sdh, subtitles=123)"
+    )
+
+
+def test_stream_from_ffprobe_stream_returns_typed_streams():
+    """Test generic stream parsing returns typed stream models."""
+    video = Stream.from_ffprobe_stream(
+        {
+            "index": 0,
+            "codec_type": "video",
+            "codec_name": "hevc",
+            "width": 3840,
+            "height": 2160,
+        }
+    )
+    audio = Stream.from_ffprobe_stream(
+        {
+            "index": 1,
+            "codec_type": "audio",
+            "codec_name": "flac",
+            "channels": 2,
+            "tags": {"language": "jpn"},
+        }
+    )
+    subtitle = Stream.from_ffprobe_stream(
+        {
+            "index": 2,
+            "codec_type": "subtitle",
+            "codec_name": "subrip",
+            "tags": {"language": "eng"},
+        }
+    )
+
+    assert isinstance(video, VideoStream)
+    assert video.probe_description == "Stream #0:0: Video: hevc (3840x2160)"
+    assert isinstance(audio, AudioStream)
+    assert audio.probe_description == "Stream #0:1(jpn): Audio: flac (channels=2)"
+    assert isinstance(subtitle, SubtitleStream)
+    assert subtitle.probe_description == "Stream #0:2(eng): Subtitle: subrip"
+
+
+def test_subtitle_stream_get_probe_description_with_details(tmp_path: Path):
+    """Test subtitle stream enriches its own probe description."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+
+    with (
+        patch(
+            "scinoephile.core.media.subtitle_analysis.analyze_subtitle_stream_script"
+        ) as analyze,
+        patch(
+            "scinoephile.core.media.subtitle_analysis.get_subtitle_stream_stats"
+        ) as stats,
+    ):
+        analyze.return_value.script = "zho-Hant"
+        stats.return_value.event_count = 12
+        stats.return_value.first_start_ms = 62_500
+        stats.return_value.last_end_ms = 3_725_250
+        description = stream.get_probe_description(
+            infile_path=infile_path,
+            details=True,
+        )
+
+    assert description == (
+        "Stream #0:2(zho-Hant): Subtitle: subrip (subtitles=12, span=00:01:02-01:02:05)"
     )
 
 

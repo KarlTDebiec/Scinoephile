@@ -5,9 +5,10 @@
 from __future__ import annotations
 
 import pytest
+from PIL import Image
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
 @pytest.mark.parametrize(
@@ -111,3 +112,24 @@ def test_save_html(
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == expected_event_count
+
+
+def test_save_html_handles_empty_images():
+    """Test saving HTML image subtitles handles empty event images."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("LA", (0, 0)),
+            )
+        ]
+    )
+    with get_temp_directory_path() as output_dir:
+        output_path = output_dir / "image_subtitles"
+        series.save(output_path)
+
+        png_path = output_path / "0001.png"
+        assert png_path.exists()
+        loaded = Image.open(png_path)
+        assert loaded.size == (1, 1)

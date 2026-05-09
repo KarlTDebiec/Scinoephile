@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
 
 import ffmpeg
 
@@ -16,6 +15,8 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.media import Stream, SubtitleStream
+from scinoephile.core.media.subtitle_analysis import cache_subtitle_stream_artifacts
 
 __all__ = ["MediaProbeCli"]
 
@@ -29,6 +30,7 @@ class MediaProbeCli(ScinoephileCliBase):
                 "探测媒体流的命令行界面"
             ),
             "list media streams in a media file": "列出媒体文件中的媒体流",
+            "include additional stream details": "包含更多媒体流详细信息",
             "video infile containing media streams": "包含媒体流的视频输入文件",
         },
         "zh-hant": {
@@ -36,6 +38,7 @@ class MediaProbeCli(ScinoephileCliBase):
                 "探測媒體流的命令列介面"
             ),
             "list media streams in a media file": "列出媒體檔中的媒體流",
+            "include additional stream details": "包含更多媒體流詳細資訊",
             "video infile containing media streams": "包含媒體流的影片輸入檔",
         },
     }
@@ -62,6 +65,11 @@ class MediaProbeCli(ScinoephileCliBase):
             type=input_file_arg(),
             help="video infile containing media streams",
         )
+        arg_groups["input arguments"].add_argument(
+            "--details",
+            action="store_true",
+            help="include additional stream details",
+        )
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -78,80 +86,48 @@ class MediaProbeCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
+        details: bool,
         infile_path: Path,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         try:
-            probe = ffmpeg.probe(str(infile_path), count_packets=None)
-            for stream in probe.get("streams", []):
-                if isinstance(stream, dict):
-                    print(_get_stream_description(stream))
+            probe = ffmpeg.probe(str(infile_path))
+            streams = [
+                stream
+                for stream in probe.get("streams", [])
+                if isinstance(stream, dict)
+            ]
+            if details:
+                cache_subtitle_stream_artifacts(
+                    infile_path,
+                    [
+                        subtitle_stream
+                        for stream in streams
+                        if (
+                            subtitle_stream := SubtitleStream.from_ffprobe_stream(
+                                stream
+                            )
+                        )
+                        is not None
+                    ],
+                )
+            for stream in streams:
+                parsed_stream = Stream.from_ffprobe_stream(stream)
+                if parsed_stream is None:
+                    continue
+                print(
+                    parsed_stream.get_probe_description(
+                        infile_path=infile_path,
+                        details=details,
+                    )
+                )
         except ffmpeg.Error:
             parser.error(
                 str(ScinoephileError(f"Could not probe media file {infile_path}"))
             )
         except ScinoephileError as exc:
             parser.error(str(exc))
-
-
-def _get_stream_description(stream: dict[str, Any]) -> str:
-    """Return a human-readable description of one ffprobe stream.
-
-    Arguments:
-        stream: ffprobe stream object
-    Returns:
-        human-readable stream description
-    """
-    index = stream.get("index", "?")
-    codec_type = stream.get("codec_type", "unknown")
-    codec_name = stream.get("codec_name", codec_type)
-
-    tags = stream.get("tags")
-    if not isinstance(tags, dict):
-        tags = {}
-    language = tags.get("language")
-    if isinstance(language, str) and language:
-        stream_id = f"#0:{index}({language})"
-    else:
-        stream_id = f"#0:{index}"
-
-    details = _get_stream_details(stream, tags)
-    description = f"Stream {stream_id}: {str(codec_type).title()}: {codec_name}"
-    if details:
-        description = f"{description} ({', '.join(details)})"
-    return description
-
-
-def _get_stream_details(stream: dict[str, Any], tags: dict[str, Any]) -> list[str]:
-    """Return detail strings for one ffprobe stream.
-
-    Arguments:
-        stream: ffprobe stream object
-        tags: ffprobe stream tags
-    Returns:
-        stream detail strings
-    """
-    details = []
-
-    width = stream.get("width")
-    height = stream.get("height")
-    if isinstance(width, int) and isinstance(height, int):
-        details.append(f"{width}x{height}")
-
-    channels = stream.get("channels")
-    if isinstance(channels, int):
-        details.append(f"channels={channels}")
-
-    title = tags.get("title")
-    if isinstance(title, str) and title:
-        details.append(f"title={title}")
-
-    packet_count = stream.get("nb_read_packets")
-    if isinstance(packet_count, int | str):
-        details.append(f"packets={packet_count}")
-
-    return details
 
 
 if __name__ == "__main__":

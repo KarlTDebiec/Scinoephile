@@ -18,10 +18,14 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.media.constants import DEFAULT_SUBTITLE_LANGUAGES
-from scinoephile.core.media.subtitles import (
-    extract_subtitle_stream,
-    get_subtitle_streams,
+from scinoephile.core.media.subtitle_analysis import (
+    analyze_subtitle_stream_script,
+    cache_subtitle_stream_artifacts,
 )
+from scinoephile.core.media.subtitle_analysis import (
+    extract_subtitle_stream_from_cache as extract_subtitle_stream,
+)
+from scinoephile.core.media.subtitles import get_subtitle_streams
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["MediaExtractSubsCli"]
@@ -146,7 +150,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "extract_subs"
+        return "extract-subs"
 
     @classmethod
     def _main(
@@ -183,6 +187,9 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                         f"No subtitle streams found in {infile_path}"
                     )
                 stream = streams[0]
+                if details:
+                    analysis = analyze_subtitle_stream_script(infile_path, stream)
+                    stream = stream.with_script(analysis.script)
                 cls._handle_sup(
                     infile_path,
                     stream,
@@ -193,13 +200,27 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 )
                 return
 
-            for stream in get_subtitle_streams(infile_path, counts=details):
-                if stream.language not in language_codes:
-                    continue
+            streams = [
+                stream
+                for stream in get_subtitle_streams(infile_path, counts=details)
+                if stream.language in language_codes
+            ]
+            if export:
+                cache_subtitle_stream_artifacts(infile_path, streams)
+            elif details:
+                cache_subtitle_stream_artifacts(
+                    infile_path,
+                    [stream for stream in streams if stream.is_chinese],
+                )
 
+            for stream in streams:
+                handled_stream = stream
+                if details:
+                    analysis = analyze_subtitle_stream_script(infile_path, stream)
+                    handled_stream = stream.with_script(analysis.script)
                 cls._handle_stream(
                     infile_path,
-                    stream,
+                    handled_stream,
                     export,
                     output_dir_path,
                     extract_sup,
@@ -284,7 +305,10 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             return
 
         # Determine output path
-        outfile_path = output_dir_path / infile_path.name
+        outfile_name = infile_path.name
+        if stream.script is not None:
+            outfile_name = f"{stream.script}{infile_path.suffix}"
+        outfile_path = output_dir_path / outfile_name
         outfile_is_infile = outfile_path.resolve() == infile_path.resolve()
 
         # Output, if applicable

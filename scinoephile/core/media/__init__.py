@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+from .audio_stream import AudioStream
+from .stream import Stream
 from .subtitle_stream import SubtitleStream
+from .video_stream import VideoStream
 
-__all__ = ["SubtitleStream"]
+__all__ = ["AudioStream", "Stream", "SubtitleStream", "VideoStream"]
