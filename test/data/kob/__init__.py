@@ -48,11 +48,13 @@ __all__ = [
     "kob_eng_ocr_lens",
     "kob_eng_ocr_paddle_new",
     "kob_eng_ocr_tesseract",
+    "kob_eng_ocr_tesseract_new",
     "kob_yue_hans",
     "kob_yue_hant",
     "kob_zho_hant_ocr_lens",
     "kob_zho_hant_ocr_paddle",
     "kob_zho_hant_ocr_paddle_new",
+    "kob_zho_hant_ocr_tesseract_new",
     "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
@@ -132,6 +134,12 @@ def kob_eng_ocr_tesseract() -> Series:
 
 
 @pytest.fixture
+def kob_eng_ocr_tesseract_new() -> Series:
+    """KOB English subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
+
+
+@pytest.fixture
 def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
@@ -159,6 +167,12 @@ def kob_zho_hant_ocr_paddle() -> Series:
 def kob_zho_hant_ocr_paddle_new() -> Series:
     """KOB 繁体中文 subtitles OCRed using internal PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_tesseract_new() -> Series:
+    """KOB 繁体中文 subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
 
 
 @cache

@@ -36,14 +36,17 @@ __all__ = [
     "t_eng_ocr_lens",
     "t_eng_ocr_paddle_new",
     "t_eng_ocr_tesseract",
+    "t_eng_ocr_tesseract_new",
     "t_zho_hans",
     "t_zho_hans_ocr_lens",
     "t_zho_hans_ocr_paddle",
     "t_zho_hans_ocr_paddle_new",
+    "t_zho_hans_ocr_tesseract_new",
     "t_zho_hant",
     "t_zho_hant_ocr_lens",
     "t_zho_hant_ocr_paddle",
     "t_zho_hant_ocr_paddle_new",
+    "t_zho_hant_ocr_tesseract_new",
     "get_t_eng_block_review_test_cases",
     "get_t_eng_ocr_fusion_test_cases",
     "get_t_zho_hans_block_review_test_cases",
@@ -106,6 +109,12 @@ def t_eng_ocr_tesseract() -> Series:
 
 
 @pytest.fixture
+def t_eng_ocr_tesseract_new() -> Series:
+    """T English subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
+
+
+@pytest.fixture
 def t_zho_hans() -> Series:
     """T 简体中文 series."""
     return Series.load(input_dir / "zho-Hans.srt")
@@ -130,6 +139,12 @@ def t_zho_hans_ocr_paddle_new() -> Series:
 
 
 @pytest.fixture
+def t_zho_hans_ocr_tesseract_new() -> Series:
+    """T 简体中文 subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "zho-Hans_ocr/tesseract_new.srt")
+
+
+@pytest.fixture
 def t_zho_hant() -> Series:
     """T 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
@@ -151,6 +166,12 @@ def t_zho_hant_ocr_paddle() -> Series:
 def t_zho_hant_ocr_paddle_new() -> Series:
     """T 繁体中文 subtitles OCRed using internal PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
+
+
+@pytest.fixture
+def t_zho_hant_ocr_tesseract_new() -> Series:
+    """T 繁体中文 subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
 
 
 @cache

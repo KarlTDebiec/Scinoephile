@@ -105,3 +105,25 @@ def test_transfer_tesseract_hocr_italics_ignores_mismatched_legacy_text():
     assert transfer_tesseract_hocr_italics(primary_hocr, legacy_hocr) == (
         "Hey, let's go"
     )
+
+
+def test_transfer_tesseract_hocr_italics_ignores_partial_word_matches():
+    """Test legacy emphasis is not copied across partial word matches."""
+    primary_hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'>Hey,</span>
+      <span class='ocrx_word' id='word_2'>let's</span>
+      <span class='ocrx_word' id='word_3'>go</span>
+    </span>
+    """
+    legacy_hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'><em>Hella</em></span>
+      <span class='ocrx_word' id='word_2'>let's</span>
+      <span class='ocrx_word' id='word_3'>go</span>
+    </span>
+    """
+
+    assert transfer_tesseract_hocr_italics(primary_hocr, legacy_hocr) == (
+        "Hey, let's go"
+    )

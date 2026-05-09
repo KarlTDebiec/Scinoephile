@@ -61,7 +61,7 @@ The pan stayed.
 15
 00:01:38,167 --> 00:01:40,167
 Mrs. McBing,
-convinced that this was a miracie,
+convinced that this was <i>a</i> miracie,
 
 16
 00:01:40,667 --> 00:01:43,292
@@ -303,7 +303,7 @@ the countryside...
 
 73
 00:06:07,000 --> 00:06:08,875
-As a result, ne speaks with an accent.
+As <i>a</i> result, ne speaks with an accent.
 
 74
 00:06:09,083 --> 00:06:10,208
@@ -797,7 +797,7 @@ from the bun
 
 192
 00:13:42,958 --> 00:13:45,708
-Now we Nave a Dun paper.
+Now we Nave <i>a</i> Dun paper.
 
 193
 00:13:46,125 --> 00:13:49,375
@@ -1567,7 +1567,7 @@ In Hong Kong history!
 
 379
 00:33:55,833 --> 00:33:59,708
-San San, when confirmed her winning...
+San <i>San,</i> when confirmed her winning...
 
 380
 00:33:59,833 --> 00:34:03,875
@@ -2557,7 +2557,7 @@ humble things like me."
 
 617
 00:50:26,667 --> 00:50:29,125
-“One day, you will know him too."
+<i>“One</i> day, you will know him too."
 
 618
 00:50:29,875 --> 00:50:31,250
@@ -2581,7 +2581,7 @@ bk ot | e+e. U Se 20 S: s] | | Se | | .
 
 623
 00:50:50,958 --> 00:50:53,042
-i dont know why | want to snatcn a Dun.
+i dont know why | want to snatcn <i>a</i> Dun.
 
 624
 00:50:53,667 --> 00:50:57,042
@@ -3543,7 +3543,7 @@ Negative property.
 
 852
 01:08:34,042 --> 01:08:38,292
-With a pair of really thick calves.
+With <i>a</i> pair of really thick calves.
 
 853
 01:08:39,250 --> 01:08:41,917
@@ -3731,7 +3731,7 @@ What's for Supper’?
 
 898
 01:11:57,500 --> 01:11:59,667
-Same as Regular.
+<i>Same</i> as Regular.
 
 899
 01:11:59,833 --> 01:12:01,792
@@ -3824,7 +3824,7 @@ What's for Lunch?
 
 921
 01:12:53,167 --> 01:12:55,375
-Same as Supper.
+<i>Same</i> as Supper.
 
 922
 01:12:55,542 --> 01:12:56,292

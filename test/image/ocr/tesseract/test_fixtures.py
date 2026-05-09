@@ -15,13 +15,21 @@ from scinoephile.core.subtitles import Series
         "mlamd_eng_ocr_tesseract_new",
         "mlamd_zho_hans_ocr_tesseract_new",
         "mlamd_zho_hant_ocr_tesseract_new",
+        "kob_eng_ocr_tesseract_new",
+        "kob_zho_hant_ocr_tesseract_new",
+        "mnt_eng_ocr_tesseract_new",
+        "mnt_zho_hans_ocr_tesseract_new",
+        "mnt_zho_hant_ocr_tesseract_new",
+        "t_eng_ocr_tesseract_new",
+        "t_zho_hans_ocr_tesseract_new",
+        "t_zho_hant_ocr_tesseract_new",
     ],
 )
-def test_mlamd_tesseract_fixtures_parse(
+def test_tesseract_fixtures_parse(
     request: pytest.FixtureRequest,
     fixture_name: str,
 ):
-    """Test MLAMD Tesseract fixtures parse as subtitle series.
+    """Test Tesseract fixtures parse as subtitle series.
 
     Arguments:
         request: pytest request

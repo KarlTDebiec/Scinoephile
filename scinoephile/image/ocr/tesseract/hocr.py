@@ -5,9 +5,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from html.parser import HTMLParser
-
-from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
 
 __all__ = [
     "TesseractHocrWord",
@@ -23,6 +22,23 @@ class TesseractHocrWord:
 
     text: str
     """Recognized word text."""
+
+    italic: bool = False
+    """Whether the word was marked as italic."""
+
+
+@dataclass(frozen=True)
+class _TesseractHocrWordSpan:
+    """A parsed hOCR word with its location in formatted text."""
+
+    text: str
+    """Recognized word text."""
+
+    start: int
+    """Start index in formatted text."""
+
+    end: int
+    """End index in formatted text."""
 
     italic: bool = False
     """Whether the word was marked as italic."""
@@ -156,29 +172,35 @@ def transfer_tesseract_hocr_italics(primary_html: str, legacy_html: str) -> str:
     Returns:
         primary recognized text with transferred italic tags
     """
-    primary_text, primary_mask = _get_text_and_italic_mask(
+    primary_text, primary_words = _get_text_and_word_spans(
         parse_tesseract_hocr_words(primary_html)
     )
-    legacy_text, legacy_mask = _get_text_and_italic_mask(
-        parse_tesseract_hocr_words(legacy_html)
-    )
-    primary_italic_mask = [False] * len(primary_mask)
-    primary_index = 0
-    legacy_index = 0
-    alignment = LineAlignment(primary_text, legacy_text)
-    for pair in alignment.alignment_pairs:
-        if pair.operation == LineAlignmentOperation.MATCH:
-            if legacy_mask[legacy_index] and not primary_text[primary_index].isspace():
-                primary_italic_mask[primary_index] = True
-            primary_index += 1
-            legacy_index += 1
-        elif pair.operation == LineAlignmentOperation.SUBSTITUTE:
-            primary_index += 1
-            legacy_index += 1
-        elif pair.operation == LineAlignmentOperation.DELETE:
-            primary_index += 1
-        elif pair.operation == LineAlignmentOperation.INSERT:
-            legacy_index += 1
+    _, legacy_words = _get_text_and_word_spans(parse_tesseract_hocr_words(legacy_html))
+    primary_italic_mask = [False] * len(primary_text)
+    primary_texts = [word.text for word in primary_words]
+    legacy_texts = [word.text for word in legacy_words]
+    matcher = SequenceMatcher(a=primary_texts, b=legacy_texts, autojunk=False)
+    for (
+        tag,
+        primary_start,
+        primary_end,
+        legacy_start,
+        legacy_end,
+    ) in matcher.get_opcodes():
+        if tag != "equal":
+            continue
+        for primary_index, legacy_index in zip(
+            range(primary_start, primary_end),
+            range(legacy_start, legacy_end),
+            strict=True,
+        ):
+            legacy_word = legacy_words[legacy_index]
+            if not legacy_word.italic:
+                continue
+            primary_word = primary_words[primary_index]
+            primary_italic_mask[primary_word.start : primary_word.end] = [True] * (
+                primary_word.end - primary_word.start
+            )
 
     return _apply_italic_mask(primary_text, primary_italic_mask)
 
@@ -229,29 +251,39 @@ def _format_tesseract_hocr_words(lines: list[list[TesseractHocrWord]]) -> str:
     return "\\N".join(formatted_lines)
 
 
-def _get_text_and_italic_mask(
+def _get_text_and_word_spans(
     lines: list[list[TesseractHocrWord]],
-) -> tuple[str, list[bool]]:
-    """Get plain text and a matching character-level italic mask.
+) -> tuple[str, list[_TesseractHocrWordSpan]]:
+    """Get formatted plain text and word spans.
 
     Arguments:
         lines: line-grouped recognized words
     Returns:
-        plain text and italic mask
+        plain text and word spans
     """
     text_parts: list[str] = []
-    italic_mask: list[bool] = []
+    word_spans: list[_TesseractHocrWordSpan] = []
+    text_length = 0
     for line_index, line in enumerate(lines):
         if line_index > 0:
             text_parts.append("\\N")
-            italic_mask.extend([False, False])
+            text_length += 2
         for word_index, word in enumerate(line):
             if word_index > 0:
                 text_parts.append(" ")
-                italic_mask.append(False)
+                text_length += 1
+            start = text_length
             text_parts.append(word.text)
-            italic_mask.extend([word.italic] * len(word.text))
-    return "".join(text_parts), italic_mask
+            text_length += len(word.text)
+            word_spans.append(
+                _TesseractHocrWordSpan(
+                    text=word.text,
+                    start=start,
+                    end=start + len(word.text),
+                    italic=word.italic,
+                )
+            )
+    return "".join(text_parts), word_spans
 
 
 def _title_indicates_italic(title: str | None) -> bool:
