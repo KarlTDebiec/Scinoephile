@@ -7,13 +7,13 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.mono_block import MonoBlockPrompt
 
-__all__ = ["EngBlockReviewPrompt"]
+__all__ = ["BlockReviewPromptEng"]
 
 
-class EngBlockReviewPrompt(MonoBlockPrompt, EngPrompt):
+class BlockReviewPromptEng(MonoBlockPrompt, PromptEng):
     """LLM correspondence text for English block review."""
 
     # Prompt

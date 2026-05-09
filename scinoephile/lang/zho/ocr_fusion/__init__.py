@@ -21,12 +21,12 @@ from scinoephile.llms.dual_single.ocr_fusion import (
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import ZhoHansOcrFusionPrompt, ZhoHantOcrFusionPrompt
+from .prompts import OcrFusionPromptZhoHans, OcrFusionPromptZhoHant
 
 __all__ = [
     "ZHO_OCR_FUSION_OPERATION_SPEC",
-    "ZhoHansOcrFusionPrompt",
-    "ZhoHantOcrFusionPrompt",
+    "OcrFusionPromptZhoHans",
+    "OcrFusionPromptZhoHant",
     "ZhoOcrFusionProcessKwargs",
     "ZhoOcrFusionProcessorKwargs",
     "get_zho_ocr_fuser",
@@ -37,7 +37,7 @@ ZHO_OCR_FUSION_OPERATION_SPEC = OperationSpec(
     operation="zho-ocr-fusion",
     test_case_table_name="test_cases__zho__ocr_fusion",
     manager_cls=OcrFusionManager,
-    prompt_cls=ZhoHansOcrFusionPrompt,
+    prompt_cls=OcrFusionPromptZhoHans,
 )
 """Operation specification for standard Chinese OCR fusion."""
 
@@ -80,7 +80,7 @@ def get_zho_ocr_fused(
 
 
 def get_zho_ocr_fuser(
-    prompt_cls: type[ZhoHansOcrFusionPrompt] = ZhoHansOcrFusionPrompt,
+    prompt_cls: type[OcrFusionPromptZhoHans] = OcrFusionPromptZhoHans,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[ZhoOcrFusionProcessorKwargs],
@@ -96,7 +96,7 @@ def get_zho_ocr_fuser(
         OcrFusionProcessor with provided configuration
     """
     if test_cases is None:
-        if prompt_cls is ZhoHantOcrFusionPrompt:
+        if prompt_cls is OcrFusionPromptZhoHant:
             test_cases = list(
                 load_default_test_cases(
                     OcrFusionManager,

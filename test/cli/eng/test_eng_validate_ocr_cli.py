@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.eng.eng_cli import EngCli
@@ -87,3 +89,47 @@ def test_eng_validate_ocr_cli(input_path: str):
         assert_series_equal(output, expected)
         assert (outfile_path / "index.html").exists()
         assert any(outfile_path.glob("*.png"))
+
+
+def test_eng_validate_ocr_cli_dev(monkeypatch, tmp_path):
+    """Test English validate-ocr CLI forwards dev mode.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+    captured_dev = None
+
+    def mock_validate_eng_ocr(
+        series: ImageSeries,
+        stop_at_idx: int | None = None,
+        interactive: bool = False,
+        dev: bool = False,
+    ) -> ImageSeries:
+        """Mock English OCR validation.
+
+        Arguments:
+            series: ImageSeries to validate
+            stop_at_idx: stop processing at this index
+            interactive: whether to prompt user for confirmations
+            dev: whether to write validation data updates to the repo
+        Returns:
+            input image series
+        """
+        nonlocal captured_dev
+        captured_dev = dev
+        return series
+
+    monkeypatch.setattr(
+        "scinoephile.cli.eng.eng_validate_ocr_cli.validate_eng_ocr",
+        mock_validate_eng_ocr,
+    )
+    full_input_path = test_data_root / "mlamd/output/eng_ocr/image"
+    outfile_path = Path(tmp_path) / "validated"
+
+    run_cli_with_args(
+        EngValidateOcrCli,
+        f"--infile {full_input_path} --outfile {outfile_path} --dev",
+    )
+
+    assert captured_dev is True

@@ -21,8 +21,8 @@ from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
@@ -30,7 +30,7 @@ from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
@@ -49,6 +49,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     *,
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -60,6 +61,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         sup_path: subtitle image input path
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to rerun validation if output exists
@@ -138,6 +140,7 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_eng_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -179,6 +182,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
     lang: str = "zho",
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -191,6 +195,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -271,6 +276,7 @@ def process_zho_hans_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -318,6 +324,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
     lang: str = "zho",
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
+    dev: bool = True,
     overwrite_srt: bool = False,
     overwrite_img: bool = False,
     force_validation: bool = False,
@@ -330,6 +337,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         lang: language code to use in input and output filenames
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
+        dev: whether to write validation data updates to the repo
         overwrite_srt: whether to overwrite subtitle outputs
         overwrite_img: whether to overwrite image outputs
         force_validation: whether to force validation even if validation output exists
@@ -367,7 +375,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             output_dir / f"{lang_code}_ocr/lang/zho/ocr_fusion.json",
         )
         fuser = get_zho_ocr_fuser(
-            prompt_cls=ZhoHantOcrFusionPrompt,
+            prompt_cls=OcrFusionPromptZhoHant,
             auto_verify=True,
             **fuser_kw,
         )
@@ -413,6 +421,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         validate = validate_zho_ocr(
             image,
             output_dir_path=image_validation_path,
+            dev=dev,
             interactive=True,
         )
         validate.save(validate_path, exist_ok=True)
@@ -430,7 +439,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
             output_dir / f"{lang_code}_ocr/lang/zho/block_review.json",
         )
         reviewer = get_zho_reviewer(
-            prompt_cls=ZhoHantBlockReviewPrompt,
+            prompt_cls=BlockReviewPromptZhoHant,
             auto_verify=True,
             **reviewer_kw,
         )
@@ -461,7 +470,7 @@ def process_zho_hant_ocr(  # noqa: PLR0912, PLR0915
         simplify_review = Series.load(simplify_review_path)
     else:
         simplify_reviewer = get_zho_reviewer(
-            prompt_cls=ZhoHansBlockReviewPrompt,
+            prompt_cls=BlockReviewPromptZhoHans,
             test_case_path=output_dir
             / f"{lang_code}_ocr"
             / "lang"

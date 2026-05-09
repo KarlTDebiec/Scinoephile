@@ -8,7 +8,7 @@ from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
@@ -58,7 +58,7 @@ def test_get_zho_ocr_fused_kob(
         lens,
         paddle,
         kob_zho_hant_ocr_fuse,
-        get_zho_ocr_fuser(prompt_cls=ZhoHantOcrFusionPrompt),
+        get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant),
     )
 
 

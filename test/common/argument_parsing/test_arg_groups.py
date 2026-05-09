@@ -99,3 +99,21 @@ def test_get_arg_groups_by_name_rename_optional():
 
     assert "other arguments" in groups
     assert "optional arguments" not in groups
+
+
+def test_get_arg_groups_by_name_orders_additional_help_after_optional():
+    """Test additional help groups appear after the optional arguments group."""
+    parser = ArgumentParser()
+
+    get_arg_groups_by_name(
+        parser,
+        "input arguments",
+        "additional help",
+        optional_arguments_name="additional arguments",
+    )
+
+    group_titles = [ag.title for ag in parser._action_groups]
+    optional_idx = group_titles.index("additional arguments")
+    additional_help_idx = group_titles.index("additional help")
+
+    assert optional_idx < additional_help_idx

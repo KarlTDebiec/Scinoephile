@@ -7,13 +7,13 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.eng.prompts import EngPrompt
+from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
 
-__all__ = ["EngOcrFusionPrompt"]
+__all__ = ["OcrFusionPromptEng"]
 
 
-class EngOcrFusionPrompt(OcrFusionPrompt, EngPrompt):
+class OcrFusionPromptEng(OcrFusionPrompt, PromptEng):
     """Text for LLM correspondence for English OCR fusion."""
 
     # Prompt
