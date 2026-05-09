@@ -52,13 +52,11 @@ class OcrCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
-        from .ocr_tesseract3_cli import OcrTesseract3Cli  # noqa: PLC0415
-        from .ocr_tesseract5_cli import OcrTesseract5Cli  # noqa: PLC0415
+        from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
 
         return {
             OcrPaddleCli.name(): OcrPaddleCli,
-            OcrTesseract3Cli.name(): OcrTesseract3Cli,
-            OcrTesseract5Cli.name(): OcrTesseract5Cli,
+            OcrTesseractCli.name(): OcrTesseractCli,
         }
 
     @classmethod

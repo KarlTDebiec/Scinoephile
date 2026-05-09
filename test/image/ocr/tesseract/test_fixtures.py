@@ -12,12 +12,9 @@ from scinoephile.core.subtitles import Series
 @pytest.mark.parametrize(
     "fixture_name",
     [
-        "mlamd_eng_ocr_tesseract3_new",
-        "mlamd_eng_ocr_tesseract5_new",
-        "mlamd_zho_hans_ocr_tesseract3_new",
-        "mlamd_zho_hans_ocr_tesseract5_new",
-        "mlamd_zho_hant_ocr_tesseract3_new",
-        "mlamd_zho_hant_ocr_tesseract5_new",
+        "mlamd_eng_ocr_tesseract_new",
+        "mlamd_zho_hans_ocr_tesseract_new",
+        "mlamd_zho_hant_ocr_tesseract_new",
     ],
 )
 def test_mlamd_tesseract_fixtures_parse(

@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseract3Cli, OcrTesseract5Cli
+from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseractCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -31,11 +31,9 @@ from test.helpers import (
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseract3Cli),
-        (OcrCli, OcrTesseract5Cli),
+        (OcrCli, OcrTesseractCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseract3Cli),
-        (ScinoephileCli, OcrCli, OcrTesseract5Cli),
+        (ScinoephileCli, OcrCli, OcrTesseractCli),
     ],
 )
 def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -52,11 +50,9 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     [
         (OcrCli,),
         (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseract3Cli),
-        (OcrCli, OcrTesseract5Cli),
+        (OcrCli, OcrTesseractCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseract3Cli),
-        (ScinoephileCli, OcrCli, OcrTesseract5Cli),
+        (ScinoephileCli, OcrCli, OcrTesseractCli),
     ],
 )
 def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -85,24 +81,14 @@ def test_ocr_paddle_cli_help_lists_language_codes():
     assert "chinese_cht (traditional Chinese)" in help_text
 
 
-@pytest.mark.parametrize(
-    "cli",
-    [OcrTesseract3Cli, OcrTesseract5Cli],
-)
-def test_ocr_tesseract_cli_help_lists_default_language(
-    cli: type[CommandLineInterface],
-):
-    """Test Tesseract OCR CLI help lists default language code.
-
-    Arguments:
-        cli: Tesseract OCR CLI class
-    """
+def test_ocr_tesseract_cli_help_lists_default_language():
+    """Test Tesseract OCR CLI help lists default language code."""
     stdout = StringIO()
     stderr = StringIO()
     with pytest.raises(SystemExit) as excinfo:
         with redirect_stdout(stdout):
             with redirect_stderr(stderr):
-                run_cli_with_args(cli, "-h")
+                run_cli_with_args(OcrTesseractCli, "-h")
 
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
@@ -149,34 +135,13 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         ]
 
 
-@pytest.mark.parametrize(
-    ("cli", "module_name", "function_name"),
-    [
-        (
-            OcrTesseract3Cli,
-            "scinoephile.cli.ocr.ocr_tesseract3_cli",
-            "ocr_image_series_with_tesseract3",
-        ),
-        (
-            OcrTesseract5Cli,
-            "scinoephile.cli.ocr.ocr_tesseract5_cli",
-            "ocr_image_series_with_tesseract5",
-        ),
-    ],
-)
 def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
     monkeypatch: pytest.MonkeyPatch,
-    cli: type[CommandLineInterface],
-    module_name: str,
-    function_name: str,
 ):
     """Test Tesseract OCR CLI writes OCR output to SRT.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        cli: Tesseract OCR CLI class
-        module_name: Tesseract OCR CLI module name
-        function_name: Tesseract OCR function name
     """
     input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
 
@@ -193,14 +158,14 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
-        f"{module_name}.{function_name}",
+        "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
         fake_ocr_image_series_with_tesseract,
     )
 
     with get_temp_directory_path() as output_dir_path:
         output_path = output_dir_path / "ocr.srt"
         run_cli_with_args(
-            cli,
+            OcrTesseractCli,
             f"--infile {input_path} --outfile {output_path}",
         )
 

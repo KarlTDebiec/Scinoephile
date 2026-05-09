@@ -24,8 +24,6 @@ from .hocr import parse_tesseract_hocr
 from .preprocessing import preprocess_tesseract_ocr_image
 
 __all__ = [
-    "Tesseract3OcrRecognizer",
-    "Tesseract5OcrRecognizer",
     "TesseractOcrRecognizer",
 ]
 
@@ -33,10 +31,10 @@ logger = getLogger(__name__)
 
 
 class TesseractOcrRecognizer:
-    """Base Tesseract recognizer for image subtitles."""
+    """Tesseract recognizer for image subtitles."""
 
-    engine_version = ""
-    """Tesseract major version label used for cache namespacing."""
+    engine_version = "tesseract"
+    """Tesseract cache version label."""
 
     def __init__(
         self,
@@ -182,9 +180,7 @@ class TesseractOcrRecognizer:
         Returns:
             recognized text
         """
-        with TemporaryDirectory(
-            prefix=f"scinoephile_tesseract{self.engine_version}_"
-        ) as tmp_dir:
+        with TemporaryDirectory(prefix="scinoephile_tesseract_") as tmp_dir:
             tmp_dir_path = Path(tmp_dir)
             image_path = tmp_dir_path / "input.png"
             output_base_path = tmp_dir_path / "output"
@@ -243,87 +239,3 @@ class TesseractOcrRecognizer:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump({"text": text}, file, ensure_ascii=False)
-
-
-class Tesseract3OcrRecognizer(TesseractOcrRecognizer):
-    """Tesseract 3 recognizer for image subtitles."""
-
-    engine_version = "3"
-    """Tesseract major version label used for cache namespacing."""
-
-    def __init__(
-        self,
-        *,
-        cache_dir_path: Path | None = None,
-        executable_path: Path | str = "tesseract",
-        language: str = "eng",
-        oem: int | None = None,
-        psm: int = 6,
-        scale: int = 2,
-        skip_executable_validation: bool = False,
-        tessdata_dir_path: Path | None = None,
-    ):
-        """Initialize.
-
-        Arguments:
-            cache_dir_path: directory in which to cache OCR results
-            executable_path: Tesseract executable path or command name
-            language: Tesseract language code
-            oem: Tesseract OCR engine mode, or None to omit --oem
-            psm: Tesseract page segmentation mode
-            scale: image preprocessing scale
-            skip_executable_validation: whether to skip executable validation
-            tessdata_dir_path: optional tessdata directory
-        """
-        super().__init__(
-            cache_dir_path=cache_dir_path,
-            executable_path=executable_path,
-            language=language,
-            oem=oem,
-            psm=psm,
-            scale=scale,
-            skip_executable_validation=skip_executable_validation,
-            tessdata_dir_path=tessdata_dir_path,
-        )
-
-
-class Tesseract5OcrRecognizer(TesseractOcrRecognizer):
-    """Tesseract 5 recognizer for image subtitles."""
-
-    engine_version = "5"
-    """Tesseract major version label used for cache namespacing."""
-
-    def __init__(
-        self,
-        *,
-        cache_dir_path: Path | None = None,
-        executable_path: Path | str = "tesseract",
-        language: str = "eng",
-        oem: int | None = 3,
-        psm: int = 6,
-        scale: int = 2,
-        skip_executable_validation: bool = False,
-        tessdata_dir_path: Path | None = None,
-    ):
-        """Initialize.
-
-        Arguments:
-            cache_dir_path: directory in which to cache OCR results
-            executable_path: Tesseract executable path or command name
-            language: Tesseract language code
-            oem: Tesseract OCR engine mode, or None to omit --oem
-            psm: Tesseract page segmentation mode
-            scale: image preprocessing scale
-            skip_executable_validation: whether to skip executable validation
-            tessdata_dir_path: optional tessdata directory
-        """
-        super().__init__(
-            cache_dir_path=cache_dir_path,
-            executable_path=executable_path,
-            language=language,
-            oem=oem,
-            psm=psm,
-            scale=scale,
-            skip_executable_validation=skip_executable_validation,
-            tessdata_dir_path=tessdata_dir_path,
-        )

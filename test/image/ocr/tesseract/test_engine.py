@@ -9,14 +9,11 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from scinoephile.image.ocr.tesseract import (
-    Tesseract3OcrRecognizer,
-    Tesseract5OcrRecognizer,
-)
+from scinoephile.image.ocr.tesseract import TesseractOcrRecognizer
 
 
-class CountingTesseract5OcrRecognizer(Tesseract5OcrRecognizer):
-    """Tesseract 5 recognizer that counts uncached recognitions."""
+class CountingTesseractOcrRecognizer(TesseractOcrRecognizer):
+    """Tesseract recognizer that counts uncached recognitions."""
 
     def __init__(self, cache_dir_path: Path | None = None, *, language: str = "eng"):
         """Initialize.
@@ -46,9 +43,9 @@ class CountingTesseract5OcrRecognizer(Tesseract5OcrRecognizer):
         return f"cached text {self.language}"
 
 
-def test_tesseract5_ocr_recognizer_caches_results_by_image(tmp_path: Path):
+def test_tesseract_ocr_recognizer_caches_results_by_image(tmp_path: Path):
     """Test Tesseract recognizer caches OCR results by image content."""
-    recognizer = CountingTesseract5OcrRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingTesseractOcrRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     assert recognizer.recognize_image(image) == "cached text eng"
@@ -58,13 +55,13 @@ def test_tesseract5_ocr_recognizer_caches_results_by_image(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 1
 
 
-def test_tesseract5_ocr_recognizer_caches_by_configuration(tmp_path: Path):
+def test_tesseract_ocr_recognizer_caches_by_configuration(tmp_path: Path):
     """Test Tesseract recognizer includes configuration in cache keys."""
-    english_recognizer = CountingTesseract5OcrRecognizer(
+    english_recognizer = CountingTesseractOcrRecognizer(
         cache_dir_path=tmp_path,
         language="eng",
     )
-    french_recognizer = CountingTesseract5OcrRecognizer(
+    french_recognizer = CountingTesseractOcrRecognizer(
         cache_dir_path=tmp_path,
         language="fra",
     )
@@ -78,52 +75,13 @@ def test_tesseract5_ocr_recognizer_caches_by_configuration(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 2
 
 
-def test_tesseract3_and_tesseract5_use_distinct_defaults():
-    """Test Tesseract version recognizers use distinct default OCR engine modes."""
-    tesseract3 = Tesseract3OcrRecognizer(
-        executable_path=Path("tesseract"),
-        skip_executable_validation=True,
-    )
-    tesseract5 = Tesseract5OcrRecognizer(
-        executable_path=Path("tesseract"),
-        skip_executable_validation=True,
-    )
-
-    assert tesseract3.engine_version == "3"
-    assert tesseract3.oem is None
-    assert tesseract5.engine_version == "5"
-    assert tesseract5.oem == 3
-
-
-def test_tesseract3_command_omits_default_oem():
-    """Test Tesseract 3 command omits default OCR engine mode."""
-    recognizer = Tesseract3OcrRecognizer(
-        executable_path=Path("tesseract"),
-        skip_executable_validation=True,
-    )
-
-    command = recognizer._build_command(Path("input.png"), Path("output"))
-
-    assert "--oem" not in command
-    assert command == [
-        "tesseract",
-        "input.png",
-        "output",
-        "-l",
-        "eng",
-        "--psm",
-        "6",
-        "hocr",
-    ]
-
-
-def test_tesseract5_command_includes_hocr_tessdata_and_language(tmp_path: Path):
+def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     """Test Tesseract command includes hOCR, tessdata, language, psm, and oem."""
     observed_command: list[str] = []
     tessdata_dir_path = tmp_path / "tessdata"
     tessdata_dir_path.mkdir()
 
-    class CommandCapturingRecognizer(Tesseract5OcrRecognizer):
+    class CommandCapturingRecognizer(TesseractOcrRecognizer):
         """Recognizer that captures command arguments."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
@@ -166,7 +124,7 @@ def test_tesseract5_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     assert str(tessdata_dir_path.resolve()) in observed_command
 
 
-def test_tesseract5_raises_and_does_not_cache_when_output_is_missing(
+def test_tesseract_raises_and_does_not_cache_when_output_is_missing(
     tmp_path: Path,
 ):
     """Test successful Tesseract commands without hOCR output are not cached.
@@ -175,7 +133,7 @@ def test_tesseract5_raises_and_does_not_cache_when_output_is_missing(
         tmp_path: temporary directory path
     """
 
-    class MissingOutputRecognizer(Tesseract5OcrRecognizer):
+    class MissingOutputRecognizer(TesseractOcrRecognizer):
         """Recognizer that simulates a successful command without hOCR output."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
