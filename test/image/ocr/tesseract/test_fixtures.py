@@ -7,26 +7,29 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from test.helpers import test_data_root
 
 
 @pytest.mark.parametrize(
-    "fixture_path",
+    "fixture_name",
     [
-        "mlamd/input/eng_ocr/tesseract3_new.srt",
-        "mlamd/input/eng_ocr/tesseract5_new.srt",
-        "mlamd/input/zho-Hans_ocr/tesseract3_new.srt",
-        "mlamd/input/zho-Hans_ocr/tesseract5_new.srt",
-        "mlamd/input/zho-Hant_ocr/tesseract3_new.srt",
-        "mlamd/input/zho-Hant_ocr/tesseract5_new.srt",
+        "mlamd_eng_ocr_tesseract3_new",
+        "mlamd_eng_ocr_tesseract5_new",
+        "mlamd_zho_hans_ocr_tesseract3_new",
+        "mlamd_zho_hans_ocr_tesseract5_new",
+        "mlamd_zho_hant_ocr_tesseract3_new",
+        "mlamd_zho_hant_ocr_tesseract5_new",
     ],
 )
-def test_mlamd_tesseract_fixtures_parse(fixture_path: str):
+def test_mlamd_tesseract_fixtures_parse(
+    request: pytest.FixtureRequest,
+    fixture_name: str,
+):
     """Test MLAMD Tesseract fixtures parse as subtitle series.
 
     Arguments:
-        fixture_path: Tesseract OCR fixture path relative to test data root
+        request: pytest request
+        fixture_name: Tesseract OCR fixture name
     """
-    series = Series.load(test_data_root / fixture_path)
+    series: Series = request.getfixturevalue(fixture_name)
 
     assert len(series) > 0

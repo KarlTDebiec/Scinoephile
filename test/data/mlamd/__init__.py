@@ -59,14 +59,20 @@ __all__ = [
     "mlamd_eng_ocr_paddle_new",
     "mlamd_eng_ocr_sup_path",
     "mlamd_eng_ocr_tesseract",
+    "mlamd_eng_ocr_tesseract3_new",
+    "mlamd_eng_ocr_tesseract5_new",
     "mlamd_zho_hans_ocr_lens",
     "mlamd_zho_hans_ocr_paddle",
     "mlamd_zho_hans_ocr_paddle_new",
     "mlamd_zho_hans_ocr_sup_path",
+    "mlamd_zho_hans_ocr_tesseract3_new",
+    "mlamd_zho_hans_ocr_tesseract5_new",
     "mlamd_zho_hant_ocr_lens",
     "mlamd_zho_hant_ocr_paddle",
     "mlamd_zho_hant_ocr_paddle_new",
     "mlamd_zho_hant_ocr_sup_path",
+    "mlamd_zho_hant_ocr_tesseract3_new",
+    "mlamd_zho_hant_ocr_tesseract5_new",
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
@@ -150,6 +156,18 @@ def mlamd_eng_ocr_tesseract() -> Series:
 
 
 @pytest.fixture
+def mlamd_eng_ocr_tesseract3_new() -> Series:
+    """MLAMD English subtitles OCRed using internal Tesseract 3."""
+    return Series.load(input_dir / "eng_ocr/tesseract3_new.srt")
+
+
+@pytest.fixture
+def mlamd_eng_ocr_tesseract5_new() -> Series:
+    """MLAMD English subtitles OCRed using internal Tesseract 5."""
+    return Series.load(input_dir / "eng_ocr/tesseract5_new.srt")
+
+
+@pytest.fixture
 def mlamd_zho_hans_ocr_lens() -> Series:
     """MLAMD 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
@@ -174,6 +192,18 @@ def mlamd_zho_hans_ocr_sup_path() -> Path:
 
 
 @pytest.fixture
+def mlamd_zho_hans_ocr_tesseract3_new() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using internal Tesseract 3."""
+    return Series.load(input_dir / "zho-Hans_ocr/tesseract3_new.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hans_ocr_tesseract5_new() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using internal Tesseract 5."""
+    return Series.load(input_dir / "zho-Hans_ocr/tesseract5_new.srt")
+
+
+@pytest.fixture
 def mlamd_zho_hant_ocr_lens() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
@@ -195,6 +225,18 @@ def mlamd_zho_hant_ocr_paddle_new() -> Series:
 def mlamd_zho_hant_ocr_sup_path() -> Path:
     """Path to MLAMD 繁体中文 SUP subtitles."""
     return input_dir / "zho-Hant_ocr/source.sup"
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_tesseract3_new() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using internal Tesseract 3."""
+    return Series.load(input_dir / "zho-Hant_ocr/tesseract3_new.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_tesseract5_new() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using internal Tesseract 5."""
+    return Series.load(input_dir / "zho-Hant_ocr/tesseract5_new.srt")
 
 
 @cache
