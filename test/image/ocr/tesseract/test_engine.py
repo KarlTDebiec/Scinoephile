@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from scinoephile.core import ScinoephileError
 from scinoephile.image.ocr.tesseract import TesseractOcrRecognizer
 
 
@@ -122,6 +123,109 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     assert "hocr" in observed_command
     assert "--tessdata-dir" in observed_command
     assert str(tessdata_dir_path.resolve()) in observed_command
+
+
+def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
+    """Test italic detection runs a legacy-engine hOCR pass."""
+    observed_commands: list[list[str]] = []
+    tessdata_dir_path = tmp_path / "legacy-tessdata"
+    tessdata_dir_path.mkdir()
+
+    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+        """Recognizer that captures primary and legacy command arguments."""
+
+        def _run_command(self, command: list[str]) -> tuple[int, str, str]:
+            """Capture command and write matching hOCR output.
+
+            Arguments:
+                command: command arguments
+            Returns:
+                fake process result
+            """
+            observed_commands.append(command.copy())
+            output_base_path = Path(command[2])
+            if "--oem" in command and command[command.index("--oem") + 1] == "0":
+                hocr = (
+                    "<span class='ocr_line'>"
+                    "<span class='ocrx_word'><em>Hey,</em></span>"
+                    "<span class='ocrx_word'>let's</span>"
+                    "<span class='ocrx_word'>go</span>"
+                    "</span>"
+                )
+            else:
+                hocr = (
+                    "<span class='ocr_line'>"
+                    "<span class='ocrx_word'>Hey,</span>"
+                    "<span class='ocrx_word'>let's</span>"
+                    "<span class='ocrx_word'>go</span>"
+                    "</span>"
+                )
+            output_base_path.with_suffix(".hocr").write_text(hocr, encoding="utf-8")
+            return 0, "", ""
+
+    recognizer = CommandCapturingRecognizer(
+        executable_path=Path("tesseract"),
+        language="eng",
+        legacy_tessdata_dir_path=tessdata_dir_path,
+        detect_italics=True,
+        skip_executable_validation=True,
+    )
+
+    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == (
+        "<i>Hey,</i> let's go"
+    )
+    assert len(observed_commands) == 2
+
+    primary_command = observed_commands[0]
+    legacy_command = observed_commands[1]
+    assert "hocr" in primary_command
+    assert "--oem" in legacy_command
+    assert legacy_command[legacy_command.index("--oem") + 1] == "0"
+    assert "-c" in legacy_command
+    assert "tessedit_create_hocr=1" in legacy_command
+    assert "hocr_font_info=1" in legacy_command
+    assert "--tessdata-dir" in legacy_command
+    assert str(tessdata_dir_path.resolve()) in legacy_command
+    assert "hocr" not in legacy_command
+
+
+def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
+    """Test italic detection reports missing legacy model support clearly."""
+
+    class LegacyFailingRecognizer(TesseractOcrRecognizer):
+        """Recognizer that simulates a missing legacy Tesseract model."""
+
+        def _run_command(self, command: list[str]) -> tuple[int, str, str]:
+            """Write primary hOCR and fail the legacy pass.
+
+            Arguments:
+                command: command arguments
+            Returns:
+                fake process result
+            """
+            output_base_path = Path(command[2])
+            if "--oem" in command and command[command.index("--oem") + 1] == "0":
+                raise ValueError(
+                    "Tesseract (legacy) engine requested, "
+                    "but components are not present"
+                )
+            output_base_path.with_suffix(".hocr").write_text(
+                "<span class='ocr_line'><span class='ocrx_word'>ok</span></span>",
+                encoding="utf-8",
+            )
+            return 0, "", ""
+
+    recognizer = LegacyFailingRecognizer(
+        cache_dir_path=tmp_path,
+        executable_path=Path("tesseract"),
+        detect_italics=True,
+        skip_executable_validation=True,
+    )
+
+    with pytest.raises(ScinoephileError, match="legacy Tesseract data"):
+        recognizer.recognize_image(Image.new("RGBA", (2, 2)))
+
+    assert list(tmp_path.glob("*.json")) == []
 
 
 def test_tesseract_raises_and_does_not_cache_when_output_is_missing(

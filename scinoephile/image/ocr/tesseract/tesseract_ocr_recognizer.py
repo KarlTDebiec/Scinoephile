@@ -19,8 +19,9 @@ from scinoephile.common.validation import (
     val_input_dir_path,
     val_output_dir_path,
 )
+from scinoephile.core import ScinoephileError
 
-from .hocr import parse_tesseract_hocr
+from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
 
 __all__ = [
@@ -41,7 +42,9 @@ class TesseractOcrRecognizer:
         *,
         cache_dir_path: Path | None = None,
         executable_path: Path | str = "tesseract",
+        detect_italics: bool = False,
         language: str = "eng",
+        legacy_tessdata_dir_path: Path | None = None,
         oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
@@ -53,7 +56,9 @@ class TesseractOcrRecognizer:
         Arguments:
             cache_dir_path: directory in which to cache OCR results
             executable_path: Tesseract executable path or command name
+            detect_italics: whether to run a legacy-engine pass for italics
             language: Tesseract language code
+            legacy_tessdata_dir_path: optional tessdata directory for legacy OCR
             oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
@@ -61,6 +66,7 @@ class TesseractOcrRecognizer:
             tessdata_dir_path: optional tessdata directory
         """
         self.language = language
+        self.detect_italics = detect_italics
         self.oem = oem
         self.psm = psm
         self.scale = scale
@@ -78,6 +84,10 @@ class TesseractOcrRecognizer:
         if tessdata_dir_path is not None:
             self.tessdata_dir_path = val_input_dir_path(tessdata_dir_path)
 
+        self.legacy_tessdata_dir_path: Path | None = None
+        if legacy_tessdata_dir_path is not None:
+            self.legacy_tessdata_dir_path = val_input_dir_path(legacy_tessdata_dir_path)
+
     @override
     def __repr__(self) -> str:
         """String representation."""
@@ -85,7 +95,9 @@ class TesseractOcrRecognizer:
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
             f"executable_path={self.executable_path!r}, "
+            f"detect_italics={self.detect_italics!r}, "
             f"language={self.language!r}, "
+            f"legacy_tessdata_dir_path={self.legacy_tessdata_dir_path!r}, "
             f"oem={self.oem!r}, "
             f"psm={self.psm!r}, "
             f"scale={self.scale!r}, "
@@ -139,6 +151,39 @@ class TesseractOcrRecognizer:
             command.extend(["--tessdata-dir", str(self.tessdata_dir_path)])
         return command
 
+    def _build_legacy_italics_command(
+        self,
+        image_path: Path,
+        output_base_path: Path,
+    ) -> list[str]:
+        """Build Tesseract legacy-engine hOCR command for italic detection.
+
+        Arguments:
+            image_path: input image path
+            output_base_path: output base path without extension
+        Returns:
+            command arguments
+        """
+        command = [
+            str(self.executable_path),
+            str(image_path),
+            str(output_base_path),
+            "-l",
+            self.language,
+            "--psm",
+            str(self.psm),
+            "--oem",
+            "0",
+            "-c",
+            "tessedit_create_hocr=1",
+            "-c",
+            "hocr_font_info=1",
+        ]
+        tessdata_dir_path = self.legacy_tessdata_dir_path or self.tessdata_dir_path
+        if tessdata_dir_path is not None:
+            command.extend(["--tessdata-dir", str(tessdata_dir_path)])
+        return command
+
     def _get_cache_path(self, image: Image.Image) -> Path | None:
         """Get cache path based on image data and OCR configuration.
 
@@ -153,8 +198,9 @@ class TesseractOcrRecognizer:
         image_sha256 = hashlib.sha256(image.tobytes()).hexdigest()
         cache_key = (
             f"{image_sha256}_{image.mode}_{image.size}_{self.engine_version}_"
-            f"{self.executable_path}_{self.language}_{self.oem}_{self.psm}_"
-            f"{self.scale}_{self.tessdata_dir_path}"
+            f"{self.executable_path}_{self.detect_italics}_{self.language}_"
+            f"{self.legacy_tessdata_dir_path}_{self.oem}_{self.psm}_{self.scale}_"
+            f"{self.tessdata_dir_path}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
@@ -218,10 +264,46 @@ class TesseractOcrRecognizer:
             recognized text
         """
         self._run_command(self._build_command(image_path, output_base_path))
+        hocr = self._read_hocr_output(output_base_path)
+        if not self.detect_italics:
+            return parse_tesseract_hocr(hocr)
+
+        legacy_output_base_path = output_base_path.with_name(
+            f"{output_base_path.name}_legacy_italics"
+        )
+        try:
+            self._run_command(
+                self._build_legacy_italics_command(
+                    image_path,
+                    legacy_output_base_path,
+                )
+            )
+            legacy_hocr = self._read_hocr_output(legacy_output_base_path)
+        except (OSError, ValueError) as exc:
+            raise ScinoephileError(
+                "Tesseract italic detection requires legacy Tesseract data. "
+                "Install legacy-capable traineddata and pass "
+                "--legacy-tessdata-dir if it is not in Tesseract's default "
+                "tessdata directory."
+            ) from exc
+
+        return transfer_tesseract_hocr_italics(hocr, legacy_hocr)
+
+    @staticmethod
+    def _read_hocr_output(output_base_path: Path) -> str:
+        """Read Tesseract hOCR output.
+
+        Arguments:
+            output_base_path: output base path without extension
+        Returns:
+            hOCR HTML
+        Raises:
+            ValueError: if Tesseract produced no hOCR output file
+        """
         for suffix in (".hocr", ".html"):
             hocr_path = output_base_path.with_suffix(suffix)
             if hocr_path.exists():
-                return parse_tesseract_hocr(hocr_path.read_text(encoding="utf-8"))
+                return hocr_path.read_text(encoding="utf-8")
         raise ValueError(
             "Tesseract command completed but did not produce hOCR output "
             f"at {output_base_path.with_suffix('.hocr')} or "

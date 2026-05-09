@@ -10,6 +10,7 @@ from typing import Any
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
+    input_dir_arg,
     input_file_or_dir_arg,
     output_file_arg,
 )
@@ -33,6 +34,12 @@ class OcrTesseractCli(ScinoephileCliBase):
             "Tesseract language code (default: %(default)s)": (
                 "Tesseract 语言代码（默认：%(default)s）"
             ),
+            "legacy Tesseract tessdata directory for italic detection": (
+                "用于斜体检测的旧版 Tesseract tessdata 目录"
+            ),
+            "run a second legacy-engine pass to detect italic text": (
+                "运行第二次旧版引擎识别以检测斜体文本"
+            ),
             (
                 "image subtitle infile path (directory containing index.html and "
                 "png files, or a .sup file)"
@@ -48,6 +55,12 @@ class OcrTesseractCli(ScinoephileCliBase):
             ),
             "Tesseract language code (default: %(default)s)": (
                 "Tesseract 語言代碼（預設：%(default)s）"
+            ),
+            "legacy Tesseract tessdata directory for italic detection": (
+                "用於斜體偵測的舊版 Tesseract tessdata 目錄"
+            ),
+            "run a second legacy-engine pass to detect italic text": (
+                "執行第二次舊版引擎識別以偵測斜體文字"
             ),
             (
                 "image subtitle infile path (directory containing index.html and "
@@ -95,6 +108,17 @@ class OcrTesseractCli(ScinoephileCliBase):
             default="eng",
             help="Tesseract language code (default: %(default)s)",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--detect-italics",
+            action="store_true",
+            help="run a second legacy-engine pass to detect italic text",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--legacy-tessdata-dir",
+            dest="legacy_tessdata_dir_path",
+            type=input_dir_arg(),
+            help="legacy Tesseract tessdata directory for italic detection",
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -127,7 +151,9 @@ class OcrTesseractCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         outfile_path: Path,
+        detect_italics: bool,
         language: str,
+        legacy_tessdata_dir_path: Path | None,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
@@ -149,7 +175,9 @@ class OcrTesseractCli(ScinoephileCliBase):
             image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_tesseract(
                 image_series,
+                detect_italics=detect_italics,
                 language=language,
+                legacy_tessdata_dir_path=legacy_tessdata_dir_path,
             )
         except (
             FileNotFoundError,
