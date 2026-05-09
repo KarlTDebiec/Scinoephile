@@ -4,16 +4,14 @@
 
 from __future__ import annotations
 
+import sys
 from collections.abc import Iterable
-from logging import getLogger
 from os import read
 from queue import Empty, Queue
 from subprocess import PIPE, Popen, TimeoutExpired
 from threading import Thread
 from time import monotonic
 from typing import IO
-
-logger = getLogger(__name__)
 
 
 def run_command(
@@ -195,16 +193,14 @@ def _monitor_live_output(
             continue
 
         chunks[stream_name].append(chunk)
-        for line in _decode_output(chunk).replace("\r", "\n").splitlines():
-            logger.info(line.rstrip())
+        _write_live_output(stream_name, chunk)
         last_output_time = monotonic()
 
     while not output_queue.empty():
         stream_name, chunk = output_queue.get_nowait()
         if chunk is not None:
             chunks[stream_name].append(chunk)
-            for line in _decode_output(chunk).replace("\r", "\n").splitlines():
-                logger.info(line.rstrip())
+            _write_live_output(stream_name, chunk)
 
     child.wait()
     return timed_out
@@ -227,6 +223,22 @@ def _read_stream(
             output_queue.put((stream_name, chunk))
     finally:
         output_queue.put((stream_name, None))
+
+
+def _write_live_output(stream_name: str, chunk: bytes):
+    """Write subprocess output chunk to the matching parent stream.
+
+    Arguments:
+        stream_name: name of stream that produced the chunk
+        chunk: output chunk to write
+    """
+    output = _decode_output(chunk)
+    if stream_name == "stderr":
+        sys.stderr.write(output)
+        sys.stderr.flush()
+    else:
+        sys.stdout.write(output)
+        sys.stdout.flush()
 
 
 __all__ = [
