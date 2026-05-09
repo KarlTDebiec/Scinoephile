@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from inspect import signature
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -37,9 +38,11 @@ def test_get_subtitle_streams(tmp_path: Path):
                 },
             ],
         },
-    ):
-        streams = get_subtitle_streams(infile_path, counts=True)
+    ) as probe:
+        streams = get_subtitle_streams(infile_path)
 
+    assert "counts" not in signature(get_subtitle_streams).parameters
+    probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 1
     assert streams[0].index == 2
     assert streams[0].language == "eng"

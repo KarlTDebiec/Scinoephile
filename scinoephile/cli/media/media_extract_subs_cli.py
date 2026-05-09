@@ -181,7 +181,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         # Perform operations
         try:
             if infile_path.suffix.lower() == ".sup":
-                streams = get_subtitle_streams(infile_path, counts=False)
+                streams = get_subtitle_streams(infile_path)
                 if not streams:
                     raise ScinoephileError(
                         f"No subtitle streams found in {infile_path}"
@@ -202,7 +202,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
 
             streams = [
                 stream
-                for stream in get_subtitle_streams(infile_path, counts=False)
+                for stream in get_subtitle_streams(infile_path)
                 if stream.language in language_codes
             ]
             if export:

@@ -51,24 +51,18 @@ def extract_subtitle_stream(
     return outfile_path
 
 
-def get_subtitle_streams(
-    infile_path: Path, counts: bool = False
-) -> list[SubtitleStream]:
+def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
     """Return subtitle streams in a media file.
 
     Arguments:
         infile_path: media input file to inspect
-        counts: whether to include subtitle packet counts
     Returns:
         subtitle stream metadata
     Raises:
         ScinoephileError: if ffprobe fails
     """
     try:
-        if counts:
-            probe = ffmpeg.probe(str(infile_path), count_packets=None)
-        else:
-            probe = ffmpeg.probe(str(infile_path))
+        probe = ffmpeg.probe(str(infile_path))
     except ffmpeg.Error as exc:
         raise ScinoephileError(f"Could not probe media file {infile_path}") from exc
 

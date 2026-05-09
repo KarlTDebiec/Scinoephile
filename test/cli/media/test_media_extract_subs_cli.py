@@ -79,7 +79,7 @@ def test_media_extract_subs_cli(tmp_path: Path):
             f"--infile {infile_path} --languages eng zho -o {output_dir_path} --export",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve(), counts=False)
+    get_streams.assert_called_once_with(infile_path.resolve())
     assert extract.call_count == 2
     assert extract.call_args_list[0].args[0] == infile_path.resolve()
     assert extract.call_args_list[0].args[1].index == 2
@@ -197,7 +197,7 @@ def test_media_extract_subs_cli_details_uses_plain_probe(tmp_path: Path):
             f"--infile {infile_path} --languages ENG --details",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve(), counts=False)
+    get_streams.assert_called_once_with(infile_path.resolve())
     extract.assert_not_called()
 
 
@@ -363,7 +363,7 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
             f"--infile {infile_path} -o {output_dir_path} --export --extract-sup",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve(), counts=False)
+    get_streams.assert_called_once_with(infile_path.resolve())
     load.assert_called_once_with(output_dir_path.resolve() / "source.sup")
     image_series.save.assert_called_once_with(output_dir_path.resolve() / "source")
     copy.assert_called_once_with(
