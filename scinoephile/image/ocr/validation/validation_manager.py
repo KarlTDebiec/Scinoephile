@@ -75,7 +75,7 @@ class ValidationManager:
             dev: whether validation data updates should write to repo data
         """
         self.dev = dev
-        self.repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
+        repo_data_dir_path = val_input_dir_path(package_root / "data/ocr")
 
         self.char_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
         self.char_grp_dims_by_n: dict[int, dict[str, set[tuple[int, ...]]]] = {}
@@ -84,17 +84,17 @@ class ValidationManager:
         # Initialize char_dims_by_n
         for n in range(1, 6):
             self.char_dims_by_n[n] = {}
-            file_path = self.repo_data_dir_path / f"char_dims_{n}.csv"
+            file_path = repo_data_dir_path / f"char_dims_{n}.csv"
             if file_path.exists():
                 self.char_dims_by_n[n] = load_char_dims(file_path)
 
         # Initialize char_grp_dims_by_n
-        file_path = self.repo_data_dir_path / "char_grp_dims.csv"
+        file_path = repo_data_dir_path / "char_grp_dims.csv"
         if file_path.exists():
             self.char_grp_dims_by_n = load_char_grp_dims(file_path)
 
         # Initialize char_pair_gaps
-        file_path = self.repo_data_dir_path / "char_pair_gaps.csv"
+        file_path = repo_data_dir_path / "char_pair_gaps.csv"
         if file_path.exists():
             self.char_pair_gaps = load_char_pair_gaps(file_path)
 
@@ -717,6 +717,6 @@ class ValidationManager:
             validation data directory
         """
         if self.dev:
-            return self.repo_data_dir_path
+            return val_input_dir_path(package_root / "data/ocr")
         self.cache_dir_path.mkdir(parents=True, exist_ok=True)
         return self.cache_dir_path
