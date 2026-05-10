@@ -64,8 +64,8 @@ def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
-def test_ocr_lens_cli_help_lists_google_lens_options():
-    """Test Google Lens CLI help lists language and request options."""
+def test_ocr_lens_cli_help_lists_language_option_only():
+    """Test Google Lens CLI help lists language but not transport options."""
     stdout = StringIO()
     stderr = StringIO()
     with pytest.raises(SystemExit) as excinfo:
@@ -77,8 +77,12 @@ def test_ocr_lens_cli_help_lists_google_lens_options():
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
     assert "--language" in help_text
-    assert "--proxy" in help_text
-    assert "--timeout" in help_text
+    assert "--api-key" not in help_text
+    assert "--client-region" not in help_text
+    assert "--client-time-zone" not in help_text
+    assert "--max-concurrent" not in help_text
+    assert "--proxy" not in help_text
+    assert "--timeout" not in help_text
 
 
 def test_ocr_lens_cli_converts_image_subtitles_to_srt(

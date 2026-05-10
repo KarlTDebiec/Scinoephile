@@ -23,6 +23,7 @@ LensAPI: Any | None = None
 
 _NO_TEXT_MESSAGE = "No OCR text found."
 _REQUEST_ERROR_MESSAGE = "Request error (possibly proxy-related)"
+_CACHE_SCHEMA = 1
 
 
 class GoogleLensRecognizer:
@@ -31,51 +32,28 @@ class GoogleLensRecognizer:
     def __init__(
         self,
         *,
-        api_key: str | None = None,
         cache_dir_path: Path | None = None,
-        client_region: str | None = None,
-        client_time_zone: str | None = None,
         language: str = "en",
-        max_concurrent: int = 5,
-        proxy: str | None = None,
-        timeout: int = 60,
     ):
         """Initialize.
 
         Arguments:
-            api_key: optional Google Lens API key override
             cache_dir_path: directory in which to cache OCR results
-            client_region: optional Google Lens client region
-            client_time_zone: optional Google Lens client time zone
             language: Google Lens OCR language code
-            max_concurrent: maximum concurrent Lens requests
-            proxy: optional proxy URL
-            timeout: request timeout in seconds
         """
-        self.api_key = api_key
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.client_region = client_region
-        self.client_time_zone = client_time_zone
         self.language = language
-        self.max_concurrent = max_concurrent
-        self.proxy = proxy
-        self.timeout = timeout
+        self._api = self._get_lens_api_class()()
 
     @override
     def __repr__(self) -> str:
         """String representation."""
         return (
             f"{self.__class__.__name__}("
-            f"api_key={self.api_key!r}, "
             f"cache_dir_path={self.cache_dir_path!r}, "
-            f"client_region={self.client_region!r}, "
-            f"client_time_zone={self.client_time_zone!r}, "
-            f"language={self.language!r}, "
-            f"max_concurrent={self.max_concurrent!r}, "
-            f"proxy={self.proxy!r}, "
-            f"timeout={self.timeout!r})"
+            f"language={self.language!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -88,27 +66,20 @@ class GoogleLensRecognizer:
         """
         if (cache_path := self._get_cache_path(image)) is not None:
             if cache_path.exists():
-                text = self._load_text(cache_path)
+                result = self._load_lens_result(cache_path)
                 cache_path.touch()
                 logger.info(f"Loaded Google Lens OCR result from cache: {cache_path}")
-                return text
+                return self._format_lens_result(result)
 
-            text = asyncio.run(self._recognize_image_uncached(image))
-            self._save_text(text, cache_path)
+            self._raise_if_running_loop()
+            result = asyncio.run(self._recognize_image_uncached(image))
+            self._save_lens_result(result, cache_path)
             logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
-            return text
+            return self._format_lens_result(result)
 
-        return asyncio.run(self._recognize_image_uncached(image))
-
-    def recognize_images(self, images: list[Image.Image]) -> list[str]:
-        """Recognize text from multiple images.
-
-        Arguments:
-            images: input images
-        Returns:
-            recognized text for each input image
-        """
-        return [self.recognize_image(image) for image in images]
+        self._raise_if_running_loop()
+        result = asyncio.run(self._recognize_image_uncached(image))
+        return self._format_lens_result(result)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
         """Get cache path based on image data and OCR configuration.
@@ -125,7 +96,7 @@ class GoogleLensRecognizer:
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
         cache_key = (
             f"{image_sha256}_{image.mode}_{image.size}_{self.language}_"
-            f"{self.client_region}_{self.client_time_zone}_chrome-lens-py"
+            f"chrome-lens-py_v{_CACHE_SCHEMA}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
@@ -224,60 +195,101 @@ class GoogleLensRecognizer:
         return LensAPI
 
     @staticmethod
-    def _load_text(cache_path: Path) -> str:
-        """Load cached Google Lens OCR text.
+    def _format_lens_result(result: dict[str, object]) -> str:
+        """Format a normalized Google Lens OCR result as subtitle text.
+
+        Arguments:
+            result: normalized Google Lens OCR result
+        Returns:
+            subtitle text
+        """
+        return GoogleLensRecognizer._clean_text(
+            GoogleLensRecognizer._extract_text(result)
+        )
+
+    @staticmethod
+    def _load_lens_result(cache_path: Path) -> dict[str, object]:
+        """Load normalized Google Lens OCR result from cache.
 
         Arguments:
             cache_path: cache file path
         Returns:
-            recognized text
+            normalized OCR result
         """
         with cache_path.open("r", encoding="utf-8") as file:
             data = json.load(file)
-        return str(data["text"])
+        if not isinstance(data, dict):
+            return {}
+        return cast(dict[str, object], data)
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> str:
+    @staticmethod
+    def _normalize_lens_result(result: object) -> dict[str, object]:
+        """Normalize raw Google Lens OCR result.
+
+        Arguments:
+            result: raw chrome-lens-py result
+        Returns:
+            normalized OCR result
+        """
+        normalized: dict[str, object] = {}
+        line_blocks = _get_result_value(result, "line_blocks")
+        if isinstance(line_blocks, list | tuple):
+            normalized_blocks = []
+            for block in line_blocks:
+                text = _get_result_value(block, "text")
+                if isinstance(text, str):
+                    normalized_blocks.append({"text": text})
+            normalized["line_blocks"] = normalized_blocks
+
+        ocr_text = _get_result_value(result, "ocr_text")
+        if isinstance(ocr_text, str):
+            normalized["ocr_text"] = ocr_text
+        return normalized
+
+    @staticmethod
+    def _raise_if_running_loop():
+        """Raise if synchronous uncached recognition is called from an event loop.
+
+        Raises:
+            RuntimeError: if an asyncio event loop is already running
+        """
+        try:
+            asyncio.get_running_loop()
+        except RuntimeError:
+            return
+        raise RuntimeError(
+            "GoogleLensRecognizer cannot run uncached Google Lens OCR from an "
+            "active asyncio event loop."
+        )
+
+    async def _recognize_image_uncached(self, image: Image.Image) -> dict[str, object]:
         """Recognize uncached image text through chrome-lens-py.
 
         Arguments:
             image: input image
         Returns:
-            recognized text
+            normalized OCR result
         """
-        lens_api_cls = self._get_lens_api_class()
-        lens_api_kwargs: dict[str, object] = {
-            "max_concurrent": self.max_concurrent,
-            "timeout": self.timeout,
-        }
-        if self.api_key is not None:
-            lens_api_kwargs["api_key"] = self.api_key
-        if self.client_region is not None:
-            lens_api_kwargs["client_region"] = self.client_region
-        if self.client_time_zone is not None:
-            lens_api_kwargs["client_time_zone"] = self.client_time_zone
-        if self.proxy is not None:
-            lens_api_kwargs["proxy"] = self.proxy
-
-        api = lens_api_cls(**lens_api_kwargs)
-        result = await api.process_image(
+        result = await self._api.process_image(
             image_path=image,
             ocr_language=self.language,
             ocr_preserve_line_breaks=True,
             output_format="lines",
         )
-        return self._clean_text(self._extract_text(result))
+        return self._normalize_lens_result(result)
 
     @staticmethod
-    def _save_text(text: str, cache_path: Path):
-        """Save Google Lens OCR text to cache.
+    def _save_lens_result(result: dict[str, object], cache_path: Path):
+        """Save normalized Google Lens OCR result to cache.
 
         Arguments:
-            text: recognized text
+            result: normalized OCR result
             cache_path: cache file path
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
+        data = {"schema": _CACHE_SCHEMA, **result}
         with cache_path.open("w", encoding="utf-8") as file:
-            json.dump({"text": text}, file, ensure_ascii=False)
+            json.dump(data, file, ensure_ascii=False)
 
 
 def _get_result_value(result: object, key: str) -> object:

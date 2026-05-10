@@ -89,35 +89,17 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
         def __init__(
             self,
             *,
-            api_key: str | None = None,
             cache_dir_path: Path | None = None,
-            client_region: str | None = None,
-            client_time_zone: str | None = None,
             language: str = "en",
-            max_concurrent: int = 5,
-            proxy: str | None = None,
-            timeout: int = 60,
         ):
             """Initialize.
 
             Arguments:
-                api_key: optional Google Lens API key override
                 cache_dir_path: directory in which to cache OCR results
-                client_region: optional Google Lens client region
-                client_time_zone: optional Google Lens client time zone
                 language: Google Lens OCR language code
-                max_concurrent: maximum concurrent Lens requests
-                proxy: optional proxy URL
-                timeout: request timeout in seconds
             """
             super().__init__([language])
             observed_cache_dir_paths.append(cache_dir_path)
-            assert api_key == "key"
-            assert client_region == "US"
-            assert client_time_zone == "America/New_York"
-            assert max_concurrent == 2
-            assert proxy == "socks5://127.0.0.1:9050"
-            assert timeout == 30
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
@@ -139,13 +121,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
 
     text_series = ocr_image_series_with_lens(
         image_series,
-        api_key="key",
-        client_region="US",
-        client_time_zone="America/New_York",
         language="zh-CN",
-        max_concurrent=2,
-        proxy="socks5://127.0.0.1:9050",
-        timeout=30,
     )
 
     assert [event.text for event in text_series] == ["zh-CN"]

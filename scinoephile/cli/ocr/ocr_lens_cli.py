@@ -27,13 +27,7 @@ class OcrLensCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "Google Lens API key override": "Google Lens API 密钥覆盖值",
-            "Google Lens client region": "Google Lens 客户端区域",
-            "Google Lens client time zone": "Google Lens 客户端时区",
             "Google Lens language code": "Google Lens 语言代码",
-            "Google Lens maximum concurrent requests": "Google Lens 最大并发请求数",
-            "Google Lens proxy URL": "Google Lens 代理 URL",
-            "Google Lens request timeout in seconds": "Google Lens 请求超时时间（秒）",
             "Recognize image subtitles with Google Lens.": (
                 "使用 Google Lens 识别图像字幕。"
             ),
@@ -44,13 +38,7 @@ class OcrLensCli(ScinoephileCliBase):
             "recognized subtitle outfile path": "识别后字幕输出文件路径",
         },
         "zh-hant": {
-            "Google Lens API key override": "Google Lens API 金鑰覆寫值",
-            "Google Lens client region": "Google Lens 用戶端區域",
-            "Google Lens client time zone": "Google Lens 用戶端時區",
             "Google Lens language code": "Google Lens 語言代碼",
-            "Google Lens maximum concurrent requests": "Google Lens 最大並行請求數",
-            "Google Lens proxy URL": "Google Lens 代理 URL",
-            "Google Lens request timeout in seconds": "Google Lens 請求逾時時間（秒）",
             "Recognize image subtitles with Google Lens.": (
                 "使用 Google Lens 識別影像字幕。"
             ),
@@ -91,41 +79,9 @@ class OcrLensCli(ScinoephileCliBase):
         )
 
         arg_groups["operation arguments"].add_argument(
-            "--api-key",
-            default=None,
-            help="Google Lens API key override",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--client-region",
-            default=None,
-            help="Google Lens client region",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--client-time-zone",
-            default=None,
-            help="Google Lens client time zone",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--language",
             default="en",
             help="Google Lens language code",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--max-concurrent",
-            type=int,
-            default=5,
-            help="Google Lens maximum concurrent requests",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--proxy",
-            default=None,
-            help="Google Lens proxy URL",
-        )
-        arg_groups["operation arguments"].add_argument(
-            "--timeout",
-            type=int,
-            default=60,
-            help="Google Lens request timeout in seconds",
         )
 
         arg_groups["output arguments"].add_argument(
@@ -156,16 +112,10 @@ class OcrLensCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        api_key: str | None,
-        client_region: str | None,
-        client_time_zone: str | None,
         infile_path: Path,
         language: str,
-        max_concurrent: int,
         outfile_path: Path,
         overwrite: bool,
-        proxy: str | None,
-        timeout: int,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
@@ -184,13 +134,7 @@ class OcrLensCli(ScinoephileCliBase):
             image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_lens(
                 image_series,
-                api_key=api_key,
-                client_region=client_region,
-                client_time_zone=client_time_zone,
                 language=language,
-                max_concurrent=max_concurrent,
-                proxy=proxy,
-                timeout=timeout,
             )
         except (
             ImportError,

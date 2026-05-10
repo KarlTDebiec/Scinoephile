@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
@@ -24,26 +25,20 @@ class CountingGoogleLensRecognizer(GoogleLensRecognizer):
         Arguments:
             cache_dir_path: directory in which to cache OCR results
         """
-        self.api_key = None
         self.cache_dir_path = cache_dir_path
-        self.client_region = None
-        self.client_time_zone = None
         self.language = "en"
-        self.max_concurrent = 5
-        self.proxy = None
-        self.timeout = 60
         self.predict_count = 0
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> str:
+    async def _recognize_image_uncached(self, image: Image.Image) -> dict[str, object]:
         """Run fake Google Lens recognition.
 
         Arguments:
             image: input image
         Returns:
-            recognized text
+            normalized OCR result
         """
         self.predict_count += 1
-        return "cached text"
+        return {"line_blocks": [{"text": "cached"}, {"text": "text"}]}
 
 
 def test_clean_google_lens_text_ignores_empty_and_error_messages():
@@ -91,11 +86,46 @@ def test_google_lens_recognizer_caches_results_by_image(tmp_path: Path):
     recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
-    assert recognizer.recognize_image(image) == "cached text"
-    assert recognizer.recognize_image(image) == "cached text"
+    assert recognizer.recognize_image(image) == "cached\ntext"
+    assert recognizer.recognize_image(image) == "cached\ntext"
 
     assert recognizer.predict_count == 1
     assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
+    """Test cached Google Lens results are formatted after loading."""
+    recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    assert recognizer.recognize_image(image) == "cached\ntext"
+
+    cache_path = next(tmp_path.glob("*.json"))
+    cache_path.write_text(
+        '{"schema": 1, "line_blocks": [{"text": "cached"}, {"text": "..."}]}',
+        encoding="utf-8",
+    )
+
+    assert recognizer.recognize_image(image) == "cached ..."
+    assert recognizer.predict_count == 1
+
+
+def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(
+    tmp_path: Path,
+):
+    """Test uncached synchronous recognition fails clearly in an async loop.
+
+    Arguments:
+        tmp_path: temporary path fixture
+    """
+    recognizer = CountingGoogleLensRecognizer(cache_dir_path=tmp_path)
+
+    async def recognize() -> None:
+        """Run synchronous recognition from an async context."""
+        with pytest.raises(RuntimeError, match="cannot run uncached Google Lens OCR"):
+            recognizer.recognize_image(Image.new("RGBA", (10, 8), (255, 255, 255, 0)))
+
+    asyncio.run(recognize())
 
 
 def test_google_lens_recognizer_import_error_is_actionable(
@@ -139,26 +169,23 @@ def test_google_lens_recognizer_import_error_is_actionable(
         GoogleLensRecognizer._get_lens_api_class()
 
 
-def test_google_lens_recognizer_omits_unset_api_key(
+def test_google_lens_recognizer_reuses_lens_api_client(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test unset API key does not override chrome-lens-py's default key.
+    """Test Google Lens recognizer reuses one LensAPI client.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
     """
-    observed_kwargs = {}
+    init_count = 0
 
     class FakeLensApi:
         """Fake chrome-lens-py LensAPI class."""
 
-        def __init__(self, **kwargs: object):
-            """Initialize.
-
-            Arguments:
-                **kwargs: LensAPI keyword arguments
-            """
-            observed_kwargs.update(kwargs)
+        def __init__(self):
+            """Initialize."""
+            nonlocal init_count
+            init_count += 1
 
         async def process_image(self, **kwargs: object) -> dict[str, object]:
             """Process an image.
@@ -174,5 +201,6 @@ def test_google_lens_recognizer_omits_unset_api_key(
     recognizer = GoogleLensRecognizer()
 
     assert recognizer.recognize_image(Image.new("RGBA", (10, 8))) == "recognized"
+    assert recognizer.recognize_image(Image.new("RGBA", (12, 9))) == "recognized"
 
-    assert "api_key" not in observed_kwargs
+    assert init_count == 1
