@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from inspect import signature
 from pathlib import Path
 from unittest.mock import patch
 
@@ -51,6 +52,28 @@ def test_media_probe_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
+def test_media_probe_cli_groups_arguments():
+    """Test media probe CLI groups arguments by purpose."""
+    groups = {
+        group.title: {
+            option
+            for action in group._group_actions
+            for option in action.option_strings
+        }
+        for group in MediaProbeCli.argparser()._action_groups
+    }
+
+    assert "--infile" in groups["input arguments"]
+    assert "--details" in groups["operation arguments"]
+
+
+def test_media_probe_cli_main_orders_infile_before_details():
+    """Test media probe CLI implementation signature follows argument order."""
+    parameters = list(signature(MediaProbeCli._main).parameters)
+
+    assert parameters.index("infile_path") < parameters.index("details")
+
+
 def test_media_probe_cli_lists_all_streams(
     tmp_path: Path,
     capsys: pytest.CaptureFixture[str],
@@ -65,7 +88,7 @@ def test_media_probe_cli_lists_all_streams(
     infile_path.touch()
 
     with patch(
-        "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+        "scinoephile.core.media.streams.ffmpeg.probe",
         return_value={
             "streams": [
                 {
@@ -115,7 +138,7 @@ def test_media_probe_cli_details_uses_plain_probe(
 
     with (
         patch(
-            "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+            "scinoephile.core.media.streams.ffmpeg.probe",
             return_value={"streams": []},
         ) as probe,
         patch("scinoephile.cli.media.media_probe_cli.cache_subtitle_stream_artifacts"),
@@ -140,7 +163,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
 
     with (
         patch(
-            "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+            "scinoephile.core.media.streams.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -189,7 +212,7 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
 
     with (
         patch(
-            "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+            "scinoephile.core.media.streams.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -238,7 +261,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
 
     with (
         patch(
-            "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+            "scinoephile.core.media.streams.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -276,7 +299,7 @@ def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
 
     with (
         patch(
-            "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+            "scinoephile.core.media.streams.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -334,7 +357,7 @@ def test_media_probe_cli_uses_stream_models(
     infile_path.touch()
 
     with patch(
-        "scinoephile.cli.media.media_probe_cli.ffmpeg.probe",
+        "scinoephile.core.media.streams.ffmpeg.probe",
         return_value={
             "streams": [
                 {

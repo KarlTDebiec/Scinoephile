@@ -7,8 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-import ffmpeg
-
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -16,6 +14,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.media import Stream, SubtitleStream
+from scinoephile.core.media.streams import get_media_streams
 from scinoephile.core.media.subtitle_analysis import cache_subtitle_stream_artifacts
 
 __all__ = ["MediaProbeCli"]
@@ -55,9 +54,11 @@ class MediaProbeCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--infile",
             dest="infile_path",
@@ -65,7 +66,9 @@ class MediaProbeCli(ScinoephileCliBase):
             type=input_file_arg(),
             help="video infile containing media streams",
         )
-        arg_groups["input arguments"].add_argument(
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
             "--details",
             action="store_true",
             help="include additional stream details",
@@ -86,18 +89,13 @@ class MediaProbeCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        details: bool,
         infile_path: Path,
+        details: bool,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         try:
-            probe = ffmpeg.probe(str(infile_path))
-            streams = [
-                stream
-                for stream in probe.get("streams", [])
-                if isinstance(stream, dict)
-            ]
+            streams = get_media_streams(infile_path)
             if details:
                 cache_subtitle_stream_artifacts(
                     infile_path,
@@ -122,10 +120,6 @@ class MediaProbeCli(ScinoephileCliBase):
                         details=details,
                     )
                 )
-        except ffmpeg.Error:
-            parser.error(
-                str(ScinoephileError(f"Could not probe media file {infile_path}"))
-            )
         except ScinoephileError as exc:
             parser.error(str(exc))
 

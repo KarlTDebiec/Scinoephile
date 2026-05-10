@@ -12,6 +12,7 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
+from scinoephile.core.media.streams import get_media_streams
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
     get_subtitle_streams,
@@ -24,7 +25,7 @@ def test_get_subtitle_streams(tmp_path: Path):
     infile_path.touch()
 
     with patch(
-        "scinoephile.core.media.subtitles.ffmpeg.probe",
+        "scinoephile.core.media.streams.ffmpeg.probe",
         return_value={
             "streams": [
                 {"index": 0, "codec_type": "video", "codec_name": "h264"},
@@ -56,6 +57,28 @@ def test_get_subtitle_streams(tmp_path: Path):
         "Stream #0:2(eng): Subtitle: subrip "
         "(extension=srt, title=English, sdh, subtitles=123)"
     )
+
+
+def test_get_media_streams_filters_non_dict_streams(tmp_path: Path):
+    """Test media stream probing returns only ffprobe stream objects."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.core.media.streams.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {"index": 0, "codec_type": "video", "codec_name": "h264"},
+                "not a stream",
+            ],
+        },
+    ) as probe:
+        streams = get_media_streams(infile_path)
+
+    probe.assert_called_once_with(str(infile_path))
+    assert streams == [
+        {"index": 0, "codec_type": "video", "codec_name": "h264"},
+    ]
 
 
 def test_stream_from_ffprobe_stream_returns_typed_streams():

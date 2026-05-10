@@ -10,6 +10,7 @@ import ffmpeg
 
 from scinoephile.core.exceptions import ScinoephileError
 
+from .streams import get_media_streams
 from .subtitle_stream import SubtitleStream
 
 __all__ = [
@@ -61,15 +62,8 @@ def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
     Raises:
         ScinoephileError: if ffprobe fails
     """
-    try:
-        probe = ffmpeg.probe(str(infile_path))
-    except ffmpeg.Error as exc:
-        raise ScinoephileError(f"Could not probe media file {infile_path}") from exc
-
     subtitle_streams = []
-    for stream in probe.get("streams", []):
-        if not isinstance(stream, dict):
-            continue
+    for stream in get_media_streams(infile_path):
         subtitle_stream = SubtitleStream.from_ffprobe_stream(stream)
         if subtitle_stream is not None:
             subtitle_streams.append(subtitle_stream)
