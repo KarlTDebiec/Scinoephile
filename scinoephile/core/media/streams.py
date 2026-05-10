@@ -12,6 +12,7 @@ import ffmpeg
 
 from scinoephile.core.exceptions import ScinoephileError
 
+from .audio_stream import AudioStream
 from .stream import Stream
 from .subtitle_analysis import (
     analyze_subtitle_stream_script,
@@ -19,15 +20,19 @@ from .subtitle_analysis import (
     get_subtitle_stream_stats,
 )
 from .subtitle_stream import SubtitleStream
+from .video_stream import VideoStream
 
-__all__ = ["get_media_streams"]
+__all__ = ["get_streams"]
 
 logger = getLogger(__name__)
 
 
-def get_media_streams(
+def get_streams(
     infile_path: Path,
     *,
+    video: bool = True,
+    audio: bool = True,
+    subtitles: bool = True,
     details: bool = False,
     cache_dir_path: Path | None = None,
 ) -> list[Stream]:
@@ -35,6 +40,9 @@ def get_media_streams(
 
     Arguments:
         infile_path: media input file to inspect
+        video: whether to include video streams
+        audio: whether to include audio streams
+        subtitles: whether to include subtitle streams
         details: whether to include expensive additional details
         cache_dir_path: cache directory path
     Returns:
@@ -54,6 +62,13 @@ def get_media_streams(
         parsed_stream = Stream.from_ffprobe_stream(cast("dict[str, Any]", stream))
         if parsed_stream is None:
             continue
+        if not _includes_stream(
+            parsed_stream,
+            video=video,
+            audio=audio,
+            subtitles=subtitles,
+        ):
+            continue
         if isinstance(parsed_stream, SubtitleStream):
             parsed_stream = parsed_stream.without_stats()
         streams.append(parsed_stream)
@@ -65,6 +80,32 @@ def get_media_streams(
             cache_dir_path=cache_dir_path,
         )
     return streams
+
+
+def _includes_stream(
+    stream: Stream,
+    *,
+    video: bool,
+    audio: bool,
+    subtitles: bool,
+) -> bool:
+    """Return whether a stream should be included by type filters.
+
+    Arguments:
+        stream: media stream
+        video: whether to include video streams
+        audio: whether to include audio streams
+        subtitles: whether to include subtitle streams
+    Returns:
+        whether the stream should be included
+    """
+    if isinstance(stream, VideoStream):
+        return video
+    if isinstance(stream, AudioStream):
+        return audio
+    if isinstance(stream, SubtitleStream):
+        return subtitles
+    return video and audio and subtitles
 
 
 def _with_details(

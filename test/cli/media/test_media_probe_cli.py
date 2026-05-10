@@ -65,6 +65,7 @@ def test_media_probe_cli_groups_arguments():
 
     assert "--infile" in groups["input arguments"]
     assert "--details" in groups["operation arguments"]
+    assert "--cache-dir" in groups["operation arguments"]
 
 
 def test_media_probe_cli_main_orders_infile_before_details():
@@ -72,6 +73,29 @@ def test_media_probe_cli_main_orders_infile_before_details():
     parameters = list(signature(MediaProbeCli._main).parameters)
 
     assert parameters.index("infile_path") < parameters.index("details")
+    assert parameters.index("details") < parameters.index("cache_dir_path")
+
+
+def test_media_probe_cli_passes_cache_dir_to_stream_probe(tmp_path: Path):
+    """Test media probe CLI passes cache directory to stream probing."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    cache_dir_path = tmp_path / "cache"
+
+    with patch(
+        "scinoephile.cli.media.media_probe_cli.get_streams",
+        return_value=[],
+    ) as get_streams:
+        run_cli_with_args(
+            MediaProbeCli,
+            f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
+        )
+
+    get_streams.assert_called_once_with(
+        infile_path.resolve(),
+        details=True,
+        cache_dir_path=cache_dir_path.resolve(),
+    )
 
 
 def test_media_probe_cli_lists_all_streams(

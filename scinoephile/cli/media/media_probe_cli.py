@@ -7,13 +7,14 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.media.streams import get_media_streams
+from scinoephile.core.media.streams import get_streams
 
 __all__ = ["MediaProbeCli"]
 
@@ -26,6 +27,7 @@ class MediaProbeCli(ScinoephileCliBase):
             "command-line interface for probing media streams": (
                 "探测媒体流的命令行界面"
             ),
+            "cache directory (default: %(default)s)": ("缓存目录（默认：%(default)s）"),
             "list media streams in a media file": "列出媒体文件中的媒体流",
             "include additional stream details": "包含更多媒体流详细信息",
             "video infile containing media streams": "包含媒体流的视频输入文件",
@@ -34,6 +36,7 @@ class MediaProbeCli(ScinoephileCliBase):
             "command-line interface for probing media streams": (
                 "探測媒體流的命令列介面"
             ),
+            "cache directory (default: %(default)s)": ("快取目錄（預設：%(default)s）"),
             "list media streams in a media file": "列出媒體檔中的媒體流",
             "include additional stream details": "包含更多媒體流詳細資訊",
             "video infile containing media streams": "包含媒體流的影片輸入檔",
@@ -71,6 +74,13 @@ class MediaProbeCli(ScinoephileCliBase):
             action="store_true",
             help="include additional stream details",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--cache-dir",
+            default=cache_dir_path_arg(None),
+            dest="cache_dir_path",
+            type=cache_dir_path_arg,
+            help="cache directory (default: %(default)s)",
+        )
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -89,11 +99,16 @@ class MediaProbeCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         details: bool,
+        cache_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         try:
-            for stream in get_media_streams(infile_path, details=details):
+            for stream in get_streams(
+                infile_path,
+                details=details,
+                cache_dir_path=cache_dir_path,
+            ):
                 print(stream.probe_description)
         except ScinoephileError as exc:
             parser.error(str(exc))

@@ -12,7 +12,7 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
-from scinoephile.core.media.streams import get_media_streams
+from scinoephile.core.media.streams import get_streams
 from scinoephile.core.media.subtitles import (
     extract_subtitle_stream,
     get_subtitle_streams,
@@ -58,7 +58,7 @@ def test_get_subtitle_streams(tmp_path: Path):
     )
 
 
-def test_get_media_streams_returns_typed_streams(tmp_path: Path):
+def test_get_streams_returns_typed_streams(tmp_path: Path):
     """Test media stream probing returns typed stream models."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
@@ -72,7 +72,7 @@ def test_get_media_streams_returns_typed_streams(tmp_path: Path):
             ],
         },
     ) as probe:
-        streams = get_media_streams(infile_path)
+        streams = get_streams(infile_path)
 
     probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 1
@@ -81,7 +81,34 @@ def test_get_media_streams_returns_typed_streams(tmp_path: Path):
     assert streams[0].codec_name == "h264"
 
 
-def test_get_media_streams_details_enriches_subtitle_streams(tmp_path: Path):
+def test_get_streams_filters_stream_types(tmp_path: Path):
+    """Test media stream probing filters by stream type."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.core.media.streams.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {"index": 0, "codec_type": "video", "codec_name": "h264"},
+                {"index": 1, "codec_type": "audio", "codec_name": "aac"},
+                {"index": 2, "codec_type": "subtitle", "codec_name": "subrip"},
+            ],
+        },
+    ):
+        streams = get_streams(
+            infile_path,
+            video=False,
+            audio=False,
+            subtitles=True,
+        )
+
+    assert len(streams) == 1
+    assert isinstance(streams[0], SubtitleStream)
+    assert streams[0].index == 2
+
+
+def test_get_streams_details_enriches_subtitle_streams(tmp_path: Path):
     """Test media stream details include subtitle script and stats."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
@@ -113,7 +140,7 @@ def test_get_media_streams_details_enriches_subtitle_streams(tmp_path: Path):
         stats.return_value.event_count = 12
         stats.return_value.first_start_ms = 62_500
         stats.return_value.last_end_ms = 3_725_250
-        streams = get_media_streams(
+        streams = get_streams(
             infile_path,
             details=True,
             cache_dir_path=cache_dir_path,

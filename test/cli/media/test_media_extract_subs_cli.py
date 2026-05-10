@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import ANY, Mock, patch
 
 import pytest
 
@@ -60,7 +60,7 @@ def test_media_extract_subs_cli(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
                 SubtitleStream(index=3, language="jpn", codec_name="subrip"),
@@ -76,10 +76,17 @@ def test_media_extract_subs_cli(tmp_path: Path):
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng zho -o {output_dir_path} --export",
+            f"--infile {infile_path} --languages eng zho -o {output_dir_path}",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve())
+    get_streams.assert_called_once_with(
+        infile_path.resolve(),
+        video=False,
+        audio=False,
+        subtitles=True,
+        details=False,
+        cache_dir_path=ANY,
+    )
     assert extract.call_count == 2
     assert extract.call_args_list[0].args[0] == infile_path.resolve()
     assert extract.call_args_list[0].args[1].index == 2
@@ -108,36 +115,44 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
-                SubtitleStream(index=4, language="zho", codec_name="subrip"),
+                SubtitleStream(
+                    index=4,
+                    language="zho",
+                    codec_name="subrip",
+                    script="zho-Hant",
+                ),
             ],
-        ),
+        ) as get_streams,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
         ),
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.analyze_subtitle_stream_script"
-        ) as analyze,
     ):
-        analyze.return_value.script = "zho-Hant"
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages zho -o {output_dir_path} "
-            "--export --details",
+            f"--infile {infile_path} --languages zho -o {output_dir_path} --details",
         )
 
+    get_streams.assert_called_once_with(
+        infile_path.resolve(),
+        video=False,
+        audio=False,
+        subtitles=True,
+        details=True,
+        cache_dir_path=ANY,
+    )
     extract.assert_called_once()
     assert extract.call_args.args[2] == output_dir_path.resolve() / "zho-Hant-4.srt"
 
 
-def test_media_extract_subs_cli_export_caches_matching_streams_together(
+def test_media_extract_subs_cli_output_dir_caches_matching_streams_together(
     tmp_path: Path,
 ):
-    """Test media extract-subs caches matching streams in one batch before export.
+    """Test media extract-subs caches matching streams in one batch before extraction.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -145,10 +160,11 @@ def test_media_extract_subs_cli_export_caches_matching_streams_together(
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     output_dir_path = tmp_path / "subtitles"
+    cache_dir_path = tmp_path / "cache"
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
                 SubtitleStream(index=3, language="zho", codec_name="subrip"),
@@ -161,21 +177,23 @@ def test_media_extract_subs_cli_export_caches_matching_streams_together(
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng zho -o {output_dir_path} --export",
+            f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
+            f"--cache-dir {cache_dir_path}",
         )
 
     cache.assert_called_once()
     assert [stream.index for stream in cache.call_args.args[1]] == [2, 3]
+    assert cache.call_args.kwargs == {"cache_dir_path": cache_dir_path.resolve()}
 
 
-def test_media_extract_subs_cli_details_uses_plain_probe(tmp_path: Path):
-    """Test media extract_subs CLI details mode avoids ffprobe packet counts."""
+def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
+    """Test media extract_subs CLI details mode passes through to stream probing."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(
                     index=2,
@@ -197,19 +215,25 @@ def test_media_extract_subs_cli_details_uses_plain_probe(tmp_path: Path):
             f"--infile {infile_path} --languages ENG --details",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve())
+    get_streams.assert_called_once_with(
+        infile_path.resolve(),
+        video=False,
+        audio=False,
+        subtitles=True,
+        details=True,
+        cache_dir_path=ANY,
+    )
     extract.assert_not_called()
 
 
-def test_media_extract_subs_cli_lists_with_output_dir(tmp_path: Path):
-    """Test media extract_subs CLI lists output paths without exporting."""
+def test_media_extract_subs_cli_lists_without_output_dir(tmp_path: Path):
+    """Test media extract_subs CLI lists streams without output paths."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
             ],
@@ -223,23 +247,23 @@ def test_media_extract_subs_cli_lists_with_output_dir(tmp_path: Path):
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng -o {output_dir_path}",
+            f"--infile {infile_path} --languages eng",
         )
 
     extract.assert_not_called()
 
 
-def test_media_extract_subs_cli_lists_with_missing_output_dir_without_creating_it(
+def test_media_extract_subs_cli_creates_missing_output_dir(
     tmp_path: Path,
 ):
-    """Test media extract_subs CLI lists missing outputs without mkdir."""
+    """Test media extract_subs CLI creates a missing output directory."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     output_dir_path = tmp_path / "subtitles"
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
             ],
@@ -257,8 +281,8 @@ def test_media_extract_subs_cli_lists_with_missing_output_dir_without_creating_i
             f"--infile {infile_path} --languages eng -o {output_dir_path}",
         )
 
-    assert not output_dir_path.exists()
-    extract.assert_not_called()
+    assert output_dir_path.exists()
+    extract.assert_called_once()
 
 
 def test_media_extract_subs_cli_overwrites_existing_file(tmp_path: Path):
@@ -272,7 +296,7 @@ def test_media_extract_subs_cli_overwrites_existing_file(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
             ],
@@ -287,8 +311,7 @@ def test_media_extract_subs_cli_overwrites_existing_file(tmp_path: Path):
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng -o {output_dir_path} "
-            "--export --overwrite",
+            f"--infile {infile_path} --languages eng -o {output_dir_path} --overwrite",
         )
 
     extract.assert_called_once()
@@ -304,7 +327,7 @@ def test_media_extract_subs_cli_extracts_sup_streams_to_image_dirs(tmp_path: Pat
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
                 SubtitleStream(index=3, language="zho", codec_name="hdmv_pgs_subtitle"),
@@ -324,7 +347,7 @@ def test_media_extract_subs_cli_extracts_sup_streams_to_image_dirs(tmp_path: Pat
         run_cli_with_args(
             MediaExtractSubsCli,
             f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
-            "--export --extract-sup",
+            "--extract-sup",
         )
 
     assert extract.call_count == 2
@@ -348,7 +371,7 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
         ) as load,
         patch("scinoephile.cli.media.media_extract_subs_cli.copy2") as copy,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(
                     index=0,
@@ -360,10 +383,17 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} -o {output_dir_path} --export --extract-sup",
+            f"--infile {infile_path} -o {output_dir_path} --extract-sup",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve())
+    get_streams.assert_called_once_with(
+        infile_path.resolve(),
+        video=False,
+        audio=False,
+        subtitles=True,
+        details=False,
+        cache_dir_path=ANY,
+    )
     load.assert_called_once_with(output_dir_path.resolve() / "source.sup")
     image_series.save.assert_called_once_with(output_dir_path.resolve() / "source")
     copy.assert_called_once_with(
@@ -385,7 +415,7 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir_in_place(tmp_path
         ) as load,
         patch("scinoephile.cli.media.media_extract_subs_cli.copy2") as copy,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[
                 SubtitleStream(
                     index=0,
@@ -397,7 +427,7 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir_in_place(tmp_path
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} -o {tmp_path} --export --extract-sup --overwrite",
+            f"--infile {infile_path} -o {tmp_path} --extract-sup --overwrite",
         )
 
     copy.assert_not_called()
@@ -414,7 +444,7 @@ def test_media_extract_subs_cli_rejects_sup_file_without_subtitle_streams(
 
     with (
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_streams",
             return_value=[],
         ),
         pytest.raises(SystemExit) as excinfo,
@@ -424,8 +454,8 @@ def test_media_extract_subs_cli_rejects_sup_file_without_subtitle_streams(
     assert excinfo.value.code == 2
 
 
-def test_media_extract_subs_cli_export_requires_output_dir(tmp_path: Path):
-    """Test media extract_subs CLI rejects export without output directory."""
+def test_media_extract_subs_cli_rejects_export_argument(tmp_path: Path):
+    """Test media extract_subs CLI rejects the removed export argument."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -435,31 +465,29 @@ def test_media_extract_subs_cli_export_requires_output_dir(tmp_path: Path):
     assert excinfo.value.code == 2
 
 
-def test_media_extract_subs_cli_extract_sup_requires_export(tmp_path: Path):
-    """Test media extract_subs CLI rejects SUP extraction without export."""
+def test_media_extract_subs_cli_extract_sup_requires_output_dir(tmp_path: Path):
+    """Test media extract_subs CLI rejects SUP extraction without output directory."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
 
     with pytest.raises(SystemExit) as excinfo:
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} -o {output_dir_path} --extract-sup",
+            f"--infile {infile_path} --extract-sup",
         )
 
     assert excinfo.value.code == 2
 
 
-def test_media_extract_subs_cli_overwrite_requires_export(tmp_path: Path):
-    """Test media extract_subs CLI rejects overwrite without export."""
+def test_media_extract_subs_cli_overwrite_requires_output_dir(tmp_path: Path):
+    """Test media extract_subs CLI rejects overwrite without output directory."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
-    output_dir_path = tmp_path / "subtitles"
 
     with pytest.raises(SystemExit) as excinfo:
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} -o {output_dir_path} --overwrite",
+            f"--infile {infile_path} --overwrite",
         )
 
     assert excinfo.value.code == 2

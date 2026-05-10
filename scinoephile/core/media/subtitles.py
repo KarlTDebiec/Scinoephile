@@ -10,7 +10,7 @@ import ffmpeg
 
 from scinoephile.core.exceptions import ScinoephileError
 
-from .streams import get_media_streams
+from .streams import get_streams
 from .subtitle_stream import SubtitleStream
 
 __all__ = [
@@ -52,11 +52,16 @@ def extract_subtitle_stream(
     return outfile_path
 
 
-def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
+def get_subtitle_streams(
+    infile_path: Path,
+    *,
+    cache_dir_path: Path | None = None,
+) -> list[SubtitleStream]:
     """Return subtitle streams in a media file.
 
     Arguments:
         infile_path: media input file to inspect
+        cache_dir_path: cache directory path
     Returns:
         subtitle stream metadata
     Raises:
@@ -64,6 +69,12 @@ def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
     """
     return [
         stream
-        for stream in get_media_streams(infile_path)
+        for stream in get_streams(
+            infile_path,
+            video=False,
+            audio=False,
+            subtitles=True,
+            cache_dir_path=cache_dir_path,
+        )
         if isinstance(stream, SubtitleStream)
     ]
