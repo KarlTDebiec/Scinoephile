@@ -249,7 +249,7 @@ def test_media_extract_subs_cli_requires_output_dir(tmp_path: Path):
 def test_media_extract_subs_cli_creates_missing_output_dir(
     tmp_path: Path,
 ):
-    """Test media extract_subs CLI creates a missing output directory."""
+    """Test media extract_subs CLI logs when creating a missing output directory."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     output_dir_path = tmp_path / "subtitles"
@@ -268,6 +268,7 @@ def test_media_extract_subs_cli_creates_missing_output_dir(
             "scinoephile.cli.media.media_extract_subs_cli."
             "cache_subtitle_stream_artifacts"
         ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.logger") as logger,
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
@@ -275,6 +276,9 @@ def test_media_extract_subs_cli_creates_missing_output_dir(
         )
 
     assert output_dir_path.exists()
+    logger.info.assert_called_once_with(
+        f"Created subtitle output directory: {output_dir_path.resolve()}"
+    )
     extract.assert_called_once()
 
 

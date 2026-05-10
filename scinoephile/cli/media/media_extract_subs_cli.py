@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from logging import getLogger
 from pathlib import Path
 from shutil import copy2
+from typing import cast
 
 from scinoephile.cli.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
@@ -27,6 +29,8 @@ from scinoephile.core.media.subtitle_analysis import (
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["MediaExtractSubsCli"]
+
+logger = getLogger(__name__)
 
 
 class MediaExtractSubsCli(ScinoephileCliBase):
@@ -168,24 +172,25 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        output_dir_path.mkdir(parents=True, exist_ok=True)
+        if not output_dir_path.exists():
+            output_dir_path.mkdir(parents=True)
+            logger.info(f"Created subtitle output directory: {output_dir_path}")
         language_codes = set(languages)
 
         # Perform operations
         try:
             if infile_path.suffix.lower() == ".sup":
-                streams = [
-                    stream
-                    for stream in get_streams(
+                streams = cast(
+                    "list[SubtitleStream]",
+                    get_streams(
                         infile_path,
                         video=False,
                         audio=False,
                         subtitles=True,
                         details=details,
                         cache_dir_path=cache_dir_path,
-                    )
-                    if isinstance(stream, SubtitleStream)
-                ]
+                    ),
+                )
                 if not streams:
                     raise ScinoephileError(
                         f"No subtitle streams found in {infile_path}"
@@ -200,19 +205,21 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 )
                 return
 
-            streams = [
-                stream
-                for stream in get_streams(
+            subtitle_streams = cast(
+                "list[SubtitleStream]",
+                get_streams(
                     infile_path,
                     video=False,
                     audio=False,
                     subtitles=True,
                     details=details,
                     cache_dir_path=cache_dir_path,
-                )
-                if isinstance(stream, SubtitleStream)
-                and stream.language in language_codes
-            ]
+                ),
+            )
+            streams = []
+            for stream in subtitle_streams:
+                if stream.language in language_codes:
+                    streams.append(stream)
             cache_subtitle_stream_artifacts(
                 infile_path,
                 streams,
