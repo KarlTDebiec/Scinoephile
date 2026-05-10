@@ -29,7 +29,6 @@ def get_tesseract_ocr_recognizer(
     executable_path: Path | str = "tesseract",
     detect_italics: bool = False,
     language: str = "eng",
-    legacy_tessdata_dir_path: Path | None = None,
     oem: int | None = 3,
     psm: int = 6,
     scale: int = 2,
@@ -43,7 +42,6 @@ def get_tesseract_ocr_recognizer(
         executable_path: Tesseract executable path or command name
         detect_italics: whether to run a legacy-engine pass for italics
         language: Tesseract language code
-        legacy_tessdata_dir_path: optional tessdata directory for legacy OCR
         oem: Tesseract OCR engine mode, or None to omit --oem
         psm: Tesseract page segmentation mode
         scale: image preprocessing scale
@@ -59,7 +57,6 @@ def get_tesseract_ocr_recognizer(
         executable_path=executable_path,
         detect_italics=detect_italics,
         language=language,
-        legacy_tessdata_dir_path=legacy_tessdata_dir_path,
         oem=oem,
         psm=psm,
         scale=scale,
@@ -74,7 +71,6 @@ def ocr_image_series_with_tesseract(
     recognizer: TesseractOcrRecognizer | None = None,
     detect_italics: bool = False,
     language: str = "eng",
-    legacy_tessdata_dir_path: Path | None = None,
 ) -> Series:
     """OCR an image subtitle series with Tesseract.
 
@@ -83,7 +79,6 @@ def ocr_image_series_with_tesseract(
         recognizer: Tesseract-compatible recognizer
         detect_italics: whether to run a legacy-engine pass for italics
         language: Tesseract language code
-        legacy_tessdata_dir_path: optional tessdata directory for legacy OCR
     Returns:
         text subtitle series
     """
@@ -91,7 +86,6 @@ def ocr_image_series_with_tesseract(
         tesseract_recognizer = get_tesseract_ocr_recognizer(
             detect_italics=detect_italics,
             language=language,
-            legacy_tessdata_dir_path=legacy_tessdata_dir_path,
         )
     else:
         tesseract_recognizer = recognizer

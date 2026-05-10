@@ -131,7 +131,6 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
             executable_path: Path | str = "tesseract",
             detect_italics: bool = False,
             language: str = "eng",
-            legacy_tessdata_dir_path: Path | None = None,
             oem: int = 3,
             psm: int = 6,
             scale: int = 2,
@@ -145,7 +144,6 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
                 executable_path: Tesseract executable path or command name
                 detect_italics: whether to run a legacy-engine pass for italics
                 language: Tesseract language code
-                legacy_tessdata_dir_path: optional tessdata directory for legacy OCR
                 oem: Tesseract OCR engine mode
                 psm: Tesseract page segmentation mode
                 scale: image preprocessing scale
@@ -155,7 +153,6 @@ def test_ocr_image_series_with_tesseract_uses_runtime_cache(
             _ = (
                 executable_path,
                 detect_italics,
-                legacy_tessdata_dir_path,
                 oem,
                 psm,
                 scale,

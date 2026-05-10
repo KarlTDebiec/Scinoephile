@@ -158,7 +158,6 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
         assert kwargs == {
             "detect_italics": False,
             "language": "eng",
-            "legacy_tessdata_dir_path": None,
         }
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
@@ -182,17 +181,13 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
 
 def test_ocr_tesseract_cli_passes_italic_detection_options(
     monkeypatch: pytest.MonkeyPatch,
-    tmp_path: Path,
 ):
     """Test Tesseract OCR CLI passes italic detection options.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
-        tmp_path: temporary directory path
     """
     input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
-    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
-    legacy_tessdata_dir_path.mkdir()
 
     def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fake Tesseract OCR image series processing.
@@ -206,7 +201,6 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         assert kwargs == {
             "detect_italics": True,
             "language": "eng",
-            "legacy_tessdata_dir_path": legacy_tessdata_dir_path,
         }
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
@@ -219,10 +213,7 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         output_path = output_dir_path / "ocr.srt"
         run_cli_with_args(
             OcrTesseractCli,
-            f"--infile {input_path} "
-            "--detect-italics "
-            f"--legacy-tessdata-dir {legacy_tessdata_dir_path} "
-            f"--outfile {output_path}",
+            f"--infile {input_path} --detect-italics --outfile {output_path}",
         )
 
         output = Series.load(output_path)

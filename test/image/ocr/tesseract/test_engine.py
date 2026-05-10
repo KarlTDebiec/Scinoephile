@@ -7,6 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import requests
 from PIL import Image
 
 from scinoephile.core import ScinoephileError
@@ -76,6 +77,26 @@ def test_tesseract_ocr_recognizer_caches_by_configuration(tmp_path: Path):
     assert len(list(tmp_path.glob("*.json"))) == 2
 
 
+def test_tesseract_ocr_recognizer_cache_key_ignores_engine_version(tmp_path: Path):
+    """Test Tesseract recognizer cache keys do not include an engine version."""
+
+    class VersionedCountingRecognizer(CountingTesseractOcrRecognizer):
+        """Counting recognizer with a legacy cache version attribute."""
+
+        engine_version = "unused-version"
+
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+    unversioned_recognizer = CountingTesseractOcrRecognizer(cache_dir_path=tmp_path)
+    versioned_recognizer = VersionedCountingRecognizer(cache_dir_path=tmp_path)
+
+    assert unversioned_recognizer.recognize_image(image) == "cached text eng"
+    assert versioned_recognizer.recognize_image(image) == "cached text eng"
+
+    assert unversioned_recognizer.recognize_count == 1
+    assert versioned_recognizer.recognize_count == 0
+    assert len(list(tmp_path.glob("*.json"))) == 1
+
+
 def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     """Test Tesseract command includes hOCR, tessdata, language, psm, and oem."""
     observed_command: list[str] = []
@@ -128,8 +149,9 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
 def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     """Test italic detection runs a legacy-engine hOCR pass."""
     observed_commands: list[list[str]] = []
-    tessdata_dir_path = tmp_path / "legacy-tessdata"
-    tessdata_dir_path.mkdir()
+    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
+    legacy_tessdata_dir_path.mkdir()
+    (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
     class CommandCapturingRecognizer(TesseractOcrRecognizer):
         """Recognizer that captures primary and legacy command arguments."""
@@ -164,9 +186,9 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
             return 0, "", ""
 
     recognizer = CommandCapturingRecognizer(
+        cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
         language="eng",
-        legacy_tessdata_dir_path=tessdata_dir_path,
         detect_italics=True,
         skip_executable_validation=True,
     )
@@ -185,15 +207,146 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     assert "tessedit_create_hocr=1" in legacy_command
     assert "hocr_font_info=1" in legacy_command
     assert "--tessdata-dir" in legacy_command
-    assert str(tessdata_dir_path.resolve()) in legacy_command
+    assert str(legacy_tessdata_dir_path.resolve()) in legacy_command
     assert "hocr" not in legacy_command
+
+
+def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test italic detection downloads missing legacy traineddata lazily.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    observed_urls: list[str] = []
+
+    class FakeResponse:
+        """Fake download response."""
+
+        content = b"legacy traineddata"
+
+        def raise_for_status(self):
+            """Raise for unsuccessful response."""
+
+    def fake_get(url: str, *, timeout: float) -> FakeResponse:
+        """Record download URL and return fake response.
+
+        Arguments:
+            url: requested URL
+            timeout: request timeout in seconds
+        Returns:
+            fake response
+        """
+        assert timeout == 60.0
+        observed_urls.append(url)
+        return FakeResponse()
+
+    monkeypatch.setattr(requests, "get", fake_get)
+
+    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+        """Recognizer that writes primary and legacy hOCR output."""
+
+        def _run_command(self, command: list[str]) -> tuple[int, str, str]:
+            """Write hOCR output.
+
+            Arguments:
+                command: command arguments
+            Returns:
+                fake process result
+            """
+            output_base_path = Path(command[2])
+            output_base_path.with_suffix(".hocr").write_text(
+                "<span class='ocr_line'><span class='ocrx_word'>ok</span></span>",
+                encoding="utf-8",
+            )
+            return 0, "", ""
+
+    recognizer = CommandCapturingRecognizer(
+        cache_dir_path=tmp_path,
+        executable_path=Path("tesseract"),
+        language="eng",
+        detect_italics=True,
+        skip_executable_validation=True,
+    )
+
+    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == "ok"
+    assert observed_urls == [
+        "https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/"
+        "eng.traineddata"
+    ]
+    assert (tmp_path / "legacy-tessdata" / "eng.traineddata").read_bytes() == (
+        b"legacy traineddata"
+    )
+
+
+def test_tesseract_detect_italics_reuses_existing_legacy_tessdata(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test italic detection reuses cached legacy traineddata.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
+    legacy_tessdata_dir_path.mkdir()
+    (legacy_tessdata_dir_path / "eng.traineddata").write_bytes(b"existing")
+
+    def fail_get(*args: object, **kwargs: object) -> object:
+        """Fail if a download is attempted.
+
+        Arguments:
+            *args: positional arguments
+            **kwargs: keyword arguments
+        Returns:
+            never returns
+        Raises:
+            AssertionError: always
+        """
+        _ = args, kwargs
+        raise AssertionError("unexpected download")
+
+    monkeypatch.setattr(requests, "get", fail_get)
+
+    class CommandCapturingRecognizer(TesseractOcrRecognizer):
+        """Recognizer that writes primary and legacy hOCR output."""
+
+        def _run_command(self, command: list[str]) -> tuple[int, str, str]:
+            """Write hOCR output.
+
+            Arguments:
+                command: command arguments
+            Returns:
+                fake process result
+            """
+            output_base_path = Path(command[2])
+            output_base_path.with_suffix(".hocr").write_text(
+                "<span class='ocr_line'><span class='ocrx_word'>ok</span></span>",
+                encoding="utf-8",
+            )
+            return 0, "", ""
+
+    recognizer = CommandCapturingRecognizer(
+        cache_dir_path=tmp_path,
+        executable_path=Path("tesseract"),
+        language="eng",
+        detect_italics=True,
+        skip_executable_validation=True,
+    )
+
+    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == "ok"
 
 
 def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
     """Test blank English OCR result falls back to legacy single-line OCR."""
     observed_commands: list[list[str]] = []
-    tessdata_dir_path = tmp_path / "legacy-tessdata"
-    tessdata_dir_path.mkdir()
+    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
+    legacy_tessdata_dir_path.mkdir()
+    (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
     class LegacyFallbackRecognizer(TesseractOcrRecognizer):
         """Recognizer that simulates blank primary OCR and useful legacy OCR."""
@@ -221,9 +374,9 @@ def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
             return 0, "", ""
 
     recognizer = LegacyFallbackRecognizer(
+        cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
         language="eng",
-        legacy_tessdata_dir_path=tessdata_dir_path,
         skip_executable_validation=True,
     )
 
@@ -236,20 +389,21 @@ def test_tesseract_blank_english_result_uses_legacy_fallback(tmp_path: Path):
     assert "--psm" in fallback_command
     assert fallback_command[fallback_command.index("--psm") + 1] == "7"
     assert "--tessdata-dir" in fallback_command
-    assert str(tessdata_dir_path.resolve()) in fallback_command
+    assert str(legacy_tessdata_dir_path.resolve()) in fallback_command
 
 
-def test_tesseract_blank_non_english_result_skips_legacy_fallback(tmp_path: Path):
-    """Test blank non-English OCR result does not use legacy fallback."""
+def test_tesseract_blank_chinese_result_uses_legacy_fallback(tmp_path: Path):
+    """Test blank Chinese OCR result falls back to legacy single-line OCR."""
     observed_commands: list[list[str]] = []
-    tessdata_dir_path = tmp_path / "legacy-tessdata"
-    tessdata_dir_path.mkdir()
+    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
+    legacy_tessdata_dir_path.mkdir()
+    (legacy_tessdata_dir_path / "chi_tra.traineddata").touch()
 
-    class BlankRecognizer(TesseractOcrRecognizer):
-        """Recognizer that simulates blank OCR."""
+    class LegacyFallbackRecognizer(TesseractOcrRecognizer):
+        """Recognizer that simulates blank primary OCR and useful legacy OCR."""
 
         def _run_command(self, command: list[str]) -> tuple[int, str, str]:
-            """Capture command and write blank hOCR output.
+            """Capture command and write fallback hOCR output.
 
             Arguments:
                 command: command arguments
@@ -258,25 +412,31 @@ def test_tesseract_blank_non_english_result_skips_legacy_fallback(tmp_path: Path
             """
             observed_commands.append(command.copy())
             output_base_path = Path(command[2])
-            output_base_path.with_suffix(".hocr").write_text(
-                "<span class='ocr_line'></span>",
-                encoding="utf-8",
-            )
+            if "--oem" in command and command[command.index("--oem") + 1] == "0":
+                hocr = (
+                    "<span class='ocr_line'><span class='ocrx_word'>你好</span></span>"
+                )
+            else:
+                hocr = "<span class='ocr_line'></span>"
+            output_base_path.with_suffix(".hocr").write_text(hocr, encoding="utf-8")
             return 0, "", ""
 
-    recognizer = BlankRecognizer(
+    recognizer = LegacyFallbackRecognizer(
+        cache_dir_path=tmp_path,
         executable_path=Path("tesseract"),
         language="chi_tra",
-        legacy_tessdata_dir_path=tessdata_dir_path,
         skip_executable_validation=True,
     )
 
-    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == ""
-    assert len(observed_commands) == 1
+    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == "你好"
+    assert len(observed_commands) == 2
 
 
 def test_tesseract_detect_italics_raises_clear_legacy_error(tmp_path: Path):
     """Test italic detection reports missing legacy model support clearly."""
+    legacy_tessdata_dir_path = tmp_path / "legacy-tessdata"
+    legacy_tessdata_dir_path.mkdir()
+    (legacy_tessdata_dir_path / "eng.traineddata").touch()
 
     class LegacyFailingRecognizer(TesseractOcrRecognizer):
         """Recognizer that simulates a missing legacy Tesseract model."""

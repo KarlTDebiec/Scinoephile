@@ -11,6 +11,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import override
 
+import requests
 from PIL import Image
 
 from scinoephile.common.subprocess import run_command
@@ -20,6 +21,7 @@ from scinoephile.common.validation import (
     val_output_dir_path,
 )
 from scinoephile.core import ScinoephileError
+from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .hocr import parse_tesseract_hocr, transfer_tesseract_hocr_italics
 from .preprocessing import preprocess_tesseract_ocr_image
@@ -30,12 +32,15 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE = (
+    "https://raw.githubusercontent.com/tesseract-ocr/tessdata/master/"
+    "{language}.traineddata"
+)
+"""URL template for legacy-capable Tesseract traineddata."""
+
 
 class TesseractOcrRecognizer:
     """Tesseract recognizer for image subtitles."""
-
-    engine_version = "tesseract-4"
-    """Tesseract cache version label."""
 
     def __init__(
         self,
@@ -44,7 +49,6 @@ class TesseractOcrRecognizer:
         executable_path: Path | str = "tesseract",
         detect_italics: bool = False,
         language: str = "eng",
-        legacy_tessdata_dir_path: Path | None = None,
         oem: int | None = 3,
         psm: int = 6,
         scale: int = 2,
@@ -58,7 +62,6 @@ class TesseractOcrRecognizer:
             executable_path: Tesseract executable path or command name
             detect_italics: whether to run a legacy-engine pass for italics
             language: Tesseract language code
-            legacy_tessdata_dir_path: optional tessdata directory for legacy OCR
             oem: Tesseract OCR engine mode, or None to omit --oem
             psm: Tesseract page segmentation mode
             scale: image preprocessing scale
@@ -84,10 +87,6 @@ class TesseractOcrRecognizer:
         if tessdata_dir_path is not None:
             self.tessdata_dir_path = val_input_dir_path(tessdata_dir_path)
 
-        self.legacy_tessdata_dir_path: Path | None = None
-        if legacy_tessdata_dir_path is not None:
-            self.legacy_tessdata_dir_path = val_input_dir_path(legacy_tessdata_dir_path)
-
     @override
     def __repr__(self) -> str:
         """String representation."""
@@ -97,7 +96,6 @@ class TesseractOcrRecognizer:
             f"executable_path={self.executable_path!r}, "
             f"detect_italics={self.detect_italics!r}, "
             f"language={self.language!r}, "
-            f"legacy_tessdata_dir_path={self.legacy_tessdata_dir_path!r}, "
             f"oem={self.oem!r}, "
             f"psm={self.psm!r}, "
             f"scale={self.scale!r}, "
@@ -179,9 +177,7 @@ class TesseractOcrRecognizer:
             "-c",
             "hocr_font_info=1",
         ]
-        tessdata_dir_path = self.legacy_tessdata_dir_path or self.tessdata_dir_path
-        if tessdata_dir_path is not None:
-            command.extend(["--tessdata-dir", str(tessdata_dir_path)])
+        command.extend(["--tessdata-dir", str(self._get_legacy_tessdata_dir_path())])
         return command
 
     def _build_legacy_fallback_command(
@@ -210,9 +206,7 @@ class TesseractOcrRecognizer:
             "-c",
             "tessedit_create_hocr=1",
         ]
-        tessdata_dir_path = self.legacy_tessdata_dir_path or self.tessdata_dir_path
-        if tessdata_dir_path is not None:
-            command.extend(["--tessdata-dir", str(tessdata_dir_path)])
+        command.extend(["--tessdata-dir", str(self._get_legacy_tessdata_dir_path())])
         return command
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
@@ -228,10 +222,9 @@ class TesseractOcrRecognizer:
 
         image_sha256 = hashlib.sha256(image.tobytes()).hexdigest()
         cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.engine_version}_"
-            f"{self.executable_path}_{self.detect_italics}_{self.language}_"
-            f"{self.legacy_tessdata_dir_path}_{self.oem}_{self.psm}_{self.scale}_"
-            f"{self.tessdata_dir_path}"
+            f"{image_sha256}_{image.mode}_{image.size}_{self.executable_path}_"
+            f"{self.detect_italics}_{self.language}_{self.oem}_{self.psm}_"
+            f"{self.scale}_{self.tessdata_dir_path}"
         )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
@@ -295,7 +288,8 @@ class TesseractOcrRecognizer:
             )
             if self._is_usable_legacy_blank_fallback_text(fallback_text):
                 logger.info(
-                    "Using Tesseract legacy fallback for blank English OCR result"
+                    "Using Tesseract legacy fallback for blank OCR result "
+                    f"with language {self.language}"
                 )
                 return fallback_text
             return text
@@ -338,9 +332,8 @@ class TesseractOcrRecognizer:
         except (OSError, ValueError) as exc:
             raise ScinoephileError(
                 "Tesseract italic detection requires legacy Tesseract data. "
-                "Install legacy-capable traineddata and pass "
-                "--legacy-tessdata-dir if it is not in Tesseract's default "
-                "tessdata directory."
+                "Scinoephile downloads legacy-capable traineddata to its "
+                "Tesseract cache directory when needed."
             ) from exc
 
         return transfer_tesseract_hocr_italics(hocr, legacy_hocr)
@@ -348,11 +341,56 @@ class TesseractOcrRecognizer:
     @property
     def _uses_legacy_blank_fallback(self) -> bool:
         """Whether to use legacy OCR as a blank-result fallback."""
-        return (
-            self.language == "eng"
-            and (self.legacy_tessdata_dir_path is not None or self.tessdata_dir_path)
-            is not None
-        )
+        return True
+
+    def _download_legacy_traineddata(self, traineddata_path: Path):
+        """Download legacy-capable Tesseract traineddata.
+
+        Arguments:
+            traineddata_path: destination traineddata path
+        Raises:
+            ScinoephileError: if the download fails
+        """
+        url = TESSERACT_LEGACY_TESSDATA_URL_TEMPLATE.format(language=self.language)
+        temp_traineddata_path = traineddata_path.with_suffix(".traineddata.tmp")
+        logger.info(f"Downloading Tesseract legacy traineddata: {url}")
+        try:
+            response = requests.get(url, timeout=60.0)
+            response.raise_for_status()
+            temp_traineddata_path.write_bytes(response.content)
+            temp_traineddata_path.replace(traineddata_path)
+        except (OSError, requests.RequestException) as exc:
+            temp_traineddata_path.unlink(missing_ok=True)
+            raise ScinoephileError(
+                "Tesseract legacy OCR requires legacy-capable traineddata. "
+                f"Failed to download {self.language}.traineddata from {url}."
+            ) from exc
+        logger.info(f"Downloaded Tesseract legacy traineddata: {traineddata_path}")
+
+    def _get_legacy_tessdata_dir_path(self) -> Path:
+        """Get legacy-capable Tesseract tessdata directory path.
+
+        Returns:
+            legacy tessdata directory path
+        """
+        if self.cache_dir_path is None:
+            legacy_tessdata_dir_path = get_runtime_cache_dir_path(
+                "tesseract",
+                "legacy-tessdata",
+            )
+        else:
+            legacy_tessdata_dir_path = val_output_dir_path(
+                self.cache_dir_path / "legacy-tessdata"
+            )
+
+        traineddata_path = legacy_tessdata_dir_path / f"{self.language}.traineddata"
+        if traineddata_path.exists():
+            logger.info(
+                f"Using cached Tesseract legacy traineddata: {traineddata_path}"
+            )
+        else:
+            self._download_legacy_traineddata(traineddata_path)
+        return legacy_tessdata_dir_path
 
     def _run_legacy_blank_fallback(
         self,
@@ -372,7 +410,7 @@ class TesseractOcrRecognizer:
                 self._build_legacy_fallback_command(image_path, output_base_path)
             )
             return parse_tesseract_hocr(self._read_hocr_output(output_base_path))
-        except (OSError, ValueError) as exc:
+        except (OSError, ScinoephileError, ValueError) as exc:
             logger.info(f"Tesseract legacy blank fallback failed: {exc}")
             return ""
 
@@ -385,7 +423,7 @@ class TesseractOcrRecognizer:
         Returns:
             whether text should replace a blank primary OCR result
         """
-        return any(char.isalpha() for char in text)
+        return any(char.isalpha() or "\u4e00" <= char <= "\u9fff" for char in text)
 
     @staticmethod
     def _read_hocr_output(output_base_path: Path) -> str:
