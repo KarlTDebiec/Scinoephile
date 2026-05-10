@@ -8,7 +8,6 @@ from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 from shutil import copy2
-from typing import cast
 
 from scinoephile.cli.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
@@ -180,16 +179,13 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         # Perform operations
         try:
             if infile_path.suffix.lower() == ".sup":
-                streams = cast(
-                    "list[SubtitleStream]",
-                    get_streams(
-                        infile_path,
-                        video=False,
-                        audio=False,
-                        subtitles=True,
-                        details=details,
-                        cache_dir_path=cache_dir_path,
-                    ),
+                streams = get_streams(
+                    infile_path,
+                    video=False,
+                    audio=False,
+                    subtitles=True,
+                    details=details,
+                    cache_dir_path=cache_dir_path,
                 )
                 if not streams:
                     raise ScinoephileError(
@@ -205,16 +201,13 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 )
                 return
 
-            subtitle_streams = cast(
-                "list[SubtitleStream]",
-                get_streams(
-                    infile_path,
-                    video=False,
-                    audio=False,
-                    subtitles=True,
-                    details=details,
-                    cache_dir_path=cache_dir_path,
-                ),
+            subtitle_streams = get_streams(
+                infile_path,
+                video=False,
+                audio=False,
+                subtitles=True,
+                details=details,
+                cache_dir_path=cache_dir_path,
             )
             streams = []
             for stream in subtitle_streams:

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
-from typing import Any, cast
+from typing import Literal, overload
 
 import ffmpeg
 
@@ -25,6 +25,30 @@ from .video_stream import VideoStream
 __all__ = ["get_streams"]
 
 logger = getLogger(__name__)
+
+
+@overload
+def get_streams(
+    infile_path: Path,
+    *,
+    video: Literal[False],
+    audio: Literal[False],
+    subtitles: Literal[True],
+    details: bool = False,
+    cache_dir_path: Path | None = None,
+) -> list[SubtitleStream]: ...
+
+
+@overload
+def get_streams(
+    infile_path: Path,
+    *,
+    video: bool = True,
+    audio: bool = True,
+    subtitles: bool = True,
+    details: bool = False,
+    cache_dir_path: Path | None = None,
+) -> list[Stream]: ...
 
 
 def get_streams(
@@ -59,7 +83,7 @@ def get_streams(
     for stream in probe.get("streams", []):
         if not isinstance(stream, dict):
             continue
-        parsed_stream = Stream.from_ffprobe_stream(cast("dict[str, Any]", stream))
+        parsed_stream = Stream.from_ffprobe_stream(stream)
         if parsed_stream is None:
             continue
         if not _includes_stream(
