@@ -1,0 +1,209 @@
+#  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
+#  and distributed under the terms of the BSD license. See the LICENSE file for details.
+"""Command-line interface for Google Lens OCR."""
+
+from __future__ import annotations
+
+from argparse import ArgumentParser
+from pathlib import Path
+from typing import Any
+
+from scinoephile.common.argument_parsing import (
+    get_arg_groups_by_name,
+    input_file_or_dir_arg,
+    output_file_arg,
+)
+from scinoephile.core import ScinoephileError
+from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.image.subtitles import ImageSeries
+
+__all__ = ["OcrLensCli"]
+
+ocr_image_series_with_lens: Any | None = None
+
+
+class OcrLensCli(ScinoephileCliBase):
+    """Recognize image subtitles with Google Lens."""
+
+    localizations = {
+        "zh-hans": {
+            "Google Lens API key override": "Google Lens API 密钥覆盖值",
+            "Google Lens client region": "Google Lens 客户端区域",
+            "Google Lens client time zone": "Google Lens 客户端时区",
+            "Google Lens language code": "Google Lens 语言代码",
+            "Google Lens maximum concurrent requests": "Google Lens 最大并发请求数",
+            "Google Lens proxy URL": "Google Lens 代理 URL",
+            "Google Lens request timeout in seconds": "Google Lens 请求超时时间（秒）",
+            "Recognize image subtitles with Google Lens.": (
+                "使用 Google Lens 识别图像字幕。"
+            ),
+            (
+                "image subtitle infile path (directory containing index.html and "
+                "png files, or a .sup file)"
+            ): "图像字幕输入文件路径（包含 index.html 和 png 文件，或 .sup 文件）",
+            "recognized subtitle outfile path": "识别后字幕输出文件路径",
+        },
+        "zh-hant": {
+            "Google Lens API key override": "Google Lens API 金鑰覆寫值",
+            "Google Lens client region": "Google Lens 用戶端區域",
+            "Google Lens client time zone": "Google Lens 用戶端時區",
+            "Google Lens language code": "Google Lens 語言代碼",
+            "Google Lens maximum concurrent requests": "Google Lens 最大並行請求數",
+            "Google Lens proxy URL": "Google Lens 代理 URL",
+            "Google Lens request timeout in seconds": "Google Lens 請求逾時時間（秒）",
+            "Recognize image subtitles with Google Lens.": (
+                "使用 Google Lens 識別影像字幕。"
+            ),
+            (
+                "image subtitle infile path (directory containing index.html and "
+                "png files, or a .sup file)"
+            ): "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案，或 .sup 檔案）",
+            "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
+        },
+    }
+    """Localized help text keyed by locale and English source text."""
+
+    @classmethod
+    def add_arguments_to_argparser(cls, parser: ArgumentParser):
+        """Add arguments to a nascent argument parser.
+
+        Arguments:
+            parser: nascent argument parser
+        """
+        super().add_arguments_to_argparser(parser)
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "input arguments",
+            "operation arguments",
+            "output arguments",
+            optional_arguments_name="additional arguments",
+        )
+
+        arg_groups["input arguments"].add_argument(
+            "--infile",
+            dest="infile_path",
+            required=True,
+            type=input_file_or_dir_arg(),
+            help=(
+                "image subtitle infile path "
+                "(directory containing index.html and png files, or a .sup file)"
+            ),
+        )
+
+        arg_groups["operation arguments"].add_argument(
+            "--api-key",
+            default=None,
+            help="Google Lens API key override",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--client-region",
+            default=None,
+            help="Google Lens client region",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--client-time-zone",
+            default=None,
+            help="Google Lens client time zone",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--language",
+            default="en",
+            help="Google Lens language code",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--max-concurrent",
+            type=int,
+            default=5,
+            help="Google Lens maximum concurrent requests",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--proxy",
+            default=None,
+            help="Google Lens proxy URL",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--timeout",
+            type=int,
+            default=60,
+            help="Google Lens request timeout in seconds",
+        )
+
+        arg_groups["output arguments"].add_argument(
+            "--outfile",
+            dest="outfile_path",
+            required=True,
+            type=output_file_arg(exist_ok=True),
+            help="recognized subtitle outfile path",
+        )
+        arg_groups["output arguments"].add_argument(
+            "--overwrite",
+            action="store_true",
+            help="overwrite outfile if it exists",
+        )
+        parser.set_defaults(_parser=parser)
+
+    @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "lens"
+
+    @classmethod
+    def _main(
+        cls,
+        *,
+        _parser: ArgumentParser | None = None,
+        api_key: str | None,
+        client_region: str | None,
+        client_time_zone: str | None,
+        infile_path: Path,
+        language: str,
+        max_concurrent: int,
+        outfile_path: Path,
+        overwrite: bool,
+        proxy: str | None,
+        timeout: int,
+    ):
+        """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
+        if outfile_path.exists() and not overwrite:
+            parser.error(f"{outfile_path} already exists")
+
+        try:
+            global ocr_image_series_with_lens  # noqa: PLW0603
+            if ocr_image_series_with_lens is None:
+                from scinoephile.image.ocr.lens import (  # noqa: PLC0415
+                    ocr_image_series_with_lens as imported_ocr,
+                )
+
+                ocr_image_series_with_lens = imported_ocr
+
+            image_series = ImageSeries.load(infile_path)
+            text_series = ocr_image_series_with_lens(
+                image_series,
+                api_key=api_key,
+                client_region=client_region,
+                client_time_zone=client_time_zone,
+                language=language,
+                max_concurrent=max_concurrent,
+                proxy=proxy,
+                timeout=timeout,
+            )
+        except (
+            ImportError,
+            NotADirectoryError,
+            OSError,
+            RuntimeError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
+
+        text_series.save(outfile_path, format_="srt")
+
+
+if __name__ == "__main__":
+    OcrLensCli.main()

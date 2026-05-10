@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr import OcrCli, OcrPaddleCli
+from scinoephile.cli.ocr import OcrCli, OcrLensCli, OcrPaddleCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -30,7 +30,9 @@ from test.helpers import (
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
+        (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
     ],
 )
@@ -47,7 +49,9 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
+        (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
     ],
 )
@@ -58,6 +62,62 @@ def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_ocr_lens_cli_help_lists_google_lens_options():
+    """Test Google Lens CLI help lists language and request options."""
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(OcrLensCli, "-h")
+
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    help_text = " ".join(stdout.getvalue().split())
+    assert "--language" in help_text
+    assert "--proxy" in help_text
+    assert "--timeout" in help_text
+
+
+def test_ocr_lens_cli_converts_image_subtitles_to_srt(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens CLI writes OCR output to SRT.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+
+    def fake_ocr_image_series_with_lens(*args: object, **kwargs: object) -> Series:
+        """Fake Google Lens image series processing.
+
+        Arguments:
+            *args: positional arguments
+            **kwargs: keyword arguments
+        Returns:
+            text subtitle series
+        """
+        return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
+        fake_ocr_image_series_with_lens,
+    )
+
+    with get_temp_directory_path() as output_dir_path:
+        output_path = output_dir_path / "ocr.srt"
+        run_cli_with_args(
+            OcrLensCli,
+            f"--infile {input_path} --outfile {output_path}",
+        )
+
+        output = Series.load(output_path)
+        assert [(event.start, event.end, event.text) for event in output] == [
+            (1000, 2000, "recognized")
+        ]
 
 
 def test_ocr_paddle_cli_help_lists_language_codes():
