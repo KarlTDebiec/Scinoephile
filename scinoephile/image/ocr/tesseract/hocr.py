@@ -136,15 +136,19 @@ class _TesseractHocrParser(HTMLParser):
         self._italic_depth += 1
 
 
-def parse_tesseract_hocr(html: str) -> str:
+def parse_tesseract_hocr(html: str, *, word_separator: str = " ") -> str:
     """Parse Tesseract hOCR into subtitle text.
 
     Arguments:
         html: hOCR HTML
+        word_separator: text with which to join hOCR word spans
     Returns:
         recognized text with ASS/SRT newline escapes
     """
-    return _format_tesseract_hocr_words(parse_tesseract_hocr_words(html))
+    return _format_tesseract_hocr_words(
+        parse_tesseract_hocr_words(html),
+        word_separator=word_separator,
+    )
 
 
 def parse_tesseract_hocr_words(html: str) -> list[list[TesseractHocrWord]]:
@@ -229,11 +233,16 @@ def _apply_italic_mask(text: str, italic_mask: list[bool]) -> str:
     return "".join(parts)
 
 
-def _format_tesseract_hocr_words(lines: list[list[TesseractHocrWord]]) -> str:
+def _format_tesseract_hocr_words(
+    lines: list[list[TesseractHocrWord]],
+    *,
+    word_separator: str = " ",
+) -> str:
     """Format parsed hOCR words as subtitle text.
 
     Arguments:
         lines: line-grouped recognized words
+        word_separator: text with which to join hOCR word spans
     Returns:
         recognized text with ASS/SRT newline escapes
     """
@@ -245,7 +254,7 @@ def _format_tesseract_hocr_words(lines: list[list[TesseractHocrWord]]) -> str:
                 formatted_words.append(f"<i>{word.text}</i>")
             else:
                 formatted_words.append(word.text)
-        line_text = " ".join(formatted_words).strip()
+        line_text = word_separator.join(formatted_words).strip()
         if line_text:
             formatted_lines.append(line_text)
     return "\\N".join(formatted_lines)

@@ -25,6 +25,19 @@ def test_parse_tesseract_hocr_extracts_words_by_line():
     assert parse_tesseract_hocr(hocr) == "Hello world\\NAgain"
 
 
+def test_parse_tesseract_hocr_supports_empty_word_separator():
+    """Test hOCR parser can join word spans without spaces."""
+    hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'>在</span>
+      <span class='ocrx_word' id='word_2'>麦</span>
+      <span class='ocrx_word' id='word_3'>太</span>
+    </span>
+    """
+
+    assert parse_tesseract_hocr(hocr, word_separator="") == "在麦太"
+
+
 def test_parse_tesseract_hocr_decodes_entities_and_keeps_italics():
     """Test hOCR parser decodes entities and normalizes emphasis tags."""
     hocr = """

@@ -316,7 +316,10 @@ class TesseractOcrRecognizer:
         self._run_command(self._build_command(image_path, output_base_path))
         hocr = self._read_hocr_output(output_base_path)
         if not self.detect_italics:
-            return parse_tesseract_hocr(hocr)
+            return parse_tesseract_hocr(
+                hocr,
+                word_separator=self._hocr_word_separator,
+            )
 
         legacy_output_base_path = output_base_path.with_name(
             f"{output_base_path.name}_legacy_italics"
@@ -337,6 +340,13 @@ class TesseractOcrRecognizer:
             ) from exc
 
         return transfer_tesseract_hocr_italics(hocr, legacy_hocr)
+
+    @property
+    def _hocr_word_separator(self) -> str:
+        """Text with which to join hOCR word spans."""
+        if self.language.startswith("chi_"):
+            return ""
+        return " "
 
     @property
     def _uses_legacy_blank_fallback(self) -> bool:
@@ -409,7 +419,10 @@ class TesseractOcrRecognizer:
             self._run_command(
                 self._build_legacy_fallback_command(image_path, output_base_path)
             )
-            return parse_tesseract_hocr(self._read_hocr_output(output_base_path))
+            return parse_tesseract_hocr(
+                self._read_hocr_output(output_base_path),
+                word_separator=self._hocr_word_separator,
+            )
         except (OSError, ScinoephileError, ValueError) as exc:
             logger.info(f"Tesseract legacy blank fallback failed: {exc}")
             return ""

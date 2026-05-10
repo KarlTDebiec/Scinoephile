@@ -146,6 +146,42 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     assert str(tessdata_dir_path.resolve()) in observed_command
 
 
+def test_tesseract_chinese_hocr_words_are_joined_without_spaces():
+    """Test Chinese hOCR word spans are joined without spaces."""
+
+    class ChineseRecognizer(TesseractOcrRecognizer):
+        """Recognizer that writes Chinese hOCR output."""
+
+        def _run_command(self, command: list[str]) -> tuple[int, str, str]:
+            """Write fake hOCR output.
+
+            Arguments:
+                command: command arguments
+            Returns:
+                fake process result
+            """
+            output_base_path = Path(command[2])
+            output_base_path.with_suffix(".hocr").write_text(
+                (
+                    "<span class='ocr_line'>"
+                    "<span class='ocrx_word'>在</span>"
+                    "<span class='ocrx_word'>麦</span>"
+                    "<span class='ocrx_word'>太</span>"
+                    "</span>"
+                ),
+                encoding="utf-8",
+            )
+            return 0, "", ""
+
+    recognizer = ChineseRecognizer(
+        executable_path=Path("tesseract"),
+        language="chi_sim",
+        skip_executable_validation=True,
+    )
+
+    assert recognizer.recognize_image(Image.new("RGBA", (2, 2))) == "在麦太"
+
+
 def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     """Test italic detection runs a legacy-engine hOCR pass."""
     observed_commands: list[list[str]] = []
