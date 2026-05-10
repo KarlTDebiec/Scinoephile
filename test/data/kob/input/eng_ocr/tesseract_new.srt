@@ -98,7 +98,7 @@ Young master, you should try hard to learn
 
 25
 00:03:35,882 --> 00:03:38,051
-Chan, | think, we should mount it
+Chan, <i>|</i> think, we should mount it
 
 26
 00:03:38,093 --> 00:03:38,719
@@ -127,12 +127,12 @@ Chan, come and sit...
 
 32
 00:03:49,479 --> 00:03:52,232
-| am so pleased that you are that hard
+<i>|</i> am so pleased that you are that hard
 working and filial
 
 33
 00:03:52,482 --> 00:03:56,069
-Listen to me, | am notorious of being
+Listen to me, <i>|</i> am notorious of being
 a spendthrift
 
 34
@@ -141,7 +141,7 @@ My fortune is almost used up
 
 35
 00:03:58,947 --> 00:04:01,783
-If | die one day,
+If <i>|</i> die one day,
 
 36
 00:04:01,867 --> 00:04:03,160
@@ -149,7 +149,7 @@ you should depend on yourself
 
 37
 00:04:03,160 --> 00:04:04,536
-| used to depend on myself
+<i>|</i> used to depend on myself
 
 38
 00:04:05,996 --> 00:04:07,998
@@ -187,7 +187,7 @@ You are like beggar!
 46
 00:04:23,013 --> 00:04:25,182
 How can a beggar be that rich?!
-| do want to be a rich beggar!
+<i>|</i> do want to be a rich beggar!
 
 47
 00:04:27,809 --> 00:04:29,728
@@ -207,8 +207,8 @@ The invitation card of my son is great!
 
 51
 00:04:35,734 --> 00:04:38,361
-If | hold a birthday party in future,
-| want a better invitation card!
+If <i>|</i> hold a birthday party in future,
+<i>|</i> want a better invitation card!
 
 52
 00:04:57,714 --> 00:05:00,967
@@ -221,7 +221,7 @@ For sure, it can't compete with Peking Opera!
 
 54
 00:05:05,472 --> 00:05:07,849
-But, | am appreciated to view this
+But, <i>|</i> am appreciated to view this
 
 55
 00:05:11,978 --> 00:05:16,233
@@ -237,7 +237,7 @@ lam homeless and sick...
 
 58
 00:05:20,195 --> 00:05:23,907
-| am poor, | am damn poor!
+<i>|</i> am poor, <i>|</i> am damn poor!
 
 59
 00:05:23,949 --> 00:05:25,575
@@ -277,7 +277,7 @@ Your living,
 67
 00:05:39,297 --> 00:05:41,550
 including the expenditure for hooking,
-| will pay for you!
+<i>|</i> will pay for you!
 
 68
 00:05:41,716 --> 00:05:42,509
@@ -330,7 +330,7 @@ ls your dad passed away?
 
 80
 00:06:06,324 --> 00:06:09,119
-| feel happy to talk in this way
+<i>|</i> feel happy to talk in this way
 
 81
 00:06:09,786 --> 00:06:12,914
@@ -410,7 +410,7 @@ What kind of woman do you want? Just tell me
 
 99
 00:06:53,538 --> 00:06:55,749
-| won't mind, every women is just the same
+<i>|</i> won't mind, every women is just the same
 
 100
 00:06:55,790 --> 00:06:57,000
@@ -430,7 +430,7 @@ What?
 
 104
 00:07:06,676 --> 00:07:08,386
-Who dared so? | will hit that
+Who dared so? <i>|</i> will hit that
 bastard's mouth for you
 
 105
@@ -443,8 +443,8 @@ she used her eyes
 
 107
 00:07:10,555 --> 00:07:13,934
-Tempting, and | smell blood
-| haven't seen such eyesight before
+Tempting, and <i>|</i> smell blood
+<i>|</i> haven't seen such eyesight before
 
 108
 00:07:14,184 --> 00:07:16,019
@@ -496,7 +496,7 @@ He killed dad
 
 120
 00:07:40,919 --> 00:07:41,836
-| know, stay calm
+<i>|</i> know, stay calm
 
 121
 00:07:41,836 --> 00:07:42,587
@@ -504,7 +504,7 @@ Let's go
 
 122
 00:07:43,004 --> 00:07:44,130
-- May | be excused
+- May <i>|</i> be excused
 - Mr Chiu
 
 123
@@ -576,11 +576,11 @@ Royal family, it's invaluable!
 
 139
 00:08:38,101 --> 00:08:39,853
-| love the pearl more
+<i>|</i> love the pearl more
 
 140
 00:08:41,855 --> 00:08:44,482
-Mr Chiu, | will wait you in my room
+Mr Chiu, <i>|</i> will wait you in my room
 
 141
 00:08:45,275 --> 00:08:46,901
@@ -592,11 +592,11 @@ Don't you think that's too little for you?
 
 143
 00:08:50,071 --> 00:08:53,992
-| love money too. But, | don't like you
+<i>|</i> love money too. But, <i>|</i> don't like you
 
 144
 00:08:57,287 --> 00:08:59,873
-You are frank! | love it very much
+You are frank! <i>|</i> love it very much
 
 145
 00:08:59,914 --> 00:09:00,749
@@ -608,11 +608,11 @@ It doesn't matter,
 
 147
 00:09:01,791 --> 00:09:03,877
-| think, my hat doesn't match me
+<i>|</i> think, my hat doesn't match me
 
 148
 00:09:03,877 --> 00:09:06,755
-Yushang doesn't like me, | deserve it
+Yushang doesn't like me, <i>|</i> deserve it
 
 149
 00:09:06,796 --> 00:09:08,048
@@ -620,11 +620,11 @@ lam glad you understand this
 
 150
 00:09:08,089 --> 00:09:10,341
-Don't worry, | have many pretty girls here
+Don't worry, <i>|</i> have many pretty girls here
 
 151
 00:09:10,341 --> 00:09:13,678
-| trust your arrangement
+<i>|</i> trust your arrangement
 
 152
 00:09:16,347 --> 00:09:17,974
@@ -660,7 +660,7 @@ How can a mantis fight with a tiger?
 
 160
 00:09:52,467 --> 00:09:54,135
-| Know Tiger Claws and Crane's Fists too!
+<i>|</i> Know Tiger Claws and Crane's Fists too!
 
 161
 00:09:55,470 --> 00:09:57,597
@@ -805,7 +805,7 @@ How about you?
 
 195
 00:11:40,283 --> 00:11:42,452
-That's right, | come...
+That's right, <i>|</i> come...
 
 196
 00:11:42,452 --> 00:11:43,286
@@ -819,11 +819,11 @@ That's right, | come...
 
 198
 00:11:45,205 --> 00:11:46,664
-| am the general of Canton,
+<i>|</i> am the general of Canton,
 
 199
 00:11:46,664 --> 00:11:49,167
-so | should arrest those bad people
+so <i>|</i> should arrest those bad people
 
 200
 00:11:49,292 --> 00:11:50,168
@@ -884,7 +884,7 @@ so forget it
 
 214
 00:12:24,035 --> 00:12:25,328
-| haven't played!
+<i>|</i> haven't played!
 
 215
 00:12:26,037 --> 00:12:26,496
@@ -896,7 +896,7 @@ a rascal has ruined the atmosphere here,
 
 217
 00:12:28,998 --> 00:12:30,041
-| should be blamed for poor arrangement
+<i>|</i> should be blamed for poor arrangement
 
 218
 00:12:30,750 --> 00:12:31,501
@@ -957,7 +957,7 @@ saying that we became the dogs of the government
 
 232
 00:13:23,845 --> 00:13:25,888
-| should ask him to pay for it
+<i>|</i> should ask him to pay for it
 
 233
 00:13:27,557 --> 00:13:29,100
@@ -974,7 +974,7 @@ we group together
 
 236
 00:13:34,689 --> 00:13:36,316
-| will try my best to seduce him to the bed
+<i>|</i> will try my best to seduce him to the bed
 
 237
 00:13:37,442 --> 00:13:38,860
@@ -1002,7 +1002,7 @@ by Mr So and become pearl powder
 
 243
 00:13:56,044 --> 00:13:57,337
-| have drunk it
+<i>|</i> have drunk it
 
 244
 00:13:58,212 --> 00:14:00,048
@@ -1018,12 +1018,12 @@ But...
 
 247
 00:14:03,551 --> 00:14:06,054
-Stop, | have taken his money,
+Stop, <i>|</i> have taken his money,
 100,000 taels you know?
 
 248
 00:14:06,262 --> 00:14:07,764
-| won't give it back
+<i>|</i> won't give it back
 
 249
 00:14:08,306 --> 00:14:09,724
@@ -1052,15 +1052,15 @@ Who is this guy?
 
 255
 00:14:22,362 --> 00:14:23,237
-| don't know
+<i>|</i> don't know
 
 256
 00:14:23,488 --> 00:14:26,574
-Miss, first of all, | have a good news to you
+Miss, first of all, <i>|</i> have a good news to you
 
 257
 00:14:27,200 --> 00:14:28,076
-| love you
+<i>|</i> love you
 
 258
 00:14:29,202 --> 00:14:31,454
@@ -1068,7 +1068,7 @@ To me, this is a bad news
 
 259
 00:14:31,871 --> 00:14:33,539
-| know you will reply like this
+<i>|</i> know you will reply like this
 
 260
 00:14:33,956 --> 00:14:34,832
@@ -1076,7 +1076,7 @@ Cut the crap
 
 261
 00:14:34,999 --> 00:14:36,209
-| wish to pay you 100 pearls
+<i>|</i> wish to pay you 100 pearls
 
 262
 00:14:36,209 --> 00:14:39,128
@@ -1084,7 +1084,7 @@ for you your company tonight
 
 263
 00:14:39,420 --> 00:14:40,505
-| don't want to talk to you
+<i>|</i> don't want to talk to you
 
 264
 00:14:40,505 --> 00:14:41,547
@@ -1092,7 +1092,7 @@ Please get out
 
 265
 00:14:43,383 --> 00:14:44,592
-| haven't chosen a wrong one
+<i>|</i> haven't chosen a wrong one
 
 266
 00:14:44,759 --> 00:14:46,844
@@ -1120,15 +1120,15 @@ You know Kung-fu?
 
 272
 00:15:03,986 --> 00:15:05,780
-No, | don't Know Kung-fu at all
+No, <i>|</i> don't Know Kung-fu at all
 
 273
 00:15:06,197 --> 00:15:07,782
-| beg you, stop bothering me
+<i>|</i> beg you, stop bothering me
 
 274
 00:15:08,032 --> 00:15:09,033
-| won't accompany you
+<i>|</i> won't accompany you
 
 275
 00:15:09,283 --> 00:15:12,161
@@ -1136,7 +1136,7 @@ Yushang, no one treats me like this
 
 276
 00:15:12,578 --> 00:15:14,372
-| have found that | am in love with you
+<i>|</i> have found that <i>|</i> am in love with you
 
 277
 00:15:16,207 --> 00:15:17,083
@@ -1144,7 +1144,7 @@ What?
 
 278
 00:15:18,000 --> 00:15:21,212
-| have been in love with you
+<i>|</i> have been in love with you
 
 279
 00:15:22,213 --> 00:15:23,464
@@ -1152,7 +1152,7 @@ Are you kidding?
 
 280
 00:15:23,923 --> 00:15:26,426
-lam not kidding, | decided to marry you
+lam not kidding, <i>|</i> decided to marry you
 
 281
 00:15:27,427 --> 00:15:28,719
@@ -1168,7 +1168,7 @@ Are there anyone hiding here?
 
 284
 00:15:39,063 --> 00:15:41,065
-That's good, | want a witness
+That's good, <i>|</i> want a witness
 
 285
 00:15:41,232 --> 00:15:42,567
@@ -1177,20 +1177,20 @@ That's good, | want a witness
 
 286
 00:15:43,276 --> 00:15:44,861
-| swear in front of your sword
+<i>|</i> swear in front of your sword
 
 287
 00:15:45,153 --> 00:15:46,904
-| do want to marry Miss Yushang
-as my wife, | am sincere
+<i>|</i> do want to marry Miss Yushang
+as my wife, <i>|</i> am sincere
 
 288
 00:15:46,904 --> 00:15:49,157
-If | cheat, | will be killed by thunder
+If <i>|</i> cheat, | will be killed by thunder
 
 289
 00:15:50,324 --> 00:15:52,452
-Sister, | feel excited for you
+Sister, <i>|</i> feel excited for you
 
 290
 00:15:52,618 --> 00:15:53,661
@@ -1202,11 +1202,11 @@ Don't you know it's that easy to be my husband?
 
 292
 00:15:57,039 --> 00:15:58,624
-How can | be your husband?
+How can <i>|</i> be your husband?
 
 293
 00:16:00,209 --> 00:16:02,086
-| want him to be the superior Kung-fu master
+<i>|</i> want him to be the superior Kung-fu master
 
 294
 00:16:02,128 --> 00:16:03,504
@@ -1222,7 +1222,7 @@ Let me think for one second
 
 297
 00:16:13,222 --> 00:16:13,931
-| can do it
+<i>|</i> can do it
 
 298
 00:16:16,476 --> 00:16:17,059
@@ -1252,7 +1252,7 @@ outside the garden
 
 304
 00:16:34,452 --> 00:16:35,786
-| won't leave until seeing you
+<i>|</i> won't leave until seeing you
 
 305
 00:16:39,749 --> 00:16:41,459
@@ -1321,7 +1321,7 @@ What did you say?
 
 321
 00:19:06,562 --> 00:19:07,772
-| won't fall in love with anybody
+<i>|</i> won't fall in love with anybody
 
 322
 00:19:07,980 --> 00:19:09,649
@@ -1342,7 +1342,7 @@ using the "Dragon Killing Palms"
 
 326
 00:19:17,990 --> 00:19:19,617
-So, | can never marry!
+So, <i>|</i> can never marry!
 
 327
 00:19:20,159 --> 00:19:22,244
@@ -1383,7 +1383,7 @@ Don't go around if you haven't made up yet
 
 336
 00:19:59,615 --> 00:20:01,158
-| won't do it again
+<i>|</i> won't do it again
 
 337
 00:20:01,575 --> 00:20:05,746
@@ -1411,7 +1411,7 @@ Men should contribute to the country
 
 343
 00:20:24,890 --> 00:20:28,644
-Where should | put my pig-tail?
+Where should <i>|</i> put my pig-tail?
 
 344
 00:20:28,811 --> 00:20:30,730
@@ -1419,7 +1419,7 @@ Swing and swing...
 
 345
 00:20:30,938 --> 00:20:32,773
-| pull it and play it...
+<i>|</i> pull it and play it...
 
 346
 00:20:33,357 --> 00:20:34,233
@@ -1427,7 +1427,7 @@ Dad!
 
 347
 00:20:34,942 --> 00:20:36,485
-| decided to join the examination for the
+<i>|</i> decided to join the examination for the
 scholar of Martial Arts
 
 348
@@ -1436,7 +1436,7 @@ Chan
 
 349
 00:20:38,863 --> 00:20:40,740
-| have been longing for this word for 25 years
+<i>|</i> have been longing for this word for 25 years
 
 350
 00:20:40,740 --> 00:20:42,867
@@ -1444,7 +1444,7 @@ For the family of us, you should do that
 
 351
 00:20:42,908 --> 00:20:44,869
-Don't misunderstand it, | do it not for no one
+Don't misunderstand it, <i>|</i> do it not for no one
 
 352
 00:20:44,869 --> 00:20:45,619
@@ -1485,7 +1485,7 @@ lam admiring you!
 
 361
 00:21:01,510 --> 00:21:02,470
-| will accompany you to Peking
+<i>|</i> will accompany you to Peking
 
 362
 00:21:02,845 --> 00:21:04,013
@@ -1515,7 +1515,7 @@ Be careful!
 368
 00:21:18,319 --> 00:21:21,030
 If you break my stuff,
-| will teach you good lesson
+<i>|</i> will teach you good lesson
 
 369
 00:21:21,280 --> 00:21:22,573
@@ -1547,7 +1547,7 @@ You are only a kid, you don't need this
 
 376
 00:21:30,581 --> 00:21:31,957
-But | am not small
+But <i>|</i> am not small
 
 377
 00:21:33,167 --> 00:21:35,669
@@ -1567,7 +1567,7 @@ Let's find something, say trousers to cover it
 
 381
 00:21:40,966 --> 00:21:42,051
-| don't want to see it
+<i>|</i> don't want to see it
 
 382
 00:21:42,885 --> 00:21:45,095
@@ -1608,7 +1608,7 @@ Sure,
 
 391
 00:22:03,280 --> 00:22:05,324
-or how can | eat Lychee in Peking?
+or how can <i>|</i> eat Lychee in Peking?
 
 392
 00:22:06,075 --> 00:22:07,701
@@ -1632,7 +1632,7 @@ the Hairy Gang in Kwangsi
 
 397
 00:22:22,007 --> 00:22:24,593
-So | bring him here to greet Your Majesty
+So <i>|</i> bring him here to greet Your Majesty
 
 398
 00:22:26,011 --> 00:22:30,933
@@ -1678,7 +1678,7 @@ Yes
 
 408
 00:25:23,188 --> 00:25:25,733
-| am sorry for scaring you
+<i>|</i> am sorry for scaring you
 
 409
 00:25:26,734 --> 00:25:28,527
@@ -1722,7 +1722,7 @@ Sweet smell, are you Piu Hung?
 
 419
 00:25:58,974 --> 00:26:01,268
-You are great! | love it
+You are great! <i>|</i> love it
 
 420
 00:26:01,935 --> 00:26:02,895
@@ -1758,7 +1758,7 @@ Good boy
 
 428
 00:26:21,663 --> 00:26:26,043
-| wanted to trick you actually,
+<i>|</i> wanted to trick you actually,
 you are really smart
 
 429
@@ -1783,16 +1783,16 @@ for your examination?
 
 434
 00:26:35,761 --> 00:26:38,514
-What should | prepare?
-| must win, don't you know that?
+What should <i>|</i> prepare?
+<i>|</i> must win, don't you know that?
 
 435
 00:26:38,806 --> 00:26:40,516
-Yes | do!
+Yes <i>|</i> do!
 
 436
 00:26:40,516 --> 00:26:43,310
-| have faith in you from seeing your behaviour!
+<i>|</i> have faith in you from seeing your behaviour!
 
 437
 00:26:43,602 --> 00:26:45,854
@@ -1860,7 +1860,7 @@ My son is keen in martial arts
 
 453
 00:27:17,928 --> 00:27:20,264
-So, can | deduct some from the payment
+So, can <i>|</i> deduct some from the payment
 of 2 million taels?
 
 454
@@ -1882,11 +1882,11 @@ The candidates come In
 
 458
 00:29:08,080 --> 00:29:08,872
-| can't lift it
+<i>|</i> can't lift it
 
 459
 00:29:12,042 --> 00:29:12,834
-| don't want to waste my force
+<i>|</i> don't want to waste my force
 
 460
 00:29:13,043 --> 00:29:16,046
@@ -1974,7 +1974,7 @@ I've studied this race for a long time
 
 480
 00:32:02,170 --> 00:32:03,964
-| feel strange about the rate too
+<i>|</i> feel strange about the rate too
 
 481
 00:32:04,464 --> 00:32:07,801
@@ -1986,7 +1986,7 @@ But see the sweat of his neck
 
 483
 00:32:11,138 --> 00:32:13,098
-| think it's because he is getting tired
+<i>|</i> think it's because he is getting tired
 
 484
 00:32:13,098 --> 00:32:13,974
@@ -2018,7 +2018,7 @@ He tried very hard
 
 491
 00:32:27,279 --> 00:32:29,114
-So | want to bet on him
+So <i>|</i> want to bet on him
 
 492
 00:32:29,489 --> 00:32:31,491
@@ -2054,7 +2054,7 @@ Come on
 
 500
 00:32:46,131 --> 00:32:47,382
-| want to bet more on him
+<i>|</i> want to bet more on him
 
 501
 00:32:47,382 --> 00:32:47,966
@@ -2074,11 +2074,11 @@ Why don't you bet?
 
 505
 00:32:53,597 --> 00:32:56,349
-Why should | bet? He is my son
+Why should <i>|</i> bet? He is my son
 
 506
 00:32:57,684 --> 00:33:00,353
-Shit, | miss one thing out of my calculation
+Shit, <i>|</i> miss one thing out of my calculation
 
 507
 00:33:00,770 --> 00:33:01,480
@@ -2127,7 +2127,7 @@ powerful shoot
 
 518
 00:34:10,924 --> 00:34:13,093
-| do think so
+<i>|</i> do think so
 
 519
 00:34:15,720 --> 00:34:19,391
@@ -2161,7 +2161,7 @@ They trick again
 
 526
 00:35:21,286 --> 00:35:24,748
-It's corrupt! May | give up the betting?
+It's corrupt! May <i>|</i> give up the betting?
 
 527
 00:35:48,938 --> 00:35:50,440
@@ -2190,7 +2190,7 @@ lll fight with single hand and leg
 
 533
 00:37:19,070 --> 00:37:20,363
-| won't take your advantage
+<i>|</i> won't take your advantage
 
 534
 00:37:31,499 --> 00:37:33,334
@@ -2239,11 +2239,11 @@ Damn you Cheng! You betrayed me!
 
 545
 00:37:59,736 --> 00:38:01,029
-| will beat you to death
+<i>|</i> will beat you to death
 
 546
 00:38:01,029 --> 00:38:02,280
-if | see you again
+if <i>|</i> see you again
 
 547
 00:38:02,614 --> 00:38:04,157
@@ -2255,11 +2255,11 @@ Why?
 
 549
 00:38:05,074 --> 00:38:06,034
-| am now going to kill him!
+<i>|</i> am now going to kill him!
 
 550
 00:38:06,034 --> 00:38:06,910
-| don't have 2 million to lose!
+<i>|</i> don't have 2 million to lose!
 
 551
 00:38:09,245 --> 00:38:10,079
@@ -2275,7 +2275,7 @@ Po is the Scholar of Martial Arts
 
 554
 00:38:16,795 --> 00:38:19,422
-| did win! Objection
+<i>|</i> did win! Objection
 
 555
 00:38:36,773 --> 00:38:37,524
@@ -2299,7 +2299,7 @@ Well, my son will be the Scholar then
 
 560
 00:38:53,915 --> 00:38:55,041
-| am going to be rich!
+<i>|</i> am going to be rich!
 
 561
 00:38:55,124 --> 00:38:56,125
@@ -2328,7 +2328,7 @@ OK
 
 567
 00:39:21,234 --> 00:39:25,530
-| want to take some statement from you as record
+<i>|</i> want to take some statement from you as record
 
 568
 00:39:25,697 --> 00:39:28,408
@@ -2365,11 +2365,11 @@ is the Scholar this year
 
 576
 00:39:56,436 --> 00:39:58,813
-Your Majesty, | am So Cha Ha Yee Chan
+Your Majesty, <i>|</i> am So Cha Ha Yee Chan
 
 577
 00:40:00,940 --> 00:40:03,067
-Your Majesty, | want to report something
+Your Majesty, <i>|</i> want to report something
 
 578
 00:40:05,653 --> 00:40:06,404
@@ -2377,7 +2377,7 @@ Go ahead
 
 579
 00:40:08,281 --> 00:40:10,491
-| have found that. So is illiterate
+<i>|</i> have found that. So is illiterate
 
 580
 00:40:10,783 --> 00:40:12,410
@@ -2410,7 +2410,7 @@ He can write his name!
 
 587
 00:40:48,154 --> 00:40:48,905
-| don't know how to write
+<i>|</i> don't know how to write
 
 588
 00:40:51,074 --> 00:40:52,075
@@ -2426,7 +2426,7 @@ No! No!
 
 591
 00:40:57,997 --> 00:40:59,624
-Your Majesty, | am the one who cheated
+Your Majesty, <i>|</i> am the one who cheated
 
 592
 00:40:59,624 --> 00:41:00,583
@@ -2446,11 +2446,11 @@ Sorry dad
 
 596
 00:41:03,586 --> 00:41:04,879
-| don't Know how to write my name
+<i>|</i> don't Know how to write my name
 
 597
 00:41:04,879 --> 00:41:06,255
-Stop, | have known it already
+Stop, <i>|</i> have known it already
 
 598
 00:41:06,547 --> 00:41:07,590
@@ -2485,7 +2485,7 @@ Come out! Hurry up
 
 605
 00:41:21,688 --> 00:41:23,815
-| am here!
+<i>|</i> am here!
 
 606
 00:41:27,694 --> 00:41:29,028
@@ -2510,8 +2510,8 @@ Have you carried out any military duty?
 
 611
 00:41:43,668 --> 00:41:46,295
-| haven't gone back to my camp for
-/ years, | haven't done anything
+<i>|</i> haven't gone back to my camp for
+/ years, <i>|</i> haven't done anything
 
 612
 00:41:47,463 --> 00:41:50,049
@@ -2531,15 +2531,15 @@ What? Are you sure?
 
 616
 00:42:01,561 --> 00:42:02,812
-| am fair
+<i>|</i> am fair
 
 617
 00:42:02,895 --> 00:42:05,440
-| judge it from the Law Book
+<i>|</i> judge it from the Law Book
 
 618
 00:42:06,691 --> 00:42:08,443
-Can | add something?
+Can <i>|</i> add something?
 
 619
 00:42:09,193 --> 00:42:11,988
@@ -2547,7 +2547,7 @@ Sure, since you are the Emperor
 
 620
 00:42:12,113 --> 00:42:14,907
-| want them to be beggars for the rest
+<i>|</i> want them to be beggars for the rest
 of their lives
 
 621
@@ -2585,7 +2585,7 @@ How poor are we...
 
 629
 00:42:45,688 --> 00:42:52,028
-| am thinking of my better half...
+<i>|</i> am thinking of my better half...
 
 630
 00:42:52,028 --> 00:42:53,112
@@ -2601,7 +2601,7 @@ youd be hard working to learn how to write
 
 633
 00:43:00,912 --> 00:43:08,044
-But | can't sell the affection...
+But <i>|</i> can't sell the affection...
 
 634
 00:43:11,547 --> 00:43:12,465
@@ -2609,19 +2609,19 @@ Professor
 
 635
 00:43:13,758 --> 00:43:14,717
-| will learn it
+<i>|</i> will learn it
 
 636
 00:43:15,885 --> 00:43:21,224
-| regret that...
+<i>|</i> regret that...
 
 637
 00:43:21,224 --> 00:43:24,185
-Master, | will take good care of little turtle
+Master, <i>|</i> will take good care of little turtle
 
 638
 00:43:24,227 --> 00:43:25,520
-| am sorry
+<i>|</i> am sorry
 
 639
 00:43:25,520 --> 00:43:28,147
@@ -2637,11 +2637,11 @@ It's all my fault
 
 642
 00:43:31,567 --> 00:43:34,237
-If | did better, you could have many babies
+If <i>|</i> did better, you could have many babies
 
 643
 00:43:34,237 --> 00:43:37,073
-But | think Chan is enough for me
+But <i>|</i> think Chan is enough for me
 
 644
 00:43:38,491 --> 00:43:39,867
@@ -2665,7 +2665,7 @@ We are free
 
 649
 00:43:48,084 --> 00:43:48,793
-| feel so happy
+<i>|</i> feel so happy
 
 650
 00:43:48,793 --> 00:43:50,044
@@ -2697,7 +2697,7 @@ Welcome...
 
 657
 00:44:08,437 --> 00:44:11,524
-Damn sequestration, | wanna cry, my son
+Damn sequestration, <i>|</i> wanna cry, my son
 
 658
 00:44:11,524 --> 00:44:13,693
@@ -2717,7 +2717,7 @@ No, how about you?
 
 662
 00:44:21,409 --> 00:44:23,119
-| forgot that
+<i>|</i> forgot that
 
 663
 00:44:25,580 --> 00:44:29,292
@@ -2753,7 +2753,7 @@ Dad should be blamed
 
 671
 00:44:50,521 --> 00:44:52,648
-| always called you beggar
+<i>|</i> always called you beggar
 
 672
 00:44:52,690 --> 00:44:53,608
@@ -2773,7 +2773,7 @@ Do you think we'd be beggars?
 
 676
 00:44:58,154 --> 00:44:59,864
-lam smart, | am keen in kung-fu fighting
+lam smart, <i>|</i> am keen in kung-fu fighting
 
 677
 00:45:00,156 --> 00:45:01,616
@@ -2785,7 +2785,7 @@ That's true
 
 679
 00:45:02,658 --> 00:45:03,534
-Am | like beggar?
+Am <i>|</i> like beggar?
 
 680
 00:45:03,576 --> 00:45:04,327
@@ -2826,7 +2826,7 @@ Dad, don't worry
 
 689
 00:45:27,642 --> 00:45:29,185
-| need no begging for money
+<i>|</i> need no begging for money
 
 690
 00:45:29,268 --> 00:45:30,436
@@ -2838,7 +2838,7 @@ Just ask someone to give us money
 
 692
 00:45:31,479 --> 00:45:33,397
-Pal, may | know your name?
+Pal, may <i>|</i> know your name?
 
 693
 00:45:34,398 --> 00:45:35,024
@@ -2863,7 +2863,7 @@ Thank you
 
 698
 00:45:45,534 --> 00:45:46,410
-Why should | give you money?
+Why should <i>|</i> give you money?
 
 699
 00:45:47,036 --> 00:45:48,120
@@ -2871,7 +2871,7 @@ Why do you ask so many questions?
 
 700
 00:45:48,287 --> 00:45:49,622
-But | should know the reason
+But <i>|</i> should know the reason
 
 701
 00:45:49,914 --> 00:45:52,083
@@ -2899,7 +2899,7 @@ Robbery...
 
 707
 00:46:01,926 --> 00:46:04,428
-lam not robbing, | am begging
+lam not robbing, <i>|</i> am begging
 
 708
 00:46:05,429 --> 00:46:07,974
@@ -2908,7 +2908,7 @@ you are cheating me!
 
 709
 00:46:07,974 --> 00:46:10,977
-Don't you think | am stupid? | am smart, you know?
+Don't you think <i>|</i> am stupid? <i>|</i> am smart, you know?
 
 710
 00:46:10,977 --> 00:46:12,103
@@ -2916,7 +2916,7 @@ Hey, two days passed,
 
 711
 00:46:12,144 --> 00:46:14,272
-It's cold and | am hungry now
+It's cold and <i>|</i> am hungry now
 
 712
 00:46:14,272 --> 00:46:15,940
@@ -2924,7 +2924,7 @@ Have you had any idea?
 
 713
 00:46:16,107 --> 00:46:18,901
-| have a friend's girl-friend
+<i>|</i> have a friend's girl-friend
 
 714
 00:46:18,901 --> 00:46:20,194
@@ -2944,7 +2944,7 @@ Yes, if you are willing to date her
 
 718
 00:46:27,451 --> 00:46:29,745
-| think she will help us to go back to Canton
+<i>|</i> think she will help us to go back to Canton
 
 719
 00:46:30,788 --> 00:46:32,331
@@ -2960,7 +2960,7 @@ For our family, just as you said
 
 722
 00:46:37,044 --> 00:46:37,962
-| Know it's very hard for you
+<i>|</i> Know it's very hard for you
 
 723
 00:46:37,962 --> 00:46:39,255
@@ -2968,7 +2968,7 @@ Cut the crap, let's go and find her
 
 724
 00:46:39,297 --> 00:46:40,756
-| have arranged it
+<i>|</i> have arranged it
 
 725
 00:46:41,173 --> 00:46:44,010
@@ -2989,7 +2989,7 @@ Why don't you go yourself?
 
 729
 00:47:13,581 --> 00:47:15,541
-Chan, | haven't tried this before
+Chan, <i>|</i> haven't tried this before
 
 730
 00:47:15,583 --> 00:47:16,542
@@ -3045,7 +3045,7 @@ You two can only be beggars
 
 743
 00:47:46,155 --> 00:47:48,282
-| am carrying my duty only Men!
+<i>|</i> am carrying my duty only Men!
 
 744
 00:47:48,491 --> 00:47:49,742
@@ -3103,7 +3103,7 @@ I've to defeat him by one powerful strike
 
 757
 00:48:18,854 --> 00:48:20,439
-| can't give him another chance to counter attack
+<i>|</i> can't give him another chance to counter attack
 
 758
 00:48:42,503 --> 00:48:44,547
@@ -3151,7 +3151,7 @@ Don't panic
 
 769
 00:49:31,093 --> 00:49:34,638
-| went to the examination hall
+<i>|</i> went to the examination hall
 
 770
 00:49:34,930 --> 00:49:36,640
@@ -3175,7 +3175,7 @@ About our story...
 
 775
 00:49:46,817 --> 00:49:48,319
-Let me stop here first, | want a smoke
+Let me stop here first, <i>|</i> want a smoke
 
 776
 00:49:49,612 --> 00:49:51,530
@@ -3235,7 +3235,7 @@ Come back to me if you can do that
 
 790
 00:50:22,603 --> 00:50:24,188
-| think we should fix our wedding date first
+<i>|</i> think we should fix our wedding date first
 
 791
 00:50:24,563 --> 00:50:27,316
@@ -3247,7 +3247,7 @@ Write your name at once
 
 793
 00:50:40,996 --> 00:50:42,122
-| don't know how to write
+<i>|</i> don't know how to write
 
 794
 00:50:52,424 --> 00:50:55,302
@@ -3277,7 +3277,7 @@ totally recovered
 
 800
 00:51:17,741 --> 00:51:20,244
-| am going to beg for food
+<i>|</i> am going to beg for food
 
 801
 00:51:20,536 --> 00:51:22,830
@@ -3342,7 +3342,7 @@ Give me money please
 
 816
 00:52:15,716 --> 00:52:18,218
-Go, go , | won't give you money
+Go, go , <i>|</i> won't give you money
 
 817
 00:52:18,469 --> 00:52:20,929
@@ -3370,11 +3370,11 @@ Why don't you write it yourself?
 
 823
 00:52:59,093 --> 00:53:01,887
-You are off duty, so | just want to lend it
+You are off duty, so <i>|</i> just want to lend it
 
 824
 00:53:02,846 --> 00:53:03,806
-Don't you think | am idiot?
+Don't you think <i>|</i> am idiot?
 
 825
 00:53:38,674 --> 00:53:39,633
@@ -3386,7 +3386,7 @@ What are you doing?
 
 827
 00:53:42,803 --> 00:53:46,473
-lam cold... | am cold... Chan
+lam cold... <i>|</i> am cold... Chan
 
 828
 00:53:48,058 --> 00:53:52,062
@@ -3406,11 +3406,11 @@ It's late
 
 832
 00:53:58,527 --> 00:54:00,362
-| have to search for food
+<i>|</i> have to search for food
 
 833
 00:54:02,156 --> 00:54:04,533
-Lie down, | will go this time
+Lie down, <i>|</i> will go this time
 
 834
 00:54:05,159 --> 00:54:06,243
@@ -3418,7 +3418,7 @@ Are you go for begging?
 
 835
 00:54:06,827 --> 00:54:08,620
-| have my own way to get food
+<i>|</i> have my own way to get food
 
 836
 00:54:08,871 --> 00:54:09,705
@@ -3426,7 +3426,7 @@ Take a rest now
 
 837
 00:54:10,164 --> 00:54:11,957
-| will take you to the doctor after
+<i>|</i> will take you to the doctor after
 getting some money
 
 838
@@ -3443,7 +3443,7 @@ Finish it
 
 841
 00:54:39,401 --> 00:54:40,652
-No, | am full
+No, <i>|</i> am full
 
 842
 00:54:40,694 --> 00:54:43,238
@@ -3524,7 +3524,7 @@ Miss, who are you looking for?
 
 861
 00:56:04,486 --> 00:56:05,737
-lam sorry, | have mistaken
+lam sorry, <i>|</i> have mistaken
 
 862
 00:56:06,238 --> 00:56:07,865
@@ -3573,7 +3573,7 @@ Dad, what are you doing?
 
 873
 00:56:49,823 --> 00:56:52,701
-| can't stand the hunger
+<i>|</i> can't stand the hunger
 
 874
 00:56:52,784 --> 00:56:56,413
@@ -3581,15 +3581,15 @@ So | bit the dumpling of the kid
 
 875
 00:56:56,705 --> 00:56:58,165
-| have dumpling, take it back
+<i>|</i> have dumpling, take it back
 
 876
 00:56:58,165 --> 00:56:59,082
-Could | pay you another head
+Could <i>|</i> pay you another head
 
 877
 00:56:59,124 --> 00:57:01,460
-if | chopped yours
+if <i>|</i> chopped yours
 
 878
 00:57:04,171 --> 00:57:05,380
@@ -3601,7 +3601,7 @@ Yes, are you the Scholar?
 
 880
 00:57:10,886 --> 00:57:11,637
-| was nearly the Scholar
+<i>|</i> was nearly the Scholar
 
 881
 00:57:11,637 --> 00:57:13,388
@@ -3629,7 +3629,7 @@ The dog's rice
 
 887
 00:57:30,822 --> 00:57:34,451
-Sir, | will let your dad go if you eat
+Sir, <i>|</i> will let your dad go if you eat
 the dog's rice now
 
 888
@@ -3654,7 +3654,7 @@ Let's forget about me
 
 893
 00:57:58,392 --> 00:58:01,228
-Sir, | was a general in Canton
+Sir, <i>|</i> was a general in Canton
 
 894
 00:58:02,104 --> 00:58:03,021
@@ -3714,7 +3714,7 @@ That's too delicious!
 
 908
 00:59:00,746 --> 00:59:02,414
-| want to save it for midnight snack
+<i>|</i> want to save it for midnight snack
 
 909
 00:59:02,831 --> 00:59:04,124
@@ -3868,7 +3868,7 @@ Don't wake him up
 
 945
 01:00:39,469 --> 01:00:40,971
-| will cook you some new year cake
+<i>|</i> will cook you some new year cake
 
 946
 01:00:41,596 --> 01:00:44,099
@@ -3910,7 +3910,7 @@ You should try your best
 
 955
 01:01:10,083 --> 01:01:13,086
-Uncle, | don't have faith to defeat them
+Uncle, <i>|</i> don't have faith to defeat them
 
 956
 01:01:13,461 --> 01:01:15,338
@@ -3918,7 +3918,7 @@ Judging from my kung-fu now,
 
 957
 01:01:15,547 --> 01:01:18,300
-how can | defeat them and become the new master?
+how can <i>|</i> defeat them and become the new master?
 
 958
 01:01:19,676 --> 01:01:23,013
@@ -3932,7 +3932,7 @@ your inner injury
 
 960
 01:01:26,683 --> 01:01:27,726
-How can | take this?
+How can <i>|</i> take this?
 
 961
 01:01:28,018 --> 01:01:29,311
@@ -3980,7 +3980,7 @@ Chan, no matter how they despise you,
 
 972
 01:02:00,675 --> 01:02:02,552
-| have faith on you
+<i>|</i> have faith on you
 
 973
 01:02:03,595 --> 01:02:05,597
@@ -4000,8 +4000,8 @@ you can achieve something
 
 977
 01:02:11,770 --> 01:02:13,855
-But | am now powerless,
-| don't want to fight again
+But <i>|</i> am now powerless,
+<i>|</i> don't want to fight again
 
 978
 01:02:13,855 --> 01:02:15,106
@@ -4037,7 +4037,7 @@ Enjoy sleeping
 
 986
 01:02:50,350 --> 01:02:54,271
-Son, | tried very hard to get this for you
+Son, <i>|</i> tried very hard to get this for you
 
 987
 01:02:54,729 --> 01:02:57,941
@@ -4057,7 +4057,7 @@ you should give me a waddy first
 
 991
 01:03:28,388 --> 01:03:30,515
-| am sorry, catch it
+<i>|</i> am sorry, catch it
 
 992
 01:03:38,690 --> 01:03:41,318
@@ -4119,11 +4119,11 @@ Your fellows despise you
 
 1006
 01:04:33,036 --> 01:04:34,913
-| was always respected by others
+<i>|</i> was always respected by others
 
 1007
 01:04:35,288 --> 01:04:36,664
-But now, | am despised
+But now, <i>|</i> am despised
 
 1008
 01:04:37,374 --> 01:04:38,792
@@ -4139,7 +4139,7 @@ Listen to me. Don't go!
 
 1011
 01:04:45,215 --> 01:04:49,052
-| remembered once in Canton
+<i>|</i> remembered once in Canton
 
 1012
 01:04:49,344 --> 01:04:52,180
@@ -4151,7 +4151,7 @@ What aweird man
 
 1014
 01:04:56,434 --> 01:04:58,061
-Kid, | remembered you
+Kid, <i>|</i> remembered you
 
 1015
 01:04:59,020 --> 01:05:01,356
@@ -4163,15 +4163,15 @@ Hey, hurry up
 
 1017
 01:05:02,357 --> 01:05:03,775
-Repay my money, | am in urgent need
+Repay my money, <i>|</i> am in urgent need
 
 1018
 01:05:03,817 --> 01:05:05,110
-If | had money,
+If <i>|</i> had money,
 
 1019
 01:05:05,318 --> 01:05:07,862
-| wouldn't be beggar!
+<i>|</i> wouldn't be beggar!
 
 1020
 01:05:11,491 --> 01:05:14,077
@@ -4179,7 +4179,7 @@ But, don't worry, you were my benefitor,
 
 1021
 01:05:14,285 --> 01:05:15,829
-| will repay you one day
+<i>|</i> will repay you one day
 
 1022
 01:05:16,955 --> 01:05:18,540
@@ -4195,7 +4195,7 @@ even you have money again
 
 1025
 01:05:24,754 --> 01:05:25,547
-What did | lose?
+What did <i>|</i> lose?
 
 1026
 01:05:26,131 --> 01:05:28,216
@@ -4236,7 +4236,7 @@ Tell me, what do you want?
 
 1035
 01:05:49,571 --> 01:05:50,697
-| want to be human again
+<i>|</i> want to be human again
 
 1036
 01:05:50,738 --> 01:05:52,365
@@ -4256,7 +4256,7 @@ Very good! Very good!
 
 1040
 01:06:03,376 --> 01:06:06,838
-But | won't cheat you, from your head to toes
+But <i>|</i> won't cheat you, from your head to toes
 
 1041
 01:06:06,838 --> 01:06:09,174
@@ -4272,7 +4272,7 @@ That means, you will be beggar for your life
 
 1044
 01:06:17,015 --> 01:06:18,975
-| don't want to talk to you, | want a sleep first
+<i>|</i> don't want to talk to you, <i>|</i> want a sleep first
 
 1045
 01:06:19,434 --> 01:06:21,603
@@ -4296,8 +4296,8 @@ That is beggar
 
 1050
 01:06:34,532 --> 01:06:36,576
-| won't care who you are,
-| just want to stop the conversation
+<i>|</i> won't care who you are,
+<i>|</i> just want to stop the conversation
 
 1051
 01:06:36,576 --> 01:06:38,661
@@ -4309,7 +4309,7 @@ Damn you!
 
 1053
 01:06:40,121 --> 01:06:41,664
-No... | just want to sleep
+No... <i>|</i> just want to sleep
 
 1054
 01:06:41,664 --> 01:06:42,999
@@ -4350,11 +4350,11 @@ On behalf of Master Hung
 
 1063
 01:07:26,209 --> 01:07:27,627
-| appoint you to be the "Sleeping Disciple”
+<i>|</i> appoint you to be the "Sleeping Disciple”
 
 1064
 01:07:28,086 --> 01:07:31,339
-Now, | will teach you the
+Now, <i>|</i> will teach you the
 "Sleeping Disciple’s Fist"!
 
 1065
@@ -4408,7 +4408,7 @@ If we can kill the Emperor,
 
 1077
 01:08:48,249 --> 01:08:49,626
-| can take over his reign
+<i>|</i> can take over his reign
 
 1078
 01:08:50,251 --> 01:08:52,837
@@ -4470,11 +4470,11 @@ Where have they been?
 
 1092
 01:11:00,047 --> 01:11:01,215
-| don't know,
+<i>|</i> don't know,
 
 1093
 01:11:01,716 --> 01:11:04,260
-| saw them chat,
+<i>|</i> saw them chat,
 
 1094
 01:11:04,260 --> 01:11:05,178
@@ -4494,11 +4494,11 @@ Uncle Mok...
 
 1098
 01:11:29,702 --> 01:11:30,787
-| am scared,
+<i>|</i> am scared,
 
 1099
 01:11:30,787 --> 01:11:31,621
-| think you won't come back
+<i>|</i> think you won't come back
 
 1100
 01:11:31,621 --> 01:11:33,289
@@ -4552,7 +4552,7 @@ You will be killed, come down
 
 1112
 01:12:55,162 --> 01:12:57,999
-It doesn't matter, | have forgotten
+It doesn't matter, <i>|</i> have forgotten
 my life already
 
 1113
@@ -4561,7 +4561,7 @@ Bull shit, throw him to death
 
 1114
 01:13:09,176 --> 01:13:11,262
-Well, | will make your wish come true
+Well, <i>|</i> will make your wish come true
 
 1115
 01:13:39,624 --> 01:13:40,166
@@ -4593,7 +4593,7 @@ lam sorry!
 
 1122
 01:15:19,974 --> 01:15:20,766
-| won
+<i>|</i> won
 
 1123
 01:15:21,058 --> 01:15:22,143
@@ -4618,7 +4618,7 @@ It's for hitting dogs
 
 1128
 01:15:37,533 --> 01:15:39,660
-| do know how to use this waday!
+<i>|</i> do know how to use this waday!
 
 1129
 01:15:39,702 --> 01:15:40,995
@@ -4639,11 +4639,11 @@ let's kill him!
 
 1133
 01:16:06,562 --> 01:16:09,065
-| am Master Hung, who dares go against me?
+<i>|</i> am Master Hung, who dares go against me?
 
 1134
 01:16:09,982 --> 01:16:11,859
-| set the rules of the association
+<i>|</i> set the rules of the association
 
 1135
 01:16:12,318 --> 01:16:14,695
@@ -4667,7 +4667,7 @@ because of being united
 
 1140
 01:16:24,121 --> 01:16:26,373
-| left you the "Dog Hitting Waddy",
+<i>|</i> left you the "Dog Hitting Waddy",
 
 1141
 01:16:26,373 --> 01:16:28,876
@@ -4733,7 +4733,7 @@ maybe, treat him dinner
 
 1156
 01:16:59,365 --> 01:17:00,825
-Then, although | am in heaven,
+Then, although <i>|</i> am in heaven,
 
 1157
 01:17:00,991 --> 01:17:05,121
@@ -4782,7 +4782,7 @@ Uncle Mok, my son is really great!
 
 1168
 01:17:42,908 --> 01:17:44,952
-| can't guess you have learnt the
+<i>|</i> can't guess you have learnt the
 "Sleeping Disciple’s Fists’?!
 
 1169
@@ -4803,7 +4803,7 @@ Hope you will be a good leader
 
 1173
 01:17:58,716 --> 01:18:00,509
-| just want to save Yushang as soon as possible
+<i>|</i> just want to save Yushang as soon as possible
 
 1174
 01:18:02,720 --> 01:18:04,555
@@ -4875,7 +4875,7 @@ My initial power is increased
 
 1191
 01:19:25,511 --> 01:19:28,097
-| can control the 17th stances
+<i>|</i> can control the 17th stances
 
 1192
 01:19:28,806 --> 01:19:31,100
@@ -4887,7 +4887,7 @@ there is no picture or description of it
 
 1194
 01:19:33,018 --> 01:19:34,144
-| can't understand at all
+<i>|</i> can't understand at all
 
 1195
 01:19:34,645 --> 01:19:37,606
@@ -4899,7 +4899,7 @@ Just go ahead
 
 1197
 01:19:39,233 --> 01:19:41,277
-No matter how, | have to save Yushang first
+No matter how, <i>|</i> have to save Yushang first
 
 1198
 01:19:41,527 --> 01:19:45,030
@@ -4935,15 +4935,15 @@ why do you bring this woman here?
 
 1206
 01:21:20,292 --> 01:21:21,835
-| know the Emperor loves pretty woman
+<i>|</i> know the Emperor loves pretty woman
 
 1207
 01:21:22,419 --> 01:21:24,171
-So | want to send him this gift
+So <i>|</i> want to send him this gift
 
 1208
 01:21:24,755 --> 01:21:25,798
-And | want to meet him too
+And <i>|</i> want to meet him too
 
 1209
 01:21:26,131 --> 01:21:28,634
@@ -4967,7 +4967,7 @@ Sir, you look great!
 
 1214
 01:21:41,105 --> 01:21:43,065
-| think you should go back
+<i>|</i> think you should go back
 
 1215
 01:21:43,315 --> 01:21:44,775
@@ -4995,7 +4995,7 @@ Chiu knows my hobby!
 
 1221
 01:22:11,468 --> 01:22:13,470
-| want to take a bath first, bring her to me later
+<i>|</i> want to take a bath first, bring her to me later
 
 1222
 01:22:13,720 --> 01:22:14,513
@@ -5007,7 +5007,7 @@ This bastard wants to see the Emperor,
 
 1224
 01:22:41,915 --> 01:22:44,877
-if | let him see His Majesty oftenly,
+if <i>|</i> let him see His Majesty oftenly,
 my post will be taken away
 
 1225
@@ -5033,7 +5033,7 @@ Who are they?
 
 1230
 01:23:03,812 --> 01:23:05,105
-| don't know!
+<i>|</i> don't know!
 
 1231
 01:23:06,190 --> 01:23:07,065
@@ -5065,7 +5065,7 @@ So Chan, what are you doing?
 
 1238
 01:24:31,692 --> 01:24:34,820
-Nothing, | just want to beg for money
+Nothing, <i>|</i> just want to beg for money
 
 1239
 01:24:35,237 --> 01:24:37,447
@@ -5097,7 +5097,7 @@ How dare you frame the courtier?
 
 1246
 01:24:50,669 --> 01:24:53,380
-| will kill you if you step forward
+<i>|</i> will kill you if you step forward
 
 1247
 01:24:57,217 --> 01:25:00,137
@@ -5126,7 +5126,7 @@ you stay here to wait for the others
 
 1253
 01:25:08,854 --> 01:25:09,313
-| will go first
+<i>|</i> will go first
 
 1254
 01:25:09,313 --> 01:25:10,147
@@ -5142,7 +5142,7 @@ Master, don't worry
 
 1257
 01:25:13,400 --> 01:25:14,943
-Am | going to die?
+Am <i>|</i> going to die?
 
 1258
 01:25:15,152 --> 01:25:16,653
@@ -5166,11 +5166,11 @@ That's enough
 
 1263
 01:25:27,539 --> 01:25:28,290
-| haven't finished
+<i>|</i> haven't finished
 
 1264
 01:25:28,665 --> 01:25:30,000
-- Go on after | left
+- Go on after <i>|</i> left
 - Sure
 
 1265
@@ -5242,7 +5242,7 @@ How about me?
 
 1281
 01:28:05,572 --> 01:28:07,866
-Don't worry, | can give you some urine
+Don't worry, <i>|</i> can give you some urine
 
 1282
 01:28:07,949 --> 01:28:09,117
@@ -5340,7 +5340,7 @@ We stayed one hour for lunch
 
 1305
 01:30:08,904 --> 01:30:09,863
-| pissed once
+<i>|</i> pissed once
 
 1306
 01:30:10,155 --> 01:30:10,822
@@ -5349,7 +5349,7 @@ We stayed one hour for lunch
 
 1307
 01:30:11,072 --> 01:30:12,240
-Then | want to eat a sweet potato
+Then <i>|</i> want to eat a sweet potato
 
 1308
 01:30:12,240 --> 01:30:13,366
@@ -5357,11 +5357,11 @@ But only dumpling left
 
 1309
 01:30:13,575 --> 01:30:16,119
-You know, | don't like eating dumpling
+You know, <i>|</i> don't like eating dumpling
 
 1310
 01:30:16,786 --> 01:30:18,914
-| am late to save you, please forgive me
+<i>|</i> am late to save you, please forgive me
 
 1311
 01:30:21,291 --> 01:30:22,459
@@ -5421,7 +5421,7 @@ Are you interested to join us?
 
 1325
 01:31:40,078 --> 01:31:42,372
-| can't guess you could recover!
+<i>|</i> can't guess you could recover!
 
 1326
 01:31:42,622 --> 01:31:44,958
@@ -5429,7 +5429,7 @@ Yes, it's all because of you
 
 1327
 01:31:48,920 --> 01:31:50,922
-Did you generate all your force? | didn't
+Did you generate all your force? <i>|</i> didn't
 
 1328
 01:32:09,482 --> 01:32:12,736
@@ -5438,7 +5438,7 @@ Stances" scare me
 
 1329
 01:32:13,028 --> 01:32:14,904
-| won't give a damn to any other stances
+<i>|</i> won't give a damn to any other stances
 
 1330
 01:32:26,750 --> 01:32:29,252
@@ -5522,7 +5522,7 @@ Chan, are you alright?
 
 1350
 01:34:57,734 --> 01:34:59,485
-see, don't you think | am alright?
+see, don't you think <i>|</i> am alright?
 
 1351
 01:35:00,111 --> 01:35:01,446
@@ -5534,11 +5534,11 @@ But your look is awful!
 
 1353
 01:35:03,198 --> 01:35:04,532
-Idiot, | am fine
+Idiot, <i>|</i> am fine
 
 1354
 01:35:04,574 --> 01:35:05,700
-| can marry tonight
+<i>|</i> can marry tonight
 
 1355
 01:35:05,700 --> 01:35:06,826
@@ -5598,7 +5598,7 @@ Invincible
 
 1369
 01:35:51,537 --> 01:35:53,164
-But, | can't be the Scholar
+But, <i>|</i> can't be the Scholar
 
 1370
 01:35:53,498 --> 01:35:56,251
@@ -5606,7 +5606,7 @@ But | don't like Scholar at all
 
 1371
 01:35:56,584 --> 01:35:58,253
-| love beggar
+<i>|</i> love beggar
 
 1372
 01:36:00,004 --> 01:36:01,422
@@ -5672,7 +5672,7 @@ Although you have saved me,
 
 1387
 01:36:53,808 --> 01:36:56,144
-if you don't respect me, | will kill you
+if you don't respect me, <i>|</i> will kill you
 
 1388
 01:36:56,894 --> 01:36:59,647

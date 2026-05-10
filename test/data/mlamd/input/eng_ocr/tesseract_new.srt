@@ -308,7 +308,7 @@ For many years...
 
 75
 00:06:10,458 --> 00:06:12,875
-| had difficulty hearing him.
+<i>|</i> had difficulty hearing him.
 
 76
 00:06:14,625 --> 00:06:17,833
@@ -395,7 +395,7 @@ Roll call now.
 
 96
 00:07:22,917 --> 00:07:24,375
-- Fai! <i>-</i> Present!
+- Fai! - Present!
 
 97
 00:07:24,500 --> 00:07:26,667
@@ -403,11 +403,11 @@ Roll call now.
 
 98
 00:07:26,833 --> 00:07:28,750
-- Darby! <i>-</i> Present!
+- Darby! - Present!
 
 99
 00:07:28,917 --> 00:07:31,708
-- May! <i>-</i> Present!
+- May! - Present!
 
 100
 00:07:31,875 --> 00:07:33,750
@@ -419,7 +419,7 @@ Roll call now.
 
 102
 00:07:36,958 --> 00:07:40,000
-- McMug! <i>-</i> Present!
+- McMug! - Present!
 
 103
 00:07:40,167 --> 00:07:41,292
@@ -447,23 +447,23 @@ Back to roll call.
 
 109
 00:07:55,792 --> 00:07:57,583
-- Fai! <i>-</i> Present!
+- Fai! - Present!
 
 110
 00:07:57,792 --> 00:07:58,958
-- Fai! <i>-</i> Present!
+- Fai! - Present!
 
 111
 00:07:59,167 --> 00:08:01,333
-- Darby! <i>-</i> Present!
+- Darby! - Present!
 
 112
 00:08:02,125 --> 00:08:03,250
-- May! <i>-</i> Present!
+- May! - Present!
 
 113
 00:08:03,500 --> 00:08:05,500
-- McMug! <i>-</i> Present!
+- McMug! - Present!
 
 114
 00:08:05,750 --> 00:08:07,875
@@ -495,11 +495,11 @@ McDull!
 
 121
 00:08:20,167 --> 00:08:22,167
-Hey, | don't understand...
+Hey, <i>|</i> don't understand...
 
 122
 00:08:22,333 --> 00:08:23,625
-| keep feeling that...
+<i>|</i> keep feeling that...
 
 123
 00:08:23,792 --> 00:08:27,625
@@ -511,7 +511,7 @@ Don't think that I've been daydreaming.
 
 125
 00:08:30,875 --> 00:08:33,667
-| was contemplating something academic:
+<i>|</i> was contemplating something academic:
 
 126
 00:08:33,833 --> 00:08:36,917
@@ -519,7 +519,7 @@ How does this universe work?
 
 127
 00:08:37,542 --> 00:08:39,833
-| mean, | ate 6 oranges that morning...
+<i>|</i> mean, | ate 6 oranges that morning...
 
 128
 00:08:40,042 --> 00:08:44,542
@@ -544,7 +544,7 @@ How are these two things related?
 133
 00:08:57,958 --> 00:09:00,500
 There are so many things that
-| don't understand.
+<i>|</i> don't understand.
 
 134
 00:09:00,667 --> 00:09:02,292
@@ -556,7 +556,7 @@ One day, when | finish kindergarten...
 
 136
 00:09:04,833 --> 00:09:08,000
-| shall move up...
+<i>|</i> shall move up...
 
 137
 00:09:08,125 --> 00:09:09,750
@@ -564,11 +564,11 @@ And get my degree.
 
 138
 00:09:09,875 --> 00:09:11,167
-When | graduate from university, | know...
+When <i>|</i> graduate from university, | know...
 
 139
 00:09:11,500 --> 00:09:13,292
-| shall understand everything!
+<i>|</i> shall understand everything!
 
 140
 00:09:13,458 --> 00:09:14,583
@@ -576,7 +576,7 @@ And then ...
 
 141
 00:09:15,125 --> 00:09:17,292
-| will buy my mother a house!
+<i>|</i> will buy my mother a house!
 
 142
 00:09:21,083 --> 00:09:24,125
@@ -652,7 +652,7 @@ By now...
 
 158
 00:10:08,875 --> 00:10:11,250
-you can probably tell how smart | am.
+you can probably tell how smart <i>|</i> am.
 
 159
 00:10:11,583 --> 00:10:13,958
@@ -676,7 +676,7 @@ Everyday...
 
 164
 00:10:27,833 --> 00:10:29,292
-| feel full of strength!
+<i>|</i> feel full of strength!
 
 165
 00:10:29,458 --> 00:10:30,833
@@ -688,7 +688,7 @@ There is a song Miss Chan loves...
 
 167
 00:10:37,000 --> 00:10:38,375
-Which | always want to learn...
+Which <i>|</i> always want to learn...
 
 168
 00:10:38,500 --> 00:10:41,667
@@ -1017,11 +1017,11 @@ As for being smart...
 
 246
 00:17:32,375 --> 00:17:36,542
-| did try hard, but then...
+<i>|</i> did try hard, but then...
 
 247
 00:17:38,375 --> 00:17:40,625
-But then, | still have dreams.
+But then, <i>|</i> still have dreams.
 
 248
 00:17:41,208 --> 00:17:44,250
@@ -1080,7 +1080,7 @@ Mother will you take me there?
 
 261
 00:18:34,458 --> 00:18:37,500
-One day when | am rich.
+One day when <i>|</i> am rich.
 
 262
 00:18:37,625 --> 00:18:40,125
@@ -1117,7 +1117,7 @@ Hello Kitty Land.
 
 270
 00:19:39,333 --> 00:19:43,583
-| bought my hairpin there.
+<i>|</i> bought my hairpin there.
 
 271
 00:19:44,167 --> 00:19:47,083
@@ -1162,7 +1162,7 @@ They serve huge bowls of rice.
 
 281
 00:20:18,458 --> 00:20:22,875
-As for the place | most want to go, wow!
+As for the place <i>|</i> most want to go, wow!
 
 282
 00:20:23,000 --> 00:20:27,917
@@ -1223,7 +1223,7 @@ How are you doing? Take the medicine.
 
 296
 00:23:42,125 --> 00:23:45,125
-Mother | don't want medicine.
+Mother <i>|</i> don't want medicine.
 
 297
 00:23:45,292 --> 00:23:47,917
@@ -1231,7 +1231,7 @@ Please mother, no.
 
 298
 00:23:48,042 --> 00:23:50,458
-| don't want the strawberry drink!
+<i>|</i> don't want the strawberry drink!
 
 299
 00:23:50,625 --> 00:23:53,583
@@ -1276,7 +1276,7 @@ Mother, when will we go?
 
 309
 00:24:19,792 --> 00:24:25,042
-| will book the ticket once you get well.
+<i>|</i> will book the ticket once you get well.
 
 310
 00:24:26,125 --> 00:24:28,000
@@ -1309,15 +1309,15 @@ And | gulped it down bit by bit...
 
 317
 00:25:06,042 --> 00:25:08,333
-| did it!
+<i>|</i> did it!
 
 318
 00:25:14,083 --> 00:25:15,667
-Now | am a good boy!
+Now <i>|</i> am a good boy!
 
 319
 00:25:15,833 --> 00:25:18,167
-Now | am not sick!
+Now <i>|</i> am not sick!
 
 320
 00:25:18,292 --> 00:25:19,167
@@ -1337,7 +1337,7 @@ Maldives?
 
 324
 00:25:24,958 --> 00:25:28,417
-You said we would go once | get well.
+You said we would go once <i>|</i> get well.
 
 325
 00:25:28,583 --> 00:25:31,958
@@ -1354,7 +1354,7 @@ Those words have flare.
 
 328
 00:25:38,833 --> 00:25:40,125
-| am happy for you.
+<i>|</i> am happy for you.
 
 329
 00:25:41,750 --> 00:25:45,250
@@ -1366,7 +1366,7 @@ We'd go to Maldives once | get well.
 
 331
 00:25:50,583 --> 00:25:53,500
-| meant once | get rich.
+<i>|</i> meant once | get rich.
 
 332
 00:25:54,417 --> 00:25:58,708
@@ -1374,7 +1374,7 @@ No, that wasn't what you mean.
 
 333
 00:26:01,625 --> 00:26:06,083
-You said we'd go once | get well.
+You said we'd go once <i>|</i> get well.
 
 334
 00:26:07,042 --> 00:26:09,125
@@ -1398,7 +1398,7 @@ When?
 
 339
 00:26:17,167 --> 00:26:18,542
-Once | get rich.
+Once <i>|</i> get rich.
 
 340
 00:26:18,708 --> 00:26:20,167
@@ -1406,7 +1406,7 @@ But you are rich.
 
 341
 00:26:20,333 --> 00:26:22,042
-Sure, sure, | am rich.
+Sure, sure, <i>|</i> am rich.
 
 342
 00:26:22,208 --> 00:26:23,500
@@ -1426,7 +1426,7 @@ Hey, I'm leaving tomorrow.
 
 346
 00:27:06,458 --> 00:27:08,667
-- Yes... <i>-</i> Is that right’?
+- Yes... - Is that right’?
 
 347
 00:27:08,833 --> 00:27:10,292
@@ -1466,7 +1466,7 @@ Coming!
 
 356
 00:27:30,125 --> 00:27:33,417
-| need to pack now. Talk to you later.
+<i>|</i> need to pack now. Talk to you later.
 
 357
 00:27:33,583 --> 00:27:35,125
@@ -1474,12 +1474,12 @@ see you!
 
 358
 00:27:44,667 --> 00:27:48,458
-Mother, do | need to bring
+Mother, do <i>|</i> need to bring
 my birth certificate?
 
 359
 00:27:48,625 --> 00:27:49,458
-| guess So.
+<i>|</i> guess So.
 
 360
 00:27:49,583 --> 00:27:50,542
@@ -1495,11 +1495,11 @@ Wow, I'm saved!
 
 363
 00:28:05,292 --> 00:28:06,875
-| found it!
+<i>|</i> found it!
 
 364
 00:28:07,042 --> 00:28:09,583
-| found my birth certificate!
+<i>|</i> found my birth certificate!
 
 365
 00:28:12,375 --> 00:28:20,917
@@ -1545,7 +1545,7 @@ If only for one small piece.
 
 375
 00:33:06,042 --> 00:33:08,250
-- Goodnight, mother! <i>-</i> Goodnight!
+- Goodnight, mother! - Goodnight!
 
 376
 00:33:46,542 --> 00:33:48,000
@@ -1624,15 +1624,15 @@ It's about the Calf!
 
 394
 00:34:46,042 --> 00:34:47,583
-| Know it is not easy.
+<i>|</i> Know it is not easy.
 
 395
 00:34:48,875 --> 00:34:51,583
-| Know it is not easy to find Logan.
+<i>|</i> Know it is not easy to find Logan.
 
 396
 00:34:52,875 --> 00:34:56,417
-| Know it is not easy for him to take me in.
+<i>|</i> Know it is not easy for him to take me in.
 
 397
 00:34:59,708 --> 00:35:03,250
@@ -1657,7 +1657,7 @@ now you will raise me!
 
 402
 00:35:31,542 --> 00:35:34,542
-When | receive my Olympic medal...
+When <i>|</i> receive my Olympic medal...
 
 403
 00:35:34,792 --> 00:35:38,375
@@ -1673,7 +1673,7 @@ Cheung Chau, | finally make it here.
 
 406
 00:35:58,333 --> 00:36:05,583
-| must kiss this holy land!
+<i>|</i> must kiss this holy land!
 
 407
 00:36:09,542 --> 00:36:13,667
@@ -1686,7 +1686,7 @@ Where Chow Yun Fat grew up?
 
 409
 00:36:29,708 --> 00:36:34,500
-| came into hiding on this island...
+<i>|</i> came into hiding on this island...
 
 410
 00:36:35,292 --> 00:36:39,500
@@ -1698,7 +1698,7 @@ And so many kids came to seek me out.
 
 412
 00:36:45,250 --> 00:36:47,833
-So | came to live here.
+So <i>|</i> came to live here.
 
 413
 00:36:48,208 --> 00:36:50,083
@@ -1770,7 +1770,7 @@ Before a calf becomes a calf?
 
 430
 00:37:48,750 --> 00:37:51,583
-| shall have this calf!
+<i>|</i> shall have this calf!
 
 431
 00:37:51,875 --> 00:37:52,917
@@ -1890,7 +1890,7 @@ Logan looks strange after the song.
 
 460
 00:39:33,542 --> 00:39:36,958
-| must grab my chance.
+<i>|</i> must grab my chance.
 
 461
 00:39:37,417 --> 00:39:39,833
@@ -1918,7 +1918,7 @@ My calf has gone numb!
 
 467
 00:40:07,833 --> 00:40:10,917
-| tell mother what happened today.
+<i>|</i> tell mother what happened today.
 
 468
 00:40:11,625 --> 00:40:14,333
@@ -1986,7 +1986,7 @@ San San’'s lover thinks...
 
 483
 00:41:21,542 --> 00:41:24,083
-| have a nice thick back.
+<i>|</i> have a nice thick back.
 
 484
 00:41:24,250 --> 00:41:28,292
@@ -2012,7 +2012,7 @@ After the soup, the ceremony begins.
 489
 00:41:44,708 --> 00:41:49,292
 Mother pours a cup of tea and
-| offer it to the master.
+<i>|</i> offer it to the master.
 
 490
 00:41:49,458 --> 00:41:53,125
@@ -2020,12 +2020,12 @@ After all the hardship looking for Logan...
 
 491
 00:41:53,250 --> 00:41:58,208
-Now | can windsurf together with
+Now <i>|</i> can windsurf together with
 San San!
 
 492
 00:42:00,958 --> 00:42:04,458
-| offer the tea to Logan...
+<i>|</i> offer the tea to Logan...
 
 493
 00:42:05,167 --> 00:42:10,292
@@ -2056,7 +2056,7 @@ One Is windsurfing.
 
 499
 00:42:29,083 --> 00:42:32,875
-That | have passed onto San San.
+That <i>|</i> have passed onto San San.
 
 500
 00:42:33,042 --> 00:42:37,708
@@ -2191,7 +2191,7 @@ A game with no bun to snatch!
 
 531
 00:44:45,583 --> 00:44:48,208
-All | do is to go to the master's home...
+All <i>|</i> do is to go to the master's home...
 
 532
 00:44:48,417 --> 00:44:51,000
@@ -2240,11 +2240,11 @@ SO San San leaves without seeing me.
 
 543
 00:45:29,667 --> 00:45:33,667
-In despair, | crawl up the shelf.
+In despair, <i>|</i> crawl up the shelf.
 
 544
 00:45:35,167 --> 00:45:39,458
-| have had a lot of things said to me...
+<i>|</i> have had a lot of things said to me...
 
 545
 00:45:39,708 --> 00:45:40,708
@@ -2256,7 +2256,7 @@ hurts like never before.
 
 547
 00:45:43,958 --> 00:45:45,333
-
+I... I...
 
 548
 00:45:45,417 --> 00:45:48,083
@@ -2265,7 +2265,7 @@ lam quitting!
 549
 00:46:10,708 --> 00:46:15,083
 Today is the first time
-| sit down with Logan.
+<i>|</i> sit down with Logan.
 
 550
 00:46:15,750 --> 00:46:18,083
@@ -2396,7 +2396,7 @@ But, looking at those steely veins...
 
 581
 00:48:08,042 --> 00:48:12,542
-| am reminded of Dull's pa, Bing.
+<i>|</i> am reminded of Dull's pa, Bing.
 
 582
 00:48:21,042 --> 00:48:26,375
@@ -2430,7 +2430,7 @@ word by word.
 
 589
 00:48:52,167 --> 00:48:57,125
-| use the machine to turn it back
+<i>|</i> use the machine to turn it back
 into Chinese.
 
 590
@@ -2444,7 +2444,7 @@ the Olympic Committee Chairman.
 
 592
 00:49:06,250 --> 00:49:08,500
-“How are you? | am fine.”
+“How are you? <i>|</i> am fine.”
 
 593
 00:49:08,667 --> 00:49:10,917
@@ -2514,7 +2514,7 @@ she's talking about me!
 609
 00:49:57,000 --> 00:49:59,792
 “One day,
-| can see him snatching buns..."
+<i>|</i> can see him snatching buns..."
 
 610
 00:50:00,083 --> 00:50:02,292
@@ -2537,7 +2537,7 @@ the talent of your children.”
 
 614
 00:50:15,667 --> 00:50:19,333
-“That is why | write you this sudden letter."
+“That is why <i>|</i> write you this sudden letter."
 
 615
 00:50:19,542 --> 00:50:23,333
@@ -2566,7 +2566,7 @@ After reading mother's letter...
 
 621
 00:50:44,000 --> 00:50:47,000
-| go back to Cheung Chau to practice.
+<i>|</i> go back to Cheung Chau to practice.
 
 622
 00:50:48,417 --> 00:50:50,458
@@ -2574,7 +2574,7 @@ Not because of San San.
 
 623
 00:50:50,958 --> 00:50:53,042
-| don't Know why | want to snatch a bun.
+<i>|</i> don't Know why | want to snatch a bun.
 
 624
 00:50:53,667 --> 00:50:57,042
@@ -2583,7 +2583,7 @@ an Olympic item.
 
 625
 00:50:57,708 --> 00:51:01,042
-But | keep learning.
+But <i>|</i> keep learning.
 
 626
 00:51:01,625 --> 00:51:04,125
@@ -2612,7 +2612,7 @@ Was much admired by Butcher Lin!
 
 632
 00:51:22,167 --> 00:51:24,000
-Later, | learn from McMug...
+Later, <i>|</i> learn from McMug...
 
 633
 00:51:24,167 --> 00:51:28,375
@@ -2621,11 +2621,11 @@ the great Kung Fu king.
 
 634
 00:51:29,458 --> 00:51:32,458
-| don't know much about Kung Fu kings...
+<i>|</i> don't know much about Kung Fu kings...
 
 635
 00:51:32,833 --> 00:51:35,542
-But | must be the ultimate pork...
+But <i>|</i> must be the ultimate pork...
 
 636
 00:51:35,708 --> 00:51:37,708
@@ -2641,11 +2641,11 @@ My mind boggles as | practice, after all...
 
 639
 00:51:46,167 --> 00:51:48,458
-| am not a fan of bun snatching.
+<i>|</i> am not a fan of bun snatching.
 
 640
 00:51:48,917 --> 00:51:50,750
-| am only doing this for mother.
+<i>|</i> am only doing this for mother.
 
 641
 00:51:50,875 --> 00:51:52,667
@@ -2657,7 +2657,7 @@ Step by step, claw by claw...
 
 643
 00:51:55,167 --> 00:51:59,833
-| make it pass
+<i>|</i> make it pass
 the"12 Bun Snatching Hands".
 
 644
@@ -2721,7 +2721,7 @@ And he hoped to eat a Christmas turkey.
 
 658
 00:53:00,833 --> 00:53:03,958
-Right, | haven't eaten any turkey then.
+Right, <i>|</i> haven't eaten any turkey then.
 
 659
 00:53:04,250 --> 00:53:05,875
@@ -2771,11 +2771,11 @@ only my imagination.
 
 670
 00:53:40,125 --> 00:53:42,417
-| had never eaten a turkey.
+<i>|</i> had never eaten a turkey.
 
 671
 00:53:42,625 --> 00:53:44,667
-| had never even smelt one.
+<i>|</i> had never even smelt one.
 
 672
 00:53:45,500 --> 00:53:47,125
@@ -2834,7 +2834,7 @@ with salt on both hands...
 
 685
 00:54:25,083 --> 00:54:28,292
-| rubbed the turkey's thick chest.
+<i>|</i> rubbed the turkey's thick chest.
 
 686
 00:54:29,125 --> 00:54:30,000
@@ -2850,7 +2850,7 @@ leaked out.
 
 689
 00:54:35,708 --> 00:54:37,333
-| cried: the turkey's stomach won't stop!
+<i>|</i> cried: the turkey's stomach won't stop!
 
 690
 00:54:39,042 --> 00:54:41,333
@@ -2896,7 +2896,7 @@ So beautiful!
 
 700
 00:55:48,042 --> 00:55:50,125
-| had never tasted anything so strong.
+<i>|</i> had never tasted anything so strong.
 
 701
 00:55:50,417 --> 00:55:53,625
@@ -2922,7 +2922,7 @@ Most beautiful, brilliant, and tender.
 
 706
 00:56:16,333 --> 00:56:18,125
-| woke up late the next day.
+<i>|</i> woke up late the next day.
 
 707
 00:56:18,417 --> 00:56:21,667
@@ -2939,7 +2939,7 @@ There was only corn soup for lunch.
 
 710
 00:56:27,792 --> 00:56:29,958
-| idly found diced turkey...
+<i>|</i> idly found diced turkey...
 
 711
 00:56:30,625 --> 00:56:33,000
@@ -2981,11 +2981,11 @@ sunday,
 
 720
 00:56:58,208 --> 00:57:01,542
-| boldly suggested eating out.
+<i>|</i> boldly suggested eating out.
 
 721
 00:57:01,792 --> 00:57:03,583
-Mother said | was ungrateful...
+Mother said <i>|</i> was ungrateful...
 
 722
 00:57:03,708 --> 00:57:05,708
@@ -3038,13 +3038,13 @@ Turkey pete with bread.
 
 734
 00:57:40,625 --> 00:57:46,625
-| shouldn't have said anything about
+<i>|</i> shouldn't have said anything about
 the turkey's stomach.
 
 735
 00:57:46,917 --> 00:57:51,208
 Came Dragon Boat Festival,
-when | dug into the dumpling...
+when <i>|</i> dug into the dumpling...
 
 736
 00:57:51,375 --> 00:57:55,792
@@ -3052,7 +3052,7 @@ And found more pieces of turkey...
 
 737
 00:57:56,000 --> 00:57:59,667
-| lost it. | cried.
+<i>|</i> lost it. | cried.
 
 738
 00:58:00,292 --> 00:58:01,792
@@ -3074,7 +3074,7 @@ my nightmare.
 
 742
 00:58:15,125 --> 00:58:16,625
-Later, | learned that...
+Later, <i>|</i> learned that...
 
 743
 00:58:16,792 --> 00:58:18,625
@@ -3094,7 +3094,7 @@ Was in fact longer than its life.
 
 747
 00:58:28,833 --> 00:58:31,417
-| realized also, with turkey...
+<i>|</i> realized also, with turkey...
 
 748
 00:58:31,583 --> 00:58:35,792
@@ -3107,11 +3107,11 @@ it is just"be over and done with it".
 
 750
 00:58:41,500 --> 00:58:43,333
-| am no philosopher.
+<i>|</i> am no philosopher.
 
 751
 00:58:43,500 --> 00:58:46,542
-| could not come up with any profundity.
+<i>|</i> could not come up with any profundity.
 
 752
 00:58:47,542 --> 00:58:49,208
@@ -3119,7 +3119,7 @@ But, such thougNts...
 
 753
 00:58:49,375 --> 00:58:50,750
-After | grew up...
+After <i>|</i> grew up...
 
 754
 00:58:51,750 --> 00:58:54,042
@@ -3143,7 +3143,7 @@ It was at my mother's cremation.
 
 759
 00:59:08,875 --> 00:59:12,833
-That day, | was looking at
+That day, <i>|</i> was looking at
 the smoke rising up.
 
 760
@@ -3153,7 +3153,7 @@ the turkey returned.
 
 761
 00:59:18,000 --> 00:59:22,542
-| regretted | made mother
+<i>|</i> regretted | made mother
 threw the turkey away.
 
 762
@@ -3310,7 +3310,7 @@ Everything went on as usual.
 797
 01:03:12,375 --> 01:03:15,792
 In secondary school,
-| stopped practicing the 12 hands.
+<i>|</i> stopped practicing the 12 hands.
 
 798
 01:03:16,917 --> 01:03:18,500
@@ -3391,7 +3391,7 @@ There was nothing but a box.
 
 816
 01:04:37,250 --> 01:04:39,000
-| opened the box...
+<i>|</i> opened the box...
 
 817
 01:04:39,167 --> 01:04:42,417
@@ -3420,7 +3420,7 @@ Maybe the pirate didn't get to finish it.
 823
 01:05:26,750 --> 01:05:35,042
 "Excelled 6 sets of steps
-when | was young..."
+when <i>|</i> was young..."
 
 824
 01:05:35,208 --> 01:05:42,458
@@ -3429,7 +3429,7 @@ when | was young..."
 825
 01:05:44,042 --> 01:05:57,375
 “Brought up San San
-when | am old! Still..."
+when <i>|</i> am old! Still..."
 
 826
 01:05:57,917 --> 01:06:01,292
@@ -3485,7 +3485,7 @@ Power doesn't mean yes.
 
 839
 01:06:44,667 --> 01:06:47,208
-Bun in hand, | suddenly thought...
+Bun in hand, <i>|</i> suddenly thought...
 
 840
 01:06:47,583 --> 01:06:50,042
@@ -3553,7 +3553,7 @@ As for the toenails...
 
 856
 01:08:50,333 --> 01:08:53,417
-| got bored one time and stared at it...
+<i>|</i> got bored one time and stared at it...
 
 857
 01:08:53,833 --> 01:08:56,750
@@ -3585,7 +3585,7 @@ Zero gain? Not really.
 
 864
 01:09:18,625 --> 01:09:21,667
-| have my calves.
+<i>|</i> have my calves.
 
 865
 01:09:23,083 --> 01:09:25,792
@@ -3597,7 +3597,7 @@ When the waves hit...
 
 867
 01:09:29,000 --> 01:09:32,250
-| feel great.
+<i>|</i> feel great.
 
 868
 01:09:34,167 --> 01:09:37,083

@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 class TesseractOcrRecognizer:
     """Tesseract recognizer for image subtitles."""
 
-    engine_version = "tesseract-3"
+    engine_version = "tesseract-4"
     """Tesseract cache version label."""
 
     def __init__(
@@ -184,6 +184,37 @@ class TesseractOcrRecognizer:
             command.extend(["--tessdata-dir", str(tessdata_dir_path)])
         return command
 
+    def _build_legacy_fallback_command(
+        self,
+        image_path: Path,
+        output_base_path: Path,
+    ) -> list[str]:
+        """Build Tesseract legacy-engine hOCR command for blank fallback.
+
+        Arguments:
+            image_path: input image path
+            output_base_path: output base path without extension
+        Returns:
+            command arguments
+        """
+        command = [
+            str(self.executable_path),
+            str(image_path),
+            str(output_base_path),
+            "-l",
+            self.language,
+            "--psm",
+            "7",
+            "--oem",
+            "0",
+            "-c",
+            "tessedit_create_hocr=1",
+        ]
+        tessdata_dir_path = self.legacy_tessdata_dir_path or self.tessdata_dir_path
+        if tessdata_dir_path is not None:
+            command.extend(["--tessdata-dir", str(tessdata_dir_path)])
+        return command
+
     def _get_cache_path(self, image: Image.Image) -> Path | None:
         """Get cache path based on image data and OCR configuration.
 
@@ -241,8 +272,33 @@ class TesseractOcrRecognizer:
         Returns:
             recognized text
         """
-        preprocessed_image = preprocess_tesseract_ocr_image(image, scale=self.scale)
-        return self._recognize_preprocessed_image(preprocessed_image)
+        with TemporaryDirectory(prefix="scinoephile_tesseract_") as tmp_dir:
+            tmp_dir_path = Path(tmp_dir)
+            image_path = tmp_dir_path / "input.png"
+            output_base_path = tmp_dir_path / "output"
+            preprocessed_image = preprocess_tesseract_ocr_image(
+                image,
+                scale=self.scale,
+            )
+            preprocessed_image.save(image_path)
+            text = self._run_tesseract(image_path, output_base_path)
+            if text.strip() or not self._uses_legacy_blank_fallback:
+                return text
+
+            fallback_image_path = tmp_dir_path / "input_legacy_fallback.png"
+            fallback_output_base_path = tmp_dir_path / "output_legacy_fallback"
+            fallback_image = preprocess_tesseract_ocr_image(image, scale=1)
+            fallback_image.save(fallback_image_path)
+            fallback_text = self._run_legacy_blank_fallback(
+                fallback_image_path,
+                fallback_output_base_path,
+            )
+            if self._is_usable_legacy_blank_fallback_text(fallback_text):
+                logger.info(
+                    "Using Tesseract legacy fallback for blank English OCR result"
+                )
+                return fallback_text
+            return text
 
     def _run_command(self, command: list[str]) -> tuple[int, str, str]:
         """Run command.
@@ -288,6 +344,48 @@ class TesseractOcrRecognizer:
             ) from exc
 
         return transfer_tesseract_hocr_italics(hocr, legacy_hocr)
+
+    @property
+    def _uses_legacy_blank_fallback(self) -> bool:
+        """Whether to use legacy OCR as a blank-result fallback."""
+        return (
+            self.language == "eng"
+            and (self.legacy_tessdata_dir_path is not None or self.tessdata_dir_path)
+            is not None
+        )
+
+    def _run_legacy_blank_fallback(
+        self,
+        image_path: Path,
+        output_base_path: Path,
+    ) -> str:
+        """Run Tesseract legacy-engine fallback and parse hOCR output.
+
+        Arguments:
+            image_path: input image path
+            output_base_path: output base path without extension
+        Returns:
+            recognized text
+        """
+        try:
+            self._run_command(
+                self._build_legacy_fallback_command(image_path, output_base_path)
+            )
+            return parse_tesseract_hocr(self._read_hocr_output(output_base_path))
+        except (OSError, ValueError) as exc:
+            logger.info(f"Tesseract legacy blank fallback failed: {exc}")
+            return ""
+
+    @staticmethod
+    def _is_usable_legacy_blank_fallback_text(text: str) -> bool:
+        """Return whether legacy fallback text is useful enough to accept.
+
+        Arguments:
+            text: fallback text
+        Returns:
+            whether text should replace a blank primary OCR result
+        """
+        return any(char.isalpha() for char in text)
 
     @staticmethod
     def _read_hocr_output(output_base_path: Path) -> str:
