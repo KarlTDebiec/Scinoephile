@@ -34,14 +34,17 @@ from test.helpers import test_data_root
 __all__ = [
     "t_eng",
     "t_eng_ocr_lens",
+    "t_eng_ocr_lens_new",
     "t_eng_ocr_paddle_new",
     "t_eng_ocr_tesseract",
     "t_zho_hans",
     "t_zho_hans_ocr_lens",
+    "t_zho_hans_ocr_lens_new",
     "t_zho_hans_ocr_paddle",
     "t_zho_hans_ocr_paddle_new",
     "t_zho_hant",
     "t_zho_hant_ocr_lens",
+    "t_zho_hant_ocr_lens_new",
     "t_zho_hant_ocr_paddle",
     "t_zho_hant_ocr_paddle_new",
     "get_t_eng_block_review_test_cases",
@@ -94,6 +97,12 @@ def t_eng_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def t_eng_ocr_lens_new() -> Series:
+    """T English subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "eng_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def t_eng_ocr_paddle_new() -> Series:
     """T English subtitles OCRed using internal PaddleOCR."""
     return Series.load(input_dir / "eng_ocr/paddle_new.srt")
@@ -118,6 +127,12 @@ def t_zho_hans_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def t_zho_hans_ocr_lens_new() -> Series:
+    """T 简体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hans_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def t_zho_hans_ocr_paddle() -> Series:
     """T 简体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
@@ -139,6 +154,12 @@ def t_zho_hant() -> Series:
 def t_zho_hant_ocr_lens() -> Series:
     """T 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def t_zho_hant_ocr_lens_new() -> Series:
+    """T 繁体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
 
 
 @pytest.fixture

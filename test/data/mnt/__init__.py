@@ -33,12 +33,15 @@ from test.helpers import test_data_root
 
 __all__ = [
     "mnt_eng_ocr_lens",
+    "mnt_eng_ocr_lens_new",
     "mnt_eng_ocr_tesseract",
     "mnt_zho_hans_ocr_lens",
+    "mnt_zho_hans_ocr_lens_new",
     "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hans_ocr_paddle_new",
     "mnt_zho_hant",
     "mnt_zho_hant_ocr_lens",
+    "mnt_zho_hant_ocr_lens_new",
     "mnt_zho_hant_ocr_paddle",
     "mnt_zho_hant_ocr_paddle_new",
     "get_mnt_eng_block_review_test_cases",
@@ -87,6 +90,12 @@ def mnt_eng_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def mnt_eng_ocr_lens_new() -> Series:
+    """MNT English subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "eng_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def mnt_eng_ocr_tesseract() -> Series:
     """MNT English subtitles OCRed using Tesseract."""
     return Series.load(input_dir / "eng_ocr/tesseract.srt")
@@ -96,6 +105,12 @@ def mnt_eng_ocr_tesseract() -> Series:
 def mnt_zho_hans_ocr_lens() -> Series:
     """MNT 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
+
+
+@pytest.fixture
+def mnt_zho_hans_ocr_lens_new() -> Series:
+    """MNT 简体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hans_ocr/lens_new.srt")
 
 
 @pytest.fixture
@@ -120,6 +135,12 @@ def mnt_zho_hant() -> Series:
 def mnt_zho_hant_ocr_lens() -> Series:
     """MNT 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def mnt_zho_hant_ocr_lens_new() -> Series:
+    """MNT 繁体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
 
 
 @pytest.fixture
