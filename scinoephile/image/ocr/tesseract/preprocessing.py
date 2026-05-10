@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 __all__ = ["preprocess_tesseract_ocr_image"]
 
@@ -26,13 +26,14 @@ def preprocess_tesseract_ocr_image(
         raise ValueError("scale must be at least 1")
 
     rgba_image = image.convert("RGBA")
-    one_color = Image.new("RGBA", rgba_image.size, (0, 0, 0, 0))
+    luminance = rgba_image.convert("L")
     alpha = rgba_image.getchannel("A")
-    one_color.paste((0, 0, 0, 255), mask=alpha)
+    luminance_mask = luminance.point(lambda value: 255 if value >= 96 else 0)
+    alpha_mask = alpha.point(lambda value: 255 if value >= 10 else 0)
+    fill_mask = ImageChops.multiply(luminance_mask, alpha_mask)
 
-    white_background = Image.new("RGBA", rgba_image.size, (255, 255, 255, 255))
-    white_background.alpha_composite(one_color)
-    rgb_image = white_background.convert("RGB")
+    rgb_image = Image.new("RGB", rgba_image.size, (255, 255, 255))
+    rgb_image.paste((0, 0, 0), mask=fill_mask)
     if scale == 1:
         return rgb_image
 

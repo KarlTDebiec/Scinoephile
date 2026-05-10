@@ -14,7 +14,7 @@ from scinoephile.image.ocr.tesseract.preprocessing import (
 def test_preprocess_tesseract_ocr_image_makes_opaque_white_background():
     """Test Tesseract preprocessing composites transparency onto white."""
     image = Image.new("RGBA", (4, 3), (0, 0, 0, 0))
-    image.putpixel((1, 1), (20, 30, 40, 255))
+    image.putpixel((1, 1), (220, 220, 220, 255))
 
     preprocessed = preprocess_tesseract_ocr_image(image)
 
@@ -22,6 +22,20 @@ def test_preprocess_tesseract_ocr_image_makes_opaque_white_background():
     assert preprocessed.size == (8, 6)
     assert preprocessed.getpixel((0, 0)) == (255, 255, 255)
     assert preprocessed.getpixel((2, 2)) == (0, 0, 0)
+
+
+def test_preprocess_tesseract_ocr_image_discards_dark_outline():
+    """Test Tesseract preprocessing keeps bright fill and discards dark outline."""
+    image = Image.new("RGBA", (3, 1), (0, 0, 0, 0))
+    image.putpixel((0, 0), (15, 15, 15, 255))
+    image.putpixel((1, 0), (20, 30, 40, 255))
+    image.putpixel((2, 0), (220, 220, 220, 255))
+
+    preprocessed = preprocess_tesseract_ocr_image(image, scale=1)
+
+    assert preprocessed.getpixel((0, 0)) == (255, 255, 255)
+    assert preprocessed.getpixel((1, 0)) == (255, 255, 255)
+    assert preprocessed.getpixel((2, 0)) == (0, 0, 0)
 
 
 def test_preprocess_tesseract_ocr_image_supports_scale_one():

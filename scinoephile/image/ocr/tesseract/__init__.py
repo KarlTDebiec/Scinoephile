@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from logging import getLogger
 from pathlib import Path
 from typing import cast
 
@@ -18,6 +19,8 @@ __all__ = [
     "get_tesseract_ocr_recognizer",
     "ocr_image_series_with_tesseract",
 ]
+
+logger = getLogger(__name__)
 
 
 def get_tesseract_ocr_recognizer(
@@ -94,7 +97,9 @@ def ocr_image_series_with_tesseract(
         tesseract_recognizer = recognizer
 
     events = []
-    for subtitle in image_series:
+    subtitle_count = len(image_series.events)
+    for subtitle_idx, subtitle in enumerate(image_series, 1):
+        logger.info(f"OCRing subtitle {subtitle_idx}/{subtitle_count} with Tesseract")
         image_subtitle = cast(ImageSubtitle, subtitle)
         text = tesseract_recognizer.recognize_image(image_subtitle.img)
         events.append(

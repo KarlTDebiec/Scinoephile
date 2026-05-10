@@ -34,7 +34,7 @@ logger = getLogger(__name__)
 class TesseractOcrRecognizer:
     """Tesseract recognizer for image subtitles."""
 
-    engine_version = "tesseract-2"
+    engine_version = "tesseract-3"
     """Tesseract cache version label."""
 
     def __init__(
