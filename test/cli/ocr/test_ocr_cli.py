@@ -178,6 +178,41 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
 
 @skip_if_ci()
 @pytest.mark.skipif(
+    not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),
+    reason=(
+        "Set SCINOEPHILE_RUN_MLAMD_LENS_OCR=1 to run full MLAMD Google Lens OCR tests"
+    ),
+)
+def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test Google Lens CLI against a full MLAMD SUP subtitle fixture.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    full_sup_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    full_expected_path = test_data_root / "mlamd/input/eng_ocr/lens.srt"
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(tmp_path / "cache"))
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            OcrLensCli,
+            f"--infile {full_sup_path} "
+            "--language en "
+            f"--outfile {output_path} "
+            "--overwrite",
+        )
+        output = Series.load(output_path)
+        expected = Series.load(full_expected_path)
+
+    assert_series_equal(output, expected)
+
+
+@skip_if_ci()
+@pytest.mark.skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_PADDLE_OCR"),
     reason="Set SCINOEPHILE_RUN_MLAMD_PADDLE_OCR=1 to run full MLAMD PaddleOCR tests",
 )
