@@ -50,17 +50,16 @@ def test_get_subtitle_streams(tmp_path: Path):
     assert streams[0].codec_name == "subrip"
     assert streams[0].title == "English"
     assert streams[0].sdh is True
-    assert streams[0].subtitle_count == 123
+    assert streams[0].subtitle_count is None
     assert streams[0].extension == "srt"
     assert streams[0].output_codec == "subrip"
     assert streams[0].description == (
-        "Stream #0:2(eng): Subtitle: subrip "
-        "(extension=srt, title=English, sdh, subtitles=123)"
+        "Stream #0:2(eng): Subtitle: subrip (extension=srt, title=English, sdh)"
     )
 
 
-def test_get_media_streams_filters_non_dict_streams(tmp_path: Path):
-    """Test media stream probing returns only ffprobe stream objects."""
+def test_get_media_streams_returns_typed_streams(tmp_path: Path):
+    """Test media stream probing returns typed stream models."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -76,9 +75,61 @@ def test_get_media_streams_filters_non_dict_streams(tmp_path: Path):
         streams = get_media_streams(infile_path)
 
     probe.assert_called_once_with(str(infile_path))
-    assert streams == [
-        {"index": 0, "codec_type": "video", "codec_name": "h264"},
-    ]
+    assert len(streams) == 1
+    assert isinstance(streams[0], VideoStream)
+    assert streams[0].index == 0
+    assert streams[0].codec_name == "h264"
+
+
+def test_get_media_streams_details_enriches_subtitle_streams(tmp_path: Path):
+    """Test media stream details include subtitle script and stats."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    cache_dir_path = tmp_path / "cache"
+
+    with (
+        patch(
+            "scinoephile.core.media.streams.ffmpeg.probe",
+            return_value={
+                "streams": [
+                    {
+                        "index": 2,
+                        "codec_type": "subtitle",
+                        "codec_name": "subrip",
+                        "tags": {"language": "zho"},
+                    },
+                ],
+            },
+        ),
+        patch(
+            "scinoephile.core.media.streams.cache_subtitle_stream_artifacts"
+        ) as cache,
+        patch(
+            "scinoephile.core.media.streams.analyze_subtitle_stream_script"
+        ) as analyze,
+        patch("scinoephile.core.media.streams.get_subtitle_stream_stats") as stats,
+    ):
+        analyze.return_value.script = "zho-Hant"
+        stats.return_value.event_count = 12
+        stats.return_value.first_start_ms = 62_500
+        stats.return_value.last_end_ms = 3_725_250
+        streams = get_media_streams(
+            infile_path,
+            details=True,
+            cache_dir_path=cache_dir_path,
+        )
+
+    assert len(streams) == 1
+    assert isinstance(streams[0], SubtitleStream)
+    assert streams[0].script == "zho-Hant"
+    assert streams[0].subtitle_count == 12
+    assert streams[0].span == "00:01:02-01:02:05"
+    cache.assert_called_once()
+    assert cache.call_args.kwargs == {"cache_dir_path": cache_dir_path}
+    analyze.assert_called_once()
+    assert analyze.call_args.kwargs == {"cache_dir_path": cache_dir_path}
+    stats.assert_called_once()
+    assert stats.call_args.kwargs == {"cache_dir_path": cache_dir_path}
 
 
 def test_stream_from_ffprobe_stream_returns_typed_streams():

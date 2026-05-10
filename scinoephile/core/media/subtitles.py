@@ -62,10 +62,8 @@ def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
     Raises:
         ScinoephileError: if ffprobe fails
     """
-    subtitle_streams = []
-    for stream in get_media_streams(infile_path):
-        subtitle_stream = SubtitleStream.from_ffprobe_stream(stream)
-        if subtitle_stream is not None:
-            subtitle_streams.append(subtitle_stream)
-
-    return subtitle_streams
+    return [
+        stream
+        for stream in get_media_streams(infile_path)
+        if isinstance(stream, SubtitleStream)
+    ]
