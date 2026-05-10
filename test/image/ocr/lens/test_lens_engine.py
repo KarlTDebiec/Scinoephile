@@ -29,16 +29,16 @@ class CountingGoogleLensRecognizer(GoogleLensRecognizer):
         self.language = "en"
         self.predict_count = 0
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> dict[str, object]:
+    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
         """Run fake Google Lens recognition.
 
         Arguments:
             image: input image
         Returns:
-            normalized OCR result
+            normalized OCR lines
         """
         self.predict_count += 1
-        return {"line_blocks": [{"text": "cached"}, {"text": "text"}]}
+        return ["cached", "text"]
 
 
 def test_clean_google_lens_text_ignores_empty_and_error_messages():
@@ -57,17 +57,17 @@ def test_clean_google_lens_text_joins_standalone_dash_and_ellipsis():
     assert text == "- Hello ...\nworld"
 
 
-def test_extract_text_falls_back_to_ocr_text():
-    """Test extraction falls back to full OCR text."""
+def test_normalize_lens_result_falls_back_to_ocr_text_lines():
+    """Test normalization falls back to full OCR text lines."""
     result = {"ocr_text": "full\ntext", "line_blocks": []}
 
-    text = GoogleLensRecognizer._extract_text(result)
+    lines = GoogleLensRecognizer._normalize_lens_result(result)
 
-    assert text == "full\ntext"
+    assert lines == ["full", "text"]
 
 
-def test_extract_text_prefers_line_blocks():
-    """Test extraction joins line block text when available."""
+def test_normalize_lens_result_prefers_line_blocks():
+    """Test normalization prefers line block text when available."""
     result: dict[str, Any] = {
         "ocr_text": "fallback",
         "line_blocks": [
@@ -76,9 +76,9 @@ def test_extract_text_prefers_line_blocks():
         ],
     }
 
-    text = GoogleLensRecognizer._extract_text(result)
+    lines = GoogleLensRecognizer._normalize_lens_result(result)
 
-    assert text == "first\nsecond"
+    assert lines == ["first", "second"]
 
 
 def test_google_lens_recognizer_caches_results_by_image(tmp_path: Path):
@@ -102,12 +102,39 @@ def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
 
     cache_path = next(tmp_path.glob("*.json"))
     cache_path.write_text(
-        '{"schema": 1, "line_blocks": [{"text": "cached"}, {"text": "..."}]}',
+        '{"schema": 2, "lines": ["cached", "..."]}',
         encoding="utf-8",
     )
 
     assert recognizer.recognize_image(image) == "cached ..."
     assert recognizer.predict_count == 1
+
+
+def test_google_lens_recognizer_does_not_cache_request_errors(tmp_path: Path):
+    """Test transient Google Lens request errors are not cached as empty OCR."""
+
+    class RequestErrorRecognizer(CountingGoogleLensRecognizer):
+        """Google Lens recognizer that returns a request error."""
+
+        async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
+            """Run fake Google Lens recognition.
+
+            Arguments:
+                image: input image
+            Returns:
+                normalized OCR lines
+            """
+            self.predict_count += 1
+            return ["Request error (possibly proxy-related)"]
+
+    recognizer = RequestErrorRecognizer(cache_dir_path=tmp_path)
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    with pytest.raises(RuntimeError, match="Google Lens request error"):
+        recognizer.recognize_image(image)
+
+    assert recognizer.predict_count == 1
+    assert not list(tmp_path.glob("*.json"))
 
 
 def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(

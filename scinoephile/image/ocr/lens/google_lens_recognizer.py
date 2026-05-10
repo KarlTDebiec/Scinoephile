@@ -23,7 +23,7 @@ LensAPI: Any | None = None
 
 _NO_TEXT_MESSAGE = "No OCR text found."
 _REQUEST_ERROR_MESSAGE = "Request error (possibly proxy-related)"
-_CACHE_SCHEMA = 1
+_CACHE_SCHEMA = 2
 
 
 class GoogleLensRecognizer:
@@ -66,20 +66,22 @@ class GoogleLensRecognizer:
         """
         if (cache_path := self._get_cache_path(image)) is not None:
             if cache_path.exists():
-                result = self._load_lens_result(cache_path)
+                lines = self._load_lens_lines(cache_path)
                 cache_path.touch()
                 logger.info(f"Loaded Google Lens OCR result from cache: {cache_path}")
-                return self._format_lens_result(result)
+                return self._format_lens_lines(lines)
 
             self._raise_if_running_loop()
-            result = asyncio.run(self._recognize_image_uncached(image))
-            self._save_lens_result(result, cache_path)
+            lines = asyncio.run(self._recognize_image_uncached(image))
+            self._raise_if_request_error(lines)
+            self._save_lens_lines(lines, cache_path)
             logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
-            return self._format_lens_result(result)
+            return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
-        result = asyncio.run(self._recognize_image_uncached(image))
-        return self._format_lens_result(result)
+        lines = asyncio.run(self._recognize_image_uncached(image))
+        self._raise_if_request_error(lines)
+        return self._format_lens_lines(lines)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
         """Get cache path based on image data and OCR configuration.
@@ -148,28 +150,15 @@ class GoogleLensRecognizer:
         return "\n".join(lines).strip()
 
     @staticmethod
-    def _extract_text(result: object) -> str:
-        """Extract subtitle text from a chrome-lens-py result.
+    def _format_lens_lines(lines: list[str]) -> str:
+        """Format normalized Google Lens OCR lines as subtitle text.
 
         Arguments:
-            result: chrome-lens-py result
+            lines: normalized Google Lens OCR lines
         Returns:
-            recognized text
+            subtitle text
         """
-        line_blocks = _get_result_value(result, "line_blocks")
-        if isinstance(line_blocks, list | tuple) and line_blocks:
-            lines = []
-            for block in line_blocks:
-                text = _get_result_value(block, "text")
-                if isinstance(text, str):
-                    lines.append(text)
-            if lines:
-                return "\n".join(lines)
-
-        ocr_text = _get_result_value(result, "ocr_text")
-        if isinstance(ocr_text, str):
-            return ocr_text
-        return ""
+        return GoogleLensRecognizer._clean_text("\n".join(lines))
 
     @staticmethod
     def _get_lens_api_class() -> Any:
@@ -195,56 +184,48 @@ class GoogleLensRecognizer:
         return LensAPI
 
     @staticmethod
-    def _format_lens_result(result: dict[str, object]) -> str:
-        """Format a normalized Google Lens OCR result as subtitle text.
-
-        Arguments:
-            result: normalized Google Lens OCR result
-        Returns:
-            subtitle text
-        """
-        return GoogleLensRecognizer._clean_text(
-            GoogleLensRecognizer._extract_text(result)
-        )
-
-    @staticmethod
-    def _load_lens_result(cache_path: Path) -> dict[str, object]:
-        """Load normalized Google Lens OCR result from cache.
+    def _load_lens_lines(cache_path: Path) -> list[str]:
+        """Load normalized Google Lens OCR lines from cache.
 
         Arguments:
             cache_path: cache file path
         Returns:
-            normalized OCR result
+            normalized OCR lines
         """
         with cache_path.open("r", encoding="utf-8") as file:
             data = json.load(file)
         if not isinstance(data, dict):
-            return {}
-        return cast(dict[str, object], data)
+            return []
+        if data.get("schema") != _CACHE_SCHEMA:
+            return []
+        lines = data.get("lines")
+        if not isinstance(lines, list):
+            return []
+        return [line for line in lines if isinstance(line, str)]
 
     @staticmethod
-    def _normalize_lens_result(result: object) -> dict[str, object]:
-        """Normalize raw Google Lens OCR result.
+    def _normalize_lens_result(result: object) -> list[str]:
+        """Normalize raw Google Lens OCR result into recognized lines.
 
         Arguments:
             result: raw chrome-lens-py result
         Returns:
-            normalized OCR result
+            normalized OCR lines
         """
-        normalized: dict[str, object] = {}
         line_blocks = _get_result_value(result, "line_blocks")
         if isinstance(line_blocks, list | tuple):
-            normalized_blocks = []
+            lines = []
             for block in line_blocks:
                 text = _get_result_value(block, "text")
                 if isinstance(text, str):
-                    normalized_blocks.append({"text": text})
-            normalized["line_blocks"] = normalized_blocks
+                    lines.append(text)
+            if lines:
+                return lines
 
         ocr_text = _get_result_value(result, "ocr_text")
         if isinstance(ocr_text, str):
-            normalized["ocr_text"] = ocr_text
-        return normalized
+            return ocr_text.splitlines()
+        return []
 
     @staticmethod
     def _raise_if_running_loop():
@@ -262,13 +243,13 @@ class GoogleLensRecognizer:
             "active asyncio event loop."
         )
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> dict[str, object]:
+    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
         """Recognize uncached image text through chrome-lens-py.
 
         Arguments:
             image: input image
         Returns:
-            normalized OCR result
+            normalized OCR lines
         """
         result = await self._api.process_image(
             image_path=image,
@@ -279,15 +260,28 @@ class GoogleLensRecognizer:
         return self._normalize_lens_result(result)
 
     @staticmethod
-    def _save_lens_result(result: dict[str, object], cache_path: Path):
-        """Save normalized Google Lens OCR result to cache.
+    def _raise_if_request_error(lines: list[str]):
+        """Raise if normalized lines contain a Google Lens request error.
 
         Arguments:
-            result: normalized OCR result
+            lines: normalized Google Lens OCR lines
+        Raises:
+            RuntimeError: if Google Lens returned a request error as OCR text
+        """
+        for line in lines:
+            if _REQUEST_ERROR_MESSAGE.casefold() in line.casefold():
+                raise RuntimeError(f"Google Lens request error: {line}")
+
+    @staticmethod
+    def _save_lens_lines(lines: list[str], cache_path: Path):
+        """Save normalized Google Lens OCR lines to cache.
+
+        Arguments:
+            lines: normalized Google Lens OCR lines
             cache_path: cache file path
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        data = {"schema": _CACHE_SCHEMA, **result}
+        data = {"schema": _CACHE_SCHEMA, "lines": lines}
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
 
