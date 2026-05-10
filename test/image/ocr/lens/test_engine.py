@@ -137,3 +137,42 @@ def test_google_lens_recognizer_import_error_is_actionable(
 
     with pytest.raises(ImportError, match="chrome-lens-py"):
         GoogleLensRecognizer._get_lens_api_class()
+
+
+def test_google_lens_recognizer_omits_unset_api_key(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test unset API key does not override chrome-lens-py's default key.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    observed_kwargs = {}
+
+    class FakeLensApi:
+        """Fake chrome-lens-py LensAPI class."""
+
+        def __init__(self, **kwargs: object):
+            """Initialize.
+
+            Arguments:
+                **kwargs: LensAPI keyword arguments
+            """
+            observed_kwargs.update(kwargs)
+
+        async def process_image(self, **kwargs: object) -> dict[str, object]:
+            """Process an image.
+
+            Arguments:
+                **kwargs: process image keyword arguments
+            Returns:
+                fake LensAPI result
+            """
+            return {"ocr_text": "recognized"}
+
+    monkeypatch.setattr(lens_module, "LensAPI", FakeLensApi)
+    recognizer = GoogleLensRecognizer()
+
+    assert recognizer.recognize_image(Image.new("RGBA", (10, 8))) == "recognized"
+
+    assert "api_key" not in observed_kwargs

@@ -245,14 +245,20 @@ class GoogleLensRecognizer:
             recognized text
         """
         lens_api_cls = self._get_lens_api_class()
-        api = lens_api_cls(
-            api_key=self.api_key,
-            client_region=self.client_region,
-            client_time_zone=self.client_time_zone,
-            max_concurrent=self.max_concurrent,
-            proxy=self.proxy,
-            timeout=self.timeout,
-        )
+        lens_api_kwargs: dict[str, object] = {
+            "max_concurrent": self.max_concurrent,
+            "timeout": self.timeout,
+        }
+        if self.api_key is not None:
+            lens_api_kwargs["api_key"] = self.api_key
+        if self.client_region is not None:
+            lens_api_kwargs["client_region"] = self.client_region
+        if self.client_time_zone is not None:
+            lens_api_kwargs["client_time_zone"] = self.client_time_zone
+        if self.proxy is not None:
+            lens_api_kwargs["proxy"] = self.proxy
+
+        api = lens_api_cls(**lens_api_kwargs)
         result = await api.process_image(
             image_path=image,
             ocr_language=self.language,
