@@ -127,7 +127,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             "-o",
             "--output-dir",
             dest="output_dir_path",
-            default=None,
+            required=True,
             type=output_dir_arg(create=False),
             help="directory to which matching subtitles will be extracted or mapped",
         )
@@ -163,27 +163,29 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         cache_dir_path: Path,
         extract_sup: bool,
         overwrite: bool,
-        output_dir_path: Path | None,
+        output_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if extract_sup and output_dir_path is None:
-            parser.error("--extract-sup requires --output-dir")
-        if overwrite and output_dir_path is None:
-            parser.error("--overwrite requires --output-dir")
-        if output_dir_path is not None:
-            output_dir_path.mkdir(parents=True, exist_ok=True)
+        output_dir_path.mkdir(parents=True, exist_ok=True)
         language_codes = set(languages)
 
         # Perform operations
         try:
             if infile_path.suffix.lower() == ".sup":
-                streams = cls._get_subtitle_streams(
-                    infile_path,
-                    details=details,
-                    cache_dir_path=cache_dir_path,
-                )
+                streams = [
+                    stream
+                    for stream in get_streams(
+                        infile_path,
+                        video=False,
+                        audio=False,
+                        subtitles=True,
+                        details=details,
+                        cache_dir_path=cache_dir_path,
+                    )
+                    if isinstance(stream, SubtitleStream)
+                ]
                 if not streams:
                     raise ScinoephileError(
                         f"No subtitle streams found in {infile_path}"
@@ -200,19 +202,22 @@ class MediaExtractSubsCli(ScinoephileCliBase):
 
             streams = [
                 stream
-                for stream in cls._get_subtitle_streams(
+                for stream in get_streams(
                     infile_path,
+                    video=False,
+                    audio=False,
+                    subtitles=True,
                     details=details,
                     cache_dir_path=cache_dir_path,
                 )
-                if stream.language in language_codes
+                if isinstance(stream, SubtitleStream)
+                and stream.language in language_codes
             ]
-            if output_dir_path is not None:
-                cache_subtitle_stream_artifacts(
-                    infile_path,
-                    streams,
-                    cache_dir_path=cache_dir_path,
-                )
+            cache_subtitle_stream_artifacts(
+                infile_path,
+                streams,
+                cache_dir_path=cache_dir_path,
+            )
 
             for stream in streams:
                 cls._handle_stream(
@@ -227,39 +232,10 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             parser.error(str(exc))
 
     @staticmethod
-    def _get_subtitle_streams(
-        infile_path: Path,
-        *,
-        details: bool,
-        cache_dir_path: Path,
-    ) -> list[SubtitleStream]:
-        """Return subtitle streams from an input media file.
-
-        Arguments:
-            infile_path: media input file
-            details: whether to include expensive additional details
-            cache_dir_path: cache directory path
-        Returns:
-            subtitle streams
-        """
-        return [
-            stream
-            for stream in get_streams(
-                infile_path,
-                video=False,
-                audio=False,
-                subtitles=True,
-                details=details,
-                cache_dir_path=cache_dir_path,
-            )
-            if isinstance(stream, SubtitleStream)
-        ]
-
-    @staticmethod
     def _handle_stream(
         infile_path: Path,
         stream: SubtitleStream,
-        output_dir_path: Path | None,
+        output_dir_path: Path,
         extract_sup: bool,
         overwrite: bool,
         *,
@@ -275,11 +251,6 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             overwrite: whether to overwrite existing outputs
             cache_dir_path: cache directory path
         """
-        # Not extracting anything
-        if output_dir_path is None:
-            print(f"[ ] {stream.description}")
-            return
-
         # Determine output path
         outfile_path = output_dir_path / stream.outfile_filename
 
@@ -319,7 +290,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
     def _handle_sup(
         infile_path: Path,
         stream: SubtitleStream,
-        output_dir_path: Path | None,
+        output_dir_path: Path,
         extract_sup: bool,
         overwrite: bool,
     ):
@@ -332,11 +303,6 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             extract_sup: whether to extract SUP subtitles
             overwrite: whether to overwrite existing outputs
         """
-        # Not extracting anything
-        if output_dir_path is None:
-            print(f"[ ] {stream.description}")
-            return
-
         # Determine output path
         outfile_name = infile_path.name
         if stream.script is not None:

@@ -190,6 +190,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
     """Test media extract_subs CLI details mode passes through to stream probing."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
 
     with (
         patch(
@@ -212,7 +213,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
-            f"--infile {infile_path} --languages ENG --details",
+            f"--infile {infile_path} --languages ENG --details -o {output_dir_path}",
         )
 
     get_streams.assert_called_once_with(
@@ -223,11 +224,11 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
         details=True,
         cache_dir_path=ANY,
     )
-    extract.assert_not_called()
+    extract.assert_called_once()
 
 
-def test_media_extract_subs_cli_lists_without_output_dir(tmp_path: Path):
-    """Test media extract_subs CLI lists streams without output paths."""
+def test_media_extract_subs_cli_requires_output_dir(tmp_path: Path):
+    """Test media extract_subs CLI requires an output directory."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
 
@@ -238,19 +239,11 @@ def test_media_extract_subs_cli_lists_without_output_dir(tmp_path: Path):
                 SubtitleStream(index=2, language="eng", codec_name="subrip"),
             ],
         ),
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
-        ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
-        ),
+        pytest.raises(SystemExit) as excinfo,
     ):
-        run_cli_with_args(
-            MediaExtractSubsCli,
-            f"--infile {infile_path} --languages eng",
-        )
+        run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path}")
 
-    extract.assert_not_called()
+    assert excinfo.value.code == 2
 
 
 def test_media_extract_subs_cli_creates_missing_output_dir(
@@ -449,7 +442,7 @@ def test_media_extract_subs_cli_rejects_sup_file_without_subtitle_streams(
         ),
         pytest.raises(SystemExit) as excinfo,
     ):
-        run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path}")
+        run_cli_with_args(MediaExtractSubsCli, f"--infile {infile_path} -o {tmp_path}")
 
     assert excinfo.value.code == 2
 
