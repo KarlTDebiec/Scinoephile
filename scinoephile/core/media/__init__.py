@@ -5,5 +5,13 @@
 from __future__ import annotations
 
 from .subtitle_stream import SubtitleStream
+from .video_offset import (
+    VideoOffsetCandidate,
+    VideoOffsetResult,
+)
 
-__all__ = ["SubtitleStream"]
+__all__ = [
+    "SubtitleStream",
+    "VideoOffsetCandidate",
+    "VideoOffsetResult",
+]
