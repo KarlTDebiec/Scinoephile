@@ -13,13 +13,52 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
 
 __all__ = [
-    "from_ffprobe_stream",
     "get_streams",
     "get_subtitle_streams",
 ]
 
 
-def from_ffprobe_stream(stream: dict[str, Any]) -> Stream | None:
+def get_streams(infile_path: Path) -> list[Stream]:
+    """Return stream objects in a media file.
+
+    Arguments:
+        infile_path: media input file to inspect
+    Returns:
+        media stream metadata
+    Raises:
+        ScinoephileError: if ffprobe fails
+    """
+    try:
+        probe = ffmpeg.probe(str(infile_path))
+    except ffmpeg.Error as exc:
+        raise ScinoephileError(f"Could not probe media file {infile_path}") from exc
+
+    streams = []
+    for stream in probe.get("streams", []):
+        if not isinstance(stream, dict):
+            continue
+        streams.append(_from_ffprobe_stream(stream))
+    return streams
+
+
+def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
+    """Return subtitle streams in a media file.
+
+    Arguments:
+        infile_path: media input file to inspect
+    Returns:
+        subtitle stream metadata
+    Raises:
+        ScinoephileError: if ffprobe fails
+    """
+    return [
+        stream
+        for stream in get_streams(infile_path)
+        if isinstance(stream, SubtitleStream)
+    ]
+
+
+def _from_ffprobe_stream(stream: dict[str, Any]) -> Stream:
     """Parse a probed ffmpeg stream into typed stream metadata.
 
     Arguments:
@@ -41,69 +80,6 @@ def from_ffprobe_stream(stream: dict[str, Any]) -> Stream | None:
         language=_get_language(stream),
         title=_get_title(stream),
     )
-
-
-def get_streams(
-    infile_path: Path,
-    *,
-    video: bool = True,
-    audio: bool = True,
-    subtitles: bool = True,
-) -> list[Stream]:
-    """Return stream objects in a media file.
-
-    Arguments:
-        infile_path: media input file to inspect
-        video: whether to include video streams
-        audio: whether to include audio streams
-        subtitles: whether to include subtitle streams
-    Returns:
-        media stream metadata
-    Raises:
-        ScinoephileError: if ffprobe fails
-    """
-    try:
-        probe = ffmpeg.probe(str(infile_path))
-    except ffmpeg.Error as exc:
-        raise ScinoephileError(f"Could not probe media file {infile_path}") from exc
-
-    streams = []
-    for stream in probe.get("streams", []):
-        if not isinstance(stream, dict):
-            continue
-        parsed_stream = from_ffprobe_stream(stream)
-        if parsed_stream is None:
-            continue
-        if _should_include_stream(
-            parsed_stream,
-            video=video,
-            audio=audio,
-            subtitles=subtitles,
-        ):
-            streams.append(parsed_stream)
-    return streams
-
-
-def get_subtitle_streams(infile_path: Path) -> list[SubtitleStream]:
-    """Return subtitle streams in a media file.
-
-    Arguments:
-        infile_path: media input file to inspect
-    Returns:
-        subtitle stream metadata
-    Raises:
-        ScinoephileError: if ffprobe fails
-    """
-    return [
-        stream
-        for stream in get_streams(
-            infile_path,
-            video=False,
-            audio=False,
-            subtitles=True,
-        )
-        if isinstance(stream, SubtitleStream)
-    ]
 
 
 def _from_ffprobe_audio_stream(stream: dict[str, Any]) -> AudioStream:
@@ -243,29 +219,3 @@ def _get_title(stream: dict[str, Any]) -> str | None:
     if not isinstance(title, str):
         return None
     return title
-
-
-def _should_include_stream(
-    stream: Stream,
-    *,
-    video: bool,
-    audio: bool,
-    subtitles: bool,
-) -> bool:
-    """Return whether to include a parsed stream in filtered output.
-
-    Arguments:
-        stream: parsed stream
-        video: whether to include video streams
-        audio: whether to include audio streams
-        subtitles: whether to include subtitle streams
-    Returns:
-        whether to include the stream
-    """
-    if isinstance(stream, VideoStream):
-        return video
-    if isinstance(stream, AudioStream):
-        return audio
-    if isinstance(stream, SubtitleStream):
-        return subtitles
-    return video and audio and subtitles
