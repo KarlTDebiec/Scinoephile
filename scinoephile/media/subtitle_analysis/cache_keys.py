@@ -9,7 +9,7 @@ import json
 from collections.abc import Mapping
 from pathlib import Path
 
-from scinoephile.core.media.subtitle_stream import SubtitleStream
+from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = [

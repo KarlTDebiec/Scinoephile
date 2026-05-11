@@ -14,7 +14,8 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.media.streams import get_streams
+from scinoephile.media.probe import get_streams
+from scinoephile.media.subtitle_analysis import with_stream_details
 
 __all__ = ["MediaProbeCli"]
 
@@ -104,12 +105,15 @@ class MediaProbeCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         try:
-            for stream in get_streams(
-                infile_path,
-                details=details,
-                cache_dir_path=cache_dir_path,
-            ):
-                print(stream.probe_description)
+            streams = get_streams(infile_path)
+            if details:
+                streams = with_stream_details(
+                    infile_path,
+                    streams,
+                    cache_dir_path=cache_dir_path,
+                )
+            for stream in streams:
+                print(stream.description)
         except ScinoephileError as exc:
             parser.error(str(exc))
 

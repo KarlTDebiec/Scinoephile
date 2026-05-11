@@ -11,7 +11,9 @@ from unittest.mock import patch
 from PIL import Image
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.media.subtitle_analysis import (
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.media.subtitle_analysis import (
     analyze_subtitle_stream_script,
     cache_subtitle_stream_artifacts,
     count_subtitle_stream_events,
@@ -19,8 +21,6 @@ from scinoephile.core.media.subtitle_analysis import (
     get_cached_subtitle_artifact_path,
     get_subtitle_stream_stats,
 )
-from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
 def test_subtitle_stream_uses_script_for_description_and_filename():
@@ -33,9 +33,7 @@ def test_subtitle_stream_uses_script_for_description_and_filename():
     )
 
     assert stream.displayed_language == "zho-Hant"
-    assert stream.description == (
-        "Stream #0:2(zho-Hant): Subtitle: subrip (extension=srt)"
-    )
+    assert stream.description == "Stream #0:2(zho-Hant): Subtitle: subrip"
     assert stream.outfile_filename == "zho-Hant-2.srt"
 
 
@@ -97,7 +95,7 @@ def test_get_cached_subtitle_artifact_path_ignores_script_analysis_version(
         cache_dir_path=cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.core.media.subtitle_analysis.cache_keys.SCRIPT_ANALYSIS_CACHE_VERSION",
+        "scinoephile.media.subtitle_analysis.cache_keys.SCRIPT_ANALYSIS_CACHE_VERSION",
         999,
     )
     changed = get_cached_subtitle_artifact_path(
@@ -127,7 +125,7 @@ def test_cache_subtitle_stream_artifacts_reextracts_empty_artifact(tmp_path: Pat
     artifact_path.write_bytes(b"")
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.artifacts.run_command"
+        "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
         cache_subtitle_stream_artifacts(
             infile_path,
@@ -159,7 +157,7 @@ def test_analyze_text_subtitle_stream_uses_cached_artifact(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.artifacts.run_command"
+        "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
         analysis = analyze_subtitle_stream_script(
             infile_path,
@@ -195,7 +193,7 @@ def test_count_text_subtitle_stream_events_from_cached_artifact(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.artifacts.run_command"
+        "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
         count = count_subtitle_stream_events(
             infile_path,
@@ -231,7 +229,7 @@ def test_get_text_subtitle_stream_stats_from_cached_artifact(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.artifacts.run_command"
+        "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -274,7 +272,7 @@ def test_count_image_subtitle_stream_events_from_cached_manifest(tmp_path: Path)
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load"
     ) as load_image_series:
         count = count_subtitle_stream_events(
             infile_path,
@@ -318,7 +316,7 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load"
     ) as load_image_series:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -359,7 +357,7 @@ def test_count_image_subtitle_stream_events_builds_image_cache(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.image_cache.ImageSeries.load",
+        "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load",
         return_value=image_series,
     ):
         count = count_subtitle_stream_events(
@@ -440,7 +438,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         fake_ocr_image_series_with_paddle,
     )
     with patch(
-        "scinoephile.core.media.subtitle_analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load"
     ) as load_image_series:
         analysis = analyze_subtitle_stream_script(
             infile_path,
@@ -685,7 +683,7 @@ def test_cache_subtitle_stream_artifacts_extracts_missing_streams_together(
     ]
 
     with patch(
-        "scinoephile.core.media.subtitle_analysis.artifacts.run_command"
+        "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
         cache_subtitle_stream_artifacts(
             infile_path,

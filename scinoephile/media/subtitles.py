@@ -9,14 +9,9 @@ from pathlib import Path
 import ffmpeg
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.media import SubtitleStream
 
-from .streams import get_streams
-from .subtitle_stream import SubtitleStream
-
-__all__ = [
-    "extract_subtitle_stream",
-    "get_subtitle_streams",
-]
+__all__ = ["extract_subtitle_stream"]
 
 
 def extract_subtitle_stream(
@@ -50,31 +45,3 @@ def extract_subtitle_stream(
             f"Could not extract subtitle stream {stream.index} from {infile_path}"
         ) from exc
     return outfile_path
-
-
-def get_subtitle_streams(
-    infile_path: Path,
-    *,
-    cache_dir_path: Path | None = None,
-) -> list[SubtitleStream]:
-    """Return subtitle streams in a media file.
-
-    Arguments:
-        infile_path: media input file to inspect
-        cache_dir_path: cache directory path
-    Returns:
-        subtitle stream metadata
-    Raises:
-        ScinoephileError: if ffprobe fails
-    """
-    return [
-        stream
-        for stream in get_streams(
-            infile_path,
-            video=False,
-            audio=False,
-            subtitles=True,
-            cache_dir_path=cache_dir_path,
-        )
-        if isinstance(stream, SubtitleStream)
-    ]

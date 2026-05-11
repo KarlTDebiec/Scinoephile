@@ -10,7 +10,7 @@ from shutil import copy2, rmtree
 from uuid import uuid4
 
 from scinoephile.common.subprocess import run_command
-from scinoephile.core.media.subtitle_stream import SubtitleStream
+from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
 from .cache_keys import get_subtitle_stream_cache_key

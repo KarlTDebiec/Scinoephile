@@ -8,7 +8,7 @@ import json
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.core.media.subtitle_stream import SubtitleStream
+from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 

@@ -5,18 +5,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from logging import getLogger
-from pathlib import Path
-from typing import Any
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.media.constants import SUBTITLE_CODEC_OUTPUTS
 
-from .constants import SUBTITLE_CODEC_OUTPUTS
 from .stream import Stream
 
 __all__ = ["SubtitleStream"]
-
-logger = getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -42,23 +37,26 @@ class SubtitleStream(Stream):
 
     @property
     def description(self) -> str:
-        """Human-readable stream description."""
+        """Stream description."""
         description = (
-            f"Stream #0:{self.index}({self.displayed_language}): Subtitle: "
-            f"{self.codec_name}"
+            f"Stream {self.stream_id}: {self.codec_type.title()}: {self.codec_name}"
         )
-        details = [f"extension={self.extension}"]
+        details = self.details
+        if details:
+            description = f"{description} ({', '.join(details)})"
+        return description
+
+    @property
+    def details(self) -> list[str]:
+        """Stream details."""
+        details = []
         if self.title is not None:
             details.append(f"title={self.title}")
-        if self.forced:
-            details.append("forced")
-        if self.sdh:
-            details.append("sdh")
         if self.subtitle_count is not None:
             details.append(f"subtitles={self.subtitle_count}")
         if self.span is not None:
             details.append(f"span={self.span}")
-        return f"{description} ({', '.join(details)})"
+        return details
 
     @property
     def displayed_language(self) -> str:
@@ -100,29 +98,6 @@ class SubtitleStream(Stream):
         return self.language in {"chi", "zho", "yue"}
 
     @property
-    def probe_description(self) -> str:
-        """Ffprobe-style stream description."""
-        description = (
-            f"Stream {self.stream_id}: {self.codec_type.title()}: {self.codec_name}"
-        )
-        details = self.probe_details
-        if details:
-            description = f"{description} ({', '.join(details)})"
-        return description
-
-    @property
-    def probe_details(self) -> list[str]:
-        """Ffprobe-style stream details."""
-        details = []
-        if self.title is not None:
-            details.append(f"title={self.title}")
-        if self.subtitle_count is not None:
-            details.append(f"subtitles={self.subtitle_count}")
-        if self.span is not None:
-            details.append(f"span={self.span}")
-        return details
-
-    @property
     def span(self) -> str | None:
         """Subtitle stream active span formatted as HH:MM:SS-HH:MM:SS."""
         if self.first_start_ms is None or self.last_end_ms is None:
@@ -143,46 +118,6 @@ class SubtitleStream(Stream):
         if script is None and self.is_chinese:
             script = f"{self.language}-Unknown"
         return replace(self, script=script)
-
-    def get_probe_description(
-        self,
-        *,
-        infile_path: Path | None = None,
-        details: bool = False,
-    ) -> str:
-        """Get an optionally enriched ffprobe-style subtitle stream description.
-
-        Arguments:
-            infile_path: media input file, when enrichment needs file access
-            details: whether to include expensive additional details
-        Returns:
-            ffprobe-style subtitle stream description
-        """
-        if not details or infile_path is None:
-            return self.without_stats().probe_description
-
-        stream = self
-        from .subtitle_analysis import (  # noqa: PLC0415
-            analyze_subtitle_stream_script,
-            get_subtitle_stream_stats,
-        )
-
-        if stream.is_chinese:
-            analysis = analyze_subtitle_stream_script(infile_path, stream)
-            stream = stream.with_script(analysis.script)
-        try:
-            stats = get_subtitle_stream_stats(infile_path, stream)
-        except (ScinoephileError, ValueError, IndexError) as exc:
-            logger.warning(
-                f"Could not read subtitle stats for stream #{stream.index}: {exc}"
-            )
-            return stream.probe_description
-        stream = stream.with_stats(
-            subtitle_count=stats.event_count,
-            first_start_ms=stats.first_start_ms,
-            last_end_ms=stats.last_end_ms,
-        )
-        return stream.probe_description
 
     def without_stats(self) -> SubtitleStream:
         """Return this stream without subtitle statistics.
@@ -218,39 +153,6 @@ class SubtitleStream(Stream):
             subtitle_count=subtitle_count,
             first_start_ms=first_start_ms,
             last_end_ms=last_end_ms,
-        )
-
-    @classmethod
-    def from_ffprobe_stream(cls, stream: dict[str, Any]) -> SubtitleStream | None:
-        """Parse a probed ffmpeg stream into subtitle metadata when applicable.
-
-        Arguments:
-            stream: ffprobe stream object
-        Returns:
-            subtitle stream metadata, or None for non-subtitle streams
-        """
-        if stream.get("codec_type") != "subtitle":
-            return None
-
-        disposition = stream.get("disposition")
-        if not isinstance(disposition, dict):
-            disposition = {}
-
-        subtitle_count = stream.get("nb_read_packets")
-        if isinstance(subtitle_count, int | str):
-            subtitle_count = int(subtitle_count)
-        else:
-            subtitle_count = None
-
-        return cls(
-            index=int(stream["index"]),
-            codec_type="subtitle",
-            codec_name=cls._get_codec_name(stream, "subtitle"),
-            language=cls._get_language(stream),
-            title=cls._get_title(stream),
-            forced=bool(disposition.get("forced")),
-            sdh=bool(disposition.get("hearing_impaired")),
-            subtitle_count=subtitle_count,
         )
 
     @staticmethod

@@ -13,7 +13,7 @@ from uuid import uuid4
 from PIL import Image
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.media.subtitle_stream import SubtitleStream
+from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .artifacts import (

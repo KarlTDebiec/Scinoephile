@@ -9,6 +9,7 @@ from .artifacts import (
     extract_subtitle_stream_from_cache,
     get_cached_subtitle_artifact_path,
 )
+from .details import with_stream_details, with_subtitle_details
 from .image_cache import get_cached_image_subtitle_dir_path
 from .script import analyze_subtitle_stream_script
 from .stats import (
@@ -29,4 +30,6 @@ __all__ = [
     "get_cached_image_subtitle_dir_path",
     "get_cached_subtitle_artifact_path",
     "get_subtitle_stream_stats",
+    "with_stream_details",
+    "with_subtitle_details",
 ]

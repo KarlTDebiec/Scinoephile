@@ -76,24 +76,31 @@ def test_media_probe_cli_main_orders_infile_before_details():
     assert parameters.index("details") < parameters.index("cache_dir_path")
 
 
-def test_media_probe_cli_passes_cache_dir_to_stream_probe(tmp_path: Path):
-    """Test media probe CLI passes cache directory to stream probing."""
+def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
+    """Test media probe CLI passes cache directory to stream detail enrichment."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     cache_dir_path = tmp_path / "cache"
 
-    with patch(
-        "scinoephile.cli.media.media_probe_cli.get_streams",
-        return_value=[],
-    ) as get_streams:
+    with (
+        patch(
+            "scinoephile.cli.media.media_probe_cli.get_streams",
+            return_value=[],
+        ) as get_streams,
+        patch(
+            "scinoephile.cli.media.media_probe_cli.with_stream_details",
+            return_value=[],
+        ) as with_details,
+    ):
         run_cli_with_args(
             MediaProbeCli,
             f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
         )
 
-    get_streams.assert_called_once_with(
+    get_streams.assert_called_once_with(infile_path.resolve())
+    with_details.assert_called_once_with(
         infile_path.resolve(),
-        details=True,
+        [],
         cache_dir_path=cache_dir_path.resolve(),
     )
 
@@ -112,7 +119,7 @@ def test_media_probe_cli_lists_all_streams(
     infile_path.touch()
 
     with patch(
-        "scinoephile.core.media.streams.ffmpeg.probe",
+        "scinoephile.media.probe.ffmpeg.probe",
         return_value={
             "streams": [
                 {
@@ -134,7 +141,6 @@ def test_media_probe_cli_lists_all_streams(
                     "codec_type": "subtitle",
                     "codec_name": "subrip",
                     "tags": {"language": "eng", "title": "SDH"},
-                    "nb_read_packets": "42",
                 },
             ],
         },
@@ -162,10 +168,12 @@ def test_media_probe_cli_details_uses_plain_probe(
 
     with (
         patch(
-            "scinoephile.core.media.streams.ffmpeg.probe",
+            "scinoephile.media.probe.ffmpeg.probe",
             return_value={"streams": []},
         ) as probe,
-        patch("scinoephile.core.media.streams.cache_subtitle_stream_artifacts"),
+        patch(
+            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+        ),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -187,7 +195,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
 
     with (
         patch(
-            "scinoephile.core.media.streams.ffmpeg.probe",
+            "scinoephile.media.probe.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -200,10 +208,14 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             },
         ),
         patch(
-            "scinoephile.core.media.streams.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
-        patch("scinoephile.core.media.streams.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.core.media.streams.cache_subtitle_stream_artifacts"),
+        patch(
+            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats"
+        ) as stats,
+        patch(
+            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+        ),
     ):
         analyze.return_value.script = "zho-Hant"
         stats.return_value.event_count = 12
@@ -234,7 +246,7 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
 
     with (
         patch(
-            "scinoephile.core.media.streams.ffmpeg.probe",
+            "scinoephile.media.probe.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -247,10 +259,14 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
             },
         ),
         patch(
-            "scinoephile.core.media.streams.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
-        patch("scinoephile.core.media.streams.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.core.media.streams.cache_subtitle_stream_artifacts"),
+        patch(
+            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats"
+        ) as stats,
+        patch(
+            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+        ),
     ):
         analyze.return_value.script = None
         stats.return_value.event_count = 12
@@ -281,7 +297,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
 
     with (
         patch(
-            "scinoephile.core.media.streams.ffmpeg.probe",
+            "scinoephile.media.probe.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -294,10 +310,12 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             },
         ),
         patch(
-            "scinoephile.core.media.streams.get_subtitle_stream_stats",
+            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.core.media.streams.cache_subtitle_stream_artifacts"),
+        patch(
+            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+        ),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -319,7 +337,7 @@ def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
 
     with (
         patch(
-            "scinoephile.core.media.streams.ffmpeg.probe",
+            "scinoephile.media.probe.ffmpeg.probe",
             return_value={
                 "streams": [
                     {
@@ -344,13 +362,13 @@ def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
             },
         ),
         patch(
-            "scinoephile.core.media.streams.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
         ) as cache,
         patch(
-            "scinoephile.core.media.streams.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
         patch(
-            "scinoephile.core.media.streams.get_subtitle_stream_stats",
+            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats",
         ) as stats,
     ):
         analyze.return_value.script = None
@@ -377,7 +395,7 @@ def test_media_probe_cli_uses_stream_models(
     infile_path.touch()
 
     with patch(
-        "scinoephile.core.media.streams.ffmpeg.probe",
+        "scinoephile.media.probe.ffmpeg.probe",
         return_value={
             "streams": [
                 {
