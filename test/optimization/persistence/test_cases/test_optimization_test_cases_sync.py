@@ -26,7 +26,7 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-block",
+        operation="unit-mono-n",
         test_case_table_name="test_cases__unit__mono_n",
         manager_cls=MonoNManager,
         prompt_cls=MonoNPrompt,
@@ -85,7 +85,7 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-block",
+        operation="unit-mono-n",
         test_case_table_name="test_cases__unit__mono_n",
         manager_cls=MonoNManager,
         prompt_cls=MonoNPrompt,
@@ -126,7 +126,7 @@ def test_sync_dry_run_reports_metadata_updates(tmp_path: Path, monkeypatch):
 
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
-        operation="unit-mono-block",
+        operation="unit-mono-n",
         test_case_table_name="test_cases__unit__mono_n",
         manager_cls=MonoNManager,
         prompt_cls=MonoNPrompt,
