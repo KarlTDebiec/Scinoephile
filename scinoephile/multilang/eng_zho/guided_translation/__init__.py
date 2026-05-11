@@ -11,7 +11,7 @@ from scinoephile.core.llms import OperationSpec, TestCase
 from scinoephile.core.llms.llm_provider import LLMProvider
 from scinoephile.core.subtitles import Series
 from scinoephile.llms.default_test_cases import (
-    ENG_FROM_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+    ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
     load_default_test_cases,
 )
 from scinoephile.llms.dual_block_cardinality import (
@@ -98,7 +98,7 @@ def get_eng_vs_zho_guided_translator(
             load_default_test_cases(
                 DualBlockCardinalityManager,
                 prompt_cls,
-                ENG_FROM_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+                ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
             )
         )
     if provider is None:
