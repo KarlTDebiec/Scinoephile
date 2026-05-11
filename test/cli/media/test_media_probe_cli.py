@@ -171,9 +171,7 @@ def test_media_probe_cli_details_uses_plain_probe(
             "scinoephile.media.probe.ffmpeg.probe",
             return_value={"streams": []},
         ) as probe,
-        patch(
-            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -213,9 +211,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
         patch(
             "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats"
         ) as stats,
-        patch(
-            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"),
     ):
         analyze.return_value.script = "zho-Hant"
         stats.return_value.event_count = 12
@@ -264,9 +260,7 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
         patch(
             "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats"
         ) as stats,
-        patch(
-            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"),
     ):
         analyze.return_value.script = None
         stats.return_value.event_count = 12
@@ -313,9 +307,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch(
-            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -324,7 +316,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
     ]
 
 
-def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
+def test_media_probe_cli_details_caches_subtitle_streams_together(
     tmp_path: Path,
 ):
     """Test media probe CLI details mode caches subtitle streams in one batch.
@@ -362,7 +354,7 @@ def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
             },
         ),
         patch(
-            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"
         ) as cache,
         patch(
             "scinoephile.media.subtitles.analysis.details.analyze_subtitle_stream_script"

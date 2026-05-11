@@ -70,9 +70,7 @@ def test_media_extract_subs_cli(tmp_path: Path):
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
@@ -132,9 +130,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
@@ -181,7 +177,7 @@ def test_media_extract_subs_cli_output_dir_caches_matching_streams_together(
             ],
         ),
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
+            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"
         ) as cache,
         patch("scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"),
     ):
@@ -228,9 +224,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
@@ -281,10 +275,7 @@ def test_media_extract_subs_cli_creates_missing_output_dir(
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli."
-            "cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
         patch("scinoephile.cli.media.media_extract_subs_cli.logger") as logger,
     ):
         run_cli_with_args(
@@ -318,10 +309,7 @@ def test_media_extract_subs_cli_overwrites_existing_file(tmp_path: Path):
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli."
-            "cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
     ):
         run_cli_with_args(
             MediaExtractSubsCli,
@@ -350,9 +338,7 @@ def test_media_extract_subs_cli_extracts_sup_streams_to_image_dirs(tmp_path: Pat
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
-        patch(
-            "scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_stream_artifacts"
-        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitle_streams"),
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.ImageSeries.load",
             return_value=image_series,

@@ -18,8 +18,8 @@ from scinoephile.lang.zho.script_analysis import (
     get_zho_script_analysis,
 )
 from scinoephile.media.subtitles.cache import (
-    cache_subtitle_stream_artifacts,
-    get_cached_subtitle_artifact_path,
+    cache_subtitle_streams,
+    get_cached_subtitle_stream_path,
 )
 
 from .cache_keys import get_subtitle_analysis_cache_path
@@ -75,26 +75,26 @@ def analyze_subtitle_stream_script(
         )
         return _load_subtitle_script_analysis(analysis_cache_path)
 
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
 
     if stream.extension == "sup":
-        analysis = _analyze_image_subtitle_artifact(
+        analysis = _analyze_image_subtitles(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,
             sample_size=sample_size,
         )
     else:
-        cache_subtitle_stream_artifacts(
+        cache_subtitle_streams(
             infile_path,
             [stream],
             cache_dir_path=cache_dir_path,
         )
-        analysis = _analyze_text_subtitle_artifact(artifact_path)
+        analysis = _analyze_text_subtitles(stream_path)
 
     _save_subtitle_script_analysis(analysis, analysis_cache_path)
     logger.info(f"Saved subtitle script analysis to cache: {analysis_cache_path}")
@@ -147,14 +147,14 @@ def _analyze_cached_image_subtitle_samples(
     )
 
 
-def _analyze_image_subtitle_artifact(
+def _analyze_image_subtitles(
     infile_path: Path,
     stream: SubtitleStream,
     *,
     cache_dir_path: Path | None,
     sample_size: int,
 ) -> SubtitleScriptAnalysis:
-    """Analyze an image subtitle artifact using PaddleOCR.
+    """Analyze an image subtitle stream using PaddleOCR.
 
     Arguments:
         infile_path: media input file
@@ -207,15 +207,15 @@ def _analyze_image_subtitle_artifact(
     return analysis
 
 
-def _analyze_text_subtitle_artifact(artifact_path: Path) -> SubtitleScriptAnalysis:
-    """Analyze a text subtitle artifact.
+def _analyze_text_subtitles(stream_path: Path) -> SubtitleScriptAnalysis:
+    """Analyze a text subtitle stream.
 
     Arguments:
-        artifact_path: cached text subtitle artifact path
+        stream_path: cached text subtitle stream path
     Returns:
         subtitle script analysis
     """
-    series = Series.load(artifact_path)
+    series = Series.load(stream_path)
     text = "\n".join(event.text for event in series)
     analysis = get_zho_script_analysis(text)
     failure_reason = None

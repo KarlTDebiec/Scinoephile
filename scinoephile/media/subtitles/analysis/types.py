@@ -27,10 +27,10 @@ class ImageSubtitleManifest(TypedDict):
     """First subtitle start time in milliseconds."""
     last_end_ms: NotRequired[int | None]
     """Last subtitle end time in milliseconds."""
-    artifact_name: NotRequired[str]
-    """Source artifact filename."""
-    artifact_size: NotRequired[int]
-    """Source artifact size in bytes."""
+    source_name: NotRequired[str]
+    """Source subtitle stream filename."""
+    source_size: NotRequired[int]
+    """Source subtitle stream size in bytes."""
 
 
 @dataclass(frozen=True)

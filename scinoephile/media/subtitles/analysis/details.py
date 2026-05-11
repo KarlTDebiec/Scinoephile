@@ -12,7 +12,7 @@ from pathlib import Path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.lang.zho.language import get_zho_script_language, is_zho_language
-from scinoephile.media.subtitles.cache import cache_subtitle_stream_artifacts
+from scinoephile.media.subtitles.cache import cache_subtitle_streams
 
 from .script import analyze_subtitle_stream_script
 from .stats import get_subtitle_stream_stats
@@ -44,7 +44,7 @@ def with_stream_details(
             subtitle_streams.append(stream)  # noqa: PERF401
 
     if subtitle_streams:
-        cache_subtitle_stream_artifacts(
+        cache_subtitle_streams(
             infile_path,
             subtitle_streams,
             cache_dir_path=cache_dir_path,

@@ -4,17 +4,20 @@
 
 from __future__ import annotations
 
+from logging import getLogger
 from pathlib import Path
 from shutil import copy2
 
 from scinoephile.core.media import SubtitleStream
 
 from .cache import (
-    cache_subtitle_stream_artifacts,
-    get_cached_subtitle_artifact_path,
+    cache_subtitle_streams,
+    get_cached_subtitle_stream_path,
 )
 
 __all__ = ["extract_subtitle_stream"]
+
+logger = getLogger(__name__)
 
 
 def extract_subtitle_stream(
@@ -24,7 +27,7 @@ def extract_subtitle_stream(
     *,
     cache_dir_path: Path | None = None,
 ) -> Path:
-    """Extract a subtitle stream using a runtime artifact cache.
+    """Extract a subtitle stream using a runtime cache.
 
     Arguments:
         infile_path: media input file
@@ -34,17 +37,19 @@ def extract_subtitle_stream(
     Returns:
         output path
     """
-    cache_subtitle_stream_artifacts(
+    cache_subtitle_streams(
         infile_path,
         [stream],
         cache_dir_path=cache_dir_path,
     )
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if artifact_path.resolve() != outfile_path.resolve():
-        outfile_path.parent.mkdir(parents=True, exist_ok=True)
-        copy2(artifact_path, outfile_path)
+    if stream_path.resolve() != outfile_path.resolve():
+        if not outfile_path.parent.exists():
+            outfile_path.parent.mkdir(parents=True)
+            logger.info(f"Created subtitle output directory: {outfile_path.parent}")
+        copy2(stream_path, outfile_path)
     return outfile_path

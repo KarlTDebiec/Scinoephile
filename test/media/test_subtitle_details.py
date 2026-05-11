@@ -24,8 +24,7 @@ def test_with_stream_details_enriches_subtitle_streams(tmp_path: Path):
 
     with (
         patch(
-            "scinoephile.media.subtitles.analysis.details."
-            "cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_streams"
         ) as cache,
         patch(
             "scinoephile.media.subtitles.analysis.details."

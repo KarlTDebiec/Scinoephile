@@ -12,24 +12,30 @@ import pytest
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.media.subtitles import extraction
-from scinoephile.media.subtitles.cache import get_cached_subtitle_artifact_path
+from scinoephile.media.subtitles.cache import get_cached_subtitle_stream_path
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
 
 
-def test_extract_subtitle_stream_copies_cached_artifact(tmp_path: Path):
-    """Test subtitle extraction copies an existing cached artifact."""
+def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
+    """Test subtitle extraction copies an existing cached subtitle stream.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        caplog: pytest log capture fixture
+    """
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     outfile_path = tmp_path / "subtitles" / "eng-2.srt"
     stream = SubtitleStream(index=2, language="eng", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text("cached subtitles", encoding="utf-8")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_text("cached subtitles", encoding="utf-8")
 
+    caplog.set_level("INFO", logger="scinoephile.media.subtitles.extraction")
     with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
@@ -40,34 +46,35 @@ def test_extract_subtitle_stream_copies_cached_artifact(tmp_path: Path):
 
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "cached subtitles"
+    assert f"Created subtitle output directory: {outfile_path.parent}" in caplog.text
     run_command.assert_not_called()
 
 
-def test_extract_subtitle_stream_caches_missing_artifact(tmp_path: Path):
-    """Test subtitle extraction builds a missing cached artifact."""
+def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
+    """Test subtitle extraction builds a missing cached subtitle stream."""
     infile_path = tmp_path / "video.mkv"
     infile_path.touch()
     outfile_path = tmp_path / "subtitles" / "eng-2.srt"
     cache_dir_path = tmp_path / "cache"
     stream = SubtitleStream(index=2, language="eng", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
 
-    def cache_artifacts(
+    def cache_streams(
         infile_path: Path,
         streams: list[SubtitleStream],
         *,
         cache_dir_path: Path | None = None,
     ):
-        artifact_path.parent.mkdir(parents=True)
-        artifact_path.write_text("new subtitles", encoding="utf-8")
+        stream_path.parent.mkdir(parents=True)
+        stream_path.write_text("new subtitles", encoding="utf-8")
 
     with patch(
-        "scinoephile.media.subtitles.extraction.cache_subtitle_stream_artifacts",
-        side_effect=cache_artifacts,
+        "scinoephile.media.subtitles.extraction.cache_subtitle_streams",
+        side_effect=cache_streams,
     ) as cache:
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,

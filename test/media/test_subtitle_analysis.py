@@ -23,8 +23,8 @@ from scinoephile.media.subtitles.analysis.stats import (
     get_subtitle_stream_stats,
 )
 from scinoephile.media.subtitles.cache import (
-    cache_subtitle_stream_artifacts,
-    get_cached_subtitle_artifact_path,
+    cache_subtitle_streams,
+    get_cached_subtitle_stream_path,
 )
 
 
@@ -48,8 +48,8 @@ def test_subtitle_stream_uses_language_for_description_and_filename():
     assert stream.outfile_filename == "zho-Hant-2.srt"
 
 
-def test_get_cached_subtitle_artifact_path_changes_by_stream(tmp_path: Path):
-    """Test subtitle artifact cache paths include stream identity.
+def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
+    """Test subtitle stream cache paths include stream identity.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -57,17 +57,17 @@ def test_get_cached_subtitle_artifact_path_changes_by_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
 
-    first = get_cached_subtitle_artifact_path(
+    first = get_cached_subtitle_stream_path(
         infile_path,
         SubtitleStream(index=2, language="zho", codec_name="subrip"),
         cache_dir_path=tmp_path / "cache",
     )
-    second = get_cached_subtitle_artifact_path(
+    second = get_cached_subtitle_stream_path(
         infile_path,
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
         cache_dir_path=tmp_path / "cache",
     )
-    same_stream_with_script = get_cached_subtitle_artifact_path(
+    same_stream_with_script = get_cached_subtitle_stream_path(
         infile_path,
         SubtitleStream(index=2, language="zho-Hant", codec_name="subrip"),
         cache_dir_path=tmp_path / "cache",
@@ -79,11 +79,11 @@ def test_get_cached_subtitle_artifact_path_changes_by_stream(tmp_path: Path):
     assert second.suffix == ".srt"
 
 
-def test_get_cached_subtitle_artifact_path_ignores_script_analysis_version(
+def test_get_cached_subtitle_stream_path_ignores_script_analysis_version(
     tmp_path: Path,
     monkeypatch,
 ):
-    """Test subtitle artifact cache paths are independent of OCR versioning.
+    """Test subtitle stream cache paths are independent of OCR versioning.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -94,7 +94,7 @@ def test_get_cached_subtitle_artifact_path_ignores_script_analysis_version(
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
     cache_dir_path = tmp_path / "cache"
 
-    original = get_cached_subtitle_artifact_path(
+    original = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
@@ -103,7 +103,7 @@ def test_get_cached_subtitle_artifact_path_ignores_script_analysis_version(
         "scinoephile.media.subtitles.analysis.cache_keys.SCRIPT_ANALYSIS_CACHE_VERSION",
         999,
     )
-    changed = get_cached_subtitle_artifact_path(
+    changed = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
@@ -112,8 +112,8 @@ def test_get_cached_subtitle_artifact_path_ignores_script_analysis_version(
     assert changed == original
 
 
-def test_cache_subtitle_stream_artifacts_reextracts_empty_artifact(tmp_path: Path):
-    """Test empty cached subtitle artifacts are re-extracted.
+def test_cache_subtitle_streams_reextracts_empty_stream(tmp_path: Path):
+    """Test empty cached subtitle streams are re-extracted.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -121,16 +121,16 @@ def test_cache_subtitle_stream_artifacts_reextracts_empty_artifact(tmp_path: Pat
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"")
 
     with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
-        cache_subtitle_stream_artifacts(
+        cache_subtitle_streams(
             infile_path,
             [stream],
             cache_dir_path=tmp_path / "cache",
@@ -139,7 +139,7 @@ def test_cache_subtitle_stream_artifacts_reextracts_empty_artifact(tmp_path: Pat
     run_command.assert_called_once()
 
 
-def test_analyze_text_subtitle_stream_uses_cached_artifact(tmp_path: Path):
+def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     """Test text subtitle stream analysis reads cached extracted subtitles.
 
     Arguments:
@@ -148,13 +148,13 @@ def test_analyze_text_subtitle_stream_uses_cached_artifact(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text(
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
         encoding="utf-8",
     )
@@ -170,7 +170,7 @@ def test_analyze_text_subtitle_stream_uses_cached_artifact(tmp_path: Path):
     assert analysis.script == "zho-Hans"
 
 
-def test_get_text_subtitle_stream_stats_counts_cached_artifact(tmp_path: Path):
+def test_get_text_subtitle_stream_stats_counts_cached_stream(tmp_path: Path):
     """Test text subtitle stats count cached extracted subtitles.
 
     Arguments:
@@ -179,13 +179,13 @@ def test_get_text_subtitle_stream_stats_counts_cached_artifact(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text(
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_text(
         (
             "1\n00:00:00,000 --> 00:00:01,000\n第一行\n\n"
             "2\n00:00:02,000 --> 00:00:03,000\n第二行\n"
@@ -204,7 +204,7 @@ def test_get_text_subtitle_stream_stats_counts_cached_artifact(tmp_path: Path):
     assert stats.event_count == 2
 
 
-def test_get_text_subtitle_stream_stats_from_cached_artifact(tmp_path: Path):
+def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     """Test text subtitle stream stats read cached extracted subtitles.
 
     Arguments:
@@ -213,13 +213,13 @@ def test_get_text_subtitle_stream_stats_from_cached_artifact(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text(
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_text(
         (
             "1\n00:00:02,500 --> 00:00:04,000\n第一行\n\n"
             "2\n00:01:02,000 --> 00:01:05,250\n第二行\n"
@@ -249,13 +249,13 @@ def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
@@ -310,13 +310,13 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
@@ -356,13 +356,13 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -406,13 +406,13 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
@@ -493,13 +493,13 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
         codec_name="hdmv_pgs_subtitle",
         title="Chinese (Simplified)",
     )
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
@@ -575,13 +575,13 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
         language="zho",
         codec_name="hdmv_pgs_subtitle",
     )
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_bytes(b"not a real sup")
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_bytes(b"not a real sup")
     image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
@@ -644,7 +644,7 @@ def test_subtitle_cache_logs_hits_and_analysis_loads(
     tmp_path: Path,
     caplog,
 ):
-    """Test subtitle artifact and analysis cache hits are logged.
+    """Test subtitle stream and analysis cache hits are logged.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -653,19 +653,19 @@ def test_subtitle_cache_logs_hits_and_analysis_loads(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text(
+    stream_path.parent.mkdir(parents=True)
+    stream_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
         encoding="utf-8",
     )
 
     caplog.set_level("INFO")
-    cache_subtitle_stream_artifacts(
+    cache_subtitle_streams(
         infile_path,
         [stream],
         cache_dir_path=tmp_path / "cache",
@@ -682,7 +682,7 @@ def test_subtitle_cache_logs_hits_and_analysis_loads(
     )
 
     messages = [record.getMessage() for record in caplog.records]
-    assert f"Loaded subtitle artifact from cache: {artifact_path}" in messages
+    assert f"Loaded subtitle stream from cache: {stream_path}" in messages
     assert any(
         message.startswith("Saved subtitle script analysis to cache: ")
         for message in messages
@@ -693,10 +693,10 @@ def test_subtitle_cache_logs_hits_and_analysis_loads(
     )
 
 
-def test_cache_subtitle_stream_artifacts_extracts_missing_streams_together(
+def test_cache_subtitle_streams_extracts_missing_streams_together(
     tmp_path: Path,
 ):
-    """Test subtitle artifact cache extracts missing streams in one ffmpeg command.
+    """Test subtitle stream cache extracts missing streams in one ffmpeg command.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -709,7 +709,7 @@ def test_cache_subtitle_stream_artifacts_extracts_missing_streams_together(
     ]
 
     with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
-        cache_subtitle_stream_artifacts(
+        cache_subtitle_streams(
             infile_path,
             streams,
             cache_dir_path=tmp_path / "cache",
@@ -723,7 +723,7 @@ def test_cache_subtitle_stream_artifacts_extracts_missing_streams_together(
     assert "0:3" in command
     assert (
         str(
-            get_cached_subtitle_artifact_path(
+            get_cached_subtitle_stream_path(
                 infile_path,
                 streams[0],
                 cache_dir_path=tmp_path / "cache",
@@ -733,7 +733,7 @@ def test_cache_subtitle_stream_artifacts_extracts_missing_streams_together(
     )
     assert (
         str(
-            get_cached_subtitle_artifact_path(
+            get_cached_subtitle_stream_path(
                 infile_path,
                 streams[1],
                 cache_dir_path=tmp_path / "cache",

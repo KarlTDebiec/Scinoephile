@@ -15,8 +15,8 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import (
-    cache_subtitle_stream_artifacts,
-    get_cached_subtitle_artifact_path,
+    cache_subtitle_streams,
+    get_cached_subtitle_stream_path,
 )
 
 from .types import ImageSubtitleManifest
@@ -59,18 +59,18 @@ def get_or_create_image_subtitle_dir_path(
         logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
         return image_dir_path
 
-    artifact_path = get_cached_subtitle_artifact_path(
+    stream_path = get_cached_subtitle_stream_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
-    cache_subtitle_stream_artifacts(
+    cache_subtitle_streams(
         infile_path,
         [stream],
         cache_dir_path=cache_dir_path,
     )
 
-    image_series = ImageSeries.load(artifact_path)
+    image_series = ImageSeries.load(stream_path)
     first_start_ms = None
     last_end_ms = None
     if image_series:
@@ -87,8 +87,8 @@ def get_or_create_image_subtitle_dir_path(
             "image_count": len(list(temp_dir_path.glob("*.png"))),
             "first_start_ms": first_start_ms,
             "last_end_ms": last_end_ms,
-            "artifact_name": artifact_path.name,
-            "artifact_size": artifact_path.stat().st_size,
+            "source_name": stream_path.name,
+            "source_size": stream_path.stat().st_size,
         },
         temp_dir_path,
     )
@@ -158,10 +158,10 @@ def load_image_subtitle_manifest(
             manifest["last_end_ms"] = None
         else:
             manifest["last_end_ms"] = int(raw["last_end_ms"])
-    if "artifact_name" in raw:
-        manifest["artifact_name"] = str(raw["artifact_name"])
-    if "artifact_size" in raw:
-        manifest["artifact_size"] = int(raw["artifact_size"])
+    if "source_name" in raw:
+        manifest["source_name"] = str(raw["source_name"])
+    if "source_size" in raw:
+        manifest["source_size"] = int(raw["source_size"])
     return manifest
 
 
@@ -196,7 +196,7 @@ def _get_cached_image_subtitle_dir_path(
         rendered image subtitle cache directory path
     """
     return (
-        get_cached_subtitle_artifact_path(
+        get_cached_subtitle_stream_path(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,

@@ -15,6 +15,7 @@ def test_internal_subtitle_helpers_are_not_public():
     details = import_module("scinoephile.media.subtitles.analysis.details")
     image_cache = import_module("scinoephile.media.subtitles.analysis.image_cache")
 
+    assert not hasattr(cache, "SUBTITLE_ARTIFACT_CACHE_VERSION")
     assert not hasattr(cache, "is_valid_subtitle_artifact_cache")
     assert not hasattr(cache, "get_subtitle_stream_cache_key")
     assert not hasattr(cache, "_hash_cache_payload")
@@ -37,7 +38,7 @@ def test_subtitle_media_package_has_no_function_reexports():
     subtitles = import_module("scinoephile.media.subtitles")
 
     assert not hasattr(subtitles, "extract_subtitle_stream")
-    assert not hasattr(subtitles, "cache_subtitle_stream_artifacts")
+    assert not hasattr(subtitles, "cache_subtitle_streams")
     assert not hasattr(subtitles, "with_stream_details")
 
 
