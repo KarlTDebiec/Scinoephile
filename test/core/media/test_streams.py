@@ -42,6 +42,28 @@ def test_stream_description_formatting_is_shared():
     """Test stream description formatting is owned by the base stream class."""
     assert "displayed_language" not in Stream.__dict__
     assert "description" not in SubtitleStream.__dict__
+    assert "stream_id" not in SubtitleStream.__dict__
+
+
+def test_subtitle_stream_has_no_chinese_specific_metadata():
+    """Test subtitle stream model does not carry Chinese-specific metadata."""
+    assert "script" not in SubtitleStream.__dataclass_fields__
+    assert "displayed_language" not in SubtitleStream.__dict__
+    assert "is_chinese" not in SubtitleStream.__dict__
+    assert "with_script" not in SubtitleStream.__dict__
+    assert "with_stats" not in SubtitleStream.__dict__
+    assert "without_stats" not in SubtitleStream.__dict__
+
+
+def test_stream_language_normalizes_script_subtags():
+    """Test stream language normalization preserves script subtag case."""
+    assert Stream(index=1, language="ENG").language == "eng"
+
+    stream = SubtitleStream(index=2, language="ZHO-HANT", codec_name="subrip")
+
+    assert stream.language == "zho-Hant"
+    assert stream.description == "Stream #0:2(zho-Hant): Subtitle: subrip"
+    assert stream.outfile_filename == "zho-Hant-2.srt"
 
 
 def test_stream_details_start_with_base_details():
@@ -96,10 +118,3 @@ def test_subtitle_stream_rejects_unknown_codec():
 
     with pytest.raises(ScinoephileError, match="Unsupported subtitle codec unknown"):
         stream.extension
-
-
-def test_subtitle_stream_with_unknown_chinese_script():
-    """Test Chinese subtitle streams record undetermined script explicitly."""
-    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-
-    assert stream.with_script(None).displayed_language == "zho-Unknown"

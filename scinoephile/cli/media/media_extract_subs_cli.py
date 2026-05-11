@@ -216,7 +216,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 )
             streams = []
             for stream in subtitle_streams:
-                if stream.language in language_codes:
+                if _language_matches(stream.language, language_codes):
                     streams.append(stream)
             cache_subtitle_stream_artifacts(
                 infile_path,
@@ -312,8 +312,8 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         """
         # Determine output path
         outfile_name = infile_path.name
-        if stream.script is not None:
-            outfile_name = f"{stream.script}{infile_path.suffix}"
+        if stream.language is not None and "-" in stream.language:
+            outfile_name = f"{stream.language}{infile_path.suffix}"
         outfile_path = output_dir_path / outfile_name
         outfile_is_infile = outfile_path.resolve() == infile_path.resolve()
 
@@ -377,10 +377,7 @@ def _get_subtitle_stream_description(stream: SubtitleStream) -> str:
     Returns:
         subtitle stream description
     """
-    description = (
-        f"Stream #0:{stream.index}({stream.displayed_language}): Subtitle: "
-        f"{stream.codec_name}"
-    )
+    description = f"Stream {stream.stream_id}: Subtitle: {stream.codec_name}"
     details = [f"extension={stream.extension}"]
     if stream.title is not None:
         details.append(f"title={stream.title}")
@@ -393,6 +390,20 @@ def _get_subtitle_stream_description(stream: SubtitleStream) -> str:
     if stream.span is not None:
         details.append(f"span={stream.span}")
     return f"{description} ({', '.join(details)})"
+
+
+def _language_matches(language: str | None, language_codes: set[str]) -> bool:
+    """Return whether a stream language matches requested language codes.
+
+    Arguments:
+        language: stream language tag, if available
+        language_codes: requested base language codes
+    Returns:
+        whether the language tag matches
+    """
+    if language is None:
+        return False
+    return language.split("-", 1)[0] in language_codes
 
 
 if __name__ == "__main__":

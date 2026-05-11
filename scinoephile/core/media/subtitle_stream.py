@@ -4,9 +4,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.timing import format_time_ms
 
 from .constants import SUBTITLE_CODEC_OUTPUTS
 from .stream import Stream
@@ -32,8 +33,6 @@ class SubtitleStream(Stream):
     """First subtitle start time in milliseconds, when known."""
     last_end_ms: int | None = None
     """Last subtitle end time in milliseconds, when known."""
-    script: str | None = None
-    """Detected Chinese script tag, when known."""
 
     @property
     def details(self) -> list[str]:
@@ -47,23 +46,11 @@ class SubtitleStream(Stream):
         return details
 
     @property
-    def displayed_language(self) -> str:
-        """Language tag to display for this subtitle stream."""
-        if self.is_chinese and self.script is not None:
-            return self.script
-        return self.language or "und"
-
-    @property
     def extension(self) -> str:
         """File extension to use for extracted subtitles."""
         if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
             raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][0]
-
-    @property
-    def is_chinese(self) -> bool:
-        """Whether this stream has a Chinese language code."""
-        return self.language in {"chi", "zho", "yue"}
 
     @property
     def outfile_filename(self) -> str:
@@ -76,7 +63,7 @@ class SubtitleStream(Stream):
             raise ValueError(
                 "Subtitle stream must have a language to build output path"
             )
-        return f"{self.displayed_language}-{self.index}.{self.extension}"
+        return f"{self.language}-{self.index}.{self.extension}"
 
     @property
     def output_codec(self) -> str:
@@ -91,75 +78,5 @@ class SubtitleStream(Stream):
         if self.first_start_ms is None or self.last_end_ms is None:
             return None
         return (
-            f"{self._format_span_time(self.first_start_ms)}-"
-            f"{self._format_span_time(self.last_end_ms)}"
+            f"{format_time_ms(self.first_start_ms)}-{format_time_ms(self.last_end_ms)}"
         )
-
-    @property
-    def stream_id(self) -> str:
-        """Ffprobe-style stream identifier."""
-        if self.language is None:
-            return f"#0:{self.index}"
-        return f"#0:{self.index}({self.displayed_language})"
-
-    def with_script(self, script: str | None) -> SubtitleStream:
-        """Return this stream with detected script metadata.
-
-        Arguments:
-            script: detected Chinese script, if any
-        Returns:
-            stream with script metadata
-        """
-        if script is None and self.is_chinese:
-            script = f"{self.language}-Unknown"
-        return replace(self, script=script)
-
-    def with_stats(
-        self,
-        *,
-        subtitle_count: int,
-        first_start_ms: int | None,
-        last_end_ms: int | None,
-    ) -> SubtitleStream:
-        """Return this stream with derived subtitle statistics.
-
-        Arguments:
-            subtitle_count: number of subtitle events
-            first_start_ms: first subtitle start time in milliseconds
-            last_end_ms: last subtitle end time in milliseconds
-        Returns:
-            stream with subtitle statistics
-        """
-        return replace(
-            self,
-            subtitle_count=subtitle_count,
-            first_start_ms=first_start_ms,
-            last_end_ms=last_end_ms,
-        )
-
-    def without_stats(self) -> SubtitleStream:
-        """Return this stream without subtitle statistics.
-
-        Returns:
-            stream without subtitle statistics
-        """
-        return replace(
-            self,
-            subtitle_count=None,
-            first_start_ms=None,
-            last_end_ms=None,
-        )
-
-    @staticmethod
-    def _format_span_time(time_ms: int) -> str:
-        """Format a stream span timestamp.
-
-        Arguments:
-            time_ms: time in milliseconds
-        Returns:
-            timestamp formatted as HH:MM:SS
-        """
-        total_seconds = time_ms // 1000
-        hours, remainder = divmod(total_seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
-        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"

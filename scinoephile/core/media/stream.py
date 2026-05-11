@@ -20,14 +20,14 @@ class Stream:
     codec_name: str = "unknown"
     """ffmpeg codec name."""
     language: str | None = None
-    """ISO 639 language code from stream tags, when available."""
+    """Language tag from stream metadata, when available."""
     title: str | None = None
     """Stream title from metadata, when available."""
 
     def __post_init__(self):
         """Normalize stream metadata."""
         if self.language is not None:
-            object.__setattr__(self, "language", self.language.lower())
+            object.__setattr__(self, "language", _normalize_language(self.language))
 
     @property
     def description(self) -> str:
@@ -54,3 +54,23 @@ class Stream:
         if self.language is None:
             return f"#0:{self.index}"
         return f"#0:{self.index}({self.language})"
+
+
+def _normalize_language(language: str) -> str:
+    """Normalize a stream language tag.
+
+    Arguments:
+        language: language tag
+    Returns:
+        normalized language tag
+    """
+    parts = language.split("-")
+    normalized_parts = [parts[0].lower()]
+    for part in parts[1:]:
+        if len(part) == 4 and part.isalpha():
+            normalized_parts.append(part.title())
+        elif part.lower() == "unknown":
+            normalized_parts.append("Unknown")
+        else:
+            normalized_parts.append(part)
+    return "-".join(normalized_parts)

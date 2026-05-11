@@ -9,7 +9,6 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from scinoephile.core.media import SubtitleStream, VideoStream
-
 from scinoephile.media.subtitle_analysis import with_stream_details
 
 
@@ -50,7 +49,7 @@ def test_with_stream_details_enriches_subtitle_streams(tmp_path: Path):
 
     assert detailed_streams[0] is streams[0]
     assert isinstance(detailed_streams[1], SubtitleStream)
-    assert detailed_streams[1].script == "zho-Hant"
+    assert detailed_streams[1].language == "zho-Hant"
     assert detailed_streams[1].subtitle_count == 12
     assert detailed_streams[1].span == "00:01:02-01:02:05"
     cache.assert_called_once()

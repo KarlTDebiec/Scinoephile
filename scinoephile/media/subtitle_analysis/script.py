@@ -12,6 +12,7 @@ from pathlib import Path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.zho.language import is_zho_language
 from scinoephile.lang.zho.script_analysis import (
     ZhoScriptAnalysis,
     get_zho_script_analysis,
@@ -68,7 +69,7 @@ def analyze_subtitle_stream_script(
     Returns:
         subtitle script analysis
     """
-    if not stream.is_chinese:
+    if not is_zho_language(stream.language):
         return from_zho_analysis(
             get_zho_script_analysis(""),
             failure_reason="not a Chinese subtitle stream",

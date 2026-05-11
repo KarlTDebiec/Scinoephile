@@ -28,7 +28,6 @@ from .types import SubtitleStatsCache, SubtitleStreamStats
 __all__ = [
     "SUBTITLE_STATS_CACHE_VERSION",
     "count_subtitle_stream_events",
-    "format_stream_span_time",
     "get_subtitle_series_stats",
     "get_subtitle_stream_stats",
 ]
@@ -61,20 +60,6 @@ def count_subtitle_stream_events(
         stream,
         cache_dir_path=cache_dir_path,
     ).event_count
-
-
-def format_stream_span_time(time_ms: int) -> str:
-    """Format a stream span timestamp.
-
-    Arguments:
-        time_ms: time in milliseconds
-    Returns:
-        timestamp formatted as HH:MM:SS
-    """
-    total_seconds = time_ms // 1000
-    hours, remainder = divmod(total_seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 
 def get_subtitle_series_stats(series: Series | ImageSeries) -> SubtitleStreamStats:

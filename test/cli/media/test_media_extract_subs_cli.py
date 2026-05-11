@@ -124,9 +124,8 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
             return_value=[
                 SubtitleStream(
                     index=4,
-                    language="zho",
+                    language="zho-Hant",
                     codec_name="subrip",
-                    script="zho-Hant",
                 ),
             ],
         ) as with_details,

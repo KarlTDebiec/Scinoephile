@@ -23,30 +23,16 @@ from scinoephile.media.subtitle_analysis import (
 )
 
 
-def test_subtitle_stream_uses_script_for_description_and_filename():
-    """Test subtitle stream output uses detected Chinese script."""
+def test_subtitle_stream_uses_language_for_description_and_filename():
+    """Test subtitle stream output uses its language tag."""
     stream = SubtitleStream(
         index=2,
-        language="zho",
+        language="zho-Hant",
         codec_name="subrip",
-        script="zho-Hant",
     )
 
-    assert stream.displayed_language == "zho-Hant"
     assert stream.description == "Stream #0:2(zho-Hant): Subtitle: subrip"
     assert stream.outfile_filename == "zho-Hant-2.srt"
-
-
-def test_subtitle_stream_marks_unknown_chinese_script():
-    """Test subtitle stream output can explicitly mark unknown Chinese script."""
-    stream = SubtitleStream(
-        index=2,
-        language="zho",
-        codec_name="subrip",
-        script="zho-Unknown",
-    )
-
-    assert stream.displayed_language == "zho-Unknown"
 
 
 def test_get_cached_subtitle_artifact_path_changes_by_stream(tmp_path: Path):

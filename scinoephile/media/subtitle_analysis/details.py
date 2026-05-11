@@ -5,11 +5,13 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import replace
 from logging import getLogger
 from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
+from scinoephile.lang.zho.language import get_zho_script_language, is_zho_language
 
 from .artifacts import cache_subtitle_stream_artifacts
 from .script import analyze_subtitle_stream_script
@@ -81,13 +83,16 @@ def with_subtitle_details(
     Returns:
         enriched subtitle stream metadata
     """
-    if stream.is_chinese:
+    if stream.language is not None and is_zho_language(stream.language):
         analysis = analyze_subtitle_stream_script(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,
         )
-        stream = stream.with_script(analysis.script)
+        stream = replace(
+            stream,
+            language=get_zho_script_language(stream.language, analysis.script),
+        )
     try:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -99,7 +104,8 @@ def with_subtitle_details(
             f"Could not read subtitle stats for stream #{stream.index}: {exc}"
         )
         return stream
-    return stream.with_stats(
+    return replace(
+        stream,
         subtitle_count=stats.event_count,
         first_start_ms=stats.first_start_ms,
         last_end_ms=stats.last_end_ms,
