@@ -14,15 +14,10 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = [
     "SCRIPT_ANALYSIS_CACHE_VERSION",
-    "SUBTITLE_ARTIFACT_CACHE_VERSION",
     "get_subtitle_analysis_cache_key",
     "get_subtitle_analysis_cache_path",
-    "get_subtitle_stream_cache_key",
-    "hash_cache_payload",
 ]
 
-SUBTITLE_ARTIFACT_CACHE_VERSION = 1
-"""Subtitle artifact cache schema version."""
 SCRIPT_ANALYSIS_CACHE_VERSION = 4
 """Subtitle script analysis cache schema version."""
 
@@ -84,35 +79,10 @@ def get_subtitle_analysis_cache_key(
         "ocr_languages": ocr_languages,
         "script_analysis_cache_version": SCRIPT_ANALYSIS_CACHE_VERSION,
     }
-    return hash_cache_payload(payload)
+    return _hash_cache_payload(payload)
 
 
-def get_subtitle_stream_cache_key(
-    infile_path: Path,
-    stream: SubtitleStream,
-) -> str:
-    """Get a stable cache key for extracted subtitle artifacts.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream
-    Returns:
-        hexadecimal cache key
-    """
-    resolved_path = infile_path.resolve()
-    stat = resolved_path.stat()
-    payload = {
-        "path": str(resolved_path),
-        "size": stat.st_size,
-        "mtime_ns": stat.st_mtime_ns,
-        "stream_index": stream.index,
-        "codec_name": stream.codec_name,
-        "subtitle_artifact_cache_version": SUBTITLE_ARTIFACT_CACHE_VERSION,
-    }
-    return hash_cache_payload(payload)
-
-
-def hash_cache_payload(payload: Mapping[str, object]) -> str:
+def _hash_cache_payload(payload: Mapping[str, object]) -> str:
     """Hash a cache key payload.
 
     Arguments:

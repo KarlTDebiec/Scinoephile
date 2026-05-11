@@ -14,12 +14,12 @@ from PIL import Image
 
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-
-from .artifacts import (
+from scinoephile.media.subtitles.cache import (
     cache_subtitle_stream_artifacts,
     get_cached_subtitle_artifact_path,
     is_valid_subtitle_artifact_cache,
 )
+
 from .types import ImageSubtitleManifest
 
 __all__ = [

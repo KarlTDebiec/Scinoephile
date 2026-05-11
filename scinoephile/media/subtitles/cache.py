@@ -4,25 +4,30 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
-from shutil import copy2, rmtree
+from shutil import rmtree
 from uuid import uuid4
 
 from scinoephile.common.subprocess import run_command
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_dir_path
 
-from .cache_keys import get_subtitle_stream_cache_key
-
 __all__ = [
+    "SUBTITLE_ARTIFACT_CACHE_VERSION",
     "cache_subtitle_stream_artifacts",
-    "extract_subtitle_stream_from_cache",
     "get_cached_subtitle_artifact_path",
+    "get_subtitle_stream_cache_key",
     "is_valid_subtitle_artifact_cache",
 ]
 
 logger = getLogger(__name__)
+
+SUBTITLE_ARTIFACT_CACHE_VERSION = 1
+"""Subtitle artifact cache schema version."""
 
 
 def cache_subtitle_stream_artifacts(
@@ -82,40 +87,6 @@ def cache_subtitle_stream_artifacts(
         rmtree(temp_dir_path, ignore_errors=True)
 
 
-def extract_subtitle_stream_from_cache(
-    infile_path: Path,
-    stream: SubtitleStream,
-    outfile_path: Path,
-    *,
-    cache_dir_path: Path | None = None,
-) -> Path:
-    """Extract a subtitle stream using a runtime artifact cache.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream to extract
-        outfile_path: requested output path
-        cache_dir_path: cache directory path
-    Returns:
-        output path
-    """
-    artifact_path = get_cached_subtitle_artifact_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
-    if not is_valid_subtitle_artifact_cache(artifact_path):
-        cache_subtitle_stream_artifacts(
-            infile_path,
-            [stream],
-            cache_dir_path=cache_dir_path,
-        )
-    if artifact_path.resolve() != outfile_path.resolve():
-        outfile_path.parent.mkdir(parents=True, exist_ok=True)
-        copy2(artifact_path, outfile_path)
-    return outfile_path
-
-
 def get_cached_subtitle_artifact_path(
     infile_path: Path,
     stream: SubtitleStream,
@@ -137,6 +108,31 @@ def get_cached_subtitle_artifact_path(
     return cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
 
 
+def get_subtitle_stream_cache_key(
+    infile_path: Path,
+    stream: SubtitleStream,
+) -> str:
+    """Get a stable cache key for extracted subtitle artifacts.
+
+    Arguments:
+        infile_path: media input file
+        stream: subtitle stream
+    Returns:
+        hexadecimal cache key
+    """
+    resolved_path = infile_path.resolve()
+    stat = resolved_path.stat()
+    payload = {
+        "path": str(resolved_path),
+        "size": stat.st_size,
+        "mtime_ns": stat.st_mtime_ns,
+        "stream_index": stream.index,
+        "codec_name": stream.codec_name,
+        "subtitle_artifact_cache_version": SUBTITLE_ARTIFACT_CACHE_VERSION,
+    }
+    return _hash_cache_payload(payload)
+
+
 def is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:
     """Check whether an extracted subtitle artifact cache is valid.
 
@@ -149,3 +145,15 @@ def is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:
         return artifact_path.stat().st_size > 0
     except FileNotFoundError:
         return False
+
+
+def _hash_cache_payload(payload: Mapping[str, object]) -> str:
+    """Hash a cache key payload.
+
+    Arguments:
+        payload: JSON-serializable cache key payload
+    Returns:
+        hexadecimal cache key
+    """
+    encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
+    return hashlib.sha256(encoded_payload).hexdigest()

@@ -22,13 +22,11 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.media.probe import get_subtitle_streams
-from scinoephile.media.subtitle_analysis.artifacts import (
-    cache_subtitle_stream_artifacts,
-)
-from scinoephile.media.subtitle_analysis.artifacts import (
+from scinoephile.media.subtitles.analysis.details import with_stream_details
+from scinoephile.media.subtitles.cache import cache_subtitle_stream_artifacts
+from scinoephile.media.subtitles.extraction import (
     extract_subtitle_stream_from_cache as extract_subtitle_stream,
 )
-from scinoephile.media.subtitle_analysis.details import with_stream_details
 
 __all__ = ["MediaExtractSubsCli"]
 

@@ -8,10 +8,10 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
-from scinoephile.core.media import SubtitleStream
 
 from scinoephile.core import ScinoephileError
-from scinoephile.media.subtitles import extract_subtitle_stream
+from scinoephile.core.media import SubtitleStream
+from scinoephile.media.subtitles.extraction import extract_subtitle_stream
 
 
 def test_extract_subtitle_stream_runs_ffmpeg(tmp_path: Path):
@@ -23,7 +23,7 @@ def test_extract_subtitle_stream_runs_ffmpeg(tmp_path: Path):
     ffmpeg_input = Mock()
 
     with patch(
-        "scinoephile.media.subtitles.ffmpeg.input",
+        "scinoephile.media.subtitles.extraction.ffmpeg.input",
         return_value=ffmpeg_input,
     ):
         extracted_path = extract_subtitle_stream(

@@ -172,7 +172,7 @@ def test_media_probe_cli_details_uses_plain_probe(
             return_value={"streams": []},
         ) as probe,
         patch(
-            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
         ),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
@@ -208,13 +208,13 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             },
         ),
         patch(
-            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitles.analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
         patch(
-            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats"
+            "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats"
         ) as stats,
         patch(
-            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
         ),
     ):
         analyze.return_value.script = "zho-Hant"
@@ -259,13 +259,13 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
             },
         ),
         patch(
-            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitles.analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
         patch(
-            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats"
+            "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats"
         ) as stats,
         patch(
-            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
         ),
     ):
         analyze.return_value.script = None
@@ -310,11 +310,11 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             },
         ),
         patch(
-            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats",
+            "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
         patch(
-            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
         ),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
@@ -362,13 +362,13 @@ def test_media_probe_cli_details_caches_subtitle_stream_artifacts_together(
             },
         ),
         patch(
-            "scinoephile.media.subtitle_analysis.details.cache_subtitle_stream_artifacts"
+            "scinoephile.media.subtitles.analysis.details.cache_subtitle_stream_artifacts"
         ) as cache,
         patch(
-            "scinoephile.media.subtitle_analysis.details.analyze_subtitle_stream_script"
+            "scinoephile.media.subtitles.analysis.details.analyze_subtitle_stream_script"
         ) as analyze,
         patch(
-            "scinoephile.media.subtitle_analysis.details.get_subtitle_stream_stats",
+            "scinoephile.media.subtitles.analysis.details.get_subtitle_stream_stats",
         ) as stats,
     ):
         analyze.return_value.script = None

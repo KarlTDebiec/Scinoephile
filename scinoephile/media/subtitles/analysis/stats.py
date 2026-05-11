@@ -9,12 +9,12 @@ from pathlib import Path
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-
-from .artifacts import (
+from scinoephile.media.subtitles.cache import (
     cache_subtitle_stream_artifacts,
     get_cached_subtitle_artifact_path,
     is_valid_subtitle_artifact_cache,
 )
+
 from .image_cache import (
     get_or_create_image_subtitle_dir_path,
     load_image_subtitle_manifest,
