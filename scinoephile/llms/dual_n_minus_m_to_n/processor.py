@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual block / subtitle block (gapped) matters."""
+"""Processes dual n minus m to n matters."""
 
 from __future__ import annotations
 
@@ -14,22 +14,22 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series, Subtitle, get_concatenated_series
 from scinoephile.core.synchronization import get_sync_overlap_matrix
 
-from .manager import DualBlockGappedManager
-from .prompt import DualBlockGappedPrompt
+from .manager import DualNMinusMToNManager
+from .prompt import DualNMinusMToNPrompt
 
-__all__ = ["DualBlockGappedProcessor"]
+__all__ = ["DualNMinusMToNProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class DualBlockGappedProcessor(Processor):
-    """Processes dual block / subtitle block (gapped) matters."""
+class DualNMinusMToNProcessor(Processor):
+    """Processes dual n minus m to n matters."""
 
-    prompt_cls: type[DualBlockGappedPrompt]
+    prompt_cls: type[DualNMinusMToNPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = DualBlockGappedManager
+    manager_cls = DualNMinusMToNManager
     """Manager class used to construct test case models."""
 
     def process(
@@ -43,7 +43,7 @@ class DualBlockGappedProcessor(Processor):
         Arguments:
             source_one: primary subtitles (may contain gaps)
             source_two: secondary subtitles providing reference
-            stop_at_idx: stop processing at this block index
+            stop_at_idx: exclusive block index at which to stop processing
         Returns:
             primary subtitles with gaps filled
         """
@@ -67,7 +67,7 @@ class DualBlockGappedProcessor(Processor):
                 continue
 
             # Query LLM
-            test_case_cls = DualBlockGappedManager.get_test_case_cls(
+            test_case_cls = DualNMinusMToNManager.get_test_case_cls(
                 size, gaps, self.prompt_cls
             )
             query_cls = test_case_cls.query_cls

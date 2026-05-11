@@ -15,9 +15,9 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_block_gapped import (
-    DualBlockGappedManager,
-    DualBlockGappedProcessor,
+from scinoephile.llms.dual_n_minus_m_to_n import (
+    DualNMinusMToNManager,
+    DualNMinusMToNProcessor,
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
@@ -39,21 +39,21 @@ __all__ = [
 YUE_ZHO_GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-gap-translation",
     test_case_table_name="test_cases__yue_zho__gap_translation",
-    manager_cls=DualBlockGappedManager,
+    manager_cls=DualNMinusMToNManager,
     prompt_cls=YueVsZhoGapTranslationPromptYueHans,
 )
 """Operation specification for written Cantonese gap translation."""
 
 
 class YueVsZhoGapTranslationProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockGappedProcessor.process."""
+    """Keyword arguments for DualNMinusMToNProcessor.process."""
 
     stop_at_idx: int | None
-    """Subtitle index at which to stop processing, inclusive."""
+    """Exclusive block index at which to stop processing."""
 
 
 class YueVsZhoGapTranslationProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockGappedProcessor initialization."""
+    """Keyword arguments for DualNMinusMToNProcessor initialization."""
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
@@ -64,7 +64,7 @@ class YueVsZhoGapTranslationProcessorKwargs(TypedDict, total=False):
 def get_yue_gap_translated_vs_zho(
     yuewen: Series,
     zhongwen: Series,
-    translator: DualBlockGappedProcessor | None = None,
+    translator: DualNMinusMToNProcessor | None = None,
     **kwargs: Unpack[YueVsZhoGapTranslationProcessKwargs],
 ) -> Series:
     """Get written Cantonese subtitle gaps translated using standard Chinese.
@@ -73,7 +73,7 @@ def get_yue_gap_translated_vs_zho(
         yuewen: written Cantonese Series
         zhongwen: standard Chinese Series
         translator: processor to use
-        **kwargs: additional arguments for DualBlockGappedProcessor.process
+        **kwargs: additional arguments for DualNMinusMToNProcessor.process
     Returns:
         written Cantonese with gaps translated using standard Chinese
     """
@@ -90,22 +90,22 @@ def get_yue_vs_zho_gap_translator(
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[YueVsZhoGapTranslationProcessorKwargs],
-) -> DualBlockGappedProcessor:
-    """Get DualBlockGappedProcessor with provided configuration.
+) -> DualNMinusMToNProcessor:
+    """Get DualNMinusMToNProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         use_dictionary_tool: whether to wire the dictionary lookup tool
         provider: provider to use for queries
-        **kwargs: additional arguments for DualBlockGappedProcessor
+        **kwargs: additional arguments for DualNMinusMToNProcessor
     Returns:
-        DualBlockGappedProcessor with provided configuration
+        DualNMinusMToNProcessor with provided configuration
     """
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(
-                DualBlockGappedManager,
+                DualNMinusMToNManager,
                 prompt_cls,
                 YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
             )
@@ -115,7 +115,7 @@ def get_yue_vs_zho_gap_translator(
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
-    return DualBlockGappedProcessor(
+    return DualNMinusMToNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual block / subtitle block (gapped) LLM classes."""
+"""Factories for dual n minus m to n LLM classes."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualBlockGappedPrompt
+from .prompt import DualNMinusMToNPrompt
 
-__all__ = ["DualBlockGappedManager"]
+__all__ = ["DualNMinusMToNManager"]
 
 
-class DualBlockGappedManager(Manager):
-    """Factories for dual block / subtitle block (gapped) LLM classes."""
+class DualNMinusMToNManager(Manager):
+    """Factories for dual n minus m to n LLM classes."""
 
-    prompt_cls: ClassVar[type[DualBlockGappedPrompt]] = DualBlockGappedPrompt
+    prompt_cls: ClassVar[type[DualNMinusMToNPrompt]] = DualNMinusMToNPrompt
     """Default prompt class."""
 
     @classmethod
@@ -30,7 +30,7 @@ class DualBlockGappedManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
+        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -47,7 +47,7 @@ class DualBlockGappedManager(Manager):
             )
 
         name = get_model_name(
-            "DualBlockGappedQuery",
+            "DualNMinusMToNQuery",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -79,7 +79,7 @@ class DualBlockGappedManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
+        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -96,7 +96,7 @@ class DualBlockGappedManager(Manager):
             )
 
         name = get_model_name(
-            "DualBlockGappedAnswer",
+            "DualNMinusMToNAnswer",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -124,7 +124,7 @@ class DualBlockGappedManager(Manager):
         cls,
         size: int,
         gaps: tuple[int, ...],
-        prompt_cls: type[DualBlockGappedPrompt] = DualBlockGappedPrompt,
+        prompt_cls: type[DualNMinusMToNPrompt] = DualNMinusMToNPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -141,7 +141,7 @@ class DualBlockGappedManager(Manager):
             )
 
         name = get_model_name(
-            "DualBlockGappedTestCase",
+            "DualNMinusMToNTestCase",
             f"{size}_"
             f"{'-'.join(map(str, [gap + 1 for gap in gaps]))}_"
             f"{prompt_cls.__name__}",
@@ -183,7 +183,7 @@ class DualBlockGappedManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[DualBlockGappedPrompt], prompt_cls)
+        prompt_cls = cast(type[DualNMinusMToNPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_2_pfx))
         source_one_idxs = [
             int(key.removeprefix(prompt_cls.src_1_pfx)) - 1

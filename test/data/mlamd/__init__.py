@@ -31,9 +31,9 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
-from scinoephile.llms.dual_block_gapped import (
-    DualBlockGappedManager,
-    DualBlockGappedPrompt,
+from scinoephile.llms.dual_n_minus_m_to_n import (
+    DualNMinusMToNManager,
+    DualNMinusMToNPrompt,
 )
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
@@ -266,7 +266,7 @@ def get_mlamd_yue_deliniation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_gap_translation_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoGapTranslationPromptYueHans,
+    prompt_cls: type[DualNMinusMToNPrompt] = YueVsZhoGapTranslationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
@@ -286,7 +286,7 @@ def get_mlamd_yue_vs_zho_gap_translation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
+        path, DualNMinusMToNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
