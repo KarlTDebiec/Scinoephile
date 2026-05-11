@@ -31,6 +31,15 @@ eng_ocr_path = output_path / "eng_ocr"
 zho_hans_ocr_path = output_path / "zho-Hans_ocr"
 
 additional_context = """
+Movie context:
+This is My Neighbor Totoro. The dialogue is from a family-friendly Studio Ghibli
+film about two young sisters, Satsuki and Mei, moving with their father to the
+countryside while their mother is in the hospital. Keep the English natural,
+warm, and child-friendly. Prefer established English Totoro terminology from the
+reference subtitles. Do not translate Cantonese idioms, teasing, or playful
+insults literally when they would sound crude, offensive, or out of tone in
+English. Translate the intended tone, not just the literal wording.
+
 Movie-specific names and terminology:
 - 小月 / 姐姐: Satsuki
 - 小美 / 次子: Mei

@@ -1,14 +1,14 @@
 1
 00:02:16,330 --> 00:02:18,390
-Why is it taking so long?
+Why are we not there yet?
 
 2
 00:02:19,230 --> 00:02:22,000
-Don't be like this. He'll be here when you've finished the candy.
+Don't be like that. We'll get there when your candy's gone.
 
 3
 00:02:23,000 --> 00:02:25,200
-This is already the eighth piece. You're lying.
+This is my eighth candy. You're just fooling me.
 
 4
 00:02:32,110 --> 00:02:33,200
@@ -16,15 +16,15 @@ Dad, when will we get there?
 
 5
 00:02:34,150 --> 00:02:35,340
-Have another piece of candy.
+Have another caramel.
 
 6
 00:02:36,020 --> 00:02:37,680
-We'll be there after this turn.
+Once we turn this corner, we're there.
 
 7
 00:02:42,850 --> 00:02:43,739
-The air here is very fresh.
+The air here is so fresh.
 
 8
 00:02:43,820 --> 00:02:44,850
@@ -32,11 +32,11 @@ It's the perfect place for Mom to recover.
 
 9
 00:02:51,030 --> 00:02:52,346
-Who's that?
+Who is that?
 
 10
 00:02:52,430 --> 00:02:54,560
-Mr. Postman should be here any minute.
+It's the postman. He'll be here any minute.
 
 11
 00:02:57,340 --> 00:02:58,670
@@ -44,27 +44,27 @@ Hello, Mr. Postman!
 
 12
 00:03:01,633 --> 00:03:02,856
-I'm Big Acorn! How are you?
+I'm Satsuki Kusakabe! How do you do?
 
 13
 00:03:02,940 --> 00:03:04,100
-Nice to meet you.
+Pleased to meet you.
 
 14
 00:03:17,443 --> 00:03:18,276
-Second Son, sit tight.
+Mei, sit still.
 
 15
 00:03:18,360 --> 00:03:19,420
-There are a lot of bends here.
+There are lots of curves here.
 
 16
 00:03:19,490 --> 00:03:21,120
-I'm so dizzy, so dizzy.
+I'm dizzy! I'm dizzy!
 
 17
 00:03:31,870 --> 00:03:33,000
-Hello, little one.
+Hello there, little one.
 
 18
 00:03:33,070 --> 00:03:34,526
@@ -84,7 +84,7 @@ How is everyone?
 
 22
 00:03:42,180 --> 00:03:44,340
-I'm Big Maki. We just moved here.
+I'm Kusakabe. We just moved here.
 
 23
 00:03:44,420 --> 00:03:46,510
@@ -92,11 +92,11 @@ Please take good care of us.
 
 24
 00:03:51,617 --> 00:03:52,506
-A young lady like you isn't even shy.
+A young lady shouldn't be so shameless.
 
 25
 00:03:52,590 --> 00:03:53,590
-Are you that close with him?
+Are you that close to him?
 
 26
 00:03:54,290 --> 00:03:55,290
@@ -112,7 +112,7 @@ We're finally here.
 
 29
 00:04:19,450 --> 00:04:20,450
-Great!
+Wonderful!
 
 30
 00:04:20,950 --> 00:04:21,980
@@ -120,7 +120,7 @@ Ah... wait for me...
 
 31
 00:04:22,620 --> 00:04:23,620
-No need to be in such a hurry.
+Don't be in such a hurry.
 
 32
 00:04:25,160 --> 00:04:26,346
@@ -140,23 +140,23 @@ Why can't I see them?
 
 36
 00:04:32,430 --> 00:04:33,870
-With your nearsighted eyes, be careful with your glasses.
+You're so nearsighted. Be careful with your glasses.
 
 37
 00:04:35,770 --> 00:04:36,882
-Careful, don't fall into the river!
+Careful! Don't fall in the river!
 
 38
 00:04:38,940 --> 00:04:39,940
-Let's first see if the house is pretty.
+Let's see if the house is pretty first.
 
 39
 00:04:42,840 --> 00:04:46,440
-Move aside, move aside, let me look first!
+Move aside, move aside! I want to look first!
 
 40
 00:04:47,550 --> 00:04:48,640
-So pretty. Let's go over and take a look.
+It's so pretty. Let's go over and see.
 
 41
 00:04:49,250 --> 00:04:51,010
@@ -168,19 +168,19 @@ Hurry up!
 
 43
 00:05:08,000 --> 00:05:11,730
-So run-down, like a haunted house.
+It's so old, it looks like a haunted house.
 
 44
 00:05:12,753 --> 00:05:13,586
-Ha! Nice.
+Ha! This is great!
 
 45
 00:05:13,670 --> 00:05:14,670
-Nice! That's exciting enough.
+This is great! It's exciting!
 
 46
 00:05:21,180 --> 00:05:22,770
-So flimsy, like it's about to collapse.
+It's so flimsy, like it's about to collapse.
 
 47
 00:05:36,000 --> 00:05:37,000
@@ -188,7 +188,7 @@ Great!
 
 48
 00:05:47,910 --> 00:05:51,900
-Second Brother, look at that tree...
+Mei, look at that tree...
 
 49
 00:05:52,910 --> 00:05:53,940
@@ -196,15 +196,15 @@ It's so tall and big. Look.
 
 50
 00:05:55,020 --> 00:05:56,866
-Dad says we children's achievements
+Dad said that what we kids achieve
 
 51
 00:05:56,950 --> 00:05:58,650
-should one day be like that tree,
+should one day be like this tree,
 
 52
 00:06:01,560 --> 00:06:03,390
-so tall and great!
+so tall and big!
 
 53
 00:06:09,260 --> 00:06:11,060
@@ -220,7 +220,7 @@ An oak tree?
 
 56
 00:06:16,140 --> 00:06:17,900
-A tree that turned from a big dumb elephant?
+A tree turned from a big dumb elephant?
 
 57
 00:06:27,980 --> 00:06:28,980
@@ -228,11 +228,11 @@ Careful!
 
 58
 00:06:31,650 --> 00:06:32,650
-There's a seed!
+There's an acorn!
 
 59
 00:06:35,160 --> 00:06:36,576
-Sis, let me see!
+Satsuki, let me see!
 
 60
 00:06:36,660 --> 00:06:37,780
@@ -240,15 +240,15 @@ No, no, no!
 
 61
 00:06:37,860 --> 00:06:39,160
-Catch me and I'll treat you to a drumstick.
+Catch me and I'll buy you a drumstick!
 
 62
 00:06:44,300 --> 00:06:45,790
-I found a drumstick too.
+I found a drumstick too!
 
 63
 00:06:52,270 --> 00:06:54,570
-A drumstick? How could there be a drumstick here?
+Chicken legs? How could there be chicken legs here?
 
 64
 00:06:55,480 --> 00:06:56,480
@@ -260,19 +260,19 @@ I found a seed, Dad.
 
 66
 00:06:59,310 --> 00:07:00,370
-I found one too.
+I found one too!
 
 67
 00:07:05,490 --> 00:07:08,110
-Seeds? How could there be seeds in the house?
+Acorns? How could there be acorns in the house?
 
 68
 00:07:08,720 --> 00:07:10,450
-Yes! Why would that happen?
+Yeah! How could that happen?
 
 69
 00:07:11,020 --> 00:07:12,820
-Maybe squirrels moved in here.
+Maybe squirrels brought them in.
 
 70
 00:07:14,030 --> 00:07:15,090
@@ -280,23 +280,23 @@ Do squirrels know how to move house?
 
 71
 00:07:16,130 --> 00:07:17,790
-Sir, where should these things be moved to?
+Sir, where should I put these things?
 
 72
 00:07:18,930 --> 00:07:20,760
-Sorry, please carry them in. Excuse us.
+Sorry, please bring them in. Excuse us.
 
 73
 00:07:21,540 --> 00:07:22,652
-Hurry and open the back door to let some air in.
+Go open the back door and air the place out.
 
 74
 00:07:23,993 --> 00:07:24,826
-Be good and hurry along.
+Be a good girl and hurry up.
 
 75
 00:07:24,910 --> 00:07:25,930
-Come on... come on... come on.
+Come on... come on... come on...
 
 76
 00:07:26,010 --> 00:07:27,122
@@ -316,7 +316,7 @@ Ha!... Come on... come on... come on...
 
 80
 00:07:44,620 --> 00:07:45,846
-...Open it!
+Open it!
 
 81
 00:07:45,930 --> 00:07:46,930
@@ -324,7 +324,7 @@ Let's take a look first.
 
 82
 00:08:04,680 --> 00:08:09,240
-Ah...
+Oh...
 
 83
 00:08:13,590 --> 00:08:14,710
@@ -332,11 +332,11 @@ Mm, no problem!
 
 84
 00:08:17,390 --> 00:08:19,860
-Dad said when you see ghosts, you scare them away.
+Dad said if you see ghosts, you scare them away.
 
 85
 00:08:20,890 --> 00:08:22,576
-Gone?
+They're gone?
 
 86
 00:08:22,660 --> 00:08:23,660
@@ -344,19 +344,19 @@ Where'd they go?
 
 87
 00:08:26,970 --> 00:08:27,886
-Gone?
+They're gone?
 
 88
 00:08:27,970 --> 00:08:29,160
-Let's go take a look.
+Let's go look.
 
 89
 00:08:31,170 --> 00:08:32,930
-Yeah, let's see if there are any that haven't left yet.
+Really? Let's see if there are any left.
 
 90
 00:08:34,470 --> 00:08:35,470
-No!
+None!
 
 91
 00:08:37,610 --> 00:08:38,996
@@ -364,7 +364,7 @@ That's the bathroom.
 
 92
 00:08:39,080 --> 00:08:40,510
-Just now we saw some ghosts.
+We just saw some ghosts.
 
 93
 00:08:41,110 --> 00:08:42,110
@@ -376,7 +376,7 @@ The two of us scared those ghosts off.
 
 95
 00:08:44,180 --> 00:08:46,080
-They went into the bathroom, and now they're gone.
+They ran into the bathroom, and now they're gone.
 
 96
 00:08:47,190 --> 00:08:48,190
@@ -384,55 +384,55 @@ Let me take a look.
 
 97
 00:09:00,500 --> 00:09:01,500
-Did you see it?
+Did you see them?
 
 98
 00:09:02,600 --> 00:09:03,830
-No, those were just bits of coal dust.
+No, those were just soot sprites.
 
 99
 00:09:04,700 --> 00:09:06,760
-Coal dust, not ghosts?
+Soot sprites, not ghosts?
 
 100
 00:09:07,710 --> 00:09:09,330
-You just came in from that bright light outside,
+You just came in from the bright outdoors,
 
 101
 00:09:09,410 --> 00:09:10,410
-so your eyes were playing tricks on you!
+so your eyes got dazzled!
 
 102
 00:09:16,120 --> 00:09:18,740
-I'm telling you, when sunlight shines into the house,
+I'm telling you, once the sunlight shines into the house,
 
 103
 00:09:19,320 --> 00:09:20,550
-every ghost and monster will run away.
+all the ghosts and goblins will run away.
 
 104
 00:09:22,020 --> 00:09:23,050
-They run the moment they see the light!
+They run the minute they see the light!
 
 105
 00:09:24,160 --> 00:09:30,460
-The soot sprites are gone. All the ghosts have disappeared.
+The soot sprites ran off. All the ghosts are gone.
 
 106
 00:09:31,230 --> 00:09:32,790
-That's great... Ha...
+That's good... Ha...
 
 107
 00:09:36,040 --> 00:09:38,270
-Stop fooling around and get to work.
+Stop playing around. Hurry up and get to work.
 
 108
 00:09:38,940 --> 00:09:40,100
-Do you know how to get up to the second floor?
+Do you know how to get to the second floor?
 
 109
 00:09:42,340 --> 00:09:45,196
-Hurry up to the second floor and open all the windows.
+Go up to the second floor and open all the windows.
 
 110
 00:09:45,280 --> 00:09:46,280
@@ -440,15 +440,15 @@ Yes!
 
 111
 00:09:46,850 --> 00:09:47,850
-...I'm going too...
+...I want to go too...
 
 112
 00:09:48,950 --> 00:09:50,366
-The stairs...
+The stairs!
 
 113
 00:09:50,450 --> 00:09:51,450
-The stairs...
+The stairs!
 
 114
 00:09:52,350 --> 00:09:53,350
@@ -464,7 +464,7 @@ Nope.
 
 117
 00:09:57,760 --> 00:09:58,760
-The stairs...
+The stairs!
 
 118
 00:10:00,860 --> 00:10:01,860
@@ -476,11 +476,11 @@ Where are they?
 
 120
 00:10:06,670 --> 00:10:08,130
-There aren't any.
+They're not here.
 
 121
 00:10:18,810 --> 00:10:21,370
-There aren't any, there aren't any.
+Not here, not here.
 
 122
 00:10:25,490 --> 00:10:26,490
@@ -488,15 +488,15 @@ Could they be here?
 
 123
 00:10:32,630 --> 00:10:33,720
-Hey, I found it.
+Hey, I found it!
 
 124
 00:10:41,000 --> 00:10:43,490
-It's so dark. Could there be more...
+It's so dark. Do you think there might be...
 
 125
 00:10:44,740 --> 00:10:45,740
-Coal poop?
+Dustbunnies again?
 
 126
 00:10:47,610 --> 00:10:48,610
@@ -504,31 +504,31 @@ What's that sound?
 
 127
 00:10:52,650 --> 00:10:53,650
-A drumstick?
+A chicken leg?
 
 128
 00:11:00,350 --> 00:11:03,690
-The Coal Shit Ghost got away.
+The soot sprites ran away.
 
 129
 00:11:23,940 --> 00:11:24,940
-Use your ultimate move.
+Use your secret move!
 
 130
 00:11:43,360 --> 00:11:44,920
-How dare you toy with the two of us like this.
+How dare you make fools of us like that.
 
 131
 00:11:45,000 --> 00:11:46,470
-Let me deal with you.
+I'll deal with you.
 
 132
 00:11:53,970 --> 00:11:54,970
-There are coal shit-ghosts!
+There are soot sprites.
 
 133
 00:11:55,910 --> 00:11:57,170
-Jiro, hurry and help!
+Mei, help me out!
 
 134
 00:12:09,090 --> 00:12:10,606
@@ -536,51 +536,51 @@ Come on.
 
 135
 00:12:10,690 --> 00:12:11,690
-It's very heavy. Be careful.
+It's heavy. Be careful.
 
 136
 00:12:12,830 --> 00:12:14,020
-Dad, Dad.
+Dad! Dad!
 
 137
 00:12:14,090 --> 00:12:15,690
-There are monsters in the house again.
+There are ghosts in the house again.
 
 138
 00:12:17,230 --> 00:12:20,016
-If you open the window, you won't be afraid of those ghosts.
+If you open the windows, you won't be afraid of those ghosts.
 
 139
 00:12:20,100 --> 00:12:22,360
-Dad is tall and mighty, wise and heroic.
+Dad is big and strong, and wise and heroic.
 
 140
 00:12:25,310 --> 00:12:26,310
-This is bad!
+That's not good!
 
 141
 00:13:12,850 --> 00:13:14,410
-Great, I caught one.
+Great, I caught one!
 
 142
 00:13:28,500 --> 00:13:32,560
-Dad, help!
+Daddy, help!
 
 143
 00:13:35,580 --> 00:13:37,370
-Big sis! Big sis!
+Satsuki! Satsuki!
 
 144
 00:13:40,480 --> 00:13:41,670
-You're so lively and adorable.
+What lively little darlings.
 
 145
 00:13:42,280 --> 00:13:44,810
-This is Auntie Eight, who lives next door to us.
+This is Granny, our neighbor.
 
 146
 00:13:44,880 --> 00:13:46,750
-She's a very nice person. Hurry and say hello.
+She's very kind. Say hello.
 
 147
 00:13:47,490 --> 00:13:48,650
@@ -588,11 +588,11 @@ How are you, Granny?
 
 148
 00:13:49,520 --> 00:13:50,520
-I'm Kusako.
+I'm Satsuki.
 
 149
 00:13:50,590 --> 00:13:52,490
-How are you, Miss Kusako?
+Hello, Miss Satsuki.
 
 150
 00:13:53,890 --> 00:13:55,716
@@ -612,15 +612,15 @@ You're too polite.
 
 154
 00:14:03,400 --> 00:14:05,230
-We're all neighbors here.
+We're neighbors, after all.
 
 155
 00:14:05,310 --> 00:14:07,030
-We ought to help each other.
+We should help each other.
 
 156
 00:14:09,710 --> 00:14:12,370
-Tsugiko, why are your hands so dirty?
+Mei, why are your hands so dirty?
 
 157
 00:14:12,450 --> 00:14:14,240
@@ -632,11 +632,11 @@ Look at your feet.
 
 159
 00:14:20,920 --> 00:14:22,620
-Why are they like that too?
+Why are they like that?
 
 160
 00:14:25,230 --> 00:14:28,130
-So you've seen the soot sprites.
+So you saw the soot sprites.
 
 161
 00:14:31,630 --> 00:14:34,586
@@ -648,15 +648,15 @@ Soot sprites?
 
 163
 00:14:36,040 --> 00:14:37,956
-Those things that flit around and pop up out of nowhere.
+Those things that fly around and pop in and out?
 
 164
 00:14:38,040 --> 00:14:39,370
-Are they really called soot sprites?
+They're really called soot sprites?
 
 165
 00:14:40,840 --> 00:14:43,470
-You don't need to be afraid. According to the legends here,
+Don't be scared. According to the legend here,
 
 166
 00:14:43,540 --> 00:14:45,996
@@ -672,11 +672,11 @@ When I was little, I used to see them all the time too.
 
 169
 00:14:54,190 --> 00:14:57,176
-When I was little, I was even prettier than you girls.
+When I was little, I was even prettier than you two.
 
 170
 00:14:57,260 --> 00:14:58,780
-This mountain area really is special.
+These mountains really are special.
 
 171
 00:15:00,560 --> 00:15:02,990
@@ -692,51 +692,51 @@ they'll help you.
 
 174
 00:15:09,600 --> 00:15:11,616
-Even if there's something you ask of them,
+Even if you ask them for something,
 
 175
 00:15:11,700 --> 00:15:12,930
-they'll help you with it.
+they'll help you with that too.
 
 176
 00:15:17,380 --> 00:15:18,280
-You'll scare them like that.
+If you scare them like that,
 
 177
 00:15:18,380 --> 00:15:20,280
-They've probably already flown away.
+they've probably flown away already.
 
 178
 00:15:20,880 --> 00:15:22,040
-I told you before, there's nothing to be afraid of.
+I told you, there's nothing to be scared of.
 
 179
 00:15:22,820 --> 00:15:24,036
-I told you before, there's nothing to be afraid of.
+I told you, there's nothing to be scared of.
 
 180
 00:15:24,120 --> 00:15:26,240
-You weren't even scared of that huge coal-shit ghost.
+You're not even scared of soot sprites that big.
 
 181
 00:15:26,890 --> 00:15:28,180
-Don't try to scare me.
+You don't have to scare me.
 
 182
 00:15:28,920 --> 00:15:31,890
-Then don't wake me up in the middle of the night to go to the bathroom with you.
+Don't wake me up in the middle of the night to go to the bathroom with you.
 
 183
 00:15:34,190 --> 00:15:36,716
-Kids, so cute.
+What cute children.
 
 184
 00:15:36,800 --> 00:15:39,420
-Bring back some water so I can clean this place.
+Go bring back some water so I can clean this place up.
 
 185
 00:15:39,500 --> 00:15:40,616
-Okay, you gossip.
+Okay, Granny.
 
 186
 00:15:40,700 --> 00:15:41,960
@@ -744,15 +744,15 @@ Great, we get to play with water.
 
 187
 00:15:42,800 --> 00:15:44,000
-Great.
+Great!
 
 188
 00:15:56,720 --> 00:15:57,936
-Come on, hurry up.
+Come on, hurry up!
 
 189
 00:15:58,020 --> 00:15:59,020
-Yes.
+Okay.
 
 190
 00:16:11,330 --> 00:16:12,490
@@ -768,7 +768,7 @@ Okay!
 
 193
 00:16:45,700 --> 00:16:46,700
-Grandmother...
+Granny...
 
 194
 00:17:01,810 --> 00:17:02,736
@@ -780,15 +780,15 @@ Who are you looking for?
 
 196
 00:17:05,080 --> 00:17:07,810
-I... I... I'm here to see my grandma.
+I-I-I-I'm here to see Granny.
 
 197
 00:17:09,890 --> 00:17:10,890
-Your grandma?
+Your granny?
 
 198
 00:17:13,130 --> 00:17:14,130
-Here, take this.
+Here, take it.
 
 199
 00:17:17,800 --> 00:17:18,800
@@ -800,15 +800,15 @@ Scaredy-cat.
 
 201
 00:17:23,300 --> 00:17:26,526
-Don't call me scaredy-cat,
+Don't call me a scaredy-cat.
 
 202
 00:17:26,610 --> 00:17:28,440
-especially not in front of such an ugly girl.
+Especially not in front of an ugly girl like this.
 
 203
 00:17:29,310 --> 00:17:30,310
-That's so rude.
+How rude.
 
 204
 00:17:40,120 --> 00:17:42,280
@@ -816,15 +816,15 @@ Your grandson is so shy, just like I was when I was little.
 
 205
 00:17:44,120 --> 00:17:46,060
-The glutinous rice balls he brought are really tasty.
+The rice cakes he brought are delicious.
 
 206
 00:17:46,130 --> 00:17:47,560
-Just as tasty as the ones Mommy makes.
+They're just as good as the ones Mom makes.
 
 207
 00:17:49,130 --> 00:17:50,130
-Then eat some more.
+Then have some more.
 
 208
 00:17:52,013 --> 00:17:52,846
@@ -836,31 +836,31 @@ Goodbye.
 
 210
 00:17:56,640 --> 00:17:58,000
-Thank you, Auntie Ba.
+Thank you, Granny.
 
 211
 00:17:59,470 --> 00:18:00,840
-Goodbye, old lady.
+Goodbye, Granny.
 
 212
 00:18:47,790 --> 00:18:49,620
-Everything in this place
+This place... everything here
 
 213
 00:18:49,690 --> 00:18:51,210
-seems to be alive.
+seems so full of life.
 
 214
 00:19:16,220 --> 00:19:18,650
-The wind sounds like ghosts howling. It's terrifying.
+The wind sounds like ghosts howling. It's scary.
 
 215
 00:19:21,220 --> 00:19:23,550
-Silly, there's nothing to be afraid of about the wind.
+Silly, there's nothing to be afraid of in the wind.
 
 216
 00:19:59,360 --> 00:20:01,206
-Auntie Ba said if you see something scary,
+Granny says if you see something scary,
 
 217
 00:20:01,290 --> 00:20:02,350
@@ -868,7 +868,7 @@ just smile at it and you'll be fine.
 
 218
 00:20:05,260 --> 00:20:06,630
-If you're laughing so hard, that means you're really scared.
+If you're laughing like that, it means you're really scared.
 
 219
 00:20:08,570 --> 00:20:09,630
@@ -876,27 +876,27 @@ Are you scared too?
 
 220
 00:20:15,070 --> 00:20:16,840
-No, don't. I'm ticklish.
+No, don't! I'm ticklish!
 
 221
 00:20:53,710 --> 00:20:57,036
-Step on it...
+Pedal...
 
 222
 00:20:57,120 --> 00:20:59,780
-Daddy, keep it going.
+Keep it going, Dad.
 
 223
 00:21:05,860 --> 00:21:06,760
-Here we go, okay?
+Here it comes, okay?
 
 224
 00:21:06,830 --> 00:21:08,190
-All right, all done.
+All right, that's done.
 
 225
 00:21:08,260 --> 00:21:09,093
-Let's go see Mommy.
+We're going to visit Mom.
 
 226
 00:21:09,160 --> 00:21:10,190
@@ -904,11 +904,11 @@ That's great.
 
 227
 00:21:13,130 --> 00:21:14,390
-Go to the hospital to see Mommy.
+We're going to the hospital to visit Mom.
 
 228
 00:21:16,370 --> 00:21:17,370
-Here we go!
+Here it comes!
 
 229
 00:21:18,170 --> 00:21:19,230
@@ -916,23 +916,23 @@ All right, let's get going.
 
 230
 00:21:37,690 --> 00:21:41,290
-Granny, how are you?
+How are you, Granny?
 
 231
 00:21:42,190 --> 00:21:43,680
-Auntie, we're heading out.
+Granny, we're heading out.
 
 232
 00:21:44,460 --> 00:21:46,290
-Where are you going?
+Where're you all heading?
 
 233
 00:21:47,270 --> 00:21:49,430
-We're going to the hospital to visit Mommy.
+We're going to visit Mom in the hospital.
 
 234
 00:21:50,270 --> 00:21:52,570
-To ask the doctor when she can be discharged
+To ask the doctor when she can leave the hospital
 
 235
 00:21:53,370 --> 00:21:55,000
@@ -940,55 +940,55 @@ and come home to recuperate?
 
 236
 00:21:55,570 --> 00:21:57,010
-All right, goodbye.
+Okay, goodbye.
 
 237
 00:22:13,690 --> 00:22:14,720
-Over there.
+It's over there!
 
 238
 00:22:14,790 --> 00:22:15,790
-Over there.
+Over there!
 
 239
 00:22:30,710 --> 00:22:32,940
-Dad, that's the hospital over there.
+Daddy, that's the hospital.
 
 240
 00:22:42,360 --> 00:22:43,536
-Auntie, how are you?
+Hello, Auntie. How are you?
 
 241
 00:22:43,620 --> 00:22:44,620
-We came to visit Mommy.
+We came to visit Mom.
 
 242
 00:22:44,720 --> 00:22:45,720
-Mommy!
+Mom!
 
 243
 00:22:47,160 --> 00:22:48,680
-Jiro, have you been good?
+Mei, have you been good?
 
 244
 00:22:49,760 --> 00:22:52,160
-Dad said Sis and I were good.
+Dad says Satsuki and I have been good.
 
 245
 00:22:52,830 --> 00:22:54,460
-Really? Soji,
+Really, Satsuki?
 
 246
 00:22:55,230 --> 00:22:56,500
-Mommy, you look well.
+Mom, you look really well.
 
 247
 00:22:57,140 --> 00:22:58,140
-Really?
+Do I?
 
 248
 00:22:58,240 --> 00:23:00,400
-Dad is talking with the doctor about your discharge.
+Dad is talking to the doctor about your discharge.
 
 249
 00:23:01,070 --> 00:23:02,540
@@ -1004,11 +1004,11 @@ Have you finished unpacking?
 
 252
 00:23:12,590 --> 00:23:14,140
-Silly, don't imagine things.
+Silly, don't be so paranoid.
 
 253
 00:23:14,750 --> 00:23:16,590
-Mommy, are you scared of soot sprites?
+Mom, are you afraid of soot sprites?
 
 254
 00:23:17,190 --> 00:23:19,660
@@ -1016,7 +1016,7 @@ If there are no ghosts in your heart, how could you see any ghosts?
 
 255
 00:23:20,590 --> 00:23:21,590
-Yes.
+Yeah.
 
 256
 00:23:23,000 --> 00:23:24,876
@@ -1028,11 +1028,11 @@ so you can come home.
 
 258
 00:23:26,500 --> 00:23:27,886
-You really miss Mommy that much?
+You really miss Mom that much?
 
 259
 00:23:27,970 --> 00:23:29,116
-Yes.
+Yeah.
 
 260
 00:23:29,200 --> 00:23:30,290
@@ -1040,19 +1040,19 @@ I miss you even more.
 
 261
 00:23:32,970 --> 00:23:33,926
-The second daughter's hair
+Mei's hair...
 
 262
 00:23:34,010 --> 00:23:35,300
-Did you comb it for her, Satsuki?
+Did you brush it for her, Satsuki?
 
 263
 00:23:36,980 --> 00:23:39,540
-Very nice. You've improved.
+Very nice. You're improving.
 
 264
 00:23:40,810 --> 00:23:42,710
-But big sis scolds me all the time.
+But Satsuki always scolds me.
 
 265
 00:23:43,220 --> 00:23:44,440
@@ -1076,19 +1076,19 @@ I like it.
 
 270
 00:23:51,390 --> 00:23:52,506
-I want mine combed too.
+I want mine brushed too.
 
 271
 00:23:52,590 --> 00:23:53,590
-Wait a moment.
+You wait a minute.
 
 272
 00:23:54,290 --> 00:23:55,780
-All right, don't fight over it all the time.
+All right, don't keep fighting over it.
 
 273
 00:23:56,600 --> 00:23:58,220
-Let me finish combing your sister's hair, then I'll do yours, okay?
+Let me finish brushing Satsuki's first, then I'll do yours, okay?
 
 274
 00:23:59,400 --> 00:24:00,420
@@ -1096,15 +1096,15 @@ When I grow up,
 
 275
 00:24:00,500 --> 00:24:02,360
-will my hair be like Mommy's too?
+will my hair be like yours, Mom?
 
 276
 00:24:03,900 --> 00:24:06,130
-It will, because you look like Mommy.
+Yes, because you look like Mom.
 
 277
 00:24:25,420 --> 00:24:26,754
-Dad, Mommy seems a lot better.
+Dad, Mom looks a lot better.
 
 278
 00:24:27,330 --> 00:24:28,546
@@ -1116,7 +1116,7 @@ The doctor said she'll be able to leave the hospital and come home soon.
 
 280
 00:24:31,430 --> 00:24:32,490
-Tomorrow?
+You mean tomorrow?
 
 281
 00:24:33,670 --> 00:24:34,830
@@ -1124,11 +1124,11 @@ Silly, how could it be that soon?
 
 282
 00:24:35,940 --> 00:24:37,130
-The earliest will be next week.
+The soonest would be next week.
 
 283
 00:24:38,040 --> 00:24:41,030
-After Mommy gets out of the hospital, I want her to hold me while I sleep.
+After Mom comes home, I want her to hold me while I sleep.
 
 284
 00:24:41,570 --> 00:24:42,956
@@ -1140,15 +1140,15 @@ and didn't need anyone to sleep with you anymore? Forgot?
 
 286
 00:24:45,980 --> 00:24:47,092
-Can't you just let me be naughty for a few more days?
+Can't I be naughty for a few more days?
 
 287
 00:25:09,770 --> 00:25:12,200
-Wake up, sleepyhead Dad!
+Lazy Dad, wake up!
 
 288
 00:25:16,810 --> 00:25:18,500
-Lazy Daddy, wake up...
+Wake up, sleepy Daddy...
 
 289
 00:25:24,980 --> 00:25:27,006
@@ -1160,39 +1160,39 @@ I've got everything ready.
 
 291
 00:25:28,890 --> 00:25:30,380
-I forgot to cook lunch for you to take to school.
+I forgot to make your lunch to take to school.
 
 292
 00:25:30,890 --> 00:25:32,520
-I've already cooked it, so don't worry.
+I've already made it, so don't worry.
 
 293
 00:25:33,590 --> 00:25:34,590
-Something smells burnt.
+It smells like something's burning.
 
 294
 00:25:34,690 --> 00:25:39,490
-Don't be ridiculous. What I cook is delicious.
+Don't be silly. What I cook is delicious.
 
 295
 00:25:41,100 --> 00:25:42,230
-Big sis is awesome.
+Satsuki, you're amazing.
 
 296
 00:25:43,500 --> 00:25:44,500
-You two are such good kids.
+You two are such good girls.
 
 297
 00:25:47,010 --> 00:25:48,630
-Second son, this lunchbox is yours.
+Mei, this lunch box is yours.
 
 298
 00:25:52,310 --> 00:25:54,840
-Caoko, time for school.
+Satsuki, it's time for school.
 
 299
 00:25:55,810 --> 00:25:56,836
-A-Xin is looking for me.
+Ashin's looking for me.
 
 300
 00:25:56,920 --> 00:25:57,920
@@ -1208,11 +1208,11 @@ Big sis is really popular with her classmates.
 
 303
 00:26:05,420 --> 00:26:09,590
-His name is A-Xin. I'm off to school.
+His name is Ashin. I'm off to school.
 
 304
 00:26:12,330 --> 00:26:13,330
-Bye-bye.
+Bye.
 
 305
 00:26:13,970 --> 00:26:15,460
@@ -1220,7 +1220,7 @@ Be careful on the way.
 
 306
 00:26:17,423 --> 00:26:18,256
-Morning, A-Xin.
+Morning, Ashin.
 
 307
 00:26:18,340 --> 00:26:19,173
@@ -1236,11 +1236,11 @@ Morning...
 
 310
 00:26:33,490 --> 00:26:34,490
-Dad.
+Dad!
 
 311
 00:26:35,990 --> 00:26:37,150
-I'm going out.
+I'm going out!
 
 312
 00:26:37,860 --> 00:26:39,550
@@ -1248,19 +1248,19 @@ Remember, don't go too far.
 
 313
 00:26:40,190 --> 00:26:41,190
-Got it.
+Okay!
 
 314
 00:27:04,980 --> 00:27:06,210
-Dad, is there lunch to eat?
+Dad, is it lunchtime yet?
 
 315
 00:27:06,890 --> 00:27:10,010
-You just finished breakfast and now you want lunch? Are you crazy?
+We just finished breakfast, and now lunch? You're silly.
 
 316
 00:27:20,900 --> 00:27:22,700
-Sir, would you like to buy some flowers?
+Flowers, sir?
 
 317
 00:27:39,450 --> 00:27:40,450
@@ -1268,61 +1268,61 @@ What are these things?
 
 318
 00:27:51,260 --> 00:27:52,260
-Find a bucket to catch it.
+Get a bucket to catch it.
 
 319
 00:27:55,830 --> 00:27:56,830
-There is one.
+There it is.
 
 320
 00:28:00,670 --> 00:28:01,670
-The one with a hole.
+It has a hole in it.
 
 321
 00:28:15,650 --> 00:28:16,650
-Drumstick?
+Chicken drumstick?
 
 322
 00:28:20,360 --> 00:28:23,916
-One more.
-Two more.
+One more!
+Two more!
 
 323
 00:28:24,000 --> 00:28:26,186
-Three more.
-Four more.
+Three more!
+Four more!
 
 324
 00:28:26,270 --> 00:28:27,390
-So many.
+There are lots of them!
 
 325
 00:28:27,470 --> 00:28:29,730
-So many.
+There are so many!
 
 326
 00:28:37,180 --> 00:28:38,940
-Chit-chat...
+Chirp, chirp...
 
 327
 00:28:39,010 --> 00:28:40,980
-Chit-chat...
+Chirp, chirp...
 
 328
 00:29:17,320 --> 00:29:18,320
-Don't go.
+Don't go!
 
 329
 00:29:21,050 --> 00:29:22,080
-Don't go.
+Don't go!
 
 330
 00:29:23,320 --> 00:29:24,410
-Don't go.
+Don't go!
 
 331
 00:29:27,260 --> 00:29:28,590
-Don't go.
+Don't go!
 
 332
 00:29:40,752 --> 00:29:42,086
@@ -1342,19 +1342,19 @@ BOm BOm Bart
 
 336
 00:30:14,945 --> 00:30:16,279
-BOm BOm Bart
+Bom bom ba!
 
 337
 00:30:16,363 --> 00:30:17,196
-Chit chit cha...
+Chitty chitty...
 
 338
 00:30:17,280 --> 00:30:18,614
-BOm BOm Bart
+Bom bom ba!
 
 339
 00:30:18,698 --> 00:30:19,748
-Chit chit cha...
+Chitty chitty...
 
 340
 00:30:31,390 --> 00:30:32,390
@@ -1362,11 +1362,11 @@ Don't go...
 
 341
 00:30:35,290 --> 00:30:36,690
-Go after them...
+Get it!
 
 342
 00:30:57,988 --> 00:30:59,766
-Come on, BOm BOm Bart!
+Run, Bom Bom Bart!
 
 343
 00:30:59,850 --> 00:31:01,936
@@ -1374,31 +1374,31 @@ A pink monster is chasing us!
 
 344
 00:31:02,020 --> 00:31:03,020
-Hurry back to our master!
+Hurry back to your master!
 
 345
 00:32:23,923 --> 00:32:24,756
-I'm sure.
+Poke.
 
 346
 00:32:24,840 --> 00:32:25,840
-I'm sure.
+Poke.
 
 347
 00:32:30,040 --> 00:32:31,040
-It's fun.
+This is fun!
 
 348
 00:32:32,810 --> 00:32:35,440
-It feels as soft as a quilt.
+It's soft as a mattress.
 
 349
 00:33:42,580 --> 00:33:44,410
-You look just like a big drumstick.
+You look just like a giant drumstick.
 
 350
 00:33:53,530 --> 00:33:55,890
-Are you the King of the Forest, Totoro?
+Are you Totoro, the king of the forest?
 
 351
 00:34:06,540 --> 00:34:10,000
@@ -1414,19 +1414,19 @@ Let's be good friends.
 
 354
 00:34:37,370 --> 00:34:38,370
-Are you okay?
+Okay?
 
 355
 00:35:17,080 --> 00:35:18,010
-Chit-chat...
+Chitter chatter...
 
 356
 00:35:18,080 --> 00:35:19,670
-BOm BOm Bart...
+Bom bom bart...
 
 357
 00:35:46,593 --> 00:35:47,426
-See ya!
+See ya, then.
 
 358
 00:35:47,510 --> 00:35:48,530
@@ -1438,11 +1438,11 @@ I'm home!
 
 360
 00:35:52,440 --> 00:35:54,140
-Welcome back. It's this late already?
+Welcome back. It's gotten so late.
 
 361
 00:35:54,750 --> 00:35:56,010
-Where's Tsugiko? Where did Tsugiko go?
+Where's Mei? Where did Mei go?
 
 362
 00:35:57,120 --> 00:35:58,580
@@ -1450,27 +1450,27 @@ She was just outside playing.
 
 363
 00:35:59,420 --> 00:36:00,566
-It's already dinnertime.
+It's almost dinnertime.
 
 364
 00:36:00,650 --> 00:36:03,310
-Tsugiko! Tsugiko!
+Mei! Mei!
 
 365
 00:36:05,960 --> 00:36:06,960
-Tsugiko!
+Mei!
 
 366
 00:36:10,130 --> 00:36:11,530
-Tsugiko!
+Mei!
 
 367
 00:36:17,640 --> 00:36:20,540
-Dad, Second Son's hat is here.
+Dad, Mei's hat is here!
 
 368
 00:36:36,860 --> 00:36:37,980
-Second son, second son.
+Mei, Mei.
 
 369
 00:36:45,760 --> 00:36:47,200
@@ -1478,19 +1478,19 @@ Mei, wake up.
 
 370
 00:36:49,670 --> 00:36:51,100
-How can you sleep here?
+How can you sleep out here?
 
 371
 00:36:53,970 --> 00:36:54,970
-Big chicken drumstick.
+Big drumstick.
 
 372
 00:36:55,470 --> 00:36:56,470
-Big chicken drumstick?
+Big drumstick?
 
 373
 00:36:57,210 --> 00:36:58,470
-Where's the big chicken drumstick?
+Where's the big drumstick?
 
 374
 00:37:01,380 --> 00:37:02,380
@@ -1498,19 +1498,19 @@ Are you still dreaming?
 
 375
 00:37:03,280 --> 00:37:05,010
-I saw a Totoro that looked like a big chicken drumstick.
+I saw a Totoro that looked like a big drumstick.
 
 376
 00:37:05,520 --> 00:37:07,540
-Totoro? That's only in comic books.
+Totoro? Those only exist in picture books.
 
 377
 00:37:08,320 --> 00:37:10,520
-There really is a Totoro.
+Totoro really does exist.
 
 378
 00:37:11,520 --> 00:37:14,750
-It was all furry, and its mouth was like this.
+He was all furry, and his mouth was like this.
 
 379
 00:37:15,590 --> 00:37:18,760
@@ -1526,11 +1526,11 @@ There you are.
 
 382
 00:37:28,710 --> 00:37:30,870
-Nice place. It's just like a base.
+This is a nice spot, just like a secret base.
 
 383
 00:37:31,740 --> 00:37:32,573
-Dad.
+Dad,
 
 384
 00:37:32,640 --> 00:37:34,010
@@ -1566,11 +1566,11 @@ But there's only one path here.
 
 392
 00:38:01,840 --> 00:38:03,270
-Cizi, come back!
+Mei, come back!
 
 393
 00:38:03,940 --> 00:38:05,200
-Cizi, come back!
+Mei, come back!
 
 394
 00:38:13,390 --> 00:38:14,390
@@ -1578,7 +1578,7 @@ Where's Totoro?
 
 395
 00:38:19,190 --> 00:38:21,990
-I'm not lying. I really saw it.
+I'm not lying. I really saw him.
 
 396
 00:38:23,760 --> 00:38:24,890
@@ -1586,7 +1586,7 @@ You don't believe me?
 
 397
 00:38:34,110 --> 00:38:35,110
-Second daughter,
+Mei.
 
 398
 00:38:36,070 --> 00:38:37,070
@@ -1594,15 +1594,15 @@ None of you believe me.
 
 399
 00:38:39,010 --> 00:38:40,696
-Dad and Sis both believe you.
+Daddy and Satsuki both believe you.
 
 400
 00:38:40,780 --> 00:38:42,270
-You will definitely see the master of this forest.
+You must have seen the master of this forest.
 
 401
 00:38:43,280 --> 00:38:44,736
-It's called Totoro.
+He's called Totoro.
 
 402
 00:38:44,820 --> 00:38:45,980
@@ -1610,15 +1610,15 @@ That's what the legend here says.
 
 403
 00:38:46,690 --> 00:38:48,135
-Not every child gets to see it.
+Not every child gets to see him.
 
 404
 00:38:49,920 --> 00:38:51,720
-If you see it, it brings good luck.
+Seeing him brings you good luck.
 
 405
 00:38:54,230 --> 00:38:56,306
-All right, how about we take a walk nearby?
+All right, why don't we take a walk nearby?
 
 406
 00:38:56,390 --> 00:38:57,316
@@ -1634,27 +1634,27 @@ Okay!
 
 409
 00:39:09,040 --> 00:39:11,010
-Riding on the ox is so much fun.
+Riding on your shoulders is fun!
 
 410
 00:39:12,310 --> 00:39:13,940
-Dad, hurry up.
+Dad, hurry!
 
 411
 00:39:14,710 --> 00:39:15,710
-Dad, hurry up.
+Dad, hurry!
 
 412
 00:39:17,020 --> 00:39:19,666
-Jiro, you're getting heavier and heavier.
+You're getting heavier and heavier, Mei.
 
 413
 00:39:19,750 --> 00:39:20,750
-Dad, look at that oak tree.
+Dad, look at that camphor tree!
 
 414
 00:39:21,950 --> 00:39:22,950
-It's so big.
+It's huge!
 
 415
 00:39:31,030 --> 00:39:32,460
@@ -1682,7 +1682,7 @@ I saw Totoro here.
 
 421
 00:39:48,880 --> 00:39:50,110
-Why has the hole disappeared?
+Why is the hole gone?
 
 422
 00:39:50,850 --> 00:39:51,850
@@ -1694,7 +1694,7 @@ She said the hole disappeared.
 
 424
 00:39:56,550 --> 00:39:57,920
-It isn't something you can see all the time.
+You can't see it all the time.
 
 425
 00:39:58,590 --> 00:40:00,350
@@ -1702,23 +1702,23 @@ Why? Why can't we see it?
 
 426
 00:40:01,160 --> 00:40:03,650
-The villagers say you can't see it all the time.
+People in the country say you can't see it all the time.
 
 427
 00:40:06,060 --> 00:40:07,460
-Unless... you're one of the lucky ones.
+Unless... you're lucky.
 
 428
 00:40:09,970 --> 00:40:12,116
-Dad grew up in this forest since he was little.
+Daddy grew up in this forest when he was little.
 
 429
 00:40:12,200 --> 00:40:13,200
-He missed this place so much.
+I've missed this place so much.
 
 430
 00:40:15,570 --> 00:40:17,510
-He hopes Mom can recover here.
+I hope Mom can recover here.
 
 431
 00:40:17,580 --> 00:40:18,580
@@ -1726,7 +1726,7 @@ And get well soon.
 
 432
 00:40:20,180 --> 00:40:21,770
-This great forest is filled with spirit.
+This big forest is full of spirit.
 
 433
 00:40:22,310 --> 00:40:23,510
@@ -1734,7 +1734,7 @@ If we live well here,
 
 434
 00:40:24,980 --> 00:40:26,350
-it will bring us good luck.
+it'll bring us good luck.
 
 435
 00:40:27,520 --> 00:40:29,306
@@ -1742,7 +1742,7 @@ Come on, let's say goodbye to Totoro.
 
 436
 00:40:29,390 --> 00:40:30,606
-Time to go home and eat.
+It's time to go home for lunch.
 
 437
 00:40:30,690 --> 00:40:33,406
@@ -1750,7 +1750,7 @@ Mei, you're sure to have good luck.
 
 438
 00:40:33,490 --> 00:40:34,750
-You'll get to see Totoro too.
+You'll see Totoro too.
 
 439
 00:40:35,230 --> 00:40:36,230
@@ -1770,15 +1770,15 @@ Goodbye, Totoro.
 
 443
 00:40:44,440 --> 00:40:45,956
-Let's see who can walk faster.
+Let's see who can get there first.
 
 444
 00:40:46,040 --> 00:40:47,800
-Dad, that's not fair. Wait for me!
+Daddy, that's cheating! Wait for me!
 
 445
 00:40:48,710 --> 00:40:49,826
-Dad!
+Daddy!
 
 446
 00:40:49,910 --> 00:40:50,743
@@ -1790,19 +1790,19 @@ Wait for me!
 
 448
 00:40:58,120 --> 00:41:00,280
-Mommy, Mei saw Totoro today.
+Mom, Mei saw Totoro today,
 
 449
 00:41:01,220 --> 00:41:03,050
-Dad said he can bring us good luck.
+and Daddy said it can bring good luck.
 
 450
 00:41:09,830 --> 00:41:12,190
-I hope you have good luck, Mommy, and get well soon.
+I hope you have good luck too, Mom, and get well soon.
 
 451
 00:41:37,360 --> 00:41:39,689
-Go on to school. I can handle this.
+You go on to school. I can manage.
 
 452
 00:41:39,773 --> 00:41:40,606
@@ -1822,11 +1822,11 @@ In a minute.
 
 456
 00:42:11,590 --> 00:42:12,590
-You’re not concentrating.
+Pay attention.
 
 457
 00:42:30,810 --> 00:42:33,000
-Satsuki, Miss Yubuki.
+Mei, Miss Yamabuki.
 
 458
 00:42:34,010 --> 00:42:35,010
@@ -1846,35 +1846,35 @@ Let's see...
 
 462
 00:42:44,520 --> 00:42:45,920
-Granny, what's the matter with her?
+Granny, what's wrong with her?
 
 463
 00:42:46,620 --> 00:42:48,446
-Satsuki threw a tantrum this morning
+Mei threw a tantrum this morning.
 
 464
 00:42:48,530 --> 00:42:50,290
-and wanted to come find her big sister to go to class together.
+She wanted to come and have class with her sister.
 
 465
 00:42:51,660 --> 00:42:52,960
-Satsuki,
+Mei.
 
 466
 00:42:53,770 --> 00:42:55,760
-you know Dad is going back to the university today.
+You know Dad has to go back to the university today.
 
 467
 00:42:56,370 --> 00:42:57,856
-You should stay put and be good at Granny's house.
+You should be a good girl and stay at Granny's.
 
 468
 00:42:57,940 --> 00:42:58,940
-Don't shout nonsense.
+Don't make a fuss.
 
 469
 00:43:01,940 --> 00:43:03,340
-I still have two classes left,
+I still have two classes to go,
 
 470
 00:43:03,940 --> 00:43:05,270
@@ -1882,27 +1882,27 @@ and Granny is very busy too.
 
 471
 00:43:06,950 --> 00:43:09,470
-Does Satsuki want to come to school and study too?
+Does Mei want to come to school too?
 
 472
 00:43:18,860 --> 00:43:20,760
-Fine, old hag, I'll talk to Teacher Yamabuki.
+Okay, Granny, I'll talk to Ms. Yamabuki.
 
 473
 00:43:27,170 --> 00:43:29,816
-Everyone, Satsuki's mother has been admitted to the hospital.
+Everyone, Satsuki's mother is in the hospital,
 
 474
 00:43:29,900 --> 00:43:31,186
-And her father has to work.
+and her father has to work, too.
 
 475
 00:43:31,270 --> 00:43:33,760
-So her little sister will be joining us in class today.
+so her little sister will be joining us in class today.
 
 476
 00:43:34,410 --> 00:43:35,410
-Yes, ma'am.
+Yes.
 
 477
 00:43:41,780 --> 00:43:42,996
@@ -1910,7 +1910,7 @@ What are you drawing?
 
 478
 00:43:43,080 --> 00:43:44,210
-It's a Totoro.
+It's Totoro.
 
 479
 00:43:45,180 --> 00:43:47,710
@@ -1918,19 +1918,19 @@ You can't be so noisy.
 
 480
 00:43:56,430 --> 00:43:57,990
-Bye-bye, bye-bye.
+See you later!
 
 481
 00:44:02,030 --> 00:44:03,860
-I'm not doing extracurricular activities anymore.
+I'm skipping club today.
 
 482
 00:44:04,740 --> 00:44:05,740
-Then see you tomorrow.
+See you tomorrow, then.
 
 483
 00:44:09,140 --> 00:44:10,570
-Hurry up. It's about to rain.
+We'd better get a move on. It's gonna rain.
 
 484
 00:44:20,050 --> 00:44:21,420
@@ -1938,11 +1938,11 @@ Oh no, it's raining.
 
 485
 00:44:22,150 --> 00:44:23,150
-It's pouring.
+It's really pouring.
 
 486
 00:44:24,560 --> 00:44:26,350
-Hurry up, hurry up, Jiro.
+Hurry up, Mei, come on!
 
 487
 00:44:32,460 --> 00:44:34,520
@@ -1950,11 +1950,11 @@ You're so careless. Come on.
 
 488
 00:44:38,870 --> 00:44:40,860
-I'm so brave. I didn't even cry when I fell.
+I didn't even cry when I fell. Aren't I great?
 
 489
 00:44:44,480 --> 00:44:45,480
-This time it's really troublesome.
+This is really a problem.
 
 490
 00:44:47,880 --> 00:44:50,540
@@ -1962,19 +1962,19 @@ Lord Guardian, please make the rain stop soon.
 
 491
 00:45:35,730 --> 00:45:36,730
-You...
+But...
 
 492
 00:45:56,880 --> 00:45:58,350
-Sis, we're really lucky.
+That was lucky, wasn't it, Sis?
 
 493
 00:46:00,280 --> 00:46:01,480
-But the umbrella's full of holes.
+But this umbrella's got holes in it.
 
 494
 00:46:14,100 --> 00:46:15,330
-Dad went out without taking an umbrella.
+Dad went out without taking his umbrella.
 
 495
 00:46:16,400 --> 00:46:17,560
@@ -1982,11 +1982,11 @@ Let's go pick him up at the station.
 
 496
 00:46:21,310 --> 00:46:23,030
-I told you, the wind tore the umbrella up, so I threw it away.
+I said the wind broke the umbrella, so I threw it away.
 
 497
 00:46:23,710 --> 00:46:25,700
-You liked that umbrella so much. How could you throw it away?
+You liked that umbrella so much. Why would you throw it away?
 
 498
 00:46:27,480 --> 00:46:28,480
@@ -1998,31 +1998,31 @@ I'll buy you a new one tomorrow.
 
 500
 00:46:30,980 --> 00:46:31,980
-I don't like it.
+I don't want one.
 
 501
 00:46:45,600 --> 00:46:46,820
-Hello? Is anyone there?
+Hello?
 
 502
 00:46:49,630 --> 00:46:52,600
-Oh, it's Satsuki and Mei, Grandma.
+Oh, Satsuki and Mei. Granny.
 
 503
 00:46:54,710 --> 00:46:56,326
-Thank you for today.
+Sorry to trouble you today.
 
 504
 00:46:56,410 --> 00:46:58,030
-Thank me? We didn't do anything for you.
+Trouble? We didn't help you with anything.
 
 505
 00:46:58,610 --> 00:47:00,510
-You did. That shy boy lent us his umbrella.
+We did. That shy boy lent us his umbrella.
 
 506
 00:47:01,810 --> 00:47:02,810
-Really?
+He did?
 
 507
 00:47:02,910 --> 00:47:04,900
@@ -2030,11 +2030,11 @@ Don't mention it. It's just an old umbrella.
 
 508
 00:47:05,720 --> 00:47:06,880
-It was raining very hard then.
+It was raining really hard then.
 
 509
 00:47:08,120 --> 00:47:09,480
-Luckily, he lent us his umbrella.
+Good thing he lent us his umbrella.
 
 510
 00:47:10,120 --> 00:47:11,876
@@ -2046,15 +2046,15 @@ It's all right.
 
 512
 00:47:13,160 --> 00:47:15,576
-That fool comes home soaked through all the time
+That fool comes home soaked all over every day anyway.
 
 513
 00:47:15,660 --> 00:47:16,660
-anyway.
+He only just got home.
 
 514
 00:47:17,460 --> 00:47:18,746
-Are you going to meet your father after work now?
+Are you going to meet your dad after work now?
 
 515
 00:47:18,830 --> 00:47:19,830
@@ -2066,19 +2066,19 @@ You're such a good girl.
 
 517
 00:47:21,353 --> 00:47:22,186
-Goodbye.
+Bye-bye.
 
 518
 00:47:22,270 --> 00:47:23,103
-Goodbye.
+Bye-bye.
 
 519
 00:47:23,187 --> 00:47:24,187
-Goodbye.
+Bye-bye.
 
 520
 00:47:34,550 --> 00:47:36,166
-Has anyone been here?
+Did someone come by?
 
 521
 00:47:36,250 --> 00:47:37,250
@@ -2086,19 +2086,19 @@ No.
 
 522
 00:47:42,090 --> 00:47:43,090
-A car's arriving at the station.
+A bus is pulling in.
 
 523
 00:47:56,770 --> 00:47:57,770
-Are you getting in the car?
+Are you getting on?
 
 524
 00:48:00,200 --> 00:48:01,200
-All right, drive.
+All right, drive on.
 
 525
 00:48:09,780 --> 00:48:11,040
-Dad didn't take this bus?
+Dad wasn't on this bus?
 
 526
 00:48:12,320 --> 00:48:13,340
@@ -2106,7 +2106,7 @@ He must be on the next one.
 
 527
 00:48:14,420 --> 00:48:15,580
-Why don't you go to Auntie Gossip's house?
+Why don't you go to Granny's house?
 
 528
 00:48:16,090 --> 00:48:17,090
@@ -2122,15 +2122,15 @@ Mei, are you tired?
 
 531
 00:49:30,160 --> 00:49:33,560
-I just told you to go to Granny's house.
+I told you to go to Granny's earlier.
 
 532
 00:49:36,570 --> 00:49:38,160
-The car will be here soon, so hang in there a little longer.
+The bus will be here soon, so hang in there a little longer.
 
 533
 00:49:45,070 --> 00:49:46,560
-Why hasn't this bus arrived yet?
+Why is the bus taking so long?
 
 534
 00:49:55,290 --> 00:49:56,290
@@ -2142,19 +2142,19 @@ Totoro?
 
 536
 00:51:31,180 --> 00:51:32,180
-Wait a moment.
+Wait a second.
 
 537
 00:51:38,320 --> 00:51:39,320
-You can borrow it.
+You can borrow this.
 
 538
 00:51:41,090 --> 00:51:42,720
-Hurry, Jizi is about to fall.
+Quick, Mei's slipping off.
 
 539
 00:51:49,500 --> 00:51:50,500
-This is how you do it.
+You do it like this.
 
 540
 00:53:08,210 --> 00:53:09,210
@@ -2162,11 +2162,11 @@ Here comes the bus!
 
 541
 00:53:14,480 --> 00:53:15,480
-What is it?
+What is that?
 
 542
 00:54:16,750 --> 00:54:18,870
-Totoro took Dad's umbrella and left.
+Totoro took Dad's umbrella away.
 
 543
 00:54:33,360 --> 00:54:34,360
@@ -2178,11 +2178,11 @@ Dad.
 
 545
 00:54:36,870 --> 00:54:39,460
-The wind's strong and the rain's heavy, and you all came to the station to pick me up.
+It's so windy and rainy, and you still came to the station for me.
 
 546
 00:54:41,270 --> 00:54:42,569
-You're such good kids.
+You two are such good girls.
 
 547
 00:54:42,653 --> 00:54:43,486
@@ -2218,7 +2218,7 @@ So great, Totoro.
 
 555
 00:54:59,020 --> 00:55:00,706
-So this is what Totoro looks like.
+So that's what Totoro is like.
 
 556
 00:55:00,790 --> 00:55:01,790
@@ -2226,15 +2226,15 @@ So great.
 
 557
 00:55:03,290 --> 00:55:04,450
-You're making a fuss over nothing.
+What a fuss over nothing.
 
 558
 00:55:23,550 --> 00:55:26,610
-Mom, tonight I finally met Totoro.
+Mom, tonight I finally saw Totoro.
 
 559
 00:55:27,320 --> 00:55:28,680
-Tonight was truly incredible.
+Tonight was really mysterious.
 
 560
 00:55:29,750 --> 00:55:31,980
@@ -2246,11 +2246,11 @@ Totoro even gave us
 
 562
 00:55:35,730 --> 00:55:37,220
-a gift wrapped in a bamboo leaf.
+a present wrapped in a bamboo leaf.
 
 563
 00:55:38,660 --> 00:55:39,820
-We opened it when we got home
+When we got home, we opened it,
 
 564
 00:55:40,660 --> 00:55:42,460
@@ -2258,11 +2258,11 @@ and it turned out to be full of acorns.
 
 565
 00:55:48,340 --> 00:55:50,656
-So we planted the acorns in the back garden,
+So we planted the acorns in the backyard,
 
 566
 00:55:50,740 --> 00:55:53,110
-hoping that one day it would turn into an oak forest.
+hoping that someday they'd grow into an oak forest.
 
 567
 00:55:53,840 --> 00:55:54,756
@@ -2270,23 +2270,23 @@ But...
 
 568
 00:55:54,840 --> 00:55:55,900
-Even after waiting forever, they still wouldn't sprout.
+they just wouldn't sprout, no matter how long we waited.
 
 569
 00:55:56,850 --> 00:55:58,750
-My second daughter stared at the soil every day, looking disappointed.
+Every day, Mei would stare at the dirt, looking disappointed.
 
 570
 00:55:59,850 --> 00:56:01,540
-It was the first time I'd ever seen her look disappointed.
+It was the first time I'd ever seen that disappointed look on her face,
 
 571
 00:56:02,690 --> 00:56:04,210
-It made me feel very uneasy.
+and it made me feel really uneasy.
 
 572
 00:56:11,460 --> 00:56:13,990
-Summer vacation is almost here. Hope you get well soon.
+It's nearly summer vacation. I hope you'll get well soon.
 
 573
 00:56:15,260 --> 00:56:17,060
@@ -2302,11 +2302,11 @@ No.
 
 576
 00:56:29,680 --> 00:56:31,940
-Dad, will those drumsticks sprout tomorrow?
+Dad, will those chicken legs sprout tomorrow?
 
 577
 00:56:32,720 --> 00:56:33,896
-How would I know?
+How should I know?
 
 578
 00:56:33,980 --> 00:56:35,203
@@ -2314,27 +2314,27 @@ Ask Totoro. Totoro would know.
 
 579
 00:56:36,790 --> 00:56:37,790
-Go to sleep early.
+Go to sleep now.
 
 580
 00:57:10,250 --> 00:57:11,380
-Chit-chat...
+Chitter chatter...
 
 581
 00:57:11,450 --> 00:57:13,420
-BOm BOm Bart...
+Bom bom bart...
 
 582
 00:57:26,170 --> 00:57:27,290
-Hey, Jiro.
+Hey, Mei.
 
 583
 00:57:27,370 --> 00:57:28,815
-BOm BOm Bart...
+Bom bom ba-bart...
 
 584
 00:57:28,899 --> 00:57:30,019
-Chi chi cha...
+Chitty chah...
 
 585
 00:57:32,480 --> 00:57:33,480
@@ -2346,15 +2346,15 @@ Why don't we go outside and take a look?
 
 587
 00:59:18,250 --> 00:59:20,910
-Great, we did it.
+We did it!
 
 588
 00:59:21,450 --> 00:59:22,450
-Great.
+Great!
 
 589
 00:59:36,170 --> 00:59:37,170
-I'm going too.
+I'll come too.
 
 590
 00:59:51,480 --> 00:59:52,480
@@ -2370,83 +2370,83 @@ What about the tree?
 
 593
 01:01:47,783 --> 01:01:48,616
-Great!
+Wonderful!
 
 594
 01:01:48,700 --> 01:01:49,533
-Great!
+Wonderful!
 
 595
 01:01:49,617 --> 01:01:51,930
-Great!
+Wonderful!
 
 596
 01:01:52,000 --> 01:01:52,833
-It's sprouting!
+It's sprouted!
 
 597
 01:01:52,917 --> 01:01:53,750
-It's sprouting!
+It's sprouted!
 
 598
 01:01:53,834 --> 01:01:56,770
-It's sprouting!
+It's sprouted!
 
 599
 01:01:56,840 --> 01:01:59,570
-It's sprouted!
+It sprouted!
 
 600
 01:02:03,533 --> 01:02:04,366
-Great.
+Wonderful.
 
 601
 01:02:04,450 --> 01:02:05,283
-Great.
+Wonderful.
 
 602
 01:02:05,367 --> 01:02:06,427
-Great.
+Wonderful.
 
 603
 01:02:06,511 --> 01:02:07,511
-Great... it's sprouting...
+Wonderful... It's sprouting...
 
 604
 01:02:17,730 --> 01:02:19,630
-Anyone home? Telegram!
+Anybody home? Telegram!
 
 605
 01:02:21,930 --> 01:02:22,990
-Excuse me, anyone home?
+Hello? Anybody home?
 
 606
 01:02:24,370 --> 01:02:25,630
-Mr. Da Juan, telegram for you!
+Mr. Kusakabe, telegram for you!
 
 607
 01:02:27,840 --> 01:02:28,840
-Why is no one here?
+Why is no one home?
 
 608
 01:02:36,350 --> 01:02:37,570
-Gossipy old hag.
+Granny!
 
 609
 01:02:40,650 --> 01:02:41,650
-You busybody.
+Granny.
 
 610
 01:02:42,690 --> 01:02:43,690
-It's you.
+It's you two.
 
 611
 01:02:46,160 --> 01:02:47,620
-Yes, Second Son, do you want some corn?
+Yes, Mei, do you eat corn?
 
 612
 01:02:57,070 --> 01:02:58,090
-Granny, I want to eat that.
+Granny, I want some.
 
 613
 01:02:58,770 --> 01:02:59,770
@@ -2454,23 +2454,23 @@ Okay.
 
 614
 01:03:06,310 --> 01:03:08,440
-Granny, this vegetable patch is like a treasure trove.
+Granny, this vegetable patch is like a treasure mountain.
 
 615
 01:03:10,780 --> 01:03:12,680
-Yes. Come on, let's take a little break.
+Yeah. Come on, let's take a little break.
 
 616
 01:03:19,990 --> 01:03:21,320
-Soak them in ice-cold water.
+These have gotten nice and cold.
 
 617
 01:03:21,820 --> 01:03:22,820
-I'll dig in, then.
+Thanks, then.
 
 618
 01:03:33,100 --> 01:03:34,416
-Very good, Yi.
+It's really good.
 
 619
 01:03:34,500 --> 01:03:35,416
@@ -2478,47 +2478,47 @@ Yeah.
 
 620
 01:03:35,500 --> 01:03:37,670
-Because the sunshine and the soil here are both very good,
+Because the sunshine and soil here are both very good,
 
 621
 01:03:38,240 --> 01:03:40,456
-so eating them is very good for your health.
+so eating them is very good for your body.
 
 622
 01:03:40,540 --> 01:03:41,700
-Then what about Mom's illness?
+Then will it help Mom's illness too?
 
 623
 01:03:42,510 --> 01:03:43,640
-Of course it helps.
+Of course it will.
 
 624
 01:03:44,150 --> 01:03:45,510
-If she eats the vegetables Auntie Po grows,
+If she eats the vegetables Granny grows,
 
 625
 01:03:46,320 --> 01:03:47,836
-she'll recover completely right away.
+she'll be completely well again in no time.
 
 626
 01:03:47,920 --> 01:03:50,080
-Mommy will be discharged on Saturday.
+Mom's getting out of the hospital on Saturday.
 
 627
 01:03:50,720 --> 01:03:53,236
-Then I can act spoiled with Mommy again.
+Then I can cuddle up to Mom again.
 
 628
 01:03:53,320 --> 01:03:54,259
-Okay.
+I see.
 
 629
 01:03:54,343 --> 01:03:55,176
-Okay.
+I see.
 
 630
 01:03:55,260 --> 01:03:57,146
-She can finally leave the hospital.
+So she can finally get out of the hospital.
 
 631
 01:03:57,230 --> 01:03:58,780
@@ -2538,23 +2538,23 @@ Then she should eat more of the fruit and vegetables here.
 
 635
 01:04:07,470 --> 01:04:09,960
-Save the corn Jizi picked for Mommy.
+The corn Mei picked should be saved for Mom to eat.
 
 636
 01:04:11,340 --> 01:04:12,740
-Mommy will definitely be very happy.
+Mom will definitely be very happy.
 
 637
 01:04:19,780 --> 01:04:20,940
-You've got a telegram.
+You have a telegram.
 
 638
 01:04:22,050 --> 01:04:23,080
-Since no one was home at your place,
+Since there was nobody at your house,
 
 639
 01:04:23,150 --> 01:04:24,380
-they delivered it to us.
+they brought it over here.
 
 640
 01:04:24,990 --> 01:04:25,866
@@ -2570,11 +2570,11 @@ But Dad said he won't be back until later.
 
 643
 01:04:32,760 --> 01:04:34,890
-Open it and have a look. It might be urgent.
+Open it and see. It might be urgent.
 
 644
 01:04:39,570 --> 01:04:42,330
-Please contact Shichikokuyama as soon as possible.
+Please contact Shichikokuyama at once.
 
 645
 01:04:43,370 --> 01:04:44,586
@@ -2582,15 +2582,15 @@ It's from the hospital.
 
 646
 01:04:44,670 --> 01:04:45,940
-It's the hospital where Mommy is staying.
+It's the hospital where Mom is staying.
 
 647
 01:04:46,680 --> 01:04:48,040
-It's Mommy's. I wonder what happened.
+It's Mom. I don't know what's happened.
 
 648
 01:04:50,310 --> 01:04:52,540
-Granny, what do we do? How do we contact them?
+Granny, what do I do? How do I contact them?
 
 649
 01:04:53,120 --> 01:04:54,840
@@ -2602,7 +2602,7 @@ Can you find your father?
 
 651
 01:04:56,990 --> 01:04:58,320
-I know the lab's phone number.
+I know the number for his research lab.
 
 652
 01:04:58,390 --> 01:04:59,720
@@ -2610,31 +2610,31 @@ But we don't have a phone at home.
 
 653
 01:05:00,403 --> 01:05:01,236
-Kanta.
+You shy boy.
 
 654
 01:05:01,320 --> 01:05:03,850
-Hurry and take her to the village chief's house to borrow the phone.
+Hurry and take her to the village headman's house to borrow the phone.
 
 655
 01:05:10,230 --> 01:05:11,530
-Second Sister, don't go with your older sister.
+Mei, don't go with Satsuki.
 
 656
 01:05:22,010 --> 01:05:24,040
-Second Son, hurry back to that old hag.
+Mei, hurry back to Granny's!
 
 657
 01:06:01,680 --> 01:06:05,410
-Hello, I'd like to make a long-distance call to the Tokyo suburbs.
+Hello, I'd like to make a long-distance call to the suburbs of Tokyo, please.
 
 658
 01:06:05,950 --> 01:06:08,950
-The local area code is 1382, yes.
+The number there is 1382, yes.
 
 659
 01:06:11,690 --> 01:06:13,890
-You shy boy, your girlfriend is really cute.
+You shy boy, your girlfriend's really cute.
 
 660
 01:06:16,770 --> 01:06:22,086
@@ -2642,11 +2642,11 @@ Is this... the archaeology department?
 
 661
 01:06:22,170 --> 01:06:23,170
-Could you call... call my father to the phone...?
+Could you please get... get my father...
 
 662
 01:06:23,670 --> 01:06:24,700
-No, I mean Mr. Oomaki.
+No, I mean Mr. Kusakabe.
 
 663
 01:06:26,063 --> 01:06:26,896
@@ -2654,11 +2654,11 @@ I'm his daughter.
 
 664
 01:06:26,980 --> 01:06:27,980
-This is Satsuko, yes.
+Satsuki, yes.
 
 665
 01:06:32,180 --> 01:06:33,340
-Dad, it's me, Satsuki.
+Dad, it's Satsuki.
 
 666
 01:06:34,420 --> 01:06:35,710
@@ -2674,15 +2674,15 @@ Yes.
 
 669
 01:06:39,090 --> 01:06:40,306
-Is it the hospital?
+From the hospital?
 
 670
 01:06:40,390 --> 01:06:42,020
-I understand. I'll call right away.
+I understand. I'll call them right away.
 
 671
 01:06:43,030 --> 01:06:45,020
-Did something happen to Mommy? What do we do, Dad?
+Did something happen to Mom? What are we gonna do, Dad?
 
 672
 01:06:46,200 --> 01:06:47,316
@@ -2690,11 +2690,11 @@ Don't worry.
 
 673
 01:06:47,400 --> 01:06:49,130
-I'll call you back after I ask.
+I'll ask and then call you right back.
 
 674
 01:06:50,200 --> 01:06:51,200
-Wait here for me a little while.
+Wait there for a little while.
 
 675
 01:06:53,540 --> 01:06:54,830
@@ -2702,39 +2702,39 @@ Satsuki, I'm hanging up now.
 
 676
 01:06:58,310 --> 01:06:59,756
-Mrs. Village Chief,
+Ma'am,
 
 677
 01:06:59,840 --> 01:07:01,926
-May I wait here for my father's call?
+could I wait here for my dad's call?
 
 678
 01:07:02,010 --> 01:07:04,310
-It's all right, make yourself at home.
+Sure, make yourself at home.
 
 679
 01:07:11,920 --> 01:07:13,220
-Sis!
+Satsuki!
 
 680
 01:07:22,970 --> 01:07:25,430
-I can't give it to you. The corn is for my mommy.
+No, you can't have it. This corn is for my mom.
 
 681
 01:07:27,240 --> 01:07:29,400
-No, I have to give it to Mommy.
+No, I have to give it to my mom.
 
 682
 01:07:44,550 --> 01:07:45,850
-Sis,
+Satsuki,
 
 683
 01:07:46,690 --> 01:07:49,210
-Jizai, Mommy's condition isn't very good right now.
+Mei, Mom's condition isn't very good right now.
 
 684
 01:07:49,290 --> 01:07:51,090
-So she'll have to come home later?
+So she has to come home later?
 
 685
 01:07:53,100 --> 01:07:54,100
@@ -2742,7 +2742,7 @@ No!
 
 686
 01:07:55,700 --> 01:07:56,930
-Mommy's health comes first.
+Mom's health is what matters.
 
 687
 01:07:57,000 --> 01:07:58,860
@@ -2754,7 +2754,7 @@ No!
 
 689
 01:08:02,300 --> 01:08:03,900
-You... do you want Mommy to die?
+Y-You want Mom to die?
 
 690
 01:08:04,570 --> 01:08:05,730
@@ -2762,11 +2762,11 @@ I don't!
 
 691
 01:08:07,610 --> 01:08:09,470
-What's your problem? She's only coming home a few days later.
+What's the matter? She's only coming home a few days later.
 
 692
 01:08:12,380 --> 01:08:14,040
-If you're not good, I won't pay attention to you.
+If you're not good, I'm not talking to you.
 
 693
 01:08:25,730 --> 01:08:26,820
@@ -2774,7 +2774,7 @@ You should go back.
 
 694
 01:08:32,730 --> 01:08:34,700
-Big Sis is so unlucky.
+Satsuki's so mean.
 
 695
 01:09:00,960 --> 01:09:02,400
@@ -2782,19 +2782,19 @@ I brought in the laundry for you.
 
 696
 01:09:05,270 --> 01:09:09,086
-Don't be so down. Pull yourself together.
+Don't be so down. Cheer up.
 
 697
 01:09:09,170 --> 01:09:10,470
-This old lady is here to help you now.
+Granny's here to help you now.
 
 698
 01:09:16,480 --> 01:09:19,240
-Your dad has already gone to the hospital to see her.
+Your dad's already gone to the hospital to see her.
 
 699
 01:09:20,780 --> 01:09:23,010
-Your mommy will be fine.
+Your mom will be fine.
 
 700
 01:09:23,990 --> 01:09:25,780
@@ -2810,11 +2810,11 @@ That's what you said last time too.
 
 703
 01:09:33,660 --> 01:09:35,250
-You said she was just staying at the hospital for two days.
+You said she'd only stay in the hospital for two days.
 
 704
 01:09:35,760 --> 01:09:37,030
-How was I supposed to know she'd stay there this long?
+Who knew she'd end up staying this long?
 
 705
 01:09:39,400 --> 01:09:40,700
@@ -2826,11 +2826,11 @@ She won't, Satsuki.
 
 707
 01:09:44,110 --> 01:09:45,400
-But what if Mommy really...
+But what if Mom really...
 
 708
 01:09:50,310 --> 01:09:52,210
-It's okay. Don't worry.
+Don't worry, it'll be okay.
 
 709
 01:09:53,180 --> 01:09:54,696
@@ -2842,23 +2842,23 @@ how could she bear to die?
 
 711
 01:09:57,520 --> 01:10:00,606
-Don't cry. Auntie is here with you.
+Don't cry. Granny's here with you.
 
 712
 01:10:00,690 --> 01:10:03,450
-I'll stay with you until your dad comes back. Be good.
+I'll stay with you till your father comes back, okay?
 
 713
 01:10:48,640 --> 01:10:50,610
-Second Son
+Mei.
 
 714
 01:10:55,740 --> 01:10:57,300
-Second Young Master
+Mei!
 
 715
 01:11:05,790 --> 01:11:07,006
-Has Mei come back?
+Did Mei come back?
 
 716
 01:11:07,090 --> 01:11:08,720
@@ -2866,23 +2866,23 @@ No, she hasn't come back yet.
 
 717
 01:11:10,860 --> 01:11:14,476
-That's strange. Where on earth did Mei go?
+That's strange. Where could Mei have gone?
 
 718
 01:11:14,560 --> 01:11:16,120
-Could it be because I scolded her just now
+Could it be because I scolded her earlier?
 
 719
 01:11:16,200 --> 01:11:18,786
-I wonder if she might have...
+I don't know if she might've...
 
 720
 01:11:18,870 --> 01:11:20,770
-gone to the hospital where Mommy is staying?
+gone to the hospital where Mom is?
 
 721
 01:11:21,370 --> 01:11:22,670
-How could she get to the hospital?
+How would she get to the hospital?
 
 722
 01:11:23,270 --> 01:11:24,270
@@ -2898,7 +2898,7 @@ I'll go look for her.
 
 725
 01:11:29,780 --> 01:11:33,010
-Don't be shy, hurry and go ask your dad for help.
+Kanta, quick, go get your dad to help!
 
 726
 01:11:33,780 --> 01:11:36,180
@@ -2906,15 +2906,15 @@ Mei's missing?
 
 727
 01:11:45,990 --> 01:11:47,316
-Second son, this is bad.
+Mei, this is bad.
 
 728
 01:11:47,400 --> 01:11:48,950
-She often gets lost.
+She always gets lost.
 
 729
 01:11:56,300 --> 01:11:58,970
-Second Young Master, Second Young Master!
+Mei, Mei!
 
 730
 01:12:05,210 --> 01:12:07,270
@@ -2926,7 +2926,7 @@ Have you seen a little girl with pigtails pass by?
 
 732
 01:12:10,950 --> 01:12:11,950
-She's my younger sister.
+She's my little sister.
 
 733
 01:12:13,620 --> 01:12:15,950
@@ -2934,27 +2934,27 @@ No, I haven't. I've been here most of the day.
 
 734
 01:12:16,020 --> 01:12:17,080
-I haven't seen any little girl pass by.
+I haven't seen any little girl go by.
 
 735
 01:12:20,160 --> 01:12:21,160
-Where on earth could she have gone?
+Where on earth did she go?
 
 736
 01:12:40,850 --> 01:12:42,780
-Why don't you go look somewhere else?
+Why don't you look somewhere else?
 
 737
 01:12:43,350 --> 01:12:44,720
-Please let nothing happen to the second young master.
+Mei, please be all right.
 
 738
 01:12:48,190 --> 01:12:50,106
-Mei, I shouldn't have scolded you.
+Mei, I shouldn't have yelled at you.
 
 739
 01:12:50,190 --> 01:12:54,576
-Please forgive me. Don't let anything happen to you.
+Please forgive me. Please be all right.
 
 740
 01:12:54,660 --> 01:12:56,060
@@ -2966,7 +2966,7 @@ Stop!
 
 742
 01:13:20,890 --> 01:13:22,606
-Are you crazy? You're going to get yourself killed!
+You idiot! You could've killed yourself!
 
 743
 01:13:22,690 --> 01:13:24,046
@@ -2974,7 +2974,7 @@ I'm looking for my little sister.
 
 744
 01:13:24,130 --> 01:13:25,242
-Have you seen a little girl pass by?
+Have you seen a little girl come by?
 
 745
 01:13:26,490 --> 01:13:27,716
@@ -2990,7 +2990,7 @@ My sister is only four years old.
 
 748
 01:13:31,800 --> 01:13:32,800
-Did you happen to notice her?
+Did you notice her?
 
 749
 01:13:34,200 --> 01:13:36,416
@@ -3026,7 +3026,7 @@ How did you get here from so far away?
 
 757
 01:13:51,820 --> 01:13:52,820
-Well, good luck looking for her.
+Well, good luck looking.
 
 758
 01:14:03,470 --> 01:14:04,470
@@ -3034,7 +3034,7 @@ Satsuki!
 
 759
 01:14:06,570 --> 01:14:07,970
-Kanta, did you find her?
+Kanta, you shy boy, did you find her?
 
 760
 01:14:09,770 --> 01:14:11,070
@@ -3046,15 +3046,15 @@ My dad and the others are searching all around.
 
 762
 01:14:14,740 --> 01:14:16,110
-I'll go with you to Shichikokuyama.
+I'll go to Shichikokuyama with you.
 
 763
 01:14:16,750 --> 01:14:18,370
-For now, you should go back home, okay?
+For now, you go back home first, okay?
 
 764
 01:14:19,080 --> 01:14:20,810
-Mei must have, on her way to the hospital,
+Mei must have, on the way to the hospital,
 
 765
 01:14:20,880 --> 01:14:22,210
@@ -3066,7 +3066,7 @@ A little while ago, they found a shoe by the river.
 
 767
 01:14:33,800 --> 01:14:35,520
-Quick, go check by the river if it's the second son's.
+Go check by the river and see if it's Mei's.
 
 768
 01:14:53,620 --> 01:14:54,620
@@ -3074,19 +3074,19 @@ Not yet.
 
 769
 01:15:06,290 --> 01:15:07,850
-Second Prince, don't die!
+Mei, don't die!
 
 770
 01:15:14,800 --> 01:15:16,360
-Second Young Master, you mustn't die.
+Mei, please don't die.
 
 771
 01:15:27,020 --> 01:15:29,510
-Namo Amitabha...
+Namu Amida Butsu...
 
 772
 01:15:31,220 --> 01:15:33,780
-Over there! Hurry and go dredge over there.
+Over there! Hurry, go drag that side!
 
 773
 01:15:44,730 --> 01:15:45,630
@@ -3094,23 +3094,23 @@ Namu Amida Butsu...
 
 774
 01:15:45,730 --> 01:15:46,860
-Kusako is on her way.
+Kusakabe's on her way.
 
 775
 01:15:52,040 --> 01:15:53,040
-The second son.
+Mei!
 
 776
 01:15:54,640 --> 01:15:56,040
-We found the second son's shoe.
+We found Mei's shoe.
 
 777
 01:16:05,550 --> 01:16:06,950
-These shoes don't belong to the younger son.
+These shoes aren't Mei's.
 
 778
 01:16:17,670 --> 01:16:21,416
-Thank goodness the Bodhisattva was watching over us. It wasn't the younger girl's.
+Thank goodness, it wasn't Mei's.
 
 779
 01:16:21,500 --> 01:16:22,500
@@ -3122,7 +3122,7 @@ So those shoes weren't a child's after all.
 
 781
 01:16:24,970 --> 01:16:27,460
-No need to look there anymore. It was a false alarm.
+No need to keep looking there. It was a false alarm.
 
 782
 01:16:28,410 --> 01:16:30,380
@@ -3134,11 +3134,11 @@ That's a relief...
 
 784
 01:16:32,980 --> 01:16:34,110
-That really scared me to death...
+That really scared me...
 
 785
 01:16:47,730 --> 01:16:50,060
-Caozi, where are you going?
+Kusakabe, where are you going?
 
 786
 01:17:07,120 --> 01:17:09,936
@@ -3146,7 +3146,7 @@ Please, let me see Totoro.
 
 787
 01:17:10,020 --> 01:17:12,820
-Mei is lost, and it's getting dark.
+Mei is lost, and it'll be dark soon.
 
 788
 01:17:12,920 --> 01:17:14,860
@@ -3158,11 +3158,11 @@ Totoro!
 
 790
 01:17:49,890 --> 01:17:52,306
-Totoro, the younger one is lost.
+Totoro, Mei's lost.
 
 791
 01:17:52,390 --> 01:17:53,876
-I can't find her anywhere.
+I just can't find her.
 
 792
 01:17:53,960 --> 01:17:55,760
@@ -3170,36 +3170,36 @@ Please, help me find her.
 
 793
 01:17:57,270 --> 01:17:59,530
-She must be hiding somewhere, crying.
+I'm sure she's somewhere crying.
 
 794
 01:18:00,870 --> 01:18:03,130
-I don't know what to do now.
+I don't know what to do anymore.
 
 795
 01:19:02,230 --> 01:19:03,230
-So it's a cat bus.
+So it's a Catbus.
 
 796
 01:19:37,670 --> 01:19:38,690
-Please mind the door.
+Please stand clear of the doors.
 
 797
 01:19:38,770 --> 01:19:41,659
 Please stand
-clear of door.
+clear of the doors.
 
 798
 01:20:15,900 --> 01:20:17,770
-Second Son
+Mei.
 
 799
 01:20:27,420 --> 01:20:28,810
-Even the trees are avoiding it.
+Even the trees are moving aside!
 
 800
 01:21:02,080 --> 01:21:03,180
-Second son.
+Mei!
 
 801
 01:21:06,350 --> 01:21:07,550
@@ -3211,15 +3211,15 @@ Sis!
 
 803
 01:21:22,683 --> 01:21:23,516
-Sis!
+Mei!
 
 804
 01:21:23,600 --> 01:21:24,700
-Sis!
+Mei!
 
 805
 01:21:24,770 --> 01:21:26,140
-Sis!
+Satsuki!
 
 806
 01:21:29,110 --> 01:21:30,340
@@ -3243,19 +3243,19 @@ That's great.
 
 811
 01:22:05,110 --> 01:22:07,836
-I'm sorry. The doctor says I can leave the hospital early.
+I'm sorry. The doctor says I can leave the hospital early,
 
 812
 01:22:07,920 --> 01:22:11,580
-I was so anxious, so I sent you a telegram.
+so I was so anxious that I sent you a telegram.
 
 813
 01:22:12,620 --> 01:22:14,140
-I'm sorry for scaring you.
+I'm really sorry I scared you.
 
 814
 01:22:14,920 --> 01:22:18,690
-If the girls knew... that you can leave the hospital tomorrow,
+If the children knew... that you can leave the hospital tomorrow,
 
 815
 01:22:18,760 --> 01:22:20,246
@@ -3263,19 +3263,19 @@ I think they'd be very happy.
 
 816
 01:22:20,330 --> 01:22:21,630
-They've been hoping for you to come home for so long.
+They've been hoping for your discharge for a long time.
 
 817
 01:22:23,930 --> 01:22:25,130
-I've been in the hospital for so long.
+I've been in the hospital so long
 
 818
 01:22:25,230 --> 01:22:27,170
-They've suffered a lot because of it.
+and made them suffer a lot.
 
 819
 01:22:27,240 --> 01:22:29,860
-With no one to look after them, I feel terrible.
+It breaks my heart that no one's there to look after them.
 
 820
 01:22:31,770 --> 01:22:32,770
@@ -3291,7 +3291,7 @@ the two of them won't have to work so hard.
 
 823
 01:22:38,050 --> 01:22:40,170
-It's not so hard. All day long they keep saying
+It's not so hard. They keep saying all day
 
 824
 01:22:40,250 --> 01:22:41,770
@@ -3303,11 +3303,11 @@ Children really are so innocent.
 
 826
 01:22:46,250 --> 01:22:47,976
-Mom looks like she's fine.
+Mom seems fine now.
 
 827
 01:22:48,060 --> 01:22:49,476
-She looks in very good spirits too.
+She looks full of energy, too.
 
 828
 01:22:49,560 --> 01:22:50,560
@@ -3315,7 +3315,7 @@ Yeah.
 
 829
 01:22:59,000 --> 01:23:00,786
-I feel so energized, like I took Totoro's medicine.
+I feel so energetic, like I took Totoro's medicine.
 
 830
 01:23:00,870 --> 01:23:01,870
@@ -3323,7 +3323,7 @@ Really?
 
 831
 01:23:10,510 --> 01:23:14,500
-There's an ear of corn here. Who brought it?
+Who brought this corn here?
 
 832
 01:23:15,680 --> 01:23:17,106
@@ -3331,7 +3331,7 @@ Could it be they really found Totoro
 
 833
 01:23:17,190 --> 01:23:18,410
-and brought me corn to make me well?
+and brought this corn to cure me?
 
 834
 01:23:21,990 --> 01:23:24,050
@@ -3339,5 +3339,5 @@ I think maybe so. Look.
 
 835
 01:23:25,330 --> 01:23:26,920
-We love you very much.
+We love you the most.
 
