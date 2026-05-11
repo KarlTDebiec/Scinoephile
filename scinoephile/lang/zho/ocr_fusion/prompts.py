@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import PromptZhoHans
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionPrompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionPrompt
 
 __all__ = [
     "OcrFusionPromptZhoHans",

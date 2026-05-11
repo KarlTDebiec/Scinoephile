@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Code related to dual track / single subtitle matters using LLMs."""
+"""Code related to dual 1 to 1 matters using LLMs."""
 
 from __future__ import annotations
 
-from .manager import DualSingleManager
-from .prompt import DualSinglePrompt
+from .manager import Dual1To1Manager
+from .prompt import Dual1To1Prompt
 
 __all__ = [
-    "DualSingleManager",
-    "DualSinglePrompt",
+    "Dual1To1Manager",
+    "Dual1To1Prompt",
 ]

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for LLM correspondence for dual track / single subtitle matters."""
+"""Text for LLM correspondence for dual 1 to 1 matters."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 from scinoephile.core.llms import Prompt
 
-__all__ = ["DualSinglePrompt"]
+__all__ = ["Dual1To1Prompt"]
 
 
-class DualSinglePrompt(Prompt, ABC):
-    """Text for LLM correspondence for dual track / single subtitle matters."""
+class Dual1To1Prompt(Prompt, ABC):
+    """Text for LLM correspondence for dual 1 to 1 matters."""
 
     # Query fields
     src_1: ClassVar[str] = "one"
