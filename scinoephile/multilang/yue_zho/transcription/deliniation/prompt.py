@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_pair import DualPairPrompt
+from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
 
 __all__ = [
     "YueVsZhoDeliniationPromptYueHans",
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class YueVsZhoDeliniationPromptYueHans(DualPairPrompt, PromptEng):
+class YueVsZhoDeliniationPromptYueHans(Dual2To2Prompt, PromptEng):
     """Text for LLM correspondence for simplified written Cantonese deliniation."""
 
     # Prompt

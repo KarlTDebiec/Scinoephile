@@ -30,13 +30,13 @@ from scinoephile.lang.zho.ocr_fusion import (
 )
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
 from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
 from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedPrompt,
 )
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
-from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (
@@ -239,7 +239,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueVsZhoDeliniationPromptYueHans,
+    prompt_cls: type[Dual2To2Prompt] = YueVsZhoDeliniationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 deliniation test cases.
@@ -260,7 +260,7 @@ def get_mlamd_yue_deliniation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
     )
 
 

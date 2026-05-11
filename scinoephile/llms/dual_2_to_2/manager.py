@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual track / subtitle pair LLM classes."""
+"""Factories for dual 2 to 2 LLM classes."""
 
 from __future__ import annotations
 
@@ -13,22 +13,22 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualPairPrompt
+from .prompt import Dual2To2Prompt
 
-__all__ = ["DualPairManager"]
+__all__ = ["Dual2To2Manager"]
 
 
-class DualPairManager(Manager):
-    """Factories for dual track / subtitle pair LLM classes."""
+class Dual2To2Manager(Manager):
+    """Factories for dual 2 to 2 LLM classes."""
 
-    prompt_cls: ClassVar[type[DualPairPrompt]] = DualPairPrompt
+    prompt_cls: ClassVar[type[Dual2To2Prompt]] = Dual2To2Prompt
     """Default prompt class."""
 
     @classmethod
     @cache
     def get_query_cls(
         cls,
-        prompt_cls: type[DualPairPrompt] = DualPairPrompt,
+        prompt_cls: type[Dual2To2Prompt] = Dual2To2Prompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -37,7 +37,7 @@ class DualPairManager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name("DualPairQuery", prompt_cls.__name__)
+        name = get_model_name("Dual2To2Query", prompt_cls.__name__)
         fields: dict[str, Any] = {
             prompt_cls.src_1_sub_1: (
                 str,
@@ -75,7 +75,7 @@ class DualPairManager(Manager):
     @cache
     def get_answer_cls(
         cls,
-        prompt_cls: type[DualPairPrompt] = DualPairPrompt,
+        prompt_cls: type[Dual2To2Prompt] = Dual2To2Prompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -84,7 +84,7 @@ class DualPairManager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name("DualPairAnswer", prompt_cls.__name__)
+        name = get_model_name("Dual2To2Answer", prompt_cls.__name__)
         fields: dict[str, Any] = {
             prompt_cls.src_2_sub_1_shifted: (
                 str,
@@ -132,7 +132,7 @@ class DualPairManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[Dual2To2Prompt] = getattr(model, "prompt_cls")
         min_difficulty = 0
         if model.answer is None:
             return min_difficulty
@@ -152,7 +152,7 @@ class DualPairManager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[Dual2To2Prompt] = getattr(model, "prompt_cls")
         src_2_sub_1 = getattr(model, prompt_cls.src_2_sub_1, None)
         src_2_sub_2 = getattr(model, prompt_cls.src_2_sub_2, None)
         if not src_2_sub_1 and not src_2_sub_2:
@@ -168,7 +168,7 @@ class DualPairManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: type[DualPairPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[Dual2To2Prompt] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
