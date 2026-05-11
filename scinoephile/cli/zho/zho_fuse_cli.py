@@ -26,7 +26,7 @@ from scinoephile.lang.zho.conversion import (
     get_zho_converted,
 )
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
@@ -213,7 +213,7 @@ class ZhoFuseCli(ScinoephileCliBase):
         """
         script = cls._get_script_for_conversion(convert)
         if script == "traditional":
-            return get_zho_ocr_fuser(prompt_cls=ZhoHantOcrFusionPrompt)
+            return get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant)
         return get_zho_ocr_fuser()
 
     @classmethod

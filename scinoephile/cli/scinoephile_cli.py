@@ -4,10 +4,12 @@
 
 from __future__ import annotations
 
-from argparse import ArgumentParser
+from argparse import SUPPRESS, ArgumentParser
 from typing import Any
 
 from scinoephile.common import CommandLineInterface
+from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .analysis import AnalysisCli
@@ -34,7 +36,9 @@ class ScinoephileCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
+            "additional help": "附加帮助",
             "analyze subtitles": "分析字幕",
+            "Available subcommands:": "可用子命令：",
             "build or search Chinese dictionaries": "构建或查询中文词典",
             "command-line interface for Scinoephile": "Scinoephile 命令行界面",
             "combine two series into the top and bottom of a synchronized series": (
@@ -42,6 +46,7 @@ class ScinoephileCli(ScinoephileCliBase):
             ),
             "inspect and invalidate local caches": "检查并清除本地缓存",
             "inspect and extract media streams": "检查并提取媒体流",
+            "list all subcommands and exit": "列出所有子命令并退出",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改标准中文字幕",
             "modify written Cantonese subtitles": "修改书面粤语字幕",
@@ -55,7 +60,9 @@ class ScinoephileCli(ScinoephileCliBase):
             ),
         },
         "zh-hant": {
+            "additional help": "附加說明",
             "analyze subtitles": "分析字幕",
+            "Available subcommands:": "可用子命令：",
             "build or search Chinese dictionaries": "建置或查詢中文詞典",
             "command-line interface for Scinoephile": "Scinoephile 命令列介面",
             "combine two series into the top and bottom of a synchronized series": (
@@ -63,6 +70,7 @@ class ScinoephileCli(ScinoephileCliBase):
             ),
             "inspect and invalidate local caches": "檢查並清除本機快取",
             "inspect and extract media streams": "檢查並提取媒體流",
+            "list all subcommands and exit": "列出所有子命令並結束",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改標準中文字幕",
             "modify written Cantonese subtitles": "修改書面粵語字幕",
@@ -86,6 +94,19 @@ class ScinoephileCli(ScinoephileCliBase):
             parser: nascent argument parser
         """
         super().add_arguments_to_argparser(parser)
+
+        arg_groups = get_arg_groups_by_name(
+            parser,
+            "additional help",
+            optional_arguments_name="additional arguments",
+        )
+        arg_groups["additional help"].add_argument(
+            "--all-commands",
+            action=ListAllCommandsAction,
+            default=SUPPRESS,
+            help="list all subcommands and exit",
+            root_cli_class=cls,
+        )
 
         subparsers = parser.add_subparsers(
             dest="subcommand_name",

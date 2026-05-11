@@ -16,15 +16,15 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.eng.block_review import EngBlockReviewPrompt
-from scinoephile.lang.eng.ocr_fusion import EngOcrFusionPrompt
+from scinoephile.lang.eng.block_review import BlockReviewPromptEng
+from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
-    ZhoHansBlockReviewPrompt,
-    ZhoHantBlockReviewPrompt,
+    BlockReviewPromptZhoHans,
+    BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.ocr_fusion import (
-    ZhoHansOcrFusionPrompt,
-    ZhoHantOcrFusionPrompt,
+    OcrFusionPromptZhoHans,
+    OcrFusionPromptZhoHant,
 )
 from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
@@ -34,6 +34,8 @@ from test.helpers import test_data_root
 __all__ = [
     "mnt_eng_ocr_lens",
     "mnt_eng_ocr_tesseract",
+    "mnt_jpn_eng",
+    "mnt_yue_zho_hant",
     "mnt_zho_hans_ocr_lens",
     "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hans_ocr_paddle_new",
@@ -93,6 +95,18 @@ def mnt_eng_ocr_tesseract() -> Series:
 
 
 @pytest.fixture
+def mnt_jpn_eng() -> Series:
+    """MNT Bilingual Japanese and English subtitles."""
+    return Series.load(input_dir / "jpn_eng.srt")
+
+
+@pytest.fixture
+def mnt_yue_zho_hant() -> Series:
+    """MNT 粤语 audio track 繁体粤文 subtitles."""
+    return Series.load(input_dir / "yue_zho-Hant.srt")
+
+
+@pytest.fixture
 def mnt_zho_hans_ocr_lens() -> Series:
     """MNT 简体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hans_ocr/lens.srt")
@@ -136,7 +150,7 @@ def mnt_zho_hant_ocr_paddle_new() -> Series:
 
 @cache
 def get_mnt_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = EngBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English block review test cases.
@@ -155,7 +169,7 @@ def get_mnt_eng_block_review_test_cases(
 
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = EngOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
@@ -174,7 +188,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 block review test cases.
@@ -193,7 +207,7 @@ def get_mnt_zho_hans_block_review_test_cases(
 
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHansOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 OCR fusion test cases.
@@ -212,7 +226,7 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHantBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 block review test cases.
@@ -231,7 +245,7 @@ def get_mnt_zho_hant_block_review_test_cases(
 
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = ZhoHantOcrFusionPrompt,
+    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 OCR fusion test cases.
@@ -250,7 +264,7 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = ZhoHansBlockReviewPrompt,
+    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 simplification block review test cases.

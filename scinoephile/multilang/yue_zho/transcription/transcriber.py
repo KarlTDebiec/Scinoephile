@@ -29,8 +29,8 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_default_provider
 
 from .aligner import Aligner
-from .deliniation import YueVsZhoYueHansDeliniationPrompt
-from .punctuation import YueVsZhoYueHansPunctuationPrompt
+from .deliniation import YueVsZhoDeliniationPromptYueHans
+from .punctuation import YueVsZhoPunctuationPromptYueHans
 
 __all__ = [
     "DemucsMode",
@@ -72,8 +72,8 @@ class YueTranscriber:
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
-        deliniation_prompt_cls: type[YueVsZhoYueHansDeliniationPrompt],
-        punctuation_prompt_cls: type[YueVsZhoYueHansPunctuationPrompt],
+        deliniation_prompt_cls: type[YueVsZhoDeliniationPromptYueHans],
+        punctuation_prompt_cls: type[YueVsZhoPunctuationPromptYueHans],
         test_case_directory_path: Path,
         deliniation_test_cases: list[TestCase],
         punctuation_test_cases: list[TestCase],

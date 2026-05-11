@@ -6,12 +6,12 @@ from __future__ import annotations
 
 from .manager import YueZhoPunctuationManager
 from .prompt import (
-    YueVsZhoYueHansPunctuationPrompt,
-    YueVsZhoYueHantPunctuationPrompt,
+    YueVsZhoPunctuationPromptYueHans,
+    YueVsZhoPunctuationPromptYueHant,
 )
 
 __all__ = [
-    "YueVsZhoYueHansPunctuationPrompt",
-    "YueVsZhoYueHantPunctuationPrompt",
+    "YueVsZhoPunctuationPromptYueHans",
+    "YueVsZhoPunctuationPromptYueHant",
     "YueZhoPunctuationManager",
 ]
