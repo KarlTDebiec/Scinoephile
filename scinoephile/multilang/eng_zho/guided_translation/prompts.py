@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for translating English from Chinese with English guidance."""
+"""Text for guided translation of English from Chinese with English guidance."""
 
 from __future__ import annotations
 
@@ -10,11 +10,11 @@ from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
 from scinoephile.llms.dual_block_cardinality import DualBlockCardinalityPrompt
 
-__all__ = ["EngVsZhoTranslationPrompt"]
+__all__ = ["EngVsZhoGuidedTranslationPrompt"]
 
 
-class EngVsZhoTranslationPrompt(DualBlockCardinalityPrompt, PromptEng):
-    """Text for translating English from Chinese with English guidance."""
+class EngVsZhoGuidedTranslationPrompt(DualBlockCardinalityPrompt, PromptEng):
+    """Text for guided translation of English from Chinese with English guidance."""
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""

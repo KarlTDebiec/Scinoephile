@@ -1,4 +1,4 @@
-# English From Chinese Translation Design
+# English From Chinese Guided Translation Design
 
 ## Goal
 
@@ -10,7 +10,7 @@ Chinese.
 
 ## Context
 
-The current `scinoephile.multilang.yue_zho.translation` flow fills gaps in a
+The current `scinoephile.multilang.yue_zho.gap_translation` flow fills gaps in a
 primary Cantonese series from a secondary Chinese series. That shape does not fit
 this feature because the Chinese and English inputs may have different subtitle
 counts, and the output must contain one English subtitle for every Chinese
@@ -42,22 +42,22 @@ The generic shape should include:
 - A processor that queries one paired block at a time and returns a `Series`
   using source-one subtitle start and end times.
 
-Add `scinoephile.multilang.eng_zho.translation` on top of that generic shape.
+Add `scinoephile.multilang.eng_zho.guided_translation` on top of that generic shape.
 Its public API should mirror existing feature packages:
 
-- `ENG_ZHO_TRANSLATION_OPERATION_SPEC`
-- `EngFromZhoTranslationProcessKwargs`
-- `EngFromZhoTranslationProcessorKwargs`
-- `EngVsZhoTranslationPrompt`
-- `get_eng_translated_vs_zho(...)`
-- `get_eng_vs_zho_translator(...)`
+- `ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC`
+- `EngFromZhoGuidedTranslationProcessKwargs`
+- `EngFromZhoGuidedTranslationProcessorKwargs`
+- `EngVsZhoGuidedTranslationPrompt`
+- `get_eng_guided_translated_vs_zho(...)`
+- `get_eng_vs_zho_guided_translator(...)`
 
 The feature package should also add `scinoephile.multilang.eng_zho.__init__` and
 update the `scinoephile.multilang` package docstring hierarchy.
 
 ## Prompt Behavior
 
-The English-from-Chinese prompt should instruct the model to:
+The English-from-Chinese guided translation prompt should instruct the model to:
 
 - Translate the Chinese subtitles into natural English.
 - Produce one English subtitle for each Chinese subtitle.
@@ -78,7 +78,7 @@ Field names should make the role of each input clear, for example:
 
 ## Data Flow
 
-`get_eng_translated_vs_zho(zho, eng, translator=None, **kwargs)` obtains a
+`get_eng_guided_translated_vs_zho(zho, eng, translator=None, **kwargs)` obtains a
 processor if needed and calls `translator.process(zho, eng, **kwargs)`.
 
 The processor pairs blocks from the Chinese and English series using
@@ -120,12 +120,12 @@ Focused unit tests should cover the generic LLM shape:
 - Processor output uses source-one timing and answer text when block sizes
   differ.
 
-Feature tests should cover `eng_zho.translation`:
+Feature tests should cover `eng_zho.guided_translation`:
 
 - The prompt exposes the expected field names and descriptions.
-- `get_eng_vs_zho_translator(...)` wires the processor, prompt, default
+- `get_eng_vs_zho_guided_translator(...)` wires the processor, prompt, default
   provider, and optional test cases.
-- `get_eng_translated_vs_zho(...)` delegates to the provided processor and
+- `get_eng_guided_translated_vs_zho(...)` delegates to the provided processor and
   returns one English subtitle per Chinese subtitle.
 
 Before completion, run formatting and checks only on changed Python files as

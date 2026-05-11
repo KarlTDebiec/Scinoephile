@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for written Cantonese translation.
+"""Command-line interface for written Cantonese gap translation.
 
 This command uses standard Chinese reference subtitles.
 """
@@ -18,11 +18,11 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoTranslationPromptYueHans,
-    YueVsZhoTranslationPromptYueHant,
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
+    YueVsZhoGapTranslationPromptYueHant,
+    get_yue_gap_translated_vs_zho,
+    get_yue_vs_zho_gap_translator,
 )
 
 __all__ = ["YueTranslateVsZhoCli"]
@@ -33,7 +33,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "command-line interface for written Cantonese translation": (
+            "command-line interface for written Cantonese gap translation": (
                 "书面粤语翻译命令行界面"
             ),
             "This command uses standard Chinese reference subtitles.": (
@@ -56,7 +56,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             ),
         },
         "zh-hant": {
-            "command-line interface for written Cantonese translation": (
+            "command-line interface for written Cantonese gap translation": (
                 "書面粵語翻譯命令列介面"
             ),
             "This command uses standard Chinese reference subtitles.": (
@@ -149,7 +149,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_translation_prompt_cls(
         cls, script: str
-    ) -> type[YueVsZhoTranslationPromptYueHans]:
+    ) -> type[YueVsZhoGapTranslationPromptYueHans]:
         """Get the translation prompt class for the selected script.
 
         Arguments:
@@ -158,8 +158,8 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             translation prompt class
         """
         if script == "traditional":
-            return YueVsZhoTranslationPromptYueHant
-        return YueVsZhoTranslationPromptYueHans
+            return YueVsZhoGapTranslationPromptYueHant
+        return YueVsZhoGapTranslationPromptYueHans
 
     @classmethod
     def _main(
@@ -196,8 +196,8 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
 
         # Perform operations
         prompt_cls = cls._get_translation_prompt_cls(script)
-        translator = get_yue_vs_zho_translator(prompt_cls=prompt_cls)
-        yuewen = get_yue_translated_vs_zho(
+        translator = get_yue_vs_zho_gap_translator(prompt_cls=prompt_cls)
+        yuewen = get_yue_gap_translated_vs_zho(
             yuewen=yuewen,
             zhongwen=zhongwen,
             translator=translator,

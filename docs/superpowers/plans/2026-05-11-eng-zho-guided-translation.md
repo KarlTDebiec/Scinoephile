@@ -1,10 +1,10 @@
-# English From Chinese Translation Implementation Plan
+# English From Chinese Guided Translation Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a reusable unaligned dual-block LLM processor and use it to generate English subtitles from Chinese subtitles with original English guidance.
 
-**Architecture:** Add `scinoephile.llms.dual_block_cardinality` for two input blocks where output count and timing follow source one. Add `scinoephile.multilang.eng_zho.translation` as a feature wrapper with an English-from-Chinese prompt and factory functions.
+**Architecture:** Add `scinoephile.llms.dual_block_cardinality` for two input blocks where output count and timing follow source one. Add `scinoephile.multilang.eng_zho.guided_translation` as a guided translation feature wrapper with an English-from-Chinese guided translation prompt and factory functions.
 
 **Tech Stack:** Python 3.13, Pydantic dynamic models, existing `Processor` / `Manager` / `Prompt` LLM framework, `Series` / `Subtitle`, pytest, ruff, ty, uv.
 
@@ -18,13 +18,13 @@
 - Create `scinoephile/llms/dual_block_cardinality/processor.py`: block-pair processor whose output series follows source one timing.
 - Modify `scinoephile/llms/__init__.py`: include the new package in the hierarchy docstring.
 - Create `scinoephile/multilang/eng_zho/__init__.py`: package marker and hierarchy docstring.
-- Create `scinoephile/multilang/eng_zho/translation/__init__.py`: operation spec, typed kwargs, public wrapper, and processor factory.
-- Create `scinoephile/multilang/eng_zho/translation/prompts.py`: English prompt for Chinese-driven translation with original English guidance.
+- Create `scinoephile/multilang/eng_zho/guided_translation/__init__.py`: operation spec, typed kwargs, public wrapper, and processor factory.
+- Create `scinoephile/multilang/eng_zho/guided_translation/prompts.py`: English prompt for Chinese-driven translation with original English guidance.
 - Modify `scinoephile/multilang/__init__.py`: include `eng_zho` in the hierarchy docstring.
 - Modify `scinoephile/llms/default_test_cases.py`: add an empty-path-capable constant for future English-from-Chinese default cases.
 - Create `test/llms/dual_block_cardinality/test_manager.py`: generic dynamic model tests.
 - Create `test/llms/dual_block_cardinality/test_processor.py`: generic processor behavior test.
-- Create `test/multilang/eng_zho/test_translation.py`: feature wrapper and prompt tests.
+- Create `test/multilang/eng_zho/test_guided_translation.py`: guided translation feature wrapper and prompt tests.
 
 ### Task 1: Generic Prompt And Manager
 
@@ -132,42 +132,42 @@ Expected: PASS.
 
 **Files:**
 - Create: `scinoephile/multilang/eng_zho/__init__.py`
-- Create: `scinoephile/multilang/eng_zho/translation/__init__.py`
-- Create: `scinoephile/multilang/eng_zho/translation/prompts.py`
+- Create: `scinoephile/multilang/eng_zho/guided_translation/__init__.py`
+- Create: `scinoephile/multilang/eng_zho/guided_translation/prompts.py`
 - Modify: `scinoephile/multilang/__init__.py`
 - Modify: `scinoephile/llms/default_test_cases.py`
-- Test: `test/multilang/eng_zho/test_translation.py`
+- Test: `test/multilang/eng_zho/test_guided_translation.py`
 
 - [ ] **Step 1: Write failing feature tests**
 
 Create tests that assert:
 
 ```python
-assert EngVsZhoTranslationPrompt.src_1(1) == "zho_1"
-assert EngVsZhoTranslationPrompt.src_2(1) == "eng_reference_1"
-assert EngVsZhoTranslationPrompt.output(1) == "eng_1"
-processor = get_eng_vs_zho_translator(test_cases=[], provider=provider)
+assert EngVsZhoGuidedTranslationPrompt.src_1(1) == "zho_1"
+assert EngVsZhoGuidedTranslationPrompt.src_2(1) == "eng_reference_1"
+assert EngVsZhoGuidedTranslationPrompt.output(1) == "eng_1"
+processor = get_eng_vs_zho_guided_translator(test_cases=[], provider=provider)
 assert isinstance(processor, DualBlockCardinalityProcessor)
-assert processor.prompt_cls is EngVsZhoTranslationPrompt
-output = get_eng_translated_vs_zho(zho_series, eng_series, translator=fake_processor)
+assert processor.prompt_cls is EngVsZhoGuidedTranslationPrompt
+output = get_eng_guided_translated_vs_zho(zho_series, eng_series, translator=fake_processor)
 assert len(output) == len(zho_series)
 ```
 
 - [ ] **Step 2: Run feature tests to verify red**
 
-Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_translation.py -q`
+Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_guided_translation.py -q`
 
 Expected: FAIL because `scinoephile.multilang.eng_zho` does not exist.
 
 - [ ] **Step 3: Implement feature package**
 
-Implement `EngVsZhoTranslationPrompt(DualBlockCardinalityPrompt, PromptEng)` with field prefixes `zho_`, `eng_reference_`, and `eng_`, plus a system prompt that prioritizes Chinese meaning and uses original English for names, terminology, register, and compatible wording.
+Implement `EngVsZhoGuidedTranslationPrompt(DualBlockCardinalityPrompt, PromptEng)` with field prefixes `zho_`, `eng_reference_`, and `eng_`, plus a system prompt that prioritizes Chinese meaning and uses original English for names, terminology, register, and compatible wording.
 
-Implement `get_eng_translated_vs_zho(...)` and `get_eng_vs_zho_translator(...)` following the existing `yue_zho.translation` factory pattern, using `DualBlockCardinalityProcessor`, `DualBlockCardinalityManager`, `get_default_provider`, and a new `ENG_FROM_ZHO_TRANSLATION_JSON_PATHS` constant set to an empty tuple.
+Implement `get_eng_guided_translated_vs_zho(...)` and `get_eng_vs_zho_guided_translator(...)` following the existing `yue_zho.gap_translation` factory pattern, using `DualBlockCardinalityProcessor`, `DualBlockCardinalityManager`, `get_default_provider`, and a new `ENG_FROM_ZHO_GUIDED_TRANSLATION_JSON_PATHS` constant set to an empty tuple.
 
 - [ ] **Step 4: Run feature tests to verify green**
 
-Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_translation.py -q`
+Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_guided_translation.py -q`
 
 Expected: PASS.
 
