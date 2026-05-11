@@ -17,7 +17,6 @@ from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles.cache import (
     cache_subtitle_stream_artifacts,
     get_cached_subtitle_artifact_path,
-    is_valid_subtitle_artifact_cache,
 )
 
 from .types import ImageSubtitleManifest
@@ -65,12 +64,11 @@ def get_or_create_image_subtitle_dir_path(
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if not is_valid_subtitle_artifact_cache(artifact_path):
-        cache_subtitle_stream_artifacts(
-            infile_path,
-            [stream],
-            cache_dir_path=cache_dir_path,
-        )
+    cache_subtitle_stream_artifacts(
+        infile_path,
+        [stream],
+        cache_dir_path=cache_dir_path,
+    )
 
     image_series = ImageSeries.load(artifact_path)
     first_start_ms = None

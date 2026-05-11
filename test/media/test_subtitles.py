@@ -30,9 +30,7 @@ def test_extract_subtitle_stream_copies_cached_artifact(tmp_path: Path):
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_text("cached subtitles", encoding="utf-8")
 
-    with patch(
-        "scinoephile.media.subtitles.extraction.cache_subtitle_stream_artifacts"
-    ) as cache_artifacts:
+    with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
             stream=stream,
@@ -42,7 +40,7 @@ def test_extract_subtitle_stream_copies_cached_artifact(tmp_path: Path):
 
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "cached subtitles"
-    cache_artifacts.assert_not_called()
+    run_command.assert_not_called()
 
 
 def test_extract_subtitle_stream_caches_missing_artifact(tmp_path: Path):

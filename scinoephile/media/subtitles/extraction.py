@@ -12,7 +12,6 @@ from scinoephile.core.media import SubtitleStream
 from .cache import (
     cache_subtitle_stream_artifacts,
     get_cached_subtitle_artifact_path,
-    is_valid_subtitle_artifact_cache,
 )
 
 __all__ = ["extract_subtitle_stream"]
@@ -35,17 +34,16 @@ def extract_subtitle_stream(
     Returns:
         output path
     """
+    cache_subtitle_stream_artifacts(
+        infile_path,
+        [stream],
+        cache_dir_path=cache_dir_path,
+    )
     artifact_path = get_cached_subtitle_artifact_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if not is_valid_subtitle_artifact_cache(artifact_path):
-        cache_subtitle_stream_artifacts(
-            infile_path,
-            [stream],
-            cache_dir_path=cache_dir_path,
-        )
     if artifact_path.resolve() != outfile_path.resolve():
         outfile_path.parent.mkdir(parents=True, exist_ok=True)
         copy2(artifact_path, outfile_path)

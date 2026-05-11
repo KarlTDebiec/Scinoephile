@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
 from logging import getLogger
 from pathlib import Path
 from shutil import rmtree
@@ -20,7 +19,6 @@ __all__ = [
     "SUBTITLE_ARTIFACT_CACHE_VERSION",
     "cache_subtitle_stream_artifacts",
     "get_cached_subtitle_artifact_path",
-    "is_valid_subtitle_artifact_cache",
 ]
 
 logger = getLogger(__name__)
@@ -49,7 +47,7 @@ def cache_subtitle_stream_artifacts(
             stream,
             cache_dir_path=cache_dir_path,
         )
-        if not is_valid_subtitle_artifact_cache(artifact_path):
+        if not _is_valid_subtitle_artifact_cache(artifact_path):
             missing.append((stream, artifact_path))
         else:
             logger.info(f"Loaded subtitle artifact from cache: {artifact_path}")
@@ -129,10 +127,11 @@ def _get_subtitle_stream_cache_key(
         "codec_name": stream.codec_name,
         "subtitle_artifact_cache_version": SUBTITLE_ARTIFACT_CACHE_VERSION,
     }
-    return _hash_cache_payload(payload)
+    encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
+    return hashlib.sha256(encoded_payload).hexdigest()
 
 
-def is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:
+def _is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:
     """Check whether an extracted subtitle artifact cache is valid.
 
     Arguments:
@@ -144,15 +143,3 @@ def is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:
         return artifact_path.stat().st_size > 0
     except FileNotFoundError:
         return False
-
-
-def _hash_cache_payload(payload: Mapping[str, object]) -> str:
-    """Hash a cache key payload.
-
-    Arguments:
-        payload: JSON-serializable cache key payload
-    Returns:
-        hexadecimal cache key
-    """
-    encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
-    return hashlib.sha256(encoded_payload).hexdigest()

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
@@ -78,16 +77,5 @@ def _get_subtitle_analysis_cache_key(
         "ocr_languages": ocr_languages,
         "script_analysis_cache_version": SCRIPT_ANALYSIS_CACHE_VERSION,
     }
-    return _hash_cache_payload(payload)
-
-
-def _hash_cache_payload(payload: Mapping[str, object]) -> str:
-    """Hash a cache key payload.
-
-    Arguments:
-        payload: JSON-serializable cache key payload
-    Returns:
-        hexadecimal cache key
-    """
     encoded_payload = json.dumps(payload, sort_keys=True).encode("utf-8")
     return hashlib.sha256(encoded_payload).hexdigest()

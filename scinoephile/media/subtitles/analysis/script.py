@@ -80,12 +80,6 @@ def analyze_subtitle_stream_script(
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if not artifact_path.exists():
-        cache_subtitle_stream_artifacts(
-            infile_path,
-            [stream],
-            cache_dir_path=cache_dir_path,
-        )
 
     if stream.extension == "sup":
         analysis = _analyze_image_subtitle_artifact(
@@ -95,6 +89,11 @@ def analyze_subtitle_stream_script(
             sample_size=sample_size,
         )
     else:
+        cache_subtitle_stream_artifacts(
+            infile_path,
+            [stream],
+            cache_dir_path=cache_dir_path,
+        )
         analysis = _analyze_text_subtitle_artifact(artifact_path)
 
     _save_subtitle_script_analysis(analysis, analysis_cache_path)
