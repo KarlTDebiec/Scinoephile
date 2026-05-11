@@ -7,11 +7,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core.subtitles import Series
+from scinoephile.multilang.eng_zho.guided_translation import (
+    get_eng_translated_from_zho_with_eng_guidance,
+)
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
+input_path = title_root / "input"
 output_path = title_root / "output"
 set_logging_verbosity(2)
 
@@ -23,6 +28,7 @@ actions = {
     "简体中文 (OCR)",
     "English (OCR)",
     "Bilingual 简体中文 and English",
+    "Guided English from 粤语",
 }
 
 if "繁體中文 (OCR)" in actions:
@@ -38,3 +44,8 @@ if "Bilingual 简体中文 and English" in actions:
         eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
         overwrite=True,
     )
+if "Guided English from 粤语" in actions:
+    yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
+    jpn_eng = Series.load(input_path / "jpn_eng.srt")
+    yue_eng = get_eng_translated_from_zho_with_eng_guidance(yue_zho_hant, jpn_eng)
+    yue_eng.save(output_path / "yue_eng.srt")
