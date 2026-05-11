@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from importlib.util import find_spec
 from pathlib import Path
 from typing import cast
 from unittest.mock import patch
@@ -13,27 +14,19 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.media.subtitles import analysis as subtitle_analysis
-from scinoephile.media.subtitles.analysis.image_cache import (
-    _get_cached_image_subtitle_dir_path,
-    _is_valid_image_subtitle_cache,
-)
-from scinoephile.media.subtitles.analysis.script import analyze_subtitle_stream_script
-from scinoephile.media.subtitles.analysis.stats import (
-    get_subtitle_stream_stats,
-)
+from scinoephile.image.subtitles.cache import is_valid_image_subtitle_cache
 from scinoephile.media.subtitles.cache import (
     cache_subtitle_streams,
     get_cached_subtitle_stream_path,
 )
+from scinoephile.media.subtitles.image_cache import _get_cached_image_subtitle_dir_path
+from scinoephile.media.subtitles.script import analyze_subtitle_stream_script
+from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
 
 
-def test_subtitle_analysis_package_exports_result_types_only():
-    """Test subtitle analysis package has a narrow public API."""
-    assert subtitle_analysis.__all__ == [
-        "SubtitleScriptAnalysis",
-        "SubtitleStreamStats",
-    ]
+def test_subtitle_analysis_package_is_removed():
+    """Test old subtitle analysis package is removed."""
+    assert find_spec("scinoephile.media.subtitles.analysis") is None
 
 
 def test_subtitle_stream_uses_language_for_description_and_filename():
@@ -100,7 +93,7 @@ def test_get_cached_subtitle_stream_path_ignores_script_analysis_version(
         cache_dir_path=cache_dir_path,
     )
     monkeypatch.setattr(
-        "scinoephile.media.subtitles.analysis.cache_keys.SCRIPT_ANALYSIS_CACHE_VERSION",
+        "scinoephile.media.subtitles.script.SCRIPT_ANALYSIS_CACHE_VERSION",
         999,
     )
     changed = get_cached_subtitle_stream_path(
@@ -272,7 +265,7 @@ def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
     ) as load_image_series:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -298,7 +291,7 @@ def test_image_subtitle_manifest_without_span_is_invalid(tmp_path: Path):
         encoding="utf-8",
     )
 
-    assert not _is_valid_image_subtitle_cache(image_dir_path)
+    assert not is_valid_image_subtitle_cache(image_dir_path)
 
 
 def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
@@ -333,7 +326,7 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
     ) as load_image_series:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -374,7 +367,7 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.analysis.image_cache.ImageSeries.load",
+        "scinoephile.media.subtitles.image_cache.ImageSeries.load",
         return_value=image_series,
     ):
         stats = get_subtitle_stream_stats(
@@ -458,7 +451,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         fake_ocr_image_series_with_paddle,
     )
     with patch(
-        "scinoephile.media.subtitles.analysis.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
     ) as load_image_series:
         analysis = analyze_subtitle_stream_script(
             infile_path,

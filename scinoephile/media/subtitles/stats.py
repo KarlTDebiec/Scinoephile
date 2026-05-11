@@ -4,23 +4,35 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles.cache import load_image_subtitle_manifest
 from scinoephile.media.subtitles.cache import (
     cache_subtitle_streams,
     get_cached_subtitle_stream_path,
 )
 
-from .image_cache import (
-    get_or_create_image_subtitle_dir_path,
-    load_image_subtitle_manifest,
-)
-from .types import SubtitleStreamStats
+from .image_cache import get_or_create_image_subtitle_dir_path
 
-__all__ = ["get_subtitle_stream_stats"]
+__all__ = [
+    "SubtitleStreamStats",
+    "get_subtitle_stream_stats",
+]
+
+
+@dataclass(frozen=True)
+class SubtitleStreamStats:
+    """Derived subtitle stream statistics."""
+
+    event_count: int
+    """Number of subtitle events."""
+    first_start_ms: int | None
+    """First subtitle start time in milliseconds."""
+    last_end_ms: int | None
+    """Last subtitle end time in milliseconds."""
 
 
 def get_subtitle_stream_stats(
@@ -59,7 +71,7 @@ def get_subtitle_stream_stats(
     return _get_subtitle_series_stats(Series.load(stream_path))
 
 
-def _get_first_start_ms(series: Series | ImageSeries) -> int | None:
+def _get_first_start_ms(series: Series) -> int | None:
     """Get first subtitle start time from a series.
 
     Arguments:
@@ -88,7 +100,7 @@ def _get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
     )
 
 
-def _get_last_end_ms(series: Series | ImageSeries) -> int | None:
+def _get_last_end_ms(series: Series) -> int | None:
     """Get last subtitle end time from a series.
 
     Arguments:
@@ -101,7 +113,7 @@ def _get_last_end_ms(series: Series | ImageSeries) -> int | None:
     return max(event.end for event in series)
 
 
-def _get_subtitle_series_stats(series: Series | ImageSeries) -> SubtitleStreamStats:
+def _get_subtitle_series_stats(series: Series) -> SubtitleStreamStats:
     """Get subtitle stats from a loaded subtitle series.
 
     Arguments:

@@ -38,10 +38,9 @@ def with_stream_details(
         enriched stream metadata, with non-subtitle streams passed through unchanged
     """
     stream_list = list(streams)
-    subtitle_streams = []
-    for stream in stream_list:
-        if isinstance(stream, SubtitleStream):
-            subtitle_streams.append(stream)  # noqa: PERF401
+    subtitle_streams = [
+        stream for stream in stream_list if isinstance(stream, SubtitleStream)
+    ]
 
     if subtitle_streams:
         cache_subtitle_streams(

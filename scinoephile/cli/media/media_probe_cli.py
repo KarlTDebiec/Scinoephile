@@ -15,7 +15,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.media.probe import get_streams
-from scinoephile.media.subtitles.analysis.details import with_stream_details
+from scinoephile.media.subtitles.details import with_stream_details
 
 __all__ = ["MediaProbeCli"]
 
