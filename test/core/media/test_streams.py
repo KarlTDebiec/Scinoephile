@@ -5,7 +5,10 @@
 from __future__ import annotations
 
 import pytest
-from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
+from scinoephile.core.media.audio_stream import AudioStream
+from scinoephile.core.media.stream import Stream
+from scinoephile.core.media.subtitle_stream import SubtitleStream
+from scinoephile.core.media.video_stream import VideoStream
 
 from scinoephile.core import ScinoephileError
 

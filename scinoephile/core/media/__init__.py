@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
-from .streams import AudioStream, Stream, SubtitleStream, VideoStream
+from .audio_stream import AudioStream
+from .stream import Stream
+from .subtitle_stream import SubtitleStream
+from .video_stream import VideoStream
 
 __all__ = [
     "AudioStream",
