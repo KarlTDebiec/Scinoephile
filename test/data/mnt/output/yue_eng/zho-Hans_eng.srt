@@ -6,12 +6,12 @@ Why are we not there yet?
 2
 00:02:19,230 --> 00:02:22,000
 你不要这样，糖吃完就会到
-Don't be like that. We'll get there when your candy's gone.
+Don't be like that. We'll be there when you finish your candy.
 
 3
 00:02:23,000 --> 00:02:25,200
 这糖已是第八粒，骗人的
-This is my eighth candy. You're just fooling me.
+This is already my eighth piece. You tricked me.
 
 4
 00:02:32,110 --> 00:02:33,200
@@ -26,7 +26,7 @@ Have another caramel.
 6
 00:02:36,020 --> 00:02:37,680
 转了这个弯，就到了
-Once we turn this corner, we're there.
+Once we go around this bend, we'll be there.
 
 7
 00:02:42,850 --> 00:02:43,739
@@ -41,12 +41,12 @@ It's the perfect place for Mom to recover.
 9
 00:02:51,030 --> 00:02:52,346
 那个是谁
-Who is that?
+Who's that?
 
 10
 00:02:52,430 --> 00:02:54,560
 邮差叔叔，一定很快就到
-It's the postman. He'll be here any minute.
+It's the postman. He'll be here in a minute.
 
 11
 00:02:57,340 --> 00:02:58,670
@@ -56,7 +56,7 @@ Hello, Mr. Postman!
 12
 00:03:01,633 --> 00:03:02,856
 我是大卷草子！你好吗？
-I'm Satsuki Kusakabe! How do you do?
+I'm Kusakabe Satsuki! How do you do?
 
 13
 00:03:02,940 --> 00:03:04,100
@@ -66,17 +66,17 @@ Pleased to meet you.
 14
 00:03:17,443 --> 00:03:18,276
 次子，坐稳
-Mei, sit still.
+Mei, hold on tight.
 
 15
 00:03:18,360 --> 00:03:19,420
 这儿有很多弯角
-There are lots of curves here.
+There are lots of twists and turns here.
 
 16
 00:03:19,490 --> 00:03:21,120
 好晕呀，好晕呀
-I'm dizzy! I'm dizzy!
+I'm so dizzy! So dizzy!
 
 17
 00:03:31,870 --> 00:03:33,000
@@ -86,12 +86,12 @@ Hello there, little one.
 18
 00:03:33,070 --> 00:03:34,526
 你家人在家吗？
-Is your family home?
+Is anyone from your family home?
 
 19
 00:03:34,610 --> 00:03:36,200
 他们在对面干活
-They're working across the way.
+They're working across the road.
 
 20
 00:03:37,110 --> 00:03:38,110
@@ -101,7 +101,7 @@ Thank you.
 21
 00:03:40,510 --> 00:03:42,110
 大家好吗？
-How is everyone?
+How are you, everyone?
 
 22
 00:03:42,180 --> 00:03:44,340
@@ -111,17 +111,17 @@ I'm Kusakabe. We just moved here.
 23
 00:03:44,420 --> 00:03:46,510
 请多多指教
-Please take good care of us.
+It's a pleasure to meet you.
 
 24
 00:03:51,617 --> 00:03:52,506
 女儿人家都不害羞
-A young lady shouldn't be so shameless.
+Girls shouldn't be so shy.
 
 25
 00:03:52,590 --> 00:03:53,590
 和你很熟络吗
-Are you that close to him?
+Do you know him that well?
 
 26
 00:03:54,290 --> 00:03:55,290
@@ -131,7 +131,7 @@ Thank you.
 27
 00:04:03,800 --> 00:04:08,300
 哈⋯我搔你痒⋯搔你痒⋯哈⋯
-Ha… I'll tickle you… tickle you… ha…
+Ha… Tickle, tickle… Ha…
 
 28
 00:04:18,020 --> 00:04:19,366
@@ -141,12 +141,12 @@ We're finally here.
 29
 00:04:19,450 --> 00:04:20,450
 真好！
-Wonderful!
+This is great!
 
 30
 00:04:20,950 --> 00:04:21,980
 呀⋯等等我呀⋯
-Ah… wait for me…
+Oh… wait for me…
 
 31
 00:04:22,620 --> 00:04:23,620
@@ -181,7 +181,7 @@ You're so nearsighted. Be careful with your glasses.
 37
 00:04:35,770 --> 00:04:36,882
 小心，不要掉下河呀！
-Careful! Don't fall in the river!
+Careful! Don't fall into the river!
 
 38
 00:04:38,940 --> 00:04:39,940
@@ -191,12 +191,12 @@ Let's see if the house is pretty first.
 39
 00:04:42,840 --> 00:04:46,440
 让一让，让一让，我先看呀！
-Move aside, move aside! I want to look first!
+Move over, move over! I want to look first!
 
 40
 00:04:47,550 --> 00:04:48,640
 好漂亮呀，过去看看
-It's so pretty. Let's go over and see.
+It's so pretty. Let's go over there.
 
 41
 00:04:49,250 --> 00:04:51,010
@@ -211,7 +211,7 @@ Hurry up!
 43
 00:05:08,000 --> 00:05:11,730
 那么残旧，像是鬼屋
-It's so old, it looks like a haunted house.
+Looks like a haunted house!
 
 44
 00:05:12,753 --> 00:05:13,586
@@ -226,12 +226,12 @@ This is great! It's exciting!
 46
 00:05:21,180 --> 00:05:22,770
 那么儿戏，像是快塌下来
-It's so flimsy, like it's about to collapse.
+It looks so flimsy, like it could collapse any minute.
 
 47
 00:05:36,000 --> 00:05:37,000
 真好！
-Great!
+That's great!
 
 48
 00:05:47,910 --> 00:05:51,900
@@ -241,22 +241,22 @@ Mei, look at that tree…
 49
 00:05:52,910 --> 00:05:53,940
 好高好大呀，看看
-It's so tall and big. Look.
+It's so tall and huge. Look!
 
 50
 00:05:55,020 --> 00:05:56,866
 爸爸说我们小朋友的成就
-Dad said that what we kids achieve
+Dad says when we grow up,
 
 51
 00:05:56,950 --> 00:05:58,650
 日后要像这棵树那样
-should one day be like this tree,
+we should become like that tree
 
 52
 00:06:01,560 --> 00:06:03,390
 那么高大呀！
-so tall and big!
+and grow big and tall!
 
 53
 00:06:09,260 --> 00:06:11,060
@@ -276,17 +276,17 @@ An oak tree?
 56
 00:06:16,140 --> 00:06:17,900
 大笨象变的树吗？
-A tree turned from a big dumb elephant?
+A tree that turned into a big elephant?
 
 57
 00:06:27,980 --> 00:06:28,980
 小心点！
-Careful!
+Watch out!
 
 58
 00:06:31,650 --> 00:06:32,650
 有粒种子呀！
-There's an acorn!
+An acorn!
 
 59
 00:06:35,160 --> 00:06:36,576
@@ -301,7 +301,7 @@ No, no, no!
 61
 00:06:37,860 --> 00:06:39,160
 追到请你吃鸡腿
-Catch me and I'll buy you a drumstick!
+If you catch me, I'll buy you a chicken leg!
 
 62
 00:06:44,300 --> 00:06:45,790
@@ -311,7 +311,7 @@ I found a drumstick too!
 63
 00:06:52,270 --> 00:06:54,570
 鸡腿？在这裏怎会有鸡腿？
-Chicken legs? How could there be chicken legs here?
+Chicken drumsticks? Why would there be chicken drumsticks here?
 
 64
 00:06:55,480 --> 00:06:56,480
@@ -321,7 +321,7 @@ These!
 65
 00:06:56,980 --> 00:06:58,670
 我捡到粒种子，爸爸
-I found a seed, Dad.
+I found a seed, Daddy.
 
 66
 00:06:59,310 --> 00:07:00,370
@@ -331,17 +331,17 @@ I found one too!
 67
 00:07:05,490 --> 00:07:08,110
 种子？在屋裏怎会有种子？
-Acorns? How could there be acorns in the house?
+Seeds? How could there be seeds in the house?
 
 68
 00:07:08,720 --> 00:07:10,450
 是！为何会这样？
-Yeah! How could that happen?
+Yes! How could that happen?
 
 69
 00:07:11,020 --> 00:07:12,820
 可能是松鼠搬进来的
-Maybe squirrels brought them in.
+Maybe some squirrels moved in.
 
 70
 00:07:14,030 --> 00:07:15,090
@@ -351,17 +351,17 @@ Do squirrels know how to move house?
 71
 00:07:16,130 --> 00:07:17,790
 先生，这些东西搬到那裏？
-Sir, where should I put these things?
+Sir, where should I put these?
 
 72
 00:07:18,930 --> 00:07:20,760
 对不起，请搬进来，得罪了
-Sorry, please bring them in. Excuse us.
+Excuse me, please bring them in. Sorry for the trouble.
 
 73
 00:07:21,540 --> 00:07:22,652
 快点去打开后门透透气
-Go open the back door and air the place out.
+Hurry and open the back door to let some air in.
 
 74
 00:07:23,993 --> 00:07:24,826
@@ -376,7 +376,7 @@ Come on… come on… come on…
 76
 00:07:26,010 --> 00:07:27,122
 这两个小妹妹，很聪明
-These two little girls are very smart.
+These two little girls are very clever.
 
 77
 00:07:31,010 --> 00:07:31,880
@@ -386,7 +386,7 @@ Come on, hurry up.
 78
 00:07:31,950 --> 00:07:33,380
 追我呀，追我呀
-Catch me, catch me!
+Catch me! Catch me!
 
 79
 00:07:34,510 --> 00:07:36,210
@@ -401,12 +401,12 @@ Open it!
 81
 00:07:45,930 --> 00:07:46,930
 先看看
-Let's take a look first.
+Let's have a look first.
 
 82
 00:08:04,680 --> 00:08:09,240
 呀⋯
-Oh…
+Ah…
 
 83
 00:08:13,590 --> 00:08:14,710
@@ -416,12 +416,12 @@ Mm, no problem!
 84
 00:08:17,390 --> 00:08:19,860
 爸爸说，见到鬼怪就要靠嚇
-Dad said if you see ghosts, you scare them away.
+Dad says if you see ghosts, you have to scare them away.
 
 85
 00:08:20,890 --> 00:08:22,576
 不见了？
-They're gone?
+They disappeared?
 
 86
 00:08:22,660 --> 00:08:23,660
@@ -431,7 +431,7 @@ Where'd they go?
 87
 00:08:26,970 --> 00:08:27,886
 不见了？
-They're gone?
+They disappeared?
 
 88
 00:08:27,970 --> 00:08:29,160
@@ -441,17 +441,17 @@ Let's go look.
 89
 00:08:31,170 --> 00:08:32,930
 是嘛，看看还有没有未走的
-Really? Let's see if there are any left.
+I see. Let's check if there are any left.
 
 90
 00:08:34,470 --> 00:08:35,470
 没有！
-None!
+No!
 
 91
 00:08:37,610 --> 00:08:38,996
 那边是浴室
-That's the bathroom.
+The bathroom's over there.
 
 92
 00:08:39,080 --> 00:08:40,510
@@ -466,17 +466,17 @@ What?
 94
 00:08:42,180 --> 00:08:44,080
 那些鬼怪给我们两个嚇倒
-The two of us scared those ghosts off.
+The two of us scared those ghosts away.
 
 95
 00:08:44,180 --> 00:08:46,080
 进了浴室那边，现在不见了
-They ran into the bathroom, and now they're gone.
+They went into the bathroom, and now they're gone.
 
 96
 00:08:47,190 --> 00:08:48,190
 让我看看
-Let me take a look.
+Let me have a look.
 
 97
 00:09:00,500 --> 00:09:01,500
@@ -496,12 +496,12 @@ Soot sprites, not ghosts?
 100
 00:09:07,710 --> 00:09:09,330
 你们刚在外面那么光进屋
-You just came in from the bright outdoors,
+You came in from that bright sunshine outside,
 
 101
 00:09:09,410 --> 00:09:10,410
 所以眼花！
-so your eyes got dazzled!
+so your eyes were playing tricks on you!
 
 102
 00:09:16,120 --> 00:09:18,740
@@ -511,27 +511,27 @@ I'm telling you, once the sunlight shines into the house,
 103
 00:09:19,320 --> 00:09:20,550
 什么鬼怪都会跑光的
-all the ghosts and goblins will run away.
+all the ghosts and goblins run away.
 
 104
 00:09:22,020 --> 00:09:23,050
 见光就跑的！
-They run the minute they see the light!
+They run the second they see the light!
 
 105
 00:09:24,160 --> 00:09:30,460
 煤炭屎鬼跑了，鬼怪全不见了
-The soot sprites ran off. All the ghosts are gone.
+The soot sprites ran away, and all the ghosts are gone.
 
 106
 00:09:31,230 --> 00:09:32,790
 真好⋯哈⋯
-That's good… Ha…
+That's great… Ha…
 
 107
 00:09:36,040 --> 00:09:38,270
 你们不要玩了，快点去做事
-Stop playing around. Hurry up and get to work.
+Stop playing around and get to work.
 
 108
 00:09:38,940 --> 00:09:40,100
@@ -541,12 +541,12 @@ Do you know how to get to the second floor?
 109
 00:09:42,340 --> 00:09:45,196
 快上二楼，将所有的窗打开
-Go up to the second floor and open all the windows.
+Hurry upstairs and open all the windows.
 
 110
 00:09:45,280 --> 00:09:46,280
 是！
-Yes!
+Okay!
 
 111
 00:09:46,850 --> 00:09:47,850
@@ -596,7 +596,7 @@ Where are they?
 120
 00:10:06,670 --> 00:10:08,130
 没有的
-They're not here.
+They aren't here.
 
 121
 00:10:18,810 --> 00:10:21,370
@@ -606,7 +606,7 @@ Not here, not here.
 122
 00:10:25,490 --> 00:10:26,490
 会不会在这儿？
-Could they be here?
+Could they be over here?
 
 123
 00:10:32,630 --> 00:10:33,720
@@ -621,7 +621,7 @@ It's so dark. Do you think there might be…
 125
 00:10:44,740 --> 00:10:45,740
 煤炭屎？
-Dustbunnies again?
+soot sprites?
 
 126
 00:10:47,610 --> 00:10:48,610
@@ -631,7 +631,7 @@ What's that sound?
 127
 00:10:52,650 --> 00:10:53,650
 鸡腿？
-A chicken leg?
+A drumstick?
 
 128
 00:11:00,350 --> 00:11:03,690
@@ -641,27 +641,27 @@ The soot sprites ran away.
 129
 00:11:23,940 --> 00:11:24,940
 用绝招
-Use your secret move!
+Use your secret weapon.
 
 130
 00:11:43,360 --> 00:11:44,920
 这么大胆戏弄我们两个
-How dare you make fools of us like that.
+How dare you tease the two of us like that.
 
 131
 00:11:45,000 --> 00:11:46,470
 让我应付你
-I'll deal with you.
+I'll take care of you.
 
 132
 00:11:53,970 --> 00:11:54,970
 有煤炭屎鬼
-There are soot sprites.
+There are soot sprites!
 
 133
 00:11:55,910 --> 00:11:57,170
 次子，快帮手
-Mei, help me out!
+Mei, come help me!
 
 134
 00:12:09,090 --> 00:12:10,606
@@ -681,27 +681,27 @@ Dad! Dad!
 137
 00:12:14,090 --> 00:12:15,690
 屋裏又有鬼怪
-There are ghosts in the house again.
+There are ghosts in the house again!
 
 138
 00:12:17,230 --> 00:12:20,016
 你打开窗就不用怕那些鬼怪
-If you open the windows, you won't be afraid of those ghosts.
+If you open the windows, you won't be scared of ghosts.
 
 139
 00:12:20,100 --> 00:12:22,360
 爸爸高大威猛，又英明神武
-Dad is big and strong, and wise and heroic.
+Dad is big and brave, and really amazing too.
 
 140
 00:12:25,310 --> 00:12:26,310
 糟糕！
-That's not good!
+Oh no!
 
 141
 00:13:12,850 --> 00:13:14,410
 真好，我捉到
-Great, I caught one!
+I got one!
 
 142
 00:13:28,500 --> 00:13:32,560
@@ -716,22 +716,22 @@ Satsuki! Satsuki!
 144
 00:13:40,480 --> 00:13:41,670
 真是活泼可爱
-What lively little darlings.
+You're so lively and adorable.
 
 145
 00:13:42,280 --> 00:13:44,810
 这位就是住在我们邻家的八婶
-This is Granny, our neighbor.
+This is Granny from next door.
 
 146
 00:13:44,880 --> 00:13:46,750
 她好好人，快点叫人
-She's very kind. Say hello.
+She's very kind, so say hello.
 
 147
 00:13:47,490 --> 00:13:48,650
 八婆，你好吗？
-How are you, Granny?
+Hello, Granny.
 
 148
 00:13:49,520 --> 00:13:50,520
@@ -756,12 +756,12 @@ I didn't have time to help you clean up.
 152
 00:13:58,700 --> 00:13:59,930
 真是不好意思
-I'm terribly sorry.
+I'm so sorry.
 
 153
 00:14:01,030 --> 00:14:02,870
 你太客气了
-You're too polite.
+You're too kind.
 
 154
 00:14:03,400 --> 00:14:05,230
@@ -771,7 +771,7 @@ We're neighbors, after all.
 155
 00:14:05,310 --> 00:14:07,030
 好应该互相帮助的
-We should help each other.
+Of course we should help each other.
 
 156
 00:14:09,710 --> 00:14:12,370
@@ -791,12 +791,12 @@ Look at your feet.
 159
 00:14:20,920 --> 00:14:22,620
 为何会这样？
-Why are they like that?
+How did they get like that?
 
 160
 00:14:25,230 --> 00:14:28,130
 原来你们见到煤炭屎鬼
-So you saw the soot sprites.
+So you two saw soot sprites.
 
 161
 00:14:31,630 --> 00:14:34,586
@@ -811,7 +811,7 @@ Soot sprites?
 163
 00:14:36,040 --> 00:14:37,956
 那些飞来飞去，神出鬼没
-Those things that fly around and pop in and out?
+The ones that fly around and pop in and out?
 
 164
 00:14:38,040 --> 00:14:39,370
@@ -821,7 +821,7 @@ They're really called soot sprites?
 165
 00:14:40,840 --> 00:14:43,470
 你不用怕，根据这儿的传说
-Don't be scared. According to the legend here,
+You don't need to be scared. According to the stories around here,
 
 166
 00:14:43,540 --> 00:14:45,996
@@ -831,7 +831,7 @@ only good children
 167
 00:14:46,080 --> 00:14:48,550
 才可以见到煤炭屎鬼的
-can see the soot sprites.
+can see soot sprites.
 
 168
 00:14:50,380 --> 00:14:52,610
@@ -846,12 +846,12 @@ When I was little, I was even prettier than you two.
 170
 00:14:57,260 --> 00:14:58,780
 这山区真是很特别
-These mountains really are special.
+These mountains are a very special place.
 
 171
 00:15:00,560 --> 00:15:02,990
 煤炭屎鬼是不会伤害小朋友
-The soot sprites won't hurt children.
+Soot sprites won't hurt children.
 
 172
 00:15:03,900 --> 00:15:06,090
@@ -866,7 +866,7 @@ they'll help you.
 174
 00:15:09,600 --> 00:15:11,616
 甚至你有什么求它们
-Even if you ask them for something,
+If there's anything you ask of them,
 
 175
 00:15:11,700 --> 00:15:12,930
@@ -876,42 +876,42 @@ they'll help you with that too.
 176
 00:15:17,380 --> 00:15:18,280
 你这样嚇它
-If you scare them like that,
+You'll scare them like that.
 
 177
 00:15:18,380 --> 00:15:20,280
 它们可能已经飞走了
-they've probably flown away already.
+They've probably flown away already.
 
 178
 00:15:20,880 --> 00:15:22,040
 我早说不用怕的
-I told you, there's nothing to be scared of.
+See? I told you there was nothing to be scared of.
 
 179
 00:15:22,820 --> 00:15:24,036
 我早说不用怕的
-I told you, there's nothing to be scared of.
+I told you there was nothing to be scared of.
 
 180
 00:15:24,120 --> 00:15:26,240
 那么大的煤炭屎鬼，你也不怕
-You're not even scared of soot sprites that big.
+You're not even scared of a soot sprite that big.
 
 181
 00:15:26,890 --> 00:15:28,180
 你不用嚇我
-You don't have to scare me.
+Don't try to scare me.
 
 182
 00:15:28,920 --> 00:15:31,890
 你半夜不要叫我起来陪你上厕
-Don't wake me up in the middle of the night to go to the bathroom with you.
+Then don't wake me up in the middle of the night to go to the bathroom with you.
 
 183
 00:15:34,190 --> 00:15:36,716
 小朋友，真可爱
-What cute children.
+What adorable children.
 
 184
 00:15:36,800 --> 00:15:39,420
@@ -926,7 +926,7 @@ Okay, Granny.
 186
 00:15:40,700 --> 00:15:41,960
 真好，有水玩了
-Great, we get to play with water.
+Yay, we get to play with water!
 
 187
 00:15:42,800 --> 00:15:44,000
@@ -941,17 +941,17 @@ Come on, hurry up!
 189
 00:15:58,020 --> 00:15:59,020
 是
-Okay.
+Yes, sir!
 
 190
 00:16:11,330 --> 00:16:12,490
 八婆呀，有水了
-Granny, there's water!
+Granny, we've got water!
 
 191
 00:16:13,470 --> 00:16:16,200
 继续打水，不要让它停止
-Keep pumping. Don't let it stop.
+Keep pumping! Don't let it stop!
 
 192
 00:16:17,840 --> 00:16:18,840
@@ -971,12 +971,12 @@ Oh, it's you.
 195
 00:17:02,820 --> 00:17:03,870
 你来找谁？
-Who are you looking for?
+Who are you here to see?
 
 196
 00:17:05,080 --> 00:17:07,810
 我⋯我⋯我⋯我来找祖母的
-I-I-I-I'm here to see Granny.
+I-I-I came to see Granny.
 
 197
 00:17:09,890 --> 00:17:10,890
@@ -986,7 +986,7 @@ Your granny?
 198
 00:17:13,130 --> 00:17:14,130
 拿著
-Here, take it.
+Here, take this.
 
 199
 00:17:17,800 --> 00:17:18,800
@@ -1001,17 +1001,17 @@ Scaredy-cat.
 201
 00:17:23,300 --> 00:17:26,526
 不要叫我害羞仔
-Don't call me a scaredy-cat.
+Don't call me a scaredy-cat!
 
 202
 00:17:26,610 --> 00:17:28,440
 特别在这么丑怪的女孩面前
-Especially not in front of an ugly girl like this.
+Especially not in front of such an ugly girl!
 
 203
 00:17:29,310 --> 00:17:30,310
 真没礼貌
-How rude.
+How rude!
 
 204
 00:17:40,120 --> 00:17:42,280
@@ -1021,7 +1021,7 @@ Your grandson is so shy, just like I was when I was little.
 205
 00:17:44,120 --> 00:17:46,060
 他拿来的糯米团，很好屹
-The rice cakes he brought are delicious.
+The rice cakes he brought are really good.
 
 206
 00:17:46,130 --> 00:17:47,560
@@ -1061,7 +1061,7 @@ This place… everything here
 213
 00:18:49,690 --> 00:18:51,210
 都好像充满生命
-seems so full of life.
+feels so full of life.
 
 214
 00:19:16,220 --> 00:19:18,650
@@ -1071,22 +1071,22 @@ The wind sounds like ghosts howling. It's scary.
 215
 00:19:21,220 --> 00:19:23,550
 傻瓜，风不用怕
-Silly, there's nothing to be afraid of in the wind.
+Silly, there's nothing to be afraid of. It's only the wind.
 
 216
 00:19:59,360 --> 00:20:01,206
 八婶说见到怕的东西
-Granny says if you see something scary,
+Granny says when you see something scary,
 
 217
 00:20:01,290 --> 00:20:02,350
 对它微笑就没事的
-just smile at it and you'll be fine.
+if you smile at it, you'll be all right.
 
 218
 00:20:05,260 --> 00:20:06,630
 你大笑即是很害怕
-If you're laughing like that, it means you're really scared.
+If you're laughing that hard, it means you're really scared.
 
 219
 00:20:08,570 --> 00:20:09,630
@@ -1101,12 +1101,12 @@ No, don't! I'm ticklish!
 221
 00:20:53,710 --> 00:20:57,036
 踩呀⋯
-Pedal…
+Pedal!
 
 222
 00:20:57,120 --> 00:20:59,780
 爸爸继续努力
-Keep it going, Dad.
+Keep it up, Dad!
 
 223
 00:21:05,860 --> 00:21:06,760
@@ -1116,12 +1116,12 @@ Here it comes, okay?
 224
 00:21:06,830 --> 00:21:08,190
 好了，大功告成
-All right, that's done.
+All right, that's all done.
 
 225
 00:21:08,260 --> 00:21:09,093
 我们去探妈咪
-We're going to visit Mom.
+We're going to see Mom.
 
 226
 00:21:09,160 --> 00:21:10,190
@@ -1131,7 +1131,7 @@ That's great.
 227
 00:21:13,130 --> 00:21:14,390
 去医院探妈咪
-We're going to the hospital to visit Mom.
+We're going to the hospital to see Mom.
 
 228
 00:21:16,370 --> 00:21:17,370
@@ -1146,7 +1146,7 @@ All right, let's get going.
 230
 00:21:37,690 --> 00:21:41,290
 八婆，你好吗？
-How are you, Granny?
+Granny, how are you?
 
 231
 00:21:42,190 --> 00:21:43,680
@@ -1156,7 +1156,7 @@ Granny, we're heading out.
 232
 00:21:44,460 --> 00:21:46,290
 你们去哪儿？
-Where're you all heading?
+Where are you going?
 
 233
 00:21:47,270 --> 00:21:49,430
@@ -1166,22 +1166,22 @@ We're going to visit Mom in the hospital.
 234
 00:21:50,270 --> 00:21:52,570
 问医生她何时可以出院
-To ask the doctor when she can leave the hospital
+To ask the doctor when she can leave
 
 235
 00:21:53,370 --> 00:21:55,000
 回家休养？
-and come home to recuperate?
+and come home to rest?
 
 236
 00:21:55,570 --> 00:21:57,010
 好，再见
-Okay, goodbye.
+All right, goodbye.
 
 237
 00:22:13,690 --> 00:22:14,720
 那儿呀
-It's over there!
+Over there!
 
 238
 00:22:14,790 --> 00:22:15,790
@@ -1236,12 +1236,12 @@ Do I?
 248
 00:22:58,240 --> 00:23:00,400
 爸爸和医生商量你出院的事
-Dad is talking to the doctor about your discharge.
+Dad's talking to the doctor about when you can leave the hospital.
 
 249
 00:23:01,070 --> 00:23:02,540
 是呀，我就快可以出院
-Yes, I'll be able to leave the hospital soon.
+Yes, I should be able to leave the hospital soon.
 
 250
 00:23:03,640 --> 00:23:04,940
@@ -1251,22 +1251,22 @@ How's the new house?
 251
 00:23:05,440 --> 00:23:06,440
 你们执拾好东西吗？
-Have you finished unpacking?
+Have you unpacked everything?
 
 252
 00:23:12,590 --> 00:23:14,140
 傻瓜，不要疑神疑鬼
-Silly, don't be so paranoid.
+Silly, don't be so jumpy.
 
 253
 00:23:14,750 --> 00:23:16,590
 妈咪，你怕煤炭屎鬼吗？
-Mom, are you afraid of soot sprites?
+Mom, are you scared of soot sprites?
 
 254
 00:23:17,190 --> 00:23:19,660
 心裏没鬼怪，又怎会见到鬼怪呢
-If there are no ghosts in your heart, how could you see any ghosts?
+If there's nothing to fear in your heart, then you won't see any ghosts.
 
 255
 00:23:20,590 --> 00:23:21,590
@@ -1306,12 +1306,12 @@ Mei's hair…
 262
 00:23:34,010 --> 00:23:35,300
 是你帮她梳的吗，草子？
-Did you brush it for her, Satsuki?
+Did you comb it for her, Satsuki?
 
 263
 00:23:36,980 --> 00:23:39,540
 真棒，有进步
-Very nice. You're improving.
+Very nice. You've improved.
 
 264
 00:23:40,810 --> 00:23:42,710
@@ -1346,22 +1346,22 @@ I like it.
 270
 00:23:51,390 --> 00:23:52,506
 我也要梳呀
-I want mine brushed too.
+I want mine brushed too!
 
 271
 00:23:52,590 --> 00:23:53,590
 你等一会儿
-You wait a minute.
+Wait a minute.
 
 272
 00:23:54,290 --> 00:23:55,780
 好了，不要整天争著
-All right, don't keep fighting over it.
+All right, stop fussing all the time.
 
 273
 00:23:56,600 --> 00:23:58,220
 让我帮姐姐梳完才和你梳好吗？
-Let me finish brushing Satsuki's first, then I'll do yours, okay?
+Let me finish brushing Satsuki's hair, then I'll do yours, okay?
 
 274
 00:23:59,400 --> 00:24:00,420
@@ -1376,12 +1376,12 @@ will my hair be like yours, Mom?
 276
 00:24:03,900 --> 00:24:06,130
 会，因为你样子像妈咪
-Yes, because you look like Mom.
+It will, because you look like me.
 
 277
 00:24:25,420 --> 00:24:26,754
 爸爸，妈咪好像康复了很多
-Dad, Mom looks a lot better.
+Dad, Mom seems a lot better.
 
 278
 00:24:27,330 --> 00:24:28,546
@@ -1396,17 +1396,17 @@ The doctor said she'll be able to leave the hospital and come home soon.
 280
 00:24:31,430 --> 00:24:32,490
 是不是明天
-You mean tomorrow?
+Will it be tomorrow?
 
 281
 00:24:33,670 --> 00:24:34,830
 傻瓜，怎会那么快
-Silly, how could it be that soon?
+Silly, not that soon.
 
 282
 00:24:35,940 --> 00:24:37,130
 最快也要下星期
-The soonest would be next week.
+The soonest will be next week.
 
 283
 00:24:38,040 --> 00:24:41,030
@@ -1416,12 +1416,12 @@ After Mom comes home, I want her to hold me while I sleep.
 284
 00:24:41,570 --> 00:24:42,956
 你不是说你长大了
-Didn't you say you'd grown up
+Didn't you say you were all grown up?
 
 285
 00:24:43,040 --> 00:24:44,840
 不用人陪你睡觉，忘记了？
-and didn't need anyone to sleep with you anymore? Forgot?
+That you didn't need anyone to sleep with you anymore, remember?
 
 286
 00:24:45,980 --> 00:24:47,092
@@ -1436,7 +1436,7 @@ Lazy Dad, wake up!
 288
 00:25:16,810 --> 00:25:18,500
 懒惰爸爸，起床啦⋯
-Wake up, sleepy Daddy…
+Wake up, sleepy Dad…
 
 289
 00:25:24,980 --> 00:25:27,006
@@ -1461,12 +1461,12 @@ I've already made it, so don't worry.
 293
 00:25:33,590 --> 00:25:34,590
 一阵烧焦味
-It smells like something's burning.
+Something smells burnt.
 
 294
 00:25:34,690 --> 00:25:39,490
 你乱说，我煮的东西很好吃的
-Don't be silly. What I cook is delicious.
+That's not true. What I cook is delicious.
 
 295
 00:25:41,100 --> 00:25:42,230
@@ -1486,17 +1486,17 @@ Mei, this lunch box is yours.
 298
 00:25:52,310 --> 00:25:54,840
 草子，上学啦
-Satsuki, it's time for school.
+Satsuki, it's time for school!
 
 299
 00:25:55,810 --> 00:25:56,836
 阿信找我
-Ashin's looking for me.
+Shin's looking for me.
 
 300
 00:25:56,920 --> 00:25:57,920
 来了⋯
-Coming…
+I'm coming!
 
 301
 00:26:01,050 --> 00:26:02,450
@@ -1506,27 +1506,27 @@ You made a friend already?
 302
 00:26:03,420 --> 00:26:05,336
 姐姐很受同学欢迎的
-Big sis is really popular with her classmates.
+Big sis is really popular at school.
 
 303
 00:26:05,420 --> 00:26:09,590
 他叫阿信，我上学啦
-His name is Ashin. I'm off to school.
+His name is Shin. I'm off to school!
 
 304
 00:26:12,330 --> 00:26:13,330
 再见
-Bye.
+Bye!
 
 305
 00:26:13,970 --> 00:26:15,460
 路上要小心呀
-Be careful on the way.
+Be careful on your way!
 
 306
 00:26:17,423 --> 00:26:18,256
 早安，阿信
-Morning, Ashin.
+Morning, Shin.
 
 307
 00:26:18,340 --> 00:26:19,173
@@ -1536,7 +1536,7 @@ Hurry up.
 308
 00:26:19,257 --> 00:26:20,257
 迟到了
-We're late.
+We're late!
 
 309
 00:26:22,640 --> 00:26:25,010
@@ -1571,12 +1571,12 @@ Dad, is it lunchtime yet?
 315
 00:27:06,890 --> 00:27:10,010
 刚刚吃完早餐又吃午餐，你傻了
-We just finished breakfast, and now lunch? You're silly.
+We just finished breakfast. You're silly.
 
 316
 00:27:20,900 --> 00:27:22,700
 先生，买花吗？
-Flowers, sir?
+Sir, would you like to buy some flowers?
 
 317
 00:27:39,450 --> 00:27:40,450
@@ -1586,22 +1586,22 @@ What are these things?
 318
 00:27:51,260 --> 00:27:52,260
 找水桶盛著它
-Get a bucket to catch it.
+Put it in a bucket.
 
 319
 00:27:55,830 --> 00:27:56,830
 有了
-There it is.
+There is.
 
 320
 00:28:00,670 --> 00:28:01,670
 有洞的
-It has a hole in it.
+It's got a hole in it.
 
 321
 00:28:15,650 --> 00:28:16,650
 鸡腿？
-Chicken drumstick?
+Chicken?
 
 322
 00:28:20,360 --> 00:28:23,916
@@ -1616,7 +1616,7 @@ Three more! Four more!
 324
 00:28:26,270 --> 00:28:27,390
 很多呀
-There are lots of them!
+There are so many!
 
 325
 00:28:27,470 --> 00:28:29,730
@@ -1626,12 +1626,12 @@ There are so many!
 326
 00:28:37,180 --> 00:28:38,940
 池池喳⋯
-Chirp, chirp…
+Tweet, tweet…
 
 327
 00:28:39,010 --> 00:28:40,980
 池池喳⋯
-Chirp, chirp…
+Tweet, tweet…
 
 328
 00:29:17,320 --> 00:29:18,320
@@ -1655,43 +1655,43 @@ Don't go!
 
 332
 00:29:40,752 --> 00:29:42,086
-BOm BOm Bart
-BOm BOm Bart
+Bom Bom Bart
+Bom Bom Bart
 
 333
 00:29:42,170 --> 00:29:43,504
-BOm BOm Bart
-BOm BOm Bart
+Bom Bom Bart
+Bom Bom Bart
 
 334
 00:29:43,588 --> 00:29:44,922
-BOm BOm Bart
-BOm BOm Bart
+Bom Bom Bart
+Bom Bom Bart
 
 335
 00:29:45,006 --> 00:29:46,340
-BOm BOm Bart
-BOm BOm Bart
+Bom Bom Bart
+Bom Bom Bart
 
 336
 00:30:14,945 --> 00:30:16,279
-BOm BOm Bart
-Bom bom ba!
+Bom Bom Bart
+Bom Bom Bart
 
 337
 00:30:16,363 --> 00:30:17,196
 池池喳⋯
-Chitty chitty…
+Chitter chatter…
 
 338
 00:30:17,280 --> 00:30:18,614
-BOm BOm Bart
-Bom bom ba!
+Bom Bom Bart
+Bom Bom Bart
 
 339
 00:30:18,698 --> 00:30:19,748
 池池喳⋯
-Chitty chitty…
+Chitter chatter…
 
 340
 00:30:31,390 --> 00:30:32,390
@@ -1701,32 +1701,32 @@ Don't go…
 341
 00:30:35,290 --> 00:30:36,690
 追呀⋯
-Get it!
+Come on, let's chase it…
 
 342
 00:30:57,988 --> 00:30:59,766
-快走呀，BOm BOm Bart
-Run, Bom Bom Bart!
+快走呀，Bom Bom Bart
+Come on, Bom Bom Bart!
 
 343
 00:30:59,850 --> 00:31:01,936
 有只粉红色的怪物在追我们
-A pink monster is chasing us!
+A pink monster's chasing us!
 
 344
 00:31:02,020 --> 00:31:03,020
 快点回去主人那儿
-Hurry back to your master!
+Let's hurry back to our master!
 
 345
 00:32:23,923 --> 00:32:24,756
 我笃
-Poke.
+I found you!
 
 346
 00:32:24,840 --> 00:32:25,840
 我笃
-Poke.
+I found you!
 
 347
 00:32:30,040 --> 00:32:31,040
@@ -1736,22 +1736,22 @@ This is fun!
 348
 00:32:32,810 --> 00:32:35,440
 好像棉胎那么软的
-It's soft as a mattress.
+It's soft, like a fluffy blanket.
 
 349
 00:33:42,580 --> 00:33:44,410
 你样子好像只大鸡腿呀
-You look just like a giant drumstick.
+You look like a giant drumstick.
 
 350
 00:33:53,530 --> 00:33:55,890
 你是森林之王龙猫吗？
-Are you Totoro, the king of the forest?
+Are you Totoro, the King of the Forest?
 
 351
 00:34:06,540 --> 00:34:10,000
 有人没刷牙呀
-Someone didn't brush their teeth.
+Somebody didn’t brush their teeth!
 
 352
 00:34:22,420 --> 00:34:26,876
@@ -1771,22 +1771,22 @@ Okay?
 355
 00:35:17,080 --> 00:35:18,010
 池池喳⋯
-Chitter chatter…
+Chit-chat…
 
 356
 00:35:18,080 --> 00:35:19,670
-BOm BOm Bart⋯
-Bom bom bart…
+Bom Bom Bart⋯
+Bom Bom Bart…
 
 357
 00:35:46,593 --> 00:35:47,426
 就这样，再见
-See ya, then.
+Well then, goodbye.
 
 358
 00:35:47,510 --> 00:35:48,530
 再见
-See you later!
+Goodbye.
 
 359
 00:35:51,410 --> 00:35:52,356
@@ -1796,7 +1796,7 @@ I'm home!
 360
 00:35:52,440 --> 00:35:54,140
 回来了，原来这么晚了
-Welcome back. It's gotten so late.
+Welcome back. It's so late already.
 
 361
 00:35:54,750 --> 00:35:56,010
@@ -1811,7 +1811,7 @@ She was just outside playing.
 363
 00:35:59,420 --> 00:36:00,566
 就到晚饭时间
-It's almost dinnertime.
+It's already time for dinner.
 
 364
 00:36:00,650 --> 00:36:03,310
@@ -1831,17 +1831,17 @@ Mei!
 367
 00:36:17,640 --> 00:36:20,540
 爸爸，次子的帽子在这儿呀
-Dad, Mei's hat is here!
+Dad, Mei's hat is over here!
 
 368
 00:36:36,860 --> 00:36:37,980
 次子呀，次子
-Mei, Mei.
+Mei. Mei.
 
 369
 00:36:45,760 --> 00:36:47,200
 次子起床呀
-Mei, wake up.
+Mei, wake up!
 
 370
 00:36:49,670 --> 00:36:51,100
@@ -1876,27 +1876,27 @@ I saw a Totoro that looked like a big drumstick.
 376
 00:37:05,520 --> 00:37:07,540
 龙猫，在漫画书裏面才有的
-Totoro? Those only exist in picture books.
+Totoro? That's only in picture books.
 
 377
 00:37:08,320 --> 00:37:10,520
 真是有龙猫的
-Totoro really does exist.
+There really is a Totoro.
 
 378
 00:37:11,520 --> 00:37:14,750
 它全身都是毛，口是这样的
-He was all furry, and his mouth was like this.
+It was all furry, and its mouth was like this.
 
 379
 00:37:15,590 --> 00:37:18,760
 有只这么大，有只大些
-There was one this big, and one bigger.
+One was this big, and one was bigger,
 
 380
 00:37:19,430 --> 00:37:21,990
 有只还更大的在睡觉呀
-And an even bigger one was sleeping.
+and there was an even bigger one sleeping.
 
 381
 00:37:26,100 --> 00:37:27,100
@@ -1906,7 +1906,7 @@ There you are.
 382
 00:37:28,710 --> 00:37:30,870
 地方不错，十足基地一样
-This is a nice spot, just like a secret base.
+This is a nice spot. It's just like a hideout.
 
 383
 00:37:31,740 --> 00:37:32,573
@@ -1926,7 +1926,7 @@ Totoro?
 386
 00:37:37,720 --> 00:37:39,240
 来啦⋯
-Coming…
+Come on…
 
 387
 00:37:45,520 --> 00:37:46,520
@@ -1981,7 +1981,7 @@ You don't believe me?
 397
 00:38:34,110 --> 00:38:35,110
 次子
-Mei.
+Mei,
 
 398
 00:38:36,070 --> 00:38:37,070
@@ -1996,7 +1996,7 @@ Daddy and Satsuki both believe you.
 400
 00:38:40,780 --> 00:38:42,270
 你一定会见到这个森林的主人
-You must have seen the master of this forest.
+You must have seen the guardian of this forest.
 
 401
 00:38:43,280 --> 00:38:44,736
@@ -2016,12 +2016,12 @@ Not every child gets to see him.
 404
 00:38:49,920 --> 00:38:51,720
 你见到它，是会带来好运的
-Seeing him brings you good luck.
+If you see him, it brings you good luck.
 
 405
 00:38:54,230 --> 00:38:56,306
 好了，我们不如到附近走走
-All right, why don't we take a walk nearby?
+All right, let's go for a walk nearby.
 
 406
 00:38:56,390 --> 00:38:57,316
@@ -2041,22 +2041,22 @@ Okay!
 409
 00:39:09,040 --> 00:39:11,010
 骑牛牛很好玩
-Riding on your shoulders is fun!
+It's fun riding on Daddy's back.
 
 410
 00:39:12,310 --> 00:39:13,940
 爸爸，快点
-Dad, hurry!
+Come on, Dad!
 
 411
 00:39:14,710 --> 00:39:15,710
 爸爸，快点
-Dad, hurry!
+Come on, Dad!
 
 412
 00:39:17,020 --> 00:39:19,666
 次子，你越来越重了
-You're getting heavier and heavier, Mei.
+You're getting heavy, Mei…
 
 413
 00:39:19,750 --> 00:39:20,750
@@ -2071,22 +2071,22 @@ It's huge!
 415
 00:39:31,030 --> 00:39:32,460
 是这棵树了
-This is the tree.
+It's this tree.
 
 416
 00:39:33,230 --> 00:39:34,186
 是这棵树了
-This is the tree.
+It's this tree.
 
 417
 00:39:34,270 --> 00:39:35,486
 是呀
-Yep.
+Yeah.
 
 418
 00:39:35,570 --> 00:39:36,403
 爸爸
-Dad.
+Dad!
 
 419
 00:39:36,487 --> 00:39:37,827
@@ -2131,7 +2131,7 @@ People in the country say you can't see it all the time.
 427
 00:40:06,060 --> 00:40:07,460
 除非⋯好运气的人
-Unless… you're lucky.
+Only the lucky ones can…
 
 428
 00:40:09,970 --> 00:40:12,116
@@ -2141,17 +2141,17 @@ Daddy grew up in this forest when he was little.
 429
 00:40:12,200 --> 00:40:13,200
 好挂念这儿
-I've missed this place so much.
+I've missed it so much.
 
 430
 00:40:15,570 --> 00:40:17,510
 希望妈妈她在这儿养病
-I hope Mom can recover here.
+I hope Mom can rest here and get well soon.
 
 431
 00:40:17,580 --> 00:40:18,580
 早点康复
-And get well soon.
+Get better soon.
 
 432
 00:40:20,180 --> 00:40:21,770
@@ -2176,7 +2176,7 @@ Come on, let's say goodbye to Totoro.
 436
 00:40:29,390 --> 00:40:30,606
 要回家吃饭
-It's time to go home for lunch.
+It's time to go home and eat.
 
 437
 00:40:30,690 --> 00:40:33,406
@@ -2211,12 +2211,12 @@ Goodbye, Totoro.
 443
 00:40:44,440 --> 00:40:45,956
 看谁走得快
-Let's see who can get there first.
+Let's see who gets there first.
 
 444
 00:40:46,040 --> 00:40:47,800
 爸爸骗人，等等我
-Daddy, that's cheating! Wait for me!
+Daddy, that's not fair! Wait for me!
 
 445
 00:40:48,710 --> 00:40:49,826
@@ -2241,37 +2241,37 @@ Mom, Mei saw Totoro today,
 449
 00:41:01,220 --> 00:41:03,050
 爸爸说可以带来好运的
-and Daddy said it can bring good luck.
+and Daddy said he'll bring us good luck.
 
 450
 00:41:09,830 --> 00:41:12,190
 希望妈咪你都好运，快点康复
-I hope you have good luck too, Mom, and get well soon.
+Mom, I hope you'll have good luck too and get well soon.
 
 451
 00:41:37,360 --> 00:41:39,689
 你上学吧，我应付得来的
-You go on to school. I can manage.
+You go on to school. I can manage by myself.
 
 452
 00:41:39,773 --> 00:41:40,606
 你要乖呀，再见
-Be good, okay? Bye.
+Be good, okay? Bye-bye.
 
 453
 00:41:40,690 --> 00:41:41,890
 再见
-Bye.
+Bye-bye.
 
 454
 00:41:44,160 --> 00:41:45,720
 害羞仔，你还不上学
-Shy boy, aren't you going to school yet?
+Shy boy, shouldn't you be off to school?
 
 455
 00:41:46,900 --> 00:41:47,900
 快了
-In a minute.
+In a minute!
 
 456
 00:42:11,590 --> 00:42:12,590
@@ -2281,7 +2281,7 @@ Pay attention.
 457
 00:42:30,810 --> 00:42:33,000
 次子，山吹老师
-Mei, Miss Yamabuki.
+Mei, Miss Yamanuki.
 
 458
 00:42:34,010 --> 00:42:35,010
@@ -2291,7 +2291,7 @@ What is it?
 459
 00:42:36,150 --> 00:42:37,170
 我妹妹在外面
-My little sister is outside.
+My little sister's outside.
 
 460
 00:42:38,620 --> 00:42:39,840
@@ -2311,12 +2311,12 @@ Granny, what's wrong with her?
 463
 00:42:46,620 --> 00:42:48,446
 次子她早上发脾气
-Mei threw a tantrum this morning.
+Mei had a tantrum this morning.
 
 464
 00:42:48,530 --> 00:42:50,290
 要来找姐姐一同上课
-She wanted to come and have class with her sister.
+She insisted on coming to class with her sister.
 
 465
 00:42:51,660 --> 00:42:52,960
@@ -2341,12 +2341,12 @@ Don't make a fuss.
 469
 00:43:01,940 --> 00:43:03,340
 我还有两课要上
-I still have two classes to go,
+I still have two classes left.
 
 470
 00:43:03,940 --> 00:43:05,270
 而且八婆也很忙
-and Granny is very busy too.
+And Granny is very busy too.
 
 471
 00:43:06,950 --> 00:43:09,470
@@ -2356,27 +2356,27 @@ Does Mei want to come to school too?
 472
 00:43:18,860 --> 00:43:20,760
 好吧，八婆，我和山吹老师说说
-Okay, Granny, I'll talk to Ms. Yamabuki.
+All right, Granny. I'll go talk to Mr. Yamabuki.
 
 473
 00:43:27,170 --> 00:43:29,816
 各位同学，草子妈妈进了医院
-Everyone, Satsuki's mother is in the hospital,
+Class, Satsuki's mother is in the hospital,
 
 474
 00:43:29,900 --> 00:43:31,186
 她爸爸又要工作
-and her father has to work, too.
+and her father has to work.
 
 475
 00:43:31,270 --> 00:43:33,760
 所以她妹妹今天和我们一同上课
-so her little sister will be joining us in class today.
+So her little sister will be joining us in class today.
 
 476
 00:43:34,410 --> 00:43:35,410
 是
-Yes.
+Yes, ma'am.
 
 477
 00:43:41,780 --> 00:43:42,996
@@ -2401,7 +2401,7 @@ See you later!
 481
 00:44:02,030 --> 00:44:03,860
 我不上课外活动了
-I'm skipping club today.
+I'm not going to club today.
 
 482
 00:44:04,740 --> 00:44:05,740
@@ -2411,7 +2411,7 @@ See you tomorrow, then.
 483
 00:44:09,140 --> 00:44:10,570
 走快一点，快下雨了
-We'd better get a move on. It's gonna rain.
+Hurry up. It's going to rain.
 
 484
 00:44:20,050 --> 00:44:21,420
@@ -2421,32 +2421,32 @@ Oh no, it's raining.
 485
 00:44:22,150 --> 00:44:23,150
 好大雨
-It's really pouring.
+It's pouring.
 
 486
 00:44:24,560 --> 00:44:26,350
 走快点，快点，次子
-Hurry up, Mei, come on!
+Hurry up, Mei!
 
 487
 00:44:32,460 --> 00:44:34,520
 你真不小心，来吧
-You're so careless. Come on.
+You're so clumsy. Come on.
 
 488
 00:44:38,870 --> 00:44:40,860
 我好棒，跌倒都没哭
-I didn't even cry when I fell. Aren't I great?
+I didn't even cry when I fell. Aren't I good?
 
 489
 00:44:44,480 --> 00:44:45,480
 今次真是麻烦
-This is really a problem.
+This really is a problem.
 
 490
 00:44:47,880 --> 00:44:50,540
 土地公公，求你叫雨快点停止
-Lord Guardian, please make the rain stop soon.
+Dear Lord Guardian, please make the rain stop soon.
 
 491
 00:45:35,730 --> 00:45:36,730
@@ -2466,17 +2466,17 @@ But this umbrella's got holes in it.
 494
 00:46:14,100 --> 00:46:15,330
 爸爸出去时没拿伞子
-Dad went out without taking his umbrella.
+Dad went out without his umbrella.
 
 495
 00:46:16,400 --> 00:46:17,560
 我们去车站接他
-Let's go pick him up at the station.
+Let's go meet him at the station.
 
 496
 00:46:21,310 --> 00:46:23,030
 都说伞给吹破了，已丢了
-I said the wind broke the umbrella, so I threw it away.
+I told you, the wind tore my umbrella and I threw it away.
 
 497
 00:46:23,710 --> 00:46:25,700
@@ -2506,7 +2506,7 @@ Hello?
 502
 00:46:49,630 --> 00:46:52,600
 原来是草子和次子，奶奶
-Oh, Satsuki and Mei. Granny.
+Oh, it's Satsuki and Mei, Granny.
 
 503
 00:46:54,710 --> 00:46:56,326
@@ -2536,12 +2536,12 @@ Don't mention it. It's just an old umbrella.
 508
 00:47:05,720 --> 00:47:06,880
 因为当时雨很大
-It was raining really hard then.
+It was raining so hard then.
 
 509
 00:47:08,120 --> 00:47:09,480
 幸好他将伞子借给我们
-Good thing he lent us his umbrella.
+It really helped that he lent it to us.
 
 510
 00:47:10,120 --> 00:47:11,876
@@ -2556,17 +2556,17 @@ It's all right.
 512
 00:47:13,160 --> 00:47:15,576
 那傻瓜整天都弄得全身湿透
-That fool comes home soaked all over every day anyway.
+That silly boy comes home soaked all the time anyway.
 
 513
 00:47:15,660 --> 00:47:16,660
 才回家的
-He only just got home.
+That's how he got home.
 
 514
 00:47:17,460 --> 00:47:18,746
 你们现在去接爸爸放工？
-Are you going to meet your dad after work now?
+Are you going to meet your father after work now?
 
 515
 00:47:18,830 --> 00:47:19,830
@@ -2581,17 +2581,17 @@ You're such a good girl.
 517
 00:47:21,353 --> 00:47:22,186
 再见
-Bye-bye.
+Goodbye.
 
 518
 00:47:22,270 --> 00:47:23,103
 再见
-Bye-bye.
+Goodbye.
 
 519
 00:47:23,187 --> 00:47:24,187
 再见
-Bye-bye.
+Goodbye.
 
 520
 00:47:34,550 --> 00:47:36,166
@@ -2606,7 +2606,7 @@ No.
 522
 00:47:42,090 --> 00:47:43,090
 有车到站
-A bus is pulling in.
+The bus is here.
 
 523
 00:47:56,770 --> 00:47:57,770
@@ -2626,7 +2626,7 @@ Dad wasn't on this bus?
 526
 00:48:12,320 --> 00:48:13,340
 一定是乘下一班
-He must be on the next one.
+He'll be on the next one for sure.
 
 527
 00:48:14,420 --> 00:48:15,580
@@ -2651,7 +2651,7 @@ Mei, are you tired?
 531
 00:49:30,160 --> 00:49:33,560
 刚才叫你去八婆家
-I told you to go to Granny's earlier.
+I told you to go to Granny's a little while ago.
 
 532
 00:49:36,570 --> 00:49:38,160
@@ -2661,7 +2661,7 @@ The bus will be here soon, so hang in there a little longer.
 533
 00:49:45,070 --> 00:49:46,560
 为何这部车那么久还没到？
-Why is the bus taking so long?
+Why is this bus taking so long?
 
 534
 00:49:55,290 --> 00:49:56,290
@@ -2686,7 +2686,7 @@ You can borrow this.
 538
 00:51:41,090 --> 00:51:42,720
 快点，次子就快掉下来
-Quick, Mei's slipping off.
+Hurry, Mei's about to fall off.
 
 539
 00:51:49,500 --> 00:51:50,500
@@ -2701,27 +2701,27 @@ Here comes the bus!
 541
 00:53:14,480 --> 00:53:15,480
 什么东西？
-What is that?
+What is it?
 
 542
 00:54:16,750 --> 00:54:18,870
 龙猫拿了爸爸的伞子走呀
-Totoro took Dad's umbrella away.
+Totoro took Dad's umbrella!
 
 543
 00:54:33,360 --> 00:54:34,360
 你们来接我吗？
-Did you come to pick me up?
+Did you come to meet me?
 
 544
 00:54:34,860 --> 00:54:35,860
 爸爸
-Dad.
+Dad!
 
 545
 00:54:36,870 --> 00:54:39,460
 风大雨大，你们都来车站接我
-It's so windy and rainy, and you still came to the station for me.
+With all this wind and rain, you came all the way to the station for me.
 
 546
 00:54:41,270 --> 00:54:42,569
@@ -2731,12 +2731,12 @@ You two are such good girls.
 547
 00:54:42,653 --> 00:54:43,486
 见到了
-I saw him.
+I saw him!
 
 548
 00:54:43,570 --> 00:54:44,630
 见到了，终于见到
-I saw him. I finally saw him.
+I saw him! I finally saw him!
 
 549
 00:54:44,710 --> 00:54:46,680
@@ -2751,42 +2751,42 @@ The Catbus?
 551
 00:54:49,580 --> 00:54:50,600
 好大的猫巴士呀
-Such a huge Catbus!
+The Catbus was huge!
 
 552
 00:54:50,680 --> 00:54:54,580
 真好，我终于见到龙猫
-This is great. I finally got to see Totoro.
+I'm so glad. I finally got to meet Totoro.
 
 553
 00:54:55,790 --> 00:54:57,150
 真好
-So great.
+That's wonderful.
 
 554
 00:54:57,220 --> 00:54:58,950
 真好，龙猫
-So great, Totoro.
+How wonderful, Totoro.
 
 555
 00:54:59,020 --> 00:55:00,706
 龙猫原来是这样的
-So that's what Totoro is like.
+So that's what Totoro looks like.
 
 556
 00:55:00,790 --> 00:55:01,790
 真好
-So great.
+How wonderful.
 
 557
 00:55:03,290 --> 00:55:04,450
 少见多怪
-What a fuss over nothing.
+You're making a fuss over nothing.
 
 558
 00:55:23,550 --> 00:55:26,610
 妈咪，我今晚终于见到龙猫
-Mom, tonight I finally saw Totoro.
+Dear Mom, tonight I finally saw Totoro.
 
 559
 00:55:27,320 --> 00:55:28,680
@@ -2796,7 +2796,7 @@ Tonight was really mysterious.
 560
 00:55:29,750 --> 00:55:31,980
 可以说又可怕又开心
-You could say it was both scary and fun.
+It was scary and fun at the same time.
 
 561
 00:55:34,560 --> 00:55:35,650
@@ -2811,12 +2811,12 @@ a present wrapped in a bamboo leaf.
 563
 00:55:38,660 --> 00:55:39,820
 回家后打开来看看
-When we got home, we opened it,
+When we got home and opened it,
 
 564
 00:55:40,660 --> 00:55:42,460
 原来全部都是橡树的果实
-and it turned out to be full of acorns.
+it turned out to be full of acorns.
 
 565
 00:55:48,340 --> 00:55:50,656
@@ -2826,7 +2826,7 @@ So we planted the acorns in the backyard,
 566
 00:55:50,740 --> 00:55:53,110
 希望将来会变成一个橡树森林
-hoping that someday they'd grow into an oak forest.
+hoping that someday it would turn into an oak forest.
 
 567
 00:55:53,840 --> 00:55:54,756
@@ -2836,27 +2836,27 @@ But…
 568
 00:55:54,840 --> 00:55:55,900
 等呆了也不发芽
-they just wouldn't sprout, no matter how long we waited.
+no matter how long we waited, they just wouldn't sprout.
 
 569
 00:55:56,850 --> 00:55:58,750
 次子每天都望著泥土很失望
-Every day, Mei would stare at the dirt, looking disappointed.
+Every day Mei would stare at the dirt, looking so disappointed.
 
 570
 00:55:59,850 --> 00:56:01,540
 都是我第一次见到她失望的表情
-It was the first time I'd ever seen that disappointed look on her face,
+It was the first time I'd ever seen her look disappointed,
 
 571
 00:56:02,690 --> 00:56:04,210
 我心都很不安乐
-and it made me feel really uneasy.
+and it made me feel uneasy too.
 
 572
 00:56:11,460 --> 00:56:13,990
 快要放暑假，希望你快点康复
-It's nearly summer vacation. I hope you'll get well soon.
+Summer vacation is almost here. I hope you get well soon.
 
 573
 00:56:15,260 --> 00:56:17,060
@@ -2871,12 +2871,12 @@ Come on, lights out.
 575
 00:56:27,980 --> 00:56:28,980
 不要
-No.
+No!
 
 576
 00:56:29,680 --> 00:56:31,940
 爸爸，明天那些鸡腿会发芽吗？
-Dad, will those chicken legs sprout tomorrow?
+Dad, will those drumsticks sprout tomorrow?
 
 577
 00:56:32,720 --> 00:56:33,896
@@ -2896,12 +2896,12 @@ Go to sleep now.
 580
 00:57:10,250 --> 00:57:11,380
 池池喳⋯
-Chitter chatter…
+Chit-chat…
 
 581
 00:57:11,450 --> 00:57:13,420
-BOm BOm Bart⋯
-Bom bom bart…
+Bom Bom Bart⋯
+Bom Bom Bart…
 
 582
 00:57:26,170 --> 00:57:27,290
@@ -2910,13 +2910,13 @@ Hey, Mei.
 
 583
 00:57:27,370 --> 00:57:28,815
-BOm BOm Bart⋯
-Bom bom ba-bart…
+Bom Bom Bart⋯
+Bom bom bart…
 
 584
 00:57:28,899 --> 00:57:30,019
 池池喳⋯
-Chitty chah…
+Chitty chatter…
 
 585
 00:57:32,480 --> 00:57:33,480
@@ -2926,12 +2926,12 @@ What are they doing?
 586
 00:57:45,890 --> 00:57:46,890
 不如我们出去看看
-Why don't we go outside and take a look?
+Let's go outside and take a look.
 
 587
 00:59:18,250 --> 00:59:20,910
 真好，成功了
-We did it!
+Great, we did it!
 
 588
 00:59:21,450 --> 00:59:22,450
@@ -2941,7 +2941,7 @@ Great!
 589
 00:59:36,170 --> 00:59:37,170
 我也去
-I'll come too.
+I'm going too.
 
 590
 00:59:51,480 --> 00:59:52,480
@@ -2961,37 +2961,37 @@ What about the tree?
 593
 01:01:47,783 --> 01:01:48,616
 真棒
-Wonderful!
+We did it!
 
 594
 01:01:48,700 --> 01:01:49,533
 真棒
-Wonderful!
+We did it!
 
 595
 01:01:49,617 --> 01:01:51,930
 真棒
-Wonderful!
+We did it!
 
 596
 01:01:52,000 --> 01:01:52,833
 发芽了
-It's sprouted!
+They sprouted!
 
 597
 01:01:52,917 --> 01:01:53,750
 发芽了
-It's sprouted!
+They sprouted!
 
 598
 01:01:53,834 --> 01:01:56,770
 发芽了
-It's sprouted!
+They sprouted!
 
 599
 01:01:56,840 --> 01:01:59,570
 发出芽了
-It sprouted!
+They've sprouted!
 
 600
 01:02:03,533 --> 01:02:04,366
@@ -3011,7 +3011,7 @@ Wonderful.
 603
 01:02:06,511 --> 01:02:07,511
 真棒⋯发出芽了⋯
-Wonderful… It's sprouting…
+Wonderful… They've sprouted…
 
 604
 01:02:17,730 --> 01:02:19,630
@@ -3021,7 +3021,7 @@ Anybody home? Telegram!
 605
 01:02:21,930 --> 01:02:22,990
 请问有人吗？
-Hello? Anybody home?
+Excuse me, is anybody home?
 
 606
 01:02:24,370 --> 01:02:25,630
@@ -3031,7 +3031,7 @@ Mr. Kusakabe, telegram for you!
 607
 01:02:27,840 --> 01:02:28,840
 为何没人的？
-Why is no one home?
+No one's home?
 
 608
 01:02:36,350 --> 01:02:37,570
@@ -3041,27 +3041,27 @@ Granny!
 609
 01:02:40,650 --> 01:02:41,650
 八婆
-Granny.
+Granny!
 
 610
 01:02:42,690 --> 01:02:43,690
 是你们
-It's you two.
+Oh, it's you two.
 
 611
 01:02:46,160 --> 01:02:47,620
 是呀，次子，你吃粟米吗？
-Yes, Mei, do you eat corn?
+Yes, Mei, would you like some corn?
 
 612
 01:02:57,070 --> 01:02:58,090
 八婆，我想吃
-Granny, I want some.
+Granny, I want one.
 
 613
 01:02:58,770 --> 01:02:59,770
 好
-Okay.
+All right.
 
 614
 01:03:06,310 --> 01:03:08,440
@@ -3071,42 +3071,42 @@ Granny, this vegetable patch is like a treasure mountain.
 615
 01:03:10,780 --> 01:03:12,680
 是呀，来！休息一会儿
-Yeah. Come on, let's take a little break.
+Yes, come on! Let's take a little break.
 
 616
 01:03:19,990 --> 01:03:21,320
 浸到很冰冻的
-These have gotten nice and cold.
+They're nice and cold now.
 
 617
 01:03:21,820 --> 01:03:22,820
 我不客气了
-Thanks, then.
+Thanks for the food.
 
 618
 01:03:33,100 --> 01:03:34,416
 很好屹
-It's really good.
+It's delicious.
 
 619
 01:03:34,500 --> 01:03:35,416
 是呀
-Yeah.
+It sure is.
 
 620
 01:03:35,500 --> 01:03:37,670
 因为这儿的阳光和泥土都很好
-Because the sunshine and soil here are both very good,
+Because the sunshine and the soil here are so good,
 
 621
 01:03:38,240 --> 01:03:40,456
 所以吃了对身体很有帮助的
-so eating them is very good for your body.
+they're very good for your body.
 
 622
 01:03:40,540 --> 01:03:41,700
 那对妈妈的病呢？
-Then will it help Mom's illness too?
+Then will it help Mom get better too?
 
 623
 01:03:42,510 --> 01:03:43,640
@@ -3116,37 +3116,37 @@ Of course it will.
 624
 01:03:44,150 --> 01:03:45,510
 吃了八婆种的蔬菜
-If she eats the vegetables Granny grows,
+If she eats Granny's vegetables,
 
 625
 01:03:46,320 --> 01:03:47,836
 会立即完全康复
-she'll be completely well again in no time.
+she'll be all better in no time.
 
 626
 01:03:47,920 --> 01:03:50,080
 妈咪星期六就会出院
-Mom's getting out of the hospital on Saturday.
+Mom's coming home on Saturday.
 
 627
 01:03:50,720 --> 01:03:53,236
 那时候我又可以撒妈咪的娇了
-Then I can cuddle up to Mom again.
+Then I can cuddle up and snuggle with Mom again.
 
 628
 01:03:53,320 --> 01:03:54,259
 好了
-I see.
+Oh.
 
 629
 01:03:54,343 --> 01:03:55,176
 好了
-I see.
+Oh.
 
 630
 01:03:55,260 --> 01:03:57,146
 终于都可以出院了
-So she can finally get out of the hospital.
+So she's finally getting out of the hospital.
 
 631
 01:03:57,230 --> 01:03:58,780
@@ -3156,27 +3156,27 @@ She's not really being discharged.
 632
 01:03:59,360 --> 01:04:00,560
 星期一还要回去的
-She still has to go back on Monday.
+She has to go back on Monday.
 
 633
 01:04:01,160 --> 01:04:02,760
 是给她习惯一下
-It's to let her get used to it first.
+It's just to help her get used to things.
 
 634
 01:04:03,530 --> 01:04:06,660
 那要她吃多些这儿的生果和蔬菜
-Then she should eat more of the fruit and vegetables here.
+Then she should eat lots of the fruit and vegetables here.
 
 635
 01:04:07,470 --> 01:04:09,960
 次子摘的粟米要留给妈咪吃
-The corn Mei picked should be saved for Mom to eat.
+We have to save the corn Mei picked for Mom.
 
 636
 01:04:11,340 --> 01:04:12,740
 妈咪一定很开心
-Mom will definitely be very happy.
+Mom will be so happy.
 
 637
 01:04:19,780 --> 01:04:20,940
@@ -3186,12 +3186,12 @@ You have a telegram.
 638
 01:04:22,050 --> 01:04:23,080
 因为你们家裏没有人
-Since there was nobody at your house,
+Since no one was home,
 
 639
 01:04:23,150 --> 01:04:24,380
 所以送来我们这儿
-they brought it over here.
+they brought it to our place.
 
 640
 01:04:24,990 --> 01:04:25,866
@@ -3201,17 +3201,17 @@ For us?
 641
 01:04:25,950 --> 01:04:26,950
 是呀
-Yes.
+That's right.
 
 642
 01:04:29,760 --> 01:04:32,250
 但是爸爸说要迟些才回来
-But Dad said he won't be back until later.
+But Dad said he wouldn't be back until later.
 
 643
 01:04:32,760 --> 01:04:34,890
 打开来看看，可能有急事
-Open it and see. It might be urgent.
+You'd better open it, in case it's urgent.
 
 644
 01:04:39,570 --> 01:04:42,330
@@ -3226,17 +3226,17 @@ It's from the hospital.
 646
 01:04:44,670 --> 01:04:45,940
 是妈咪住的那间医院
-It's the hospital where Mom is staying.
+It's Mom's hospital.
 
 647
 01:04:46,680 --> 01:04:48,040
 是妈咪，不知道有什么事
-It's Mom. I don't know what's happened.
+It's about Mom. I wonder what's happened.
 
 648
 01:04:50,310 --> 01:04:52,540
 婆，怎么办？怎样联络？
-Granny, what do I do? How do I contact them?
+Granny, what should we do? How do we contact them?
 
 649
 01:04:53,120 --> 01:04:54,840
@@ -3246,17 +3246,17 @@ Calm down. Don't panic.
 650
 01:04:54,920 --> 01:04:56,320
 你可以找到你爸爸吗？
-Can you find your father?
+Do you know where your dad is?
 
 651
 01:04:56,990 --> 01:04:58,320
 我知研究室的电话
-I know the number for his research lab.
+I know the number for his office.
 
 652
 01:04:58,390 --> 01:04:59,720
 但是家裏没有电话
-But we don't have a phone at home.
+But we don't have a phone.
 
 653
 01:05:00,403 --> 01:05:01,236
@@ -3281,17 +3281,17 @@ Mei, hurry back to Granny's!
 657
 01:06:01,680 --> 01:06:05,410
 请帮我接郊区，东京de
-Hello, I'd like to make a long-distance call to the suburbs of Tokyo, please.
+Hello, I'd like to make a long-distance call, please.
 
 658
 01:06:05,950 --> 01:06:08,950
 地方区号码是1382，是
-The number there is 1382, yes.
+It's to Tokyo 31-1382.
 
 659
 01:06:11,690 --> 01:06:13,890
 害羞仔，你女朋友真可爱
-You shy boy, your girlfriend's really cute.
+You shy boy, your girlfriend is so cute.
 
 660
 01:06:16,770 --> 01:06:22,086
@@ -3301,7 +3301,7 @@ Is this… the archaeology department?
 661
 01:06:22,170 --> 01:06:23,170
 请你叫⋯叫爸爸听⋯
-Could you please get… get my father…
+Could I speak to my father…
 
 662
 01:06:23,670 --> 01:06:24,700
@@ -3316,12 +3316,12 @@ I'm his daughter.
 664
 01:06:26,980 --> 01:06:27,980
 草子呀，是
-Satsuki, yes.
+Kusakabe. Yes.
 
 665
 01:06:32,180 --> 01:06:33,340
 爸爸呀，我是草子
-Dad, it's Satsuki.
+Dad, it's me, Satsuki.
 
 666
 01:06:34,420 --> 01:06:35,710
@@ -3341,17 +3341,17 @@ Yes.
 669
 01:06:39,090 --> 01:06:40,306
 是医院呀？
-From the hospital?
+Is it from the hospital?
 
 670
 01:06:40,390 --> 01:06:42,020
 我知道了，我立即打电话去
-I understand. I'll call them right away.
+I understand. I'll call right away.
 
 671
 01:06:43,030 --> 01:06:45,020
 妈咪有事吗？那怎办，爸爸？
-Did something happen to Mom? What are we gonna do, Dad?
+Did something happen to Mom? What are we going to do, Dad?
 
 672
 01:06:46,200 --> 01:06:47,316
@@ -3361,12 +3361,12 @@ Don't worry.
 673
 01:06:47,400 --> 01:06:49,130
 我问完后打电话回来给你
-I'll ask and then call you right back.
+I'll ask them and call you right back.
 
 674
 01:06:50,200 --> 01:06:51,200
 你在这儿等我一会儿
-Wait there for a little while.
+Wait there for me a little while.
 
 675
 01:06:53,540 --> 01:06:54,830
@@ -3376,17 +3376,17 @@ Satsuki, I'm hanging up now.
 676
 01:06:58,310 --> 01:06:59,756
 村长太太
-Ma'am,
+Madam Mayor,
 
 677
 01:06:59,840 --> 01:07:01,926
 我可以在这儿等爸爸电话吗
-could I wait here for my dad's call?
+may I wait here for my dad's call?
 
 678
 01:07:02,010 --> 01:07:04,310
 不要紧，你随便吧
-Sure, make yourself at home.
+Of course, make yourself at home.
 
 679
 01:07:11,920 --> 01:07:13,220
@@ -3396,7 +3396,7 @@ Satsuki!
 680
 01:07:22,970 --> 01:07:25,430
 不能给你，粟米是给我妈咪吃的
-No, you can't have it. This corn is for my mom.
+I can't give it to you. This corn is for my mom.
 
 681
 01:07:27,240 --> 01:07:29,400
@@ -3416,7 +3416,7 @@ Mei, Mom's condition isn't very good right now.
 684
 01:07:49,290 --> 01:07:51,090
 所以要迟些才可回家？
-So she has to come home later?
+So she has to come home a little later?
 
 685
 01:07:53,100 --> 01:07:54,100
@@ -3426,7 +3426,7 @@ No!
 686
 01:07:55,700 --> 01:07:56,930
 妈咪身体要紧嘛
-Mom's health is what matters.
+Mom's health comes first.
 
 687
 01:07:57,000 --> 01:07:58,860
@@ -3451,17 +3451,17 @@ I don't!
 691
 01:08:07,610 --> 01:08:09,470
 干什么，只不过迟几天才回家
-What's the matter? She's only coming home a few days later.
+What's gotten into you? She's only coming home a few days later.
 
 692
 01:08:12,380 --> 01:08:14,040
 你不乖，我不理你
-If you're not good, I'm not talking to you.
+If you won't behave, I'm not talking to you.
 
 693
 01:08:25,730 --> 01:08:26,820
 你回去吧
-You should go back.
+You go on back.
 
 694
 01:08:32,730 --> 01:08:34,700
@@ -3476,7 +3476,7 @@ I brought in the laundry for you.
 696
 01:09:05,270 --> 01:09:09,086
 不要那么没心机，提起精神
-Don't be so down. Cheer up.
+Don't look so glum. Cheer up.
 
 697
 01:09:09,170 --> 01:09:10,470
@@ -3486,12 +3486,12 @@ Granny's here to help you now.
 698
 01:09:16,480 --> 01:09:19,240
 你爸爸都已经去了医院看她了
-Your dad's already gone to the hospital to see her.
+Your father's already gone to the hospital to see her.
 
 699
 01:09:20,780 --> 01:09:23,010
 你妈咪不会有事的
-Your mom will be fine.
+Your mom's going to be fine.
 
 700
 01:09:23,990 --> 01:09:25,780
@@ -3501,27 +3501,27 @@ She'll be home next Saturday.
 701
 01:09:27,260 --> 01:09:28,260
 撒谎
-You're lying.
+That's a lie.
 
 702
 01:09:31,690 --> 01:09:33,090
 上次又是这样说
-That's what you said last time too.
+That's what they said last time, too.
 
 703
 01:09:33,660 --> 01:09:35,250
 只是去医院住两天
-You said she'd only stay in the hospital for two days.
+They said she'd only be in the hospital for two days.
 
 704
 01:09:35,760 --> 01:09:37,030
 怎知道一住就住这么久
-Who knew she'd end up staying this long?
+Who knew she'd end up staying so long?
 
 705
 01:09:39,400 --> 01:09:40,700
 如果她死了，那怎么办？
-What if she dies?
+But what if she dies?
 
 706
 01:09:42,570 --> 01:09:44,026
@@ -3541,7 +3541,7 @@ Don't worry, it'll be okay.
 709
 01:09:53,180 --> 01:09:54,696
 有个那么可爱的女儿
-With such a lovely daughter,
+With such a sweet little daughter,
 
 710
 01:09:54,780 --> 01:09:56,050
@@ -3556,7 +3556,7 @@ Don't cry. Granny's here with you.
 712
 01:10:00,690 --> 01:10:03,450
 陪到你爸爸回来，乖啦
-I'll stay with you till your father comes back, okay?
+I'll stay until your father comes back, all right?
 
 713
 01:10:48,640 --> 01:10:50,610
@@ -3576,7 +3576,7 @@ Did Mei come back?
 716
 01:11:07,090 --> 01:11:08,720
 没有，她还没有回来
-No, she hasn't come back yet.
+No, she still hasn't come back.
 
 717
 01:11:10,860 --> 01:11:14,476
@@ -3586,32 +3586,32 @@ That's strange. Where could Mei have gone?
 718
 01:11:14,560 --> 01:11:16,120
 会不会因为我刚才骂过她
-Could it be because I scolded her earlier?
+Could it be because I scolded her just now
 
 719
 01:11:16,200 --> 01:11:18,786
 不知道她会不会⋯
-I don't know if she might've…
+I wonder if she…
 
 720
 01:11:18,870 --> 01:11:20,770
 去了妈咪住的那间医院？
-gone to the hospital where Mom is?
+went to the hospital where Mom is?
 
 721
 01:11:21,370 --> 01:11:22,670
 她怎样去医院？
-How would she get to the hospital?
+How could she get to the hospital?
 
 722
 01:11:23,270 --> 01:11:24,270
 很远的
-It's very far.
+It's so far away.
 
 723
 01:11:24,770 --> 01:11:27,096
 她这么小怎懂得乘车去医院
-She's so little. How would she know how to take a bus to the hospital?
+She's so little, how could she know how to get there by bus?
 
 724
 01:11:27,180 --> 01:11:28,180
@@ -3621,7 +3621,7 @@ I'll go look for her.
 725
 01:11:29,780 --> 01:11:33,010
 害羞呀，快去找你爸爸帮手
-Kanta, quick, go get your dad to help!
+Don't be shy, hurry and go get your dad's help.
 
 726
 01:11:33,780 --> 01:11:36,180
@@ -3631,7 +3631,7 @@ Mei's missing?
 727
 01:11:45,990 --> 01:11:47,316
 次子，糟糕
-Mei, this is bad.
+Mei, oh no.
 
 728
 01:11:47,400 --> 01:11:48,950
@@ -3651,12 +3651,12 @@ Excuse me, sir, may I ask you something?
 731
 01:12:08,020 --> 01:12:10,110
 见到有个梳孖辫的小女孩经过吗
-Have you seen a little girl with pigtails pass by?
+Have you seen a little girl with pigtails come by?
 
 732
 01:12:10,950 --> 01:12:11,950
 她是我妹妹
-She's my little sister.
+She's my sister.
 
 733
 01:12:13,620 --> 01:12:15,950
@@ -3666,12 +3666,12 @@ No, I haven't. I've been here most of the day.
 734
 01:12:16,020 --> 01:12:17,080
 不见有小女孩经过
-I haven't seen any little girl go by.
+I haven't seen any little girl come by.
 
 735
 01:12:20,160 --> 01:12:21,160
 究竟去了哪儿？
-Where on earth did she go?
+Where could she have gone?
 
 736
 01:12:40,850 --> 01:12:42,780
@@ -3681,12 +3681,12 @@ Why don't you look somewhere else?
 737
 01:12:43,350 --> 01:12:44,720
 次子不要有事
-Mei, please be all right.
+Please let Mei be all right.
 
 738
 01:12:48,190 --> 01:12:50,106
 次子，我不该骂你的
-Mei, I shouldn't have yelled at you.
+Mei, I shouldn't have scolded you.
 
 739
 01:12:50,190 --> 01:12:54,576
@@ -3706,17 +3706,17 @@ Stop!
 742
 01:13:20,890 --> 01:13:22,606
 你神经病，撞死你的
-You idiot! You could've killed yourself!
+Are you crazy? You could've killed yourself!
 
 743
 01:13:22,690 --> 01:13:24,046
 我在找妹妹
-I'm looking for my little sister.
+I'm looking for my sister.
 
 744
 01:13:24,130 --> 01:13:25,242
 有见过小女孩经过吗？
-Have you seen a little girl come by?
+Have you seen a little girl pass by?
 
 745
 01:13:26,490 --> 01:13:27,716
@@ -3736,17 +3736,17 @@ My sister is only four years old.
 748
 01:13:31,800 --> 01:13:32,800
 你有留意吗？
-Did you notice her?
+Did you happen to notice her?
 
 749
 01:13:34,200 --> 01:13:36,416
 我们是由七国山来的
-We came from Shichikokuyama.
+We came from Shichikokuyama,
 
 750
 01:13:36,500 --> 01:13:38,670
 但是沿路上都不见有小女孩经过
-But we didn't see any little girl along the way.
+but we didn't see any little girl along the way.
 
 751
 01:13:40,140 --> 01:13:41,700
@@ -3771,17 +3771,17 @@ Totoro Mountain?
 755
 01:13:47,320 --> 01:13:48,836
 你没弄错吧，很远的
-You must be mistaken. That's very far.
+You must be mistaken. That's very far away.
 
 756
 01:13:48,920 --> 01:13:50,280
 这么远，你怎样来？
-How did you get here from so far away?
+It's so far. How did you get here?
 
 757
 01:13:51,820 --> 01:13:52,820
 那你慢慢找吧
-Well, good luck looking.
+Well, good luck finding her.
 
 758
 01:14:03,470 --> 01:14:04,470
@@ -3791,7 +3791,7 @@ Satsuki!
 759
 01:14:06,570 --> 01:14:07,970
 害羞仔，找到吗？
-Kanta, you shy boy, did you find her?
+Kanta, did you find her?
 
 760
 01:14:09,770 --> 01:14:11,070
@@ -3801,7 +3801,7 @@ Not yet. She's not in there.
 761
 01:14:12,670 --> 01:14:14,110
 爸爸他们在四周寻找
-My dad and the others are searching all around.
+My dad and the others are looking around.
 
 762
 01:14:14,740 --> 01:14:16,110
@@ -3811,17 +3811,17 @@ I'll go to Shichikokuyama with you.
 763
 01:14:16,750 --> 01:14:18,370
 现在你先回家，好嘛
-For now, you go back home first, okay?
+You go on home first, okay?
 
 764
 01:14:19,080 --> 01:14:20,810
 次子一定是去医院时
-Mei must have, on the way to the hospital,
+Mei must've
 
 765
 01:14:20,880 --> 01:14:22,210
 在路上迷了途
-gotten lost on the road.
+gotten lost on the way to the hospital.
 
 766
 01:14:24,090 --> 01:14:25,810
@@ -3831,7 +3831,7 @@ A little while ago, they found a shoe by the river.
 767
 01:14:33,800 --> 01:14:35,520
 你快去河边看看是不是次子的
-Go check by the river and see if it's Mei's.
+Go check by the river and see if it's Mei's!
 
 768
 01:14:53,620 --> 01:14:54,620
@@ -3856,7 +3856,7 @@ Namu Amida Butsu…
 772
 01:15:31,220 --> 01:15:33,780
 在那儿，你们快过去那边打捞
-Over there! Hurry, go drag that side!
+Over there! Hurry and drag that side!
 
 773
 01:15:44,730 --> 01:15:45,630
@@ -3866,7 +3866,7 @@ Namu Amida Butsu…
 774
 01:15:45,730 --> 01:15:46,860
 草子正赶来
-Kusakabe's on her way.
+The Kusakabes are on their way.
 
 775
 01:15:52,040 --> 01:15:53,040
@@ -3881,7 +3881,7 @@ We found Mei's shoe.
 777
 01:16:05,550 --> 01:16:06,950
 这鞋子不是次子的
-These shoes aren't Mei's.
+It's not Mei's.
 
 778
 01:16:17,670 --> 01:16:21,416
@@ -3891,17 +3891,17 @@ Thank goodness, it wasn't Mei's.
 779
 01:16:21,500 --> 01:16:22,500
 嚇死我了
-That scared me to death.
+You gave me such a scare.
 
 780
 01:16:23,000 --> 01:16:24,300
 原来那鞋子不是小孩子的
-So those shoes weren't a child's after all.
+So that sandal wasn't a child's after all.
 
 781
 01:16:24,970 --> 01:16:27,460
 不用找了，摆乌龙
-No need to keep looking there. It was a false alarm.
+You can stop looking. It was all a mistake.
 
 782
 01:16:28,410 --> 01:16:30,380
@@ -3916,12 +3916,12 @@ That's a relief…
 784
 01:16:32,980 --> 01:16:34,110
 真是嚇死呀⋯
-That really scared me…
+What a scare…
 
 785
 01:16:47,730 --> 01:16:50,060
 草子，你去哪儿？
-Kusakabe, where are you going?
+Satsuki, where are you going?
 
 786
 01:17:07,120 --> 01:17:09,936
@@ -3931,7 +3931,7 @@ Please, let me see Totoro.
 787
 01:17:10,020 --> 01:17:12,820
 次子迷了途，天就快黑
-Mei is lost, and it'll be dark soon.
+Mei is lost, and it's getting dark.
 
 788
 01:17:12,920 --> 01:17:14,860
@@ -3946,7 +3946,7 @@ Totoro!
 790
 01:17:49,890 --> 01:17:52,306
 龙猫，次子迷了途
-Totoro, Mei's lost.
+Totoro, Mei is lost.
 
 791
 01:17:52,390 --> 01:17:53,876
@@ -3961,22 +3961,22 @@ Please, help me find her.
 793
 01:17:57,270 --> 01:17:59,530
 她一定是不知躲在哪儿在哭
-I'm sure she's somewhere crying.
+I'm sure she's crying somewhere.
 
 794
 01:18:00,870 --> 01:18:03,130
 我现在都不知道怎么办
-I don't know what to do anymore.
+I don't know what to do.
 
 795
 01:19:02,230 --> 01:19:03,230
 原来是只猫巴士
-So it's a Catbus.
+It's a Catbus!
 
 796
 01:19:37,670 --> 01:19:38,690
 请小心车门
-Please stand clear of the doors.
+Please watch the doors.
 
 797
 01:19:38,770 --> 01:19:41,659
@@ -3991,7 +3991,7 @@ Mei.
 799
 01:20:27,420 --> 01:20:28,810
 树都避开
-Even the trees are moving aside!
+Even the trees are getting out of the way!
 
 800
 01:21:02,080 --> 01:21:03,180
@@ -4001,12 +4001,12 @@ Mei!
 801
 01:21:06,350 --> 01:21:07,550
 姐姐呀
-Sis!
+Satsuki!
 
 802
 01:21:10,460 --> 01:21:12,090
 姐姐呀
-Sis!
+Satsuki!
 
 803
 01:21:22,683 --> 01:21:23,516
@@ -4036,7 +4036,7 @@ I'm sorry.
 808
 01:21:34,380 --> 01:21:36,710
 你想将粟米送去医院给妈咪吃？
-Did you want to take the corn to the hospital for Mom to eat?
+Did you want to take the corn to the hospital for Mom?
 
 809
 01:21:49,500 --> 01:21:50,930
@@ -4046,7 +4046,7 @@ You'll take us to the hospital?
 810
 01:21:54,300 --> 01:21:55,300
 真好
-That's great.
+That's great!
 
 811
 01:22:05,110 --> 01:22:07,836
@@ -4056,47 +4056,47 @@ I'm sorry. The doctor says I can leave the hospital early,
 812
 01:22:07,920 --> 01:22:11,580
 我很心急，所以打电报给你们
-so I was so anxious that I sent you a telegram.
+so I was so excited, I sent you a telegram.
 
 813
 01:22:12,620 --> 01:22:14,140
 嚇了你们，真不好意思
-I'm really sorry I scared you.
+I'm sorry I gave you such a scare.
 
 814
 01:22:14,920 --> 01:22:18,690
 如果孩子知道⋯你明天可以出院
-If the children knew… that you can leave the hospital tomorrow,
+If the girls knew you could leave the hospital tomorrow,
 
 815
 01:22:18,760 --> 01:22:20,246
 我想她们一定很开心
-I think they'd be very happy.
+I'm sure they'd be very happy.
 
 816
 01:22:20,330 --> 01:22:21,630
 她们希望你出院好久了
-They've been hoping for your discharge for a long time.
+They've been hoping for you to come home for so long.
 
 817
 01:22:23,930 --> 01:22:25,130
 我住了医院这么久
-I've been in the hospital so long
+I've been in the hospital such a long time,
 
 818
 01:22:25,230 --> 01:22:27,170
 使她们受了很多苦
-and made them suffer a lot.
+and they've had to go through so much.
 
 819
 01:22:27,240 --> 01:22:29,860
 没人照顾她们，我心裏很难过
-It breaks my heart that no one's there to look after them.
+It breaks my heart not being there to take care of them.
 
 820
 01:22:31,770 --> 01:22:32,770
 她们很懂事
-They're very sensible.
+They're such good girls.
 
 821
 01:22:33,440 --> 01:22:34,670
@@ -4106,17 +4106,17 @@ Once I'm out of the hospital,
 822
 01:22:34,740 --> 01:22:37,270
 她们两个就不用那么辛苦
-the two of them won't have to work so hard.
+those two won't have to work so hard anymore.
 
 823
 01:22:38,050 --> 01:22:40,170
 不辛苦，她们整天都说
-It's not so hard. They keep saying all day
+Oh, they don't mind. They're always saying
 
 824
 01:22:40,250 --> 01:22:41,770
 要找龙猫送药来医好你
-they want to find Totoro and have him bring medicine to make you well.
+they'll find Totoro and have him bring medicine to make you well.
 
 825
 01:22:43,450 --> 01:22:44,920
@@ -4126,12 +4126,12 @@ Children really are so innocent.
 826
 01:22:46,250 --> 01:22:47,976
 妈咪好像没事了
-Mom seems fine now.
+Mom looks all better now.
 
 827
 01:22:48,060 --> 01:22:49,476
 还精神很好
-She looks full of energy, too.
+She seems full of energy, too.
 
 828
 01:22:49,560 --> 01:22:50,560
@@ -4141,7 +4141,7 @@ Yeah.
 829
 01:22:59,000 --> 01:23:00,786
 我好像吃了龙猫的药那么精神
-I feel so energetic, like I took Totoro's medicine.
+I feel so full of energy, like I took Totoro's medicine.
 
 830
 01:23:00,870 --> 01:23:01,870
@@ -4156,20 +4156,20 @@ Who brought this corn here?
 832
 01:23:15,680 --> 01:23:17,106
 莫非她们真的找到龙猫
-Could it be they really found Totoro
+Maybe they really did find Totoro,
 
 833
 01:23:17,190 --> 01:23:18,410
 送粟米来给我治病
-and brought this corn to cure me?
+and brought me this corn to make me well.
 
 834
 01:23:21,990 --> 01:23:24,050
 我想可能是，你看看
-I think maybe so. Look.
+I think maybe they did. Look.
 
 835
 01:23:25,330 --> 01:23:26,920
 我们最疼你
-We love you the most.
+We love you very much.
 
