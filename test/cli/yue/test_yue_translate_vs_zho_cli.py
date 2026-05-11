@@ -15,8 +15,8 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoTranslationPromptYueHans,
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
 )
 from test.helpers import (
     assert_cli_help,
@@ -89,11 +89,11 @@ def test_yue_translate_vs_zho_cli(
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_vs_zho_translator",
+            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_vs_zho_gap_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_translated_vs_zho",
+                "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_gap_translated_vs_zho",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
@@ -106,7 +106,7 @@ def test_yue_translate_vs_zho_cli(
 
     assert (
         patched_factory.call_args.kwargs["prompt_cls"]
-        is YueVsZhoTranslationPromptYueHans
+        is YueVsZhoGapTranslationPromptYueHans
     )
     called_kwargs = patched_translate.call_args.kwargs
     assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))

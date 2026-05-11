@@ -16,6 +16,10 @@ from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
+from scinoephile.multilang.yue_zho.gap_translation import (
+    get_yue_gap_translated_vs_zho,
+    get_yue_vs_zho_gap_translator,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
@@ -24,10 +28,6 @@ from scinoephile.multilang.yue_zho.transcription import (
     VADMode,
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
 )
 from test.data.mlamd import (
     get_mlamd_yue_deliniation_test_cases,
@@ -129,15 +129,15 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_line_reviewed.save(outfile_path)
 
     # Translate
-    translator = get_yue_vs_zho_translator(
+    translator = get_yue_vs_zho_gap_translator(
         test_case_path=yue_hans_transcribe_path
         / "multilang"
         / "yue_zho"
-        / "translation"
+        / "gap_translation"
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = get_yue_translated_vs_zho(
+    yue_hans_review_translate = get_yue_gap_translated_vs_zho(
         yue_hans_line_reviewed, zho_hans, translator=translator
     )
     outfile_path = yue_hans_transcribe_path / "transcribe_review_translate.srt"
