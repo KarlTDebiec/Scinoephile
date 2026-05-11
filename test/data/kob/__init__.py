@@ -27,7 +27,7 @@ from scinoephile.lang.zho.block_review import (
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.line_review import (
@@ -233,7 +233,7 @@ def get_kob_yue_deliniation_test_cases(
 
 @cache
 def get_kob_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoPunctuationPromptYueHans,
+    prompt_cls: type[DualNTo1Prompt] = YueVsZhoPunctuationPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 punctuation test cases.

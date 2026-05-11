@@ -35,7 +35,7 @@ from scinoephile.llms.dual_block_gapped import (
     DualBlockGappedManager,
     DualBlockGappedPrompt,
 )
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
@@ -292,7 +292,7 @@ def get_mlamd_yue_vs_zho_gap_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoPunctuationPromptYueHans,
+    prompt_cls: type[DualNTo1Prompt] = YueVsZhoPunctuationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 punctuation test cases.
