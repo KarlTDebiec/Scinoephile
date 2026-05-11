@@ -20,7 +20,6 @@ __all__ = [
     "SUBTITLE_ARTIFACT_CACHE_VERSION",
     "cache_subtitle_stream_artifacts",
     "get_cached_subtitle_artifact_path",
-    "get_subtitle_stream_cache_key",
     "is_valid_subtitle_artifact_cache",
 ]
 
@@ -104,11 +103,11 @@ def get_cached_subtitle_artifact_path(
     """
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("media", "subtitles")
-    cache_key = get_subtitle_stream_cache_key(infile_path, stream)
+    cache_key = _get_subtitle_stream_cache_key(infile_path, stream)
     return cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
 
 
-def get_subtitle_stream_cache_key(
+def _get_subtitle_stream_cache_key(
     infile_path: Path,
     stream: SubtitleStream,
 ) -> str:

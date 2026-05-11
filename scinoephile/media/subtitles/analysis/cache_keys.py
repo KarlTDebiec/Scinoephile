@@ -14,7 +14,6 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = [
     "SCRIPT_ANALYSIS_CACHE_VERSION",
-    "get_subtitle_analysis_cache_key",
     "get_subtitle_analysis_cache_path",
 ]
 
@@ -41,7 +40,7 @@ def get_subtitle_analysis_cache_path(
     """
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("media", "subtitle-analysis")
-    cache_key = get_subtitle_analysis_cache_key(
+    cache_key = _get_subtitle_analysis_cache_key(
         infile_path,
         stream,
         sample_size=sample_size,
@@ -50,7 +49,7 @@ def get_subtitle_analysis_cache_path(
     return cache_dir_path / f"{cache_key}.json"
 
 
-def get_subtitle_analysis_cache_key(
+def _get_subtitle_analysis_cache_key(
     infile_path: Path,
     stream: SubtitleStream,
     *,

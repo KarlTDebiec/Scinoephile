@@ -24,9 +24,7 @@ from .types import ImageSubtitleManifest
 
 __all__ = [
     "IMAGE_SERIES_CACHE_VERSION",
-    "get_cached_image_subtitle_dir_path",
     "get_or_create_image_subtitle_dir_path",
-    "is_valid_image_subtitle_cache",
     "load_cached_image_subtitles",
     "load_image_subtitle_manifest",
     "save_image_subtitle_manifest",
@@ -36,31 +34,6 @@ logger = getLogger(__name__)
 
 IMAGE_SERIES_CACHE_VERSION = 1
 """Rendered image subtitle cache schema version."""
-
-
-def get_cached_image_subtitle_dir_path(
-    infile_path: Path,
-    stream: SubtitleStream,
-    *,
-    cache_dir_path: Path | None = None,
-) -> Path:
-    """Get the cache directory path for rendered image subtitles.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream
-        cache_dir_path: cache directory path
-    Returns:
-        rendered image subtitle cache directory path
-    """
-    return (
-        get_cached_subtitle_artifact_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        ).parent
-        / "image-series"
-    )
 
 
 def get_or_create_image_subtitle_dir_path(
@@ -78,12 +51,12 @@ def get_or_create_image_subtitle_dir_path(
     Returns:
         rendered image subtitle cache directory path
     """
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if is_valid_image_subtitle_cache(image_dir_path):
+    if _is_valid_image_subtitle_cache(image_dir_path):
         logger.info(f"Loaded image subtitle series from cache: {image_dir_path}")
         return image_dir_path
 
@@ -126,28 +99,6 @@ def get_or_create_image_subtitle_dir_path(
     temp_dir_path.replace(image_dir_path)
     logger.info(f"Saved image subtitle series to cache: {image_dir_path}")
     return image_dir_path
-
-
-def is_valid_image_subtitle_cache(image_dir_path: Path) -> bool:
-    """Check whether a rendered image subtitle cache is valid.
-
-    Arguments:
-        image_dir_path: rendered image subtitle cache directory path
-    Returns:
-        whether the cache is valid
-    """
-    try:
-        manifest = load_image_subtitle_manifest(image_dir_path)
-    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
-        return False
-    return (
-        manifest["version"] == IMAGE_SERIES_CACHE_VERSION
-        and manifest["event_count"] >= 0
-        and manifest["image_count"] == manifest["event_count"]
-        and "first_start_ms" in manifest
-        and "last_end_ms" in manifest
-        and (image_dir_path / "index.html").exists()
-    )
 
 
 def load_cached_image_subtitles(
@@ -229,3 +180,50 @@ def save_image_subtitle_manifest(
     manifest_path = image_dir_path / "manifest.json"
     with manifest_path.open("w", encoding="utf-8") as file:
         json.dump(manifest, file, ensure_ascii=False, sort_keys=True)
+
+
+def _get_cached_image_subtitle_dir_path(
+    infile_path: Path,
+    stream: SubtitleStream,
+    *,
+    cache_dir_path: Path | None = None,
+) -> Path:
+    """Get the cache directory path for rendered image subtitles.
+
+    Arguments:
+        infile_path: media input file
+        stream: subtitle stream
+        cache_dir_path: cache directory path
+    Returns:
+        rendered image subtitle cache directory path
+    """
+    return (
+        get_cached_subtitle_artifact_path(
+            infile_path,
+            stream,
+            cache_dir_path=cache_dir_path,
+        ).parent
+        / "image-series"
+    )
+
+
+def _is_valid_image_subtitle_cache(image_dir_path: Path) -> bool:
+    """Check whether a rendered image subtitle cache is valid.
+
+    Arguments:
+        image_dir_path: rendered image subtitle cache directory path
+    Returns:
+        whether the cache is valid
+    """
+    try:
+        manifest = load_image_subtitle_manifest(image_dir_path)
+    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
+        return False
+    return (
+        manifest["version"] == IMAGE_SERIES_CACHE_VERSION
+        and manifest["event_count"] >= 0
+        and manifest["image_count"] == manifest["event_count"]
+        and "first_start_ms" in manifest
+        and "last_end_ms" in manifest
+        and (image_dir_path / "index.html").exists()
+    )

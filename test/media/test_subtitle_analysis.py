@@ -15,8 +15,8 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.media.subtitles import analysis as subtitle_analysis
 from scinoephile.media.subtitles.analysis.image_cache import (
-    get_cached_image_subtitle_dir_path,
-    is_valid_image_subtitle_cache,
+    _get_cached_image_subtitle_dir_path,
+    _is_valid_image_subtitle_cache,
 )
 from scinoephile.media.subtitles.analysis.script import analyze_subtitle_stream_script
 from scinoephile.media.subtitles.analysis.stats import (
@@ -256,7 +256,7 @@ def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
     )
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_bytes(b"not a real sup")
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -298,7 +298,7 @@ def test_image_subtitle_manifest_without_span_is_invalid(tmp_path: Path):
         encoding="utf-8",
     )
 
-    assert not is_valid_image_subtitle_cache(image_dir_path)
+    assert not _is_valid_image_subtitle_cache(image_dir_path)
 
 
 def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
@@ -317,7 +317,7 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     )
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_bytes(b"not a real sup")
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -383,7 +383,7 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
             cache_dir_path=tmp_path / "cache",
         )
 
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -413,7 +413,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     )
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_bytes(b"not a real sup")
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -500,7 +500,7 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
     )
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_bytes(b"not a real sup")
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -582,7 +582,7 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
     )
     artifact_path.parent.mkdir(parents=True)
     artifact_path.write_bytes(b"not a real sup")
-    image_dir_path = get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_cached_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",

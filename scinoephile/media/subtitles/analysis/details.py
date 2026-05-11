@@ -17,10 +17,7 @@ from scinoephile.media.subtitles.cache import cache_subtitle_stream_artifacts
 from .script import analyze_subtitle_stream_script
 from .stats import get_subtitle_stream_stats
 
-__all__ = [
-    "with_stream_details",
-    "with_subtitle_details",
-]
+__all__ = ["with_stream_details"]
 
 logger = getLogger(__name__)
 
@@ -57,7 +54,7 @@ def with_stream_details(
     for stream in stream_list:
         if isinstance(stream, SubtitleStream):
             detailed_streams.append(
-                with_subtitle_details(
+                _with_subtitle_details(
                     infile_path,
                     stream,
                     cache_dir_path=cache_dir_path,
@@ -68,7 +65,7 @@ def with_stream_details(
     return detailed_streams
 
 
-def with_subtitle_details(
+def _with_subtitle_details(
     infile_path: Path,
     stream: SubtitleStream,
     *,
