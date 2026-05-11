@@ -46,7 +46,10 @@ class DualNToMProcessor(Processor):
         """
         block_pairs = get_block_pairs_by_pause(source_one, source_two)
         output_series_to_concatenate: list[Series | None] = [None] * len(block_pairs)
-        stop_at_idx = stop_at_idx or len(block_pairs)
+        if stop_at_idx is None:
+            stop_at_idx = len(block_pairs)
+        elif stop_at_idx < 0:
+            raise ValueError("stop_at_idx must be greater than or equal to 0")
         for blk_idx, (one_blk, two_blk) in enumerate(block_pairs):
             if blk_idx >= stop_at_idx:
                 break
@@ -88,8 +91,12 @@ class DualNToMProcessor(Processor):
                 self.test_case_path, self.queryer.encountered_test_cases.values()
             )
 
-        output_series = get_concatenated_series(
-            [series for series in output_series_to_concatenate if series is not None]
-        )
+        output_series_blocks = [
+            series for series in output_series_to_concatenate if series is not None
+        ]
+        if output_series_blocks:
+            output_series = get_concatenated_series(output_series_blocks)
+        else:
+            output_series = Series()
         logger.info(f"Concatenated Series:\n{output_series.to_simple_string()}")
         return output_series

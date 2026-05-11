@@ -42,8 +42,8 @@ class EngZhoGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
     src_1_pfx: ClassVar[str] = "zho_"
     """Prefix for Chinese source fields in query."""
 
-    src_1_desc_tpl: ClassVar[str] = "Chinese subtitle {idx} to translate"
-    """Description template for Chinese source fields in query."""
+    src_1_desc_tpl: ClassVar[str] = "Cantonese subtitle {idx} to translate"
+    """Description template for Cantonese source fields in query."""
 
     src_2_pfx: ClassVar[str] = "eng_reference_"
     """Prefix for English reference fields in query."""
@@ -58,6 +58,6 @@ class EngZhoGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
     """Prefix for generated English output fields in answer."""
 
     output_desc_tpl: ClassVar[str] = (
-        "Generated English subtitle {idx} corresponding to Chinese subtitle {idx}"
+        "Generated English subtitle {idx} corresponding to Cantonese subtitle {idx}"
     )
     """Description template for generated English output fields in answer."""

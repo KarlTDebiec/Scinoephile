@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from unittest.mock import Mock
 
+import pytest
+
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import (
@@ -54,3 +56,28 @@ def test_process_outputs_one_subtitle_per_source_one_subtitle():
             Subtitle(start=2100, end=3000, text="Second translated"),
         ]
     )
+
+
+def test_process_stop_at_idx_zero_processes_no_blocks():
+    """Test stop_at_idx 0 stops before processing any blocks."""
+    provider = Mock(spec=LLMProvider)
+    processor = DualNToMProcessor(prompt_cls=_Prompt, provider=provider)
+    processor.queryer = Mock()
+    source_one = Series([Subtitle(start=1000, end=2000, text="第一句")])
+    source_two = Series([Subtitle(start=1000, end=2000, text="Reference")])
+
+    output = processor.process(source_one, source_two, stop_at_idx=0)
+
+    assert output == Series()
+    processor.queryer.assert_not_called()
+
+
+def test_process_rejects_negative_stop_at_idx():
+    """Test negative stop_at_idx values are rejected."""
+    provider = Mock(spec=LLMProvider)
+    processor = DualNToMProcessor(prompt_cls=_Prompt, provider=provider)
+    source_one = Series([Subtitle(start=1000, end=2000, text="第一句")])
+    source_two = Series([Subtitle(start=1000, end=2000, text="Reference")])
+
+    with pytest.raises(ValueError, match="stop_at_idx"):
+        processor.process(source_one, source_two, stop_at_idx=-1)

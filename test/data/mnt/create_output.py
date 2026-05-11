@@ -93,10 +93,10 @@ if "Guided English from 粤语" in actions:
     )
     yue_eng.save(output_path / "yue_eng/eng.srt")
 if "Bilingual 简体中文 and guided English from 粤语" in actions:
-    yue_zho_hans = Series.load(input_path / "yue_zho-Hant.srt")
-    yue_zho_hans = get_zho_cleaned(yue_zho_hans)
-    yue_zho_hans = get_zho_flattened(yue_zho_hans)
-    yue_zho_hans = get_zho_converted(yue_zho_hans, OpenCCConfig.t2s)
+    yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
+    yue_zho_hant = get_zho_cleaned(yue_zho_hant)
+    yue_zho_hant = get_zho_flattened(yue_zho_hant)
+    yue_zho_hans = get_zho_converted(yue_zho_hant, OpenCCConfig.t2s)
 
     yue_eng = Series.load(output_path / "yue_eng/eng.srt")
     yue_eng = get_eng_cleaned(yue_eng)
