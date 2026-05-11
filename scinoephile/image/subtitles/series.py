@@ -231,10 +231,7 @@ class ImageSeries(Series):
         image_paths = []
         for i, event in enumerate(self, 1):
             outfile_path = dir_path / f"{i:04d}.png"
-            img = event.img
-            if img.width == 0 or img.height == 0:
-                img = Image.new("LA", (1, 1), (0, 0))
-            img.save(outfile_path)
+            event.img.save(outfile_path)
             image_paths.append(outfile_path)
         logger.info(f"Saved images to {dir_path}")
 

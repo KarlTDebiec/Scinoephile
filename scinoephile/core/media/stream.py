@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .helpers import normalize_language
-
 __all__ = ["Stream"]
 
 
@@ -29,7 +27,16 @@ class Stream:
     def __post_init__(self):
         """Normalize stream metadata."""
         if self.language is not None:
-            object.__setattr__(self, "language", normalize_language(self.language))
+            parts = self.language.split("-")
+            normalized_parts = [parts[0].lower()]
+            for part in parts[1:]:
+                if len(part) == 4 and part.isalpha():
+                    normalized_parts.append(part.title())
+                elif part.lower() == "unknown":
+                    normalized_parts.append("Unknown")
+                else:
+                    normalized_parts.append(part)
+            object.__setattr__(self, "language", "-".join(normalized_parts))
 
     @property
     def description(self) -> str:
