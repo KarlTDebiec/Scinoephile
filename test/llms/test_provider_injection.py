@@ -120,6 +120,34 @@ def test_queryer_requires_injected_provider():
         queryer_cls()
 
 
+def test_queryer_includes_additional_context_before_few_shot_prompt():
+    """Test queryer includes additional context before few-shot examples."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"done"}'
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    prompt_test_case = _TestCase(
+        query=_Query(text="example"),
+        answer=_Answer(output="example output"),
+        prompt=True,
+    )
+    queryer = queryer_cls(
+        additional_context="Use canonical names.",
+        prompt_test_cases=[prompt_test_case],
+        provider=provider,
+        max_attempts=1,
+    )
+
+    test_case = _TestCase(query=_Query(text="input"))
+    queryer(test_case)
+
+    messages = provider.chat_completion.call_args.args[0]
+    system_message = messages[0]["content"]
+    assert "Additional context:\nUse canonical names." in system_message
+    assert system_message.index("Additional context:") < system_message.index(
+        _Prompt.few_shot_intro
+    )
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)
