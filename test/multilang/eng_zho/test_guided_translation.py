@@ -10,31 +10,31 @@ from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor
 from scinoephile.multilang.eng_zho.guided_translation import (
-    EngVsZhoGuidedTranslationPrompt,
-    get_eng_guided_translated_vs_zho,
-    get_eng_vs_zho_guided_translator,
+    EngZhoGuidedTranslationPrompt,
+    get_eng_translated_from_zho_with_eng_guidance,
+    get_eng_zho_guided_translator,
 )
 
 
-def test_eng_vs_zho_guided_translation_prompt_field_names():
+def test_eng_zho_guided_translation_prompt_field_names():
     """Test guided translation prompt uses domain-specific field names."""
-    assert EngVsZhoGuidedTranslationPrompt.src_1(1) == "zho_1"
-    assert EngVsZhoGuidedTranslationPrompt.src_2(1) == "eng_reference_1"
-    assert EngVsZhoGuidedTranslationPrompt.output(1) == "eng_1"
+    assert EngZhoGuidedTranslationPrompt.src_1(1) == "zho_1"
+    assert EngZhoGuidedTranslationPrompt.src_2(1) == "eng_reference_1"
+    assert EngZhoGuidedTranslationPrompt.output(1) == "eng_1"
 
 
-def test_get_eng_vs_zho_guided_translator_wires_processor():
+def test_get_eng_zho_guided_translator_wires_processor():
     """Test English-from-Chinese guided translator factory wiring."""
     provider = Mock(spec=LLMProvider)
 
-    processor = get_eng_vs_zho_guided_translator(test_cases=[], provider=provider)
+    processor = get_eng_zho_guided_translator(test_cases=[], provider=provider)
 
     assert isinstance(processor, DualNToMProcessor)
-    assert processor.prompt_cls is EngVsZhoGuidedTranslationPrompt
+    assert processor.prompt_cls is EngZhoGuidedTranslationPrompt
     assert processor.queryer.provider is provider
 
 
-def test_get_eng_guided_translated_vs_zho_delegates_to_processor():
+def test_get_eng_translated_from_zho_with_eng_guidance_delegates_to_processor():
     """Test guided translation wrapper delegates to provided processor."""
     zho = Series(
         [
@@ -52,7 +52,11 @@ def test_get_eng_guided_translated_vs_zho_delegates_to_processor():
     translator = Mock(spec=DualNToMProcessor)
     translator.process.return_value = expected
 
-    output = get_eng_guided_translated_vs_zho(zho, eng, translator=translator)
+    output = get_eng_translated_from_zho_with_eng_guidance(
+        zho,
+        eng,
+        translator=translator,
+    )
 
     assert output == expected
     translator.process.assert_called_once_with(zho, eng)

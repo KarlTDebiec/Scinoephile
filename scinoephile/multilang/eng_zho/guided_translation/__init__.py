@@ -20,34 +20,34 @@ from scinoephile.llms.dual_n_to_m import (
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
-from .prompts import EngVsZhoGuidedTranslationPrompt
+from .prompts import EngZhoGuidedTranslationPrompt
 
 __all__ = [
     "ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC",
-    "EngFromZhoGuidedTranslationProcessKwargs",
-    "EngFromZhoGuidedTranslationProcessorKwargs",
-    "EngVsZhoGuidedTranslationPrompt",
-    "get_eng_guided_translated_vs_zho",
-    "get_eng_vs_zho_guided_translator",
+    "EngZhoGuidedTranslationProcessKwargs",
+    "EngZhoGuidedTranslationProcessorKwargs",
+    "EngZhoGuidedTranslationPrompt",
+    "get_eng_translated_from_zho_with_eng_guidance",
+    "get_eng_zho_guided_translator",
 ]
 
 ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="eng-zho-guided-translation",
     test_case_table_name="test_cases__eng_zho__guided_translation",
     manager_cls=DualNToMManager,
-    prompt_cls=EngVsZhoGuidedTranslationPrompt,
+    prompt_cls=EngZhoGuidedTranslationPrompt,
 )
 """Operation specification for English guided translation from Chinese."""
 
 
-class EngFromZhoGuidedTranslationProcessKwargs(TypedDict, total=False):
+class EngZhoGuidedTranslationProcessKwargs(TypedDict, total=False):
     """Keyword arguments for DualNToMProcessor.process."""
 
     stop_at_idx: int | None
     """Exclusive block index at which to stop processing."""
 
 
-class EngFromZhoGuidedTranslationProcessorKwargs(TypedDict, total=False):
+class EngZhoGuidedTranslationProcessorKwargs(TypedDict, total=False):
     """Keyword arguments for DualNToMProcessor initialization."""
 
     test_case_path: Path | None
@@ -56,11 +56,11 @@ class EngFromZhoGuidedTranslationProcessorKwargs(TypedDict, total=False):
     """Whether generated test cases should be marked verified automatically."""
 
 
-def get_eng_guided_translated_vs_zho(
+def get_eng_translated_from_zho_with_eng_guidance(
     zho: Series,
     eng: Series,
     translator: DualNToMProcessor | None = None,
-    **kwargs: Unpack[EngFromZhoGuidedTranslationProcessKwargs],
+    **kwargs: Unpack[EngZhoGuidedTranslationProcessKwargs],
 ) -> Series:
     """Get English subtitles guided-translated from Chinese.
 
@@ -73,15 +73,15 @@ def get_eng_guided_translated_vs_zho(
         English subtitles guided-translated from Chinese
     """
     if translator is None:
-        translator = get_eng_vs_zho_guided_translator()
+        translator = get_eng_zho_guided_translator()
     return translator.process(zho, eng, **kwargs)
 
 
-def get_eng_vs_zho_guided_translator(
-    prompt_cls: type[EngVsZhoGuidedTranslationPrompt] = EngVsZhoGuidedTranslationPrompt,
+def get_eng_zho_guided_translator(
+    prompt_cls: type[EngZhoGuidedTranslationPrompt] = EngZhoGuidedTranslationPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
-    **kwargs: Unpack[EngFromZhoGuidedTranslationProcessorKwargs],
+    **kwargs: Unpack[EngZhoGuidedTranslationProcessorKwargs],
 ) -> DualNToMProcessor:
     """Get DualNToMProcessor with provided configuration.
 
