@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for mono track / subtitle block LLM classes."""
+"""Factories for mono `n` LLM classes."""
 
 from __future__ import annotations
 
@@ -14,15 +14,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import MonoBlockPrompt
+from .prompt import MonoNPrompt
 
-__all__ = ["MonoBlockManager"]
+__all__ = ["MonoNManager"]
 
 
-class MonoBlockManager(Manager):
-    """Factories for mono track / subtitle block LLM classes."""
+class MonoNManager(Manager):
+    """Factories for mono `n` LLM classes."""
 
-    prompt_cls: ClassVar[type[MonoBlockPrompt]] = MonoBlockPrompt
+    prompt_cls: ClassVar[type[MonoNPrompt]] = MonoNPrompt
     """Default prompt class."""
 
     @classmethod
@@ -30,7 +30,7 @@ class MonoBlockManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
+        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -40,7 +40,7 @@ class MonoBlockManager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name("MonoBlockQuery", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("MonoNQuery", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.input(idx + 1)
@@ -62,7 +62,7 @@ class MonoBlockManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
+        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -72,7 +72,7 @@ class MonoBlockManager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name("MonoBlockAnswer", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("MonoNAnswer", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.output(idx + 1)
@@ -97,7 +97,7 @@ class MonoBlockManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[MonoBlockPrompt] = MonoBlockPrompt,
+        prompt_cls: type[MonoNPrompt] = MonoNPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -107,7 +107,7 @@ class MonoBlockManager(Manager):
         Returns:
             test case model class
         """
-        name = get_model_name("MonoBlockTestCase", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("MonoNTestCase", f"{size}_{prompt_cls.__name__}")
         query_cls = cls.get_query_cls(size, prompt_cls)
         answer_cls = cls.get_answer_cls(size, prompt_cls)
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
@@ -144,7 +144,7 @@ class MonoBlockManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[MonoBlockPrompt], prompt_cls)
+        prompt_cls = cast(type[MonoNPrompt], prompt_cls)
         pattern = re.compile(rf"^{re.escape(prompt_cls.input_pfx)}\d+$")
         size = sum(1 for field in data["query"] if pattern.match(field))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
@@ -158,7 +158,7 @@ class MonoBlockManager(Manager):
         Returns:
             minimum difficulty
         """
-        prompt_cls: type[MonoBlockPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[MonoNPrompt] = getattr(model, "prompt_cls")
         size: int = getattr(model, "size")
         min_difficulty = 0
         if model.answer is None:
@@ -180,7 +180,7 @@ class MonoBlockManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: type[MonoBlockPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[MonoNPrompt] = getattr(model, "prompt_cls")
         size: int = getattr(model, "size")
         if model.answer is None:
             return model

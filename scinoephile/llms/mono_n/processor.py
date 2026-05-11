@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes mono track / subtitle block matters."""
+"""Processes mono `n` LLM queries."""
 
 from __future__ import annotations
 
@@ -10,26 +10,26 @@ from scinoephile.core.llms import Processor
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 
-from .manager import MonoBlockManager
-from .prompt import MonoBlockPrompt
+from .manager import MonoNManager
+from .prompt import MonoNPrompt
 
-__all__ = ["MonoBlockProcessor"]
+__all__ = ["MonoNProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class MonoBlockProcessor(Processor):
-    """Processes mono track / subtitle block matters."""
+class MonoNProcessor(Processor):
+    """Processes mono `n` LLM queries."""
 
-    prompt_cls: type[MonoBlockPrompt]
+    prompt_cls: type[MonoNPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = MonoBlockManager
+    manager_cls = MonoNManager
     """Manager class used to construct test case models."""
 
     def process(self, series: Series, stop_at_idx: int | None = None) -> Series:
-        """Processes mono track / block matters.
+        """Process mono `n` LLM queries.
 
         Arguments:
             series: subtitles
@@ -48,9 +48,7 @@ class MonoBlockProcessor(Processor):
                 break
 
             # Query LLM
-            test_case_cls = MonoBlockManager.get_test_case_cls(
-                len(block), self.prompt_cls
-            )
+            test_case_cls = MonoNManager.get_test_case_cls(len(block), self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for idx, subtitle in enumerate(block.events):

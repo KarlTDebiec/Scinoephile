@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 
 from scinoephile.core.llms import OperationSpec
-from scinoephile.llms.mono_block.manager import MonoBlockManager
-from scinoephile.llms.mono_block.prompt import MonoBlockPrompt
+from scinoephile.llms.mono_n.manager import MonoNManager
+from scinoephile.llms.mono_n.prompt import MonoNPrompt
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoPunctuationPromptYueHans,
     YueZhoPunctuationManager,
@@ -27,9 +27,9 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
         operation="unit-mono-block",
-        test_case_table_name="test_cases__unit__mono_block",
-        manager_cls=MonoBlockManager,
-        prompt_cls=MonoBlockPrompt,
+        test_case_table_name="test_cases__unit__mono_n",
+        manager_cls=MonoNManager,
+        prompt_cls=MonoNPrompt,
     )
 
     src1 = Path("src1.json")
@@ -86,9 +86,9 @@ def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
         operation="unit-mono-block",
-        test_case_table_name="test_cases__unit__mono_block",
-        manager_cls=MonoBlockManager,
-        prompt_cls=MonoBlockPrompt,
+        test_case_table_name="test_cases__unit__mono_n",
+        manager_cls=MonoNManager,
+        prompt_cls=MonoNPrompt,
     )
 
     src1 = Path("src1.json")
@@ -127,9 +127,9 @@ def test_sync_dry_run_reports_metadata_updates(tmp_path: Path, monkeypatch):
     db_path = Path("test_cases.sqlite")
     operation_spec = OperationSpec(
         operation="unit-mono-block",
-        test_case_table_name="test_cases__unit__mono_block",
-        manager_cls=MonoBlockManager,
-        prompt_cls=MonoBlockPrompt,
+        test_case_table_name="test_cases__unit__mono_n",
+        manager_cls=MonoNManager,
+        prompt_cls=MonoNPrompt,
     )
 
     src1 = Path("src1.json")
