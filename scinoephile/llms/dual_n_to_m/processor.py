@@ -80,7 +80,7 @@ class DualNToMProcessor(Processor):
                     Subtitle(start=sub.start, end=sub.end, text=output)
                 )
 
-            logger.info(f"Block {blk_idx}:\n{one_blk.to_simple_string()}")
+            logger.info(f"Block {blk_idx}:\n{output_series.to_simple_string()}")
             output_series_to_concatenate[blk_idx] = output_series
 
         if self.test_case_path is not None:
