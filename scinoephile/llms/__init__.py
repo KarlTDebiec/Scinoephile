@@ -6,6 +6,6 @@ This module may import from: common, core
 
 Hierarchy within module (lower may import from higher)::
 * providers / default_test_cases
-* dual_block / dual_block_gapped / dual_multi_single / dual_pair / dual_single
+* dual_block / dual_block_gapped / dual_multi_single / dual_pair / dual_1_to_1
   / mono_n
 """

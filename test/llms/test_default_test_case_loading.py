@@ -33,9 +33,9 @@ from scinoephile.llms.default_test_cases import (
     ZHO_HANT_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
 )
+from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
-from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_n.manager import MonoNManager
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (

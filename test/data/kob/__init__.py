@@ -25,10 +25,10 @@ from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHant,
 )
 from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
 from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoLineReviewPromptYueHans,
@@ -187,7 +187,7 @@ def get_kob_eng_block_review_test_cases(
 
 @cache
 def get_kob_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB English OCR fusion test cases.
@@ -260,7 +260,7 @@ def get_kob_yue_punctuation_test_cases(
 
 @cache
 def get_kob_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueVsZhoLineReviewPromptYueHans,
+    prompt_cls: type[Dual1To1Prompt] = YueVsZhoLineReviewPromptYueHans,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 简体粤文 vs 简体中文 line-review test cases.
@@ -305,7 +305,7 @@ def get_kob_zho_hant_block_review_test_cases(
 
 @cache
 def get_kob_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Unpack[_KobTestCaseKwargs],
 ) -> list[TestCase]:
     """Get KOB 繁体中文 OCR fusion test cases.

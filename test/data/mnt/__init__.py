@@ -26,8 +26,8 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from test.helpers import test_data_root
 
@@ -169,7 +169,7 @@ def get_mnt_eng_block_review_test_cases(
 
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
@@ -207,7 +207,7 @@ def get_mnt_zho_hans_block_review_test_cases(
 
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHans,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 OCR fusion test cases.
@@ -245,7 +245,7 @@ def get_mnt_zho_hant_block_review_test_cases(
 
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 OCR fusion test cases.

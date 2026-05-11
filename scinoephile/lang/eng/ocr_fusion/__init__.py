@@ -14,7 +14,7 @@ from scinoephile.llms.default_test_cases import (
     ENG_OCR_FUSION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager, OcrFusionProcessor
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager, OcrFusionProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
 from .prompts import OcrFusionPromptEng

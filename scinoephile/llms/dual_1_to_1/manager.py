@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual track / single subtitle LLM classes."""
+"""Factories for dual 1 to 1 LLM classes."""
 
 from __future__ import annotations
 
@@ -12,19 +12,19 @@ from pydantic import Field, create_model, model_validator
 from scinoephile.core.llms import Answer, Manager, Query
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualSinglePrompt
+from .prompt import Dual1To1Prompt
 
-__all__ = ["DualSingleManager"]
+__all__ = ["Dual1To1Manager"]
 
 
-class DualSingleManager(Manager):
-    """Factories for dual track / single subtitle LLM classes."""
+class Dual1To1Manager(Manager):
+    """Factories for dual 1 to 1 LLM classes."""
 
     @classmethod
     @cache
     def get_query_cls[TQuery: Query](
         cls,
-        prompt_cls: type[DualSinglePrompt],
+        prompt_cls: type[Dual1To1Prompt],
     ) -> type[TQuery]:
         """Get concrete query class with provided configuration.
 
@@ -60,7 +60,7 @@ class DualSingleManager(Manager):
     @cache
     def get_answer_cls[TAnswer: Answer](
         cls,
-        prompt_cls: type[DualSinglePrompt],
+        prompt_cls: type[Dual1To1Prompt],
     ) -> type[TAnswer]:
         """Get concrete answer class with provided configuration.
 
@@ -101,7 +101,7 @@ class DualSingleManager(Manager):
         Returns:
             validated query
         """
-        prompt_cls: type[DualSinglePrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[Dual1To1Prompt] = getattr(model, "prompt_cls")
         source_one = getattr(model, prompt_cls.src_1, None)
         source_two = getattr(model, prompt_cls.src_2, None)
         if not source_one:
@@ -121,7 +121,7 @@ class DualSingleManager(Manager):
         Returns:
             validated answer
         """
-        prompt_cls: type[DualSinglePrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[Dual1To1Prompt] = getattr(model, "prompt_cls")
         output = getattr(model, prompt_cls.output, None)
         note = getattr(model, prompt_cls.note, None)
         output_err = getattr(prompt_cls, "output_missing_err", None)

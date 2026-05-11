@@ -30,7 +30,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 
 __all__ = ["ZhoFuseCli"]
 

@@ -1,21 +1,21 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for OCR fusion dual track / single subtitle LLM classes."""
+"""Factories for OCR fusion dual 1 to 1 LLM classes."""
 
 from __future__ import annotations
 
 from typing import ClassVar
 
 from scinoephile.core.llms import TestCase
-from scinoephile.llms.dual_single import DualSingleManager
+from scinoephile.llms.dual_1_to_1 import Dual1To1Manager
 
 from .prompt import OcrFusionPrompt
 
 __all__ = ["OcrFusionManager"]
 
 
-class OcrFusionManager(DualSingleManager):
-    """Factories for OCR fusion dual track / single subtitle LLM classes."""
+class OcrFusionManager(Dual1To1Manager):
+    """Factories for OCR fusion dual 1 to 1 LLM classes."""
 
     prompt_cls: ClassVar[type[OcrFusionPrompt]] = OcrFusionPrompt
     """Default prompt class."""
@@ -48,7 +48,7 @@ class OcrFusionManager(DualSingleManager):
                 return True
             if source_two == output_text and "\n" not in source_two:
                 return True
-        return DualSingleManager.get_auto_verified(model)
+        return Dual1To1Manager.get_auto_verified(model)
 
     @staticmethod
     def get_min_difficulty(model: TestCase) -> int:
@@ -60,7 +60,7 @@ class OcrFusionManager(DualSingleManager):
             minimum difficulty
         """
         prompt_cls: type[OcrFusionPrompt] = getattr(model, "prompt_cls")
-        min_difficulty = DualSingleManager.get_min_difficulty(model)
+        min_difficulty = Dual1To1Manager.get_min_difficulty(model)
         min_difficulty = max(min_difficulty, 1)
         if model.answer is None:
             return min_difficulty
