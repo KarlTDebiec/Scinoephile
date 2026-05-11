@@ -41,3 +41,31 @@ def test_read_sup_series_rejects_truncated_segment_data():
 
     with pytest.raises(ValueError, match="segment data is truncated"):
         read_sup_series(data)
+
+
+def test_read_sup_series_rejects_truncated_palette_entry():
+    """Test SUP palette entries cannot contain fewer than five bytes."""
+    data = np.array(
+        [
+            0x50,
+            0x47,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x14,
+            0x00,
+            0x03,
+            0x00,
+            0x00,
+            0x01,
+        ],
+        dtype=np.uint8,
+    )
+
+    with pytest.raises(ValueError, match="palette segment is truncated"):
+        read_sup_series(data)
