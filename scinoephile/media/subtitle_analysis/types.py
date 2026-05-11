@@ -10,7 +10,6 @@ from typing import NotRequired, TypedDict
 __all__ = [
     "ImageSubtitleManifest",
     "SubtitleScriptAnalysis",
-    "SubtitleStatsCache",
     "SubtitleStreamStats",
 ]
 
@@ -32,19 +31,6 @@ class ImageSubtitleManifest(TypedDict):
     """Source artifact filename."""
     artifact_size: NotRequired[int]
     """Source artifact size in bytes."""
-
-
-class SubtitleStatsCache(TypedDict):
-    """Subtitle stream stats cache."""
-
-    version: int
-    """Cache schema version."""
-    event_count: int
-    """Number of subtitle events."""
-    first_start_ms: int | None
-    """First subtitle start time in milliseconds."""
-    last_end_ms: int | None
-    """Last subtitle end time in milliseconds."""
 
 
 @dataclass(frozen=True)

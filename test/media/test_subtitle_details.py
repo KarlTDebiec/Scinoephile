@@ -9,7 +9,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from scinoephile.core.media import SubtitleStream, VideoStream
-from scinoephile.media.subtitle_analysis import with_stream_details
+from scinoephile.media.subtitle_analysis.details import with_stream_details
 
 
 def test_with_stream_details_enriches_subtitle_streams(tmp_path: Path):

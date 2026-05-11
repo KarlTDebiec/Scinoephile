@@ -79,9 +79,7 @@ def get_subtitle_analysis_cache_key(
         "size": stat.st_size,
         "mtime_ns": stat.st_mtime_ns,
         "stream_index": stream.index,
-        "language": stream.language,
         "codec_name": stream.codec_name,
-        "extension": stream.extension,
         "sample_size": sample_size,
         "ocr_languages": ocr_languages,
         "script_analysis_cache_version": SCRIPT_ANALYSIS_CACHE_VERSION,
@@ -108,9 +106,7 @@ def get_subtitle_stream_cache_key(
         "size": stat.st_size,
         "mtime_ns": stat.st_mtime_ns,
         "stream_index": stream.index,
-        "language": stream.language,
         "codec_name": stream.codec_name,
-        "extension": stream.extension,
         "subtitle_artifact_cache_version": SUBTITLE_ARTIFACT_CACHE_VERSION,
     }
     return hash_cache_payload(payload)

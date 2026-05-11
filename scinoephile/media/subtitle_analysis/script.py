@@ -28,21 +28,9 @@ from .image_cache import (
     load_cached_image_subtitles,
     load_image_subtitle_manifest,
 )
-from .stats import IMAGE_SUBTITLE_EXTENSIONS
 from .types import SubtitleScriptAnalysis
 
-__all__ = [
-    "CONFLICT_SAMPLE_SIZE",
-    "DEFAULT_SAMPLE_SIZE",
-    "analyze_subtitle_stream_script",
-    "analyze_cached_image_subtitle_samples",
-    "analyze_image_subtitle_artifact",
-    "analyze_text_subtitle_artifact",
-    "get_evenly_spaced_indexes",
-    "get_expected_script_from_title",
-    "load_subtitle_script_analysis",
-    "save_subtitle_script_analysis",
-]
+__all__ = ["analyze_subtitle_stream_script"]
 
 logger = getLogger(__name__)
 
@@ -70,7 +58,7 @@ def analyze_subtitle_stream_script(
         subtitle script analysis
     """
     if not is_zho_language(stream.language):
-        return from_zho_analysis(
+        return _from_zho_analysis(
             get_zho_script_analysis(""),
             failure_reason="not a Chinese subtitle stream",
         )
@@ -85,7 +73,7 @@ def analyze_subtitle_stream_script(
         logger.info(
             f"Loaded subtitle script analysis from cache: {analysis_cache_path}"
         )
-        return load_subtitle_script_analysis(analysis_cache_path)
+        return _load_subtitle_script_analysis(analysis_cache_path)
 
     artifact_path = get_cached_subtitle_artifact_path(
         infile_path,
@@ -99,22 +87,22 @@ def analyze_subtitle_stream_script(
             cache_dir_path=cache_dir_path,
         )
 
-    if stream.extension in IMAGE_SUBTITLE_EXTENSIONS:
-        analysis = analyze_image_subtitle_artifact(
+    if stream.extension == "sup":
+        analysis = _analyze_image_subtitle_artifact(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,
             sample_size=sample_size,
         )
     else:
-        analysis = analyze_text_subtitle_artifact(artifact_path)
+        analysis = _analyze_text_subtitle_artifact(artifact_path)
 
-    save_subtitle_script_analysis(analysis, analysis_cache_path)
+    _save_subtitle_script_analysis(analysis, analysis_cache_path)
     logger.info(f"Saved subtitle script analysis to cache: {analysis_cache_path}")
     return analysis
 
 
-def analyze_cached_image_subtitle_samples(
+def _analyze_cached_image_subtitle_samples(
     image_dir_path: Path,
     sample_indexes: list[int],
 ) -> SubtitleScriptAnalysis:
@@ -160,7 +148,7 @@ def analyze_cached_image_subtitle_samples(
     )
 
 
-def analyze_image_subtitle_artifact(
+def _analyze_image_subtitle_artifact(
     infile_path: Path,
     stream: SubtitleStream,
     *,
@@ -183,7 +171,7 @@ def analyze_image_subtitle_artifact(
         cache_dir_path=cache_dir_path,
     )
     manifest = load_image_subtitle_manifest(image_dir_path)
-    sample_indexes = get_evenly_spaced_indexes(
+    sample_indexes = _get_evenly_spaced_indexes(
         int(manifest["event_count"]),
         sample_size,
     )
@@ -196,11 +184,11 @@ def analyze_image_subtitle_artifact(
             failure_reason="no subtitle images to sample",
         )
 
-    analysis = analyze_cached_image_subtitle_samples(
+    analysis = _analyze_cached_image_subtitle_samples(
         image_dir_path,
         sample_indexes,
     )
-    expected_script = get_expected_script_from_title(stream.title)
+    expected_script = _get_expected_script_from_title(stream.title)
     should_expand_samples = False
     if int(manifest["event_count"]) > len(sample_indexes):
         if analysis.script is None:
@@ -209,18 +197,18 @@ def analyze_image_subtitle_artifact(
             should_expand_samples = True
 
     if should_expand_samples:
-        expanded_sample_indexes = get_evenly_spaced_indexes(
+        expanded_sample_indexes = _get_evenly_spaced_indexes(
             int(manifest["event_count"]),
             CONFLICT_SAMPLE_SIZE,
         )
-        analysis = analyze_cached_image_subtitle_samples(
+        analysis = _analyze_cached_image_subtitle_samples(
             image_dir_path,
             expanded_sample_indexes,
         )
     return analysis
 
 
-def analyze_text_subtitle_artifact(artifact_path: Path) -> SubtitleScriptAnalysis:
+def _analyze_text_subtitle_artifact(artifact_path: Path) -> SubtitleScriptAnalysis:
     """Analyze a text subtitle artifact.
 
     Arguments:
@@ -234,10 +222,10 @@ def analyze_text_subtitle_artifact(artifact_path: Path) -> SubtitleScriptAnalysi
     failure_reason = None
     if analysis.script is None:
         failure_reason = "Chinese script could not be determined"
-    return from_zho_analysis(analysis, failure_reason=failure_reason)
+    return _from_zho_analysis(analysis, failure_reason=failure_reason)
 
 
-def from_zho_analysis(
+def _from_zho_analysis(
     analysis: ZhoScriptAnalysis,
     *,
     failure_reason: str | None = None,
@@ -259,7 +247,7 @@ def from_zho_analysis(
     )
 
 
-def get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
+def _get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
     """Get evenly spaced indexes for sampling a subtitle series.
 
     Arguments:
@@ -279,7 +267,7 @@ def get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
     ]
 
 
-def get_expected_script_from_title(title: str | None) -> str | None:
+def _get_expected_script_from_title(title: str | None) -> str | None:
     """Get expected Chinese script from a stream title.
 
     Arguments:
@@ -297,7 +285,7 @@ def get_expected_script_from_title(title: str | None) -> str | None:
     return None
 
 
-def load_subtitle_script_analysis(cache_path: Path) -> SubtitleScriptAnalysis:
+def _load_subtitle_script_analysis(cache_path: Path) -> SubtitleScriptAnalysis:
     """Load subtitle script analysis from cache.
 
     Arguments:
@@ -318,7 +306,7 @@ def load_subtitle_script_analysis(cache_path: Path) -> SubtitleScriptAnalysis:
     )
 
 
-def save_subtitle_script_analysis(
+def _save_subtitle_script_analysis(
     analysis: SubtitleScriptAnalysis,
     cache_path: Path,
 ):

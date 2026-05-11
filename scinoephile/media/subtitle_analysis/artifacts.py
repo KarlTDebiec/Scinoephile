@@ -30,32 +30,28 @@ def cache_subtitle_stream_artifacts(
     streams: list[SubtitleStream],
     *,
     cache_dir_path: Path | None = None,
-) -> list[Path]:
+):
     """Cache extracted subtitle stream artifacts using one ffmpeg command.
 
     Arguments:
         infile_path: media input file
         streams: subtitle streams to cache
         cache_dir_path: cache directory path
-    Returns:
-        cached artifact paths
     """
     missing: list[tuple[SubtitleStream, Path]] = []
-    artifact_paths = []
     for stream in streams:
         artifact_path = get_cached_subtitle_artifact_path(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,
         )
-        artifact_paths.append(artifact_path)
         if not is_valid_subtitle_artifact_cache(artifact_path):
             missing.append((stream, artifact_path))
         else:
             logger.info(f"Loaded subtitle artifact from cache: {artifact_path}")
 
     if not missing:
-        return artifact_paths
+        return
 
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("media", "subtitles")
@@ -84,7 +80,6 @@ def cache_subtitle_stream_artifacts(
             logger.info(f"Saved subtitle artifact to cache: {artifact_path}")
     finally:
         rmtree(temp_dir_path, ignore_errors=True)
-    return artifact_paths
 
 
 def extract_subtitle_stream_from_cache(
@@ -139,11 +134,7 @@ def get_cached_subtitle_artifact_path(
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("media", "subtitles")
     cache_key = get_subtitle_stream_cache_key(infile_path, stream)
-    return (
-        cache_dir_path
-        / cache_key
-        / f"{stream.language or 'und'}-{stream.index}.{stream.extension}"
-    )
+    return cache_dir_path / cache_key / f"{stream.index}.{stream.extension}"
 
 
 def is_valid_subtitle_artifact_cache(artifact_path: Path) -> bool:

@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-import json
-from logging import getLogger
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
@@ -20,61 +18,10 @@ from .artifacts import (
 from .image_cache import (
     get_or_create_image_subtitle_dir_path,
     load_image_subtitle_manifest,
-    save_image_subtitle_manifest,
-    update_image_subtitle_stats_from_html,
 )
-from .types import SubtitleStatsCache, SubtitleStreamStats
+from .types import SubtitleStreamStats
 
-__all__ = [
-    "SUBTITLE_STATS_CACHE_VERSION",
-    "count_subtitle_stream_events",
-    "get_subtitle_series_stats",
-    "get_subtitle_stream_stats",
-]
-
-logger = getLogger(__name__)
-
-IMAGE_SUBTITLE_EXTENSIONS = {"sup"}
-"""Subtitle artifact extensions that contain image subtitles."""
-SUBTITLE_STATS_CACHE_VERSION = 1
-"""Subtitle stats cache schema version."""
-
-
-def count_subtitle_stream_events(
-    infile_path: Path,
-    stream: SubtitleStream,
-    *,
-    cache_dir_path: Path | None = None,
-) -> int:
-    """Count subtitle events in a subtitle stream using cached artifacts.
-
-    Arguments:
-        infile_path: media input file
-        stream: subtitle stream to count
-        cache_dir_path: cache directory path
-    Returns:
-        number of subtitle events
-    """
-    return get_subtitle_stream_stats(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    ).event_count
-
-
-def get_subtitle_series_stats(series: Series | ImageSeries) -> SubtitleStreamStats:
-    """Get subtitle stats from a loaded subtitle series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        subtitle stream statistics
-    """
-    return SubtitleStreamStats(
-        event_count=len(series),
-        first_start_ms=get_first_start_ms(series),
-        last_end_ms=get_last_end_ms(series),
-    )
+__all__ = ["get_subtitle_stream_stats"]
 
 
 def get_subtitle_stream_stats(
@@ -104,26 +51,18 @@ def get_subtitle_stream_stats(
             cache_dir_path=cache_dir_path,
         )
 
-    if stream.extension in IMAGE_SUBTITLE_EXTENSIONS:
+    if stream.extension == "sup":
         image_dir_path = get_or_create_image_subtitle_dir_path(
             infile_path,
             stream,
             cache_dir_path=cache_dir_path,
         )
-        return get_image_subtitle_stats(image_dir_path)
+        return _get_image_subtitle_stats(image_dir_path)
 
-    stats_cache_path = artifact_path.parent / "stats.json"
-    if is_valid_subtitle_stats_cache(stats_cache_path):
-        logger.info(f"Loaded subtitle stats from cache: {stats_cache_path}")
-        return load_subtitle_stats_cache(stats_cache_path)
-
-    stats = get_subtitle_series_stats(Series.load(artifact_path))
-    save_subtitle_stats_cache(stats, stats_cache_path)
-    logger.info(f"Saved subtitle stats to cache: {stats_cache_path}")
-    return stats
+    return _get_subtitle_series_stats(Series.load(artifact_path))
 
 
-def get_first_start_ms(series: Series | ImageSeries) -> int | None:
+def _get_first_start_ms(series: Series | ImageSeries) -> int | None:
     """Get first subtitle start time from a series.
 
     Arguments:
@@ -136,7 +75,7 @@ def get_first_start_ms(series: Series | ImageSeries) -> int | None:
     return min(event.start for event in series)
 
 
-def get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
+def _get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
     """Get image subtitle stats from cached manifest or HTML metadata.
 
     Arguments:
@@ -145,8 +84,6 @@ def get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
         subtitle stream statistics
     """
     manifest = load_image_subtitle_manifest(image_dir_path)
-    if "first_start_ms" not in manifest or "last_end_ms" not in manifest:
-        manifest = update_image_subtitle_stats_from_html(image_dir_path, manifest)
     return SubtitleStreamStats(
         event_count=int(manifest["event_count"]),
         first_start_ms=manifest.get("first_start_ms"),
@@ -154,7 +91,7 @@ def get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
     )
 
 
-def get_last_end_ms(series: Series | ImageSeries) -> int | None:
+def _get_last_end_ms(series: Series | ImageSeries) -> int | None:
     """Get last subtitle end time from a series.
 
     Arguments:
@@ -167,80 +104,16 @@ def get_last_end_ms(series: Series | ImageSeries) -> int | None:
     return max(event.end for event in series)
 
 
-def is_valid_subtitle_stats_cache(cache_path: Path) -> bool:
-    """Check whether a subtitle stats cache is valid.
+def _get_subtitle_series_stats(series: Series | ImageSeries) -> SubtitleStreamStats:
+    """Get subtitle stats from a loaded subtitle series.
 
     Arguments:
-        cache_path: stats cache path
-    Returns:
-        whether the cache is valid
-    """
-    try:
-        cache = load_subtitle_stats_cache(cache_path)
-    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
-        return False
-    if cache.event_count < 0:
-        return False
-    return True
-
-
-def load_subtitle_stats_cache(cache_path: Path) -> SubtitleStreamStats:
-    """Load subtitle stats from cache.
-
-    Arguments:
-        cache_path: stats cache path
+        series: loaded subtitle series
     Returns:
         subtitle stream statistics
     """
-    with cache_path.open("r", encoding="utf-8") as file:
-        raw = json.load(file)
-    if int(raw["version"]) != SUBTITLE_STATS_CACHE_VERSION:
-        raise ValueError(f"Unsupported subtitle stats cache version: {raw['version']}")
-    first_start_ms = raw["first_start_ms"]
-    if first_start_ms is not None:
-        first_start_ms = int(first_start_ms)
-    last_end_ms = raw["last_end_ms"]
-    if last_end_ms is not None:
-        last_end_ms = int(last_end_ms)
     return SubtitleStreamStats(
-        event_count=int(raw["event_count"]),
-        first_start_ms=first_start_ms,
-        last_end_ms=last_end_ms,
+        event_count=len(series),
+        first_start_ms=_get_first_start_ms(series),
+        last_end_ms=_get_last_end_ms(series),
     )
-
-
-def save_subtitle_stats_cache(
-    stats: SubtitleStreamStats,
-    cache_path: Path,
-):
-    """Save subtitle stats to cache.
-
-    Arguments:
-        stats: subtitle stream statistics
-        cache_path: stats cache path
-    """
-    cache: SubtitleStatsCache = {
-        "version": SUBTITLE_STATS_CACHE_VERSION,
-        "event_count": stats.event_count,
-        "first_start_ms": stats.first_start_ms,
-        "last_end_ms": stats.last_end_ms,
-    }
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    with cache_path.open("w", encoding="utf-8") as file:
-        json.dump(cache, file, ensure_ascii=False, sort_keys=True)
-
-
-def save_image_subtitle_stats_cache(
-    stats: SubtitleStreamStats,
-    image_dir_path: Path,
-):
-    """Save image subtitle stats into the rendered manifest.
-
-    Arguments:
-        stats: subtitle stream statistics
-        image_dir_path: rendered image subtitle cache directory path
-    """
-    manifest = load_image_subtitle_manifest(image_dir_path)
-    manifest["first_start_ms"] = stats.first_start_ms
-    manifest["last_end_ms"] = stats.last_end_ms
-    save_image_subtitle_manifest(manifest, image_dir_path)

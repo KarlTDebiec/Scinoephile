@@ -13,14 +13,27 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.media.subtitle_analysis import (
-    analyze_subtitle_stream_script,
+from scinoephile.media import subtitle_analysis
+from scinoephile.media.subtitle_analysis.artifacts import (
     cache_subtitle_stream_artifacts,
-    count_subtitle_stream_events,
-    get_cached_image_subtitle_dir_path,
     get_cached_subtitle_artifact_path,
+)
+from scinoephile.media.subtitle_analysis.image_cache import (
+    get_cached_image_subtitle_dir_path,
+    is_valid_image_subtitle_cache,
+)
+from scinoephile.media.subtitle_analysis.script import analyze_subtitle_stream_script
+from scinoephile.media.subtitle_analysis.stats import (
     get_subtitle_stream_stats,
 )
+
+
+def test_subtitle_analysis_package_exports_result_types_only():
+    """Test subtitle analysis package has a narrow public API."""
+    assert subtitle_analysis.__all__ == [
+        "SubtitleScriptAnalysis",
+        "SubtitleStreamStats",
+    ]
 
 
 def test_subtitle_stream_uses_language_for_description_and_filename():
@@ -54,8 +67,14 @@ def test_get_cached_subtitle_artifact_path_changes_by_stream(tmp_path: Path):
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
         cache_dir_path=tmp_path / "cache",
     )
+    same_stream_with_script = get_cached_subtitle_artifact_path(
+        infile_path,
+        SubtitleStream(index=2, language="zho-Hant", codec_name="subrip"),
+        cache_dir_path=tmp_path / "cache",
+    )
 
     assert first != second
+    assert first == same_stream_with_script
     assert first.suffix == ".srt"
     assert second.suffix == ".srt"
 
@@ -155,8 +174,8 @@ def test_analyze_text_subtitle_stream_uses_cached_artifact(tmp_path: Path):
     assert analysis.script == "zho-Hans"
 
 
-def test_count_text_subtitle_stream_events_from_cached_artifact(tmp_path: Path):
-    """Test text subtitle event counting reads cached extracted subtitles.
+def test_get_text_subtitle_stream_stats_counts_cached_artifact(tmp_path: Path):
+    """Test text subtitle stats count cached extracted subtitles.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -181,14 +200,14 @@ def test_count_text_subtitle_stream_events_from_cached_artifact(tmp_path: Path):
     with patch(
         "scinoephile.media.subtitle_analysis.artifacts.run_command"
     ) as run_command:
-        count = count_subtitle_stream_events(
+        stats = get_subtitle_stream_stats(
             infile_path,
             stream,
             cache_dir_path=tmp_path / "cache",
         )
 
     run_command.assert_not_called()
-    assert count == 2
+    assert stats.event_count == 2
 
 
 def test_get_text_subtitle_stream_stats_from_cached_artifact(tmp_path: Path):
@@ -229,8 +248,8 @@ def test_get_text_subtitle_stream_stats_from_cached_artifact(tmp_path: Path):
     assert stats.last_end_ms == 65250
 
 
-def test_count_image_subtitle_stream_events_from_cached_manifest(tmp_path: Path):
-    """Test image subtitle event counting reads cached image metadata.
+def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
+    """Test image subtitle stats count cached image metadata.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -253,21 +272,41 @@ def test_count_image_subtitle_stream_events_from_cached_manifest(tmp_path: Path)
     image_dir_path.mkdir()
     (image_dir_path / "index.html").write_text("", encoding="utf-8")
     (image_dir_path / "manifest.json").write_text(
-        '{"event_count": 7, "image_count": 7, "version": 1}',
+        (
+            '{"event_count": 7, "first_start_ms": 2500, "image_count": 7, '
+            '"last_end_ms": 65250, "version": 1}'
+        ),
         encoding="utf-8",
     )
 
     with patch(
         "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load"
     ) as load_image_series:
-        count = count_subtitle_stream_events(
+        stats = get_subtitle_stream_stats(
             infile_path,
             stream,
             cache_dir_path=tmp_path / "cache",
         )
 
     load_image_series.assert_not_called()
-    assert count == 7
+    assert stats.event_count == 7
+
+
+def test_image_subtitle_manifest_without_span_is_invalid(tmp_path: Path):
+    """Test old image subtitle manifests without timing metadata are invalid.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    image_dir_path = tmp_path / "image-series"
+    image_dir_path.mkdir()
+    (image_dir_path / "index.html").write_text("", encoding="utf-8")
+    (image_dir_path / "manifest.json").write_text(
+        '{"event_count": 7, "image_count": 7, "version": 1}',
+        encoding="utf-8",
+    )
+
+    assert not is_valid_image_subtitle_cache(image_dir_path)
 
 
 def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
@@ -316,8 +355,8 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     assert stats.last_end_ms == 65250
 
 
-def test_count_image_subtitle_stream_events_builds_image_cache(tmp_path: Path):
-    """Test image subtitle event counting builds rendered image cache.
+def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
+    """Test image subtitle stats build rendered image cache.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -346,7 +385,7 @@ def test_count_image_subtitle_stream_events_builds_image_cache(tmp_path: Path):
         "scinoephile.media.subtitle_analysis.image_cache.ImageSeries.load",
         return_value=image_series,
     ):
-        count = count_subtitle_stream_events(
+        stats = get_subtitle_stream_stats(
             infile_path,
             stream,
             cache_dir_path=tmp_path / "cache",
@@ -357,7 +396,7 @@ def test_count_image_subtitle_stream_events_builds_image_cache(tmp_path: Path):
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    assert count == 1
+    assert stats.event_count == 1
     assert (image_dir_path / "index.html").exists()
     assert (image_dir_path / "manifest.json").exists()
 
@@ -399,7 +438,10 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     )
     image_series.save(image_dir_path)
     (image_dir_path / "manifest.json").write_text(
-        '{"event_count": 7, "image_count": 7, "version": 1}',
+        (
+            '{"event_count": 7, "first_start_ms": 0, "image_count": 7, '
+            '"last_end_ms": 6500, "version": 1}'
+        ),
         encoding="utf-8",
     )
     ocr_sizes: list[list[tuple[int, int]]] = []
@@ -483,7 +525,10 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
     )
     image_series.save(image_dir_path)
     (image_dir_path / "manifest.json").write_text(
-        '{"event_count": 16, "image_count": 16, "version": 1}',
+        (
+            '{"event_count": 16, "first_start_ms": 0, "image_count": 16, '
+            '"last_end_ms": 15500, "version": 1}'
+        ),
         encoding="utf-8",
     )
     sample_lengths: list[int] = []
@@ -562,7 +607,10 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
     )
     image_series.save(image_dir_path)
     (image_dir_path / "manifest.json").write_text(
-        '{"event_count": 16, "image_count": 16, "version": 1}',
+        (
+            '{"event_count": 16, "first_start_ms": 0, "image_count": 16, '
+            '"last_end_ms": 15500, "version": 1}'
+        ),
         encoding="utf-8",
     )
     sample_lengths: list[int] = []

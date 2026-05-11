@@ -12,7 +12,6 @@ from uuid import uuid4
 
 from PIL import Image
 
-from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
@@ -26,8 +25,6 @@ from .types import ImageSubtitleManifest
 __all__ = [
     "IMAGE_SERIES_CACHE_VERSION",
     "get_cached_image_subtitle_dir_path",
-    "get_first_start_ms",
-    "get_last_end_ms",
     "get_or_create_image_subtitle_dir_path",
     "is_valid_image_subtitle_cache",
     "load_cached_image_subtitles",
@@ -64,32 +61,6 @@ def get_cached_image_subtitle_dir_path(
         ).parent
         / "image-series"
     )
-
-
-def get_first_start_ms(series: ImageSeries) -> int | None:
-    """Get first subtitle start time from a series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        first subtitle start time in milliseconds, if available
-    """
-    if not series:
-        return None
-    return min(event.start for event in series)
-
-
-def get_last_end_ms(series: ImageSeries) -> int | None:
-    """Get last subtitle end time from a series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        last subtitle end time in milliseconds, if available
-    """
-    if not series:
-        return None
-    return max(event.end for event in series)
 
 
 def get_or_create_image_subtitle_dir_path(
@@ -129,6 +100,12 @@ def get_or_create_image_subtitle_dir_path(
         )
 
     image_series = ImageSeries.load(artifact_path)
+    first_start_ms = None
+    last_end_ms = None
+    if image_series:
+        first_start_ms = min(event.start for event in image_series)
+        last_end_ms = max(event.end for event in image_series)
+
     image_dir_path.parent.mkdir(parents=True, exist_ok=True)
     temp_dir_path = image_dir_path.parent / f"{image_dir_path.name}-tmp-{uuid4().hex}"
     image_series.save(temp_dir_path)
@@ -137,8 +114,8 @@ def get_or_create_image_subtitle_dir_path(
             "version": IMAGE_SERIES_CACHE_VERSION,
             "event_count": len(image_series),
             "image_count": len(list(temp_dir_path.glob("*.png"))),
-            "first_start_ms": get_first_start_ms(image_series),
-            "last_end_ms": get_last_end_ms(image_series),
+            "first_start_ms": first_start_ms,
+            "last_end_ms": last_end_ms,
             "artifact_name": artifact_path.name,
             "artifact_size": artifact_path.stat().st_size,
         },
@@ -163,13 +140,14 @@ def is_valid_image_subtitle_cache(image_dir_path: Path) -> bool:
         manifest = load_image_subtitle_manifest(image_dir_path)
     except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         return False
-    if manifest["version"] != IMAGE_SERIES_CACHE_VERSION:
-        return False
-    if manifest["event_count"] < 0:
-        return False
-    if manifest["image_count"] != manifest["event_count"]:
-        return False
-    return (image_dir_path / "index.html").exists()
+    return (
+        manifest["version"] == IMAGE_SERIES_CACHE_VERSION
+        and manifest["event_count"] >= 0
+        and manifest["image_count"] == manifest["event_count"]
+        and "first_start_ms" in manifest
+        and "last_end_ms" in manifest
+        and (image_dir_path / "index.html").exists()
+    )
 
 
 def load_cached_image_subtitles(
@@ -251,28 +229,3 @@ def save_image_subtitle_manifest(
     manifest_path = image_dir_path / "manifest.json"
     with manifest_path.open("w", encoding="utf-8") as file:
         json.dump(manifest, file, ensure_ascii=False, sort_keys=True)
-
-
-def update_image_subtitle_stats_from_html(
-    image_dir_path: Path,
-    manifest: ImageSubtitleManifest,
-) -> ImageSubtitleManifest:
-    """Update image subtitle stats in a manifest from cached HTML.
-
-    Arguments:
-        image_dir_path: rendered image subtitle cache directory path
-        manifest: manifest to update
-    Returns:
-        updated manifest
-    """
-    html_path = image_dir_path / "index.html"
-    html_text = html_path.read_text(encoding="utf-8")
-    try:
-        html_events = ImageSeries._parse_html_events(html_text, image_dir_path)
-    except ScinoephileError:
-        return manifest
-    manifest["first_start_ms"] = min(event["start"] for event in html_events)
-    manifest["last_end_ms"] = max(event["end"] for event in html_events)
-    save_image_subtitle_manifest(manifest, image_dir_path)
-    logger.info(f"Updated image subtitle stats cache: {image_dir_path}")
-    return manifest
