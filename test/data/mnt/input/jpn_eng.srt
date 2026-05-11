@@ -267,7 +267,7 @@ There's nothing here.
 
 67
 00:08:34,740 --> 00:08:35,610
-Yeah...
+Yeah…
 
 68
 00:08:37,280 --> 00:08:38,620
@@ -419,11 +419,11 @@ Are you there, Mr. Dustbunny?
 
 103
 00:12:08,450 --> 00:12:10,700
-Okay...
+Okay…
 
 104
 00:12:10,700 --> 00:12:11,830
-And lift...
+And lift…
 
 105
 00:12:12,410 --> 00:12:16,460
@@ -637,7 +637,7 @@ Can I help you?
 
 155
 00:17:04,790 --> 00:17:07,420
-M-My Mom... for Granny.
+M-My Mom… for Granny.
 
 156
 00:17:09,460 --> 00:17:10,670
@@ -1193,7 +1193,7 @@ Totoro?
 
 291
 00:36:56,100 --> 00:36:58,360
-Huh? Where'd he...?
+Huh? Where'd he…?
 
 292
 00:37:00,980 --> 00:37:02,940
@@ -1331,7 +1331,7 @@ Whew!
 
 325
 00:39:16,790 --> 00:39:18,370
-You're getting heavy, Mei...
+You're getting heavy, Mei…
 
 326
 00:39:18,370 --> 00:39:20,120
@@ -1466,7 +1466,7 @@ Wait up!
 
 357
 00:40:57,340 --> 00:40:59,970
-“I've got some really amazing news for you today.
+"I've got some really amazing news for you today.
 
 358
 00:41:00,640 --> 00:41:03,640
@@ -1474,7 +1474,7 @@ Mei met the giant creature, Totoro.
 
 359
 00:41:09,060 --> 00:41:13,150
-I'm really hoping to meet him myself, too.”
+I'm really hoping to meet him myself, too."
 
 360
 00:41:43,720 --> 00:41:46,980
@@ -1516,7 +1516,7 @@ and wouldn't listen to me.
 
 369
 00:42:51,500 --> 00:42:52,790
-But...
+But…
 
 370
 00:42:52,790 --> 00:42:56,050
@@ -1621,7 +1621,7 @@ I didn't cry. Aren't I good?
 
 394
 00:44:41,070 --> 00:44:41,740
-Yeah...
+Yeah…
 
 395
 00:44:43,700 --> 00:44:45,910
@@ -1634,7 +1634,7 @@ shelter here for a little while.
 
 397
 00:45:35,460 --> 00:45:36,330
-But...
+But…
 
 398
 00:45:57,020 --> 00:45:58,900
@@ -1794,7 +1794,7 @@ Are you sleepy?
 
 436
 00:49:29,480 --> 00:49:31,400
-That's why I told you...
+That's why I told you…
 
 437
 00:49:31,400 --> 00:49:33,240
@@ -1839,7 +1839,7 @@ Here comes the bus!
 
 447
 00:54:15,930 --> 00:54:19,100
-He took Dad's umbrella...
+He took Dad's umbrella…
 
 448
 00:54:32,700 --> 00:54:34,330
@@ -1891,7 +1891,7 @@ Come on!
 
 460
 00:55:22,080 --> 00:55:25,920
-“Dear Mom, my heart's still racing
+"Dear Mom, my heart's still racing
 from the excitement today.
 
 461
@@ -1909,15 +1909,15 @@ and tied up with dragon whiskers.
 
 464
 00:55:37,930 --> 00:55:40,600
-We opened it when we got home...
+We opened it when we got home…
 
 465
 00:55:40,600 --> 00:55:42,940
-and found lots of nuts inside.”
+and found lots of nuts inside."
 
 466
 00:55:47,650 --> 00:55:50,530
-“We thought our garden would be even better
+"We thought our garden would be even better
 if it turned into a forest,
 
 467
@@ -1926,11 +1926,11 @@ so we planted them in the garden.
 
 468
 00:55:52,990 --> 00:55:53,780
-But...”
+But…"
 
 469
 00:55:53,780 --> 00:55:55,780
-“...they don't want to sprout.
+"…they don't want to sprout.
 
 470
 00:55:55,780 --> 00:56:00,330
@@ -1948,7 +1948,7 @@ It's nearly summer vacation.
 473
 00:56:12,260 --> 00:56:16,550
 Dearest, dear Mom, please get well soon.
-Love, Satsuki.”
+Love, Satsuki."
 
 474
 00:56:20,060 --> 00:56:21,140
@@ -2374,7 +2374,7 @@ She's so stupid!
 
 576
 01:08:37,920 --> 01:08:41,050
-So stupid...
+So stupid…
 
 577
 01:08:59,690 --> 01:09:03,360
@@ -2415,11 +2415,11 @@ But what if she dies?
 
 586
 01:09:40,860 --> 01:09:42,860
-Satsuki...
+Satsuki…
 
 587
 01:09:43,490 --> 01:09:45,280
-Maybe Mom's...
+Maybe Mom's…
 
 588
 01:09:49,280 --> 01:09:52,290
@@ -2473,7 +2473,7 @@ I had a big fight with her earlier.
 
 600
 01:11:15,790 --> 01:11:17,540
-I mean, she was...
+I mean, she was…
 
 601
 01:11:17,540 --> 01:11:20,210
@@ -2514,7 +2514,7 @@ Mei!
 
 610
 01:12:04,670 --> 01:12:06,670
-Excuse me, mister. Um...
+Excuse me, mister. Um…
 
 611
 01:12:07,750 --> 01:12:08,630
@@ -2527,7 +2527,7 @@ She's my sister.
 
 613
 01:12:13,220 --> 01:12:15,680
-Let's see... A little girl?
+Let's see… A little girl?
 
 614
 01:12:16,100 --> 01:12:18,350
