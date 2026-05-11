@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Factories for dual track / subtitle block LLM classes."""
+"""Factories for dual n to n LLM classes."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, Manager, Query, TestCase, TestCaseClsKwargs
 from scinoephile.core.llms.models import get_model_name
 
-from .prompt import DualBlockPrompt
+from .prompt import DualNToNPrompt
 
-__all__ = ["DualBlockManager"]
+__all__ = ["DualNToNManager"]
 
 
-class DualBlockManager(Manager):
-    """Factories for dual track / subtitle block LLM classes."""
+class DualNToNManager(Manager):
+    """Factories for dual n to n LLM classes."""
 
-    prompt_cls: ClassVar[type[DualBlockPrompt]] = DualBlockPrompt
+    prompt_cls: ClassVar[type[DualNToNPrompt]] = DualNToNPrompt
     """Default prompt class."""
 
     @classmethod
@@ -29,7 +29,7 @@ class DualBlockManager(Manager):
     def get_query_cls(
         cls,
         size: int,
-        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
+        prompt_cls: type[DualNToNPrompt] = DualNToNPrompt,
     ) -> type[Query]:
         """Get concrete query class with provided configuration.
 
@@ -39,7 +39,7 @@ class DualBlockManager(Manager):
         Returns:
             query model class
         """
-        name = get_model_name("DualBlockQuery", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("DualNToNQuery", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.src_1(idx + 1)
@@ -64,7 +64,7 @@ class DualBlockManager(Manager):
     def get_answer_cls(
         cls,
         size: int,
-        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
+        prompt_cls: type[DualNToNPrompt] = DualNToNPrompt,
     ) -> type[Answer]:
         """Get concrete answer class with provided configuration.
 
@@ -74,7 +74,7 @@ class DualBlockManager(Manager):
         Returns:
             answer model class
         """
-        name = get_model_name("DualBlockAnswer", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("DualNToNAnswer", f"{size}_{prompt_cls.__name__}")
         fields: dict[str, Any] = {}
         for idx in range(size):
             key = prompt_cls.output(idx + 1)
@@ -99,7 +99,7 @@ class DualBlockManager(Manager):
     def get_test_case_cls(
         cls,
         size: int,
-        prompt_cls: type[DualBlockPrompt] = DualBlockPrompt,
+        prompt_cls: type[DualNToNPrompt] = DualNToNPrompt,
     ) -> type[TestCase]:
         """Get concrete test case class with provided configuration.
 
@@ -109,7 +109,7 @@ class DualBlockManager(Manager):
         Returns:
             test case model class
         """
-        name = get_model_name("DualBlockTestCase", f"{size}_{prompt_cls.__name__}")
+        name = get_model_name("DualNToNTestCase", f"{size}_{prompt_cls.__name__}")
         query_cls = cls.get_query_cls(size, prompt_cls)
         answer_cls = cls.get_answer_cls(size, prompt_cls)
         fields = cls.get_test_case_fields(query_cls, answer_cls, prompt_cls)
@@ -146,7 +146,7 @@ class DualBlockManager(Manager):
         """
         if (prompt_cls := kwargs.get("prompt_cls")) is None:
             raise ScinoephileError("prompt_cls must be provided as a keyword argument")
-        prompt_cls = cast(type[DualBlockPrompt], prompt_cls)
+        prompt_cls = cast(type[DualNToNPrompt], prompt_cls)
         size = sum(1 for key in data["query"] if key.startswith(prompt_cls.src_1_pfx))
         return cls.get_test_case_cls(size=size, prompt_cls=prompt_cls)
 
@@ -159,7 +159,7 @@ class DualBlockManager(Manager):
         Returns:
             validated test case
         """
-        prompt_cls: type[DualBlockPrompt] = getattr(model, "prompt_cls")
+        prompt_cls: type[DualNToNPrompt] = getattr(model, "prompt_cls")
         size: int = getattr(model, "size")
         if model.answer is None:
             return model

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Processes dual track / subtitle block matters."""
+"""Processes dual n to n matters."""
 
 from __future__ import annotations
 
@@ -12,22 +12,22 @@ from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.subtitles import Series, get_concatenated_series
 from scinoephile.core.synchronization import are_series_one_to_one
 
-from .manager import DualBlockManager
-from .prompt import DualBlockPrompt
+from .manager import DualNToNManager
+from .prompt import DualNToNPrompt
 
-__all__ = ["DualBlockProcessor"]
+__all__ = ["DualNToNProcessor"]
 
 
 logger = getLogger(__name__)
 
 
-class DualBlockProcessor(Processor):
-    """Processes dual track / subtitle block matters."""
+class DualNToNProcessor(Processor):
+    """Processes dual n to n matters."""
 
-    prompt_cls: type[DualBlockPrompt]
+    prompt_cls: type[DualNToNPrompt]
     """Text for LLM correspondence."""
 
-    manager_cls = DualBlockManager
+    manager_cls = DualNToNManager
     """Manager class used to construct test case models."""
 
     def process(
@@ -41,7 +41,7 @@ class DualBlockProcessor(Processor):
         Arguments:
             source_one: primary subtitles to be processed
             source_two: secondary subtitles providing reference
-            stop_at_idx: stop processing at this block index
+            stop_at_idx: exclusive block index at which to stop processing
         Returns:
             processed subtitles based on the primary series
         """
@@ -68,7 +68,7 @@ class DualBlockProcessor(Processor):
             size = len(one_blk)
 
             # Query LLM
-            test_case_cls = DualBlockManager.get_test_case_cls(size, self.prompt_cls)
+            test_case_cls = DualNToNManager.get_test_case_cls(size, self.prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs: dict[str, str] = {}
             for sub_idx in range(size):
