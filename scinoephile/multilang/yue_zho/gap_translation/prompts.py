@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for gap translating written Cantonese from standard Chinese."""
+"""Text for written Cantonese gap translation using standard Chinese."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ __all__ = [
 class YueVsZhoGapTranslationPromptYueHans(
     DictionaryToolPrompt, DualBlockGappedPrompt, PromptYueHans
 ):
-    """Text for gap translating simplified written Cantonese from standard Chinese."""
+    """Text for simplified written Cantonese gap translation using standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -93,7 +93,7 @@ class YueVsZhoGapTranslationPromptYueHans(
 
 
 class YueVsZhoGapTranslationPromptYueHant(YueVsZhoGapTranslationPromptYueHans):
-    """Text for gap translating traditional written Cantonese from standard Chinese."""
+    """Text for traditional written Cantonese gap translation using standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config for converting simplified Chinese characters from the parent class."""

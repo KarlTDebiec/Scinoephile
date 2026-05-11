@@ -72,7 +72,7 @@ __all__ = [
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
-    "get_mlamd_yue_from_zho_gap_translation_test_cases",
+    "get_mlamd_yue_vs_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
@@ -265,11 +265,11 @@ def get_mlamd_yue_deliniation_test_cases(
 
 
 @cache
-def get_mlamd_yue_from_zho_gap_translation_test_cases(
+def get_mlamd_yue_vs_zho_gap_translation_test_cases(
     prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoGapTranslationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 from 简体中文 gap translation test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence

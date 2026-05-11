@@ -34,6 +34,8 @@ from test.helpers import test_data_root
 __all__ = [
     "mnt_eng_ocr_lens",
     "mnt_eng_ocr_tesseract",
+    "mnt_jpn_eng",
+    "mnt_yue_zho_hant",
     "mnt_zho_hans_ocr_lens",
     "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hans_ocr_paddle_new",
@@ -90,6 +92,18 @@ def mnt_eng_ocr_lens() -> Series:
 def mnt_eng_ocr_tesseract() -> Series:
     """MNT English subtitles OCRed using Tesseract."""
     return Series.load(input_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def mnt_jpn_eng() -> Series:
+    """MNT Bilingual Japanese and English subtitles."""
+    return Series.load(input_dir / "jpn_eng.srt")
+
+
+@pytest.fixture
+def mnt_yue_zho_hant() -> Series:
+    """MNT 粤语 audio track 繁体粤文 subtitles."""
+    return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
 @pytest.fixture

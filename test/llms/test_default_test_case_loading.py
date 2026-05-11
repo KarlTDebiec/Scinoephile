@@ -24,8 +24,8 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
-    YUE_FROM_ZHO_GAP_TRANSLATION_JSON_PATHS,
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
+    YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
@@ -173,11 +173,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_from_zho_gap_translation",
+            "yue_vs_zho_gap_translation",
             lambda: load_default_test_cases(
                 DualBlockGappedManager,
                 YueVsZhoGapTranslationPromptYueHans,
-                YUE_FROM_ZHO_GAP_TRANSLATION_JSON_PATHS,
+                YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
             ),
             [
                 "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json",

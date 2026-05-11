@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.multilang.yue_zho.get_yue_gap_translated_vs_zho."""
+"""Tests of scinoephile.multilang.yue_zho.gap_translation."""
 
 from __future__ import annotations
 
