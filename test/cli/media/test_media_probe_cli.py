@@ -419,6 +419,6 @@ def test_media_probe_cli_uses_stream_models(
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path}")
 
     assert capsys.readouterr().out.splitlines() == [
-        "Stream #0:0: Video: hevc (3840x2160, title=Main Video)",
+        "Stream #0:0: Video: hevc (title=Main Video, 3840x2160)",
         "Stream #0:1(jpn): Audio: flac (channels=2)",
     ]

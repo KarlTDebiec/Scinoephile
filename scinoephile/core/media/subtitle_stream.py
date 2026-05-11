@@ -7,8 +7,8 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.media.constants import SUBTITLE_CODEC_OUTPUTS
 
+from .constants import SUBTITLE_CODEC_OUTPUTS
 from .stream import Stream
 
 __all__ = ["SubtitleStream"]
@@ -36,26 +36,14 @@ class SubtitleStream(Stream):
     """Detected Chinese script tag, when known."""
 
     @property
-    def description(self) -> str:
-        """Stream description."""
-        description = (
-            f"Stream {self.stream_id}: {self.codec_type.title()}: {self.codec_name}"
-        )
-        details = self.details
-        if details:
-            description = f"{description} ({', '.join(details)})"
-        return description
-
-    @property
     def details(self) -> list[str]:
         """Stream details."""
-        details = []
-        if self.title is not None:
-            details.append(f"title={self.title}")
+        details = super().details
         if self.subtitle_count is not None:
             details.append(f"subtitles={self.subtitle_count}")
-        if self.span is not None:
-            details.append(f"span={self.span}")
+        span = self.span
+        if span is not None:
+            details.append(f"span={span}")
         return details
 
     @property
@@ -71,6 +59,11 @@ class SubtitleStream(Stream):
         if self.codec_name not in SUBTITLE_CODEC_OUTPUTS:
             raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][0]
+
+    @property
+    def is_chinese(self) -> bool:
+        """Whether this stream has a Chinese language code."""
+        return self.language in {"chi", "zho", "yue"}
 
     @property
     def outfile_filename(self) -> str:
@@ -93,11 +86,6 @@ class SubtitleStream(Stream):
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][1]
 
     @property
-    def is_chinese(self) -> bool:
-        """Whether this stream has a Chinese language code."""
-        return self.language in {"chi", "zho", "yue"}
-
-    @property
     def span(self) -> str | None:
         """Subtitle stream active span formatted as HH:MM:SS-HH:MM:SS."""
         if self.first_start_ms is None or self.last_end_ms is None:
@@ -106,6 +94,13 @@ class SubtitleStream(Stream):
             f"{self._format_span_time(self.first_start_ms)}-"
             f"{self._format_span_time(self.last_end_ms)}"
         )
+
+    @property
+    def stream_id(self) -> str:
+        """Ffprobe-style stream identifier."""
+        if self.language is None:
+            return f"#0:{self.index}"
+        return f"#0:{self.index}({self.displayed_language})"
 
     def with_script(self, script: str | None) -> SubtitleStream:
         """Return this stream with detected script metadata.
@@ -118,19 +113,6 @@ class SubtitleStream(Stream):
         if script is None and self.is_chinese:
             script = f"{self.language}-Unknown"
         return replace(self, script=script)
-
-    def without_stats(self) -> SubtitleStream:
-        """Return this stream without subtitle statistics.
-
-        Returns:
-            stream without subtitle statistics
-        """
-        return replace(
-            self,
-            subtitle_count=None,
-            first_start_ms=None,
-            last_end_ms=None,
-        )
 
     def with_stats(
         self,
@@ -153,6 +135,19 @@ class SubtitleStream(Stream):
             subtitle_count=subtitle_count,
             first_start_ms=first_start_ms,
             last_end_ms=last_end_ms,
+        )
+
+    def without_stats(self) -> SubtitleStream:
+        """Return this stream without subtitle statistics.
+
+        Returns:
+            stream without subtitle statistics
+        """
+        return replace(
+            self,
+            subtitle_count=None,
+            first_start_ms=None,
+            last_end_ms=None,
         )
 
     @staticmethod

@@ -23,8 +23,7 @@ class VideoStream(Stream):
     @property
     def details(self) -> list[str]:
         """Stream details."""
-        details = []
+        details = super().details
         if self.width is not None and self.height is not None:
             details.append(f"{self.width}x{self.height}")
-        details.extend(super().details)
         return details

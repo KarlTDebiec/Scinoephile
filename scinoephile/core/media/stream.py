@@ -30,11 +30,6 @@ class Stream:
             object.__setattr__(self, "language", self.language.lower())
 
     @property
-    def displayed_language(self) -> str:
-        """Language tag to display for this stream."""
-        return self.language or "und"
-
-    @property
     def description(self) -> str:
         """Stream description."""
         description = (
@@ -58,4 +53,4 @@ class Stream:
         """Ffprobe-style stream identifier."""
         if self.language is None:
             return f"#0:{self.index}"
-        return f"#0:{self.index}({self.displayed_language})"
+        return f"#0:{self.index}({self.language})"
