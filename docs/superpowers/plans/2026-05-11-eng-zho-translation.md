@@ -1,10 +1,10 @@
-# English From Cantonese Translation Implementation Plan
+# English From Chinese Translation Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a reusable unaligned dual-block LLM processor and use it to generate English subtitles from Cantonese subtitles with original English guidance.
+**Goal:** Build a reusable unaligned dual-block LLM processor and use it to generate English subtitles from Chinese subtitles with original English guidance.
 
-**Architecture:** Add `scinoephile.llms.dual_block_cardinality` for two input blocks where output count and timing follow source one. Add `scinoephile.multilang.eng_yue.translation` as a feature wrapper with an English-from-Cantonese prompt and factory functions.
+**Architecture:** Add `scinoephile.llms.dual_block_cardinality` for two input blocks where output count and timing follow source one. Add `scinoephile.multilang.eng_zho.translation` as a feature wrapper with an English-from-Chinese prompt and factory functions.
 
 **Tech Stack:** Python 3.13, Pydantic dynamic models, existing `Processor` / `Manager` / `Prompt` LLM framework, `Series` / `Subtitle`, pytest, ruff, ty, uv.
 
@@ -17,14 +17,14 @@
 - Create `scinoephile/llms/dual_block_cardinality/manager.py`: dynamic query, answer, and test-case model factories keyed by source-one and source-two sizes.
 - Create `scinoephile/llms/dual_block_cardinality/processor.py`: block-pair processor whose output series follows source one timing.
 - Modify `scinoephile/llms/__init__.py`: include the new package in the hierarchy docstring.
-- Create `scinoephile/multilang/eng_yue/__init__.py`: package marker and hierarchy docstring.
-- Create `scinoephile/multilang/eng_yue/translation/__init__.py`: operation spec, typed kwargs, public wrapper, and processor factory.
-- Create `scinoephile/multilang/eng_yue/translation/prompts.py`: English prompt for Cantonese-driven translation with original English guidance.
-- Modify `scinoephile/multilang/__init__.py`: include `eng_yue` in the hierarchy docstring.
-- Modify `scinoephile/llms/default_test_cases.py`: add an empty-path-capable constant for future English-from-Cantonese default cases.
+- Create `scinoephile/multilang/eng_zho/__init__.py`: package marker and hierarchy docstring.
+- Create `scinoephile/multilang/eng_zho/translation/__init__.py`: operation spec, typed kwargs, public wrapper, and processor factory.
+- Create `scinoephile/multilang/eng_zho/translation/prompts.py`: English prompt for Chinese-driven translation with original English guidance.
+- Modify `scinoephile/multilang/__init__.py`: include `eng_zho` in the hierarchy docstring.
+- Modify `scinoephile/llms/default_test_cases.py`: add an empty-path-capable constant for future English-from-Chinese default cases.
 - Create `test/llms/dual_block_cardinality/test_manager.py`: generic dynamic model tests.
 - Create `test/llms/dual_block_cardinality/test_processor.py`: generic processor behavior test.
-- Create `test/multilang/eng_yue/test_translation.py`: feature wrapper and prompt tests.
+- Create `test/multilang/eng_zho/test_translation.py`: feature wrapper and prompt tests.
 
 ### Task 1: Generic Prompt And Manager
 
@@ -110,7 +110,7 @@ def fake_queryer(test_case):
     return type(test_case)(query=test_case.query, answer=answer)
 ```
 
-Build a Yue/source-one series with two subtitles and an English/source-two series with three subtitles in the same pause block. Assert the output has two subtitles, source-one timings, and fake English text.
+Build a Chinese/source-one series with two subtitles and an English/source-two series with three subtitles in the same pause block. Assert the output has two subtitles, source-one timings, and fake English text.
 
 - [ ] **Step 2: Run processor test to verify red**
 
@@ -128,46 +128,46 @@ Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/llms/dual_block_cardinality/
 
 Expected: PASS.
 
-### Task 3: English-Cantonese Translation Feature
+### Task 3: English-Chinese Translation Feature
 
 **Files:**
-- Create: `scinoephile/multilang/eng_yue/__init__.py`
-- Create: `scinoephile/multilang/eng_yue/translation/__init__.py`
-- Create: `scinoephile/multilang/eng_yue/translation/prompts.py`
+- Create: `scinoephile/multilang/eng_zho/__init__.py`
+- Create: `scinoephile/multilang/eng_zho/translation/__init__.py`
+- Create: `scinoephile/multilang/eng_zho/translation/prompts.py`
 - Modify: `scinoephile/multilang/__init__.py`
 - Modify: `scinoephile/llms/default_test_cases.py`
-- Test: `test/multilang/eng_yue/test_translation.py`
+- Test: `test/multilang/eng_zho/test_translation.py`
 
 - [ ] **Step 1: Write failing feature tests**
 
 Create tests that assert:
 
 ```python
-assert EngVsYueTranslationPrompt.src_1(1) == "yue_1"
-assert EngVsYueTranslationPrompt.src_2(1) == "eng_reference_1"
-assert EngVsYueTranslationPrompt.output(1) == "eng_1"
-processor = get_eng_vs_yue_translator(test_cases=[], provider=provider)
+assert EngVsZhoTranslationPrompt.src_1(1) == "zho_1"
+assert EngVsZhoTranslationPrompt.src_2(1) == "eng_reference_1"
+assert EngVsZhoTranslationPrompt.output(1) == "eng_1"
+processor = get_eng_vs_zho_translator(test_cases=[], provider=provider)
 assert isinstance(processor, DualBlockCardinalityProcessor)
-assert processor.prompt_cls is EngVsYueTranslationPrompt
-output = get_eng_translated_vs_yue(yue_series, eng_series, translator=fake_processor)
-assert len(output) == len(yue_series)
+assert processor.prompt_cls is EngVsZhoTranslationPrompt
+output = get_eng_translated_vs_zho(zho_series, eng_series, translator=fake_processor)
+assert len(output) == len(zho_series)
 ```
 
 - [ ] **Step 2: Run feature tests to verify red**
 
-Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_yue/test_translation.py -q`
+Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_translation.py -q`
 
-Expected: FAIL because `scinoephile.multilang.eng_yue` does not exist.
+Expected: FAIL because `scinoephile.multilang.eng_zho` does not exist.
 
 - [ ] **Step 3: Implement feature package**
 
-Implement `EngVsYueTranslationPrompt(DualBlockCardinalityPrompt, PromptEng)` with field prefixes `yue_`, `eng_reference_`, and `eng_`, plus a system prompt that prioritizes Cantonese meaning and uses original English for names, terminology, register, and compatible wording.
+Implement `EngVsZhoTranslationPrompt(DualBlockCardinalityPrompt, PromptEng)` with field prefixes `zho_`, `eng_reference_`, and `eng_`, plus a system prompt that prioritizes Chinese meaning and uses original English for names, terminology, register, and compatible wording.
 
-Implement `get_eng_translated_vs_yue(...)` and `get_eng_vs_yue_translator(...)` following the existing `yue_zho.translation` factory pattern, using `DualBlockCardinalityProcessor`, `DualBlockCardinalityManager`, `get_default_provider`, and a new `ENG_FROM_YUE_TRANSLATION_JSON_PATHS` constant set to an empty tuple.
+Implement `get_eng_translated_vs_zho(...)` and `get_eng_vs_zho_translator(...)` following the existing `yue_zho.translation` factory pattern, using `DualBlockCardinalityProcessor`, `DualBlockCardinalityManager`, `get_default_provider`, and a new `ENG_FROM_ZHO_TRANSLATION_JSON_PATHS` constant set to an empty tuple.
 
 - [ ] **Step 4: Run feature tests to verify green**
 
-Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_yue/test_translation.py -q`
+Run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest test/multilang/eng_zho/test_translation.py -q`
 
 Expected: PASS.
 
@@ -207,7 +207,7 @@ Run:
 ```bash
 UV_CACHE_DIR=/tmp/uv-cache uv run pytest \
   test/llms/dual_block_cardinality \
-  test/multilang/eng_yue \
+  test/multilang/eng_zho \
   -q
 ```
 

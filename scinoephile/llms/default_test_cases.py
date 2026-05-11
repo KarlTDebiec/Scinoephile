@@ -14,7 +14,7 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 
 __all__ = [
     "ENG_BLOCK_REVIEW_JSON_PATHS",
-    "ENG_FROM_YUE_TRANSLATION_JSON_PATHS",
+    "ENG_FROM_ZHO_TRANSLATION_JSON_PATHS",
     "ENG_OCR_FUSION_JSON_PATHS",
     "YUE_FROM_ZHO_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_LINE_REVIEW_JSON_PATHS",
@@ -45,7 +45,7 @@ ENG_OCR_FUSION_JSON_PATHS = (
     Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
 )
 
-ENG_FROM_YUE_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+ENG_FROM_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 
 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
     Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
