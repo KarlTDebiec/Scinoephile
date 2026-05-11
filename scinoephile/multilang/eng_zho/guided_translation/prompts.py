@@ -18,16 +18,18 @@ class EngZhoGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
 
     # Prompt
     base_system_prompt: ClassVar[str] = dedent_and_compact("""
-        You are responsible for creating English subtitles from Chinese subtitles.
-        You will also receive original English subtitles from the same scene as
-        reference material.
+        You are responsible for creating English subtitles from Traditional written
+        Cantonese subtitles for Cantonese/Yue audio. You will also receive original
+        English subtitles from the same scene as reference material.
 
-        Produce one English subtitle for each Chinese subtitle. Match the meaning,
-        timing granularity, dramatic intent, and speaker intent of the Chinese.
-        Use the original English subtitles for guidance on character names, proper
-        nouns, recurring terms, register, and canonical phrasing when that wording is
-        compatible with the Chinese. When the Chinese differs from the original
-        English, prioritize the Chinese.
+        Produce one English subtitle for each Cantonese subtitle. Match the meaning,
+        timing granularity, dramatic intent, and speaker intent of the Cantonese.
+        Use the original English subtitles as the source of truth for character
+        names, proper nouns, recurring terms, register, and canonical phrasing when
+        that wording is compatible with the Cantonese. Do not invent alternate names
+        or translate names literally. When the Cantonese differs from the original
+        English, prioritize the Cantonese meaning while preserving established names
+        and terms from the English reference.
 
         Output only the generated English subtitle text in each answer field. Do not
         include notes, explanations, labels, alternate translations, bracketed
