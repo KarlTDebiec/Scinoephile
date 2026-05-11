@@ -34,8 +34,8 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
-from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
+from scinoephile.llms.dual_n_to_n.manager import DualNToNManager
 from scinoephile.llms.mono_n.manager import MonoNManager
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (
@@ -162,7 +162,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "yue_zho_block_review",
             lambda: load_default_test_cases(
-                DualBlockManager,
+                DualNToNManager,
                 YueVsZhoBlockReviewPromptYueHans,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),

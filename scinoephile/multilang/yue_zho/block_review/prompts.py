@@ -10,7 +10,7 @@ from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_block import DualBlockPrompt
+from scinoephile.llms.dual_n_to_n import DualNToNPrompt
 
 __all__ = [
     "YueVsZhoBlockReviewPromptYueHans",
@@ -19,7 +19,7 @@ __all__ = [
 
 
 class YueVsZhoBlockReviewPromptYueHans(
-    DictionaryToolPrompt, DualBlockPrompt, PromptYueHans
+    DictionaryToolPrompt, DualNToNPrompt, PromptYueHans
 ):
     """Text for simplified written Cantonese block review against standard Chinese."""
 
