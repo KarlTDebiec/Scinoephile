@@ -28,17 +28,20 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.dual_block import DualBlockManager, DualBlockPrompt
-from scinoephile.llms.dual_block_gapped import (
-    DualBlockGappedManager,
-    DualBlockGappedPrompt,
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager, Dual2To2Prompt
+from scinoephile.llms.dual_n_minus_m_to_n import (
+    DualNMinusMToNManager,
+    DualNMinusMToNPrompt,
 )
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
-from scinoephile.llms.dual_pair import DualPairManager, DualPairPrompt
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
+from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
+from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoLineReviewPromptYueHans,
     YueZhoLineReviewManager,
@@ -50,7 +53,6 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoPunctuationPromptYueHans,
     YueZhoPunctuationManager,
 )
-from scinoephile.multilang.yue_zho.translation import YueVsZhoTranslationPromptYueHans
 from test.helpers import test_data_root
 
 __all__ = [
@@ -70,7 +72,7 @@ __all__ = [
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
-    "get_mlamd_yue_from_zho_translation_test_cases",
+    "get_mlamd_yue_vs_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
@@ -199,7 +201,7 @@ def mlamd_zho_hant_ocr_sup_path() -> Path:
 
 @cache
 def get_mlamd_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptEng,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD English block review test cases.
@@ -212,13 +214,13 @@ def get_mlamd_eng_block_review_test_cases(
     """
     path = output_dir / "eng_ocr/lang/eng/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD English OCR fusion test cases.
@@ -237,7 +239,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_yue_deliniation_test_cases(
-    prompt_cls: type[DualPairPrompt] = YueVsZhoDeliniationPromptYueHans,
+    prompt_cls: type[Dual2To2Prompt] = YueVsZhoDeliniationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 deliniation test cases.
@@ -258,16 +260,16 @@ def get_mlamd_yue_deliniation_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualPairManager, prompt_cls=prompt_cls, **kwargs
+        path, Dual2To2Manager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
-def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoTranslationPromptYueHans,
+def get_mlamd_yue_vs_zho_gap_translation_test_cases(
+    prompt_cls: type[DualNMinusMToNPrompt] = YueVsZhoGapTranslationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 from 简体中文 translation test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -280,17 +282,17 @@ def get_mlamd_yue_from_zho_translation_test_cases(
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "translation"
+        / "gap_translation"
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualBlockGappedManager, prompt_cls=prompt_cls, **kwargs
+        path, DualNMinusMToNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt_cls: type[DualMultiSinglePrompt] = YueVsZhoPunctuationPromptYueHans,
+    prompt_cls: type[DualNTo1Prompt] = YueVsZhoPunctuationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 punctuation test cases.
@@ -317,7 +319,7 @@ def get_mlamd_yue_punctuation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_block_review_test_cases(
-    prompt_cls: type[DualBlockPrompt] = YueVsZhoBlockReviewPromptYueHans,
+    prompt_cls: type[DualNToNPrompt] = YueVsZhoBlockReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 review test cases.
@@ -337,13 +339,13 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(
-        path, DualBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, DualNToNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[DualSinglePrompt] = YueVsZhoLineReviewPromptYueHans,
+    prompt_cls: type[Dual1To1Prompt] = YueVsZhoLineReviewPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.
@@ -369,7 +371,7 @@ def get_mlamd_yue_vs_zho_line_review_test_cases(
 
 @cache
 def get_mlamd_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体中文 block review test cases.
@@ -382,13 +384,13 @@ def get_mlamd_zho_hans_block_review_test_cases(
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHans,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体中文 OCR fusion test cases.
@@ -407,7 +409,7 @@ def get_mlamd_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 block review test cases.
@@ -420,13 +422,13 @@ def get_mlamd_zho_hant_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mlamd_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 OCR fusion test cases.
@@ -445,7 +447,7 @@ def get_mlamd_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 繁体中文 simplification block review test cases.
@@ -458,7 +460,7 @@ def get_mlamd_zho_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
