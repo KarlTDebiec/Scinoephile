@@ -39,6 +39,9 @@ from scinoephile.llms.dual_single import DualSinglePrompt
 from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
 from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoLineReviewPromptYueHans,
     YueZhoLineReviewManager,
@@ -50,7 +53,6 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoPunctuationPromptYueHans,
     YueZhoPunctuationManager,
 )
-from scinoephile.multilang.yue_zho.translation import YueVsZhoTranslationPromptYueHans
 from test.helpers import test_data_root
 
 __all__ = [
@@ -70,7 +72,7 @@ __all__ = [
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
-    "get_mlamd_yue_from_zho_translation_test_cases",
+    "get_mlamd_yue_vs_zho_gap_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
@@ -263,11 +265,11 @@ def get_mlamd_yue_deliniation_test_cases(
 
 
 @cache
-def get_mlamd_yue_from_zho_translation_test_cases(
-    prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoTranslationPromptYueHans,
+def get_mlamd_yue_vs_zho_gap_translation_test_cases(
+    prompt_cls: type[DualBlockGappedPrompt] = YueVsZhoGapTranslationPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 from 简体中文 translation test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
@@ -280,7 +282,7 @@ def get_mlamd_yue_from_zho_translation_test_cases(
         / "yue-Hans_transcribe"
         / "multilang"
         / "yue_zho"
-        / "translation"
+        / "gap_translation"
         / f"{get_torch_device()}.json"
     )
     return load_test_cases_from_json(

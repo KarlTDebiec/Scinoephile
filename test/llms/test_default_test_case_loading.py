@@ -24,8 +24,8 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
-    YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
+    YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
@@ -38,9 +38,11 @@ from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.mono_block.manager import MonoBlockManager
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import YueVsZhoLineReviewPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
-from scinoephile.multilang.yue_zho.translation import YueVsZhoTranslationPromptYueHans
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
@@ -171,16 +173,16 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_from_zho_translation",
+            "yue_vs_zho_gap_translation",
             lambda: load_default_test_cases(
                 DualBlockGappedManager,
-                YueVsZhoTranslationPromptYueHans,
-                YUE_FROM_ZHO_TRANSLATION_JSON_PATHS,
+                YueVsZhoGapTranslationPromptYueHans,
+                YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
             ),
             [
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cuda.json",
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/cpu.json",
-                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/translation/mps.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json",
+                "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json",
             ],
         ),
     ],

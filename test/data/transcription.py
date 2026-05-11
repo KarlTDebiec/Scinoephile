@@ -22,6 +22,10 @@ from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
+from scinoephile.multilang.yue_zho.gap_translation import (
+    get_yue_gap_translated_vs_zho,
+    get_yue_vs_zho_gap_translator,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     get_yue_line_reviewed_vs_zho,
     get_yue_vs_zho_line_reviewer,
@@ -29,10 +33,6 @@ from scinoephile.multilang.yue_zho.line_review import (
 from scinoephile.multilang.yue_zho.transcription import (
     get_yue_transcribed_vs_zho,
     get_yue_vs_zho_transcriber,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    get_yue_translated_vs_zho,
-    get_yue_vs_zho_translator,
 )
 
 __all__ = ["process_yue_hans_transcription"]
@@ -80,7 +80,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
-        translator_kw: additional keyword arguments for get_yue_vs_zho_translator
+        translator_kw: additional keyword arguments for get_yue_vs_zho_gap_translator
         block_reviewer_kw: additional keyword arguments for
           get_yue_vs_zho_block_reviewer
     Returns:
@@ -107,7 +107,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         parents=True, exist_ok=True
     )
     (test_case_dir_path / "line_review").mkdir(parents=True, exist_ok=True)
-    (test_case_dir_path / "translation").mkdir(parents=True, exist_ok=True)
+    (test_case_dir_path / "gap_translation").mkdir(parents=True, exist_ok=True)
     (test_case_dir_path / "block_review").mkdir(parents=True, exist_ok=True)
 
     # Stage audio
@@ -199,11 +199,13 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
             translator_kw = {}
         translator_kw.setdefault(
             "test_case_path",
-            test_case_dir_path / "translation" / f"{device}.json",
+            test_case_dir_path / "gap_translation" / f"{device}.json",
         )
         translator_kw.setdefault("auto_verify", True)
-        translator = get_yue_vs_zho_translator(**translator_kw)
-        translate = get_yue_translated_vs_zho(line_review, zho, translator=translator)
+        translator = get_yue_vs_zho_gap_translator(**translator_kw)
+        translate = get_yue_gap_translated_vs_zho(
+            line_review, zho, translator=translator
+        )
         translate.save(translate_path, exist_ok=True)
 
     if reference is not None:

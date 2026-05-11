@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Text for translating written Cantonese from standard Chinese."""
+"""Text for written Cantonese gap translation using standard Chinese."""
 
 from __future__ import annotations
 
@@ -13,15 +13,15 @@ from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
 
 __all__ = [
-    "YueVsZhoTranslationPromptYueHans",
-    "YueVsZhoTranslationPromptYueHant",
+    "YueVsZhoGapTranslationPromptYueHans",
+    "YueVsZhoGapTranslationPromptYueHant",
 ]
 
 
-class YueVsZhoTranslationPromptYueHans(
+class YueVsZhoGapTranslationPromptYueHans(
     DictionaryToolPrompt, DualBlockGappedPrompt, PromptYueHans
 ):
-    """Text for translating simplified written Cantonese from standard Chinese."""
+    """Text for simplified written Cantonese gap translation using standard Chinese."""
 
     # Dictionary tool
     dictionary_tool_name: ClassVar[str] = "lookup_dictionary"
@@ -92,8 +92,8 @@ class YueVsZhoTranslationPromptYueHans(
         return cls.output_contains_note_err_tpl.format(idx=idx)
 
 
-class YueVsZhoTranslationPromptYueHant(YueVsZhoTranslationPromptYueHans):
-    """Text for translating traditional written Cantonese from standard Chinese."""
+class YueVsZhoGapTranslationPromptYueHant(YueVsZhoGapTranslationPromptYueHans):
+    """Text for traditional written Cantonese gap translation using standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk
     """Config for converting simplified Chinese characters from the parent class."""
