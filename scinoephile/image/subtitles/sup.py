@@ -188,7 +188,7 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
             set_timestamp = timestamp
 
         if segment_kind == 0x14:  # Palette
-            if size < 2:
+            if size < 2 or (size - 2) % 5 != 0:
                 raise ValueError("SUP palette segment is truncated.")
             palette = read_sup_palette(segment_bytes[2:])
         elif segment_kind == 0x15:  # Image
