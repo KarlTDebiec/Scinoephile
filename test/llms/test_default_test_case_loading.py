@@ -36,7 +36,7 @@ from scinoephile.llms.default_test_cases import (
 from scinoephile.llms.dual_block.manager import DualBlockManager
 from scinoephile.llms.dual_block_gapped.manager import DualBlockGappedManager
 from scinoephile.llms.dual_single.ocr_fusion.manager import OcrFusionManager
-from scinoephile.llms.mono_block.manager import MonoBlockManager
+from scinoephile.llms.mono_n.manager import MonoNManager
 from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
@@ -70,7 +70,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "eng_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager, BlockReviewPromptEng, ENG_BLOCK_REVIEW_JSON_PATHS
+                MonoNManager, BlockReviewPromptEng, ENG_BLOCK_REVIEW_JSON_PATHS
             ),
             [
                 "kob/output/eng_ocr/lang/eng/block_review.json",
@@ -95,7 +95,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "zho_hans_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager,
+                MonoNManager,
                 BlockReviewPromptZhoHans,
                 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
             ),
@@ -108,7 +108,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
         (
             "zho_hant_block_review",
             lambda: load_default_test_cases(
-                MonoBlockManager,
+                MonoNManager,
                 BlockReviewPromptZhoHant,
                 ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
             ),
