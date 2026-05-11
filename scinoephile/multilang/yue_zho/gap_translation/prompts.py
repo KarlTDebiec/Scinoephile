@@ -10,7 +10,7 @@ from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_block_gapped import DualBlockGappedPrompt
+from scinoephile.llms.dual_n_minus_m_to_n import DualNMinusMToNPrompt
 
 __all__ = [
     "YueVsZhoGapTranslationPromptYueHans",
@@ -19,7 +19,7 @@ __all__ = [
 
 
 class YueVsZhoGapTranslationPromptYueHans(
-    DictionaryToolPrompt, DualBlockGappedPrompt, PromptYueHans
+    DictionaryToolPrompt, DualNMinusMToNPrompt, PromptYueHans
 ):
     """Text for simplified written Cantonese gap translation using standard Chinese."""
 

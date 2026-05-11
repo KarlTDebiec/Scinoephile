@@ -8,7 +8,7 @@ from unittest.mock import Mock
 
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.llms.dual_block_cardinality import DualBlockCardinalityProcessor
+from scinoephile.llms.dual_n_to_m import DualNToMProcessor
 from scinoephile.multilang.eng_zho.guided_translation import (
     EngVsZhoGuidedTranslationPrompt,
     get_eng_guided_translated_vs_zho,
@@ -29,7 +29,7 @@ def test_get_eng_vs_zho_guided_translator_wires_processor():
 
     processor = get_eng_vs_zho_guided_translator(test_cases=[], provider=provider)
 
-    assert isinstance(processor, DualBlockCardinalityProcessor)
+    assert isinstance(processor, DualNToMProcessor)
     assert processor.prompt_cls is EngVsZhoGuidedTranslationPrompt
     assert processor.queryer.provider is provider
 
@@ -49,7 +49,7 @@ def test_get_eng_guided_translated_vs_zho_delegates_to_processor():
             Subtitle(start=2100, end=3000, text="Second translated"),
         ]
     )
-    translator = Mock(spec=DualBlockCardinalityProcessor)
+    translator = Mock(spec=DualNToMProcessor)
     translator.process.return_value = expected
 
     output = get_eng_guided_translated_vs_zho(zho, eng, translator=translator)

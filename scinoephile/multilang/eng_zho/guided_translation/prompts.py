@@ -8,12 +8,12 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.llms.dual_block_cardinality import DualBlockCardinalityPrompt
+from scinoephile.llms.dual_n_to_m import DualNToMPrompt
 
 __all__ = ["EngVsZhoGuidedTranslationPrompt"]
 
 
-class EngVsZhoGuidedTranslationPrompt(DualBlockCardinalityPrompt, PromptEng):
+class EngVsZhoGuidedTranslationPrompt(DualNToMPrompt, PromptEng):
     """Text for guided translation of English from Chinese with English guidance."""
 
     # Prompt

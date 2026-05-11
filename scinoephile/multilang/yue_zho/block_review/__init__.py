@@ -15,7 +15,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_block import DualBlockManager, DualBlockProcessor
+from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNProcessor
 from scinoephile.llms.providers.registry import get_default_provider
 
 from .prompts import (
@@ -36,21 +36,21 @@ __all__ = [
 YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-block-review",
     test_case_table_name="test_cases__yue_zho__block_review",
-    manager_cls=DualBlockManager,
+    manager_cls=DualNToNManager,
     prompt_cls=YueVsZhoBlockReviewPromptYueHans,
 )
 """Operation specification for written Cantonese block review."""
 
 
 class YueZhoBlockReviewProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockProcessor.process."""
+    """Keyword arguments for DualNToNProcessor.process."""
 
     stop_at_idx: int | None
-    """Subtitle index at which to stop processing, inclusive."""
+    """Exclusive block index at which to stop processing."""
 
 
 class YueZhoBlockReviewProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockProcessor initialization."""
+    """Keyword arguments for DualNToNProcessor initialization."""
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
@@ -61,7 +61,7 @@ class YueZhoBlockReviewProcessorKwargs(TypedDict, total=False):
 def get_yue_block_reviewed_vs_zho(
     yuewen: Series,
     zhongwen: Series,
-    reviewer: DualBlockProcessor | None = None,
+    reviewer: DualNToNProcessor | None = None,
     **kwargs: Unpack[YueZhoBlockReviewProcessKwargs],
 ) -> Series:
     """Get written Cantonese block reviewed against standard Chinese subtitles.
@@ -70,7 +70,7 @@ def get_yue_block_reviewed_vs_zho(
         yuewen: written Cantonese Series
         zhongwen: standard Chinese Series
         reviewer: processor to use
-        **kwargs: additional arguments for DualBlockProcessor.process
+        **kwargs: additional arguments for DualNToNProcessor.process
     Returns:
         written Cantonese block reviewed against standard Chinese
     """
@@ -87,22 +87,22 @@ def get_yue_vs_zho_block_reviewer(
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[YueZhoBlockReviewProcessorKwargs],
-) -> DualBlockProcessor:
-    """Get DualBlockProcessor with provided configuration.
+) -> DualNToNProcessor:
+    """Get DualNToNProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         use_dictionary_tool: whether to wire the dictionary lookup tool
         provider: provider to use for queries
-        **kwargs: additional arguments for DualBlockProcessor
+        **kwargs: additional arguments for DualNToNProcessor
     Returns:
-        DualBlockProcessor with provided configuration
+        DualNToNProcessor with provided configuration
     """
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(
-                DualBlockManager,
+                DualNToNManager,
                 prompt_cls,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             )
@@ -112,7 +112,7 @@ def get_yue_vs_zho_block_reviewer(
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
         provider = get_default_provider()
-    return DualBlockProcessor(
+    return DualNToNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,

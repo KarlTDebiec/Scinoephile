@@ -7,14 +7,14 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.llms import Answer, TestCase
-from scinoephile.llms.dual_single import DualSingleManager
+from scinoephile.llms.dual_1_to_1 import Dual1To1Manager
 
 from .prompts import YueVsZhoLineReviewPromptYueHans
 
 __all__ = ["YueZhoLineReviewManager"]
 
 
-class YueZhoLineReviewManager(DualSingleManager):
+class YueZhoLineReviewManager(Dual1To1Manager):
     """Factories for written Cantonese vs. standard Chinese line-review LLM classes."""
 
     prompt_cls: ClassVar[type[YueVsZhoLineReviewPromptYueHans]] = (

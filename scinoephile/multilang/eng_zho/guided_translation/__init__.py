@@ -14,9 +14,9 @@ from scinoephile.llms.default_test_cases import (
     ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_block_cardinality import (
-    DualBlockCardinalityManager,
-    DualBlockCardinalityProcessor,
+from scinoephile.llms.dual_n_to_m import (
+    DualNToMManager,
+    DualNToMProcessor,
 )
 from scinoephile.llms.providers.registry import get_default_provider
 
@@ -34,21 +34,21 @@ __all__ = [
 ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="eng-zho-guided-translation",
     test_case_table_name="test_cases__eng_zho__guided_translation",
-    manager_cls=DualBlockCardinalityManager,
+    manager_cls=DualNToMManager,
     prompt_cls=EngVsZhoGuidedTranslationPrompt,
 )
 """Operation specification for English guided translation from Chinese."""
 
 
 class EngFromZhoGuidedTranslationProcessKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockCardinalityProcessor.process."""
+    """Keyword arguments for DualNToMProcessor.process."""
 
     stop_at_idx: int | None
-    """Subtitle block index at which to stop processing, inclusive."""
+    """Exclusive block index at which to stop processing."""
 
 
 class EngFromZhoGuidedTranslationProcessorKwargs(TypedDict, total=False):
-    """Keyword arguments for DualBlockCardinalityProcessor initialization."""
+    """Keyword arguments for DualNToMProcessor initialization."""
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
@@ -59,7 +59,7 @@ class EngFromZhoGuidedTranslationProcessorKwargs(TypedDict, total=False):
 def get_eng_guided_translated_vs_zho(
     zho: Series,
     eng: Series,
-    translator: DualBlockCardinalityProcessor | None = None,
+    translator: DualNToMProcessor | None = None,
     **kwargs: Unpack[EngFromZhoGuidedTranslationProcessKwargs],
 ) -> Series:
     """Get English subtitles guided-translated from Chinese.
@@ -68,7 +68,7 @@ def get_eng_guided_translated_vs_zho(
         zho: Chinese subtitles to translate
         eng: original English subtitles to use as reference
         translator: processor to use
-        **kwargs: additional arguments for DualBlockCardinalityProcessor.process
+        **kwargs: additional arguments for DualNToMProcessor.process
     Returns:
         English subtitles guided-translated from Chinese
     """
@@ -82,28 +82,28 @@ def get_eng_vs_zho_guided_translator(
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[EngFromZhoGuidedTranslationProcessorKwargs],
-) -> DualBlockCardinalityProcessor:
-    """Get DualBlockCardinalityProcessor with provided configuration.
+) -> DualNToMProcessor:
+    """Get DualNToMProcessor with provided configuration.
 
     Arguments:
         prompt_cls: text for LLM correspondence
         test_cases: test cases
         provider: provider to use for queries
-        **kwargs: additional arguments for DualBlockCardinalityProcessor
+        **kwargs: additional arguments for DualNToMProcessor
     Returns:
-        DualBlockCardinalityProcessor with provided configuration
+        DualNToMProcessor with provided configuration
     """
     if test_cases is None:
         test_cases = list(
             load_default_test_cases(
-                DualBlockCardinalityManager,
+                DualNToMManager,
                 prompt_cls,
                 ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
             )
         )
     if provider is None:
         provider = get_default_provider()
-    return DualBlockCardinalityProcessor(
+    return DualNToMProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,
         provider=provider,

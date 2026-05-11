@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
 from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_multi_single import DualMultiSinglePrompt
+from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 
 __all__ = [
     "YueVsZhoPunctuationPromptYueHans",
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-class YueVsZhoPunctuationPromptYueHans(DualMultiSinglePrompt, PromptYueHans):
+class YueVsZhoPunctuationPromptYueHans(DualNTo1Prompt, PromptYueHans):
     """Text for simplified written Cantonese/standard Chinese punctuation."""
 
     # Prompt
