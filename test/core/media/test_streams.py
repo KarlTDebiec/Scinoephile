@@ -8,6 +8,7 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media.audio_stream import AudioStream
+from scinoephile.core.media.helpers import normalize_language
 from scinoephile.core.media.stream import Stream
 from scinoephile.core.media.subtitle_stream import SubtitleStream
 from scinoephile.core.media.video_stream import VideoStream
@@ -57,6 +58,9 @@ def test_subtitle_stream_has_no_chinese_specific_metadata():
 
 def test_stream_language_normalizes_script_subtags():
     """Test stream language normalization preserves script subtag case."""
+    assert normalize_language("ENG") == "eng"
+    assert normalize_language("ZHO-HANT") == "zho-Hant"
+    assert normalize_language("ZHO-UNKNOWN") == "zho-Unknown"
     assert Stream(index=1, language="ENG").language == "eng"
 
     stream = SubtitleStream(index=2, language="ZHO-HANT", codec_name="subrip")
