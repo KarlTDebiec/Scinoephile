@@ -26,14 +26,6 @@
 * In `__init__.py` files, only import classes from the module, not functions or variables.
 
 ## Organization
-* Document module dependency boundaries and internal hierarchy in each
-  `__init__.py` module docstring.
-  * Module docstrings should list which peer modules the module may import
-    from.
-  * When a module has internal subpackage dependencies, document the
-    hierarchy using ordered groups where lower entries may import from higher
-    entries.
-
 * Within classes, sort methods in the following hierarchy:
   1. Level 1: `__init__`, other builtins, public properties, public methods, private properties, private methods
   2. Level 2: standard methods, class methods, static methods
