@@ -10,19 +10,19 @@ from scinoephile.lang.zho.block_review import (
     get_zho_block_reviewed,
     get_zho_reviewer,
 )
-from scinoephile.llms.mono_block import MonoBlockProcessor
+from scinoephile.llms.mono_n import MonoNProcessor
 from test.helpers import assert_series_equal
 
 
 def _test_get_zho_block_reviewed(
-    series: Series, expected: Series, processor: MonoBlockProcessor | None = None
+    series: Series, expected: Series, processor: MonoNProcessor | None = None
 ):
     """Test get_zho_block_reviewed.
 
     Arguments:
         series: Series with which to test
         expected: Expected output series
-        processor: MonoBlockProcessor to use for the test
+        processor: MonoNProcessor to use for the test
     """
     output = get_zho_block_reviewed(series, processor=processor)
 

@@ -19,11 +19,15 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoBlockReviewPromptYueHans,
     YueVsZhoBlockReviewPromptYueHant,
+)
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YueVsZhoGapTranslationPromptYueHans,
+    YueVsZhoGapTranslationPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueVsZhoLineReviewPromptYueHans,
@@ -37,10 +41,6 @@ from scinoephile.multilang.yue_zho.transcription.deliniation import (
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueVsZhoPunctuationPromptYueHans,
     YueVsZhoPunctuationPromptYueHant,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YueVsZhoTranslationPromptYueHans,
-    YueVsZhoTranslationPromptYueHant,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
 from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
@@ -156,7 +156,7 @@ if "简体粤文 (Transcription)" in actions:
             "punctuation_prompt_cls": YueVsZhoPunctuationPromptYueHans,
         },
         line_reviewer_kw={"prompt_cls": YueVsZhoLineReviewPromptYueHans},
-        translator_kw={"prompt_cls": YueVsZhoTranslationPromptYueHans},
+        translator_kw={"prompt_cls": YueVsZhoGapTranslationPromptYueHans},
         block_reviewer_kw={"prompt_cls": YueVsZhoBlockReviewPromptYueHans},
         overwrite_srt=True,
     )
@@ -177,7 +177,7 @@ if "简体粤文 (Transcription)" in actions:
             "punctuation_prompt_cls": YueVsZhoPunctuationPromptYueHant,
         },
         line_reviewer_kw={"prompt_cls": YueVsZhoLineReviewPromptYueHant},
-        translator_kw={"prompt_cls": YueVsZhoTranslationPromptYueHant},
+        translator_kw={"prompt_cls": YueVsZhoGapTranslationPromptYueHant},
         block_reviewer_kw={"prompt_cls": YueVsZhoBlockReviewPromptYueHant},
         overwrite_srt=True,
     )

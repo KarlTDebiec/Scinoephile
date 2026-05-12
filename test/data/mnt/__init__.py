@@ -26,14 +26,20 @@ from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHans,
     OcrFusionPromptZhoHant,
 )
-from scinoephile.llms.dual_single import DualSinglePrompt
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionManager
-from scinoephile.llms.mono_block import MonoBlockManager, MonoBlockPrompt
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
+from scinoephile.llms.dual_n_to_m import DualNToMManager, DualNToMPrompt
+from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
+from scinoephile.multilang.eng_zho.guided_translation import (
+    EngZhoGuidedTranslationPrompt,
+)
 from test.helpers import test_data_root
 
 __all__ = [
     "mnt_eng_ocr_lens",
     "mnt_eng_ocr_tesseract",
+    "mnt_jpn_eng",
+    "mnt_yue_zho_hant",
     "mnt_zho_hans_ocr_lens",
     "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hans_ocr_paddle_new",
@@ -43,6 +49,7 @@ __all__ = [
     "mnt_zho_hant_ocr_paddle_new",
     "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
+    "get_mnt_eng_zho_guided_translation_test_cases",
     "get_mnt_zho_hans_block_review_test_cases",
     "get_mnt_zho_hans_ocr_fusion_test_cases",
     "get_mnt_zho_hant_block_review_test_cases",
@@ -55,6 +62,8 @@ __all__ = [
     "mnt_eng_fuse_clean_validate_review_flatten",
     "mnt_eng_image",
     "mnt_eng_image_path",
+    "mnt_yue_eng",
+    "mnt_yue_zho_hans_eng",
     "mnt_zho_hans_fuse",
     "mnt_zho_hans_fuse_clean",
     "mnt_zho_hans_fuse_clean_validate",
@@ -90,6 +99,18 @@ def mnt_eng_ocr_lens() -> Series:
 def mnt_eng_ocr_tesseract() -> Series:
     """MNT English subtitles OCRed using Tesseract."""
     return Series.load(input_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def mnt_jpn_eng() -> Series:
+    """MNT Bilingual Japanese and English subtitles."""
+    return Series.load(input_dir / "jpn_eng.srt")
+
+
+@pytest.fixture
+def mnt_yue_zho_hant() -> Series:
+    """MNT 粤语 audio track 繁体粤文 subtitles."""
+    return Series.load(input_dir / "yue_zho-Hant.srt")
 
 
 @pytest.fixture
@@ -136,7 +157,7 @@ def mnt_zho_hant_ocr_paddle_new() -> Series:
 
 @cache
 def get_mnt_eng_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptEng,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English block review test cases.
@@ -149,13 +170,13 @@ def get_mnt_eng_block_review_test_cases(
     """
     path = output_dir / "eng_ocr/lang/eng/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mnt_eng_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptEng,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptEng,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English OCR fusion test cases.
@@ -173,8 +194,27 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 
 @cache
+def get_mnt_eng_zho_guided_translation_test_cases(
+    prompt_cls: type[DualNToMPrompt] = EngZhoGuidedTranslationPrompt,
+    **kwargs: Any,
+) -> list[TestCase]:
+    """Get MNT English-from-Cantonese guided translation test cases.
+
+    Arguments:
+        prompt_cls: text for LLM correspondence
+        **kwargs: additional keyword arguments for load_test_cases_from_json
+    Returns:
+        test cases
+    """
+    path = output_dir / "yue_eng/multilang/eng_zho/guided_translation.json"
+    return load_test_cases_from_json(
+        path, DualNToMManager, prompt_cls=prompt_cls, **kwargs
+    )
+
+
+@cache
 def get_mnt_zho_hans_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 block review test cases.
@@ -187,13 +227,13 @@ def get_mnt_zho_hans_block_review_test_cases(
     """
     path = output_dir / "zho-Hans_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mnt_zho_hans_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHans,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 简体中文 OCR fusion test cases.
@@ -212,7 +252,7 @@ def get_mnt_zho_hans_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_zho_hant_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHant,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 block review test cases.
@@ -225,13 +265,13 @@ def get_mnt_zho_hant_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
 @cache
 def get_mnt_zho_hant_ocr_fusion_test_cases(
-    prompt_cls: type[DualSinglePrompt] = OcrFusionPromptZhoHant,
+    prompt_cls: type[Dual1To1Prompt] = OcrFusionPromptZhoHant,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 OCR fusion test cases.
@@ -250,7 +290,7 @@ def get_mnt_zho_hant_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_zho_hant_simplify_block_review_test_cases(
-    prompt_cls: type[MonoBlockPrompt] = BlockReviewPromptZhoHans,
+    prompt_cls: type[MonoNPrompt] = BlockReviewPromptZhoHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT 繁体中文 simplification block review test cases.
@@ -263,7 +303,7 @@ def get_mnt_zho_hant_simplify_block_review_test_cases(
     """
     path = output_dir / "zho-Hant_ocr/lang/zho/simplify_block_review.json"
     return load_test_cases_from_json(
-        path, MonoBlockManager, prompt_cls=prompt_cls, **kwargs
+        path, MonoNManager, prompt_cls=prompt_cls, **kwargs
     )
 
 
@@ -307,6 +347,18 @@ def mnt_eng_image() -> ImageSeries:
 def mnt_eng_image_path() -> Path:
     """Path to MNT English image subtitles."""
     return output_dir / "eng_ocr/image"
+
+
+@pytest.fixture
+def mnt_yue_eng() -> Series:
+    """MNT English subtitles translated from 粤语 audio track subtitles."""
+    return Series.load(output_dir / "yue_eng/eng.srt")
+
+
+@pytest.fixture
+def mnt_yue_zho_hans_eng() -> Series:
+    """MNT Bilingual 简体粤文 and English subtitles for the 粤语 audio track."""
+    return Series.load(output_dir / "yue_eng/zho-Hans_eng.srt")
 
 
 @pytest.fixture

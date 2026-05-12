@@ -14,7 +14,7 @@ from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from scinoephile.core.media import (
+from scinoephile.media.video_offset import (
     VideoOffsetCandidate,
     VideoOffsetResult,
 )

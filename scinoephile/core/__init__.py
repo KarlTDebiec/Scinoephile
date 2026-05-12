@@ -5,8 +5,8 @@
 This module may import from: common
 
 Hierarchy within module (lower may import from higher):
-* cache / cli / dictionaries / exceptions / llms / media / ml / optimization
-  / paths / subtitles
+* cache / cli / dictionaries / exceptions / llms / ml / optimization / paths
+  / media / subtitles
 * pairs / text / timing
 * synchronization
 """

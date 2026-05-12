@@ -14,8 +14,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.media import VideoOffsetResult
-from scinoephile.core.media.video_offset import get_video_offset
+from scinoephile.media.video_offset import VideoOffsetResult, get_video_offset
 
 __all__ = ["MediaOffsetCli"]
 

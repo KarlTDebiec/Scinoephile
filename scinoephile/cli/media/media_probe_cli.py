@@ -6,16 +6,17 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
 
-import ffmpeg
-
+from scinoephile.cli.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.media import SubtitleStream
+from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
+from scinoephile.media.probe import get_streams
 
 __all__ = ["MediaProbeCli"]
 
@@ -28,14 +29,18 @@ class MediaProbeCli(ScinoephileCliBase):
             "command-line interface for probing media streams": (
                 "探测媒体流的命令行界面"
             ),
+            "cache directory (default: %(default)s)": ("缓存目录（默认：%(default)s）"),
             "list media streams in a media file": "列出媒体文件中的媒体流",
+            "include additional stream details": "包含更多媒体流详细信息",
             "video infile containing media streams": "包含媒体流的视频输入文件",
         },
         "zh-hant": {
             "command-line interface for probing media streams": (
                 "探測媒體流的命令列介面"
             ),
+            "cache directory (default: %(default)s)": ("快取目錄（預設：%(default)s）"),
             "list media streams in a media file": "列出媒體檔中的媒體流",
+            "include additional stream details": "包含更多媒體流詳細資訊",
             "video infile containing media streams": "包含媒體流的影片輸入檔",
         },
     }
@@ -52,15 +57,31 @@ class MediaProbeCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--infile",
             dest="infile_path",
             required=True,
             type=input_file_arg(),
             help="video infile containing media streams",
+        )
+
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--details",
+            action="store_true",
+            help="include additional stream details",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--cache-dir",
+            default=cache_dir_path_arg("media", "subtitles"),
+            dest="cache_dir_path",
+            type=cache_dir_path_arg,
+            help="cache directory (default: %(default)s)",
         )
         parser.set_defaults(_parser=parser)
 
@@ -79,79 +100,34 @@ class MediaProbeCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
+        details: bool,
+        cache_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         try:
-            probe = ffmpeg.probe(str(infile_path), count_packets=None)
-            for stream in probe.get("streams", []):
-                if isinstance(stream, dict):
-                    print(_get_stream_description(stream))
-        except ffmpeg.Error:
-            parser.error(
-                str(ScinoephileError(f"Could not probe media file {infile_path}"))
-            )
+            if details:
+                streams = get_streams(infile_path)
+                detailed_subtitle_streams = get_zho_subtitle_streams(
+                    infile_path,
+                    cache_dir_path=cache_dir_path,
+                    streams=streams,
+                )
+                detailed_subtitle_streams_by_index = {
+                    stream.index: stream for stream in detailed_subtitle_streams
+                }
+                streams = [
+                    detailed_subtitle_streams_by_index.get(stream.index, stream)
+                    if isinstance(stream, SubtitleStream)
+                    else stream
+                    for stream in streams
+                ]
+            else:
+                streams = get_streams(infile_path)
+            for stream in streams:
+                print(stream.description)
         except ScinoephileError as exc:
             parser.error(str(exc))
-
-
-def _get_stream_description(stream: dict[str, Any]) -> str:
-    """Return a human-readable description of one ffprobe stream.
-
-    Arguments:
-        stream: ffprobe stream object
-    Returns:
-        human-readable stream description
-    """
-    index = stream.get("index", "?")
-    codec_type = stream.get("codec_type", "unknown")
-    codec_name = stream.get("codec_name", codec_type)
-
-    tags = stream.get("tags")
-    if not isinstance(tags, dict):
-        tags = {}
-    language = tags.get("language")
-    if isinstance(language, str) and language:
-        stream_id = f"#0:{index}({language})"
-    else:
-        stream_id = f"#0:{index}"
-
-    details = _get_stream_details(stream, tags)
-    description = f"Stream {stream_id}: {str(codec_type).title()}: {codec_name}"
-    if details:
-        description = f"{description} ({', '.join(details)})"
-    return description
-
-
-def _get_stream_details(stream: dict[str, Any], tags: dict[str, Any]) -> list[str]:
-    """Return detail strings for one ffprobe stream.
-
-    Arguments:
-        stream: ffprobe stream object
-        tags: ffprobe stream tags
-    Returns:
-        stream detail strings
-    """
-    details = []
-
-    width = stream.get("width")
-    height = stream.get("height")
-    if isinstance(width, int) and isinstance(height, int):
-        details.append(f"{width}x{height}")
-
-    channels = stream.get("channels")
-    if isinstance(channels, int):
-        details.append(f"channels={channels}")
-
-    title = tags.get("title")
-    if isinstance(title, str) and title:
-        details.append(f"title={title}")
-
-    packet_count = stream.get("nb_read_packets")
-    if isinstance(packet_count, int | str):
-        details.append(f"packets={packet_count}")
-
-    return details
 
 
 if __name__ == "__main__":

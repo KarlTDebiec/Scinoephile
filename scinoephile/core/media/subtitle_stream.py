@@ -5,56 +5,45 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 from scinoephile.core.exceptions import ScinoephileError
+from scinoephile.core.timing import format_time_ms
 
 from .constants import SUBTITLE_CODEC_OUTPUTS
+from .stream import Stream
 
 __all__ = ["SubtitleStream"]
 
 
 @dataclass(frozen=True)
-class SubtitleStream:
+class SubtitleStream(Stream):
     """Subtitle stream metadata needed for extraction."""
 
-    index: int
-    """Absolute ffmpeg stream index."""
-    language: str | None
-    """ISO 639 language code from stream tags, when available."""
-    codec_name: str
+    codec_type: str = "subtitle"
+    """Stream codec type."""
+    codec_name: str = "subtitle"
     """ffmpeg codec name."""
-    title: str | None = None
-    """Stream title from metadata, when available."""
     forced: bool = False
     """Whether stream is marked as forced."""
     sdh: bool = False
     """Whether stream is marked as hearing impaired."""
     subtitle_count: int | None = None
     """Number of subtitle packets in stream, when available."""
-
-    def __post_init__(self):
-        """Normalize stream metadata."""
-        if self.language is not None:
-            object.__setattr__(self, "language", self.language.lower())
+    first_start_ms: int | None = None
+    """First subtitle start time in milliseconds, when known."""
+    last_end_ms: int | None = None
+    """Last subtitle end time in milliseconds, when known."""
 
     @property
-    def description(self) -> str:
-        """Human-readable stream description."""
-        description = (
-            f"Stream #0:{self.index}({self.language or 'und'}): Subtitle: "
-            f"{self.codec_name}"
-        )
-        details = [f"extension={self.extension}"]
-        if self.title is not None:
-            details.append(f"title={self.title}")
-        if self.forced:
-            details.append("forced")
-        if self.sdh:
-            details.append("sdh")
+    def details(self) -> list[str]:
+        """Stream details."""
+        details = super().details
         if self.subtitle_count is not None:
             details.append(f"subtitles={self.subtitle_count}")
-        return f"{description} ({', '.join(details)})"
+        span = self.span
+        if span is not None:
+            details.append(f"span={span}")
+        return details
 
     @property
     def extension(self) -> str:
@@ -83,50 +72,11 @@ class SubtitleStream:
             raise ScinoephileError(f"Unsupported subtitle codec {self.codec_name}")
         return SUBTITLE_CODEC_OUTPUTS[self.codec_name][1]
 
-    @classmethod
-    def from_ffprobe_stream(cls, stream: dict[str, Any]) -> SubtitleStream | None:
-        """Parse a probed ffmpeg stream into subtitle metadata when applicable.
-
-        Arguments:
-            stream: ffprobe stream object
-        Returns:
-            subtitle stream metadata, or None for non-subtitle streams
-        """
-        if stream.get("codec_type") != "subtitle":
+    @property
+    def span(self) -> str | None:
+        """Subtitle stream active span formatted as HH:MM:SS-HH:MM:SS."""
+        if self.first_start_ms is None or self.last_end_ms is None:
             return None
-
-        codec_name = stream.get("codec_name")
-        if not isinstance(codec_name, str) or not codec_name:
-            codec_name = "subtitle"
-
-        tags = stream.get("tags")
-        if not isinstance(tags, dict):
-            tags = {}
-
-        disposition = stream.get("disposition")
-        if not isinstance(disposition, dict):
-            disposition = {}
-
-        language = tags.get("language")
-        if not isinstance(language, str):
-            language = None
-
-        title = tags.get("title")
-        if not isinstance(title, str):
-            title = None
-
-        subtitle_count = stream.get("nb_read_packets")
-        if isinstance(subtitle_count, int | str):
-            subtitle_count = int(subtitle_count)
-        else:
-            subtitle_count = None
-
-        return cls(
-            index=int(stream["index"]),
-            language=language,
-            codec_name=codec_name,
-            title=title,
-            forced=bool(disposition.get("forced")),
-            sdh=bool(disposition.get("hearing_impaired")),
-            subtitle_count=subtitle_count,
+        return (
+            f"{format_time_ms(self.first_start_ms)}-{format_time_ms(self.last_end_ms)}"
         )

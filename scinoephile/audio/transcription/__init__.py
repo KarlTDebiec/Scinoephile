@@ -7,7 +7,10 @@ from __future__ import annotations
 from copy import deepcopy
 from logging import getLogger
 
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_text_converted
+from scinoephile.lang.zho.script.conversion import (
+    OpenCCConfig,
+    get_zho_text_converted,
+)
 
 from .demucs_separator import DemucsSeparator
 from .transcribed_segment import TranscribedSegment

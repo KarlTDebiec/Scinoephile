@@ -27,7 +27,6 @@ from scinoephile.lang.zho.block_review import (
     get_zho_reviewer,
 )
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.flattening import get_zho_flattened
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
@@ -35,6 +34,7 @@ from scinoephile.lang.zho.ocr_fusion import (
     get_zho_ocr_fuser,
 )
 from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 
 __all__ = [
     "process_eng_ocr",
