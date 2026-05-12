@@ -14,23 +14,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.subtitles import Series
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrLensCli"]
-
-
-def _ocr_image_series_with_lens(
-    image_series: ImageSeries,
-    *,
-    language: str,
-) -> Series:
-    """OCR an image subtitle series with Google Lens."""
-    from scinoephile.image.ocr.lens import (  # noqa: PLC0415
-        ocr_image_series_with_lens,
-    )
-
-    return ocr_image_series_with_lens(image_series, language=language)
 
 
 class OcrLensCli(ScinoephileCliBase):
@@ -135,7 +122,7 @@ class OcrLensCli(ScinoephileCliBase):
 
         try:
             image_series = ImageSeries.load(infile_path)
-            text_series = _ocr_image_series_with_lens(
+            text_series = ocr_image_series_with_lens(
                 image_series,
                 language=language,
             )

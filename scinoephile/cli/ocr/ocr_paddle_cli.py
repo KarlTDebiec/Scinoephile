@@ -14,23 +14,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.subtitles import Series
+from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrPaddleCli"]
-
-
-def _ocr_image_series_with_paddle(
-    image_series: ImageSeries,
-    *,
-    language: str,
-) -> Series:
-    """OCR an image subtitle series with PaddleOCR."""
-    from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
-        ocr_image_series_with_paddle,
-    )
-
-    return ocr_image_series_with_paddle(image_series, language=language)
 
 
 class OcrPaddleCli(ScinoephileCliBase):
@@ -162,7 +149,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         # Perform operations
         try:
             image_series = ImageSeries.load(infile_path)
-            text_series = _ocr_image_series_with_paddle(
+            text_series = ocr_image_series_with_paddle(
                 image_series,
                 language=language,
             )
