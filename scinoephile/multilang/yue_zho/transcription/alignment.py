@@ -19,7 +19,7 @@ from scinoephile.core.synchronization import (
     get_sync_groups_string,
     get_sync_overlap_matrix,
 )
-from scinoephile.llms.dual_pair import DualPairManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 
 from .deliniation import YueVsZhoDeliniationPromptYueHans
 from .punctuation import YueVsZhoPunctuationPromptYueHans, YueZhoPunctuationManager
@@ -199,7 +199,7 @@ class Alignment:
         # Return
         if len(yw_1) == 0 and len(yw_2) == 0:
             return None
-        test_case_cls = DualPairManager.get_test_case_cls(
+        test_case_cls = Dual2To2Manager.get_test_case_cls(
             prompt_cls=YueVsZhoDeliniationPromptYueHans
         )
         query_kwargs = {

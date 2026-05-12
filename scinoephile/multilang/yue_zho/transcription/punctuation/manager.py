@@ -11,14 +11,14 @@ from scinoephile.core.text import (
     remove_non_punc_and_whitespace,
     remove_punc_and_whitespace,
 )
-from scinoephile.llms.dual_multi_single import DualMultiSingleManager
+from scinoephile.llms.dual_n_to_1 import DualNTo1Manager
 
 from .prompt import YueVsZhoPunctuationPromptYueHans
 
 __all__ = ["YueZhoPunctuationManager"]
 
 
-class YueZhoPunctuationManager(DualMultiSingleManager):
+class YueZhoPunctuationManager(DualNTo1Manager):
     """Factories for written Cantonese/standard Chinese punctuation LLM classes."""
 
     prompt_cls: ClassVar[type[YueVsZhoPunctuationPromptYueHans]] = (
@@ -38,7 +38,7 @@ class YueZhoPunctuationManager(DualMultiSingleManager):
         prompt_cls: type[YueVsZhoPunctuationPromptYueHans] = getattr(
             model, "prompt_cls"
         )
-        min_difficulty = DualMultiSingleManager.get_min_difficulty(model)
+        min_difficulty = DualNTo1Manager.get_min_difficulty(model)
         if model.answer is None:
             return min_difficulty
 

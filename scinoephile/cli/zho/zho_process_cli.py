@@ -28,13 +28,13 @@ from scinoephile.lang.zho.block_review import (
     get_zho_reviewer,
 )
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import (
+from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import (
     SIMPLIFIED_CONFIGS,
     TRADITIONAL_CONFIGS,
     OpenCCConfig,
     get_zho_converted,
 )
-from scinoephile.lang.zho.flattening import get_zho_flattened
 
 __all__ = ["ZhoProcessCli"]
 

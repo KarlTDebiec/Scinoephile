@@ -17,14 +17,20 @@ __all__ = [
 ]
 
 
-def cache_dir_path_arg(value: str | None) -> Path:
+def cache_dir_path_arg(*values: str | None) -> Path:
     """Resolve a cache directory CLI argument.
 
     Arguments:
-        value: path value or None for the runtime cache root
+        *values: path value or runtime cache subpath parts
     Returns:
         resolved cache directory path
     """
+    if len(values) == 0 or values == (None,):
+        return get_runtime_cache_dir_path(create=False)
+    if len(values) > 1:
+        parts = [value for value in values if value is not None]
+        return get_runtime_cache_dir_path(*parts, create=False)
+    value = values[0]
     if value is None:
         return get_runtime_cache_dir_path(create=False)
     return Path(value).expanduser().resolve()

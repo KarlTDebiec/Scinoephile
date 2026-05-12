@@ -5,5 +5,5 @@
 This module may import from: common, core, lang, audio, llms
 
 Hierarchy within module (lower may import from higher)::
-* yue_zho
+* eng_zho / yue_zho
 """

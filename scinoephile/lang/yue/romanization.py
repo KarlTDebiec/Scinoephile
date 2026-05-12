@@ -18,7 +18,7 @@ with catch_warnings():
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type
-from scinoephile.lang.zho.conversion import get_zho_converter
+from scinoephile.lang.zho.script.conversion import get_zho_converter
 
 __all__ = [
     "get_yue_jyutping_query_strings",

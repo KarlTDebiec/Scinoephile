@@ -13,8 +13,14 @@ from scinoephile.lang.zho.block_review import (
     ZHO_BLOCK_REVIEW_OPERATION_SPEC,
 )
 from scinoephile.lang.zho.ocr_fusion import ZHO_OCR_FUSION_OPERATION_SPEC
+from scinoephile.multilang.eng_zho.guided_translation import (
+    ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
+)
 from scinoephile.multilang.yue_zho.block_review import (
     YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
+)
+from scinoephile.multilang.yue_zho.gap_translation import (
+    YUE_ZHO_GAP_TRANSLATION_OPERATION_SPEC,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
@@ -22,9 +28,6 @@ from scinoephile.multilang.yue_zho.line_review import (
 from scinoephile.multilang.yue_zho.transcription import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
-)
-from scinoephile.multilang.yue_zho.translation import (
-    YUE_ZHO_TRANSLATION_OPERATION_SPEC,
 )
 
 __all__ = ["OPERATIONS"]
@@ -36,11 +39,12 @@ OPERATIONS: dict[str, OperationSpec] = {
         (
             ENG_BLOCK_REVIEW_OPERATION_SPEC,
             ENG_OCR_FUSION_OPERATION_SPEC,
+            ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
             ZHO_BLOCK_REVIEW_OPERATION_SPEC,
             ZHO_OCR_FUSION_OPERATION_SPEC,
             YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
             YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
-            YUE_ZHO_TRANSLATION_OPERATION_SPEC,
+            YUE_ZHO_GAP_TRANSLATION_OPERATION_SPEC,
             YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
             YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
         ),

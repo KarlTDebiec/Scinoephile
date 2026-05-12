@@ -10,7 +10,7 @@ from unittest.mock import ANY, Mock, patch
 
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
