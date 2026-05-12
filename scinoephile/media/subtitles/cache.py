@@ -70,11 +70,7 @@ def cache_subtitle_streams(
             stream,
             cache_dir_path=cache_dir_path,
         )
-        try:
-            stream_is_cached = stream_path.stat().st_size > 0
-        except FileNotFoundError:
-            stream_is_cached = False
-        if stream_is_cached:
+        if stream_path.exists():
             logger.info(f"Loaded subtitle stream from cache: {stream_path}")
         else:
             missing.append((stream, stream_path))

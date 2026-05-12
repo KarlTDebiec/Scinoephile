@@ -72,8 +72,8 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     assert second.suffix == ".srt"
 
 
-def test_cache_subtitle_streams_reextracts_empty_stream(tmp_path: Path):
-    """Test empty cached subtitle streams are re-extracted.
+def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
+    """Test existing cached subtitle streams are reused.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -96,7 +96,7 @@ def test_cache_subtitle_streams_reextracts_empty_stream(tmp_path: Path):
             cache_dir_path=tmp_path / "cache",
         )
 
-    run_command.assert_called_once()
+    run_command.assert_not_called()
 
 
 def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
