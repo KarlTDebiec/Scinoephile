@@ -67,10 +67,7 @@ def get_tesseract_ocr_recognizer(
     """
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("tesseract")
-    return TesseractOcrRecognizer(
-        cache_dir_path=cache_dir_path,
-        **kwargs,
-    )
+    return TesseractOcrRecognizer(cache_dir_path=cache_dir_path, **kwargs)
 
 
 def ocr_image_series_with_tesseract(
@@ -92,8 +89,7 @@ def ocr_image_series_with_tesseract(
     """
     if recognizer is None:
         tesseract_recognizer = get_tesseract_ocr_recognizer(
-            detect_italics=detect_italics,
-            language=language,
+            detect_italics=detect_italics, language=language
         )
     else:
         tesseract_recognizer = recognizer

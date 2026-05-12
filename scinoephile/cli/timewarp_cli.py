@@ -187,8 +187,16 @@ class TimewarpCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        anchor = read_series(parser, anchor_infile_path, allow_stdin=True)
-        mobile = read_series(parser, mobile_infile_path, allow_stdin=True)
+        try:
+            anchor = read_series(parser, anchor_infile_path, allow_stdin=True)
+            mobile = read_series(parser, mobile_infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         try:

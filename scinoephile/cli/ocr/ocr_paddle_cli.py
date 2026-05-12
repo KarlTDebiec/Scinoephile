@@ -147,7 +147,15 @@ class OcrPaddleCli(ScinoephileCliBase):
             parser.error(f"{outfile_path} already exists")
 
         # Read inputs
-        image_series = ImageSeries.load(infile_path)
+        try:
+            image_series = ImageSeries.load(infile_path)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         try:

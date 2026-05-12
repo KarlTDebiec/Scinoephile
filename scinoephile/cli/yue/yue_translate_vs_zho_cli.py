@@ -18,6 +18,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
@@ -192,8 +193,16 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
-        zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
+        try:
+            yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
+            zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         prompt_cls = cls._get_translation_prompt_cls(script)

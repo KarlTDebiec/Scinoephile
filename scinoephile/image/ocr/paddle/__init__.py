@@ -47,10 +47,7 @@ def get_paddle_ocr_recognizer(
     """
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("paddleocr")
-    return PaddleOcrRecognizer(
-        cache_dir_path=cache_dir_path,
-        **kwargs,
-    )
+    return PaddleOcrRecognizer(cache_dir_path=cache_dir_path, **kwargs)
 
 
 def ocr_image_series_with_paddle(

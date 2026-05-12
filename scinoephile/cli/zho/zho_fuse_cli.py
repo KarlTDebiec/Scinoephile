@@ -17,6 +17,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
@@ -183,8 +184,16 @@ class ZhoFuseCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        lens = read_series(parser, lens_infile_path, allow_stdin=True)
-        paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
+        try:
+            lens = read_series(parser, lens_infile_path, allow_stdin=True)
+            paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         if clean:

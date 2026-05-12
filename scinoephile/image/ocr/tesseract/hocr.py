@@ -145,8 +145,7 @@ def parse_tesseract_hocr(html: str, *, word_separator: str = " ") -> str:
         recognized text with ASS/SRT newline escapes
     """
     return _format_tesseract_hocr_words(
-        parse_tesseract_hocr_words(html),
-        word_separator=word_separator,
+        parse_tesseract_hocr_words(html), word_separator=word_separator
     )
 
 

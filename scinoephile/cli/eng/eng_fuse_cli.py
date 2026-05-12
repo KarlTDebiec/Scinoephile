@@ -14,6 +14,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
@@ -163,8 +164,16 @@ class EngFuseCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        lens = read_series(parser, lens_infile_path, allow_stdin=True)
-        tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
+        try:
+            lens = read_series(parser, lens_infile_path, allow_stdin=True)
+            tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         if clean:

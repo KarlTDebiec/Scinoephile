@@ -282,8 +282,7 @@ class TesseractOcrRecognizer:
         """
         if self.cache_dir_path is None:
             legacy_tessdata_dir_path = get_runtime_cache_dir_path(
-                "tesseract",
-                "legacy-tessdata",
+                "tesseract", "legacy-tessdata"
             )
         else:
             legacy_tessdata_dir_path = val_output_dir_path(
@@ -311,10 +310,7 @@ class TesseractOcrRecognizer:
             tmp_dir_path = Path(tmp_dir)
             image_path = tmp_dir_path / "input.png"
             output_base_path = tmp_dir_path / "output"
-            preprocessed_image = preprocess_tesseract_ocr_image(
-                image,
-                scale=self.scale,
-            )
+            preprocessed_image = preprocess_tesseract_ocr_image(image, scale=self.scale)
             preprocessed_image.save(image_path)
             text = self._run_tesseract(image_path, output_base_path)
             if text.strip():
@@ -383,10 +379,7 @@ class TesseractOcrRecognizer:
         self._run_command(self._build_command(image_path, output_base_path))
         hocr = self._read_hocr_output(output_base_path)
         if not self.detect_italics:
-            return parse_tesseract_hocr(
-                hocr,
-                word_separator=self._hocr_word_separator,
-            )
+            return parse_tesseract_hocr(hocr, word_separator=self._hocr_word_separator)
 
         legacy_output_base_path = output_base_path.with_name(
             f"{output_base_path.name}_legacy_italics"

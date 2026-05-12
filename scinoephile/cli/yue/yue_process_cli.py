@@ -19,6 +19,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
@@ -224,7 +225,15 @@ class YueProcessCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         # Read inputs
-        series = read_series(parser, infile_path, allow_stdin=True)
+        try:
+            series = read_series(parser, infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         if clean:

@@ -58,10 +58,7 @@ def test_ocr_image_series_with_tesseract_preserves_timings_and_sets_text():
     )
     recognizer = FakeTesseractRecognizer(["first", "second"])
 
-    text_series = ocr_image_series_with_tesseract(
-        image_series,
-        recognizer=recognizer,
-    )
+    text_series = ocr_image_series_with_tesseract(image_series, recognizer=recognizer)
 
     assert [(event.start, event.end, event.text) for event in text_series] == [
         (1000, 2000, "first"),
