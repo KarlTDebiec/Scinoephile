@@ -87,24 +87,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## chrome-lens-py
-
-Scinoephile's Google Lens OCR integration uses `chrome-lens-py`, a Python
-library for Google Lens OCR and translation using the `crupload` endpoint:
-
-- Project: https://github.com/bropines/chrome-lens-py
-- Package: https://pypi.org/project/chrome-lens-py/
-- License: MIT
-- Copyright: Copyright (c) 2024 Bropines
-
-The `chrome-lens-py` license permits use, modification, and distribution,
-provided the copyright and permission notice are included in copies or
-substantial portions of the software.
-
-For the complete license text used by `chrome-lens-py`, see:
-
-- https://github.com/bropines/chrome-lens-py/blob/main/LICENSE
-
 ## CUHK dictionary data source
 
 The CUHK data source used by the scraper is:

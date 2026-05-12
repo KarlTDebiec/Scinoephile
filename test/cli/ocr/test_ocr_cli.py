@@ -107,7 +107,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
+        "scinoephile.cli.ocr.ocr_lens_cli._ocr_image_series_with_lens",
         fake_ocr_image_series_with_lens,
     )
 
@@ -163,7 +163,7 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
-        "scinoephile.cli.ocr.ocr_paddle_cli.ocr_image_series_with_paddle",
+        "scinoephile.cli.ocr.ocr_paddle_cli._ocr_image_series_with_paddle",
         fake_ocr_image_series_with_paddle,
     )
 

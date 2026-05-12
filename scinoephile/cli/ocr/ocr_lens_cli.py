@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -15,11 +14,23 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrLensCli"]
 
-ocr_image_series_with_lens: Any | None = None
+
+def _ocr_image_series_with_lens(
+    image_series: ImageSeries,
+    *,
+    language: str,
+) -> Series:
+    """OCR an image subtitle series with Google Lens."""
+    from scinoephile.image.ocr.lens import (  # noqa: PLC0415
+        ocr_image_series_with_lens,
+    )
+
+    return ocr_image_series_with_lens(image_series, language=language)
 
 
 class OcrLensCli(ScinoephileCliBase):
@@ -123,16 +134,8 @@ class OcrLensCli(ScinoephileCliBase):
             parser.error(f"{outfile_path} already exists")
 
         try:
-            global ocr_image_series_with_lens  # noqa: PLW0603
-            if ocr_image_series_with_lens is None:
-                from scinoephile.image.ocr.lens import (  # noqa: PLC0415
-                    ocr_image_series_with_lens as imported_ocr,
-                )
-
-                ocr_image_series_with_lens = imported_ocr
-
             image_series = ImageSeries.load(infile_path)
-            text_series = ocr_image_series_with_lens(
+            text_series = _ocr_image_series_with_lens(
                 image_series,
                 language=language,
             )
