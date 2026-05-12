@@ -12,17 +12,16 @@ def test_internal_subtitle_helpers_are_not_public():
     """Test internal subtitle helpers are not public module APIs."""
     cache = import_module("scinoephile.media.subtitles.cache")
     details = import_module("scinoephile.media.subtitles.details")
-    image_cache = import_module("scinoephile.media.subtitles.image_cache")
     script = import_module("scinoephile.media.subtitles.script")
 
     assert not hasattr(cache, "SUBTITLE_ARTIFACT_CACHE_VERSION")
     assert not hasattr(cache, "is_valid_subtitle_artifact_cache")
     assert not hasattr(cache, "get_subtitle_stream_cache_key")
+    assert not hasattr(cache, "get_cached_image_subtitle_dir_path")
     assert not hasattr(cache, "_hash_cache_payload")
     assert not hasattr(details, "with_subtitle_details")
     assert not hasattr(script, "get_subtitle_analysis_cache_key")
     assert not hasattr(script, "_hash_cache_payload")
-    assert not hasattr(image_cache, "get_cached_image_subtitle_dir_path")
 
 
 def test_subtitle_media_modules_live_under_subtitles_package():
@@ -30,15 +29,26 @@ def test_subtitle_media_modules_live_under_subtitles_package():
     assert find_spec("scinoephile.media.subtitles.extraction") is not None
     assert find_spec("scinoephile.media.subtitles.cache") is not None
     assert find_spec("scinoephile.media.subtitles.details") is not None
-    assert find_spec("scinoephile.media.subtitles.image_cache") is not None
     assert find_spec("scinoephile.media.subtitles.script") is not None
     assert find_spec("scinoephile.media.subtitles.stats") is not None
 
 
 def test_script_specific_helpers_live_outside_media():
-    """Test script and image-specific helpers live in their owning packages."""
-    assert find_spec("scinoephile.image.subtitles.cache") is not None
+    """Test script-specific helpers live outside media."""
     assert find_spec("scinoephile.lang.zho.script_analysis.subtitles") is not None
+
+
+def test_image_subtitle_cache_helpers_are_merged_into_media_cache():
+    """Test rendered image subtitle cache helpers live in media cache."""
+    cache = import_module("scinoephile.media.subtitles.cache")
+
+    assert hasattr(cache, "get_or_create_image_subtitle_dir_path")
+    assert hasattr(cache, "is_valid_image_subtitle_cache")
+    assert hasattr(cache, "load_cached_image_subtitles")
+    assert hasattr(cache, "load_image_subtitle_manifest")
+    assert hasattr(cache, "save_image_subtitle_manifest")
+    assert find_spec("scinoephile.media.subtitles.image_cache") is None
+    assert find_spec("scinoephile.image.subtitles.cache") is None
 
 
 def test_subtitle_media_package_has_no_function_reexports():

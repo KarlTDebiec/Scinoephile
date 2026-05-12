@@ -14,12 +14,12 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.image.subtitles.cache import is_valid_image_subtitle_cache
 from scinoephile.media.subtitles.cache import (
+    _get_cached_image_subtitle_dir_path,
     cache_subtitle_streams,
     get_cached_subtitle_stream_path,
+    is_valid_image_subtitle_cache,
 )
-from scinoephile.media.subtitles.image_cache import _get_cached_image_subtitle_dir_path
 from scinoephile.media.subtitles.script import analyze_subtitle_stream_script
 from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
 
@@ -265,7 +265,7 @@ def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.cache.ImageSeries.load"
     ) as load_image_series:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -326,7 +326,7 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.cache.ImageSeries.load"
     ) as load_image_series:
         stats = get_subtitle_stream_stats(
             infile_path,
@@ -367,7 +367,7 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     )
 
     with patch(
-        "scinoephile.media.subtitles.image_cache.ImageSeries.load",
+        "scinoephile.media.subtitles.cache.ImageSeries.load",
         return_value=image_series,
     ):
         stats = get_subtitle_stream_stats(
@@ -451,7 +451,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         fake_ocr_image_series_with_paddle,
     )
     with patch(
-        "scinoephile.media.subtitles.image_cache.ImageSeries.load"
+        "scinoephile.media.subtitles.cache.ImageSeries.load"
     ) as load_image_series:
         analysis = analyze_subtitle_stream_script(
             infile_path,

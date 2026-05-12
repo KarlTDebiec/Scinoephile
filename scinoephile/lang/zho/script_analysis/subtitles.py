@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.image.subtitles.cache import (
+from scinoephile.media.subtitles.cache import (
     load_cached_image_subtitles,
     load_image_subtitle_manifest,
 )

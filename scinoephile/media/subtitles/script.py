@@ -24,9 +24,8 @@ from scinoephile.lang.zho.script_analysis.subtitles import (
 from scinoephile.media.subtitles.cache import (
     cache_subtitle_streams,
     get_cached_subtitle_stream_path,
+    get_or_create_image_subtitle_dir_path,
 )
-
-from .image_cache import get_or_create_image_subtitle_dir_path
 
 __all__ = ["analyze_subtitle_stream_script"]
 
