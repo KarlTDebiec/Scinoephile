@@ -12,16 +12,14 @@ def test_internal_subtitle_helpers_are_not_public():
     """Test internal subtitle helpers are not public module APIs."""
     cache = import_module("scinoephile.media.subtitles.cache")
     details = import_module("scinoephile.media.subtitles.details")
-    script = import_module("scinoephile.media.subtitles.script")
 
     assert not hasattr(cache, "SUBTITLE_ARTIFACT_CACHE_VERSION")
+    assert not hasattr(cache, "IMAGE_SERIES_CACHE_VERSION")
     assert not hasattr(cache, "is_valid_subtitle_artifact_cache")
     assert not hasattr(cache, "get_subtitle_stream_cache_key")
     assert not hasattr(cache, "get_cached_image_subtitle_dir_path")
     assert not hasattr(cache, "_hash_cache_payload")
     assert not hasattr(details, "with_subtitle_details")
-    assert not hasattr(script, "get_subtitle_analysis_cache_key")
-    assert not hasattr(script, "_hash_cache_payload")
 
 
 def test_subtitle_media_modules_live_under_subtitles_package():
@@ -29,13 +27,14 @@ def test_subtitle_media_modules_live_under_subtitles_package():
     assert find_spec("scinoephile.media.subtitles.extraction") is not None
     assert find_spec("scinoephile.media.subtitles.cache") is not None
     assert find_spec("scinoephile.media.subtitles.details") is not None
-    assert find_spec("scinoephile.media.subtitles.script") is not None
     assert find_spec("scinoephile.media.subtitles.stats") is not None
 
 
 def test_script_specific_helpers_live_outside_media():
     """Test script-specific helpers live outside media."""
     assert find_spec("scinoephile.lang.zho.script_analysis.subtitles") is not None
+    assert find_spec("scinoephile.lang.zho.subtitle_streams") is not None
+    assert find_spec("scinoephile.media.subtitles.script") is None
 
 
 def test_image_subtitle_cache_helpers_are_merged_into_media_cache():

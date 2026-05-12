@@ -14,13 +14,13 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
+from scinoephile.lang.zho.subtitle_streams import analyze_zho_subtitle_stream_script
 from scinoephile.media.subtitles.cache import (
     _get_cached_image_subtitle_dir_path,
     cache_subtitle_streams,
     get_cached_subtitle_stream_path,
     is_valid_image_subtitle_cache,
 )
-from scinoephile.media.subtitles.script import analyze_subtitle_stream_script
 from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
 
 
@@ -72,39 +72,6 @@ def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
     assert second.suffix == ".srt"
 
 
-def test_get_cached_subtitle_stream_path_ignores_script_analysis_version(
-    tmp_path: Path,
-    monkeypatch,
-):
-    """Test subtitle stream cache paths are independent of OCR versioning.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-        monkeypatch: pytest monkeypatch fixture
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    cache_dir_path = tmp_path / "cache"
-
-    original = get_cached_subtitle_stream_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
-    monkeypatch.setattr(
-        "scinoephile.media.subtitles.script.SCRIPT_ANALYSIS_CACHE_VERSION",
-        999,
-    )
-    changed = get_cached_subtitle_stream_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
-
-    assert changed == original
-
-
 def test_cache_subtitle_streams_reextracts_empty_stream(tmp_path: Path):
     """Test empty cached subtitle streams are re-extracted.
 
@@ -153,7 +120,7 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     )
 
     with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
-        analysis = analyze_subtitle_stream_script(
+        analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
             cache_dir_path=tmp_path / "cache",
@@ -259,7 +226,7 @@ def test_get_image_subtitle_stream_stats_counts_cached_manifest(tmp_path: Path):
     (image_dir_path / "manifest.json").write_text(
         (
             '{"event_count": 7, "first_start_ms": 2500, "image_count": 7, '
-            '"last_end_ms": 65250, "version": 1}'
+            '"last_end_ms": 65250}'
         ),
         encoding="utf-8",
     )
@@ -287,7 +254,7 @@ def test_image_subtitle_manifest_without_span_is_invalid(tmp_path: Path):
     image_dir_path.mkdir()
     (image_dir_path / "index.html").write_text("", encoding="utf-8")
     (image_dir_path / "manifest.json").write_text(
-        '{"event_count": 7, "image_count": 7, "version": 1}',
+        '{"event_count": 7, "image_count": 7}',
         encoding="utf-8",
     )
 
@@ -320,7 +287,7 @@ def test_get_image_subtitle_stream_stats_from_cached_manifest(tmp_path: Path):
     (image_dir_path / "manifest.json").write_text(
         (
             '{"event_count": 7, "first_start_ms": 2500, "image_count": 7, '
-            '"last_end_ms": 65250, "version": 1}'
+            '"last_end_ms": 65250}'
         ),
         encoding="utf-8",
     )
@@ -384,6 +351,9 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     assert stats.event_count == 1
     assert (image_dir_path / "index.html").exists()
     assert (image_dir_path / "manifest.json").exists()
+    assert '"version"' not in (image_dir_path / "manifest.json").read_text(
+        encoding="utf-8"
+    )
 
 
 def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
@@ -425,7 +395,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     (image_dir_path / "manifest.json").write_text(
         (
             '{"event_count": 7, "first_start_ms": 0, "image_count": 7, '
-            '"last_end_ms": 6500, "version": 1}'
+            '"last_end_ms": 6500}'
         ),
         encoding="utf-8",
     )
@@ -453,7 +423,7 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     with patch(
         "scinoephile.media.subtitles.cache.ImageSeries.load"
     ) as load_image_series:
-        analysis = analyze_subtitle_stream_script(
+        analysis = analyze_zho_subtitle_stream_script(
             infile_path,
             stream,
             cache_dir_path=tmp_path / "cache",
@@ -512,7 +482,7 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
     (image_dir_path / "manifest.json").write_text(
         (
             '{"event_count": 16, "first_start_ms": 0, "image_count": 16, '
-            '"last_end_ms": 15500, "version": 1}'
+            '"last_end_ms": 15500}'
         ),
         encoding="utf-8",
     )
@@ -540,7 +510,7 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
         fake_ocr_image_series_with_paddle,
     )
 
-    analysis = analyze_subtitle_stream_script(
+    analysis = analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -594,7 +564,7 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
     (image_dir_path / "manifest.json").write_text(
         (
             '{"event_count": 16, "first_start_ms": 0, "image_count": 16, '
-            '"last_end_ms": 15500, "version": 1}'
+            '"last_end_ms": 15500}'
         ),
         encoding="utf-8",
     )
@@ -622,7 +592,7 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
         fake_ocr_image_series_with_paddle,
     )
 
-    analysis = analyze_subtitle_stream_script(
+    analysis = analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
@@ -663,12 +633,12 @@ def test_subtitle_cache_logs_hits_and_analysis_loads(
         [stream],
         cache_dir_path=tmp_path / "cache",
     )
-    analyze_subtitle_stream_script(
+    analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    analyze_subtitle_stream_script(
+    analyze_zho_subtitle_stream_script(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",

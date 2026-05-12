@@ -20,7 +20,6 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 __all__ = [
-    "IMAGE_SERIES_CACHE_VERSION",
     "ImageSubtitleManifest",
     "cache_subtitle_streams",
     "get_cached_subtitle_stream_path",
@@ -31,17 +30,12 @@ __all__ = [
     "save_image_subtitle_manifest",
 ]
 
-IMAGE_SERIES_CACHE_VERSION = 1
-"""Rendered image subtitle cache schema version."""
-
 logger = getLogger(__name__)
 
 
 class ImageSubtitleManifest(TypedDict):
     """Rendered image subtitle cache manifest."""
 
-    version: int
-    """Manifest schema version."""
     event_count: int
     """Number of subtitle events."""
     image_count: int
@@ -195,7 +189,6 @@ def get_or_create_image_subtitle_dir_path(
     image_series.save(temp_dir_path)
     save_image_subtitle_manifest(
         {
-            "version": IMAGE_SERIES_CACHE_VERSION,
             "event_count": len(image_series),
             "image_count": len(list(temp_dir_path.glob("*.png"))),
             "first_start_ms": first_start_ms,
@@ -225,8 +218,7 @@ def is_valid_image_subtitle_cache(image_dir_path: Path) -> bool:
     except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError):
         return False
     return (
-        manifest["version"] == IMAGE_SERIES_CACHE_VERSION
-        and manifest["event_count"] >= 0
+        manifest["event_count"] >= 0
         and manifest["image_count"] == manifest["event_count"]
         and "first_start_ms" in manifest
         and "last_end_ms" in manifest
@@ -279,7 +271,6 @@ def load_image_subtitle_manifest(
     with manifest_path.open("r", encoding="utf-8") as file:
         raw = json.load(file)
     manifest: ImageSubtitleManifest = {
-        "version": int(raw["version"]),
         "event_count": int(raw["event_count"]),
         "image_count": int(raw["image_count"]),
     }

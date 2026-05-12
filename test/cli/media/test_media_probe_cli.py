@@ -88,19 +88,18 @@ def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
             return_value=[],
         ) as get_streams,
         patch(
-            "scinoephile.cli.media.media_probe_cli.with_stream_details",
+            "scinoephile.cli.media.media_probe_cli.get_zho_streams",
             return_value=[],
-        ) as with_details,
+        ) as get_zho_streams,
     ):
         run_cli_with_args(
             MediaProbeCli,
             f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
         )
 
-    get_streams.assert_called_once_with(infile_path.resolve())
-    with_details.assert_called_once_with(
+    get_streams.assert_not_called()
+    get_zho_streams.assert_called_once_with(
         infile_path.resolve(),
-        [],
         cache_dir_path=cache_dir_path.resolve(),
     )
 
@@ -206,7 +205,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             },
         ),
         patch(
-            "scinoephile.media.subtitles.details.analyze_subtitle_stream_script"
+            "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
         patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
@@ -253,7 +252,7 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
             },
         ),
         patch(
-            "scinoephile.media.subtitles.details.analyze_subtitle_stream_script"
+            "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
         patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
@@ -351,7 +350,7 @@ def test_media_probe_cli_details_caches_subtitle_streams_together(
         ),
         patch("scinoephile.media.subtitles.details.cache_subtitle_streams") as cache,
         patch(
-            "scinoephile.media.subtitles.details.analyze_subtitle_stream_script"
+            "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",

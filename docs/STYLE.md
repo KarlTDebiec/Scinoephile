@@ -26,6 +26,10 @@
 * In `__init__.py` files, only import classes from the module, not functions or variables.
 
 ## Organization
+* Package dependencies follow the hierarchy `core -> image -> media -> lang`.
+  * Packages may import from packages at the same or earlier hierarchy level.
+  * Packages must not import from packages later in the hierarchy.
+
 * Within classes, sort methods in the following hierarchy:
   1. Level 1: `__init__`, other builtins, public properties, public methods, private properties, private methods
   2. Level 2: standard methods, class methods, static methods

@@ -11,10 +11,8 @@ from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
-from scinoephile.lang.zho.language import get_zho_script_language, is_zho_language
 from scinoephile.media.subtitles.cache import cache_subtitle_streams
 
-from .script import analyze_subtitle_stream_script
 from .stats import get_subtitle_stream_stats
 
 __all__ = ["with_stream_details"]
@@ -79,16 +77,6 @@ def _with_subtitle_details(
     Returns:
         enriched subtitle stream metadata
     """
-    if stream.language is not None and is_zho_language(stream.language):
-        analysis = analyze_subtitle_stream_script(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        )
-        stream = replace(
-            stream,
-            language=get_zho_script_language(stream.language, analysis.script),
-        )
     try:
         stats = get_subtitle_stream_stats(
             infile_path,

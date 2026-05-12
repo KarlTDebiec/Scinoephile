@@ -118,7 +118,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
             ],
         ) as get_subtitle_streams,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.with_stream_details",
+            "scinoephile.cli.media.media_extract_subs_cli.get_zho_streams",
             return_value=[
                 SubtitleStream(
                     index=4,
@@ -126,7 +126,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
                     codec_name="subrip",
                 ),
             ],
-        ) as with_details,
+        ) as get_zho_streams,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
@@ -137,18 +137,9 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
             f"--infile {infile_path} --languages zho -o {output_dir_path} --details",
         )
 
-    get_subtitle_streams.assert_called_once_with(
+    get_subtitle_streams.assert_not_called()
+    get_zho_streams.assert_called_once_with(
         infile_path.resolve(),
-    )
-    with_details.assert_called_once()
-    assert with_details.call_args.args[0] == infile_path.resolve()
-    assert [stream.index for stream in with_details.call_args.args[1]] == [4]
-    assert with_details.call_args.kwargs == {
-        "cache_dir_path": ANY,
-    }
-    with_details.assert_called_once_with(
-        infile_path.resolve(),
-        ANY,
         cache_dir_path=ANY,
     )
     extract.assert_called_once()
@@ -211,7 +202,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
             ],
         ) as get_subtitle_streams,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.with_stream_details",
+            "scinoephile.cli.media.media_extract_subs_cli.get_zho_streams",
             return_value=[
                 SubtitleStream(
                     index=2,
@@ -220,7 +211,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
                     subtitle_count=42,
                 ),
             ],
-        ) as with_details,
+        ) as get_zho_streams,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
@@ -231,10 +222,11 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
             f"--infile {infile_path} --languages ENG --details -o {output_dir_path}",
         )
 
-    get_subtitle_streams.assert_called_once_with(
+    get_subtitle_streams.assert_not_called()
+    get_zho_streams.assert_called_once_with(
         infile_path.resolve(),
+        cache_dir_path=ANY,
     )
-    with_details.assert_called_once()
     extract.assert_called_once()
 
 
