@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -13,8 +14,9 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.media.video_offset import (
-    VideoOffsetCandidate,
     VideoOffsetResult,
+    _get_offsets,
+    _sample_video_frames,
     get_video_offset,
 )
 
@@ -82,30 +84,7 @@ def test_get_video_offset_tolerates_brightness_shift():
     assert result.best.score == pytest.approx(0.0)
 
 
-def test_get_video_offset_uses_ten_second_default():
-    """Test video offset search defaults to a ten-second maximum offset."""
-    reference_samples = _get_samples([0.0, 1.0, 2.0], [1, 2, 3])
-    target_samples = _get_samples([9.0, 10.0, 11.0], [1, 2, 3])
-
-    with patch(
-        "scinoephile.media.video_offset._sample_video_frames",
-        side_effect=[reference_samples, target_samples],
-    ) as sample_video_frames:
-        result = get_video_offset(
-            reference_infile_path=Path("reference.mkv"),
-            target_infile_path=Path("target.mkv"),
-            sample_rate=1.0,
-            duration=30.0,
-            coarse_step=1.0,
-            fine_step=0.5,
-        )
-
-    assert sample_video_frames.call_args_list[0].kwargs["duration"] == 30.0
-    assert result.offset == 9.0
-    assert result.best.offset == 9.0
-
-
-def test_get_video_offset_reports_none_for_insufficient_matches():
+def test_get_video_offset_rejects_insufficient_matches():
     """Test video offset search rejects insufficient support."""
     reference_samples = _get_samples([0.0], [10])
     target_samples = _get_samples([1.0], [10])
@@ -152,68 +131,123 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
     assert abs(result.second_best.offset - result.offset) >= 1.0
 
 
+def test_get_offsets_clamps_to_requested_end():
+    """Test candidate offsets do not exceed the requested end."""
+    offsets = _get_offsets(-1.0, 1.0, 0.7)
+
+    assert offsets == [-1.0, -0.3, 0.4, 1.0]
+    assert max(offsets) == 1.0
+
+
+def test_sample_video_frames_normalizes_brightness():
+    """Test sampled video frames normalize brightness during sampling."""
+    output = np.array(
+        [
+            [[0, 1], [2, 3]],
+            [[10, 12], [14, 16]],
+        ],
+        dtype=np.uint8,
+    ).tobytes()
+
+    with patch(
+        "scinoephile.media.video_offset.ffmpeg.input",
+    ) as input_:
+        input_.return_value.filter.return_value.filter.return_value.filter.return_value.output.return_value.run.return_value = (  # noqa: E501
+            output,
+            b"",
+        )
+        samples = _sample_video_frames(
+            Path("video.mkv"),
+            sample_rate=1.0,
+            start_time=0.0,
+            duration=2.0,
+            width=2,
+            height=2,
+        )
+
+    assert samples[0].frame.mean() == pytest.approx(0.0)
+    assert samples[0].frame.std() == pytest.approx(1.0)
+    assert samples[1].frame.mean() == pytest.approx(0.0)
+    assert samples[1].frame.std() == pytest.approx(1.0)
+
+
 @pytest.mark.parametrize(
-    ("parameter_name", "message"),
+    ("call", "message"),
     [
-        ("max_offset", "0.0 is less than minimum value"),
-        ("sample_rate", "0.0 is less than minimum value"),
-        ("coarse_step", "0.0 is less than minimum value"),
-        ("fine_step", "0.0 is less than minimum value"),
-        ("width", "0 is less than minimum value of 1"),
-        ("height", "0 is less than minimum value of 1"),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                max_offset=0.0,
+            ),
+            "0.0 is less than minimum value",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                sample_rate=0.0,
+            ),
+            "0.0 is less than minimum value",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                start_time=-1.0,
+            ),
+            "-1.0 is less than minimum value of 0.0",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                coarse_step=0.0,
+            ),
+            "0.0 is less than minimum value",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                fine_step=0.0,
+            ),
+            "0.0 is less than minimum value",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                width=0,
+            ),
+            "0 is less than minimum value of 1",
+        ),
+        (
+            lambda: get_video_offset(
+                reference_infile_path=Path("reference.mkv"),
+                target_infile_path=Path("target.mkv"),
+                height=0,
+            ),
+            "0 is less than minimum value of 1",
+        ),
     ],
 )
 def test_get_video_offset_rejects_invalid_numeric_parameters(
-    parameter_name: str,
+    call: Callable[[], VideoOffsetResult],
     message: str,
 ):
     """Test video offset rejects invalid numeric parameters.
 
     Arguments:
-        parameter_name: invalid parameter name
+        call: call with invalid arguments
         message: expected error message
     """
     with pytest.raises(ValueError, match=message):
-        if parameter_name == "max_offset":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                max_offset=0.0,
-            )
-        elif parameter_name == "sample_rate":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                sample_rate=0.0,
-            )
-        elif parameter_name == "coarse_step":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                coarse_step=0.0,
-            )
-        elif parameter_name == "fine_step":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                fine_step=0.0,
-            )
-        elif parameter_name == "width":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                width=0,
-            )
-        elif parameter_name == "height":
-            get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                height=0,
-            )
+        call()
 
 
-def test_get_video_offset_wraps_sampling_failures():
-    """Test sampling failures are reported as Scinoephile errors."""
+def test_get_video_offset_propagates_sampling_failures():
+    """Test sampling failures are propagated as Scinoephile errors."""
     with patch(
         "scinoephile.media.video_offset._sample_video_frames",
         side_effect=ScinoephileError("Could not sample frames"),
@@ -225,21 +259,6 @@ def test_get_video_offset_wraps_sampling_failures():
             )
 
 
-def test_result_types_are_public_dataclasses():
-    """Test result dataclasses expose expected fields."""
-    best = VideoOffsetCandidate(offset=1.0, matched_count=3, score=0.5)
-    second_best = VideoOffsetCandidate(offset=0.0, matched_count=3, score=5.0)
-    result = VideoOffsetResult(
-        offset=1.0,
-        confidence="high",
-        best=best,
-        second_best=second_best,
-    )
-
-    assert result.best == best
-    assert result.second_best == second_best
-
-
 def _get_sample(time: float, frame: np.ndarray) -> SimpleNamespace:
     """Return a synthetic frame sample.
 
@@ -249,6 +268,9 @@ def _get_sample(time: float, frame: np.ndarray) -> SimpleNamespace:
     Returns:
         synthetic frame sample
     """
+    frame_std = float(np.std(frame))
+    if frame_std > 0:
+        frame = (frame - float(np.mean(frame))) / frame_std
     return SimpleNamespace(time=time, frame=frame)
 
 

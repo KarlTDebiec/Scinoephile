@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from math import nextafter
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import (
@@ -114,16 +115,17 @@ class MediaOffsetCli(ScinoephileCliBase):
         )
 
         # Operation arguments
+        positive_float_min = nextafter(0.0, 1.0)
         arg_groups["operation arguments"].add_argument(
             "--max-offset",
             default=10.0,
-            type=float_arg(min_value=0.0),
+            type=float_arg(min_value=positive_float_min),
             help="maximum absolute offset to search in seconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--sample-rate",
             default=2.0,
-            type=float_arg(min_value=0.0),
+            type=float_arg(min_value=positive_float_min),
             help="sample rate in frames per second (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
@@ -135,19 +137,19 @@ class MediaOffsetCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--duration",
             default=300.0,
-            type=float_arg(min_value=0.0),
+            type=float_arg(min_value=positive_float_min),
             help="duration to sample in seconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--coarse-step",
             default=0.25,
-            type=float_arg(min_value=0.0),
+            type=float_arg(min_value=positive_float_min),
             help="coarse search step in seconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--fine-step",
             default=0.04,
-            type=float_arg(min_value=0.0),
+            type=float_arg(min_value=positive_float_min),
             help="fine search step in seconds (default: %(default)s)",
         )
         parser.set_defaults(_parser=parser)

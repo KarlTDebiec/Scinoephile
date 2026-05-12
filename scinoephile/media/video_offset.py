@@ -172,9 +172,7 @@ def get_video_offset(
 
     # Classify confidence from match support and score separation
     confidence = "low"
-    if best.matched_count < min_matches:
-        confidence = "none"
-    elif second_best is None:
+    if second_best is None:
         confidence = "low"
     elif best.score <= 0:
         if second_best.score > 0:
@@ -204,12 +202,15 @@ def _get_offsets(start: float, end: float, step: float) -> list[float]:
     Returns:
         candidate offsets
     """
-    count = int(round((end - start) / step))
     offsets = []
-    for index in range(count + 1):
-        offset = start + index * step
+    offset = start
+    epsilon = step / 1_000_000
+    while offset <= end + epsilon:
         offsets.append(round(offset, 6))
-    if offsets[-1] < end:
+        offset += step
+    if offsets[-1] > end:
+        offsets[-1] = round(end, 6)
+    elif offsets[-1] < end:
         offsets.append(round(end, 6))
     return offsets
 
@@ -275,6 +276,13 @@ def _sample_video_frames(
     array = np.frombuffer(output[: frame_count * frame_size], dtype=np.uint8)
     array = array.reshape((frame_count, height, width)).astype(np.float32)
 
+    # Normalize brightness once per sampled frame
+    for index in range(frame_count):
+        frame = array[index]
+        frame_std = float(np.std(frame))
+        if frame_std > 0:
+            array[index] = (frame - float(np.mean(frame))) / frame_std
+
     return [
         _VideoFrameSample(time=index / sample_rate, frame=array[index])
         for index in range(frame_count)
@@ -327,17 +335,6 @@ def _score_offsets(
             target_sample = target_samples[best_index]
             reference_frame = reference_sample.frame
             target_frame = target_sample.frame
-
-            # Normalize brightness before comparing frame differences
-            reference_std = float(np.std(reference_frame))
-            target_std = float(np.std(target_frame))
-            if reference_std > 0 and target_std > 0:
-                reference_frame = (
-                    reference_frame - float(np.mean(reference_frame))
-                ) / reference_std
-                target_frame = (
-                    target_frame - float(np.mean(target_frame))
-                ) / target_std
             scores.append(float(np.mean(np.abs(reference_frame - target_frame))))
 
         # Keep candidate offsets with enough matched samples

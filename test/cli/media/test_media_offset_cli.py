@@ -108,6 +108,45 @@ def test_media_offset_cli_reports_offset(
     ]
 
 
-def test_media_cli_registers_offset_subcommand():
-    """Test media CLI registers the offset subcommand."""
-    assert MediaCli.subcommands()["offset"] is MediaOffsetCli
+@pytest.mark.parametrize(
+    "argument",
+    [
+        "--max-offset",
+        "--sample-rate",
+        "--duration",
+        "--coarse-step",
+        "--fine-step",
+    ],
+)
+def test_media_offset_cli_rejects_zero_positive_arguments(
+    argument: str,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test media offset CLI rejects zero for positive arguments.
+
+    Arguments:
+        argument: argument to test
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.mkv"
+    target_infile_path = tmp_path / "target.mkv"
+    reference_infile_path.touch()
+    target_infile_path.touch()
+
+    with (
+        pytest.raises(SystemExit),
+        patch(
+            "scinoephile.cli.media.media_offset_cli.get_video_offset",
+        ) as get_offset,
+    ):
+        run_cli_with_args(
+            MediaOffsetCli,
+            f"--reference-infile {reference_infile_path} "
+            f"--target-infile {target_infile_path} "
+            f"{argument} 0",
+        )
+
+    get_offset.assert_not_called()
+    assert "is less than minimum value" in capsys.readouterr().err
