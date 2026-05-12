@@ -23,7 +23,7 @@ from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.media.probe import get_subtitle_streams
-from scinoephile.media.subtitles.cache import cache_subtitle_streams
+from scinoephile.media.subtitles.cache import cache_subtitles
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
 
 __all__ = ["MediaExtractSubsCli"]
@@ -212,11 +212,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 if stream.language is not None
                 and stream.language.split("-", 1)[0] in language_codes
             ]
-            cache_subtitle_streams(
-                infile_path,
-                streams,
-                cache_dir_path=cache_dir_path,
-            )
+            cache_subtitles(infile_path, streams, cache_dir_path=cache_dir_path)
 
             for stream in streams:
                 cls._handle_stream(
