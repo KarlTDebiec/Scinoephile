@@ -57,15 +57,18 @@ from test.helpers import test_data_root
 
 __all__ = [
     "mlamd_eng_ocr_lens",
+    "mlamd_eng_ocr_lens_new",
     "mlamd_eng_ocr_paddle",
     "mlamd_eng_ocr_paddle_new",
     "mlamd_eng_ocr_sup_path",
     "mlamd_eng_ocr_tesseract",
     "mlamd_zho_hans_ocr_lens",
+    "mlamd_zho_hans_ocr_lens_new",
     "mlamd_zho_hans_ocr_paddle",
     "mlamd_zho_hans_ocr_paddle_new",
     "mlamd_zho_hans_ocr_sup_path",
     "mlamd_zho_hant_ocr_lens",
+    "mlamd_zho_hant_ocr_lens_new",
     "mlamd_zho_hant_ocr_paddle",
     "mlamd_zho_hant_ocr_paddle_new",
     "mlamd_zho_hant_ocr_sup_path",
@@ -128,6 +131,12 @@ def mlamd_eng_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def mlamd_eng_ocr_lens_new() -> Series:
+    """MLAMD English subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "eng_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def mlamd_eng_ocr_paddle() -> Series:
     """MLAMD English subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "eng_ocr/paddle.srt")
@@ -158,6 +167,12 @@ def mlamd_zho_hans_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def mlamd_zho_hans_ocr_lens_new() -> Series:
+    """MLAMD 简体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hans_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def mlamd_zho_hans_ocr_paddle() -> Series:
     """MLAMD 简体中文 subtitles OCRed using PaddleOCR."""
     return Series.load(input_dir / "zho-Hans_ocr/paddle.srt")
@@ -179,6 +194,12 @@ def mlamd_zho_hans_ocr_sup_path() -> Path:
 def mlamd_zho_hant_ocr_lens() -> Series:
     """MLAMD 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def mlamd_zho_hant_ocr_lens_new() -> Series:
+    """MLAMD 繁体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
 
 
 @pytest.fixture

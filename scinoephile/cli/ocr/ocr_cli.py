@@ -51,9 +51,13 @@ class OcrCli(ScinoephileCliBase):
         Returns:
             mapping of subcommand names to CLI classes
         """
+        from .ocr_lens_cli import OcrLensCli  # noqa: PLC0415
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
 
-        return {OcrPaddleCli.name(): OcrPaddleCli}
+        return {
+            OcrLensCli.name(): OcrLensCli,
+            OcrPaddleCli.name(): OcrPaddleCli,
+        }
 
     @classmethod
     def _main(

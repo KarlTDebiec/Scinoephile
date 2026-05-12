@@ -63,6 +63,7 @@ class CacheListCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg(None),
@@ -70,6 +71,8 @@ class CacheListCli(ScinoephileCliBase):
             type=cache_dir_path_arg,
             help="cache root directory to inspect (default: %(default)s)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
             default=None,
@@ -123,8 +126,10 @@ class CacheListCli(ScinoephileCliBase):
         reverse: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
 
+        # Perform operations
         try:
             entries = get_cache_entries(cache_dir_path, namespace=namespace)
         except (NotADirectoryError, ScinoephileError) as exc:
@@ -132,4 +137,6 @@ class CacheListCli(ScinoephileCliBase):
         entries = sort_entries(entries, sort=sort, reverse=reverse)
         if limit is not None:
             entries = entries[:limit]
+
+        # Write outputs
         print_entries(entries, output_format)

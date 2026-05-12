@@ -46,11 +46,13 @@ from test.helpers import SeriesCERResult, test_data_root
 __all__ = [
     "kob_eng",
     "kob_eng_ocr_lens",
+    "kob_eng_ocr_lens_new",
     "kob_eng_ocr_paddle_new",
     "kob_eng_ocr_tesseract",
     "kob_yue_hans",
     "kob_yue_hant",
     "kob_zho_hant_ocr_lens",
+    "kob_zho_hant_ocr_lens_new",
     "kob_zho_hant_ocr_paddle",
     "kob_zho_hant_ocr_paddle_new",
     "get_kob_eng_block_review_test_cases",
@@ -120,6 +122,12 @@ def kob_eng_ocr_lens() -> Series:
 
 
 @pytest.fixture
+def kob_eng_ocr_lens_new() -> Series:
+    """KOB English subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "eng_ocr/lens_new.srt")
+
+
+@pytest.fixture
 def kob_eng_ocr_paddle_new() -> Series:
     """KOB English subtitles OCRed using internal PaddleOCR."""
     return Series.load(input_dir / "eng_ocr/paddle_new.srt")
@@ -147,6 +155,12 @@ def kob_yue_hant() -> Series:
 def kob_zho_hant_ocr_lens() -> Series:
     """KOB 繁体中文 subtitles OCRed using Google Lens."""
     return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_lens_new() -> Series:
+    """KOB 繁体中文 subtitles OCRed using internal Google Lens."""
+    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
 
 
 @pytest.fixture

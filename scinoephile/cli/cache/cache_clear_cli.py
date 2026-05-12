@@ -64,6 +64,7 @@ class CacheClearCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg(None),
@@ -71,6 +72,8 @@ class CacheClearCli(ScinoephileCliBase):
             type=cache_dir_path_arg,
             help="cache root directory to inspect (default: %(default)s)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
             default=None,
@@ -115,12 +118,14 @@ class CacheClearCli(ScinoephileCliBase):
         yes: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
         if namespace is not None and all_namespaces:
             parser.error("--namespace and --all may not be used together")
 
+        # Perform operations
         try:
             if dry_run:
                 if all_namespaces:
@@ -131,13 +136,14 @@ class CacheClearCli(ScinoephileCliBase):
                     )
                 else:
                     entries = get_cache_entries(cache_dir_path, namespace=namespace)
-                print_entries(entries, "text")
             else:
-                deleted_entries = clear_cache(
+                entries = clear_cache(
                     cache_dir_path,
                     namespace=namespace,
                     all_namespaces=all_namespaces,
                 )
-                print_entries(deleted_entries, "text")
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
+
+        # Write outputs
+        print_entries(entries, "text")
