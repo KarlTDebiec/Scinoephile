@@ -20,7 +20,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
+from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import cache_subtitles

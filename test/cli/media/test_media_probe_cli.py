@@ -168,7 +168,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             },
         ),
         patch(
-            "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
         patch("scinoephile.media.subtitles.details.cache_subtitles"),

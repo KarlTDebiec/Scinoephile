@@ -9,7 +9,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
+from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 
 
 def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path):
@@ -24,7 +24,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
 
     with (
         patch(
-            "scinoephile.lang.zho.subtitle_streams.get_detailed_subtitle_streams",
+            "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
             return_value=[
                 SubtitleStream(
                     index=2,
@@ -43,7 +43,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
             ],
         ) as get_detailed_subtitle_streams,
         patch(
-            "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script",
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
             return_value=SimpleNamespace(script="zho-Hant"),
         ) as analyze,
     ):

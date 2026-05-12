@@ -13,7 +13,9 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.lang.zho.subtitle_streams import analyze_zho_subtitle_stream_script
+from scinoephile.lang.zho.subtitles.script_analysis import (
+    analyze_zho_subtitle_stream_script,
+)
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_subtitle_cache_path,
