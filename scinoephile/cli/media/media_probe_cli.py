@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.lang.zho.subtitle_streams import get_zho_streams
+from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
 
 __all__ = ["MediaProbeCli"]
@@ -106,7 +106,10 @@ class MediaProbeCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         try:
             if details:
-                streams = get_zho_streams(infile_path, cache_dir_path=cache_dir_path)
+                streams = get_zho_subtitle_streams(
+                    infile_path,
+                    cache_dir_path=cache_dir_path,
+                )
             else:
                 streams = get_streams(infile_path)
             for stream in streams:
