@@ -126,8 +126,10 @@ class CacheListCli(ScinoephileCliBase):
         reverse: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
 
+        # Perform operations
         try:
             entries = get_cache_entries(cache_dir_path, namespace=namespace)
         except (NotADirectoryError, ScinoephileError) as exc:
@@ -135,4 +137,6 @@ class CacheListCli(ScinoephileCliBase):
         entries = sort_entries(entries, sort=sort, reverse=reverse)
         if limit is not None:
             entries = entries[:limit]
+
+        # Write outputs
         print_entries(entries, output_format)

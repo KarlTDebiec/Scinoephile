@@ -100,10 +100,14 @@ class CacheStatsCli(ScinoephileCliBase):
         output_format: Literal["text", "json"],
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
 
+        # Perform operations
         try:
             stats = get_cache_stats(cache_dir_path, namespace=namespace)
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
+
+        # Write outputs
         print_stats(stats, output_format)

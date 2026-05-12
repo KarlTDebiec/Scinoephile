@@ -158,7 +158,7 @@ class EngValidateOcrCli(ScinoephileCliBase):
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 
-        # Read input
+        # Read inputs
         try:
             series = ImageSeries.load(infile_path)
         except (
@@ -178,7 +178,7 @@ class EngValidateOcrCli(ScinoephileCliBase):
             dev=dev,
         )
 
-        # Write output
+        # Write outputs
         validated.save(outfile_path)
 
 

@@ -146,9 +146,11 @@ class OcrPaddleCli(ScinoephileCliBase):
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 
+        # Read inputs
+        image_series = ImageSeries.load(infile_path)
+
         # Perform operations
         try:
-            image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_paddle(
                 image_series,
                 language=language,

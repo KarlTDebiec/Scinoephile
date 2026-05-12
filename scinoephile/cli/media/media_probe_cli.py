@@ -104,7 +104,10 @@ class MediaProbeCli(ScinoephileCliBase):
         cache_dir_path: Path,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
+
+        # Perform operations
         try:
             if details:
                 streams = get_streams(infile_path)
@@ -124,10 +127,12 @@ class MediaProbeCli(ScinoephileCliBase):
                 ]
             else:
                 streams = get_streams(infile_path)
-            for stream in streams:
-                print(stream.description)
         except ScinoephileError as exc:
             parser.error(str(exc))
+
+        # Write outputs
+        for stream in streams:
+            print(stream.description)
 
 
 if __name__ == "__main__":

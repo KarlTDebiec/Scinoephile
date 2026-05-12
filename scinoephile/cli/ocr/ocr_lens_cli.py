@@ -119,12 +119,16 @@ class OcrLensCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
 
+        # Read inputs
+        image_series = ImageSeries.load(infile_path)
+
+        # Perform operations
         try:
-            image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_lens(
                 image_series,
                 language=language,
@@ -139,6 +143,7 @@ class OcrLensCli(ScinoephileCliBase):
         ) as exc:
             parser.error(str(exc))
 
+        # Write outputs
         text_series.save(outfile_path, format_="srt")
 
 

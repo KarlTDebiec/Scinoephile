@@ -220,7 +220,7 @@ class ZhoProcessCli(ScinoephileCliBase):
                 parser.error(str(exc))
         cls._validate_review_script(parser, convert, review_script)
 
-        # Read input
+        # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
 
         # Perform operations
@@ -239,7 +239,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         if offset:
             series.shift(ms=offset)
 
-        # Write output
+        # Write outputs
         write_series(
             parser, series, outfile_path if outfile_path is not None else "-", overwrite
         )

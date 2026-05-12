@@ -123,23 +123,26 @@ class CachePruneCli(ScinoephileCliBase):
         yes: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
             parser.error("--yes is required unless --dry-run is specified")
 
+        # Perform operations
         try:
             if dry_run:
                 cutoff = datetime.now().astimezone() - older_than
-                cutoff_entries = [
+                entries = [
                     entry
                     for entry in get_cache_entries(cache_dir_path, namespace=namespace)
                     if entry.modified_at < cutoff
                 ]
-                print_entries(cutoff_entries, "text")
             else:
-                deleted_entries = prune_cache(
+                entries = prune_cache(
                     cache_dir_path, older_than=older_than, namespace=namespace
                 )
-                print_entries(deleted_entries, "text")
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
+
+        # Write outputs
+        print_entries(entries, "text")

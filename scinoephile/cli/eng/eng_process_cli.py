@@ -164,7 +164,7 @@ class EngProcessCli(ScinoephileCliBase):
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
 
-        # Read input
+        # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
 
         # Perform operations
@@ -177,7 +177,7 @@ class EngProcessCli(ScinoephileCliBase):
         if offset:
             series.shift(ms=offset)
 
-        # Write output
+        # Write outputs
         write_series(
             parser, series, outfile_path if outfile_path is not None else "-", overwrite
         )
