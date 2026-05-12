@@ -6,24 +6,10 @@ from __future__ import annotations
 
 from typing import TypeGuard
 
-__all__ = ["get_zho_script_language", "is_chinese"]
+__all__ = ["is_chinese"]
 
 _CHINESE_LANGUAGE_CODES = {"chi", "zho", "yue"}
 """Language codes treated as Chinese for script analysis."""
-
-
-def get_zho_script_language(language: str, script: str | None) -> str:
-    """Return the language tag to use after Chinese script analysis.
-
-    Arguments:
-        language: original language tag
-        script: detected Chinese script tag, if determined
-    Returns:
-        Chinese language tag with script information
-    """
-    if script is not None:
-        return script
-    return f"{language.split('-', 1)[0]}-Unknown"
 
 
 def is_chinese(language: str | None) -> TypeGuard[str]:

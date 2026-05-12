@@ -4,13 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core.media.language import get_zho_script_language, is_chinese
-
-
-def test_get_zho_script_language():
-    """Test Chinese script language tag generation."""
-    assert get_zho_script_language("zho", "zho-Hant") == "zho-Hant"
-    assert get_zho_script_language("yue", None) == "yue-Unknown"
+from scinoephile.core.media.language import is_chinese
 
 
 def test_is_chinese():
