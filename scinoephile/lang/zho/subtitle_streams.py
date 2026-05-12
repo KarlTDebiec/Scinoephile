@@ -11,7 +11,7 @@ from logging import getLogger
 from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
-from scinoephile.core.media.language import get_zho_script_language, is_chinese
+from scinoephile.core.media.language import is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script_analysis.subtitles import (
@@ -128,10 +128,15 @@ def get_zho_subtitle_streams(
                 stream,
                 cache_dir_path=cache_dir_path,
             )
+            language = language.split("-", 1)[0]
+            if analysis.script is not None:
+                language = analysis.script
+            else:
+                language = f"{language}-Unknown"
             detailed_streams.append(
                 replace(
                     stream,
-                    language=get_zho_script_language(language, analysis.script),
+                    language=language,
                 )
             )
         else:
