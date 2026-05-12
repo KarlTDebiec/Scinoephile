@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import subprocess
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -13,7 +14,6 @@ import numpy as np
 import pytest
 from PIL import Image
 
-import scinoephile.image.ocr.paddle.paddle_ocr_recognizer as paddle_module
 from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
@@ -95,9 +95,24 @@ def test_paddle_ocr_recognizer_uses_server_models(
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
 
 
-def test_paddle_ocr_recognizer_does_not_cache_paddleocr_globally():
-    """Test PaddleOCR imports rely on Python's import cache."""
-    assert not hasattr(paddle_module, "PaddleOCR")
+def test_paddle_ocr_recognizer_imports_paddleocr_only_when_needed():
+    """Test importing PaddleOCR recognizer does not import paddleocr."""
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys;"
+                "import scinoephile.image.ocr.paddle.paddle_ocr_recognizer;"
+                "raise SystemExit('paddleocr' in sys.modules)"
+            ),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
 
 
 def test_paddle_ocr_recognizer_rejects_unsupported_languages():

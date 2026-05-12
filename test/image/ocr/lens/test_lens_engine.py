@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import asyncio
+import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
@@ -14,7 +15,6 @@ from typing import Any
 import pytest
 from PIL import Image
 
-import scinoephile.image.ocr.lens.google_lens_recognizer as lens_module
 from scinoephile.image.ocr.lens.google_lens_recognizer import GoogleLensRecognizer
 
 
@@ -212,15 +212,30 @@ def test_google_lens_recognizer_import_error_is_actionable(
         GoogleLensRecognizer._get_lens_api_class()
 
 
-def test_google_lens_recognizer_does_not_cache_lens_api_globally():
-    """Test chrome-lens-py imports rely on Python's import cache."""
-    assert not hasattr(lens_module, "LensAPI")
+def test_google_lens_recognizer_imports_chrome_lens_py_only_when_needed():
+    """Test importing Google Lens OCR does not import chrome-lens-py."""
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys;"
+                "import scinoephile.image.ocr.lens.google_lens_recognizer;"
+                "raise SystemExit('chrome_lens_py' in sys.modules)"
+            ),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
 
 
-def test_google_lens_recognizer_reuses_lens_api_client(
+def test_google_lens_recognizer_reuses_lens_api_client_per_instance(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test Google Lens recognizer reuses one LensAPI client.
+    """Test each Google Lens recognizer reuses one LensAPI client.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
