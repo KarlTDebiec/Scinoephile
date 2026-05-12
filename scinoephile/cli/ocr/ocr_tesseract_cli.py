@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Any
 
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -15,11 +14,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrTesseractCli"]
-
-ocr_image_series_with_tesseract: Any | None = None
 
 
 class OcrTesseractCli(ScinoephileCliBase):
@@ -150,14 +148,6 @@ class OcrTesseractCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            global ocr_image_series_with_tesseract  # noqa: PLW0603
-            if ocr_image_series_with_tesseract is None:
-                from scinoephile.image.ocr.tesseract import (  # noqa: PLC0415
-                    ocr_image_series_with_tesseract as imported_ocr,
-                )
-
-                ocr_image_series_with_tesseract = imported_ocr
-
             image_series = ImageSeries.load(infile_path)
             text_series = ocr_image_series_with_tesseract(
                 image_series,

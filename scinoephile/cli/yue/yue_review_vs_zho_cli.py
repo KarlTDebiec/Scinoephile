@@ -244,7 +244,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
                 reviewer=reviewer,
             )
 
-        # Write output
+        # Write outputs
         write_series(
             parser,
             reviewed,

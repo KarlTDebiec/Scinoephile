@@ -4,7 +4,10 @@
 
 from __future__ import annotations
 
+import subprocess
+import sys
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 import numpy as np
@@ -82,15 +85,34 @@ def test_paddle_ocr_recognizer_uses_server_models(
             """
             observed_kwargs.update(kwargs)
 
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_ocr_recognizer.PaddleOCR",
-        FakePaddleOCR,
-    )
+    paddleocr = ModuleType("paddleocr")
+    setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
+    monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
 
     PaddleOcrRecognizer(language="ch")
 
     assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
+
+
+def test_paddle_ocr_recognizer_imports_paddleocr_only_when_needed():
+    """Test importing PaddleOCR recognizer does not import paddleocr."""
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys;"
+                "import scinoephile.image.ocr.paddle.paddle_ocr_recognizer;"
+                "raise SystemExit('paddleocr' in sys.modules)"
+            ),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
 
 
 def test_paddle_ocr_recognizer_rejects_unsupported_languages():

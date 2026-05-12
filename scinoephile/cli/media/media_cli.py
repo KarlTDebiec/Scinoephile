@@ -11,6 +11,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .media_extract_subs_cli import MediaExtractSubsCli
+from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
 
 __all__ = ["MediaCli"]
@@ -25,6 +26,9 @@ class MediaCli(ScinoephileCliBase):
             "extract matching subtitle streams from a video file": (
                 "从视频文件提取匹配的字幕流"
             ),
+            "estimate visual offset between two media files": (
+                "估计两个媒体文件之间的视觉偏移"
+            ),
             "inspect and extract media streams": "检查并提取媒体流",
             "list media streams in a media file": "列出媒体文件中的媒体流",
         },
@@ -32,6 +36,9 @@ class MediaCli(ScinoephileCliBase):
             "command-line interface for media operations": "媒體操作命令列介面",
             "extract matching subtitle streams from a video file": (
                 "從影片檔提取匹配的字幕流"
+            ),
+            "estimate visual offset between two media files": (
+                "估計兩個媒體檔之間的視覺偏移"
             ),
             "inspect and extract media streams": "檢查並提取媒體流",
             "list media streams in a media file": "列出媒體檔中的媒體流",
@@ -66,6 +73,7 @@ class MediaCli(ScinoephileCliBase):
         """
         return {
             MediaExtractSubsCli.name(): MediaExtractSubsCli,
+            MediaOffsetCli.name(): MediaOffsetCli,
             MediaProbeCli.name(): MediaProbeCli,
         }
 

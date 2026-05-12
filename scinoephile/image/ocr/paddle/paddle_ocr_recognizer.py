@@ -23,7 +23,6 @@ from .text_result import PaddleOcrTextResult
 __all__ = ["PaddleOcrRecognizer"]
 
 logger = getLogger(__name__)
-PaddleOCR: Any | None = None
 
 _SUPPORTED_LANGUAGES = {"ch", "chinese_cht", "en"}
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
@@ -139,18 +138,15 @@ class PaddleOcrRecognizer:
     @staticmethod
     def _get_paddle_ocr_class() -> Any:
         """Import PaddleOCR on demand."""
-        global PaddleOCR  # noqa: PLW0603
-        if PaddleOCR is None:
-            try:
-                from paddleocr import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
-                    PaddleOCR as ImportedPaddleOCR,
-                )
-            except ImportError as exc:
-                raise ImportError(
-                    "PaddleOCR support requires optional OCR dependencies. "
-                    "Install scinoephile with the 'ocr' extra."
-                ) from exc
-            PaddleOCR = ImportedPaddleOCR
+        try:
+            from paddleocr import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                PaddleOCR,
+            )
+        except ImportError as exc:
+            raise ImportError(
+                "PaddleOCR support requires optional OCR dependencies. "
+                "Install scinoephile with the 'ocr' extra."
+            ) from exc
         return PaddleOCR
 
     @staticmethod

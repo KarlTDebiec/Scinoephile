@@ -11,7 +11,13 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr import OcrCli, OcrPaddleCli, OcrTesseractCli
+from scinoephile.cli.ocr import (
+    OcrCli,
+    OcrLensCli,
+    OcrPaddleCli,
+    OcrTesseractCli,
+    ocr_tesseract_cli,
+)
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
@@ -26,12 +32,19 @@ from test.helpers import (
 )
 
 
+def test_ocr_tesseract_cli_imports_ocr_function_at_module_load():
+    """Test Tesseract CLI exposes its OCR function like other OCR CLIs."""
+    assert callable(ocr_tesseract_cli.ocr_image_series_with_tesseract)
+
+
 @pytest.mark.parametrize(
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
         (OcrCli, OcrTesseractCli),
+        (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
         (ScinoephileCli, OcrCli, OcrTesseractCli),
     ],
@@ -49,8 +62,10 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
         (OcrCli, OcrTesseractCli),
+        (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
         (ScinoephileCli, OcrCli, OcrTesseractCli),
     ],
@@ -62,6 +77,66 @@ def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_ocr_lens_cli_help_lists_language_option_only():
+    """Test Google Lens CLI help lists language but not transport options."""
+    stdout = StringIO()
+    stderr = StringIO()
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stdout(stdout):
+            with redirect_stderr(stderr):
+                run_cli_with_args(OcrLensCli, "-h")
+
+    assert excinfo.value.code == 0
+    assert stderr.getvalue() == ""
+    help_text = " ".join(stdout.getvalue().split())
+    assert "--language" in help_text
+    assert "--api-key" not in help_text
+    assert "--client-region" not in help_text
+    assert "--client-time-zone" not in help_text
+    assert "--max-concurrent" not in help_text
+    assert "--proxy" not in help_text
+    assert "--timeout" not in help_text
+
+
+def test_ocr_lens_cli_converts_image_subtitles_to_srt(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens CLI writes OCR output to SRT.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+
+    def fake_ocr_image_series_with_lens(*args: object, **kwargs: object) -> Series:
+        """Fake Google Lens image series processing.
+
+        Arguments:
+            *args: positional arguments
+            **kwargs: keyword arguments
+        Returns:
+            text subtitle series
+        """
+        return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_lens_cli.ocr_image_series_with_lens",
+        fake_ocr_image_series_with_lens,
+    )
+
+    with get_temp_directory_path() as output_dir_path:
+        output_path = output_dir_path / "ocr.srt"
+        run_cli_with_args(
+            OcrLensCli,
+            f"--infile {input_path} --outfile {output_path}",
+        )
+
+        output = Series.load(output_path)
+        assert [(event.start, event.end, event.text) for event in output] == [
+            (1000, 2000, "recognized")
+        ]
 
 
 def test_ocr_paddle_cli_help_lists_language_codes():
@@ -220,6 +295,41 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         assert [(event.start, event.end, event.text) for event in output] == [
             (1000, 2000, "recognized")
         ]
+
+
+@skip_if_ci()
+@pytest.mark.skipif(
+    not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),
+    reason=(
+        "Set SCINOEPHILE_RUN_MLAMD_LENS_OCR=1 to run full MLAMD Google Lens OCR tests"
+    ),
+)
+def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test Google Lens CLI against a full MLAMD SUP subtitle fixture.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    full_sup_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    full_expected_path = test_data_root / "mlamd/input/eng_ocr/lens.srt"
+    monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(tmp_path / "cache"))
+
+    with get_temp_file_path(".srt") as output_path:
+        run_cli_with_args(
+            OcrLensCli,
+            f"--infile {full_sup_path} "
+            "--language en "
+            f"--outfile {output_path} "
+            "--overwrite",
+        )
+        output = Series.load(output_path)
+        expected = Series.load(full_expected_path)
+
+    assert_series_equal(output, expected)
 
 
 @skip_if_ci()

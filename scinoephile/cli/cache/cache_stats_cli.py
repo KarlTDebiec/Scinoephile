@@ -57,6 +57,7 @@ class CacheStatsCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg(None),
@@ -64,6 +65,8 @@ class CacheStatsCli(ScinoephileCliBase):
             type=cache_dir_path_arg,
             help="cache root directory to inspect (default: %(default)s)",
         )
+
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",
             default=None,
@@ -97,10 +100,14 @@ class CacheStatsCli(ScinoephileCliBase):
         output_format: Literal["text", "json"],
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
 
+        # Perform operations
         try:
             stats = get_cache_stats(cache_dir_path, namespace=namespace)
         except (NotADirectoryError, ScinoephileError) as exc:
             parser.error(str(exc))
+
+        # Write outputs
         print_stats(stats, output_format)

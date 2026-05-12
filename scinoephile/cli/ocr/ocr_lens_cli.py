@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for PaddleOCR."""
+"""Command-line interface for Google Lens OCR."""
 
 from __future__ import annotations
 
@@ -14,54 +14,36 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
+from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = ["OcrPaddleCli"]
+__all__ = ["OcrLensCli"]
 
 
-class OcrPaddleCli(ScinoephileCliBase):
-    """Recognize image subtitles with PaddleOCR."""
+class OcrLensCli(ScinoephileCliBase):
+    """Recognize image subtitles with Google Lens."""
 
     localizations = {
         "zh-hans": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
-                "chinese_cht（繁体中文）"
-            ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 识别图像字幕。"
+            "Google Lens language code": "Google Lens 语言代码",
+            "Recognize image subtitles with Google Lens.": (
+                "使用 Google Lens 识别图像字幕。"
             ),
             (
                 "image subtitle infile path (directory containing index.html and "
                 "png files, or a .sup file)"
-            ): (
-                "图像字幕输入文件路径（包含 index.html 和 png 文件的目录，"
-                "或 .sup 文件）"
-            ),
+            ): "图像字幕输入文件路径（包含 index.html 和 png 文件，或 .sup 文件）",
             "recognized subtitle outfile path": "识别后字幕输出文件路径",
         },
         "zh-hant": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
-                "chinese_cht（繁體中文）"
-            ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 識別影像字幕。"
+            "Google Lens language code": "Google Lens 語言代碼",
+            "Recognize image subtitles with Google Lens.": (
+                "使用 Google Lens 識別影像字幕。"
             ),
             (
                 "image subtitle infile path (directory containing index.html and "
                 "png files, or a .sup file)"
-            ): (
-                "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案的目錄，"
-                "或 .sup 檔案）"
-            ),
+            ): "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案，或 .sup 檔案）",
             "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
         },
     }
@@ -98,12 +80,8 @@ class OcrPaddleCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            choices=("ch", "chinese_cht", "en"),
             default="en",
-            help=(
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ),
+            help="Google Lens language code",
         )
 
         # Output arguments
@@ -128,7 +106,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "paddle"
+        return "lens"
 
     @classmethod
     def _main(
@@ -136,8 +114,8 @@ class OcrPaddleCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         infile_path: Path,
-        outfile_path: Path,
         language: str,
+        outfile_path: Path,
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
@@ -151,14 +129,15 @@ class OcrPaddleCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            text_series = ocr_image_series_with_paddle(
+            text_series = ocr_image_series_with_lens(
                 image_series,
                 language=language,
             )
         except (
-            FileNotFoundError,
-            NotADirectoryError,
             ImportError,
+            NotADirectoryError,
+            OSError,
+            RuntimeError,
             ScinoephileError,
             ValueError,
         ) as exc:
@@ -169,4 +148,4 @@ class OcrPaddleCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    OcrPaddleCli.main()
+    OcrLensCli.main()
