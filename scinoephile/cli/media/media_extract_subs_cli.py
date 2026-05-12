@@ -20,7 +20,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho.subtitle_streams import get_zho_streams
+from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import cache_subtitle_streams
@@ -39,7 +39,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             "convert extracted SUP subtitle streams to image directories": (
                 "将提取的 SUP 字幕流转换为图像目录"
             ),
-            "cache directory (default: %(default)s)": ("缓存目录（默认：%(default)s）"),
+            "cache directory (default: %(default)s)": "缓存目录（默认：%(default)s）",
             "directory to which matching subtitles will be extracted or mapped": (
                 "匹配字幕将被提取或映射到的目录"
             ),
@@ -59,7 +59,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             "convert extracted SUP subtitle streams to image directories": (
                 "將提取的 SUP 字幕流轉換為影像目錄"
             ),
-            "cache directory (default: %(default)s)": ("快取目錄（預設：%(default)s）"),
+            "cache directory (default: %(default)s)": "快取目錄（預設：%(default)s）",
             "directory to which matching subtitles will be extracted or mapped": (
                 "匹配字幕將被提取或映射到的目錄"
             ),
@@ -109,7 +109,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             default=list(DEFAULT_SUBTITLE_LANGUAGES),
             nargs="+",
             type=language_arg,
-            help=("ISO 639 language codes to extract (default: chi eng yue zho)"),
+            help="ISO 639 language codes to extract (default: chi eng yue zho)",
         )
         arg_groups["operation arguments"].add_argument(
             "--details",
@@ -179,14 +179,12 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         try:
             if infile_path.suffix.lower() == ".sup":
                 if details:
-                    streams = cls._get_detailed_subtitle_streams(
+                    streams = get_zho_subtitle_streams(
                         infile_path,
                         cache_dir_path=cache_dir_path,
                     )
                 else:
-                    streams = get_subtitle_streams(
-                        infile_path,
-                    )
+                    streams = get_subtitle_streams(infile_path)
                 if not streams:
                     raise ScinoephileError(
                         f"No subtitle streams found in {infile_path}"
@@ -202,18 +200,18 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 return
 
             if details:
-                subtitle_streams = cls._get_detailed_subtitle_streams(
+                subtitle_streams = get_zho_subtitle_streams(
                     infile_path,
                     cache_dir_path=cache_dir_path,
                 )
             else:
-                subtitle_streams = get_subtitle_streams(
-                    infile_path,
-                )
-            streams = []
-            for stream in subtitle_streams:
-                if _language_matches(stream.language, language_codes):
-                    streams.append(stream)
+                subtitle_streams = get_subtitle_streams(infile_path)
+            streams = [
+                stream
+                for stream in subtitle_streams
+                if stream.language is not None
+                and stream.language.split("-", 1)[0] in language_codes
+            ]
             cache_subtitle_streams(
                 infile_path,
                 streams,
@@ -264,18 +262,16 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                     outfile_path,
                     cache_dir_path=cache_dir_path,
                 )
-            description = _get_subtitle_stream_description(stream)
-            print(f"[x] {description} -> {outfile_path}")
+            print(f"[x] {stream.description} -> {outfile_path}")
         else:
-            description = _get_subtitle_stream_description(stream)
-            print(f"[ ] {description} -> {outfile_path}")
+            print(f"[ ] {stream.description} -> {outfile_path}")
             extract_subtitle_stream(
                 infile_path,
                 stream,
                 outfile_path,
                 cache_dir_path=cache_dir_path,
             )
-            print(f"[x] {description} -> {outfile_path}")
+            print(f"[x] {stream.description} -> {outfile_path}")
 
         # Output directory, if applicable
         if stream.extension == "sup" and extract_sup:
@@ -283,11 +279,11 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             if output_image_dir_path.exists():
                 if overwrite:
                     ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[ ] {description} -> {output_image_dir_path}")
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
             else:
-                print(f"[ ] {description} -> {output_image_dir_path}")
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
                 ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[x] {description} -> {output_image_dir_path}")
+                print(f"[x] {stream.description} -> {output_image_dir_path}")
 
     @staticmethod
     def _handle_sup(
@@ -317,14 +313,12 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         if outfile_path.exists():
             if overwrite and not outfile_is_infile:
                 copy2(infile_path, outfile_path)
-            description = _get_subtitle_stream_description(stream)
-            print(f"[x] {description} -> {outfile_path}")
+            print(f"[x] {stream.description} -> {outfile_path}")
         else:
-            description = _get_subtitle_stream_description(stream)
-            print(f"[ ] {description} -> {outfile_path}")
+            print(f"[ ] {stream.description} -> {outfile_path}")
             if not outfile_is_infile:
                 copy2(infile_path, outfile_path)
-                print(f"[x] {description} -> {outfile_path}")
+                print(f"[x] {stream.description} -> {outfile_path}")
 
         # Output directory, if applicable
         if stream.extension == "sup" and extract_sup:
@@ -332,71 +326,11 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             if output_image_dir_path.exists():
                 if overwrite:
                     ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[ ] {description} -> {output_image_dir_path}")
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
             else:
-                print(f"[ ] {description} -> {output_image_dir_path}")
+                print(f"[ ] {stream.description} -> {output_image_dir_path}")
                 ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[x] {description} -> {output_image_dir_path}")
-
-    @staticmethod
-    def _get_detailed_subtitle_streams(
-        infile_path: Path,
-        *,
-        cache_dir_path: Path,
-    ) -> list[SubtitleStream]:
-        """Return subtitle streams enriched with details.
-
-        Arguments:
-            infile_path: media input file
-            cache_dir_path: cache directory path
-        Returns:
-            enriched subtitle streams
-        """
-        return [
-            stream
-            for stream in get_zho_streams(
-                infile_path,
-                cache_dir_path=cache_dir_path,
-            )
-            if isinstance(stream, SubtitleStream)
-        ]
-
-
-def _get_subtitle_stream_description(stream: SubtitleStream) -> str:
-    """Return extraction-oriented subtitle stream description.
-
-    Arguments:
-        stream: subtitle stream
-    Returns:
-        subtitle stream description
-    """
-    description = f"Stream {stream.stream_id}: Subtitle: {stream.codec_name}"
-    details = [f"extension={stream.extension}"]
-    if stream.title is not None:
-        details.append(f"title={stream.title}")
-    if stream.forced:
-        details.append("forced")
-    if stream.sdh:
-        details.append("sdh")
-    if stream.subtitle_count is not None:
-        details.append(f"subtitles={stream.subtitle_count}")
-    if stream.span is not None:
-        details.append(f"span={stream.span}")
-    return f"{description} ({', '.join(details)})"
-
-
-def _language_matches(language: str | None, language_codes: set[str]) -> bool:
-    """Return whether a stream language matches requested language codes.
-
-    Arguments:
-        language: stream language tag, if available
-        language_codes: requested base language codes
-    Returns:
-        whether the language tag matches
-    """
-    if language is None:
-        return False
-    return language.split("-", 1)[0] in language_codes
+                print(f"[x] {stream.description} -> {output_image_dir_path}")
 
 
 if __name__ == "__main__":
