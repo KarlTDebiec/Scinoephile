@@ -297,6 +297,42 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         ]
 
 
+def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test Tesseract OCR CLI rejects italic detection for non-English OCR."""
+    input_path = test_data_root / "mlamd/input/zho-Hans_ocr/source.sup"
+    output_path = tmp_path / "unused.srt"
+    stderr = StringIO()
+
+    def fail_ocr_image_series_with_tesseract(
+        *args: object,
+        **kwargs: object,
+    ) -> Series:
+        """Fail if OCR is invoked before argument validation."""
+        _ = args, kwargs
+        raise AssertionError("unexpected OCR")
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_tesseract_cli.ocr_image_series_with_tesseract",
+        fail_ocr_image_series_with_tesseract,
+    )
+
+    with pytest.raises(SystemExit) as excinfo:
+        with redirect_stderr(stderr):
+            run_cli_with_args(
+                OcrTesseractCli,
+                f"--infile {input_path} "
+                "--language chi_sim "
+                "--detect-italics "
+                f"--outfile {output_path}",
+            )
+
+    assert excinfo.value.code == 2
+    assert "--detect-italics may only be used with --language eng" in stderr.getvalue()
+
+
 @skip_if_ci()
 @pytest.mark.skipif(
     not getenv("SCINOEPHILE_RUN_MLAMD_LENS_OCR"),

@@ -247,6 +247,17 @@ def test_tesseract_detect_italics_runs_legacy_hocr_pass(tmp_path: Path):
     assert "hocr" not in legacy_command
 
 
+def test_tesseract_detect_italics_rejects_non_english_language():
+    """Test italic detection is only supported for English Tesseract OCR."""
+    with pytest.raises(ValueError, match="only supported with language eng"):
+        TesseractOcrRecognizer(
+            executable_path=Path("tesseract"),
+            detect_italics=True,
+            language="chi_sim",
+            skip_executable_validation=True,
+        )
+
+
 def test_tesseract_detect_italics_downloads_missing_legacy_tessdata(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,

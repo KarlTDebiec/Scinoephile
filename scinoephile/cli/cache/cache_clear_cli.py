@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
@@ -121,9 +122,19 @@ class CacheClearCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
-            parser.error("--yes is required unless --dry-run is specified")
+            try:
+                raise ArgumentConflictError(
+                    "--yes is required unless --dry-run is specified"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
         if namespace is not None and all_namespaces:
-            parser.error("--namespace and --all may not be used together")
+            try:
+                raise ArgumentConflictError(
+                    "--namespace and --all may not be used together"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
         # Perform operations
         try:

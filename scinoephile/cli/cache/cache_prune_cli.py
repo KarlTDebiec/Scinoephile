@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import get_cache_entries, prune_cache
 from scinoephile.core.cli import ScinoephileCliBase
@@ -126,7 +127,12 @@ class CachePruneCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if not dry_run and not yes:
-            parser.error("--yes is required unless --dry-run is specified")
+            try:
+                raise ArgumentConflictError(
+                    "--yes is required unless --dry-run is specified"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
         # Perform operations
         try:

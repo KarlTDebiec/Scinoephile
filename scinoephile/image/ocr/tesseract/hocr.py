@@ -118,8 +118,7 @@ class _TesseractHocrParser(HTMLParser):
         if self._current_word_parts is None:
             return
 
-        while self._italic_depth > 0:
-            self._close_italic()
+        self._italic_depth = 0
         word = "".join(self._current_word_parts).strip()
         if word and self._current_line is not None:
             self._current_line.append(

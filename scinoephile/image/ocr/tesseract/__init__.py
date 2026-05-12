@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from logging import getLogger
 from pathlib import Path
-from typing import cast
+from typing import TypedDict, Unpack, cast
 
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
@@ -23,30 +23,42 @@ __all__ = [
 logger = getLogger(__name__)
 
 
+class _TesseractOcrRecognizerKwargs(TypedDict, total=False):
+    """Additional keyword arguments forwarded to TesseractOcrRecognizer."""
+
+    executable_path: Path | str
+    """Tesseract executable path or command name."""
+
+    oem: int | None
+    """Tesseract OCR engine mode, or None to omit --oem."""
+
+    psm: int
+    """Tesseract page segmentation mode."""
+
+    scale: int
+    """Image preprocessing scale."""
+
+    skip_executable_validation: bool
+    """Whether to skip executable validation."""
+
+    tessdata_dir_path: Path | None
+    """Optional tessdata directory."""
+
+
 def get_tesseract_ocr_recognizer(
     *,
     cache_dir_path: Path | None = None,
-    executable_path: Path | str = "tesseract",
     detect_italics: bool = False,
     language: str = "eng",
-    oem: int | None = 3,
-    psm: int = 6,
-    scale: int = 2,
-    skip_executable_validation: bool = False,
-    tessdata_dir_path: Path | None = None,
+    **kwargs: Unpack[_TesseractOcrRecognizerKwargs],
 ) -> TesseractOcrRecognizer:
     """Get Tesseract recognizer with provided configuration.
 
     Arguments:
         cache_dir_path: directory in which to cache OCR results
-        executable_path: Tesseract executable path or command name
         detect_italics: whether to run a legacy-engine pass for italics
         language: Tesseract language code
-        oem: Tesseract OCR engine mode, or None to omit --oem
-        psm: Tesseract page segmentation mode
-        scale: image preprocessing scale
-        skip_executable_validation: whether to skip executable validation
-        tessdata_dir_path: optional tessdata directory
+        **kwargs: additional keyword arguments for TesseractOcrRecognizer
     Returns:
         Tesseract recognizer
     """
@@ -54,14 +66,9 @@ def get_tesseract_ocr_recognizer(
         cache_dir_path = get_runtime_cache_dir_path("tesseract")
     return TesseractOcrRecognizer(
         cache_dir_path=cache_dir_path,
-        executable_path=executable_path,
         detect_italics=detect_italics,
         language=language,
-        oem=oem,
-        psm=psm,
-        scale=scale,
-        skip_executable_validation=skip_executable_validation,
-        tessdata_dir_path=tessdata_dir_path,
+        **kwargs,
     )
 
 

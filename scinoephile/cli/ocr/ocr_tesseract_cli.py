@@ -12,6 +12,7 @@ from scinoephile.common.argument_parsing import (
     input_file_or_dir_arg,
     output_file_arg,
 )
+from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
@@ -145,6 +146,13 @@ class OcrTesseractCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
+        if detect_italics and language != "eng":
+            try:
+                raise ArgumentConflictError(
+                    "--detect-italics may only be used with --language eng"
+                )
+            except ArgumentConflictError as exc:
+                parser.error(str(exc))
 
         # Perform operations
         try:

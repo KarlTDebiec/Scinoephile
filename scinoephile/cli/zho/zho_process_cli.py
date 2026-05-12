@@ -218,7 +218,10 @@ class ZhoProcessCli(ScinoephileCliBase):
                 )
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
-        cls._validate_review_script(parser, convert, review_script)
+        try:
+            cls._validate_review_script(convert, review_script)
+        except ArgumentConflictError as exc:
+            parser.error(str(exc))
 
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
@@ -277,14 +280,12 @@ class ZhoProcessCli(ScinoephileCliBase):
     @classmethod
     def _validate_review_script(
         cls,
-        parser: ArgumentParser,
         convert: OpenCCConfig | None,
         review_script: str | None,
     ):
         """Validate that review script matches conversion output.
 
         Arguments:
-            parser: argument parser for error reporting
             convert: OpenCC configuration
             review_script: script identifier for block review
         """
@@ -294,7 +295,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         if convert_script is None:
             return
         if convert_script != review_script:
-            parser.error(
+            raise ArgumentConflictError(
                 "Review script must match post-conversion script: "
                 f"{convert} yields {convert_script}"
             )
