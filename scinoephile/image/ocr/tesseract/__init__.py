@@ -16,6 +16,7 @@ from .tesseract_ocr_recognizer import TesseractOcrRecognizer
 
 __all__ = [
     "TesseractOcrRecognizer",
+    "TesseractOcrRecognizerKwargs",
     "get_tesseract_ocr_recognizer",
     "ocr_image_series_with_tesseract",
 ]
@@ -23,11 +24,17 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-class _TesseractOcrRecognizerKwargs(TypedDict, total=False):
+class TesseractOcrRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to TesseractOcrRecognizer."""
+
+    detect_italics: bool
+    """Whether to run a legacy-engine pass for italics."""
 
     executable_path: Path | str
     """Tesseract executable path or command name."""
+
+    language: str
+    """Tesseract language code."""
 
     oem: int | None
     """Tesseract OCR engine mode, or None to omit --oem."""
@@ -48,16 +55,12 @@ class _TesseractOcrRecognizerKwargs(TypedDict, total=False):
 def get_tesseract_ocr_recognizer(
     *,
     cache_dir_path: Path | None = None,
-    detect_italics: bool = False,
-    language: str = "eng",
-    **kwargs: Unpack[_TesseractOcrRecognizerKwargs],
+    **kwargs: Unpack[TesseractOcrRecognizerKwargs],
 ) -> TesseractOcrRecognizer:
     """Get Tesseract recognizer with provided configuration.
 
     Arguments:
         cache_dir_path: directory in which to cache OCR results
-        detect_italics: whether to run a legacy-engine pass for italics
-        language: Tesseract language code
         **kwargs: additional keyword arguments for TesseractOcrRecognizer
     Returns:
         Tesseract recognizer
@@ -66,8 +69,6 @@ def get_tesseract_ocr_recognizer(
         cache_dir_path = get_runtime_cache_dir_path("tesseract")
     return TesseractOcrRecognizer(
         cache_dir_path=cache_dir_path,
-        detect_italics=detect_italics,
-        language=language,
         **kwargs,
     )
 

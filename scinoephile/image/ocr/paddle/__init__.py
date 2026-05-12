@@ -16,13 +16,17 @@ from .preprocessing import preprocess_paddle_ocr_image
 
 __all__ = [
     "PaddleOcrRecognizer",
+    "PaddleOcrRecognizerKwargs",
     "get_paddle_ocr_recognizer",
     "ocr_image_series_with_paddle",
 ]
 
 
-class _PaddleOcrRecognizerKwargs(TypedDict, total=False):
+class PaddleOcrRecognizerKwargs(TypedDict, total=False):
     """Additional keyword arguments forwarded to PaddleOcrRecognizer."""
+
+    language: str
+    """PaddleOCR language code."""
 
     min_confidence: float
     """Minimum confidence to include."""
@@ -31,14 +35,12 @@ class _PaddleOcrRecognizerKwargs(TypedDict, total=False):
 def get_paddle_ocr_recognizer(
     *,
     cache_dir_path: Path | None = None,
-    language: str = "en",
-    **kwargs: Unpack[_PaddleOcrRecognizerKwargs],
+    **kwargs: Unpack[PaddleOcrRecognizerKwargs],
 ) -> PaddleOcrRecognizer:
     """Get PaddleOCR recognizer with provided configuration.
 
     Arguments:
         cache_dir_path: directory in which to cache OCR results
-        language: PaddleOCR language code
         **kwargs: additional keyword arguments for PaddleOcrRecognizer
     Returns:
         PaddleOCR recognizer
@@ -47,7 +49,6 @@ def get_paddle_ocr_recognizer(
         cache_dir_path = get_runtime_cache_dir_path("paddleocr")
     return PaddleOcrRecognizer(
         cache_dir_path=cache_dir_path,
-        language=language,
         **kwargs,
     )
 
