@@ -10,10 +10,6 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .ocr_lens_cli import OcrLensCli
-from .ocr_paddle_cli import OcrPaddleCli
-from .ocr_tesseract_cli import OcrTesseractCli
-
 __all__ = ["OcrCli"]
 
 
@@ -55,6 +51,10 @@ class OcrCli(ScinoephileCliBase):
         Returns:
             mapping of subcommand names to CLI classes
         """
+        from .ocr_lens_cli import OcrLensCli  # noqa: PLC0415
+        from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
+        from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
+
         return {
             OcrLensCli.name(): OcrLensCli,
             OcrPaddleCli.name(): OcrPaddleCli,

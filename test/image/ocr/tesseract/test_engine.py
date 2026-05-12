@@ -144,6 +144,7 @@ def test_tesseract_command_includes_hocr_tessdata_and_language(tmp_path: Path):
     assert "hocr" in observed_command
     assert "--tessdata-dir" in observed_command
     assert str(tessdata_dir_path.resolve()) in observed_command
+    assert observed_command.index("--tessdata-dir") < observed_command.index("hocr")
 
 
 def test_tesseract_chinese_hocr_words_are_joined_without_spaces():

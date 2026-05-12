@@ -156,7 +156,7 @@ class TesseractOcrRecognizer:
         if self.oem is not None:
             command[-1:-1] = ["--oem", str(self.oem)]
         if self.tessdata_dir_path is not None:
-            command.extend(["--tessdata-dir", str(self.tessdata_dir_path)])
+            command[-1:-1] = ["--tessdata-dir", str(self.tessdata_dir_path)]
         return command
 
     def _build_legacy_command(
