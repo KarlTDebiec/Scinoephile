@@ -8,10 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.media.subtitles.cache import (
-    load_cached_image_subtitles,
-    load_image_subtitle_manifest,
-)
+from scinoephile.media.subtitles.cache import load_cached_image_subtitles
 
 from .analysis import get_zho_script_analysis
 from .result import ZhoScriptAnalysis
@@ -68,8 +65,7 @@ def get_zho_image_subtitle_script_analysis(
     Returns:
         Chinese subtitle script analysis
     """
-    manifest = load_image_subtitle_manifest(image_dir_path)
-    event_count = int(manifest["event_count"])
+    event_count = len(ImageSeries.load(image_dir_path))
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
         return ZhoSubtitleScriptAnalysis(

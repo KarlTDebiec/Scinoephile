@@ -44,8 +44,8 @@ def test_image_subtitle_cache_helpers_are_merged_into_media_cache():
     assert hasattr(cache, "get_or_create_image_subtitle_dir_path")
     assert hasattr(cache, "is_valid_image_subtitle_cache")
     assert hasattr(cache, "load_cached_image_subtitles")
-    assert hasattr(cache, "load_image_subtitle_manifest")
-    assert hasattr(cache, "save_image_subtitle_manifest")
+    assert not hasattr(cache, "load_image_subtitle_manifest")
+    assert not hasattr(cache, "save_image_subtitle_manifest")
     assert find_spec("scinoephile.media.subtitles.image_cache") is None
     assert find_spec("scinoephile.image.subtitles.cache") is None
 
@@ -55,7 +55,7 @@ def test_subtitle_media_package_has_no_function_reexports():
     subtitles = import_module("scinoephile.media.subtitles")
 
     assert not hasattr(subtitles, "extract_subtitle_stream")
-    assert not hasattr(subtitles, "cache_subtitle_streams")
+    assert not hasattr(subtitles, "cache_subtitles")
     assert not hasattr(subtitles, "with_stream_details")
 
 

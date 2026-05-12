@@ -11,8 +11,8 @@ from shutil import copy2
 from scinoephile.core.media import SubtitleStream
 
 from .cache import (
-    cache_subtitle_streams,
-    get_cached_subtitle_stream_path,
+    cache_subtitles,
+    get_subtitle_cache_path,
 )
 
 __all__ = ["extract_subtitle_stream"]
@@ -37,12 +37,8 @@ def extract_subtitle_stream(
     Returns:
         output path
     """
-    cache_subtitle_streams(
-        infile_path,
-        [stream],
-        cache_dir_path=cache_dir_path,
-    )
-    stream_path = get_cached_subtitle_stream_path(
+    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
+    stream_path = get_subtitle_cache_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,

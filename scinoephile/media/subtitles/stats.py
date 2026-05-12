@@ -9,11 +9,11 @@ from pathlib import Path
 
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
+from scinoephile.image.subtitles import ImageSeries
 from scinoephile.media.subtitles.cache import (
-    cache_subtitle_streams,
-    get_cached_subtitle_stream_path,
+    cache_subtitles,
     get_or_create_image_subtitle_dir_path,
-    load_image_subtitle_manifest,
+    get_subtitle_cache_path,
 )
 
 __all__ = [
@@ -57,12 +57,8 @@ def get_subtitle_stream_stats(
         )
         return _get_image_subtitle_stats(image_dir_path)
 
-    cache_subtitle_streams(
-        infile_path,
-        [stream],
-        cache_dir_path=cache_dir_path,
-    )
-    stream_path = get_cached_subtitle_stream_path(
+    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
+    stream_path = get_subtitle_cache_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
@@ -84,19 +80,14 @@ def _get_first_start_ms(series: Series) -> int | None:
 
 
 def _get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
-    """Get image subtitle stats from cached manifest or HTML metadata.
+    """Get image subtitle stats from cached rendered images.
 
     Arguments:
         image_dir_path: rendered image subtitle cache directory path
     Returns:
         subtitle stream statistics
     """
-    manifest = load_image_subtitle_manifest(image_dir_path)
-    return SubtitleStreamStats(
-        event_count=int(manifest["event_count"]),
-        first_start_ms=manifest.get("first_start_ms"),
-        last_end_ms=manifest.get("last_end_ms"),
-    )
+    return _get_subtitle_series_stats(ImageSeries.load(image_dir_path))
 
 
 def _get_last_end_ms(series: Series) -> int | None:

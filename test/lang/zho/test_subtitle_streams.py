@@ -44,7 +44,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
                 last_end_ms=3_725_250,
             ),
         ) as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
     ):
         streams = get_zho_subtitle_streams(
             infile_path,

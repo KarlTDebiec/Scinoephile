@@ -170,7 +170,7 @@ def test_media_probe_cli_details_uses_plain_probe(
             "scinoephile.media.probe.ffmpeg.probe",
             return_value={"streams": []},
         ) as probe,
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -208,7 +208,7 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
             "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
     ):
         analyze.return_value.script = "zho-Hant"
         stats.return_value.event_count = 12
@@ -255,7 +255,7 @@ def test_media_probe_cli_details_marks_undetermined_chinese_script(
             "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,
         patch("scinoephile.media.subtitles.details.get_subtitle_stream_stats") as stats,
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
     ):
         analyze.return_value.script = None
         stats.return_value.event_count = 12
@@ -302,7 +302,7 @@ def test_media_probe_cli_details_omits_unreadable_subtitle_stats(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             side_effect=ValueError("Malformed SUP data"),
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
+        patch("scinoephile.media.subtitles.details.cache_subtitles"),
     ):
         run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
 
@@ -348,7 +348,7 @@ def test_media_probe_cli_details_caches_subtitle_streams_together(
                 ],
             },
         ),
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams") as cache,
+        patch("scinoephile.media.subtitles.details.cache_subtitles") as cache,
         patch(
             "scinoephile.lang.zho.subtitle_streams.analyze_zho_subtitle_stream_script"
         ) as analyze,

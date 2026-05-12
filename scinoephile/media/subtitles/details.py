@@ -11,7 +11,7 @@ from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.media import Stream, SubtitleStream
-from scinoephile.media.subtitles.cache import cache_subtitle_streams
+from scinoephile.media.subtitles.cache import cache_subtitles
 
 from .stats import get_subtitle_stream_stats
 
@@ -41,11 +41,7 @@ def with_stream_details(
     ]
 
     if subtitle_streams:
-        cache_subtitle_streams(
-            infile_path,
-            subtitle_streams,
-            cache_dir_path=cache_dir_path,
-        )
+        cache_subtitles(infile_path, subtitle_streams, cache_dir_path=cache_dir_path)
 
     detailed_streams = []
     for stream in stream_list:

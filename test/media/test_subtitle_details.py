@@ -23,7 +23,7 @@ def test_with_stream_details_enriches_subtitle_stream_stats(tmp_path: Path):
     ]
 
     with (
-        patch("scinoephile.media.subtitles.details.cache_subtitle_streams") as cache,
+        patch("scinoephile.media.subtitles.details.cache_subtitles") as cache,
         patch(
             "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
             return_value=SimpleNamespace(
