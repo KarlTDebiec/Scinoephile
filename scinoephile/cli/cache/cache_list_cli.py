@@ -71,6 +71,7 @@ class CacheListCli(ScinoephileCliBase):
             type=cache_dir_path_arg,
             help="cache root directory to inspect (default: %(default)s)",
         )
+
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--namespace",

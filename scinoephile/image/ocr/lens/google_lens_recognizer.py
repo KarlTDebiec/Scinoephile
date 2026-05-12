@@ -23,7 +23,6 @@ LensAPI: Any | None = None
 
 _NO_TEXT_MESSAGE = "No OCR text found."
 _REQUEST_ERROR_MESSAGE = "Request error (possibly proxy-related)"
-_CACHE_SCHEMA = 2
 
 
 class GoogleLensRecognizer:
@@ -96,10 +95,7 @@ class GoogleLensRecognizer:
 
         image_bytes = image.tobytes()
         image_sha256 = hashlib.sha256(image_bytes).hexdigest()
-        cache_key = (
-            f"{image_sha256}_{image.mode}_{image.size}_{self.language}_"
-            f"chrome-lens-py_v{_CACHE_SCHEMA}"
-        )
+        cache_key = f"{image_sha256}_{image.mode}_{image.size}_{self.language}"
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
 
@@ -196,8 +192,6 @@ class GoogleLensRecognizer:
             data = json.load(file)
         if not isinstance(data, dict):
             return []
-        if data.get("schema") != _CACHE_SCHEMA:
-            return []
         lines = data.get("lines")
         if not isinstance(lines, list):
             return []
@@ -281,7 +275,7 @@ class GoogleLensRecognizer:
             cache_path: cache file path
         """
         cache_path.parent.mkdir(parents=True, exist_ok=True)
-        data = {"schema": _CACHE_SCHEMA, "lines": lines}
+        data = {"lines": lines}
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
 

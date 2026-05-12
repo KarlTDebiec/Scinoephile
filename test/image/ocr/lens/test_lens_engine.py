@@ -102,7 +102,7 @@ def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
 
     cache_path = next(tmp_path.glob("*.json"))
     cache_path.write_text(
-        '{"schema": 2, "lines": ["cached", "..."]}',
+        '{"lines": ["cached", "..."]}',
         encoding="utf-8",
     )
 
