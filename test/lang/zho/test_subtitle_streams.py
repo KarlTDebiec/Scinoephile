@@ -9,10 +9,10 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-from scinoephile.lang.zho.subtitle_streams import get_zho_streams
+from scinoephile.lang.zho.subtitle_streams import get_zho_subtitle_streams
 
 
-def test_get_zho_streams_adds_script_and_regular_details(tmp_path: Path):
+def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path):
     """Test Chinese stream probing enriches script and regular details.
 
     Arguments:
@@ -46,7 +46,7 @@ def test_get_zho_streams_adds_script_and_regular_details(tmp_path: Path):
         ) as stats,
         patch("scinoephile.media.subtitles.details.cache_subtitle_streams"),
     ):
-        streams = get_zho_streams(
+        streams = get_zho_subtitle_streams(
             infile_path,
             cache_dir_path=cache_dir_path,
         )
@@ -56,11 +56,9 @@ def test_get_zho_streams_adds_script_and_regular_details(tmp_path: Path):
     assert analyze.call_args.args[1].index == 2
     assert analyze.call_args.kwargs == {"cache_dir_path": cache_dir_path}
     assert stats.call_count == 2
-    assert [stream.index for stream in streams] == [0, 1, 2, 3]
-    assert isinstance(streams[2], SubtitleStream)
-    assert streams[2].language == "zho-Hant"
-    assert streams[2].subtitle_count == 12
-    assert streams[2].span == "00:01:02-01:02:05"
-    assert isinstance(streams[3], SubtitleStream)
-    assert streams[3].language == "eng"
-    assert streams[3].subtitle_count == 12
+    assert [stream.index for stream in streams] == [2, 3]
+    assert streams[0].language == "zho-Hant"
+    assert streams[0].subtitle_count == 12
+    assert streams[0].span == "00:01:02-01:02:05"
+    assert streams[1].language == "eng"
+    assert streams[1].subtitle_count == 12

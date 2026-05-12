@@ -88,9 +88,9 @@ def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
             return_value=[],
         ) as get_streams,
         patch(
-            "scinoephile.cli.media.media_probe_cli.get_zho_streams",
+            "scinoephile.cli.media.media_probe_cli.get_zho_subtitle_streams",
             return_value=[],
-        ) as get_zho_streams,
+        ) as get_zho_subtitle_streams,
     ):
         run_cli_with_args(
             MediaProbeCli,
@@ -98,7 +98,7 @@ def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
         )
 
     get_streams.assert_not_called()
-    get_zho_streams.assert_called_once_with(
+    get_zho_subtitle_streams.assert_called_once_with(
         infile_path.resolve(),
         cache_dir_path=cache_dir_path.resolve(),
     )

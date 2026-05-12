@@ -118,7 +118,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
             ],
         ) as get_subtitle_streams,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_zho_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_zho_subtitle_streams",
             return_value=[
                 SubtitleStream(
                     index=4,
@@ -126,7 +126,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
                     codec_name="subrip",
                 ),
             ],
-        ) as get_zho_streams,
+        ) as get_zho_subtitle_streams,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
@@ -138,7 +138,7 @@ def test_media_extract_subs_cli_details_uses_detected_chinese_script(
         )
 
     get_subtitle_streams.assert_not_called()
-    get_zho_streams.assert_called_once_with(
+    get_zho_subtitle_streams.assert_called_once_with(
         infile_path.resolve(),
         cache_dir_path=ANY,
     )
@@ -202,7 +202,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
             ],
         ) as get_subtitle_streams,
         patch(
-            "scinoephile.cli.media.media_extract_subs_cli.get_zho_streams",
+            "scinoephile.cli.media.media_extract_subs_cli.get_zho_subtitle_streams",
             return_value=[
                 SubtitleStream(
                     index=2,
@@ -211,7 +211,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
                     subtitle_count=42,
                 ),
             ],
-        ) as get_zho_streams,
+        ) as get_zho_subtitle_streams,
         patch(
             "scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"
         ) as extract,
@@ -223,7 +223,7 @@ def test_media_extract_subs_cli_details_uses_stream_probe(tmp_path: Path):
         )
 
     get_subtitle_streams.assert_not_called()
-    get_zho_streams.assert_called_once_with(
+    get_zho_subtitle_streams.assert_called_once_with(
         infile_path.resolve(),
         cache_dir_path=ANY,
     )
