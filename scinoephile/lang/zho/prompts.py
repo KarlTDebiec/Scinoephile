@@ -10,7 +10,7 @@ from typing import Any, ClassVar
 
 from scinoephile.core.llms import Prompt
 
-from .conversion import OpenCCConfig, get_zho_text_converted
+from .script.conversion import OpenCCConfig, get_zho_text_converted
 
 __all__ = ["PromptZhoHans"]
 

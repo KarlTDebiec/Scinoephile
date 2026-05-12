@@ -6,13 +6,13 @@ from __future__ import annotations
 
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 from test.helpers import assert_series_equal
 
 

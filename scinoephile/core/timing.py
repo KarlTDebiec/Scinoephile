@@ -9,7 +9,21 @@ from copy import deepcopy
 from .exceptions import ScinoephileError
 from .subtitles import Series
 
-__all__ = ["get_series_timewarped"]
+__all__ = ["format_time_ms", "get_series_timewarped"]
+
+
+def format_time_ms(time_ms: int) -> str:
+    """Format a millisecond timestamp as HH:MM:SS.
+
+    Arguments:
+        time_ms: time in milliseconds
+    Returns:
+        timestamp formatted as HH:MM:SS
+    """
+    total_seconds = time_ms // 1000
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 
 def get_series_timewarped(

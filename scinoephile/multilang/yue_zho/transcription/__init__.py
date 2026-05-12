@@ -11,13 +11,13 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.dual_pair import DualPairManager
+from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 from scinoephile.llms.providers.registry import get_default_provider
 
 from .deliniation import YueVsZhoDeliniationPromptYueHans
@@ -39,7 +39,7 @@ __all__ = [
 YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-transcription-deliniation",
     test_case_table_name="test_cases__yue_zho__transcription_deliniation",
-    manager_cls=DualPairManager,
+    manager_cls=Dual2To2Manager,
     prompt_cls=YueVsZhoDeliniationPromptYueHans,
 )
 """Operation specification for written Cantonese transcription deliniation."""
@@ -148,7 +148,7 @@ def get_yue_vs_zho_transcriber(
     if deliniation_test_cases is None:
         deliniation_test_cases = list(
             load_default_test_cases(
-                DualPairManager,
+                Dual2To2Manager,
                 deliniation_prompt_cls,
                 YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
             )

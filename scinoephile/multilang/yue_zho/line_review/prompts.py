@@ -9,8 +9,8 @@ from typing import ClassVar
 from scinoephile.core.dictionaries import DictionaryToolPrompt
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.yue.prompts import PromptYueHans
-from scinoephile.lang.zho.conversion import OpenCCConfig
-from scinoephile.llms.dual_single import DualSinglePrompt
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 
 __all__ = [
     "YueVsZhoLineReviewPromptYueHans",
@@ -19,7 +19,7 @@ __all__ = [
 
 
 class YueVsZhoLineReviewPromptYueHans(
-    DictionaryToolPrompt, DualSinglePrompt, PromptYueHans
+    DictionaryToolPrompt, Dual1To1Prompt, PromptYueHans
 ):
     """Text for simplified written Cantonese line review against standard Chinese."""
 

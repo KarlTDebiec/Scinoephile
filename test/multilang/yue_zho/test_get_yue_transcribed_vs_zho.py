@@ -8,7 +8,7 @@ from unittest.mock import Mock, patch
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import get_yue_transcribed_vs_zho
 
 

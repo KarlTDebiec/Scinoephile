@@ -19,18 +19,18 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import (
-    SIMPLIFIED_CONFIGS,
-    TRADITIONAL_CONFIGS,
-    OpenCCConfig,
-    get_zho_converted,
-)
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
     get_zho_ocr_fused,
     get_zho_ocr_fuser,
 )
-from scinoephile.llms.dual_single.ocr_fusion import OcrFusionProcessor
+from scinoephile.lang.zho.script.conversion import (
+    SIMPLIFIED_CONFIGS,
+    TRADITIONAL_CONFIGS,
+    OpenCCConfig,
+    get_zho_converted,
+)
+from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 
 __all__ = ["ZhoFuseCli"]
 
