@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for PaddleOCR."""
+"""Command-line interface for Tesseract OCR."""
 
 from __future__ import annotations
 
@@ -14,26 +14,25 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
+from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries
 
-__all__ = ["OcrPaddleCli"]
+__all__ = ["OcrTesseractCli"]
 
 
-class OcrPaddleCli(ScinoephileCliBase):
-    """Recognize image subtitles with PaddleOCR."""
+class OcrTesseractCli(ScinoephileCliBase):
+    """Recognize image subtitles with Tesseract OCR."""
 
     localizations = {
         "zh-hans": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
-                "chinese_cht（繁体中文）"
+            "Recognize image subtitles with Tesseract OCR.": (
+                "使用 Tesseract OCR 识别图像字幕。"
             ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 识别图像字幕。"
+            "Tesseract language code (default: %(default)s)": (
+                "Tesseract 语言代码（默认：%(default)s）"
+            ),
+            "run a second legacy-engine pass to detect italic text": (
+                "运行第二次旧版引擎识别以检测斜体文本"
             ),
             (
                 "image subtitle infile path (directory containing index.html and "
@@ -45,15 +44,14 @@ class OcrPaddleCli(ScinoephileCliBase):
             "recognized subtitle outfile path": "识别后字幕输出文件路径",
         },
         "zh-hant": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
-                "chinese_cht（繁體中文）"
+            "Recognize image subtitles with Tesseract OCR.": (
+                "使用 Tesseract OCR 識別影像字幕。"
             ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 識別影像字幕。"
+            "Tesseract language code (default: %(default)s)": (
+                "Tesseract 語言代碼（預設：%(default)s）"
+            ),
+            "run a second legacy-engine pass to detect italic text": (
+                "執行第二次舊版引擎識別以偵測斜體文字"
             ),
             (
                 "image subtitle infile path (directory containing index.html and "
@@ -98,12 +96,13 @@ class OcrPaddleCli(ScinoephileCliBase):
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
-            choices=("ch", "chinese_cht", "en"),
-            default="en",
-            help=(
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ),
+            default="eng",
+            help="Tesseract language code (default: %(default)s)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--detect-italics",
+            action="store_true",
+            help="run a second legacy-engine pass to detect italic text",
         )
 
         # Output arguments
@@ -128,7 +127,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "paddle"
+        return "tesseract"
 
     @classmethod
     def _main(
@@ -137,6 +136,7 @@ class OcrPaddleCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         infile_path: Path,
         outfile_path: Path,
+        detect_italics: bool,
         language: str,
         overwrite: bool,
     ):
@@ -145,6 +145,8 @@ class OcrPaddleCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if outfile_path.exists() and not overwrite:
             parser.error(f"{outfile_path} already exists")
+        if detect_italics and language != "eng":
+            parser.error("--detect-italics may only be used with --language eng")
 
         # Read inputs
         try:
@@ -159,13 +161,12 @@ class OcrPaddleCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            text_series = ocr_image_series_with_paddle(
+            text_series = ocr_image_series_with_tesseract(
                 image_series,
+                detect_italics=detect_italics,
                 language=language,
             )
         except (
-            FileNotFoundError,
-            NotADirectoryError,
             ImportError,
             ScinoephileError,
             ValueError,
@@ -177,4 +178,4 @@ class OcrPaddleCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    OcrPaddleCli.main()
+    OcrTesseractCli.main()

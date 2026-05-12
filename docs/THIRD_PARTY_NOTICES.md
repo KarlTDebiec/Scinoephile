@@ -45,9 +45,9 @@ SOFTWARE.
 
 ## SubtitleEdit (adapted OCR preprocessing, grouping, and cleanup logic)
 
-Scinoephile's PaddleOCR preprocessing and text grouping code, and selected
-Google Lens OCR text cleanup behavior, are informed by and partially adapted
-from the `SubtitleEdit` project:
+Scinoephile's PaddleOCR preprocessing and text grouping code, selected Google
+Lens OCR text cleanup behavior, and Tesseract OCR preprocessing and hOCR parsing
+code are informed by and partially adapted from the `SubtitleEdit` project:
 
 - Project: https://github.com/SubtitleEdit/subtitleedit
 - License: MIT

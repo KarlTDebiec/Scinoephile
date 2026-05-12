@@ -15,6 +15,7 @@ from scinoephile.common.argument_parsing import (
     output_dir_arg,
 )
 from scinoephile.common.exceptions import NotAFileError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
@@ -166,6 +167,7 @@ class EngValidateOcrCli(ScinoephileCliBase):
             FileNotFoundError,
             NotADirectoryError,
             NotAFileError,
+            ScinoephileError,
             ValueError,
         ) as exc:
             parser.error(str(exc))

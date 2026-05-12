@@ -39,17 +39,20 @@ __all__ = [
     "mnt_eng_ocr_lens",
     "mnt_eng_ocr_lens_new",
     "mnt_eng_ocr_tesseract",
+    "mnt_eng_ocr_tesseract_new",
     "mnt_jpn_eng",
     "mnt_yue_zho_hant",
     "mnt_zho_hans_ocr_lens",
     "mnt_zho_hans_ocr_lens_new",
     "mnt_zho_hans_ocr_paddle",
     "mnt_zho_hans_ocr_paddle_new",
+    "mnt_zho_hans_ocr_tesseract_new",
     "mnt_zho_hant",
     "mnt_zho_hant_ocr_lens",
     "mnt_zho_hant_ocr_lens_new",
     "mnt_zho_hant_ocr_paddle",
     "mnt_zho_hant_ocr_paddle_new",
+    "mnt_zho_hant_ocr_tesseract_new",
     "get_mnt_eng_block_review_test_cases",
     "get_mnt_eng_ocr_fusion_test_cases",
     "get_mnt_eng_zho_guided_translation_test_cases",
@@ -111,6 +114,12 @@ def mnt_eng_ocr_tesseract() -> Series:
 
 
 @pytest.fixture
+def mnt_eng_ocr_tesseract_new() -> Series:
+    """MNT English subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
+
+
+@pytest.fixture
 def mnt_jpn_eng() -> Series:
     """MNT Bilingual Japanese and English subtitles."""
     return Series.load(input_dir / "jpn_eng.srt")
@@ -147,6 +156,12 @@ def mnt_zho_hans_ocr_paddle_new() -> Series:
 
 
 @pytest.fixture
+def mnt_zho_hans_ocr_tesseract_new() -> Series:
+    """MNT 简体中文 subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "zho-Hans_ocr/tesseract_new.srt")
+
+
+@pytest.fixture
 def mnt_zho_hant() -> Series:
     """MNT 繁体中文 series."""
     return Series.load(input_dir / "zho-Hant.srt")
@@ -174,6 +189,12 @@ def mnt_zho_hant_ocr_paddle() -> Series:
 def mnt_zho_hant_ocr_paddle_new() -> Series:
     """MNT 繁体中文 subtitles OCRed using internal PaddleOCR."""
     return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
+
+
+@pytest.fixture
+def mnt_zho_hant_ocr_tesseract_new() -> Series:
+    """MNT 繁体中文 subtitles OCRed using internal Tesseract."""
+    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
 
 
 @cache

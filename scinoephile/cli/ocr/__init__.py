@@ -10,6 +10,7 @@ __all__ = [
     "OcrCli",
     "OcrLensCli",
     "OcrPaddleCli",
+    "OcrTesseractCli",
 ]
 
 
@@ -23,4 +24,8 @@ def __getattr__(name: str):
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
 
         return OcrPaddleCli
+    if name == "OcrTesseractCli":
+        from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
+
+        return OcrTesseractCli
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
