@@ -19,7 +19,7 @@ from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueVsZhoDeliniationPromptYueHans,

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.lang.zho.script_analysis import get_zho_script_analysis
+from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
 
 
 @pytest.mark.parametrize(

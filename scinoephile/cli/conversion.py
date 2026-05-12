@@ -15,7 +15,7 @@ from argparse import (  # noqa: PLC2701
 from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 
 __all__ = [
     "CONVERSION_LOCALIZATIONS",

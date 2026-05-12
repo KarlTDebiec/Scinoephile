@@ -15,7 +15,7 @@ from scinoephile.core.media.language import is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho.script_analysis import (
+from scinoephile.lang.zho.script.analysis import (
     ZhoScriptAnalysis,
     get_zho_script_analysis,
 )

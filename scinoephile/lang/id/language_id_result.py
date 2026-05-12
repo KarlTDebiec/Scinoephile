@@ -14,8 +14,8 @@ from scinoephile.lang.yue.romanization import is_accented_yale as is_accented_ya
 from scinoephile.lang.yue.romanization import (
     is_numbered_jyutping as is_numbered_jyutping_fn,
 )
-from scinoephile.lang.zho.conversion import is_simplified as is_simplified_fn
-from scinoephile.lang.zho.conversion import is_traditional as is_traditional_fn
+from scinoephile.lang.zho.script.analysis import is_simplified as is_simplified_fn
+from scinoephile.lang.zho.script.analysis import is_traditional as is_traditional_fn
 
 __all__ = ["LanguageIDResult"]
 
