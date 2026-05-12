@@ -65,6 +65,7 @@ class OcrLensCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--infile",
             dest="infile_path",
@@ -76,12 +77,14 @@ class OcrLensCli(ScinoephileCliBase):
             ),
         )
 
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
             default="en",
             help="Google Lens language code",
         )
 
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "--outfile",
             dest="outfile_path",
