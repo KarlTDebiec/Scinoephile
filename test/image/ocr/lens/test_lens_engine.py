@@ -8,7 +8,7 @@ import asyncio
 import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from types import ModuleType
+from types import ModuleType, SimpleNamespace
 from typing import Any
 
 import pytest
@@ -77,6 +77,21 @@ def test_normalize_lens_result_prefers_line_blocks():
             {"text": "second"},
         ],
     }
+
+    lines = GoogleLensRecognizer._normalize_lens_result(result)
+
+    assert lines == ["first", "second"]
+
+
+def test_normalize_lens_result_supports_object_results():
+    """Test normalization supports object-like chrome-lens-py results."""
+    result = SimpleNamespace(
+        ocr_text="fallback",
+        line_blocks=[
+            SimpleNamespace(text="first"),
+            SimpleNamespace(text="second"),
+        ],
+    )
 
     lines = GoogleLensRecognizer._normalize_lens_result(result)
 

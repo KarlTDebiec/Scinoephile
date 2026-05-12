@@ -20,9 +20,6 @@ __all__ = ["GoogleLensRecognizer"]
 
 logger = getLogger(__name__)
 
-_NO_TEXT_MESSAGE = "No OCR text found."
-_REQUEST_ERROR_MESSAGE = "Request error (possibly proxy-related)"
-
 
 class GoogleLensRecognizer:
     """Google Lens recognizer for image subtitles."""
@@ -112,9 +109,12 @@ class GoogleLensRecognizer:
             stripped = line.strip()
             if not stripped:
                 continue
-            if stripped.casefold() == _NO_TEXT_MESSAGE.casefold():
+            if stripped.casefold() == "No OCR text found.".casefold():
                 continue
-            if _REQUEST_ERROR_MESSAGE.casefold() in stripped.casefold():
+            if (
+                "Request error (possibly proxy-related)".casefold()
+                in stripped.casefold()
+            ):
                 continue
             lines.append(stripped)
 
@@ -202,20 +202,34 @@ class GoogleLensRecognizer:
         Returns:
             normalized OCR lines
         """
-        line_blocks = _get_result_value(result, "line_blocks")
+        line_blocks = GoogleLensRecognizer._get_result_value(result, "line_blocks")
         if isinstance(line_blocks, list | tuple):
             lines = []
             for block in line_blocks:
-                text = _get_result_value(block, "text")
+                text = GoogleLensRecognizer._get_result_value(block, "text")
                 if isinstance(text, str):
                     lines.append(text)
             if lines:
                 return lines
 
-        ocr_text = _get_result_value(result, "ocr_text")
+        ocr_text = GoogleLensRecognizer._get_result_value(result, "ocr_text")
         if isinstance(ocr_text, str):
             return ocr_text.splitlines()
         return []
+
+    @staticmethod
+    def _get_result_value(result: object, key: str) -> object:
+        """Get a value from a dict-like or object-like result.
+
+        Arguments:
+            result: result object
+            key: value key or attribute name
+        Returns:
+            value if present
+        """
+        if isinstance(result, Mapping):
+            return cast(Mapping[str, object], result).get(key)
+        return getattr(result, key, None)
 
     @staticmethod
     def _raise_if_running_loop():
@@ -259,7 +273,7 @@ class GoogleLensRecognizer:
             RuntimeError: if Google Lens returned a request error as OCR text
         """
         for line in lines:
-            if _REQUEST_ERROR_MESSAGE.casefold() in line.casefold():
+            if "Request error (possibly proxy-related)".casefold() in line.casefold():
                 raise RuntimeError(f"Google Lens request error: {line}")
 
     @staticmethod
@@ -274,17 +288,3 @@ class GoogleLensRecognizer:
         data = {"lines": lines}
         with cache_path.open("w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
-
-
-def _get_result_value(result: object, key: str) -> object:
-    """Get a value from a dict-like or object-like result.
-
-    Arguments:
-        result: result object
-        key: value key or attribute name
-    Returns:
-        value if present
-    """
-    if isinstance(result, Mapping):
-        return cast(Mapping[str, object], result).get(key)
-    return getattr(result, key, None)
