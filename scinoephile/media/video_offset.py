@@ -105,6 +105,7 @@ def get_video_offset(
         ValueError: if numeric parameters are invalid
         ScinoephileError: if frames cannot be sampled or scored
     """
+    # Validate numeric search parameters
     positive_float_min = nextafter(0.0, 1.0)
     max_offset = val_float(max_offset, min_value=positive_float_min)
     sample_rate = val_float(sample_rate, min_value=positive_float_min)
@@ -115,6 +116,7 @@ def get_video_offset(
     width = val_int(width, min_value=1)
     height = val_int(height, min_value=1)
 
+    # Sample comparable grayscale frames from both videos
     reference_samples = _sample_video_frames(
         reference_infile_path,
         sample_rate=sample_rate,
@@ -132,6 +134,7 @@ def get_video_offset(
         height=height,
     )
 
+    # Search the full offset range at coarse resolution
     min_matches = max(2, int(sample_rate * 2))
     coarse_offsets = _get_offsets(-max_offset, max_offset, coarse_step)
     coarse_candidates = _score_offsets(
@@ -144,6 +147,7 @@ def get_video_offset(
     if not coarse_candidates:
         raise ScinoephileError("Could not find enough matching video samples")
 
+    # Refine around the best coarse offset
     best_coarse = coarse_candidates[0]
     fine_start = max(-max_offset, best_coarse.offset - coarse_step)
     fine_end = min(max_offset, best_coarse.offset + coarse_step)
@@ -158,6 +162,7 @@ def get_video_offset(
     if not candidates:
         candidates = coarse_candidates
 
+    # Find the best distinct fallback candidate
     best = candidates[0]
     second_best = None
     for candidate in candidates:
@@ -165,6 +170,7 @@ def get_video_offset(
             second_best = candidate
             break
 
+    # Classify confidence from match support and score separation
     confidence = "low"
     if best.matched_count < min_matches:
         confidence = "none"
@@ -232,11 +238,15 @@ def _sample_video_frames(
         ScinoephileError: if ffmpeg fails or no frames are sampled
     """
     frame_size = width * height
+
+    # Build ffmpeg input options for the requested sample window
     input_kwargs = {}
     if start_time > 0:
         input_kwargs["ss"] = start_time
     if duration > 0:
         input_kwargs["t"] = duration
+
+    # Decode scaled grayscale frames as raw bytes
     try:
         output, _ = (
             ffmpeg.input(str(infile_path), **input_kwargs)
@@ -260,6 +270,8 @@ def _sample_video_frames(
         )
 
     frame_count = len(output) // frame_size
+
+    # Reshape raw frame bytes into sample objects
     array = np.frombuffer(output[: frame_count * frame_size], dtype=np.uint8)
     array = array.reshape((frame_count, height, width)).astype(np.float32)
 
@@ -290,11 +302,14 @@ def _score_offsets(
     """
     candidates = []
     tolerance = 0.49 / sample_rate
+
+    # Precompute target timestamps for nearest-frame lookup
     target_times = [sample.time for sample in target_samples]
 
     for offset in offsets:
         scores = []
         for reference_sample in reference_samples:
+            # Match each reference sample to the nearest target sample
             target_time = reference_sample.time + offset
             best_index = None
             best_delta = tolerance
@@ -312,6 +327,8 @@ def _score_offsets(
             target_sample = target_samples[best_index]
             reference_frame = reference_sample.frame
             target_frame = target_sample.frame
+
+            # Normalize brightness before comparing frame differences
             reference_std = float(np.std(reference_frame))
             target_std = float(np.std(target_frame))
             if reference_std > 0 and target_std > 0:
@@ -323,6 +340,7 @@ def _score_offsets(
                 ) / target_std
             scores.append(float(np.mean(np.abs(reference_frame - target_frame))))
 
+        # Keep candidate offsets with enough matched samples
         if len(scores) >= min_matches:
             candidates.append(
                 VideoOffsetCandidate(
