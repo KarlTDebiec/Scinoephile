@@ -5,29 +5,19 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
-if TYPE_CHECKING:
-    from .google_lens_recognizer import GoogleLensRecognizer
+from .google_lens_recognizer import GoogleLensRecognizer
 
 __all__ = [
     "GoogleLensRecognizer",
     "get_google_lens_recognizer",
     "ocr_image_series_with_lens",
 ]
-
-
-def __getattr__(name: str):
-    """Lazily import Google Lens-backed classes."""
-    if name == "GoogleLensRecognizer":
-        from .google_lens_recognizer import GoogleLensRecognizer  # noqa: PLC0415
-
-        return GoogleLensRecognizer
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def get_google_lens_recognizer(
@@ -43,15 +33,9 @@ def get_google_lens_recognizer(
     Returns:
         Google Lens recognizer
     """
-    google_lens_recognizer_cls = globals().get("GoogleLensRecognizer")
-    if google_lens_recognizer_cls is None:
-        from .google_lens_recognizer import GoogleLensRecognizer  # noqa: PLC0415
-
-        google_lens_recognizer_cls = GoogleLensRecognizer
-
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("google-lens")
-    return google_lens_recognizer_cls(
+    return GoogleLensRecognizer(
         cache_dir_path=cache_dir_path,
         language=language,
     )

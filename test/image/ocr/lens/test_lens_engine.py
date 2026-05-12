@@ -5,8 +5,10 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 from collections.abc import Mapping, Sequence
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 import pytest
@@ -189,11 +191,15 @@ def test_google_lens_recognizer_import_error_is_actionable(
             raise ImportError("missing chrome-lens-py")
         return real_import(name, globals_, locals_, fromlist, level)
 
-    monkeypatch.setattr(lens_module, "LensAPI", None)
     monkeypatch.setattr("builtins.__import__", fake_import)
 
     with pytest.raises(ImportError, match="chrome-lens-py"):
         GoogleLensRecognizer._get_lens_api_class()
+
+
+def test_google_lens_recognizer_does_not_cache_lens_api_globally():
+    """Test chrome-lens-py imports rely on Python's import cache."""
+    assert not hasattr(lens_module, "LensAPI")
 
 
 def test_google_lens_recognizer_reuses_lens_api_client(
@@ -224,7 +230,9 @@ def test_google_lens_recognizer_reuses_lens_api_client(
             """
             return {"ocr_text": "recognized"}
 
-    monkeypatch.setattr(lens_module, "LensAPI", FakeLensApi)
+    chrome_lens_py = ModuleType("chrome_lens_py")
+    setattr(chrome_lens_py, "LensAPI", FakeLensApi)
+    monkeypatch.setitem(sys.modules, "chrome_lens_py", chrome_lens_py)
     recognizer = GoogleLensRecognizer()
 
     assert recognizer.recognize_image(Image.new("RGBA", (10, 8))) == "recognized"

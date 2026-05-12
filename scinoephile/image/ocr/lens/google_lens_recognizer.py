@@ -19,7 +19,6 @@ from scinoephile.common.validation import val_output_dir_path
 __all__ = ["GoogleLensRecognizer"]
 
 logger = getLogger(__name__)
-LensAPI: Any | None = None
 
 _NO_TEXT_MESSAGE = "No OCR text found."
 _REQUEST_ERROR_MESSAGE = "Request error (possibly proxy-related)"
@@ -165,18 +164,15 @@ class GoogleLensRecognizer:
         Raises:
             ImportError: if chrome-lens-py is not installed
         """
-        global LensAPI  # noqa: PLW0603
-        if LensAPI is None:
-            try:
-                from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
-                    LensAPI as ImportedLensAPI,
-                )
-            except ImportError as exc:
-                raise ImportError(
-                    "Google Lens OCR support requires chrome-lens-py. Install "
-                    "scinoephile with the 'ocr' extra."
-                ) from exc
-            LensAPI = ImportedLensAPI
+        try:
+            from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                LensAPI,
+            )
+        except ImportError as exc:
+            raise ImportError(
+                "Google Lens OCR support requires chrome-lens-py. Install "
+                "scinoephile with the 'ocr' extra."
+            ) from exc
         return LensAPI
 
     @staticmethod
