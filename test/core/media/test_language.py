@@ -1,10 +1,10 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of Chinese language tag helpers."""
+"""Tests of media language tag helpers."""
 
 from __future__ import annotations
 
-from scinoephile.lang.zho.language import get_zho_script_language, is_zho_language
+from scinoephile.core.media.language import get_zho_script_language, is_chinese
 
 
 def test_get_zho_script_language():
@@ -13,11 +13,11 @@ def test_get_zho_script_language():
     assert get_zho_script_language("yue", None) == "yue-Unknown"
 
 
-def test_is_zho_language():
+def test_is_chinese():
     """Test Chinese language tag detection."""
-    assert is_zho_language("chi")
-    assert is_zho_language("zho")
-    assert is_zho_language("zho-Hant")
-    assert is_zho_language("yue")
-    assert not is_zho_language(None)
-    assert not is_zho_language("eng")
+    assert is_chinese("chi")
+    assert is_chinese("zho")
+    assert is_chinese("zho-Hant")
+    assert is_chinese("yue")
+    assert not is_chinese(None)
+    assert not is_chinese("eng")

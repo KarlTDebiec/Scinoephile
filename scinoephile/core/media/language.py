@@ -1,12 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Chinese language tag helpers."""
+"""Media language tag helpers."""
 
 from __future__ import annotations
 
-__all__ = ["get_zho_script_language", "is_zho_language"]
+from typing import TypeGuard
 
-_ZHO_LANGUAGE_CODES = {"chi", "zho", "yue"}
+__all__ = ["get_zho_script_language", "is_chinese"]
+
+_CHINESE_LANGUAGE_CODES = {"chi", "zho", "yue"}
 """Language codes treated as Chinese for script analysis."""
 
 
@@ -24,7 +26,7 @@ def get_zho_script_language(language: str, script: str | None) -> str:
     return f"{language.split('-', 1)[0]}-Unknown"
 
 
-def is_zho_language(language: str | None) -> bool:
+def is_chinese(language: str | None) -> TypeGuard[str]:
     """Return whether a language tag should be treated as Chinese.
 
     Arguments:
@@ -34,4 +36,4 @@ def is_zho_language(language: str | None) -> bool:
     """
     if language is None:
         return False
-    return language.split("-", 1)[0].lower() in _ZHO_LANGUAGE_CODES
+    return language.split("-", 1)[0].lower() in _CHINESE_LANGUAGE_CODES

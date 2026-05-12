@@ -6,15 +6,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Iterable
 from dataclasses import asdict, replace
 from logging import getLogger
 from pathlib import Path
 
-from scinoephile.core.media import Stream, SubtitleStream
+from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media.language import get_zho_script_language, is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.language import get_zho_script_language, is_zho_language
 from scinoephile.lang.zho.script_analysis.subtitles import (
     DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
     ZHO_SUBTITLE_OCR_LANGUAGES,
@@ -32,7 +31,7 @@ from scinoephile.media.subtitles.details import with_stream_details
 
 __all__ = [
     "analyze_zho_subtitle_stream_script",
-    "get_zho_streams",
+    "get_zho_subtitle_streams",
 ]
 
 logger = getLogger(__name__)
@@ -55,7 +54,7 @@ def analyze_zho_subtitle_stream_script(
     Returns:
         subtitle script analysis
     """
-    if not is_zho_language(stream.language):
+    if not is_chinese(stream.language):
         return get_zho_subtitle_script_analysis(
             "",
             failure_reason="not a Chinese subtitle stream",
@@ -105,49 +104,25 @@ def analyze_zho_subtitle_stream_script(
     return analysis
 
 
-def get_zho_streams(
+def get_zho_subtitle_streams(
     infile_path: Path,
     *,
     cache_dir_path: Path | None = None,
-) -> list[Stream]:
-    """Get stream metadata enriched with Chinese subtitle script details.
+) -> list[SubtitleStream]:
+    """Get subtitle stream metadata enriched with Chinese script details.
 
     Arguments:
         infile_path: media input file to inspect
         cache_dir_path: cache directory path
     Returns:
-        enriched stream metadata
-    """
-    return _with_zho_script_details(
-        infile_path,
-        get_streams(infile_path),
-        cache_dir_path=cache_dir_path,
-    )
-
-
-def _with_zho_script_details(
-    infile_path: Path,
-    streams: Iterable[Stream],
-    *,
-    cache_dir_path: Path | None = None,
-) -> list[Stream]:
-    """Return stream metadata enriched with Chinese subtitle script details.
-
-    Arguments:
-        infile_path: media input file to inspect
-        streams: streams to enrich
-        cache_dir_path: cache directory path
-    Returns:
-        enriched stream metadata
+        enriched subtitle stream metadata
     """
     detailed_streams = []
-    for stream in streams:
-        language = stream.language if isinstance(stream, SubtitleStream) else None
-        if (
-            isinstance(stream, SubtitleStream)
-            and language is not None
-            and is_zho_language(language)
-        ):
+    for stream in get_streams(infile_path):
+        if not isinstance(stream, SubtitleStream):
+            continue
+        language = stream.language
+        if is_chinese(language):
             analysis = analyze_zho_subtitle_stream_script(
                 infile_path,
                 stream,
@@ -161,11 +136,15 @@ def _with_zho_script_details(
             )
         else:
             detailed_streams.append(stream)
-    return with_stream_details(
-        infile_path,
-        detailed_streams,
-        cache_dir_path=cache_dir_path,
-    )
+    return [
+        stream
+        for stream in with_stream_details(
+            infile_path,
+            detailed_streams,
+            cache_dir_path=cache_dir_path,
+        )
+        if isinstance(stream, SubtitleStream)
+    ]
 
 
 def _get_subtitle_analysis_cache_path(
