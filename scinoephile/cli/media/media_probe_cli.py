@@ -106,10 +106,7 @@ class MediaProbeCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         try:
             if details:
-                streams = get_zho_streams(
-                    infile_path,
-                    cache_dir_path=cache_dir_path,
-                )
+                streams = get_zho_streams(infile_path, cache_dir_path=cache_dir_path)
             else:
                 streams = get_streams(infile_path)
             for stream in streams:
