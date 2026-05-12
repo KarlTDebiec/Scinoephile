@@ -188,41 +188,41 @@ class MediaOffsetCli(ScinoephileCliBase):
                 coarse_step=coarse_step,
                 fine_step=fine_step,
             )
-            print(_get_result_description(result))
+            print(cls._get_result_description(result))
         except (ScinoephileError, ValueError) as exc:
             parser.error(str(exc))
 
+    @staticmethod
+    def _get_result_description(result: VideoOffsetResult) -> str:
+        """Return a human-readable offset result.
 
-def _get_result_description(result: VideoOffsetResult) -> str:
-    """Return a human-readable offset result.
+        Arguments:
+            result: video offset result
+        Returns:
+            human-readable result
+        """
+        lines = [
+            f"Offset: {result.offset:+.3f} s",
+            f"Direction: {MediaOffsetCli._get_direction_description(result.offset)}",
+            f"Confidence: {result.confidence}",
+            f"Matched samples: {result.best.matched_count}",
+            f"Best score: {result.best.score:.6f}",
+        ]
+        if result.second_best is not None:
+            lines.append(f"Next-best score: {result.second_best.score:.6f}")
+        return "\n".join(lines)
 
-    Arguments:
-        result: video offset result
-    Returns:
-        human-readable result
-    """
-    lines = [
-        f"Offset: {result.offset:+.3f} s",
-        f"Direction: {_get_direction_description(result.offset)}",
-        f"Confidence: {result.confidence}",
-        f"Matched samples: {result.best.matched_count}",
-        f"Best score: {result.best.score:.6f}",
-    ]
-    if result.second_best is not None:
-        lines.append(f"Next-best score: {result.second_best.score:.6f}")
-    return "\n".join(lines)
+    @staticmethod
+    def _get_direction_description(offset: float) -> str:
+        """Return a human-readable offset direction.
 
-
-def _get_direction_description(offset: float) -> str:
-    """Return a human-readable offset direction.
-
-    Arguments:
-        offset: target timestamp minus reference timestamp
-    Returns:
-        human-readable offset direction
-    """
-    if offset > 0:
-        return f"target is {offset:.3f} s later than reference"
-    if offset < 0:
-        return f"target is {abs(offset):.3f} s earlier than reference"
-    return "target is aligned with reference"
+        Arguments:
+            offset: target timestamp minus reference timestamp
+        Returns:
+            human-readable offset direction
+        """
+        if offset > 0:
+            return f"target is {offset:.3f} s later than reference"
+        if offset < 0:
+            return f"target is {abs(offset):.3f} s earlier than reference"
+        return "target is aligned with reference"

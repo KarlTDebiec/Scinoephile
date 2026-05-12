@@ -150,38 +150,12 @@ def get_video_offset(
         candidates = coarse_candidates
 
     best = candidates[0]
-    second_best = _get_second_best(
-        candidates, best, minimum_offset_distance=coarse_step
-    )
+    second_best = None
+    for candidate in candidates:
+        if abs(candidate.offset - best.offset) >= coarse_step:
+            second_best = candidate
+            break
 
-    confidence = _classify_confidence(
-        best=best,
-        second_best=second_best,
-        min_matches=min_matches,
-    )
-    return VideoOffsetResult(
-        offset=best.offset,
-        confidence=confidence,
-        best=best,
-        second_best=second_best,
-    )
-
-
-def _classify_confidence(
-    *,
-    best: VideoOffsetCandidate,
-    second_best: VideoOffsetCandidate | None,
-    min_matches: int,
-) -> str:
-    """Classify offset confidence from match count and score separation.
-
-    Arguments:
-        best: best offset candidate
-        second_best: next-best offset candidate, if available
-        min_matches: minimum required match count
-    Returns:
-        confidence label
-    """
     confidence = "low"
     if best.matched_count < min_matches:
         confidence = "none"
@@ -196,7 +170,13 @@ def _classify_confidence(
             confidence = "high"
         elif ratio >= 2.0:
             confidence = "medium"
-    return confidence
+
+    return VideoOffsetResult(
+        offset=best.offset,
+        confidence=confidence,
+        best=best,
+        second_best=second_best,
+    )
 
 
 def _get_offsets(start: float, end: float, step: float) -> list[float]:
@@ -217,26 +197,6 @@ def _get_offsets(start: float, end: float, step: float) -> list[float]:
     if offsets[-1] < end:
         offsets.append(round(end, 6))
     return offsets
-
-
-def _get_second_best(
-    candidates: list[VideoOffsetCandidate],
-    best: VideoOffsetCandidate,
-    minimum_offset_distance: float,
-) -> VideoOffsetCandidate | None:
-    """Return the best candidate outside a minimum distance of the winner.
-
-    Arguments:
-        candidates: sorted candidates
-        best: best candidate
-        minimum_offset_distance: minimum offset distance from the winner
-    Returns:
-        second-best candidate
-    """
-    for candidate in candidates:
-        if abs(candidate.offset - best.offset) >= minimum_offset_distance:
-            return candidate
-    return None
 
 
 def _sample_video_frames(
@@ -300,51 +260,6 @@ def _sample_video_frames(
     ]
 
 
-def _score_offset(
-    reference_samples: list[_VideoFrameSample],
-    target_samples: list[_VideoFrameSample],
-    *,
-    offset: float,
-    sample_rate: float,
-    min_matches: int,
-) -> VideoOffsetCandidate | None:
-    """Score one candidate offset.
-
-    Arguments:
-        reference_samples: reference video samples
-        target_samples: target video samples
-        offset: target timestamp minus reference timestamp
-        sample_rate: samples per second
-        min_matches: minimum required match count
-    Returns:
-        scored offset if enough samples matched
-    """
-    tolerance = 0.49 / sample_rate
-    target_times = [sample.time for sample in target_samples]
-    scores = []
-
-    for reference_sample in reference_samples:
-        target_time = reference_sample.time + offset
-        target_sample = _get_nearest_sample(
-            target_samples, target_times, target_time, tolerance
-        )
-        if target_sample is None:
-            continue
-
-        score = _get_frame_difference(reference_sample.frame, target_sample.frame)
-        scores.append(score)
-
-    if len(scores) < min_matches:
-        return None
-
-    aggregate_score = float(np.median(np.array(scores, dtype=np.float32)))
-    return VideoOffsetCandidate(
-        offset=offset,
-        matched_count=len(scores),
-        score=aggregate_score,
-    )
-
-
 def _score_offsets(
     reference_samples: list[_VideoFrameSample],
     target_samples: list[_VideoFrameSample],
@@ -365,69 +280,49 @@ def _score_offsets(
         sorted candidate scores
     """
     candidates = []
+    tolerance = 0.49 / sample_rate
+    target_times = [sample.time for sample in target_samples]
+
     for offset in offsets:
-        scored = _score_offset(
-            reference_samples,
-            target_samples,
-            offset=offset,
-            sample_rate=sample_rate,
-            min_matches=min_matches,
-        )
-        if scored is not None:
-            candidates.append(scored)
+        scores = []
+        for reference_sample in reference_samples:
+            target_time = reference_sample.time + offset
+            best_index = None
+            best_delta = tolerance
+            insertion_index = bisect_left(target_times, target_time)
+            for index in [insertion_index - 1, insertion_index]:
+                if index < 0 or index >= len(target_samples):
+                    continue
+                delta = abs(target_times[index] - target_time)
+                if delta <= best_delta:
+                    best_delta = delta
+                    best_index = index
+            if best_index is None:
+                continue
+
+            target_sample = target_samples[best_index]
+            reference_frame = reference_sample.frame
+            target_frame = target_sample.frame
+            reference_std = float(np.std(reference_frame))
+            target_std = float(np.std(target_frame))
+            if reference_std > 0 and target_std > 0:
+                reference_frame = (
+                    reference_frame - float(np.mean(reference_frame))
+                ) / reference_std
+                target_frame = (
+                    target_frame - float(np.mean(target_frame))
+                ) / target_std
+            scores.append(float(np.mean(np.abs(reference_frame - target_frame))))
+
+        if len(scores) >= min_matches:
+            candidates.append(
+                VideoOffsetCandidate(
+                    offset=offset,
+                    matched_count=len(scores),
+                    score=float(np.median(np.array(scores, dtype=np.float32))),
+                )
+            )
     return sorted(candidates, key=lambda candidate: candidate.score)
-
-
-def _get_frame_difference(
-    reference_frame: np.ndarray, target_frame: np.ndarray
-) -> float:
-    """Return normalized difference between two grayscale frames.
-
-    Arguments:
-        reference_frame: reference grayscale frame
-        target_frame: target grayscale frame
-    Returns:
-        frame difference score
-    """
-    reference_std = float(np.std(reference_frame))
-    target_std = float(np.std(target_frame))
-    if reference_std > 0 and target_std > 0:
-        reference_frame = (
-            reference_frame - float(np.mean(reference_frame))
-        ) / reference_std
-        target_frame = (target_frame - float(np.mean(target_frame))) / target_std
-    return float(np.mean(np.abs(reference_frame - target_frame)))
-
-
-def _get_nearest_sample(
-    samples: list[_VideoFrameSample],
-    sample_times: list[float],
-    time: float,
-    tolerance: float,
-) -> _VideoFrameSample | None:
-    """Return the nearest sample within tolerance.
-
-    Arguments:
-        samples: ordered samples
-        sample_times: ordered sample timestamps
-        time: desired timestamp
-        tolerance: maximum allowed timestamp difference
-    Returns:
-        nearest sample, if one is close enough
-    """
-    best_index = None
-    best_delta = tolerance
-    insertion_index = bisect_left(sample_times, time)
-    for index in [insertion_index - 1, insertion_index]:
-        if index < 0 or index >= len(samples):
-            continue
-        delta = abs(sample_times[index] - time)
-        if delta <= best_delta:
-            best_delta = delta
-            best_index = index
-    if best_index is None:
-        return None
-    return samples[best_index]
 
 
 def _validate_positive(name: str, value: float | int):
