@@ -4,12 +4,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import replace
 from logging import getLogger
 from pathlib import Path
 
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import cache_subtitles
 
@@ -24,16 +25,23 @@ def get_detailed_subtitle_streams(
     infile_path: Path,
     *,
     cache_dir_path: Path | None = None,
+    streams: Sequence[Stream] | None = None,
 ) -> list[SubtitleStream]:
     """Get subtitle stream metadata enriched with expensive subtitle details.
 
     Arguments:
         infile_path: media input file to inspect
         cache_dir_path: cache directory path
+        streams: optional pre-probed media streams
     Returns:
         enriched subtitle stream metadata
     """
-    subtitle_streams = get_subtitle_streams(infile_path)
+    if streams is None:
+        subtitle_streams = get_subtitle_streams(infile_path)
+    else:
+        subtitle_streams = [
+            stream for stream in streams if isinstance(stream, SubtitleStream)
+        ]
     if subtitle_streams:
         cache_subtitles(infile_path, subtitle_streams, cache_dir_path=cache_dir_path)
 

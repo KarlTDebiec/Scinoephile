@@ -111,6 +111,7 @@ class MediaProbeCli(ScinoephileCliBase):
                 detailed_subtitle_streams = get_zho_subtitle_streams(
                     infile_path,
                     cache_dir_path=cache_dir_path,
+                    streams=streams,
                 )
                 detailed_subtitle_streams_by_index = {
                     stream.index: stream for stream in detailed_subtitle_streams

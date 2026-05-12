@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
 
@@ -53,3 +53,50 @@ def test_get_detailed_subtitle_streams_enriches_subtitle_stats(tmp_path: Path):
     )
     stats.assert_called_once()
     assert stats.call_args.kwargs == {"cache_dir_path": cache_dir_path}
+
+
+def test_get_detailed_subtitle_streams_uses_provided_subtitle_streams(
+    tmp_path: Path,
+):
+    """Test detailed subtitle enrichment can reuse provided mixed streams.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    cache_dir_path = tmp_path / "cache"
+    streams = [
+        VideoStream(index=0, codec_type="video", codec_name="h264"),
+        AudioStream(index=1, codec_type="audio", codec_name="aac"),
+        SubtitleStream(index=2, codec_type="subtitle", codec_name="subrip"),
+    ]
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.details.get_subtitle_streams",
+        ) as get_subtitle_streams,
+        patch("scinoephile.media.subtitles.details.cache_subtitles") as cache,
+        patch(
+            "scinoephile.media.subtitles.details.get_subtitle_stream_stats",
+            return_value=SimpleNamespace(
+                event_count=12,
+                first_start_ms=62_500,
+                last_end_ms=3_725_250,
+            ),
+        ),
+    ):
+        detailed_streams = get_detailed_subtitle_streams(
+            infile_path,
+            cache_dir_path=cache_dir_path,
+            streams=streams,
+        )
+
+    get_subtitle_streams.assert_not_called()
+    assert [stream.index for stream in detailed_streams] == [2]
+    assert detailed_streams[0].subtitle_count == 12
+    cache.assert_called_once_with(
+        infile_path,
+        [streams[2]],
+        cache_dir_path=cache_dir_path,
+    )

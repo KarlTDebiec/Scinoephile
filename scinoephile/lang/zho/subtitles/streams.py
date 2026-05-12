@@ -4,10 +4,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import replace
 from pathlib import Path
 
-from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media import Stream, SubtitleStream
 from scinoephile.core.media.language import is_chinese
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
@@ -20,23 +21,26 @@ def get_zho_subtitle_streams(
     infile_path: Path,
     *,
     cache_dir_path: Path | None = None,
+    streams: Sequence[Stream] | None = None,
 ) -> list[SubtitleStream]:
     """Get subtitle stream metadata enriched with Chinese script details.
 
     Arguments:
         infile_path: media input file to inspect
         cache_dir_path: cache directory path
+        streams: optional pre-probed media streams
     Returns:
         enriched subtitle stream metadata
     """
-    streams = []
+    zho_streams = []
     for stream in get_detailed_subtitle_streams(
         infile_path,
         cache_dir_path=cache_dir_path,
+        streams=streams,
     ):
         language = stream.language
         if not is_chinese(language):
-            streams.append(stream)
+            zho_streams.append(stream)
             continue
 
         analysis = analyze_zho_subtitle_stream_script(
@@ -52,5 +56,5 @@ def get_zho_subtitle_streams(
             language = f"{language}-{script}"
         else:
             language = f"{language}-Unknown"
-        streams.append(replace(stream, language=language))
-    return streams
+        zho_streams.append(replace(stream, language=language))
+    return zho_streams

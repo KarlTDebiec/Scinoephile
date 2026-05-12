@@ -8,7 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from scinoephile.core.media import SubtitleStream
+from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 
 
@@ -55,6 +55,7 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     get_detailed_subtitle_streams.assert_called_once_with(
         infile_path,
         cache_dir_path=cache_dir_path,
+        streams=None,
     )
     analyze.assert_called_once()
     assert analyze.call_args.args[1].index == 2
@@ -125,3 +126,43 @@ def test_get_zho_subtitle_streams_normalizes_chi_language(tmp_path: Path):
         streams = get_zho_subtitle_streams(infile_path)
 
     assert streams[0].language == "zho-Unknown"
+
+
+def test_get_zho_subtitle_streams_uses_provided_streams(tmp_path: Path):
+    """Test Chinese stream probing reuses provided mixed streams.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    streams = [
+        VideoStream(index=0, codec_type="video", codec_name="h264"),
+        AudioStream(index=1, codec_type="audio", codec_name="aac"),
+        SubtitleStream(
+            index=2,
+            codec_type="subtitle",
+            codec_name="subrip",
+            language="zho",
+        ),
+    ]
+
+    with (
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
+            return_value=[streams[2]],
+        ) as get_detailed_subtitle_streams,
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
+            return_value=SimpleNamespace(script="zho-Hant"),
+        ),
+    ):
+        zho_streams = get_zho_subtitle_streams(infile_path, streams=streams)
+
+    get_detailed_subtitle_streams.assert_called_once_with(
+        infile_path,
+        cache_dir_path=None,
+        streams=streams,
+    )
+    assert [stream.index for stream in zho_streams] == [2]
+    assert zho_streams[0].language == "zho-Hant"

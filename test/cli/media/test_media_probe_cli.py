@@ -77,6 +77,7 @@ def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
     get_zho_subtitle_streams.assert_called_once_with(
         infile_path.resolve(),
         cache_dir_path=cache_dir_path.resolve(),
+        streams=[],
     )
 
 
