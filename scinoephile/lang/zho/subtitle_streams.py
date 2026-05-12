@@ -23,7 +23,6 @@ from scinoephile.lang.zho.script_analysis.subtitles import (
 )
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
-    get_or_create_image_subtitle_dir_path,
     get_subtitle_cache_path,
 )
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
@@ -71,6 +70,7 @@ def analyze_zho_subtitle_stream_script(
         )
         return _load_subtitle_script_analysis(analysis_cache_path)
 
+    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
     stream_path = get_subtitle_cache_path(
         infile_path,
         stream,
@@ -78,18 +78,13 @@ def analyze_zho_subtitle_stream_script(
     )
 
     if stream.extension == "sup":
-        image_dir_path = get_or_create_image_subtitle_dir_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        )
+        image_dir_path = stream_path.parent / "image-series"
         analysis = get_zho_image_subtitle_script_analysis(
             image_dir_path,
             title=stream.title,
             sample_size=sample_size,
         )
     else:
-        cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
         series = Series.load(stream_path)
         text = "\n".join(event.text for event in series)
         analysis = get_zho_subtitle_script_analysis(text)

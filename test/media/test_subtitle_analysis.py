@@ -15,10 +15,8 @@ from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.zho.subtitle_streams import analyze_zho_subtitle_stream_script
 from scinoephile.media.subtitles.cache import (
-    _get_cached_image_subtitle_dir_path,
     cache_subtitles,
     get_subtitle_cache_path,
-    is_valid_image_subtitle_cache,
 )
 from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
 
@@ -134,18 +132,6 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     assert stats.last_end_ms == 65250
 
 
-def test_image_subtitle_cache_without_index_is_invalid(tmp_path: Path):
-    """Test image subtitle caches without HTML index are invalid.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    image_dir_path = tmp_path / "image-series"
-    image_dir_path.mkdir()
-
-    assert not is_valid_image_subtitle_cache(image_dir_path)
-
-
 def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
     """Test image subtitle stats read cached rendered images.
 
@@ -175,8 +161,8 @@ def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
     assert stats.last_end_ms == 65250
 
 
-def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
-    """Test image subtitle stats build rendered image cache.
+def test_cache_subtitles_builds_image_cache_for_sup_stream(tmp_path: Path):
+    """Test subtitle caching renders cached SUP subtitle images.
 
     Arguments:
         tmp_path: temporary directory provided by pytest
@@ -199,18 +185,17 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
         "scinoephile.media.subtitles.cache.ImageSeries.load",
         return_value=image_series,
     ):
-        stats = get_subtitle_stream_stats(
+        cache_subtitles(
             infile_path,
-            stream,
+            [stream],
             cache_dir_path=tmp_path / "cache",
         )
 
-    image_dir_path = _get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=tmp_path / "cache",
     )
-    assert stats.event_count == 1
     assert (image_dir_path / "index.html").exists()
 
 
@@ -464,7 +449,7 @@ def _cache_image_subtitles(
         rendered image subtitle directory path
     """
     _cache_subtitle_stream(infile_path, stream, cache_dir_path, b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
+    image_dir_path = _get_image_subtitle_dir_path(
         infile_path,
         stream,
         cache_dir_path=cache_dir_path,
@@ -515,3 +500,28 @@ def _cache_subtitle_stream(
     else:
         stream_path.write_text(data, encoding="utf-8")
     return stream_path
+
+
+def _get_image_subtitle_dir_path(
+    infile_path: Path,
+    stream: SubtitleStream,
+    *,
+    cache_dir_path: Path,
+) -> Path:
+    """Get the image subtitle cache directory path used by the media cache.
+
+    Arguments:
+        infile_path: media input file
+        stream: subtitle stream to cache
+        cache_dir_path: cache directory path
+    Returns:
+        cached image subtitle directory path
+    """
+    return (
+        get_subtitle_cache_path(
+            infile_path,
+            stream,
+            cache_dir_path=cache_dir_path,
+        ).parent
+        / "image-series"
+    )

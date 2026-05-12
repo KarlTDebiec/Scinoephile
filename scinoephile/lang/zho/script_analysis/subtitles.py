@@ -8,7 +8,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.media.subtitles.cache import load_cached_image_subtitles
 
 from .analysis import get_zho_script_analysis
 from .result import ZhoScriptAnalysis
@@ -65,7 +64,8 @@ def get_zho_image_subtitle_script_analysis(
     Returns:
         Chinese subtitle script analysis
     """
-    event_count = len(ImageSeries.load(image_dir_path))
+    series = ImageSeries.load(image_dir_path)
+    event_count = len(series)
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
         return ZhoSubtitleScriptAnalysis(
@@ -76,8 +76,8 @@ def get_zho_image_subtitle_script_analysis(
             failure_reason="no subtitle images to sample",
         )
 
-    analysis = _get_cached_image_subtitle_sample_analysis(
-        image_dir_path,
+    analysis = _get_image_subtitle_sample_analysis(
+        series,
         sample_indexes,
     )
     expected_script = _get_expected_script_from_title(title)
@@ -93,8 +93,8 @@ def get_zho_image_subtitle_script_analysis(
             event_count,
             CONFLICT_ZHO_SUBTITLE_SAMPLE_SIZE,
         )
-        analysis = _get_cached_image_subtitle_sample_analysis(
-            image_dir_path,
+        analysis = _get_image_subtitle_sample_analysis(
+            series,
             expanded_sample_indexes,
         )
     return analysis
@@ -141,52 +141,6 @@ def _from_zho_analysis(
     )
 
 
-def _get_cached_image_subtitle_sample_analysis(
-    image_dir_path: Path,
-    sample_indexes: list[int],
-) -> ZhoSubtitleScriptAnalysis:
-    """Analyze selected cached image subtitles using PaddleOCR.
-
-    Arguments:
-        image_dir_path: rendered image subtitle cache directory path
-        sample_indexes: zero-based indexes of subtitles to OCR
-    Returns:
-        Chinese subtitle script analysis
-    """
-    sampled_events = load_cached_image_subtitles(image_dir_path, sample_indexes)
-    analyses = []
-    for language in ZHO_SUBTITLE_OCR_LANGUAGES:
-        from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
-            ocr_image_series_with_paddle,
-        )
-
-        sampled_series = ImageSeries(events=sampled_events)
-        text_series = ocr_image_series_with_paddle(
-            sampled_series,
-            language=language,
-        )
-        text = "\n".join(event.text for event in text_series)
-        analyses.append(get_zho_script_analysis(text))
-
-    first_analysis = analyses[0]
-    second_analysis = analyses[1]
-    script = first_analysis.script
-    failure_reason = None
-    if script is None or second_analysis.script != script:
-        script = None
-        failure_reason = "OCR script analyses did not agree"
-
-    return ZhoSubtitleScriptAnalysis(
-        script=script,
-        simplified_count=first_analysis.simplified_count,
-        traditional_count=first_analysis.traditional_count,
-        shared_count=first_analysis.shared_count,
-        sample_indexes=tuple(sample_indexes),
-        ocr_languages=ZHO_SUBTITLE_OCR_LANGUAGES,
-        failure_reason=failure_reason,
-    )
-
-
 def _get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
     """Get evenly spaced indexes for sampling a subtitle series.
 
@@ -223,3 +177,49 @@ def _get_expected_script_from_title(title: str | None) -> str | None:
     if "traditional" in normalized_title or "hant" in normalized_title:
         return "zho-Hant"
     return None
+
+
+def _get_image_subtitle_sample_analysis(
+    series: ImageSeries,
+    sample_indexes: list[int],
+) -> ZhoSubtitleScriptAnalysis:
+    """Analyze selected cached image subtitles using PaddleOCR.
+
+    Arguments:
+        series: rendered image subtitle series
+        sample_indexes: zero-based indexes of subtitles to OCR
+    Returns:
+        Chinese subtitle script analysis
+    """
+    sampled_events = [series.events[index] for index in sample_indexes]
+    analyses = []
+    for language in ZHO_SUBTITLE_OCR_LANGUAGES:
+        from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
+            ocr_image_series_with_paddle,
+        )
+
+        sampled_series = ImageSeries(events=sampled_events)
+        text_series = ocr_image_series_with_paddle(
+            sampled_series,
+            language=language,
+        )
+        text = "\n".join(event.text for event in text_series)
+        analyses.append(get_zho_script_analysis(text))
+
+    first_analysis = analyses[0]
+    second_analysis = analyses[1]
+    script = first_analysis.script
+    failure_reason = None
+    if script is None or second_analysis.script != script:
+        script = None
+        failure_reason = "OCR script analyses did not agree"
+
+    return ZhoSubtitleScriptAnalysis(
+        script=script,
+        simplified_count=first_analysis.simplified_count,
+        traditional_count=first_analysis.traditional_count,
+        shared_count=first_analysis.shared_count,
+        sample_indexes=tuple(sample_indexes),
+        ocr_languages=ZHO_SUBTITLE_OCR_LANGUAGES,
+        failure_reason=failure_reason,
+    )

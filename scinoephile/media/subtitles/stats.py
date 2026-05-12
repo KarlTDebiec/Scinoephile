@@ -12,7 +12,6 @@ from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
-    get_or_create_image_subtitle_dir_path,
     get_subtitle_cache_path,
 )
 
@@ -49,20 +48,16 @@ def get_subtitle_stream_stats(
     Returns:
         subtitle stream statistics
     """
+    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
+    stream_path = get_subtitle_cache_path(
+        infile_path,
+        stream,
+        cache_dir_path=cache_dir_path,
+    )
     if stream.extension == "sup":
-        image_dir_path = get_or_create_image_subtitle_dir_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        )
+        image_dir_path = stream_path.parent / "image-series"
         series = ImageSeries.load(image_dir_path)
     else:
-        cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
-        stream_path = get_subtitle_cache_path(
-            infile_path,
-            stream,
-            cache_dir_path=cache_dir_path,
-        )
         series = Series.load(stream_path)
 
     if series:
