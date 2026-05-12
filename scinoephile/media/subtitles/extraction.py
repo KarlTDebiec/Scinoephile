@@ -43,9 +43,10 @@ def extract_subtitle_stream(
         stream,
         cache_dir_path=cache_dir_path,
     )
-    if stream_path.resolve() != outfile_path.resolve():
+    if stream_path != outfile_path:
         if not outfile_path.parent.exists():
             outfile_path.parent.mkdir(parents=True)
             logger.info(f"Created subtitle output directory: {outfile_path.parent}")
         copy2(stream_path, outfile_path)
+        logger.info(f"Extracted subtitle stream to {outfile_path}")
     return outfile_path

@@ -21,13 +21,12 @@ from scinoephile.lang.zho.script_analysis.subtitles import (
     get_zho_image_subtitle_script_analysis,
     get_zho_subtitle_script_analysis,
 )
-from scinoephile.media.probe import get_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
     get_or_create_image_subtitle_dir_path,
     get_subtitle_cache_path,
 )
-from scinoephile.media.subtitles.details import with_stream_details
+from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
 __all__ = [
     "analyze_zho_subtitle_stream_script",
@@ -113,10 +112,11 @@ def get_zho_subtitle_streams(
     Returns:
         enriched subtitle stream metadata
     """
-    detailed_streams = []
-    for stream in get_streams(infile_path):
-        if not isinstance(stream, SubtitleStream):
-            continue
+    streams = []
+    for stream in get_detailed_subtitle_streams(
+        infile_path,
+        cache_dir_path=cache_dir_path,
+    ):
         language = stream.language
         if is_chinese(language):
             analysis = analyze_zho_subtitle_stream_script(
@@ -129,23 +129,15 @@ def get_zho_subtitle_streams(
                 language = analysis.script
             else:
                 language = f"{language}-Unknown"
-            detailed_streams.append(
+            streams.append(
                 replace(
                     stream,
                     language=language,
                 )
             )
         else:
-            detailed_streams.append(stream)
-    return [
-        stream
-        for stream in with_stream_details(
-            infile_path,
-            detailed_streams,
-            cache_dir_path=cache_dir_path,
-        )
-        if isinstance(stream, SubtitleStream)
-    ]
+            streams.append(stream)
+    return streams
 
 
 def _get_subtitle_analysis_cache_path(

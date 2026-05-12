@@ -55,64 +55,24 @@ def get_subtitle_stream_stats(
             stream,
             cache_dir_path=cache_dir_path,
         )
-        return _get_image_subtitle_stats(image_dir_path)
+        series = ImageSeries.load(image_dir_path)
+    else:
+        cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
+        stream_path = get_subtitle_cache_path(
+            infile_path,
+            stream,
+            cache_dir_path=cache_dir_path,
+        )
+        series = Series.load(stream_path)
 
-    cache_subtitles(infile_path, [stream], cache_dir_path=cache_dir_path)
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=cache_dir_path,
-    )
-    return _get_subtitle_series_stats(Series.load(stream_path))
-
-
-def _get_first_start_ms(series: Series) -> int | None:
-    """Get first subtitle start time from a series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        first subtitle start time in milliseconds, if available
-    """
-    if not series:
-        return None
-    return min(event.start for event in series)
-
-
-def _get_image_subtitle_stats(image_dir_path: Path) -> SubtitleStreamStats:
-    """Get image subtitle stats from cached rendered images.
-
-    Arguments:
-        image_dir_path: rendered image subtitle cache directory path
-    Returns:
-        subtitle stream statistics
-    """
-    return _get_subtitle_series_stats(ImageSeries.load(image_dir_path))
-
-
-def _get_last_end_ms(series: Series) -> int | None:
-    """Get last subtitle end time from a series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        last subtitle end time in milliseconds, if available
-    """
-    if not series:
-        return None
-    return max(event.end for event in series)
-
-
-def _get_subtitle_series_stats(series: Series) -> SubtitleStreamStats:
-    """Get subtitle stats from a loaded subtitle series.
-
-    Arguments:
-        series: loaded subtitle series
-    Returns:
-        subtitle stream statistics
-    """
+    if series:
+        first_start_ms = min(event.start for event in series)
+        last_end_ms = max(event.end for event in series)
+    else:
+        first_start_ms = None
+        last_end_ms = None
     return SubtitleStreamStats(
         event_count=len(series),
-        first_start_ms=_get_first_start_ms(series),
-        last_end_ms=_get_last_end_ms(series),
+        first_start_ms=first_start_ms,
+        last_end_ms=last_end_ms,
     )
