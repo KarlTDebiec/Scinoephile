@@ -4,13 +4,16 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 import numpy as np
 import pytest
 from PIL import Image
 
+import scinoephile.image.ocr.paddle.paddle_ocr_recognizer as paddle_module
 from scinoephile.image.ocr.paddle import PaddleOcrRecognizer
 from scinoephile.image.ocr.paddle.bounding_box import PaddleOcrBoundingBox
 from scinoephile.image.ocr.paddle.text_result import PaddleOcrTextResult
@@ -82,15 +85,19 @@ def test_paddle_ocr_recognizer_uses_server_models(
             """
             observed_kwargs.update(kwargs)
 
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.paddle_ocr_recognizer.PaddleOCR",
-        FakePaddleOCR,
-    )
+    paddleocr = ModuleType("paddleocr")
+    setattr(paddleocr, "PaddleOCR", FakePaddleOCR)
+    monkeypatch.setitem(sys.modules, "paddleocr", paddleocr)
 
     PaddleOcrRecognizer(language="ch")
 
     assert observed_kwargs["text_detection_model_name"] == "PP-OCRv5_server_det"
     assert observed_kwargs["text_recognition_model_name"] == "PP-OCRv5_server_rec"
+
+
+def test_paddle_ocr_recognizer_does_not_cache_paddleocr_globally():
+    """Test PaddleOCR imports rely on Python's import cache."""
+    assert not hasattr(paddle_module, "PaddleOCR")
 
 
 def test_paddle_ocr_recognizer_rejects_unsupported_languages():
