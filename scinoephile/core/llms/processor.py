@@ -37,6 +37,7 @@ class Processor(ABC):
         test_case_path: Path | None = None,
         *,
         provider: LLMProvider,
+        additional_context: str | None = None,
         auto_verify: bool = False,
         tool_box: ToolBox | None = None,
     ):
@@ -47,6 +48,7 @@ class Processor(ABC):
             test_cases: test cases
             test_case_path: path to file containing test cases
             provider: provider to use for queries
+            additional_context: additional context to include in the system prompt
             auto_verify: automatically verify test cases if they meet selected criteria
             tool_box: available tools and handlers
         """
@@ -76,6 +78,7 @@ class Processor(ABC):
             verified_test_cases=[tc for tc in test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
+            additional_context=additional_context,
             auto_verify=auto_verify,
             tool_box=tool_box,
         )
