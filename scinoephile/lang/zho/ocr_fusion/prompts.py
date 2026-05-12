@@ -7,8 +7,8 @@ from __future__ import annotations
 from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
-from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.prompts import PromptZhoHans
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionPrompt
 
 __all__ = [

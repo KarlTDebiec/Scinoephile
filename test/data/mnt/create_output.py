@@ -12,8 +12,8 @@ from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import OpenCCConfig, get_zho_converted
 from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_translated_from_zho_with_eng_guidance,
     get_eng_zho_guided_translator,

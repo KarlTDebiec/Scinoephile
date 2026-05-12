@@ -11,7 +11,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series, get_series_with_subs_merged
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,

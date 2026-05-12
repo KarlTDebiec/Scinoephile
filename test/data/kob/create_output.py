@@ -19,8 +19,8 @@ from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.conversion import OpenCCConfig
 from scinoephile.lang.zho.flattening import get_zho_flattened
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoBlockReviewPromptYueHans,
     YueVsZhoBlockReviewPromptYueHant,

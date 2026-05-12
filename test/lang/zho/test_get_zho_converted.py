@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import (
+from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
     get_zho_converter,

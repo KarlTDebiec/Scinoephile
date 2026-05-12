@@ -8,7 +8,7 @@ from typing import ClassVar
 
 from scinoephile.core.text import dedent_and_compact
 from scinoephile.lang.eng.prompts import PromptEng
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
 
 __all__ = [

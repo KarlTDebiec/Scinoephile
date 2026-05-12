@@ -24,7 +24,7 @@ from scinoephile.common.exceptions import ArgumentConflictError, NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,

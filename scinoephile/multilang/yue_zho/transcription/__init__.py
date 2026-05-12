@@ -11,7 +11,7 @@ from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
-from scinoephile.lang.zho.conversion import OpenCCConfig
+from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
