@@ -155,12 +155,12 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
 @pytest.mark.parametrize(
     ("parameter_name", "message"),
     [
-        ("max_offset", "max_offset must be positive"),
-        ("sample_rate", "sample_rate must be positive"),
-        ("coarse_step", "coarse_step must be positive"),
-        ("fine_step", "fine_step must be positive"),
-        ("width", "width must be positive"),
-        ("height", "height must be positive"),
+        ("max_offset", "0.0 is less than minimum value"),
+        ("sample_rate", "0.0 is less than minimum value"),
+        ("coarse_step", "0.0 is less than minimum value"),
+        ("fine_step", "0.0 is less than minimum value"),
+        ("width", "0 is less than minimum value of 1"),
+        ("height", "0 is less than minimum value of 1"),
     ],
 )
 def test_get_video_offset_rejects_invalid_numeric_parameters(

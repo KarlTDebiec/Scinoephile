@@ -1,17 +1,25 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Video offset detection from sampled frame comparisons."""
+"""Video offset detection from sampled frame comparisons.
+
+This module contains logic adapted from `vs_align` by pifroggi:
+https://github.com/pifroggi/vs_align
+
+See `docs/THIRD_PARTY_NOTICES.md` for license details.
+"""
 
 from __future__ import annotations
 
 from bisect import bisect_left
 from dataclasses import dataclass
 from logging import getLogger
+from math import nextafter
 from pathlib import Path
 
 import ffmpeg
 import numpy as np
 
+from scinoephile.common.validation import val_float, val_int
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
@@ -97,14 +105,15 @@ def get_video_offset(
         ValueError: if numeric parameters are invalid
         ScinoephileError: if frames cannot be sampled or scored
     """
-    _validate_positive("max_offset", max_offset)
-    _validate_positive("sample_rate", sample_rate)
-    _validate_nonnegative("start_time", start_time)
-    _validate_positive("duration", duration)
-    _validate_positive("coarse_step", coarse_step)
-    _validate_positive("fine_step", fine_step)
-    _validate_positive("width", width)
-    _validate_positive("height", height)
+    positive_float_min = nextafter(0.0, 1.0)
+    max_offset = val_float(max_offset, min_value=positive_float_min)
+    sample_rate = val_float(sample_rate, min_value=positive_float_min)
+    start_time = val_float(start_time, min_value=0.0)
+    duration = val_float(duration, min_value=positive_float_min)
+    coarse_step = val_float(coarse_step, min_value=positive_float_min)
+    fine_step = val_float(fine_step, min_value=positive_float_min)
+    width = val_int(width, min_value=1)
+    height = val_int(height, min_value=1)
 
     reference_samples = _sample_video_frames(
         reference_infile_path,
@@ -323,29 +332,3 @@ def _score_offsets(
                 )
             )
     return sorted(candidates, key=lambda candidate: candidate.score)
-
-
-def _validate_positive(name: str, value: float | int):
-    """Validate that a numeric value is positive.
-
-    Arguments:
-        name: value name for error messages
-        value: numeric value
-    Raises:
-        ValueError: if value is not positive
-    """
-    if value <= 0:
-        raise ValueError(f"{name} must be positive")
-
-
-def _validate_nonnegative(name: str, value: float | int):
-    """Validate that a numeric value is nonnegative.
-
-    Arguments:
-        name: value name for error messages
-        value: numeric value
-    Raises:
-        ValueError: if value is negative
-    """
-    if value < 0:
-        raise ValueError(f"{name} must be nonnegative")
