@@ -6,10 +6,12 @@ from __future__ import annotations
 
 from .media_cli import MediaCli
 from .media_extract_subs_cli import MediaExtractSubsCli
+from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
 
 __all__ = [
     "MediaCli",
     "MediaExtractSubsCli",
+    "MediaOffsetCli",
     "MediaProbeCli",
 ]
