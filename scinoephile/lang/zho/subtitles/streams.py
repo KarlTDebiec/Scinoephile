@@ -11,7 +11,7 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.core.media.language import is_chinese
 from scinoephile.media.subtitles.details import get_detailed_subtitle_streams
 
-from .script_analysis import analyze_zho_subtitle_stream_script
+from .analysis import analyze_zho_subtitle_stream_script
 
 __all__ = ["get_zho_subtitle_streams"]
 

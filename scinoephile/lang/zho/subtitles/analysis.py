@@ -15,14 +15,8 @@ from scinoephile.core.media.language import is_chinese
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho.script.analysis import (
-    ZhoScriptAnalysis,
-    get_zho_script_analysis,
-)
-from scinoephile.media.subtitles.cache import (
-    cache_subtitles,
-    get_subtitle_cache_path,
-)
+from scinoephile.lang.zho.script.analysis import get_zho_script_analysis
+from scinoephile.media.subtitles.cache import cache_subtitles, get_subtitle_cache_path
 
 __all__ = [
     "ZhoSubtitleScriptAnalysis",
@@ -31,8 +25,6 @@ __all__ = [
 
 _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE = 4
 """Default number of image subtitle samples to OCR."""
-_CONFLICT_ZHO_SUBTITLE_SAMPLE_SIZE = 16
-"""Number of image subtitle samples to OCR when more evidence is needed."""
 _ZHO_SUBTITLE_OCR_LANGUAGES = ("ch", "chinese_cht")
 """PaddleOCR languages to compare for Chinese subtitle script analysis."""
 
@@ -43,13 +35,13 @@ logger = getLogger(__name__)
 class ZhoSubtitleScriptAnalysis:
     """Chinese subtitle stream script analysis result."""
 
-    script: str | None
+    script: str | None = None
     """Detected script tag, when determined."""
-    simplified_count: int
+    simplified_count: int = 0
     """Number of simplified-only Hanzi observed."""
-    traditional_count: int
+    traditional_count: int = 0
     """Number of traditional-only Hanzi observed."""
-    shared_count: int
+    shared_count: int = 0
     """Number of non-decisive Hanzi observed."""
     sample_indexes: tuple[int, ...] = ()
     """Indexes sampled for OCR, if applicable."""
@@ -77,8 +69,7 @@ def analyze_zho_subtitle_stream_script(
         subtitle script analysis
     """
     if not is_chinese(stream.language):
-        return _get_zho_subtitle_script_analysis(
-            "",
+        return ZhoSubtitleScriptAnalysis(
             failure_reason="not a Chinese subtitle stream",
         )
 
@@ -105,7 +96,6 @@ def analyze_zho_subtitle_stream_script(
         image_dir_path = stream_path.parent / "image-series"
         analysis = _get_zho_image_subtitle_script_analysis(
             image_dir_path,
-            title=stream.title,
             sample_size=sample_size,
         )
     else:
@@ -116,28 +106,6 @@ def analyze_zho_subtitle_stream_script(
     _save_subtitle_script_analysis(analysis, analysis_cache_path)
     logger.info(f"Saved subtitle script analysis to cache: {analysis_cache_path}")
     return analysis
-
-
-def _from_zho_analysis(
-    analysis: ZhoScriptAnalysis,
-    *,
-    failure_reason: str | None = None,
-) -> ZhoSubtitleScriptAnalysis:
-    """Convert Chinese text analysis to subtitle stream analysis.
-
-    Arguments:
-        analysis: Chinese text analysis
-        failure_reason: failure reason, if any
-    Returns:
-        Chinese subtitle script analysis
-    """
-    return ZhoSubtitleScriptAnalysis(
-        script=analysis.script,
-        simplified_count=analysis.simplified_count,
-        traditional_count=analysis.traditional_count,
-        shared_count=analysis.shared_count,
-        failure_reason=failure_reason,
-    )
 
 
 def _get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
@@ -160,24 +128,6 @@ def _get_evenly_spaced_indexes(length: int, sample_size: int) -> list[int]:
     ]
 
 
-def _get_expected_script_from_title(title: str | None) -> str | None:
-    """Get expected Chinese script from a stream title.
-
-    Arguments:
-        title: stream title
-    Returns:
-        expected script, if a title contains an explicit script hint
-    """
-    if title is None:
-        return None
-    normalized_title = title.casefold()
-    if "simplified" in normalized_title or "hans" in normalized_title:
-        return "zho-Hans"
-    if "traditional" in normalized_title or "hant" in normalized_title:
-        return "zho-Hant"
-    return None
-
-
 def _get_image_subtitle_sample_analysis(
     series: ImageSeries,
     sample_indexes: list[int],
@@ -190,34 +140,36 @@ def _get_image_subtitle_sample_analysis(
     Returns:
         Chinese subtitle script analysis
     """
-    sampled_events = [series.events[index] for index in sample_indexes]
-    analyses = []
-    for language in _ZHO_SUBTITLE_OCR_LANGUAGES:
-        from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
-            ocr_image_series_with_paddle,
-        )
+    from scinoephile.image.ocr.paddle import (  # noqa: PLC0415
+        ocr_image_series_with_paddle,
+    )
 
-        sampled_series = ImageSeries(events=sampled_events)
+    sampled_series = ImageSeries(
+        events=[series.events[index] for index in sample_indexes]
+    )
+    script_analyses = []
+    for language in _ZHO_SUBTITLE_OCR_LANGUAGES:
         text_series = ocr_image_series_with_paddle(
             sampled_series,
             language=language,
         )
         text = "\n".join(event.text for event in text_series)
-        analyses.append(get_zho_script_analysis(text))
+        script_analyses.append(get_zho_script_analysis(text))
 
-    first_analysis = analyses[0]
-    second_analysis = analyses[1]
-    script = first_analysis.script
+    reference_analysis = script_analyses[0]
+    script = reference_analysis.script
     failure_reason = None
-    if script is None or second_analysis.script != script:
+    if script is None or any(
+        analysis.script != script for analysis in script_analyses[1:]
+    ):
         script = None
         failure_reason = "OCR script analyses did not agree"
 
     return ZhoSubtitleScriptAnalysis(
         script=script,
-        simplified_count=first_analysis.simplified_count,
-        traditional_count=first_analysis.traditional_count,
-        shared_count=first_analysis.shared_count,
+        simplified_count=reference_analysis.simplified_count,
+        traditional_count=reference_analysis.traditional_count,
+        shared_count=reference_analysis.shared_count,
         sample_indexes=tuple(sample_indexes),
         ocr_languages=_ZHO_SUBTITLE_OCR_LANGUAGES,
         failure_reason=failure_reason,
@@ -262,14 +214,12 @@ def _get_subtitle_analysis_cache_path(
 def _get_zho_image_subtitle_script_analysis(
     image_dir_path: Path,
     *,
-    title: str | None = None,
     sample_size: int = _DEFAULT_ZHO_SUBTITLE_SAMPLE_SIZE,
 ) -> ZhoSubtitleScriptAnalysis:
     """Analyze Chinese script in rendered image subtitles using PaddleOCR.
 
     Arguments:
         image_dir_path: rendered image subtitle cache directory path
-        title: stream title, if available
         sample_size: maximum number of image subtitles to OCR
     Returns:
         Chinese subtitle script analysis
@@ -279,35 +229,13 @@ def _get_zho_image_subtitle_script_analysis(
     sample_indexes = _get_evenly_spaced_indexes(event_count, sample_size)
     if not sample_indexes:
         return ZhoSubtitleScriptAnalysis(
-            script=None,
-            simplified_count=0,
-            traditional_count=0,
-            shared_count=0,
             failure_reason="no subtitle images to sample",
         )
 
-    analysis = _get_image_subtitle_sample_analysis(
+    return _get_image_subtitle_sample_analysis(
         series,
         sample_indexes,
     )
-    expected_script = _get_expected_script_from_title(title)
-    should_expand_samples = False
-    if event_count > len(sample_indexes):
-        if analysis.script is None:
-            should_expand_samples = True
-        elif expected_script is not None and analysis.script != expected_script:
-            should_expand_samples = True
-
-    if should_expand_samples:
-        expanded_sample_indexes = _get_evenly_spaced_indexes(
-            event_count,
-            _CONFLICT_ZHO_SUBTITLE_SAMPLE_SIZE,
-        )
-        analysis = _get_image_subtitle_sample_analysis(
-            series,
-            expanded_sample_indexes,
-        )
-    return analysis
 
 
 def _get_zho_subtitle_script_analysis(
@@ -326,7 +254,13 @@ def _get_zho_subtitle_script_analysis(
     analysis = get_zho_script_analysis(text)
     if failure_reason is None and analysis.script is None:
         failure_reason = "Chinese script could not be determined"
-    return _from_zho_analysis(analysis, failure_reason=failure_reason)
+    return ZhoSubtitleScriptAnalysis(
+        script=analysis.script,
+        simplified_count=analysis.simplified_count,
+        traditional_count=analysis.traditional_count,
+        shared_count=analysis.shared_count,
+        failure_reason=failure_reason,
+    )
 
 
 def _load_subtitle_script_analysis(cache_path: Path) -> ZhoSubtitleScriptAnalysis:

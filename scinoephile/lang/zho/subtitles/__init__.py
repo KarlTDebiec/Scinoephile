@@ -9,6 +9,6 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from .script_analysis import ZhoSubtitleScriptAnalysis
+from .analysis import ZhoSubtitleScriptAnalysis
 
 __all__ = ["ZhoSubtitleScriptAnalysis"]

@@ -13,7 +13,7 @@ from PIL import Image
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
-from scinoephile.lang.zho.subtitles.script_analysis import (
+from scinoephile.lang.zho.subtitles.analysis import (
     analyze_zho_subtitle_stream_script,
 )
 from scinoephile.media.subtitles.cache import (
@@ -253,123 +253,6 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
         [(10, 8), (12, 8), (14, 8), (16, 8)],
         [(10, 8), (12, 8), (14, 8), (16, 8)],
     ]
-
-
-def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
-    tmp_path: Path,
-    monkeypatch,
-):
-    """Test image subtitle analysis expands OCR samples when title conflicts.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-        monkeypatch: pytest monkeypatch fixture
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(
-        index=2,
-        language="zho",
-        codec_name="hdmv_pgs_subtitle",
-        title="Chinese (Simplified)",
-    )
-    _cache_image_subtitles(
-        infile_path,
-        stream,
-        tmp_path / "cache",
-        event_count=16,
-    )
-    sample_lengths: list[int] = []
-
-    def fake_ocr_image_series_with_paddle(
-        sampled_series: ImageSeries,
-        *,
-        language: str,
-    ) -> Series:
-        sample_lengths.append(len(sampled_series))
-        if len(sampled_series) == 4:
-            text = "繁體中文漢字"
-        else:
-            text = "简体中文汉字"
-        return Series(
-            events=[
-                Subtitle(start=event.start, end=event.end, text=text)
-                for event in sampled_series
-            ]
-        )
-
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.ocr_image_series_with_paddle",
-        fake_ocr_image_series_with_paddle,
-    )
-
-    analysis = analyze_zho_subtitle_stream_script(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-
-    assert analysis.script == "zho-Hans"
-    assert analysis.sample_indexes == tuple(range(16))
-    assert sample_lengths == [4, 4, 16, 16]
-
-
-def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
-    tmp_path: Path,
-    monkeypatch,
-):
-    """Test image subtitle analysis expands OCR samples when inconclusive.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-        monkeypatch: pytest monkeypatch fixture
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(
-        index=2,
-        language="zho",
-        codec_name="hdmv_pgs_subtitle",
-    )
-    _cache_image_subtitles(
-        infile_path,
-        stream,
-        tmp_path / "cache",
-        event_count=16,
-    )
-    sample_lengths: list[int] = []
-
-    def fake_ocr_image_series_with_paddle(
-        sampled_series: ImageSeries,
-        *,
-        language: str,
-    ) -> Series:
-        sample_lengths.append(len(sampled_series))
-        if len(sampled_series) == 4:
-            text = "中文"
-        else:
-            text = "繁體中文漢字"
-        return Series(
-            events=[
-                Subtitle(start=event.start, end=event.end, text=text)
-                for event in sampled_series
-            ]
-        )
-
-    monkeypatch.setattr(
-        "scinoephile.image.ocr.paddle.ocr_image_series_with_paddle",
-        fake_ocr_image_series_with_paddle,
-    )
-
-    analysis = analyze_zho_subtitle_stream_script(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-
-    assert analysis.script == "zho-Hant"
-    assert analysis.sample_indexes == tuple(range(16))
-    assert sample_lengths == [4, 4, 16, 16]
 
 
 def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog):
