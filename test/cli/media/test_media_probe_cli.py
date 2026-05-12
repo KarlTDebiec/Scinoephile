@@ -14,6 +14,7 @@ from scinoephile.cli.media.media_probe_cli import MediaProbeCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
+from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
 from test.helpers import assert_cli_help, assert_cli_usage
 
 
@@ -72,7 +73,7 @@ def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):
             f"--infile {infile_path} --details --cache-dir {cache_dir_path}",
         )
 
-    get_streams.assert_not_called()
+    get_streams.assert_called_once_with(infile_path.resolve())
     get_zho_subtitle_streams.assert_called_once_with(
         infile_path.resolve(),
         cache_dir_path=cache_dir_path.resolve(),
@@ -182,6 +183,72 @@ def test_media_probe_cli_details_includes_chinese_script_in_stream_id(
     assert capsys.readouterr().out.splitlines() == [
         (
             f"Stream #0:2({language}): Subtitle: subrip "
+            "(subtitles=12, span=00:01:02-01:02:05)"
+        ),
+    ]
+
+
+def test_media_probe_cli_details_preserves_non_subtitle_streams(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test media probe CLI detail mode still lists non-subtitle streams.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_probe_cli.get_streams",
+            return_value=[
+                VideoStream(
+                    index=0,
+                    codec_type="video",
+                    codec_name="h264",
+                    width=1920,
+                    height=1080,
+                ),
+                AudioStream(
+                    index=1,
+                    codec_type="audio",
+                    codec_name="aac",
+                    language="eng",
+                    channels=2,
+                ),
+                SubtitleStream(
+                    index=2,
+                    codec_type="subtitle",
+                    codec_name="subrip",
+                    language="zho",
+                ),
+            ],
+        ),
+        patch(
+            "scinoephile.cli.media.media_probe_cli.get_zho_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=2,
+                    codec_type="subtitle",
+                    codec_name="subrip",
+                    language="zho-Hant",
+                    subtitle_count=12,
+                    first_start_ms=62_500,
+                    last_end_ms=3_725_250,
+                ),
+            ],
+        ),
+    ):
+        run_cli_with_args(MediaProbeCli, f"--infile {infile_path} --details")
+
+    assert capsys.readouterr().out.splitlines() == [
+        "Stream #0:0: Video: h264 (1920x1080)",
+        "Stream #0:1(eng): Audio: aac (channels=2)",
+        (
+            "Stream #0:2(zho-Hant): Subtitle: subrip "
             "(subtitles=12, span=00:01:02-01:02:05)"
         ),
     ]

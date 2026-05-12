@@ -6,10 +6,13 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import cast
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
+import ffmpeg
+import pytest
 from PIL import Image
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -73,6 +76,38 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
         )
 
     ffmpeg_input.assert_not_called()
+
+
+def test_cache_subtitles_wraps_ffmpeg_extraction_errors(tmp_path: Path):
+    """Test subtitle caching surfaces ffmpeg failures as ScinoephileError.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
+    input_stream = Mock()
+    input_stream.output.return_value = Mock()
+    merged_stream = Mock()
+    merged_stream.run.side_effect = ffmpeg.Error("ffmpeg", b"", b"failed")
+
+    with (
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.input",
+            return_value=input_stream,
+        ),
+        patch(
+            "scinoephile.media.subtitles.cache.ffmpeg.merge_outputs",
+            return_value=merged_stream,
+        ),
+        pytest.raises(ScinoephileError, match="Could not cache subtitle streams"),
+    ):
+        cache_subtitles(
+            infile_path,
+            [stream],
+            cache_dir_path=tmp_path / "cache",
+        )
 
 
 def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):

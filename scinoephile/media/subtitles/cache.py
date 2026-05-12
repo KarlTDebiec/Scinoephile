@@ -11,6 +11,7 @@ from pathlib import Path
 
 import ffmpeg
 
+from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.image.subtitles import ImageSeries
@@ -70,10 +71,15 @@ def cache_subtitles(
                     },
                 )
             )
-        ffmpeg.merge_outputs(*output_streams).run(
-            quiet=False,
-            overwrite_output=True,
-        )
+        try:
+            ffmpeg.merge_outputs(*output_streams).run(
+                quiet=False,
+                overwrite_output=True,
+            )
+        except ffmpeg.Error as exc:
+            raise ScinoephileError(
+                f"Could not cache subtitle streams from {infile_path}"
+            ) from exc
         for _, stream_path in missing:
             logger.info(f"Saved subtitle stream to cache: {stream_path}")
 

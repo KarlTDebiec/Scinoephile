@@ -14,6 +14,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.media import SubtitleStream
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_streams
 
@@ -77,7 +78,7 @@ class MediaProbeCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--cache-dir",
-            default=cache_dir_path_arg(None),
+            default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
             type=cache_dir_path_arg,
             help="cache directory (default: %(default)s)",
@@ -106,10 +107,20 @@ class MediaProbeCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         try:
             if details:
-                streams = get_zho_subtitle_streams(
+                streams = get_streams(infile_path)
+                detailed_subtitle_streams = get_zho_subtitle_streams(
                     infile_path,
                     cache_dir_path=cache_dir_path,
                 )
+                detailed_subtitle_streams_by_index = {
+                    stream.index: stream for stream in detailed_subtitle_streams
+                }
+                streams = [
+                    detailed_subtitle_streams_by_index.get(stream.index, stream)
+                    if isinstance(stream, SubtitleStream)
+                    else stream
+                    for stream in streams
+                ]
             else:
                 streams = get_streams(infile_path)
             for stream in streams:

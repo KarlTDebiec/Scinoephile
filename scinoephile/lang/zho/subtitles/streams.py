@@ -45,8 +45,11 @@ def get_zho_subtitle_streams(
             cache_dir_path=cache_dir_path,
         )
         language = language.split("-", 1)[0]
+        if language == "chi":
+            language = "zho"
         if analysis.script is not None:
-            language = analysis.script
+            script = analysis.script.split("-", 1)[1]
+            language = f"{language}-{script}"
         else:
             language = f"{language}-Unknown"
         streams.append(replace(stream, language=language))

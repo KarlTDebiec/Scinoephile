@@ -65,3 +65,63 @@ def test_get_zho_subtitle_streams_adds_script_and_regular_details(tmp_path: Path
     assert streams[0].span == "00:01:02-01:02:05"
     assert streams[1].language == "eng"
     assert streams[1].subtitle_count == 8
+
+
+def test_get_zho_subtitle_streams_preserves_yue_language(tmp_path: Path):
+    """Test Chinese stream probing preserves Yue while adding detected script.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+
+    with (
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=2,
+                    codec_name="subrip",
+                    language="yue",
+                ),
+            ],
+        ),
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
+            return_value=SimpleNamespace(script="zho-Hant"),
+        ),
+    ):
+        streams = get_zho_subtitle_streams(infile_path)
+
+    assert streams[0].language == "yue-Hant"
+
+
+def test_get_zho_subtitle_streams_normalizes_chi_language(tmp_path: Path):
+    """Test Chinese stream probing replaces chi with zho before adding script.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.write_bytes(b"video")
+
+    with (
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.get_detailed_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=2,
+                    codec_name="subrip",
+                    language="chi",
+                ),
+            ],
+        ),
+        patch(
+            "scinoephile.lang.zho.subtitles.streams.analyze_zho_subtitle_stream_script",
+            return_value=SimpleNamespace(script=None),
+        ),
+    ):
+        streams = get_zho_subtitle_streams(infile_path)
+
+    assert streams[0].language == "zho-Unknown"

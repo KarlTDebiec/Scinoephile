@@ -118,7 +118,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--cache-dir",
-            default=cache_dir_path_arg(None),
+            default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
             type=cache_dir_path_arg,
             help="cache directory (default: %(default)s)",
@@ -275,7 +275,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             if output_image_dir_path.exists():
                 if overwrite:
                     ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+                print(f"[x] {stream.description} -> {output_image_dir_path}")
             else:
                 print(f"[ ] {stream.description} -> {output_image_dir_path}")
                 ImageSeries.load(outfile_path).save(output_image_dir_path)
@@ -322,7 +322,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             if output_image_dir_path.exists():
                 if overwrite:
                     ImageSeries.load(outfile_path).save(output_image_dir_path)
-                print(f"[ ] {stream.description} -> {output_image_dir_path}")
+                print(f"[x] {stream.description} -> {output_image_dir_path}")
             else:
                 print(f"[ ] {stream.description} -> {output_image_dir_path}")
                 ImageSeries.load(outfile_path).save(output_image_dir_path)

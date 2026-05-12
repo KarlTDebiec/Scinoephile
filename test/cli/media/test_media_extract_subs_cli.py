@@ -267,6 +267,50 @@ def test_media_extract_subs_cli_extracts_sup_streams_to_image_dirs(tmp_path: Pat
     image_series.save.assert_called_once_with(output_dir_path.resolve() / "zho-3")
 
 
+def test_media_extract_subs_cli_marks_existing_sup_image_dir_present(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test media extract-subs CLI marks existing SUP image outputs present.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+    output_dir_path.mkdir()
+    (output_dir_path / "zho-3.sup").touch()
+    (output_dir_path / "zho-3").mkdir()
+    image_series = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(index=3, language="zho", codec_name="hdmv_pgs_subtitle"),
+            ],
+        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.extract_subtitle_stream"),
+        patch("scinoephile.cli.media.media_extract_subs_cli.cache_subtitles"),
+        patch(
+            "scinoephile.cli.media.media_extract_subs_cli.ImageSeries.load",
+            return_value=image_series,
+        ),
+    ):
+        run_cli_with_args(
+            MediaExtractSubsCli,
+            f"--infile {infile_path} --languages zho -o {output_dir_path} "
+            "--extract-sup --overwrite",
+        )
+
+    assert capsys.readouterr().out.splitlines()[-1] == (
+        f"[x] Stream #0:3(zho): Subtitle: hdmv_pgs_subtitle "
+        f"-> {output_dir_path.resolve() / 'zho-3'}"
+    )
+
+
 def test_media_extract_subs_cli_extracts_sup_file_to_image_dir(tmp_path: Path):
     """Test media extract_subs CLI converts SUP input files and copies the source."""
     infile_path = tmp_path / "source.sup"
@@ -338,6 +382,52 @@ def test_media_extract_subs_cli_extracts_sup_file_to_image_dir_in_place(tmp_path
     copy.assert_not_called()
     load.assert_called_once_with(infile_path.resolve())
     image_series.save.assert_called_once_with(tmp_path.resolve() / "source")
+
+
+def test_media_extract_subs_cli_marks_existing_sup_file_image_dir_present(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test media extract-subs CLI marks existing SUP-file image outputs present.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    infile_path = tmp_path / "source.sup"
+    infile_path.touch()
+    output_dir_path = tmp_path / "subtitles"
+    output_dir_path.mkdir()
+    (output_dir_path / "source.sup").touch()
+    (output_dir_path / "source").mkdir()
+    image_series = Mock()
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_extract_subs_cli.ImageSeries.load",
+            return_value=image_series,
+        ),
+        patch("scinoephile.cli.media.media_extract_subs_cli.copy2"),
+        patch(
+            "scinoephile.cli.media.media_extract_subs_cli.get_subtitle_streams",
+            return_value=[
+                SubtitleStream(
+                    index=0,
+                    language=None,
+                    codec_name="hdmv_pgs_subtitle",
+                ),
+            ],
+        ),
+    ):
+        run_cli_with_args(
+            MediaExtractSubsCli,
+            f"--infile {infile_path} -o {output_dir_path} --extract-sup --overwrite",
+        )
+
+    assert capsys.readouterr().out.splitlines()[-1] == (
+        f"[x] Stream #0:0: Subtitle: hdmv_pgs_subtitle "
+        f"-> {output_dir_path.resolve() / 'source'}"
+    )
 
 
 def test_media_extract_subs_cli_rejects_sup_file_without_subtitle_streams(
