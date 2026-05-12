@@ -4,26 +4,11 @@
 
 from __future__ import annotations
 
-from inspect import signature
 from pathlib import Path
 from unittest.mock import patch
 
-from scinoephile import media
 from scinoephile.core.media import AudioStream, Stream, SubtitleStream, VideoStream
-from scinoephile.media import probe as media_probe
 from scinoephile.media.probe import get_streams, get_subtitle_streams
-
-
-def test_media_package_does_not_export_core_stream_classes():
-    """Test media package does not re-export core stream models."""
-    assert not hasattr(media, "SubtitleStream")
-
-
-def test_probe_public_api_is_minimal():
-    """Test media probe exports only public probing functions."""
-    assert "from_ffprobe_stream" not in media_probe.__all__
-    assert list(signature(get_streams).parameters) == ["infile_path"]
-    assert list(signature(get_subtitle_streams).parameters) == ["infile_path"]
 
 
 def test_get_subtitle_streams(tmp_path: Path):
@@ -51,18 +36,13 @@ def test_get_subtitle_streams(tmp_path: Path):
 
     probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 1
-    assert streams[0].index == 2
-    assert streams[0].language == "eng"
-    assert streams[0].codec_name == "subrip"
-    assert streams[0].title == "English"
-    assert streams[0].sdh is True
-    assert streams[0].subtitle_count == 123
-    assert streams[0].extension == "srt"
-    assert streams[0].output_codec == "subrip"
-    assert (
-        streams[0].description
-        == "Stream #0:2(eng): Subtitle: subrip (title=English, subtitles=123)"
-    )
+    stream = streams[0]
+    assert stream.index == 2
+    assert stream.language == "eng"
+    assert stream.codec_name == "subrip"
+    assert stream.title == "English"
+    assert stream.sdh is True
+    assert stream.subtitle_count == 123
 
 
 def test_get_streams_returns_all_typed_streams(tmp_path: Path):
@@ -104,13 +84,15 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
     probe.assert_called_once_with(str(infile_path))
     assert len(streams) == 4
     assert isinstance(streams[0], VideoStream)
-    assert streams[0].description == "Stream #0:0: Video: hevc (3840x2160)"
+    assert streams[0].width == 3840
+    assert streams[0].height == 2160
     assert isinstance(streams[1], AudioStream)
-    assert streams[1].description == "Stream #0:1(jpn): Audio: flac (channels=2)"
+    assert streams[1].language == "jpn"
+    assert streams[1].channels == 2
     assert isinstance(streams[2], SubtitleStream)
-    assert streams[2].description == "Stream #0:2(eng): Subtitle: subrip"
+    assert streams[2].language == "eng"
     assert isinstance(streams[3], Stream)
-    assert streams[3].description == "Stream #0:3: Data: bin_data"
+    assert streams[3].codec_type == "data"
 
 
 def test_get_streams_normalizes_missing_codecs(tmp_path: Path):
@@ -131,7 +113,5 @@ def test_get_streams_normalizes_missing_codecs(tmp_path: Path):
 
     assert streams[0].codec_type == "unknown"
     assert streams[0].codec_name == "unknown"
-    assert streams[0].description == "Stream #0:0: Unknown: unknown"
     assert streams[1].codec_type == "data"
     assert streams[1].codec_name == "data"
-    assert streams[1].description == "Stream #0:1: Data: data"

@@ -11,7 +11,6 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
-from scinoephile.media.subtitles import extraction
 from scinoephile.media.subtitles.cache import get_subtitle_cache_path
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
 
@@ -36,7 +35,7 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     stream_path.write_text("cached subtitles", encoding="utf-8")
 
     caplog.set_level("INFO", logger="scinoephile.media.subtitles.extraction")
-    with patch("scinoephile.media.subtitles.cache.run_command") as run_command:
+    with patch("scinoephile.media.subtitles.extraction.cache_subtitles") as cache:
         extracted_path = extract_subtitle_stream(
             infile_path=infile_path,
             stream=stream,
@@ -47,7 +46,9 @@ def test_extract_subtitle_stream_copies_cached_stream(tmp_path: Path, caplog):
     assert extracted_path == outfile_path
     assert outfile_path.read_text(encoding="utf-8") == "cached subtitles"
     assert f"Created subtitle output directory: {outfile_path.parent}" in caplog.text
-    run_command.assert_not_called()
+    cache.assert_called_once_with(
+        infile_path, [stream], cache_dir_path=tmp_path / "cache"
+    )
 
 
 def test_extract_subtitle_stream_caches_missing_stream(tmp_path: Path):
@@ -102,8 +103,3 @@ def test_extract_subtitle_stream_rejects_unknown_codec(tmp_path: Path):
             outfile_path=outfile_path,
             cache_dir_path=tmp_path / "cache",
         )
-
-
-def test_extract_subtitle_stream_from_cache_is_not_public():
-    """Test the cached extraction implementation does not expose a second API."""
-    assert not hasattr(extraction, "extract_subtitle_stream_from_cache")

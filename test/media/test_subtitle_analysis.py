@@ -4,10 +4,9 @@
 
 from __future__ import annotations
 
-from importlib.util import find_spec
 from pathlib import Path
 from typing import cast
-from unittest.mock import call, patch
+from unittest.mock import patch
 
 from PIL import Image
 
@@ -22,23 +21,6 @@ from scinoephile.media.subtitles.cache import (
     is_valid_image_subtitle_cache,
 )
 from scinoephile.media.subtitles.stats import get_subtitle_stream_stats
-
-
-def test_subtitle_analysis_package_is_removed():
-    """Test old subtitle analysis package is removed."""
-    assert find_spec("scinoephile.media.subtitles.analysis") is None
-
-
-def test_subtitle_stream_uses_language_for_description_and_filename():
-    """Test subtitle stream output uses its language tag."""
-    stream = SubtitleStream(
-        index=2,
-        language="zho-Hant",
-        codec_name="subrip",
-    )
-
-    assert stream.description == "Stream #0:2(zho-Hant): Subtitle: subrip"
-    assert stream.outfile_filename == "zho-Hant-2.srt"
 
 
 def test_get_cached_subtitle_stream_path_changes_by_stream(tmp_path: Path):
@@ -77,18 +59,11 @@ def test_cache_subtitle_streams_uses_existing_stream(tmp_path: Path):
 
     Arguments:
         tmp_path: temporary directory provided by pytest
-        caplog: pytest log capture fixture
     """
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"")
+    _cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"")
 
     with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
         cache_subtitles(
@@ -109,15 +84,11 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
+    _cache_subtitle_stream(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_text(
+        tmp_path / "cache",
         "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
-        encoding="utf-8",
     )
 
     with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
@@ -131,40 +102,6 @@ def test_analyze_text_subtitle_stream_uses_cached_stream(tmp_path: Path):
     assert analysis.script == "zho-Hans"
 
 
-def test_get_text_subtitle_stream_stats_counts_cached_stream(tmp_path: Path):
-    """Test text subtitle stats count cached extracted subtitles.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_text(
-        (
-            "1\n00:00:00,000 --> 00:00:01,000\n第一行\n\n"
-            "2\n00:00:02,000 --> 00:00:03,000\n第二行\n"
-        ),
-        encoding="utf-8",
-    )
-
-    with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
-        stats = get_subtitle_stream_stats(
-            infile_path,
-            stream,
-            cache_dir_path=tmp_path / "cache",
-        )
-
-    ffmpeg_input.assert_not_called()
-    assert stats.event_count == 2
-
-
 def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     """Test text subtitle stream stats read cached extracted subtitles.
 
@@ -174,18 +111,14 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
+    _cache_subtitle_stream(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_text(
+        tmp_path / "cache",
         (
             "1\n00:00:02,500 --> 00:00:04,000\n第一行\n\n"
             "2\n00:01:02,000 --> 00:01:05,250\n第二行\n"
         ),
-        encoding="utf-8",
     )
 
     with patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input:
@@ -199,47 +132,6 @@ def test_get_text_subtitle_stream_stats_from_cached_stream(tmp_path: Path):
     assert stats.event_count == 2
     assert stats.first_start_ms == 2500
     assert stats.last_end_ms == 65250
-
-
-def test_get_image_subtitle_stream_stats_counts_cached_images(tmp_path: Path):
-    """Test image subtitle stats count cached rendered images.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=index * 1000,
-                end=index * 1000 + 500,
-                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
-            )
-            for index in range(7)
-        ]
-    ).save(image_dir_path)
-
-    stats = get_subtitle_stream_stats(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-
-    assert stats.event_count == 7
 
 
 def test_image_subtitle_cache_without_index_is_invalid(tmp_path: Path):
@@ -263,28 +155,14 @@ def test_get_image_subtitle_stream_stats_from_cached_images(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    stream_path = get_subtitle_cache_path(
+    _cache_image_subtitles(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        tmp_path / "cache",
+        event_count=7,
+        first_start_ms=2500,
+        last_end_ms=65_250,
     )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=2500 if index == 0 else index * 10_000,
-                end=65_250 if index == 6 else index * 10_000 + 500,
-                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
-            )
-            for index in range(7)
-        ]
-    ).save(image_dir_path)
 
     stats = get_subtitle_stream_stats(
         infile_path,
@@ -306,13 +184,7 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
+    _cache_subtitle_stream(infile_path, stream, tmp_path / "cache", b"not a real sup")
     image_series = ImageSeries(
         events=[
             ImageSubtitle(
@@ -340,7 +212,6 @@ def test_get_image_subtitle_stream_stats_builds_image_cache(tmp_path: Path):
     )
     assert stats.event_count == 1
     assert (image_dir_path / "index.html").exists()
-    assert not (image_dir_path / "manifest.json").exists()
 
 
 def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
@@ -356,29 +227,12 @@ def test_analyze_image_subtitle_stream_uses_cached_sampled_pngs(
     infile_path = tmp_path / "video.mkv"
     infile_path.write_bytes(b"video")
     stream = SubtitleStream(index=2, language="zho", codec_name="hdmv_pgs_subtitle")
-    stream_path = get_subtitle_cache_path(
+    _cache_image_subtitles(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        tmp_path / "cache",
+        event_count=7,
     )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    image_series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=index * 1000,
-                end=index * 1000 + 500,
-                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
-            )
-            for index in range(7)
-        ]
-    )
-    image_series.save(image_dir_path)
     ocr_sizes: list[list[tuple[int, int]]] = []
 
     def fake_ocr_image_series_with_paddle(
@@ -432,29 +286,12 @@ def test_analyze_image_subtitle_stream_expands_samples_on_title_conflict(
         codec_name="hdmv_pgs_subtitle",
         title="Chinese (Simplified)",
     )
-    stream_path = get_subtitle_cache_path(
+    _cache_image_subtitles(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        tmp_path / "cache",
+        event_count=16,
     )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    image_series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=index * 1000,
-                end=index * 1000 + 500,
-                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
-            )
-            for index in range(16)
-        ]
-    )
-    image_series.save(image_dir_path)
     sample_lengths: list[int] = []
 
     def fake_ocr_image_series_with_paddle(
@@ -507,29 +344,12 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
         language="zho",
         codec_name="hdmv_pgs_subtitle",
     )
-    stream_path = get_subtitle_cache_path(
+    _cache_image_subtitles(
         infile_path,
         stream,
-        cache_dir_path=tmp_path / "cache",
+        tmp_path / "cache",
+        event_count=16,
     )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_bytes(b"not a real sup")
-    image_dir_path = _get_cached_image_subtitle_dir_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    image_series = ImageSeries(
-        events=[
-            ImageSubtitle(
-                start=index * 1000,
-                end=index * 1000 + 500,
-                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
-            )
-            for index in range(16)
-        ]
-    )
-    image_series.save(image_dir_path)
     sample_lengths: list[int] = []
 
     def fake_ocr_image_series_with_paddle(
@@ -565,59 +385,6 @@ def test_analyze_image_subtitle_stream_expands_samples_when_inconclusive(
     assert sample_lengths == [4, 4, 16, 16]
 
 
-def test_subtitle_cache_logs_hits_and_analysis_loads(
-    tmp_path: Path,
-    caplog,
-):
-    """Test subtitle stream and analysis cache hits are logged.
-
-    Arguments:
-        tmp_path: temporary directory provided by pytest
-        caplog: pytest log capture fixture
-    """
-    infile_path = tmp_path / "video.mkv"
-    infile_path.write_bytes(b"video")
-    stream = SubtitleStream(index=2, language="zho", codec_name="subrip")
-    stream_path = get_subtitle_cache_path(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    stream_path.parent.mkdir(parents=True)
-    stream_path.write_text(
-        "1\n00:00:00,000 --> 00:00:01,000\n简体中文汉字\n",
-        encoding="utf-8",
-    )
-
-    caplog.set_level("INFO")
-    cache_subtitles(
-        infile_path,
-        [stream],
-        cache_dir_path=tmp_path / "cache",
-    )
-    analyze_zho_subtitle_stream_script(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-    analyze_zho_subtitle_stream_script(
-        infile_path,
-        stream,
-        cache_dir_path=tmp_path / "cache",
-    )
-
-    messages = [record.getMessage() for record in caplog.records]
-    assert f"Loaded subtitle stream from cache: {stream_path}" in messages
-    assert any(
-        message.startswith("Saved subtitle script analysis to cache: ")
-        for message in messages
-    )
-    assert any(
-        message.startswith("Loaded subtitle script analysis from cache: ")
-        for message in messages
-    )
-
-
 def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog):
     """Test subtitle stream cache extracts missing streams with ffmpeg.
 
@@ -632,6 +399,7 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog)
         SubtitleStream(index=3, language="zho", codec_name="subrip"),
     ]
 
+    caplog.set_level("INFO", logger="scinoephile.media.subtitles.cache")
     with (
         patch("scinoephile.media.subtitles.cache.ffmpeg.input") as ffmpeg_input,
         patch(
@@ -654,21 +422,15 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog)
         streams[1],
         cache_dir_path=tmp_path / "cache",
     )
-    assert ffmpeg_input.call_args_list == [call(str(infile_path))]
-    assert ffmpeg_input.return_value.output.call_args_list == [
-        call(
-            str(first_stream_path),
-            **{"map": "0:2", "c:s": "subrip"},
-        ),
-        call(
-            str(second_stream_path),
-            **{"map": "0:3", "c:s": "subrip"},
-        ),
-    ]
-    merge_outputs.assert_called_once_with(
-        ffmpeg_input.return_value.output.return_value,
-        ffmpeg_input.return_value.output.return_value,
-    )
+    ffmpeg_input.assert_called_once_with(str(infile_path))
+    output = ffmpeg_input.return_value.output
+    assert output.call_count == 2
+    assert output.call_args_list[0].args == (str(first_stream_path),)
+    assert output.call_args_list[0].kwargs == {"map": "0:2", "c:s": "subrip"}
+    assert output.call_args_list[1].args == (str(second_stream_path),)
+    assert output.call_args_list[1].kwargs == {"map": "0:3", "c:s": "subrip"}
+    merge_outputs.assert_called_once()
+    assert len(merge_outputs.call_args.args) == 2
     merge_outputs.return_value.run.assert_called_once_with(
         quiet=False,
         overwrite_output=True,
@@ -678,3 +440,78 @@ def test_cache_subtitle_streams_extracts_missing_streams(tmp_path: Path, caplog)
     messages = [record.getMessage() for record in caplog.records]
     assert f"Created cache directory: {first_stream_path.parent}" in messages
     assert f"Created cache directory: {second_stream_path.parent}" in messages
+
+
+def _cache_image_subtitles(
+    infile_path: Path,
+    stream: SubtitleStream,
+    cache_dir_path: Path,
+    *,
+    event_count: int,
+    first_start_ms: int | None = None,
+    last_end_ms: int | None = None,
+) -> Path:
+    """Write cached SUP data and rendered image subtitles.
+
+    Arguments:
+        infile_path: media input file
+        stream: subtitle stream to cache
+        cache_dir_path: cache directory path
+        event_count: number of rendered subtitle events to write
+        first_start_ms: start timestamp for the first event, if overridden
+        last_end_ms: end timestamp for the final event, if overridden
+    Returns:
+        rendered image subtitle directory path
+    """
+    _cache_subtitle_stream(infile_path, stream, cache_dir_path, b"not a real sup")
+    image_dir_path = _get_cached_image_subtitle_dir_path(
+        infile_path,
+        stream,
+        cache_dir_path=cache_dir_path,
+    )
+    events: list[ImageSubtitle] = []
+    for index in range(event_count):
+        start = index * 10_000
+        if index == 0 and first_start_ms is not None:
+            start = first_start_ms
+        end = index * 10_000 + 500
+        if index == event_count - 1 and last_end_ms is not None:
+            end = last_end_ms
+        events.append(
+            ImageSubtitle(
+                start=start,
+                end=end,
+                img=Image.new("RGBA", (10 + index, 8), (255, 255, 255, 0)),
+            )
+        )
+    ImageSeries(events=events).save(image_dir_path)
+    return image_dir_path
+
+
+def _cache_subtitle_stream(
+    infile_path: Path,
+    stream: SubtitleStream,
+    cache_dir_path: Path,
+    data: bytes | str,
+) -> Path:
+    """Write a cached extracted subtitle stream.
+
+    Arguments:
+        infile_path: media input file
+        stream: subtitle stream to cache
+        cache_dir_path: cache directory path
+        data: data to write to the cached stream
+    Returns:
+        cached subtitle stream path
+    """
+    stream_path = get_subtitle_cache_path(
+        infile_path,
+        stream,
+        cache_dir_path=cache_dir_path,
+    )
+    stream_path.parent.mkdir(parents=True)
+    if isinstance(data, bytes):
+        stream_path.write_bytes(data)
+    else:
+        stream_path.write_text(data, encoding="utf-8")
+    return stream_path

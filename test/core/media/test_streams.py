@@ -38,23 +38,6 @@ def test_stream_descriptions():
     assert generic.description == "Stream #0:3: Data: bin_data"
 
 
-def test_stream_description_formatting_is_shared():
-    """Test stream description formatting is owned by the base stream class."""
-    assert "displayed_language" not in Stream.__dict__
-    assert "description" not in SubtitleStream.__dict__
-    assert "stream_id" not in SubtitleStream.__dict__
-
-
-def test_subtitle_stream_has_no_chinese_specific_metadata():
-    """Test subtitle stream model does not carry Chinese-specific metadata."""
-    assert "script" not in SubtitleStream.__dataclass_fields__
-    assert "displayed_language" not in SubtitleStream.__dict__
-    assert "is_chinese" not in SubtitleStream.__dict__
-    assert "with_script" not in SubtitleStream.__dict__
-    assert "with_stats" not in SubtitleStream.__dict__
-    assert "without_stats" not in SubtitleStream.__dict__
-
-
 def test_stream_language_normalizes_script_subtags():
     """Test stream language normalization preserves script subtag case."""
     assert Stream(index=1, language="ENG").language == "eng"
