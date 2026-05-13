@@ -153,10 +153,12 @@ def extract_subtitles(
     Returns:
         subtitle extraction result
     """
+    # Ensure the destination directory exists
     if not output_dir_path.exists():
         output_dir_path.mkdir(parents=True)
         logger.info(f"Created subtitle output directory: {output_dir_path}")
 
+    # Handle standalone SUP files separately from containerized media
     if infile_path.suffix.lower() == ".sup":
         outputs = _extract_sup_file(
             infile_path,
@@ -168,6 +170,7 @@ def extract_subtitles(
         )
         return SubtitleExtractionResult(infile_path=infile_path, outputs=outputs)
 
+    # Select matching subtitle streams from the media container
     language_codes = set(languages)
     if details:
         subtitle_streams = get_zho_subtitle_streams(
@@ -184,6 +187,7 @@ def extract_subtitles(
     ]
     cache_subtitles(infile_path, streams, cache_dir_path=cache_dir_path)
 
+    # Extract each selected stream and collect reported outputs
     outputs = []
     for stream in streams:
         outputs.extend(
@@ -221,6 +225,8 @@ def _extract_stream(
         outputs handled for the stream
     """
     outfile_path = output_dir_path / stream.outfile_filename
+
+    # Extract the subtitle file and report its output status
     status = _extract_stream_file(
         infile_path,
         stream,
@@ -236,6 +242,8 @@ def _extract_stream(
             path=outfile_path,
         )
     ]
+
+    # Optionally render SUP subtitles as image directories
     if stream.extension == "sup" and extract_sup:
         outputs.append(
             _extract_sup_image_series(
@@ -267,6 +275,7 @@ def _extract_stream_file(
     Returns:
         output status
     """
+    # Reuse or overwrite existing subtitle files according to caller preference
     if outfile_path.exists():
         if overwrite:
             extract_subtitle_stream(
@@ -278,6 +287,7 @@ def _extract_stream_file(
             return SubtitleExtractionOutputStatus.OVERWRITTEN
         return SubtitleExtractionOutputStatus.EXISTED
 
+    # Extract missing subtitle files
     extract_subtitle_stream(
         infile_path,
         stream,
@@ -308,6 +318,7 @@ def _extract_sup_file(
     Returns:
         outputs handled for the SUP file
     """
+    # Probe the standalone SUP file and optionally enrich stream details
     if details:
         streams = get_zho_subtitle_streams(
             infile_path,
@@ -318,11 +329,14 @@ def _extract_sup_file(
     if not streams:
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
 
+    # Determine the output SUP filename from detected stream metadata
     stream = streams[0]
     outfile_name = infile_path.name
     if stream.language is not None and "-" in stream.language:
         outfile_name = f"{stream.language}{infile_path.suffix}"
     outfile_path = output_dir_path / outfile_name
+
+    # Copy the SUP file and report its output status
     status = _copy_sup_file(
         infile_path,
         outfile_path,
@@ -336,6 +350,8 @@ def _extract_sup_file(
             path=outfile_path,
         )
     ]
+
+    # Optionally render the SUP file as an image directory
     if stream.extension == "sup" and extract_sup:
         outputs.append(
             _extract_sup_image_series(
@@ -364,12 +380,15 @@ def _copy_sup_file(
         output status
     """
     outfile_is_infile = outfile_path.resolve() == infile_path.resolve()
+
+    # Reuse or overwrite an existing SUP file according to caller preference
     if outfile_path.exists():
         if overwrite and not outfile_is_infile:
             copy2(infile_path, outfile_path)
             return SubtitleExtractionOutputStatus.OVERWRITTEN
         return SubtitleExtractionOutputStatus.EXISTED
 
+    # Copy missing SUP files unless the output is already the input
     if not outfile_is_infile:
         copy2(infile_path, outfile_path)
     return SubtitleExtractionOutputStatus.CREATED
@@ -392,6 +411,7 @@ def _extract_sup_image_series(
     Returns:
         output handled for the image directory
     """
+    # Reuse or overwrite existing image directories according to caller preference
     if output_dir_path.exists():
         if overwrite:
             ImageSeries.load(infile_path).save(output_dir_path)
