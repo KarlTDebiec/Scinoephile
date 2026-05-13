@@ -216,6 +216,7 @@ def _apply_italic_mask(text: str, italic_mask: list[bool]) -> str:
     Returns:
         text with italic tags
     """
+    italic_mask = _include_between_word_italic_separators(text, italic_mask)
     parts: list[str] = []
     italic_open = False
     for character, italic in zip(text, italic_mask, strict=True):
@@ -246,13 +247,11 @@ def _format_tesseract_hocr_words(
     """
     formatted_lines = []
     for line in lines:
-        formatted_words = []
-        for word in line:
-            if word.italic:
-                formatted_words.append(f"<i>{word.text}</i>")
-            else:
-                formatted_words.append(word.text)
-        line_text = word_separator.join(formatted_words).strip()
+        line_text, word_spans = _get_text_and_word_spans(
+            [line], word_separator=word_separator
+        )
+        italic_mask = _get_italic_mask(line_text, word_spans)
+        line_text = _apply_italic_mask(line_text, italic_mask).strip()
         if line_text:
             formatted_lines.append(line_text)
     return "\\N".join(formatted_lines)
@@ -260,11 +259,14 @@ def _format_tesseract_hocr_words(
 
 def _get_text_and_word_spans(
     lines: list[list[TesseractHocrWord]],
+    *,
+    word_separator: str = " ",
 ) -> tuple[str, list[_TesseractHocrWordSpan]]:
     """Get formatted plain text and word spans.
 
     Arguments:
         lines: line-grouped recognized words
+        word_separator: text with which to join hOCR word spans
     Returns:
         plain text and word spans
     """
@@ -277,8 +279,8 @@ def _get_text_and_word_spans(
             text_length += 2
         for word_index, word in enumerate(line):
             if word_index > 0:
-                text_parts.append(" ")
-                text_length += 1
+                text_parts.append(word_separator)
+                text_length += len(word_separator)
             start = text_length
             text_parts.append(word.text)
             text_length += len(word.text)
@@ -291,6 +293,54 @@ def _get_text_and_word_spans(
                 )
             )
     return "".join(text_parts), word_spans
+
+
+def _get_italic_mask(text: str, word_spans: list[_TesseractHocrWordSpan]) -> list[bool]:
+    """Get italic mask from word spans.
+
+    Arguments:
+        text: plain text
+        word_spans: word spans within text
+    Returns:
+        character-level italic mask
+    """
+    italic_mask = [False] * len(text)
+    for word_span in word_spans:
+        if not word_span.italic:
+            continue
+        italic_mask[word_span.start : word_span.end] = [True] * (
+            word_span.end - word_span.start
+        )
+    return italic_mask
+
+
+def _include_between_word_italic_separators(
+    text: str, italic_mask: list[bool]
+) -> list[bool]:
+    """Include spaces between adjacent italic words in italic runs.
+
+    Arguments:
+        text: plain text
+        italic_mask: character-level italic mask
+    Returns:
+        italic mask with word separators between italic words included
+    """
+    collapsed_mask = italic_mask.copy()
+    index = 0
+    while index < len(text):
+        if italic_mask[index] or not text[index].isspace():
+            index += 1
+            continue
+
+        start = index
+        while index < len(text) and not italic_mask[index] and text[index].isspace():
+            index += 1
+        end = index
+        if start == 0 or end == len(text):
+            continue
+        if italic_mask[start - 1] and italic_mask[end]:
+            collapsed_mask[start:end] = [True] * (end - start)
+    return collapsed_mask
 
 
 def _title_indicates_italic(title: str | None) -> bool:
