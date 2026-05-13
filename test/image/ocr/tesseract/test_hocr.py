@@ -51,6 +51,23 @@ def test_parse_tesseract_hocr_decodes_entities_and_keeps_italics():
     assert parse_tesseract_hocr(hocr) == "<i>Tom</i> & Jerry's"
 
 
+def test_parse_tesseract_hocr_collapses_adjacent_italic_words():
+    """Test hOCR parser includes separators between adjacent italic words."""
+    hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'><em>Gusteau's</em></span>
+      <span class='ocrx_word' id='word_2'><em>restaurant</em></span>
+      <span class='ocrx_word' id='word_3'>is</span>
+      <span class='ocrx_word' id='word_4'><em>booked</em></span>
+      <span class='ocrx_word' id='word_5'><em>solid.</em></span>
+    </span>
+    """
+
+    assert parse_tesseract_hocr(hocr) == (
+        "<i>Gusteau's restaurant</i> is <i>booked solid.</i>"
+    )
+
+
 def test_parse_tesseract_hocr_detects_italic_font_metadata():
     """Test hOCR parser detects Tesseract italic font metadata."""
     hocr = """
@@ -95,6 +112,32 @@ def test_transfer_tesseract_hocr_italics_applies_legacy_emphasis():
 
     assert transfer_tesseract_hocr_italics(primary_hocr, legacy_hocr) == (
         "<i>Hey,</i> let's go"
+    )
+
+
+def test_transfer_tesseract_hocr_italics_collapses_adjacent_words():
+    """Test transferred italics include spaces between adjacent italic words."""
+    primary_hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'>booked</span>
+      <span class='ocrx_word' id='word_2'>five</span>
+      <span class='ocrx_word' id='word_3'>months</span>
+      <span class='ocrx_word' id='word_4'>in</span>
+      <span class='ocrx_word' id='word_5'>advance.</span>
+    </span>
+    """
+    legacy_hocr = """
+    <span class='ocr_line' id='line_1'>
+      <span class='ocrx_word' id='word_1'><em>booked</em></span>
+      <span class='ocrx_word' id='word_2'>five</span>
+      <span class='ocrx_word' id='word_3'><em>months</em></span>
+      <span class='ocrx_word' id='word_4'><em>in</em></span>
+      <span class='ocrx_word' id='word_5'><em>advance.</em></span>
+    </span>
+    """
+
+    assert transfer_tesseract_hocr_italics(primary_hocr, legacy_hocr) == (
+        "<i>booked</i> five <i>months in advance.</i>"
     )
 
 
