@@ -1,0 +1,2444 @@
+[
+  {
+    "query": {
+      "lens": "Such that the emperor woos a whore,",
+      "tesseract": "such that the emperor woos a whore,"
+    },
+    "answer": {
+      "output": "such that the emperor woos a whore,",
+      "note": "Used lower-case 'such'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And a princess elopes with a beggar",
+      "tesseract": "and a princess elopes with a beggar"
+    },
+    "answer": {
+      "output": "and a princess elopes with a beggar",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "He then stole my Heavenly Dog\nand braised it with bamboo shoot",
+      "tesseract": "he then stole my Heavenly Dog\nand braised it with bamboo shoot"
+    },
+    "answer": {
+      "output": "he then stole my Heavenly Dog\nand braised it with bamboo shoot",
+      "note": "Used lower-case 'he' from Tesseract for the first word; kept the line break and remaining wording unchanged."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And there's a centuries- old man",
+      "tesseract": "and there's a centuries- old man"
+    },
+    "answer": {
+      "output": "and there's a centuries- old man",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "And make a great fuss",
+      "tesseract": "and make a great fuss"
+    },
+    "answer": {
+      "output": "and make a great fuss",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Are you also a part of this?",
+      "tesseract": "are you also a part of this?"
+    },
+    "answer": {
+      "output": "are you also a part of this?",
+      "note": "Used lower-case 'are'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Hey! What has it to do with me?\nI…",
+      "tesseract": "Hey! What has it to do with me? I…"
+    },
+    "answer": {
+      "output": "Hey! What has it to do with me? I…",
+      "note": "Used space instead of newline as in Tesseract; kept ellipsis."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Yet you're a loyal friend.",
+      "tesseract": "yet you're a loyal friend."
+    },
+    "answer": {
+      "output": "yet you're a loyal friend.",
+      "note": "Used lower-case 'yet'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Thanks…",
+      "tesseract": "Thanks\"."
+    },
+    "answer": {
+      "output": "Thanks…",
+      "note": "Used ellipsis from Google Lens instead of misread punctuation from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Just make an apology and leave",
+      "tesseract": "just make an apology and leave"
+    },
+    "answer": {
+      "output": "just make an apology and leave",
+      "note": "Used lower-case 'just'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And speak ill of those families who gave you less",
+      "tesseract": "and speak \"I of those families who gave you less"
+    },
+    "answer": {
+      "output": "and speak ill of those families who gave you less",
+      "note": "Used lower-case 'and' from Tesseract; kept 'ill' from Google Lens instead of misread '\"I'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Poke him - Poke him",
+      "tesseract": "- Poke him\n- Poke him"
+    },
+    "answer": {
+      "output": "- Poke him\n- Poke him",
+      "note": "Used line break and repeated '-' for both dialogue lines as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Poke your nose in everybody's business",
+      "tesseract": "poke your nose in everybody's business"
+    },
+    "answer": {
+      "output": "poke your nose in everybody's business",
+      "note": "Used lower-case 'poke'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "For the stolen peaches",
+      "tesseract": "for the stolen peaches"
+    },
+    "answer": {
+      "output": "for the stolen peaches",
+      "note": "Used lower-case 'for'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You fool humans with several red strings",
+      "tesseract": "you fool humans with several red strings"
+    },
+    "answer": {
+      "output": "you fool humans with several red strings",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Why not tie them together?",
+      "tesseract": "why not tie them together?"
+    },
+    "answer": {
+      "output": "why not tie them together?",
+      "note": "Used lower-case 'why' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "What have they done to you to deserve this?",
+      "tesseract": "what have they done to you to deserve this?"
+    },
+    "answer": {
+      "output": "what have they done to you to deserve this?",
+      "note": "Used lower-case 'what'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Or even a man with a pig,\na roach with a cow",
+      "tesseract": "or even a man with a pig,\na roach with a cow"
+    },
+    "answer": {
+      "output": "or even a man with a pig,\na roach with a cow",
+      "note": "Used lower-case 'or' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Worst of all would be a\nlotus root with a rock - Yes",
+      "tesseract": "- Worst of all would be a lotus root with a rock\n- Yes"
+    },
+    "answer": {
+      "output": "- Worst of all would be a lotus root with a rock\n- Yes",
+      "note": "Used Tesseract's line break and placed '-' on the second line."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Flung her into a frying pan",
+      "tesseract": "flung her into a frying pan"
+    },
+    "answer": {
+      "output": "flung her into a frying pan",
+      "note": "Used lower-case 'flung'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And fried her to a crisp",
+      "tesseract": "and fried her to a crisp"
+    },
+    "answer": {
+      "output": "and fried her to a crisp",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- We're only carrying out\norders - Your highness…",
+      "tesseract": "- We're only carrying out orders\n- Your highness…"
+    },
+    "answer": {
+      "output": "- We're only carrying out orders\n- Your highness…",
+      "note": "Used Tesseract line break and placed '-' on second line; kept ellipsis from both."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Were known by Bodhisattva in the Ninth Heaven,",
+      "tesseract": "were known by Bodhisattva in the Ninth Heaven,"
+    },
+    "answer": {
+      "output": "were known by Bodhisattva in the Ninth Heaven,",
+      "note": "Used lower-case 'were'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "She'll think this is the joke of a moron",
+      "tesseract": "she'll think this is the joke of a moron"
+    },
+    "answer": {
+      "output": "she'll think this is the joke of a moron",
+      "note": "Used lower-case 'she'll'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Reckon Dragon Fighter Lo Han is just too rampant",
+      "tesseract": "reckon Dragon Fighter Lo Han is just too rampant"
+    },
+    "answer": {
+      "output": "reckon Dragon Fighter Lo Han is just too rampant",
+      "note": "Used lower-case 'reckon'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Please allow me to fight him one on one",
+      "tesseract": "please allow me to fight him one on one"
+    },
+    "answer": {
+      "output": "please allow me to fight him one on one",
+      "note": "Used lower-case 'please'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- I want to fight him one\non one - Don't kill him",
+      "tesseract": "- I want to fight him one on one\n- Don't kill him"
+    },
+    "answer": {
+      "output": "- I want to fight him one on one\n- Don't kill him",
+      "note": "Used Tesseract's line break and placed '-' on the second line."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "There must be one that convicts you",
+      "tesseract": "there must be one that convicts you"
+    },
+    "answer": {
+      "output": "there must be one that convicts you",
+      "note": "Used lower-case 'there'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And make them a pig and a dog",
+      "tesseract": "and make them a pig and a dog"
+    },
+    "answer": {
+      "output": "and make them a pig and a dog",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Might be an opportunity",
+      "tesseract": "might be an opportunity"
+    },
+    "answer": {
+      "output": "might be an opportunity",
+      "note": "Used lower-case 'might'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Or they have progressed?",
+      "tesseract": "or they have progressed?"
+    },
+    "answer": {
+      "output": "or they have progressed?",
+      "note": "Used lower-case 'or'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "This kid offends a superior…",
+      "tesseract": "this kid offends a superior…"
+    },
+    "answer": {
+      "output": "this kid offends a superior…",
+      "note": "Used lower-case 'this' from Tesseract; kept ellipsis."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And experience the mortal world",
+      "tesseract": "and experience the mortal world"
+    },
+    "answer": {
+      "output": "and experience the mortal world",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And they shouldn't be condemned for\na mistake or two",
+      "tesseract": "and they shouldn't be condemned for\na mistake or two"
+    },
+    "answer": {
+      "output": "and they shouldn't be condemned for\na mistake or two",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Regardless of how ignorant and dumb they are,",
+      "tesseract": "regardless of how ignorant and dumb they are,"
+    },
+    "answer": {
+      "output": "regardless of how ignorant and dumb they are,",
+      "note": "Used lower-case 'regardless'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "How evil and deserving of death,",
+      "tesseract": "how evil and deserving of death,"
+    },
+    "answer": {
+      "output": "how evil and deserving of death,",
+      "note": "Used lower-case 'how'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "They are after all… after all…",
+      "tesseract": "they are after all… after all…"
+    },
+    "answer": {
+      "output": "they are after all… after all…",
+      "note": "Used lower-case 'they' from Tesseract for the first word; kept ellipses as recognized."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "To experience it. Alright?",
+      "tesseract": "to experience it. Alright?"
+    },
+    "answer": {
+      "output": "to experience it. Alright?",
+      "note": "Used lower-case 'to'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "With predestined fates",
+      "tesseract": "with predestined fates"
+    },
+    "answer": {
+      "output": "with predestined fates",
+      "note": "Used lower-case 'with'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And one a villain for 9 lives",
+      "tesseract": "and one a villain for 9 lives"
+    },
+    "answer": {
+      "output": "and one a villain for 9 lives",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "If you can change their fates,",
+      "tesseract": "if you can change their fates,"
+    },
+    "answer": {
+      "output": "if you can change their fates,",
+      "note": "Used lower-case 'if'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Then you win",
+      "tesseract": "then you win"
+    },
+    "answer": {
+      "output": "then you win",
+      "note": "Used lower-case 'then'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You'll go as a layman…",
+      "tesseract": "you'll go as a layman…"
+    },
+    "answer": {
+      "output": "you'll go as a layman…",
+      "note": "Used lower-case 'you'll' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "But if you don't act accordingly,",
+      "tesseract": "but if you don't act accordingly,"
+    },
+    "answer": {
+      "output": "but if you don't act accordingly,",
+      "note": "Used lower-case 'but'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Don't expect to return to Heaven",
+      "tesseract": "don't expect to return to Heaven"
+    },
+    "answer": {
+      "output": "don't expect to return to Heaven",
+      "note": "Used lower-case 'don't'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You can't enter Heaven",
+      "tesseract": "you can't enter Heaven"
+    },
+    "answer": {
+      "output": "you can't enter Heaven",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Ah Lung…\nLung",
+      "tesseract": "Ah Lung… Lung"
+    },
+    "answer": {
+      "output": "Ah Lung… Lung",
+      "note": "Used space instead of newline as in Tesseract; kept ellipsis from Lens."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Same to you",
+      "tesseract": "Same{\\i1}to you{\\i0}"
+    },
+    "answer": {
+      "output": "Same to you",
+      "note": "Removed incorrect italics from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You won't die",
+      "tesseract": "you won't die"
+    },
+    "answer": {
+      "output": "you won't die",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "A golden body has been left behind",
+      "tesseract": "a golden body has been left behind"
+    },
+    "answer": {
+      "output": "a golden body has been left behind",
+      "note": "Used lower-case 'a'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You can preserve your physical body,",
+      "tesseract": "you can preserve your physical body,"
+    },
+    "answer": {
+      "output": "you can preserve your physical body,",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And transmigrate between\nthe mortal and spiritual worlds",
+      "tesseract": "and transmigrate between\nthe mortal and spiritual worlds"
+    },
+    "answer": {
+      "output": "and transmigrate between\nthe mortal and spiritual worlds",
+      "note": "Used lower-case 'and' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "When the cracks vanish",
+      "tesseract": "when the cracks vanish"
+    },
+    "answer": {
+      "output": "when the cracks vanish",
+      "note": "Used lower-case 'when'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Nor manipulate freewill",
+      "tesseract": "nor manipulate freewill"
+    },
+    "answer": {
+      "output": "nor manipulate freewill",
+      "note": "Used lower-case 'nor'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "But laymen are often bewitched by what they see",
+      "tesseract": "but laymen are often bewitched by what they see"
+    },
+    "answer": {
+      "output": "but laymen are often bewitched by what they see",
+      "note": "Used lower-case 'but'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Yes… Go down -",
+      "tesseract": "- Yes…\n- Go down"
+    },
+    "answer": {
+      "output": "- Yes…\n- Go down",
+      "note": "Used line break and leading '-' on second line as in Tesseract; kept ellipsis from Lens and removed trailing '-'."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Only you can come and go as you please",
+      "tesseract": "only you can come and go as you please"
+    },
+    "answer": {
+      "output": "only you can come and go as you please",
+      "note": "Used lower-case 'only'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You bastard…",
+      "tesseract": "you bastard…"
+    },
+    "answer": {
+      "output": "you bastard…",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You need to pray to Goddess of Mercy",
+      "tesseract": "you need to pray to Goddess of Mercy"
+    },
+    "answer": {
+      "output": "you need to pray to Goddess of Mercy",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Do bless me with a son",
+      "tesseract": "do bless me with a son"
+    },
+    "answer": {
+      "output": "do bless me with a son",
+      "note": "Used lower-case 'do'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "As an envoy all these years",
+      "tesseract": "as an envoy all these years"
+    },
+    "answer": {
+      "output": "as an envoy all these years",
+      "note": "Used lower-case 'as'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Master, you said just now\nGoodbye…",
+      "tesseract": "- Master, you said just now\n- Goodbye…"
+    },
+    "answer": {
+      "output": "- Master, you said just now\n- Goodbye…",
+      "note": "Added '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Our future young master",
+      "tesseract": "our future young master"
+    },
+    "answer": {
+      "output": "our future young master",
+      "note": "Used lower-case 'our'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Must be a dignitary",
+      "tesseract": "must be a dignitary"
+    },
+    "answer": {
+      "output": "must be a dignitary",
+      "note": "Used lower-case 'must'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- A son! Congratulations,\nmaster Congratulations, master…",
+      "tesseract": "- A son! Congratulations, master\n- Congratulations, master…"
+    },
+    "answer": {
+      "output": "- A son! Congratulations, master    - Congratulations, master…",
+      "note": "Used Google Lens wording and ellipsis; included '-' for both dialogue lines as in Tesseract and joined the two short dialogue lines with four spaces."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "After eating at that restaurant",
+      "tesseract": "after eating at that restaurant"
+    },
+    "answer": {
+      "output": "after eating at that restaurant",
+      "note": "Used lower-case 'after'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Damn it - Damn it",
+      "tesseract": "- Damn it\n- Damn it"
+    },
+    "answer": {
+      "output": "- Damn it    - Damn it",
+      "note": "Used dialogue dashes and split the two speakers as in Tesseract; added four spaces between lines for clarity."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- It's urgent - Yes…",
+      "tesseract": "- It's urgent\n- Yes…"
+    },
+    "answer": {
+      "output": "- It's urgent\n- Yes…",
+      "note": "Added line break and '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Quick and give them to me\nHey… Lung…",
+      "tesseract": "- Quick and give them to me\n- Hey… Lung…"
+    },
+    "answer": {
+      "output": "- Quick and give them to me\n- Hey… Lung…",
+      "note": "Added '-' to the second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- I hand- picked two\nthat fight best - Brag",
+      "tesseract": "- I hand- picked two that fight best\n- Brag"
+    },
+    "answer": {
+      "output": "- I hand- picked two that fight best\n- Brag",
+      "note": "Used Tesseract line break and placed '-' on second line."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "You must re-incarnate and become human",
+      "tesseract": "you must re-incarnate and become human"
+    },
+    "answer": {
+      "output": "you must re-incarnate and become human",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "After blowing up,",
+      "tesseract": "after blowing up,"
+    },
+    "answer": {
+      "output": "after blowing up,",
+      "note": "Used lower-case 'after'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And you'll become a moron\nwhen back to Heaven",
+      "tesseract": "and you'll become a moron\nwhen back to Heaven"
+    },
+    "answer": {
+      "output": "and you'll become a moron\nwhen back to Heaven",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "If I become a moron",
+      "tesseract": "if I become a moron"
+    },
+    "answer": {
+      "output": "if I become a moron",
+      "note": "Used lower-case 'if'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "The surveillance in Heaven is the weakest,\nunderstand?",
+      "tesseract": "the surveillance in Heaven is the weakest,\nunderstand?"
+    },
+    "answer": {
+      "output": "the surveillance in Heaven is the weakest,\nunderstand?",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- It's a fan - What?",
+      "tesseract": "- It's a fan\n- What?"
+    },
+    "answer": {
+      "output": "- It's a fan\n- What?",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- One more time - What",
+      "tesseract": "- One more time\n- What"
+    },
+    "answer": {
+      "output": "- One more time\n- What",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- - Go on, run Brother…",
+      "tesseract": "- Go on, run\n- Brother…"
+    },
+    "answer": {
+      "output": "- Go on, run\n- Brother…",
+      "note": "Used line break and dialogue dashes from Tesseract; kept ellipsis from Lens/Tesseract and removed the extra '-' at the start."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "I'll need to get a part-time job",
+      "tesseract": "I'll need to get a part- time job"
+    },
+    "answer": {
+      "output": "I'll need to get a part-time job",
+      "note": "Used 'part-time' from Google Lens instead of 'part- time'."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Though a big eater",
+      "tesseract": "though a big eater"
+    },
+    "answer": {
+      "output": "though a big eater",
+      "note": "Used lower-case 'though'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Then you'll revive your memory",
+      "tesseract": "then you'll revive your memory"
+    },
+    "answer": {
+      "output": "then you'll revive your memory",
+      "note": "Used lower-case 'then'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- If he can be treated?\n- Milk…",
+      "tesseract": "- if he can be treated?\n- Milk…"
+    },
+    "answer": {
+      "output": "- if he can be treated?\n- Milk…",
+      "note": "Used lower-case 'if' from Tesseract for the first word; kept line break and ellipsis."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- - No Milk…",
+      "tesseract": "- No\n- Milk…"
+    },
+    "answer": {
+      "output": "- No\n- Milk…",
+      "note": "Used line break and '-' placement from Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Just asking, thanks - Milk…",
+      "tesseract": "- just asking, thanks\n- Milk…"
+    },
+    "answer": {
+      "output": "- just asking, thanks\n- Milk…",
+      "note": "Used lower-case 'just', added line break, and placed '-' on second line as in Tesseract; kept ellipsis from Lens/Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "They're moving him over here",
+      "tesseract": "they're moving him over here"
+    },
+    "answer": {
+      "output": "they're moving him over here",
+      "note": "Used lower-case 'they\\'re'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Streaking in the\nstreet - So what?",
+      "tesseract": "- Streaking in the street\n- So what?"
+    },
+    "answer": {
+      "output": "- Streaking in the street\n- So what?",
+      "note": "Used line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- See when it'll be\nyour turn - What?",
+      "tesseract": "- See when it'll be your turn\n- What?"
+    },
+    "answer": {
+      "output": "- See when it'll be your turn\n- What?",
+      "note": "Used space instead of newline in the first subtitle segment and placed '-' on the second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Yes, I cursed you.\nCrazy - Just say so",
+      "tesseract": "- Yes, I cursed you. Crazy\n- Just say so"
+    },
+    "answer": {
+      "output": "- Yes, I cursed you. Crazy\n- Just say so",
+      "note": "Used space instead of newline after 'you.' and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "To watch this for free",
+      "tesseract": "to watch this for free"
+    },
+    "answer": {
+      "output": "to watch this for free",
+      "note": "Used lower-case 'to'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- or I'll suffer - That\nguy is so unlucky",
+      "tesseract": "- or I'll suffer\n- That guy is so unlucky"
+    },
+    "answer": {
+      "output": "- or I'll suffer\n- That guy is so unlucky",
+      "note": "Added '-' before the second line and used Tesseract's line break/dialogue formatting."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Milk - Take her\nto dip in a pig cage",
+      "tesseract": "- Milk\n- Take her to dip in a pig cage"
+    },
+    "answer": {
+      "output": "- Milk\n- Take her to dip in a pig cage",
+      "note": "Placed '-' on second line and used Tesseract's line break."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Is so immoral",
+      "tesseract": "is so immoral"
+    },
+    "answer": {
+      "output": "is so immoral",
+      "note": "Used lower-case 'is'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Take her to dip\nin a pig cage - Don't",
+      "tesseract": "- Take her to dip in a pig cage\n- Don't"
+    },
+    "answer": {
+      "output": "- Take her to dip in a pig cage\n- Don't",
+      "note": "Used Tesseract line break and placed '-' on second line."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Go now - Milk",
+      "tesseract": "- Go now\n- Milk"
+    },
+    "answer": {
+      "output": "- Go now\n- Milk",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "You've accumulated some worthiness\nso I'll give you some face…",
+      "tesseract": "you've accumulated some worthiness\nso I'll give you some face…"
+    },
+    "answer": {
+      "output": "you've accumulated some worthiness\nso I'll give you some face…",
+      "note": "Used lower-case 'you've' from Tesseract for the first word; kept line break and ellipsis."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "So am I",
+      "tesseract": "So am"
+    },
+    "answer": {
+      "output": "So am I",
+      "note": "Used 'I' from Google Lens; Tesseract appears to have omitted the final word."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Bring me the clothes - Yes",
+      "tesseract": "- Bring me the clothes\n- Yes"
+    },
+    "answer": {
+      "output": "- Bring me the clothes\n- Yes",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Not the back",
+      "tesseract": "not the back"
+    },
+    "answer": {
+      "output": "not the back",
+      "note": "Used lower-case 'not'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "See if you can get away",
+      "tesseract": "see if you can get away"
+    },
+    "answer": {
+      "output": "see if you can get away",
+      "note": "Used lower-case 'see'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Lay down the sword and be a Buddha",
+      "tesseract": "Lay down the sword and be 3 Buddha"
+    },
+    "answer": {
+      "output": "Lay down the sword and be a Buddha",
+      "note": "Used 'a' instead of '3'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Even rats and roaches",
+      "tesseract": "even rats and roaches"
+    },
+    "answer": {
+      "output": "even rats and roaches",
+      "note": "Used lower-case 'even'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Such an organized person",
+      "tesseract": "such an organized person"
+    },
+    "answer": {
+      "output": "such an organized person",
+      "note": "Used lower-case 'such'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Yet you're still concerned with such matters",
+      "tesseract": "yet you're still concerned with such matters"
+    },
+    "answer": {
+      "output": "yet you're still concerned with such matters",
+      "note": "Used lower-case 'yet'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "He'll be an emperor in his next life.\nGood for him",
+      "tesseract": "he'll be an emperor in his next life.\nGood for him"
+    },
+    "answer": {
+      "output": "he'll be an emperor in his next life.\nGood for him",
+      "note": "Used lower-case 'he'll' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You should die with him",
+      "tesseract": "you should die with him"
+    },
+    "answer": {
+      "output": "you should die with him",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And they always die together",
+      "tesseract": "and they always die together"
+    },
+    "answer": {
+      "output": "and they always die together",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- You can't go yet - What?",
+      "tesseract": "- You can't go yet\n- What?"
+    },
+    "answer": {
+      "output": "- You can't go yet\n- What?",
+      "note": "Used line break and '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Why not give me one to fill my stomach",
+      "tesseract": "why not give me one to fill my stomach"
+    },
+    "answer": {
+      "output": "why not give me one to fill my stomach",
+      "note": "Used lower-case 'why'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "That means you consent",
+      "tesseract": "that means you consent"
+    },
+    "answer": {
+      "output": "that means you consent",
+      "note": "Used lower-case 'that'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "1, 2, 3",
+      "tesseract": "1,2,3"
+    },
+    "answer": {
+      "output": "1, 2, 3",
+      "note": "Used spacing after commas from Google Lens."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "We must've self-respect as a human",
+      "tesseract": "we must've self-respect as a human"
+    },
+    "answer": {
+      "output": "we must've self-respect as a human",
+      "note": "Used lower-case 'we'."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "So great",
+      "tesseract": "80 great"
+    },
+    "answer": {
+      "output": "So great",
+      "note": "Used 'So' instead of '80'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Never go begging again with your bowl",
+      "tesseract": "never go begging again with your bowl"
+    },
+    "answer": {
+      "output": "never go begging again with your bowl",
+      "note": "Used lower-case 'never'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You should order sharks' fins\nto rinse your mouth",
+      "tesseract": "you should order sharks' fins\nto rinse your mouth"
+    },
+    "answer": {
+      "output": "you should order sharks' fins\nto rinse your mouth",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "How are you going to be successful?",
+      "tesseract": "how are you going to be successful?"
+    },
+    "answer": {
+      "output": "how are you going to be successful?",
+      "note": "Used lower-case 'how'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And hanged two sausages on your mouth",
+      "tesseract": "and hanged two sausages on your mouth"
+    },
+    "answer": {
+      "output": "and hanged two sausages on your mouth",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Just to scare a beggar?",
+      "tesseract": "just to scare a beggar?"
+    },
+    "answer": {
+      "output": "just to scare a beggar?",
+      "note": "Used lower-case 'just'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Go to hell\n…",
+      "tesseract": "Go to hell…"
+    },
+    "answer": {
+      "output": "Go to hell…",
+      "note": "Used ellipsis without line break as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Go to hell -\nDon't be impetuous",
+      "tesseract": "- Go to hell\n- Don't be impetuous"
+    },
+    "answer": {
+      "output": "- Go to hell\n- Don't be impetuous",
+      "note": "Placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Let's go - Don't be mad",
+      "tesseract": "- Let's go\n- Don't be mad"
+    },
+    "answer": {
+      "output": "- Let's go\n- Don't be mad",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "For such nuts, you've to\nbeat him to dead - Let's go",
+      "tesseract": "- For such nuts, you've to beat him to dead\n- Let's go"
+    },
+    "answer": {
+      "output": "- For such nuts, you've to beat him to dead\n- Let's go",
+      "note": "Added '-' and line break as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "I can fulfill for you.\nTell me",
+      "tesseract": "I can fulfill for you. Tell me"
+    },
+    "answer": {
+      "output": "I can fulfill for you. Tell me",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Any more",
+      "tesseract": "any more"
+    },
+    "answer": {
+      "output": "any more",
+      "note": "Used lower-case 'any'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "So I can come down to inform you",
+      "tesseract": "so I can come down to inform you"
+    },
+    "answer": {
+      "output": "so I can come down to inform you",
+      "note": "Used lower-case 'so'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "So they sent down God of Plague\nto spread disease everywhere",
+      "tesseract": "so they sent down God of Plague\nto spread disease everywhere"
+    },
+    "answer": {
+      "output": "so they sent down God of Plague\nto spread disease everywhere",
+      "note": "Used lower-case 'so' from Tesseract for the first word; kept the line break."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "The casualties caused",
+      "tesseract": "the casualties caused"
+    },
+    "answer": {
+      "output": "the casualties caused",
+      "note": "Used lower-case 'the'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You may be demoted 3 grades",
+      "tesseract": "you may be demoted 3 grades"
+    },
+    "answer": {
+      "output": "you may be demoted 3 grades",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You know how it's like with the fools up there",
+      "tesseract": "you know how it's like with the fools up there"
+    },
+    "answer": {
+      "output": "you know how it's like with the fools up there",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "But to harm so many lives,",
+      "tesseract": "but to harm so many lives,"
+    },
+    "answer": {
+      "output": "but to harm so many lives,",
+      "note": "Used lower-case 'but'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "It's really a big trouble",
+      "tesseract": "it's really a big trouble"
+    },
+    "answer": {
+      "output": "it's really a big trouble",
+      "note": "Used lower-case 'it's'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "We promise not to accuse you",
+      "tesseract": "we promise not to accuse you"
+    },
+    "answer": {
+      "output": "we promise not to accuse you",
+      "note": "Used lower-case 'we'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- The Accounts Department\npays salaries only - Yes",
+      "tesseract": "- The Accounts Department pays salaries only\n- Yes"
+    },
+    "answer": {
+      "output": "- The Accounts Department pays salaries only\n- Yes",
+      "note": "Used space instead of line break in the first sentence and placed '-' on the second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Then Publicity Department…",
+      "tesseract": "then Publicity Department…"
+    },
+    "answer": {
+      "output": "then Publicity Department…",
+      "note": "Used lower-case 'then' from Tesseract; kept ellipsis."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Ignore him\n… and Welfare Department…",
+      "tesseract": "- Ignore him\nand Welfare Department…"
+    },
+    "answer": {
+      "output": "- Ignore him… and Welfare Department…",
+      "note": "Used '-' from Tesseract for dialogue, kept ellipses from Lens, and removed the line break."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- I'm going up now - …have\nto show respect to each other",
+      "tesseract": "- I'm going up now\n- …have to show respect to each other"
+    },
+    "answer": {
+      "output": "- I'm going up now\n- …have to show respect to each other",
+      "note": "Added '-' and line break on the second line as in Tesseract; kept ellipsis from both sources and removed the unnecessary line break within the sentence."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Take care - Also\nPublishing Department…",
+      "tesseract": "- Take care\n- Also Publishing Department…"
+    },
+    "answer": {
+      "output": "- Take care\n- Also Publishing Department…",
+      "note": "Used line break and '-' on second line as in Tesseract; kept ellipsis from both."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Claimed that we're brothers…",
+      "tesseract": "claimed that we're brothers…"
+    },
+    "answer": {
+      "output": "claimed that we're brothers…",
+      "note": "Used lower-case 'claimed'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Be careful - Health\nDepartment… They…",
+      "tesseract": "- Be careful\n- Health Department… They…"
+    },
+    "answer": {
+      "output": "- Be careful\n- Health Department… They…",
+      "note": "Used line break and '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Let's go! Genital In short\nthey screw up together…",
+      "tesseract": "- Let's go! Genital\nIn short they screw up together…"
+    },
+    "answer": {
+      "output": "- Let's go! Genital\nIn short they screw up together…",
+      "note": "Used line break as in Tesseract instead of Lens."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Why not die yet for having\nso many sores",
+      "tesseract": "why not die yet for having\nso many sores"
+    },
+    "answer": {
+      "output": "why not die yet for having\nso many sores",
+      "note": "Used lower-case 'why' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Wow - What?",
+      "tesseract": "- Wow\n- What?"
+    },
+    "answer": {
+      "output": "- Wow\n- What?",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "So I negotiated with Heavenly Emperor",
+      "tesseract": "so I negotiated with Heavenly Emperor"
+    },
+    "answer": {
+      "output": "so I negotiated with Heavenly Emperor",
+      "note": "Used lower-case 'so'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "May shorten 10 years of my life",
+      "tesseract": "may shorten 10 years of my life"
+    },
+    "answer": {
+      "output": "may shorten 10 years of my life",
+      "note": "Used lower-case 'may'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Get someone to sacrifice to gods",
+      "tesseract": "get someone to sacrifice to gods"
+    },
+    "answer": {
+      "output": "get someone to sacrifice to gods",
+      "note": "Used lower-case 'get'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Hurry… Quick! Come…\nOutrageous…",
+      "tesseract": "- Hurry… Quick! Come…\n- Outrageous…"
+    },
+    "answer": {
+      "output": "- Hurry… Quick! Come…\n- Outrageous…",
+      "note": "Added '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Get going - Take her away",
+      "tesseract": "- Get going\n- Take her away"
+    },
+    "answer": {
+      "output": "- Get going\n- Take her away",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- It'll take a long\ntime then - Not me…",
+      "tesseract": "- It'll take a long time then\n- Not me…"
+    },
+    "answer": {
+      "output": "- It'll take a long time then\n- Not me…",
+      "note": "Used Tesseract's line break and placed '-' on second line; kept ellipsis."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Better off to wait till my powers are gone",
+      "tesseract": "better off to wait till my powers are gone"
+    },
+    "answer": {
+      "output": "better off to wait till my powers are gone",
+      "note": "Used lower-case 'better'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Burning her will stop the plague?",
+      "tesseract": "burning her will stop the plague?"
+    },
+    "answer": {
+      "output": "burning her will stop the plague?",
+      "note": "Used lower-case 'burning'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Heavenly Highness\ntold me in a dream - Oh…",
+      "tesseract": "- Heavenly Highness told me in a dream\n- Oh…"
+    },
+    "answer": {
+      "output": "- Heavenly Highness told me in a dream\n- Oh…",
+      "note": "Used line break and second '-' as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- …your mother in a\ndream - It can't be…",
+      "tesseract": "- …your mother in a dream\n- It can't be…"
+    },
+    "answer": {
+      "output": "- …your mother in a dream\n- It can't be…",
+      "note": "Used line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "The two moles on your face will disappear",
+      "tesseract": "the two moles on your face will disappear"
+    },
+    "answer": {
+      "output": "the two moles on your face will disappear",
+      "note": "Used lower-case 'the'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "There'll be no more plague",
+      "tesseract": "there'll be no more plague"
+    },
+    "answer": {
+      "output": "there'll be no more plague",
+      "note": "Used lower-case 'there'll'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "The fire is so fierce.\nHow to release?",
+      "tesseract": "The fire is so fierce. How to release?"
+    },
+    "answer": {
+      "output": "The fire is so fierce. How to release?",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Treat you like a shit bowl",
+      "tesseract": "treat you like a shit bowl"
+    },
+    "answer": {
+      "output": "treat you like a shit bowl",
+      "note": "Used lower-case 'treat'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "But they're not emotionally tied to it",
+      "tesseract": "but they're not emotionally tied to it"
+    },
+    "answer": {
+      "output": "but they're not emotionally tied to it",
+      "note": "Used lower-case 'but'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "But I\ndo",
+      "tesseract": "but I do"
+    },
+    "answer": {
+      "output": "but I do",
+      "note": "Used lower-case 'but' and space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Not really,\nMaster.",
+      "tesseract": "Not really, Master."
+    },
+    "answer": {
+      "output": "Not really, Master.",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "How come you ain't that persist\napart from begging?",
+      "tesseract": "how come you ain't that persist\napart from begging?"
+    },
+    "answer": {
+      "output": "how come you ain't that persist\napart from begging?",
+      "note": "Used lower-case 'how' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Help…\nC'mon…",
+      "tesseract": "Help… C'mon…"
+    },
+    "answer": {
+      "output": "Help… C'mon…",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "My nick name here. Thanks",
+      "tesseract": "my nick name here. Thanks"
+    },
+    "answer": {
+      "output": "my nick name here. Thanks",
+      "note": "Used lower-case 'my'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "In the presence of Siu Yuk",
+      "tesseract": "in the presence of Siu Yuk"
+    },
+    "answer": {
+      "output": "in the presence of Siu Yuk",
+      "note": "Used lower-case 'in'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "A chicken… can also become a phoenix",
+      "tesseract": "a chicken… can also become a phoenix"
+    },
+    "answer": {
+      "output": "a chicken… can also become a phoenix",
+      "note": "Used lower-case 'a' from Tesseract for the first word; kept ellipsis from Lens/Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "A good-looking and presentable man",
+      "tesseract": "A good- looking and presentable man"
+    },
+    "answer": {
+      "output": "A good-looking and presentable man",
+      "note": "Used Google Lens wording; removed incorrect space in hyphenated 'good-looking' from Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Yeah…",
+      "tesseract": "Yeah\"."
+    },
+    "answer": {
+      "output": "Yeah…",
+      "note": "Used ellipsis from Google Lens instead of misread quote and period in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And the sores will emerge again",
+      "tesseract": "and the sores will emerge again"
+    },
+    "answer": {
+      "output": "and the sores will emerge again",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "She sometimes makes guest appearances",
+      "tesseract": "she sometimes makes guest appearances"
+    },
+    "answer": {
+      "output": "she sometimes makes guest appearances",
+      "note": "Used lower-case 'she'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Some dishes for you?",
+      "tesseract": "some dishes for you?"
+    },
+    "answer": {
+      "output": "some dishes for you?",
+      "note": "Used lower-case 'some' from Tesseract for the first word capitalization."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- I'm a beggar - What?",
+      "tesseract": "- I'm a beggar\n- What?"
+    },
+    "answer": {
+      "output": "- I'm a beggar\n- What?",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "There's no reason I can't fix you",
+      "tesseract": "there's no reason I can't fix you"
+    },
+    "answer": {
+      "output": "there's no reason I can't fix you",
+      "note": "Used lower-case 'there's'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "As well tomorrow",
+      "tesseract": "as well tomorrow"
+    },
+    "answer": {
+      "output": "as well tomorrow",
+      "note": "Used lower-case 'as'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "After knowing him too",
+      "tesseract": "after knowing him too"
+    },
+    "answer": {
+      "output": "after knowing him too",
+      "note": "Used lower-case 'after'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And leave Siu Yuk alone tonight,",
+      "tesseract": "and leave Siu Yuk alone tonight,"
+    },
+    "answer": {
+      "output": "and leave Siu Yuk alone tonight,",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "We'll settle our score later",
+      "tesseract": "we'll settle our score later"
+    },
+    "answer": {
+      "output": "we'll settle our score later",
+      "note": "Used lower-case 'we\\'ll'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Is someone selling rice dumplings?",
+      "tesseract": "ls someone selling rice dumplings?"
+    },
+    "answer": {
+      "output": "Is someone selling rice dumplings?",
+      "note": "Used 'Is' from Google Lens instead of Tesseract's misread 'ls'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- Never mind it - Ok",
+      "tesseract": "- Never mind it\n- Ok"
+    },
+    "answer": {
+      "output": "- Never mind it\n- Ok",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- Turn his face\nover - Turn his face",
+      "tesseract": "- Turn his face over\n- Turn his face"
+    },
+    "answer": {
+      "output": "- Turn his face over\n- Turn his face",
+      "note": "Used line break and second-line '-' as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Which makes you invulnerable",
+      "tesseract": "which makes you invulnerable"
+    },
+    "answer": {
+      "output": "which makes you invulnerable",
+      "note": "Used lower-case 'which'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- No - For just one night",
+      "tesseract": "- No\n- For just one night"
+    },
+    "answer": {
+      "output": "- No\n- For just one night",
+      "note": "Added line break and placed '-' on second line as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- - No One hour",
+      "tesseract": "- No\n- One hour"
+    },
+    "answer": {
+      "output": "- No\n- One hour",
+      "note": "Used dialogue line break and second '-' as in Tesseract."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "- - No Ok, then a cross",
+      "tesseract": "- No\n- Ok, then a cross"
+    },
+    "answer": {
+      "output": "- No    - Ok, then a cross",
+      "note": "Used dialogue dashes and separation from Tesseract; removed extra '-' from Lens and added four spaces between the two dialogue lines for clarity."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "Hey man,\nhalt",
+      "tesseract": "Hey man, halt"
+    },
+    "answer": {
+      "output": "Hey man, halt",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Understand?",
+      "tesseract": "understand?"
+    },
+    "answer": {
+      "output": "understand?",
+      "note": "Used lower-case 'understand'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "How dare you?\nStop",
+      "tesseract": "How dare you? Stop"
+    },
+    "answer": {
+      "output": "How dare you? Stop",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Okay?",
+      "tesseract": "okay?"
+    },
+    "answer": {
+      "output": "okay?",
+      "note": "Used lower-case 'okay' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Stinking monk, why\nappeared so sudden",
+      "tesseract": "Stinking monk, why appeared so sudden"
+    },
+    "answer": {
+      "output": "Stinking monk, why appeared so sudden",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And help accomplish your mission",
+      "tesseract": "and help accomplish your mission"
+    },
+    "answer": {
+      "output": "and help accomplish your mission",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "The fairies inside said…",
+      "tesseract": "the fairies inside said…"
+    },
+    "answer": {
+      "output": "the fairies inside said…",
+      "note": "Used lower-case 'the' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "The golden body cannot leave the temple",
+      "tesseract": "the golden body cannot leave the temple"
+    },
+    "answer": {
+      "output": "the golden body cannot leave the temple",
+      "note": "Used lower-case 'the'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "How can I bear this responsibility?",
+      "tesseract": "how can I bear this responsibility?"
+    },
+    "answer": {
+      "output": "how can I bear this responsibility?",
+      "note": "Used lower-case 'how'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And kissed by thousands of people,",
+      "tesseract": "and kissed by thousands of people,"
+    },
+    "answer": {
+      "output": "and kissed by thousands of people,",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You still…",
+      "tesseract": "you still…"
+    },
+    "answer": {
+      "output": "you still…",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "No…\nYeah…",
+      "tesseract": "No… Yeah…"
+    },
+    "answer": {
+      "output": "No… Yeah…",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Good… go…",
+      "tesseract": "Good--- go-.-."
+    },
+    "answer": {
+      "output": "Good… go…",
+      "note": "Used ellipses from Google Lens instead of misrecognized dashes/punctuation in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "I\nvowed",
+      "tesseract": "I vowed"
+    },
+    "answer": {
+      "output": "I vowed",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Yes,\nI am",
+      "tesseract": "Yes, I am"
+    },
+    "answer": {
+      "output": "Yes, I am",
+      "note": "Used space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "From 77491 people",
+      "tesseract": "from 77491 people"
+    },
+    "answer": {
+      "output": "from 77491 people",
+      "note": "Used lower-case 'from'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You can be a fairy again",
+      "tesseract": "you can be a fairy again"
+    },
+    "answer": {
+      "output": "you can be a fairy again",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Many lives would have been spared",
+      "tesseract": "many lives would have been spared"
+    },
+    "answer": {
+      "output": "many lives would have been spared",
+      "note": "Used lower-case 'many'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You guys can't kill me",
+      "tesseract": "you guys can't kill me"
+    },
+    "answer": {
+      "output": "you guys can't kill me",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "He plans to get back the scepter",
+      "tesseract": "he plans to get back the scepter"
+    },
+    "answer": {
+      "output": "he plans to get back the scepter",
+      "note": "Used lower-case 'he'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "We've to stay on earth to sell banana",
+      "tesseract": "we've to stay on earth to sell banana"
+    },
+    "answer": {
+      "output": "we've to stay on earth to sell banana",
+      "note": "Used lower-case 'we've'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Do they want to die either?",
+      "tesseract": "do they want to die either?"
+    },
+    "answer": {
+      "output": "do they want to die either?",
+      "note": "Used lower-case 'do'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "You can only be the puppet of Hak Lo Sat,",
+      "tesseract": "you can only be the puppet of Hak Lo Sat,"
+    },
+    "answer": {
+      "output": "you can only be the puppet of Hak Lo Sat,",
+      "note": "Used lower-case 'you'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And continue killing innocent folk.\nIs that what you want?",
+      "tesseract": "and continue killing innocent folk.\nIs that what you want?"
+    },
+    "answer": {
+      "output": "and continue killing innocent folk.\nIs that what you want?",
+      "note": "Used lower-case 'and' from Tesseract for the first word; kept the line break and remaining text."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "From my thirteen life cycles' training",
+      "tesseract": "from my thirteen life cycles' training"
+    },
+    "answer": {
+      "output": "from my thirteen life cycles' training",
+      "note": "Used lower-case 'from'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "To overpower\nhim",
+      "tesseract": "to overpower him"
+    },
+    "answer": {
+      "output": "to overpower him",
+      "note": "Used lower-case 'to' and space instead of newline as in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "To defecate the golden powder",
+      "tesseract": "to defecate the golden powder"
+    },
+    "answer": {
+      "output": "to defecate the golden powder",
+      "note": "Used lower-case 'to'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "And I'll spare you",
+      "tesseract": "and I'll spare you"
+    },
+    "answer": {
+      "output": "and I'll spare you",
+      "note": "Used lower-case 'and'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Haha…",
+      "tesseract": "Haha\"."
+    },
+    "answer": {
+      "output": "Haha…",
+      "note": "Used ellipsis from Google Lens instead of misread '\".' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- I also said he'll\nlose - Lose for sure,",
+      "tesseract": "- I also said he'll lose\n- Loss for sure,"
+    },
+    "answer": {
+      "output": "- I also said he'll lose\n- Lose for sure,",
+      "note": "Used line break and second-line '-' from Tesseract; corrected 'Loss' to 'Lose' from Lens."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "No argument…",
+      "tesseract": "no argument…"
+    },
+    "answer": {
+      "output": "no argument…",
+      "note": "Used lower-case 'no' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "He could have twenty more years\nto beg for his living",
+      "tesseract": "he could have twenty more years\nto beg for his living"
+    },
+    "answer": {
+      "output": "he could have twenty more years\nto beg for his living",
+      "note": "Used lower-case 'he'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "So… it's so… SO…",
+      "tesseract": "So… it's so… so…"
+    },
+    "answer": {
+      "output": "So… it's so… SO…",
+      "note": "Used capitalized 'SO' from Google Lens."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Things wouldn't have been such a mess",
+      "tesseract": "things wouldn't have been such a mess"
+    },
+    "answer": {
+      "output": "things wouldn't have been such a mess",
+      "note": "Used lower-case 'things'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Nonsense…",
+      "tesseract": "Nonsense\"."
+    },
+    "answer": {
+      "output": "Nonsense…",
+      "note": "Used ellipsis from Google Lens instead of misread quote/period in Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "Suffered an innocent death",
+      "tesseract": "suffered an innocent death"
+    },
+    "answer": {
+      "output": "suffered an innocent death",
+      "note": "Used lower-case 'suffered'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- He doesn't have to be\na beggar this life - Right…",
+      "tesseract": "- He doesn't have to be a beggar this life\n- Right…"
+    },
+    "answer": {
+      "output": "- He doesn't have to be a beggar this life\n- Right…",
+      "note": "Used Tesseract's line break and placed '-' on the second line for dialogue."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "She's no longer a whore",
+      "tesseract": "she's no longer a whore"
+    },
+    "answer": {
+      "output": "she's no longer a whore",
+      "note": "Used lower-case 'she's'."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "He said he didn't want to be\na human being anymore",
+      "tesseract": "he said he didn't want to be\na human being anymore"
+    },
+    "answer": {
+      "output": "he said he didn't want to be\na human being anymore",
+      "note": "Used lower-case 'he' from Tesseract."
+    },
+    "difficulty": 1
+  },
+  {
+    "query": {
+      "lens": "- - He'll be a senior\nCould he be a senior?",
+      "tesseract": "- He'll be a senior\n- Could he be a senior?"
+    },
+    "answer": {
+      "output": "- He'll be a senior\n- Could he be a senior?",
+      "note": "Removed extra '-' from the first line and used dialogue formatting from Tesseract for the second line."
+    },
+    "difficulty": 2
+  },
+  {
+    "query": {
+      "lens": "A senior Dragon Fighter today?",
+      "tesseract": "a senior Dragon Fighter today?"
+    },
+    "answer": {
+      "output": "a senior Dragon Fighter today?",
+      "note": "Used lower-case 'a' for the first word as in Tesseract."
+    },
+    "difficulty": 1
+  }
+]
