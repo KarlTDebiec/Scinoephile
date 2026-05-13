@@ -61,7 +61,6 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
         patch(
             "scinoephile.workflows.subtitle_extraction.extract_subtitle_stream"
         ) as extract,
-        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles") as cache,
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -71,9 +70,6 @@ def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
         )
 
     get_subtitle_streams.assert_called_once_with(infile_path)
-    cache.assert_called_once()
-    assert [stream.index for stream in cache.call_args.args[1]] == [2, 4]
-    assert cache.call_args.kwargs == {"cache_dir_path": cache_dir_path}
     assert extract.call_count == 2
     assert [output.path for output in result.outputs] == [
         output_dir_path / "eng-2.srt",
@@ -114,7 +110,6 @@ def test_extract_subtitles_details_uses_detected_chinese_script(tmp_path: Path):
             ],
         ) as get_zho_subtitle_streams,
         patch("scinoephile.workflows.subtitle_extraction.extract_subtitle_stream"),
-        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -155,7 +150,6 @@ def test_extract_subtitles_reports_existing_outputs(tmp_path: Path):
         patch(
             "scinoephile.workflows.subtitle_extraction.extract_subtitle_stream"
         ) as extract,
-        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -191,7 +185,6 @@ def test_extract_subtitles_reports_overwritten_outputs(tmp_path: Path):
         patch(
             "scinoephile.workflows.subtitle_extraction.extract_subtitle_stream"
         ) as extract,
-        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
     ):
         result = extract_subtitles(
             infile_path=infile_path,
@@ -225,7 +218,6 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
             ],
         ),
         patch("scinoephile.workflows.subtitle_extraction.extract_subtitle_stream"),
-        patch("scinoephile.workflows.subtitle_extraction.cache_subtitles"),
         patch(
             "scinoephile.workflows.subtitle_extraction.ImageSeries.load",
             return_value=image_series,

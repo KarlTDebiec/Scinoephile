@@ -10,13 +10,13 @@ from enum import Enum
 from logging import getLogger
 from pathlib import Path
 from shutil import copy2
+from typing import Self
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_subtitle_streams
-from scinoephile.media.subtitles.cache import cache_subtitles
 from scinoephile.media.subtitles.extraction import extract_subtitle_stream
 
 __all__ = [
@@ -30,21 +30,16 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-class SubtitleExtractionOutputKind(Enum):
-    """Kind of output produced by subtitle extraction."""
+class _DescribedEnum(Enum):
+    """Enum with OpenCC-style code and description metadata."""
 
     _description: str
 
-    SUBTITLE = ("subtitle", "subtitle")
-    """Extracted or copied subtitle file."""
-    IMAGE_SERIES = ("image-series", "image series")
-    """Image directory rendered from a SUP subtitle file."""
-
-    def __new__(cls, code: str, description: str) -> SubtitleExtractionOutputKind:
+    def __new__(cls, code: str, description: str) -> Self:
         """Create enum member with attached description metadata.
 
         Arguments:
-            code: output kind code
+            code: enum code
             description: human-readable description
         """
         member = object.__new__(cls)
@@ -54,12 +49,12 @@ class SubtitleExtractionOutputKind(Enum):
 
     @property
     def code(self) -> str:
-        """Output kind code."""
+        """Enum code."""
         return self.value
 
     @property
     def description(self) -> str:
-        """Human-readable description of this output kind."""
+        """Human-readable description of this enum member."""
         return self._description
 
     def __str__(self) -> str:
@@ -67,10 +62,17 @@ class SubtitleExtractionOutputKind(Enum):
         return self.value
 
 
-class SubtitleExtractionOutputStatus(Enum):
-    """Status of an output path handled by subtitle extraction."""
+class SubtitleExtractionOutputKind(_DescribedEnum):
+    """Kind of output produced by subtitle extraction."""
 
-    _description: str
+    SUBTITLE = ("subtitle", "subtitle")
+    """Extracted or copied subtitle file."""
+    IMAGE_SERIES = ("image-series", "image series")
+    """Image directory rendered from a SUP subtitle file."""
+
+
+class SubtitleExtractionOutputStatus(_DescribedEnum):
+    """Status of an output path handled by subtitle extraction."""
 
     CREATED = ("created", "Created")
     """Output did not exist and was created."""
@@ -78,32 +80,6 @@ class SubtitleExtractionOutputStatus(Enum):
     """Output already existed and was left in place."""
     OVERWRITTEN = ("overwritten", "Overwritten")
     """Output already existed and was regenerated."""
-
-    def __new__(cls, code: str, description: str) -> SubtitleExtractionOutputStatus:
-        """Create enum member with attached description metadata.
-
-        Arguments:
-            code: output status code
-            description: human-readable description
-        """
-        member = object.__new__(cls)
-        member._value_ = code
-        member._description = description
-        return member
-
-    @property
-    def code(self) -> str:
-        """Output status code."""
-        return self.value
-
-    @property
-    def description(self) -> str:
-        """Human-readable description of this output status."""
-        return self._description
-
-    def __str__(self) -> str:
-        """String representation used in CLI/help contexts."""
-        return self.value
 
 
 @dataclass(frozen=True)
@@ -172,20 +148,16 @@ def extract_subtitles(
 
     # Select matching subtitle streams from the media container
     language_codes = set(languages)
-    if details:
-        subtitle_streams = get_zho_subtitle_streams(
-            infile_path,
-            cache_dir_path=cache_dir_path,
-        )
-    else:
-        subtitle_streams = get_subtitle_streams(infile_path)
     streams = [
         stream
-        for stream in subtitle_streams
+        for stream in _get_workflow_subtitle_streams(
+            infile_path,
+            cache_dir_path=cache_dir_path,
+            details=details,
+        )
         if stream.language is not None
         and stream.language.split("-", 1)[0] in language_codes
     ]
-    cache_subtitles(infile_path, streams, cache_dir_path=cache_dir_path)
 
     # Extract each selected stream and collect reported outputs
     outputs = []
@@ -256,6 +228,30 @@ def _extract_stream(
     return outputs
 
 
+def _get_workflow_subtitle_streams(
+    infile_path: Path,
+    *,
+    cache_dir_path: Path | None,
+    details: bool,
+) -> list[SubtitleStream]:
+    """Get subtitle streams with optional workflow-level detail enrichment.
+
+    Arguments:
+        infile_path: media input file
+        cache_dir_path: cache directory path
+        details: whether to include expensive stream details
+    Returns:
+        subtitle streams
+    """
+    # Use downstream Chinese script analysis only when details are requested
+    if details:
+        return get_zho_subtitle_streams(
+            infile_path,
+            cache_dir_path=cache_dir_path,
+        )
+    return get_subtitle_streams(infile_path)
+
+
 def _extract_stream_file(
     infile_path: Path,
     stream: SubtitleStream,
@@ -319,13 +315,11 @@ def _extract_sup_file(
         outputs handled for the SUP file
     """
     # Probe the standalone SUP file and optionally enrich stream details
-    if details:
-        streams = get_zho_subtitle_streams(
-            infile_path,
-            cache_dir_path=cache_dir_path,
-        )
-    else:
-        streams = get_subtitle_streams(infile_path)
+    streams = _get_workflow_subtitle_streams(
+        infile_path,
+        cache_dir_path=cache_dir_path,
+        details=details,
+    )
     if not streams:
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
 
