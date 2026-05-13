@@ -5,11 +5,11 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from enum import Enum
 from functools import cache
 
 from opencc import OpenCC
 
+from scinoephile.common.described_enum import DescribedEnum
 from scinoephile.core.subtitles import Series
 
 __all__ = [
@@ -39,10 +39,8 @@ _conversion_exclusions = {
 """Characters for which OpenCC's conversion is undesirable in this package."""
 
 
-class OpenCCConfig(Enum):
+class OpenCCConfig(DescribedEnum):
     """OpenCC configuration names for standard Chinese character set conversion."""
-
-    _description: str
 
     s2t = ("s2t", "Simplified Chinese to Traditional Chinese.")
     """Simplified Chinese to Traditional Chinese."""
@@ -84,32 +82,6 @@ class OpenCCConfig(Enum):
     """New Japanese kanji to traditional Chinese characters."""
     tw2t = ("tw2t", "Traditional Chinese (Taiwan) to Traditional Chinese.")
     """Traditional Chinese for Taiwan to Traditional Chinese."""
-
-    def __new__(cls, code: str, description: str) -> OpenCCConfig:
-        """Create enum member with attached description metadata.
-
-        Arguments:
-            code: OpenCC configuration code
-            description: human-readable description
-        """
-        member = object.__new__(cls)
-        member._value_ = code
-        member._description = description
-        return member
-
-    @property
-    def code(self) -> str:
-        """OpenCC configuration code."""
-        return self.value
-
-    @property
-    def description(self) -> str:
-        """Human-readable description of this OpenCC configuration."""
-        return self._description
-
-    def __str__(self) -> str:
-        """String representation used in CLI/help contexts."""
-        return self.value
 
 
 SIMPLIFIED_CONFIGS = {

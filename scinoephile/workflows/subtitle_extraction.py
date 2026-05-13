@@ -6,12 +6,11 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import Enum
 from logging import getLogger
 from pathlib import Path
 from shutil import copy2
-from typing import Self
 
+from scinoephile.common.described_enum import DescribedEnum
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
@@ -30,39 +29,7 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-class _DescribedEnum(Enum):
-    """Enum with OpenCC-style code and description metadata."""
-
-    _description: str
-
-    def __new__(cls, code: str, description: str) -> Self:
-        """Create enum member with attached description metadata.
-
-        Arguments:
-            code: enum code
-            description: human-readable description
-        """
-        member = object.__new__(cls)
-        member._value_ = code
-        member._description = description
-        return member
-
-    @property
-    def code(self) -> str:
-        """Enum code."""
-        return self.value
-
-    @property
-    def description(self) -> str:
-        """Human-readable description of this enum member."""
-        return self._description
-
-    def __str__(self) -> str:
-        """String representation used in CLI/help contexts."""
-        return self.value
-
-
-class SubtitleExtractionOutputKind(_DescribedEnum):
+class SubtitleExtractionOutputKind(DescribedEnum):
     """Kind of output produced by subtitle extraction."""
 
     SUBTITLE = ("subtitle", "subtitle")
@@ -71,7 +38,7 @@ class SubtitleExtractionOutputKind(_DescribedEnum):
     """Image directory rendered from a SUP subtitle file."""
 
 
-class SubtitleExtractionOutputStatus(_DescribedEnum):
+class SubtitleExtractionOutputStatus(DescribedEnum):
     """Status of an output path handled by subtitle extraction."""
 
     CREATED = ("created", "Created")
