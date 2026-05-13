@@ -15,6 +15,15 @@ from scinoephile.lang.zho.script.conversion import (
 from test.helpers import assert_series_equal
 
 
+def test_opencc_config_metadata():
+    """Test OpenCCConfig metadata."""
+    config = OpenCCConfig.s2t
+    assert config.code == "s2t"
+    assert config.description == "Simplified Chinese to Traditional Chinese."
+    assert str(config) == "s2t"
+    assert OpenCCConfig("s2t") is config
+
+
 def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Series):
     """Test get_zho_converted.
 
