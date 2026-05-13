@@ -53,10 +53,12 @@ class OcrCli(ScinoephileCliBase):
         """
         from .ocr_lens_cli import OcrLensCli  # noqa: PLC0415
         from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
+        from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
 
         return {
             OcrLensCli.name(): OcrLensCli,
             OcrPaddleCli.name(): OcrPaddleCli,
+            OcrTesseractCli.name(): OcrTesseractCli,
         }
 
     @classmethod

@@ -15,6 +15,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
+from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
@@ -162,8 +163,16 @@ class SyncCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        top = read_series(parser, top_infile_path, allow_stdin=True)
-        bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
+        try:
+            top = read_series(parser, top_infile_path, allow_stdin=True)
+            bottom = read_series(parser, bottom_infile_path, allow_stdin=True)
+        except (
+            FileNotFoundError,
+            NotADirectoryError,
+            ScinoephileError,
+            ValueError,
+        ) as exc:
+            parser.error(str(exc))
 
         # Perform operations
         synced = get_synced_series(
