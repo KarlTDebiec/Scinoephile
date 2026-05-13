@@ -18,6 +18,26 @@ from scinoephile.workflows.subtitle_extraction import (
 )
 
 
+def test_subtitle_extraction_output_kind_metadata():
+    """Test subtitle extraction output kind enum metadata."""
+    assert SubtitleExtractionOutputKind.SUBTITLE.code == "subtitle"
+    assert SubtitleExtractionOutputKind.SUBTITLE.value == "subtitle"
+    assert SubtitleExtractionOutputKind.SUBTITLE.description == "subtitle"
+    assert str(SubtitleExtractionOutputKind.SUBTITLE) == "subtitle"
+    assert SubtitleExtractionOutputKind.IMAGE_SERIES.code == "image-series"
+    assert SubtitleExtractionOutputKind.IMAGE_SERIES.description == "image series"
+
+
+def test_subtitle_extraction_output_status_metadata():
+    """Test subtitle extraction output status enum metadata."""
+    assert SubtitleExtractionOutputStatus.CREATED.code == "created"
+    assert SubtitleExtractionOutputStatus.CREATED.value == "created"
+    assert SubtitleExtractionOutputStatus.CREATED.description == "Created"
+    assert str(SubtitleExtractionOutputStatus.CREATED) == "created"
+    assert SubtitleExtractionOutputStatus.EXISTED.description == "Already existed"
+    assert SubtitleExtractionOutputStatus.OVERWRITTEN.description == "Overwritten"
+
+
 def test_extract_subtitles_extracts_matching_streams(tmp_path: Path):
     """Test subtitle extraction workflow exports matching streams.
 

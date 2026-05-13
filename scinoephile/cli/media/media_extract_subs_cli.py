@@ -18,7 +18,6 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.workflows.subtitle_extraction import (
-    SubtitleExtractionOutputKind,
     SubtitleExtractionOutputStatus,
     SubtitleExtractionResult,
     extract_subtitles,
@@ -186,23 +185,14 @@ class MediaExtractSubsCli(ScinoephileCliBase):
         Arguments:
             result: subtitle extraction result
         """
-        status_labels = {
-            SubtitleExtractionOutputStatus.CREATED: "Created",
-            SubtitleExtractionOutputStatus.EXISTED: "Already existed",
-            SubtitleExtractionOutputStatus.OVERWRITTEN: "Overwritten",
-        }
-        kind_labels = {
-            SubtitleExtractionOutputKind.SUBTITLE: "subtitle",
-            SubtitleExtractionOutputKind.IMAGE_SERIES: "image series",
-        }
-        for status, status_label in status_labels.items():
+        for status in SubtitleExtractionOutputStatus:
             outputs = [output for output in result.outputs if output.status == status]
             if not outputs:
                 continue
-            print(f"{status_label}:")
+            print(f"{status.description}:")
             for output in outputs:
                 print(
-                    f"  {kind_labels[output.kind]}: "
+                    f"  {output.kind.description}: "
                     f"{output.stream.description} -> {output.path}"
                 )
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from enum import StrEnum
+from enum import Enum
 from logging import getLogger
 from pathlib import Path
 from shutil import copy2
@@ -30,24 +30,80 @@ __all__ = [
 logger = getLogger(__name__)
 
 
-class SubtitleExtractionOutputKind(StrEnum):
+class SubtitleExtractionOutputKind(Enum):
     """Kind of output produced by subtitle extraction."""
 
-    SUBTITLE = "subtitle"
+    _description: str
+
+    SUBTITLE = ("subtitle", "subtitle")
     """Extracted or copied subtitle file."""
-    IMAGE_SERIES = "image-series"
+    IMAGE_SERIES = ("image-series", "image series")
     """Image directory rendered from a SUP subtitle file."""
 
+    def __new__(cls, code: str, description: str) -> SubtitleExtractionOutputKind:
+        """Create enum member with attached description metadata.
 
-class SubtitleExtractionOutputStatus(StrEnum):
+        Arguments:
+            code: output kind code
+            description: human-readable description
+        """
+        member = object.__new__(cls)
+        member._value_ = code
+        member._description = description
+        return member
+
+    @property
+    def code(self) -> str:
+        """Output kind code."""
+        return self.value
+
+    @property
+    def description(self) -> str:
+        """Human-readable description of this output kind."""
+        return self._description
+
+    def __str__(self) -> str:
+        """String representation used in CLI/help contexts."""
+        return self.value
+
+
+class SubtitleExtractionOutputStatus(Enum):
     """Status of an output path handled by subtitle extraction."""
 
-    CREATED = "created"
+    _description: str
+
+    CREATED = ("created", "Created")
     """Output did not exist and was created."""
-    EXISTED = "existed"
+    EXISTED = ("existed", "Already existed")
     """Output already existed and was left in place."""
-    OVERWRITTEN = "overwritten"
+    OVERWRITTEN = ("overwritten", "Overwritten")
     """Output already existed and was regenerated."""
+
+    def __new__(cls, code: str, description: str) -> SubtitleExtractionOutputStatus:
+        """Create enum member with attached description metadata.
+
+        Arguments:
+            code: output status code
+            description: human-readable description
+        """
+        member = object.__new__(cls)
+        member._value_ = code
+        member._description = description
+        return member
+
+    @property
+    def code(self) -> str:
+        """Output status code."""
+        return self.value
+
+    @property
+    def description(self) -> str:
+        """Human-readable description of this output status."""
+        return self._description
+
+    def __str__(self) -> str:
+        """String representation used in CLI/help contexts."""
+        return self.value
 
 
 @dataclass(frozen=True)
