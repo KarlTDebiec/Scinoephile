@@ -16,7 +16,10 @@ from scinoephile.core.media import SubtitleStream
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.zho.subtitles.streams import get_zho_subtitle_streams
 from scinoephile.media.probe import get_subtitle_streams
-from scinoephile.media.subtitles.extraction import extract_subtitle_stream
+from scinoephile.media.subtitles.cache import (
+    cache_subtitles,
+    get_subtitle_cache_path,
+)
 
 __all__ = [
     "SubtitleExtractionOutput",
@@ -105,6 +108,7 @@ def extract_subtitles(
     if infile_path.suffix.lower() == ".sup":
         outputs = _extract_sup_file(
             infile_path,
+            languages,
             output_dir_path,
             details=details,
             extract_sup=extract_sup,
@@ -126,73 +130,86 @@ def extract_subtitles(
         and stream.language.split("-", 1)[0] in language_codes
     ]
 
-    # Extract each selected stream and collect reported outputs
+    # Determine subtitle file outputs and which streams need cache extraction
     outputs = []
+    streams_to_extract = []
     for stream in streams:
-        outputs.extend(
-            _extract_stream(
-                infile_path,
-                stream,
-                output_dir_path,
-                extract_sup=extract_sup,
-                overwrite=overwrite,
-                cache_dir_path=cache_dir_path,
+        outfile_path = output_dir_path / stream.outfile_filename
+        status = _get_stream_file_status(outfile_path, overwrite=overwrite)
+        outputs.append(
+            SubtitleExtractionOutput(
+                kind=SubtitleExtractionOutputKind.SUBTITLE,
+                status=status,
+                stream=stream,
+                path=outfile_path,
             )
         )
-    return SubtitleExtractionResult(infile_path=infile_path, outputs=outputs)
+        if status != SubtitleExtractionOutputStatus.EXISTED:
+            streams_to_extract.append(stream)
+
+    # Cache all subtitle files that need extraction in one ffmpeg run
+    if streams_to_extract:
+        cache_subtitles(
+            infile_path,
+            streams_to_extract,
+            cache_dir_path=cache_dir_path,
+        )
+
+    # Copy cached subtitle files into place and optionally render SUP image directories
+    handled_outputs = []
+    for output in outputs:
+        if output.status != SubtitleExtractionOutputStatus.EXISTED:
+            _copy_cached_stream_file(
+                infile_path,
+                output.stream,
+                output.path,
+                cache_dir_path=cache_dir_path,
+            )
+        handled_outputs.append(output)
+        if output.stream.extension == "sup" and extract_sup:
+            handled_outputs.append(
+                _extract_sup_image_series(
+                    output.stream,
+                    output.path,
+                    output.path.with_suffix(""),
+                    overwrite=overwrite,
+                )
+            )
+    return SubtitleExtractionResult(infile_path=infile_path, outputs=handled_outputs)
 
 
-def _extract_stream(
+def _copy_cached_stream_file(
     infile_path: Path,
     stream: SubtitleStream,
-    output_dir_path: Path,
+    outfile_path: Path,
     *,
     cache_dir_path: Path | None,
-    extract_sup: bool,
-    overwrite: bool,
-) -> list[SubtitleExtractionOutput]:
-    """Extract one matching subtitle stream.
+) -> Path:
+    """Copy a cached subtitle stream file into place.
 
     Arguments:
         infile_path: media input file
-        stream: subtitle stream to extract
-        output_dir_path: output directory
+        stream: subtitle stream to copy
+        outfile_path: output subtitle path
         cache_dir_path: cache directory path
-        extract_sup: whether to convert SUP subtitles to image directories
-        overwrite: whether to overwrite existing outputs
     Returns:
-        outputs handled for the stream
+        output subtitle path
     """
-    outfile_path = output_dir_path / stream.outfile_filename
-
-    # Extract the subtitle file and report its output status
-    status = _extract_stream_file(
+    # Resolve the cached subtitle path for the extracted stream
+    stream_path = get_subtitle_cache_path(
         infile_path,
         stream,
-        outfile_path,
         cache_dir_path=cache_dir_path,
-        overwrite=overwrite,
     )
-    outputs = [
-        SubtitleExtractionOutput(
-            kind=SubtitleExtractionOutputKind.SUBTITLE,
-            status=status,
-            stream=stream,
-            path=outfile_path,
-        )
-    ]
 
-    # Optionally render SUP subtitles as image directories
-    if stream.extension == "sup" and extract_sup:
-        outputs.append(
-            _extract_sup_image_series(
-                stream,
-                outfile_path,
-                outfile_path.with_suffix(""),
-                overwrite=overwrite,
-            )
-        )
-    return outputs
+    # Copy from cache unless the requested output already is the cached file
+    if stream_path != outfile_path:
+        if not outfile_path.parent.exists():
+            outfile_path.parent.mkdir(parents=True)
+            logger.info(f"Created subtitle output directory: {outfile_path.parent}")
+        copy2(stream_path, outfile_path)
+        logger.info(f"Extracted subtitle stream to {outfile_path}")
+    return outfile_path
 
 
 def _get_workflow_subtitle_streams(
@@ -219,21 +236,15 @@ def _get_workflow_subtitle_streams(
     return get_subtitle_streams(infile_path)
 
 
-def _extract_stream_file(
-    infile_path: Path,
-    stream: SubtitleStream,
+def _get_stream_file_status(
     outfile_path: Path,
     *,
-    cache_dir_path: Path | None,
     overwrite: bool,
 ) -> SubtitleExtractionOutputStatus:
-    """Extract a subtitle stream file and return its output status.
+    """Get the status to report for a subtitle stream file.
 
     Arguments:
-        infile_path: media input file
-        stream: subtitle stream to extract
         outfile_path: output subtitle path
-        cache_dir_path: cache directory path
         overwrite: whether to overwrite existing output
     Returns:
         output status
@@ -241,27 +252,16 @@ def _extract_stream_file(
     # Reuse or overwrite existing subtitle files according to caller preference
     if outfile_path.exists():
         if overwrite:
-            extract_subtitle_stream(
-                infile_path,
-                stream,
-                outfile_path,
-                cache_dir_path=cache_dir_path,
-            )
             return SubtitleExtractionOutputStatus.OVERWRITTEN
         return SubtitleExtractionOutputStatus.EXISTED
 
-    # Extract missing subtitle files
-    extract_subtitle_stream(
-        infile_path,
-        stream,
-        outfile_path,
-        cache_dir_path=cache_dir_path,
-    )
+    # Report missing subtitle files as created
     return SubtitleExtractionOutputStatus.CREATED
 
 
 def _extract_sup_file(
     infile_path: Path,
+    languages: Sequence[str],
     output_dir_path: Path,
     *,
     cache_dir_path: Path | None,
@@ -273,6 +273,7 @@ def _extract_sup_file(
 
     Arguments:
         infile_path: SUP input file
+        languages: ISO 639 language codes to extract
         output_dir_path: output directory
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
@@ -291,7 +292,13 @@ def _extract_sup_file(
         raise ScinoephileError(f"No subtitle streams found in {infile_path}")
 
     # Determine the output SUP filename from detected stream metadata
+    language_codes = set(languages)
     stream = streams[0]
+    if (
+        stream.language is not None
+        and stream.language.split("-", 1)[0] not in language_codes
+    ):
+        return []
     outfile_name = infile_path.name
     if stream.language is not None and "-" in stream.language:
         outfile_name = f"{stream.language}{infile_path.suffix}"
