@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.TimewarpCli."""
+"""Tests of the multi timewarp CLI."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.multi.multi_cli import MultiCli
+from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.timewarp_cli import TimewarpCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -27,13 +27,13 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (TimewarpCli,),
-        (MultiCli, TimewarpCli),
-        (ScinoephileCli, MultiCli, TimewarpCli),
+        (MultiTimewarpCli,),
+        (MultiCli, MultiTimewarpCli),
+        (ScinoephileCli, MultiCli, MultiTimewarpCli),
     ],
 )
-def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test timewarp CLI help output.
+def test_multi_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi timewarp CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -44,13 +44,13 @@ def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (TimewarpCli,),
-        (MultiCli, TimewarpCli),
-        (ScinoephileCli, MultiCli, TimewarpCli),
+        (MultiTimewarpCli,),
+        (MultiCli, MultiTimewarpCli),
+        (ScinoephileCli, MultiCli, MultiTimewarpCli),
     ],
 )
-def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test timewarp CLI usage output.
+def test_multi_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi timewarp CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -69,13 +69,13 @@ def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
     ],
 )
-def test_timewarp_cli(
+def test_multi_timewarp_cli(
     anchor_path: str,
     mobile_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test timewarp CLI processing with file arguments.
+    """Test multi timewarp CLI processing with file arguments.
 
     Arguments:
         anchor_path: path to anchor subtitle fixture
@@ -89,7 +89,7 @@ def test_timewarp_cli(
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            TimewarpCli,
+            MultiTimewarpCli,
             f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
             f"{args} --outfile {output_path}",
         )
@@ -110,10 +110,10 @@ def test_timewarp_cli(
         ),
     ],
 )
-def test_timewarp_cli_pipe(
+def test_multi_timewarp_cli_pipe(
     anchor_path: str, mobile_path: str, args: str, expected_path: str
 ):
-    """Test timewarp CLI writes stdout when outfile is omitted.
+    """Test multi timewarp CLI writes stdout when outfile is omitted.
 
     Arguments:
         anchor_path: path to anchor subtitle fixture
@@ -128,7 +128,7 @@ def test_timewarp_cli_pipe(
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
-            TimewarpCli,
+            MultiTimewarpCli,
             f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
             f"{args}",
         )

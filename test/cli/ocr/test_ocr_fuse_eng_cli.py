@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.EngFuseCli."""
+"""Tests of the OCR fuse CLI for English subtitles."""
 
 from __future__ import annotations
 
@@ -32,8 +32,8 @@ from test.helpers import (
         (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
-def test_eng_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English fuse CLI help output.
+def test_ocr_fuse_eng_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR fuse CLI help output for English subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -49,8 +49,8 @@ def test_eng_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
-def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English fuse CLI usage output.
+def test_ocr_fuse_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR fuse CLI usage output for English subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -87,13 +87,13 @@ def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
     ],
 )
-def test_eng_fuse_cli(
+def test_ocr_fuse_eng_cli(
     lens_input_path: str,
     tesseract_input_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test English fuse CLI processing with file arguments.
+    """Test OCR fuse CLI processing for English subtitles with file arguments.
 
     Arguments:
         lens_input_path: path to Google Lens subtitle fixture
@@ -129,13 +129,13 @@ def test_eng_fuse_cli(
         ),
     ],
 )
-def test_eng_fuse_cli_pipe(
+def test_ocr_fuse_eng_cli_pipe(
     lens_input_path: str,
     tesseract_input_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test English fuse CLI processing via stdout.
+    """Test OCR fuse CLI processing for English subtitles via stdout.
 
     Arguments:
         lens_input_path: path to Google Lens subtitle fixture

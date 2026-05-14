@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.SyncCli."""
+"""Tests of the multi sync CLI."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.multi.multi_cli import MultiCli
+from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -28,13 +28,13 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (SyncCli,),
-        (MultiCli, SyncCli),
-        (ScinoephileCli, MultiCli, SyncCli),
+        (MultiSyncCli,),
+        (MultiCli, MultiSyncCli),
+        (ScinoephileCli, MultiCli, MultiSyncCli),
     ],
 )
-def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test sync CLI help output.
+def test_multi_sync_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi sync CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -45,13 +45,13 @@ def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (SyncCli,),
-        (MultiCli, SyncCli),
-        (ScinoephileCli, MultiCli, SyncCli),
+        (MultiSyncCli,),
+        (MultiCli, MultiSyncCli),
+        (ScinoephileCli, MultiCli, MultiSyncCli),
     ],
 )
-def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test sync CLI usage output.
+def test_multi_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi sync CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -70,13 +70,13 @@ def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
     ],
 )
-def test_sync_cli(
+def test_multi_sync_cli(
     top_path: str,
     bottom_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test sync CLI processing with file arguments.
+    """Test multi sync CLI processing with file arguments.
 
     Arguments:
         top_path: path to top subtitle fixture
@@ -90,7 +90,7 @@ def test_sync_cli(
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            SyncCli,
+            MultiSyncCli,
             f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
             f"{args} --outfile {output_path}",
         )
@@ -110,8 +110,8 @@ def test_sync_cli(
         ),
     ],
 )
-def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
-    """Test sync CLI processing writes stdout when outfile is omitted.
+def test_multi_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
+    """Test multi sync CLI processing writes stdout when outfile is omitted.
 
     Arguments:
         top_path: path to top subtitle fixture
@@ -125,7 +125,7 @@ def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
-            SyncCli,
+            MultiSyncCli,
             f"--top-infile {full_top_path} --bottom-infile {full_bottom_path}",
         )
 
@@ -142,12 +142,12 @@ def test_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
         ("--sync-cutoff 0.25 --pause-length 5000", 0.25, 5000),
     ],
 )
-def test_sync_cli_passes_tuning_options(
+def test_multi_sync_cli_passes_tuning_options(
     args: str,
     expected_sync_cutoff: float,
     expected_pause_length: int,
 ):
-    """Test sync CLI passes synchronization tuning options.
+    """Test multi sync CLI passes synchronization tuning options.
 
     Arguments:
         args: extra command-line arguments
@@ -166,16 +166,16 @@ def test_sync_cli_passes_tuning_options(
     synced_series = Series()
 
     with patch(
-        "scinoephile.cli.sync_cli.read_series",
+        "scinoephile.cli.multi.multi_sync_cli.read_series",
         side_effect=[top_series, bottom_series],
     ):
-        with patch("scinoephile.cli.sync_cli.write_series"):
+        with patch("scinoephile.cli.multi.multi_sync_cli.write_series"):
             with patch(
-                "scinoephile.cli.sync_cli.get_synced_series",
+                "scinoephile.cli.multi.multi_sync_cli.get_synced_series",
                 return_value=synced_series,
             ) as get_synced_series:
                 run_cli_with_args(
-                    SyncCli,
+                    MultiSyncCli,
                     f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
                 )
 
@@ -195,11 +195,11 @@ def test_sync_cli_passes_tuning_options(
         ("--pause-length 0", "0 is less than minimum value of 1"),
     ],
 )
-def test_sync_cli_rejects_invalid_tuning_options(
+def test_multi_sync_cli_rejects_invalid_tuning_options(
     args: str,
     expected_error: str,
 ):
-    """Test sync CLI rejects invalid synchronization tuning options.
+    """Test multi sync CLI rejects invalid synchronization tuning options.
 
     Arguments:
         args: extra command-line arguments
@@ -217,7 +217,7 @@ def test_sync_cli_rejects_invalid_tuning_options(
     with pytest.raises(SystemExit) as excinfo:
         with redirect_stderr(stderr):
             run_cli_with_args(
-                SyncCli,
+                MultiSyncCli,
                 f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
             )
 

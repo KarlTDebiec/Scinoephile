@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for synchronizing subtitle series."""
+"""Command-line interface for multi-series subtitle synchronization."""
 
 from __future__ import annotations
 
@@ -17,10 +17,10 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
-__all__ = ["SyncCli"]
+__all__ = ["MultiSyncCli"]
 
 
-class SyncCli(ScinoephileCliBase):
+class MultiSyncCli(ScinoephileCliBase):
     """Combine two series into the top and bottom of a synchronized series."""
 
     localizations = {
@@ -131,6 +131,15 @@ class SyncCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "sync"
+
+    @classmethod
     def _main(
         cls,
         *,
@@ -169,4 +178,4 @@ class SyncCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    SyncCli.main()
+    MultiSyncCli.main()

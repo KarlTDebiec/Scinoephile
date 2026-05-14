@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for subtitle diff analysis."""
+"""Command-line interface for multi-series subtitle diffs."""
 
 from __future__ import annotations
 
@@ -16,17 +16,17 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
-__all__ = ["AnalysisDiffCli"]
+__all__ = ["MultiDiffCli"]
 
 
-class AnalysisDiffCli(ScinoephileCliBase):
+class MultiDiffCli(ScinoephileCliBase):
     """Calculate the diff between two series."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
             "calculate the diff between two series": "计算两个序列之间的差异",
-            "command-line interface for subtitle diff analysis": (
-                "字幕差异分析命令行界面"
+            "command-line interface for multi-series subtitle diffs": (
+                "多序列字幕差异命令行界面"
             ),
             "label for first series (default: one)": "第一个序列标签（默认：one）",
             "label for second series (default: two)": "第二个序列标签（默认：two）",
@@ -42,8 +42,8 @@ class AnalysisDiffCli(ScinoephileCliBase):
         },
         "zh-hant": {
             "calculate the diff between two series": "計算兩個序列之間的差異",
-            "command-line interface for subtitle diff analysis": (
-                "字幕差異分析命令列介面"
+            "command-line interface for multi-series subtitle diffs": (
+                "多序列字幕差異命令列介面"
             ),
             "label for first series (default: one)": "第一個序列標籤（預設：one）",
             "label for second series (default: two)": "第二個序列標籤（預設：two）",
@@ -159,4 +159,4 @@ class AnalysisDiffCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    AnalysisDiffCli.main()
+    MultiDiffCli.main()

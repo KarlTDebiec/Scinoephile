@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for timewarping subtitle series."""
+"""Command-line interface for multi-series subtitle timewarping."""
 
 from __future__ import annotations
 
@@ -17,10 +17,10 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
 
-__all__ = ["TimewarpCli"]
+__all__ = ["MultiTimewarpCli"]
 
 
-class TimewarpCli(ScinoephileCliBase):
+class MultiTimewarpCli(ScinoephileCliBase):
     """Shift and stretch the timings of one subtitle series to match another."""
 
     localizations = {
@@ -154,6 +154,15 @@ class TimewarpCli(ScinoephileCliBase):
         parser.set_defaults(_parser=parser)
 
     @classmethod
+    def name(cls) -> str:
+        """Name of this tool used to define it when it is a subparser.
+
+        Returns:
+            subcommand name
+        """
+        return "timewarp"
+
+    @classmethod
     def _main(
         cls,
         *,
@@ -202,4 +211,4 @@ class TimewarpCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    TimewarpCli.main()
+    MultiTimewarpCli.main()

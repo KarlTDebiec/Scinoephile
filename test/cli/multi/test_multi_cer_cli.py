@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli.analysis.analysis_cer_cli import AnalysisCerCli
+from scinoephile.cli.multi.multi_cer_cli import MultiCerCli
 from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
@@ -22,9 +22,9 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (AnalysisCerCli,),
-        (MultiCli, AnalysisCerCli),
-        (ScinoephileCli, MultiCli, AnalysisCerCli),
+        (MultiCerCli,),
+        (MultiCli, MultiCerCli),
+        (ScinoephileCli, MultiCli, MultiCerCli),
     ],
 )
 def test_multi_cer_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -39,9 +39,9 @@ def test_multi_cer_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (AnalysisCerCli,),
-        (MultiCli, AnalysisCerCli),
-        (ScinoephileCli, MultiCli, AnalysisCerCli),
+        (MultiCerCli,),
+        (MultiCli, MultiCerCli),
+        (ScinoephileCli, MultiCli, MultiCerCli),
     ],
 )
 def test_multi_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -89,7 +89,7 @@ def test_multi_cer_cli(
     expected_result: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
 
     run_cli_with_args(
-        AnalysisCerCli,
+        MultiCerCli,
         f"--reference-infile {reference_infile_path} "
         f"--candidate-infile {candidate_infile_path}",
     )

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for character error rate analysis."""
+"""Command-line interface for multi-series character error rate calculation."""
 
 from __future__ import annotations
 
@@ -12,10 +12,10 @@ from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
-__all__ = ["AnalysisCerCli"]
+__all__ = ["MultiCerCli"]
 
 
-class AnalysisCerCli(ScinoephileCliBase):
+class MultiCerCli(ScinoephileCliBase):
     """Calculate the Character Error Rate (CER) of one series relative to another."""
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
@@ -24,9 +24,10 @@ class AnalysisCerCli(ScinoephileCliBase):
                 "calculate the Character Error Rate (CER) "
                 "of one series relative to another"
             ): "计算一个序列相对于另一个序列的字符错误率（CER）",
-            "command-line interface for character error rate analysis": (
-                "字符错误率分析命令行界面"
-            ),
+            (
+                "command-line interface for multi-series character error rate "
+                "calculation"
+            ): "多序列字符错误率计算命令行界面",
             'subtitle infile for candidate series or "-" for stdin': (
                 '候选序列的字幕输入文件，或用 "-" 表示标准输入'
             ),
@@ -39,9 +40,10 @@ class AnalysisCerCli(ScinoephileCliBase):
                 "calculate the Character Error Rate (CER) "
                 "of one series relative to another"
             ): "計算一個序列相對於另一個序列的字元錯誤率（CER）",
-            "command-line interface for character error rate analysis": (
-                "字元錯誤率分析命令列介面"
-            ),
+            (
+                "command-line interface for multi-series character error rate "
+                "calculation"
+            ): "多序列字元錯誤率計算命令列介面",
             'subtitle infile for candidate series or "-" for stdin': (
                 '候選序列的字幕輸入檔，或用 "-" 表示標準輸入'
             ),
@@ -119,4 +121,4 @@ class AnalysisCerCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    AnalysisCerCli.main()
+    MultiCerCli.main()

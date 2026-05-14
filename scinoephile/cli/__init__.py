@@ -3,9 +3,8 @@
 """Command-line interfaces for Scinoephile.
 
 Package hierarchy (modules may import from any above):
-* analysis / cache / conversion / dictionary / eng / optimization / sync_cli
-  / timewarp_cli
-* media / multi / ocr / yue / zho
+* cache / conversion / dictionary / eng / multi / optimization
+* media / ocr / yue / zho
 * scinoephile_cli
 """
 

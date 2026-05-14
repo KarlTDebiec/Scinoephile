@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.ZhoFuseCli."""
+"""Tests of the OCR fuse CLI for standard Chinese subtitles."""
 
 from __future__ import annotations
 
@@ -32,8 +32,8 @@ from test.helpers import (
         (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
-def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese fuse CLI help output.
+def test_ocr_fuse_zho_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR fuse CLI help output for standard Chinese subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -49,8 +49,8 @@ def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
-def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese fuse CLI usage output.
+def test_ocr_fuse_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR fuse CLI usage output for standard Chinese subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -87,13 +87,13 @@ def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
     ],
 )
-def test_zho_fuse_cli(
+def test_ocr_fuse_zho_cli(
     lens_path: str,
     paddle_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test standard Chinese OCR fusion CLI processing with file output.
+    """Test OCR fuse CLI processing for standard Chinese subtitles with file output.
 
     Arguments:
         lens_path: path to Google Lens subtitle fixture
@@ -129,13 +129,13 @@ def test_zho_fuse_cli(
         ),
     ],
 )
-def test_zho_fuse_cli_pipe(
+def test_ocr_fuse_zho_cli_pipe(
     lens_path: str,
     paddle_path: str,
     args: str,
     expected_path: str,
 ):
-    """Test standard Chinese OCR fusion CLI processing with stdout output.
+    """Test OCR fuse CLI processing for standard Chinese subtitles with stdout output.
 
     Arguments:
         lens_path: path to Google Lens subtitle fixture
@@ -161,8 +161,8 @@ def test_zho_fuse_cli_pipe(
     assert_series_equal(output, expected)
 
 
-def test_zho_fuse_cli_rejects_bare_convert_flag():
-    """Test standard Chinese OCR fusion CLI requires an explicit conversion config."""
+def test_ocr_fuse_zho_cli_rejects_bare_convert_flag():
+    """Test OCR fuse CLI requires an explicit conversion config."""
     full_lens_path = test_data_root / "mnt/input/zho-Hans_ocr/lens.srt"
     full_paddle_path = test_data_root / "mnt/input/zho-Hans_ocr/paddle.srt"
 

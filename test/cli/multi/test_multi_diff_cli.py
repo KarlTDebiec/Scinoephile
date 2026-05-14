@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
 from scinoephile.cli.multi.multi_cli import MultiCli
+from scinoephile.cli.multi.multi_diff_cli import MultiDiffCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
@@ -19,9 +19,9 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
 @pytest.mark.parametrize(
     "cli",
     [
-        (AnalysisDiffCli,),
-        (MultiCli, AnalysisDiffCli),
-        (ScinoephileCli, MultiCli, AnalysisDiffCli),
+        (MultiDiffCli,),
+        (MultiCli, MultiDiffCli),
+        (ScinoephileCli, MultiCli, MultiDiffCli),
     ],
 )
 def test_multi_diff_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -36,9 +36,9 @@ def test_multi_diff_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (AnalysisDiffCli,),
-        (MultiCli, AnalysisDiffCli),
-        (ScinoephileCli, MultiCli, AnalysisDiffCli),
+        (MultiDiffCli,),
+        (MultiCli, MultiDiffCli),
+        (ScinoephileCli, MultiCli, MultiDiffCli),
     ],
 )
 def test_multi_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -72,7 +72,7 @@ def test_multi_diff_cli(
     )
 
     run_cli_with_args(
-        AnalysisDiffCli,
+        MultiDiffCli,
         f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
         "--one-label TRANSCRIBE --two-label REFERENCE",
     )
@@ -104,7 +104,7 @@ def test_multi_diff_cli_multiline_split_edit(
     )
 
     run_cli_with_args(
-        AnalysisDiffCli,
+        MultiDiffCli,
         f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
         "--one-label TRANSCRIBE --two-label REFERENCE",
     )
@@ -190,7 +190,7 @@ def test_multi_diff_cli_matches_expected_fixture(
     expected: list[str] = request.getfixturevalue(expected_fixture_name)
 
     run_cli_with_args(
-        AnalysisDiffCli,
+        MultiDiffCli,
         f"--one-infile {test_data_root / one_path} "
         f"--two-infile {test_data_root / two_path} "
         f"--one-label {one_label} --two-label {two_label}",

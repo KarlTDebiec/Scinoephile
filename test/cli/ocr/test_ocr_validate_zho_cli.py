@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.ZhoValidateOcrCli."""
+"""Tests of the OCR validate CLI for standard Chinese subtitles."""
 
 from __future__ import annotations
 
@@ -30,8 +30,8 @@ from test.helpers import (
         (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
-def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese validate-ocr CLI help output.
+def test_ocr_validate_zho_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR validate CLI help output for standard Chinese subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -47,8 +47,8 @@ def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
-def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test standard Chinese validate-ocr CLI usage output.
+def test_ocr_validate_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR validate CLI usage output for standard Chinese subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -63,8 +63,8 @@ def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
         ("mlamd/input/zho-Hans_ocr/source.sup",),
     ],
 )
-def test_zho_validate_ocr_cli(input_path: str):
-    """Test standard Chinese validate-ocr CLI processing with directory output.
+def test_ocr_validate_zho_cli(input_path: str):
+    """Test OCR validate CLI processing for standard Chinese subtitles.
 
     Arguments:
         input_path: path to input image subtitle fixture

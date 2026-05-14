@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.EngValidateOcrCli."""
+"""Tests of the OCR validate CLI for English subtitles."""
 
 from __future__ import annotations
 
@@ -32,8 +32,8 @@ from test.helpers import (
         (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
-def test_eng_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English validate-ocr CLI help output.
+def test_ocr_validate_eng_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR validate CLI help output for English subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -49,8 +49,8 @@ def test_eng_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
-def test_eng_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English validate-ocr CLI usage output.
+def test_ocr_validate_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test OCR validate CLI usage output for English subtitles.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -65,8 +65,8 @@ def test_eng_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
         ("mlamd/input/eng_ocr/source.sup",),
     ],
 )
-def test_eng_validate_ocr_cli(input_path: str):
-    """Test English validate-ocr CLI processing with directory output.
+def test_ocr_validate_eng_cli(input_path: str):
+    """Test OCR validate CLI processing for English subtitles with directory output.
 
     Arguments:
         input_path: path to input image subtitle fixture
@@ -92,8 +92,8 @@ def test_eng_validate_ocr_cli(input_path: str):
         assert any(outfile_path.glob("*.png"))
 
 
-def test_eng_validate_ocr_cli_dev(monkeypatch, tmp_path):
-    """Test English validate-ocr CLI forwards dev mode.
+def test_ocr_validate_eng_cli_dev(monkeypatch, tmp_path):
+    """Test OCR validate CLI forwards dev mode for English subtitles.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture

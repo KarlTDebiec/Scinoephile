@@ -10,10 +10,10 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from ..analysis.analysis_cer_cli import AnalysisCerCli
-from ..analysis.analysis_diff_cli import AnalysisDiffCli
-from ..sync_cli import SyncCli
-from ..timewarp_cli import TimewarpCli
+from .multi_cer_cli import MultiCerCli
+from .multi_diff_cli import MultiDiffCli
+from .multi_sync_cli import MultiSyncCli
+from .multi_timewarp_cli import MultiTimewarpCli
 
 __all__ = ["MultiCli"]
 
@@ -57,10 +57,10 @@ class MultiCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            AnalysisCerCli.name(): AnalysisCerCli,
-            AnalysisDiffCli.name(): AnalysisDiffCli,
-            SyncCli.name(): SyncCli,
-            TimewarpCli.name(): TimewarpCli,
+            MultiCerCli.name(): MultiCerCli,
+            MultiDiffCli.name(): MultiDiffCli,
+            MultiSyncCli.name(): MultiSyncCli,
+            MultiTimewarpCli.name(): MultiTimewarpCli,
         }
 
     @classmethod
