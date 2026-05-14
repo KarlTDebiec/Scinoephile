@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 
-from scinoephile.core.subtitles import Series
-from scinoephile.lang.eng.cleaning import get_eng_cleaned
+from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.lang.eng.cleaning import _get_english_text_cleaned, get_eng_cleaned
 from test.helpers import assert_series_equal
 
 # noinspection PyProtectedMember
@@ -22,6 +22,11 @@ def _test_get_eng_cleaned(series: Series, expected: Series):
     assert_series_equal(output, expected)
 
 
+def test_get_english_text_cleaned_removes_ass_dash_only_line():
+    """Test ASS multiline dash-only line removal."""
+    assert _get_english_text_cleaned("hello\\N-\\Nworld") == "hello\\Nworld"
+
+
 def test_get_eng_cleaned_kob(
     kob_eng_ocr_fuse: Series,
     kob_eng_ocr_fuse_clean: Series,
@@ -33,6 +38,19 @@ def test_get_eng_cleaned_kob(
         kob_eng_ocr_fuse_clean: Expected cleaned KOB English series fixture
     """
     _test_get_eng_cleaned(kob_eng_ocr_fuse, kob_eng_ocr_fuse_clean)
+
+
+def test_get_eng_cleaned_invalidates_cached_blocks():
+    """Test get_eng_cleaned invalidates cached blocks when events are removed."""
+    series = Series(events=[Subtitle(start=0, end=1000, text="-")])
+    assert [[event.text for event in block.events] for block in series.blocks] == [
+        ["-"]
+    ]
+
+    output = get_eng_cleaned(series)
+
+    assert output.events == []
+    assert output.blocks == []
 
 
 def test_get_eng_cleaned_mlamd(

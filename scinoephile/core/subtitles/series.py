@@ -102,6 +102,18 @@ class Series(SSAFile):
             f"<{self.__class__.__name__} with 0 events and {len(self.styles)} styles>"
         )
 
+    @override
+    def __setattr__(self, name: str, value: object):
+        """Set attribute, invalidating cached blocks after event replacement.
+
+        Arguments:
+            name: attribute name
+            value: attribute value
+        """
+        super().__setattr__(name, value)
+        if name == "events" and hasattr(self, "_blocks"):
+            self._blocks = None
+
     @property
     def blocks(self) -> list[Series]:
         """List of blocks in the series."""

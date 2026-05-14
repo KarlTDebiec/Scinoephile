@@ -41,7 +41,7 @@ def _get_english_text_cleaned(text: str) -> str | None:
     Returns:
         Cleaned text, or None if no text remains
     """
-    line_sep = r"\\N"
+    line_sep = "\\N"
     cleaned = text.strip()
 
     # Remove ASS hard-space \h
