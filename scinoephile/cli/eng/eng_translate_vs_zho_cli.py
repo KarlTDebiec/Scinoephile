@@ -33,11 +33,11 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
 
     localizations = {
         "zh-hans": {
-            "aligned English subtitle infile to use as guidance, or '-' for stdin": (
-                "用作参考的已对齐英文字幕输入文件，或使用 '-' 表示标准输入"
+            'aligned English subtitle infile to use as guidance, or "-" for stdin': (
+                '用作参考的已对齐英文字幕输入文件，或使用 "-" 表示标准输入'
             ),
-            "aligned standard Chinese subtitle infile or '-' for stdin": (
-                "已对齐的标准中文字幕输入文件，或使用 '-' 表示标准输入"
+            'aligned standard Chinese subtitle infile or "-" for stdin': (
+                '已对齐的标准中文字幕输入文件，或使用 "-" 表示标准输入'
             ),
             "command-line interface for English guided translation from Chinese": (
                 "由中文引导的英文翻译命令行界面"
@@ -54,11 +54,11 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             "reference": ("使用中文字幕和英文参考翻译英文字幕"),
         },
         "zh-hant": {
-            "aligned English subtitle infile to use as guidance, or '-' for stdin": (
-                "用作參考的已對齊英文字幕輸入檔，或使用 '-' 代表標準輸入"
+            'aligned English subtitle infile to use as guidance, or "-" for stdin': (
+                '用作參考的已對齊英文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
-            "aligned standard Chinese subtitle infile or '-' for stdin": (
-                "已對齊的標準中文字幕輸入檔，或使用 '-' 代表標準輸入"
+            'aligned standard Chinese subtitle infile or "-" for stdin': (
+                '已對齊的標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
             ),
             "command-line interface for English guided translation from Chinese": (
                 "由中文引導的英文翻譯命令列介面"
@@ -93,27 +93,30 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--eng-infile",
             dest="eng_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help="aligned English subtitle infile to use as guidance, or '-' for stdin",
+            help='aligned English subtitle infile to use as guidance, or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
             dest="zho_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help="aligned standard Chinese subtitle infile or '-' for stdin",
+            help='aligned standard Chinese subtitle infile or "-" for stdin',
         )
 
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--stop-at-idx",
             type=int_arg(min_value=0),
             help="stop translation after this subtitle index",
         )
 
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -150,6 +153,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if eng_infile_path == "-" and zho_infile_path == "-":
             try:
@@ -166,6 +170,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
 
+        # Read inputs
         try:
             eng = read_series(parser, eng_infile_path, allow_stdin=True)
             zho = read_series(parser, zho_infile_path, allow_stdin=True)
@@ -177,6 +182,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         ) as exc:
             parser.error(str(exc))
 
+        # Perform operations
         translator = get_eng_zho_guided_translator()
         eng_translated = get_eng_translated_from_zho_with_eng_guidance(
             zho=zho,
@@ -185,6 +191,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             stop_at_idx=stop_at_idx,
         )
 
+        # Write outputs
         write_series(
             parser,
             eng_translated,
