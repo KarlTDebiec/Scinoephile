@@ -1,6 +1,12 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Character-level alignment helpers."""
+"""Character-level alignment helpers.
+
+Package hierarchy (modules may import from any above):
+* line_alignment_metric / line_alignment_operation
+* line_alignment_pair
+* line_alignment
+"""
 
 from __future__ import annotations
 
