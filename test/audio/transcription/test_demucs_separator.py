@@ -6,10 +6,16 @@ from __future__ import annotations
 
 from unittest.mock import Mock, patch
 
-import torch
+import pytest
 from pydub import AudioSegment
 
-from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+torch = pytest.importorskip("torch")
+pytest.importorskip("torchaudio")
+pytest.importorskip("demucs_infer")
+demucs_separator_module = pytest.importorskip(
+    "scinoephile.audio.transcription.demucs_separator"
+)
+DemucsSeparator = demucs_separator_module.DemucsSeparator
 
 
 def test_get_audio_segment_restores_mono_output():

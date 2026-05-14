@@ -7,6 +7,7 @@ from __future__ import annotations
 from enum import StrEnum
 from logging import getLogger
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from pydub import AudioSegment
 
@@ -15,9 +16,7 @@ from scinoephile.audio.subtitles import (
     get_series_from_segments,
 )
 from scinoephile.audio.transcription import (
-    DemucsSeparator,
     TranscribedSegment,
-    WhisperTranscriber,
     get_segment_split_on_whitespace,
     get_segment_zho_converted,
 )
@@ -39,6 +38,10 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+if TYPE_CHECKING:
+    from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
+    from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
 
 
 class DemucsMode(StrEnum):
@@ -99,15 +102,19 @@ class YueTranscriber:
         self.convert = convert
         if provider is None:
             provider = get_default_provider()
-        self.demucs_separator = None
+        self.demucs_separator: DemucsSeparator | None = None
         if demucs_mode == DemucsMode.ON:
+            from scinoephile.audio.transcription.demucs_separator import (  # noqa: PLC0415
+                DemucsSeparator,
+            )
+
             self.demucs_separator = DemucsSeparator(
                 cache_dir_path=get_runtime_cache_dir_path("demucs")
             )
-        self.vad_transcriber = None
+        self.vad_transcriber: WhisperTranscriber | None = None
         if vad_mode in (VADMode.AUTO, VADMode.ON):
             self.vad_transcriber = self._get_whisper_transcriber(use_vad=True)
-        self.no_vad_transcriber = None
+        self.no_vad_transcriber: WhisperTranscriber | None = None
         if vad_mode in (VADMode.AUTO, VADMode.OFF):
             self.no_vad_transcriber = self._get_whisper_transcriber(use_vad=False)
         deliniation_queryer_cls = Queryer.get_queryer_cls(deliniation_prompt_cls)
@@ -249,6 +256,10 @@ class YueTranscriber:
         Returns:
             configured Whisper transcriber
         """
+        from scinoephile.audio.transcription.whisper_transcriber import (  # noqa: PLC0415
+            WhisperTranscriber,
+        )
+
         return WhisperTranscriber(
             model_name=self.model_name,
             cache_dir_path=get_runtime_cache_dir_path("whisper"),

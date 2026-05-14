@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from functools import cache
 
-import torch
-
 __all__ = ["get_torch_device"]
 
 
@@ -18,6 +16,14 @@ def get_torch_device() -> str:
     Returns:
         torch device identifier
     """
+    try:
+        import torch  # noqa: PLC0415
+    except ImportError as exc:
+        raise ImportError(
+            "Torch device detection requires optional ML runtime dependencies. "
+            "Install scinoephile with the 'transcription' or 'demucs' extra."
+        ) from exc
+
     if torch.mps.is_available():
         return "mps"
     if torch.cuda.is_available():

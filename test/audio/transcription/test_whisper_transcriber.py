@@ -7,10 +7,16 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import Mock
 
+import pytest
+
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
-from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+
+whisper_transcriber_module = pytest.importorskip(
+    "scinoephile.audio.transcription.whisper_transcriber"
+)
+WhisperTranscriber = whisper_transcriber_module.WhisperTranscriber
 
 
 def test_get_cache_path_separates_vad_modes_with_shared_cache_dir():

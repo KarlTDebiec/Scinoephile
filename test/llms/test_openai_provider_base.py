@@ -9,11 +9,15 @@ from types import SimpleNamespace
 from typing import Any, cast
 
 import pytest
-from openai import OpenAI
 
-from scinoephile.core.llms import OpenAIProviderBase
 from scinoephile.core.llms.tool import Tool
 from scinoephile.core.llms.tool_box import ToolBox
+
+OpenAI = pytest.importorskip("openai").OpenAI
+openai_provider_base_module = pytest.importorskip(
+    "scinoephile.core.llms.openai_provider_base"
+)
+OpenAIProviderBase = openai_provider_base_module.OpenAIProviderBase
 
 
 class _DummyProvider(OpenAIProviderBase):

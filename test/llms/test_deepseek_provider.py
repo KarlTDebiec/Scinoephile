@@ -9,10 +9,14 @@ from typing import Any, cast
 
 import pytest
 
-from scinoephile.core.llms import openai_provider_base
 from scinoephile.core.llms.tool import Tool
 from scinoephile.core.llms.tool_box import ToolBox
-from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
+
+openai_provider_base = pytest.importorskip("scinoephile.core.llms.openai_provider_base")
+deepseek_provider_module = pytest.importorskip(
+    "scinoephile.llms.providers.deepseek_provider"
+)
+DeepSeekProvider = deepseek_provider_module.DeepSeekProvider
 
 
 class _DummyOpenAI:

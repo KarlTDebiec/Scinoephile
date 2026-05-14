@@ -9,6 +9,19 @@ Scinoephile is a package for working with Chinese/English bilingual subtitles, w
 focus on combining separate Chinese and English subtitles into synchronized bilingual
 subtitles.
 
+## Installation
+
+The base install excludes heavyweight ML and API runtime dependencies. Install extras
+for feature-specific support:
+
+```bash
+pip install scinoephile
+pip install 'scinoephile[ocr]'
+pip install 'scinoephile[llm]'
+pip install 'scinoephile[transcription]'
+pip install 'scinoephile[transcription,demucs]'
+```
+
 ## Notices
 
 Third-party license and data-source acknowledgements are listed in

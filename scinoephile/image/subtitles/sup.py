@@ -4,8 +4,15 @@
 
 from __future__ import annotations
 
-import numba as nb
 import numpy as np
+
+try:
+    import numba as nb
+except ImportError as exc:
+    raise ImportError(
+        "SUP image subtitle support requires optional OCR dependencies. "
+        "Install scinoephile with the 'ocr' extra."
+    ) from exc
 
 __all__ = [
     "read_sup_image_array",

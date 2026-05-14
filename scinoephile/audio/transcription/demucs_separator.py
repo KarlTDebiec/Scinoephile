@@ -10,11 +10,18 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import torch
-import torchaudio.functional
-from demucs_infer.apply import apply_model
-from demucs_infer.pretrained import get_model
 from pydub import AudioSegment
+
+try:
+    import torch
+    import torchaudio.functional
+    from demucs_infer.apply import apply_model
+    from demucs_infer.pretrained import get_model
+except ImportError as exc:
+    raise ImportError(
+        "Demucs vocal separation requires optional Demucs dependencies. "
+        "Install scinoephile with the 'demucs' extra."
+    ) from exc
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError

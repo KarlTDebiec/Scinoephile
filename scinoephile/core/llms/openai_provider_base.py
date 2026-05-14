@@ -10,8 +10,14 @@ from logging import getLogger
 from time import sleep
 from typing import Any, Unpack, cast
 
-from openai import OpenAI, OpenAIError
-from openai.types.chat import ChatCompletionMessageFunctionToolCall
+try:
+    from openai import OpenAI, OpenAIError
+    from openai.types.chat import ChatCompletionMessageFunctionToolCall
+except ImportError as exc:
+    raise ImportError(
+        "OpenAI-compatible LLM providers require optional LLM dependencies. "
+        "Install scinoephile with the 'llm' extra."
+    ) from exc
 
 from scinoephile.core import ScinoephileError
 

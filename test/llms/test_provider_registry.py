@@ -13,13 +13,20 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, LLMProvider
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
-from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
-from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
     get_default_provider,
     get_provider,
     register_provider_factory,
 )
+
+deepseek_provider_module = pytest.importorskip(
+    "scinoephile.llms.providers.deepseek_provider"
+)
+openai_provider_module = pytest.importorskip(
+    "scinoephile.llms.providers.openai_provider"
+)
+DeepSeekProvider = deepseek_provider_module.DeepSeekProvider
+OpenAIProvider = openai_provider_module.OpenAIProvider
 
 
 class _DummyProvider(LLMProvider):

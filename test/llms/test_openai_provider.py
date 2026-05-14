@@ -9,8 +9,11 @@ from typing import Any, cast
 
 import pytest
 
-from scinoephile.core.llms import openai_provider_base
-from scinoephile.llms.providers.openai_provider import OpenAIProvider
+openai_provider_base = pytest.importorskip("scinoephile.core.llms.openai_provider_base")
+openai_provider_module = pytest.importorskip(
+    "scinoephile.llms.providers.openai_provider"
+)
+OpenAIProvider = openai_provider_module.OpenAIProvider
 
 
 class _DummyOpenAI:

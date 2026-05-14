@@ -12,9 +12,15 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
-import whisper_timestamped as whisper
-from huggingface_hub import snapshot_download
-from huggingface_hub.utils import HFValidationError, validate_repo_id
+try:
+    import whisper_timestamped as whisper
+    from huggingface_hub import snapshot_download
+    from huggingface_hub.utils import HFValidationError, validate_repo_id
+except ImportError as exc:
+    raise ImportError(
+        "Whisper transcription requires optional transcription dependencies. "
+        "Install scinoephile with the 'transcription' extra."
+    ) from exc
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path

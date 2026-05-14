@@ -27,7 +27,6 @@ from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
 from .subtitle import ImageSubtitle
-from .sup import read_sup_series
 
 __all__ = ["ImageSeries"]
 
@@ -326,6 +325,8 @@ class ImageSeries(Series):
         Returns:
             loaded series
         """
+        from .sup import read_sup_series  # noqa: PLC0415
+
         data = np.frombuffer(file_path.read_bytes(), dtype=np.uint8)
         starts, ends, images = read_sup_series(data)
         if len(starts) != len(ends) or len(starts) != len(images):

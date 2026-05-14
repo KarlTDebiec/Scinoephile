@@ -12,16 +12,15 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
+from typing import TYPE_CHECKING
 
 from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_text_converted,
 )
 
-from .demucs_separator import DemucsSeparator
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
-from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
     "DemucsSeparator",
@@ -35,6 +34,31 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
+
+if TYPE_CHECKING:
+    from .demucs_separator import DemucsSeparator
+    from .whisper_transcriber import WhisperTranscriber
+
+
+def __getattr__(name: str) -> object:
+    """Import optional transcription components on demand.
+
+    Arguments:
+        name: requested module attribute name
+    Returns:
+        requested optional component
+    Raises:
+        AttributeError: if the requested attribute is not exported here
+    """
+    if name == "DemucsSeparator":
+        from .demucs_separator import DemucsSeparator  # noqa: PLC0415
+
+        return DemucsSeparator
+    if name == "WhisperTranscriber":
+        from .whisper_transcriber import WhisperTranscriber  # noqa: PLC0415
+
+        return WhisperTranscriber
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def get_segment_zho_converted(
