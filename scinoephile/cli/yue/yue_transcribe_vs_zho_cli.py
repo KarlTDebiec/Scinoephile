@@ -255,9 +255,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        try:
-            if zhongwen_infile_path == "-":
-                zhongwen = read_series(parser, "-", allow_stdin=True)
+        if zhongwen_infile_path == "-":
+            zhongwen = read_series(parser, "-", allow_stdin=True)
+            try:
                 with get_temp_file_path(suffix=".srt") as temp_zhongwen_path:
                     zhongwen.save(temp_zhongwen_path)
                     yuewen = AudioSeries.load_from_media(
@@ -265,21 +265,30 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                         subtitle_path=temp_zhongwen_path,
                         stream_index=stream_index,
                     )
-            else:
-                zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
+            except (
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
+        else:
+            zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
+            try:
                 yuewen = AudioSeries.load_from_media(
                     media_path=media_infile_path,
                     subtitle_path=zhongwen_infile_path,
                     stream_index=stream_index,
                 )
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            NotAFileError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+            except (
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
 
         # Perform operations
         deliniation_prompt_cls, punctuation_prompt_cls = (

@@ -14,7 +14,6 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.block_review import get_eng_block_reviewed
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -166,15 +165,7 @@ class EngProcessCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        try:
-            series = read_series(parser, infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        series = read_series(parser, infile_path, allow_stdin=True)
 
         # Perform operations
         if clean:

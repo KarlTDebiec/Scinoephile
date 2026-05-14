@@ -15,7 +15,6 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
@@ -148,16 +147,8 @@ class AnalysisDiffCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        try:
-            one_subtitle_series = read_series(parser, one_infile_path, allow_stdin=True)
-            two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        one_subtitle_series = read_series(parser, one_infile_path, allow_stdin=True)
+        two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
 
         # Perform operations
         diff = SeriesDiff(

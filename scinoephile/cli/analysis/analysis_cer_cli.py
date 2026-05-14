@@ -11,7 +11,6 @@ from typing import ClassVar
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
@@ -113,20 +112,8 @@ class AnalysisCerCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        try:
-            reference_series = read_series(
-                parser, reference_infile_path, allow_stdin=True
-            )
-            candidate_series = read_series(
-                parser, candidate_infile_path, allow_stdin=True
-            )
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        reference_series = read_series(parser, reference_infile_path, allow_stdin=True)
+        candidate_series = read_series(parser, candidate_infile_path, allow_stdin=True)
 
         # Perform operations
         result = SeriesCER(reference_series, candidate_series)

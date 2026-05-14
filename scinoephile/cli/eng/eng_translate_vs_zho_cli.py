@@ -18,7 +18,6 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_translated_from_zho_with_eng_guidance,
@@ -171,16 +170,8 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
                 parser.error(str(exc))
 
         # Read inputs
-        try:
-            eng = read_series(parser, eng_infile_path, allow_stdin=True)
-            zho = read_series(parser, zho_infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        eng = read_series(parser, eng_infile_path, allow_stdin=True)
+        zho = read_series(parser, zho_infile_path, allow_stdin=True)
 
         # Perform operations
         translator = get_eng_zho_guided_translator()

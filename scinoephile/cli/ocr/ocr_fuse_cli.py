@@ -19,7 +19,6 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
@@ -293,16 +292,8 @@ class OcrFuseCli(ScinoephileCliBase):
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
 
-        try:
-            lens = read_series(parser, lens_infile_path, allow_stdin=True)
-            tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        lens = read_series(parser, lens_infile_path, allow_stdin=True)
+        tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
 
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
@@ -350,16 +341,8 @@ class OcrFuseCli(ScinoephileCliBase):
             except ArgumentConflictError as exc:
                 parser.error(str(exc))
 
-        try:
-            lens = read_series(parser, lens_infile_path, allow_stdin=True)
-            paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        lens = read_series(parser, lens_infile_path, allow_stdin=True)
+        paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
 
         if clean:
             lens = get_zho_cleaned(lens, remove_empty=False)
