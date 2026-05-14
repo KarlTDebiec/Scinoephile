@@ -92,7 +92,17 @@ ignore = [
 convention = 'google'
 
 [tool.setuptools]
+include-package-data = true
 packages = { find = { include = ["scinoephile*"] } }
+
+[tool.setuptools.package-data]
+scinoephile = [
+    "data/*.md",
+    "data/dictionaries/kaifangcidian/*.csv",
+    "data/dictionaries/unihan/*.txt",
+    "data/ocr/*.csv",
+    "data/ocr/*.txt",
+]
 
 [tool.uv]
 package = true
