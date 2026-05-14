@@ -19,6 +19,7 @@ from scinoephile.llms.providers.registry import (
     register_provider_factory,
 )
 
+openai_provider_base = pytest.importorskip("scinoephile.core.llms.openai_provider_base")
 deepseek_provider_module = pytest.importorskip(
     "scinoephile.llms.providers.deepseek_provider"
 )
@@ -27,6 +28,10 @@ openai_provider_module = pytest.importorskip(
 )
 DeepSeekProvider = deepseek_provider_module.DeepSeekProvider
 OpenAIProvider = openai_provider_module.OpenAIProvider
+
+
+class _DummyOpenAIError(Exception):
+    """Dummy OpenAI SDK error."""
 
 
 class _DummyProvider(LLMProvider):
@@ -50,6 +55,16 @@ class _DummyProvider(LLMProvider):
         """Return a fixed completion value."""
         _ = (messages, response_format, tool_box, kwargs)
         return "{}"
+
+
+@pytest.fixture(autouse=True)
+def _use_dummy_openai_runtime(monkeypatch: pytest.MonkeyPatch):
+    """Use dummy OpenAI runtime dependencies."""
+    monkeypatch.setattr(
+        openai_provider_base,
+        "_get_openai_runtime",
+        lambda: (object, _DummyOpenAIError),
+    )
 
 
 def test_get_default_provider_returns_openai_provider():

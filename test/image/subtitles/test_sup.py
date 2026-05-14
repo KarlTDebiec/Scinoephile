@@ -7,6 +7,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+pytest.importorskip("numba")
+
 from scinoephile.image.subtitles.sup import read_sup_image_array, read_sup_series
 
 

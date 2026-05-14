@@ -7,20 +7,12 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Sequence
+from functools import cache
+from importlib import import_module
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
-
-try:
-    import whisper_timestamped as whisper
-    from huggingface_hub import snapshot_download
-    from huggingface_hub.utils import HFValidationError, validate_repo_id
-except ImportError as exc:
-    raise ImportError(
-        "Whisper transcription requires optional transcription dependencies. "
-        "Install scinoephile with the 'transcription' extra."
-    ) from exc
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -39,6 +31,30 @@ if TYPE_CHECKING:
         from pydub import AudioSegment
 
 logger = getLogger(__name__)
+
+
+@cache
+def _get_whisper_runtime() -> tuple[Any, Any, type[Exception], Any]:
+    """Import Whisper runtime dependencies on demand.
+
+    Returns:
+        Whisper runtime dependencies
+    Raises:
+        ImportError: if optional Whisper dependencies are unavailable
+    """
+    try:
+        whisper = import_module("whisper_timestamped")
+        huggingface_hub = import_module("huggingface_hub")
+        huggingface_hub_utils = import_module("huggingface_hub.utils")
+        snapshot_download = getattr(huggingface_hub, "snapshot_download")
+        hf_validation_error = getattr(huggingface_hub_utils, "HFValidationError")
+        validate_repo_id = getattr(huggingface_hub_utils, "validate_repo_id")
+    except ImportError as exc:
+        raise ImportError(
+            "Whisper transcription requires optional transcription dependencies. "
+            "Install scinoephile with the 'transcription' extra."
+        ) from exc
+    return whisper, snapshot_download, hf_validation_error, validate_repo_id
 
 
 class WhisperTranscriber:
@@ -61,6 +77,8 @@ class WhisperTranscriber:
             use_demucs: whether Demucs preprocessing was applied
             use_vad: whether to enable Whisper VAD
         """
+        _get_whisper_runtime()
+
         self.model_name = model_name
         self._model: Any | None = None
         self.language = language
@@ -91,6 +109,7 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
+            whisper, snapshot_download, _, _ = _get_whisper_runtime()
             try:
                 self._model = whisper.load_model(
                     self.model_name, device=get_torch_device()
@@ -150,6 +169,7 @@ class WhisperTranscriber:
 
         # Transcribe using Whisper
         cache_path = self._get_cache_path(cache_audio)
+        whisper = _get_whisper_runtime()[0]
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
@@ -192,9 +212,10 @@ class WhisperTranscriber:
             )
         ):
             return False
+        _, _, hf_validation_error_cls, validate_repo_id = _get_whisper_runtime()
         try:
             validate_repo_id(self.model_name)
-        except HFValidationError:
+        except hf_validation_error_cls:
             return False
         return "/" in self.model_name
 

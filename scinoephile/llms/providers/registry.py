@@ -9,11 +9,13 @@ coupling `scinoephile.core` to any specific provider.
 from __future__ import annotations
 
 from collections.abc import Callable
-from importlib import import_module
-from typing import Any, cast
+from typing import Any
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
+
+from .deepseek_provider import DeepSeekProvider
+from .openai_provider import OpenAIProvider
 
 __all__ = [
     "get_default_provider",
@@ -22,14 +24,10 @@ __all__ = [
 ]
 
 _DEFAULT_PROVIDER_NAME = "openai"
-_PROVIDER_FACTORY_IMPORTS = {
-    "deepseek": ("scinoephile.llms.providers.deepseek_provider", "DeepSeekProvider"),
-    _DEFAULT_PROVIDER_NAME: (
-        "scinoephile.llms.providers.openai_provider",
-        "OpenAIProvider",
-    ),
+_PROVIDER_FACTORIES: dict[str, Callable[..., LLMProvider]] = {
+    "deepseek": DeepSeekProvider,
+    _DEFAULT_PROVIDER_NAME: OpenAIProvider,
 }
-_PROVIDER_FACTORIES: dict[str, Callable[..., LLMProvider]] = {}
 
 
 def register_provider_factory(
@@ -57,38 +55,10 @@ def get_provider(provider_name: str, **kwargs: Any) -> LLMProvider:
     """
     provider_factory = _PROVIDER_FACTORIES.get(provider_name)
     if provider_factory is None:
-        if provider_name not in _PROVIDER_FACTORY_IMPORTS:
-            raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
-        provider_factory = _load_provider_factory(provider_name)
+        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
     return provider_factory(**kwargs)
 
 
 def get_default_provider() -> LLMProvider:
     """Construct and return the default provider."""
     return get_provider(_DEFAULT_PROVIDER_NAME)
-
-
-def _load_provider_factory(provider_name: str) -> Callable[..., LLMProvider]:
-    """Load a built-in provider factory on demand.
-
-    Arguments:
-        provider_name: provider identifier
-    Returns:
-        provider factory
-    Raises:
-        ImportError: if optional LLM dependencies are missing
-    """
-    module_name, class_name = _PROVIDER_FACTORY_IMPORTS[provider_name]
-    try:
-        module = import_module(module_name)
-    except ImportError as exc:
-        raise ImportError(
-            "LLM provider support requires optional LLM dependencies. "
-            "Install scinoephile with the 'llm' extra."
-        ) from exc
-    provider_factory = getattr(module, class_name)
-    _PROVIDER_FACTORIES[provider_name] = cast(
-        Callable[..., LLMProvider],
-        provider_factory,
-    )
-    return _PROVIDER_FACTORIES[provider_name]

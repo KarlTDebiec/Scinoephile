@@ -28,12 +28,22 @@ class _DummyOpenAI:
         )
 
 
-def test_openai_constructs_client_with_explicit_api_key_and_base_url(
-    monkeypatch: pytest.MonkeyPatch,
-):
-    """Test OpenAIProvider forwards explicit client overrides to OpenAI."""
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
+class _DummyOpenAIError(Exception):
+    """Dummy OpenAI SDK error."""
 
+
+@pytest.fixture(autouse=True)
+def _use_dummy_openai_runtime(monkeypatch: pytest.MonkeyPatch):
+    """Use dummy OpenAI runtime dependencies."""
+    monkeypatch.setattr(
+        openai_provider_base,
+        "_get_openai_runtime",
+        lambda: (_DummyOpenAI, _DummyOpenAIError),
+    )
+
+
+def test_openai_constructs_client_with_explicit_api_key_and_base_url():
+    """Test OpenAIProvider forwards explicit client overrides to OpenAI."""
     provider = OpenAIProvider(
         api_key="explicit",
         base_url="https://example.invalid/v1",
@@ -45,12 +55,8 @@ def test_openai_constructs_client_with_explicit_api_key_and_base_url(
     assert client.kwargs["base_url"] == "https://example.invalid/v1"
 
 
-def test_openai_constructs_client_without_overrides(
-    monkeypatch: pytest.MonkeyPatch,
-):
+def test_openai_constructs_client_without_overrides():
     """Test OpenAIProvider uses SDK defaults when no overrides are supplied."""
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
-
     provider = OpenAIProvider()
     client = cast(_DummyOpenAI, provider.sync_client)
 

@@ -31,6 +31,20 @@ class _DummyOpenAI:
         )
 
 
+class _DummyOpenAIError(Exception):
+    """Dummy OpenAI SDK error."""
+
+
+@pytest.fixture(autouse=True)
+def _use_dummy_openai_runtime(monkeypatch: pytest.MonkeyPatch):
+    """Use dummy OpenAI runtime dependencies."""
+    monkeypatch.setattr(
+        openai_provider_base,
+        "_get_openai_runtime",
+        lambda: (_DummyOpenAI, _DummyOpenAIError),
+    )
+
+
 def _get_tool_box() -> ToolBox:
     """Build a tool box for one lookup tool."""
     return ToolBox(
@@ -53,8 +67,6 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(
     """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "dummy")
 
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
-
     provider = DeepSeekProvider()
     client = cast(_DummyOpenAI, provider.sync_client)
 
@@ -68,8 +80,6 @@ def test_deepseek_api_key_override_wins_over_env(
 ):
     """Test explicit api_key overrides the environment variable."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")
-
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
 
     provider = DeepSeekProvider(api_key="explicit")
     client = cast(_DummyOpenAI, provider.sync_client)

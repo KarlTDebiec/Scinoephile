@@ -13,11 +13,10 @@ Package hierarchy (modules may import from any above):
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from .answer import Answer
 from .llm_provider import ChatCompletionKwargs, LLMProvider
 from .manager import Manager, TestCaseClsKwargs
+from .openai_provider_base import OpenAIProviderBase
 from .operation_spec import OperationSpec
 from .processor import Processor
 from .prompt import Prompt
@@ -43,23 +42,3 @@ __all__ = [
     "Tool",
     "ToolBox",
 ]
-
-if TYPE_CHECKING:
-    from .openai_provider_base import OpenAIProviderBase
-
-
-def __getattr__(name: str) -> object:
-    """Import optional LLM provider implementations on demand.
-
-    Arguments:
-        name: requested module attribute name
-    Returns:
-        requested optional component
-    Raises:
-        AttributeError: if the requested attribute is not exported here
-    """
-    if name == "OpenAIProviderBase":
-        from .openai_provider_base import OpenAIProviderBase  # noqa: PLC0415
-
-        return OpenAIProviderBase
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

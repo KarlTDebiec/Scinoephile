@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import builtins
+import importlib
 import sys
 import tomllib
 from collections.abc import Iterator, Sequence
@@ -34,6 +35,7 @@ def _blocked_imports(
         purge_prefixes: module prefixes to remove before importing
     """
     original_import = builtins.__import__
+    original_import_module = importlib.import_module
     saved_modules = _pop_modules(blocked_roots | purge_prefixes)
 
     def guarded_import(
@@ -52,7 +54,18 @@ def _blocked_imports(
             )
         return original_import(name, globals_, locals_, fromlist, level)
 
+    def guarded_import_module(name: str, package: str | None = None) -> ModuleType:
+        """Import a module while pretending selected root modules are unavailable."""
+        if name.split(".", 1)[0] in blocked_roots:
+            missing_name = name.split(".", 1)[0]
+            raise ModuleNotFoundError(
+                f"No module named '{missing_name}'",
+                name=missing_name,
+            )
+        return original_import_module(name, package)
+
     monkeypatch.setattr(builtins, "__import__", guarded_import)
+    monkeypatch.setattr(importlib, "import_module", guarded_import_module)
     try:
         yield
     finally:
@@ -63,7 +76,7 @@ def _blocked_imports(
 def test_audio_transcription_package_imports_without_ml_dependencies(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    """Test safe transcription helpers import without ML runtime extras."""
+    """Test transcription package imports without ML runtime extras."""
     with _blocked_imports(
         monkeypatch,
         blocked_roots={
@@ -76,9 +89,15 @@ def test_audio_transcription_package_imports_without_ml_dependencies(
         purge_prefixes={"scinoephile.audio"},
     ):
         from scinoephile.audio import transcription  # noqa: PLC0415
+        from scinoephile.audio.transcription import (  # noqa: PLC0415
+            DemucsSeparator,
+            WhisperTranscriber,
+        )
 
+        assert DemucsSeparator.__name__ == "DemucsSeparator"
         assert transcription.TranscribedSegment.__name__ == "TranscribedSegment"
         assert transcription.TranscribedWord.__name__ == "TranscribedWord"
+        assert WhisperTranscriber.__name__ == "WhisperTranscriber"
         assert callable(transcription.get_segment_split_on_whitespace)
 
 
@@ -95,10 +114,18 @@ def test_core_llms_package_imports_without_openai(
         },
     ):
         from scinoephile.core import llms  # noqa: PLC0415
-        from scinoephile.llms.providers import registry  # noqa: PLC0415
+        from scinoephile.core.llms import OpenAIProviderBase  # noqa: PLC0415
+        from scinoephile.llms.providers import (  # noqa: PLC0415
+            DeepSeekProvider,
+            OpenAIProvider,
+            registry,  # noqa: PLC0415
+        )
 
         assert llms.Answer.__name__ == "Answer"
         assert llms.LLMProvider.__name__ == "LLMProvider"
+        assert DeepSeekProvider.__name__ == "DeepSeekProvider"
+        assert OpenAIProvider.__name__ == "OpenAIProvider"
+        assert OpenAIProviderBase.__name__ == "OpenAIProviderBase"
 
         with pytest.raises(ImportError, match="llm"):
             registry.get_default_provider()

@@ -6,18 +6,11 @@ from __future__ import annotations
 
 import os
 from collections.abc import Mapping
+from functools import cache
+from importlib import import_module
 from logging import getLogger
 from time import sleep
 from typing import Any, Unpack, cast
-
-try:
-    from openai import OpenAI, OpenAIError
-    from openai.types.chat import ChatCompletionMessageFunctionToolCall
-except ImportError as exc:
-    raise ImportError(
-        "OpenAI-compatible LLM providers require optional LLM dependencies. "
-        "Install scinoephile with the 'llm' extra."
-    ) from exc
 
 from scinoephile.core import ScinoephileError
 
@@ -28,6 +21,27 @@ from .tool_box import ToolBox
 __all__ = ["OpenAIProviderBase"]
 
 logger = getLogger(__name__)
+
+
+@cache
+def _get_openai_runtime() -> tuple[Any, type[Exception]]:
+    """Import OpenAI SDK runtime dependencies on demand.
+
+    Returns:
+        OpenAI SDK runtime dependencies
+    Raises:
+        ImportError: if optional OpenAI SDK dependencies are unavailable
+    """
+    try:
+        openai = import_module("openai")
+        openai_cls = getattr(openai, "OpenAI")
+        openai_error_cls = getattr(openai, "OpenAIError")
+    except ImportError as exc:
+        raise ImportError(
+            "OpenAI-compatible LLM providers require optional LLM dependencies. "
+            "Install scinoephile with the 'llm' extra."
+        ) from exc
+    return openai_cls, openai_error_cls
 
 
 class OpenAIProviderBase(LLMProvider):
@@ -44,7 +58,7 @@ class OpenAIProviderBase(LLMProvider):
 
     def __init__(
         self,
-        client: OpenAI | None = None,
+        client: Any | None = None,
         *,
         api_key: str | None = None,
         base_url: str | None = None,
@@ -58,7 +72,10 @@ class OpenAIProviderBase(LLMProvider):
             base_url: explicit base URL; if omitted, provider default is used
             model: model identifier override
         """
-        self._sync_client: OpenAI | None = client
+        if client is None:
+            _get_openai_runtime()
+
+        self._sync_client: Any | None = client
         self._api_key: str | None = api_key
         if base_url is not None:
             self.base_url = base_url
@@ -75,10 +92,11 @@ class OpenAIProviderBase(LLMProvider):
         return os.environ.get(self.api_key_env_var_name)
 
     @property
-    def sync_client(self) -> OpenAI:
+    def sync_client(self) -> Any:
         """Synchronous OpenAI client."""
         if self._sync_client is None:
-            self._sync_client = OpenAI(api_key=self.api_key, base_url=self.base_url)
+            openai_cls = _get_openai_runtime()[0]
+            self._sync_client = openai_cls(api_key=self.api_key, base_url=self.base_url)
         return self._sync_client
 
     @property
@@ -120,10 +138,7 @@ class OpenAIProviderBase(LLMProvider):
                 # Query provider
                 completion = self._query(messages, response_format, request_kwargs)
                 message = completion.choices[0].message
-                tool_calls = cast(
-                    list[ChatCompletionMessageFunctionToolCall],
-                    message.tool_calls or [],
-                )
+                tool_calls = cast(list[Any], message.tool_calls or [])
 
                 # If no tool calls requested, return
                 if not tool_calls:
@@ -149,7 +164,9 @@ class OpenAIProviderBase(LLMProvider):
                 f"Tool-calling did not reach a final response after {max_tool_rounds} "
                 "rounds."
             )
-        except OpenAIError as exc:
+        except Exception as exc:  # noqa: PLW0718
+            if not self._is_openai_error(exc):
+                raise
             exc_code = getattr(exc, "code", None)
             exc_type = getattr(exc, "type", None)
             exc_param = getattr(exc, "param", None)
@@ -202,7 +219,7 @@ class OpenAIProviderBase(LLMProvider):
         """
         if response_format:
             return self.sync_client.beta.chat.completions.parse(
-                messages=messages,  # ty:ignore[invalid-argument-type]
+                messages=messages,
                 model=self.model,
                 **request_kwargs,
             )
@@ -210,12 +227,12 @@ class OpenAIProviderBase(LLMProvider):
             messages=messages,
             model=self.model,
             **request_kwargs,
-        )  # ty:ignore[no-matching-overload]
+        )
 
     @staticmethod
     def _call_tool(
         message: Any,
-        tool_calls: list[ChatCompletionMessageFunctionToolCall],
+        tool_calls: list[Any],
         tool_box: ToolBox,
     ) -> list[dict[str, Any]]:
         """Call a tool.
@@ -261,6 +278,21 @@ class OpenAIProviderBase(LLMProvider):
                 }
             )
         return tool_messages
+
+    @staticmethod
+    def _is_openai_error(exc: Exception) -> bool:
+        """Determine whether an exception came from the OpenAI SDK.
+
+        Arguments:
+            exc: exception to inspect
+        Returns:
+            whether the exception is an OpenAI SDK error
+        """
+        try:
+            _, openai_error_cls = _get_openai_runtime()
+        except ImportError:
+            return False
+        return isinstance(exc, openai_error_cls)
 
     @staticmethod
     def _build_request_kwargs(

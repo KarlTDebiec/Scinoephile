@@ -5,23 +5,14 @@
 from __future__ import annotations
 
 import hashlib
+from functools import cache
+from importlib import import_module
 from logging import getLogger
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 from pydub import AudioSegment
-
-try:
-    import torch
-    import torchaudio.functional
-    from demucs_infer.apply import apply_model
-    from demucs_infer.pretrained import get_model
-except ImportError as exc:
-    raise ImportError(
-        "Demucs vocal separation requires optional Demucs dependencies. "
-        "Install scinoephile with the 'demucs' extra."
-    ) from exc
 
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core import ScinoephileError
@@ -30,6 +21,31 @@ from scinoephile.core.ml import get_torch_device
 __all__ = ["DemucsSeparator"]
 
 logger = getLogger(__name__)
+
+if TYPE_CHECKING:
+    import torch
+
+
+@cache
+def _get_demucs_runtime() -> tuple[Any, Any, Any, Any]:
+    """Import Demucs runtime dependencies on demand.
+
+    Returns:
+        Demucs runtime dependencies
+    Raises:
+        ImportError: if optional Demucs dependencies are unavailable
+    """
+    try:
+        torch = import_module("torch")
+        torchaudio_functional = import_module("torchaudio.functional")
+        apply_model = getattr(import_module("demucs_infer.apply"), "apply_model")
+        get_model = getattr(import_module("demucs_infer.pretrained"), "get_model")
+    except ImportError as exc:
+        raise ImportError(
+            "Demucs vocal separation requires optional Demucs dependencies. "
+            "Install scinoephile with the 'demucs' extra."
+        ) from exc
+    return torch, torchaudio_functional, apply_model, get_model
 
 
 class DemucsSeparator:
@@ -47,6 +63,8 @@ class DemucsSeparator:
             model_name: Demucs model name used for source separation
             cache_dir_path: directory in which to cache separated vocals
         """
+        _get_demucs_runtime()
+
         self.model_name = model_name
         """Demucs model name used for source separation."""
 
@@ -95,8 +113,9 @@ class DemucsSeparator:
             loaded Demucs model
         """
         if self._model is None:
+            *_, get_demucs_model = _get_demucs_runtime()
             try:
-                self._model = get_model(self.model_name).to(self.device).eval()
+                self._model = get_demucs_model(self.model_name).to(self.device).eval()
             except Exception as exc:
                 raise ScinoephileError(
                     f"Unable to load Demucs model '{self.model_name}'."
@@ -116,17 +135,20 @@ class DemucsSeparator:
         if input_channels == 1:
             normalized_audio = normalized_audio.set_channels(2)
         waveform = self._get_waveform(normalized_audio)
+        torch_module, torchaudio_functional, apply_demucs_model, _ = (
+            _get_demucs_runtime()
+        )
         target_frame_rate = getattr(
             self.model, "samplerate", normalized_audio.frame_rate
         )
         if normalized_audio.frame_rate != target_frame_rate:
-            waveform = torchaudio.functional.resample(
+            waveform = torchaudio_functional.resample(
                 waveform, normalized_audio.frame_rate, target_frame_rate
             )
 
-        with torch.no_grad():
+        with torch_module.no_grad():
             try:
-                sources = apply_model(
+                sources = apply_demucs_model(
                     self.model,
                     waveform.unsqueeze(0).to(self.device),
                     device=self.device,
@@ -144,7 +166,7 @@ class DemucsSeparator:
 
         vocals = sources[0, vocals_idx].cpu()
         if target_frame_rate != normalized_audio.frame_rate:
-            vocals = torchaudio.functional.resample(
+            vocals = torchaudio_functional.resample(
                 vocals, target_frame_rate, normalized_audio.frame_rate
             )
 
@@ -241,8 +263,9 @@ class DemucsSeparator:
         Returns:
             waveform tensor as [channels, time]
         """
+        torch_module = _get_demucs_runtime()[0]
         array = np.array(audio.get_array_of_samples(), dtype=np.int16)
-        waveform = torch.from_numpy(
+        waveform = torch_module.from_numpy(
             array.reshape((-1, audio.channels)).T.astype(np.float32)
             / np.iinfo(np.int16).max
         )

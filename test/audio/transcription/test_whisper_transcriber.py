@@ -117,6 +117,9 @@ def test_get_cache_path_separates_demucs_modes():
 
 def test_model_name_is_huggingface_repo_id_rejects_local_paths():
     """Test HuggingFace retry is skipped for local filesystem paths."""
+    pytest.importorskip("huggingface_hub")
+    pytest.importorskip("whisper_timestamped")
+
     transcriber = object.__new__(WhisperTranscriber)
     transcriber.model_name = "khleeloo/whisper-large-v3-cantonese"
 

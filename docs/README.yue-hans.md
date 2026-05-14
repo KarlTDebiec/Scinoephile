@@ -6,15 +6,3 @@
 [English](/README.md) | [繁體中文](/docs/README.zh-hant.md) | [简体中文](/docs/README.zh-hans.md) | [繁體粵文](/docs/README.yue-hant.md) | [简体粤文](/docs/README.yue-hans.md)
 
 Scinoephile 系一个用嚟处理中英文双语字幕嘅套件，重点系将分开嘅中文同英文字幕结合成同步嘅双语字幕。
-
-## 安装
-
-预设安装唔包较重嘅 ML 同 API 运行时依赖。按需要安装功能 extras：
-
-```bash
-pip install scinoephile
-pip install 'scinoephile[ocr]'
-pip install 'scinoephile[llm]'
-pip install 'scinoephile[transcription]'
-pip install 'scinoephile[transcription,demucs]'
-```

@@ -10,7 +10,7 @@ import pytest
 from pydub import AudioSegment
 
 torch = pytest.importorskip("torch")
-pytest.importorskip("torchaudio")
+torchaudio = pytest.importorskip("torchaudio")
 pytest.importorskip("demucs_infer")
 demucs_separator_module = pytest.importorskip(
     "scinoephile.audio.transcription.demucs_separator"
@@ -34,17 +34,19 @@ def test_get_audio_segment_restores_mono_output():
 
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
-    separator = DemucsSeparator()
-    separator._model = Mock(samplerate=16000, sources=["vocals"])
-    separator._model.to.return_value = separator._model
-    separator._model.eval.return_value = separator._model
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
+    patched_apply_model = Mock(return_value=separated_sources)
 
-    with patch(
-        "scinoephile.audio.transcription.demucs_separator.apply_model",
-        return_value=separated_sources,
-    ) as patched_apply_model:
+    with patch.object(
+        demucs_separator_module,
+        "_get_demucs_runtime",
+        return_value=(torch, torchaudio.functional, patched_apply_model, Mock()),
+    ):
+        separator = DemucsSeparator()
+        separator._model = Mock(samplerate=16000, sources=["vocals"])
+        separator._model.to.return_value = separator._model
+        separator._model.eval.return_value = separator._model
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
