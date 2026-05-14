@@ -212,12 +212,7 @@ class ZhoProcessCli(ScinoephileCliBase):
         if not (clean or flatten or convert or review_script or romanize or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
         try:
             cls._validate_review_script(convert, review_script)
         except ArgumentConflictError as exc:

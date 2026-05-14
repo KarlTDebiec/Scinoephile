@@ -13,7 +13,6 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
@@ -148,19 +147,9 @@ class EngFuseCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if lens_infile_path == "-" and tesseract_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--lens-infile and --tesseract-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--lens-infile and --tesseract-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         lens = read_series(parser, lens_infile_path, allow_stdin=True)

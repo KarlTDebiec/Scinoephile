@@ -17,7 +17,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_translated_from_zho_with_eng_guidance,
@@ -155,19 +154,9 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if eng_infile_path == "-" and zho_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--eng-infile and --zho-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--eng-infile and --zho-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         eng = read_series(parser, eng_infile_path, allow_stdin=True)

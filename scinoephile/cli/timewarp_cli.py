@@ -13,7 +13,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.timing import get_series_timewarped
@@ -172,19 +171,9 @@ class TimewarpCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if anchor_infile_path == "-" and mobile_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--anchor-infile and --mobile-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--anchor-infile and --mobile-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         anchor = read_series(parser, anchor_infile_path, allow_stdin=True)

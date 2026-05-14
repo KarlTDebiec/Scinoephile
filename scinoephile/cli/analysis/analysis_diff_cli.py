@@ -14,7 +14,6 @@ from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisDiffCli"]
@@ -139,12 +138,7 @@ class AnalysisDiffCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if one_infile_path == "-" and two_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--one-infile and --two-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--one-infile and --two-infile may not both be '-'")
 
         # Read inputs
         one_subtitle_series = read_series(parser, one_infile_path, allow_stdin=True)

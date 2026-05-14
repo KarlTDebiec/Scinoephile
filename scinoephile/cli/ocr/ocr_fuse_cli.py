@@ -18,7 +18,6 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
@@ -192,12 +191,7 @@ class OcrFuseCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         if language == "eng":
             cls._main_eng(
@@ -285,12 +279,7 @@ class OcrFuseCli(ScinoephileCliBase):
         if convert is not None:
             parser.error("--convert may only be used when --language is zho")
         if lens_infile_path == "-" and tesseract_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--lens-infile and --tesseract-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--lens-infile and --tesseract-infile may not both be '-'")
 
         lens = read_series(parser, lens_infile_path, allow_stdin=True)
         tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
@@ -334,12 +323,7 @@ class OcrFuseCli(ScinoephileCliBase):
         if paddle_infile_path is None:
             parser.error("--paddle-infile is required when --language is zho")
         if lens_infile_path == "-" and paddle_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--lens-infile and --paddle-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--lens-infile and --paddle-infile may not both be '-'")
 
         lens = read_series(parser, lens_infile_path, allow_stdin=True)
         paddle = read_series(parser, paddle_infile_path, allow_stdin=True)

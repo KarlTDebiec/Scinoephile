@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError, NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
@@ -240,19 +240,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if media_infile_path == "-" and zhongwen_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--media-infile and --zhongwen-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--media-infile and --zhongwen-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         if zhongwen_infile_path == "-":

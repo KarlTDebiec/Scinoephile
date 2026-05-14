@@ -10,7 +10,6 @@ from typing import ClassVar
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series
 
 __all__ = ["AnalysisCerCli"]
@@ -104,12 +103,9 @@ class AnalysisCerCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if reference_infile_path == "-" and candidate_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--reference-infile and --candidate-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error(
+                "--reference-infile and --candidate-infile may not both be '-'"
+            )
 
         # Read inputs
         reference_series = read_series(parser, reference_infile_path, allow_stdin=True)

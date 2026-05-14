@@ -14,7 +14,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.synchronization import get_synced_series
 
@@ -147,19 +146,9 @@ class SyncCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if top_infile_path == "-" and bottom_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--top-infile and --bottom-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--top-infile and --bottom-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
         top = read_series(parser, top_infile_path, allow_stdin=True)
