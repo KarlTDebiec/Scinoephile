@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.cache.cache_list_cli import CacheListCli
+from scinoephile.cli.utility.cache.cache_list_cli import CacheListCli
 from scinoephile.common.testing import run_cli_with_args
 
 

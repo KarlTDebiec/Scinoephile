@@ -12,13 +12,12 @@ from scinoephile.common.argument_parsing import get_arg_groups_by_name
 from scinoephile.common.cli import ListAllCommandsAction
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .cache import CacheCli
 from .dictionary import DictionaryCli
 from .eng import EngCli
 from .media import MediaCli
 from .multi import MultiCli
 from .ocr import OcrCli
-from .optimization import OptimizationCli
+from .utility import UtilityCli
 from .yue import YueCli
 from .zho import ZhoCli
 
@@ -45,15 +44,14 @@ class ScinoephileCli(ScinoephileCliBase):
                 "将两个序列合并为上下行同步字幕"
             ),
             "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
-            "inspect and invalidate local caches": "检查并清除本地缓存",
             "inspect and extract media streams": "检查并提取媒体流",
             "list all subcommands and exit": "列出所有子命令并退出",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改标准中文字幕",
             "modify written Cantonese subtitles": "修改书面粤语字幕",
             "operate on multiple subtitle series": "处理多个字幕序列",
-            "prompt optimization utilities and persistence": "提示词优化工具与持久化",
             "recognize text from image-based subtitles": "识别图像字幕中的文本",
+            "run utility commands": "运行实用工具命令",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -77,15 +75,14 @@ class ScinoephileCli(ScinoephileCliBase):
                 "將兩個序列合併為上下行同步字幕"
             ),
             "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
-            "inspect and invalidate local caches": "檢查並清除本機快取",
             "inspect and extract media streams": "檢查並提取媒體流",
             "list all subcommands and exit": "列出所有子命令並結束",
             "modify English subtitles": "修改英文字幕",
             "modify standard Chinese subtitles": "修改標準中文字幕",
             "modify written Cantonese subtitles": "修改書面粵語字幕",
             "operate on multiple subtitle series": "處理多個字幕序列",
-            "prompt optimization utilities and persistence": "提示詞最佳化工具與持久化",
             "recognize text from image-based subtitles": "識別影像字幕中的文字",
+            "run utility commands": "執行實用工具命令",
             (
                 "Scinoephile is an application for working with Chinese, English, "
                 "and bilingual subtitles."
@@ -139,13 +136,12 @@ class ScinoephileCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            CacheCli.name(): CacheCli,
             DictionaryCli.name(): DictionaryCli,
             EngCli.name(): EngCli,
             MediaCli.name(): MediaCli,
             MultiCli.name(): MultiCli,
             OcrCli.name(): OcrCli,
-            OptimizationCli.name(): OptimizationCli,
+            UtilityCli.name(): UtilityCli,
             YueCli.name(): YueCli,
             ZhoCli.name(): ZhoCli,
         }

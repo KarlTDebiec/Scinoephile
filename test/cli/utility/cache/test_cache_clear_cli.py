@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.cache.cache_clear_cli import CacheClearCli
+from scinoephile.cli.utility.cache.cache_clear_cli import CacheClearCli
 from scinoephile.common.testing import run_cli_with_args
 
 

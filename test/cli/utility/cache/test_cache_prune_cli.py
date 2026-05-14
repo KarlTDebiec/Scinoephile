@@ -10,7 +10,7 @@ from time import time
 
 import pytest
 
-from scinoephile.cli.cache.cache_prune_cli import CachePruneCli
+from scinoephile.cli.utility.cache.cache_prune_cli import CachePruneCli
 from scinoephile.common.testing import run_cli_with_args
 
 

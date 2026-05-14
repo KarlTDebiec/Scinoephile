@@ -6,11 +6,12 @@ from __future__ import annotations
 
 import pytest
 
-from scinoephile.cli.optimization.optimization_cli import OptimizationCli
-from scinoephile.cli.optimization.optimization_test_cases_cli import (
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.utility.optimization.optimization_cli import OptimizationCli
+from scinoephile.cli.utility.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.utility.utility_cli import UtilityCli
 from scinoephile.common import CommandLineInterface
 from test.helpers import assert_cli_help, assert_cli_usage
 
@@ -19,7 +20,8 @@ from test.helpers import assert_cli_help, assert_cli_usage
     "cli",
     [
         (OptimizationCli,),
-        (ScinoephileCli, OptimizationCli),
+        (UtilityCli, OptimizationCli),
+        (ScinoephileCli, UtilityCli, OptimizationCli),
     ],
 )
 def test_optimization_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -35,7 +37,8 @@ def test_optimization_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (OptimizationCli,),
-        (ScinoephileCli, OptimizationCli),
+        (UtilityCli, OptimizationCli),
+        (ScinoephileCli, UtilityCli, OptimizationCli),
     ],
 )
 def test_optimization_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -49,4 +52,6 @@ def test_optimization_usage(cli: tuple[type[CommandLineInterface], ...]):
 
 def test_optimization_subcommand_help():
     """Test optimization subcommand help output."""
-    assert_cli_help((OptimizationCli, OptimizationSyncTestCasesCli))
+    assert_cli_help(
+        (ScinoephileCli, UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli)
+    )

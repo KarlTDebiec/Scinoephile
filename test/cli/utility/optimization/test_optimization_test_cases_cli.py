@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.optimization.OptimizationSyncTestCasesCli."""
+"""Tests of scinoephile.cli.utility.optimization.OptimizationSyncTestCasesCli."""
 
 from __future__ import annotations
 
@@ -12,11 +12,12 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.optimization.optimization_cli import OptimizationCli
-from scinoephile.cli.optimization.optimization_test_cases_cli import (
+from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.utility.optimization.optimization_cli import OptimizationCli
+from scinoephile.cli.utility.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
+from scinoephile.cli.utility.utility_cli import UtilityCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.optimization.operations import OPERATIONS
@@ -29,7 +30,8 @@ from test.helpers import assert_cli_help, assert_cli_usage
     [
         (OptimizationSyncTestCasesCli,),
         (OptimizationCli, OptimizationSyncTestCasesCli),
-        (ScinoephileCli, OptimizationCli, OptimizationSyncTestCasesCli),
+        (UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
+        (ScinoephileCli, UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
     ],
 )
 def test_optimization_sync_test_cases_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -46,7 +48,8 @@ def test_optimization_sync_test_cases_help(cli: tuple[type[CommandLineInterface]
     [
         (OptimizationSyncTestCasesCli,),
         (OptimizationCli, OptimizationSyncTestCasesCli),
-        (ScinoephileCli, OptimizationCli, OptimizationSyncTestCasesCli),
+        (UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
+        (ScinoephileCli, UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
     ],
 )
 def test_optimization_sync_test_cases_usage(

@@ -1,15 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interfaces for Scinoephile.
+"""Command-line interfaces for utility operations.
 
 Package hierarchy (modules may import from any above):
-* conversion / dictionary / eng / multi / utility
-* media / ocr / yue / zho
-* scinoephile_cli
+* cache / optimization
+* utility_cli
 """
 
 from __future__ import annotations
 
-from .scinoephile_cli import ScinoephileCli
+from .utility_cli import UtilityCli
 
-__all__ = ["ScinoephileCli"]
+__all__ = ["UtilityCli"]
