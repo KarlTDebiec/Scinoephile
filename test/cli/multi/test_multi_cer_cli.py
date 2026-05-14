@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.AnalysisCerCli."""
+"""Tests of the multi cer CLI."""
 
 from __future__ import annotations
 
@@ -27,8 +27,8 @@ from test.helpers import (
         (ScinoephileCli, MultiCli, AnalysisCerCli),
     ],
 )
-def test_analysis_cer_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test analysis cer CLI help output.
+def test_multi_cer_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi cer CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -44,8 +44,8 @@ def test_analysis_cer_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, MultiCli, AnalysisCerCli),
     ],
 )
-def test_analysis_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test analysis cer CLI usage output.
+def test_multi_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi cer CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -68,14 +68,14 @@ def test_analysis_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
         ),
     ],
 )
-def test_analysis_cer_cli(
+def test_multi_cer_cli(
     reference_path: str,
     candidate_path: str,
     expected_fixture_name: str,
     request: pytest.FixtureRequest,
     capsys: pytest.CaptureFixture,
 ):
-    """Test analysis cer CLI output against expected CER values.
+    """Test multi cer CLI output against expected CER values.
 
     Arguments:
         reference_path: path to reference subtitle fixture

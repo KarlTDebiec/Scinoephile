@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.AnalysisDiffCli."""
+"""Tests of the multi diff CLI."""
 
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
         (ScinoephileCli, MultiCli, AnalysisDiffCli),
     ],
 )
-def test_analysis_diff_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test analysis diff CLI help output.
+def test_multi_diff_help(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi diff CLI help output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -41,8 +41,8 @@ def test_analysis_diff_help(cli: tuple[type[CommandLineInterface], ...]):
         (ScinoephileCli, MultiCli, AnalysisDiffCli),
     ],
 )
-def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test analysis diff CLI usage output.
+def test_multi_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
+    """Test multi diff CLI usage output.
 
     Arguments:
         cli: CLI class tuple with optional subcommands
@@ -50,11 +50,11 @@ def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
     assert_cli_usage(cli)
 
 
-def test_analysis_diff_cli(
+def test_multi_diff_cli(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    """Test analysis diff CLI output.
+    """Test multi diff CLI output.
 
     Arguments:
         tmp_path: temporary path
@@ -81,11 +81,11 @@ def test_analysis_diff_cli(
     assert output == ("edit: TRANSCRIBE[1] -> REFERENCE[1]: '靠你了' -> '靠你喇！'\n")
 
 
-def test_analysis_diff_cli_multiline_split_edit(
+def test_multi_diff_cli_multiline_split_edit(
     tmp_path: Path,
     capsys: pytest.CaptureFixture,
 ):
-    """Test analysis diff CLI output for multi-line alignment.
+    """Test multi diff CLI output for multi-line alignment.
 
     Arguments:
         tmp_path: temporary path
@@ -167,7 +167,7 @@ def test_analysis_diff_cli_multiline_split_edit(
         ),
     ],
 )
-def test_analysis_diff_cli_matches_expected_fixture(
+def test_multi_diff_cli_matches_expected_fixture(
     one_path: Path,
     two_path: Path,
     one_label: str,
@@ -176,7 +176,7 @@ def test_analysis_diff_cli_matches_expected_fixture(
     capsys: pytest.CaptureFixture,
     request: pytest.FixtureRequest,
 ):
-    """Test analysis diff CLI output against real subtitle fixtures.
+    """Test multi diff CLI output against real subtitle fixtures.
 
     Arguments:
         one_path: first subtitle path relative to test data root
