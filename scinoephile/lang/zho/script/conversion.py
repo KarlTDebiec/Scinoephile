@@ -157,14 +157,18 @@ def get_zho_text_converted(
     converter = get_zho_converter(config)
     converted_text = converter.convert(text)
 
+    excluded_chars: set[str] = set()
     if apply_exclusions:
         if config in SIMPLIFIED_CONFIGS:
-            for trad_char, simp_char in _conversion_exclusions.items():
-                if trad_char in text and simp_char in converted_text:
-                    converted_text = converted_text.replace(simp_char, trad_char)
+            excluded_chars = set(_conversion_exclusions)
         if config in TRADITIONAL_CONFIGS:
-            for trad_char, simp_char in _conversion_exclusions.items():
-                if simp_char in text and trad_char in converted_text:
-                    converted_text = converted_text.replace(trad_char, simp_char)
+            excluded_chars = set(_conversion_exclusions.values())
+
+    if excluded_chars and len(converted_text) == len(text):
+        converted_chars = list(converted_text)
+        for index, char in enumerate(text):
+            if char in excluded_chars:
+                converted_chars[index] = char
+        converted_text = "".join(converted_chars)
 
     return converted_text

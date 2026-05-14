@@ -11,6 +11,7 @@ from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
     get_zho_converter,
+    get_zho_text_converted,
 )
 from test.helpers import assert_series_equal
 
@@ -35,6 +36,29 @@ def _test_get_zho_converted(series: Series, config: OpenCCConfig, expected: Seri
     output = get_zho_converted(series, config)
     assert len(series) == len(output)
     assert_series_equal(output, expected)
+
+
+@pytest.mark.parametrize(
+    ("text", "config", "expected"),
+    [
+        ("台臺", OpenCCConfig.t2s, "台臺"),
+        ("台臺", OpenCCConfig.s2t, "台臺"),
+        ("台灣臺灣", OpenCCConfig.t2s, "台湾臺湾"),
+        ("台湾臺湾", OpenCCConfig.s2t, "台灣臺灣"),
+        ("这家伙", OpenCCConfig.s2t, "這傢伙"),
+    ],
+)
+def test_get_zho_text_converted_applies_exclusions_by_character_position(
+    text: str, config: OpenCCConfig, expected: str
+):
+    """Test conversion exclusions preserve only original excluded characters.
+
+    Arguments:
+        text: Text to convert
+        config: Conversion configuration
+        expected: Expected converted text
+    """
+    assert get_zho_text_converted(text, config) == expected
 
 
 def test_get_zho_converted_kob(
