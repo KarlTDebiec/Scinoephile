@@ -112,6 +112,7 @@ class OcrFuseCli(ScinoephileCliBase):
             optional_arguments_name="additional arguments",
         )
 
+        # Input arguments
         arg_groups["input arguments"].add_argument(
             "--lens-infile",
             dest="lens_infile_path",
@@ -134,6 +135,7 @@ class OcrFuseCli(ScinoephileCliBase):
             help="Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin",
         )
 
+        # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
@@ -150,6 +152,7 @@ class OcrFuseCli(ScinoephileCliBase):
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
 
+        # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
             "--outfile",
@@ -189,10 +192,12 @@ class OcrFuseCli(ScinoephileCliBase):
         overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
+        # Validate arguments
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
+        # Dispatch to language-specific implementation
         if language == "eng":
             cls._main_eng(
                 parser=parser,
@@ -272,6 +277,7 @@ class OcrFuseCli(ScinoephileCliBase):
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
+        # Validate arguments
         if tesseract_infile_path is None:
             parser.error("--tesseract-infile is required when --language is eng")
         if paddle_infile_path is not None:
@@ -281,14 +287,17 @@ class OcrFuseCli(ScinoephileCliBase):
         if lens_infile_path == "-" and tesseract_infile_path == "-":
             parser.error("--lens-infile and --tesseract-infile may not both be '-'")
 
+        # Read inputs
         lens = read_series(parser, lens_infile_path, allow_stdin=True)
         tesseract = read_series(parser, tesseract_infile_path, allow_stdin=True)
 
+        # Perform operations
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
         fused = get_eng_ocr_fused(lens, tesseract)
 
+        # Write outputs
         write_series(
             parser, fused, outfile_path if outfile_path is not None else "-", overwrite
         )
@@ -318,6 +327,7 @@ class OcrFuseCli(ScinoephileCliBase):
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
+        # Validate arguments
         if tesseract_infile_path is not None:
             parser.error("--tesseract-infile may only be used when --language is eng")
         if paddle_infile_path is None:
@@ -325,9 +335,11 @@ class OcrFuseCli(ScinoephileCliBase):
         if lens_infile_path == "-" and paddle_infile_path == "-":
             parser.error("--lens-infile and --paddle-infile may not both be '-'")
 
+        # Read inputs
         lens = read_series(parser, lens_infile_path, allow_stdin=True)
         paddle = read_series(parser, paddle_infile_path, allow_stdin=True)
 
+        # Perform operations
         if clean:
             lens = get_zho_cleaned(lens, remove_empty=False)
             paddle = get_zho_cleaned(paddle, remove_empty=False)
@@ -338,6 +350,7 @@ class OcrFuseCli(ScinoephileCliBase):
         processor = cls._get_ocr_fuser(convert)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
 
+        # Write outputs
         write_series(
             parser, fused, outfile_path if outfile_path is not None else "-", overwrite
         )
