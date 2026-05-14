@@ -6,6 +6,11 @@ Dual n minus m to n matters take in two subtitle Series where each secondary
 block has n subtitles and the corresponding primary block has n minus m
 subtitles because m subtitles are missing. They process the paired blocks and
 output a single completed Series.
+
+Package hierarchy (modules may import from any above):
+* prompt
+* manager
+* processor
 """
 
 from __future__ import annotations

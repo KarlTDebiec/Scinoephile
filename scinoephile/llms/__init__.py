@@ -5,9 +5,8 @@
 This module may import from: common, core
 
 Hierarchy within module, where lower entries may import from higher entries:
-* providers / default_test_cases
-* dual_n_to_m / dual_n_to_n / dual_n_minus_m_to_n / dual_n_to_1 / dual_2_to_2
-  / dual_1_to_1 / mono_n
+* default_test_cases / dual_1_to_1 / dual_2_to_2 / dual_n_minus_m_to_n
+  / dual_n_to_1 / dual_n_to_m / dual_n_to_n / mono_n / providers
 
 LLM shapes:
 

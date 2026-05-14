@@ -5,10 +5,10 @@
 This module may import from: common
 
 Hierarchy within module (lower may import from higher):
-* cache / cli / dictionaries / exceptions / llms / ml / optimization / paths
-  / media / subtitles
-* pairs / text / timing
-* synchronization
+* dictionaries / exceptions / ml / optimization / paths
+* cache / llms / subtitles / text
+* cli / pairs / timing
+* media / synchronization
 """
 
 from __future__ import annotations

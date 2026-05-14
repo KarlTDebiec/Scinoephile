@@ -1,6 +1,14 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Dictionary build command-line interfaces."""
+"""Dictionary build command-line interfaces.
+
+Package hierarchy (modules may import from any above):
+* dictionary_build_cli_base
+* dictionary_build_cuhk_cli / dictionary_build_gzzj_cli
+  / dictionary_build_kaifangcidian_cli / dictionary_build_unihan_cli
+  / dictionary_build_wiktionary_cli
+* dictionary_build_cli
+"""
 
 from __future__ import annotations
 

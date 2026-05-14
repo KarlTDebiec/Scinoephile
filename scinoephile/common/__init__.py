@@ -3,6 +3,11 @@
 """General-purpose code not tied to a particular project.
 
 This module should not import from other modules outside the standard library.
+
+Package hierarchy (modules may import from any above):
+* csv / described_enum / exceptions / file / logs / subprocess
+* command_line_interface / validation
+* argument_parsing / cli / testing
 """
 
 from __future__ import annotations

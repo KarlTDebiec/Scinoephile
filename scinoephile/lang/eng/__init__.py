@@ -4,5 +4,5 @@
 
 Package hierarchy (modules may import from any above):
 * cleaning / flattening / ocr_validation / prompts
-* ocr_fusion / block_review
+* block_review / ocr_fusion
 """

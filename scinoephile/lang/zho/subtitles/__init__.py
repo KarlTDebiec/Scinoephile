@@ -3,7 +3,7 @@
 """Code related to standard Chinese subtitles.
 
 Package hierarchy (modules may import from any above):
-* script_analysis
+* analysis
 * streams
 """
 

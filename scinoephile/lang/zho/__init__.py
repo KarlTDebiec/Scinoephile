@@ -4,7 +4,6 @@
 
 Package hierarchy (modules may import from any above):
 * cleaning / flattening / ocr_validation / script
-* subtitles
-* prompts
-* ocr_fusion / block_review
+* prompts / subtitles
+* block_review / ocr_fusion
 """
