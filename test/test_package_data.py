@@ -19,6 +19,9 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     project_root_path = Path(__file__).resolve().parents[1]
     build_source_dir_path = _copy_build_source(project_root_path, tmp_path / "source")
     source_data_dir_path = build_source_dir_path / "scinoephile/data"
+    ignored_local_dump_path = (
+        source_data_dir_path / "dictionaries/wiktionary/entries.jsonl"
+    )
     wheel_dir_path = tmp_path / "wheel"
     install_dir_path = tmp_path / "install"
 
@@ -27,6 +30,8 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         for path in source_data_dir_path.rglob("*")
         if path.is_file()
     )
+    ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
+    ignored_local_dump_path.write_text("{}\n", encoding="utf-8")
 
     uv_path = shutil.which("uv")
     assert uv_path is not None
@@ -45,7 +50,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
         cwd_path=build_source_dir_path,
         env=command_env,
     )
-    wheel_path = next(wheel_dir_path.glob("scinoephile-*.whl"))
+    wheel_path = _get_single_wheel_path(wheel_dir_path)
 
     _run_required_command(
         [
@@ -84,6 +89,8 @@ if missing_data_file_paths:
     raise AssertionError(
         f"Missing installed data files: {missing_data_file_paths}"
     )
+if (package_root / "data/dictionaries/wiktionary/entries.jsonl").exists():
+    raise AssertionError("Installed wheel includes ignored Wiktionary dump")
 """,
         ],
         cwd=tmp_path,
@@ -94,6 +101,27 @@ if missing_data_file_paths:
     )
 
     assert result.returncode == 0, result.stderr
+
+
+def test_copy_build_source_includes_uv_lock(tmp_path: Path):
+    """Test build source copies include uv.lock."""
+    project_root_path = tmp_path / "project"
+    (project_root_path / "scinoephile").mkdir(parents=True)
+    (project_root_path / "uv.lock").write_text("lock contents", encoding="utf-8")
+
+    output_dir_path = _copy_build_source(project_root_path, tmp_path / "source")
+
+    assert (output_dir_path / "uv.lock").read_text(encoding="utf-8") == (
+        "lock contents"
+    )
+
+
+def test_get_single_wheel_path_reports_missing_wheel(tmp_path: Path):
+    """Test missing wheel lookup failures include directory context."""
+    with pytest.raises(
+        pytest.fail.Exception, match="Expected exactly one scinoephile wheel"
+    ):
+        _get_single_wheel_path(tmp_path)
 
 
 def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
@@ -110,11 +138,35 @@ def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
         output_dir_path / "scinoephile",
         ignore=shutil.ignore_patterns("__pycache__"),
     )
-    for file_name in ("LICENSE", "MANIFEST.in", "README.md", "pyproject.toml"):
+    for file_name in (
+        "LICENSE",
+        "MANIFEST.in",
+        "README.md",
+        "pyproject.toml",
+        "uv.lock",
+    ):
         file_path = project_root_path / file_name
         if file_path.exists():
             shutil.copy2(file_path, output_dir_path / file_name)
     return output_dir_path
+
+
+def _get_single_wheel_path(wheel_dir_path: Path) -> Path:
+    """Get the only scinoephile wheel path from a directory.
+
+    Arguments:
+        wheel_dir_path: directory containing build output
+    Returns:
+        path to the built wheel
+    """
+    wheel_paths = sorted(wheel_dir_path.glob("scinoephile-*.whl"))
+    if len(wheel_paths) != 1:
+        found_file_names = sorted(path.name for path in wheel_dir_path.iterdir())
+        pytest.fail(
+            "Expected exactly one scinoephile wheel in "
+            f"{wheel_dir_path}, found {len(wheel_paths)}: {found_file_names}"
+        )
+    return wheel_paths[0]
 
 
 def _run_required_command(
