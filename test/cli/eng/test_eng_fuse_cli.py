@@ -9,8 +9,8 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.eng.eng_cli import EngCli
-from scinoephile.cli.eng.eng_fuse_cli import EngFuseCli
+from scinoephile.cli.ocr.ocr_cli import OcrCli
+from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
@@ -27,9 +27,9 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngFuseCli,),
-        (EngCli, EngFuseCli),
-        (ScinoephileCli, EngCli, EngFuseCli),
+        (OcrFuseCli,),
+        (OcrCli, OcrFuseCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
 def test_eng_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -44,9 +44,9 @@ def test_eng_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngFuseCli,),
-        (EngCli, EngFuseCli),
-        (ScinoephileCli, EngCli, EngFuseCli),
+        (OcrFuseCli,),
+        (OcrCli, OcrFuseCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
 def test_eng_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -107,8 +107,8 @@ def test_eng_fuse_cli(
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            EngFuseCli,
-            f"--lens-infile {full_lens_input_path} "
+            OcrFuseCli,
+            f"--language eng --lens-infile {full_lens_input_path} "
             f"--tesseract-infile {full_tesseract_input_path} "
             f"{args} --outfile {output_path}",
         )
@@ -150,8 +150,8 @@ def test_eng_fuse_cli_pipe(
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
-            EngFuseCli,
-            f"--lens-infile {full_lens_input_path} "
+            OcrFuseCli,
+            f"--language eng --lens-infile {full_lens_input_path} "
             f"--tesseract-infile {full_tesseract_input_path} {args}",
         )
 

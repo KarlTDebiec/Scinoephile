@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import pytest
 
+from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.sync_cli import SyncCli
 from scinoephile.common import CommandLineInterface
@@ -28,7 +29,8 @@ from test.helpers import (
     "cli",
     [
         (SyncCli,),
-        (ScinoephileCli, SyncCli),
+        (MultiCli, SyncCli),
+        (ScinoephileCli, MultiCli, SyncCli),
     ],
 )
 def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -44,7 +46,8 @@ def test_sync_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (SyncCli,),
-        (ScinoephileCli, SyncCli),
+        (MultiCli, SyncCli),
+        (ScinoephileCli, MultiCli, SyncCli),
     ],
 )
 def test_sync_usage(cli: tuple[type[CommandLineInterface], ...]):

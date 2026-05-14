@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.analysis.analysis_cli import AnalysisCli
 from scinoephile.cli.analysis.analysis_diff_cli import AnalysisDiffCli
+from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
@@ -20,8 +20,8 @@ from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
     "cli",
     [
         (AnalysisDiffCli,),
-        (AnalysisCli, AnalysisDiffCli),
-        (ScinoephileCli, AnalysisCli, AnalysisDiffCli),
+        (MultiCli, AnalysisDiffCli),
+        (ScinoephileCli, MultiCli, AnalysisDiffCli),
     ],
 )
 def test_analysis_diff_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -37,8 +37,8 @@ def test_analysis_diff_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (AnalysisDiffCli,),
-        (AnalysisCli, AnalysisDiffCli),
-        (ScinoephileCli, AnalysisCli, AnalysisDiffCli),
+        (MultiCli, AnalysisDiffCli),
+        (ScinoephileCli, MultiCli, AnalysisDiffCli),
     ],
 )
 def test_analysis_diff_usage(cli: tuple[type[CommandLineInterface], ...]):

@@ -9,9 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
+from scinoephile.cli.ocr.ocr_cli import OcrCli
+from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.zho.zho_cli import ZhoCli
-from scinoephile.cli.zho.zho_fuse_cli import ZhoFuseCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
@@ -27,9 +27,9 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoFuseCli,),
-        (ZhoCli, ZhoFuseCli),
-        (ScinoephileCli, ZhoCli, ZhoFuseCli),
+        (OcrFuseCli,),
+        (OcrCli, OcrFuseCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
 def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -44,9 +44,9 @@ def test_zho_fuse_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoFuseCli,),
-        (ZhoCli, ZhoFuseCli),
-        (ScinoephileCli, ZhoCli, ZhoFuseCli),
+        (OcrFuseCli,),
+        (OcrCli, OcrFuseCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
     ],
 )
 def test_zho_fuse_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -107,8 +107,8 @@ def test_zho_fuse_cli(
 
     with get_temp_file_path(".srt") as output_path:
         run_cli_with_args(
-            ZhoFuseCli,
-            f"--lens-infile {full_lens_path} "
+            OcrFuseCli,
+            f"--language zho --lens-infile {full_lens_path} "
             f"--paddle-infile {full_paddle_path} "
             f"{args} --outfile {output_path}",
         )
@@ -150,8 +150,9 @@ def test_zho_fuse_cli_pipe(
     stdout_stream = StringIO()
     with patch("scinoephile.core.cli.stdout", stdout_stream):
         run_cli_with_args(
-            ZhoFuseCli,
-            f"--lens-infile {full_lens_path} --paddle-infile {full_paddle_path} {args}",
+            OcrFuseCli,
+            f"--language zho --lens-infile {full_lens_path} "
+            f"--paddle-infile {full_paddle_path} {args}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
@@ -167,7 +168,7 @@ def test_zho_fuse_cli_rejects_bare_convert_flag():
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
-            ZhoFuseCli,
-            f"--lens-infile {full_lens_path} "
+            OcrFuseCli,
+            f"--language zho --lens-infile {full_lens_path} "
             f"--paddle-infile {full_paddle_path} --clean --convert",
         )

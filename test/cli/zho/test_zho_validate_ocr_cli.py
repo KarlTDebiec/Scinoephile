@@ -6,9 +6,9 @@ from __future__ import annotations
 
 import pytest
 
+from scinoephile.cli.ocr.ocr_cli import OcrCli
+from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.zho.zho_cli import ZhoCli
-from scinoephile.cli.zho.zho_validate_ocr_cli import ZhoValidateOcrCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.testing import run_cli_with_args
@@ -25,9 +25,9 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoValidateOcrCli,),
-        (ZhoCli, ZhoValidateOcrCli),
-        (ScinoephileCli, ZhoCli, ZhoValidateOcrCli),
+        (OcrValidateCli,),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -42,9 +42,9 @@ def test_zho_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (ZhoValidateOcrCli,),
-        (ZhoCli, ZhoValidateOcrCli),
-        (ScinoephileCli, ZhoCli, ZhoValidateOcrCli),
+        (OcrValidateCli,),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_zho_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -79,8 +79,9 @@ def test_zho_validate_ocr_cli(input_path: str):
     with get_temp_directory_path() as output_dir_path:
         outfile_path = output_dir_path / "validated"
         run_cli_with_args(
-            ZhoValidateOcrCli,
-            f"--infile {full_input_path} --stop-at-idx 1 --outfile {outfile_path}",
+            OcrValidateCli,
+            f"--language zho --infile {full_input_path} --stop-at-idx 1 "
+            f"--outfile {outfile_path}",
         )
 
         output = ImageSeries.load(outfile_path)

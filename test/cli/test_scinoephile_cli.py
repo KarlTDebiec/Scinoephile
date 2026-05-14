@@ -57,17 +57,25 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     assert output.startswith("Available subcommands:\n\n")
-    assert "\nanalysis" in output
+    lines = output.splitlines()
+    assert not any(line.startswith("analysis") for line in lines)
+    assert not any(line.startswith("sync") for line in lines)
+    assert not any(line.startswith("timewarp") for line in lines)
+    assert "\nmulti" in output
     assert "\n    cer" in output
+    assert "\n    diff" in output
+    assert "\n    sync" in output
+    assert "\n    timewarp" in output
     assert "\ndictionary" in output
     assert "\n    build" in output
     assert "\n        wiktionary" in output
     assert "\neng" in output
-    assert "\n    validate-ocr" in output
-    assert "\nzho" in output
+    assert "\n    translate-vs-zho" in output
+    assert "\nocr" in output
     assert "\n    fuse" in output
+    assert "\n    validate" in output
+    assert "\nzho" in output
     assert "\n    process" in output
-    assert "\n    validate-ocr" in output
     assert all(len(line) <= 80 for line in output.splitlines())
     assert "    transcribe-vs-zho" in output
     assert "transcribe subtitles from audio and revise using" in output
@@ -91,6 +99,8 @@ def test_scinoephile_all_commands_localized():
     assert "可用子命令：" in output
     assert "子命令" in output
     assert "\nzho" in output
+    assert "\nmulti" in output
+    assert "\nocr" in output
     assert "\n    process" in output
     assert "修改標準中文字幕" in output
     assert "香港中文大學現代標準漢語與粵語對照資料庫" not in output

@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
+from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.cli.timewarp_cli import TimewarpCli
 from scinoephile.common import CommandLineInterface
@@ -27,7 +28,8 @@ from test.helpers import (
     "cli",
     [
         (TimewarpCli,),
-        (ScinoephileCli, TimewarpCli),
+        (MultiCli, TimewarpCli),
+        (ScinoephileCli, MultiCli, TimewarpCli),
     ],
 )
 def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -43,7 +45,8 @@ def test_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (TimewarpCli,),
-        (ScinoephileCli, TimewarpCli),
+        (MultiCli, TimewarpCli),
+        (ScinoephileCli, MultiCli, TimewarpCli),
     ],
 )
 def test_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):

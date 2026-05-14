@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.cli.analysis.analysis_cer_cli import AnalysisCerCli
-from scinoephile.cli.analysis.analysis_cli import AnalysisCli
+from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
@@ -23,8 +23,8 @@ from test.helpers import (
     "cli",
     [
         (AnalysisCerCli,),
-        (AnalysisCli, AnalysisCerCli),
-        (ScinoephileCli, AnalysisCli, AnalysisCerCli),
+        (MultiCli, AnalysisCerCli),
+        (ScinoephileCli, MultiCli, AnalysisCerCli),
     ],
 )
 def test_analysis_cer_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -40,8 +40,8 @@ def test_analysis_cer_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (AnalysisCerCli,),
-        (AnalysisCli, AnalysisCerCli),
-        (ScinoephileCli, AnalysisCli, AnalysisCerCli),
+        (MultiCli, AnalysisCerCli),
+        (ScinoephileCli, MultiCli, AnalysisCerCli),
     ],
 )
 def test_analysis_cer_usage(cli: tuple[type[CommandLineInterface], ...]):

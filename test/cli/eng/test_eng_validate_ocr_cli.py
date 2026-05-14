@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.eng.eng_cli import EngCli
-from scinoephile.cli.eng.eng_validate_ocr_cli import EngValidateOcrCli
+from scinoephile.cli.ocr.ocr_cli import OcrCli
+from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_directory_path
@@ -27,9 +27,9 @@ from test.helpers import (
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngValidateOcrCli,),
-        (EngCli, EngValidateOcrCli),
-        (ScinoephileCli, EngCli, EngValidateOcrCli),
+        (OcrValidateCli,),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_eng_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -44,9 +44,9 @@ def test_eng_validate_ocr_help(cli: tuple[type[CommandLineInterface], ...]):
 @pytest.mark.parametrize(
     "cli",
     [
-        (EngValidateOcrCli,),
-        (EngCli, EngValidateOcrCli),
-        (ScinoephileCli, EngCli, EngValidateOcrCli),
+        (OcrValidateCli,),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_eng_validate_ocr_usage(cli: tuple[type[CommandLineInterface], ...]):
@@ -81,8 +81,9 @@ def test_eng_validate_ocr_cli(input_path: str):
     with get_temp_directory_path() as output_dir_path:
         outfile_path = output_dir_path / "validated"
         run_cli_with_args(
-            EngValidateOcrCli,
-            f"--infile {full_input_path} --stop-at-idx 1 --outfile {outfile_path}",
+            OcrValidateCli,
+            f"--language eng --infile {full_input_path} --stop-at-idx 1 "
+            f"--outfile {outfile_path}",
         )
 
         output = ImageSeries.load(outfile_path)
@@ -121,15 +122,15 @@ def test_eng_validate_ocr_cli_dev(monkeypatch, tmp_path):
         return series
 
     monkeypatch.setattr(
-        "scinoephile.cli.eng.eng_validate_ocr_cli.validate_eng_ocr",
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_eng_ocr",
         mock_validate_eng_ocr,
     )
     full_input_path = test_data_root / "mlamd/output/eng_ocr/image"
     outfile_path = Path(tmp_path) / "validated"
 
     run_cli_with_args(
-        EngValidateOcrCli,
-        f"--infile {full_input_path} --outfile {outfile_path} --dev",
+        OcrValidateCli,
+        f"--language eng --infile {full_input_path} --outfile {outfile_path} --dev",
     )
 
     assert captured_dev is True

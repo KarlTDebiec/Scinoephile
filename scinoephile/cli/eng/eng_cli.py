@@ -10,9 +10,8 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .eng_fuse_cli import EngFuseCli
 from .eng_process_cli import EngProcessCli
-from .eng_validate_ocr_cli import EngValidateOcrCli
+from .eng_translate_vs_zho_cli import EngTranslateVsZhoCli
 
 __all__ = ["EngCli"]
 
@@ -62,9 +61,8 @@ class EngCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            EngFuseCli.name(): EngFuseCli,
             EngProcessCli.name(): EngProcessCli,
-            EngValidateOcrCli.name(): EngValidateOcrCli,
+            EngTranslateVsZhoCli.name(): EngTranslateVsZhoCli,
         }
 
     @classmethod
