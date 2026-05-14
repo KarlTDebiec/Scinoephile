@@ -72,6 +72,41 @@ def test_module_hierarchy_docs_match_imports():
     assert not violations, "\n\n".join(violations)
 
 
+def test_resolve_import_from_modules_includes_absolute_package_aliases():
+    """Test import-from package aliases resolve as candidate modules."""
+    node = ast.parse("from scinoephile.core import llms, media").body[0]
+    assert isinstance(node, ast.ImportFrom)
+
+    imported_modules = resolve_import_from_modules(
+        file_path=REPO_DIR_PATH / "scinoephile/core/cache/operations.py",
+        node=node,
+        root_package_parts=["scinoephile", "core"],
+    )
+
+    assert imported_modules == [
+        "scinoephile.core",
+        "scinoephile.core.llms",
+        "scinoephile.core.media",
+    ]
+
+
+def test_resolve_import_from_modules_includes_relative_package_aliases():
+    """Test relative import-from package aliases resolve as candidate modules."""
+    node = ast.parse("from . import operations").body[0]
+    assert isinstance(node, ast.ImportFrom)
+
+    imported_modules = resolve_import_from_modules(
+        file_path=REPO_DIR_PATH / "scinoephile/core/cache/cache_entry.py",
+        node=node,
+        root_package_parts=["scinoephile", "core", "cache"],
+    )
+
+    assert imported_modules == [
+        "scinoephile.core.cache",
+        "scinoephile.core.cache.operations",
+    ]
+
+
 def get_child_names(package_dir_path: Path) -> list[str]:
     """Get direct child module and package names.
 
@@ -262,42 +297,50 @@ def get_imported_modules(file_path: Path, root_package_parts: list[str]) -> list
         if isinstance(node, ast.Import):
             imported_modules.extend(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom):
-            imported_module = resolve_import_from_module(
-                file_path=file_path,
-                node=node,
-                root_package_parts=root_package_parts,
+            imported_modules.extend(
+                resolve_import_from_modules(
+                    file_path=file_path,
+                    node=node,
+                    root_package_parts=root_package_parts,
+                )
             )
-            if imported_module is not None:
-                imported_modules.append(imported_module)
     return imported_modules
 
 
-def resolve_import_from_module(
+def resolve_import_from_modules(
     file_path: Path,
     node: ast.ImportFrom,
     root_package_parts: list[str],
-) -> str | None:
-    """Resolve an `ImportFrom` node to an absolute module name.
+) -> list[str]:
+    """Resolve an `ImportFrom` node to absolute module name candidates.
 
     Arguments:
         file_path: Python file path
         node: import-from node
         root_package_parts: root package path parts
     Returns:
-        absolute module name, or None if unavailable
+        absolute module name candidates
     """
     if node.level == 0:
-        return node.module
+        if node.module is None:
+            return []
+        imported_module = node.module
+    else:
+        file_package_parts = get_file_package_parts(file_path)
+        absolute_parent_len = len(file_package_parts) - node.level + 1
+        if absolute_parent_len < len(root_package_parts):
+            return []
 
-    file_package_parts = get_file_package_parts(file_path)
-    absolute_parent_len = len(file_package_parts) - node.level + 1
-    if absolute_parent_len < len(root_package_parts):
-        return None
+        imported_parts = file_package_parts[:absolute_parent_len]
+        if node.module:
+            imported_parts.extend(node.module.split("."))
+        imported_module = ".".join(imported_parts)
 
-    imported_parts = file_package_parts[:absolute_parent_len]
-    if node.module:
-        imported_parts.extend(node.module.split("."))
-    return ".".join(imported_parts)
+    imported_modules = [imported_module]
+    imported_modules.extend(
+        f"{imported_module}.{alias.name}" for alias in node.names if alias.name != "*"
+    )
+    return imported_modules
 
 
 def get_file_package_parts(file_path: Path) -> list[str]:
