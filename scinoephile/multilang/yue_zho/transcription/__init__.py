@@ -122,6 +122,7 @@ def get_yue_vs_zho_transcriber(
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
+    additional_context: str | None = None,
     deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHans] = (
         YueDeliniationVsZhoPromptYueHans
     ),
@@ -140,6 +141,7 @@ def get_yue_vs_zho_transcriber(
         vad_mode: Whisper VAD mode for transcription
         provider: provider to use for queries
         convert: OpenCC configuration used for transcribed text conversion
+        additional_context: additional context to include in LLM prompts
         deliniation_prompt_cls: prompt class for alignment deliniation
         punctuation_prompt_cls: prompt class for transcription punctuation
         test_case_directory_path: optional directory where test cases are updated
@@ -174,6 +176,7 @@ def get_yue_vs_zho_transcriber(
         vad_mode=vad_mode,
         provider=provider,
         convert=convert,
+        additional_context=additional_context,
         deliniation_prompt_cls=deliniation_prompt_cls,
         punctuation_prompt_cls=punctuation_prompt_cls,
         test_case_directory_path=test_case_directory_path,

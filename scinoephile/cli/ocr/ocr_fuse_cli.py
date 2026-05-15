@@ -12,7 +12,11 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -199,6 +203,7 @@ class OcrFuseCli(ScinoephileCliBase):
         convert: OpenCCConfig | None,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -207,6 +212,9 @@ class OcrFuseCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
         provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Dispatch to language-specific implementation
@@ -219,6 +227,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 clean=clean,
                 convert=convert,
                 provider=provider,
+                additional_context=additional_context,
                 outfile_path=outfile_path,
                 overwrite=overwrite,
             )
@@ -231,28 +240,38 @@ class OcrFuseCli(ScinoephileCliBase):
                 clean=clean,
                 convert=convert,
                 provider=provider,
+                additional_context=additional_context,
                 outfile_path=outfile_path,
                 overwrite=overwrite,
             )
 
     @classmethod
     def _get_ocr_fuser(
-        cls, convert: OpenCCConfig | None, provider: LLMProvider
+        cls,
+        convert: OpenCCConfig | None,
+        provider: LLMProvider,
+        additional_context: str | None,
     ) -> OcrFusionProcessor:
         """Get OCR fuser for selected conversion output script.
 
         Arguments:
             convert: OpenCC conversion configuration
             provider: provider to use for queries
+            additional_context: additional context to include in LLM prompts
         Returns:
             configured OCR fuser
         """
         script = cls._get_script_for_conversion(convert)
         if script == "traditional":
             return get_zho_ocr_fuser(
-                prompt_cls=OcrFusionPromptZhoHant, provider=provider
+                prompt_cls=OcrFusionPromptZhoHant,
+                provider=provider,
+                additional_context=additional_context,
             )
-        return get_zho_ocr_fuser(provider=provider)
+        return get_zho_ocr_fuser(
+            provider=provider,
+            additional_context=additional_context,
+        )
 
     @classmethod
     def _get_script_for_conversion(cls, convert: OpenCCConfig | None) -> str:
@@ -282,6 +301,7 @@ class OcrFuseCli(ScinoephileCliBase):
         clean: bool,
         convert: OpenCCConfig | None,
         provider: LLMProvider,
+        additional_context: str | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -295,6 +315,7 @@ class OcrFuseCli(ScinoephileCliBase):
             clean: whether to clean inputs before fusion
             convert: OpenCC conversion configuration, if provided
             provider: provider to use for queries
+            additional_context: additional context to include in LLM prompts
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
@@ -316,7 +337,10 @@ class OcrFuseCli(ScinoephileCliBase):
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
-        fuser = get_eng_ocr_fuser(provider=provider)
+        fuser = get_eng_ocr_fuser(
+            provider=provider,
+            additional_context=additional_context,
+        )
         fused = get_eng_ocr_fused(lens, tesseract, processor=fuser)
 
         # Write outputs
@@ -335,6 +359,7 @@ class OcrFuseCli(ScinoephileCliBase):
         clean: bool,
         convert: OpenCCConfig | None,
         provider: LLMProvider,
+        additional_context: str | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -348,6 +373,7 @@ class OcrFuseCli(ScinoephileCliBase):
             clean: whether to clean inputs before fusion
             convert: OpenCC conversion configuration, if provided
             provider: provider to use for queries
+            additional_context: additional context to include in LLM prompts
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
@@ -371,7 +397,7 @@ class OcrFuseCli(ScinoephileCliBase):
             lens = get_zho_converted(lens, convert)
             paddle = get_zho_converted(paddle, convert)
 
-        processor = cls._get_ocr_fuser(convert, provider)
+        processor = cls._get_ocr_fuser(convert, provider, additional_context)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
 
         # Write outputs

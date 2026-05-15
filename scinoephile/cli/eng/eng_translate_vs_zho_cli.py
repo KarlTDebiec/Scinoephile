@@ -11,7 +11,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -188,6 +192,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         eng_guide_infile_path: Path | str | None,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -203,12 +208,18 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
 
         # Read inputs
         zho = read_series(parser, zho_infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
         provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Perform operations
         if eng_gapped_infile_path is not None:
             eng = read_series(parser, eng_gapped_infile_path, allow_stdin=True)
-            translator = get_eng_vs_zho_gapped_translator(provider=provider)
+            translator = get_eng_vs_zho_gapped_translator(
+                provider=provider,
+                additional_context=additional_context,
+            )
             eng = get_eng_gapped_translated_vs_zho(
                 eng=eng,
                 zho=zho,
@@ -216,14 +227,20 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             )
         elif eng_guide_infile_path is not None:
             eng = read_series(parser, eng_guide_infile_path, allow_stdin=True)
-            translator = get_eng_zho_guided_translator(provider=provider)
+            translator = get_eng_zho_guided_translator(
+                provider=provider,
+                additional_context=additional_context,
+            )
             eng = get_eng_translated_from_zho_with_eng_guidance(
                 zho=zho,
                 eng=eng,
                 translator=translator,
             )
         else:
-            translator = get_eng_zho_translator(provider=provider)
+            translator = get_eng_zho_translator(
+                provider=provider,
+                additional_context=additional_context,
+            )
             eng = get_eng_translated_from_zho(zho=zho, translator=translator)
 
         # Write outputs

@@ -49,6 +49,8 @@ class EngBlockReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     """path where encountered or verified test cases are persisted."""
+    additional_context: str | None
+    """additional context to include in the system prompt."""
     auto_verify: bool
     """whether to automatically verify model outputs against expected cases."""
 
