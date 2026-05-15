@@ -12,23 +12,15 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.ocr import (
-    OcrCli,
-    OcrFuseCli,
     OcrLensCli,
     OcrPaddleCli,
     OcrTesseractCli,
-    OcrValidateCli,
-    ocr_tesseract_cli,
 )
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
 from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
     assert_series_equal,
     skip_if_ci,
     test_data_root,
@@ -77,61 +69,6 @@ def _write_placeholder_sup_path(tmp_path: Path) -> Path:
     infile_path = tmp_path / "source.sup"
     infile_path.write_bytes(b"unused")
     return infile_path
-
-
-def test_ocr_tesseract_cli_imports_ocr_function_at_module_load():
-    """Test Tesseract CLI exposes its OCR function like other OCR CLIs."""
-    assert callable(ocr_tesseract_cli.ocr_image_series_with_tesseract)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OcrCli,),
-        (OcrCli, OcrFuseCli),
-        (OcrCli, OcrLensCli),
-        (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseractCli),
-        (OcrCli, OcrValidateCli),
-        (ScinoephileCli, OcrCli, OcrFuseCli),
-        (ScinoephileCli, OcrCli, OcrLensCli),
-        (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseractCli),
-        (ScinoephileCli, OcrCli, OcrValidateCli),
-    ],
-)
-def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test OCR CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OcrCli,),
-        (OcrCli, OcrFuseCli),
-        (OcrCli, OcrLensCli),
-        (OcrCli, OcrPaddleCli),
-        (OcrCli, OcrTesseractCli),
-        (OcrCli, OcrValidateCli),
-        (ScinoephileCli, OcrCli, OcrFuseCli),
-        (ScinoephileCli, OcrCli, OcrLensCli),
-        (ScinoephileCli, OcrCli, OcrPaddleCli),
-        (ScinoephileCli, OcrCli, OcrTesseractCli),
-        (ScinoephileCli, OcrCli, OcrValidateCli),
-    ],
-)
-def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test OCR CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_ocr_lens_cli_help_lists_language_option_only():

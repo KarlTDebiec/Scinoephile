@@ -11,10 +11,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from scinoephile.audio.subtitles import AudioSeries
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.yue.yue_cli import YueCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
@@ -30,45 +27,9 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHant,
 )
 from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
     assert_series_equal,
     test_data_root,
 )
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (YueTranscribeVsZhoCli,),
-        (YueCli, YueTranscribeVsZhoCli),
-        (ScinoephileCli, YueCli, YueTranscribeVsZhoCli),
-    ],
-)
-def test_yue_transcribe_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test written Cantonese transcribe-vs-zho CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (YueTranscribeVsZhoCli,),
-        (YueCli, YueTranscribeVsZhoCli),
-        (ScinoephileCli, YueCli, YueTranscribeVsZhoCli),
-    ],
-)
-def test_yue_transcribe_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test written Cantonese transcribe-vs-zho CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():

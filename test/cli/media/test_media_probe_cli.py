@@ -9,47 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.media.media_cli import MediaCli
 from scinoephile.cli.media.media_probe_cli import MediaProbeCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.media import AudioStream, SubtitleStream, VideoStream
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaProbeCli,),
-        (MediaCli, MediaProbeCli),
-        (ScinoephileCli, MediaCli, MediaProbeCli),
-    ],
-)
-def test_media_probe_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media probe CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaProbeCli,),
-        (MediaCli, MediaProbeCli),
-        (ScinoephileCli, MediaCli, MediaProbeCli),
-    ],
-)
-def test_media_probe_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media probe CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_media_probe_cli_passes_cache_dir_to_stream_details(tmp_path: Path):

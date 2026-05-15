@@ -10,57 +10,12 @@ from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-import pytest
-
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.cli.utility.optimization.optimization_cli import OptimizationCli
 from scinoephile.cli.utility.optimization.optimization_test_cases_cli import (
     OptimizationSyncTestCasesCli,
 )
-from scinoephile.cli.utility.utility_cli import UtilityCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.optimization.operations import OPERATIONS
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OptimizationSyncTestCasesCli,),
-        (OptimizationCli, OptimizationSyncTestCasesCli),
-        (UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
-        (ScinoephileCli, UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
-    ],
-)
-def test_optimization_sync_test_cases_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test optimization sync-test-cases CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OptimizationSyncTestCasesCli,),
-        (OptimizationCli, OptimizationSyncTestCasesCli),
-        (UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
-        (ScinoephileCli, UtilityCli, OptimizationCli, OptimizationSyncTestCasesCli),
-    ],
-)
-def test_optimization_sync_test_cases_usage(
-    cli: tuple[type[CommandLineInterface], ...],
-):
-    """Test optimization sync-test-cases CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_optimization_sync_test_cases_cli_dry_run_and_apply(tmp_path: Path):

@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from types import SimpleNamespace
-from typing import Any, cast
+from typing import cast
 
 import pytest
 
@@ -13,18 +12,7 @@ from scinoephile.core.llms import openai_provider_base
 from scinoephile.core.llms.tool import Tool
 from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
-
-
-class _DummyOpenAI:
-    """Dummy OpenAI client capturing constructor kwargs."""
-
-    def __init__(self, **kwargs: Any):
-        """Initialize and capture kwargs."""
-        self.kwargs = kwargs
-        self.chat = SimpleNamespace(completions=SimpleNamespace(create=None))
-        self.beta = SimpleNamespace(
-            chat=SimpleNamespace(completions=SimpleNamespace(parse=None))
-        )
+from test.helpers.openai import DummyOpenAI
 
 
 def _get_tool_box() -> ToolBox:
@@ -49,12 +37,12 @@ def test_deepseek_constructs_client_with_base_url_and_env_api_key(
     """Test DeepSeekProvider uses base_url and DEEPSEEK_API_KEY by default."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "dummy")
 
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
+    monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
 
     provider = DeepSeekProvider()
-    client = cast(_DummyOpenAI, provider.sync_client)
+    client = cast(DummyOpenAI, provider.sync_client)
 
-    assert isinstance(client, _DummyOpenAI)
+    assert isinstance(client, DummyOpenAI)
     assert client.kwargs["base_url"] == "https://api.deepseek.com"
     assert client.kwargs["api_key"] == "dummy"
 
@@ -65,10 +53,10 @@ def test_deepseek_api_key_override_wins_over_env(
     """Test explicit api_key overrides the environment variable."""
     monkeypatch.setenv("DEEPSEEK_API_KEY", "env")
 
-    monkeypatch.setattr(openai_provider_base, "OpenAI", _DummyOpenAI)
+    monkeypatch.setattr(openai_provider_base, "OpenAI", DummyOpenAI)
 
     provider = DeepSeekProvider(api_key="explicit")
-    client = cast(_DummyOpenAI, provider.sync_client)
+    client = cast(DummyOpenAI, provider.sync_client)
 
     assert client.kwargs["api_key"] == "explicit"
 

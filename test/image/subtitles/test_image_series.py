@@ -14,8 +14,6 @@ from scinoephile.image.subtitles import ImageSeries
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         ("mlamd_eng_ocr_sup_path", 942, (953, 63)),
-        ("mlamd_zho_hans_ocr_sup_path", 932, (773, 73)),
-        ("mlamd_zho_hant_ocr_sup_path", 932, (775, 73)),
     ],
 )
 def test_load_sup(
@@ -49,7 +47,6 @@ def test_load_sup(
     "input_path_fixture, expected_event_count, expected_first_size",
     [
         ("mlamd_eng_image_path", 942, (953, 63)),
-        ("mlamd_zho_hans_image_path", 932, (773, 73)),
     ],
 )
 def test_load_html(

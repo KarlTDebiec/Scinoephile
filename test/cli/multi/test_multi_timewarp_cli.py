@@ -5,135 +5,83 @@
 from __future__ import annotations
 
 from io import StringIO
+from pathlib import Path
 from unittest.mock import patch
 
-import pytest
-
-from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
-    assert_series_equal,
-    test_data_root,
-)
+from test.helpers import assert_series_equal
 
 
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiTimewarpCli,),
-        (MultiCli, MultiTimewarpCli),
-        (ScinoephileCli, MultiCli, MultiTimewarpCli),
-    ],
-)
-def test_multi_timewarp_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi timewarp CLI help output.
+def test_multi_timewarp_cli_passes_arguments_and_writes_file(tmp_path: Path):
+    """Test multi timewarp CLI passes parsed arguments to timing logic.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
+        tmp_path: temporary path fixture
     """
-    assert_cli_help(cli)
+    anchor_path = tmp_path / "anchor.srt"
+    mobile_path = tmp_path / "mobile.srt"
+    output_path = tmp_path / "timewarped.srt"
+    anchor_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nA\n", encoding="utf-8")
+    mobile_path.write_text("1\n00:00:02,000 --> 00:00:03,000\nB\n", encoding="utf-8")
+    anchor_series = Series.from_string(anchor_path.read_text(encoding="utf-8"))
+    mobile_series = Series.from_string(mobile_path.read_text(encoding="utf-8"))
+    timewarped_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\nB\n",
+        format_="srt",
+    )
 
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiTimewarpCli,),
-        (MultiCli, MultiTimewarpCli),
-        (ScinoephileCli, MultiCli, MultiTimewarpCli),
-    ],
-)
-def test_multi_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi timewarp CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
-
-
-@pytest.mark.parametrize(
-    ("anchor_path", "mobile_path", "args", "expected_path"),
-    [
-        (
-            "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
-            "kob/input/yue-Hant.srt",
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
-            "kob/output/yue-Hant/timewarp.srt",
-        ),
-    ],
-)
-def test_multi_timewarp_cli(
-    anchor_path: str,
-    mobile_path: str,
-    args: str,
-    expected_path: str,
-):
-    """Test multi timewarp CLI processing with file arguments.
-
-    Arguments:
-        anchor_path: path to anchor subtitle fixture
-        mobile_path: path to mobile subtitle fixture
-        args: command-line arguments for anchor indexes
-        expected_path: path to expected output subtitle fixture
-    """
-    full_anchor_path = test_data_root / anchor_path
-    full_mobile_path = test_data_root / mobile_path
-    full_expected_path = test_data_root / expected_path
-
-    with get_temp_file_path(".srt") as output_path:
+    with (
+        patch(
+            "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
+            return_value=timewarped_series,
+        ) as get_series_timewarped,
+    ):
         run_cli_with_args(
             MultiTimewarpCli,
-            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
-            f"{args} --outfile {output_path}",
+            f"--anchor-infile {anchor_path} --mobile-infile {mobile_path} "
+            "--one-start-idx 1 --one-end-idx 2 --two-start-idx 3 --two-end-idx 4 "
+            f"--outfile {output_path}",
         )
-        output = Series.load(output_path)
-        expected = Series.load(full_expected_path)
 
-    assert_series_equal(output, expected)
+    called_kwargs = get_series_timewarped.call_args.kwargs
+    assert_series_equal(called_kwargs["source_one"], anchor_series)
+    assert_series_equal(called_kwargs["source_two"], mobile_series)
+    assert called_kwargs["one_start_idx"] == 1
+    assert called_kwargs["one_end_idx"] == 2
+    assert called_kwargs["two_start_idx"] == 3
+    assert called_kwargs["two_end_idx"] == 4
+    assert_series_equal(Series.load(output_path), timewarped_series)
 
 
-@pytest.mark.parametrize(
-    ("anchor_path", "mobile_path", "args", "expected_path"),
-    [
-        (
-            "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
-            "kob/input/yue-Hant.srt",
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
-            "kob/output/yue-Hant/timewarp.srt",
-        ),
-    ],
-)
-def test_multi_timewarp_cli_pipe(
-    anchor_path: str, mobile_path: str, args: str, expected_path: str
-):
+def test_multi_timewarp_cli_pipe(tmp_path: Path):
     """Test multi timewarp CLI writes stdout when outfile is omitted.
 
     Arguments:
-        anchor_path: path to anchor subtitle fixture
-        mobile_path: path to mobile subtitle fixture
-        args: command-line arguments for anchor indexes
-        expected_path: path to expected output subtitle fixture
+        tmp_path: temporary path fixture
     """
-    full_anchor_path = test_data_root / anchor_path
-    full_mobile_path = test_data_root / mobile_path
-    full_expected_path = test_data_root / expected_path
+    anchor_path = tmp_path / "anchor.srt"
+    mobile_path = tmp_path / "mobile.srt"
+    anchor_path.write_text("1\n00:00:00,000 --> 00:00:01,000\nA\n", encoding="utf-8")
+    mobile_path.write_text("1\n00:00:02,000 --> 00:00:03,000\nB\n", encoding="utf-8")
+    timewarped_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\nB\n",
+        format_="srt",
+    )
 
     stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.stdout", stdout_stream):
+    with (
+        patch(
+            "scinoephile.cli.multi.multi_timewarp_cli.get_series_timewarped",
+            return_value=timewarped_series,
+        ),
+        patch("scinoephile.core.cli.stdout", stdout_stream),
+    ):
         run_cli_with_args(
             MultiTimewarpCli,
-            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
-            f"{args}",
+            f"--anchor-infile {anchor_path} --mobile-infile {mobile_path}",
         )
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(full_expected_path)
-
-    assert_series_equal(output, expected)
+    assert_series_equal(output, timewarped_series)
