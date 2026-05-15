@@ -22,9 +22,9 @@ from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.gap_translation import (
-    get_yue_gap_translated_vs_zho,
-    get_yue_vs_zho_gap_translator,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    get_yue_gapped_translated_vs_zho,
+    get_yue_vs_zho_gapped_translator,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     get_yue_line_reviewed_vs_zho,
@@ -80,7 +80,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
-        translator_kw: additional keyword arguments for get_yue_vs_zho_gap_translator
+        translator_kw: additional keyword arguments for get_yue_vs_zho_gapped_translator
         block_reviewer_kw: additional keyword arguments for
           get_yue_vs_zho_block_reviewer
     Returns:
@@ -202,8 +202,8 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
             test_case_dir_path / "gap_translation" / f"{device}.json",
         )
         translator_kw.setdefault("auto_verify", True)
-        translator = get_yue_vs_zho_gap_translator(**translator_kw)
-        translate = get_yue_gap_translated_vs_zho(
+        translator = get_yue_vs_zho_gapped_translator(**translator_kw)
+        translate = get_yue_gapped_translated_vs_zho(
             line_review, zho, translator=translator
         )
         translate.save(translate_path, exist_ok=True)

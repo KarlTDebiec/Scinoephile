@@ -14,11 +14,15 @@ from scinoephile.core.llms.utils import load_test_cases_from_json
 
 __all__ = [
     "ENG_BLOCK_REVIEW_JSON_PATHS",
+    "ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS",
     "ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS",
+    "ENG_ZHO_TRANSLATION_JSON_PATHS",
     "ENG_OCR_FUSION_JSON_PATHS",
-    "YUE_ZHO_GAP_TRANSLATION_JSON_PATHS",
+    "YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS",
+    "YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_LINE_REVIEW_JSON_PATHS",
     "YUE_ZHO_BLOCK_REVIEW_JSON_PATHS",
+    "YUE_ZHO_TRANSLATION_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS",
     "YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS",
     "ZHO_HANS_BLOCK_REVIEW_JSON_PATHS",
@@ -45,7 +49,11 @@ ENG_OCR_FUSION_JSON_PATHS = (
     Path("t/output/eng_ocr/lang/eng/ocr_fusion.json"),
 )
 
+ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
 ENG_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
+ENG_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 
 ZHO_HANS_BLOCK_REVIEW_JSON_PATHS = (
     Path("mlamd/output/zho-Hans_ocr/lang/zho/block_review.json"),
@@ -85,13 +93,17 @@ YUE_ZHO_BLOCK_REVIEW_JSON_PATHS = (
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/block_review/mps.json"),
 )
 
-YUE_ZHO_GAP_TRANSLATION_JSON_PATHS = (
+YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS = (
     Path(
         "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json"
     ),
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json"),
     Path("mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json"),
 )
+
+YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
+
+YUE_ZHO_TRANSLATION_JSON_PATHS: tuple[Path, ...] = ()
 
 YUE_ZHO_TRANSCRIPTION_DELINIATION_JSON_PATHS = (
     Path(
