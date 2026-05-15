@@ -87,6 +87,38 @@ def test_eng_translate_vs_zho_cli_regular_translation():
     assert_series_equal(output, expected)
 
 
+def test_eng_translate_vs_zho_cli_passes_llm_additional_context_file(tmp_path):
+    """Test English translate-vs-zho CLI passes LLM additional context."""
+    zho_input_path = test_data_root / (
+        "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+    expected_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate_review.srt"
+    expected = Series.load(expected_path)
+    context_path = tmp_path / "context.txt"
+    context_path.write_text("Use canonical character names.\n", encoding="utf-8")
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(
+            "scinoephile.cli.eng.eng_translate_vs_zho_cli.get_eng_zho_translator",
+            return_value="translator",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.eng.eng_translate_vs_zho_cli.get_eng_translated_from_zho",
+                return_value=expected,
+            ):
+                run_cli_with_args(
+                    EngTranslateVsZhoCli,
+                    f"--zho-infile {zho_input_path} "
+                    f"--llm-additional-content-file {context_path} "
+                    f"--outfile {output_path}",
+                )
+
+    assert (
+        patched_factory.call_args.kwargs["additional_context"]
+        == "Use canonical character names.\n"
+    )
+
+
 def test_eng_translate_vs_zho_cli_gapped_translation():
     """Test English translate-vs-zho CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"

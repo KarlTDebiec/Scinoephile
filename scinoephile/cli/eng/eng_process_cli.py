@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -164,6 +168,7 @@ class EngProcessCli(ScinoephileCliBase):
         proofread: bool,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         offset: int,
         overwrite: bool,
     ):
@@ -178,6 +183,9 @@ class EngProcessCli(ScinoephileCliBase):
 
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
 
         # Perform operations
         if clean:
@@ -186,7 +194,10 @@ class EngProcessCli(ScinoephileCliBase):
             series = get_eng_flattened(series)
         if proofread:
             provider = get_provider(llm_provider_name, model=llm_model_name)
-            reviewer = get_eng_block_reviewer(provider=provider)
+            reviewer = get_eng_block_reviewer(
+                provider=provider,
+                additional_context=additional_context,
+            )
             series = get_eng_block_reviewed(series, processor=reviewer)
         if offset:
             series.shift(ms=offset)

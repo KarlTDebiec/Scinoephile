@@ -191,7 +191,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
     assert_series_equal(output_series, expected_series)
 
 
-def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
+def test_yue_transcribe_vs_zho_cli_passes_llm_options(tmp_path):
     """Test written Cantonese transcribe-vs-zho CLI passes through explicit VAD mode."""
     zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
     media_infile_path = "/tmp/test_media.mp4"
@@ -200,6 +200,8 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
         format_="srt",
     )
     yuewen_audio_series = Mock(spec=AudioSeries)
+    context_path = tmp_path / "context.txt"
+    context_path.write_text("Prefer existing subtitles.\n", encoding="utf-8")
 
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
@@ -216,10 +218,15 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_vad_mode():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --vad off",
+                    f"--zhongwen-infile {zhongwen_infile_path} --vad off "
+                    f"--llm-additional-content-file {context_path}",
                 )
 
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.OFF
+    assert (
+        patched_factory.call_args.kwargs["additional_context"]
+        == "Prefer existing subtitles.\n"
+    )
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():

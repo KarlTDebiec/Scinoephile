@@ -63,6 +63,8 @@ class YueZhoLineReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     """path where review test cases are persisted."""
+    additional_context: str | None
+    """additional context to include in the system prompt."""
     auto_verify: bool
     """whether to automatically verify updated test cases."""
 

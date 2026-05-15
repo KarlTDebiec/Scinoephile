@@ -12,7 +12,11 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
@@ -242,6 +246,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         convert: OpenCCConfig | None,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         demucs: DemucsMode,
         vad: VADMode,
         outfile_path: Path | None,
@@ -295,6 +300,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         deliniation_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
         provider = get_provider(llm_provider_name, model=llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
             demucs_mode=demucs,
@@ -303,6 +311,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             convert=convert,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
+            additional_context=additional_context,
         )
         yuewen = get_yue_transcribed_vs_zho(
             yuewen=yuewen,

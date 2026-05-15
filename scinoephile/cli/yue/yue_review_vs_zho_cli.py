@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -215,6 +219,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         script: str,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -229,13 +234,18 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         # Read inputs
         yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
         provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Perform operations
         if mode == "line":
             prompt_cls = cls._get_line_review_prompt_cls(script)
             line_reviewer = get_yue_vs_zho_line_reviewer(
-                prompt_cls=prompt_cls, provider=provider
+                prompt_cls=prompt_cls,
+                provider=provider,
+                additional_context=additional_context,
             )
             reviewed = get_yue_line_reviewed_vs_zho(
                 yuewen=yuewen,
@@ -245,7 +255,9 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
         else:
             prompt_cls = cls._get_block_review_prompt_cls(script)
             reviewer = get_yue_vs_zho_block_reviewer(
-                prompt_cls=prompt_cls, provider=provider
+                prompt_cls=prompt_cls,
+                provider=provider,
+                additional_context=additional_context,
             )
             reviewed = get_yue_block_reviewed_vs_zho(
                 yuewen=yuewen,

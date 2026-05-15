@@ -51,6 +51,8 @@ class ZhoBlockReviewProcessorKwargs(TypedDict, total=False):
 
     test_case_path: Path | None
     """Path where encountered test cases are persisted."""
+    additional_context: str | None
+    """Additional context to include in the system prompt."""
     auto_verify: bool
     """Whether generated test cases should be marked verified automatically."""
 
