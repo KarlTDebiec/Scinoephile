@@ -39,27 +39,13 @@ jobs:
 
       - name: Run ruff
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ruff check --output-format json | tee ${GITHUB_WORKSPACE}/.github/outputs/ruff.json || echo
-
-      - name: Annotate with ruff results
-        uses: KarlTDebiec/LinterPrinter@main
-        with:
-          tool: ruff
-          tool_infile: .github/outputs/ruff.json
+          uv run ruff check --output-format=github
 
       - name: Run ty
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           cd ${GITHUB_WORKSPACE}
-          uv run ty check --output-format gitlab . | tee ${GITHUB_WORKSPACE}/.github/outputs/ty.json || echo
-
-      - name: Annotate with ty results
-        uses: KarlTDebiec/LinterPrinter@main
-        with:
-          tool: ty
-          tool_infile: .github/outputs/ty.json
+          uv run ty check --output-format=github .
 
       - name: Run pytest
         run: |
