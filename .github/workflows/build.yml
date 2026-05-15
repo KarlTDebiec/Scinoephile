@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Linux:
     runs-on: ubuntu-latest
@@ -31,7 +35,7 @@ jobs:
           python-version: 3.13
 
       - name: Install the project
-        run: uv sync --all-extras --dev
+        run: uv sync --dev --frozen
 
       - name: Run ruff
         run: |
