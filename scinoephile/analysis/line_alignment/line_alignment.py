@@ -50,20 +50,12 @@ def _get_alignment_operation_table(  # noqa: PLR0915
 
     previous_gaps[0] = _GAP_NONE
     for two_idx in range(1, two_length + 1):
-        previous_metrics[two_idx, 0] = two_idx
-        previous_metrics[two_idx, 1] = 1
-        previous_metrics[two_idx, 2] = 0
-        previous_metrics[two_idx, 3] = 0
-        previous_metrics[two_idx, 4] = two_idx
+        _set_metric(previous_metrics, two_idx, two_idx, 1, 0, 0, two_idx)
         previous_gaps[two_idx] = _OPERATION_INSERT
 
     for one_idx in range(1, one_length + 1):
         operation_table[one_idx, 0] = _OPERATION_DELETE
-        current_metrics[0, 0] = one_idx
-        current_metrics[0, 1] = 1
-        current_metrics[0, 2] = 0
-        current_metrics[0, 3] = one_idx
-        current_metrics[0, 4] = 0
+        _set_metric(current_metrics, 0, one_idx, 1, 0, one_idx, 0)
         current_gaps[0] = _OPERATION_DELETE
         one_char = one[one_idx - 1]
 
@@ -95,24 +87,17 @@ def _get_alignment_operation_table(  # noqa: PLR0915
             insert_2 = current_metrics[previous_insert_idx, 2]
             insert_3 = current_metrics[previous_insert_idx, 3]
             insert_4 = current_metrics[previous_insert_idx, 4] + 1
-            if insert_0 < best_0 or (
-                insert_0 == best_0
-                and (
-                    insert_1 < best_1
-                    or (
-                        insert_1 == best_1
-                        and (
-                            insert_2 < best_2
-                            or (
-                                insert_2 == best_2
-                                and (
-                                    insert_3 < best_3
-                                    or (insert_3 == best_3 and insert_4 < best_4)
-                                )
-                            )
-                        )
-                    )
-                )
+            if _is_metric_less(
+                insert_0,
+                insert_1,
+                insert_2,
+                insert_3,
+                insert_4,
+                best_0,
+                best_1,
+                best_2,
+                best_3,
+                best_4,
             ):
                 best_0 = insert_0
                 best_1 = insert_1
@@ -129,31 +114,29 @@ def _get_alignment_operation_table(  # noqa: PLR0915
             delete_2 = previous_metrics[two_idx, 2]
             delete_3 = previous_metrics[two_idx, 3] + 1
             delete_4 = previous_metrics[two_idx, 4]
-            delete_is_less = delete_0 < best_0 or (
-                delete_0 == best_0
-                and (
-                    delete_1 < best_1
-                    or (
-                        delete_1 == best_1
-                        and (
-                            delete_2 < best_2
-                            or (
-                                delete_2 == best_2
-                                and (
-                                    delete_3 < best_3
-                                    or (delete_3 == best_3 and delete_4 < best_4)
-                                )
-                            )
-                        )
-                    )
-                )
+            delete_is_less = _is_metric_less(
+                delete_0,
+                delete_1,
+                delete_2,
+                delete_3,
+                delete_4,
+                best_0,
+                best_1,
+                best_2,
+                best_3,
+                best_4,
             )
-            delete_is_equal = (
-                delete_0 == best_0
-                and delete_1 == best_1
-                and delete_2 == best_2
-                and delete_3 == best_3
-                and delete_4 == best_4
+            delete_is_equal = _is_metric_equal(
+                delete_0,
+                delete_1,
+                delete_2,
+                delete_3,
+                delete_4,
+                best_0,
+                best_1,
+                best_2,
+                best_3,
+                best_4,
             )
             if delete_is_less or (
                 delete_is_equal and _OPERATION_DELETE < best_operation
@@ -166,11 +149,15 @@ def _get_alignment_operation_table(  # noqa: PLR0915
                 best_operation = _OPERATION_DELETE
                 best_gap = _OPERATION_DELETE
 
-            current_metrics[two_idx, 0] = best_0
-            current_metrics[two_idx, 1] = best_1
-            current_metrics[two_idx, 2] = best_2
-            current_metrics[two_idx, 3] = best_3
-            current_metrics[two_idx, 4] = best_4
+            _set_metric(
+                current_metrics,
+                two_idx,
+                best_0,
+                best_1,
+                best_2,
+                best_3,
+                best_4,
+            )
             current_gaps[two_idx] = best_gap
             operation_table[one_idx, two_idx] = best_operation
 
@@ -189,6 +176,112 @@ def _get_codepoints(text: str) -> np.ndarray:
         integer code points
     """
     return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
+
+
+@nb.jit(nopython=True, nogil=True, inline="always")
+def _is_metric_equal(
+    left_0: int,
+    left_1: int,
+    left_2: int,
+    left_3: int,
+    left_4: int,
+    right_0: int,
+    right_1: int,
+    right_2: int,
+    right_3: int,
+    right_4: int,
+) -> bool:
+    """Check whether two alignment metrics are equal.
+
+    Arguments:
+        left_0: first element of the left metric
+        left_1: second element of the left metric
+        left_2: third element of the left metric
+        left_3: fourth element of the left metric
+        left_4: fifth element of the left metric
+        right_0: first element of the right metric
+        right_1: second element of the right metric
+        right_2: third element of the right metric
+        right_3: fourth element of the right metric
+        right_4: fifth element of the right metric
+    Returns:
+        whether the two metrics are equal
+    """
+    return (
+        left_0 == right_0
+        and left_1 == right_1
+        and left_2 == right_2
+        and left_3 == right_3
+        and left_4 == right_4
+    )
+
+
+@nb.jit(nopython=True, nogil=True, inline="always")
+def _is_metric_less(
+    left_0: int,
+    left_1: int,
+    left_2: int,
+    left_3: int,
+    left_4: int,
+    right_0: int,
+    right_1: int,
+    right_2: int,
+    right_3: int,
+    right_4: int,
+) -> bool:
+    """Check whether one alignment metric sorts before another.
+
+    Arguments:
+        left_0: first element of the left metric
+        left_1: second element of the left metric
+        left_2: third element of the left metric
+        left_3: fourth element of the left metric
+        left_4: fifth element of the left metric
+        right_0: first element of the right metric
+        right_1: second element of the right metric
+        right_2: third element of the right metric
+        right_3: fourth element of the right metric
+        right_4: fifth element of the right metric
+    Returns:
+        whether the left metric sorts before the right metric
+    """
+    if left_0 != right_0:
+        return left_0 < right_0
+    if left_1 != right_1:
+        return left_1 < right_1
+    if left_2 != right_2:
+        return left_2 < right_2
+    if left_3 != right_3:
+        return left_3 < right_3
+    return left_4 < right_4
+
+
+@nb.jit(nopython=True, nogil=True, inline="always")
+def _set_metric(
+    metrics: np.ndarray,
+    idx: int,
+    value_0: int,
+    value_1: int,
+    value_2: int,
+    value_3: int,
+    value_4: int,
+):
+    """Set one row of the alignment metric table.
+
+    Arguments:
+        metrics: metric table to update
+        idx: row index to update
+        value_0: first metric value
+        value_1: second metric value
+        value_2: third metric value
+        value_3: fourth metric value
+        value_4: fifth metric value
+    """
+    metrics[idx, 0] = value_0
+    metrics[idx, 1] = value_1
+    metrics[idx, 2] = value_2
+    metrics[idx, 3] = value_3
+    metrics[idx, 4] = value_4
 
 
 class LineAlignment:
