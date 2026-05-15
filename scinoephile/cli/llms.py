@@ -16,10 +16,8 @@ from argparse import (  # noqa: PLC2701
 from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
-from scinoephile.core.llms import LLMProvider
 from scinoephile.llms.providers.registry import (
     get_default_provider_name,
-    get_provider,
     get_provider_names,
 )
 from scinoephile.llms.providers.registry import (
@@ -29,7 +27,6 @@ from scinoephile.llms.providers.registry import (
 __all__ = [
     "LLM_LOCALIZATIONS",
     "add_llm_provider_arguments",
-    "get_llm_provider",
     "get_llm_provider_description",
     "llm_provider_name_arg",
 ]
@@ -38,31 +35,23 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional help": "附加帮助",
         "Available LLM providers:": "可用 LLM 提供商：",
-        "DeepSeek LLM Provider (OpenAI-SDK compatible).": (
-            "DeepSeek LLM 提供商（兼容 OpenAI SDK）。"
-        ),
         "LLM model identifier override": "LLM 模型标识符覆盖值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show available providers.": (
             "要使用的 LLM 提供商（默认：%(default)s）。使用 "
             "--list-llm-providers 查看可用提供商。"
         ),
-        "OpenAI LLM Provider.": "OpenAI LLM 提供商。",
         "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
     },
     "zh-hant": {
         "additional help": "附加說明",
         "Available LLM providers:": "可用 LLM 提供商：",
-        "DeepSeek LLM Provider (OpenAI-SDK compatible).": (
-            "DeepSeek LLM 提供商（相容 OpenAI SDK）。"
-        ),
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show available providers.": (
             "要使用的 LLM 提供商（預設：%(default)s）。使用 "
             "--list-llm-providers 查看可用提供商。"
         ),
-        "OpenAI LLM Provider.": "OpenAI LLM 提供商。",
         "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
     },
 }
@@ -148,24 +137,6 @@ def add_llm_provider_arguments(
     )
 
 
-def get_llm_provider(
-    provider_name: str,
-    model_name: str | None = None,
-) -> LLMProvider:
-    """Construct an LLM provider from CLI arguments.
-
-    Arguments:
-        provider_name: registered provider name
-        model_name: model name override
-    Returns:
-        constructed LLM provider
-    """
-    kwargs: dict[str, object] = {}
-    if model_name is not None:
-        kwargs["model"] = model_name
-    return get_provider(provider_name, **kwargs)
-
-
 def get_llm_provider_description(provider_name: str, locale_name: str = "en") -> str:
     """Get localized description for an LLM provider.
 
@@ -175,8 +146,7 @@ def get_llm_provider_description(provider_name: str, locale_name: str = "en") ->
     Returns:
         localized description when available, otherwise English description
     """
-    description = get_registered_provider_description(provider_name)
-    return LLM_LOCALIZATIONS.get(locale_name, {}).get(description, description)
+    return get_registered_provider_description(provider_name, locale_name)
 
 
 def llm_provider_name_arg(value: str) -> str:

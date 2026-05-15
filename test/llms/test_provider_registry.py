@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Unpack
+from typing import Any, ClassVar, Unpack
 from unittest.mock import Mock
 
 import pytest
@@ -48,6 +48,16 @@ class _DummyProvider(LLMProvider):
         return "{}"
 
 
+class _LocalizedDummyProvider(_DummyProvider):
+    """Localized dummy provider fixture for registry tests."""
+
+    description_localizations: ClassVar[dict[str, str]] = {
+        "zh-hans": "本地化测试提供商。",
+        "zh-hant": "本地化測試提供商。",
+    }
+    """Provider description translations keyed by locale."""
+
+
 def test_get_default_provider_returns_openai_provider():
     """Test default provider resolution returns an OpenAI provider."""
     provider = get_default_provider()
@@ -69,6 +79,14 @@ def test_get_provider_constructs_openai_provider_with_kwargs():
     assert provider.sync_client is client
 
 
+def test_get_provider_preserves_default_model_with_none_override():
+    """Test provider construction tolerates omitted CLI model overrides."""
+    provider = get_provider("openai", model=None)
+
+    assert isinstance(provider, OpenAIProvider)
+    assert provider.model == "gpt-5.4"
+
+
 def test_get_provider_constructs_deepseek_provider_with_kwargs():
     """Test DeepSeek provider construction forwards kwargs to the factory."""
     client = Mock()
@@ -84,6 +102,18 @@ def test_get_provider_description_uses_provider_docstrings():
         "DeepSeek LLM Provider (OpenAI-SDK compatible)."
     )
     assert get_provider_description("openai") == "OpenAI LLM Provider."
+
+
+def test_get_provider_description_uses_provider_localizations():
+    """Test provider description localizations are exposed from provider classes."""
+    assert get_provider_description("deepseek", "zh-hans") == (
+        "DeepSeek LLM 提供商（兼容 OpenAI SDK）。"
+    )
+    assert get_provider_description("deepseek", "zh-hant") == (
+        "DeepSeek LLM 提供商（相容 OpenAI SDK）。"
+    )
+    assert get_provider_description("openai", "zh-hans") == "OpenAI LLM 提供商。"
+    assert get_provider_description("openai", "zh-hant") == "OpenAI LLM 提供商。"
 
 
 def test_register_provider_factory_supports_custom_providers():
@@ -102,6 +132,15 @@ def test_get_provider_description_supports_registered_provider_factories():
     assert (
         get_provider_description("test-described")
         == "Dummy provider fixture for registry tests."
+    )
+
+
+def test_get_provider_description_supports_registered_provider_localizations():
+    """Test provider descriptions can be localized from custom providers."""
+    register_provider_factory("test-localized", _LocalizedDummyProvider)
+
+    assert get_provider_description("test-localized", "zh-hans") == (
+        "本地化测试提供商。"
     )
 
 

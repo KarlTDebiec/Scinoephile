@@ -15,7 +15,6 @@ from scinoephile.cli.conversion import (
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
-    get_llm_provider,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -45,6 +44,7 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_converted,
 )
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["OcrFuseCli"]
 
@@ -214,7 +214,7 @@ class OcrFuseCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        provider = get_llm_provider(llm_provider_name, llm_model_name)
+        provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Dispatch to language-specific implementation
         if language == "eng":

@@ -10,7 +10,6 @@ from pathlib import Path
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
-    get_llm_provider,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -30,6 +29,7 @@ from scinoephile.lang.eng.block_review import (
 )
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["EngProcessCli"]
 
@@ -193,7 +193,7 @@ class EngProcessCli(ScinoephileCliBase):
         if flatten:
             series = get_eng_flattened(series)
         if proofread:
-            provider = get_llm_provider(llm_provider_name, llm_model_name)
+            provider = get_provider(llm_provider_name, model=llm_model_name)
             proofreader = get_eng_block_reviewer(provider=provider)
             series = get_eng_block_reviewed(series, processor=proofreader)
         if offset:

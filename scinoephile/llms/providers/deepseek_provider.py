@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from scinoephile.core.llms import OpenAIProviderBase
 
 __all__ = ["DeepSeekProvider"]
@@ -11,6 +13,12 @@ __all__ = ["DeepSeekProvider"]
 
 class DeepSeekProvider(OpenAIProviderBase):
     """DeepSeek LLM Provider (OpenAI-SDK compatible)."""
+
+    description_localizations: ClassVar[dict[str, str]] = {
+        "zh-hans": "DeepSeek LLM 提供商（兼容 OpenAI SDK）。",
+        "zh-hant": "DeepSeek LLM 提供商（相容 OpenAI SDK）。",
+    }
+    """Provider description translations keyed by locale."""
 
     model = "deepseek-v4-flash"
     """DeepSeek model identifier."""

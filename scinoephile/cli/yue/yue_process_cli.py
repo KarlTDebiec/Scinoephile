@@ -14,7 +14,6 @@ from scinoephile.cli.conversion import (
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
-    get_llm_provider,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -45,6 +44,7 @@ from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
 )
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["YueProcessCli"]
 
@@ -247,7 +247,7 @@ class YueProcessCli(ScinoephileCliBase):
             series = get_zho_flattened(series)
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
-            provider = get_llm_provider(llm_provider_name, llm_model_name)
+            provider = get_provider(llm_provider_name, model=llm_model_name)
             proofreader = get_zho_reviewer(prompt_cls=prompt_cls, provider=provider)
             series = get_zho_block_reviewed(series, processor=proofreader)
         if romanize:

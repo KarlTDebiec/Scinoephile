@@ -15,7 +15,6 @@ from scinoephile.cli.conversion import (
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
-    get_llm_provider,
 )
 from scinoephile.common.argument_parsing import (
     enum_arg,
@@ -35,6 +34,7 @@ from scinoephile.core.cli import (
 )
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,
@@ -303,7 +303,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         deliniation_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
-        provider = get_llm_provider(llm_provider_name, llm_model_name)
+        provider = get_provider(llm_provider_name, model=llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
             demucs_mode=demucs,
             vad_mode=vad,

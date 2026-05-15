@@ -14,7 +14,6 @@ from pathlib import Path
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
-    get_llm_provider,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -28,6 +27,7 @@ from scinoephile.core.cli import (
     read_series,
     write_series,
 )
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
     YueVsZhoGapTranslationPromptYueHant,
@@ -207,7 +207,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
 
         # Perform operations
         prompt_cls = cls._get_translation_prompt_cls(script)
-        provider = get_llm_provider(llm_provider_name, llm_model_name)
+        provider = get_provider(llm_provider_name, model=llm_model_name)
         translator = get_yue_vs_zho_gap_translator(
             prompt_cls=prompt_cls, provider=provider
         )

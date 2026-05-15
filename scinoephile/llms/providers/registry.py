@@ -8,7 +8,7 @@ coupling `scinoephile.core` to any specific provider.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from inspect import getdoc
 from typing import Any
 
@@ -19,8 +19,8 @@ from .deepseek_provider import DeepSeekProvider
 from .openai_provider import OpenAIProvider
 
 __all__ = [
-    "get_default_provider_name",
     "get_default_provider",
+    "get_default_provider_name",
     "get_provider",
     "get_provider_description",
     "get_provider_names",
@@ -32,6 +32,64 @@ _PROVIDER_FACTORIES: dict[str, Callable[..., LLMProvider]] = {
     "deepseek": DeepSeekProvider,
     _DEFAULT_PROVIDER_NAME: OpenAIProvider,
 }
+
+
+def get_default_provider() -> LLMProvider:
+    """Construct and return the default provider."""
+    return get_provider(_DEFAULT_PROVIDER_NAME)
+
+
+def get_default_provider_name() -> str:
+    """Get the default provider name.
+
+    Returns:
+        default provider name
+    """
+    return _DEFAULT_PROVIDER_NAME
+
+
+def get_provider(provider_name: str, **kwargs: Any) -> LLMProvider:
+    """Construct and return a named provider.
+
+    Arguments:
+        provider_name: provider identifier
+        **kwargs: keyword arguments forwarded to provider factory
+    Returns:
+        constructed provider instance
+    Raises:
+        ScinoephileError: provider name is not registered
+    """
+    provider_factory = _get_provider_factory(provider_name)
+    return provider_factory(**kwargs)
+
+
+def get_provider_description(provider_name: str, locale_name: str = "en") -> str:
+    """Get a registered provider's localized description.
+
+    Arguments:
+        provider_name: provider identifier
+        locale_name: locale name to use for description lookup
+    Returns:
+        localized provider description when available, otherwise English description
+    Raises:
+        ScinoephileError: provider name is not registered
+    """
+    provider_factory = _get_provider_factory(provider_name)
+    description = _get_provider_english_description(provider_factory)
+    if locale_name == "en":
+        return description
+
+    localizations = _get_provider_description_localizations(provider_factory)
+    return localizations.get(locale_name, description)
+
+
+def get_provider_names() -> tuple[str, ...]:
+    """Get registered provider names.
+
+    Returns:
+        sorted registered provider names
+    """
+    return tuple(sorted(_PROVIDER_FACTORIES))
 
 
 def register_provider_factory(
@@ -46,61 +104,53 @@ def register_provider_factory(
     _PROVIDER_FACTORIES[provider_name] = provider_factory
 
 
-def get_provider(provider_name: str, **kwargs: Any) -> LLMProvider:
-    """Construct and return a named provider.
+def _get_provider_description_localizations(
+    provider_factory: Callable[..., LLMProvider],
+) -> Mapping[str, str]:
+    """Get description localizations exposed by a provider factory.
 
     Arguments:
-        provider_name: provider identifier
-        **kwargs: keyword arguments forwarded to provider factory
+        provider_factory: callable returning an LLMProvider
     Returns:
-        constructed provider instance
-    Raises:
-        ScinoephileError: provider name is not registered
+        provider description localizations keyed by locale
     """
-    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
-    if provider_factory is None:
-        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
-    return provider_factory(**kwargs)
+    localizations = getattr(provider_factory, "description_localizations", {})
+    if not isinstance(localizations, Mapping):
+        return {}
+    return {
+        locale_name: description
+        for locale_name, description in localizations.items()
+        if isinstance(locale_name, str) and isinstance(description, str)
+    }
 
 
-def get_provider_description(provider_name: str) -> str:
-    """Get a registered provider's English description.
+def _get_provider_english_description(
+    provider_factory: Callable[..., LLMProvider],
+) -> str:
+    """Get the English description for a provider factory.
 
     Arguments:
-        provider_name: provider identifier
+        provider_factory: callable returning an LLMProvider
     Returns:
-        provider description
-    Raises:
-        ScinoephileError: provider name is not registered
+        English provider description
     """
-    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
-    if provider_factory is None:
-        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
-
     description = getdoc(provider_factory)
     if description is None:
         return ""
     return " ".join(description.split())
 
 
-def get_default_provider_name() -> str:
-    """Get the default provider name.
+def _get_provider_factory(provider_name: str) -> Callable[..., LLMProvider]:
+    """Get a registered provider factory.
 
+    Arguments:
+        provider_name: provider identifier
     Returns:
-        default provider name
+        provider factory
+    Raises:
+        ScinoephileError: provider name is not registered
     """
-    return _DEFAULT_PROVIDER_NAME
-
-
-def get_default_provider() -> LLMProvider:
-    """Construct and return the default provider."""
-    return get_provider(_DEFAULT_PROVIDER_NAME)
-
-
-def get_provider_names() -> tuple[str, ...]:
-    """Get registered provider names.
-
-    Returns:
-        sorted registered provider names
-    """
-    return tuple(sorted(_PROVIDER_FACTORIES))
+    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
+    if provider_factory is None:
+        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
+    return provider_factory
