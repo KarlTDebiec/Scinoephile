@@ -4,13 +4,32 @@
 
 from __future__ import annotations
 
+import builtins
+import os
+import subprocess
+import sys
+from collections.abc import Mapping, Sequence
 from pathlib import Path
+from textwrap import dedent
 from unittest.mock import Mock
+
+import pytest
 
 from scinoephile.audio.transcription import get_segment_split_at_idx
 from scinoephile.audio.transcription.transcribed_segment import TranscribedSegment
 from scinoephile.audio.transcription.transcribed_word import TranscribedWord
 from scinoephile.audio.transcription.whisper_transcriber import WhisperTranscriber
+
+_OPTIONAL_TRANSCRIPTION_MODULES = (
+    "demucs_infer",
+    "huggingface_hub",
+    "onnxruntime",
+    "torch",
+    "torchaudio",
+    "transformers",
+    "whisper_timestamped",
+)
+_REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
 def test_get_cache_path_separates_vad_modes_with_shared_cache_dir():
@@ -111,6 +130,7 @@ def test_get_cache_path_separates_demucs_modes():
 
 def test_model_name_is_huggingface_repo_id_rejects_local_paths():
     """Test HuggingFace retry is skipped for local filesystem paths."""
+    pytest.importorskip("huggingface_hub")
     transcriber = object.__new__(WhisperTranscriber)
     transcriber.model_name = "khleeloo/whisper-large-v3-cantonese"
 
@@ -127,6 +147,75 @@ def test_model_name_is_huggingface_repo_id_rejects_local_paths():
 
     transcriber.model_name = "large-v3"
     assert not transcriber._model_name_is_huggingface_repo_id()
+
+
+def test_transcription_imports_without_optional_runtime_dependencies():
+    """Test importing transcription APIs does not require runtime extras."""
+    script = dedent(
+        f"""
+        import importlib.abc
+        import sys
+
+        blocked_roots = {set(_OPTIONAL_TRANSCRIPTION_MODULES)!r}
+
+        class Blocker(importlib.abc.MetaPathFinder):
+            def find_spec(self, fullname, path, target=None):
+                if fullname.split(".", 1)[0] in blocked_roots:
+                    raise ImportError(f"blocked optional dependency: {{fullname}}")
+                return None
+
+        sys.meta_path.insert(0, Blocker())
+
+        from scinoephile.audio.transcription import (
+            DemucsSeparator,
+            TranscribedSegment,
+            WhisperTranscriber,
+            get_segment_split_at_idx,
+        )
+        from scinoephile.cli.yue.yue_cli import YueCli
+
+        WhisperTranscriber()
+        assert DemucsSeparator.__name__ == "DemucsSeparator"
+        assert TranscribedSegment.__name__ == "TranscribedSegment"
+        assert get_segment_split_at_idx.__name__ == "get_segment_split_at_idx"
+        assert "transcribe-vs-zho" in YueCli.subcommands()
+        """
+    )
+    env = os.environ.copy()
+    env["PYTHONPATH"] = os.pathsep.join(
+        [str(_REPO_ROOT_PATH), env.get("PYTHONPATH", "")]
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=_REPO_ROOT_PATH,
+        env=env,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
+def test_whisper_module_requires_transcription_extra(monkeypatch: pytest.MonkeyPatch):
+    """Test Whisper import errors mention the transcription extra."""
+    original_import = builtins.__import__
+
+    def import_without_whisper(
+        name: str,
+        globals: Mapping[str, object] | None = None,
+        locals: Mapping[str, object] | None = None,
+        fromlist: Sequence[str] | None = (),
+        level: int = 0,
+    ) -> object:
+        if name == "whisper_timestamped":
+            raise ImportError("blocked optional dependency")
+        return original_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr(builtins, "__import__", import_without_whisper)
+
+    with pytest.raises(ImportError, match="'transcription' extra"):
+        WhisperTranscriber._get_whisper_module()
 
 
 def test_normalize_transcription_segments_coalesces_malformed_duplicate_pair():

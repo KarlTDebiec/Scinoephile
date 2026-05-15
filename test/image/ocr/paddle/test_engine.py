@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -113,6 +114,40 @@ def test_paddle_ocr_recognizer_imports_paddleocr_only_when_needed():
     )
 
     assert result.returncode == 0, result.stderr
+
+
+def test_paddle_ocr_class_requires_ocr_extra(monkeypatch: pytest.MonkeyPatch):
+    """Test PaddleOCR import errors mention the OCR extra."""
+    real_import = __import__
+
+    def fake_import(
+        name: str,
+        globals_: Mapping[str, object] | None = None,
+        locals_: Mapping[str, object] | None = None,
+        fromlist: Sequence[str] | None = (),
+        level: int = 0,
+    ) -> object:
+        """Fake import that treats paddleocr as missing.
+
+        Arguments:
+            name: module name
+            globals_: global namespace
+            locals_: local namespace
+            fromlist: names to import
+            level: import level
+        Returns:
+            imported module
+        Raises:
+            ImportError: if importing paddleocr
+        """
+        if name == "paddleocr":
+            raise ImportError("missing paddleocr")
+        return real_import(name, globals_, locals_, fromlist, level)
+
+    monkeypatch.setattr("builtins.__import__", fake_import)
+
+    with pytest.raises(ImportError, match="'ocr' extra"):
+        PaddleOcrRecognizer._get_paddle_ocr_class()
 
 
 def test_paddle_ocr_recognizer_rejects_unsupported_languages():

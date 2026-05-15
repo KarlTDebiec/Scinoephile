@@ -4,17 +4,38 @@
 
 from __future__ import annotations
 
+import builtins
+from collections.abc import Mapping, Sequence
 from unittest.mock import Mock, patch
 
-import torch
+import numpy as np
+import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.transcription.demucs_separator import DemucsSeparator
 
 
+class _NumpyBackedTensor:
+    """Minimal tensor-shaped object for audio conversion tests."""
+
+    def __init__(self, array: np.ndarray):
+        """Initialize.
+
+        Arguments:
+            array: array returned by the numpy method
+        """
+        self._array = array
+
+    def numpy(self) -> np.ndarray:
+        """Return the wrapped numpy array."""
+        return self._array
+
+
 def test_get_audio_segment_restores_mono_output():
     """Test separated stereo vocals can be restored to mono output."""
-    vocals = torch.tensor([[0.25, -0.25], [0.25, -0.25]], dtype=torch.float32)
+    vocals = _NumpyBackedTensor(
+        np.array([[0.25, -0.25], [0.25, -0.25]], dtype=np.float32)
+    )
 
     audio = DemucsSeparator._get_audio_segment(
         vocals=vocals,
@@ -26,22 +47,44 @@ def test_get_audio_segment_restores_mono_output():
     assert audio.channels == 1
 
 
+def test_demucs_model_loader_requires_transcription_extra(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Demucs import errors mention the transcription extra."""
+    original_import = builtins.__import__
+
+    def import_without_demucs(
+        name: str,
+        globals: Mapping[str, object] | None = None,
+        locals: Mapping[str, object] | None = None,
+        fromlist: Sequence[str] | None = (),
+        level: int = 0,
+    ) -> object:
+        if name.split(".", 1)[0] == "demucs_infer":
+            raise ImportError("blocked optional dependency")
+        return original_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setattr(builtins, "__import__", import_without_demucs)
+
+    with pytest.raises(ImportError, match="'transcription' extra"):
+        DemucsSeparator._get_model_loader()
+
+
 def test_separate_vocals_uses_default_demucs_shifts():
     """Test Demucs separation relies on library-default shift behavior."""
+    torch = pytest.importorskip("torch")
     separator = DemucsSeparator()
     separator._model = Mock(samplerate=16000, sources=["vocals"])
     separator._model.to.return_value = separator._model
     separator._model.eval.return_value = separator._model
     input_audio = AudioSegment.silent(duration=1000, frame_rate=16000).set_channels(1)
     separated_sources = torch.zeros((1, 1, 2, 16000), dtype=torch.float32)
+    apply_model = Mock(return_value=separated_sources)
 
-    with patch(
-        "scinoephile.audio.transcription.demucs_separator.apply_model",
-        return_value=separated_sources,
-    ) as patched_apply_model:
+    with patch.object(DemucsSeparator, "_get_apply_model", return_value=apply_model):
         output_audio = separator.separate_vocals(input_audio)
 
     assert isinstance(output_audio, AudioSegment)
     assert output_audio.frame_rate == input_audio.frame_rate
-    patched_apply_model.assert_called_once()
-    assert "shifts" not in patched_apply_model.call_args.kwargs
+    apply_model.assert_called_once()
+    assert "shifts" not in apply_model.call_args.kwargs

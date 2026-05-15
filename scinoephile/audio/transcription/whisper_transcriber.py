@@ -12,10 +12,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from warnings import catch_warnings, filterwarnings
 
-import whisper_timestamped as whisper
-from huggingface_hub import snapshot_download
-from huggingface_hub.utils import HFValidationError, validate_repo_id
-
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.ml import get_torch_device
@@ -25,6 +21,10 @@ from .transcribed_segment import TranscribedSegment
 __all__ = ["WhisperTranscriber"]
 
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
+_TRANSCRIPTION_EXTRA_MESSAGE = (
+    "Whisper transcription support requires optional transcription dependencies. "
+    "Install scinoephile with the 'transcription' extra."
+)
 
 if TYPE_CHECKING:
     with catch_warnings():
@@ -85,6 +85,7 @@ class WhisperTranscriber:
             loaded Whisper model
         """
         if self._model is None:
+            whisper = self._get_whisper_module()
             try:
                 self._model = whisper.load_model(
                     self.model_name, device=get_torch_device()
@@ -96,6 +97,7 @@ class WhisperTranscriber:
                     "Whisper model load failed due to missing cache file; "
                     "re-downloading HuggingFace snapshot and retrying."
                 )
+                snapshot_download = self._get_snapshot_download()
                 snapshot_download(repo_id=self.model_name)
                 self._model = whisper.load_model(
                     self.model_name, device=get_torch_device()
@@ -144,6 +146,7 @@ class WhisperTranscriber:
 
         # Transcribe using Whisper
         cache_path = self._get_cache_path(cache_audio)
+        whisper = self._get_whisper_module()
         with get_temp_file_path(suffix=".wav") as temp_audio_path:
             audio.export(temp_audio_path, format="wav")
             result = whisper.transcribe(
@@ -186,9 +189,12 @@ class WhisperTranscriber:
             )
         ):
             return False
+        hf_validation_error_cls, validate_repo_id = (
+            self._get_huggingface_repo_validation()
+        )
         try:
             validate_repo_id(self.model_name)
-        except HFValidationError:
+        except hf_validation_error_cls:
             return False
         return "/" in self.model_name
 
@@ -304,6 +310,38 @@ class WhisperTranscriber:
             return None
 
         return segment_text_from_words
+
+    @staticmethod
+    def _get_huggingface_repo_validation() -> tuple[type[Exception], Any]:
+        """Import HuggingFace repo validation helpers on demand."""
+        try:
+            from huggingface_hub.utils import (  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+                HFValidationError,
+                validate_repo_id,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return HFValidationError, validate_repo_id
+
+    @staticmethod
+    def _get_snapshot_download() -> Any:
+        """Import HuggingFace snapshot downloader on demand."""
+        try:
+            from huggingface_hub import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                snapshot_download,
+            )
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return snapshot_download
+
+    @staticmethod
+    def _get_whisper_module() -> Any:
+        """Import whisper-timestamped on demand."""
+        try:
+            import whisper_timestamped as whisper  # ty: ignore[unresolved-import]  # noqa: E501, PLC0415
+        except ImportError as exc:
+            raise ImportError(_TRANSCRIPTION_EXTRA_MESSAGE) from exc
+        return whisper
 
     def _get_cache_path(self, audio: AudioSegment) -> Path | None:
         """Get cache path based on hash of audio data.

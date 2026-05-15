@@ -28,6 +28,10 @@ _SUPPORTED_LANGUAGES = {"ch", "chinese_cht", "en"}
 _TEXT_DETECTION_MODEL_NAME = "PP-OCRv5_server_det"
 _TEXT_RECOGNITION_MODEL_NAME = "PP-OCRv5_server_rec"
 _TEXTLINE_ORIENTATION_MODEL_NAME = "PP-LCNet_x1_0_textline_ori"
+_OCR_EXTRA_MESSAGE = (
+    "PaddleOCR support requires optional OCR dependencies. "
+    "Install scinoephile with the 'ocr' extra."
+)
 
 
 class PaddleOcrRecognizer:
@@ -143,10 +147,7 @@ class PaddleOcrRecognizer:
                 PaddleOCR,
             )
         except ImportError as exc:
-            raise ImportError(
-                "PaddleOCR support requires optional OCR dependencies. "
-                "Install scinoephile with the 'ocr' extra."
-            ) from exc
+            raise ImportError(_OCR_EXTRA_MESSAGE) from exc
         return PaddleOCR
 
     @staticmethod
