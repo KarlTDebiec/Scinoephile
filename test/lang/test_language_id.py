@@ -7,28 +7,153 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.language_id import LanguageId
-from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
 
-
-def test_language_id_initializes_from_values():
-    """Initialize language ID result from explicit values."""
-    result = LanguageId(
-        text="中文",
+LANGUAGE_ID_TEST_CASES: list[LanguageId] = [
+    LanguageId(
+        text="nǐ hǎo",
         is_accented_pinyin=True,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="lüè",
+        is_accented_pinyin=True,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="ni3 hao3",
+        is_accented_pinyin=False,
         is_numbered_pinyin=True,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="lu:e4",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=True,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="lv4",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=True,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="ni hao",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="néih hóu",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
         is_accented_yale=True,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="gwóngdūngwá",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=True,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="nei5 hou2",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
         is_numbered_jyutping=True,
         is_simplified=False,
         is_traditional=False,
-    )
-
-    assert result.text == "中文"
-    assert result.is_accented_pinyin is True
-    assert result.is_numbered_pinyin is True
-    assert result.is_accented_yale is True
-    assert result.is_numbered_jyutping is True
-    assert result.is_simplified is False
-    assert result.is_traditional is False
+    ),
+    LanguageId(
+        text="gwong2 dung1 waa2",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=True,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="简体中文",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=True,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="汉字",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=True,
+        is_traditional=False,
+    ),
+    LanguageId(
+        text="繁體中文",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=True,
+    ),
+    LanguageId(
+        text="漢字",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=True,
+    ),
+    LanguageId(
+        text="中文",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=True,
+        is_traditional=True,
+    ),
+    LanguageId(
+        text="",
+        is_accented_pinyin=False,
+        is_numbered_pinyin=False,
+        is_accented_yale=False,
+        is_numbered_jyutping=False,
+        is_simplified=False,
+        is_traditional=False,
+    ),
+]
 
 
 @pytest.mark.parametrize("case", LANGUAGE_ID_TEST_CASES)
