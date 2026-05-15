@@ -11,7 +11,6 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .eng_process_cli import EngProcessCli
-from .eng_translate_vs_zho_cli import EngTranslateVsZhoCli
 
 __all__ = ["EngCli"]
 
@@ -62,7 +61,6 @@ class EngCli(ScinoephileCliBase):
         """
         return {
             EngProcessCli.name(): EngProcessCli,
-            EngTranslateVsZhoCli.name(): EngTranslateVsZhoCli,
         }
 
     @classmethod

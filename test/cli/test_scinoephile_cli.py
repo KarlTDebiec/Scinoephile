@@ -72,7 +72,9 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\n    build" in output
     assert "\n        wiktionary" in output
     assert "\neng" in output
-    assert "\n    translate-vs-zho" in output
+    eng_section = output.split("\neng", maxsplit=1)[1].split("\nmedia", maxsplit=1)[0]
+    assert "\n    process" in eng_section
+    assert "\n    translate-vs-zho" not in eng_section
     assert "\nocr" in output
     assert "\n    fuse" in output
     assert "\n    validate" in output

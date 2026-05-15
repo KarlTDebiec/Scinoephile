@@ -59,8 +59,6 @@ class ScinoephileCli(ScinoephileCliBase):
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
             ),
-            "translate English subtitles using Chinese subtitles and English "
-            "reference": ("使用中文字幕和英文参考翻译英文字幕"),
             "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
         },
         "zh-hant": {
@@ -90,8 +88,6 @@ class ScinoephileCli(ScinoephileCliBase):
             "shift and stretch the timings of one subtitle series to match another": (
                 "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
             ),
-            "translate English subtitles using Chinese subtitles and English "
-            "reference": ("使用中文字幕與英文參考翻譯英文字幕"),
             "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
         },
     }
