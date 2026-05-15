@@ -19,11 +19,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -63,14 +59,14 @@ class OcrFuseCli(ScinoephileCliBase):
                 "English subtitles OCRed using Tesseract or '-' for stdin": (
                     "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
                 ),
-                "fuse OCR output for a selected language": ("融合所选语言的 OCR 输出"),
+                "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
                 "language of the OCR text to fuse (eng or zho)": (
                     "要融合的 OCR 文本语言（eng 或 zho）"
                 ),
                 "OCR subtitles OCRed using Google Lens or '-' for stdin": (
                     "使用 Google Lens OCR 的字幕，或用 '-' 表示标准输入"
                 ),
-                ("Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin"): (
+                "Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
                     "使用 PaddleOCR OCR 的标准中文字幕，或用 '-' 表示标准输入"
                 ),
                 "fused subtitle outfile path (default: stdout)": (
@@ -87,14 +83,14 @@ class OcrFuseCli(ScinoephileCliBase):
                 "English subtitles OCRed using Tesseract or '-' for stdin": (
                     "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
                 ),
-                "fuse OCR output for a selected language": ("融合所選語言的 OCR 輸出"),
+                "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
                 "language of the OCR text to fuse (eng or zho)": (
                     "要融合的 OCR 文字語言（eng 或 zho）"
                 ),
                 "OCR subtitles OCRed using Google Lens or '-' for stdin": (
                     "使用 Google Lens OCR 的字幕，或用 '-' 表示標準輸入"
                 ),
-                ("Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin"): (
+                "Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin": (
                     "使用 PaddleOCR OCR 的標準中文字幕，或用 '-' 表示標準輸入"
                 ),
                 "fused subtitle outfile path (default: stdout)": (

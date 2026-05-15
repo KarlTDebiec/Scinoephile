@@ -32,7 +32,7 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "使用指定 OpenCC 配置转换中文字符。使用 "
             "--list-opencc-configs 查看可用代码。"
         ),
-        "list available OpenCC configurations and exit": ("列出可用 OpenCC 配置并退出"),
+        "list available OpenCC configurations and exit": "列出可用 OpenCC 配置并退出",
     },
     "zh-hant": {
         "additional help": "附加說明",
@@ -42,7 +42,7 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "使用指定 OpenCC 設定轉換中文字符。使用 "
             "--list-opencc-configs 查看可用代碼。"
         ),
-        "list available OpenCC configurations and exit": ("列出可用 OpenCC 設定並結束"),
+        "list available OpenCC configurations and exit": "列出可用 OpenCC 設定並結束",
     },
 }
 """Localized text shared by CLIs that expose OpenCC conversion arguments."""
@@ -98,6 +98,43 @@ def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en")
     )
 
 
+def add_opencc_convert_argument(
+    operation_arg_group: _ArgumentGroup,
+    additional_help_arg_group: _ArgumentGroup,
+):
+    """Add standard OpenCC conversion and help arguments to argument groups.
+
+    Arguments:
+        operation_arg_group: group to which to add `--convert`
+        additional_help_arg_group: group to which to add help-only OpenCC arguments
+    """
+    operation_arg_group.add_argument(
+        "--convert",
+        type=opencc_config_arg,
+        help=(
+            "convert Chinese characters using specified OpenCC configuration. "
+            "Use --list-opencc-configs to show available codes."
+        ),
+    )
+    additional_help_arg_group.add_argument(
+        "--list-opencc-configs",
+        action=_ListOpenCCConfigsAction,
+        default=SUPPRESS,
+        help="list available OpenCC configurations and exit",
+    )
+
+
+def opencc_config_arg(value: str) -> OpenCCConfig:
+    """Validate an OpenCC configuration CLI argument.
+
+    Arguments:
+        value: raw CLI argument value
+    Returns:
+        parsed OpenCC configuration
+    """
+    return OpenCCConfig(value)
+
+
 class _ListOpenCCConfigsAction(Action):
     """Print available OpenCC configurations and exit."""
 
@@ -139,40 +176,3 @@ class _ListOpenCCConfigsAction(Action):
         )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
         parser.exit(0)
-
-
-def add_opencc_convert_argument(
-    operation_arg_group: _ArgumentGroup,
-    additional_help_arg_group: _ArgumentGroup,
-):
-    """Add standard OpenCC conversion and help arguments to argument groups.
-
-    Arguments:
-        operation_arg_group: group to which to add `--convert`
-        additional_help_arg_group: group to which to add help-only OpenCC arguments
-    """
-    operation_arg_group.add_argument(
-        "--convert",
-        type=opencc_config_arg,
-        help=(
-            "convert Chinese characters using specified OpenCC configuration. "
-            "Use --list-opencc-configs to show available codes."
-        ),
-    )
-    additional_help_arg_group.add_argument(
-        "--list-opencc-configs",
-        action=_ListOpenCCConfigsAction,
-        default=SUPPRESS,
-        help="list available OpenCC configurations and exit",
-    )
-
-
-def opencc_config_arg(value: str) -> OpenCCConfig:
-    """Validate an OpenCC configuration CLI argument.
-
-    Arguments:
-        value: raw CLI argument value
-    Returns:
-        parsed OpenCC configuration
-    """
-    return OpenCCConfig(value)

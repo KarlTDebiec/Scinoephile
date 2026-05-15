@@ -17,7 +17,7 @@ from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
-    get_default_provider_name,
+    DEFAULT_PROVIDER_NAME,
     get_provider_description,
     get_provider_names,
 )
@@ -53,6 +53,59 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized text shared by CLIs that expose LLM provider arguments."""
+
+
+def add_llm_provider_arguments(
+    operation_arg_group: _ArgumentGroup,
+    additional_help_arg_group: _ArgumentGroup,
+):
+    """Add standard LLM provider arguments to argument groups.
+
+    Arguments:
+        operation_arg_group: group to which provider arguments are added
+        additional_help_arg_group: group to which help-only arguments are added
+    """
+    operation_arg_group.add_argument(
+        "--llm-provider",
+        default=DEFAULT_PROVIDER_NAME,
+        dest="llm_provider_name",
+        type=llm_provider_name_arg,
+        help=(
+            "LLM provider to use (default: %(default)s). Use --list-llm-providers "
+            "to show available providers."
+        ),
+    )
+    operation_arg_group.add_argument(
+        "--llm-model",
+        default=None,
+        dest="llm_model_name",
+        help="LLM model identifier override",
+    )
+    additional_help_arg_group.add_argument(
+        "--list-llm-providers",
+        action=_ListLLMProvidersAction,
+        default=SUPPRESS,
+        help="list available LLM providers and exit",
+    )
+
+
+def llm_provider_name_arg(value: str) -> str:
+    """Validate an LLM provider name CLI argument.
+
+    Arguments:
+        value: raw CLI argument value
+    Returns:
+        validated provider name
+    Raises:
+        ArgumentTypeError: if provider name is not registered
+    """
+    provider_names = get_provider_names()
+    if value in provider_names:
+        return value
+    options = ", ".join(provider_names)
+    raise ArgumentTypeError(
+        f"{value!r} is not one of the supported LLM providers: {options}"
+    )
 
 
 class _ListLLMProvidersAction(Action):
@@ -97,56 +150,3 @@ class _ListLLMProvidersAction(Action):
         )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
         parser.exit(0)
-
-
-def add_llm_provider_arguments(
-    operation_arg_group: _ArgumentGroup,
-    additional_help_arg_group: _ArgumentGroup,
-):
-    """Add standard LLM provider arguments to argument groups.
-
-    Arguments:
-        operation_arg_group: group to which provider arguments are added
-        additional_help_arg_group: group to which help-only arguments are added
-    """
-    operation_arg_group.add_argument(
-        "--llm-provider",
-        default=get_default_provider_name(),
-        dest="llm_provider_name",
-        type=llm_provider_name_arg,
-        help=(
-            "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-            "to show available providers."
-        ),
-    )
-    operation_arg_group.add_argument(
-        "--llm-model",
-        default=None,
-        dest="llm_model_name",
-        help="LLM model identifier override",
-    )
-    additional_help_arg_group.add_argument(
-        "--list-llm-providers",
-        action=_ListLLMProvidersAction,
-        default=SUPPRESS,
-        help="list available LLM providers and exit",
-    )
-
-
-def llm_provider_name_arg(value: str) -> str:
-    """Validate an LLM provider name CLI argument.
-
-    Arguments:
-        value: raw CLI argument value
-    Returns:
-        validated provider name
-    Raises:
-        ArgumentTypeError: if provider name is not registered
-    """
-    provider_names = get_provider_names()
-    if value in provider_names:
-        return value
-    options = ", ".join(provider_names)
-    raise ArgumentTypeError(
-        f"{value!r} is not one of the supported LLM providers: {options}"
-    )

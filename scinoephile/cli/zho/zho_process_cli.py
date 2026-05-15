@@ -20,11 +20,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
@@ -54,8 +50,8 @@ class ZhoProcessCli(ScinoephileCliBase):
         LLM_LOCALIZATIONS,
         {
             "zh-hans": {
-                "append Mandarin romanization to subtitles": ("为字幕追加普通话罗马字"),
-                ("clean subtitles of closed-caption annotations and other anomalies"): (
+                "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
                     "清理字幕中的隐藏字幕标注及其他异常"
                 ),
                 "command-line interface for standard Chinese subtitle processing": (
@@ -82,8 +78,8 @@ class ZhoProcessCli(ScinoephileCliBase):
                 ),
             },
             "zh-hant": {
-                "append Mandarin romanization to subtitles": ("為字幕附加普通話羅馬字"),
-                ("clean subtitles of closed-caption annotations and other anomalies"): (
+                "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
                     "清理字幕中的隱藏字幕標註及其他異常"
                 ),
                 "command-line interface for standard Chinese subtitle processing": (

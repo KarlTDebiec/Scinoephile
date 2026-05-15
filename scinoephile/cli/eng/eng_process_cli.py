@@ -14,11 +14,7 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,

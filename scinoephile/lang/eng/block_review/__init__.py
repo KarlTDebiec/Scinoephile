@@ -15,7 +15,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.mono_n import MonoNManager, MonoNProcessor
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import BlockReviewPromptEng
 
@@ -97,7 +97,7 @@ def get_eng_block_reviewer(
             )
         )
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return MonoNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

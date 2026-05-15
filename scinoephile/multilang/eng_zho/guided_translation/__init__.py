@@ -18,7 +18,7 @@ from scinoephile.llms.dual_n_to_m import (
     DualNToMManager,
     DualNToMProcessor,
 )
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import EngZhoGuidedTranslationPrompt
 
@@ -104,7 +104,7 @@ def get_eng_zho_guided_translator(
             )
         )
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return DualNToMProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

@@ -14,11 +14,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.block_review import (
@@ -58,7 +54,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
                 (
                     "review written Cantonese subtitles against standard Chinese "
                     "subtitles"
-                ): ("校对书面粤语字幕与标准中文字幕"),
+                ): "校对书面粤语字幕与标准中文字幕",
                 "script for prompts and output conversion (default: simplified)": (
                     "提示词和输出转换使用的字形（默认：简体）"
                 ),
@@ -84,7 +80,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
                 (
                     "review written Cantonese subtitles against standard Chinese "
                     "subtitles"
-                ): ("校對書面粵語字幕與標準中文字幕"),
+                ): "校對書面粵語字幕與標準中文字幕",
                 "script for prompts and output conversion (default: simplified)": (
                     "提示詞與輸出轉換使用的字形（預設：簡體）"
                 ),

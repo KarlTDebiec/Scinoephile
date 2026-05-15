@@ -26,7 +26,7 @@ from scinoephile.core.llms import LLMProvider, Queryer, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .aligner import Aligner
 from .deliniation import YueVsZhoDeliniationPromptYueHans
@@ -98,7 +98,7 @@ class YueTranscriber:
         self.demucs_mode = demucs_mode
         self.convert = convert
         if provider is None:
-            provider = get_default_provider()
+            provider = get_provider()
         self.demucs_separator = None
         if demucs_mode == DemucsMode.ON:
             self.demucs_separator = DemucsSeparator(

@@ -21,7 +21,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
     load_default_test_cases,
 )
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .manager import YueZhoLineReviewManager
 from .processor import YueZhoLineReviewProcessor
@@ -118,7 +118,7 @@ def get_yue_vs_zho_line_reviewer(
     if use_dictionary_tool:
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return YueZhoLineReviewProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

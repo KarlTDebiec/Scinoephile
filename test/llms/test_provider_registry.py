@@ -16,8 +16,7 @@ from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
-    get_default_provider,
-    get_default_provider_name,
+    DEFAULT_PROVIDER_NAME,
     get_provider,
     get_provider_description,
     get_provider_names,
@@ -25,49 +24,16 @@ from scinoephile.llms.providers.registry import (
 )
 
 
-class _DummyProvider(LLMProvider):
-    """Dummy provider fixture for registry tests."""
-
-    def __init__(self, marker: str):
-        """Initialize dummy provider.
-
-        Arguments:
-            marker: marker value for construction assertions
-        """
-        self.marker = marker
-
-    def chat_completion(
-        self,
-        messages: list[dict[str, Any]],
-        response_format: type[Answer] | None = None,
-        tool_box: ToolBox | None = None,
-        **kwargs: Unpack[ChatCompletionKwargs],
-    ) -> str:
-        """Return a fixed completion value."""
-        _ = (messages, response_format, tool_box, kwargs)
-        return "{}"
+def test_default_provider_name_is_openai():
+    """Test default provider name is exposed for CLI defaults."""
+    assert DEFAULT_PROVIDER_NAME == "openai"
 
 
-class _LocalizedDummyProvider(_DummyProvider):
-    """Localized dummy provider fixture for registry tests."""
-
-    description_localizations: ClassVar[dict[str, str]] = {
-        "zh-hans": "本地化测试提供商。",
-        "zh-hant": "本地化測試提供商。",
-    }
-    """Provider description translations keyed by locale."""
-
-
-def test_get_default_provider_returns_openai_provider():
+def test_get_provider_without_name_returns_openai_provider():
     """Test default provider resolution returns an OpenAI provider."""
-    provider = get_default_provider()
+    provider = get_provider()
 
     assert isinstance(provider, OpenAIProvider)
-
-
-def test_get_default_provider_name_returns_openai():
-    """Test default provider name is exposed for CLI defaults."""
-    assert get_default_provider_name() == "openai"
 
 
 def test_get_provider_constructs_openai_provider_with_kwargs():
@@ -163,3 +129,36 @@ def test_get_provider_description_raises_for_unknown_provider():
     """Test provider description lookup fails for unknown provider names."""
     with pytest.raises(ScinoephileError):
         get_provider_description("missing-provider")
+
+
+class _DummyProvider(LLMProvider):
+    """Dummy provider fixture for registry tests."""
+
+    def __init__(self, marker: str):
+        """Initialize dummy provider.
+
+        Arguments:
+            marker: marker value for construction assertions
+        """
+        self.marker = marker
+
+    def chat_completion(
+        self,
+        messages: list[dict[str, Any]],
+        response_format: type[Answer] | None = None,
+        tool_box: ToolBox | None = None,
+        **kwargs: Unpack[ChatCompletionKwargs],
+    ) -> str:
+        """Return a fixed completion value."""
+        _ = (messages, response_format, tool_box, kwargs)
+        return "{}"
+
+
+class _LocalizedDummyProvider(_DummyProvider):
+    """Localized dummy provider fixture for registry tests."""
+
+    description_localizations: ClassVar[dict[str, str]] = {
+        "zh-hans": "本地化测试提供商。",
+        "zh-hant": "本地化測試提供商。",
+    }
+    """Provider description translations keyed by locale."""

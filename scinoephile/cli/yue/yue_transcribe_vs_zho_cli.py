@@ -23,11 +23,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -64,7 +60,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "command-line interface for written Cantonese subtitle "
                     "transcription"
-                ): ("书面粤语字幕转写命令行界面"),
+                ): "书面粤语字幕转写命令行界面",
                 "script used for transcription prompts (default: simplified)": (
                     "转写提示词使用的字形（默认：简体）"
                 ),
@@ -74,7 +70,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "Whisper voice activity detection mode "
                     "(options: on, off, auto; default: auto)"
-                ): ("Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）"),
+                ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
                 'Standard Chinese subtitle infile or "-" for stdin': (
                     '标准中文字幕输入文件，或使用 "-" 表示标准输入'
                 ),
@@ -96,7 +92,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "command-line interface for written Cantonese subtitle "
                     "transcription"
-                ): ("書面粵語字幕轉寫命令列介面"),
+                ): "書面粵語字幕轉寫命令列介面",
                 "script used for transcription prompts (default: simplified)": (
                     "轉寫提示詞使用的字形（預設：簡體）"
                 ),
@@ -106,7 +102,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "Whisper voice activity detection mode "
                     "(options: on, off, auto; default: auto)"
-                ): ("Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）"),
+                ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
                 'Standard Chinese subtitle infile or "-" for stdin': (
                     '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
                 ),

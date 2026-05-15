@@ -18,11 +18,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.gap_translation import (
@@ -61,9 +57,9 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
                 (
                     "gap-filled written Cantonese subtitle outfile path "
                     "(default: stdout)"
-                ): ("补全缺口后的书面粤语字幕输出文件路径（默认：标准输出）"),
+                ): "补全缺口后的书面粤语字幕输出文件路径（默认：标准输出）",
                 "fill missing written Cantonese subtitles using standard Chinese "
-                "subtitles": ("使用标准中文字幕补全缺失的书面粤语字幕"),
+                "subtitles": "使用标准中文字幕补全缺失的书面粤语字幕",
             },
             "zh-hant": {
                 "command-line interface for written Cantonese gap translation": (
@@ -85,9 +81,9 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
                 (
                     "gap-filled written Cantonese subtitle outfile path "
                     "(default: stdout)"
-                ): ("補全缺口後的書面粵語字幕輸出檔路徑（預設：標準輸出）"),
+                ): "補全缺口後的書面粵語字幕輸出檔路徑（預設：標準輸出）",
                 "fill missing written Cantonese subtitles using standard Chinese "
-                "subtitles": ("使用標準中文字幕補全缺失的書面粵語字幕"),
+                "subtitles": "使用標準中文字幕補全缺失的書面粵語字幕",
             },
         },
     )

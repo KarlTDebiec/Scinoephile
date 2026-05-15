@@ -89,9 +89,6 @@
 * Base command CLIs that dispatch to subcommands should call the selected
   subcommand directly, such as
   `cls.subcommands()[subcommand_name]._main(**kwargs)`.
-* Do not delete intentionally unused callback arguments just to mark them as
-  used; prefer underscore-prefixed parameter names where a framework signature
-  allows them, otherwise use a targeted lint suppression.
 * CLI modules should support localization by defining a `localizations` mapping when
   the repository's CLI base supports it, and writing `help`, `description`, and
   argument-group titles using stable English strings that can be translated.

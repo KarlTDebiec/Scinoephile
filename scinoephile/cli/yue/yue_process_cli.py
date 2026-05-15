@@ -20,11 +20,7 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core.cli import (
-    ScinoephileCliBase,
-    read_series,
-    write_series,
-)
+from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.block_review import (
@@ -54,11 +50,11 @@ class YueProcessCli(ScinoephileCliBase):
         LLM_LOCALIZATIONS,
         {
             "zh-hans": {
-                "append Cantonese romanization to subtitles": ("为字幕追加粤语罗马字"),
-                ("clean subtitles of closed-caption annotations and other anomalies"): (
+                "append Cantonese romanization to subtitles": "为字幕追加粤语罗马字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
                     "清理字幕中的隐藏字幕标注及其他异常"
                 ),
-                ("command-line interface for written Cantonese subtitle processing"): (
+                "command-line interface for written Cantonese subtitle processing": (
                     "书面粤语字幕处理命令行界面"
                 ),
                 "flatten multi-line subtitles into single lines": (
@@ -82,11 +78,11 @@ class YueProcessCli(ScinoephileCliBase):
                 ),
             },
             "zh-hant": {
-                "append Cantonese romanization to subtitles": ("為字幕附加粵語羅馬字"),
-                ("clean subtitles of closed-caption annotations and other anomalies"): (
+                "append Cantonese romanization to subtitles": "為字幕附加粵語羅馬字",
+                "clean subtitles of closed-caption annotations and other anomalies": (
                     "清理字幕中的隱藏字幕標註及其他異常"
                 ),
-                ("command-line interface for written Cantonese subtitle processing"): (
+                "command-line interface for written Cantonese subtitle processing": (
                     "書面粵語字幕處理命令列介面"
                 ),
                 "flatten multi-line subtitles into single lines": (
