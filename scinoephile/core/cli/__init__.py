@@ -3,7 +3,7 @@
 """Shared CLI I/O helpers and Scinoephile CLI base class.
 
 Package hierarchy (modules may import from any above):
-* argument_types / constants
+* argument_types / constants / localization
 * scinoephile_cli_base
 """
 

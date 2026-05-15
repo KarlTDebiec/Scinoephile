@@ -19,7 +19,7 @@ from scinoephile.llms.dual_n_minus_m_to_n import (
     DualNMinusMToNManager,
     DualNMinusMToNProcessor,
 )
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import (
     YueVsZhoGapTranslationPromptYueHans,
@@ -114,7 +114,7 @@ def get_yue_vs_zho_gap_translator(
     if use_dictionary_tool:
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return DualNMinusMToNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

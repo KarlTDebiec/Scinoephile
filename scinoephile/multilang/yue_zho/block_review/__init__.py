@@ -16,7 +16,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNProcessor
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import (
     YueVsZhoBlockReviewPromptYueHans,
@@ -111,7 +111,7 @@ def get_yue_vs_zho_block_reviewer(
     if use_dictionary_tool:
         tool_box = get_dictionary_tools(prompt_cls)
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return DualNToNProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

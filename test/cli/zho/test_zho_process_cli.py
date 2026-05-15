@@ -16,6 +16,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
+from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
@@ -173,3 +174,31 @@ def test_zho_process_cli_rejects_bare_convert_flag():
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")
+
+
+def test_zho_process_cli_passes_llm_provider_and_model_to_reviewer():
+    """Test standard Chinese CLI constructs configured LLM provider for review."""
+    full_input_path = test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt"
+    expected = Series.load(
+        test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt"
+    )
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(
+            "scinoephile.cli.zho.zho_process_cli.get_zho_reviewer",
+            return_value="proofreader",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.zho.zho_process_cli.get_zho_block_reviewed",
+                return_value=expected,
+            ):
+                run_cli_with_args(
+                    ZhoProcessCli,
+                    f"--infile {full_input_path} --proofread traditional "
+                    "--llm-provider deepseek --llm-model custom-model "
+                    f"--outfile {output_path}",
+                )
+
+    provider = patched_factory.call_args.kwargs["provider"]
+    assert isinstance(provider, DeepSeekProvider)
+    assert provider.model == "custom-model"

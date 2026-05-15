@@ -9,9 +9,10 @@ from pathlib import Path
 from typing import ClassVar
 
 from scinoephile.cli.conversion import (
+    CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
-    merge_conversion_localizations,
 )
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -19,8 +20,10 @@ from scinoephile.common.argument_parsing import (
     str_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
-from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused
+from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import (
     OcrFusionPromptZhoHant,
@@ -34,6 +37,7 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_converted,
 )
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["OcrFuseCli"]
 
@@ -41,7 +45,9 @@ __all__ = ["OcrFuseCli"]
 class OcrFuseCli(ScinoephileCliBase):
     """Fuse OCR output for a selected language."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = merge_conversion_localizations(
+    localizations: ClassVar[dict[str, dict[str, str]]] = merge_localizations(
+        CONVERSION_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 "clean OCR subtitle inputs before fusing": (
@@ -53,7 +59,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 "English subtitles OCRed using Tesseract or '-' for stdin": (
                     "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
                 ),
-                "fuse OCR output for a selected language": ("融合所选语言的 OCR 输出"),
+                "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
                 "language of the OCR text to fuse (eng or zho)": (
                     "要融合的 OCR 文本语言（eng 或 zho）"
                 ),
@@ -77,7 +83,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 "English subtitles OCRed using Tesseract or '-' for stdin": (
                     "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
                 ),
-                "fuse OCR output for a selected language": ("融合所選語言的 OCR 輸出"),
+                "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
                 "language of the OCR text to fuse (eng or zho)": (
                     "要融合的 OCR 文字語言（eng 或 zho）"
                 ),
@@ -91,7 +97,7 @@ class OcrFuseCli(ScinoephileCliBase):
                     "融合後字幕輸出檔路徑（預設：標準輸出）"
                 ),
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -151,6 +157,9 @@ class OcrFuseCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
+        add_llm_provider_arguments(
+            arg_groups["operation arguments"], arg_groups["additional help"]
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -188,6 +197,8 @@ class OcrFuseCli(ScinoephileCliBase):
         paddle_infile_path: Path | str | None,
         clean: bool,
         convert: OpenCCConfig | None,
+        llm_provider_name: str,
+        llm_model_name: str | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -196,6 +207,7 @@ class OcrFuseCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
+        provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Dispatch to language-specific implementation
         if language == "eng":
@@ -206,6 +218,7 @@ class OcrFuseCli(ScinoephileCliBase):
                 paddle_infile_path=paddle_infile_path,
                 clean=clean,
                 convert=convert,
+                provider=provider,
                 outfile_path=outfile_path,
                 overwrite=overwrite,
             )
@@ -217,23 +230,29 @@ class OcrFuseCli(ScinoephileCliBase):
                 paddle_infile_path=paddle_infile_path,
                 clean=clean,
                 convert=convert,
+                provider=provider,
                 outfile_path=outfile_path,
                 overwrite=overwrite,
             )
 
     @classmethod
-    def _get_ocr_fuser(cls, convert: OpenCCConfig | None) -> OcrFusionProcessor:
+    def _get_ocr_fuser(
+        cls, convert: OpenCCConfig | None, provider: LLMProvider
+    ) -> OcrFusionProcessor:
         """Get OCR fuser for selected conversion output script.
 
         Arguments:
             convert: OpenCC conversion configuration
+            provider: provider to use for queries
         Returns:
             configured OCR fuser
         """
         script = cls._get_script_for_conversion(convert)
         if script == "traditional":
-            return get_zho_ocr_fuser(prompt_cls=OcrFusionPromptZhoHant)
-        return get_zho_ocr_fuser()
+            return get_zho_ocr_fuser(
+                prompt_cls=OcrFusionPromptZhoHant, provider=provider
+            )
+        return get_zho_ocr_fuser(provider=provider)
 
     @classmethod
     def _get_script_for_conversion(cls, convert: OpenCCConfig | None) -> str:
@@ -262,6 +281,7 @@ class OcrFuseCli(ScinoephileCliBase):
         paddle_infile_path: Path | str | None,
         clean: bool,
         convert: OpenCCConfig | None,
+        provider: LLMProvider,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -274,6 +294,7 @@ class OcrFuseCli(ScinoephileCliBase):
             paddle_infile_path: PaddleOCR subtitle path, if provided
             clean: whether to clean inputs before fusion
             convert: OpenCC conversion configuration, if provided
+            provider: provider to use for queries
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
@@ -295,7 +316,8 @@ class OcrFuseCli(ScinoephileCliBase):
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
-        fused = get_eng_ocr_fused(lens, tesseract)
+        fuser = get_eng_ocr_fuser(provider=provider)
+        fused = get_eng_ocr_fused(lens, tesseract, processor=fuser)
 
         # Write outputs
         write_series(
@@ -312,6 +334,7 @@ class OcrFuseCli(ScinoephileCliBase):
         paddle_infile_path: Path | str | None,
         clean: bool,
         convert: OpenCCConfig | None,
+        provider: LLMProvider,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -324,6 +347,7 @@ class OcrFuseCli(ScinoephileCliBase):
             paddle_infile_path: PaddleOCR OCR subtitle path
             clean: whether to clean inputs before fusion
             convert: OpenCC conversion configuration, if provided
+            provider: provider to use for queries
             outfile_path: output subtitle path
             overwrite: whether to overwrite an existing output file
         """
@@ -347,7 +371,7 @@ class OcrFuseCli(ScinoephileCliBase):
             lens = get_zho_converted(lens, convert)
             paddle = get_zho_converted(paddle, convert)
 
-        processor = cls._get_ocr_fuser(convert)
+        processor = cls._get_ocr_fuser(convert, provider)
         fused = get_zho_ocr_fused(lens, paddle, processor=processor)
 
         # Write outputs

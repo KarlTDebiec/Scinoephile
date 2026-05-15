@@ -19,7 +19,7 @@ from scinoephile.llms.dual_1_to_1.ocr_fusion import (
     OcrFusionManager,
     OcrFusionProcessor,
 )
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import OcrFusionPromptZhoHans, OcrFusionPromptZhoHant
 
@@ -113,7 +113,7 @@ def get_zho_ocr_fuser(
                 )
             )
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     return OcrFusionProcessor(
         prompt_cls=prompt_cls,
         test_cases=test_cases,

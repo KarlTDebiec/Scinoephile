@@ -8,9 +8,10 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.conversion import (
+    CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
-    merge_conversion_localizations,
 )
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -20,6 +21,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
@@ -35,6 +37,7 @@ from scinoephile.lang.zho.script.conversion import (
     OpenCCConfig,
     get_zho_converted,
 )
+from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["ZhoProcessCli"]
 
@@ -42,7 +45,9 @@ __all__ = ["ZhoProcessCli"]
 class ZhoProcessCli(ScinoephileCliBase):
     """Modify standard Chinese subtitles."""
 
-    localizations = merge_conversion_localizations(
+    localizations = merge_localizations(
+        CONVERSION_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
@@ -100,7 +105,7 @@ class ZhoProcessCli(ScinoephileCliBase):
                     "標準中文字幕輸出檔路徑（預設：標準輸出）"
                 ),
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -138,6 +143,9 @@ class ZhoProcessCli(ScinoephileCliBase):
             help="clean subtitles of closed-caption annotations and other anomalies",
         )
         add_opencc_convert_argument(
+            arg_groups["operation arguments"], arg_groups["additional help"]
+        )
+        add_llm_provider_arguments(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
         arg_groups["operation arguments"].add_argument(
@@ -201,6 +209,8 @@ class ZhoProcessCli(ScinoephileCliBase):
         flatten: bool,
         convert: OpenCCConfig | None,
         review_script: str | None,
+        llm_provider_name: str,
+        llm_model_name: str | None,
         romanize: bool,
         offset: int,
         overwrite: bool,
@@ -230,8 +240,9 @@ class ZhoProcessCli(ScinoephileCliBase):
             series = get_zho_flattened(series)
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
-            proofreader = get_zho_reviewer(prompt_cls=prompt_cls)
-            series = get_zho_block_reviewed(series, processor=proofreader)
+            provider = get_provider(llm_provider_name, model=llm_model_name)
+            reviewer = get_zho_reviewer(prompt_cls=prompt_cls, provider=provider)
+            series = get_zho_block_reviewed(series, processor=reviewer)
         if romanize:
             series = get_cmn_romanized(series, append=True)
         if offset:

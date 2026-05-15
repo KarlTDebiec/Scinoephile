@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from scinoephile.core.llms import OpenAIProviderBase
 
 __all__ = ["OpenAIProvider"]
@@ -11,6 +13,12 @@ __all__ = ["OpenAIProvider"]
 
 class OpenAIProvider(OpenAIProviderBase):
     """OpenAI LLM Provider."""
+
+    description_localizations: ClassVar[dict[str, str]] = {
+        "zh-hans": "OpenAI LLM 提供商。",
+        "zh-hant": "OpenAI LLM 提供商。",
+    }
+    """Provider description translations keyed by locale."""
 
     model = "gpt-5.4"
     """OpenAI model identifier."""

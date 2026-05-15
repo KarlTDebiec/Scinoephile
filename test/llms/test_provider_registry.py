@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Unpack
+from typing import Any, ClassVar, Unpack
 from unittest.mock import Mock
 
 import pytest
@@ -16,10 +16,119 @@ from scinoephile.core.llms.tool_box import ToolBox
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
-    get_default_provider,
+    DEFAULT_PROVIDER_NAME,
     get_provider,
+    get_provider_description,
+    get_provider_names,
     register_provider_factory,
 )
+
+
+def test_default_provider_name_is_openai():
+    """Test default provider name is exposed for CLI defaults."""
+    assert DEFAULT_PROVIDER_NAME == "openai"
+
+
+def test_get_provider_without_name_returns_openai_provider():
+    """Test default provider resolution returns an OpenAI provider."""
+    provider = get_provider()
+
+    assert isinstance(provider, OpenAIProvider)
+
+
+def test_get_provider_constructs_openai_provider_with_kwargs():
+    """Test explicit provider construction forwards kwargs to the factory."""
+    client = Mock()
+    provider = get_provider("openai", client=client)
+
+    assert isinstance(provider, OpenAIProvider)
+    assert provider.sync_client is client
+
+
+def test_get_provider_preserves_default_model_with_none_override():
+    """Test provider construction tolerates omitted CLI model overrides."""
+    provider = get_provider("openai", model=None)
+
+    assert isinstance(provider, OpenAIProvider)
+    assert provider.model == "gpt-5.4"
+
+
+def test_get_provider_constructs_deepseek_provider_with_kwargs():
+    """Test DeepSeek provider construction forwards kwargs to the factory."""
+    client = Mock()
+    provider = get_provider("deepseek", client=client)
+
+    assert isinstance(provider, DeepSeekProvider)
+    assert provider.sync_client is client
+
+
+def test_get_provider_description_uses_provider_docstrings():
+    """Test provider descriptions are exposed from registered provider classes."""
+    assert get_provider_description("deepseek") == (
+        "DeepSeek LLM Provider (OpenAI-SDK compatible)."
+    )
+    assert get_provider_description("openai") == "OpenAI LLM Provider."
+
+
+def test_get_provider_description_uses_provider_localizations():
+    """Test provider description localizations are exposed from provider classes."""
+    assert get_provider_description("deepseek", "zh-hans") == (
+        "DeepSeek LLM 提供商（兼容 OpenAI SDK）。"
+    )
+    assert get_provider_description("deepseek", "zh-hant") == (
+        "DeepSeek LLM 提供商（相容 OpenAI SDK）。"
+    )
+    assert get_provider_description("openai", "zh-hans") == "OpenAI LLM 提供商。"
+    assert get_provider_description("openai", "zh-hant") == "OpenAI LLM 提供商。"
+
+
+def test_register_provider_factory_supports_custom_providers():
+    """Test registry can resolve explicitly registered provider factories."""
+    register_provider_factory("test-dummy", _DummyProvider)
+    provider = get_provider("test-dummy", marker="dummy")
+
+    assert isinstance(provider, _DummyProvider)
+    assert provider.marker == "dummy"
+
+
+def test_get_provider_description_supports_registered_provider_factories():
+    """Test provider descriptions can be read from registered custom providers."""
+    register_provider_factory("test-described", _DummyProvider)
+
+    assert (
+        get_provider_description("test-described")
+        == "Dummy provider fixture for registry tests."
+    )
+
+
+def test_get_provider_description_supports_registered_provider_localizations():
+    """Test provider descriptions can be localized from custom providers."""
+    register_provider_factory("test-localized", _LocalizedDummyProvider)
+
+    assert get_provider_description("test-localized", "zh-hans") == (
+        "本地化测试提供商。"
+    )
+
+
+def test_get_provider_names_returns_registered_provider_names():
+    """Test registry exposes provider names for CLI validation and listing."""
+    provider_names = get_provider_names()
+
+    assert provider_names == tuple(sorted(provider_names))
+    assert "deepseek" in provider_names
+    assert "openai" in provider_names
+
+
+def test_get_provider_raises_for_unknown_provider():
+    """Test provider lookup fails for unknown provider names."""
+    with pytest.raises(ScinoephileError):
+        get_provider("missing-provider")
+
+
+def test_get_provider_description_raises_for_unknown_provider():
+    """Test provider description lookup fails for unknown provider names."""
+    with pytest.raises(ScinoephileError):
+        get_provider_description("missing-provider")
 
 
 class _DummyProvider(LLMProvider):
@@ -45,41 +154,11 @@ class _DummyProvider(LLMProvider):
         return "{}"
 
 
-def test_get_default_provider_returns_openai_provider():
-    """Test default provider resolution returns an OpenAI provider."""
-    provider = get_default_provider()
+class _LocalizedDummyProvider(_DummyProvider):
+    """Localized dummy provider fixture for registry tests."""
 
-    assert isinstance(provider, OpenAIProvider)
-
-
-def test_get_provider_constructs_openai_provider_with_kwargs():
-    """Test explicit provider construction forwards kwargs to the factory."""
-    client = Mock()
-    provider = get_provider("openai", client=client)
-
-    assert isinstance(provider, OpenAIProvider)
-    assert provider.sync_client is client
-
-
-def test_get_provider_constructs_deepseek_provider_with_kwargs():
-    """Test DeepSeek provider construction forwards kwargs to the factory."""
-    client = Mock()
-    provider = get_provider("deepseek", client=client)
-
-    assert isinstance(provider, DeepSeekProvider)
-    assert provider.sync_client is client
-
-
-def test_register_provider_factory_supports_custom_providers():
-    """Test registry can resolve explicitly registered provider factories."""
-    register_provider_factory("test-dummy", _DummyProvider)
-    provider = get_provider("test-dummy", marker="dummy")
-
-    assert isinstance(provider, _DummyProvider)
-    assert provider.marker == "dummy"
-
-
-def test_get_provider_raises_for_unknown_provider():
-    """Test provider lookup fails for unknown provider names."""
-    with pytest.raises(ScinoephileError):
-        get_provider("missing-provider")
+    description_localizations: ClassVar[dict[str, str]] = {
+        "zh-hans": "本地化测试提供商。",
+        "zh-hant": "本地化測試提供商。",
+    }
+    """Provider description translations keyed by locale."""

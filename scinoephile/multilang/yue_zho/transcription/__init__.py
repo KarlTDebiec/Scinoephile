@@ -25,7 +25,7 @@ from scinoephile.llms.default_test_cases import (
     load_default_test_cases,
 )
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
-from scinoephile.llms.providers.registry import get_default_provider
+from scinoephile.llms.providers.registry import get_provider
 
 from .deliniation import YueVsZhoDeliniationPromptYueHans
 from .punctuation import YueVsZhoPunctuationPromptYueHans, YueZhoPunctuationManager
@@ -149,7 +149,7 @@ def get_yue_vs_zho_transcriber(
         configured YueTranscriber
     """
     if provider is None:
-        provider = get_default_provider()
+        provider = get_provider()
     if test_case_directory_path is None:
         test_case_directory_path = _get_default_test_case_dir_path()
     if deliniation_test_cases is None:

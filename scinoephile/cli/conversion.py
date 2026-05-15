@@ -20,7 +20,6 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
     "add_opencc_convert_argument",
-    "merge_conversion_localizations",
     "opencc_config_arg",
 ]
 
@@ -33,7 +32,7 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "使用指定 OpenCC 配置转换中文字符。使用 "
             "--list-opencc-configs 查看可用代码。"
         ),
-        "list available OpenCC configurations and exit": ("列出可用 OpenCC 配置并退出"),
+        "list available OpenCC configurations and exit": "列出可用 OpenCC 配置并退出",
     },
     "zh-hant": {
         "additional help": "附加說明",
@@ -43,7 +42,7 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "使用指定 OpenCC 設定轉換中文字符。使用 "
             "--list-opencc-configs 查看可用代碼。"
         ),
-        "list available OpenCC configurations and exit": ("列出可用 OpenCC 設定並結束"),
+        "list available OpenCC configurations and exit": "列出可用 OpenCC 設定並結束",
     },
 }
 """Localized text shared by CLIs that expose OpenCC conversion arguments."""
@@ -99,50 +98,6 @@ def get_opencc_config_description(config: OpenCCConfig, locale_name: str = "en")
     )
 
 
-class _ListOpenCCConfigsAction(Action):
-    """Print available OpenCC configurations and exit."""
-
-    def __init__(self, option_strings: list[str], dest: str, **kwargs: Any):
-        """Initialize.
-
-        Arguments:
-            option_strings: option strings
-            dest: argparse destination name
-            **kwargs: additional keyword arguments
-        """
-        kwargs.setdefault("nargs", 0)
-        super().__init__(option_strings=option_strings, dest=dest, **kwargs)
-
-    def __call__(
-        self,
-        parser: ArgumentParser,
-        namespace: Namespace,
-        values: Any,
-        option_string: str | None = None,
-    ):
-        """Handle the action.
-
-        Arguments:
-            parser: active argument parser
-            namespace: parsed namespace
-            values: parsed argument value
-            option_string: option string used
-        """
-        del namespace, values, option_string
-        locale_name = ScinoephileCliBase.locale_name
-        heading = CONVERSION_LOCALIZATIONS.get(locale_name, {}).get(
-            "Available OpenCC configurations:",
-            "Available OpenCC configurations:",
-        )
-        lines = [heading]
-        lines.extend(
-            f"  {config.value:<5} {get_opencc_config_description(config, locale_name)}"
-            for config in OpenCCConfig
-        )
-        parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
-        parser.exit(0)
-
-
 def add_opencc_convert_argument(
     operation_arg_group: _ArgumentGroup,
     additional_help_arg_group: _ArgumentGroup,
@@ -169,26 +124,6 @@ def add_opencc_convert_argument(
     )
 
 
-def merge_conversion_localizations(
-    localizations: dict[str, dict[str, str]],
-) -> dict[str, dict[str, str]]:
-    """Merge shared conversion localizations with CLI-specific localizations.
-
-    Arguments:
-        localizations: CLI-specific localizations
-    Returns:
-        merged localizations
-    """
-    merged: dict[str, dict[str, str]] = {
-        locale_name: dict(locale_text)
-        for locale_name, locale_text in CONVERSION_LOCALIZATIONS.items()
-    }
-    for locale_name, locale_text in localizations.items():
-        merged.setdefault(locale_name, {})
-        merged[locale_name].update(locale_text)
-    return merged
-
-
 def opencc_config_arg(value: str) -> OpenCCConfig:
     """Validate an OpenCC configuration CLI argument.
 
@@ -198,3 +133,46 @@ def opencc_config_arg(value: str) -> OpenCCConfig:
         parsed OpenCC configuration
     """
     return OpenCCConfig(value)
+
+
+class _ListOpenCCConfigsAction(Action):
+    """Print available OpenCC configurations and exit."""
+
+    def __init__(self, option_strings: list[str], dest: str, **kwargs: Any):
+        """Initialize.
+
+        Arguments:
+            option_strings: option strings
+            dest: argparse destination name
+            **kwargs: additional keyword arguments
+        """
+        kwargs.setdefault("nargs", 0)
+        super().__init__(option_strings=option_strings, dest=dest, **kwargs)
+
+    def __call__(  # noqa: ARG002
+        self,
+        parser: ArgumentParser,
+        namespace: Namespace,
+        values: Any,
+        option_string: str | None = None,
+    ):
+        """Handle the action.
+
+        Arguments:
+            parser: active argument parser
+            namespace: parsed namespace
+            values: parsed argument value
+            option_string: option string used
+        """
+        locale_name = ScinoephileCliBase.locale_name
+        heading = CONVERSION_LOCALIZATIONS.get(locale_name, {}).get(
+            "Available OpenCC configurations:",
+            "Available OpenCC configurations:",
+        )
+        lines = [heading]
+        lines.extend(
+            f"  {config.value:<5} {get_opencc_config_description(config, locale_name)}"
+            for config in OpenCCConfig
+        )
+        parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
+        parser.exit(0)

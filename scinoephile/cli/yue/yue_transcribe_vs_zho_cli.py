@@ -9,9 +9,10 @@ from pathlib import Path
 
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.cli.conversion import (
+    CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
-    merge_conversion_localizations,
 )
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
@@ -23,8 +24,10 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
+from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
     VADMode,
@@ -46,15 +49,18 @@ __all__ = ["YueTranscribeVsZhoCli"]
 class YueTranscribeVsZhoCli(ScinoephileCliBase):
     """Transcribe subtitles from audio and revise using standard Chinese text."""
 
-    localizations = merge_conversion_localizations(
+    localizations = merge_localizations(
+        CONVERSION_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 "audio stream index in media input (default: 0)": (
                     "媒体输入中的音频流索引（默认：0）"
                 ),
-                "command-line interface for written Cantonese subtitle transcription": (
-                    "书面粤语字幕转写命令行界面"
-                ),
+                (
+                    "command-line interface for written Cantonese subtitle "
+                    "transcription"
+                ): "书面粤语字幕转写命令行界面",
                 "script used for transcription prompts (default: simplified)": (
                     "转写提示词使用的字形（默认：简体）"
                 ),
@@ -64,7 +70,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "Whisper voice activity detection mode "
                     "(options: on, off, auto; default: auto)"
-                ): ("Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）"),
+                ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
                 'Standard Chinese subtitle infile or "-" for stdin': (
                     '标准中文字幕输入文件，或使用 "-" 表示标准输入'
                 ),
@@ -83,9 +89,10 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 "audio stream index in media input (default: 0)": (
                     "媒體輸入中的音訊流索引（預設：0）"
                 ),
-                "command-line interface for written Cantonese subtitle transcription": (
-                    "書面粵語字幕轉寫命令列介面"
-                ),
+                (
+                    "command-line interface for written Cantonese subtitle "
+                    "transcription"
+                ): "書面粵語字幕轉寫命令列介面",
                 "script used for transcription prompts (default: simplified)": (
                     "轉寫提示詞使用的字形（預設：簡體）"
                 ),
@@ -95,7 +102,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 (
                     "Whisper voice activity detection mode "
                     "(options: on, off, auto; default: auto)"
-                ): ("Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）"),
+                ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
                 'Standard Chinese subtitle infile or "-" for stdin': (
                     '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
                 ),
@@ -110,7 +117,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                     "Chinese text"
                 ): "從音訊轉錄字幕，並使用標準中文文字修訂",
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -172,6 +179,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
+        add_llm_provider_arguments(
+            arg_groups["operation arguments"], arg_groups["additional help"]
+        )
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
@@ -231,6 +241,8 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         stream_index: int,
         script: str,
         convert: OpenCCConfig | None,
+        llm_provider_name: str,
+        llm_model_name: str | None,
         demucs: DemucsMode,
         vad: VADMode,
         outfile_path: Path | None,
@@ -284,9 +296,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         deliniation_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
+        provider = get_provider(llm_provider_name, model=llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
             demucs_mode=demucs,
             vad_mode=vad,
+            provider=provider,
             convert=convert,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,
