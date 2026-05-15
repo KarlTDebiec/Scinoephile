@@ -9,6 +9,7 @@ coupling `scinoephile.core` to any specific provider.
 from __future__ import annotations
 
 from collections.abc import Callable
+from inspect import getdoc
 from typing import Any
 
 from scinoephile.core import ScinoephileError
@@ -21,6 +22,7 @@ __all__ = [
     "get_default_provider_name",
     "get_default_provider",
     "get_provider",
+    "get_provider_description",
     "get_provider_names",
     "register_provider_factory",
 ]
@@ -59,6 +61,26 @@ def get_provider(provider_name: str, **kwargs: Any) -> LLMProvider:
     if provider_factory is None:
         raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
     return provider_factory(**kwargs)
+
+
+def get_provider_description(provider_name: str) -> str:
+    """Get a registered provider's English description.
+
+    Arguments:
+        provider_name: provider identifier
+    Returns:
+        provider description
+    Raises:
+        ScinoephileError: provider name is not registered
+    """
+    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
+    if provider_factory is None:
+        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
+
+    description = getdoc(provider_factory)
+    if description is None:
+        return ""
+    return " ".join(description.split())
 
 
 def get_default_provider_name() -> str:

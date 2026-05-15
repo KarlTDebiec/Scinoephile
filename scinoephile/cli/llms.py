@@ -22,6 +22,9 @@ from scinoephile.llms.providers.registry import (
     get_provider,
     get_provider_names,
 )
+from scinoephile.llms.providers.registry import (
+    get_provider_description as get_registered_provider_description,
+)
 
 __all__ = [
     "LLM_LOCALIZATIONS",
@@ -64,12 +67,6 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized text shared by CLIs that expose LLM provider arguments."""
-
-LLM_PROVIDER_DESCRIPTIONS: dict[str, str] = {
-    "deepseek": "DeepSeek LLM Provider (OpenAI-SDK compatible).",
-    "openai": "OpenAI LLM Provider.",
-}
-"""Provider descriptions keyed by provider name."""
 
 
 class _ListLLMProvidersAction(Action):
@@ -178,7 +175,7 @@ def get_llm_provider_description(provider_name: str, locale_name: str = "en") ->
     Returns:
         localized description when available, otherwise English description
     """
-    description = LLM_PROVIDER_DESCRIPTIONS.get(provider_name, "")
+    description = get_registered_provider_description(provider_name)
     return LLM_LOCALIZATIONS.get(locale_name, {}).get(description, description)
 
 

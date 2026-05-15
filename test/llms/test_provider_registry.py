@@ -19,6 +19,7 @@ from scinoephile.llms.providers.registry import (
     get_default_provider,
     get_default_provider_name,
     get_provider,
+    get_provider_description,
     get_provider_names,
     register_provider_factory,
 )
@@ -77,6 +78,14 @@ def test_get_provider_constructs_deepseek_provider_with_kwargs():
     assert provider.sync_client is client
 
 
+def test_get_provider_description_uses_provider_docstrings():
+    """Test provider descriptions are exposed from registered provider classes."""
+    assert get_provider_description("deepseek") == (
+        "DeepSeek LLM Provider (OpenAI-SDK compatible)."
+    )
+    assert get_provider_description("openai") == "OpenAI LLM Provider."
+
+
 def test_register_provider_factory_supports_custom_providers():
     """Test registry can resolve explicitly registered provider factories."""
     register_provider_factory("test-dummy", _DummyProvider)
@@ -84,6 +93,16 @@ def test_register_provider_factory_supports_custom_providers():
 
     assert isinstance(provider, _DummyProvider)
     assert provider.marker == "dummy"
+
+
+def test_get_provider_description_supports_registered_provider_factories():
+    """Test provider descriptions can be read from registered custom providers."""
+    register_provider_factory("test-described", _DummyProvider)
+
+    assert (
+        get_provider_description("test-described")
+        == "Dummy provider fixture for registry tests."
+    )
 
 
 def test_get_provider_names_returns_registered_provider_names():
@@ -99,3 +118,9 @@ def test_get_provider_raises_for_unknown_provider():
     """Test provider lookup fails for unknown provider names."""
     with pytest.raises(ScinoephileError):
         get_provider("missing-provider")
+
+
+def test_get_provider_description_raises_for_unknown_provider():
+    """Test provider description lookup fails for unknown provider names."""
+    with pytest.raises(ScinoephileError):
+        get_provider_description("missing-provider")
