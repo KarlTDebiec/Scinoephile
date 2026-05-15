@@ -4,21 +4,19 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_directory_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.image.subtitles import ImageSeries
-from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
-    assert_series_equal,
-    test_data_root,
 )
 
 
@@ -63,28 +61,80 @@ def test_ocr_validate_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
         ("mlamd/input/zho-Hans_ocr/source.sup",),
     ],
 )
-def test_ocr_validate_zho_cli(input_path: str):
+def test_ocr_validate_zho_cli(
+    input_path: str,
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
     """Test OCR validate CLI processing for standard Chinese subtitles.
 
     Arguments:
         input_path: path to input image subtitle fixture
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
     """
-    full_input_path = test_data_root / input_path
-    expected = validate_zho_ocr(
-        ImageSeries.load(full_input_path),
-        stop_at_idx=1,
-        interactive=False,
+    original_load = ImageSeries.load
+    infile_path = tmp_path / input_path
+    infile_path.parent.mkdir(parents=True, exist_ok=True)
+    if infile_path.suffix:
+        infile_path.write_bytes(b"unused")
+    else:
+        infile_path.mkdir()
+
+    load_paths: list[Path] = []
+    validate_calls: list[tuple[ImageSeries, int | None, bool, bool]] = []
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading.
+
+        Arguments:
+            path: image subtitle input path
+        Returns:
+            configured image subtitle series
+        """
+        load_paths.append(path)
+        return tiny_image_series
+
+    def fake_validate_zho_ocr(
+        series: ImageSeries,
+        stop_at_idx: int | None = None,
+        interactive: bool = False,
+        dev: bool = False,
+    ) -> ImageSeries:
+        """Fake standard Chinese OCR validation.
+
+        Arguments:
+            series: ImageSeries to validate
+            stop_at_idx: stop processing at this index
+            interactive: whether to prompt user for confirmations
+            dev: whether to write validation data updates to the repo
+        Returns:
+            configured validated image series
+        """
+        validate_calls.append((series, stop_at_idx, interactive, dev))
+        return tiny_image_series
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.ImageSeries.load",
+        fake_load,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.validate_zho_ocr",
+        fake_validate_zho_ocr,
     )
 
-    with get_temp_directory_path() as output_dir_path:
-        outfile_path = output_dir_path / "validated"
-        run_cli_with_args(
-            OcrValidateCli,
-            f"--language zho --infile {full_input_path} --stop-at-idx 1 "
-            f"--outfile {outfile_path}",
-        )
+    outfile_path = tmp_path / "validated"
+    run_cli_with_args(
+        OcrValidateCli,
+        f"--language zho --infile {infile_path} --stop-at-idx 1 "
+        f"--outfile {outfile_path}",
+    )
 
-        output = ImageSeries.load(outfile_path)
-        assert_series_equal(output, expected)
-        assert (outfile_path / "index.html").exists()
-        assert any(outfile_path.glob("*.png"))
+    assert load_paths == [infile_path]
+    assert validate_calls == [(tiny_image_series, 1, False, False)]
+    output = original_load(outfile_path)
+    assert len(output) == len(tiny_image_series)
+    assert (outfile_path / "index.html").exists()
+    assert len(list(outfile_path.glob("*.png"))) == len(tiny_image_series)

@@ -120,13 +120,13 @@ def test_run_command_timeout():
     start_time = monotonic()
     exitcode, stdout, stderr = run_command(
         [sys.executable, "-c", "import time; time.sleep(10)"],
-        timeout=1,
+        timeout=0,
         acceptable_exitcodes=[-9, -15, 1],
     )
     elapsed = monotonic() - start_time
 
     assert exitcode != 0
-    assert elapsed < 2.0
+    assert elapsed < 1.0
 
 
 def test_run_command_unicode_output():
