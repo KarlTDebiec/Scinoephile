@@ -13,7 +13,6 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
     int_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.dictionaries import DictionaryEntry
 from scinoephile.dictionaries.lookup import (
@@ -96,6 +95,7 @@ class DictionarySearchCli(ScinoephileCliBase):
             default=10,
             help="maximum number of matches to show per dictionary",
         )
+        parser.set_defaults(_parser=parser)
 
     @classmethod
     def name(cls) -> str:
@@ -136,26 +136,26 @@ class DictionarySearchCli(ScinoephileCliBase):
     def _main(
         cls,
         *,
+        _parser: ArgumentParser | None = None,
         database_path: Path | None,
         dictionary_name: str,
         query: str,
         limit: int,
     ):
         """Execute with provided keyword arguments."""
+        parser = _parser or cls.argparser()
+        if dictionary_name == "all" and database_path is not None:
+            parser.error(
+                "--database-path may only be used with a specific --dictionary-name"
+            )
+
         try:
-            if dictionary_name == "all" and database_path is not None:
-                raise ArgumentConflictError(
-                    "--database-path may only be used with a specific --dictionary-name"
-                )
             entries = cls._search_dictionaries(
                 query=query,
                 limit=limit,
                 dictionary_name=dictionary_name,
                 database_path=database_path,
             )
-        except ArgumentConflictError as exc:
-            logger.error(str(exc))
-            raise SystemExit(2) from exc
         except ValueError as exc:
             logger.error(f"Unsupported query {query!r}: {exc}")
             raise SystemExit(1) from exc

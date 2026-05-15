@@ -13,8 +13,6 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.lang.eng.block_review import get_eng_block_reviewed
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -158,23 +156,10 @@ class EngProcessCli(ScinoephileCliBase):
         if not (clean or flatten or proofread or offset):
             parser.error("At least one operation required")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        try:
-            series = read_series(parser, infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        series = read_series(parser, infile_path, allow_stdin=True)
 
         # Perform operations
         if clean:

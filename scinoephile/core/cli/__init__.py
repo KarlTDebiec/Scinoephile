@@ -15,6 +15,7 @@ from sys import stdin, stdout
 
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.validation import val_input_path, val_output_path
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
 from .scinoephile_cli_base import ScinoephileCliBase
@@ -41,14 +42,19 @@ def read_series(
     Returns:
         loaded subtitle series
     """
-    if allow_stdin and str(infile) == "-":
-        return Series.from_string(stdin.read(), format_="srt")
-
     try:
+        if allow_stdin and str(infile) == "-":
+            return Series.from_string(stdin.read(), format_="srt")
         infile_path = val_input_path(infile)
-    except (FileNotFoundError, NotAFileError) as exc:
+        return Series.load(infile_path)
+    except (
+        FileNotFoundError,
+        NotADirectoryError,
+        NotAFileError,
+        ScinoephileError,
+        ValueError,
+    ) as exc:
         parser.error(str(exc))
-    return Series.load(infile_path)
 
 
 def write_series(

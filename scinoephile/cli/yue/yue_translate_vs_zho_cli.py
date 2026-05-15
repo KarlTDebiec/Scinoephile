@@ -17,8 +17,6 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError
-from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
@@ -178,31 +176,13 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if yue_infile_path == "-" and zho_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--yue-infile and --zho-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--yue-infile and --zho-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        try:
-            yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
-            zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+        yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
+        zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
 
         # Perform operations
         prompt_cls = cls._get_translation_prompt_cls(script)

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for standard Chinese subtitle operations."""
+"""Command-line interface for utility operations."""
 
 from __future__ import annotations
 
@@ -10,26 +10,23 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
-from .zho_process_cli import ZhoProcessCli
+from .cache import CacheCli
+from .optimization import OptimizationCli
 
-__all__ = ["ZhoCli"]
+__all__ = ["UtilityCli"]
 
 
-class ZhoCli(ScinoephileCliBase):
-    """Modify standard Chinese subtitles."""
+class UtilityCli(ScinoephileCliBase):
+    """Run utility commands."""
 
     localizations = {
         "zh-hans": {
-            "command-line interface for standard Chinese subtitle operations": (
-                "标准中文字幕操作命令行界面"
-            ),
-            "modify standard Chinese subtitles": "修改标准中文字幕",
+            "command-line interface for utility operations": "实用工具命令行界面",
+            "run utility commands": "运行实用工具命令",
         },
         "zh-hant": {
-            "command-line interface for standard Chinese subtitle operations": (
-                "標準中文字幕操作命令列介面"
-            ),
-            "modify standard Chinese subtitles": "修改標準中文字幕",
+            "command-line interface for utility operations": "實用工具命令列介面",
+            "run utility commands": "執行實用工具命令",
         },
     }
     """Localized help text keyed by locale and English source text."""
@@ -43,9 +40,8 @@ class ZhoCli(ScinoephileCliBase):
         """
         super().add_arguments_to_argparser(parser)
 
-        # Subcommands
         subparsers = parser.add_subparsers(
-            dest="zho_subcommand_name",
+            dest="utility_subcommand_name",
             help="subcommand",
             required=True,
         )
@@ -61,19 +57,20 @@ class ZhoCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
-            ZhoProcessCli.name(): ZhoProcessCli,
+            CacheCli.name(): CacheCli,
+            OptimizationCli.name(): OptimizationCli,
         }
 
     @classmethod
     def _main(
         cls,
         *,
-        zho_subcommand_name: str,
+        utility_subcommand_name: str,
         **kwargs: Any,
     ):
         """Execute with provided keyword arguments."""
-        cls.subcommands()[zho_subcommand_name]._main(**kwargs)
+        cls.subcommands()[utility_subcommand_name]._main(**kwargs)
 
 
 if __name__ == "__main__":
-    ZhoCli.main()
+    UtilityCli.main()

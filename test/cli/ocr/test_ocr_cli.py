@@ -13,9 +13,11 @@ import pytest
 
 from scinoephile.cli.ocr import (
     OcrCli,
+    OcrFuseCli,
     OcrLensCli,
     OcrPaddleCli,
     OcrTesseractCli,
+    OcrValidateCli,
     ocr_tesseract_cli,
 )
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
@@ -41,12 +43,16 @@ def test_ocr_tesseract_cli_imports_ocr_function_at_module_load():
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrFuseCli),
         (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
         (OcrCli, OcrTesseractCli),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
         (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
         (ScinoephileCli, OcrCli, OcrTesseractCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
@@ -62,12 +68,16 @@ def test_ocr_cli_help(cli: tuple[type[CommandLineInterface], ...]):
     "cli",
     [
         (OcrCli,),
+        (OcrCli, OcrFuseCli),
         (OcrCli, OcrLensCli),
         (OcrCli, OcrPaddleCli),
         (OcrCli, OcrTesseractCli),
+        (OcrCli, OcrValidateCli),
+        (ScinoephileCli, OcrCli, OcrFuseCli),
         (ScinoephileCli, OcrCli, OcrLensCli),
         (ScinoephileCli, OcrCli, OcrPaddleCli),
         (ScinoephileCli, OcrCli, OcrTesseractCli),
+        (ScinoephileCli, OcrCli, OcrValidateCli),
     ],
 )
 def test_ocr_cli_usage(cli: tuple[type[CommandLineInterface], ...]):

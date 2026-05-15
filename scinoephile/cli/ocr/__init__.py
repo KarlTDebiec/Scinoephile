@@ -3,34 +3,25 @@
 """Command-line interfaces for OCR operations.
 
 Package hierarchy (modules may import from any above):
-* ocr_lens_cli / ocr_paddle_cli / ocr_tesseract_cli
+* ocr_fuse_cli / ocr_lens_cli / ocr_paddle_cli / ocr_tesseract_cli
+  / ocr_validate_cli
 * ocr_cli
 """
 
 from __future__ import annotations
 
 from .ocr_cli import OcrCli
+from .ocr_fuse_cli import OcrFuseCli
+from .ocr_lens_cli import OcrLensCli
+from .ocr_paddle_cli import OcrPaddleCli
+from .ocr_tesseract_cli import OcrTesseractCli
+from .ocr_validate_cli import OcrValidateCli
 
 __all__ = [
     "OcrCli",
+    "OcrFuseCli",
     "OcrLensCli",
     "OcrPaddleCli",
     "OcrTesseractCli",
+    "OcrValidateCli",
 ]
-
-
-def __getattr__(name: str):
-    """Lazily import heavy OCR command implementations."""
-    if name == "OcrLensCli":
-        from .ocr_lens_cli import OcrLensCli  # noqa: PLC0415
-
-        return OcrLensCli
-    if name == "OcrPaddleCli":
-        from .ocr_paddle_cli import OcrPaddleCli  # noqa: PLC0415
-
-        return OcrPaddleCli
-    if name == "OcrTesseractCli":
-        from .ocr_tesseract_cli import OcrTesseractCli  # noqa: PLC0415
-
-        return OcrTesseractCli
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.common.exceptions import ArgumentConflictError, NotAFileError
+from scinoephile.common.exceptions import NotAFileError
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.exceptions import ScinoephileError
@@ -240,24 +240,14 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         # Validate arguments
         parser = _parser or cls.argparser()
         if media_infile_path == "-" and zhongwen_infile_path == "-":
-            try:
-                raise ArgumentConflictError(
-                    "--media-infile and --zhongwen-infile may not both be '-'"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--media-infile and --zhongwen-infile may not both be '-'")
         if overwrite and outfile_path is None:
-            try:
-                raise ArgumentConflictError(
-                    "--overwrite may only be used with --outfile"
-                )
-            except ArgumentConflictError as exc:
-                parser.error(str(exc))
+            parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        try:
-            if zhongwen_infile_path == "-":
-                zhongwen = read_series(parser, "-", allow_stdin=True)
+        if zhongwen_infile_path == "-":
+            zhongwen = read_series(parser, "-", allow_stdin=True)
+            try:
                 with get_temp_file_path(suffix=".srt") as temp_zhongwen_path:
                     zhongwen.save(temp_zhongwen_path)
                     yuewen = AudioSeries.load_from_media(
@@ -265,21 +255,30 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                         subtitle_path=temp_zhongwen_path,
                         stream_index=stream_index,
                     )
-            else:
-                zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
+            except (
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
+        else:
+            zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
+            try:
                 yuewen = AudioSeries.load_from_media(
                     media_path=media_infile_path,
                     subtitle_path=zhongwen_infile_path,
                     stream_index=stream_index,
                 )
-        except (
-            FileNotFoundError,
-            NotADirectoryError,
-            NotAFileError,
-            ScinoephileError,
-            ValueError,
-        ) as exc:
-            parser.error(str(exc))
+            except (
+                FileNotFoundError,
+                NotADirectoryError,
+                NotAFileError,
+                ScinoephileError,
+                ValueError,
+            ) as exc:
+                parser.error(str(exc))
 
         # Perform operations
         deliniation_prompt_cls, punctuation_prompt_cls = (
