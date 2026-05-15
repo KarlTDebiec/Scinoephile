@@ -19,52 +19,45 @@ from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrPaddleCli"]
 
+OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        (
+            "PaddleOCR language code: en (English), ch (simplified Chinese "
+            "and English), chinese_cht (traditional Chinese)"
+        ): (
+            "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
+            "chinese_cht（繁体中文）"
+        ),
+        "Recognize image subtitles with PaddleOCR.": ("使用 PaddleOCR 识别图像字幕。"),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): ("图像字幕输入文件路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"),
+        "recognized subtitle outfile path": "识别后字幕输出文件路径",
+    },
+    "zh-hant": {
+        (
+            "PaddleOCR language code: en (English), ch (simplified Chinese "
+            "and English), chinese_cht (traditional Chinese)"
+        ): (
+            "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
+            "chinese_cht（繁體中文）"
+        ),
+        "Recognize image subtitles with PaddleOCR.": ("使用 PaddleOCR 識別影像字幕。"),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): ("影像字幕輸入檔案路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔案）"),
+        "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OcrPaddleCli(ScinoephileCliBase):
     """Recognize image subtitles with PaddleOCR."""
 
-    localizations = {
-        "zh-hans": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
-                "chinese_cht（繁体中文）"
-            ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 识别图像字幕。"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): (
-                "图像字幕输入文件路径（包含 index.html 和 png 文件的目录，"
-                "或 .sup 文件）"
-            ),
-            "recognized subtitle outfile path": "识别后字幕输出文件路径",
-        },
-        "zh-hant": {
-            (
-                "PaddleOCR language code: en (English), ch (simplified Chinese "
-                "and English), chinese_cht (traditional Chinese)"
-            ): (
-                "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
-                "chinese_cht（繁體中文）"
-            ),
-            "Recognize image subtitles with PaddleOCR.": (
-                "使用 PaddleOCR 識別影像字幕。"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): (
-                "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案的目錄，"
-                "或 .sup 檔案）"
-            ),
-            "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
-        },
-    }
+    localizations = OCR_PADDLE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

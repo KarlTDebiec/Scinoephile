@@ -19,50 +19,47 @@ from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrTesseractCli"]
 
+OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "Recognize image subtitles with Tesseract OCR.": (
+            "使用 Tesseract OCR 识别图像字幕。"
+        ),
+        "Tesseract language code (default: %(default)s)": (
+            "Tesseract 语言代码（默认：%(default)s）"
+        ),
+        "run a second legacy-engine pass to detect italic text": (
+            "运行第二次旧版引擎识别以检测斜体文本"
+        ),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): ("图像字幕输入文件路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"),
+        "recognized subtitle outfile path": "识别后字幕输出文件路径",
+    },
+    "zh-hant": {
+        "Recognize image subtitles with Tesseract OCR.": (
+            "使用 Tesseract OCR 識別影像字幕。"
+        ),
+        "Tesseract language code (default: %(default)s)": (
+            "Tesseract 語言代碼（預設：%(default)s）"
+        ),
+        "run a second legacy-engine pass to detect italic text": (
+            "執行第二次舊版引擎識別以偵測斜體文字"
+        ),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): ("影像字幕輸入檔案路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔案）"),
+        "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OcrTesseractCli(ScinoephileCliBase):
     """Recognize image subtitles with Tesseract OCR."""
 
-    localizations = {
-        "zh-hans": {
-            "Recognize image subtitles with Tesseract OCR.": (
-                "使用 Tesseract OCR 识别图像字幕。"
-            ),
-            "Tesseract language code (default: %(default)s)": (
-                "Tesseract 语言代码（默认：%(default)s）"
-            ),
-            "run a second legacy-engine pass to detect italic text": (
-                "运行第二次旧版引擎识别以检测斜体文本"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): (
-                "图像字幕输入文件路径（包含 index.html 和 png 文件的目录，"
-                "或 .sup 文件）"
-            ),
-            "recognized subtitle outfile path": "识别后字幕输出文件路径",
-        },
-        "zh-hant": {
-            "Recognize image subtitles with Tesseract OCR.": (
-                "使用 Tesseract OCR 識別影像字幕。"
-            ),
-            "Tesseract language code (default: %(default)s)": (
-                "Tesseract 語言代碼（預設：%(default)s）"
-            ),
-            "run a second legacy-engine pass to detect italic text": (
-                "執行第二次舊版引擎識別以偵測斜體文字"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): (
-                "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案的目錄，"
-                "或 .sup 檔案）"
-            ),
-            "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
-        },
-    }
+    localizations = OCR_TESSERACT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

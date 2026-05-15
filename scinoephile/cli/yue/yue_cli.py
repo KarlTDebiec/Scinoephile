@@ -17,24 +17,27 @@ from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 
 __all__ = ["YueCli"]
 
+YUE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for written Cantonese subtitle operations": (
+            "书面粤语字幕操作命令行界面"
+        ),
+        "modify written Cantonese subtitles": "修改书面粤语字幕",
+    },
+    "zh-hant": {
+        "command-line interface for written Cantonese subtitle operations": (
+            "書面粵語字幕操作命令列介面"
+        ),
+        "modify written Cantonese subtitles": "修改書面粵語字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class YueCli(ScinoephileCliBase):
     """Modify written Cantonese subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for written Cantonese subtitle operations": (
-                "书面粤语字幕操作命令行界面"
-            ),
-            "modify written Cantonese subtitles": "修改书面粤语字幕",
-        },
-        "zh-hant": {
-            "command-line interface for written Cantonese subtitle operations": (
-                "書面粵語字幕操作命令列介面"
-            ),
-            "modify written Cantonese subtitles": "修改書面粵語字幕",
-        },
-    }
+    localizations = YUE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

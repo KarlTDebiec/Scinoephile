@@ -17,18 +17,21 @@ from .multi_timewarp_cli import MultiTimewarpCli
 
 __all__ = ["MultiCli"]
 
+MULTI_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "operate on multiple subtitle series": "处理多个字幕序列",
+    },
+    "zh-hant": {
+        "operate on multiple subtitle series": "處理多個字幕序列",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class MultiCli(ScinoephileCliBase):
     """Operate on multiple subtitle series."""
 
-    localizations = {
-        "zh-hans": {
-            "operate on multiple subtitle series": "处理多个字幕序列",
-        },
-        "zh-hant": {
-            "operate on multiple subtitle series": "處理多個字幕序列",
-        },
-    }
+    localizations = MULTI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

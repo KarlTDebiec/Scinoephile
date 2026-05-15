@@ -23,6 +23,68 @@ from .zho import ZhoCli
 
 __all__ = ["ScinoephileCli"]
 
+SCINOEPHILE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "additional help": "附加帮助",
+        "Available subcommands:": "可用子命令：",
+        "build or search Chinese dictionaries": "构建或查询中文词典",
+        "calculate the Character Error Rate (CER) of one series relative to "
+        "another": "计算一个序列相对于另一个序列的字符错误率（CER）",
+        "calculate the diff between two series": "计算两个序列之间的差异",
+        "command-line interface for Scinoephile": "Scinoephile 命令行界面",
+        "combine two series into the top and bottom of a synchronized series": (
+            "将两个序列合并为上下行同步字幕"
+        ),
+        "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
+        "inspect and extract media streams": "检查并提取媒体流",
+        "list all subcommands and exit": "列出所有子命令并退出",
+        "modify English subtitles": "修改英文字幕",
+        "modify standard Chinese subtitles": "修改标准中文字幕",
+        "modify written Cantonese subtitles": "修改书面粤语字幕",
+        "operate on multiple subtitle series": "处理多个字幕序列",
+        "recognize text from image-based subtitles": "识别图像字幕中的文本",
+        "run utility commands": "运行实用工具命令",
+        (
+            "Scinoephile is an application for working with Chinese, English, "
+            "and bilingual subtitles."
+        ): "Scinoephile 是一个用于处理中英及双语字幕的应用。",
+        "shift and stretch the timings of one subtitle series to match another": (
+            "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
+        ),
+        "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
+    },
+    "zh-hant": {
+        "additional help": "附加說明",
+        "Available subcommands:": "可用子命令：",
+        "build or search Chinese dictionaries": "建置或查詢中文詞典",
+        "calculate the Character Error Rate (CER) of one series relative to "
+        "another": "計算一個序列相對於另一個序列的字元錯誤率（CER）",
+        "calculate the diff between two series": "計算兩個序列之間的差異",
+        "command-line interface for Scinoephile": "Scinoephile 命令列介面",
+        "combine two series into the top and bottom of a synchronized series": (
+            "將兩個序列合併為上下行同步字幕"
+        ),
+        "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
+        "inspect and extract media streams": "檢查並提取媒體流",
+        "list all subcommands and exit": "列出所有子命令並結束",
+        "modify English subtitles": "修改英文字幕",
+        "modify standard Chinese subtitles": "修改標準中文字幕",
+        "modify written Cantonese subtitles": "修改書面粵語字幕",
+        "operate on multiple subtitle series": "處理多個字幕序列",
+        "recognize text from image-based subtitles": "識別影像字幕中的文字",
+        "run utility commands": "執行實用工具命令",
+        (
+            "Scinoephile is an application for working with Chinese, English, "
+            "and bilingual subtitles."
+        ): "Scinoephile 是用於處理中文、英文與雙語字幕的應用程式。",
+        "shift and stretch the timings of one subtitle series to match another": (
+            "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
+        ),
+        "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class ScinoephileCli(ScinoephileCliBase):
     """Command-line interface for Scinoephile.
@@ -31,66 +93,7 @@ class ScinoephileCli(ScinoephileCliBase):
     subtitles.
     """
 
-    localizations = {
-        "zh-hans": {
-            "additional help": "附加帮助",
-            "Available subcommands:": "可用子命令：",
-            "build or search Chinese dictionaries": "构建或查询中文词典",
-            "calculate the Character Error Rate (CER) of one series relative to "
-            "another": "计算一个序列相对于另一个序列的字符错误率（CER）",
-            "calculate the diff between two series": "计算两个序列之间的差异",
-            "command-line interface for Scinoephile": "Scinoephile 命令行界面",
-            "combine two series into the top and bottom of a synchronized series": (
-                "将两个序列合并为上下行同步字幕"
-            ),
-            "fuse OCR output for a selected language": "融合所选语言的 OCR 输出",
-            "inspect and extract media streams": "检查并提取媒体流",
-            "list all subcommands and exit": "列出所有子命令并退出",
-            "modify English subtitles": "修改英文字幕",
-            "modify standard Chinese subtitles": "修改标准中文字幕",
-            "modify written Cantonese subtitles": "修改书面粤语字幕",
-            "operate on multiple subtitle series": "处理多个字幕序列",
-            "recognize text from image-based subtitles": "识别图像字幕中的文本",
-            "run utility commands": "运行实用工具命令",
-            (
-                "Scinoephile is an application for working with Chinese, English, "
-                "and bilingual subtitles."
-            ): "Scinoephile 是一个用于处理中英及双语字幕的应用。",
-            "shift and stretch the timings of one subtitle series to match another": (
-                "平移并拉伸一个字幕序列的时间轴以匹配另一个序列"
-            ),
-            "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
-        },
-        "zh-hant": {
-            "additional help": "附加說明",
-            "Available subcommands:": "可用子命令：",
-            "build or search Chinese dictionaries": "建置或查詢中文詞典",
-            "calculate the Character Error Rate (CER) of one series relative to "
-            "another": "計算一個序列相對於另一個序列的字元錯誤率（CER）",
-            "calculate the diff between two series": "計算兩個序列之間的差異",
-            "command-line interface for Scinoephile": "Scinoephile 命令列介面",
-            "combine two series into the top and bottom of a synchronized series": (
-                "將兩個序列合併為上下行同步字幕"
-            ),
-            "fuse OCR output for a selected language": "融合所選語言的 OCR 輸出",
-            "inspect and extract media streams": "檢查並提取媒體流",
-            "list all subcommands and exit": "列出所有子命令並結束",
-            "modify English subtitles": "修改英文字幕",
-            "modify standard Chinese subtitles": "修改標準中文字幕",
-            "modify written Cantonese subtitles": "修改書面粵語字幕",
-            "operate on multiple subtitle series": "處理多個字幕序列",
-            "recognize text from image-based subtitles": "識別影像字幕中的文字",
-            "run utility commands": "執行實用工具命令",
-            (
-                "Scinoephile is an application for working with Chinese, English, "
-                "and bilingual subtitles."
-            ): "Scinoephile 是用於處理中文、英文與雙語字幕的應用程式。",
-            "shift and stretch the timings of one subtitle series to match another": (
-                "平移並拉伸一個字幕序列的時間軸以匹配另一個序列"
-            ),
-            "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
-        },
-    }
+    localizations = SCINOEPHILE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

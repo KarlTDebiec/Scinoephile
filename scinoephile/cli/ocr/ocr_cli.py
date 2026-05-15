@@ -12,18 +12,21 @@ from scinoephile.core.cli import ScinoephileCliBase
 
 __all__ = ["OcrCli"]
 
+OCR_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "Recognize text from image-based subtitles.": "识别图像字幕中的文本。",
+    },
+    "zh-hant": {
+        "Recognize text from image-based subtitles.": "識別影像字幕中的文字。",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OcrCli(ScinoephileCliBase):
     """Recognize text from image-based subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "Recognize text from image-based subtitles.": "识别图像字幕中的文本。",
-        },
-        "zh-hant": {
-            "Recognize text from image-based subtitles.": "識別影像字幕中的文字。",
-        },
-    }
+    localizations = OCR_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

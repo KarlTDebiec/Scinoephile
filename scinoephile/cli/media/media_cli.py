@@ -16,34 +16,37 @@ from .media_probe_cli import MediaProbeCli
 
 __all__ = ["MediaCli"]
 
+MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for media operations": "媒体操作命令行界面",
+        "extract matching subtitle streams from a video file": (
+            "从视频文件提取匹配的字幕流"
+        ),
+        "estimate visual offset between two media files": (
+            "估计两个媒体文件之间的视觉偏移"
+        ),
+        "inspect and extract media streams": "检查并提取媒体流",
+        "list media streams in a media file": "列出媒体文件中的媒体流",
+    },
+    "zh-hant": {
+        "command-line interface for media operations": "媒體操作命令列介面",
+        "extract matching subtitle streams from a video file": (
+            "從影片檔提取匹配的字幕流"
+        ),
+        "estimate visual offset between two media files": (
+            "估計兩個媒體檔之間的視覺偏移"
+        ),
+        "inspect and extract media streams": "檢查並提取媒體流",
+        "list media streams in a media file": "列出媒體檔中的媒體流",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class MediaCli(ScinoephileCliBase):
     """Inspect and extract media streams."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for media operations": "媒体操作命令行界面",
-            "extract matching subtitle streams from a video file": (
-                "从视频文件提取匹配的字幕流"
-            ),
-            "estimate visual offset between two media files": (
-                "估计两个媒体文件之间的视觉偏移"
-            ),
-            "inspect and extract media streams": "检查并提取媒体流",
-            "list media streams in a media file": "列出媒体文件中的媒体流",
-        },
-        "zh-hant": {
-            "command-line interface for media operations": "媒體操作命令列介面",
-            "extract matching subtitle streams from a video file": (
-                "從影片檔提取匹配的字幕流"
-            ),
-            "estimate visual offset between two media files": (
-                "估計兩個媒體檔之間的視覺偏移"
-            ),
-            "inspect and extract media streams": "檢查並提取媒體流",
-            "list media streams in a media file": "列出媒體檔中的媒體流",
-        },
-    }
+    localizations = MEDIA_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

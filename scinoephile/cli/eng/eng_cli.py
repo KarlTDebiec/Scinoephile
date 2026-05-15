@@ -14,24 +14,27 @@ from .eng_process_cli import EngProcessCli
 
 __all__ = ["EngCli"]
 
+ENG_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for English subtitle operations": (
+            "英文字幕操作命令行界面"
+        ),
+        "modify English subtitles": "修改英文字幕",
+    },
+    "zh-hant": {
+        "command-line interface for English subtitle operations": (
+            "英文字幕操作命令列介面"
+        ),
+        "modify English subtitles": "修改英文字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class EngCli(ScinoephileCliBase):
     """Modify English subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for English subtitle operations": (
-                "英文字幕操作命令行界面"
-            ),
-            "modify English subtitles": "修改英文字幕",
-        },
-        "zh-hant": {
-            "command-line interface for English subtitle operations": (
-                "英文字幕操作命令列介面"
-            ),
-            "modify English subtitles": "修改英文字幕",
-        },
-    }
+    localizations = ENG_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

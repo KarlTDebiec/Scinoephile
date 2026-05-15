@@ -26,52 +26,51 @@ from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["EngProcessCli"]
 
+ENG_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隐藏字幕标注及其他异常"
+        ),
+        'English subtitle infile path or "-" for stdin': (
+            '英文字幕输入文件路径，或使用 "-" 表示标准输入'
+        ),
+        "English subtitle outfile path (default: stdout)": (
+            "英文字幕输出文件路径（默认：标准输出）"
+        ),
+        "flatten multi-line subtitles into single lines": ("将多行字幕合并为单行"),
+        "modify English subtitles": "修改英文字幕",
+        "shift subtitle timings by this many milliseconds": (
+            "按指定毫秒数平移字幕时间"
+        ),
+        "proofread subtitles using LLM": "使用大语言模型校对字幕",
+    },
+    "zh-hant": {
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隱藏字幕標註及其他異常"
+        ),
+        'English subtitle infile path or "-" for stdin': (
+            '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+        ),
+        "English subtitle outfile path (default: stdout)": (
+            "英文字幕輸出檔路徑（預設：標準輸出）"
+        ),
+        "flatten multi-line subtitles into single lines": ("將多行字幕合併為單行"),
+        "modify English subtitles": "修改英文字幕",
+        "shift subtitle timings by this many milliseconds": (
+            "依指定毫秒數平移字幕時間"
+        ),
+        "proofread subtitles using LLM": "使用大型語言模型校對字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class EngProcessCli(ScinoephileCliBase):
     """Modify English subtitles."""
 
     localizations = merge_localizations(
         LLM_LOCALIZATIONS,
-        {
-            "zh-hans": {
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隐藏字幕标注及其他异常"
-                ),
-                'English subtitle infile path or "-" for stdin': (
-                    '英文字幕输入文件路径，或使用 "-" 表示标准输入'
-                ),
-                "English subtitle outfile path (default: stdout)": (
-                    "英文字幕输出文件路径（默认：标准输出）"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "将多行字幕合并为单行"
-                ),
-                "modify English subtitles": "修改英文字幕",
-                "shift subtitle timings by this many milliseconds": (
-                    "按指定毫秒数平移字幕时间"
-                ),
-                "proofread subtitles using LLM": "使用大语言模型校对字幕",
-            },
-            "zh-hant": {
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隱藏字幕標註及其他異常"
-                ),
-                'English subtitle infile path or "-" for stdin': (
-                    '英文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
-                ),
-                "English subtitle outfile path (default: stdout)": (
-                    "英文字幕輸出檔路徑（預設：標準輸出）"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "將多行字幕合併為單行"
-                ),
-                "modify English subtitles": "修改英文字幕",
-                "shift subtitle timings by this many milliseconds": (
-                    "依指定毫秒數平移字幕時間"
-                ),
-                "proofread subtitles using LLM": "使用大型語言模型校對字幕",
-            },
-        },
+        ENG_PROCESS_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 

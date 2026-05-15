@@ -22,36 +22,40 @@ from scinoephile.dictionaries.lookup import (
 
 __all__ = ["DictionarySearchCli"]
 
+DICTIONARY_SEARCH_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "dictionary to search, or all available dictionaries": (
+            "要查询的词典，或选择全部可用词典"
+        ),
+        "Mandarin or Cantonese query text": "普通话或粤语查询文本",
+        "maximum number of matches to show per dictionary": (
+            "每个词典显示的最大匹配数"
+        ),
+        "search dictionaries": "查询词典",
+        "SQLite database input path": "SQLite 数据库输入路径",
+    },
+    "zh-hant": {
+        "dictionary to search, or all available dictionaries": (
+            "要查詢的詞典，或選擇全部可用詞典"
+        ),
+        "Mandarin or Cantonese query text": "普通話或粵語查詢文字",
+        "maximum number of matches to show per dictionary": (
+            "每個詞典顯示的最大符合數"
+        ),
+        "search dictionaries": "查詢詞典",
+        "SQLite database input path": "SQLite 資料庫輸入路徑",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
+
 logger = getLogger(__name__)
 
 
 class DictionarySearchCli(ScinoephileCliBase):
     """Search dictionaries."""
 
-    localizations = {
-        "zh-hans": {
-            "dictionary to search, or all available dictionaries": (
-                "要查询的词典，或选择全部可用词典"
-            ),
-            "Mandarin or Cantonese query text": "普通话或粤语查询文本",
-            "maximum number of matches to show per dictionary": (
-                "每个词典显示的最大匹配数"
-            ),
-            "search dictionaries": "查询词典",
-            "SQLite database input path": "SQLite 数据库输入路径",
-        },
-        "zh-hant": {
-            "dictionary to search, or all available dictionaries": (
-                "要查詢的詞典，或選擇全部可用詞典"
-            ),
-            "Mandarin or Cantonese query text": "普通話或粵語查詢文字",
-            "maximum number of matches to show per dictionary": (
-                "每個詞典顯示的最大符合數"
-            ),
-            "search dictionaries": "查詢詞典",
-            "SQLite database input path": "SQLite 資料庫輸入路徑",
-        },
-    }
+    localizations = DICTIONARY_SEARCH_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

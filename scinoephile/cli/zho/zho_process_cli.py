@@ -41,6 +41,62 @@ from scinoephile.llms.providers.registry import get_provider
 
 __all__ = ["ZhoProcessCli"]
 
+ZHO_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隐藏字幕标注及其他异常"
+        ),
+        "command-line interface for standard Chinese subtitle processing": (
+            "标准中文字幕处理命令行界面"
+        ),
+        "flatten multi-line subtitles into single lines": ("将多行字幕合并为单行"),
+        "modify standard Chinese subtitles": "修改标准中文字幕",
+        "proofread subtitles using LLM (default: simplified)": (
+            "使用大语言模型校对字幕（默认：简体）"
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示词和输出转换使用的字形（默认：简体）"
+        ),
+        "shift subtitle timings by this many milliseconds": (
+            "按指定毫秒数平移字幕时间"
+        ),
+        'Standard Chinese subtitle infile path or "-" for stdin': (
+            '标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
+        ),
+        "Standard Chinese subtitle outfile path (default: stdout)": (
+            "标准中文字幕输出文件路径（默认：标准输出）"
+        ),
+    },
+    "zh-hant": {
+        "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
+        "clean subtitles of closed-caption annotations and other anomalies": (
+            "清理字幕中的隱藏字幕標註及其他異常"
+        ),
+        "command-line interface for standard Chinese subtitle processing": (
+            "標準中文字幕處理命令列介面"
+        ),
+        "flatten multi-line subtitles into single lines": ("將多行字幕合併為單行"),
+        "modify standard Chinese subtitles": "修改標準中文字幕",
+        "proofread subtitles using LLM (default: simplified)": (
+            "使用大型語言模型校對字幕（預設：簡體）"
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示詞與輸出轉換使用的字形（預設：簡體）"
+        ),
+        "shift subtitle timings by this many milliseconds": (
+            "依指定毫秒數平移字幕時間"
+        ),
+        'Standard Chinese subtitle infile path or "-" for stdin': (
+            '標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
+        ),
+        "Standard Chinese subtitle outfile path (default: stdout)": (
+            "標準中文字幕輸出檔路徑（預設：標準輸出）"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class ZhoProcessCli(ScinoephileCliBase):
     """Modify standard Chinese subtitles."""
@@ -48,64 +104,7 @@ class ZhoProcessCli(ScinoephileCliBase):
     localizations = merge_localizations(
         CONVERSION_LOCALIZATIONS,
         LLM_LOCALIZATIONS,
-        {
-            "zh-hans": {
-                "append Mandarin romanization to subtitles": "为字幕追加普通话罗马字",
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隐藏字幕标注及其他异常"
-                ),
-                "command-line interface for standard Chinese subtitle processing": (
-                    "标准中文字幕处理命令行界面"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "将多行字幕合并为单行"
-                ),
-                "modify standard Chinese subtitles": "修改标准中文字幕",
-                "proofread subtitles using LLM (default: simplified)": (
-                    "使用大语言模型校对字幕（默认：简体）"
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示词和输出转换使用的字形（默认：简体）"
-                ),
-                "shift subtitle timings by this many milliseconds": (
-                    "按指定毫秒数平移字幕时间"
-                ),
-                'Standard Chinese subtitle infile path or "-" for stdin': (
-                    '标准中文字幕输入文件路径，或使用 "-" 表示标准输入'
-                ),
-                "Standard Chinese subtitle outfile path (default: stdout)": (
-                    "标准中文字幕输出文件路径（默认：标准输出）"
-                ),
-            },
-            "zh-hant": {
-                "append Mandarin romanization to subtitles": "為字幕附加普通話羅馬字",
-                "clean subtitles of closed-caption annotations and other anomalies": (
-                    "清理字幕中的隱藏字幕標註及其他異常"
-                ),
-                "command-line interface for standard Chinese subtitle processing": (
-                    "標準中文字幕處理命令列介面"
-                ),
-                "flatten multi-line subtitles into single lines": (
-                    "將多行字幕合併為單行"
-                ),
-                "modify standard Chinese subtitles": "修改標準中文字幕",
-                "proofread subtitles using LLM (default: simplified)": (
-                    "使用大型語言模型校對字幕（預設：簡體）"
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示詞與輸出轉換使用的字形（預設：簡體）"
-                ),
-                "shift subtitle timings by this many milliseconds": (
-                    "依指定毫秒數平移字幕時間"
-                ),
-                'Standard Chinese subtitle infile path or "-" for stdin': (
-                    '標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
-                ),
-                "Standard Chinese subtitle outfile path (default: stdout)": (
-                    "標準中文字幕輸出檔路徑（預設：標準輸出）"
-                ),
-            },
-        },
+        ZHO_PROCESS_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 

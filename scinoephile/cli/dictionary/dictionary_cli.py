@@ -15,20 +15,23 @@ from .dictionary_search_cli import DictionarySearchCli
 
 __all__ = ["DictionaryCli"]
 
+DICTIONARY_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "build or search Chinese dictionaries": "构建或查询中文词典",
+        "command-line interface for dictionary operations": "词典操作命令行界面",
+    },
+    "zh-hant": {
+        "build or search Chinese dictionaries": "建置或查詢中文詞典",
+        "command-line interface for dictionary operations": "詞典操作命令列介面",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryCli(ScinoephileCliBase):
     """Build or search Chinese dictionaries."""
 
-    localizations = {
-        "zh-hans": {
-            "build or search Chinese dictionaries": "构建或查询中文词典",
-            "command-line interface for dictionary operations": "词典操作命令行界面",
-        },
-        "zh-hant": {
-            "build or search Chinese dictionaries": "建置或查詢中文詞典",
-            "command-line interface for dictionary operations": "詞典操作命令列介面",
-        },
-    }
+    localizations = DICTIONARY_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

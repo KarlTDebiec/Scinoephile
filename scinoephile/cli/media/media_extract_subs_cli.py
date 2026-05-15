@@ -25,52 +25,55 @@ from scinoephile.workflows.subtitle_extraction import (
 
 __all__ = ["MediaExtractSubsCli"]
 
+MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "convert extracted SUP subtitle streams to image directories": (
+            "将提取的 SUP 字幕流转换为图像目录"
+        ),
+        "cache directory (default: %(default)s)": "缓存目录（默认：%(default)s）",
+        "directory to which matching subtitles will be extracted or mapped": (
+            "匹配字幕将被提取或映射到的目录"
+        ),
+        "extract matching subtitle streams from a video file": (
+            "从视频文件提取匹配的字幕流"
+        ),
+        "include additional subtitle stream details": "包含更多字幕流详细信息",
+        "ISO 639 language codes to extract (default: chi eng yue zho)": (
+            "要提取的 ISO 639 语言代码（默认：chi eng yue zho）"
+        ),
+        "overwrite extracted subtitle files if they exist": (
+            "若提取的字幕文件已存在则覆盖"
+        ),
+        "video infile containing subtitle streams": "包含字幕流的视频输入文件",
+    },
+    "zh-hant": {
+        "convert extracted SUP subtitle streams to image directories": (
+            "將提取的 SUP 字幕流轉換為影像目錄"
+        ),
+        "cache directory (default: %(default)s)": "快取目錄（預設：%(default)s）",
+        "directory to which matching subtitles will be extracted or mapped": (
+            "匹配字幕將被提取或映射到的目錄"
+        ),
+        "extract matching subtitle streams from a video file": (
+            "從影片檔提取匹配的字幕流"
+        ),
+        "include additional subtitle stream details": "包含更多字幕流詳細資訊",
+        "ISO 639 language codes to extract (default: chi eng yue zho)": (
+            "要提取的 ISO 639 語言代碼（預設：chi eng yue zho）"
+        ),
+        "overwrite extracted subtitle files if they exist": (
+            "若提取的字幕檔已存在則覆寫"
+        ),
+        "video infile containing subtitle streams": "包含字幕流的影片輸入檔",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class MediaExtractSubsCli(ScinoephileCliBase):
     """Extract matching subtitle streams from a video file."""
 
-    localizations = {
-        "zh-hans": {
-            "convert extracted SUP subtitle streams to image directories": (
-                "将提取的 SUP 字幕流转换为图像目录"
-            ),
-            "cache directory (default: %(default)s)": "缓存目录（默认：%(default)s）",
-            "directory to which matching subtitles will be extracted or mapped": (
-                "匹配字幕将被提取或映射到的目录"
-            ),
-            "extract matching subtitle streams from a video file": (
-                "从视频文件提取匹配的字幕流"
-            ),
-            "include additional subtitle stream details": "包含更多字幕流详细信息",
-            "ISO 639 language codes to extract (default: chi eng yue zho)": (
-                "要提取的 ISO 639 语言代码（默认：chi eng yue zho）"
-            ),
-            "overwrite extracted subtitle files if they exist": (
-                "若提取的字幕文件已存在则覆盖"
-            ),
-            "video infile containing subtitle streams": "包含字幕流的视频输入文件",
-        },
-        "zh-hant": {
-            "convert extracted SUP subtitle streams to image directories": (
-                "將提取的 SUP 字幕流轉換為影像目錄"
-            ),
-            "cache directory (default: %(default)s)": "快取目錄（預設：%(default)s）",
-            "directory to which matching subtitles will be extracted or mapped": (
-                "匹配字幕將被提取或映射到的目錄"
-            ),
-            "extract matching subtitle streams from a video file": (
-                "從影片檔提取匹配的字幕流"
-            ),
-            "include additional subtitle stream details": "包含更多字幕流詳細資訊",
-            "ISO 639 language codes to extract (default: chi eng yue zho)": (
-                "要提取的 ISO 639 語言代碼（預設：chi eng yue zho）"
-            ),
-            "overwrite extracted subtitle files if they exist": (
-                "若提取的字幕檔已存在則覆寫"
-            ),
-            "video infile containing subtitle streams": "包含字幕流的影片輸入檔",
-        },
-    }
+    localizations = MEDIA_EXTRACT_SUBS_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

@@ -15,20 +15,23 @@ from .optimization import OptimizationCli
 
 __all__ = ["UtilityCli"]
 
+UTILITY_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for utility operations": "实用工具命令行界面",
+        "run utility commands": "运行实用工具命令",
+    },
+    "zh-hant": {
+        "command-line interface for utility operations": "實用工具命令列介面",
+        "run utility commands": "執行實用工具命令",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class UtilityCli(ScinoephileCliBase):
     """Run utility commands."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for utility operations": "实用工具命令行界面",
-            "run utility commands": "运行实用工具命令",
-        },
-        "zh-hant": {
-            "command-line interface for utility operations": "實用工具命令列介面",
-            "run utility commands": "執行實用工具命令",
-        },
-    }
+    localizations = UTILITY_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

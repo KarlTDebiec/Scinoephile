@@ -14,24 +14,27 @@ from .zho_process_cli import ZhoProcessCli
 
 __all__ = ["ZhoCli"]
 
+ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for standard Chinese subtitle operations": (
+            "标准中文字幕操作命令行界面"
+        ),
+        "modify standard Chinese subtitles": "修改标准中文字幕",
+    },
+    "zh-hant": {
+        "command-line interface for standard Chinese subtitle operations": (
+            "標準中文字幕操作命令列介面"
+        ),
+        "modify standard Chinese subtitles": "修改標準中文字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class ZhoCli(ScinoephileCliBase):
     """Modify standard Chinese subtitles."""
 
-    localizations = {
-        "zh-hans": {
-            "command-line interface for standard Chinese subtitle operations": (
-                "标准中文字幕操作命令行界面"
-            ),
-            "modify standard Chinese subtitles": "修改标准中文字幕",
-        },
-        "zh-hant": {
-            "command-line interface for standard Chinese subtitle operations": (
-                "標準中文字幕操作命令列介面"
-            ),
-            "modify standard Chinese subtitles": "修改標準中文字幕",
-        },
-    }
+    localizations = ZHO_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
