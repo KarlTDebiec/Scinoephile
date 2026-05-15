@@ -28,7 +28,9 @@ from scinoephile.llms.default_test_cases import (
     ENG_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
     YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
+    YUE_ZHO_TRANSLATION_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
     ZHO_HANT_BLOCK_REVIEW_JSON_PATHS,
@@ -48,8 +50,12 @@ from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPrompt
 from scinoephile.multilang.yue_zho.gapped_translation import (
     YueGappedTranslationVsZhoPromptYueHans,
 )
+from scinoephile.multilang.yue_zho.guided_translation import (
+    YueGuidedTranslationVsZhoPromptYueHans,
+)
 from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
+from scinoephile.multilang.yue_zho.translation import YueTranslationVsZhoPromptYueHans
 
 
 def _get_expected_case_count(relative_paths: list[str]) -> int:
@@ -209,6 +215,24 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cpu.json",
                 "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/mps.json",
             ],
+        ),
+        (
+            "yue_zho_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                YueTranslationVsZhoPromptYueHans,
+                YUE_ZHO_TRANSLATION_JSON_PATHS,
+            ),
+            [],
+        ),
+        (
+            "yue_zho_guided_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                YueGuidedTranslationVsZhoPromptYueHans,
+                YUE_ZHO_GUIDED_TRANSLATION_JSON_PATHS,
+            ),
+            [],
         ),
     ],
 )
