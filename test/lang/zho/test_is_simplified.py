@@ -7,7 +7,7 @@ from __future__ import annotations
 import pytest
 
 from scinoephile.lang.zho.script.analysis import is_simplified
-from test.lang.language_id_test_cases import LANGUAGE_ID_TEST_CASES
+from test.lang.test_language_id import LANGUAGE_ID_TEST_CASES
 
 
 @pytest.mark.parametrize(

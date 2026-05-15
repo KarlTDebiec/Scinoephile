@@ -10,7 +10,7 @@ from scinoephile.common.validation import val_input_path, val_int, val_output_pa
 from scinoephile.core.dictionaries import DictionaryEntry, DictionarySqliteStore
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.lang.cmn.romanization import get_cmn_pinyin_query_strings
-from scinoephile.lang.id import LanguageIDResult
+from scinoephile.lang.language_id import LanguageId
 from scinoephile.lang.yue.romanization import get_yue_jyutping_query_strings
 
 from .constants import GZZJ_DOWNLOAD_URL, MAX_LOOKUP_LIMIT
@@ -81,7 +81,7 @@ class GzzjDictionaryService:
 
         self._ensure_database()
 
-        query_id = LanguageIDResult(query)
+        query_id = LanguageId.from_text(query)
         matched_format = False
         entries: list[DictionaryEntry] = []
 
