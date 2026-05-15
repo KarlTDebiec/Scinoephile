@@ -44,14 +44,16 @@ ENG_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "filling gaps in English subtitles or using English guide subtitles.": (
             "此命令将中文字幕翻译为英文，并可选择补全英文字幕缺口或使用英文参考字幕。"
         ),
-        'aligned Chinese subtitle infile or "-" for stdin': (
-            '已对齐的中文字幕输入文件，或使用 "-" 表示标准输入'
+        'Chinese subtitle infile or "-" for stdin': (
+            '中文字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        'English subtitle infile with gaps, or "-" for stdin': (
-            '含缺口的英文字幕输入文件，或使用 "-" 表示标准输入'
+        "English subtitle infile with gaps to fill with translation from Chinese, "
+        'or "-" for stdin': (
+            '含缺口、需根据中文翻译补全的英文字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        'English guide subtitle infile, or "-" for stdin': (
-            '英文参考字幕输入文件，或使用 "-" 表示标准输入'
+        "English subtitle infile with which to guide translation from Chinese, "
+        'or "-" for stdin': (
+            '用于指导从中文翻译的英文字幕输入文件，或使用 "-" 表示标准输入'
         ),
         "English subtitle outfile path (default: stdout)": (
             "英文字幕输出文件路径（默认：标准输出）"
@@ -68,14 +70,16 @@ ENG_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "filling gaps in English subtitles or using English guide subtitles.": (
             "此命令將中文字幕翻譯為英文，並可選擇補全英文字幕缺口或使用英文參考字幕。"
         ),
-        'aligned Chinese subtitle infile or "-" for stdin': (
-            '已對齊的中文字幕輸入檔，或使用 "-" 代表標準輸入'
+        'Chinese subtitle infile or "-" for stdin': (
+            '中文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        'English subtitle infile with gaps, or "-" for stdin': (
-            '含缺口的英文字幕輸入檔，或使用 "-" 代表標準輸入'
+        "English subtitle infile with gaps to fill with translation from Chinese, "
+        'or "-" for stdin': (
+            '含缺口、需根據中文翻譯補全的英文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        'English guide subtitle infile, or "-" for stdin': (
-            '英文參考字幕輸入檔，或使用 "-" 代表標準輸入'
+        "English subtitle infile with which to guide translation from Chinese, "
+        'or "-" for stdin': (
+            '用於指導從中文翻譯的英文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
         "English subtitle outfile path (default: stdout)": (
             "英文字幕輸出檔路徑（預設：標準輸出）"
@@ -120,7 +124,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             dest="zho_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='aligned Chinese subtitle infile or "-" for stdin',
+            help='Chinese subtitle infile or "-" for stdin',
         )
         eng_input_group = arg_groups["input arguments"].add_mutually_exclusive_group()
         eng_input_group.add_argument(
@@ -128,14 +132,20 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             dest="eng_gapped_infile_path",
             default=None,
             type=input_file_arg(allow_stdin=True),
-            help='English subtitle infile with gaps, or "-" for stdin',
+            help=(
+                "English subtitle infile with gaps to fill with translation from "
+                'Chinese, or "-" for stdin'
+            ),
         )
         eng_input_group.add_argument(
             "--eng-guide-infile",
             dest="eng_guide_infile_path",
             default=None,
             type=input_file_arg(allow_stdin=True),
-            help='English guide subtitle infile, or "-" for stdin',
+            help=(
+                "English subtitle infile with which to guide translation from "
+                'Chinese, or "-" for stdin'
+            ),
         )
 
         # Operation arguments
