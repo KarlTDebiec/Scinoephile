@@ -22,9 +22,10 @@ from scinoephile.cli.ocr import (
 )
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_directory_path, get_temp_file_path
+from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.image.subtitles import ImageSeries
 from test.helpers import (
     assert_cli_help,
     assert_cli_usage,
@@ -32,6 +33,50 @@ from test.helpers import (
     skip_if_ci,
     test_data_root,
 )
+
+
+def _patch_image_series_load(
+    monkeypatch: pytest.MonkeyPatch,
+    target: str,
+    image_series: ImageSeries,
+) -> list[Path]:
+    """Patch image subtitle loading and return captured input paths.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        target: monkeypatch target for ImageSeries.load
+        image_series: image subtitle series to return
+    Returns:
+        paths passed to ImageSeries.load
+    """
+    input_paths: list[Path] = []
+
+    def fake_load(path: Path) -> ImageSeries:
+        """Fake image subtitle loading.
+
+        Arguments:
+            path: image subtitle input path
+        Returns:
+            configured image subtitle series
+        """
+        input_paths.append(path)
+        return image_series
+
+    monkeypatch.setattr(target, fake_load)
+    return input_paths
+
+
+def _write_placeholder_sup_path(tmp_path: Path) -> Path:
+    """Write a placeholder SUP file for CLI path validation.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    Returns:
+        placeholder SUP file path
+    """
+    infile_path = tmp_path / "source.sup"
+    infile_path.write_bytes(b"unused")
+    return infile_path
 
 
 def test_ocr_tesseract_cli_imports_ocr_function_at_module_load():
@@ -112,13 +157,22 @@ def test_ocr_lens_cli_help_lists_language_option_only():
 
 def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
 ):
     """Test Google Lens CLI writes OCR output to SRT.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
     """
-    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    input_paths = _patch_image_series_load(
+        monkeypatch,
+        "scinoephile.cli.ocr.ocr_lens_cli.ImageSeries.load",
+        tiny_image_series,
+    )
+    input_path = _write_placeholder_sup_path(tmp_path)
 
     def fake_ocr_image_series_with_lens(*args: object, **kwargs: object) -> Series:
         """Fake Google Lens image series processing.
@@ -136,17 +190,17 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
         fake_ocr_image_series_with_lens,
     )
 
-    with get_temp_directory_path() as output_dir_path:
-        output_path = output_dir_path / "ocr.srt"
-        run_cli_with_args(
-            OcrLensCli,
-            f"--infile {input_path} --outfile {output_path}",
-        )
+    output_path = tmp_path / "ocr.srt"
+    run_cli_with_args(
+        OcrLensCli,
+        f"--infile {input_path} --outfile {output_path}",
+    )
 
-        output = Series.load(output_path)
-        assert [(event.start, event.end, event.text) for event in output] == [
-            (1000, 2000, "recognized")
-        ]
+    assert input_paths == [input_path.resolve()]
+    output = Series.load(output_path)
+    assert [(event.start, event.end, event.text) for event in output] == [
+        (1000, 2000, "recognized")
+    ]
 
 
 def test_ocr_paddle_cli_help_lists_language_codes():
@@ -184,13 +238,22 @@ def test_ocr_tesseract_cli_help_lists_default_language():
 
 def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
 ):
     """Test PaddleOCR CLI writes OCR output to SRT.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
     """
-    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    input_paths = _patch_image_series_load(
+        monkeypatch,
+        "scinoephile.cli.ocr.ocr_paddle_cli.ImageSeries.load",
+        tiny_image_series,
+    )
+    input_path = _write_placeholder_sup_path(tmp_path)
 
     def fake_ocr_image_series_with_paddle(*args: object, **kwargs: object) -> Series:
         """Fake PaddleOCR image series processing.
@@ -208,28 +271,37 @@ def test_ocr_paddle_cli_converts_image_subtitles_to_srt(
         fake_ocr_image_series_with_paddle,
     )
 
-    with get_temp_directory_path() as output_dir_path:
-        output_path = output_dir_path / "ocr.srt"
-        run_cli_with_args(
-            OcrPaddleCli,
-            f"--infile {input_path} --outfile {output_path}",
-        )
+    output_path = tmp_path / "ocr.srt"
+    run_cli_with_args(
+        OcrPaddleCli,
+        f"--infile {input_path} --outfile {output_path}",
+    )
 
-        output = Series.load(output_path)
-        assert [(event.start, event.end, event.text) for event in output] == [
-            (1000, 2000, "recognized")
-        ]
+    assert input_paths == [input_path.resolve()]
+    output = Series.load(output_path)
+    assert [(event.start, event.end, event.text) for event in output] == [
+        (1000, 2000, "recognized")
+    ]
 
 
 def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
 ):
     """Test Tesseract OCR CLI writes OCR output to SRT.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
     """
-    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    input_paths = _patch_image_series_load(
+        monkeypatch,
+        "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+        tiny_image_series,
+    )
+    input_path = _write_placeholder_sup_path(tmp_path)
 
     def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fake Tesseract OCR image series processing.
@@ -251,28 +323,37 @@ def test_ocr_tesseract_cli_converts_image_subtitles_to_srt(
         fake_ocr_image_series_with_tesseract,
     )
 
-    with get_temp_directory_path() as output_dir_path:
-        output_path = output_dir_path / "ocr.srt"
-        run_cli_with_args(
-            OcrTesseractCli,
-            f"--infile {input_path} --outfile {output_path}",
-        )
+    output_path = tmp_path / "ocr.srt"
+    run_cli_with_args(
+        OcrTesseractCli,
+        f"--infile {input_path} --outfile {output_path}",
+    )
 
-        output = Series.load(output_path)
-        assert [(event.start, event.end, event.text) for event in output] == [
-            (1000, 2000, "recognized")
-        ]
+    assert input_paths == [input_path.resolve()]
+    output = Series.load(output_path)
+    assert [(event.start, event.end, event.text) for event in output] == [
+        (1000, 2000, "recognized")
+    ]
 
 
 def test_ocr_tesseract_cli_passes_italic_detection_options(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
 ):
     """Test Tesseract OCR CLI passes italic detection options.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
     """
-    input_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
+    input_paths = _patch_image_series_load(
+        monkeypatch,
+        "scinoephile.cli.ocr.ocr_tesseract_cli.ImageSeries.load",
+        tiny_image_series,
+    )
+    input_path = _write_placeholder_sup_path(tmp_path)
 
     def fake_ocr_image_series_with_tesseract(*args: object, **kwargs: object) -> Series:
         """Fake Tesseract OCR image series processing.
@@ -294,17 +375,17 @@ def test_ocr_tesseract_cli_passes_italic_detection_options(
         fake_ocr_image_series_with_tesseract,
     )
 
-    with get_temp_directory_path() as output_dir_path:
-        output_path = output_dir_path / "ocr.srt"
-        run_cli_with_args(
-            OcrTesseractCli,
-            f"--infile {input_path} --detect-italics --outfile {output_path}",
-        )
+    output_path = tmp_path / "ocr.srt"
+    run_cli_with_args(
+        OcrTesseractCli,
+        f"--infile {input_path} --detect-italics --outfile {output_path}",
+    )
 
-        output = Series.load(output_path)
-        assert [(event.start, event.end, event.text) for event in output] == [
-            (1000, 2000, "recognized")
-        ]
+    assert input_paths == [input_path.resolve()]
+    output = Series.load(output_path)
+    assert [(event.start, event.end, event.text) for event in output] == [
+        (1000, 2000, "recognized")
+    ]
 
 
 def test_ocr_tesseract_cli_rejects_italic_detection_for_non_english(
