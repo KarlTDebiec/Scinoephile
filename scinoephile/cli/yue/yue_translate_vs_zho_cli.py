@@ -21,11 +21,11 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.yue_zho.gap_translation import (
-    YueGapTranslationVsZhoPromptYueHans,
-    YueGapTranslationVsZhoPromptYueHant,
-    get_yue_gap_translated_vs_zho,
-    get_yue_vs_zho_gap_translator,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+    YueGappedTranslationVsZhoPromptYueHant,
+    get_yue_gapped_translated_vs_zho,
+    get_yue_vs_zho_gapped_translator,
 )
 
 __all__ = ["YueTranslateVsZhoCli"]
@@ -162,7 +162,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_translation_prompt_cls(
         cls, script: str
-    ) -> type[YueGapTranslationVsZhoPromptYueHans]:
+    ) -> type[YueGappedTranslationVsZhoPromptYueHans]:
         """Get the gap translation prompt class for the selected script.
 
         Arguments:
@@ -171,8 +171,8 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             gap translation prompt class
         """
         if script == "traditional":
-            return YueGapTranslationVsZhoPromptYueHant
-        return YueGapTranslationVsZhoPromptYueHans
+            return YueGappedTranslationVsZhoPromptYueHant
+        return YueGappedTranslationVsZhoPromptYueHans
 
     @classmethod
     def _main(
@@ -202,10 +202,10 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         # Perform operations
         prompt_cls = cls._get_translation_prompt_cls(script)
         provider = get_provider(llm_provider_name, model=llm_model_name)
-        translator = get_yue_vs_zho_gap_translator(
+        translator = get_yue_vs_zho_gapped_translator(
             prompt_cls=prompt_cls, provider=provider
         )
-        yuewen = get_yue_gap_translated_vs_zho(
+        yuewen = get_yue_gapped_translated_vs_zho(
             yuewen=yuewen,
             zhongwen=zhongwen,
             translator=translator,
