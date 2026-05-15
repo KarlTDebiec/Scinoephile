@@ -19,6 +19,7 @@ from scinoephile.multilang.eng_zho.guided_translation import (
     get_eng_zho_guided_translator,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
+from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
 from test.data.synchronization import process_zho_hans_eng
 from test.helpers import test_data_root
 
@@ -80,6 +81,7 @@ if "Guided English from 粤语" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     jpn_eng = Series.load(input_path / "jpn_eng.srt")
     translator = get_eng_zho_guided_translator(
+        prompt_cls=EngGuidedTranslationVsZhoOfYuePrompt,
         test_case_path=(
             output_path / "yue_eng/multilang/eng_zho/guided_translation.json"
         ),

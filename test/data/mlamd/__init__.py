@@ -39,8 +39,8 @@ from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
 from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
-from scinoephile.multilang.yue_zho.gap_translation import (
-    YueGapTranslationVsZhoPromptYueHans,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
@@ -78,7 +78,7 @@ __all__ = [
     "get_mlamd_eng_block_review_test_cases",
     "get_mlamd_eng_ocr_fusion_test_cases",
     "get_mlamd_yue_deliniation_test_cases",
-    "get_mlamd_yue_vs_zho_gap_translation_test_cases",
+    "get_mlamd_yue_vs_zho_gapped_translation_test_cases",
     "get_mlamd_yue_punctuation_test_cases",
     "get_mlamd_yue_vs_zho_block_review_test_cases",
     "get_mlamd_yue_vs_zho_line_review_test_cases",
@@ -307,11 +307,11 @@ def get_mlamd_yue_deliniation_test_cases(
 
 
 @cache
-def get_mlamd_yue_vs_zho_gap_translation_test_cases(
-    prompt_cls: type[DualNMinusMToNPrompt] = YueGapTranslationVsZhoPromptYueHans,
+def get_mlamd_yue_vs_zho_gapped_translation_test_cases(
+    prompt_cls: type[DualNMinusMToNPrompt] = YueGappedTranslationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
-    """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
+    """Get MLAMD 简体粤文 vs 简体中文 gapped translation test cases.
 
     Arguments:
         prompt_cls: text for LLM correspondence
