@@ -155,6 +155,13 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
     current_image = np.zeros((0, 0), np.uint8)
     has_current_image = False
 
+    pending_image_data = np.zeros(0, np.uint8)
+    pending_image_data_length = -1
+    pending_image_height = 0
+    pending_image_object_id = -1
+    pending_image_version = -1
+    pending_image_width = 0
+
     active_start = -1.0
     active_image = np.zeros((0, 0, 4), np.uint8)
     has_active_image = False
@@ -192,12 +199,74 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
                 raise ValueError("SUP palette segment is truncated.")
             palette = read_sup_palette(segment_bytes[2:])
         elif segment_kind == 0x15:  # Image
-            if size < 11:
+            if size < 4:
                 raise ValueError("SUP image segment is truncated.")
-            width = int(segment_bytes[7]) * 256 + int(segment_bytes[8])
-            height = int(segment_bytes[9]) * 256 + int(segment_bytes[10])
-            current_image = read_sup_image_array(segment_bytes[11:], height, width)
-            has_current_image = True
+            object_id = int(segment_bytes[0]) * 256 + int(segment_bytes[1])
+            object_version = int(segment_bytes[2])
+            sequence_descriptor = int(segment_bytes[3])
+            if (sequence_descriptor & 0x3F) != 0:
+                raise ValueError("SUP image segment has invalid sequence descriptor.")
+
+            if (sequence_descriptor & 0x80) != 0:
+                if pending_image_object_id >= 0:
+                    raise ValueError(
+                        "SUP image segment started before previous image completed."
+                    )
+                if size < 11:
+                    raise ValueError("SUP image segment is truncated.")
+                object_data_length = (
+                    int(segment_bytes[4]) * 65536
+                    + int(segment_bytes[5]) * 256
+                    + int(segment_bytes[6])
+                )
+                if object_data_length < 4:
+                    raise ValueError("SUP image segment is truncated.")
+                pending_image_data = segment_bytes[11:]
+                pending_image_data_length = object_data_length - 4
+                pending_image_height = int(segment_bytes[9]) * 256 + int(
+                    segment_bytes[10]
+                )
+                pending_image_object_id = object_id
+                pending_image_version = object_version
+                pending_image_width = int(segment_bytes[7]) * 256 + int(
+                    segment_bytes[8]
+                )
+            else:
+                if pending_image_object_id < 0:
+                    raise ValueError(
+                        "Encountered SUP image continuation without initial image "
+                        "segment."
+                    )
+                if (
+                    object_id != pending_image_object_id
+                    or object_version != pending_image_version
+                ):
+                    raise ValueError(
+                        "SUP image continuation does not match initial image segment."
+                    )
+                pending_image_data = np.concatenate(
+                    (pending_image_data, segment_bytes[4:])
+                )
+
+            if len(pending_image_data) > pending_image_data_length:
+                raise ValueError(
+                    "SUP image data extends past declared object data length."
+                )
+            if (sequence_descriptor & 0x40) != 0:
+                if len(pending_image_data) != pending_image_data_length:
+                    raise ValueError("SUP image segment data is truncated.")
+                current_image = read_sup_image_array(
+                    pending_image_data,
+                    pending_image_height,
+                    pending_image_width,
+                )
+                has_current_image = True
+                pending_image_data = np.zeros(0, np.uint8)
+                pending_image_data_length = -1
+                pending_image_height = 0
+                pending_image_object_id = -1
+                pending_image_version = -1
+                pending_image_width = 0
         elif segment_kind == 0x16:  # Presentation Composition
             if size < 11:
                 raise ValueError("SUP presentation composition segment is truncated.")
@@ -240,6 +309,9 @@ def read_sup_series(  # noqa: PLR0912, PLR0915
             set_has_object = False
 
         byte_i += size
+
+    if pending_image_object_id >= 0:
+        raise ValueError("SUP image segment data is truncated.")
 
     if has_active_image:
         starts.append(active_start)

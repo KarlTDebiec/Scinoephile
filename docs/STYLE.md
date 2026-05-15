@@ -48,6 +48,7 @@
 * Exclusively use f-strings for string interpolation.
 * Where possible, classes should implement `__repr__` methods such that they may be reconstructed from its `repr` output.
 * Avoid ternary expressions; prefer explicit `if`/`else` statements for readability.
+* Use one-line block comments above continuous blocks of code when they help separate the steps of nontrivial logic; do not end these comments with periods.
 
 ## Type Annotations
 * Include type annotations for all function and method signatures, with the following exception:
