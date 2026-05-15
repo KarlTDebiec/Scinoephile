@@ -10,11 +10,8 @@ from copy import deepcopy
 from functools import cache, lru_cache
 from logging import getLogger
 from typing import Any, cast
-from warnings import catch_warnings, simplefilter
 
-with catch_warnings():
-    simplefilter("ignore", UserWarning)
-    import pycantonese
+import pycantonese
 
 from scinoephile.core.subtitles import Series
 from scinoephile.core.text import RE_WESTERN, full_to_half_punc, get_char_type

@@ -10,7 +10,6 @@ from collections.abc import Sequence
 from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
-from warnings import catch_warnings, filterwarnings
 
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.validation import val_output_dir_path
@@ -27,10 +26,7 @@ _TRANSCRIPTION_EXTRA_MESSAGE = (
 )
 
 if TYPE_CHECKING:
-    with catch_warnings():
-        filterwarnings("ignore", category=SyntaxWarning)
-        filterwarnings("ignore", category=RuntimeWarning)
-        from pydub import AudioSegment
+    from pydub import AudioSegment
 
 logger = getLogger(__name__)
 
