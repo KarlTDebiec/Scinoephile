@@ -18,34 +18,37 @@ from .output import print_entries, sort_entries
 
 __all__ = ["CacheListCli"]
 
+CACHE_LIST_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "cache namespace to inspect": "要检查的缓存命名空间",
+        "cache root directory to inspect (default: %(default)s)": (
+            "要检查的缓存根目录（默认：%(default)s）"
+        ),
+        "list cache entries": "列出缓存条目",
+        "maximum number of entries to show": "要显示的最大条目数",
+        "output format": "输出格式",
+        "reverse sort order": "反转排序顺序",
+        "sort field": "排序字段",
+    },
+    "zh-hant": {
+        "cache namespace to inspect": "要檢查的快取命名空間",
+        "cache root directory to inspect (default: %(default)s)": (
+            "要檢查的快取根目錄（預設：%(default)s）"
+        ),
+        "list cache entries": "列出快取條目",
+        "maximum number of entries to show": "要顯示的最大條目數",
+        "output format": "輸出格式",
+        "reverse sort order": "反轉排序順序",
+        "sort field": "排序欄位",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class CacheListCli(ScinoephileCliBase):
     """List cache entries."""
 
-    localizations = {
-        "zh-hans": {
-            "cache namespace to inspect": "要检查的缓存命名空间",
-            "cache root directory to inspect (default: %(default)s)": (
-                "要检查的缓存根目录（默认：%(default)s）"
-            ),
-            "list cache entries": "列出缓存条目",
-            "maximum number of entries to show": "要显示的最大条目数",
-            "output format": "输出格式",
-            "reverse sort order": "反转排序顺序",
-            "sort field": "排序字段",
-        },
-        "zh-hant": {
-            "cache namespace to inspect": "要檢查的快取命名空間",
-            "cache root directory to inspect (default: %(default)s)": (
-                "要檢查的快取根目錄（預設：%(default)s）"
-            ),
-            "list cache entries": "列出快取條目",
-            "maximum number of entries to show": "要顯示的最大條目數",
-            "output format": "輸出格式",
-            "reverse sort order": "反轉排序順序",
-            "sort field": "排序欄位",
-        },
-    }
+    localizations = CACHE_LIST_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

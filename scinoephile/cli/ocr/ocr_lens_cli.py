@@ -19,34 +19,37 @@ from scinoephile.image.subtitles import ImageSeries
 
 __all__ = ["OcrLensCli"]
 
+OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "Google Lens language code": "Google Lens 语言代码",
+        "Recognize image subtitles with Google Lens.": (
+            "使用 Google Lens 识别图像字幕。"
+        ),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): "图像字幕输入文件路径（包含 index.html 和 png 文件，或 .sup 文件）",
+        "recognized subtitle outfile path": "识别后字幕输出文件路径",
+    },
+    "zh-hant": {
+        "Google Lens language code": "Google Lens 語言代碼",
+        "Recognize image subtitles with Google Lens.": (
+            "使用 Google Lens 識別影像字幕。"
+        ),
+        (
+            "image subtitle infile path (directory containing index.html and "
+            "png files, or a .sup file)"
+        ): "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案，或 .sup 檔案）",
+        "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OcrLensCli(ScinoephileCliBase):
     """Recognize image subtitles with Google Lens."""
 
-    localizations = {
-        "zh-hans": {
-            "Google Lens language code": "Google Lens 语言代码",
-            "Recognize image subtitles with Google Lens.": (
-                "使用 Google Lens 识别图像字幕。"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): "图像字幕输入文件路径（包含 index.html 和 png 文件，或 .sup 文件）",
-            "recognized subtitle outfile path": "识别后字幕输出文件路径",
-        },
-        "zh-hant": {
-            "Google Lens language code": "Google Lens 語言代碼",
-            "Recognize image subtitles with Google Lens.": (
-                "使用 Google Lens 識別影像字幕。"
-            ),
-            (
-                "image subtitle infile path (directory containing index.html and "
-                "png files, or a .sup file)"
-            ): "影像字幕輸入檔案路徑（包含 index.html 和 png 檔案，或 .sup 檔案）",
-            "recognized subtitle outfile path": "識別後字幕輸出檔案路徑",
-        },
-    }
+    localizations = OCR_LENS_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

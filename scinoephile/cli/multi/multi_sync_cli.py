@@ -19,50 +19,55 @@ from scinoephile.core.synchronization import get_synced_series
 
 __all__ = ["MultiSyncCli"]
 
+MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "combine two series into the top and bottom of a synchronized series": (
+            "将两个序列合并为上下行同步字幕"
+        ),
+        "initial overlap cutoff used to form sync groups (default: 0.16)": (
+            "用于形成同步组的初始重叠阈值（默认：0.16）"
+        ),
+        "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
+            "用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"
+        ),
+        'subtitle infile for bottom line or "-" for stdin': (
+            '底行字幕输入文件，或使用 "-" 表示标准输入'
+        ),
+        'subtitle infile for top line or "-" for stdin': (
+            '顶行字幕输入文件，或使用 "-" 表示标准输入'
+        ),
+        "synchronized subtitle outfile path (default: stdout)": (
+            "同步字幕输出文件路径（默认：标准输出）"
+        ),
+    },
+    "zh-hant": {
+        "combine two series into the top and bottom of a synchronized series": (
+            "將兩個序列合併為上下行同步字幕"
+        ),
+        "initial overlap cutoff used to form sync groups (default: 0.16)": (
+            "用於形成同步組的初始重疊閾值（預設：0.16）"
+        ),
+        "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
+            "用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"
+        ),
+        'subtitle infile for bottom line or "-" for stdin': (
+            '底行字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
+        'subtitle infile for top line or "-" for stdin': (
+            '頂行字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
+        "synchronized subtitle outfile path (default: stdout)": (
+            "同步字幕輸出檔路徑（預設：標準輸出）"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class MultiSyncCli(ScinoephileCliBase):
     """Combine two series into the top and bottom of a synchronized series."""
 
-    localizations = {
-        "zh-hans": {
-            "combine two series into the top and bottom of a synchronized series": (
-                "将两个序列合并为上下行同步字幕"
-            ),
-            "initial overlap cutoff used to form sync groups (default: 0.16)": (
-                "用于形成同步组的初始重叠阈值（默认：0.16）"
-            ),
-            "pause length in milliseconds used to split subtitle blocks "
-            "(default: 3000)": ("用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"),
-            'subtitle infile for bottom line or "-" for stdin': (
-                '底行字幕输入文件，或使用 "-" 表示标准输入'
-            ),
-            'subtitle infile for top line or "-" for stdin': (
-                '顶行字幕输入文件，或使用 "-" 表示标准输入'
-            ),
-            "synchronized subtitle outfile path (default: stdout)": (
-                "同步字幕输出文件路径（默认：标准输出）"
-            ),
-        },
-        "zh-hant": {
-            "combine two series into the top and bottom of a synchronized series": (
-                "將兩個序列合併為上下行同步字幕"
-            ),
-            "initial overlap cutoff used to form sync groups (default: 0.16)": (
-                "用於形成同步組的初始重疊閾值（預設：0.16）"
-            ),
-            "pause length in milliseconds used to split subtitle blocks "
-            "(default: 3000)": ("用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"),
-            'subtitle infile for bottom line or "-" for stdin': (
-                '底行字幕輸入檔，或使用 "-" 代表標準輸入'
-            ),
-            'subtitle infile for top line or "-" for stdin': (
-                '頂行字幕輸入檔，或使用 "-" 代表標準輸入'
-            ),
-            "synchronized subtitle outfile path (default: stdout)": (
-                "同步字幕輸出檔路徑（預設：標準輸出）"
-            ),
-        },
-    }
+    localizations = MULTI_SYNC_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

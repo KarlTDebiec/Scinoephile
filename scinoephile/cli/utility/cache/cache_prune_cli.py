@@ -18,40 +18,43 @@ from .output import print_entries
 
 __all__ = ["CachePruneCli"]
 
+CACHE_PRUNE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "cache namespace to inspect": "要检查的缓存命名空间",
+        "cache root directory to inspect (default: %(default)s)": (
+            "要检查的缓存根目录（默认：%(default)s）"
+        ),
+        "confirm destructive deletion": "确认破坏性删除",
+        "delete entries older than a duration such as 7d, 30d, or 12h": (
+            "删除早于指定时长的条目，例如 7d、30d 或 12h"
+        ),
+        "prune old cache entries": "清理旧缓存条目",
+        "show what would be deleted without deleting files": (
+            "显示将删除的内容但不删除文件"
+        ),
+    },
+    "zh-hant": {
+        "cache namespace to inspect": "要檢查的快取命名空間",
+        "cache root directory to inspect (default: %(default)s)": (
+            "要檢查的快取根目錄（預設：%(default)s）"
+        ),
+        "confirm destructive deletion": "確認破壞性刪除",
+        "delete entries older than a duration such as 7d, 30d, or 12h": (
+            "刪除早於指定時長的條目，例如 7d、30d 或 12h"
+        ),
+        "prune old cache entries": "清理舊快取條目",
+        "show what would be deleted without deleting files": (
+            "顯示將刪除的內容但不刪除檔案"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class CachePruneCli(ScinoephileCliBase):
     """Prune old cache entries."""
 
-    localizations = {
-        "zh-hans": {
-            "cache namespace to inspect": "要检查的缓存命名空间",
-            "cache root directory to inspect (default: %(default)s)": (
-                "要检查的缓存根目录（默认：%(default)s）"
-            ),
-            "confirm destructive deletion": "确认破坏性删除",
-            "delete entries older than a duration such as 7d, 30d, or 12h": (
-                "删除早于指定时长的条目，例如 7d、30d 或 12h"
-            ),
-            "prune old cache entries": "清理旧缓存条目",
-            "show what would be deleted without deleting files": (
-                "显示将删除的内容但不删除文件"
-            ),
-        },
-        "zh-hant": {
-            "cache namespace to inspect": "要檢查的快取命名空間",
-            "cache root directory to inspect (default: %(default)s)": (
-                "要檢查的快取根目錄（預設：%(default)s）"
-            ),
-            "confirm destructive deletion": "確認破壞性刪除",
-            "delete entries older than a duration such as 7d, 30d, or 12h": (
-                "刪除早於指定時長的條目，例如 7d、30d 或 12h"
-            ),
-            "prune old cache entries": "清理舊快取條目",
-            "show what would be deleted without deleting files": (
-                "顯示將刪除的內容但不刪除檔案"
-            ),
-        },
-    }
+    localizations = CACHE_PRUNE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

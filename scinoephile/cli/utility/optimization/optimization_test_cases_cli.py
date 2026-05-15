@@ -23,38 +23,41 @@ from .argument_types import operation_arg
 
 __all__ = ["OptimizationSyncTestCasesCli"]
 
+OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "SQLite database outfile path": "SQLite 数据库输出路径",
+        "operation to which test case JSON file(s) correspond": (
+            "测试用例 JSON 文件对应的操作"
+        ),
+        "list rows that would be inserted, updated, or deleted without writing": (
+            "列出将插入、更新或删除的行而不写入"
+        ),
+        "one or more input JSON paths": "一个或多个输入 JSON 路径",
+        "synchronize persisted LLM test cases from JSON into SQLite": (
+            "将 JSON 测试用例同步到 SQLite"
+        ),
+    },
+    "zh-hant": {
+        "SQLite database outfile path": "SQLite 資料庫輸出路徑",
+        "operation to which test case JSON file(s) correspond": (
+            "測試用例 JSON 檔對應的操作"
+        ),
+        "list rows that would be inserted, updated, or deleted without writing": (
+            "列出將插入、更新或刪除的列而不寫入"
+        ),
+        "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
+        "synchronize persisted LLM test cases from JSON into SQLite": (
+            "將 JSON 測試用例同步到 SQLite"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OptimizationSyncTestCasesCli(ScinoephileCliBase):
     """Synchronize persisted LLM test cases from JSON into SQLite."""
 
-    localizations = {
-        "zh-hans": {
-            "SQLite database outfile path": "SQLite 数据库输出路径",
-            "operation to which test case JSON file(s) correspond": (
-                "测试用例 JSON 文件对应的操作"
-            ),
-            "list rows that would be inserted, updated, or deleted without writing": (
-                "列出将插入、更新或删除的行而不写入"
-            ),
-            "one or more input JSON paths": "一个或多个输入 JSON 路径",
-            "synchronize persisted LLM test cases from JSON into SQLite": (
-                "将 JSON 测试用例同步到 SQLite"
-            ),
-        },
-        "zh-hant": {
-            "SQLite database outfile path": "SQLite 資料庫輸出路徑",
-            "operation to which test case JSON file(s) correspond": (
-                "測試用例 JSON 檔對應的操作"
-            ),
-            "list rows that would be inserted, updated, or deleted without writing": (
-                "列出將插入、更新或刪除的列而不寫入"
-            ),
-            "one or more input JSON paths": "一個或多個輸入 JSON 路徑",
-            "synchronize persisted LLM test cases from JSON into SQLite": (
-                "將 JSON 測試用例同步到 SQLite"
-            ),
-        },
-    }
+    localizations = OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod

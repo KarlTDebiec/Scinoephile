@@ -30,62 +30,63 @@ from scinoephile.multilang.yue_zho.gap_translation import (
 
 __all__ = ["YueTranslateVsZhoCli"]
 
+YUE_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for written Cantonese gap translation": (
+            "书面粤语缺口翻译命令行界面"
+        ),
+        "This command fills empty written Cantonese subtitle lines using the "
+        "corresponding standard Chinese subtitle lines as reference.": (
+            "此命令使用对应的标准中文字幕作为参考，补全空白的书面粤语字幕行。"
+        ),
+        'aligned standard Chinese subtitle infile or "-" for stdin': (
+            '已对齐的标准中文字幕输入文件，或使用 "-" 表示标准输入'
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示词和输出转换使用的字形（默认：简体）"
+        ),
+        'written Cantonese subtitle infile with gaps, or "-" for stdin': (
+            '含缺口的书面粤语字幕输入文件，或使用 "-" 表示标准输入'
+        ),
+        (
+            "gap-filled written Cantonese subtitle outfile path (default: stdout)"
+        ): "补全缺口后的书面粤语字幕输出文件路径（默认：标准输出）",
+        "fill missing written Cantonese subtitles using standard Chinese "
+        "subtitles": "使用标准中文字幕补全缺失的书面粤语字幕",
+    },
+    "zh-hant": {
+        "command-line interface for written Cantonese gap translation": (
+            "書面粵語缺口翻譯命令列介面"
+        ),
+        "This command fills empty written Cantonese subtitle lines using the "
+        "corresponding standard Chinese subtitle lines as reference.": (
+            "此命令使用對應的標準中文字幕作為參考，補全空白的書面粵語字幕行。"
+        ),
+        'aligned standard Chinese subtitle infile or "-" for stdin': (
+            '已對齊的標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
+        "script for prompts and output conversion (default: simplified)": (
+            "提示詞與輸出轉換使用的字形（預設：簡體）"
+        ),
+        'written Cantonese subtitle infile with gaps, or "-" for stdin': (
+            '含缺口的書面粵語字幕輸入檔，或使用 "-" 代表標準輸入'
+        ),
+        (
+            "gap-filled written Cantonese subtitle outfile path (default: stdout)"
+        ): "補全缺口後的書面粵語字幕輸出檔路徑（預設：標準輸出）",
+        "fill missing written Cantonese subtitles using standard Chinese "
+        "subtitles": "使用標準中文字幕補全缺失的書面粵語字幕",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class YueTranslateVsZhoCli(ScinoephileCliBase):
     """Fill missing written Cantonese subtitles using standard Chinese subtitles."""
 
     localizations = merge_localizations(
         LLM_LOCALIZATIONS,
-        {
-            "zh-hans": {
-                "command-line interface for written Cantonese gap translation": (
-                    "书面粤语缺口翻译命令行界面"
-                ),
-                "This command fills empty written Cantonese subtitle lines using the "
-                "corresponding standard Chinese subtitle lines as reference.": (
-                    "此命令使用对应的标准中文字幕作为参考，补全空白的书面粤语字幕行。"
-                ),
-                'aligned standard Chinese subtitle infile or "-" for stdin': (
-                    '已对齐的标准中文字幕输入文件，或使用 "-" 表示标准输入'
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示词和输出转换使用的字形（默认：简体）"
-                ),
-                'written Cantonese subtitle infile with gaps, or "-" for stdin': (
-                    '含缺口的书面粤语字幕输入文件，或使用 "-" 表示标准输入'
-                ),
-                (
-                    "gap-filled written Cantonese subtitle outfile path "
-                    "(default: stdout)"
-                ): "补全缺口后的书面粤语字幕输出文件路径（默认：标准输出）",
-                "fill missing written Cantonese subtitles using standard Chinese "
-                "subtitles": "使用标准中文字幕补全缺失的书面粤语字幕",
-            },
-            "zh-hant": {
-                "command-line interface for written Cantonese gap translation": (
-                    "書面粵語缺口翻譯命令列介面"
-                ),
-                "This command fills empty written Cantonese subtitle lines using the "
-                "corresponding standard Chinese subtitle lines as reference.": (
-                    "此命令使用對應的標準中文字幕作為參考，補全空白的書面粵語字幕行。"
-                ),
-                'aligned standard Chinese subtitle infile or "-" for stdin': (
-                    '已對齊的標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
-                ),
-                "script for prompts and output conversion (default: simplified)": (
-                    "提示詞與輸出轉換使用的字形（預設：簡體）"
-                ),
-                'written Cantonese subtitle infile with gaps, or "-" for stdin': (
-                    '含缺口的書面粵語字幕輸入檔，或使用 "-" 代表標準輸入'
-                ),
-                (
-                    "gap-filled written Cantonese subtitle outfile path "
-                    "(default: stdout)"
-                ): "補全缺口後的書面粵語字幕輸出檔路徑（預設：標準輸出）",
-                "fill missing written Cantonese subtitles using standard Chinese "
-                "subtitles": "使用標準中文字幕補全缺失的書面粵語字幕",
-            },
-        },
+        YUE_TRANSLATE_VS_ZHO_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
