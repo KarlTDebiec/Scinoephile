@@ -52,6 +52,7 @@ scinoephile = "scinoephile.cli.scinoephile_cli:ScinoephileCli.main"
 dev = [
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
+    "pytest-github-actions-annotate-failures>=0.4.0",
     "pytest-xdist>=3.8.0",
     "ruff>=0.15.12",
     "ty>=0.0.34",
