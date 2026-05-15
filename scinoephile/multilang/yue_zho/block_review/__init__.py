@@ -19,14 +19,14 @@ from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNProcessor
 from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import (
-    YueVsZhoBlockReviewPromptYueHans,
-    YueVsZhoBlockReviewPromptYueHant,
+    YueBlockReviewVsZhoPromptYueHans,
+    YueBlockReviewVsZhoPromptYueHant,
 )
 
 __all__ = [
     "YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC",
-    "YueVsZhoBlockReviewPromptYueHans",
-    "YueVsZhoBlockReviewPromptYueHant",
+    "YueBlockReviewVsZhoPromptYueHans",
+    "YueBlockReviewVsZhoPromptYueHant",
     "YueZhoBlockReviewProcessKwargs",
     "YueZhoBlockReviewProcessorKwargs",
     "get_yue_block_reviewed_vs_zho",
@@ -37,7 +37,7 @@ YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-block-review",
     test_case_table_name="test_cases__yue_zho__block_review",
     manager_cls=DualNToNManager,
-    prompt_cls=YueVsZhoBlockReviewPromptYueHans,
+    prompt_cls=YueBlockReviewVsZhoPromptYueHans,
 )
 """Operation specification for written Cantonese block review."""
 
@@ -80,8 +80,8 @@ def get_yue_block_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_block_reviewer(
-    prompt_cls: type[YueVsZhoBlockReviewPromptYueHans] = (
-        YueVsZhoBlockReviewPromptYueHans
+    prompt_cls: type[YueBlockReviewVsZhoPromptYueHans] = (
+        YueBlockReviewVsZhoPromptYueHans
     ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

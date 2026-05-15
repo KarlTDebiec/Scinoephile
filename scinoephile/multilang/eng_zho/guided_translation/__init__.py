@@ -20,13 +20,13 @@ from scinoephile.llms.dual_n_to_m import (
 )
 from scinoephile.llms.providers.registry import get_provider
 
-from .prompts import EngZhoGuidedTranslationPrompt
+from .prompts import EngGuidedTranslationVsZhoPrompt
 
 __all__ = [
     "ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC",
     "EngZhoGuidedTranslationProcessKwargs",
     "EngZhoGuidedTranslationProcessorKwargs",
-    "EngZhoGuidedTranslationPrompt",
+    "EngGuidedTranslationVsZhoPrompt",
     "get_eng_translated_from_zho_with_eng_guidance",
     "get_eng_zho_guided_translator",
 ]
@@ -35,7 +35,7 @@ ENG_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="eng-zho-guided-translation",
     test_case_table_name="test_cases__eng_zho__guided_translation",
     manager_cls=DualNToMManager,
-    prompt_cls=EngZhoGuidedTranslationPrompt,
+    prompt_cls=EngGuidedTranslationVsZhoPrompt,
 )
 """Operation specification for English guided translation from Chinese."""
 
@@ -80,7 +80,7 @@ def get_eng_translated_from_zho_with_eng_guidance(
 
 
 def get_eng_zho_guided_translator(
-    prompt_cls: type[EngZhoGuidedTranslationPrompt] = EngZhoGuidedTranslationPrompt,
+    prompt_cls: type[EngGuidedTranslationVsZhoPrompt] = EngGuidedTranslationVsZhoPrompt,
     test_cases: list[TestCase] | None = None,
     provider: LLMProvider | None = None,
     **kwargs: Unpack[EngZhoGuidedTranslationProcessorKwargs],

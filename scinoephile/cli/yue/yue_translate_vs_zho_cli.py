@@ -22,8 +22,8 @@ from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.gap_translation import (
-    YueVsZhoGapTranslationPromptYueHans,
-    YueVsZhoGapTranslationPromptYueHant,
+    YueGapTranslationVsZhoPromptYueHans,
+    YueGapTranslationVsZhoPromptYueHant,
     get_yue_gap_translated_vs_zho,
     get_yue_vs_zho_gap_translator,
 )
@@ -162,7 +162,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
     @classmethod
     def _get_translation_prompt_cls(
         cls, script: str
-    ) -> type[YueVsZhoGapTranslationPromptYueHans]:
+    ) -> type[YueGapTranslationVsZhoPromptYueHans]:
         """Get the gap translation prompt class for the selected script.
 
         Arguments:
@@ -171,8 +171,8 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             gap translation prompt class
         """
         if script == "traditional":
-            return YueVsZhoGapTranslationPromptYueHant
-        return YueVsZhoGapTranslationPromptYueHans
+            return YueGapTranslationVsZhoPromptYueHant
+        return YueGapTranslationVsZhoPromptYueHans
 
     @classmethod
     def _main(

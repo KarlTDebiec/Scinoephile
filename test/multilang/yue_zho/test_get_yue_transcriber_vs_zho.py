@@ -21,10 +21,10 @@ from scinoephile.multilang.yue_zho.transcription import (
     get_yue_vs_zho_transcriber,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoDeliniationPromptYueHans,
+    YueDeliniationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoPunctuationPromptYueHans,
+    YuePunctuationVsZhoPromptYueHans,
 )
 
 
@@ -54,8 +54,8 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
             convert=None,
-            deliniation_prompt_cls=YueVsZhoDeliniationPromptYueHans,
-            punctuation_prompt_cls=YueVsZhoPunctuationPromptYueHans,
+            deliniation_prompt_cls=YueDeliniationVsZhoPromptYueHans,
+            punctuation_prompt_cls=YuePunctuationVsZhoPromptYueHans,
             provider=ANY,
         )
         assert (

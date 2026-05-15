@@ -10,7 +10,7 @@ from scinoephile.core.llms import LLMProvider
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.llms.dual_n_to_m import DualNToMProcessor
 from scinoephile.multilang.eng_zho.guided_translation import (
-    EngZhoGuidedTranslationPrompt,
+    EngGuidedTranslationVsZhoPrompt,
     get_eng_translated_from_zho_with_eng_guidance,
     get_eng_zho_guided_translator,
 )
@@ -18,9 +18,9 @@ from scinoephile.multilang.eng_zho.guided_translation import (
 
 def test_eng_zho_guided_translation_prompt_field_names():
     """Test guided translation prompt uses domain-specific field names."""
-    assert EngZhoGuidedTranslationPrompt.src_1(1) == "zho_1"
-    assert EngZhoGuidedTranslationPrompt.src_2(1) == "eng_reference_1"
-    assert EngZhoGuidedTranslationPrompt.output(1) == "eng_1"
+    assert EngGuidedTranslationVsZhoPrompt.src_1(1) == "zho_1"
+    assert EngGuidedTranslationVsZhoPrompt.src_2(1) == "eng_reference_1"
+    assert EngGuidedTranslationVsZhoPrompt.output(1) == "eng_1"
 
 
 def test_get_eng_zho_guided_translator_wires_processor():
@@ -30,7 +30,7 @@ def test_get_eng_zho_guided_translator_wires_processor():
     processor = get_eng_zho_guided_translator(test_cases=[], provider=provider)
 
     assert isinstance(processor, DualNToMProcessor)
-    assert processor.prompt_cls is EngZhoGuidedTranslationPrompt
+    assert processor.prompt_cls is EngGuidedTranslationVsZhoPrompt
     assert processor.queryer.provider is provider
 
 

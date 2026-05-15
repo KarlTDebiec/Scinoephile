@@ -26,14 +26,14 @@ from scinoephile.llms.providers.registry import get_provider
 from .manager import YueZhoLineReviewManager
 from .processor import YueZhoLineReviewProcessor
 from .prompts import (
-    YueVsZhoLineReviewPromptYueHans,
-    YueVsZhoLineReviewPromptYueHant,
+    YueLineReviewVsZhoPromptYueHans,
+    YueLineReviewVsZhoPromptYueHant,
 )
 
 __all__ = [
     "YUE_ZHO_LINE_REVIEW_OPERATION_SPEC",
-    "YueVsZhoLineReviewPromptYueHans",
-    "YueVsZhoLineReviewPromptYueHant",
+    "YueLineReviewVsZhoPromptYueHans",
+    "YueLineReviewVsZhoPromptYueHant",
     "YueZhoLineReviewManager",
     "YueZhoLineReviewProcessKwargs",
     "YueZhoLineReviewProcessor",
@@ -46,7 +46,7 @@ YUE_ZHO_LINE_REVIEW_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-line-review",
     test_case_table_name="test_cases__yue_zho__line_review",
     manager_cls=YueZhoLineReviewManager,
-    prompt_cls=YueVsZhoLineReviewPromptYueHans,
+    prompt_cls=YueLineReviewVsZhoPromptYueHans,
 )
 """Operation specification for written Cantonese line review."""
 
@@ -89,7 +89,7 @@ def get_yue_line_reviewed_vs_zho(
 
 
 def get_yue_vs_zho_line_reviewer(
-    prompt_cls: type[YueVsZhoLineReviewPromptYueHans] = YueVsZhoLineReviewPromptYueHans,
+    prompt_cls: type[YueLineReviewVsZhoPromptYueHans] = YueLineReviewVsZhoPromptYueHans,
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,
     provider: LLMProvider | None = None,

@@ -37,11 +37,11 @@ from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
 from scinoephile.llms.dual_n_to_n.manager import DualNToNManager
 from scinoephile.llms.mono_n.manager import MonoNManager
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (
-    YueVsZhoGapTranslationPromptYueHans,
+    YueGapTranslationVsZhoPromptYueHans,
 )
-from scinoephile.multilang.yue_zho.line_review import YueVsZhoLineReviewPromptYueHans
+from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
 
 
@@ -150,7 +150,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_zho_line_review",
             lambda: load_default_test_cases(
                 YueZhoLineReviewManager,
-                YueVsZhoLineReviewPromptYueHans,
+                YueLineReviewVsZhoPromptYueHans,
                 YUE_ZHO_LINE_REVIEW_JSON_PATHS,
             ),
             [
@@ -163,7 +163,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_zho_block_review",
             lambda: load_default_test_cases(
                 DualNToNManager,
-                YueVsZhoBlockReviewPromptYueHans,
+                YueBlockReviewVsZhoPromptYueHans,
                 YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
             ),
             [
@@ -176,7 +176,7 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             "yue_vs_zho_gap_translation",
             lambda: load_default_test_cases(
                 DualNMinusMToNManager,
-                YueVsZhoGapTranslationPromptYueHans,
+                YueGapTranslationVsZhoPromptYueHans,
                 YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
             ),
             [

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from scinoephile.core.llms import OperationSpec
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoPunctuationPromptYueHans,
+    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
 )
 from scinoephile.optimization.persistence.test_cases import (
@@ -24,7 +24,7 @@ def get_punctuation_operation_spec() -> OperationSpec:
         operation="unit-punctuation",
         test_case_table_name="test_cases__unit__punctuation",
         manager_cls=YueZhoPunctuationManager,
-        prompt_cls=YueVsZhoPunctuationPromptYueHans,
+        prompt_cls=YuePunctuationVsZhoPromptYueHans,
         list_fields={"query.yuewen_to_punctuate": 10},
     )
 

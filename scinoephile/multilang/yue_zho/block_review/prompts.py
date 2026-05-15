@@ -13,12 +13,12 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_n_to_n import DualNToNPrompt
 
 __all__ = [
-    "YueVsZhoBlockReviewPromptYueHans",
-    "YueVsZhoBlockReviewPromptYueHant",
+    "YueBlockReviewVsZhoPromptYueHans",
+    "YueBlockReviewVsZhoPromptYueHant",
 ]
 
 
-class YueVsZhoBlockReviewPromptYueHans(
+class YueBlockReviewVsZhoPromptYueHans(
     DictionaryToolPrompt, DualNToNPrompt, PromptYueHans
 ):
     """Text for simplified written Cantonese block review against standard Chinese."""
@@ -101,7 +101,7 @@ class YueVsZhoBlockReviewPromptYueHans(
     """Error template when output is present but note is missing."""
 
 
-class YueVsZhoBlockReviewPromptYueHant(YueVsZhoBlockReviewPromptYueHans):
+class YueBlockReviewVsZhoPromptYueHant(YueBlockReviewVsZhoPromptYueHans):
     """Text for traditional written Cantonese block review against standard Chinese."""
 
     opencc_config = OpenCCConfig.s2hk

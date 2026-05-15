@@ -12,12 +12,12 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.dual_2_to_2 import Dual2To2Prompt
 
 __all__ = [
-    "YueVsZhoDeliniationPromptYueHans",
-    "YueVsZhoDeliniationPromptYueHant",
+    "YueDeliniationVsZhoPromptYueHans",
+    "YueDeliniationVsZhoPromptYueHant",
 ]
 
 
-class YueVsZhoDeliniationPromptYueHans(Dual2To2Prompt, PromptEng):
+class YueDeliniationVsZhoPromptYueHans(Dual2To2Prompt, PromptEng):
     """Text for LLM correspondence for simplified written Cantonese deliniation."""
 
     # Prompt
@@ -107,7 +107,7 @@ class YueVsZhoDeliniationPromptYueHans(Dual2To2Prompt, PromptEng):
         )
 
 
-class YueVsZhoDeliniationPromptYueHant(YueVsZhoDeliniationPromptYueHans):
+class YueDeliniationVsZhoPromptYueHant(YueDeliniationVsZhoPromptYueHans):
     """Text for LLM correspondence for traditional written Cantonese deliniation."""
 
     opencc_config = OpenCCConfig.s2hk
