@@ -8,9 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
     get_llm_provider,
-    merge_llm_localizations,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -18,7 +18,12 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import (
+    ScinoephileCliBase,
+    merge_localizations,
+    read_series,
+    write_series,
+)
 from scinoephile.multilang.yue_zho.block_review import (
     YueVsZhoBlockReviewPromptYueHans,
     YueVsZhoBlockReviewPromptYueHant,
@@ -38,7 +43,8 @@ __all__ = ["YueReviewVsZhoCli"]
 class YueReviewVsZhoCli(ScinoephileCliBase):
     """Review written Cantonese subtitles against standard Chinese subtitles."""
 
-    localizations = merge_llm_localizations(
+    localizations = merge_localizations(
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 (
@@ -92,7 +98,7 @@ class YueReviewVsZhoCli(ScinoephileCliBase):
                     '參考標準中文字幕輸入檔路徑，或使用 "-" 代表標準輸入'
                 ),
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 

@@ -3,7 +3,7 @@
 """Shared CLI I/O helpers and Scinoephile CLI base class.
 
 Package hierarchy (modules may import from any above):
-* argument_types / constants
+* argument_types / constants / localization
 * scinoephile_cli_base
 """
 
@@ -18,10 +18,12 @@ from scinoephile.common.validation import val_input_path, val_output_path
 from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series
 
+from .localization import merge_localizations
 from .scinoephile_cli_base import ScinoephileCliBase
 
 __all__ = [
     "ScinoephileCliBase",
+    "merge_localizations",
     "read_series",
     "write_series",
 ]

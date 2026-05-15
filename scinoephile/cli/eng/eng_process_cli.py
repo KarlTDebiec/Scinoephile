@@ -8,9 +8,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
     get_llm_provider,
-    merge_llm_localizations,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -18,7 +18,12 @@ from scinoephile.common.argument_parsing import (
     int_arg,
     output_file_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import (
+    ScinoephileCliBase,
+    merge_localizations,
+    read_series,
+    write_series,
+)
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
     get_eng_block_reviewer,
@@ -32,7 +37,8 @@ __all__ = ["EngProcessCli"]
 class EngProcessCli(ScinoephileCliBase):
     """Modify English subtitles."""
 
-    localizations = merge_llm_localizations(
+    localizations = merge_localizations(
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 "clean subtitles of closed-caption annotations and other anomalies": (
@@ -72,7 +78,7 @@ class EngProcessCli(ScinoephileCliBase):
                 ),
                 "proofread subtitles using LLM": "使用大型語言模型校對字幕",
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 

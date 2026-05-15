@@ -9,13 +9,13 @@ from pathlib import Path
 from typing import ClassVar
 
 from scinoephile.cli.conversion import (
+    CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
-    merge_conversion_localizations,
 )
 from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
     get_llm_provider,
-    merge_llm_localizations,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -23,7 +23,12 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import (
+    ScinoephileCliBase,
+    merge_localizations,
+    read_series,
+    write_series,
+)
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
@@ -47,65 +52,59 @@ __all__ = ["OcrFuseCli"]
 class OcrFuseCli(ScinoephileCliBase):
     """Fuse OCR output for a selected language."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = merge_llm_localizations(
-        merge_conversion_localizations(
-            {
-                "zh-hans": {
-                    "clean OCR subtitle inputs before fusing": (
-                        "在融合前清理 OCR 字幕输入"
-                    ),
-                    "command-line interface for OCR subtitle fusion": (
-                        "OCR 字幕融合命令行界面"
-                    ),
-                    "English subtitles OCRed using Tesseract or '-' for stdin": (
-                        "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
-                    ),
-                    "fuse OCR output for a selected language": (
-                        "融合所选语言的 OCR 输出"
-                    ),
-                    "language of the OCR text to fuse (eng or zho)": (
-                        "要融合的 OCR 文本语言（eng 或 zho）"
-                    ),
-                    "OCR subtitles OCRed using Google Lens or '-' for stdin": (
-                        "使用 Google Lens OCR 的字幕，或用 '-' 表示标准输入"
-                    ),
-                    (
-                        "Standard Chinese subtitles OCRed using PaddleOCR "
-                        "or '-' for stdin"
-                    ): ("使用 PaddleOCR OCR 的标准中文字幕，或用 '-' 表示标准输入"),
-                    "fused subtitle outfile path (default: stdout)": (
-                        "融合后字幕输出文件路径（默认：标准输出）"
-                    ),
-                },
-                "zh-hant": {
-                    "clean OCR subtitle inputs before fusing": (
-                        "在融合前清理 OCR 字幕輸入"
-                    ),
-                    "command-line interface for OCR subtitle fusion": (
-                        "OCR 字幕融合命令列介面"
-                    ),
-                    "English subtitles OCRed using Tesseract or '-' for stdin": (
-                        "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
-                    ),
-                    "fuse OCR output for a selected language": (
-                        "融合所選語言的 OCR 輸出"
-                    ),
-                    "language of the OCR text to fuse (eng or zho)": (
-                        "要融合的 OCR 文字語言（eng 或 zho）"
-                    ),
-                    "OCR subtitles OCRed using Google Lens or '-' for stdin": (
-                        "使用 Google Lens OCR 的字幕，或用 '-' 表示標準輸入"
-                    ),
-                    (
-                        "Standard Chinese subtitles OCRed using PaddleOCR "
-                        "or '-' for stdin"
-                    ): ("使用 PaddleOCR OCR 的標準中文字幕，或用 '-' 表示標準輸入"),
-                    "fused subtitle outfile path (default: stdout)": (
-                        "融合後字幕輸出檔路徑（預設：標準輸出）"
-                    ),
-                },
-            }
-        )
+    localizations: ClassVar[dict[str, dict[str, str]]] = merge_localizations(
+        CONVERSION_LOCALIZATIONS,
+        LLM_LOCALIZATIONS,
+        {
+            "zh-hans": {
+                "clean OCR subtitle inputs before fusing": (
+                    "在融合前清理 OCR 字幕输入"
+                ),
+                "command-line interface for OCR subtitle fusion": (
+                    "OCR 字幕融合命令行界面"
+                ),
+                "English subtitles OCRed using Tesseract or '-' for stdin": (
+                    "使用 Tesseract OCR 的英文字幕，或用 '-' 表示标准输入"
+                ),
+                "fuse OCR output for a selected language": ("融合所选语言的 OCR 输出"),
+                "language of the OCR text to fuse (eng or zho)": (
+                    "要融合的 OCR 文本语言（eng 或 zho）"
+                ),
+                "OCR subtitles OCRed using Google Lens or '-' for stdin": (
+                    "使用 Google Lens OCR 的字幕，或用 '-' 表示标准输入"
+                ),
+                ("Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin"): (
+                    "使用 PaddleOCR OCR 的标准中文字幕，或用 '-' 表示标准输入"
+                ),
+                "fused subtitle outfile path (default: stdout)": (
+                    "融合后字幕输出文件路径（默认：标准输出）"
+                ),
+            },
+            "zh-hant": {
+                "clean OCR subtitle inputs before fusing": (
+                    "在融合前清理 OCR 字幕輸入"
+                ),
+                "command-line interface for OCR subtitle fusion": (
+                    "OCR 字幕融合命令列介面"
+                ),
+                "English subtitles OCRed using Tesseract or '-' for stdin": (
+                    "使用 Tesseract OCR 的英文字幕，或用 '-' 表示標準輸入"
+                ),
+                "fuse OCR output for a selected language": ("融合所選語言的 OCR 輸出"),
+                "language of the OCR text to fuse (eng or zho)": (
+                    "要融合的 OCR 文字語言（eng 或 zho）"
+                ),
+                "OCR subtitles OCRed using Google Lens or '-' for stdin": (
+                    "使用 Google Lens OCR 的字幕，或用 '-' 表示標準輸入"
+                ),
+                ("Standard Chinese subtitles OCRed using PaddleOCR or '-' for stdin"): (
+                    "使用 PaddleOCR OCR 的標準中文字幕，或用 '-' 表示標準輸入"
+                ),
+                "fused subtitle outfile path (default: stdout)": (
+                    "融合後字幕輸出檔路徑（預設：標準輸出）"
+                ),
+            },
+        },
     )
     """Localized help text keyed by locale and English source text."""
 

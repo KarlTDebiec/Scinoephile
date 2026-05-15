@@ -12,9 +12,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
     add_llm_provider_arguments,
     get_llm_provider,
-    merge_llm_localizations,
 )
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -22,7 +22,12 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
     str_arg,
 )
-from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.cli import (
+    ScinoephileCliBase,
+    merge_localizations,
+    read_series,
+    write_series,
+)
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
     YueVsZhoGapTranslationPromptYueHant,
@@ -36,7 +41,8 @@ __all__ = ["YueTranslateVsZhoCli"]
 class YueTranslateVsZhoCli(ScinoephileCliBase):
     """Fill missing written Cantonese subtitles using standard Chinese subtitles."""
 
-    localizations = merge_llm_localizations(
+    localizations = merge_localizations(
+        LLM_LOCALIZATIONS,
         {
             "zh-hans": {
                 "command-line interface for written Cantonese gap translation": (
@@ -86,7 +92,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
                 "fill missing written Cantonese subtitles using standard Chinese "
                 "subtitles": ("使用標準中文字幕補全缺失的書面粵語字幕"),
             },
-        }
+        },
     )
     """Localized help text keyed by locale and English source text."""
 

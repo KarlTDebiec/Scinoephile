@@ -20,7 +20,6 @@ from scinoephile.lang.zho.script.conversion import OpenCCConfig
 __all__ = [
     "CONVERSION_LOCALIZATIONS",
     "add_opencc_convert_argument",
-    "merge_conversion_localizations",
     "opencc_config_arg",
 ]
 
@@ -167,26 +166,6 @@ def add_opencc_convert_argument(
         default=SUPPRESS,
         help="list available OpenCC configurations and exit",
     )
-
-
-def merge_conversion_localizations(
-    localizations: dict[str, dict[str, str]],
-) -> dict[str, dict[str, str]]:
-    """Merge shared conversion localizations with CLI-specific localizations.
-
-    Arguments:
-        localizations: CLI-specific localizations
-    Returns:
-        merged localizations
-    """
-    merged: dict[str, dict[str, str]] = {
-        locale_name: dict(locale_text)
-        for locale_name, locale_text in CONVERSION_LOCALIZATIONS.items()
-    }
-    for locale_name, locale_text in localizations.items():
-        merged.setdefault(locale_name, {})
-        merged[locale_name].update(locale_text)
-    return merged
 
 
 def opencc_config_arg(value: str) -> OpenCCConfig:

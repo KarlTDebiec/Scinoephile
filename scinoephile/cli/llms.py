@@ -29,7 +29,6 @@ __all__ = [
     "get_llm_provider",
     "get_llm_provider_description",
     "llm_provider_name_arg",
-    "merge_llm_localizations",
 ]
 
 LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
@@ -200,23 +199,3 @@ def llm_provider_name_arg(value: str) -> str:
     raise ArgumentTypeError(
         f"{value!r} is not one of the supported LLM providers: {options}"
     )
-
-
-def merge_llm_localizations(
-    localizations: dict[str, dict[str, str]],
-) -> dict[str, dict[str, str]]:
-    """Merge shared LLM localizations with CLI-specific localizations.
-
-    Arguments:
-        localizations: CLI-specific localizations
-    Returns:
-        merged localizations
-    """
-    merged: dict[str, dict[str, str]] = {
-        locale_name: dict(locale_text)
-        for locale_name, locale_text in LLM_LOCALIZATIONS.items()
-    }
-    for locale_name, locale_text in localizations.items():
-        merged.setdefault(locale_name, {})
-        merged[locale_name].update(locale_text)
-    return merged
