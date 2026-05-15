@@ -22,14 +22,14 @@ from scinoephile.llms.dual_n_minus_m_to_n import (
 from scinoephile.llms.providers.registry import get_provider
 
 from .prompts import (
-    YueVsZhoGapTranslationPromptYueHans,
-    YueVsZhoGapTranslationPromptYueHant,
+    YueGapTranslationVsZhoPromptYueHans,
+    YueGapTranslationVsZhoPromptYueHant,
 )
 
 __all__ = [
     "YUE_ZHO_GAP_TRANSLATION_OPERATION_SPEC",
-    "YueVsZhoGapTranslationPromptYueHans",
-    "YueVsZhoGapTranslationPromptYueHant",
+    "YueGapTranslationVsZhoPromptYueHans",
+    "YueGapTranslationVsZhoPromptYueHant",
     "YueVsZhoGapTranslationProcessKwargs",
     "YueVsZhoGapTranslationProcessorKwargs",
     "get_yue_gap_translated_vs_zho",
@@ -40,7 +40,7 @@ YUE_ZHO_GAP_TRANSLATION_OPERATION_SPEC = OperationSpec(
     operation="yue-zho-gap-translation",
     test_case_table_name="test_cases__yue_zho__gap_translation",
     manager_cls=DualNMinusMToNManager,
-    prompt_cls=YueVsZhoGapTranslationPromptYueHans,
+    prompt_cls=YueGapTranslationVsZhoPromptYueHans,
 )
 """Operation specification for written Cantonese gap translation."""
 
@@ -83,8 +83,8 @@ def get_yue_gap_translated_vs_zho(
 
 
 def get_yue_vs_zho_gap_translator(
-    prompt_cls: type[YueVsZhoGapTranslationPromptYueHans] = (
-        YueVsZhoGapTranslationPromptYueHans
+    prompt_cls: type[YueGapTranslationVsZhoPromptYueHans] = (
+        YueGapTranslationVsZhoPromptYueHans
     ),
     test_cases: list[TestCase] | None = None,
     use_dictionary_tool: bool = True,

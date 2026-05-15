@@ -38,19 +38,19 @@ from scinoephile.llms.dual_n_minus_m_to_n import (
 from scinoephile.llms.dual_n_to_1 import DualNTo1Prompt
 from scinoephile.llms.dual_n_to_n import DualNToNManager, DualNToNPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
-from scinoephile.multilang.yue_zho.block_review import YueVsZhoBlockReviewPromptYueHans
+from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.gap_translation import (
-    YueVsZhoGapTranslationPromptYueHans,
+    YueGapTranslationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.line_review import (
-    YueVsZhoLineReviewPromptYueHans,
+    YueLineReviewVsZhoPromptYueHans,
     YueZhoLineReviewManager,
 )
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
-    YueVsZhoDeliniationPromptYueHans,
+    YueDeliniationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
-    YueVsZhoPunctuationPromptYueHans,
+    YuePunctuationVsZhoPromptYueHans,
     YueZhoPunctuationManager,
 )
 from test.helpers import test_data_root
@@ -281,7 +281,7 @@ def get_mlamd_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mlamd_yue_deliniation_test_cases(
-    prompt_cls: type[Dual2To2Prompt] = YueVsZhoDeliniationPromptYueHans,
+    prompt_cls: type[Dual2To2Prompt] = YueDeliniationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 deliniation test cases.
@@ -308,7 +308,7 @@ def get_mlamd_yue_deliniation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_gap_translation_test_cases(
-    prompt_cls: type[DualNMinusMToNPrompt] = YueVsZhoGapTranslationPromptYueHans,
+    prompt_cls: type[DualNMinusMToNPrompt] = YueGapTranslationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 gap translation test cases.
@@ -334,7 +334,7 @@ def get_mlamd_yue_vs_zho_gap_translation_test_cases(
 
 @cache
 def get_mlamd_yue_punctuation_test_cases(
-    prompt_cls: type[DualNTo1Prompt] = YueVsZhoPunctuationPromptYueHans,
+    prompt_cls: type[DualNTo1Prompt] = YuePunctuationVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 punctuation test cases.
@@ -361,7 +361,7 @@ def get_mlamd_yue_punctuation_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_block_review_test_cases(
-    prompt_cls: type[DualNToNPrompt] = YueVsZhoBlockReviewPromptYueHans,
+    prompt_cls: type[DualNToNPrompt] = YueBlockReviewVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 review test cases.
@@ -387,7 +387,7 @@ def get_mlamd_yue_vs_zho_block_review_test_cases(
 
 @cache
 def get_mlamd_yue_vs_zho_line_review_test_cases(
-    prompt_cls: type[Dual1To1Prompt] = YueVsZhoLineReviewPromptYueHans,
+    prompt_cls: type[Dual1To1Prompt] = YueLineReviewVsZhoPromptYueHans,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MLAMD 简体粤文 vs 简体中文 line-review test cases.

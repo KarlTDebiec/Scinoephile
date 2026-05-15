@@ -21,8 +21,8 @@ from scinoephile.core.synchronization import (
 )
 from scinoephile.llms.dual_2_to_2 import Dual2To2Manager
 
-from .deliniation import YueVsZhoDeliniationPromptYueHans
-from .punctuation import YueVsZhoPunctuationPromptYueHans, YueZhoPunctuationManager
+from .deliniation import YueDeliniationVsZhoPromptYueHans
+from .punctuation import YuePunctuationVsZhoPromptYueHans, YueZhoPunctuationManager
 
 __all__ = ["Alignment"]
 
@@ -200,7 +200,7 @@ class Alignment:
         if len(yw_1) == 0 and len(yw_2) == 0:
             return None
         test_case_cls = Dual2To2Manager.get_test_case_cls(
-            prompt_cls=YueVsZhoDeliniationPromptYueHans
+            prompt_cls=YueDeliniationVsZhoPromptYueHans
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_1_sub_1: zw_1,
@@ -246,7 +246,7 @@ class Alignment:
 
         # Return punctuate query
         test_case_cls = YueZhoPunctuationManager.get_test_case_cls(
-            prompt_cls=YueVsZhoPunctuationPromptYueHans
+            prompt_cls=YuePunctuationVsZhoPromptYueHans
         )
         query_kwargs = {
             test_case_cls.prompt_cls.src_2: zw,

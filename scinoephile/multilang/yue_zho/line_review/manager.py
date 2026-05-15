@@ -9,7 +9,7 @@ from typing import ClassVar
 from scinoephile.core.llms import Answer, TestCase
 from scinoephile.llms.dual_1_to_1 import Dual1To1Manager
 
-from .prompts import YueVsZhoLineReviewPromptYueHans
+from .prompts import YueLineReviewVsZhoPromptYueHans
 
 __all__ = ["YueZhoLineReviewManager"]
 
@@ -17,8 +17,8 @@ __all__ = ["YueZhoLineReviewManager"]
 class YueZhoLineReviewManager(Dual1To1Manager):
     """Factories for written Cantonese vs. standard Chinese line-review LLM classes."""
 
-    prompt_cls: ClassVar[type[YueVsZhoLineReviewPromptYueHans]] = (
-        YueVsZhoLineReviewPromptYueHans
+    prompt_cls: ClassVar[type[YueLineReviewVsZhoPromptYueHans]] = (
+        YueLineReviewVsZhoPromptYueHans
     )
     """Default prompt class."""
 
@@ -31,7 +31,7 @@ class YueZhoLineReviewManager(Dual1To1Manager):
         Returns:
             validated answer
         """
-        prompt_cls: type[YueVsZhoLineReviewPromptYueHans] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueLineReviewVsZhoPromptYueHans] = getattr(model, "prompt_cls")
         output = getattr(model, prompt_cls.output, None)
         note = getattr(model, prompt_cls.note, None)
         if not output and not note:
@@ -47,7 +47,7 @@ class YueZhoLineReviewManager(Dual1To1Manager):
         Returns:
             validated test case
         """
-        prompt_cls: type[YueVsZhoLineReviewPromptYueHans] = getattr(model, "prompt_cls")
+        prompt_cls: type[YueLineReviewVsZhoPromptYueHans] = getattr(model, "prompt_cls")
         if model.answer is None:
             return model
 
