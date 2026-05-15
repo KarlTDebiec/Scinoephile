@@ -12,6 +12,11 @@ from scinoephile.cli.conversion import (
     add_opencc_convert_argument,
     merge_conversion_localizations,
 )
+from scinoephile.cli.llms import (
+    add_llm_provider_arguments,
+    get_llm_provider,
+    merge_llm_localizations,
+)
 from scinoephile.common.argument_parsing import (
     enum_arg,
     get_arg_groups_by_name,
@@ -46,71 +51,75 @@ __all__ = ["YueTranscribeVsZhoCli"]
 class YueTranscribeVsZhoCli(ScinoephileCliBase):
     """Transcribe subtitles from audio and revise using standard Chinese text."""
 
-    localizations = merge_conversion_localizations(
-        {
-            "zh-hans": {
-                "audio stream index in media input (default: 0)": (
-                    "媒体输入中的音频流索引（默认：0）"
-                ),
-                "command-line interface for written Cantonese subtitle transcription": (
-                    "书面粤语字幕转写命令行界面"
-                ),
-                "script used for transcription prompts (default: simplified)": (
-                    "转写提示词使用的字形（默认：简体）"
-                ),
-                "Demucs vocal-separation mode (options: on, off; default: off)": (
-                    "Demucs 人声分离模式（选项：on、off；默认：off）"
-                ),
-                (
-                    "Whisper voice activity detection mode "
-                    "(options: on, off, auto; default: auto)"
-                ): ("Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）"),
-                'Standard Chinese subtitle infile or "-" for stdin': (
-                    '标准中文字幕输入文件，或使用 "-" 表示标准输入'
-                ),
-                "video or audio media input path used for transcription": (
-                    "用于转写的视频或音频输入路径"
-                ),
-                "Written Cantonese subtitle outfile path (default: stdout)": (
-                    "书面粤语字幕输出文件路径（默认：标准输出）"
-                ),
-                (
-                    "Transcribe subtitles from audio and revise using standard "
-                    "Chinese text"
-                ): "从音频转录字幕，并使用标准中文文本修订",
-            },
-            "zh-hant": {
-                "audio stream index in media input (default: 0)": (
-                    "媒體輸入中的音訊流索引（預設：0）"
-                ),
-                "command-line interface for written Cantonese subtitle transcription": (
-                    "書面粵語字幕轉寫命令列介面"
-                ),
-                "script used for transcription prompts (default: simplified)": (
-                    "轉寫提示詞使用的字形（預設：簡體）"
-                ),
-                "Demucs vocal-separation mode (options: on, off; default: off)": (
-                    "Demucs 人聲分離模式（選項：on、off；預設：off）"
-                ),
-                (
-                    "Whisper voice activity detection mode "
-                    "(options: on, off, auto; default: auto)"
-                ): ("Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）"),
-                'Standard Chinese subtitle infile or "-" for stdin': (
-                    '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
-                ),
-                "video or audio media input path used for transcription": (
-                    "用於轉寫的視訊或音訊輸入路徑"
-                ),
-                "Written Cantonese subtitle outfile path (default: stdout)": (
-                    "書面粵語字幕輸出檔路徑（預設：標準輸出）"
-                ),
-                (
-                    "Transcribe subtitles from audio and revise using standard "
-                    "Chinese text"
-                ): "從音訊轉錄字幕，並使用標準中文文字修訂",
-            },
-        }
+    localizations = merge_llm_localizations(
+        merge_conversion_localizations(
+            {
+                "zh-hans": {
+                    "audio stream index in media input (default: 0)": (
+                        "媒体输入中的音频流索引（默认：0）"
+                    ),
+                    (
+                        "command-line interface for written Cantonese subtitle "
+                        "transcription"
+                    ): ("书面粤语字幕转写命令行界面"),
+                    "script used for transcription prompts (default: simplified)": (
+                        "转写提示词使用的字形（默认：简体）"
+                    ),
+                    "Demucs vocal-separation mode (options: on, off; default: off)": (
+                        "Demucs 人声分离模式（选项：on、off；默认：off）"
+                    ),
+                    (
+                        "Whisper voice activity detection mode "
+                        "(options: on, off, auto; default: auto)"
+                    ): ("Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）"),
+                    'Standard Chinese subtitle infile or "-" for stdin': (
+                        '标准中文字幕输入文件，或使用 "-" 表示标准输入'
+                    ),
+                    "video or audio media input path used for transcription": (
+                        "用于转写的视频或音频输入路径"
+                    ),
+                    "Written Cantonese subtitle outfile path (default: stdout)": (
+                        "书面粤语字幕输出文件路径（默认：标准输出）"
+                    ),
+                    (
+                        "Transcribe subtitles from audio and revise using standard "
+                        "Chinese text"
+                    ): "从音频转录字幕，并使用标准中文文本修订",
+                },
+                "zh-hant": {
+                    "audio stream index in media input (default: 0)": (
+                        "媒體輸入中的音訊流索引（預設：0）"
+                    ),
+                    (
+                        "command-line interface for written Cantonese subtitle "
+                        "transcription"
+                    ): ("書面粵語字幕轉寫命令列介面"),
+                    "script used for transcription prompts (default: simplified)": (
+                        "轉寫提示詞使用的字形（預設：簡體）"
+                    ),
+                    "Demucs vocal-separation mode (options: on, off; default: off)": (
+                        "Demucs 人聲分離模式（選項：on、off；預設：off）"
+                    ),
+                    (
+                        "Whisper voice activity detection mode "
+                        "(options: on, off, auto; default: auto)"
+                    ): ("Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）"),
+                    'Standard Chinese subtitle infile or "-" for stdin': (
+                        '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
+                    ),
+                    "video or audio media input path used for transcription": (
+                        "用於轉寫的視訊或音訊輸入路徑"
+                    ),
+                    "Written Cantonese subtitle outfile path (default: stdout)": (
+                        "書面粵語字幕輸出檔路徑（預設：標準輸出）"
+                    ),
+                    (
+                        "Transcribe subtitles from audio and revise using standard "
+                        "Chinese text"
+                    ): "從音訊轉錄字幕，並使用標準中文文字修訂",
+                },
+            }
+        )
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -172,6 +181,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
+        add_llm_provider_arguments(
+            arg_groups["operation arguments"], arg_groups["additional help"]
+        )
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
@@ -231,6 +243,8 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         stream_index: int,
         script: str,
         convert: OpenCCConfig | None,
+        llm_provider_name: str,
+        llm_model_name: str | None,
         demucs: DemucsMode,
         vad: VADMode,
         outfile_path: Path | None,
@@ -284,9 +298,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         deliniation_prompt_cls, punctuation_prompt_cls = (
             cls._get_transcription_prompt_classes(script)
         )
+        provider = get_llm_provider(llm_provider_name, llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
             demucs_mode=demucs,
             vad_mode=vad,
+            provider=provider,
             convert=convert,
             deliniation_prompt_cls=deliniation_prompt_cls,
             punctuation_prompt_cls=punctuation_prompt_cls,

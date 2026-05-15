@@ -18,8 +18,10 @@ from .deepseek_provider import DeepSeekProvider
 from .openai_provider import OpenAIProvider
 
 __all__ = [
+    "get_default_provider_name",
     "get_default_provider",
     "get_provider",
+    "get_provider_names",
     "register_provider_factory",
 ]
 
@@ -59,6 +61,24 @@ def get_provider(provider_name: str, **kwargs: Any) -> LLMProvider:
     return provider_factory(**kwargs)
 
 
+def get_default_provider_name() -> str:
+    """Get the default provider name.
+
+    Returns:
+        default provider name
+    """
+    return _DEFAULT_PROVIDER_NAME
+
+
 def get_default_provider() -> LLMProvider:
     """Construct and return the default provider."""
     return get_provider(_DEFAULT_PROVIDER_NAME)
+
+
+def get_provider_names() -> tuple[str, ...]:
+    """Get registered provider names.
+
+    Returns:
+        sorted registered provider names
+    """
+    return tuple(sorted(_PROVIDER_FACTORIES))

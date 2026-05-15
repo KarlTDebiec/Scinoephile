@@ -17,7 +17,9 @@ from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
     get_default_provider,
+    get_default_provider_name,
     get_provider,
+    get_provider_names,
     register_provider_factory,
 )
 
@@ -52,6 +54,11 @@ def test_get_default_provider_returns_openai_provider():
     assert isinstance(provider, OpenAIProvider)
 
 
+def test_get_default_provider_name_returns_openai():
+    """Test default provider name is exposed for CLI defaults."""
+    assert get_default_provider_name() == "openai"
+
+
 def test_get_provider_constructs_openai_provider_with_kwargs():
     """Test explicit provider construction forwards kwargs to the factory."""
     client = Mock()
@@ -77,6 +84,15 @@ def test_register_provider_factory_supports_custom_providers():
 
     assert isinstance(provider, _DummyProvider)
     assert provider.marker == "dummy"
+
+
+def test_get_provider_names_returns_registered_provider_names():
+    """Test registry exposes provider names for CLI validation and listing."""
+    provider_names = get_provider_names()
+
+    assert provider_names == tuple(sorted(provider_names))
+    assert "deepseek" in provider_names
+    assert "openai" in provider_names
 
 
 def test_get_provider_raises_for_unknown_provider():
