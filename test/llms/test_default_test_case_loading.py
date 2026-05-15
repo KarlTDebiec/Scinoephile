@@ -24,8 +24,10 @@ from scinoephile.lang.zho.ocr_fusion import (
 from scinoephile.llms.default_test_cases import (
     ENG_BLOCK_REVIEW_JSON_PATHS,
     ENG_OCR_FUSION_JSON_PATHS,
+    ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+    ENG_ZHO_TRANSLATION_JSON_PATHS,
     YUE_ZHO_BLOCK_REVIEW_JSON_PATHS,
-    YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
+    YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
     YUE_ZHO_LINE_REVIEW_JSON_PATHS,
     ZHO_HANS_BLOCK_REVIEW_JSON_PATHS,
     ZHO_HANS_OCR_FUSION_JSON_PATHS,
@@ -35,11 +37,16 @@ from scinoephile.llms.default_test_cases import (
 )
 from scinoephile.llms.dual_1_to_1.ocr_fusion.manager import OcrFusionManager
 from scinoephile.llms.dual_n_minus_m_to_n.manager import DualNMinusMToNManager
+from scinoephile.llms.dual_n_to_m.manager import DualNToMManager
 from scinoephile.llms.dual_n_to_n.manager import DualNToNManager
 from scinoephile.llms.mono_n.manager import MonoNManager
+from scinoephile.multilang.eng_zho.gapped_translation import (
+    EngGappedTranslationVsZhoPrompt,
+)
+from scinoephile.multilang.eng_zho.translation import EngTranslationVsZhoPrompt
 from scinoephile.multilang.yue_zho.block_review import YueBlockReviewVsZhoPromptYueHans
-from scinoephile.multilang.yue_zho.gap_translation import (
-    YueGapTranslationVsZhoPromptYueHans,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
 )
 from scinoephile.multilang.yue_zho.line_review import YueLineReviewVsZhoPromptYueHans
 from scinoephile.multilang.yue_zho.line_review.manager import YueZhoLineReviewManager
@@ -91,6 +98,24 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
                 "mnt/output/eng_ocr/lang/eng/ocr_fusion.json",
                 "t/output/eng_ocr/lang/eng/ocr_fusion.json",
             ],
+        ),
+        (
+            "eng_zho_translation",
+            lambda: load_default_test_cases(
+                DualNToMManager,
+                EngTranslationVsZhoPrompt,
+                ENG_ZHO_TRANSLATION_JSON_PATHS,
+            ),
+            [],
+        ),
+        (
+            "eng_zho_gapped_translation",
+            lambda: load_default_test_cases(
+                DualNMinusMToNManager,
+                EngGappedTranslationVsZhoPrompt,
+                ENG_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
+            ),
+            [],
         ),
         (
             "zho_hans_block_review",
@@ -173,11 +198,11 @@ def _get_expected_case_count(relative_paths: list[str]) -> int:
             ],
         ),
         (
-            "yue_vs_zho_gap_translation",
+            "yue_vs_zho_gapped_translation",
             lambda: load_default_test_cases(
                 DualNMinusMToNManager,
-                YueGapTranslationVsZhoPromptYueHans,
-                YUE_ZHO_GAP_TRANSLATION_JSON_PATHS,
+                YueGappedTranslationVsZhoPromptYueHans,
+                YUE_ZHO_GAPPED_TRANSLATION_JSON_PATHS,
             ),
             [
                 "mlamd/output/yue-Hans_transcribe/multilang/yue_zho/gap_translation/cuda.json",

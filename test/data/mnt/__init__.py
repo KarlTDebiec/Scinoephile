@@ -30,9 +30,7 @@ from scinoephile.llms.dual_1_to_1 import Dual1To1Prompt
 from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionManager
 from scinoephile.llms.dual_n_to_m import DualNToMManager, DualNToMPrompt
 from scinoephile.llms.mono_n import MonoNManager, MonoNPrompt
-from scinoephile.multilang.eng_zho.guided_translation import (
-    EngGuidedTranslationVsZhoPrompt,
-)
+from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
 from test.helpers import test_data_root
 
 __all__ = [
@@ -237,7 +235,7 @@ def get_mnt_eng_ocr_fusion_test_cases(
 
 @cache
 def get_mnt_eng_zho_guided_translation_test_cases(
-    prompt_cls: type[DualNToMPrompt] = EngGuidedTranslationVsZhoPrompt,
+    prompt_cls: type[DualNToMPrompt] = EngGuidedTranslationVsZhoOfYuePrompt,
     **kwargs: Any,
 ) -> list[TestCase]:
     """Get MNT English-from-Cantonese guided translation test cases.

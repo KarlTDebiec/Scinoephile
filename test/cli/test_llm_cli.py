@@ -12,6 +12,7 @@ from unittest.mock import patch
 import pytest
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
+from scinoephile.cli.eng.eng_translate_vs_zho_cli import EngTranslateVsZhoCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
@@ -26,6 +27,7 @@ from scinoephile.common.testing import run_cli_with_args
     "cli",
     [
         EngProcessCli,
+        EngTranslateVsZhoCli,
         OcrFuseCli,
         YueProcessCli,
         YueReviewVsZhoCli,
