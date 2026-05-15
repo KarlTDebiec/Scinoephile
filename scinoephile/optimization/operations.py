@@ -28,12 +28,18 @@ from scinoephile.multilang.yue_zho.block_review import (
 from scinoephile.multilang.yue_zho.gapped_translation import (
     YUE_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
 )
+from scinoephile.multilang.yue_zho.guided_translation import (
+    YUE_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
+)
 from scinoephile.multilang.yue_zho.line_review import (
     YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
 )
 from scinoephile.multilang.yue_zho.transcription import (
     YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YUE_ZHO_TRANSLATION_OPERATION_SPEC,
 )
 
 __all__ = ["OPERATIONS"]
@@ -53,6 +59,8 @@ OPERATIONS: dict[str, OperationSpec] = {
             YUE_ZHO_BLOCK_REVIEW_OPERATION_SPEC,
             YUE_ZHO_LINE_REVIEW_OPERATION_SPEC,
             YUE_ZHO_GAPPED_TRANSLATION_OPERATION_SPEC,
+            YUE_ZHO_GUIDED_TRANSLATION_OPERATION_SPEC,
+            YUE_ZHO_TRANSLATION_OPERATION_SPEC,
             YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC,
             YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC,
         ),
