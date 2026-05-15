@@ -148,11 +148,11 @@ def test_run_command_live_timeout():
     start_time = monotonic()
     with pytest.raises(TimeoutExpired):
         run_command_live(
-            [sys.executable, "-c", "import time; time.sleep(2)"], timeout=1
+            [sys.executable, "-c", "import time; time.sleep(2)"], timeout=0
         )
     elapsed = monotonic() - start_time
 
-    assert elapsed < 1.5
+    assert elapsed < 1.0
 
 
 def test_run_command_live_non_utf8_output():

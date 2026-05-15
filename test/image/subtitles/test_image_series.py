@@ -78,30 +78,15 @@ def test_load_html(
         assert event.img.size[1] > 0
 
 
-@pytest.mark.parametrize(
-    "input_path_fixture, expected_event_count",
-    [
-        ("mlamd_eng_image_path", 942),
-        ("mlamd_zho_hans_image_path", 932),
-    ],
-)
-def test_save_html(
-    input_path_fixture: str,
-    expected_event_count: int,
-    request: pytest.FixtureRequest,
-):
+def test_save_html(tiny_image_series: ImageSeries):
     """Test saving HTML image subtitles.
 
     Arguments:
-        input_path_fixture: html input path fixture name
-        expected_event_count: expected number of subtitles
-        request: pytest fixture request
+        tiny_image_series: small image subtitle series
     """
-    source_path = request.getfixturevalue(input_path_fixture)
-    series = ImageSeries.load(source_path, encoding="utf-8")
     with get_temp_directory_path() as output_dir:
         output_path = output_dir / "image_subtitles"
-        series.save(output_path)
+        tiny_image_series.save(output_path)
 
         html_path = output_path / "index.html"
         assert html_path.exists()
@@ -110,4 +95,4 @@ def test_save_html(
         assert "<img src='0001.png' />" in html_text
 
         png_files = sorted(output_path.glob("*.png"))
-        assert len(png_files) == expected_event_count
+        assert len(png_files) == len(tiny_image_series)
