@@ -15,8 +15,14 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from scinoephile.multilang.yue_zho.gap_translation import (
-    YueGapTranslationVsZhoPromptYueHans,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+)
+from scinoephile.multilang.yue_zho.guided_translation import (
+    YueGuidedTranslationVsZhoPromptYueHans,
+)
+from scinoephile.multilang.yue_zho.translation import (
+    YueTranslationVsZhoPromptYueHans,
 )
 from test.helpers import (
     assert_cli_help,
@@ -60,56 +66,144 @@ def test_yue_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...])
     assert_cli_usage(cli)
 
 
-@pytest.mark.parametrize(
-    ("yue_input_path", "zho_input_path", "expected_path"),
-    [
-        (
-            "mlamd/output/yue-Hans_transcribe/transcribe_review.srt",
-            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/yue-Hans_transcribe/transcribe_review_translate.srt",
-        ),
-    ],
-)
-def test_yue_translate_vs_zho_cli(
-    yue_input_path: str,
-    zho_input_path: str,
-    expected_path: str,
-):
-    """Test written Cantonese translate-vs-zho CLI with file arguments.
-
-    Arguments:
-        yue_input_path: path to input written Cantonese subtitle fixture
-        zho_input_path: path to input standard Chinese subtitle fixture
-        expected_path: path to expected output subtitle fixture
-    """
-    full_yue_input_path = test_data_root / yue_input_path
-    full_zho_input_path = test_data_root / zho_input_path
-    full_expected_path = test_data_root / expected_path
-    expected = Series.load(full_expected_path)
+def test_yue_translate_vs_zho_cli_regular_translation():
+    """Test written Cantonese translate-vs-zho CLI routes to regular translation."""
+    zho_input_path = test_data_root / (
+        "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+    expected_path = test_data_root / (
+        "mlamd/output/yue-Hans_transcribe/transcribe_review_translate.srt"
+    )
+    expected = Series.load(expected_path)
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_vs_zho_gap_translator",
+            "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_zho_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.yue.yue_translate_vs_zho_cli.get_yue_gap_translated_vs_zho",
+                "scinoephile.cli.yue.yue_translate_vs_zho_cli."
+                "get_yue_translated_from_zho",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
                     YueTranslateVsZhoCli,
-                    f"--yue-infile {full_yue_input_path} "
-                    f"--zho-infile {full_zho_input_path} "
+                    f"--zho-infile {zho_input_path} --outfile {output_path}",
+                )
+        output = Series.load(output_path)
+
+    assert (
+        patched_factory.call_args.kwargs["prompt_cls"]
+        is YueTranslationVsZhoPromptYueHans
+    )
+    assert patched_factory.call_args.kwargs["provider"] is not None
+    called_kwargs = patched_translate.call_args.kwargs
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zho_input_path))
+    assert called_kwargs["translator"] == "translator"
+    assert_series_equal(output, expected)
+
+
+def test_yue_translate_vs_zho_cli_gapped_translation():
+    """Test written Cantonese translate-vs-zho CLI routes to gapped translation."""
+    yue_input_path = (
+        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
+    )
+    zho_input_path = test_data_root / (
+        "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+    expected_path = test_data_root / (
+        "mlamd/output/yue-Hans_transcribe/transcribe_review_translate.srt"
+    )
+    expected = Series.load(expected_path)
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(
+            "scinoephile.cli.yue.yue_translate_vs_zho_cli."
+            "get_yue_vs_zho_gapped_translator",
+            return_value="translator",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_translate_vs_zho_cli."
+                "get_yue_gapped_translated_vs_zho",
+                return_value=expected,
+            ) as patched_translate:
+                run_cli_with_args(
+                    YueTranslateVsZhoCli,
+                    f"--zho-infile {zho_input_path} "
+                    f"--yue-gapped-infile {yue_input_path} "
                     f"--outfile {output_path}",
                 )
         output = Series.load(output_path)
 
     assert (
         patched_factory.call_args.kwargs["prompt_cls"]
-        is YueGapTranslationVsZhoPromptYueHans
+        is YueGappedTranslationVsZhoPromptYueHans
     )
+    assert patched_factory.call_args.kwargs["provider"] is not None
     called_kwargs = patched_translate.call_args.kwargs
-    assert_series_equal(called_kwargs["yuewen"], Series.load(full_yue_input_path))
-    assert_series_equal(called_kwargs["zhongwen"], Series.load(full_zho_input_path))
+    assert_series_equal(called_kwargs["yuewen"], Series.load(yue_input_path))
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zho_input_path))
     assert called_kwargs["translator"] == "translator"
     assert_series_equal(output, expected)
+
+
+def test_yue_translate_vs_zho_cli_guided_translation():
+    """Test written Cantonese translate-vs-zho CLI routes to guided translation."""
+    yue_input_path = (
+        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
+    )
+    zho_input_path = test_data_root / (
+        "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+    expected_path = test_data_root / (
+        "mlamd/output/yue-Hans_transcribe/transcribe_review_translate.srt"
+    )
+    expected = Series.load(expected_path)
+
+    with get_temp_file_path(".srt") as output_path:
+        with patch(
+            "scinoephile.cli.yue.yue_translate_vs_zho_cli."
+            "get_yue_zho_guided_translator",
+            return_value="translator",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_translate_vs_zho_cli."
+                "get_yue_translated_from_zho_with_yue_guidance",
+                return_value=expected,
+            ) as patched_translate:
+                run_cli_with_args(
+                    YueTranslateVsZhoCli,
+                    f"--zho-infile {zho_input_path} "
+                    f"--yue-guide-infile {yue_input_path} "
+                    f"--outfile {output_path}",
+                )
+        output = Series.load(output_path)
+
+    assert (
+        patched_factory.call_args.kwargs["prompt_cls"]
+        is YueGuidedTranslationVsZhoPromptYueHans
+    )
+    assert patched_factory.call_args.kwargs["provider"] is not None
+    called_kwargs = patched_translate.call_args.kwargs
+    assert_series_equal(called_kwargs["zhongwen"], Series.load(zho_input_path))
+    assert_series_equal(called_kwargs["yuewen"], Series.load(yue_input_path))
+    assert called_kwargs["translator"] == "translator"
+    assert_series_equal(output, expected)
+
+
+def test_yue_translate_vs_zho_cli_rejects_gapped_and_guide_together():
+    """Test written Cantonese translate-vs-zho CLI rejects mutually exclusive inputs."""
+    yue_input_path = (
+        test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
+    )
+    zho_input_path = test_data_root / (
+        "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
+    )
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranslateVsZhoCli,
+            f"--zho-infile {zho_input_path} "
+            f"--yue-gapped-infile {yue_input_path} "
+            f"--yue-guide-infile {yue_input_path}",
+        )
