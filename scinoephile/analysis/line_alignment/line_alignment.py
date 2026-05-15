@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+import numba as nb
+import numpy as np
+
 from .line_alignment_operation import LineAlignmentOperation
 from .line_alignment_pair import LineAlignmentPair
 
@@ -16,7 +19,176 @@ _OPERATION_DELETE = LineAlignmentOperation.DELETE.value
 _OPERATION_INSERT = LineAlignmentOperation.INSERT.value
 _GAP_NONE = -1
 
-type _MetricKey = tuple[int, int, int, int, int]
+
+@nb.jit(nopython=True, nogil=True, cache=True)
+def _get_alignment_operation_table(  # noqa: PLR0915
+    one: np.ndarray,
+    two: np.ndarray,
+) -> np.ndarray:
+    """Get the compact dynamic-programming operation table.
+
+    Arguments:
+        one: first string as Unicode code points
+        two: second string as Unicode code points
+    Returns:
+        operation table used to backtrace the best alignment
+    """
+    one_length = len(one)
+    two_length = len(two)
+    operation_table = np.full(
+        (one_length + 1, two_length + 1),
+        _OPERATION_NONE,
+        dtype=np.uint8,
+    )
+    if two_length > 0:
+        operation_table[0, 1:] = _OPERATION_INSERT
+
+    previous_metrics = np.zeros((two_length + 1, 5), dtype=np.int32)
+    current_metrics = np.empty((two_length + 1, 5), dtype=np.int32)
+    previous_gaps = np.empty(two_length + 1, dtype=np.int16)
+    current_gaps = np.empty(two_length + 1, dtype=np.int16)
+
+    previous_gaps[0] = _GAP_NONE
+    for two_idx in range(1, two_length + 1):
+        previous_metrics[two_idx, 0] = two_idx
+        previous_metrics[two_idx, 1] = 1
+        previous_metrics[two_idx, 2] = 0
+        previous_metrics[two_idx, 3] = 0
+        previous_metrics[two_idx, 4] = two_idx
+        previous_gaps[two_idx] = _OPERATION_INSERT
+
+    for one_idx in range(1, one_length + 1):
+        operation_table[one_idx, 0] = _OPERATION_DELETE
+        current_metrics[0, 0] = one_idx
+        current_metrics[0, 1] = 1
+        current_metrics[0, 2] = 0
+        current_metrics[0, 3] = one_idx
+        current_metrics[0, 4] = 0
+        current_gaps[0] = _OPERATION_DELETE
+        one_char = one[one_idx - 1]
+
+        for two_idx in range(1, two_length + 1):
+            two_char = two[two_idx - 1]
+            previous_diagonal_idx = two_idx - 1
+            if one_char == two_char:
+                best_0 = previous_metrics[previous_diagonal_idx, 0]
+                best_1 = previous_metrics[previous_diagonal_idx, 1]
+                best_2 = previous_metrics[previous_diagonal_idx, 2]
+                best_3 = previous_metrics[previous_diagonal_idx, 3]
+                best_4 = previous_metrics[previous_diagonal_idx, 4]
+                best_operation = _OPERATION_MATCH
+                best_gap = _GAP_NONE
+            else:
+                best_0 = previous_metrics[previous_diagonal_idx, 0] + 1
+                best_1 = previous_metrics[previous_diagonal_idx, 1]
+                best_2 = previous_metrics[previous_diagonal_idx, 2] + 1
+                best_3 = previous_metrics[previous_diagonal_idx, 3]
+                best_4 = previous_metrics[previous_diagonal_idx, 4]
+                best_operation = _OPERATION_SUBSTITUTE
+                best_gap = _GAP_NONE
+
+            previous_insert_idx = two_idx - 1
+            insert_1 = current_metrics[previous_insert_idx, 1]
+            if current_gaps[previous_insert_idx] != _OPERATION_INSERT:
+                insert_1 += 1
+            insert_0 = current_metrics[previous_insert_idx, 0] + 1
+            insert_2 = current_metrics[previous_insert_idx, 2]
+            insert_3 = current_metrics[previous_insert_idx, 3]
+            insert_4 = current_metrics[previous_insert_idx, 4] + 1
+            if insert_0 < best_0 or (
+                insert_0 == best_0
+                and (
+                    insert_1 < best_1
+                    or (
+                        insert_1 == best_1
+                        and (
+                            insert_2 < best_2
+                            or (
+                                insert_2 == best_2
+                                and (
+                                    insert_3 < best_3
+                                    or (insert_3 == best_3 and insert_4 < best_4)
+                                )
+                            )
+                        )
+                    )
+                )
+            ):
+                best_0 = insert_0
+                best_1 = insert_1
+                best_2 = insert_2
+                best_3 = insert_3
+                best_4 = insert_4
+                best_operation = _OPERATION_INSERT
+                best_gap = _OPERATION_INSERT
+
+            delete_1 = previous_metrics[two_idx, 1]
+            if previous_gaps[two_idx] != _OPERATION_DELETE:
+                delete_1 += 1
+            delete_0 = previous_metrics[two_idx, 0] + 1
+            delete_2 = previous_metrics[two_idx, 2]
+            delete_3 = previous_metrics[two_idx, 3] + 1
+            delete_4 = previous_metrics[two_idx, 4]
+            delete_is_less = delete_0 < best_0 or (
+                delete_0 == best_0
+                and (
+                    delete_1 < best_1
+                    or (
+                        delete_1 == best_1
+                        and (
+                            delete_2 < best_2
+                            or (
+                                delete_2 == best_2
+                                and (
+                                    delete_3 < best_3
+                                    or (delete_3 == best_3 and delete_4 < best_4)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            delete_is_equal = (
+                delete_0 == best_0
+                and delete_1 == best_1
+                and delete_2 == best_2
+                and delete_3 == best_3
+                and delete_4 == best_4
+            )
+            if delete_is_less or (
+                delete_is_equal and _OPERATION_DELETE < best_operation
+            ):
+                best_0 = delete_0
+                best_1 = delete_1
+                best_2 = delete_2
+                best_3 = delete_3
+                best_4 = delete_4
+                best_operation = _OPERATION_DELETE
+                best_gap = _OPERATION_DELETE
+
+            current_metrics[two_idx, 0] = best_0
+            current_metrics[two_idx, 1] = best_1
+            current_metrics[two_idx, 2] = best_2
+            current_metrics[two_idx, 3] = best_3
+            current_metrics[two_idx, 4] = best_4
+            current_gaps[two_idx] = best_gap
+            operation_table[one_idx, two_idx] = best_operation
+
+        previous_metrics, current_metrics = current_metrics, previous_metrics
+        previous_gaps, current_gaps = current_gaps, previous_gaps
+
+    return operation_table
+
+
+def _get_codepoints(text: str) -> np.ndarray:
+    """Convert text to Unicode code points.
+
+    Arguments:
+        text: text to convert
+    Returns:
+        integer code points
+    """
+    return np.fromiter((ord(char) for char in text), dtype=np.int32, count=len(text))
 
 
 class LineAlignment:
@@ -55,141 +227,19 @@ class LineAlignment:
         """
         return f"{type(self).__name__}({self.one!r}, {self.two!r})"
 
-    def _get_operation_table(  # noqa: PLR0915
-        self,
-    ) -> list[bytearray]:
+    def _get_operation_table(self) -> np.ndarray:
         """Get the compact dynamic-programming operation table.
 
         Returns:
             operation table used to backtrace the best alignment
         """
-        one_length = len(self.one)
-        two_length = len(self.two)
-
-        # Initialize the backtrace-only table. Metrics are kept only for the
-        # previous and current rows, but every chosen operation must be retained
-        # so the final alignment can be reconstructed from bottom-right to top-left.
-        operation_table = [
-            bytearray([_OPERATION_NONE]) * (two_length + 1)
-            for _ in range(one_length + 1)
-        ]
-        if two_length > 0:
-            operation_table[0][1:] = bytearray([_OPERATION_INSERT]) * two_length
-
-        # The top edge aligns an empty first string with prefixes of `two`, so
-        # every non-origin cell is reached by one contiguous insert run.
-        previous_metrics = [
-            self._get_insert_metric(two_idx) for two_idx in range(two_length + 1)
-        ]
-        previous_gaps = [_GAP_NONE]
-        previous_gaps.extend(_OPERATION_INSERT for _ in range(two_length))
-
-        for one_idx in range(1, one_length + 1):
-            # The left edge aligns prefixes of `one` with an empty second string,
-            # so each row starts with one contiguous delete run.
-            operation_table[one_idx][0] = _OPERATION_DELETE
-            current_metrics = [self._get_delete_metric(one_idx)]
-            current_gaps = [_OPERATION_DELETE]
-            one_char = self.one[one_idx - 1]
-            operation_row = operation_table[one_idx]
-
-            for two_idx in range(1, two_length + 1):
-                two_char = self.two[two_idx - 1]
-
-                # The diagonal candidate consumes one character from both sides.
-                # It is free for a match and costs one substitution otherwise.
-                previous_diagonal = previous_metrics[two_idx - 1]
-                if one_char == two_char:
-                    best_key = previous_diagonal
-                    best_operation = _OPERATION_MATCH
-                    best_gap = _GAP_NONE
-                else:
-                    best_key = (
-                        previous_diagonal[0] + 1,
-                        previous_diagonal[1],
-                        previous_diagonal[2] + 1,
-                        previous_diagonal[3],
-                        previous_diagonal[4],
-                    )
-                    best_operation = _OPERATION_SUBSTITUTE
-                    best_gap = _GAP_NONE
-
-                # The left candidate consumes the next character from `two`.
-                # Starting a new insert run is worse than extending an existing one.
-                previous_insert = current_metrics[two_idx - 1]
-                insert_gap_runs = previous_insert[1]
-                if current_gaps[two_idx - 1] != _OPERATION_INSERT:
-                    insert_gap_runs += 1
-                insert_key = (
-                    previous_insert[0] + 1,
-                    insert_gap_runs,
-                    previous_insert[2],
-                    previous_insert[3],
-                    previous_insert[4] + 1,
-                )
-                if insert_key < best_key:
-                    best_key = insert_key
-                    best_operation = _OPERATION_INSERT
-                    best_gap = _OPERATION_INSERT
-
-                # The upper candidate consumes the next character from `one`.
-                # Ties are resolved by operation enum order to match prior behavior.
-                previous_delete = previous_metrics[two_idx]
-                delete_gap_runs = previous_delete[1]
-                if previous_gaps[two_idx] != _OPERATION_DELETE:
-                    delete_gap_runs += 1
-                delete_key = (
-                    previous_delete[0] + 1,
-                    delete_gap_runs,
-                    previous_delete[2],
-                    previous_delete[3] + 1,
-                    previous_delete[4],
-                )
-                if delete_key < best_key or (
-                    delete_key == best_key and _OPERATION_DELETE < best_operation
-                ):
-                    best_key = delete_key
-                    best_operation = _OPERATION_DELETE
-                    best_gap = _OPERATION_DELETE
-
-                current_metrics.append(best_key)
-                current_gaps.append(best_gap)
-                operation_row[two_idx] = best_operation
-
-            previous_metrics = current_metrics
-            previous_gaps = current_gaps
-
-        return operation_table
-
-    @staticmethod
-    def _get_delete_metric(count: int) -> _MetricKey:
-        """Build an edge metric for forced deletes.
-
-        Arguments:
-            count: number of deleted characters
-        Returns:
-            metric for a prefix aligned only by deletes
-        """
-        if count == 0:
-            return (0, 0, 0, 0, 0)
-        return (count, 1, 0, count, 0)
-
-    @staticmethod
-    def _get_insert_metric(count: int) -> _MetricKey:
-        """Build an edge metric for forced inserts.
-
-        Arguments:
-            count: number of inserted characters
-        Returns:
-            metric for a prefix aligned only by inserts
-        """
-        if count == 0:
-            return (0, 0, 0, 0, 0)
-        return (count, 1, 0, 0, count)
+        one = _get_codepoints(self.one)
+        two = _get_codepoints(self.two)
+        return _get_alignment_operation_table(one, two)
 
     def _populate_alignment_pairs(
         self,
-        operation_table: list[bytearray],
+        operation_table: np.ndarray,
     ):
         """Populate alignment pairs by backtracing DP operations.
 
@@ -200,7 +250,7 @@ class LineAlignment:
         two_idx = len(self.two)
         self.alignment_pairs = []
         while one_idx != 0 or two_idx != 0:
-            operation_value = operation_table[one_idx][two_idx]
+            operation_value = int(operation_table[one_idx, two_idx])
             if operation_value == _OPERATION_NONE:
                 break
             operation = LineAlignmentOperation(operation_value)
