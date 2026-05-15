@@ -72,6 +72,7 @@ class YueTranscriber:
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
         convert: OpenCCConfig | None = None,
+        additional_context: str | None = None,
         deliniation_prompt_cls: type[YueDeliniationVsZhoPromptYueHans],
         punctuation_prompt_cls: type[YuePunctuationVsZhoPromptYueHans],
         test_case_directory_path: Path,
@@ -86,6 +87,7 @@ class YueTranscriber:
             vad_mode: Whisper VAD mode for transcription
             provider: provider to use for LLM queryers
             convert: OpenCC configuration used to convert transcribed text
+            additional_context: additional context to include in LLM prompts
             deliniation_prompt_cls: prompt class for block-boundary deliniation
             punctuation_prompt_cls: prompt class for line punctuation
             test_case_directory_path: path to directory containing test cases
@@ -116,6 +118,7 @@ class YueTranscriber:
             verified_test_cases=[tc for tc in deliniation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
+            additional_context=additional_context,
         )
         punctuation_queryer_cls = Queryer.get_queryer_cls(punctuation_prompt_cls)
         self.punctuation_queryer = punctuation_queryer_cls(
@@ -123,6 +126,7 @@ class YueTranscriber:
             verified_test_cases=[tc for tc in punctuation_test_cases if tc.verified],
             provider=provider,
             cache_dir_path=get_runtime_cache_dir_path("llm"),
+            additional_context=additional_context,
         )
         self.aligner = Aligner(
             deliniation_queryer=self.deliniation_queryer,

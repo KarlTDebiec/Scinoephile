@@ -11,7 +11,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -259,6 +263,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         script: str,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -276,6 +281,9 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
 
         # Read inputs
         zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
         provider = get_provider(llm_provider_name, model=llm_model_name)
 
         # Perform operations
@@ -285,6 +293,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             translator = get_yue_vs_zho_gapped_translator(
                 prompt_cls=prompt_cls,
                 provider=provider,
+                additional_context=additional_context,
             )
             yuewen = get_yue_gapped_translated_vs_zho(
                 yuewen=yuewen,
@@ -297,6 +306,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             translator = get_yue_zho_guided_translator(
                 prompt_cls=prompt_cls,
                 provider=provider,
+                additional_context=additional_context,
             )
             yuewen = get_yue_translated_from_zho_with_yue_guidance(
                 zhongwen=zhongwen,
@@ -308,6 +318,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
             translator = get_yue_zho_translator(
                 prompt_cls=prompt_cls,
                 provider=provider,
+                additional_context=additional_context,
             )
             yuewen = get_yue_translated_from_zho(
                 zhongwen=zhongwen,

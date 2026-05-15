@@ -11,7 +11,11 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
+from scinoephile.cli.llms import (
+    LLM_LOCALIZATIONS,
+    add_llm_provider_arguments,
+    read_llm_additional_context,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -210,6 +214,7 @@ class YueProcessCli(ScinoephileCliBase):
         review_script: str | None,
         llm_provider_name: str,
         llm_model_name: str | None,
+        llm_additional_context_file_path: Path | None,
         romanize: bool,
         offset: int,
         overwrite: bool,
@@ -229,6 +234,9 @@ class YueProcessCli(ScinoephileCliBase):
 
         # Read inputs
         series = read_series(parser, infile_path, allow_stdin=True)
+        additional_context = read_llm_additional_context(
+            parser, llm_additional_context_file_path
+        )
 
         # Perform operations
         if clean:
@@ -240,7 +248,11 @@ class YueProcessCli(ScinoephileCliBase):
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
             provider = get_provider(llm_provider_name, model=llm_model_name)
-            reviewer = get_zho_reviewer(prompt_cls=prompt_cls, provider=provider)
+            reviewer = get_zho_reviewer(
+                prompt_cls=prompt_cls,
+                provider=provider,
+                additional_context=additional_context,
+            )
             series = get_zho_block_reviewed(series, processor=reviewer)
         if romanize:
             series = get_yue_romanized(series, append=True)
