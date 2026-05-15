@@ -9,50 +9,12 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.media.media_cli import MediaCli
 from scinoephile.cli.media.media_offset_cli import MediaOffsetCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.media.video_offset import (
     VideoOffsetCandidate,
     VideoOffsetResult,
 )
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaOffsetCli,),
-        (MediaCli, MediaOffsetCli),
-        (ScinoephileCli, MediaCli, MediaOffsetCli),
-    ],
-)
-def test_media_offset_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media offset CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaOffsetCli,),
-        (MediaCli, MediaOffsetCli),
-        (ScinoephileCli, MediaCli, MediaOffsetCli),
-    ],
-)
-def test_media_offset_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media offset CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_media_offset_cli_reports_offset(

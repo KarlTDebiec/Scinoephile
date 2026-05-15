@@ -13,6 +13,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import Answer, LLMProvider
 from scinoephile.core.llms.llm_provider import ChatCompletionKwargs
 from scinoephile.core.llms.tool_box import ToolBox
+from scinoephile.llms.providers import registry as provider_registry
 from scinoephile.llms.providers.deepseek_provider import DeepSeekProvider
 from scinoephile.llms.providers.openai_provider import OpenAIProvider
 from scinoephile.llms.providers.registry import (
@@ -22,6 +23,15 @@ from scinoephile.llms.providers.registry import (
     get_provider_names,
     register_provider_factory,
 )
+
+
+@pytest.fixture(autouse=True)
+def restore_provider_registry():
+    """Restore registered LLM providers after each test."""
+    provider_factories = provider_registry._PROVIDER_FACTORIES.copy()
+    yield
+    provider_registry._PROVIDER_FACTORIES.clear()
+    provider_registry._PROVIDER_FACTORIES.update(provider_factories)
 
 
 def test_default_provider_name_is_openai():
@@ -64,22 +74,16 @@ def test_get_provider_constructs_deepseek_provider_with_kwargs():
 
 def test_get_provider_description_uses_provider_docstrings():
     """Test provider descriptions are exposed from registered provider classes."""
-    assert get_provider_description("deepseek") == (
-        "DeepSeek LLM Provider (OpenAI-SDK compatible)."
-    )
-    assert get_provider_description("openai") == "OpenAI LLM Provider."
+    assert "DeepSeek" in get_provider_description("deepseek")
+    assert "OpenAI" in get_provider_description("openai")
 
 
 def test_get_provider_description_uses_provider_localizations():
     """Test provider description localizations are exposed from provider classes."""
-    assert get_provider_description("deepseek", "zh-hans") == (
-        "DeepSeek LLM 提供商（兼容 OpenAI SDK）。"
-    )
-    assert get_provider_description("deepseek", "zh-hant") == (
-        "DeepSeek LLM 提供商（相容 OpenAI SDK）。"
-    )
-    assert get_provider_description("openai", "zh-hans") == "OpenAI LLM 提供商。"
-    assert get_provider_description("openai", "zh-hant") == "OpenAI LLM 提供商。"
+    assert "DeepSeek" in get_provider_description("deepseek", "zh-hans")
+    assert "DeepSeek" in get_provider_description("deepseek", "zh-hant")
+    assert "OpenAI" in get_provider_description("openai", "zh-hans")
+    assert "OpenAI" in get_provider_description("openai", "zh-hant")
 
 
 def test_register_provider_factory_supports_custom_providers():

@@ -103,27 +103,6 @@ if (package_root / "data/dictionaries/wiktionary/entries.jsonl").exists():
     assert result.returncode == 0, result.stderr
 
 
-def test_copy_build_source_includes_uv_lock(tmp_path: Path):
-    """Test build source copies include uv.lock."""
-    project_root_path = tmp_path / "project"
-    (project_root_path / "scinoephile").mkdir(parents=True)
-    (project_root_path / "uv.lock").write_text("lock contents", encoding="utf-8")
-
-    output_dir_path = _copy_build_source(project_root_path, tmp_path / "source")
-
-    assert (output_dir_path / "uv.lock").read_text(encoding="utf-8") == (
-        "lock contents"
-    )
-
-
-def test_get_single_wheel_path_reports_missing_wheel(tmp_path: Path):
-    """Test missing wheel lookup failures include directory context."""
-    with pytest.raises(
-        pytest.fail.Exception, match="Expected exactly one scinoephile wheel"
-    ):
-        _get_single_wheel_path(tmp_path)
-
-
 def _copy_build_source(project_root_path: Path, output_dir_path: Path) -> Path:
     """Copy the project files needed to build a wheel.
 

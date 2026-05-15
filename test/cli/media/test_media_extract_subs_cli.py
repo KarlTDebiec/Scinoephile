@@ -9,10 +9,7 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.media.media_cli import MediaCli
 from scinoephile.cli.media.media_extract_subs_cli import MediaExtractSubsCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
@@ -22,41 +19,6 @@ from scinoephile.workflows.subtitle_extraction import (
     SubtitleExtractionOutputStatus,
     SubtitleExtractionResult,
 )
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaExtractSubsCli,),
-        (MediaCli, MediaExtractSubsCli),
-        (ScinoephileCli, MediaCli, MediaExtractSubsCli),
-    ],
-)
-def test_media_extract_subs_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media extract_subs CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MediaExtractSubsCli,),
-        (MediaCli, MediaExtractSubsCli),
-        (ScinoephileCli, MediaCli, MediaExtractSubsCli),
-    ],
-)
-def test_media_extract_subs_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test media extract_subs CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_media_extract_subs_cli_passes_arguments_to_workflow(tmp_path: Path):

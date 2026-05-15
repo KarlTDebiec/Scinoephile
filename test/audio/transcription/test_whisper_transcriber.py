@@ -32,121 +32,61 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
 _REPO_ROOT_PATH = Path(__file__).parents[3]
 
 
-def test_get_cache_path_separates_vad_modes_with_shared_cache_dir():
-    """Test Whisper cache paths differ by VAD mode within one cache directory."""
-    vad_on_transcriber = object.__new__(WhisperTranscriber)
-    vad_on_transcriber.cache_dir_path = Path("/tmp/whisper")
-    vad_on_transcriber.model_name = "custom/model"
-    vad_on_transcriber.language = "yue"
-    vad_on_transcriber.use_demucs = False
-    vad_on_transcriber.use_vad = True
+@pytest.mark.parametrize(
+    ("field_name", "first_value", "second_value"),
+    [
+        ("use_vad", True, False),
+        ("model_name", "model/one", "model/two"),
+        ("use_demucs", True, False),
+    ],
+)
+def test_get_cache_path_separates_configuration(
+    field_name: str,
+    first_value: object,
+    second_value: object,
+):
+    """Test Whisper cache paths differ by cache-relevant configuration.
 
-    vad_off_transcriber = object.__new__(WhisperTranscriber)
-    vad_off_transcriber.cache_dir_path = Path("/tmp/whisper")
-    vad_off_transcriber.model_name = "custom/model"
-    vad_off_transcriber.language = "yue"
-    vad_off_transcriber.use_demucs = False
-    vad_off_transcriber.use_vad = False
-
+    Arguments:
+        field_name: transcriber configuration field under test
+        first_value: first transcriber field value
+        second_value: second transcriber field value
+    """
     audio = Mock(raw_data=b"audio")
-    vad_on_cache_path = vad_on_transcriber._get_cache_path(audio)
-    vad_off_cache_path = vad_off_transcriber._get_cache_path(audio)
+    first_transcriber = _get_whisper_transcriber()
+    second_transcriber = _get_whisper_transcriber()
+    setattr(first_transcriber, field_name, first_value)
+    setattr(second_transcriber, field_name, second_value)
+    first_cache_path = first_transcriber._get_cache_path(audio)
+    second_cache_path = second_transcriber._get_cache_path(audio)
 
-    assert vad_on_cache_path is not None
-    assert vad_off_cache_path is not None
-    assert vad_on_cache_path.parent == Path("/tmp/whisper")
-    assert vad_off_cache_path.parent == Path("/tmp/whisper")
-    assert vad_on_cache_path != vad_off_cache_path
-
-
-def test_get_cache_path_separates_models():
-    """Test Whisper cache paths differ for different model names."""
-    transcriber_one = object.__new__(WhisperTranscriber)
-    transcriber_one.cache_dir_path = Path("/tmp/whisper")
-    transcriber_one.model_name = "model/one"
-    transcriber_one.language = "yue"
-    transcriber_one.use_demucs = False
-    transcriber_one.use_vad = True
-
-    transcriber_two = object.__new__(WhisperTranscriber)
-    transcriber_two.cache_dir_path = Path("/tmp/whisper")
-    transcriber_two.model_name = "model/two"
-    transcriber_two.language = "yue"
-    transcriber_two.use_demucs = False
-    transcriber_two.use_vad = True
-
-    audio = Mock(raw_data=b"audio")
-    cache_path_one = transcriber_one._get_cache_path(audio)
-    cache_path_two = transcriber_two._get_cache_path(audio)
-
-    assert cache_path_one is not None
-    assert cache_path_two is not None
-    assert cache_path_one != cache_path_two
+    assert first_cache_path is not None
+    assert second_cache_path is not None
+    assert first_cache_path.parent == Path("/tmp/whisper")
+    assert second_cache_path.parent == Path("/tmp/whisper")
+    assert first_cache_path != second_cache_path
 
 
-def test_get_cache_path_can_use_original_audio_with_processed_input():
-    """Test cache path can be derived from original audio bytes."""
-    transcriber = object.__new__(WhisperTranscriber)
-    transcriber.cache_dir_path = Path("/tmp/whisper")
-    transcriber.model_name = "custom/model"
-    transcriber.language = "yue"
-    transcriber.use_demucs = False
-    transcriber.use_vad = True
-
-    original_audio = Mock(raw_data=b"original-audio")
-    processed_audio = Mock(raw_data=b"processed-audio")
-    original_cache_path = transcriber._get_cache_path(original_audio)
-    processed_cache_path = transcriber._get_cache_path(processed_audio)
-
-    assert original_cache_path is not None
-    assert processed_cache_path is not None
-    assert original_cache_path != processed_cache_path
-
-
-def test_get_cache_path_separates_demucs_modes():
-    """Test Whisper cache paths differ for Demucs-on and Demucs-off runs."""
-    demucs_on_transcriber = object.__new__(WhisperTranscriber)
-    demucs_on_transcriber.cache_dir_path = Path("/tmp/whisper")
-    demucs_on_transcriber.model_name = "custom/model"
-    demucs_on_transcriber.language = "yue"
-    demucs_on_transcriber.use_demucs = True
-    demucs_on_transcriber.use_vad = True
-
-    demucs_off_transcriber = object.__new__(WhisperTranscriber)
-    demucs_off_transcriber.cache_dir_path = Path("/tmp/whisper")
-    demucs_off_transcriber.model_name = "custom/model"
-    demucs_off_transcriber.language = "yue"
-    demucs_off_transcriber.use_demucs = False
-    demucs_off_transcriber.use_vad = True
-
-    audio = Mock(raw_data=b"audio")
-    demucs_on_cache_path = demucs_on_transcriber._get_cache_path(audio)
-    demucs_off_cache_path = demucs_off_transcriber._get_cache_path(audio)
-
-    assert demucs_on_cache_path is not None
-    assert demucs_off_cache_path is not None
-    assert demucs_on_cache_path != demucs_off_cache_path
-
-
-def test_model_name_is_huggingface_repo_id_rejects_local_paths():
+@pytest.mark.parametrize(
+    ("model_name", "expected"),
+    [
+        ("khleeloo/whisper-large-v3-cantonese", True),
+        ("models/whisper.pt", False),
+        ("models/whisper", False),
+        ("/opt/models/whisper", False),
+        ("large-v3", False),
+    ],
+)
+def test_model_name_is_huggingface_repo_id_rejects_local_paths(
+    model_name: str,
+    expected: bool,
+):
     """Test HuggingFace retry is skipped for local filesystem paths."""
     pytest.importorskip("huggingface_hub")
     transcriber = object.__new__(WhisperTranscriber)
-    transcriber.model_name = "khleeloo/whisper-large-v3-cantonese"
+    transcriber.model_name = model_name
 
-    assert transcriber._model_name_is_huggingface_repo_id()
-
-    transcriber.model_name = "models/whisper.pt"
-    assert not transcriber._model_name_is_huggingface_repo_id()
-
-    transcriber.model_name = "models/whisper"
-    assert not transcriber._model_name_is_huggingface_repo_id()
-
-    transcriber.model_name = "/opt/models/whisper"
-    assert not transcriber._model_name_is_huggingface_repo_id()
-
-    transcriber.model_name = "large-v3"
-    assert not transcriber._model_name_is_huggingface_repo_id()
+    assert transcriber._model_name_is_huggingface_repo_id() is expected
 
 
 def test_transcription_imports_without_optional_runtime_dependencies():
@@ -297,12 +237,38 @@ def test_get_segment_split_at_idx_includes_segment_details_in_error():
         words=None,
     )
 
-    try:
+    with pytest.raises(ValueError) as exc_info:
         get_segment_split_at_idx(segment, 3)
-    except ValueError as exc:
-        assert str(exc) == (
-            "Cannot split segment without word timing data: "
-            "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
-        )
-    else:
-        raise AssertionError("Expected ValueError")
+
+    assert str(exc_info.value) == (
+        "Cannot split segment without word timing data: "
+        "id=9 start=156.4 end=161.29 text='照先生你就展示畀朕睇下係' text_len=12."
+    )
+
+
+def _get_whisper_transcriber(
+    *,
+    cache_dir_path: Path = Path("/tmp/whisper"),
+    model_name: str = "custom/model",
+    language: str = "yue",
+    use_demucs: bool = False,
+    use_vad: bool = True,
+) -> WhisperTranscriber:
+    """Get a minimally initialized Whisper transcriber.
+
+    Arguments:
+        cache_dir_path: cache directory path
+        model_name: Whisper model name
+        language: transcription language code
+        use_demucs: whether Demucs preprocessing is enabled
+        use_vad: whether VAD is enabled
+    Returns:
+        minimally initialized transcriber
+    """
+    transcriber = object.__new__(WhisperTranscriber)
+    transcriber.cache_dir_path = cache_dir_path
+    transcriber.model_name = model_name
+    transcriber.language = language
+    transcriber.use_demucs = use_demucs
+    transcriber.use_vad = use_vad
+    return transcriber

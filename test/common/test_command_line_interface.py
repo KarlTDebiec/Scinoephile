@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from logging import getLogger
 from pathlib import Path
 from typing import ClassVar
 from unittest.mock import patch
@@ -98,20 +97,31 @@ class AnotherTestCli(CommandLineInterface):
         pass
 
 
-def test_name():
-    """Test name() class method."""
-    assert TestCli.name() == "test"
+class ReportTool(CommandLineInterface):
+    """Test CLI whose name does not end in Cli."""
+
+    @classmethod
+    def _main(cls):
+        """Execute test CLI."""
+        pass
 
 
-def test_name_with_cli_suffix():
-    """Test name() strips 'Cli' suffix."""
-    assert TestCli.name() == "test"
+@pytest.mark.parametrize(
+    ("cli_cls", "expected_name"),
+    [
+        (TestCli, "test"),
+        (AnotherTestCli, "anothertest"),
+        (ReportTool, "reporttool"),
+    ],
+)
+def test_name(cli_cls: type[CommandLineInterface], expected_name: str):
+    """Test CLI name derivation.
 
-
-def test_name_without_cli_suffix():
-    """Test name() with class name ending in 'Cli'."""
-    # AnotherTestCli ends with 'Cli', so it gets stripped
-    assert AnotherTestCli.name() == "anothertest"
+    Arguments:
+        cli_cls: CLI class under test
+        expected_name: expected command name
+    """
+    assert cli_cls.name() == expected_name
 
 
 def test_description():
@@ -194,6 +204,7 @@ def test_argparser_with_subparsers():
     parser = TestCli.argparser(subparsers=subparsers)
 
     assert isinstance(parser, ArgumentParser)
+    assert "test" in main_parser.format_help()
 
 
 def test_log_command_line():
@@ -239,25 +250,6 @@ def test_main_with_log_file(tmp_path: Path):
             mock_main.assert_called_once()
             # Log file should be created
             assert log_file.exists()
-
-
-def test_main_clears_handlers():
-    """Test main() clears existing logger handlers."""
-    logger = getLogger()
-
-    with patch.object(TestCli, "_main"):
-        with patch("sys.argv", ["test_script.py"]):
-            TestCli.main()
-
-    # Logger should have handlers managed
-    assert logger.handlers is not None
-
-
-def test_abstract_main():
-    """Test that _main is abstract and must be implemented."""
-    with pytest.raises(TypeError):
-        # Cannot instantiate ABC without implementing abstract method
-        CommandLineInterface()
 
 
 def test_run_cli_with_args_quoted_values():

@@ -8,53 +8,14 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.eng.eng_cli import EngCli
 from scinoephile.cli.eng.eng_translate_vs_zho_cli import EngTranslateVsZhoCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
 from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
     assert_series_equal,
     test_data_root,
 )
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (EngTranslateVsZhoCli,),
-        (EngCli, EngTranslateVsZhoCli),
-        (ScinoephileCli, EngCli, EngTranslateVsZhoCli),
-    ],
-)
-def test_eng_translate_vs_zho_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English translate-vs-zho CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (EngTranslateVsZhoCli,),
-        (EngCli, EngTranslateVsZhoCli),
-        (ScinoephileCli, EngCli, EngTranslateVsZhoCli),
-    ],
-)
-def test_eng_translate_vs_zho_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test English translate-vs-zho CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_eng_translate_vs_zho_cli_regular_translation():

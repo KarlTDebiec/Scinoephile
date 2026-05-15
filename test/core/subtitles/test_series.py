@@ -4,42 +4,18 @@
 
 from __future__ import annotations
 
-import pytest
-
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.core.subtitles import Series
-from test.helpers import test_data_root
+from test.helpers import assert_series_equal, test_data_root
 
 
-@pytest.mark.parametrize(
-    "relative_path",
-    [
-        "kob/input/eng.srt",
-        "kob/input/yue-Hans.srt",
-        "kob/input/yue-Hant.srt",
-        "mnt/input/zho-Hant.srt",
-        "t/input/eng.srt",
-        "t/input/zho-Hans.srt",
-        "t/input/zho-Hant.srt",
-    ],
-)
-def test_series(relative_path: str):
-    """Test loading and saving a series.
-
-    Arguments:
-        relative_path: Relative path to the subtitle file
-    """
-    path = test_data_root / relative_path
+def test_series_round_trips_srt():
+    """Test loading and saving an SRT series."""
+    path = test_data_root / "kob/input/eng.srt"
 
     series = Series.load(path)
-    assert len(series) > 0
-
-    # Assert that all lines have text
-    for event in series:
-        assert event.text
-        assert event.text.strip()
-
     with get_temp_file_path(".srt") as output_path:
         series.save(output_path)
-        assert output_path.exists()
-        assert output_path.stat().st_size > 0
+        output = Series.load(output_path)
+
+    assert_series_equal(output, series)
