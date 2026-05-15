@@ -76,7 +76,8 @@ def test_read_sup_series_supports_fragmented_image_segments():
     """Test SUP image objects split across multiple segments are assembled."""
     rle_data = b"\x01\x01\x01\x00\x00\x01\x01\x01"
     object_data_length = 4 + len(rle_data)
-    first_fragment = rle_data[:5]
+    first_fragment = rle_data[:3]
+    middle_fragment = rle_data[3:5]
     last_fragment = rle_data[5:]
     data = np.frombuffer(
         b"".join(
@@ -97,6 +98,7 @@ def test_read_sup_series_supports_fragmented_image_segments():
                         + first_fragment
                     ),
                 ),
+                _sup_segment(90000, 0x15, b"\x00\x00\x00\x00" + middle_fragment),
                 _sup_segment(90000, 0x15, b"\x00\x00\x00\x40" + last_fragment),
                 _sup_segment(90000, 0x80, b""),
                 _sup_segment(
