@@ -49,15 +49,6 @@ jobs:
 
       - name: Run pytest
         run: |
-          set -o pipefail
-          mkdir -p ${GITHUB_WORKSPACE}/.github/outputs
           export PACKAGE_ROOT=${GITHUB_WORKSPACE}/scinoephile
           cd ${GITHUB_WORKSPACE}/test
-          uv run pytest -n auto -v --cov=scinoephile --cov-report term . | tee ${GITHUB_WORKSPACE}/.github/outputs/pytest.txt
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: .github/outputs/
+          uv run pytest -n auto -v --cov=scinoephile --cov-report term .
