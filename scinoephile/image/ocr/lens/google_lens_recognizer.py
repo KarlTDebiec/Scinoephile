@@ -20,6 +20,11 @@ __all__ = ["GoogleLensRecognizer"]
 
 logger = getLogger(__name__)
 
+_OCR_EXTRA_MESSAGE = (
+    "Google Lens OCR support requires optional OCR dependencies. "
+    "Install scinoephile with the 'ocr' extra."
+)
+
 
 class GoogleLensRecognizer:
     """Google Lens recognizer for image subtitles."""
@@ -169,10 +174,7 @@ class GoogleLensRecognizer:
                 LensAPI,
             )
         except ImportError as exc:
-            raise ImportError(
-                "Google Lens OCR support requires chrome-lens-py. Install "
-                "scinoephile with the 'ocr' extra."
-            ) from exc
+            raise ImportError(_OCR_EXTRA_MESSAGE) from exc
         return LensAPI
 
     @staticmethod

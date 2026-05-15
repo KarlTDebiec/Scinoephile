@@ -208,7 +208,7 @@ def test_google_lens_recognizer_import_error_is_actionable(
 
     monkeypatch.setattr("builtins.__import__", fake_import)
 
-    with pytest.raises(ImportError, match="chrome-lens-py"):
+    with pytest.raises(ImportError, match="'ocr' extra"):
         GoogleLensRecognizer._get_lens_api_class()
 
 
