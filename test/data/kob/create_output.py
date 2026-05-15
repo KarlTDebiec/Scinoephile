@@ -25,9 +25,9 @@ from scinoephile.multilang.yue_zho.block_review import (
     YueBlockReviewVsZhoPromptYueHans,
     YueBlockReviewVsZhoPromptYueHant,
 )
-from scinoephile.multilang.yue_zho.gap_translation import (
-    YueGapTranslationVsZhoPromptYueHans,
-    YueGapTranslationVsZhoPromptYueHant,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    YueGappedTranslationVsZhoPromptYueHans,
+    YueGappedTranslationVsZhoPromptYueHant,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     YueLineReviewVsZhoPromptYueHans,
@@ -156,7 +156,7 @@ if "简体粤文 (Transcription)" in actions:
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHans,
         },
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
-        translator_kw={"prompt_cls": YueGapTranslationVsZhoPromptYueHans},
+        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHans},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
         overwrite_srt=True,
     )
@@ -177,7 +177,7 @@ if "简体粤文 (Transcription)" in actions:
             "punctuation_prompt_cls": YuePunctuationVsZhoPromptYueHant,
         },
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
-        translator_kw={"prompt_cls": YueGapTranslationVsZhoPromptYueHant},
+        translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHant},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
         overwrite_srt=True,
     )

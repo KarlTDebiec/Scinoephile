@@ -16,9 +16,9 @@ from scinoephile.multilang.yue_zho.block_review import (
     get_yue_block_reviewed_vs_zho,
     get_yue_vs_zho_block_reviewer,
 )
-from scinoephile.multilang.yue_zho.gap_translation import (
-    get_yue_gap_translated_vs_zho,
-    get_yue_vs_zho_gap_translator,
+from scinoephile.multilang.yue_zho.gapped_translation import (
+    get_yue_gapped_translated_vs_zho,
+    get_yue_vs_zho_gapped_translator,
 )
 from scinoephile.multilang.yue_zho.line_review import (
     get_yue_line_reviewed_vs_zho,
@@ -129,7 +129,7 @@ if "简体粤文 (Transcription)" in actions:
     yue_hans_line_reviewed.save(outfile_path)
 
     # Translate
-    translator = get_yue_vs_zho_gap_translator(
+    translator = get_yue_vs_zho_gapped_translator(
         test_case_path=yue_hans_transcribe_path
         / "multilang"
         / "yue_zho"
@@ -137,7 +137,7 @@ if "简体粤文 (Transcription)" in actions:
         / f"{get_torch_device()}.json",
         auto_verify=True,
     )
-    yue_hans_review_translate = get_yue_gap_translated_vs_zho(
+    yue_hans_review_translate = get_yue_gapped_translated_vs_zho(
         yue_hans_line_reviewed, zho_hans, translator=translator
     )
     outfile_path = yue_hans_transcribe_path / "transcribe_review_translate.srt"
