@@ -103,8 +103,8 @@ class DualNMinusMToNManager(Manager):
         )
         fields: dict[str, Any] = {}
         for idx in gaps:
-            key = prompt_cls.src_1(idx + 1)
-            description = prompt_cls.src_1_desc(idx + 1)
+            key = prompt_cls.output(idx + 1)
+            description = prompt_cls.output_desc(idx + 1)
             fields[key] = (str, Field(..., description=description))
 
         model = create_model(
