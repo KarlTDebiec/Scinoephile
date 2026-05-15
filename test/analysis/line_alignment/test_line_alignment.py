@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import numpy as np
 import pytest
 
 from scinoephile.analysis.line_alignment import (
@@ -59,3 +60,15 @@ def test_line_alignment_operations(
     assert len(ops) == sum(expected_counts.values())
     for operation, expected_count in expected_counts.items():
         assert ops.count(operation) == expected_count
+
+
+def test_line_alignment_operation_table_uses_numeric_array():
+    """Test alignment operation table uses a compact numeric array."""
+    alignment = object.__new__(LineAlignment)
+    alignment.one = "廣東話"
+    alignment.two = "广东话"
+
+    operation_table = alignment._get_operation_table()
+
+    assert isinstance(operation_table, np.ndarray)
+    assert operation_table.dtype == np.uint8
