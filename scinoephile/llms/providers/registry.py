@@ -75,12 +75,17 @@ def get_provider_description(provider_name: str, locale_name: str = "en") -> str
         ScinoephileError: provider name is not registered
     """
     provider_factory = _get_provider_factory(provider_name)
-    description = _get_provider_english_description(provider_factory)
-    if locale_name == "en":
-        return description
+    if locale_name != "en":
+        localizations = getattr(provider_factory, "description_localizations", {})
+        if isinstance(localizations, Mapping):
+            description = localizations.get(locale_name)
+            if isinstance(description, str):
+                return description
 
-    localizations = _get_provider_description_localizations(provider_factory)
-    return localizations.get(locale_name, description)
+    description = getdoc(provider_factory)
+    if description is None:
+        return ""
+    return " ".join(description.split())
 
 
 def get_provider_names() -> tuple[str, ...]:
@@ -102,42 +107,6 @@ def register_provider_factory(
         provider_factory: callable returning an LLMProvider
     """
     _PROVIDER_FACTORIES[provider_name] = provider_factory
-
-
-def _get_provider_description_localizations(
-    provider_factory: Callable[..., LLMProvider],
-) -> Mapping[str, str]:
-    """Get description localizations exposed by a provider factory.
-
-    Arguments:
-        provider_factory: callable returning an LLMProvider
-    Returns:
-        provider description localizations keyed by locale
-    """
-    localizations = getattr(provider_factory, "description_localizations", {})
-    if not isinstance(localizations, Mapping):
-        return {}
-    return {
-        locale_name: description
-        for locale_name, description in localizations.items()
-        if isinstance(locale_name, str) and isinstance(description, str)
-    }
-
-
-def _get_provider_english_description(
-    provider_factory: Callable[..., LLMProvider],
-) -> str:
-    """Get the English description for a provider factory.
-
-    Arguments:
-        provider_factory: callable returning an LLMProvider
-    Returns:
-        English provider description
-    """
-    description = getdoc(provider_factory)
-    if description is None:
-        return ""
-    return " ".join(description.split())
 
 
 def _get_provider_factory(provider_name: str) -> Callable[..., LLMProvider]:

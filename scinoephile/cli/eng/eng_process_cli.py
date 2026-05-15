@@ -7,10 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
-    LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
-)
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -19,10 +16,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import (
     ScinoephileCliBase,
-    merge_localizations,
     read_series,
     write_series,
 )
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.eng.block_review import (
     get_eng_block_reviewed,
     get_eng_block_reviewer,
@@ -194,8 +191,8 @@ class EngProcessCli(ScinoephileCliBase):
             series = get_eng_flattened(series)
         if proofread:
             provider = get_provider(llm_provider_name, model=llm_model_name)
-            proofreader = get_eng_block_reviewer(provider=provider)
-            series = get_eng_block_reviewed(series, processor=proofreader)
+            reviewer = get_eng_block_reviewer(provider=provider)
+            series = get_eng_block_reviewed(series, processor=reviewer)
         if offset:
             series.shift(ms=offset)
 

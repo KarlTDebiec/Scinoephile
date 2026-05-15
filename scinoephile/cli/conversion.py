@@ -112,7 +112,7 @@ class _ListOpenCCConfigsAction(Action):
         kwargs.setdefault("nargs", 0)
         super().__init__(option_strings=option_strings, dest=dest, **kwargs)
 
-    def __call__(
+    def __call__(  # noqa: ARG002
         self,
         parser: ArgumentParser,
         namespace: Namespace,
@@ -127,7 +127,6 @@ class _ListOpenCCConfigsAction(Action):
             values: parsed argument value
             option_string: option string used
         """
-        del namespace, values, option_string
         locale_name = ScinoephileCliBase.locale_name
         heading = CONVERSION_LOCALIZATIONS.get(locale_name, {}).get(
             "Available OpenCC configurations:",

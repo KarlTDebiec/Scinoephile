@@ -11,10 +11,7 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import (
-    LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
-)
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -25,10 +22,10 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.common.exceptions import ArgumentConflictError
 from scinoephile.core.cli import (
     ScinoephileCliBase,
-    merge_localizations,
     read_series,
     write_series,
 )
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.lang.cmn.romanization import get_cmn_romanized
 from scinoephile.lang.zho.block_review import (
     BlockReviewPromptZhoHans,
@@ -248,8 +245,8 @@ class ZhoProcessCli(ScinoephileCliBase):
         if review_script is not None:
             prompt_cls = cls._get_review_prompt_cls(review_script)
             provider = get_provider(llm_provider_name, model=llm_model_name)
-            proofreader = get_zho_reviewer(prompt_cls=prompt_cls, provider=provider)
-            series = get_zho_block_reviewed(series, processor=proofreader)
+            reviewer = get_zho_reviewer(prompt_cls=prompt_cls, provider=provider)
+            series = get_zho_block_reviewed(series, processor=reviewer)
         if romanize:
             series = get_cmn_romanized(series, append=True)
         if offset:

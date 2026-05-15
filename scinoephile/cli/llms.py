@@ -18,16 +18,13 @@ from typing import Any
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     get_default_provider_name,
+    get_provider_description,
     get_provider_names,
-)
-from scinoephile.llms.providers.registry import (
-    get_provider_description as get_registered_provider_description,
 )
 
 __all__ = [
     "LLM_LOCALIZATIONS",
     "add_llm_provider_arguments",
-    "get_llm_provider_description",
     "llm_provider_name_arg",
 ]
 
@@ -72,7 +69,7 @@ class _ListLLMProvidersAction(Action):
         kwargs.setdefault("nargs", 0)
         super().__init__(option_strings=option_strings, dest=dest, **kwargs)
 
-    def __call__(
+    def __call__(  # noqa: ARG002
         self,
         parser: ArgumentParser,
         namespace: Namespace,
@@ -87,7 +84,6 @@ class _ListLLMProvidersAction(Action):
             values: parsed argument value
             option_string: option string used
         """
-        del namespace, values, option_string
         locale_name = ScinoephileCliBase.locale_name
         heading = LLM_LOCALIZATIONS.get(locale_name, {}).get(
             "Available LLM providers:",
@@ -96,7 +92,7 @@ class _ListLLMProvidersAction(Action):
         lines = [heading]
         lines.extend(
             f"  {provider_name:<9} "
-            f"{get_llm_provider_description(provider_name, locale_name)}"
+            f"{get_provider_description(provider_name, locale_name)}"
             for provider_name in get_provider_names()
         )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
@@ -135,18 +131,6 @@ def add_llm_provider_arguments(
         default=SUPPRESS,
         help="list available LLM providers and exit",
     )
-
-
-def get_llm_provider_description(provider_name: str, locale_name: str = "en") -> str:
-    """Get localized description for an LLM provider.
-
-    Arguments:
-        provider_name: provider name
-        locale_name: locale name to use for description lookup
-    Returns:
-        localized description when available, otherwise English description
-    """
-    return get_registered_provider_description(provider_name, locale_name)
 
 
 def llm_provider_name_arg(value: str) -> str:

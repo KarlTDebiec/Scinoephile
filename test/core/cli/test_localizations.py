@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from scinoephile.core.cli import merge_localizations
+from scinoephile.core.cli.localization import merge_localizations
 
 
 def test_merge_localizations_merges_locale_text_in_order():

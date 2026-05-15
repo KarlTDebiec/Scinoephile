@@ -12,10 +12,7 @@ from scinoephile.cli.conversion import (
     CONVERSION_LOCALIZATIONS,
     add_opencc_convert_argument,
 )
-from scinoephile.cli.llms import (
-    LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
-)
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -24,10 +21,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import (
     ScinoephileCliBase,
-    merge_localizations,
     read_series,
     write_series,
 )
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.core.llms import LLMProvider
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
@@ -323,8 +320,8 @@ class OcrFuseCli(ScinoephileCliBase):
         if clean:
             lens = get_eng_cleaned(lens, remove_empty=False)
             tesseract = get_eng_cleaned(tesseract, remove_empty=False)
-        processor = get_eng_ocr_fuser(provider=provider)
-        fused = get_eng_ocr_fused(lens, tesseract, processor=processor)
+        fuser = get_eng_ocr_fuser(provider=provider)
+        fused = get_eng_ocr_fused(lens, tesseract, processor=fuser)
 
         # Write outputs
         write_series(

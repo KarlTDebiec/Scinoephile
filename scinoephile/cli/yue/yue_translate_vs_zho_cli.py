@@ -11,10 +11,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.llms import (
-    LLM_LOCALIZATIONS,
-    add_llm_provider_arguments,
-)
+from scinoephile.cli.llms import LLM_LOCALIZATIONS, add_llm_provider_arguments
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -23,10 +20,10 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core.cli import (
     ScinoephileCliBase,
-    merge_localizations,
     read_series,
     write_series,
 )
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.gap_translation import (
     YueVsZhoGapTranslationPromptYueHans,
