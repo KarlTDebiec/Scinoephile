@@ -176,12 +176,14 @@ def test_zho_process_cli_rejects_bare_convert_flag():
         run_cli_with_args(ZhoProcessCli, f"--infile {full_input_path} --convert")
 
 
-def test_zho_process_cli_passes_llm_provider_and_model_to_reviewer():
+def test_zho_process_cli_passes_llm_options_to_reviewer(tmp_path):
     """Test standard Chinese CLI constructs configured LLM provider for review."""
     full_input_path = test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate.srt"
     expected = Series.load(
         test_data_root / "mnt/output/zho-Hant_ocr/fuse_clean_validate_review.srt"
     )
+    context_path = tmp_path / "context.txt"
+    context_path.write_text("Use glossary terms.\n", encoding="utf-8")
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
@@ -196,9 +198,14 @@ def test_zho_process_cli_passes_llm_provider_and_model_to_reviewer():
                     ZhoProcessCli,
                     f"--infile {full_input_path} --proofread traditional "
                     "--llm-provider deepseek --llm-model custom-model "
+                    f"--llm-additional-content-file {context_path} "
                     f"--outfile {output_path}",
                 )
 
     provider = patched_factory.call_args.kwargs["provider"]
     assert isinstance(provider, DeepSeekProvider)
     assert provider.model == "custom-model"
+    assert (
+        patched_factory.call_args.kwargs["additional_context"]
+        == "Use glossary terms.\n"
+    )

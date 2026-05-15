@@ -13,8 +13,10 @@ from argparse import (  # noqa: PLC2701
     Namespace,
     _ArgumentGroup,
 )
+from pathlib import Path
 from typing import Any
 
+from scinoephile.common.argument_parsing import input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
@@ -26,12 +28,16 @@ __all__ = [
     "LLM_LOCALIZATIONS",
     "add_llm_provider_arguments",
     "llm_provider_name_arg",
+    "read_llm_additional_context",
 ]
 
 LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional help": "附加帮助",
         "Available LLM providers:": "可用 LLM 提供商：",
+        "file from which to read additional context for LLM prompts": (
+            "用于读取 LLM 提示词附加上下文的文件"
+        ),
         "LLM model identifier override": "LLM 模型标识符覆盖值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show available providers.": (
@@ -43,6 +49,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "additional help": "附加說明",
         "Available LLM providers:": "可用 LLM 提供商：",
+        "file from which to read additional context for LLM prompts": (
+            "用於讀取 LLM 提示詞附加上下文的檔案"
+        ),
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show available providers.": (
@@ -81,6 +90,13 @@ def add_llm_provider_arguments(
         dest="llm_model_name",
         help="LLM model identifier override",
     )
+    operation_arg_group.add_argument(
+        "--llm-additional-content-file",
+        default=None,
+        dest="llm_additional_context_file_path",
+        type=input_file_arg(),
+        help="file from which to read additional context for LLM prompts",
+    )
     additional_help_arg_group.add_argument(
         "--list-llm-providers",
         action=_ListLLMProvidersAction,
@@ -106,6 +122,26 @@ def llm_provider_name_arg(value: str) -> str:
     raise ArgumentTypeError(
         f"{value!r} is not one of the supported LLM providers: {options}"
     )
+
+
+def read_llm_additional_context(
+    parser: ArgumentParser,
+    llm_additional_context_file_path: Path | None,
+) -> str | None:
+    """Read additional context for LLM prompts.
+
+    Arguments:
+        parser: active argument parser
+        llm_additional_context_file_path: optional file from which to read context
+    Returns:
+        additional context text, if provided
+    """
+    if llm_additional_context_file_path is None:
+        return None
+    try:
+        return llm_additional_context_file_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        parser.error(str(exc))
 
 
 class _ListLLMProvidersAction(Action):
