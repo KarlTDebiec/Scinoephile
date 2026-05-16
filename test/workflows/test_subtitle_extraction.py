@@ -254,7 +254,7 @@ def test_extract_subtitles_extracts_sup_streams_to_image_dirs(tmp_path: Path):
             languages=["eng", "zho"],
             output_dir_path=output_dir_path,
             cache_dir_path=cache_dir_path,
-            extract_sup=True,
+            export_images=True,
         )
 
     cache_subtitles.assert_called_once_with(
@@ -304,7 +304,7 @@ def test_extract_subtitles_extracts_sup_file_to_image_dir_in_place(tmp_path: Pat
             infile_path=infile_path,
             languages=["zho"],
             output_dir_path=tmp_path,
-            extract_sup=True,
+            export_images=True,
             overwrite=True,
         )
 
@@ -343,7 +343,7 @@ def test_extract_subtitles_skips_sup_file_with_nonmatching_language(tmp_path: Pa
             infile_path=infile_path,
             languages=["zho"],
             output_dir_path=tmp_path,
-            extract_sup=True,
+            export_images=True,
         )
 
     copy.assert_not_called()

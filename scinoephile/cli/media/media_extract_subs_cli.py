@@ -187,7 +187,7 @@ class MediaExtractSubsCli(ScinoephileCliBase):
                 output_dir_path=output_dir_path,
                 cache_dir_path=cache_dir_path,
                 details=details,
-                extract_sup=export_images,
+                export_images=export_images,
                 overwrite=overwrite,
             )
         except ScinoephileError as exc:

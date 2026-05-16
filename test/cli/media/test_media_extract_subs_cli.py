@@ -51,7 +51,7 @@ def test_media_extract_subs_cli_passes_arguments_to_workflow(tmp_path: Path):
         output_dir_path=output_dir_path.resolve(),
         cache_dir_path=cache_dir_path.resolve(),
         details=True,
-        extract_sup=True,
+        export_images=True,
         overwrite=True,
     )
 
