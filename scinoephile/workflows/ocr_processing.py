@@ -21,7 +21,6 @@ from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fused, get_zho_ocr_fuser
-from scinoephile.llms.dual_1_to_1.ocr_fusion import OcrFusionProcessor
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
@@ -89,19 +88,95 @@ def process_eng_ocr(
         image_dir_path,
         overwrite=overwrite,
     )
-    output_paths = _process_eng_image_ocr(
-        image_series,
-        output_dir_path,
-        export_images=export_images,
+
+    # Process OCR outputs
+    lens_path = output_dir_path / "lens.srt"
+    lens_image_dir_path = output_dir_path / "lens"
+    tesseract_path = output_dir_path / "tesseract.srt"
+    tesseract_image_dir_path = output_dir_path / "tesseract"
+    fuse_path = output_dir_path / "fuse.srt"
+    fuse_image_dir_path = output_dir_path / "fuse"
+
+    lens = _get_or_build_series(
+        lens_path,
+        lambda: ocr_image_series_with_lens(image_series, language="en"),
         overwrite=overwrite,
-        provider=provider,
-        additional_context=additional_context,
     )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            lens,
+            lens_image_dir_path,
+            overwrite=overwrite,
+        )
+    tesseract = _get_or_build_series(
+        tesseract_path,
+        lambda: ocr_image_series_with_tesseract(
+            image_series,
+            detect_italics=False,
+            language="eng",
+        ),
+        overwrite=overwrite,
+    )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            tesseract,
+            tesseract_image_dir_path,
+            overwrite=overwrite,
+        )
+
+    # Fuse OCR outputs
+    if provider is None and additional_context is None:
+        fuser = None
+    else:
+        fuser = get_eng_ocr_fuser(
+            provider=provider,
+            additional_context=additional_context,
+        )
+    if fuser is None:
+
+        def fuse_builder() -> Series:
+            """Build fused English OCR output."""
+            return get_eng_ocr_fused(lens, tesseract)
+    else:
+
+        def fuse_builder() -> Series:
+            """Build fused English OCR output with a configured processor."""
+            return get_eng_ocr_fused(lens, tesseract, processor=fuser)
+
+    fuse = _get_or_build_series(
+        fuse_path,
+        fuse_builder,
+        overwrite=overwrite,
+    )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            fuse,
+            fuse_image_dir_path,
+            overwrite=overwrite,
+        )
+
+    output_paths = {
+        "image": image_dir_path,
+        "lens": lens_path,
+        "tesseract": tesseract_path,
+        "fuse": fuse_path,
+    }
+    if export_images:
+        output_paths.update(
+            {
+                "lens-images": lens_image_dir_path,
+                "tesseract-images": tesseract_image_dir_path,
+                "fuse-images": fuse_image_dir_path,
+            }
+        )
 
     return OcrProcessingResult(
         infile_path=infile_path,
         output_dir_path=output_dir_path,
-        output_paths={"image": image_dir_path, **output_paths},
+        output_paths=output_paths,
     )
 
 
@@ -145,47 +220,91 @@ def process_zho_ocr(
         image_dir_path,
         overwrite=overwrite,
     )
-    output_paths = _process_zho_image_ocr(
-        image_series,
-        output_dir_path,
-        export_images=export_images,
+
+    # Process OCR outputs
+    lens_path = output_dir_path / "lens.srt"
+    lens_image_dir_path = output_dir_path / "lens"
+    paddle_path = output_dir_path / "paddle.srt"
+    paddle_image_dir_path = output_dir_path / "paddle"
+    fuse_path = output_dir_path / "fuse.srt"
+    fuse_image_dir_path = output_dir_path / "fuse"
+
+    lens = _get_or_build_series(
+        lens_path,
+        lambda: ocr_image_series_with_lens(image_series, language="zh-CN"),
         overwrite=overwrite,
-        provider=provider,
-        additional_context=additional_context,
     )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            lens,
+            lens_image_dir_path,
+            overwrite=overwrite,
+        )
+    paddle = _get_or_build_series(
+        paddle_path,
+        lambda: ocr_image_series_with_paddle(image_series, language="ch"),
+        overwrite=overwrite,
+    )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            paddle,
+            paddle_image_dir_path,
+            overwrite=overwrite,
+        )
+
+    # Fuse OCR outputs
+    if provider is None and additional_context is None:
+        fuser = None
+    else:
+        fuser = get_zho_ocr_fuser(
+            provider=provider,
+            additional_context=additional_context,
+        )
+    if fuser is None:
+
+        def fuse_builder() -> Series:
+            """Build fused Chinese OCR output."""
+            return get_zho_ocr_fused(lens, paddle)
+    else:
+
+        def fuse_builder() -> Series:
+            """Build fused Chinese OCR output with a configured processor."""
+            return get_zho_ocr_fused(lens, paddle, processor=fuser)
+
+    fuse = _get_or_build_series(
+        fuse_path,
+        fuse_builder,
+        overwrite=overwrite,
+    )
+    if export_images:
+        _save_text_image_series(
+            image_series,
+            fuse,
+            fuse_image_dir_path,
+            overwrite=overwrite,
+        )
+
+    output_paths = {
+        "image": image_dir_path,
+        "lens": lens_path,
+        "paddle": paddle_path,
+        "fuse": fuse_path,
+    }
+    if export_images:
+        output_paths.update(
+            {
+                "lens-images": lens_image_dir_path,
+                "paddle-images": paddle_image_dir_path,
+                "fuse-images": fuse_image_dir_path,
+            }
+        )
 
     return OcrProcessingResult(
         infile_path=infile_path,
         output_dir_path=output_dir_path,
-        output_paths={"image": image_dir_path, **output_paths},
-    )
-
-
-def _get_fuser(
-    *,
-    language: str,
-    provider: LLMProvider | None,
-    additional_context: str | None,
-) -> OcrFusionProcessor | None:
-    """Get OCR fusion processor for optional provider configuration.
-
-    Arguments:
-        language: OCR text language
-        provider: provider to use for OCR fusion queries
-        additional_context: additional context to include in OCR fusion prompts
-    Returns:
-        OCR fusion processor, if custom configuration is needed
-    """
-    if provider is None and additional_context is None:
-        return None
-    if language == "eng":
-        return get_eng_ocr_fuser(
-            provider=provider,
-            additional_context=additional_context,
-        )
-    return get_zho_ocr_fuser(
-        provider=provider,
-        additional_context=additional_context,
+        output_paths=output_paths,
     )
 
 
@@ -268,204 +387,6 @@ def _load_image_series(
         cache_dir_path=cache_dir_path,
     )
     return ImageSeries.load(stream_path)
-
-
-def _process_eng_image_ocr(
-    image_series: ImageSeries,
-    output_dir_path: Path,
-    *,
-    export_images: bool,
-    overwrite: bool,
-    provider: LLMProvider | None,
-    additional_context: str | None,
-) -> dict[str, Path]:
-    """Process English image subtitle OCR.
-
-    Arguments:
-        image_series: image subtitles to OCR
-        output_dir_path: directory where OCR outputs are written
-        export_images: whether to export OCR outputs as image subtitle directories
-        overwrite: whether to overwrite existing workflow outputs
-        provider: provider to use for OCR fusion queries
-        additional_context: additional context to include in OCR fusion prompts
-    Returns:
-        output paths keyed by output name
-    """
-    lens_path = output_dir_path / "lens.srt"
-    lens_image_dir_path = output_dir_path / "lens"
-    tesseract_path = output_dir_path / "tesseract.srt"
-    tesseract_image_dir_path = output_dir_path / "tesseract"
-    fuse_path = output_dir_path / "fuse.srt"
-    fuse_image_dir_path = output_dir_path / "fuse"
-
-    lens = _get_or_build_series(
-        lens_path,
-        lambda: ocr_image_series_with_lens(image_series, language="en"),
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            lens,
-            lens_image_dir_path,
-            overwrite=overwrite,
-        )
-    tesseract = _get_or_build_series(
-        tesseract_path,
-        lambda: ocr_image_series_with_tesseract(
-            image_series,
-            detect_italics=False,
-            language="eng",
-        ),
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            tesseract,
-            tesseract_image_dir_path,
-            overwrite=overwrite,
-        )
-    fuser = _get_fuser(
-        language="eng",
-        provider=provider,
-        additional_context=additional_context,
-    )
-    if fuser is None:
-
-        def fuse_builder() -> Series:
-            """Build fused English OCR output."""
-            return get_eng_ocr_fused(lens, tesseract)
-    else:
-
-        def fuse_builder() -> Series:
-            """Build fused English OCR output with a configured processor."""
-            return get_eng_ocr_fused(lens, tesseract, processor=fuser)
-
-    fuse = _get_or_build_series(
-        fuse_path,
-        fuse_builder,
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            fuse,
-            fuse_image_dir_path,
-            overwrite=overwrite,
-        )
-
-    output_paths = {
-        "lens": lens_path,
-        "tesseract": tesseract_path,
-        "fuse": fuse_path,
-    }
-    if export_images:
-        output_paths.update(
-            {
-                "lens-images": lens_image_dir_path,
-                "tesseract-images": tesseract_image_dir_path,
-                "fuse-images": fuse_image_dir_path,
-            }
-        )
-    return output_paths
-
-
-def _process_zho_image_ocr(
-    image_series: ImageSeries,
-    output_dir_path: Path,
-    *,
-    export_images: bool,
-    overwrite: bool,
-    provider: LLMProvider | None,
-    additional_context: str | None,
-) -> dict[str, Path]:
-    """Process standard Chinese image subtitle OCR.
-
-    Arguments:
-        image_series: image subtitles to OCR
-        output_dir_path: directory where OCR outputs are written
-        export_images: whether to export OCR outputs as image subtitle directories
-        overwrite: whether to overwrite existing workflow outputs
-        provider: provider to use for OCR fusion queries
-        additional_context: additional context to include in OCR fusion prompts
-    Returns:
-        output paths keyed by output name
-    """
-    lens_path = output_dir_path / "lens.srt"
-    lens_image_dir_path = output_dir_path / "lens"
-    paddle_path = output_dir_path / "paddle.srt"
-    paddle_image_dir_path = output_dir_path / "paddle"
-    fuse_path = output_dir_path / "fuse.srt"
-    fuse_image_dir_path = output_dir_path / "fuse"
-
-    lens = _get_or_build_series(
-        lens_path,
-        lambda: ocr_image_series_with_lens(image_series, language="zh-CN"),
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            lens,
-            lens_image_dir_path,
-            overwrite=overwrite,
-        )
-    paddle = _get_or_build_series(
-        paddle_path,
-        lambda: ocr_image_series_with_paddle(image_series, language="ch"),
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            paddle,
-            paddle_image_dir_path,
-            overwrite=overwrite,
-        )
-    fuser = _get_fuser(
-        language="zho",
-        provider=provider,
-        additional_context=additional_context,
-    )
-    if fuser is None:
-
-        def fuse_builder() -> Series:
-            """Build fused Chinese OCR output."""
-            return get_zho_ocr_fused(lens, paddle)
-    else:
-
-        def fuse_builder() -> Series:
-            """Build fused Chinese OCR output with a configured processor."""
-            return get_zho_ocr_fused(lens, paddle, processor=fuser)
-
-    fuse = _get_or_build_series(
-        fuse_path,
-        fuse_builder,
-        overwrite=overwrite,
-    )
-    if export_images:
-        _save_text_image_series(
-            image_series,
-            fuse,
-            fuse_image_dir_path,
-            overwrite=overwrite,
-        )
-
-    output_paths = {
-        "lens": lens_path,
-        "paddle": paddle_path,
-        "fuse": fuse_path,
-    }
-    if export_images:
-        output_paths.update(
-            {
-                "lens-images": lens_image_dir_path,
-                "paddle-images": paddle_image_dir_path,
-                "fuse-images": fuse_image_dir_path,
-            }
-        )
-    return output_paths
 
 
 def _resolve_input_path(infile_path: Path) -> Path:
