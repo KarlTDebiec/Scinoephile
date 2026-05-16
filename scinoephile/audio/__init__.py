@@ -6,5 +6,26 @@ This module may import from: common, core, lang
 
 Hierarchy within module (lower may import from higher)::
 * transcription
+* speech_activity
 * subtitles
 """
+
+from __future__ import annotations
+
+from .speech_activity import (
+    SpeechActivityDetector,
+    SpeechInterval,
+    WhisperSpeechActivityDetector,
+    get_speech_intervals_cleaned,
+    get_speech_intervals_from_segments,
+    get_speech_overlap_duration,
+)
+
+__all__ = [
+    "SpeechActivityDetector",
+    "SpeechInterval",
+    "WhisperSpeechActivityDetector",
+    "get_speech_intervals_cleaned",
+    "get_speech_intervals_from_segments",
+    "get_speech_overlap_duration",
+]

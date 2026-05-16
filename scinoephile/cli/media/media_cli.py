@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .media_adjust_subs_cli import MediaAdjustSubsCli
 from .media_extract_subs_cli import MediaExtractSubsCli
 from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
@@ -18,6 +19,9 @@ __all__ = ["MediaCli"]
 
 MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "adjust subtitle timings using detected speech activity": (
+            "使用检测到的语音活动调整字幕时间"
+        ),
         "command-line interface for media operations": "媒体操作命令行界面",
         "extract matching subtitle streams from a video file": (
             "从视频文件提取匹配的字幕流"
@@ -29,6 +33,9 @@ MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "list media streams in a media file": "列出媒体文件中的媒体流",
     },
     "zh-hant": {
+        "adjust subtitle timings using detected speech activity": (
+            "使用偵測到的語音活動調整字幕時間"
+        ),
         "command-line interface for media operations": "媒體操作命令列介面",
         "extract matching subtitle streams from a video file": (
             "從影片檔提取匹配的字幕流"
@@ -75,6 +82,7 @@ class MediaCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            MediaAdjustSubsCli.name(): MediaAdjustSubsCli,
             MediaExtractSubsCli.name(): MediaExtractSubsCli,
             MediaOffsetCli.name(): MediaOffsetCli,
             MediaProbeCli.name(): MediaProbeCli,
