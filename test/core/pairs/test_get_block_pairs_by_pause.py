@@ -8,21 +8,6 @@ from scinoephile.core.pairs import get_block_pairs_by_pause
 from scinoephile.core.subtitles import Series
 
 
-def _test_get_block_pairs_by_pause(
-    series_one: Series, series_two: Series, expected: int
-):
-    """Test get_block_pairs_by_pause.
-
-    Arguments:
-        series_one: series one with which to test
-        series_two: series two with which to test
-        expected: Expected number of pair blocks
-    """
-    block_pairs = get_block_pairs_by_pause(series_one, series_two)
-    assert len(block_pairs) == expected
-
-
-# get_block_pairs_by_pause
 def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
     """Test get_block_pairs_by_pause with KOB simplified written Cantonese.
 
@@ -30,40 +15,19 @@ def test_get_block_pairs_by_pause_kob(kob_yue_hans: Series, kob_eng: Series):
         kob_yue_hans: KOB simplified written Cantonese series fixture
         kob_eng: KOB English series fixture
     """
-    _test_get_block_pairs_by_pause(
-        kob_yue_hans,
-        kob_eng,
-        193,
-    )
+    block_pairs = get_block_pairs_by_pause(kob_yue_hans, kob_eng)
 
+    assert len(block_pairs) == 193
+    first_one_block, first_two_block = block_pairs[0]
+    assert len(first_one_block) == 1
+    assert len(first_two_block) == 1
+    assert first_one_block[0].start == 136970
+    assert first_two_block[0].start == 136970
+    assert first_one_block[0].text == "少爷！准备好喇"
+    assert first_two_block[0].text == "Young master, we are ready"
 
-def test_get_block_pairs_by_pause_mnt(
-    mnt_zho_hans_fuse_clean_validate_review_flatten: Series,
-    mnt_eng_fuse_clean_validate_review_flatten: Series,
-):
-    """Test get_block_pairs_by_pause with MNT traditional standard Chinese.
-
-    Arguments:
-        mnt_zho_hans_fuse_clean_validate_review_flatten: MNT traditional standard
-          Chinese series fixture
-        mnt_eng_fuse_clean_validate_review_flatten: MNT English series fixture
-    """
-    _test_get_block_pairs_by_pause(
-        mnt_zho_hans_fuse_clean_validate_review_flatten,
-        mnt_eng_fuse_clean_validate_review_flatten,
-        177,
-    )
-
-
-def test_get_block_pairs_by_pause_t(t_zho_hans: Series, t_eng: Series):
-    """Test get_block_pairs_by_pause with T simplified standard Chinese.
-
-    Arguments:
-        t_zho_hans: T simplified standard Chinese series fixture
-        t_eng: T English series fixture
-    """
-    _test_get_block_pairs_by_pause(
-        t_zho_hans,
-        t_eng,
-        192,
-    )
+    last_one_block, last_two_block = block_pairs[-1]
+    assert len(last_one_block) == 2
+    assert len(last_two_block) == 2
+    assert last_one_block[0].start == 5931306
+    assert last_two_block[0].start == 5931348

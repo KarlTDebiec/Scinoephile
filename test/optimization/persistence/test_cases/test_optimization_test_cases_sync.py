@@ -15,6 +15,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YueZhoPunctuationManager,
 )
 from scinoephile.optimization.persistence.test_cases import TestCaseSqliteStore
+from scinoephile.optimization.persistence.test_cases.id import get_test_case_id
 from scinoephile.optimization.persistence.test_cases.sync import (
     sync_test_cases_from_json_paths,
 )
@@ -57,6 +58,13 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
     )
     assert len(report1.insert_ids) == 2
     assert report1.delete_ids == ()
+    test_case_cls = MonoNManager.get_test_case_cls(size=1, prompt_cls=MonoNPrompt)
+    deleted_test_case = test_case_cls.model_validate(data1_v1[1])
+    assert deleted_test_case.answer is not None
+    expected_delete_id = get_test_case_id(
+        deleted_test_case.query,
+        deleted_test_case.answer,
+    )
 
     # Now remove one test case from src1; sync should delete that ID for this source.
     data1_v2 = [
@@ -76,7 +84,7 @@ def test_sync_inserts_and_deletes_by_source_path(tmp_path: Path, monkeypatch):
         input_paths=[src1],
         dry_run=False,
     )
-    assert report2.delete_ids != ()
+    assert report2.delete_ids == (expected_delete_id,)
 
 
 def test_sync_canonicalizes_source_paths(tmp_path: Path, monkeypatch):

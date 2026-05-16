@@ -7,6 +7,8 @@ from __future__ import annotations
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
+import pytest
+
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription.transcriber import (
@@ -227,15 +229,26 @@ def test_transcribe_block_audio_auto_retries_when_vad_result_has_text_without_wo
     )
 
 
-def test_transcribe_block_audio_auto_retries_when_vad_raises_segment_assertion():
-    """Test AUTO mode retries when VAD raises a Whisper assertion."""
+@pytest.mark.parametrize(
+    "error_message",
+    [
+        "Inconsistent number of segments: 8 != 7",
+        "other failure",
+    ],
+)
+def test_transcribe_block_audio_auto_retries_when_vad_raises_assertion(
+    error_message: str,
+):
+    """Test AUTO mode retries on VAD assertion failures.
+
+    Arguments:
+        error_message: assertion message raised by VAD transcription
+    """
     transcriber = object.__new__(YueTranscriber)
     transcriber.vad_mode = VADMode.AUTO
     transcriber.demucs_mode = DemucsMode.OFF
     transcriber.demucs_separator = None
-    transcriber.vad_transcriber = Mock(
-        side_effect=AssertionError("Inconsistent number of segments: 8 != 7")
-    )
+    transcriber.vad_transcriber = Mock(side_effect=AssertionError(error_message))
     transcriber.no_vad_transcriber = Mock(return_value=[Mock(text="fallback")])
     transcriber.vad_transcriber.get_cached_transcription.return_value = None
     transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
@@ -246,35 +259,6 @@ def test_transcribe_block_audio_auto_retries_when_vad_raises_segment_assertion()
     output = transcriber._transcribe_block_audio(input_audio)
 
     assert output == transcriber.no_vad_transcriber.return_value
-    transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
-        input_audio
-    )
-    transcriber.vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
-    )
-    transcriber.no_vad_transcriber.assert_called_once_with(
-        input_audio, cache_audio=input_audio
-    )
-
-
-def test_transcribe_block_audio_auto_retries_when_vad_raises_assertion():
-    """Test AUTO mode retries on VAD assertion failures."""
-    transcriber = object.__new__(YueTranscriber)
-    transcriber.vad_mode = VADMode.AUTO
-    transcriber.demucs_mode = DemucsMode.OFF
-    transcriber.demucs_separator = None
-    transcriber.vad_transcriber = Mock(side_effect=AssertionError("other failure"))
-    transcriber.no_vad_transcriber = Mock(return_value=[Mock(text="fallback")])
-    transcriber.vad_transcriber.get_cached_transcription.return_value = None
-    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
-
-    input_audio = Mock()
-    input_audio.raw_data = b"raw-audio"
-
-    output = transcriber._transcribe_block_audio(input_audio)
-
-    assert output == transcriber.no_vad_transcriber.return_value
-
     transcriber.vad_transcriber.get_cached_transcription.assert_called_once_with(
         input_audio
     )

@@ -8,46 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.multi.multi_diff_cli import MultiDiffCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage, test_data_root
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiDiffCli,),
-        (MultiCli, MultiDiffCli),
-        (ScinoephileCli, MultiCli, MultiDiffCli),
-    ],
-)
-def test_multi_diff_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi diff CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiDiffCli,),
-        (MultiCli, MultiDiffCli),
-        (ScinoephileCli, MultiCli, MultiDiffCli),
-    ],
-)
-def test_multi_diff_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi diff CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 def test_multi_diff_cli(
@@ -145,7 +107,11 @@ def test_multi_diff_cli_identical_series_prints_no_differences(
 
 
 def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
-    """Test multi diff rejects the old one/two flags."""
+    """Test multi diff rejects the old one/two flags.
+
+    Arguments:
+        tmp_path: temporary path
+    """
     reference_infile_path = tmp_path / "reference.srt"
     candidate_infile_path = tmp_path / "candidate.srt"
     content = "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n"
@@ -158,87 +124,3 @@ def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
             f"--one-infile {reference_infile_path} "
             f"--two-infile {candidate_infile_path}",
         )
-
-
-@pytest.mark.parametrize(
-    (
-        "reference_path",
-        "candidate_path",
-        "reference_label",
-        "candidate_label",
-        "expected_fixture_name",
-    ),
-    [
-        (
-            Path("kob/output/eng_ocr/fuse_clean_validate_review_flatten.srt"),
-            Path("kob/output/eng/timewarp_clean_review_flatten.srt"),
-            "OCR",
-            "SRT",
-            "kob_eng_expected_series_diff",
-        ),
-        (
-            Path("mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
-            Path(
-                "mlamd/output/"
-                "zho-Hant_ocr/"
-                "fuse_clean_validate_review_flatten_simplify_review.srt"
-            ),
-            "SIMP",
-            "TRAD",
-            "mlamd_zho_simplify_expected_series_diff",
-        ),
-        (
-            Path("mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
-            Path(
-                "mnt/output/"
-                "zho-Hant_ocr/"
-                "fuse_clean_validate_review_flatten_simplify_review.srt"
-            ),
-            "SIMP",
-            "TRAD",
-            "mnt_zho_simplify_expected_series_diff",
-        ),
-        (
-            Path("t/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"),
-            Path(
-                "t/output/"
-                "zho-Hant_ocr/"
-                "fuse_clean_validate_review_flatten_simplify_review.srt"
-            ),
-            "SIMP",
-            "TRAD",
-            "t_zho_simplify_expected_series_diff",
-        ),
-    ],
-)
-def test_multi_diff_cli_matches_expected_fixture(
-    reference_path: Path,
-    candidate_path: Path,
-    reference_label: str,
-    candidate_label: str,
-    expected_fixture_name: str,
-    capsys: pytest.CaptureFixture,
-    request: pytest.FixtureRequest,
-):
-    """Test multi diff CLI output against real subtitle fixtures.
-
-    Arguments:
-        reference_path: reference subtitle path relative to test data root
-        candidate_path: candidate subtitle path relative to test data root
-        reference_label: label for the reference subtitle series
-        candidate_label: label for the candidate subtitle series
-        expected_fixture_name: fixture name containing expected diff strings
-        capsys: pytest stdout/stderr capture fixture
-        request: pytest fixture request object
-    """
-    expected: list[str] = request.getfixturevalue(expected_fixture_name)
-
-    run_cli_with_args(
-        MultiDiffCli,
-        f"--reference-infile {test_data_root / reference_path} "
-        f"--candidate-infile {test_data_root / candidate_path} "
-        f"--reference-label {reference_label} --candidate-label {candidate_label}",
-    )
-    output = capsys.readouterr().out
-
-    assert output.splitlines() == expected

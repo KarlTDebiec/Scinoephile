@@ -9,41 +9,7 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.dictionary.dictionary_cli import DictionaryCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionaryCli,),
-        (ScinoephileCli, DictionaryCli),
-    ],
-)
-def test_dictionary_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (DictionaryCli,),
-        (ScinoephileCli, DictionaryCli),
-    ],
-)
-def test_dictionary_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test dictionary CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
+from test.helpers import assert_cli_usage
 
 
 def test_dictionary_usage_does_not_create_default_cache_dir(

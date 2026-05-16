@@ -326,4 +326,11 @@ def test_series_diff_large_block_falls_back_to_line_alignment():
         max_alignment_cells=1,
     )
     messages = list(diff)
-    assert messages
+    assert [message.kind for message in messages] == [
+        LineDiffKind.MERGE_EDIT,
+        LineDiffKind.SPLIT_EDIT,
+    ]
+    assert messages[0].one_idxs == (0, 1)
+    assert messages[0].two_idxs == (0,)
+    assert messages[1].one_idxs == (3,)
+    assert messages[1].two_idxs == (2, 3)

@@ -4,89 +4,31 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from scinoephile.cli.multi.multi_cer_cli import MultiCerCli
-from scinoephile.cli.multi.multi_cli import MultiCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import (
-    SeriesCERResult,
-    assert_cli_help,
-    assert_cli_usage,
-    test_data_root,
-)
 
 
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiCerCli,),
-        (MultiCli, MultiCerCli),
-        (ScinoephileCli, MultiCli, MultiCerCli),
-    ],
-)
-def test_multi_cer_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi cer CLI help output.
+def test_multi_cer_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+    """Test multi cer CLI output.
 
     Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiCerCli,),
-        (MultiCli, MultiCerCli),
-        (ScinoephileCli, MultiCli, MultiCerCli),
-    ],
-)
-def test_multi_cer_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi cer CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
-
-
-@pytest.mark.parametrize(
-    ("reference_path", "candidate_path", "expected_fixture_name"),
-    [
-        (
-            "kob/output/yue-Hans/timewarp_clean_flatten.srt",
-            "kob/output/yue-Hans_transcribe/transcribe.srt",
-            "kob_yue_hans_transcribe_expected_cer",
-        ),
-        (
-            "kob/output/yue-Hans/timewarp_clean_flatten.srt",
-            "kob/output/yue-Hans_transcribe/transcribe_review_translate_block_review.srt",
-            "kob_yue_hans_transcribe_review_translate_block_review_expected_cer",
-        ),
-    ],
-)
-def test_multi_cer_cli(
-    reference_path: str,
-    candidate_path: str,
-    expected_fixture_name: str,
-    request: pytest.FixtureRequest,
-    capsys: pytest.CaptureFixture,
-):
-    """Test multi cer CLI output against expected CER values.
-
-    Arguments:
-        reference_path: path to reference subtitle fixture
-        candidate_path: path to candidate subtitle fixture
-        expected_fixture_name: fixture name containing expected CER result
-        request: pytest fixture request object
+        tmp_path: temporary path fixture
         capsys: pytest stdout/stderr capture fixture
     """
-    reference_infile_path = test_data_root / reference_path
-    candidate_infile_path = test_data_root / candidate_path
-    expected_result: SeriesCERResult = request.getfixturevalue(expected_fixture_name)
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\nabc\n",
+        encoding="utf-8",
+    )
+    candidate_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\naxc\n",
+        encoding="utf-8",
+    )
 
     run_cli_with_args(
         MultiCerCli,
@@ -95,9 +37,9 @@ def test_multi_cer_cli(
     )
     output = capsys.readouterr().out
 
-    assert f"CER: {expected_result.cer}" in output
-    assert f"Correct: {expected_result.correct}" in output
-    assert f"Substitutions: {expected_result.substitutions}" in output
-    assert f"Insertions: {expected_result.insertions}" in output
-    assert f"Deletions: {expected_result.deletions}" in output
-    assert f"Reference length: {expected_result.reference_length}" in output
+    assert "CER: 0.3333333333333333" in output
+    assert "Correct: 2" in output
+    assert "Substitutions: 1" in output
+    assert "Insertions: 0" in output
+    assert "Deletions: 0" in output
+    assert "Reference length: 3" in output

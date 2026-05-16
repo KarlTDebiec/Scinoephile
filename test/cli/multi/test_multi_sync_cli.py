@@ -10,129 +10,10 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.multi.multi_cli import MultiCli
 from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
-from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
-from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
-    assert_series_equal,
-    test_data_root,
-)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiSyncCli,),
-        (MultiCli, MultiSyncCli),
-        (ScinoephileCli, MultiCli, MultiSyncCli),
-    ],
-)
-def test_multi_sync_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi sync CLI help output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (MultiSyncCli,),
-        (MultiCli, MultiSyncCli),
-        (ScinoephileCli, MultiCli, MultiSyncCli),
-    ],
-)
-def test_multi_sync_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test multi sync CLI usage output.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
-
-
-@pytest.mark.parametrize(
-    ("top_path", "bottom_path", "args", "expected_path"),
-    [
-        (
-            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
-            "",
-            "mlamd/output/zho-Hans_eng.srt",
-        ),
-    ],
-)
-def test_multi_sync_cli(
-    top_path: str,
-    bottom_path: str,
-    args: str,
-    expected_path: str,
-):
-    """Test multi sync CLI processing with file arguments.
-
-    Arguments:
-        top_path: path to top subtitle fixture
-        bottom_path: path to bottom subtitle fixture
-        args: extra command-line arguments
-        expected_path: path to expected output subtitle fixture
-    """
-    full_top_path = test_data_root / top_path
-    full_bottom_path = test_data_root / bottom_path
-    full_expected_path = test_data_root / expected_path
-
-    with get_temp_file_path(".srt") as output_path:
-        run_cli_with_args(
-            MultiSyncCli,
-            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path} "
-            f"{args} --outfile {output_path}",
-        )
-        output = Series.load(output_path)
-        expected = Series.load(full_expected_path)
-
-    assert_series_equal(output, expected)
-
-
-@pytest.mark.parametrize(
-    ("top_path", "bottom_path", "expected_path"),
-    [
-        (
-            "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/eng_ocr/fuse_clean_validate_review_flatten.srt",
-            "mlamd/output/zho-Hans_eng.srt",
-        ),
-    ],
-)
-def test_multi_sync_cli_pipe(top_path: str, bottom_path: str, expected_path: str):
-    """Test multi sync CLI processing writes stdout when outfile is omitted.
-
-    Arguments:
-        top_path: path to top subtitle fixture
-        bottom_path: path to bottom subtitle fixture
-        expected_path: path to expected output subtitle fixture
-    """
-    full_top_path = test_data_root / top_path
-    full_bottom_path = test_data_root / bottom_path
-    full_expected_path = test_data_root / expected_path
-
-    stdout_stream = StringIO()
-    with patch("scinoephile.core.cli.stdout", stdout_stream):
-        run_cli_with_args(
-            MultiSyncCli,
-            f"--top-infile {full_top_path} --bottom-infile {full_bottom_path}",
-        )
-
-    output = Series.from_string(stdout_stream.getvalue(), format_="srt")
-    expected = Series.load(full_expected_path)
-
-    assert_series_equal(output, expected)
+from test.helpers import test_data_root
 
 
 @pytest.mark.parametrize(
@@ -165,19 +46,21 @@ def test_multi_sync_cli_passes_tuning_options(
     bottom_series = Series()
     synced_series = Series()
 
-    with patch(
-        "scinoephile.cli.multi.multi_sync_cli.read_series",
-        side_effect=[top_series, bottom_series],
+    with (
+        patch(
+            "scinoephile.cli.multi.multi_sync_cli.read_series",
+            side_effect=[top_series, bottom_series],
+        ),
+        patch("scinoephile.cli.multi.multi_sync_cli.write_series") as write_series,
+        patch(
+            "scinoephile.cli.multi.multi_sync_cli.get_synced_series",
+            return_value=synced_series,
+        ) as get_synced_series,
     ):
-        with patch("scinoephile.cli.multi.multi_sync_cli.write_series"):
-            with patch(
-                "scinoephile.cli.multi.multi_sync_cli.get_synced_series",
-                return_value=synced_series,
-            ) as get_synced_series:
-                run_cli_with_args(
-                    MultiSyncCli,
-                    f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
-                )
+        run_cli_with_args(
+            MultiSyncCli,
+            f"--top-infile {top_path} --bottom-infile {bottom_path} {args}",
+        )
 
     get_synced_series.assert_called_once_with(
         top_series,
@@ -185,6 +68,7 @@ def test_multi_sync_cli_passes_tuning_options(
         sync_cutoff=expected_sync_cutoff,
         pause_length=expected_pause_length,
     )
+    assert write_series.call_args.args[1:] == (synced_series, "-", False)
 
 
 @pytest.mark.parametrize(

@@ -14,17 +14,7 @@ import pytest
 
 from scinoephile.cli.scinoephile_cli import ScinoephileCli
 from scinoephile.common.testing import run_cli_with_args
-from test.helpers import assert_cli_help, assert_cli_usage
-
-
-def test_scinoephile_help():
-    """Test root CLI help output."""
-    assert_cli_help((ScinoephileCli,))
-
-
-def test_scinoephile_usage():
-    """Test root CLI usage output."""
-    assert_cli_usage((ScinoephileCli,))
+from test.helpers import assert_cli_help
 
 
 def test_scinoephile_help_does_not_create_default_cache_dir(

@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import cast
 from unittest.mock import ANY, Mock, patch
 
+import pytest
+
 from scinoephile.common.file import get_temp_directory_path
 from scinoephile.core.llms import TestCase
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
@@ -75,8 +77,24 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
         ).is_dir()
 
 
-def test_get_yue_vs_zho_transcriber_passes_model_name():
-    """Test transcriber factory forwards an explicit Whisper model name."""
+@pytest.mark.parametrize(
+    ("kwarg_name", "kwarg_value"),
+    [
+        ("model_name", "custom/model"),
+        ("demucs_mode", DemucsMode.ON),
+        ("convert", OpenCCConfig.hk2s),
+    ],
+)
+def test_get_yue_vs_zho_transcriber_forwards_options(
+    kwarg_name: str,
+    kwarg_value: object,
+):
+    """Test transcriber factory forwards explicit options.
+
+    Arguments:
+        kwarg_name: option keyword under test
+        kwarg_value: option value under test
+    """
     deliniation_test_cases = [cast(TestCase, Mock())]
     punctuation_test_cases = [cast(TestCase, Mock())]
 
@@ -84,52 +102,29 @@ def test_get_yue_vs_zho_transcriber_passes_model_name():
         with patch(
             "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
         ) as patched_transcriber:
-            get_yue_vs_zho_transcriber(
-                deliniation_test_cases=deliniation_test_cases,
-                punctuation_test_cases=punctuation_test_cases,
-                test_case_directory_path=temp_dir_path,
-                model_name="custom/model",
-            )
+            if kwarg_name == "model_name":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    model_name=cast(str, kwarg_value),
+                )
+            elif kwarg_name == "demucs_mode":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    demucs_mode=cast(DemucsMode, kwarg_value),
+                )
+            else:
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    convert=cast(OpenCCConfig, kwarg_value),
+                )
 
-    assert patched_transcriber.call_args.kwargs["model_name"] == "custom/model"
-
-
-def test_get_yue_vs_zho_transcriber_passes_demucs_mode():
-    """Test transcriber factory forwards an explicit Demucs mode."""
-    deliniation_test_cases = [cast(TestCase, Mock())]
-    punctuation_test_cases = [cast(TestCase, Mock())]
-
-    with get_temp_directory_path() as temp_dir_path:
-        with patch(
-            "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
-        ) as patched_transcriber:
-            get_yue_vs_zho_transcriber(
-                deliniation_test_cases=deliniation_test_cases,
-                punctuation_test_cases=punctuation_test_cases,
-                test_case_directory_path=temp_dir_path,
-                demucs_mode=DemucsMode.ON,
-            )
-
-    assert patched_transcriber.call_args.kwargs["demucs_mode"] == DemucsMode.ON
-
-
-def test_get_yue_vs_zho_transcriber_passes_convert():
-    """Test transcriber factory forwards an explicit OpenCC conversion."""
-    deliniation_test_cases = [cast(TestCase, Mock())]
-    punctuation_test_cases = [cast(TestCase, Mock())]
-
-    with get_temp_directory_path() as temp_dir_path:
-        with patch(
-            "scinoephile.multilang.yue_zho.transcription.YueTranscriber"
-        ) as patched_transcriber:
-            get_yue_vs_zho_transcriber(
-                deliniation_test_cases=deliniation_test_cases,
-                punctuation_test_cases=punctuation_test_cases,
-                test_case_directory_path=temp_dir_path,
-                convert=OpenCCConfig.hk2s,
-            )
-
-    assert patched_transcriber.call_args.kwargs["convert"] == OpenCCConfig.hk2s
+    assert patched_transcriber.call_args.kwargs[kwarg_name] == kwarg_value
 
 
 def test_get_yue_vs_zho_transcriber_defaults_exclude_kob_test_cases():

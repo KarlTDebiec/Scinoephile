@@ -8,6 +8,8 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 
+import pytest
+
 from scinoephile.core.llms import OperationSpec
 from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHans,
@@ -224,12 +226,8 @@ def test_store_rejects_configured_list_fields_over_max(tmp_path: Path):
         source_paths=["x.json"],
     )
 
-    try:
+    with pytest.raises(ValueError, match="supports at most 10 items"):
         store.upsert_table_test_cases(table_name, [tc], source_path="x.json")
-    except ValueError as err:
-        assert "supports at most 10 items" in str(err)
-    else:
-        raise AssertionError("Expected ValueError for oversized list field.")
 
 
 def test_store_source_path_index(tmp_path: Path):

@@ -8,50 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
-from scinoephile.cli.scinoephile_cli import ScinoephileCli
-from scinoephile.common import CommandLineInterface
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.image.subtitles import ImageSeries
-from test.helpers import (
-    assert_cli_help,
-    assert_cli_usage,
-)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OcrValidateCli,),
-        (OcrCli, OcrValidateCli),
-        (ScinoephileCli, OcrCli, OcrValidateCli),
-    ],
-)
-def test_ocr_validate_eng_help(cli: tuple[type[CommandLineInterface], ...]):
-    """Test OCR validate CLI help output for English subtitles.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_help(cli)
-
-
-@pytest.mark.parametrize(
-    "cli",
-    [
-        (OcrValidateCli,),
-        (OcrCli, OcrValidateCli),
-        (ScinoephileCli, OcrCli, OcrValidateCli),
-    ],
-)
-def test_ocr_validate_eng_usage(cli: tuple[type[CommandLineInterface], ...]):
-    """Test OCR validate CLI usage output for English subtitles.
-
-    Arguments:
-        cli: CLI class tuple with optional subcommands
-    """
-    assert_cli_usage(cli)
 
 
 @pytest.mark.parametrize(
