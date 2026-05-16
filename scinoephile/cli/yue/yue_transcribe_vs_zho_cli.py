@@ -167,7 +167,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.OFF,
-            choices=tuple(DemucsMode),
             metavar="{on,off}",
             type=enum_arg(DemucsMode),
             help="Demucs vocal-separation mode (options: on, off; default: off)",
@@ -175,7 +174,6 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--vad",
             default=VADMode.AUTO,
-            choices=tuple(VADMode),
             metavar="{auto,on,off}",
             type=enum_arg(VADMode),
             help=(
@@ -192,7 +190,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
-            choices=("simplified", "traditional"),
+            metavar="{simplified,traditional}",
             type=str_arg(options=("simplified", "traditional")),
             help="script used for transcription prompts (default: simplified)",
         )

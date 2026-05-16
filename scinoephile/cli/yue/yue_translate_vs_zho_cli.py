@@ -175,7 +175,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
-            choices=("simplified", "traditional"),
+            metavar="{simplified,traditional}",
             type=str_arg(options=("simplified", "traditional")),
             help="script for prompts and output conversion (default: simplified)",
         )

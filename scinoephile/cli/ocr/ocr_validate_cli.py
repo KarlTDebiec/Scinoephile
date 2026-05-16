@@ -108,7 +108,7 @@ class OcrValidateCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
-            choices=("eng", "zho"),
+            metavar="{eng,zho}",
             type=str_arg(options=("eng", "zho")),
             help="language of the OCR text to validate (eng or zho)",
         )

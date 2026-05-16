@@ -161,7 +161,7 @@ class YueProcessCli(ScinoephileCliBase):
             dest="review_script",
             nargs="?",
             const="traditional",
-            choices=("simplified", "traditional"),
+            metavar="{simplified,traditional}",
             type=str_arg(options=("simplified", "traditional")),
             help="proofread subtitles using LLM (default: traditional)",
         )
