@@ -74,23 +74,34 @@ def process_eng_ocr(
     Returns:
         OCR processing result
     """
-    return _process_ocr(
-        infile_path=infile_path,
-        output_dir_path=output_dir_path,
+    infile_path = _resolve_input_path(infile_path)
+    output_dir_path = output_dir_path.resolve()
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+
+    image_series = _load_image_series(
+        infile_path,
         stream_index=stream_index,
         cache_dir_path=cache_dir_path,
+    )
+    image_dir_path = output_dir_path / "image"
+    _save_image_series(
+        image_series,
+        image_dir_path,
+        overwrite=overwrite,
+    )
+    output_paths = _process_eng_image_ocr(
+        image_series,
+        output_dir_path,
         export_images=export_images,
         overwrite=overwrite,
-        output_builder=lambda image_series, resolved_output_dir_path: (
-            _process_eng_image_ocr(
-                image_series,
-                resolved_output_dir_path,
-                export_images=export_images,
-                overwrite=overwrite,
-                provider=provider,
-                additional_context=additional_context,
-            )
-        ),
+        provider=provider,
+        additional_context=additional_context,
+    )
+
+    return OcrProcessingResult(
+        infile_path=infile_path,
+        output_dir_path=output_dir_path,
+        output_paths={"image": image_dir_path, **output_paths},
     )
 
 
@@ -119,23 +130,34 @@ def process_zho_ocr(
     Returns:
         OCR processing result
     """
-    return _process_ocr(
-        infile_path=infile_path,
-        output_dir_path=output_dir_path,
+    infile_path = _resolve_input_path(infile_path)
+    output_dir_path = output_dir_path.resolve()
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+
+    image_series = _load_image_series(
+        infile_path,
         stream_index=stream_index,
         cache_dir_path=cache_dir_path,
+    )
+    image_dir_path = output_dir_path / "image"
+    _save_image_series(
+        image_series,
+        image_dir_path,
+        overwrite=overwrite,
+    )
+    output_paths = _process_zho_image_ocr(
+        image_series,
+        output_dir_path,
         export_images=export_images,
         overwrite=overwrite,
-        output_builder=lambda image_series, resolved_output_dir_path: (
-            _process_zho_image_ocr(
-                image_series,
-                resolved_output_dir_path,
-                export_images=export_images,
-                overwrite=overwrite,
-                provider=provider,
-                additional_context=additional_context,
-            )
-        ),
+        provider=provider,
+        additional_context=additional_context,
+    )
+
+    return OcrProcessingResult(
+        infile_path=infile_path,
+        output_dir_path=output_dir_path,
+        output_paths={"image": image_dir_path, **output_paths},
     )
 
 
@@ -347,53 +369,6 @@ def _process_eng_image_ocr(
             }
         )
     return output_paths
-
-
-def _process_ocr(
-    infile_path: Path,
-    output_dir_path: Path,
-    *,
-    stream_index: int | None,
-    cache_dir_path: Path | None,
-    export_images: bool,
-    overwrite: bool,
-    output_builder: Callable[[ImageSeries, Path], dict[str, Path]],
-) -> OcrProcessingResult:
-    """Process image subtitle OCR using a language-specific output builder.
-
-    Arguments:
-        infile_path: SUP, image subtitle directory, or media input path
-        output_dir_path: directory where OCR outputs are written
-        stream_index: media subtitle stream index when infile is media
-        cache_dir_path: media subtitle cache directory path
-        export_images: whether to export OCR outputs as image subtitle directories
-        overwrite: whether to overwrite existing workflow outputs
-        output_builder: function that builds language-specific OCR outputs
-    Returns:
-        OCR processing result
-    """
-    infile_path = _resolve_input_path(infile_path)
-    output_dir_path = output_dir_path.resolve()
-    output_dir_path.mkdir(parents=True, exist_ok=True)
-
-    image_series = _load_image_series(
-        infile_path,
-        stream_index=stream_index,
-        cache_dir_path=cache_dir_path,
-    )
-    image_dir_path = output_dir_path / "image"
-    _save_image_series(
-        image_series,
-        image_dir_path,
-        overwrite=overwrite,
-    )
-    output_paths = output_builder(image_series, output_dir_path)
-
-    return OcrProcessingResult(
-        infile_path=infile_path,
-        output_dir_path=output_dir_path,
-        output_paths={"image": image_dir_path, **output_paths},
-    )
 
 
 def _process_zho_image_ocr(
