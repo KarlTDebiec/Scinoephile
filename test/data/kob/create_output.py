@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from scinoephile.analysis.character_error_rate import SeriesCER
-from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.logs import set_logging_verbosity
 from scinoephile.core.subtitles import Series
 from scinoephile.core.timing import get_series_timewarped
@@ -17,6 +15,7 @@ from scinoephile.lang.eng.block_review import (
 )
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
+from scinoephile.lang.yue.analysis import YueSeriesCER, YueSeriesDiff
 from scinoephile.lang.yue.romanization import get_yue_romanized
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.flattening import get_zho_flattened
@@ -194,7 +193,7 @@ if "简体粤文 (Diff)" in actions:
     zho_hans_reference = Series.load(
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    diff = SeriesDiff(
+    diff = YueSeriesDiff(
         yue_hans_transcribe,
         yue_hans_reference,
         one_lbl="TRANSCRIBE",
@@ -202,4 +201,4 @@ if "简体粤文 (Diff)" in actions:
     )
     print(diff)
     print(diff.get_stacked_str(three=zho_hans_reference, include_equal=True))
-    print(SeriesCER(yue_hans_reference, yue_hans_transcribe))
+    print(YueSeriesCER(yue_hans_reference, yue_hans_transcribe))
