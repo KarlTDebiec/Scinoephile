@@ -77,11 +77,7 @@ def process_eng_ocr(
     output_dir_path = output_dir_path.resolve()
     output_dir_path.mkdir(parents=True, exist_ok=True)
 
-    image_series = _load_image_series(
-        infile_path,
-        stream_index=stream_index,
-        cache_dir_path=cache_dir_path,
-    )
+    image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
     image_dir_path = output_dir_path / "image"
     _save_image_series(
         image_series,
@@ -209,11 +205,7 @@ def process_zho_ocr(
     output_dir_path = output_dir_path.resolve()
     output_dir_path.mkdir(parents=True, exist_ok=True)
 
-    image_series = _load_image_series(
-        infile_path,
-        stream_index=stream_index,
-        cache_dir_path=cache_dir_path,
-    )
+    image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
     image_dir_path = output_dir_path / "image"
     _save_image_series(
         image_series,
@@ -359,7 +351,6 @@ def _get_or_build_series(
 
 def _load_image_series(
     infile_path: Path,
-    *,
     stream_index: int | None,
     cache_dir_path: Path | None,
 ) -> ImageSeries:
