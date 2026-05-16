@@ -14,9 +14,17 @@ __all__ = ["OcrCli"]
 
 OCR_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        (
+            "Backend commands may require optional OCR dependencies, browser access, "
+            "or system OCR executables."
+        ): "后端命令可能需要可选 OCR 依赖、浏览器访问或系统 OCR 可执行文件。",
         "Recognize text from image-based subtitles.": "识别图像字幕中的文本。",
     },
     "zh-hant": {
+        (
+            "Backend commands may require optional OCR dependencies, browser access, "
+            "or system OCR executables."
+        ): "後端命令可能需要可選 OCR 依賴、瀏覽器存取或系統 OCR 可執行檔。",
         "Recognize text from image-based subtitles.": "識別影像字幕中的文字。",
     },
 }
@@ -24,7 +32,11 @@ OCR_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class OcrCli(ScinoephileCliBase):
-    """Recognize text from image-based subtitles."""
+    """Recognize text from image-based subtitles.
+
+    Backend commands may require optional OCR dependencies, browser access, or system
+    OCR executables.
+    """
 
     localizations = OCR_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

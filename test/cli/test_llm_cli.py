@@ -53,8 +53,12 @@ def test_list_llm_providers(cli: type[CommandLineInterface]):
     listing = stdout.getvalue()
     assert stderr.getvalue() == ""
     assert listing.startswith("Available LLM providers:\n")
-    assert "  deepseek  DeepSeek LLM Provider (OpenAI-SDK compatible).\n" in listing
-    assert "  openai    OpenAI LLM Provider.\n" in listing
+    assert "  deepseek  DeepSeek LLM Provider (OpenAI-SDK compatible)." in listing
+    assert "default model: deepseek-v4-flash" in listing
+    assert "API key env: DEEPSEEK_API_KEY" in listing
+    assert "  openai    OpenAI LLM Provider." in listing
+    assert "default model: gpt-5.4" in listing
+    assert "API key env: OPENAI_API_KEY" in listing
 
 
 def test_list_llm_providers_uses_simplified_chinese_descriptions():
@@ -71,8 +75,12 @@ def test_list_llm_providers_uses_simplified_chinese_descriptions():
     listing = stdout.getvalue()
     assert stderr.getvalue() == ""
     assert listing.startswith("可用 LLM 提供商：\n")
-    assert "  deepseek  DeepSeek LLM 提供商（兼容 OpenAI SDK）。\n" in listing
-    assert "  openai    OpenAI LLM 提供商。\n" in listing
+    assert "  deepseek  DeepSeek LLM 提供商（兼容 OpenAI SDK）。" in listing
+    assert "default model: deepseek-v4-flash" in listing
+    assert "API key env: DEEPSEEK_API_KEY" in listing
+    assert "  openai    OpenAI LLM 提供商。" in listing
+    assert "default model: gpt-5.4" in listing
+    assert "API key env: OPENAI_API_KEY" in listing
 
 
 def test_llm_provider_arg_rejects_unknown_provider():

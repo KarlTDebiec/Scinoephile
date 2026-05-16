@@ -39,13 +39,18 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
             "download fresh Unihan.zip before building": (
                 "在构建前下载最新 Unihan.zip"
             ),
-            "path to Unihan_DictionaryLikeData.txt": (
-                "Unihan_DictionaryLikeData.txt 的路径"
+            "path to Unihan_DictionaryLikeData.txt (default: bundled local data)": (
+                "Unihan_DictionaryLikeData.txt 的路径（默认：随包本地数据）"
             ),
-            "path to Unihan_Readings.txt": "Unihan_Readings.txt 的路径",
-            "path to Unihan_Variants.txt": "Unihan_Variants.txt 的路径",
-            "update source files under scinoephile/data/dictionaries/unihan": (
-                "更新 scinoephile/data/dictionaries/unihan 下的源文件"
+            "path to Unihan_Readings.txt (default: bundled local data)": (
+                "Unihan_Readings.txt 的路径（默认：随包本地数据）"
+            ),
+            "path to Unihan_Variants.txt (default: bundled local data)": (
+                "Unihan_Variants.txt 的路径（默认：随包本地数据）"
+            ),
+            "maintainer option: update source files under "
+            "scinoephile/data/dictionaries/unihan": (
+                "维护者选项：更新 scinoephile/data/dictionaries/unihan 下的源文件"
             ),
         },
         "zh-hant": {
@@ -57,13 +62,18 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
             "download fresh Unihan.zip before building": (
                 "在建立前下載最新 Unihan.zip"
             ),
-            "path to Unihan_DictionaryLikeData.txt": (
-                "Unihan_DictionaryLikeData.txt 的路徑"
+            "path to Unihan_DictionaryLikeData.txt (default: bundled local data)": (
+                "Unihan_DictionaryLikeData.txt 的路徑（預設：隨包本機資料）"
             ),
-            "path to Unihan_Readings.txt": "Unihan_Readings.txt 的路徑",
-            "path to Unihan_Variants.txt": "Unihan_Variants.txt 的路徑",
-            "update source files under scinoephile/data/dictionaries/unihan": (
-                "更新 scinoephile/data/dictionaries/unihan 下的來源檔案"
+            "path to Unihan_Readings.txt (default: bundled local data)": (
+                "Unihan_Readings.txt 的路徑（預設：隨包本機資料）"
+            ),
+            "path to Unihan_Variants.txt (default: bundled local data)": (
+                "Unihan_Variants.txt 的路徑（預設：隨包本機資料）"
+            ),
+            "maintainer option: update source files under "
+            "scinoephile/data/dictionaries/unihan": (
+                "維護者選項：更新 scinoephile/data/dictionaries/unihan 下的來源檔案"
             ),
         },
     }
@@ -90,19 +100,19 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
             "--source-dictionary-like-data-path",
             default=None,
             type=input_file_arg(),
-            help="path to Unihan_DictionaryLikeData.txt",
+            help="path to Unihan_DictionaryLikeData.txt (default: bundled local data)",
         )
         arg_groups["input arguments"].add_argument(
             "--source-readings-path",
             default=None,
             type=input_file_arg(),
-            help="path to Unihan_Readings.txt",
+            help="path to Unihan_Readings.txt (default: bundled local data)",
         )
         arg_groups["input arguments"].add_argument(
             "--source-variants-path",
             default=None,
             type=input_file_arg(),
-            help="path to Unihan_Variants.txt",
+            help="path to Unihan_Variants.txt (default: bundled local data)",
         )
 
         # Operation arguments
@@ -114,7 +124,10 @@ class DictionaryBuildUnihanCli(DictionaryBuildCliBase):
         arg_groups["operation arguments"].add_argument(
             "--update-local-data",
             action="store_true",
-            help="update source files under scinoephile/data/dictionaries/unihan",
+            help=(
+                "maintainer option: update source files under "
+                "scinoephile/data/dictionaries/unihan"
+            ),
         )
         cls.add_common_output_arguments(parser)
 

@@ -24,9 +24,10 @@ MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "combine two series into the top and bottom of a synchronized series": (
             "将两个序列合并为上下行同步字幕"
         ),
-        "initial overlap cutoff used to form sync groups (default: 0.16)": (
-            "用于形成同步组的初始重叠阈值（默认：0.16）"
-        ),
+        (
+            "minimum timing-overlap score from 0.0 to 1.0 used to form sync "
+            "groups (default: 0.16)"
+        ): ("用于形成同步组的最小时间重叠分数，范围 0.0 到 1.0（默认：0.16）"),
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"
         ),
@@ -44,9 +45,10 @@ MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "combine two series into the top and bottom of a synchronized series": (
             "將兩個序列合併為上下行同步字幕"
         ),
-        "initial overlap cutoff used to form sync groups (default: 0.16)": (
-            "用於形成同步組的初始重疊閾值（預設：0.16）"
-        ),
+        (
+            "minimum timing-overlap score from 0.0 to 1.0 used to form sync "
+            "groups (default: 0.16)"
+        ): ("用於形成同步組的最小時間重疊分數，範圍 0.0 到 1.0（預設：0.16）"),
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"
         ),
@@ -107,7 +109,10 @@ class MultiSyncCli(ScinoephileCliBase):
             "--sync-cutoff",
             default=0.16,
             type=float_arg(min_value=0.0, max_value=1.0),
-            help="initial overlap cutoff used to form sync groups (default: 0.16)",
+            help=(
+                "minimum timing-overlap score from 0.0 to 1.0 used to form sync "
+                "groups (default: 0.16)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--pause-length",

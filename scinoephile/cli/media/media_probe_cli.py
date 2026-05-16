@@ -23,14 +23,16 @@ __all__ = ["MediaProbeCli"]
 MEDIA_PROBE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "command-line interface for probing media streams": ("探测媒体流的命令行界面"),
-        "cache directory (default: %(default)s)": ("缓存目录（默认：%(default)s）"),
+        "cache directory for reusable media stream inspection data (default: "
+        "%(default)s)": ("可复用媒体流检查数据的缓存目录（默认：%(default)s）"),
         "list media streams in a media file": "列出媒体文件中的媒体流",
         "include additional stream details": "包含更多媒体流详细信息",
         "video infile containing media streams": "包含媒体流的视频输入文件",
     },
     "zh-hant": {
         "command-line interface for probing media streams": ("探測媒體流的命令列介面"),
-        "cache directory (default: %(default)s)": ("快取目錄（預設：%(default)s）"),
+        "cache directory for reusable media stream inspection data (default: "
+        "%(default)s)": ("可重用媒體流檢查資料的快取目錄（預設：%(default)s）"),
         "list media streams in a media file": "列出媒體檔中的媒體流",
         "include additional stream details": "包含更多媒體流詳細資訊",
         "video infile containing media streams": "包含媒體流的影片輸入檔",
@@ -80,7 +82,10 @@ class MediaProbeCli(ScinoephileCliBase):
             default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
             type=cache_dir_path_arg,
-            help="cache directory (default: %(default)s)",
+            help=(
+                "cache directory for reusable media stream inspection data "
+                "(default: %(default)s)"
+            ),
         )
         parser.set_defaults(_parser=parser)
 

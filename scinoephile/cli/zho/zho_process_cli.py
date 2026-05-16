@@ -161,6 +161,7 @@ class ZhoProcessCli(ScinoephileCliBase):
             dest="review_script",
             nargs="?",
             const="simplified",
+            choices=("simplified", "traditional"),
             type=str_arg(options=("simplified", "traditional")),
             help="proofread subtitles using LLM (default: simplified)",
         )

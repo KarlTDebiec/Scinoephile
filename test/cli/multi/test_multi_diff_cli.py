@@ -60,25 +60,26 @@ def test_multi_diff_cli(
         tmp_path: temporary path
         capsys: pytest stdout/stderr capture fixture
     """
-    one_infile_path = tmp_path / "one.srt"
-    two_infile_path = tmp_path / "two.srt"
-    one_infile_path.write_text(
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n",
         encoding="utf-8",
     )
-    two_infile_path.write_text(
+    candidate_infile_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\n靠你喇！\n",
         encoding="utf-8",
     )
 
     run_cli_with_args(
         MultiDiffCli,
-        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
-        "--one-label TRANSCRIBE --two-label REFERENCE",
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path} "
+        "--reference-label REFERENCE --candidate-label CANDIDATE",
     )
     output = capsys.readouterr().out
 
-    assert output == ("edit: TRANSCRIBE[1] -> REFERENCE[1]: '靠你了' -> '靠你喇！'\n")
+    assert output == ("edit: REFERENCE[1] -> CANDIDATE[1]: '靠你了' -> '靠你喇！'\n")
 
 
 def test_multi_diff_cli_multiline_split_edit(
@@ -91,13 +92,13 @@ def test_multi_diff_cli_multiline_split_edit(
         tmp_path: temporary path
         capsys: pytest stdout/stderr capture fixture
     """
-    one_infile_path = tmp_path / "one.srt"
-    two_infile_path = tmp_path / "two.srt"
-    one_infile_path.write_text(
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
         "1\n00:00:00,000 --> 00:00:02,000\nalpha beta\n",
         encoding="utf-8",
     )
-    two_infile_path.write_text(
+    candidate_infile_path.write_text(
         "1\n00:00:00,000 --> 00:00:01,000\nalpha\n\n"
         "2\n00:00:01,000 --> 00:00:02,000\nbetx\n",
         encoding="utf-8",
@@ -105,23 +106,66 @@ def test_multi_diff_cli_multiline_split_edit(
 
     run_cli_with_args(
         MultiDiffCli,
-        f"--one-infile {one_infile_path} --two-infile {two_infile_path} "
-        "--one-label TRANSCRIBE --two-label REFERENCE",
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path} "
+        "--reference-label REFERENCE --candidate-label CANDIDATE",
     )
     output = capsys.readouterr().out
 
     assert output == (
-        "split_edit: TRANSCRIBE[1] -> REFERENCE[1-2]: "
+        "split_edit: REFERENCE[1] -> CANDIDATE[1-2]: "
         "['alpha beta'] -> ['alpha', 'betx']\n"
     )
 
 
+def test_multi_diff_cli_identical_series_prints_no_differences(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test multi diff reports when there are no differences.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    content = "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n"
+    reference_infile_path.write_text(content, encoding="utf-8")
+    candidate_infile_path.write_text(content, encoding="utf-8")
+
+    run_cli_with_args(
+        MultiDiffCli,
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path}",
+    )
+    output = capsys.readouterr().out
+
+    assert output == "No differences found.\n"
+
+
+def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
+    """Test multi diff rejects the old one/two flags."""
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    content = "1\n00:00:00,000 --> 00:00:01,000\n靠你了\n"
+    reference_infile_path.write_text(content, encoding="utf-8")
+    candidate_infile_path.write_text(content, encoding="utf-8")
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            MultiDiffCli,
+            f"--one-infile {reference_infile_path} "
+            f"--two-infile {candidate_infile_path}",
+        )
+
+
 @pytest.mark.parametrize(
     (
-        "one_path",
-        "two_path",
-        "one_label",
-        "two_label",
+        "reference_path",
+        "candidate_path",
+        "reference_label",
+        "candidate_label",
         "expected_fixture_name",
     ),
     [
@@ -168,10 +212,10 @@ def test_multi_diff_cli_multiline_split_edit(
     ],
 )
 def test_multi_diff_cli_matches_expected_fixture(
-    one_path: Path,
-    two_path: Path,
-    one_label: str,
-    two_label: str,
+    reference_path: Path,
+    candidate_path: Path,
+    reference_label: str,
+    candidate_label: str,
     expected_fixture_name: str,
     capsys: pytest.CaptureFixture,
     request: pytest.FixtureRequest,
@@ -179,10 +223,10 @@ def test_multi_diff_cli_matches_expected_fixture(
     """Test multi diff CLI output against real subtitle fixtures.
 
     Arguments:
-        one_path: first subtitle path relative to test data root
-        two_path: second subtitle path relative to test data root
-        one_label: label for the first subtitle series
-        two_label: label for the second subtitle series
+        reference_path: reference subtitle path relative to test data root
+        candidate_path: candidate subtitle path relative to test data root
+        reference_label: label for the reference subtitle series
+        candidate_label: label for the candidate subtitle series
         expected_fixture_name: fixture name containing expected diff strings
         capsys: pytest stdout/stderr capture fixture
         request: pytest fixture request object
@@ -191,9 +235,9 @@ def test_multi_diff_cli_matches_expected_fixture(
 
     run_cli_with_args(
         MultiDiffCli,
-        f"--one-infile {test_data_root / one_path} "
-        f"--two-infile {test_data_root / two_path} "
-        f"--one-label {one_label} --two-label {two_label}",
+        f"--reference-infile {test_data_root / reference_path} "
+        f"--candidate-infile {test_data_root / candidate_path} "
+        f"--reference-label {reference_label} --candidate-label {candidate_label}",
     )
     output = capsys.readouterr().out
 

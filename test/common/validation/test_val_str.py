@@ -24,7 +24,10 @@ def test_val_str_case_insensitive():
 
 def test_val_str_invalid_option():
     """Test validation with invalid option."""
-    with pytest.raises(ValueError, match="is not one of options"):
+    with pytest.raises(
+        ValueError,
+        match="'invalid' is not one of the supported values: option1, option2",
+    ):
         val_str("invalid", ["option1", "option2"])
 
 

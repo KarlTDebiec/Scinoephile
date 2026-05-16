@@ -64,7 +64,8 @@ def test_multi_timewarp_usage(cli: tuple[type[CommandLineInterface], ...]):
         (
             "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
             "kob/input/yue-Hant.srt",
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
+            "--anchor-start-idx 1 --anchor-end-idx 1421 "
+            "--mobile-start-idx 1 --mobile-end-idx 1461",
             "kob/output/yue-Hant/timewarp.srt",
         ),
     ],
@@ -105,7 +106,8 @@ def test_multi_timewarp_cli(
         (
             "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt",
             "kob/input/yue-Hant.srt",
-            "--one-start-idx 1 --one-end-idx 1421 --two-start-idx 1 --two-end-idx 1461",
+            "--anchor-start-idx 1 --anchor-end-idx 1421 "
+            "--mobile-start-idx 1 --mobile-end-idx 1461",
             "kob/output/yue-Hant/timewarp.srt",
         ),
     ],
@@ -137,3 +139,18 @@ def test_multi_timewarp_cli_pipe(
     expected = Series.load(full_expected_path)
 
     assert_series_equal(output, expected)
+
+
+def test_multi_timewarp_cli_rejects_old_one_two_index_flags():
+    """Test timewarp rejects old one/two index flags."""
+    full_anchor_path = (
+        test_data_root / "kob/output/zho-Hant_ocr/fuse_clean_validate_review.srt"
+    )
+    full_mobile_path = test_data_root / "kob/input/yue-Hant.srt"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            MultiTimewarpCli,
+            f"--anchor-infile {full_anchor_path} --mobile-infile {full_mobile_path} "
+            "--one-start-idx 1 --two-start-idx 1",
+        )

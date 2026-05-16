@@ -20,6 +20,8 @@ from scinoephile.common.argument_parsing import input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
     DEFAULT_PROVIDER_NAME,
+    get_provider_api_key_env_var_name,
+    get_provider_default_model,
     get_provider_description,
     get_provider_names,
 )
@@ -40,9 +42,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "LLM model identifier override": "LLM 模型标识符覆盖值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-        "to show available providers.": (
+        "to show providers, default models, and API-key environment variables.": (
             "要使用的 LLM 提供商（默认：%(default)s）。使用 "
-            "--list-llm-providers 查看可用提供商。"
+            "--list-llm-providers 查看提供商、默认模型和 API 密钥环境变量。"
         ),
         "list available LLM providers and exit": "列出可用 LLM 提供商并退出",
     },
@@ -54,9 +56,9 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-        "to show available providers.": (
+        "to show providers, default models, and API-key environment variables.": (
             "要使用的 LLM 提供商（預設：%(default)s）。使用 "
-            "--list-llm-providers 查看可用提供商。"
+            "--list-llm-providers 查看提供商、預設模型和 API 金鑰環境變數。"
         ),
         "list available LLM providers and exit": "列出可用 LLM 提供商並結束",
     },
@@ -81,7 +83,7 @@ def add_llm_provider_arguments(
         type=llm_provider_name_arg,
         help=(
             "LLM provider to use (default: %(default)s). Use --list-llm-providers "
-            "to show available providers."
+            "to show providers, default models, and API-key environment variables."
         ),
     )
     operation_arg_group.add_argument(
@@ -179,10 +181,31 @@ class _ListLLMProvidersAction(Action):
             "Available LLM providers:",
         )
         lines = [heading]
-        lines.extend(
-            f"  {provider_name:<9} "
-            f"{get_provider_description(provider_name, locale_name)}"
-            for provider_name in get_provider_names()
-        )
+        for provider_name in get_provider_names():
+            details = self._get_provider_details(provider_name)
+            lines.append(
+                f"  {provider_name:<9} "
+                f"{get_provider_description(provider_name, locale_name)} {details}"
+            )
         parser._print_message("\n".join(lines) + "\n", sys.stdout)  # noqa: SLF001
         parser.exit(0)
+
+    @staticmethod
+    def _get_provider_details(provider_name: str) -> str:
+        """Get human-readable provider configuration details.
+
+        Arguments:
+            provider_name: provider identifier
+        Returns:
+            configuration detail string
+        """
+        model_name = get_provider_default_model(provider_name)
+        env_var_name = get_provider_api_key_env_var_name(provider_name)
+        details: list[str] = []
+        if model_name is not None:
+            details.append(f"default model: {model_name}")
+        if env_var_name is not None:
+            details.append(f"API key env: {env_var_name}")
+        if not details:
+            return ""
+        return f"({'; '.join(details)})"

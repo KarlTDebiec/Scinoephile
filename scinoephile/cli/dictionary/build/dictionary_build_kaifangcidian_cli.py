@@ -39,8 +39,12 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
                 "在构建前下载最新 Kaifangcidian 数据"
             ),
             (
-                "update canonical CSV under scinoephile/data/dictionaries/kaifangcidian"
-            ): "更新 scinoephile/data/dictionaries/kaifangcidian 下的标准 CSV",
+                "maintainer option: update canonical CSV under "
+                "scinoephile/data/dictionaries/kaifangcidian"
+            ): (
+                "维护者选项：更新 scinoephile/data/dictionaries/kaifangcidian "
+                "下的标准 CSV"
+            ),
         },
         "zh-hant": {
             "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
@@ -52,8 +56,12 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
                 "在建立前下載最新 Kaifangcidian 資料"
             ),
             (
-                "update canonical CSV under scinoephile/data/dictionaries/kaifangcidian"
-            ): "更新 scinoephile/data/dictionaries/kaifangcidian 下的標準 CSV",
+                "maintainer option: update canonical CSV under "
+                "scinoephile/data/dictionaries/kaifangcidian"
+            ): (
+                "維護者選項：更新 scinoephile/data/dictionaries/kaifangcidian "
+                "下的標準 CSV"
+            ),
         },
     }
     """Localized help text keyed by locale and English source text."""
@@ -83,7 +91,8 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
             "--update-local-data",
             action="store_true",
             help=(
-                "update canonical CSV under scinoephile/data/dictionaries/kaifangcidian"
+                "maintainer option: update canonical CSV under "
+                "scinoephile/data/dictionaries/kaifangcidian"
             ),
         )
         cls.add_common_output_arguments(parser)

@@ -33,8 +33,9 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
                 "Digital data derived from the 2004 second edition of "
                 "《廣州話正音字典》."
             ): "由 2004 年第二版《广州话正音字典》整理而成的数字数据。",
-            "path to manually downloaded GZZJ source JSON": (
-                "手动下载的 GZZJ 源 JSON 路径"
+            "path to manually downloaded GZZJ source JSON; required unless bundled "
+            "local data is already available": (
+                "手动下载的 GZZJ 源 JSON 路径；除非已有随包本地数据，否则必须提供"
             ),
         },
         "zh-hant": {
@@ -43,8 +44,9 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
                 "Digital data derived from the 2004 second edition of "
                 "《廣州話正音字典》."
             ): "由 2004 年第二版《廣州話正音字典》整理而成的數碼資料。",
-            "path to manually downloaded GZZJ source JSON": (
-                "手動下載的 GZZJ 來源 JSON 路徑"
+            "path to manually downloaded GZZJ source JSON; required unless bundled "
+            "local data is already available": (
+                "手動下載的 GZZJ 來源 JSON 路徑；除非已有隨包本機資料，否則必須提供"
             ),
         },
     }
@@ -70,7 +72,10 @@ class DictionaryBuildGzzjCli(DictionaryBuildCliBase):
             "--source-json-path",
             default=None,
             type=input_file_arg(),
-            help="path to manually downloaded GZZJ source JSON",
+            help=(
+                "path to manually downloaded GZZJ source JSON; required unless "
+                "bundled local data is already available"
+            ),
         )
         cls.add_common_output_arguments(parser)
 

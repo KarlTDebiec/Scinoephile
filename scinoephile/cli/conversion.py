@@ -27,20 +27,20 @@ CONVERSION_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional help": "附加帮助",
         "Available OpenCC configurations:": "可用 OpenCC 配置：",
-        "convert Chinese characters using specified OpenCC configuration. Use "
-        "--list-opencc-configs to show available codes.": (
-            "使用指定 OpenCC 配置转换中文字符。使用 "
-            "--list-opencc-configs 查看可用代码。"
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
+        "s2hk. Use --list-opencc-configs to show all codes.": (
+            "使用 OpenCC 代码转换中文字符，例如 s2t、t2s 或 s2hk。使用 "
+            "--list-opencc-configs 查看所有代码。"
         ),
         "list available OpenCC configurations and exit": "列出可用 OpenCC 配置并退出",
     },
     "zh-hant": {
         "additional help": "附加說明",
         "Available OpenCC configurations:": "可用 OpenCC 設定：",
-        "convert Chinese characters using specified OpenCC configuration. Use "
-        "--list-opencc-configs to show available codes.": (
-            "使用指定 OpenCC 設定轉換中文字符。使用 "
-            "--list-opencc-configs 查看可用代碼。"
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
+        "s2hk. Use --list-opencc-configs to show all codes.": (
+            "使用 OpenCC 代碼轉換中文字符，例如 s2t、t2s 或 s2hk。使用 "
+            "--list-opencc-configs 查看所有代碼。"
         ),
         "list available OpenCC configurations and exit": "列出可用 OpenCC 設定並結束",
     },
@@ -112,8 +112,8 @@ def add_opencc_convert_argument(
         "--convert",
         type=opencc_config_arg,
         help=(
-            "convert Chinese characters using specified OpenCC configuration. "
-            "Use --list-opencc-configs to show available codes."
+            "convert Chinese characters with an OpenCC code such as s2t, t2s, or "
+            "s2hk. Use --list-opencc-configs to show all codes."
         ),
     )
     additional_help_arg_group.add_argument(

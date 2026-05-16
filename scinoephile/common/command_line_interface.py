@@ -43,7 +43,10 @@ class CommandLineInterface(ABC):
             action="count",
             default=1,
             dest="verbosity",
-            help="enable verbose output, may be specified more than once",
+            help=(
+                "increase console verbosity; use -v for info and -vv for debug "
+                "(default: warnings and errors)"
+            ),
         )
         verbosity.add_argument(
             "-q",
@@ -51,7 +54,7 @@ class CommandLineInterface(ABC):
             action="store_const",
             const=0,
             dest="verbosity",
-            help="disable verbose output",
+            help="show only errors",
         )
 
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -62,8 +65,14 @@ class CommandLineInterface(ABC):
             const=f"{cls.name()}.{timestamp}.log",
             required=False,
             type=str,
-            help="log to file (default: 'YYYY-MM-DD_hh-mm-ss.log')",
+            help=(
+                "write logs to an optional path; without a value, use "
+                "<command>.YYYY-MM-DD_hh-mm-ss.log in the current directory"
+            ),
         )
+        for action_group in parser._action_groups:  # noqa: SLF001
+            if action_group.title in {"optional arguments", "options"}:
+                action_group.title = "additional arguments"
 
     @classmethod
     def argparser(

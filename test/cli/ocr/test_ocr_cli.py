@@ -232,7 +232,8 @@ def test_ocr_tesseract_cli_help_lists_default_language():
     assert excinfo.value.code == 0
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
-    assert "Tesseract language code (default: eng)" in help_text
+    assert "Tesseract language code installed in Tesseract" in help_text
+    assert "such as eng or chi_sim (default: eng)" in help_text
     assert "run a second legacy-engine pass to detect italic text" in help_text
 
 

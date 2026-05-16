@@ -13,13 +13,16 @@ BASE_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "additional arguments": "附加参数",
         "at least one operation required": "至少需要一种操作",
-        "disable verbose output": "禁用详细输出",
-        "enable verbose output, may be specified more than once": (
-            "启用详细输出，可重复指定"
+        "increase console verbosity; use -v for info and -vv for debug "
+        "(default: warnings and errors)": (
+            "提高控制台详细程度；使用 -v 显示信息，-vv 显示调试信息（默认：警告和错误）"
         ),
+        "show only errors": "仅显示错误",
         "input arguments": "输入参数",
-        "log to file (default: 'YYYY-MM-DD_hh-mm-ss.log')": (
-            "写入日志文件（默认：'YYYY-MM-DD_hh-mm-ss.log'）"
+        "write logs to an optional path; without a value, use "
+        "<command>.YYYY-MM-DD_hh-mm-ss.log in the current directory": (
+            "将日志写入可选路径；未提供路径时，在当前目录使用 "
+            "<command>.YYYY-MM-DD_hh-mm-ss.log"
         ),
         "operation arguments": "操作参数",
         "options": "选项",
@@ -33,13 +36,16 @@ BASE_CLI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "additional arguments": "附加參數",
         "at least one operation required": "至少需要一種操作",
-        "disable verbose output": "停用詳細輸出",
-        "enable verbose output, may be specified more than once": (
-            "啟用詳細輸出，可重複指定"
+        "increase console verbosity; use -v for info and -vv for debug "
+        "(default: warnings and errors)": (
+            "提高控制台詳細程度；使用 -v 顯示資訊，-vv 顯示除錯資訊（預設：警告和錯誤）"
         ),
+        "show only errors": "僅顯示錯誤",
         "input arguments": "輸入參數",
-        "log to file (default: 'YYYY-MM-DD_hh-mm-ss.log')": (
-            "寫入日誌檔（預設：'YYYY-MM-DD_hh-mm-ss.log'）"
+        "write logs to an optional path; without a value, use "
+        "<command>.YYYY-MM-DD_hh-mm-ss.log in the current directory": (
+            "將日誌寫入可選路徑；未提供路徑時，在目前目錄使用 "
+            "<command>.YYYY-MM-DD_hh-mm-ss.log"
         ),
         "operation arguments": "操作參數",
         "options": "選項",

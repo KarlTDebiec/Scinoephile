@@ -24,8 +24,12 @@ OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Recognize image subtitles with Tesseract OCR.": (
             "使用 Tesseract OCR 识别图像字幕。"
         ),
-        "Tesseract language code (default: %(default)s)": (
-            "Tesseract 语言代码（默认：%(default)s）"
+        "Tesseract language code installed in Tesseract, such as eng or chi_sim "
+        "(default: %(default)s)": (
+            "Tesseract 中已安装的语言代码，例如 eng 或 chi_sim（默认：%(default)s）"
+        ),
+        "Tesseract requires the system tesseract executable and language data.": (
+            "Tesseract 需要系统 tesseract 可执行文件和语言数据。"
         ),
         "run a second legacy-engine pass to detect italic text": (
             "运行第二次旧版引擎识别以检测斜体文本"
@@ -40,8 +44,12 @@ OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Recognize image subtitles with Tesseract OCR.": (
             "使用 Tesseract OCR 識別影像字幕。"
         ),
-        "Tesseract language code (default: %(default)s)": (
-            "Tesseract 語言代碼（預設：%(default)s）"
+        "Tesseract language code installed in Tesseract, such as eng or chi_sim "
+        "(default: %(default)s)": (
+            "Tesseract 中已安裝的語言代碼，例如 eng 或 chi_sim（預設：%(default)s）"
+        ),
+        "Tesseract requires the system tesseract executable and language data.": (
+            "Tesseract 需要系統 tesseract 可執行檔和語言資料。"
         ),
         "run a second legacy-engine pass to detect italic text": (
             "執行第二次舊版引擎識別以偵測斜體文字"
@@ -57,7 +65,10 @@ OCR_TESSERACT_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class OcrTesseractCli(ScinoephileCliBase):
-    """Recognize image subtitles with Tesseract OCR."""
+    """Recognize image subtitles with Tesseract OCR.
+
+    Tesseract requires the system tesseract executable and language data.
+    """
 
     localizations = OCR_TESSERACT_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
@@ -94,7 +105,10 @@ class OcrTesseractCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             default="eng",
-            help="Tesseract language code (default: %(default)s)",
+            help=(
+                "Tesseract language code installed in Tesseract, such as eng or "
+                "chi_sim (default: %(default)s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--detect-italics",

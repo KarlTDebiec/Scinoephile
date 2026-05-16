@@ -105,7 +105,9 @@ def get_optional_args_group(parser: ArgumentParser) -> _ArgumentGroup:
     """
     action_groups = parser._action_groups  # noqa pylint: disable=protected-access
     return next(
-        ag for ag in action_groups if ag.title in ["optional arguments", "options"]
+        ag
+        for ag in action_groups
+        if ag.title in ["additional arguments", "optional arguments", "options"]
     )
 
 
@@ -174,6 +176,8 @@ def get_arg_groups_by_name(
         ag = action_groups.pop()
         if ag.title in ["options", "optional arguments"]:
             ag.title = optional_arguments_name
+        if ag.title == "positional arguments" and not ag._group_actions:
+            continue
         if ag.title:
             additional_groups[ag.title] = ag
 

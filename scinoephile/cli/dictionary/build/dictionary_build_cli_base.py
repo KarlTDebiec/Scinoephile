@@ -31,19 +31,25 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
             "base class for building a specific dictionary cache": (
                 "用于构建特定词典缓存的基类"
             ),
-            "overwrite the existing SQLite database if it already exists": (
-                "若 SQLite 数据库已存在则覆盖"
+            "replace an existing SQLite database; without this, an existing "
+            "database is left untouched": (
+                "替换已有 SQLite 数据库；未指定时保留已有数据库"
             ),
-            "SQLite database output path": "SQLite 数据库输出路径",
+            "SQLite database output path (default: source-specific runtime cache)": (
+                "SQLite 数据库输出路径（默认：对应来源的运行时缓存）"
+            ),
         },
         "zh-hant": {
             "base class for building a specific dictionary cache": (
                 "用於建立特定詞典快取的基底類別"
             ),
-            "overwrite the existing SQLite database if it already exists": (
-                "若 SQLite 資料庫已存在則覆寫"
+            "replace an existing SQLite database; without this, an existing "
+            "database is left untouched": (
+                "替換已有 SQLite 資料庫；未指定時保留已有資料庫"
             ),
-            "SQLite database output path": "SQLite 資料庫輸出路徑",
+            "SQLite database output path (default: source-specific runtime cache)": (
+                "SQLite 資料庫輸出路徑（預設：對應來源的執行時快取）"
+            ),
         },
     }
     """Localized help text keyed by locale and English source text."""
@@ -66,12 +72,15 @@ class DictionaryBuildCliBase(ScinoephileCliBase, ABC):
             "--database-path",
             default=None,
             type=output_file_arg(exist_ok=True),
-            help="SQLite database output path",
+            help="SQLite database output path (default: source-specific runtime cache)",
         )
         arg_groups["output arguments"].add_argument(
             "--overwrite",
             action="store_true",
-            help="overwrite the existing SQLite database if it already exists",
+            help=(
+                "replace an existing SQLite database; without this, an existing "
+                "database is left untouched"
+            ),
         )
 
     @classmethod

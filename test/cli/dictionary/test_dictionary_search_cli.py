@@ -261,3 +261,30 @@ def test_dictionary_search_cli_all_dictionaries_database_path_is_usage_error():
                 DictionarySearchCli,
                 f"--database-path {database_path} --dictionary-name all 共享",
             )
+
+
+def test_dictionary_search_cli_prints_no_matches(
+    dictionary_database_dir_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test dictionary search reports no matches on stdout.
+
+    Arguments:
+        dictionary_database_dir_path: directory containing fixture dictionaries
+        capsys: pytest capture fixture
+    """
+    database_path = (
+        dictionary_database_dir_path
+        / "scinoephile"
+        / "dictionaries"
+        / "cuhk"
+        / "cuhk.db"
+    )
+
+    run_cli_with_args(
+        DictionarySearchCli,
+        f"--dictionary-name cuhk --database-path {database_path} --limit 3 冇呢個詞",
+    )
+    output = capsys.readouterr().out
+
+    assert output == "No matches found in cuhk for '冇呢個詞'.\n"

@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.common.argument_parsing import get_arg_groups_by_name
+from scinoephile.common.argument_parsing import get_arg_groups_by_name, int_arg
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cache.operations import clear_cache, get_cache_entries
 from scinoephile.core.cli import ScinoephileCliBase
@@ -26,6 +26,9 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "clear cache entries": "清除缓存条目",
         "clear every discovered namespace": "清除所有发现的命名空间",
         "confirm destructive deletion": "确认破坏性删除",
+        "maximum entries to print; use 0 to show all (default: %(default)s)": (
+            "最多输出的条目数；使用 0 显示全部（默认：%(default)s）"
+        ),
         "show what would be deleted without deleting files": (
             "显示将删除的内容但不删除文件"
         ),
@@ -38,6 +41,9 @@ CACHE_CLEAR_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "clear cache entries": "清除快取條目",
         "clear every discovered namespace": "清除所有發現的命名空間",
         "confirm destructive deletion": "確認破壞性刪除",
+        "maximum entries to print; use 0 to show all (default: %(default)s)": (
+            "最多輸出的條目數；使用 0 顯示全部（預設：%(default)s）"
+        ),
         "show what would be deleted without deleting files": (
             "顯示將刪除的內容但不刪除檔案"
         ),
@@ -94,6 +100,12 @@ class CacheClearCli(ScinoephileCliBase):
             help="show what would be deleted without deleting files",
         )
         arg_groups["operation arguments"].add_argument(
+            "--limit",
+            default=100,
+            type=int_arg(min_value=0),
+            help="maximum entries to print; use 0 to show all (default: %(default)s)",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--yes",
             action="store_true",
             help="confirm destructive deletion",
@@ -118,6 +130,7 @@ class CacheClearCli(ScinoephileCliBase):
         namespace: str | None,
         all_namespaces: bool,
         dry_run: bool,
+        limit: int,
         yes: bool,
     ):
         """Execute with provided keyword arguments."""
@@ -149,4 +162,4 @@ class CacheClearCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         # Write outputs
-        print_entries(entries, "text")
+        print_entries(entries, "text", limit=limit)
