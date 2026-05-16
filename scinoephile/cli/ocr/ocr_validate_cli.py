@@ -48,8 +48,8 @@ class OcrValidateCli(ScinoephileCliBase):
             "prompt for interactive validation decisions": "提示进行交互式校验决策",
             "stop validation after this subtitle index": "校验到此字幕索引后停止",
             "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
-            "write validation data updates to repo data": (
-                "将校验数据更新写入仓库数据"
+            "maintainer option: write validation data updates to repo data": (
+                "维护者选项：将校验数据更新写入仓库数据"
             ),
         },
         "zh-hant": {
@@ -70,8 +70,8 @@ class OcrValidateCli(ScinoephileCliBase):
             "prompt for interactive validation decisions": "提示進行互動式驗證決策",
             "stop validation after this subtitle index": "驗證到此字幕索引後停止",
             "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
-            "write validation data updates to repo data": (
-                "將驗證資料更新寫入儲存庫資料"
+            "maintainer option: write validation data updates to repo data": (
+                "維護者選項：將驗證資料更新寫入儲存庫資料"
             ),
         },
     }
@@ -108,6 +108,7 @@ class OcrValidateCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
+            metavar="{eng,zho}",
             type=str_arg(options=("eng", "zho")),
             help="language of the OCR text to validate (eng or zho)",
         )
@@ -124,7 +125,7 @@ class OcrValidateCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--dev",
             action="store_true",
-            help="write validation data updates to repo data",
+            help="maintainer option: write validation data updates to repo data",
         )
 
         arg_groups["output arguments"].add_argument(

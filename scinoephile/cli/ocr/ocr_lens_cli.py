@@ -21,7 +21,9 @@ __all__ = ["OcrLensCli"]
 
 OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "Google Lens language code": "Google Lens 语言代码",
+        "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
+            "Google Lens 语言代码，例如 en、zh-CN 或 zh-TW（默认：en）"
+        ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 识别图像字幕。"
         ),
@@ -32,7 +34,9 @@ OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "recognized subtitle outfile path": "识别后字幕输出文件路径",
     },
     "zh-hant": {
-        "Google Lens language code": "Google Lens 語言代碼",
+        "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
+            "Google Lens 語言代碼，例如 en、zh-CN 或 zh-TW（預設：en）"
+        ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 識別影像字幕。"
         ),
@@ -84,7 +88,7 @@ class OcrLensCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             default="en",
-            help="Google Lens language code",
+            help="Google Lens language code such as en, zh-CN, or zh-TW (default: en)",
         )
 
         # Output arguments

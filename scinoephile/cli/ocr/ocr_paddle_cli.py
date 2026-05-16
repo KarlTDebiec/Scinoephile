@@ -28,6 +28,9 @@ OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "PaddleOCR 语言代码：en（英语），ch（简体中文和英语），"
             "chinese_cht（繁体中文）"
         ),
+        "PaddleOCR requires the optional PaddleOCR runtime dependencies.": (
+            "PaddleOCR 需要可选的 PaddleOCR 运行时依赖。"
+        ),
         "Recognize image subtitles with PaddleOCR.": ("使用 PaddleOCR 识别图像字幕。"),
         (
             "image subtitle infile path (directory containing index.html and "
@@ -43,6 +46,9 @@ OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "PaddleOCR 語言代碼：en（英語），ch（簡體中文和英語），"
             "chinese_cht（繁體中文）"
         ),
+        "PaddleOCR requires the optional PaddleOCR runtime dependencies.": (
+            "PaddleOCR 需要可選的 PaddleOCR 執行時依賴。"
+        ),
         "Recognize image subtitles with PaddleOCR.": ("使用 PaddleOCR 識別影像字幕。"),
         (
             "image subtitle infile path (directory containing index.html and "
@@ -55,7 +61,10 @@ OCR_PADDLE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class OcrPaddleCli(ScinoephileCliBase):
-    """Recognize image subtitles with PaddleOCR."""
+    """Recognize image subtitles with PaddleOCR.
+
+    PaddleOCR requires the optional PaddleOCR runtime dependencies.
+    """
 
     localizations = OCR_PADDLE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

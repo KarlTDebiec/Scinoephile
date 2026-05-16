@@ -30,16 +30,18 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "convert extracted SUP subtitle streams to image directories": (
             "将提取的 SUP 字幕流转换为图像目录"
         ),
-        "cache directory (default: %(default)s)": "缓存目录（默认：%(default)s）",
-        "directory to which matching subtitles will be extracted or mapped": (
-            "匹配字幕将被提取或映射到的目录"
-        ),
+        "cache directory for extracted or converted subtitle artifacts (default: "
+        "%(default)s)": ("提取或转换字幕产物的缓存目录（默认：%(default)s）"),
+        "directory where extracted subtitle files or converted image directories "
+        "will be written": ("写入已提取字幕文件或已转换图像目录的目录"),
         "extract matching subtitle streams from a video file": (
             "从视频文件提取匹配的字幕流"
         ),
         "include additional subtitle stream details": "包含更多字幕流详细信息",
-        "ISO 639 language codes to extract (default: chi eng yue zho)": (
-            "要提取的 ISO 639 语言代码（默认：chi eng yue zho）"
+        "ISO 639 language tags to extract; common subtitle tags include chi, eng, "
+        "yue, and zho (default: chi eng yue zho)": (
+            "要提取的 ISO 639 语言标签；常见字幕标签包括 chi、eng、yue 和 zho"
+            "（默认：chi eng yue zho）"
         ),
         "overwrite extracted subtitle files if they exist": (
             "若提取的字幕文件已存在则覆盖"
@@ -50,16 +52,18 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "convert extracted SUP subtitle streams to image directories": (
             "將提取的 SUP 字幕流轉換為影像目錄"
         ),
-        "cache directory (default: %(default)s)": "快取目錄（預設：%(default)s）",
-        "directory to which matching subtitles will be extracted or mapped": (
-            "匹配字幕將被提取或映射到的目錄"
-        ),
+        "cache directory for extracted or converted subtitle artifacts (default: "
+        "%(default)s)": ("提取或轉換字幕產物的快取目錄（預設：%(default)s）"),
+        "directory where extracted subtitle files or converted image directories "
+        "will be written": ("寫入已提取字幕檔或已轉換影像目錄的目錄"),
         "extract matching subtitle streams from a video file": (
             "從影片檔提取匹配的字幕流"
         ),
         "include additional subtitle stream details": "包含更多字幕流詳細資訊",
-        "ISO 639 language codes to extract (default: chi eng yue zho)": (
-            "要提取的 ISO 639 語言代碼（預設：chi eng yue zho）"
+        "ISO 639 language tags to extract; common subtitle tags include chi, eng, "
+        "yue, and zho (default: chi eng yue zho)": (
+            "要提取的 ISO 639 語言標籤；常見字幕標籤包括 chi、eng、yue 和 zho"
+            "（預設：chi eng yue zho）"
         ),
         "overwrite extracted subtitle files if they exist": (
             "若提取的字幕檔已存在則覆寫"
@@ -107,7 +111,10 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             default=list(DEFAULT_SUBTITLE_LANGUAGES),
             nargs="+",
             type=language_arg,
-            help="ISO 639 language codes to extract (default: chi eng yue zho)",
+            help=(
+                "ISO 639 language tags to extract; common subtitle tags include chi, "
+                "eng, yue, and zho (default: chi eng yue zho)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--details",
@@ -119,7 +126,10 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
             type=cache_dir_path_arg,
-            help="cache directory (default: %(default)s)",
+            help=(
+                "cache directory for extracted or converted subtitle artifacts "
+                "(default: %(default)s)"
+            ),
         )
 
         # Output arguments
@@ -129,7 +139,10 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             dest="output_dir_path",
             required=True,
             type=output_dir_arg(create=False),
-            help="directory to which matching subtitles will be extracted or mapped",
+            help=(
+                "directory where extracted subtitle files or converted image "
+                "directories will be written"
+            ),
         )
         arg_groups["output arguments"].add_argument(
             "--extract-sup",

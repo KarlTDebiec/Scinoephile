@@ -49,7 +49,10 @@ def test_str_arg():
     assert validator("option1") == "option1"
     assert validator("OPTION1") == "option1"
 
-    with pytest.raises(ArgumentTypeError, match="is not one of options"):
+    with pytest.raises(
+        ArgumentTypeError,
+        match="'invalid' is not one of the supported values: option1, option2, option3",
+    ):
         validator("invalid")
 
 

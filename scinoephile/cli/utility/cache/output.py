@@ -57,12 +57,18 @@ def format_cache_stats(stats: CacheStats) -> dict[str, Any]:
     }
 
 
-def print_entries(entries: list[CacheEntry], output_format: str):
+def print_entries(
+    entries: list[CacheEntry],
+    output_format: str,
+    *,
+    limit: int | None = None,
+):
     """Print cache entries.
 
     Arguments:
         entries: entries to print
         output_format: output format
+        limit: maximum text entries to print, or 0/None to print all
     """
     objects = [format_cache_entry(entry) for entry in entries]
     if output_format == "json":
@@ -74,13 +80,21 @@ def print_entries(entries: list[CacheEntry], output_format: str):
         if not objects:
             print("No cache entries found.")
             return
-        for entry_object in objects:
+        display_objects = objects
+        if limit is not None and limit > 0:
+            display_objects = objects[:limit]
+        for entry_object in display_objects:
             print(
                 f"{entry_object['namespace']}\t{entry_object['path']}\t"
                 f"{entry_object['size_bytes']} bytes\t"
                 f"{entry_object['file_count']} file(s)\t"
                 f"mtime {entry_object['modified_at']}\t"
                 f"atime {entry_object['accessed_at']}"
+            )
+        if len(display_objects) < len(objects):
+            print(
+                f"Showing {len(display_objects)} of {len(objects)} entries. "
+                "Use --limit 0 to show all."
             )
 
 

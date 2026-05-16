@@ -20,6 +20,8 @@ from .openai_provider import OpenAIProvider
 
 __all__ = [
     "DEFAULT_PROVIDER_NAME",
+    "get_provider_api_key_env_var_name",
+    "get_provider_default_model",
     "get_provider",
     "get_provider_description",
     "get_provider_names",
@@ -79,6 +81,44 @@ def get_provider_description(provider_name: str, locale_name: str = "en") -> str
     if description is None:
         return ""
     return " ".join(description.split())
+
+
+def get_provider_api_key_env_var_name(provider_name: str) -> str | None:
+    """Get the environment variable used for a provider's API key.
+
+    Arguments:
+        provider_name: provider identifier
+    Returns:
+        environment variable name, if configured
+    Raises:
+        ScinoephileError: provider name is not registered
+    """
+    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
+    if provider_factory is None:
+        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
+    env_var_name = getattr(provider_factory, "api_key_env_var_name", None)
+    if not isinstance(env_var_name, str):
+        return None
+    return env_var_name
+
+
+def get_provider_default_model(provider_name: str) -> str | None:
+    """Get a provider's default model.
+
+    Arguments:
+        provider_name: provider identifier
+    Returns:
+        default model identifier, if configured
+    Raises:
+        ScinoephileError: provider name is not registered
+    """
+    provider_factory = _PROVIDER_FACTORIES.get(provider_name)
+    if provider_factory is None:
+        raise ScinoephileError(f"Unknown LLM provider '{provider_name}'.")
+    model = getattr(provider_factory, "model", None)
+    if not isinstance(model, str):
+        return None
+    return model
 
 
 def get_provider_names() -> tuple[str, ...]:

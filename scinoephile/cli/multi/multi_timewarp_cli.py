@@ -116,25 +116,25 @@ class MultiTimewarpCli(ScinoephileCliBase):
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
-            "--one-start-idx",
+            "--anchor-start-idx",
             type=int_arg(min_value=1),
             default=None,
             help="1-based start index in anchor series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--one-end-idx",
+            "--anchor-end-idx",
             type=int_arg(min_value=1),
             default=None,
             help="1-based end index in anchor series (default: final subtitle)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--two-start-idx",
+            "--mobile-start-idx",
             type=int_arg(min_value=1),
             default=None,
             help="1-based start index in moving series (default: 1)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--two-end-idx",
+            "--mobile-end-idx",
             type=int_arg(min_value=1),
             default=None,
             help="1-based end index in moving series (default: final subtitle)",
@@ -172,10 +172,10 @@ class MultiTimewarpCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         anchor_infile_path: Path | str,
         mobile_infile_path: Path | str,
-        one_start_idx: int | None,
-        one_end_idx: int | None,
-        two_start_idx: int | None,
-        two_end_idx: int | None,
+        anchor_start_idx: int | None,
+        anchor_end_idx: int | None,
+        mobile_start_idx: int | None,
+        mobile_end_idx: int | None,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -196,10 +196,10 @@ class MultiTimewarpCli(ScinoephileCliBase):
             timewarped = get_series_timewarped(
                 source_one=anchor,
                 source_two=mobile,
-                one_start_idx=one_start_idx,
-                one_end_idx=one_end_idx,
-                two_start_idx=two_start_idx,
-                two_end_idx=two_end_idx,
+                one_start_idx=anchor_start_idx,
+                one_end_idx=anchor_end_idx,
+                two_start_idx=mobile_start_idx,
+                two_end_idx=mobile_end_idx,
             )
         except ScinoephileError as exc:
             parser.error(str(exc))

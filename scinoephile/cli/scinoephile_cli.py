@@ -105,12 +105,8 @@ class ScinoephileCli(ScinoephileCliBase):
         """
         super().add_arguments_to_argparser(parser)
 
-        arg_groups = get_arg_groups_by_name(
-            parser,
-            "additional help",
-            optional_arguments_name="additional arguments",
-        )
-        arg_groups["additional help"].add_argument(
+        additional_help_arg_group = parser.add_argument_group("additional help")
+        additional_help_arg_group.add_argument(
             "--all-commands",
             action=ListAllCommandsAction,
             default=SUPPRESS,
@@ -126,6 +122,11 @@ class ScinoephileCli(ScinoephileCliBase):
         subcommands = cls.subcommands()
         for name in sorted(subcommands):
             subcommands[name].argparser(subparsers=subparsers)
+        get_arg_groups_by_name(
+            parser,
+            "additional help",
+            optional_arguments_name="additional arguments",
+        )
 
     @classmethod
     def subcommands(cls) -> dict[str, type[CommandLineInterface]]:

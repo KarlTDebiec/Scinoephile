@@ -649,8 +649,9 @@ def val_str(value: Any, options: Iterable[Any]) -> str:
     value = value.lower()
 
     if value not in case_insensitive_options:
+        options_text = ", ".join(case_insensitive_options.values())
         raise ValueError(
-            f"'{value}' is not one of options '{case_insensitive_options.keys()}'"
+            f"'{value}' is not one of the supported values: {options_text}"
         ) from None
 
     return case_insensitive_options[value]

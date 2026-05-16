@@ -19,9 +19,15 @@ __all__ = ["MultiCli"]
 
 MULTI_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "A subtitle series is one timed subtitle timeline loaded from one file.": (
+            "字幕序列是从一个文件载入的一条带时间轴的字幕时间线。"
+        ),
         "operate on multiple subtitle series": "处理多个字幕序列",
     },
     "zh-hant": {
+        "A subtitle series is one timed subtitle timeline loaded from one file.": (
+            "字幕序列是從一個檔案載入的一條帶時間軸的字幕時間線。"
+        ),
         "operate on multiple subtitle series": "處理多個字幕序列",
     },
 }
@@ -29,7 +35,10 @@ MULTI_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class MultiCli(ScinoephileCliBase):
-    """Operate on multiple subtitle series."""
+    """Operate on multiple subtitle series.
+
+    A subtitle series is one timed subtitle timeline loaded from one file.
+    """
 
     localizations = MULTI_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

@@ -16,19 +16,23 @@ __all__ = ["OptimizationCli"]
 
 OPTIMIZATION_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
+        "maintainer tools for prompt optimization data and persistence": (
+            "用于提示词优化数据与持久化的维护者工具"
+        ),
         "optimization-related tools": "优化相关工具",
-        "prompt optimization utilities and persistence": "提示词优化工具与持久化",
     },
     "zh-hant": {
+        "maintainer tools for prompt optimization data and persistence": (
+            "用於提示詞最佳化資料與持久化的維護者工具"
+        ),
         "optimization-related tools": "最佳化相關工具",
-        "prompt optimization utilities and persistence": "提示詞最佳化工具與持久化",
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
 class OptimizationCli(ScinoephileCliBase):
-    """Prompt optimization utilities and persistence."""
+    """Maintainer tools for prompt optimization data and persistence."""
 
     localizations = OPTIMIZATION_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

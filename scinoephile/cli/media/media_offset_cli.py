@@ -24,6 +24,9 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for estimating visual media offset": (
             "估计媒体视觉偏移的命令行界面"
         ),
+        "Positive output means the target is later than the reference.": (
+            "正数输出表示目标文件晚于参考文件。"
+        ),
         "estimate visual offset between two media files": (
             "估计两个媒体文件之间的视觉偏移"
         ),
@@ -51,6 +54,9 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "command-line interface for estimating visual media offset": (
             "估計媒體視覺偏移的命令列介面"
+        ),
+        "Positive output means the target is later than the reference.": (
+            "正數輸出表示目標檔晚於參考檔。"
         ),
         "estimate visual offset between two media files": (
             "估計兩個媒體檔之間的視覺偏移"
@@ -81,7 +87,10 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 class MediaOffsetCli(ScinoephileCliBase):
-    """Estimate visual offset between two media files."""
+    """Estimate visual offset between two media files.
+
+    Positive output means the target is later than the reference.
+    """
 
     localizations = MEDIA_OFFSET_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""

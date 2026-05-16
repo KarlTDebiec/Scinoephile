@@ -16,7 +16,10 @@ __all__ = ["MultiCerCli"]
 
 
 class MultiCerCli(ScinoephileCliBase):
-    """Calculate the Character Error Rate (CER) of one series relative to another."""
+    """Calculate the Character Error Rate (CER) of one series relative to another.
+
+    Character Error Rate is printed as edits divided by reference character count.
+    """
 
     localizations: ClassVar[dict[str, dict[str, str]]] = {
         "zh-hans": {
@@ -24,6 +27,10 @@ class MultiCerCli(ScinoephileCliBase):
                 "calculate the Character Error Rate (CER) "
                 "of one series relative to another"
             ): "计算一个序列相对于另一个序列的字符错误率（CER）",
+            (
+                "Character Error Rate is printed as edits divided by reference "
+                "character count."
+            ): "字符错误率按编辑次数除以参考字符数输出。",
             (
                 "command-line interface for multi-series character error rate "
                 "calculation"
@@ -40,6 +47,10 @@ class MultiCerCli(ScinoephileCliBase):
                 "calculate the Character Error Rate (CER) "
                 "of one series relative to another"
             ): "計算一個序列相對於另一個序列的字元錯誤率（CER）",
+            (
+                "Character Error Rate is printed as edits divided by reference "
+                "character count."
+            ): "字元錯誤率按編輯次數除以參考字元數輸出。",
             (
                 "command-line interface for multi-series character error rate "
                 "calculation"

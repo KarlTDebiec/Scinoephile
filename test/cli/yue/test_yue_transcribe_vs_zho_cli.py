@@ -45,18 +45,18 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     help_text = stdout.getvalue()
     normalized_help_text = " ".join(help_text.split())
     assert stderr.getvalue() == ""
-    assert "--script SCRIPT" in help_text
+    assert "--script {simplified,traditional}" in help_text
     assert "script used for transcription prompts" in help_text
     assert "--convert CONVERT" in normalized_help_text
     assert (
-        "convert Chinese characters using specified OpenCC configuration"
+        "convert Chinese characters with an OpenCC code such as s2t, t2s, or s2hk"
         in normalized_help_text
     )
-    assert "--demucs DEMUCS" in help_text
+    assert "--demucs {on,off}" in help_text
     assert "Demucs vocal-separation mode" in help_text
     assert "options: on, off;" in help_text
     assert "default: off" in help_text
-    assert "--vad VAD" in help_text
+    assert "--vad {auto,on,off}" in help_text
     assert "Whisper voice activity detection mode" in help_text
     assert "off, auto; default: auto" in help_text
 
@@ -90,7 +90,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
                     run_cli_with_args(
                         YueTranscribeVsZhoCli,
                         f"--media-infile {media_infile_path} "
-                        f"--zhongwen-infile {zhongwen_infile_path} "
+                        f"--zho-infile {zhongwen_infile_path} "
                         f"--stream-index 1 -o {outfile_path}",
                     )
         output_series = Series.load(outfile_path)
@@ -145,7 +145,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
                     run_cli_with_args(
                         YueTranscribeVsZhoCli,
                         f"--media-infile {media_infile_path} "
-                        f"--zhongwen-infile {zhongwen_infile_path}",
+                        f"--zho-infile {zhongwen_infile_path}",
                     )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
@@ -179,7 +179,7 @@ def test_yue_transcribe_vs_zho_cli_passes_llm_options(tmp_path):
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --vad off "
+                    f"--zho-infile {zhongwen_infile_path} --vad off "
                     f"--llm-additional-content-file {context_path}",
                 )
 
@@ -215,7 +215,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --demucs on",
+                    f"--zho-infile {zhongwen_infile_path} --demucs on",
                 )
 
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
@@ -246,7 +246,7 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} --convert s2hk",
+                    f"--zho-infile {zhongwen_infile_path} --convert s2hk",
                 )
 
     assert patched_factory.call_args.kwargs["convert"] == OpenCCConfig.s2hk
@@ -260,7 +260,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_bare_convert_flag():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --convert",
+            f"--zho-infile {zhongwen_infile_path} --convert",
         )
 
 
@@ -289,7 +289,7 @@ def test_yue_transcribe_vs_zho_cli_keeps_script_and_convert_independent():
                 run_cli_with_args(
                     YueTranscribeVsZhoCli,
                     f"--media-infile {media_infile_path} "
-                    f"--zhongwen-infile {zhongwen_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
                     "--script traditional --convert hk2s",
                 )
 
@@ -312,7 +312,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_negative_stream_index():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --stream-index -1",
+            f"--zho-infile {zhongwen_infile_path} --stream-index -1",
         )
 
 
@@ -328,7 +328,7 @@ def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
             run_cli_with_args(
                 YueTranscribeVsZhoCli,
                 f"--media-infile {media_infile_path} "
-                f"--zhongwen-infile {zhongwen_infile_path} --stream-index 7",
+                f"--zho-infile {zhongwen_infile_path} --stream-index 7",
             )
 
 
@@ -340,8 +340,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_subtitle_infile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path}",
+            f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
         )
 
 
@@ -353,8 +352,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_missing_media_infile():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path}",
+            f"--media-infile {media_infile_path} --zho-infile {zhongwen_infile_path}",
         )
 
 
@@ -386,7 +384,7 @@ def test_yue_transcribe_vs_zho_cli_allows_stdin_subtitle_infile():
                     with patch("scinoephile.core.cli.stdout", stdout_stream):
                         run_cli_with_args(
                             YueTranscribeVsZhoCli,
-                            f"--media-infile {media_infile_path} --zhongwen-infile -",
+                            f"--media-infile {media_infile_path} --zho-infile -",
                         )
 
     called_kwargs = patched_transcribe.call_args.kwargs
@@ -404,7 +402,7 @@ def test_yue_transcribe_vs_zho_cli_rejects_two_stdin_infiles():
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
             YueTranscribeVsZhoCli,
-            "--media-infile - --zhongwen-infile -",
+            "--media-infile - --zho-infile -",
         )
 
 
@@ -417,5 +415,18 @@ def test_yue_transcribe_vs_zho_cli_rejects_overwrite_without_outfile():
         run_cli_with_args(
             YueTranscribeVsZhoCli,
             f"--media-infile {media_infile_path} "
-            f"--zhongwen-infile {zhongwen_infile_path} --overwrite",
+            f"--zho-infile {zhongwen_infile_path} --overwrite",
+        )
+
+
+def test_yue_transcribe_vs_zho_cli_rejects_old_zhongwen_infile_flag():
+    """Test written Cantonese CLI rejects the old Zhongwen infile flag."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+
+    with pytest.raises(SystemExit, match="2"):
+        run_cli_with_args(
+            YueTranscribeVsZhoCli,
+            f"--media-infile {media_infile_path} "
+            f"--zhongwen-infile {zhongwen_infile_path}",
         )

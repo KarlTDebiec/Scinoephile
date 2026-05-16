@@ -67,7 +67,7 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
-        'Standard Chinese subtitle infile or "-" for stdin': (
+        'standard Chinese subtitle infile, or "-" for stdin': (
             '标准中文字幕输入文件，或使用 "-" 表示标准输入'
         ),
         "video or audio media input path used for transcription": (
@@ -97,7 +97,7 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
-        'Standard Chinese subtitle infile or "-" for stdin': (
+        'standard Chinese subtitle infile, or "-" for stdin': (
             '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
         "video or audio media input path used for transcription": (
@@ -156,23 +156,25 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             help="audio stream index in media input (default: 0)",
         )
         arg_groups["input arguments"].add_argument(
-            "--zhongwen-infile",
-            dest="zhongwen_infile_path",
+            "--zho-infile",
+            dest="zho_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='Standard Chinese subtitle infile or "-" for stdin',
+            help='standard Chinese subtitle infile, or "-" for stdin',
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "--demucs",
             default=DemucsMode.OFF,
+            metavar="{on,off}",
             type=enum_arg(DemucsMode),
             help="Demucs vocal-separation mode (options: on, off; default: off)",
         )
         arg_groups["operation arguments"].add_argument(
             "--vad",
             default=VADMode.AUTO,
+            metavar="{auto,on,off}",
             type=enum_arg(VADMode),
             help=(
                 "Whisper voice activity detection mode "
@@ -188,6 +190,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--script",
             default="simplified",
+            metavar="{simplified,traditional}",
             type=str_arg(options=("simplified", "traditional")),
             help="script used for transcription prompts (default: simplified)",
         )
@@ -240,7 +243,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         *,
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
-        zhongwen_infile_path: Path | str,
+        zho_infile_path: Path | str,
         stream_index: int,
         script: str,
         convert: OpenCCConfig | None,
@@ -255,20 +258,20 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if media_infile_path == "-" and zhongwen_infile_path == "-":
-            parser.error("--media-infile and --zhongwen-infile may not both be '-'")
+        if media_infile_path == "-" and zho_infile_path == "-":
+            parser.error("--media-infile and --zho-infile may not both be '-'")
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
 
         # Read inputs
-        if zhongwen_infile_path == "-":
+        if zho_infile_path == "-":
             zhongwen = read_series(parser, "-", allow_stdin=True)
             try:
-                with get_temp_file_path(suffix=".srt") as temp_zhongwen_path:
-                    zhongwen.save(temp_zhongwen_path)
+                with get_temp_file_path(suffix=".srt") as temp_zho_path:
+                    zhongwen.save(temp_zho_path)
                     yuewen = AudioSeries.load_from_media(
                         media_path=media_infile_path,
-                        subtitle_path=temp_zhongwen_path,
+                        subtitle_path=temp_zho_path,
                         stream_index=stream_index,
                     )
             except (
@@ -280,11 +283,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             ) as exc:
                 parser.error(str(exc))
         else:
-            zhongwen = read_series(parser, zhongwen_infile_path, allow_stdin=True)
+            zhongwen = read_series(parser, zho_infile_path, allow_stdin=True)
             try:
                 yuewen = AudioSeries.load_from_media(
                     media_path=media_infile_path,
-                    subtitle_path=zhongwen_infile_path,
+                    subtitle_path=zho_infile_path,
                     stream_index=stream_index,
                 )
             except (

@@ -28,16 +28,19 @@ class MultiDiffCli(ScinoephileCliBase):
             "command-line interface for multi-series subtitle diffs": (
                 "多序列字幕差异命令行界面"
             ),
-            "label for first series (default: one)": "第一个序列标签（默认：one）",
-            "label for second series (default: two)": "第二个序列标签（默认：two）",
+            "series label for candidate output in diff messages (default: candidate)": (
+                "差异消息中候选输出的序列标签（默认：candidate）"
+            ),
+            "series label for reference input in diff messages (default: reference)": (
+                "差异消息中参考输入的序列标签（默认：reference）"
+            ),
             "similarity threshold used to pair replacements (default: 0.6)": (
                 "用于配对替换项的相似度阈值（默认：0.6）"
             ),
-            'subtitle infile for first series or "-" for stdin': (
-                '第一个序列的字幕输入文件，或用 "-" 表示标准输入'
-            ),
-            'subtitle infile for second series or "-" for stdin': (
-                '第二个序列的字幕输入文件，或用 "-" 表示标准输入'
+            'candidate subtitle infile to compare against the reference, or "-" '
+            "for stdin": ('要与参考输入比较的候选字幕输入文件，或用 "-" 表示标准输入'),
+            'reference subtitle infile or "-" for stdin': (
+                '参考字幕输入文件，或用 "-" 表示标准输入'
             ),
         },
         "zh-hant": {
@@ -45,16 +48,19 @@ class MultiDiffCli(ScinoephileCliBase):
             "command-line interface for multi-series subtitle diffs": (
                 "多序列字幕差異命令列介面"
             ),
-            "label for first series (default: one)": "第一個序列標籤（預設：one）",
-            "label for second series (default: two)": "第二個序列標籤（預設：two）",
+            "series label for candidate output in diff messages (default: candidate)": (
+                "差異訊息中候選輸出的序列標籤（預設：candidate）"
+            ),
+            "series label for reference input in diff messages (default: reference)": (
+                "差異訊息中參考輸入的序列標籤（預設：reference）"
+            ),
             "similarity threshold used to pair replacements (default: 0.6)": (
                 "用於配對替換項的相似度閾值（預設：0.6）"
             ),
-            'subtitle infile for first series or "-" for stdin': (
-                '第一個序列的字幕輸入檔，或用 "-" 表示標準輸入'
-            ),
-            'subtitle infile for second series or "-" for stdin': (
-                '第二個序列的字幕輸入檔，或用 "-" 表示標準輸入'
+            'candidate subtitle infile to compare against the reference, or "-" '
+            "for stdin": ('要與參考輸入比較的候選字幕輸入檔，或用 "-" 表示標準輸入'),
+            'reference subtitle infile or "-" for stdin': (
+                '參考字幕輸入檔，或用 "-" 表示標準輸入'
             ),
         },
     }
@@ -78,18 +84,21 @@ class MultiDiffCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "--one-infile",
-            dest="one_infile_path",
+            "--reference-infile",
+            dest="reference_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='subtitle infile for first series or "-" for stdin',
+            help='reference subtitle infile or "-" for stdin',
         )
         arg_groups["input arguments"].add_argument(
-            "--two-infile",
-            dest="two_infile_path",
+            "--candidate-infile",
+            dest="candidate_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='subtitle infile for second series or "-" for stdin',
+            help=(
+                'candidate subtitle infile to compare against the reference, or "-" '
+                "for stdin"
+            ),
         )
 
         # Operation arguments
@@ -102,16 +111,21 @@ class MultiDiffCli(ScinoephileCliBase):
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
-            "--one-label",
-            default="one",
+            "--reference-label",
+            default="reference",
             type=str,
-            help="label for first series (default: one)",
+            help=(
+                "series label for reference input in diff messages (default: reference)"
+            ),
         )
         arg_groups["output arguments"].add_argument(
-            "--two-label",
-            default="two",
+            "--candidate-label",
+            default="candidate",
             type=str,
-            help="label for second series (default: two)",
+            help=(
+                "series label for candidate output in diff messages "
+                "(default: candidate)"
+            ),
         )
 
     @classmethod
@@ -128,33 +142,43 @@ class MultiDiffCli(ScinoephileCliBase):
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        one_infile_path: Path | str,
-        two_infile_path: Path | str,
+        reference_infile_path: Path | str,
+        candidate_infile_path: Path | str,
         similarity_cutoff: float,
-        one_label: str,
-        two_label: str,
+        reference_label: str,
+        candidate_label: str,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
-        if one_infile_path == "-" and two_infile_path == "-":
-            parser.error("--one-infile and --two-infile may not both be '-'")
+        if reference_infile_path == "-" and candidate_infile_path == "-":
+            parser.error(
+                "--reference-infile and --candidate-infile may not both be '-'"
+            )
 
         # Read inputs
-        one_subtitle_series = read_series(parser, one_infile_path, allow_stdin=True)
-        two_subtitle_series = read_series(parser, two_infile_path, allow_stdin=True)
+        reference_subtitle_series = read_series(
+            parser, reference_infile_path, allow_stdin=True
+        )
+        candidate_subtitle_series = read_series(
+            parser, candidate_infile_path, allow_stdin=True
+        )
 
         # Perform operations
         diff = SeriesDiff(
-            one_subtitle_series,
-            two_subtitle_series,
-            one_lbl=one_label,
-            two_lbl=two_label,
+            reference_subtitle_series,
+            candidate_subtitle_series,
+            one_lbl=reference_label,
+            two_lbl=candidate_label,
             similarity_cutoff=similarity_cutoff,
         )
 
         # Write outputs
-        for line_diff in diff:
+        line_diffs = list(diff)
+        if not line_diffs:
+            print("No differences found.")
+            return
+        for line_diff in line_diffs:
             print(line_diff)
 
 

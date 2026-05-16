@@ -38,11 +38,14 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
             "download fresh Kaikki JSONL before building": (
                 "在构建前下载最新 Kaikki JSONL"
             ),
-            "path to Kaikki Chinese Wiktionary JSONL dump": (
-                "Kaikki 中文 Wiktionary JSONL 转储路径"
+            "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
+            "data; use --force-download to fetch a fresh dump)": (
+                "Kaikki 中文 Wiktionary JSONL 转储路径（默认：随包本地数据；使用 "
+                "--force-download 获取最新转储）"
             ),
-            "update source file under scinoephile/data/dictionaries/wiktionary": (
-                "更新 scinoephile/data/dictionaries/wiktionary 下的源文件"
+            "maintainer option: update source file under "
+            "scinoephile/data/dictionaries/wiktionary": (
+                "维护者选项：更新 scinoephile/data/dictionaries/wiktionary 下的源文件"
             ),
         },
         "zh-hant": {
@@ -54,11 +57,14 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
             "download fresh Kaikki JSONL before building": (
                 "在建立前下載最新 Kaikki JSONL"
             ),
-            "path to Kaikki Chinese Wiktionary JSONL dump": (
-                "Kaikki 中文 Wiktionary JSONL 傾印路徑"
+            "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled local "
+            "data; use --force-download to fetch a fresh dump)": (
+                "Kaikki 中文 Wiktionary JSONL 傾印路徑（預設：隨包本機資料；使用 "
+                "--force-download 取得最新傾印）"
             ),
-            "update source file under scinoephile/data/dictionaries/wiktionary": (
-                "更新 scinoephile/data/dictionaries/wiktionary 下的來源檔案"
+            "maintainer option: update source file under "
+            "scinoephile/data/dictionaries/wiktionary": (
+                "維護者選項：更新 scinoephile/data/dictionaries/wiktionary 下的來源檔案"
             ),
         },
     }
@@ -85,7 +91,10 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
             "--source-jsonl-path",
             default=None,
             type=input_file_arg(),
-            help="path to Kaikki Chinese Wiktionary JSONL dump",
+            help=(
+                "path to Kaikki Chinese Wiktionary JSONL dump (default: bundled "
+                "local data; use --force-download to fetch a fresh dump)"
+            ),
         )
 
         # Operation arguments
@@ -97,7 +106,10 @@ class DictionaryBuildWiktionaryCli(DictionaryBuildCliBase):
         arg_groups["operation arguments"].add_argument(
             "--update-local-data",
             action="store_true",
-            help="update source file under scinoephile/data/dictionaries/wiktionary",
+            help=(
+                "maintainer option: update source file under "
+                "scinoephile/data/dictionaries/wiktionary"
+            ),
         )
         cls.add_common_output_arguments(parser)
 

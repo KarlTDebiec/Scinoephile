@@ -22,3 +22,6 @@ class OpenAIProvider(OpenAIProviderBase):
 
     model = "gpt-5.4"
     """OpenAI model identifier."""
+
+    api_key_env_var_name = "OPENAI_API_KEY"
+    """Environment variable name used for the OpenAI API key."""

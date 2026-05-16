@@ -117,3 +117,18 @@ def test_get_arg_groups_by_name_orders_additional_help_after_optional():
     additional_help_idx = group_titles.index("additional help")
 
     assert optional_idx < additional_help_idx
+
+
+def test_get_arg_groups_by_name_removes_empty_positional_group():
+    """Test empty positional groups do not appear in help output."""
+    parser = ArgumentParser()
+
+    get_arg_groups_by_name(
+        parser,
+        "input arguments",
+        "operation arguments",
+        optional_arguments_name="additional arguments",
+    )
+
+    group_titles = [ag.title for ag in parser._action_groups]
+    assert "positional arguments" not in group_titles

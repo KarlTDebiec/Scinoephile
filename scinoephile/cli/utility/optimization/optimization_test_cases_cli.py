@@ -26,9 +26,8 @@ __all__ = ["OptimizationSyncTestCasesCli"]
 OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "SQLite database outfile path": "SQLite 数据库输出路径",
-        "operation to which test case JSON file(s) correspond": (
-            "测试用例 JSON 文件对应的操作"
-        ),
+        "LLM operation name from the optimization registry for these test case JSON "
+        "file(s)": ("这些测试用例 JSON 文件对应的优化注册表 LLM 操作名称"),
         "list rows that would be inserted, updated, or deleted without writing": (
             "列出将插入、更新或删除的行而不写入"
         ),
@@ -39,9 +38,8 @@ OPTIMIZATION_SYNC_TEST_CASES_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
     "zh-hant": {
         "SQLite database outfile path": "SQLite 資料庫輸出路徑",
-        "operation to which test case JSON file(s) correspond": (
-            "測試用例 JSON 檔對應的操作"
-        ),
+        "LLM operation name from the optimization registry for these test case JSON "
+        "file(s)": ("這些測試用例 JSON 檔對應的最佳化登錄檔 LLM 操作名稱"),
         "list rows that would be inserted, updated, or deleted without writing": (
             "列出將插入、更新或刪除的列而不寫入"
         ),
@@ -91,7 +89,10 @@ class OptimizationSyncTestCasesCli(ScinoephileCliBase):
             "--operation",
             required=True,
             type=operation_arg,
-            help="operation to which test case JSON file(s) correspond",
+            help=(
+                "LLM operation name from the optimization registry for these test "
+                "case JSON file(s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--dry-run",

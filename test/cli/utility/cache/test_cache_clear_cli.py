@@ -29,6 +29,28 @@ def test_cache_clear_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[str])
     assert "llm/one.json" in capsys.readouterr().out
 
 
+def test_cache_clear_all_dry_run_limits_output(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+):
+    """Test all-namespace dry-run output is bounded.
+
+    Arguments:
+        tmp_path: temporary directory
+        capsys: pytest capture fixture
+    """
+    _write_cache_file(tmp_path / "llm/one.json")
+    _write_cache_file(tmp_path / "llm/two.json")
+    _write_cache_file(tmp_path / "whisper/three.json")
+
+    run_cli_with_args(
+        CacheClearCli, f"--cache-dir {tmp_path} --all --dry-run --limit 2"
+    )
+
+    output = capsys.readouterr().out
+    assert output.count("\n") == 3
+    assert "Showing 2 of 3 entries." in output
+
+
 def test_cache_clear_namespace_confirmed(tmp_path: Path):
     """Test confirmed namespace clearing.
 

@@ -149,6 +149,7 @@ class OcrFuseCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--language",
             required=True,
+            metavar="{eng,zho}",
             type=str_arg(options=("eng", "zho")),
             help="language of the OCR text to fuse (eng or zho)",
         )

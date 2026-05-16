@@ -24,26 +24,34 @@ __all__ = ["DictionarySearchCli"]
 
 DICTIONARY_SEARCH_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "dictionary to search, or all available dictionaries": (
-            "要查询的词典，或选择全部可用词典"
+        "dictionary to search, or all available dictionary caches": (
+            "要查询的词典，或选择全部可用词典缓存"
         ),
-        "Mandarin or Cantonese query text": "普通话或粤语查询文本",
+        "Mandarin or Cantonese Hanzi, pinyin, or Jyutping query text": (
+            "普通话或粤语汉字、拼音或粤拼查询文本"
+        ),
         "maximum number of matches to show per dictionary": (
             "每个词典显示的最大匹配数"
         ),
         "search dictionaries": "查询词典",
-        "SQLite database input path": "SQLite 数据库输入路径",
+        "SQLite database input path for one dictionary; omit to use runtime cache": (
+            "单个词典的 SQLite 数据库输入路径；省略时使用运行时缓存"
+        ),
     },
     "zh-hant": {
-        "dictionary to search, or all available dictionaries": (
-            "要查詢的詞典，或選擇全部可用詞典"
+        "dictionary to search, or all available dictionary caches": (
+            "要查詢的詞典，或選擇全部可用詞典快取"
         ),
-        "Mandarin or Cantonese query text": "普通話或粵語查詢文字",
+        "Mandarin or Cantonese Hanzi, pinyin, or Jyutping query text": (
+            "普通話或粵語漢字、拼音或粵拼查詢文字"
+        ),
         "maximum number of matches to show per dictionary": (
             "每個詞典顯示的最大符合數"
         ),
         "search dictionaries": "查詢詞典",
-        "SQLite database input path": "SQLite 資料庫輸入路徑",
+        "SQLite database input path for one dictionary; omit to use runtime cache": (
+            "單個詞典的 SQLite 資料庫輸入路徑；省略時使用執行時快取"
+        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -78,20 +86,23 @@ class DictionarySearchCli(ScinoephileCliBase):
             "--database-path",
             default=None,
             type=input_file_arg(),
-            help="SQLite database input path",
+            help=(
+                "SQLite database input path for one dictionary; omit to use runtime "
+                "cache"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--dictionary-name",
             default="all",
             choices=["all", *AVAILABLE_DICTIONARY_NAMES],
-            help="dictionary to search, or all available dictionaries",
+            help="dictionary to search, or all available dictionary caches",
         )
 
         # Operation arguments
         arg_groups["operation arguments"].add_argument(
             "query",
             type=str,
-            help="Mandarin or Cantonese query text",
+            help="Mandarin or Cantonese Hanzi, pinyin, or Jyutping query text",
         )
         arg_groups["operation arguments"].add_argument(
             "--limit",
@@ -111,30 +122,52 @@ class DictionarySearchCli(ScinoephileCliBase):
         return "search"
 
     @classmethod
-    def _log_search_results(
+    def _format_search_results(
+        cls,
+        query: str,
+        entries: list[DictionaryEntry],
+        dictionary_name: str,
+    ) -> list[str]:
+        """Format search results.
+
+        Arguments:
+            query: lookup query
+            entries: lookup results
+            dictionary_name: requested dictionary selector
+        Returns:
+            formatted result lines
+        """
+        if not entries:
+            return [f"No matches found in {dictionary_name} for {query!r}."]
+
+        lines = [f"Found {len(entries)} match(es) in {dictionary_name} for {query!r}:"]
+        for index, entry in enumerate(entries, start=1):
+            lines.append(
+                f"{index}. {entry.traditional} | {entry.simplified} | "
+                f"Jyutping: {entry.jyutping} | Pinyin: {entry.pinyin}"
+            )
+            for definition in entry.definitions:
+                label_prefix = f"[{definition.label}] " if definition.label else ""
+                lines.append(f"   - {label_prefix}{definition.text}")
+        return lines
+
+    @classmethod
+    def _write_search_results(
         cls,
         query: str,
         entries: list[DictionaryEntry],
         dictionary_name: str,
     ):
-        """Log formatted search results.
+        """Write formatted search results to stdout and logs.
 
         Arguments:
             query: lookup query
             entries: lookup results
             dictionary_name: requested dictionary selector
         """
-        logger.info(
-            f"Found {len(entries)} match(es) in {dictionary_name} for {query!r}"
-        )
-        for index, entry in enumerate(entries, start=1):
-            logger.info(
-                f"{index}. {entry.traditional} | {entry.simplified} | "
-                f"Jyutping: {entry.jyutping} | Pinyin: {entry.pinyin}"
-            )
-            for definition in entry.definitions:
-                label_prefix = f"[{definition.label}] " if definition.label else ""
-                logger.info(f"   - {label_prefix}{definition.text}")
+        for line in cls._format_search_results(query, entries, dictionary_name):
+            print(line)
+            logger.info(line)
 
     @classmethod
     def _main(
@@ -166,7 +199,7 @@ class DictionarySearchCli(ScinoephileCliBase):
         except FileNotFoundError as exc:
             logger.error(str(exc))
             raise SystemExit(1) from exc
-        cls._log_search_results(query, entries, dictionary_name)
+        cls._write_search_results(query, entries, dictionary_name)
 
     @classmethod
     def _search_dictionaries(

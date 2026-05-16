@@ -243,10 +243,10 @@ def test_scinoephile_help_localized(
         (
             "en",
             "utility optimization",
-            "Prompt optimization utilities and persistence",
+            "Maintainer tools for prompt optimization data and persistence",
         ),
-        ("zh-hans", "utility optimization", "提示词优化工具与持久化"),
-        ("zh-hant", "utility optimization", "提示詞最佳化工具與持久化"),
+        ("zh-hans", "utility optimization", "用于提示词优化数据与持久化的维护者工具"),
+        ("zh-hant", "utility optimization", "用於提示詞最佳化資料與持久化的維護者工具"),
         ("en", "ocr fuse", "Fuse OCR output for a selected language"),
         ("zh-hans", "ocr fuse", "融合所选语言的 OCR 输出"),
         ("zh-hant", "ocr fuse", "融合所選語言的 OCR 輸出"),
