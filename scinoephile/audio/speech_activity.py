@@ -8,6 +8,8 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Protocol
 
+from scinoephile.core.subtitles import Series, Subtitle
+
 from .transcription import TranscribedSegment, WhisperTranscriber
 
 if TYPE_CHECKING:
@@ -20,6 +22,7 @@ __all__ = [
     "get_speech_intervals_cleaned",
     "get_speech_intervals_from_segments",
     "get_speech_overlap_duration",
+    "get_speech_series_from_intervals",
 ]
 
 
@@ -221,6 +224,22 @@ def get_speech_intervals_from_segments(
             continue
         intervals.append(SpeechInterval(start_ms=start_ms, end_ms=end_ms))
     return intervals
+
+
+def get_speech_series_from_intervals(intervals: Sequence[SpeechInterval]) -> Series:
+    """Get an empty-text subtitle series from speech intervals.
+
+    Arguments:
+        intervals: speech intervals to represent as subtitle events
+    Returns:
+        subtitle series with one empty-text event per speech interval
+    """
+    return Series(
+        events=[
+            Subtitle(start=interval.start_ms, end=interval.end_ms, text="")
+            for interval in intervals
+        ]
+    )
 
 
 def get_speech_overlap_duration(

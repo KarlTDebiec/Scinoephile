@@ -13,8 +13,10 @@ from scinoephile.audio.speech_activity import (
     SpeechInterval,
     get_speech_intervals_cleaned,
     get_speech_overlap_duration,
+    get_speech_series_from_intervals,
 )
 from scinoephile.core.subtitles import Series
+from scinoephile.core.synchronization import SyncGroup, get_sync_groups
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
@@ -198,19 +200,13 @@ def get_series_timing_adjustment(
             block_spec=block_spec,
             config=config,
         )
-        cue_diagnostics: list[SubtitleTimingAdjustmentCueDiagnostics] = []
-        for cue_idx in range(block_spec.start_idx, block_spec.end_idx):
-            cue_diagnostic = _adjust_event_timing(
-                original_event=series.events[cue_idx],
-                adjusted_event=adjusted_series.events[cue_idx],
-                cue_idx=cue_idx,
-                series=series,
-                adjusted_series=adjusted_series,
-                speech_intervals=speech_intervals,
-                block_spec=block_spec,
-                config=config,
-            )
-            cue_diagnostics.append(cue_diagnostic)
+        cue_diagnostics = _adjust_block_timing(
+            series=series,
+            adjusted_series=adjusted_series,
+            block_spec=block_spec,
+            speech_intervals=speech_intervals,
+            config=config,
+        )
 
         block_diagnostics.append(
             SubtitleTimingAdjustmentBlockDiagnostics(
@@ -228,6 +224,47 @@ def get_series_timing_adjustment(
     )
 
 
+def _adjust_block_timing(
+    *,
+    series: AudioSeries,
+    adjusted_series: AudioSeries,
+    block_spec: _SubtitleTimingAdjustmentBlockSpec,
+    speech_intervals: Sequence[SpeechInterval],
+    config: SubtitleTimingAdjustmentConfig,
+) -> list[SubtitleTimingAdjustmentCueDiagnostics]:
+    """Adjust a block using subtitle-to-speech sync groups.
+
+    Arguments:
+        series: original full series
+        adjusted_series: output full series
+        block_spec: block specification
+        speech_intervals: speech intervals in full-series time
+        config: adjustment configuration
+    Returns:
+        cue-level timing diagnostics for the block
+    """
+    block_series = series.slice(block_spec.start_idx, block_spec.end_idx)
+    speech_series = get_speech_series_from_intervals(speech_intervals)
+    sync_groups = get_sync_groups(block_series, speech_series)
+    cue_diagnostics_by_idx: dict[int, SubtitleTimingAdjustmentCueDiagnostics] = {}
+    for sync_group in sync_groups:
+        cue_diagnostics = _adjust_sync_group_timing(
+            sync_group=sync_group,
+            series=series,
+            adjusted_series=adjusted_series,
+            block_spec=block_spec,
+            speech_intervals=speech_intervals,
+            config=config,
+        )
+        for cue_diagnostic in cue_diagnostics:
+            cue_diagnostics_by_idx[cue_diagnostic.cue_idx] = cue_diagnostic
+
+    return [
+        cue_diagnostics_by_idx[cue_idx]
+        for cue_idx in range(block_spec.start_idx, block_spec.end_idx)
+    ]
+
+
 def _adjust_event_timing(
     *,
     original_event: AudioSubtitle,
@@ -236,8 +273,9 @@ def _adjust_event_timing(
     series: AudioSeries,
     adjusted_series: AudioSeries,
     speech_intervals: Sequence[SpeechInterval],
-    block_spec: _SubtitleTimingAdjustmentBlockSpec,
     config: SubtitleTimingAdjustmentConfig,
+    adjust_start: bool,
+    adjust_end: bool,
 ) -> SubtitleTimingAdjustmentCueDiagnostics:
     """Adjust one event and return diagnostics.
 
@@ -248,34 +286,23 @@ def _adjust_event_timing(
         series: original full series
         adjusted_series: output full series
         speech_intervals: speech intervals in full-series time
-        block_spec: block specification
         config: adjustment configuration
+        adjust_start: whether to adjust the cue start to speech
+        adjust_end: whether to adjust the cue end to speech
     Returns:
         cue-level timing diagnostics
     """
-    relevant_start_ms = max(
-        block_spec.buffered_start_ms,
-        original_event.start - config.max_start_expansion_ms,
-    )
-    relevant_end_ms = min(
-        block_spec.buffered_end_ms,
-        original_event.end + config.max_end_expansion_ms,
-    )
-    relevant_intervals = _get_overlapping_intervals(
-        speech_intervals,
-        start_ms=relevant_start_ms,
-        end_ms=relevant_end_ms,
-    )
-
     desired_start_ms = original_event.start
     desired_end_ms = original_event.end
-    if relevant_intervals:
-        speech_start_ms = min(interval.start_ms for interval in relevant_intervals)
-        speech_end_ms = max(interval.end_ms for interval in relevant_intervals)
+    if speech_intervals:
+        speech_start_ms = min(interval.start_ms for interval in speech_intervals)
+        speech_end_ms = max(interval.end_ms for interval in speech_intervals)
+    if speech_intervals and adjust_end:
         desired_end_ms = max(
             original_event.end,
             min(speech_end_ms, original_event.end + config.max_end_expansion_ms),
         )
+    if speech_intervals and adjust_start:
         desired_start_ms = min(
             original_event.start,
             max(speech_start_ms, original_event.start - config.max_start_expansion_ms),
@@ -298,16 +325,16 @@ def _adjust_event_timing(
     adjusted_event.start = adjusted_start_ms
     adjusted_event.end = adjusted_end_ms
 
-    speech_duration_ms = sum(interval.duration_ms for interval in relevant_intervals)
+    speech_duration_ms = sum(interval.duration_ms for interval in speech_intervals)
     speech_coverage_before_ms = get_speech_overlap_duration(
         original_event.start,
         original_event.end,
-        relevant_intervals,
+        speech_intervals,
     )
     speech_coverage_after_ms = get_speech_overlap_duration(
         adjusted_start_ms,
         adjusted_end_ms,
-        relevant_intervals,
+        speech_intervals,
     )
     return SubtitleTimingAdjustmentCueDiagnostics(
         cue_idx=cue_idx,
@@ -336,6 +363,55 @@ def _adjust_event_timing(
             and adjusted_end_ms == original_event.end
         ),
     )
+
+
+def _adjust_sync_group_timing(
+    *,
+    sync_group: SyncGroup,
+    series: AudioSeries,
+    adjusted_series: AudioSeries,
+    block_spec: _SubtitleTimingAdjustmentBlockSpec,
+    speech_intervals: Sequence[SpeechInterval],
+    config: SubtitleTimingAdjustmentConfig,
+) -> list[SubtitleTimingAdjustmentCueDiagnostics]:
+    """Adjust one subtitle-to-speech sync group.
+
+    Arguments:
+        sync_group: indexes of subtitles and speech intervals in the block
+        series: original full series
+        adjusted_series: output full series
+        block_spec: block specification
+        speech_intervals: speech intervals in full-series time
+        config: adjustment configuration
+    Returns:
+        cue-level timing diagnostics for the sync group
+    """
+    block_cue_idxs, speech_idxs = sync_group
+    if not block_cue_idxs:
+        return []
+
+    cue_idxs = [
+        block_spec.start_idx + block_cue_idx for block_cue_idx in block_cue_idxs
+    ]
+    group_speech_intervals = [
+        speech_intervals[speech_idx] for speech_idx in speech_idxs
+    ]
+    first_cue_idx = cue_idxs[0]
+    last_cue_idx = cue_idxs[-1]
+    return [
+        _adjust_event_timing(
+            original_event=series.events[cue_idx],
+            adjusted_event=adjusted_series.events[cue_idx],
+            cue_idx=cue_idx,
+            series=series,
+            adjusted_series=adjusted_series,
+            speech_intervals=group_speech_intervals,
+            config=config,
+            adjust_start=cue_idx == first_cue_idx,
+            adjust_end=cue_idx == last_cue_idx,
+        )
+        for cue_idx in cue_idxs
+    ]
 
 
 def _get_block_specs(
@@ -444,28 +520,6 @@ def _get_next_event_boundary(cue_idx: int, series: AudioSeries) -> int:
     if cue_idx + 1 < len(series.events):
         return series.events[cue_idx + 1].start
     return len(series.audio)
-
-
-def _get_overlapping_intervals(
-    intervals: Sequence[SpeechInterval],
-    *,
-    start_ms: int,
-    end_ms: int,
-) -> list[SpeechInterval]:
-    """Get intervals overlapping a window.
-
-    Arguments:
-        intervals: speech intervals
-        start_ms: inclusive window start in milliseconds
-        end_ms: exclusive window end in milliseconds
-    Returns:
-        intervals overlapping the window
-    """
-    return [
-        interval
-        for interval in intervals
-        if interval.end_ms > start_ms and interval.start_ms < end_ms
-    ]
 
 
 def _get_previous_event_boundary(cue_idx: int, series: AudioSeries) -> int:

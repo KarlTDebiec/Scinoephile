@@ -11,6 +11,7 @@ from scinoephile.audio.speech_activity import (
     WhisperSpeechActivityDetector,
     get_speech_intervals_cleaned,
     get_speech_intervals_from_segments,
+    get_speech_series_from_intervals,
 )
 from scinoephile.audio.transcription import TranscribedSegment
 
@@ -82,6 +83,21 @@ def test_get_speech_intervals_from_segments_applies_offset():
     assert intervals == [
         SpeechInterval(start_ms=1125, end_ms=1500),
         SpeechInterval(start_ms=1550, end_ms=1900),
+    ]
+
+
+def test_get_speech_series_from_intervals_uses_empty_text_events():
+    """Test speech intervals can be represented as an empty subtitle series."""
+    intervals = [
+        SpeechInterval(start_ms=1000, end_ms=1500),
+        SpeechInterval(start_ms=2000, end_ms=2600),
+    ]
+
+    series = get_speech_series_from_intervals(intervals)
+
+    assert [(event.start, event.end, event.text) for event in series.events] == [
+        (1000, 1500, ""),
+        (2000, 2600, ""),
     ]
 
 

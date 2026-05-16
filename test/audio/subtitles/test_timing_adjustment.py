@@ -77,7 +77,7 @@ def test_get_series_timing_adjustment_prevents_overlaps_and_reports_blocking():
             AudioSubtitle(start=1800, end=2300, text="two"),
         ],
     )
-    detector = StaticSpeechDetector([[SpeechInterval(start_ms=1000, end_ms=2200)]])
+    detector = StaticSpeechDetector([[SpeechInterval(start_ms=1000, end_ms=1900)]])
 
     result = get_series_timing_adjustment(
         series,
@@ -92,8 +92,8 @@ def test_get_series_timing_adjustment_prevents_overlaps_and_reports_blocking():
         (1000, 1800),
         (1800, 2300),
     ]
-    assert result.cues[0].blocked_end_expansion_ms == 400
-    assert result.cues[1].blocked_start_expansion_ms == 500
+    assert result.cues[0].blocked_end_expansion_ms == 100
+    assert result.cues[1].unchanged is True
 
 
 def test_get_series_timing_adjustment_applies_block_relative_offsets():
@@ -115,6 +115,36 @@ def test_get_series_timing_adjustment_applies_block_relative_offsets():
     )
 
     assert [(event.start, event.end) for event in adjusted.events] == [(4900, 5900)]
+
+
+def test_get_series_timing_adjustment_preserves_middle_of_complex_sync_group():
+    """Test complex sync groups adjust outer edges without moving middle timings."""
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[
+            AudioSubtitle(start=1000, end=1400, text="one"),
+            AudioSubtitle(start=1700, end=2100, text="two"),
+        ],
+    )
+    detector = StaticSpeechDetector([[SpeechInterval(start_ms=700, end_ms=2600)]])
+
+    result = get_series_timing_adjustment(
+        series,
+        speech_detector=detector,
+        config=SubtitleTimingAdjustmentConfig(
+            max_start_expansion_ms=500,
+            max_end_expansion_ms=800,
+        ),
+    )
+
+    assert [(event.start, event.end) for event in result.series.events] == [
+        (700, 1400),
+        (1700, 2600),
+    ]
+    assert result.cues[0].start_delta_ms == -300
+    assert result.cues[0].end_delta_ms == 0
+    assert result.cues[1].start_delta_ms == 0
+    assert result.cues[1].end_delta_ms == 500
 
 
 def test_get_series_timing_adjustment_leaves_empty_speech_blocks_unchanged():
