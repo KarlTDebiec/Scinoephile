@@ -42,7 +42,7 @@ def test_media_extract_subs_cli_passes_arguments_to_workflow(tmp_path: Path):
         run_cli_with_args(
             MediaExtractSubsCli,
             f"--infile {infile_path} --languages eng zho -o {output_dir_path} "
-            f"--details --extract-sup --overwrite --cache-dir {cache_dir_path}",
+            f"--details --export-images --overwrite --cache-dir {cache_dir_path}",
         )
 
     extract.assert_called_once_with(
