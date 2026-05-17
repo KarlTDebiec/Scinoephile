@@ -10,6 +10,7 @@ from typing import Any
 from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
+from .yue_benchmark_transcription_cli import YueBenchmarkTranscriptionCli
 from .yue_process_cli import YueProcessCli
 from .yue_review_vs_zho_cli import YueReviewVsZhoCli
 from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -67,6 +68,7 @@ class YueCli(ScinoephileCliBase):
             mapping of subcommand names to CLI classes
         """
         return {
+            YueBenchmarkTranscriptionCli.name(): YueBenchmarkTranscriptionCli,
             YueProcessCli.name(): YueProcessCli,
             YueReviewVsZhoCli.name(): YueReviewVsZhoCli,
             YueTranscribeVsZhoCli.name(): YueTranscribeVsZhoCli,

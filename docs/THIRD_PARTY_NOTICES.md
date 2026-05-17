@@ -130,6 +130,108 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## WhisperX (forced-alignment reference interface and result handling)
+
+Scinoephile's MiMo forced-alignment adapter and optional alignment worker use
+WhisperX's alignment API and alignment-result schema as the reference interface.
+The Scinoephile conversion and validation code is in-house, but it intentionally
+accepts WhisperX-style segment and word payloads.
+
+- Project: https://github.com/m-bain/whisperX
+- License: BSD 2-Clause
+- Copyright: Copyright (c) 2024, Max Bain
+
+The `WhisperX` license permits use, modification, and distribution, provided the
+copyright notice, license conditions, and disclaimer are retained or reproduced
+as required by the license.
+
+For the complete license text used by `WhisperX`, see:
+
+- https://github.com/m-bain/whisperX/blob/main/LICENSE
+
+BSD 2-Clause license text (from `WhisperX`):
+
+```text
+BSD 2-Clause License
+
+Copyright (c) 2024, Max Bain
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+## TorchAudio forced-alignment tutorial (adapted CTC trellis logic)
+
+Scinoephile's in-house CTC aligner is informed by and partially adapted from the
+TorchAudio forced-alignment tutorial's trellis construction, backtracking, and
+repeat-merge flow. Scinoephile rewrites that logic around NumPy arrays, Hugging
+Face CTC models, Cantonese character tokenization, punctuation fallback, and the
+project's `TranscribedSegment` / `TranscribedWord` data model.
+
+- Project: https://github.com/pytorch/audio
+- Tutorial source:
+  https://github.com/pytorch/audio/blob/main/examples/tutorials/forced_alignment_tutorial.py
+- License: BSD 2-Clause
+- Copyright: Copyright (c) 2017 Facebook Inc. (Soumith Chintala), All rights
+  reserved.
+- Tutorial author: Moto Hira
+
+The `TorchAudio` license permits use, modification, and distribution, provided
+the copyright notice, license conditions, and disclaimer are retained or
+reproduced as required by the license.
+
+For the complete license text used by `TorchAudio`, see:
+
+- https://github.com/pytorch/audio/blob/main/LICENSE
+
+BSD 2-Clause license text (from `TorchAudio`):
+
+```text
+BSD 2-Clause License
+
+Copyright (c) 2017 Facebook Inc. (Soumith Chintala),
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
 ## CUHK dictionary data source
 
 The CUHK data source used by the scraper is:

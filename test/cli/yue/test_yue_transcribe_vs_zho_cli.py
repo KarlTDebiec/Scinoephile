@@ -17,7 +17,12 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
+from scinoephile.multilang.yue_zho.transcription import (
+    DemucsMode,
+    MimoRuntime,
+    TranscriptionBackend,
+    VADMode,
+)
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueDeliniationVsZhoPromptYueHans,
     YueDeliniationVsZhoPromptYueHant,
@@ -32,7 +37,7 @@ from test.helpers import (
 )
 
 
-def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():
+def test_yue_transcribe_vs_zho_help_lists_transcription_options():
     """Test written Cantonese CLI help lists prompt and conversion options."""
     stdout = StringIO()
     stderr = StringIO()
@@ -56,9 +61,15 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     assert "Demucs vocal-separation mode" in help_text
     assert "options: on, off;" in help_text
     assert "default: off" in help_text
+    assert "--asr-backend {whisper,mimo}" in help_text
+    assert "ASR backend" in help_text
+    assert "--mimo-runtime {auto,mlx}" in help_text
     assert "--vad {auto,on,off}" in help_text
     assert "Whisper voice activity detection mode" in help_text
     assert "off, auto; default: auto" in help_text
+    assert "--mimo-aligner {whisperx,ctc}" in help_text
+    assert "--mimo-aligner-worker-command" in help_text
+    assert "--mimo-no-fallback" in help_text
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
@@ -104,6 +115,7 @@ def test_yue_transcribe_vs_zho_cli_writes_file():
         is YuePunctuationVsZhoPromptYueHans
     )
     assert patched_factory.call_args.kwargs["convert"] is None
+    assert patched_factory.call_args.kwargs["backend"] == TranscriptionBackend.WHISPER
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.OFF
     assert patched_factory.call_args.kwargs["vad_mode"] == VADMode.AUTO
     called_kwargs = patched_transcribe.call_args.kwargs
@@ -219,6 +231,77 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
                 )
 
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_mimo_options():
+    """Test written Cantonese CLI passes through explicit MiMo options."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
+                    "--asr-backend mimo "
+                    "--mimo-runtime mlx "
+                    "--mimo-language auto "
+                    "--mimo-max-tokens 1024 "
+                    "--mimo-chunk-duration 20 "
+                    "--mimo-chunk-overlap 1.5 "
+                    "--mimo-model-name /models/MiMo-V2.5-ASR-MLX "
+                    "--mimo-tokenizer-name /models/MiMo-Audio-Tokenizer "
+                    '--mimo-worker-command "python -m worker" '
+                    "--mimo-aligner ctc "
+                    "--mimo-aligner-language zh "
+                    "--mimo-aligner-model custom/aligner "
+                    '--mimo-aligner-worker-command "python aligner_worker.py" '
+                    "--mimo-no-fallback",
+                )
+
+    assert patched_factory.call_args.kwargs["backend"] == TranscriptionBackend.MIMO
+    assert patched_factory.call_args.kwargs["mimo_runtime"] == MimoRuntime.MLX
+    assert patched_factory.call_args.kwargs["mimo_language"] == "auto"
+    assert patched_factory.call_args.kwargs["mimo_max_tokens"] == 1024
+    assert patched_factory.call_args.kwargs["mimo_chunk_duration_seconds"] == 20.0
+    assert patched_factory.call_args.kwargs["mimo_chunk_overlap_seconds"] == 1.5
+    assert patched_factory.call_args.kwargs["mimo_model_name"] == (
+        "/models/MiMo-V2.5-ASR-MLX"
+    )
+    assert patched_factory.call_args.kwargs["mimo_tokenizer_name"] == (
+        "/models/MiMo-Audio-Tokenizer"
+    )
+    assert patched_factory.call_args.kwargs["mimo_worker_command"] == [
+        "python",
+        "-m",
+        "worker",
+    ]
+    assert patched_factory.call_args.kwargs["mimo_aligner_backend"] == "ctc"
+    assert patched_factory.call_args.kwargs["mimo_aligner_language"] == "zh"
+    assert patched_factory.call_args.kwargs["mimo_aligner_model_name"] == (
+        "custom/aligner"
+    )
+    assert patched_factory.call_args.kwargs["mimo_aligner_worker_command"] == [
+        "python",
+        "aligner_worker.py",
+    ]
+    assert patched_factory.call_args.kwargs["mimo_fallback"] is False
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_convert():

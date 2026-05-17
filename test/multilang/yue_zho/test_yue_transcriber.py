@@ -10,9 +10,12 @@ from unittest.mock import Mock, patch
 import pytest
 
 from scinoephile.audio.transcription import TranscribedSegment, TranscribedWord
+from scinoephile.audio.transcription.mimo_transcriber import MimoTranscriptionError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.multilang.yue_zho.transcription.transcriber import (
     DemucsMode,
+    MimoRuntime,
+    TranscriptionBackend,
     VADMode,
     YueTranscriber,
 )
@@ -229,6 +232,66 @@ def test_transcribe_block_audio_auto_retries_when_vad_result_has_text_without_wo
     )
 
 
+def test_transcribe_block_audio_whisper_uses_mimo_fallback_when_unusable():
+    """Test Whisper primary mode can fall back to MiMo for unusable output."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.backend = TranscriptionBackend.WHISPER
+    transcriber.vad_mode = VADMode.OFF
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.demucs_separator = None
+    transcriber.mimo_fallback = True
+    transcriber.no_vad_transcriber = Mock(
+        return_value=[
+            TranscribedSegment(
+                id=0,
+                seek=0,
+                start=0.0,
+                end=1.0,
+                text="你好",
+                words=None,
+            )
+        ]
+    )
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.vad_transcriber = None
+    transcriber.mimo_transcriber = Mock(return_value=[_get_transcribed_segment("mimo")])
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.mimo_transcriber.return_value
+    transcriber.no_vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+    transcriber.mimo_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+
+
+def test_transcribe_block_audio_whisper_skips_mimo_fallback_when_usable():
+    """Test Whisper primary mode does not call MiMo when Whisper works."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.backend = TranscriptionBackend.WHISPER
+    transcriber.vad_mode = VADMode.OFF
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.demucs_separator = None
+    transcriber.mimo_fallback = True
+    transcriber.no_vad_transcriber = Mock(return_value=[_get_transcribed_segment("ok")])
+    transcriber.no_vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.vad_transcriber = None
+    transcriber.mimo_transcriber = Mock()
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.no_vad_transcriber.return_value
+    transcriber.mimo_transcriber.assert_not_called()
+
+
 @pytest.mark.parametrize(
     "error_message",
     [
@@ -279,6 +342,113 @@ def test_get_whisper_transcriber_sets_use_demucs():
     whisper_transcriber = transcriber._get_whisper_transcriber(use_vad=True)
 
     assert whisper_transcriber.use_demucs is True
+
+
+def test_get_mimo_transcriber_forwards_runtime():
+    """Test YueTranscriber forwards the selected MiMo runtime."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.mimo_model_name = "custom/model"
+    transcriber.mimo_tokenizer_name = "custom/tokenizer"
+    transcriber.mimo_runtime = MimoRuntime.MLX
+    transcriber.mimo_language = "auto"
+    transcriber.mimo_max_tokens = 1024
+    transcriber.mimo_chunk_duration_seconds = 20.0
+    transcriber.mimo_chunk_overlap_seconds = 1.5
+    transcriber.mimo_worker_command = None
+    transcriber.mimo_aligner_backend = "whisperx"
+    transcriber.mimo_aligner_language = "zh"
+    transcriber.mimo_aligner_model_name = None
+    transcriber.mimo_aligner_worker_command = ("python", "aligner_worker.py")
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.vad_mode = VADMode.AUTO
+
+    mimo_transcriber = transcriber._get_mimo_transcriber()
+
+    assert mimo_transcriber.mimo_runtime == MimoRuntime.MLX
+    assert mimo_transcriber.language == "auto"
+    assert mimo_transcriber.max_tokens == 1024
+    assert mimo_transcriber.chunk_duration_seconds == 20.0
+    assert mimo_transcriber.chunk_overlap_seconds == 1.5
+    assert mimo_transcriber.aligner_worker_command == (
+        "python",
+        "aligner_worker.py",
+    )
+
+
+def test_transcribe_block_audio_mimo_uses_mimo_cache_before_demucs():
+    """Test MiMo cache hit short-circuits before Demucs preprocessing."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.backend = TranscriptionBackend.MIMO
+    transcriber.demucs_mode = DemucsMode.ON
+    transcriber.demucs_separator = Mock()
+    transcriber.mimo_transcriber = Mock()
+    transcriber.mimo_transcriber.get_cached_transcription.return_value = [
+        _get_transcribed_segment("cached-mimo")
+    ]
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.mimo_transcriber.get_cached_transcription.return_value
+    transcriber.mimo_transcriber.get_cached_transcription.assert_called_once_with(
+        input_audio
+    )
+    transcriber.demucs_separator.assert_not_called()
+    transcriber.mimo_transcriber.assert_not_called()
+
+
+def test_transcribe_block_audio_mimo_applies_demucs_then_transcribes():
+    """Test MiMo transcription receives separated audio and original cache audio."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.backend = TranscriptionBackend.MIMO
+    transcriber.demucs_mode = DemucsMode.ON
+    transcriber.demucs_separator = Mock()
+    transcriber.mimo_transcriber = Mock(return_value=[_get_transcribed_segment("你好")])
+    transcriber.mimo_transcriber.get_cached_transcription.return_value = None
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+    separated_audio = Mock()
+    transcriber.demucs_separator.return_value = separated_audio
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.mimo_transcriber.return_value
+    transcriber.demucs_separator.assert_called_once_with(input_audio)
+    transcriber.mimo_transcriber.assert_called_once_with(
+        separated_audio, cache_audio=input_audio
+    )
+
+
+def test_transcribe_block_audio_mimo_falls_back_to_whisper_when_enabled():
+    """Test MiMo backend can fall back to Whisper-style VAD behavior."""
+    transcriber = object.__new__(YueTranscriber)
+    transcriber.backend = TranscriptionBackend.MIMO
+    transcriber.demucs_mode = DemucsMode.OFF
+    transcriber.mimo_fallback = True
+    transcriber.mimo_transcriber = Mock(side_effect=MimoTranscriptionError("failed"))
+    transcriber.mimo_transcriber.get_cached_transcription.return_value = None
+    transcriber.vad_mode = VADMode.ON
+    transcriber.vad_transcriber = Mock(
+        return_value=[_get_transcribed_segment("fallback")]
+    )
+    transcriber.vad_transcriber.get_cached_transcription.return_value = None
+    transcriber.no_vad_transcriber = None
+
+    input_audio = Mock()
+    input_audio.raw_data = b"raw-audio"
+
+    output = transcriber._transcribe_block_audio(input_audio)
+
+    assert output == transcriber.vad_transcriber.return_value
+    transcriber.mimo_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
+    transcriber.vad_transcriber.assert_called_once_with(
+        input_audio, cache_audio=input_audio
+    )
 
 
 def test_process_block_leaves_text_unchanged_without_conversion():

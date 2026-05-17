@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import TypedDict, Unpack
 
 from scinoephile.audio.subtitles import AudioSeries
+from scinoephile.audio.transcription import MIMO_MODEL_NAME, MIMO_TOKENIZER_NAME
 from scinoephile.core.llms import LLMProvider, OperationSpec, TestCase
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series
@@ -29,7 +30,13 @@ from scinoephile.llms.providers.registry import get_provider
 
 from .deliniation import YueDeliniationVsZhoPromptYueHans
 from .punctuation import YuePunctuationVsZhoPromptYueHans, YueZhoPunctuationManager
-from .transcriber import DemucsMode, VADMode, YueTranscriber
+from .transcriber import (
+    DemucsMode,
+    MimoRuntime,
+    TranscriptionBackend,
+    VADMode,
+    YueTranscriber,
+)
 
 __all__ = [
     "YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC",
@@ -37,6 +44,8 @@ __all__ = [
     "get_yue_transcribed_vs_zho",
     "get_yue_vs_zho_transcriber",
     "DemucsMode",
+    "MimoRuntime",
+    "TranscriptionBackend",
     "VADMode",
     "YueTranscriber",
     "YueZhoTranscriberKwargs",
@@ -73,10 +82,38 @@ class YueZhoTranscriberKwargs(TypedDict, total=False):
 
     model_name: str
     """Whisper model name used for transcription."""
+    backend: TranscriptionBackend
+    """ASR backend used for initial transcription."""
     demucs_mode: DemucsMode
     """Demucs preprocessing mode for transcription."""
     vad_mode: VADMode
     """Whisper VAD mode for transcription."""
+    mimo_model_name: str
+    """MiMo model name used when backend is MiMo."""
+    mimo_tokenizer_name: str
+    """MiMo audio tokenizer name used when backend is MiMo."""
+    mimo_runtime: MimoRuntime
+    """Runtime implementation used for MiMo inference."""
+    mimo_language: str
+    """Language metadata passed to MiMo."""
+    mimo_max_tokens: int | None
+    """Optional maximum number of MiMo text tokens to generate."""
+    mimo_chunk_duration_seconds: float | None
+    """Optional chunk duration for MiMo inference."""
+    mimo_chunk_overlap_seconds: float
+    """Context overlap applied to each MiMo chunk."""
+    mimo_worker_command: list[str] | tuple[str, ...] | None
+    """Command that runs the MiMo worker."""
+    mimo_aligner_backend: str
+    """Timestamp alignment backend used when backend is MiMo."""
+    mimo_aligner_language: str
+    """Language code used by the MiMo timestamp aligner."""
+    mimo_aligner_model_name: str | None
+    """Optional timestamp aligner model name."""
+    mimo_aligner_worker_command: list[str] | tuple[str, ...] | None
+    """Command that runs the MiMo timestamp aligner worker."""
+    mimo_fallback: bool
+    """Whether Whisper and MiMo may fall back to each other."""
     provider: LLMProvider | None
     """provider to use for queries."""
     convert: OpenCCConfig | None
@@ -118,8 +155,22 @@ def get_yue_transcribed_vs_zho(
 
 def get_yue_vs_zho_transcriber(
     model_name: str = "khleeloo/whisper-large-v3-cantonese",
+    backend: TranscriptionBackend = TranscriptionBackend.WHISPER,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
+    mimo_model_name: str = MIMO_MODEL_NAME,
+    mimo_tokenizer_name: str = MIMO_TOKENIZER_NAME,
+    mimo_runtime: MimoRuntime = MimoRuntime.AUTO,
+    mimo_language: str = "yue",
+    mimo_max_tokens: int | None = None,
+    mimo_chunk_duration_seconds: float | None = None,
+    mimo_chunk_overlap_seconds: float = 1.0,
+    mimo_worker_command: list[str] | tuple[str, ...] | None = None,
+    mimo_aligner_backend: str = "whisperx",
+    mimo_aligner_language: str = "zh",
+    mimo_aligner_model_name: str | None = None,
+    mimo_aligner_worker_command: list[str] | tuple[str, ...] | None = None,
+    mimo_fallback: bool = True,
     provider: LLMProvider | None = None,
     convert: OpenCCConfig | None = None,
     additional_context: str | None = None,
@@ -137,8 +188,22 @@ def get_yue_vs_zho_transcriber(
 
     Arguments:
         model_name: Whisper model name used for transcription
+        backend: ASR backend used for initial transcription
         demucs_mode: Demucs preprocessing mode for transcription
         vad_mode: Whisper VAD mode for transcription
+        mimo_model_name: MiMo model name used when backend is MiMo
+        mimo_tokenizer_name: MiMo audio tokenizer name
+        mimo_runtime: runtime implementation used for MiMo inference
+        mimo_language: language metadata passed to MiMo
+        mimo_max_tokens: optional maximum number of MiMo text tokens to generate
+        mimo_chunk_duration_seconds: optional chunk duration for MiMo inference
+        mimo_chunk_overlap_seconds: context overlap applied to each MiMo chunk
+        mimo_worker_command: optional command that runs the MiMo worker
+        mimo_aligner_backend: timestamp alignment backend for MiMo
+        mimo_aligner_language: language code used by the MiMo timestamp aligner
+        mimo_aligner_model_name: optional timestamp aligner model name
+        mimo_aligner_worker_command: optional timestamp aligner worker command
+        mimo_fallback: whether Whisper and MiMo may fall back to each other
         provider: provider to use for queries
         convert: OpenCC configuration used for transcribed text conversion
         additional_context: additional context to include in LLM prompts
@@ -172,8 +237,22 @@ def get_yue_vs_zho_transcriber(
         )
     return YueTranscriber(
         model_name=model_name,
+        backend=backend,
         demucs_mode=demucs_mode,
         vad_mode=vad_mode,
+        mimo_model_name=mimo_model_name,
+        mimo_tokenizer_name=mimo_tokenizer_name,
+        mimo_runtime=mimo_runtime,
+        mimo_language=mimo_language,
+        mimo_max_tokens=mimo_max_tokens,
+        mimo_chunk_duration_seconds=mimo_chunk_duration_seconds,
+        mimo_chunk_overlap_seconds=mimo_chunk_overlap_seconds,
+        mimo_worker_command=mimo_worker_command,
+        mimo_aligner_backend=mimo_aligner_backend,
+        mimo_aligner_language=mimo_aligner_language,
+        mimo_aligner_model_name=mimo_aligner_model_name,
+        mimo_aligner_worker_command=mimo_aligner_worker_command,
+        mimo_fallback=mimo_fallback,
         provider=provider,
         convert=convert,
         additional_context=additional_context,
