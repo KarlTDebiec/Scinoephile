@@ -3,9 +3,10 @@
 """Code related to audio transcription.
 
 Package hierarchy (modules may import from any above):
-* demucs_separator / transcribed_word
-* transcribed_segment
-* whisper_transcriber
+* demucs_separator / forced_alignment_worker / mimo_runtime / transcribed_word
+* mimo_worker / transcribed_segment
+* base_transcriber / forced_alignment / whisper_transcriber
+* mimo_transcriber
 """
 
 from __future__ import annotations
@@ -18,16 +19,41 @@ from scinoephile.lang.zho.script.conversion import (
     get_zho_text_converted,
 )
 
+from .base_transcriber import BaseTranscriber
 from .demucs_separator import DemucsSeparator
+from .forced_alignment import TranscriptionAlignmentError, align_mimo_transcription
+from .mimo_transcriber import (
+    MIMO_MLX_MODEL_NAME,
+    MIMO_MODEL_NAME,
+    MIMO_TOKENIZER_NAME,
+    MimoRuntime,
+    MimoRuntimeUnsupportedError,
+    MimoTranscriber,
+    MimoTranscriptEmptyError,
+    MimoTranscriptionError,
+    MimoWorkerError,
+)
 from .transcribed_segment import TranscribedSegment
 from .transcribed_word import TranscribedWord
 from .whisper_transcriber import WhisperTranscriber
 
 __all__ = [
+    "MIMO_MODEL_NAME",
+    "MIMO_MLX_MODEL_NAME",
+    "MIMO_TOKENIZER_NAME",
+    "BaseTranscriber",
     "DemucsSeparator",
+    "MimoRuntime",
+    "MimoRuntimeUnsupportedError",
+    "MimoTranscriptEmptyError",
+    "MimoTranscriber",
+    "MimoTranscriptionError",
+    "MimoWorkerError",
     "TranscribedSegment",
     "TranscribedWord",
+    "TranscriptionAlignmentError",
     "WhisperTranscriber",
+    "align_mimo_transcription",
     "get_segment_merged",
     "get_segment_split_at_idx",
     "get_segment_split_on_whitespace",

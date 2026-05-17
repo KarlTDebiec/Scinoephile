@@ -19,6 +19,8 @@ from scinoephile.llms.default_test_cases import (
 )
 from scinoephile.multilang.yue_zho.transcription import (
     DemucsMode,
+    MimoRuntime,
+    TranscriptionBackend,
     VADMode,
     get_yue_vs_zho_transcriber,
 )
@@ -53,8 +55,22 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             deliniation_test_cases=deliniation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
             model_name="khleeloo/whisper-large-v3-cantonese",
+            backend=TranscriptionBackend.WHISPER,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
+            mimo_model_name="mlx-community/MiMo-V2.5-ASR-MLX",
+            mimo_tokenizer_name="XiaomiMiMo/MiMo-Audio-Tokenizer",
+            mimo_runtime=MimoRuntime.AUTO,
+            mimo_language="yue",
+            mimo_max_tokens=None,
+            mimo_chunk_duration_seconds=None,
+            mimo_chunk_overlap_seconds=1.0,
+            mimo_worker_command=None,
+            mimo_aligner_backend="whisperx",
+            mimo_aligner_language="zh",
+            mimo_aligner_model_name=None,
+            mimo_aligner_worker_command=None,
+            mimo_fallback=True,
             convert=None,
             additional_context=None,
             deliniation_prompt_cls=YueDeliniationVsZhoPromptYueHans,
@@ -81,7 +97,13 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
     ("kwarg_name", "kwarg_value"),
     [
         ("model_name", "custom/model"),
+        ("backend", TranscriptionBackend.MIMO),
         ("demucs_mode", DemucsMode.ON),
+        ("mimo_runtime", MimoRuntime.MLX),
+        ("mimo_language", "auto"),
+        ("mimo_max_tokens", 1024),
+        ("mimo_chunk_duration_seconds", 20.0),
+        ("mimo_chunk_overlap_seconds", 1.5),
         ("convert", OpenCCConfig.hk2s),
     ],
 )
@@ -109,12 +131,54 @@ def test_get_yue_vs_zho_transcriber_forwards_options(
                     test_case_directory_path=temp_dir_path,
                     model_name=cast(str, kwarg_value),
                 )
+            elif kwarg_name == "backend":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    backend=cast(TranscriptionBackend, kwarg_value),
+                )
             elif kwarg_name == "demucs_mode":
                 get_yue_vs_zho_transcriber(
                     deliniation_test_cases=deliniation_test_cases,
                     punctuation_test_cases=punctuation_test_cases,
                     test_case_directory_path=temp_dir_path,
                     demucs_mode=cast(DemucsMode, kwarg_value),
+                )
+            elif kwarg_name == "mimo_runtime":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    mimo_runtime=cast(MimoRuntime, kwarg_value),
+                )
+            elif kwarg_name == "mimo_language":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    mimo_language=cast(str, kwarg_value),
+                )
+            elif kwarg_name == "mimo_max_tokens":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    mimo_max_tokens=cast(int, kwarg_value),
+                )
+            elif kwarg_name == "mimo_chunk_duration_seconds":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    mimo_chunk_duration_seconds=cast(float, kwarg_value),
+                )
+            elif kwarg_name == "mimo_chunk_overlap_seconds":
+                get_yue_vs_zho_transcriber(
+                    deliniation_test_cases=deliniation_test_cases,
+                    punctuation_test_cases=punctuation_test_cases,
+                    test_case_directory_path=temp_dir_path,
+                    mimo_chunk_overlap_seconds=cast(float, kwarg_value),
                 )
             else:
                 get_yue_vs_zho_transcriber(

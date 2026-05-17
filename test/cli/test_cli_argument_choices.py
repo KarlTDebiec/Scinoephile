@@ -10,6 +10,9 @@ import pytest
 
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
+from scinoephile.cli.yue.yue_benchmark_transcription_cli import (
+    YueBenchmarkTranscriptionCli,
+)
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -26,7 +29,17 @@ from scinoephile.common import CommandLineInterface
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),
         (YueReviewVsZhoCli, "--script", "{simplified,traditional}"),
+        (YueBenchmarkTranscriptionCli, "--asr-backend", "{whisper,mimo}"),
+        (YueBenchmarkTranscriptionCli, "--demucs", "{on,off}"),
+        (YueBenchmarkTranscriptionCli, "--mimo-aligner", "{whisperx,ctc}"),
+        (YueBenchmarkTranscriptionCli, "--mimo-runtime", "{auto,mlx}"),
+        (YueBenchmarkTranscriptionCli, "--vad", "{auto,on,off}"),
+        (YueBenchmarkTranscriptionCli, "--script", "{simplified,traditional}"),
+        (YueBenchmarkTranscriptionCli, "--cer-window", "{block,time}"),
+        (YueTranscribeVsZhoCli, "--asr-backend", "{whisper,mimo}"),
         (YueTranscribeVsZhoCli, "--demucs", "{on,off}"),
+        (YueTranscribeVsZhoCli, "--mimo-aligner", "{whisperx,ctc}"),
+        (YueTranscribeVsZhoCli, "--mimo-runtime", "{auto,mlx}"),
         (YueTranscribeVsZhoCli, "--vad", "{auto,on,off}"),
         (YueTranscribeVsZhoCli, "--script", "{simplified,traditional}"),
         (YueTranslateVsZhoCli, "--script", "{simplified,traditional}"),
