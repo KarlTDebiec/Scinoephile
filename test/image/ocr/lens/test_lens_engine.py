@@ -18,29 +18,78 @@ from PIL import Image
 from scinoephile.image.ocr.lens.google_lens_recognizer import GoogleLensRecognizer
 
 
+class FakeLensApiError(RuntimeError):
+    """Fake chrome-lens-py LensAPIError."""
+
+
 class CountingGoogleLensRecognizer(GoogleLensRecognizer):
     """Google Lens recognizer that counts uncached predictions."""
 
-    def __init__(self, cache_dir_path: Path | None = None):
+    def __init__(
+        self,
+        cache_dir_path: Path | None = None,
+        exceptions: list[Exception | None] | None = None,
+        results: list[list[str]] | None = None,
+    ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
+            exceptions: exceptions to raise from subsequent recognitions
+            results: normalized OCR lines to return from subsequent recognitions
         """
         self.cache_dir_path = cache_dir_path
         self.language = "en"
+        self.retries = 3
         self.predict_count = 0
+        self.exceptions = exceptions
+        if results is None:
+            results = [["cached", "text"]]
+        self.results = results
+        self._api = self
+        self._lens_api_error_class = FakeLensApiError
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-        """Run fake Google Lens recognition.
+    async def process_image(self, **kwargs: object) -> dict[str, object]:
+        """Process an image.
 
         Arguments:
-            image: input image
+            **kwargs: process image keyword arguments
         Returns:
-            normalized OCR lines
+            fake LensAPI result
         """
         self.predict_count += 1
-        return ["cached", "text"]
+        if self.exceptions is not None:
+            exception_index = min(self.predict_count - 1, len(self.exceptions) - 1)
+            exception = self.exceptions[exception_index]
+            if exception is not None:
+                raise exception
+        result_index = min(self.predict_count - 1, len(self.results) - 1)
+        return {"ocr_text": "\n".join(self.results[result_index])}
+
+
+def patch_google_lens_sleep(monkeypatch: pytest.MonkeyPatch) -> list[float]:
+    """Patch Google Lens retry sleeps and capture their delays.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    Returns:
+        captured sleep delays
+    """
+    delays = []
+
+    async def fake_sleep(delay: float):
+        """Capture retry sleep delay.
+
+        Arguments:
+            delay: requested sleep delay
+        """
+        delays.append(delay)
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.google_lens_recognizer.asyncio.sleep",
+        fake_sleep,
+    )
+    return delays
 
 
 def test_clean_google_lens_text_ignores_empty_and_error_messages():
@@ -127,31 +176,189 @@ def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
     assert recognizer.predict_count == 1
 
 
-def test_google_lens_recognizer_does_not_cache_request_errors(tmp_path: Path):
-    """Test transient Google Lens request errors are not cached as empty OCR."""
+def test_google_lens_recognizer_does_not_cache_request_errors(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test transient Google Lens request errors are not cached as empty OCR.
 
-    class RequestErrorRecognizer(CountingGoogleLensRecognizer):
-        """Google Lens recognizer that returns a request error."""
-
-        async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-            """Run fake Google Lens recognition.
-
-            Arguments:
-                image: input image
-            Returns:
-                normalized OCR lines
-            """
-            self.predict_count += 1
-            return ["Request error (possibly proxy-related)"]
-
-    recognizer = RequestErrorRecognizer(cache_dir_path=tmp_path)
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    patch_google_lens_sleep(monkeypatch)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[["Request error (possibly proxy-related)"]],
+    )
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     with pytest.raises(RuntimeError, match="Google Lens request error"):
         recognizer.recognize_image(image)
 
-    assert recognizer.predict_count == 1
+    assert recognizer.predict_count == 3
     assert not list(tmp_path.glob("*.json"))
+
+
+def test_google_lens_recognizer_retries_request_errors_before_caching(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test Google Lens retries transient request errors before caching success.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    patch_google_lens_sleep(monkeypatch)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["recognized"],
+        ],
+    )
+    recognizer.retries = 3
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    assert recognizer.recognize_image(image) == "recognized"
+
+    assert recognizer.predict_count == 3
+    assert len(list(tmp_path.glob("*.json"))) == 1
+
+
+def test_google_lens_recognizer_raises_last_request_error_after_retries(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test Google Lens raises the last request error after retry exhaustion.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: temporary path fixture
+    """
+    patch_google_lens_sleep(monkeypatch)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[
+            ["Request error (possibly proxy-related): attempt 1"],
+            ["Request error (possibly proxy-related): attempt 2"],
+            ["Request error (possibly proxy-related): attempt 3"],
+        ],
+    )
+    recognizer.retries = 3
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    with pytest.raises(RuntimeError, match="attempt 3"):
+        recognizer.recognize_image(image)
+
+    assert recognizer.predict_count == 3
+    assert not list(tmp_path.glob("*.json"))
+
+
+def test_google_lens_recognizer_retries_in_one_asyncio_run(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens retries within one asyncio.run call.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    real_asyncio_run = asyncio.run
+    run_count = 0
+    patch_google_lens_sleep(monkeypatch)
+
+    def counting_run(main: Any, **kwargs: Any) -> Any:
+        """Count asyncio.run calls.
+
+        Arguments:
+            main: awaitable to run
+            **kwargs: asyncio.run keyword arguments
+        Returns:
+            asyncio.run result
+        """
+        nonlocal run_count
+        run_count += 1
+        return real_asyncio_run(main, **kwargs)
+
+    monkeypatch.setattr(
+        "scinoephile.image.ocr.lens.google_lens_recognizer.asyncio.run",
+        counting_run,
+    )
+    recognizer = CountingGoogleLensRecognizer(
+        results=[
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["recognized"],
+        ],
+    )
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    assert recognizer.recognize_image(image) == "recognized"
+
+    assert run_count == 1
+    assert recognizer.predict_count == 3
+
+
+def test_google_lens_recognizer_waits_between_transient_retries(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens waits before retrying transient failures.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    delays = patch_google_lens_sleep(monkeypatch)
+    recognizer = CountingGoogleLensRecognizer(
+        results=[
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["recognized"],
+        ],
+    )
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    assert recognizer.recognize_image(image) == "recognized"
+
+    assert delays == [1.5, 1.5]
+
+
+def test_google_lens_recognizer_retries_lens_api_errors(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Test Google Lens retries transient chrome-lens-py API errors.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+    """
+    patch_google_lens_sleep(monkeypatch)
+    recognizer = CountingGoogleLensRecognizer(
+        exceptions=[
+            FakeLensApiError("502 Bad Gateway"),
+            FakeLensApiError("502 Bad Gateway"),
+            None,
+        ],
+        results=[["recognized"]],
+    )
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    assert recognizer.recognize_image(image) == "recognized"
+
+    assert recognizer.predict_count == 3
+
+
+def test_google_lens_recognizer_does_not_retry_nontransient_errors():
+    """Test Google Lens does not retry deterministic API errors."""
+    recognizer = CountingGoogleLensRecognizer(
+        exceptions=[ValueError("deterministic failure")],
+    )
+    image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
+
+    with pytest.raises(ValueError, match="deterministic failure"):
+        recognizer.recognize_image(image)
+
+    assert recognizer.predict_count == 1
 
 
 def test_google_lens_recognizer_rejects_uncached_calls_in_async_loop(
@@ -262,9 +469,11 @@ def test_google_lens_recognizer_reuses_lens_api_client_per_instance(
 
     chrome_lens_py = ModuleType("chrome_lens_py")
     setattr(chrome_lens_py, "LensAPI", FakeLensApi)
+    setattr(chrome_lens_py, "LensAPIError", FakeLensApiError)
     monkeypatch.setitem(sys.modules, "chrome_lens_py", chrome_lens_py)
     recognizer = GoogleLensRecognizer()
 
+    assert recognizer.retries == 3
     assert recognizer.recognize_image(Image.new("RGBA", (10, 8))) == "recognized"
     assert recognizer.recognize_image(Image.new("RGBA", (12, 9))) == "recognized"
 

@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_or_dir_arg,
+    int_arg,
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
@@ -24,6 +25,9 @@ OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
             "Google Lens 语言代码，例如 en、zh-CN 或 zh-TW（默认：en）"
         ),
+        "Google Lens request attempts per uncached image (default: %(default)s)": (
+            "每张未缓存图像的 Google Lens 请求尝试次数（默认：%(default)s）"
+        ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 识别图像字幕。"
         ),
@@ -36,6 +40,9 @@ OCR_LENS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "Google Lens language code such as en, zh-CN, or zh-TW (default: en)": (
             "Google Lens 語言代碼，例如 en、zh-CN 或 zh-TW（預設：en）"
+        ),
+        "Google Lens request attempts per uncached image (default: %(default)s)": (
+            "每張未快取影像的 Google Lens 請求嘗試次數（預設：%(default)s）"
         ),
         "Recognize image subtitles with Google Lens.": (
             "使用 Google Lens 識別影像字幕。"
@@ -90,6 +97,14 @@ class OcrLensCli(ScinoephileCliBase):
             default="en",
             help="Google Lens language code such as en, zh-CN, or zh-TW (default: en)",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--retries",
+            default=3,
+            type=int_arg(min_value=1),
+            help=(
+                "Google Lens request attempts per uncached image (default: %(default)s)"
+            ),
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -124,6 +139,7 @@ class OcrLensCli(ScinoephileCliBase):
         language: str,
         outfile_path: Path,
         overwrite: bool,
+        retries: int,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -147,6 +163,7 @@ class OcrLensCli(ScinoephileCliBase):
             text_series = ocr_image_series_with_lens(
                 image_series,
                 language=language,
+                retries=retries,
             )
         except (
             ImportError,
