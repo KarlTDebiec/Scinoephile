@@ -14,7 +14,7 @@ from typing import Any, cast, override
 
 from PIL import Image
 
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.validation import val_int, val_output_dir_path
 
 __all__ = ["GoogleLensRecognizer"]
 
@@ -24,6 +24,11 @@ _OCR_EXTRA_MESSAGE = (
     "Google Lens OCR support requires optional OCR dependencies. "
     "Install scinoephile with the 'ocr' extra."
 )
+_LENS_RETRY_DELAY_SECONDS = 1.5
+
+
+class _GoogleLensRequestError(RuntimeError):
+    """Transient Google Lens request error returned as OCR text."""
 
 
 class GoogleLensRecognizer:
@@ -34,17 +39,21 @@ class GoogleLensRecognizer:
         *,
         cache_dir_path: Path | None = None,
         language: str = "en",
+        retries: int = 3,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
             language: Google Lens OCR language code
+            retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.language = language
+        self.retries = val_int(retries, min_value=1)
+        self._lens_api_error_class = self._get_lens_api_error_class()
         self._api = self._get_lens_api_class()()
 
     @override
@@ -53,7 +62,8 @@ class GoogleLensRecognizer:
         return (
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
-            f"language={self.language!r})"
+            f"language={self.language!r}, "
+            f"retries={self.retries!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -72,15 +82,13 @@ class GoogleLensRecognizer:
                 return self._format_lens_lines(lines)
 
             self._raise_if_running_loop()
-            lines = asyncio.run(self._recognize_image_uncached(image))
-            self._raise_if_request_error(lines)
+            lines = self._recognize_image_uncached(image)
             self._save_lens_lines(lines, cache_path)
             logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
             return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
-        lines = asyncio.run(self._recognize_image_uncached(image))
-        self._raise_if_request_error(lines)
+        lines = self._recognize_image_uncached(image)
         return self._format_lens_lines(lines)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
@@ -99,6 +107,14 @@ class GoogleLensRecognizer:
         cache_key = f"{image_sha256}_{image.mode}_{image.size}_{self.language}"
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
+
+    def _get_transient_error_classes(self) -> tuple[type[Exception], ...]:
+        """Get exception classes that should trigger a Google Lens retry.
+
+        Returns:
+            transient exception classes
+        """
+        return self._lens_api_error_class, _GoogleLensRequestError
 
     @staticmethod
     def _clean_text(text: str) -> str:
@@ -178,6 +194,33 @@ class GoogleLensRecognizer:
         return LensAPI
 
     @staticmethod
+    def _get_lens_api_error_class() -> type[Exception]:
+        """Import chrome-lens-py LensAPIError on demand.
+
+        Returns:
+            chrome-lens-py LensAPIError class
+        Raises:
+            ImportError: if chrome-lens-py is not installed
+        """
+        try:
+            from chrome_lens_py.exceptions import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                LensAPIError,
+            )
+        except ImportError as module_exc:
+            try:
+                from chrome_lens_py import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
+                    LensAPIError,
+                )
+            except ImportError as package_exc:
+                raise ImportError(_OCR_EXTRA_MESSAGE) from package_exc
+            if module_exc.name != "chrome_lens_py.exceptions":
+                logger.debug(
+                    f"Imported LensAPIError from chrome_lens_py package after "
+                    f"submodule import failed: {module_exc}"
+                )
+        return cast(type[Exception], LensAPIError)
+
+    @staticmethod
     def _load_lens_lines(cache_path: Path) -> list[str]:
         """Load normalized Google Lens OCR lines from cache.
 
@@ -249,21 +292,44 @@ class GoogleLensRecognizer:
             "active asyncio event loop."
         )
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
+    def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
         """Recognize uncached image text through chrome-lens-py.
 
         Arguments:
             image: input image
         Returns:
             normalized OCR lines
+        Raises:
+            RuntimeError: if Google Lens returns request-error text
         """
-        result = await self._api.process_image(
-            image_path=image,
-            ocr_language=self.language,
-            ocr_preserve_line_breaks=True,
-            output_format="lines",
-        )
-        return self._normalize_lens_result(result)
+        transient_error_classes = self._get_transient_error_classes()
+
+        async def recognize() -> list[str]:
+            """Run Google Lens OCR retries in one event loop."""
+            for attempt in range(1, self.retries + 1):
+                try:
+                    result = await self._api.process_image(
+                        image_path=image,
+                        ocr_language=self.language,
+                        ocr_preserve_line_breaks=True,
+                        output_format="lines",
+                    )
+                    lines = self._normalize_lens_result(result)
+                    self._raise_if_request_error(lines)
+                except transient_error_classes as exc:
+                    if attempt == self.retries:
+                        raise
+                    logger.warning(
+                        f"Google Lens OCR attempt {attempt} of {self.retries} "
+                        f"failed; retrying: {exc}"
+                    )
+                    await asyncio.sleep(_LENS_RETRY_DELAY_SECONDS)
+                else:
+                    return lines
+
+            raise RuntimeError("Google Lens OCR retry loop exhausted without an error")
+
+        return asyncio.run(recognize())
 
     @staticmethod
     def _raise_if_request_error(lines: list[str]):
@@ -276,7 +342,7 @@ class GoogleLensRecognizer:
         """
         for line in lines:
             if "Request error (possibly proxy-related)".casefold() in line.casefold():
-                raise RuntimeError(f"Google Lens request error: {line}")
+                raise _GoogleLensRequestError(f"Google Lens request error: {line}")
 
     @staticmethod
     def _save_lens_lines(lines: list[str], cache_path: Path):

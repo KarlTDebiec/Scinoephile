@@ -82,6 +82,7 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     """
     cache_dir_path = tmp_path / "cache"
     observed_cache_dir_paths = []
+    observed_retries = []
 
     class FakeDefaultRecognizer(FakeRecognizer):
         """Fake default recognizer with cache directory tracking."""
@@ -91,15 +92,18 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
             *,
             cache_dir_path: Path | None = None,
             language: str = "en",
+            retries: int = 3,
         ):
             """Initialize.
 
             Arguments:
                 cache_dir_path: directory in which to cache OCR results
                 language: Google Lens OCR language code
+                retries: Google Lens OCR request attempts per uncached image
             """
             super().__init__([language])
             observed_cache_dir_paths.append(cache_dir_path)
+            observed_retries.append(retries)
 
     monkeypatch.setattr(
         "scinoephile.image.ocr.lens.get_runtime_cache_dir_path",
@@ -122,7 +126,9 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     text_series = ocr_image_series_with_lens(
         image_series,
         language="zh-CN",
+        retries=5,
     )
 
     assert [event.text for event in text_series] == ["zh-CN"]
     assert observed_cache_dir_paths == [cache_dir_path]
+    assert observed_retries == [5]
