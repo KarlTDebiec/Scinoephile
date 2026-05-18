@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 
 from scinoephile.common.argument_parsing import (
+    enum_arg,
     float_arg,
     get_arg_groups_by_name,
     input_file_arg,
@@ -15,7 +16,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
-from scinoephile.core.synchronization import get_synced_series
+from scinoephile.core.synchronization import SyncTimingMode, get_synced_series
 
 __all__ = ["MultiSyncCli"]
 
@@ -31,6 +32,10 @@ MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用于分割字幕块的停顿时长，单位为毫秒（默认：3000）"
         ),
+        (
+            "timing mode for generated subtitles (options: top, bottom, outer; "
+            "default: outer)"
+        ): ("生成字幕的时间轴模式（选项：top、bottom、outer；默认：outer）"),
         'subtitle infile for bottom line or "-" for stdin': (
             '底行字幕输入文件，或使用 "-" 表示标准输入'
         ),
@@ -52,6 +57,10 @@ MULTI_SYNC_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "pause length in milliseconds used to split subtitle blocks (default: 3000)": (
             "用於分割字幕區塊的停頓時長，單位為毫秒（預設：3000）"
         ),
+        (
+            "timing mode for generated subtitles (options: top, bottom, outer; "
+            "default: outer)"
+        ): ("生成字幕的時間軸模式（選項：top、bottom、outer；預設：outer）"),
         'subtitle infile for bottom line or "-" for stdin': (
             '底行字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
@@ -123,6 +132,17 @@ class MultiSyncCli(ScinoephileCliBase):
                 "(default: 3000)"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--timing",
+            default=SyncTimingMode.OUTER,
+            dest="timing_mode",
+            metavar="{top,bottom,outer}",
+            type=enum_arg(SyncTimingMode),
+            help=(
+                "timing mode for generated subtitles (options: top, bottom, outer; "
+                "default: outer)"
+            ),
+        )
 
         # Output arguments
         arg_groups["output arguments"].add_argument(
@@ -158,6 +178,7 @@ class MultiSyncCli(ScinoephileCliBase):
         bottom_infile_path: Path | str,
         sync_cutoff: float,
         pause_length: int,
+        timing_mode: SyncTimingMode,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -179,6 +200,7 @@ class MultiSyncCli(ScinoephileCliBase):
             bottom,
             sync_cutoff=sync_cutoff,
             pause_length=pause_length,
+            timing_mode=timing_mode,
         )
 
         # Write outputs
