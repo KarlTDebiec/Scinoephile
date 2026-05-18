@@ -70,13 +70,14 @@ def test_get_sync_offset_stats_skips_mobile_only_blocks():
         events=[
             Subtitle(start=1250, end=2250, text="1"),
             Subtitle(start=7000, end=8000, text="2"),
+            Subtitle(start=8100, end=9000, text="3"),
         ]
     )
 
     stats = get_sync_offset_stats(anchor, mobile)
 
     assert stats.sample_count == 1
-    assert stats.skipped_group_count == 1
+    assert stats.skipped_group_count == 2
     assert stats.mean_ms == pytest.approx(250.0)
 
 

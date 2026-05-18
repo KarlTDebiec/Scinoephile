@@ -20,7 +20,7 @@ from scinoephile.multilang.eng_zho.guided_translation import (
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
-from test.data.synchronization import process_zho_hans_eng
+from test.data.stacking import process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name

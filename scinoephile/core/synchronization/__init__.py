@@ -12,12 +12,12 @@ from __future__ import annotations
 
 from .comparison import are_series_one_to_one
 from .groups import SyncGroup, get_sync_groups, get_sync_groups_string
-from .offsets import SyncOffsetSample, SyncOffsetStats, get_sync_offset_stats
+from .offsets import SyncOffsetDatum, SyncOffsetStats, get_sync_offset_stats
 from .overlap import get_overlap_string, get_sync_overlap_matrix
 
 __all__ = [
     "SyncGroup",
-    "SyncOffsetSample",
+    "SyncOffsetDatum",
     "SyncOffsetStats",
     "are_series_one_to_one",
     "get_overlap_string",

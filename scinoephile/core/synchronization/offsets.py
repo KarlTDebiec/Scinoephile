@@ -14,14 +14,14 @@ from scinoephile.core.subtitles import Series, Subtitle
 from .groups import get_sync_groups
 
 __all__ = [
-    "SyncOffsetSample",
+    "SyncOffsetDatum",
     "SyncOffsetStats",
     "get_sync_offset_stats",
 ]
 
 
 @dataclass(frozen=True)
-class SyncOffsetSample:
+class SyncOffsetDatum:
     """One paired sync group used for subtitle offset estimation."""
 
     block_index: int
@@ -65,7 +65,7 @@ class SyncOffsetStats:
     max_ms: float
     """Maximum mobile-minus-anchor offset, in milliseconds."""
 
-    samples: tuple[SyncOffsetSample, ...]
+    samples: tuple[SyncOffsetDatum, ...]
     """Offset samples included in the estimate."""
 
 
@@ -91,16 +91,18 @@ def get_sync_offset_stats(
     Raises:
         ScinoephileError: if no paired sync groups are available
     """
-    samples: list[SyncOffsetSample] = []
+    samples: list[SyncOffsetDatum] = []
     skipped_group_count = 0
     block_pairs = get_block_pairs_by_pause(anchor, mobile, pause_length=pause_length)
 
     for block_index, (anchor_block, mobile_block) in enumerate(block_pairs):
-        if not anchor_block.events or not mobile_block.events:
-            skipped_group_count += len(anchor_block.events) + len(mobile_block.events)
-            continue
+        if not anchor_block.events:
+            groups = [([], [i]) for i in range(len(mobile_block))]
+        elif not mobile_block.events:
+            groups = [([i], []) for i in range(len(anchor_block))]
+        else:
+            groups = get_sync_groups(anchor_block, mobile_block, cutoff=sync_cutoff)
 
-        groups = get_sync_groups(anchor_block, mobile_block, cutoff=sync_cutoff)
         for group_index, (anchor_indexes, mobile_indexes) in enumerate(groups):
             if not anchor_indexes or not mobile_indexes:
                 skipped_group_count += 1
@@ -112,7 +114,7 @@ def get_sync_offset_stats(
                 mobile_subs
             ) - _get_subtitle_group_midpoint(anchor_subs)
             samples.append(
-                SyncOffsetSample(
+                SyncOffsetDatum(
                     block_index=block_index,
                     group_index=group_index,
                     anchor_indexes=tuple(anchor_indexes),
@@ -147,4 +149,6 @@ def _get_subtitle_group_midpoint(subtitles: list[Subtitle]) -> float:
     Returns:
         midpoint of the group span in milliseconds
     """
-    return subtitles[0].start + (subtitles[-1].end - subtitles[0].start) / 2
+    start = min(subtitle.start for subtitle in subtitles)
+    end = max(subtitle.end for subtitle in subtitles)
+    return start + (end - start) / 2

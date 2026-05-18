@@ -3,8 +3,7 @@
 """Command-line interfaces for multi-series subtitle operations.
 
 Package hierarchy (modules may import from any above):
-* multi_cer_cli / multi_diff_cli / multi_stack_cli / multi_sync_cli
-/ multi_timewarp_cli
+* multi_cer_cli / multi_diff_cli / multi_stack_cli / multi_sync_cli / multi_timewarp_cli
 * multi_cli
 """
 
