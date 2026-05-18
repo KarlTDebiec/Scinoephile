@@ -50,3 +50,24 @@ def test_get_validator_type_error():
 
     with pytest.raises(ArgumentTypeError):
         validator("test")
+
+
+def test_get_validator_os_error():
+    """Test get_validator converts OSError to ArgumentTypeError."""
+
+    def failing_func(value: str) -> str:
+        """Function that raises OSError.
+
+        Arguments:
+            value: input value
+        Returns:
+            validated value
+        Raises:
+            OSError: always
+        """
+        raise OSError("Invalid path")
+
+    validator = get_validator(failing_func)
+
+    with pytest.raises(ArgumentTypeError, match="Invalid path"):
+        validator("test")

@@ -8,6 +8,7 @@ from argparse import Action
 
 import pytest
 
+from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
@@ -25,6 +26,7 @@ from scinoephile.common import CommandLineInterface
         (OcrFuseCli, "--language", "{eng,zho}"),
         (OcrProcessCli, "--language", "{eng,zho}"),
         (OcrValidateCli, "--language", "{eng,zho}"),
+        (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),
         (YueReviewVsZhoCli, "--mode", "{block,line}"),
         (YueReviewVsZhoCli, "--script", "{simplified,traditional}"),
