@@ -137,7 +137,7 @@ class EngProcessCli(ScinoephileCliBase):
             "--outfile",
             default=None,
             dest="outfile_path",
-            type=output_file_arg(),
+            type=output_file_arg(exist_ok=True),
             help="English subtitle outfile path (default: stdout)",
         )
         arg_groups["output arguments"].add_argument(
