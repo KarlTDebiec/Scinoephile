@@ -21,27 +21,37 @@ from scinoephile.image.ocr.lens.google_lens_recognizer import GoogleLensRecogniz
 class CountingGoogleLensRecognizer(GoogleLensRecognizer):
     """Google Lens recognizer that counts uncached predictions."""
 
-    def __init__(self, cache_dir_path: Path | None = None):
+    def __init__(
+        self,
+        cache_dir_path: Path | None = None,
+        results: list[list[str]] | None = None,
+    ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
+            results: normalized OCR lines to return from subsequent recognitions
         """
         self.cache_dir_path = cache_dir_path
         self.language = "en"
         self.retries = 3
         self.predict_count = 0
+        if results is None:
+            results = [["cached", "text"]]
+        self.results = results
+        self._api = self
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-        """Run fake Google Lens recognition.
+    async def process_image(self, **kwargs: object) -> dict[str, object]:
+        """Process an image.
 
         Arguments:
-            image: input image
+            **kwargs: process image keyword arguments
         Returns:
-            normalized OCR lines
+            fake LensAPI result
         """
         self.predict_count += 1
-        return ["cached", "text"]
+        result_index = min(self.predict_count - 1, len(self.results) - 1)
+        return {"ocr_text": "\n".join(self.results[result_index])}
 
 
 def test_clean_google_lens_text_ignores_empty_and_error_messages():
@@ -130,22 +140,10 @@ def test_google_lens_recognizer_formats_cached_results(tmp_path: Path):
 
 def test_google_lens_recognizer_does_not_cache_request_errors(tmp_path: Path):
     """Test transient Google Lens request errors are not cached as empty OCR."""
-
-    class RequestErrorRecognizer(CountingGoogleLensRecognizer):
-        """Google Lens recognizer that returns a request error."""
-
-        async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-            """Run fake Google Lens recognition.
-
-            Arguments:
-                image: input image
-            Returns:
-                normalized OCR lines
-            """
-            self.predict_count += 1
-            return ["Request error (possibly proxy-related)"]
-
-    recognizer = RequestErrorRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[["Request error (possibly proxy-related)"]],
+    )
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
     with pytest.raises(RuntimeError, match="Google Lens request error"):
@@ -157,24 +155,14 @@ def test_google_lens_recognizer_does_not_cache_request_errors(tmp_path: Path):
 
 def test_google_lens_recognizer_retries_request_errors_before_caching(tmp_path: Path):
     """Test Google Lens retries transient request errors before caching success."""
-
-    class RetryRecognizer(CountingGoogleLensRecognizer):
-        """Google Lens recognizer that succeeds after request errors."""
-
-        async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-            """Run fake Google Lens recognition.
-
-            Arguments:
-                image: input image
-            Returns:
-                normalized OCR lines
-            """
-            self.predict_count += 1
-            if self.predict_count < 3:
-                return ["Request error (possibly proxy-related): 502 Bad Gateway"]
-            return ["recognized"]
-
-    recognizer = RetryRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["Request error (possibly proxy-related): 502 Bad Gateway"],
+            ["recognized"],
+        ],
+    )
     recognizer.retries = 3
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 
@@ -192,24 +180,14 @@ def test_google_lens_recognizer_raises_last_request_error_after_retries(
     Arguments:
         tmp_path: temporary path fixture
     """
-
-    class RequestErrorRecognizer(CountingGoogleLensRecognizer):
-        """Google Lens recognizer that always returns a request error."""
-
-        async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
-            """Run fake Google Lens recognition.
-
-            Arguments:
-                image: input image
-            Returns:
-                normalized OCR lines
-            """
-            self.predict_count += 1
-            return [
-                f"Request error (possibly proxy-related): attempt {self.predict_count}"
-            ]
-
-    recognizer = RequestErrorRecognizer(cache_dir_path=tmp_path)
+    recognizer = CountingGoogleLensRecognizer(
+        cache_dir_path=tmp_path,
+        results=[
+            ["Request error (possibly proxy-related): attempt 1"],
+            ["Request error (possibly proxy-related): attempt 2"],
+            ["Request error (possibly proxy-related): attempt 3"],
+        ],
+    )
     recognizer.retries = 3
     image = Image.new("RGBA", (10, 8), (255, 255, 255, 0))
 

@@ -76,13 +76,13 @@ class GoogleLensRecognizer:
                 return self._format_lens_lines(lines)
 
             self._raise_if_running_loop()
-            lines = self._recognize_image_with_retries(image)
+            lines = self._recognize_image_uncached(image)
             self._save_lens_lines(lines, cache_path)
             logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
             return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
-        lines = self._recognize_image_with_retries(image)
+        lines = self._recognize_image_uncached(image)
         return self._format_lens_lines(lines)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
@@ -251,24 +251,8 @@ class GoogleLensRecognizer:
             "active asyncio event loop."
         )
 
-    async def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
+    def _recognize_image_uncached(self, image: Image.Image) -> list[str]:
         """Recognize uncached image text through chrome-lens-py.
-
-        Arguments:
-            image: input image
-        Returns:
-            normalized OCR lines
-        """
-        result = await self._api.process_image(
-            image_path=image,
-            ocr_language=self.language,
-            ocr_preserve_line_breaks=True,
-            output_format="lines",
-        )
-        return self._normalize_lens_result(result)
-
-    def _recognize_image_with_retries(self, image: Image.Image) -> list[str]:
-        """Recognize uncached image text, retrying transient Lens failures.
 
         Arguments:
             image: input image
@@ -279,7 +263,15 @@ class GoogleLensRecognizer:
         """
         for attempt in range(1, self.retries + 1):
             try:
-                lines = asyncio.run(self._recognize_image_uncached(image))
+                result = asyncio.run(
+                    self._api.process_image(
+                        image_path=image,
+                        ocr_language=self.language,
+                        ocr_preserve_line_breaks=True,
+                        output_format="lines",
+                    )
+                )
+                lines = self._normalize_lens_result(result)
                 self._raise_if_request_error(lines)
             except Exception as exc:
                 if attempt == self.retries:
