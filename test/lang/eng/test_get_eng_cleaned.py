@@ -27,6 +27,13 @@ def test_get_english_text_cleaned_removes_ass_dash_only_line():
     assert _get_english_text_cleaned("hello\\N-\\Nworld") == "hello\\Nworld"
 
 
+def test_get_english_text_cleaned_removes_eia_608_markup():
+    """Test EIA-608 extraction markup is removed from English text."""
+    text = '<font face="Monospace">{\\an7}WOODY:\xa0Look out!</font>'
+
+    assert _get_english_text_cleaned(text) == "WOODY: Look out!"
+
+
 def test_get_eng_cleaned_kob(
     kob_eng_ocr_fuse: Series,
     kob_eng_ocr_fuse_clean: Series,
