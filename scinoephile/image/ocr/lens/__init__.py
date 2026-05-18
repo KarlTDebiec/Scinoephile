@@ -24,12 +24,14 @@ def get_google_lens_recognizer(
     *,
     cache_dir_path: Path | None = None,
     language: str = "en",
+    retries: int = 3,
 ) -> GoogleLensRecognizer:
     """Get Google Lens recognizer with provided configuration.
 
     Arguments:
         cache_dir_path: directory in which to cache OCR results
         language: Google Lens OCR language code
+        retries: Google Lens OCR request attempts per uncached image
     Returns:
         Google Lens recognizer
     """
@@ -38,6 +40,7 @@ def get_google_lens_recognizer(
     return GoogleLensRecognizer(
         cache_dir_path=cache_dir_path,
         language=language,
+        retries=retries,
     )
 
 
@@ -45,6 +48,7 @@ def ocr_image_series_with_lens(
     image_series: ImageSeries,
     *,
     language: str = "en",
+    retries: int = 3,
     recognizer: GoogleLensRecognizer | None = None,
 ) -> Series:
     """OCR an image subtitle series with Google Lens.
@@ -52,6 +56,7 @@ def ocr_image_series_with_lens(
     Arguments:
         image_series: image subtitle series
         language: Google Lens OCR language code
+        retries: Google Lens OCR request attempts per uncached image
         recognizer: Google Lens-compatible recognizer
     Returns:
         text subtitle series
@@ -59,6 +64,7 @@ def ocr_image_series_with_lens(
     if recognizer is None:
         lens_recognizer = get_google_lens_recognizer(
             language=language,
+            retries=retries,
         )
     else:
         lens_recognizer = recognizer

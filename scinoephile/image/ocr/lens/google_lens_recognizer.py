@@ -14,7 +14,7 @@ from typing import Any, cast, override
 
 from PIL import Image
 
-from scinoephile.common.validation import val_output_dir_path
+from scinoephile.common.validation import val_int, val_output_dir_path
 
 __all__ = ["GoogleLensRecognizer"]
 
@@ -34,17 +34,20 @@ class GoogleLensRecognizer:
         *,
         cache_dir_path: Path | None = None,
         language: str = "en",
+        retries: int = 3,
     ):
         """Initialize.
 
         Arguments:
             cache_dir_path: directory in which to cache OCR results
             language: Google Lens OCR language code
+            retries: Google Lens OCR request attempts per uncached image
         """
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
         self.language = language
+        self.retries = val_int(retries, min_value=1)
         self._api = self._get_lens_api_class()()
 
     @override
@@ -53,7 +56,8 @@ class GoogleLensRecognizer:
         return (
             f"{self.__class__.__name__}("
             f"cache_dir_path={self.cache_dir_path!r}, "
-            f"language={self.language!r})"
+            f"language={self.language!r}, "
+            f"retries={self.retries!r})"
         )
 
     def recognize_image(self, image: Image.Image) -> str:
@@ -72,15 +76,13 @@ class GoogleLensRecognizer:
                 return self._format_lens_lines(lines)
 
             self._raise_if_running_loop()
-            lines = asyncio.run(self._recognize_image_uncached(image))
-            self._raise_if_request_error(lines)
+            lines = self._recognize_image_with_retries(image)
             self._save_lens_lines(lines, cache_path)
             logger.info(f"Saved Google Lens OCR result to cache: {cache_path}")
             return self._format_lens_lines(lines)
 
         self._raise_if_running_loop()
-        lines = asyncio.run(self._recognize_image_uncached(image))
-        self._raise_if_request_error(lines)
+        lines = self._recognize_image_with_retries(image)
         return self._format_lens_lines(lines)
 
     def _get_cache_path(self, image: Image.Image) -> Path | None:
@@ -264,6 +266,32 @@ class GoogleLensRecognizer:
             output_format="lines",
         )
         return self._normalize_lens_result(result)
+
+    def _recognize_image_with_retries(self, image: Image.Image) -> list[str]:
+        """Recognize uncached image text, retrying transient Lens failures.
+
+        Arguments:
+            image: input image
+        Returns:
+            normalized OCR lines
+        Raises:
+            Exception: last error raised by Google Lens OCR after retries
+        """
+        for attempt in range(1, self.retries + 1):
+            try:
+                lines = asyncio.run(self._recognize_image_uncached(image))
+                self._raise_if_request_error(lines)
+            except Exception as exc:
+                if attempt == self.retries:
+                    raise
+                logger.warning(
+                    f"Google Lens OCR attempt {attempt} of {self.retries} failed; "
+                    f"retrying: {exc}"
+                )
+            else:
+                return lines
+
+        raise RuntimeError("Google Lens OCR retry loop exhausted without an error")
 
     @staticmethod
     def _raise_if_request_error(lines: list[str]):
