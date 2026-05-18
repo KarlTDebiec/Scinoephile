@@ -13,20 +13,27 @@ import pytest
 from scinoephile.cli.multi.multi_sync_cli import MultiSyncCli
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
+from scinoephile.core.synchronization import SyncTimingMode
 from test.helpers import test_data_root
 
 
 @pytest.mark.parametrize(
-    ("args", "expected_sync_cutoff", "expected_pause_length"),
+    ("args", "expected_sync_cutoff", "expected_pause_length", "expected_timing_mode"),
     [
-        ("", 0.16, 3000),
-        ("--sync-cutoff 0.25 --pause-length 5000", 0.25, 5000),
+        ("", 0.16, 3000, SyncTimingMode.OUTER),
+        (
+            "--sync-cutoff 0.25 --pause-length 5000 --timing top",
+            0.25,
+            5000,
+            SyncTimingMode.TOP,
+        ),
     ],
 )
 def test_multi_sync_cli_passes_tuning_options(
     args: str,
     expected_sync_cutoff: float,
     expected_pause_length: int,
+    expected_timing_mode: SyncTimingMode,
 ):
     """Test multi sync CLI passes synchronization tuning options.
 
@@ -34,6 +41,7 @@ def test_multi_sync_cli_passes_tuning_options(
         args: extra command-line arguments
         expected_sync_cutoff: expected sync cutoff passed to synchronization
         expected_pause_length: expected pause length passed to synchronization
+        expected_timing_mode: expected timing mode passed to synchronization
     """
     top_path = (
         test_data_root
@@ -67,6 +75,7 @@ def test_multi_sync_cli_passes_tuning_options(
         bottom_series,
         sync_cutoff=expected_sync_cutoff,
         pause_length=expected_pause_length,
+        timing_mode=expected_timing_mode,
     )
     assert write_series.call_args.args[1:] == (synced_series, "-", False)
 
@@ -77,6 +86,10 @@ def test_multi_sync_cli_passes_tuning_options(
         ("--sync-cutoff -0.01", "-0.01 is less than minimum value of 0.0"),
         ("--sync-cutoff 1.01", "1.01 is greater than maximum value of 1.0"),
         ("--pause-length 0", "0 is less than minimum value of 1"),
+        (
+            "--timing inside",
+            "'inside' is not one of the supported values: top, bottom, outer",
+        ),
     ],
 )
 def test_multi_sync_cli_rejects_invalid_tuning_options(

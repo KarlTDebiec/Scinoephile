@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from enum import StrEnum
 from logging import getLogger
 from pprint import pformat
 
@@ -15,6 +16,7 @@ from .subtitles import Series, Subtitle, get_concatenated_series
 
 __all__ = [
     "SyncGroup",
+    "SyncTimingMode",
     "are_series_one_to_one",
     "get_overlap_string",
     "get_sync_groups",
@@ -28,6 +30,17 @@ logger = getLogger(__name__)
 
 SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
+
+
+class SyncTimingMode(StrEnum):
+    """Timing modes for synchronized subtitles."""
+
+    TOP = "top"
+    """Use top subtitle timing where available."""
+    BOTTOM = "bottom"
+    """Use bottom subtitle timing where available."""
+    OUTER = "outer"
+    """Use the full outer timing span of paired subtitles."""
 
 
 def are_series_one_to_one(one: Series, two: Series) -> bool:
@@ -204,6 +217,7 @@ def get_synced_series(
     two: Series,
     sync_cutoff: float = 0.16,
     pause_length: int = 3000,
+    timing_mode: SyncTimingMode = SyncTimingMode.OUTER,
 ) -> Series:
     """Compile synchonized subtitles from two series.
 
@@ -212,6 +226,7 @@ def get_synced_series(
         two: Second Series
         sync_cutoff: Initial overlap cutoff used to form sync groups
         pause_length: Pause length in milliseconds used to split subtitle blocks
+        timing_mode: Timing mode used for synchronized subtitles
     Returns:
         Synchonized subtitles
     """
@@ -231,18 +246,21 @@ def get_synced_series(
         groups = get_sync_groups(one_block, two_block, cutoff=sync_cutoff)
         logger.info(f"SYNC GROUPS:\n{pformat(groups, width=1000)}")
 
-        synced_block = get_synced_series_from_groups(one_block, two_block, groups)
+        synced_block = get_synced_series_from_groups(
+            one_block, two_block, groups, timing_mode=timing_mode
+        )
         logger.info(f"SYNCED SUBTITLES:\n{synced_block.to_simple_string()}")
         synced_blocks.append(synced_block)
 
     synced = get_concatenated_series(synced_blocks)
-    return synced
+    return _get_series_without_overlaps(synced)
 
 
 def get_synced_series_from_groups(
     one: Series,
     two: Series,
     groups: list[SyncGroup],
+    timing_mode: SyncTimingMode = SyncTimingMode.OUTER,
 ) -> Series:
     """Compile synchronized subtitles from two series based on sync groups.
 
@@ -250,6 +268,7 @@ def get_synced_series_from_groups(
         one: First series
         two: Second series
         groups: Sync groups including the indexes of subtitles in each series
+        timing_mode: Timing mode used for synchronized subtitles
     Returns:
         Series whose subtitles are composed of the text of the subtitles from the two
         input series as indicated by the sync groups
@@ -274,10 +293,11 @@ def get_synced_series_from_groups(
         if len(one_subs) == 1 and len(two_subs) == 1:
             one_text = one_subs[0].text
             two_text = two_subs[0].text
+            start, end = _get_sync_group_timings(one_subs, two_subs, 1, timing_mode)[0]
             synced.events.append(
                 Subtitle(
-                    start=min(one_subs[0].start, two_subs[0].start),
-                    end=max(one_subs[0].end, two_subs[0].end),
+                    start=start,
+                    end=end,
                     text=(
                         f"{one_text}\\N{two_text}"
                         if one_text and two_text
@@ -290,11 +310,11 @@ def get_synced_series_from_groups(
         # Many to one mapping
         if len(one_subs) > 1 and len(two_subs) == 1:
             two_sub = two_subs[0]
-            group_start = min(one_subs[0].start, two_sub.start)
-            group_end = max(one_subs[-1].end, two_sub.end)
-            edges = np.linspace(group_start, group_end, len(one_subs) + 1, dtype=int)
+            timings = _get_sync_group_timings(
+                one_subs, two_subs, len(one_subs), timing_mode
+            )
 
-            for one_sub, start, end in zip(one_subs, edges[:-1], edges[1:]):
+            for one_sub, (start, end) in zip(one_subs, timings):
                 one_text = one_sub.text
                 two_text = two_sub.text
                 synced.events.append(
@@ -313,11 +333,11 @@ def get_synced_series_from_groups(
         # One to many mapping
         if len(one_subs) == 1 and len(two_subs) > 1:
             one_sub = one_subs[0]
-            group_start = min(one_sub.start, two_subs[0].start)
-            group_end = max(one_sub.end, two_subs[-1].end)
-            edges = np.linspace(group_start, group_end, len(two_subs) + 1, dtype=int)
+            timings = _get_sync_group_timings(
+                one_subs, two_subs, len(two_subs), timing_mode
+            )
 
-            for two_sub, start, end in zip(two_subs, edges[:-1], edges[1:]):
+            for two_sub, (start, end) in zip(two_subs, timings):
                 one_text = one_sub.text
                 two_text = two_sub.text
                 synced.events.append(
@@ -339,7 +359,7 @@ def get_synced_series_from_groups(
             f"and {len(two_subs)} subtitles from series two."
         )
 
-    return synced
+    return _get_series_without_overlaps(synced)
 
 
 def _compare_sync_groups(  # noqa: PLR0912
@@ -389,6 +409,97 @@ def _compare_sync_groups(  # noqa: PLR0912
             return 1
         case _:
             raise ScinoephileError("Unexpected comparison result between sync groups")
+
+
+def _get_series_without_overlaps(series: Series) -> Series:
+    """Get a copy of a subtitle series with adjacent timing overlaps removed.
+
+    Arguments:
+        series: subtitle series whose events should be made non-overlapping
+    Returns:
+        Copy of the subtitle series with adjacent overlaps split at their midpoint
+    Raises:
+        ScinoephileError: if overlap removal would make a subtitle non-positive
+    """
+    output = type(series)(
+        events=[type(event)(**event.as_dict()) for event in series.events]
+    )
+
+    for idx, (previous, current) in enumerate(
+        zip(output.events, output.events[1:]), start=1
+    ):
+        if current.start >= previous.end:
+            continue
+
+        minimum_boundary = previous.start + 1
+        maximum_boundary = current.end - 1
+        if minimum_boundary > maximum_boundary:
+            raise ScinoephileError(
+                f"Cannot remove subtitle timing overlap between events {idx} "
+                f"and {idx + 1} without creating a non-positive duration "
+                f"subtitle: previous={previous.start}-{previous.end}, "
+                f"current={current.start}-{current.end}."
+            )
+
+        boundary = (previous.end + current.start) // 2
+        boundary = max(boundary, minimum_boundary)
+        boundary = min(boundary, maximum_boundary)
+
+        previous.end = boundary
+        current.start = boundary
+
+    return output
+
+
+def _get_sync_group_interval(
+    one_subs: list[Subtitle],
+    two_subs: list[Subtitle],
+    timing_mode: SyncTimingMode,
+) -> tuple[int, int]:
+    """Get the selected timing interval for a sync group.
+
+    Arguments:
+        one_subs: subtitles from the first series
+        two_subs: subtitles from the second series
+        timing_mode: timing mode used for synchronized subtitles
+    Returns:
+        Start and end times for the sync group
+    """
+    if timing_mode == SyncTimingMode.TOP and one_subs:
+        return one_subs[0].start, one_subs[-1].end
+    if timing_mode == SyncTimingMode.BOTTOM and two_subs:
+        return two_subs[0].start, two_subs[-1].end
+
+    starts = [sub.start for sub in one_subs + two_subs]
+    ends = [sub.end for sub in one_subs + two_subs]
+    return min(starts), max(ends)
+
+
+def _get_sync_group_timings(
+    one_subs: list[Subtitle],
+    two_subs: list[Subtitle],
+    count: int,
+    timing_mode: SyncTimingMode,
+) -> list[tuple[int, int]]:
+    """Get generated subtitle timings for a sync group.
+
+    Arguments:
+        one_subs: subtitles from the first series
+        two_subs: subtitles from the second series
+        count: number of generated subtitles
+        timing_mode: timing mode used for synchronized subtitles
+    Returns:
+        Start and end times for each generated subtitle
+    """
+    if timing_mode == SyncTimingMode.TOP and len(one_subs) == count:
+        return [(sub.start, sub.end) for sub in one_subs]
+    if timing_mode == SyncTimingMode.BOTTOM and len(two_subs) == count:
+        return [(sub.start, sub.end) for sub in two_subs]
+
+    # Split SyncTimingMode.OUTER, or top/bottom groups with mismatched output counts
+    group_start, group_end = _get_sync_group_interval(one_subs, two_subs, timing_mode)
+    edges = np.linspace(group_start, group_end, count + 1, dtype=int)
+    return [(int(start), int(end)) for start, end in zip(edges[:-1], edges[1:])]
 
 
 def _get_sync_groups(  # noqa: PLR0912, PLR0915
