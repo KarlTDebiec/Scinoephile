@@ -43,7 +43,11 @@ def _get_zho_text_cleaned(text: str) -> str | None:
         Cleaned text
     """
     line_sep = r"\N"
-    cleaned = text.strip()
+    cleaned = text.replace("\xa0", " ").strip()
+
+    # Remove extraction markup before punctuation normalization
+    cleaned = re.sub(r"</?font\b[^>]*>", "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\{\\an\d+\}", "", cleaned)
 
     cleaned_lines = []
     for raw_line in cleaned.split(line_sep):
