@@ -20,10 +20,9 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
+from scinoephile.core.stacking import StackTimingMode, get_stacked_series
 from scinoephile.core.synchronization import (
-    SyncTimingMode,
     get_sync_offset_stats,
-    get_synced_series,
 )
 
 __all__ = [
@@ -221,7 +220,7 @@ class MultiStackCli(ScinoephileCliBase):
 
         # Perform operations
         try:
-            timing_mode = SyncTimingMode.OUTER
+            timing_mode = StackTimingMode.OUTER
             if sync_mode == StackSyncMode.ANCHOR_TOP:
                 stats = get_sync_offset_stats(
                     top,
@@ -231,7 +230,7 @@ class MultiStackCli(ScinoephileCliBase):
                 )
                 bottom = deepcopy(bottom)
                 bottom.shift(ms=int(round(-stats.mean_ms)))
-                timing_mode = SyncTimingMode.TOP
+                timing_mode = StackTimingMode.TOP
                 logger.info(f"Mean offset: {stats.mean_ms / 1000:+.3f} s")
             elif sync_mode == StackSyncMode.ANCHOR_BOTTOM:
                 stats = get_sync_offset_stats(
@@ -242,10 +241,10 @@ class MultiStackCli(ScinoephileCliBase):
                 )
                 top = deepcopy(top)
                 top.shift(ms=int(round(-stats.mean_ms)))
-                timing_mode = SyncTimingMode.BOTTOM
+                timing_mode = StackTimingMode.BOTTOM
                 logger.info(f"Mean offset: {stats.mean_ms / 1000:+.3f} s")
 
-            synced = get_synced_series(
+            stacked = get_stacked_series(
                 top,
                 bottom,
                 sync_cutoff=sync_cutoff,
@@ -257,7 +256,10 @@ class MultiStackCli(ScinoephileCliBase):
 
         # Write outputs
         write_series(
-            parser, synced, outfile_path if outfile_path is not None else "-", overwrite
+            parser,
+            stacked,
+            outfile_path if outfile_path is not None else "-",
+            overwrite,
         )
 
 
