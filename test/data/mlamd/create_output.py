@@ -34,7 +34,7 @@ from test.data.mlamd import (
     get_mlamd_yue_punctuation_test_cases,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
+from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name

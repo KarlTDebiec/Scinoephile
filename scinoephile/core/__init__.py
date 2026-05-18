@@ -9,6 +9,7 @@ Hierarchy within module (lower may import from higher):
 * cache / llms / subtitles / text
 * cli / pairs / timing
 * media / synchronization
+* stacking
 """
 
 from __future__ import annotations

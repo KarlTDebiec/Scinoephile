@@ -56,6 +56,7 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\nmulti" in output
     assert "\n    cer" in output
     assert "\n    diff" in output
+    assert "\n    stack" in output
     assert "\n    sync" in output
     assert "\n    timewarp" in output
     assert "\ndictionary" in output
