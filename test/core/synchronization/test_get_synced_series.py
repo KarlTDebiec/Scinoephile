@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import pytest
 
+from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.core.synchronization import (
     SyncTimingMode,
@@ -125,6 +126,22 @@ def test_get_synced_series_splits_selected_timing_for_one_to_many_groups(
 
     assert [(event.start, event.end) for event in output.events] == expected_times
     assert [event.text for event in output.events] == ["A\\N1", "A\\N2"]
+
+
+def test_get_synced_series_overlap_error_includes_event_context():
+    """Test impossible overlap removal errors include adjacent event context."""
+    one = Series(
+        events=[
+            Subtitle(start=1000, end=3000, text="A"),
+            Subtitle(start=1000, end=1001, text="B"),
+        ]
+    )
+
+    with pytest.raises(
+        ScinoephileError,
+        match=("events 1 and 2.*previous=1000-3000.*current=1000-1001"),
+    ):
+        get_synced_series_from_groups(one, Series(), [([0], []), ([1], [])])
 
 
 def test_get_synced_series_kob(

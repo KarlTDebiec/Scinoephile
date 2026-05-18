@@ -425,7 +425,9 @@ def _get_series_without_overlaps(series: Series) -> Series:
         events=[type(event)(**event.as_dict()) for event in series.events]
     )
 
-    for previous, current in zip(output.events, output.events[1:]):
+    for idx, (previous, current) in enumerate(
+        zip(output.events, output.events[1:]), start=1
+    ):
         if current.start >= previous.end:
             continue
 
@@ -433,8 +435,10 @@ def _get_series_without_overlaps(series: Series) -> Series:
         maximum_boundary = current.end - 1
         if minimum_boundary > maximum_boundary:
             raise ScinoephileError(
-                "Cannot remove subtitle timing overlap without creating a "
-                "non-positive duration subtitle."
+                f"Cannot remove subtitle timing overlap between events {idx} "
+                f"and {idx + 1} without creating a non-positive duration "
+                f"subtitle: previous={previous.start}-{previous.end}, "
+                f"current={current.start}-{current.end}."
             )
 
         boundary = (previous.end + current.start) // 2
