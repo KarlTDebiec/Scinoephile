@@ -397,14 +397,14 @@ def _romanize_yue_hanzi_run(text: str) -> str:
         original_segment = text[start:end]
         if jyutping is None:
             for char in original_segment:
-                logger.warning("No Cantonese romanization for character: %s", char)
+                logger.warning(f"No Cantonese romanization for character: {char}")
             pieces.append((original_segment, True))
             continue
 
         yale = _jyutping_to_yale(jyutping)
         if yale is None:
             for char in original_segment:
-                logger.warning("No Cantonese romanization for character: %s", char)
+                logger.warning(f"No Cantonese romanization for character: {char}")
             pieces.append((original_segment, True))
             continue
         pieces.append((yale, False))
