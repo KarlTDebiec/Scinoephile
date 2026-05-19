@@ -4,7 +4,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
 from logging import getLogger, info
 from pathlib import Path
@@ -52,7 +51,7 @@ class OcrProcessingResult:
     """Output paths keyed by output name."""
 
 
-def process_eng_ocr(  # noqa: PLR0912
+def process_eng_ocr(  # noqa: PLR0912, PLR0915
     infile_path: Path,
     output_dir_path: Path,
     *,
@@ -122,23 +121,21 @@ def process_eng_ocr(  # noqa: PLR0912
     fusion_tesseract = tesseract
     if clean:
         lens_clean_path = output_dir_path / "lens_clean.srt"
-        fusion_lens = _get_cleaned_ocr_output(
-            lens,
-            lens_clean_path,
-            "Lens",
-            overwrite=overwrite,
-            cleaner=lambda series: get_eng_cleaned(series, remove_empty=False),
-        )
+        if lens_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
+            fusion_lens = Series.load(lens_clean_path)
+        else:
+            fusion_lens = get_eng_cleaned(lens, remove_empty=False)
+            fusion_lens.save(lens_clean_path, format_="srt")
         output_paths["lens_clean"] = lens_clean_path
 
         tesseract_clean_path = output_dir_path / "tesseract_clean.srt"
-        fusion_tesseract = _get_cleaned_ocr_output(
-            tesseract,
-            tesseract_clean_path,
-            "Tesseract",
-            overwrite=overwrite,
-            cleaner=lambda series: get_eng_cleaned(series, remove_empty=False),
-        )
+        if tesseract_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Tesseract OCR output exists: {tesseract_clean_path}")
+            fusion_tesseract = Series.load(tesseract_clean_path)
+        else:
+            fusion_tesseract = get_eng_cleaned(tesseract, remove_empty=False)
+            fusion_tesseract.save(tesseract_clean_path, format_="srt")
         output_paths["tesseract_clean"] = tesseract_clean_path
 
     # Fusion
@@ -161,7 +158,7 @@ def process_eng_ocr(  # noqa: PLR0912
     )
 
 
-def process_zho_ocr(  # noqa: PLR0912
+def process_zho_ocr(  # noqa: PLR0912, PLR0915
     infile_path: Path,
     output_dir_path: Path,
     *,
@@ -236,23 +233,21 @@ def process_zho_ocr(  # noqa: PLR0912
     fusion_paddle = paddle
     if clean:
         lens_clean_path = output_dir_path / "lens_clean.srt"
-        fusion_lens = _get_cleaned_ocr_output(
-            lens,
-            lens_clean_path,
-            "Lens",
-            overwrite=overwrite,
-            cleaner=lambda series: get_zho_cleaned(series, remove_empty=False),
-        )
+        if lens_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
+            fusion_lens = Series.load(lens_clean_path)
+        else:
+            fusion_lens = get_zho_cleaned(lens, remove_empty=False)
+            fusion_lens.save(lens_clean_path, format_="srt")
         output_paths["lens_clean"] = lens_clean_path
 
         paddle_clean_path = output_dir_path / "paddle_clean.srt"
-        fusion_paddle = _get_cleaned_ocr_output(
-            paddle,
-            paddle_clean_path,
-            "PaddleOCR",
-            overwrite=overwrite,
-            cleaner=lambda series: get_zho_cleaned(series, remove_empty=False),
-        )
+        if paddle_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned PaddleOCR output exists: {paddle_clean_path}")
+            fusion_paddle = Series.load(paddle_clean_path)
+        else:
+            fusion_paddle = get_zho_cleaned(paddle, remove_empty=False)
+            fusion_paddle.save(paddle_clean_path, format_="srt")
         output_paths["paddle_clean"] = paddle_clean_path
 
     # Fusion
@@ -273,34 +268,6 @@ def process_zho_ocr(  # noqa: PLR0912
         output_dir_path=output_dir_path,
         output_paths=output_paths,
     )
-
-
-def _get_cleaned_ocr_output(
-    series: Series,
-    outfile_path: Path,
-    output_name: str,
-    *,
-    overwrite: bool,
-    cleaner: Callable[[Series], Series],
-) -> Series:
-    """Get cleaned OCR output from an existing file or a source series.
-
-    Arguments:
-        series: source OCR subtitle series
-        outfile_path: cleaned OCR output file path
-        output_name: name of the OCR output for log messages
-        overwrite: whether to overwrite existing cleaned output
-        cleaner: function used to clean the source series
-    Returns:
-        cleaned OCR subtitle series
-    """
-    if outfile_path.exists() and not overwrite:
-        logger.info(f"Cleaned {output_name} OCR output exists: {outfile_path}")
-        return Series.load(outfile_path)
-
-    cleaned = cleaner(series)
-    cleaned.save(outfile_path, format_="srt")
-    return cleaned
 
 
 def _get_media_subtitle_stream(
