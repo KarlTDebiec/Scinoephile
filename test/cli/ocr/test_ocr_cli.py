@@ -71,8 +71,8 @@ def _write_placeholder_sup_path(tmp_path: Path) -> Path:
     return infile_path
 
 
-def test_ocr_lens_cli_help_lists_language_option_only():
-    """Test Google Lens CLI help lists language but not transport options."""
+def test_ocr_lens_cli_help_lists_language_and_retry_options_only():
+    """Test Google Lens CLI help lists supported operation options."""
     stdout = StringIO()
     stderr = StringIO()
     with pytest.raises(SystemExit) as excinfo:
@@ -84,6 +84,7 @@ def test_ocr_lens_cli_help_lists_language_option_only():
     assert stderr.getvalue() == ""
     help_text = " ".join(stdout.getvalue().split())
     assert "--language" in help_text
+    assert "--retries" in help_text
     assert "--api-key" not in help_text
     assert "--client-region" not in help_text
     assert "--client-time-zone" not in help_text
@@ -110,6 +111,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
         tiny_image_series,
     )
     input_path = _write_placeholder_sup_path(tmp_path)
+    observed_kwargs = []
 
     def fake_ocr_image_series_with_lens(*args: object, **kwargs: object) -> Series:
         """Fake Google Lens image series processing.
@@ -120,6 +122,7 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
         Returns:
             text subtitle series
         """
+        observed_kwargs.append(kwargs)
         return Series(events=[Subtitle(start=1000, end=2000, text="recognized")])
 
     monkeypatch.setattr(
@@ -130,10 +133,11 @@ def test_ocr_lens_cli_converts_image_subtitles_to_srt(
     output_path = tmp_path / "ocr.srt"
     run_cli_with_args(
         OcrLensCli,
-        f"--infile {input_path} --outfile {output_path}",
+        f"--infile {input_path} --outfile {output_path} --language zh-CN --retries 5",
     )
 
     assert input_paths == [input_path.resolve()]
+    assert observed_kwargs == [{"language": "zh-CN", "retries": 5}]
     output = Series.load(output_path)
     assert [(event.start, event.end, event.text) for event in output] == [
         (1000, 2000, "recognized")

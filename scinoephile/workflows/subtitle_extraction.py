@@ -83,7 +83,7 @@ def extract_subtitles(
     *,
     cache_dir_path: Path | None = None,
     details: bool = False,
-    extract_sup: bool = False,
+    export_images: bool = False,
     overwrite: bool = False,
 ) -> SubtitleExtractionResult:
     """Extract matching subtitle streams from media.
@@ -94,7 +94,7 @@ def extract_subtitles(
         output_dir_path: directory to which matching subtitles will be extracted
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
-        extract_sup: whether to convert extracted SUP subtitles to image directories
+        export_images: whether to export SUP subtitles as image directories
         overwrite: whether to overwrite existing outputs
     Returns:
         subtitle extraction result
@@ -111,7 +111,7 @@ def extract_subtitles(
             languages,
             output_dir_path,
             details=details,
-            extract_sup=extract_sup,
+            export_images=export_images,
             overwrite=overwrite,
             cache_dir_path=cache_dir_path,
         )
@@ -166,7 +166,7 @@ def extract_subtitles(
                 cache_dir_path=cache_dir_path,
             )
         handled_outputs.append(output)
-        if output.stream.extension == "sup" and extract_sup:
+        if output.stream.extension == "sup" and export_images:
             handled_outputs.append(
                 _extract_sup_image_series(
                     output.stream,
@@ -266,7 +266,7 @@ def _extract_sup_file(
     *,
     cache_dir_path: Path | None,
     details: bool,
-    extract_sup: bool,
+    export_images: bool,
     overwrite: bool,
 ) -> list[SubtitleExtractionOutput]:
     """Extract or copy a SUP subtitle input file.
@@ -277,7 +277,7 @@ def _extract_sup_file(
         output_dir_path: output directory
         cache_dir_path: cache directory path
         details: whether to include expensive stream details
-        extract_sup: whether to convert SUP subtitles to image directories
+        export_images: whether to export SUP subtitles as image directories
         overwrite: whether to overwrite existing outputs
     Returns:
         outputs handled for the SUP file
@@ -320,7 +320,7 @@ def _extract_sup_file(
     ]
 
     # Optionally render the SUP file as an image directory
-    if stream.extension == "sup" and extract_sup:
+    if stream.extension == "sup" and export_images:
         outputs.append(
             _extract_sup_image_series(
                 stream,

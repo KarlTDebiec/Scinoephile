@@ -1,13 +1,13 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Functions for synchronizing multilingual subtitles."""
+"""Functions for stacking multilingual subtitles."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
+from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
-from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
@@ -25,7 +25,7 @@ def process_yue_hans_eng(
     eng_path: Path | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Process bilingual 简体粤文 and English subtitles into a synced series.
+    """Process bilingual 简体粤文 and English subtitles into a stacked series.
 
     Arguments:
         title_root_path: title root directory
@@ -53,7 +53,7 @@ def process_yue_hans_eng(
         eng = get_eng_cleaned(eng)
         eng = get_eng_flattened(eng)
 
-        yue_hans_eng = get_synced_series(yue_hans, eng)
+        yue_hans_eng = get_stacked_series(yue_hans, eng)
         yue_hans_eng.save(output_dir / "yue-Hans_eng.srt")
 
     return yue_hans_eng
@@ -65,7 +65,7 @@ def process_zho_hans_eng(
     eng_path: Path | None = None,
     overwrite: bool = False,
 ) -> Series:
-    """Process bilingual 简体中文 and English subtitles into a synced series.
+    """Process bilingual 简体中文 and English subtitles into a stacked series.
 
     Arguments:
         title_root_path: title root directory
@@ -89,7 +89,7 @@ def process_zho_hans_eng(
             eng_path = output_dir / "eng.srt"
         eng = Series.load(eng_path)
 
-        zho_hans_eng = get_synced_series(zho_hans, eng)
+        zho_hans_eng = get_stacked_series(zho_hans, eng)
         zho_hans_eng.save(output_dir / "zho-Hans_eng.srt")
 
     return zho_hans_eng

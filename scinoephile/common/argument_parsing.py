@@ -217,11 +217,11 @@ def get_validator[T](function: Callable[..., T], **kwargs: Any) -> Callable[[Any
         Returns:
             Validated value
         Raises:
-            ArgumentTypeError: If TypeError or ValueError is raised by wrapped function
+            ArgumentTypeError: If validation raises a user-facing error
         """
         try:
             return function(value, **kwargs)
-        except (TypeError, ValueError) as exc:
+        except (OSError, TypeError, ValueError) as exc:
             raise ArgumentTypeError(str(exc)) from exc
 
     return wrapped

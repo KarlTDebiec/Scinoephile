@@ -38,6 +38,12 @@ COPYRIGHT_LINE_TWO_RE = re.compile(
 RST_DOUBLE_BACKTICK_RE = re.compile(r"``[^`]+``")
 """Regex matching reStructuredText-style double backticks."""
 
+PERCENT_INTERPOLATION_RE = re.compile(
+    r"(?<!%)%(?!%)(?:\([^)]+\))?[#0\- +]*(?:\d+|\*)?"
+    r"(?:\.(?:\d+|\*))?[hlL]?[diouxXeEfFgGcrsa]"
+)
+"""Regex matching percent-style string interpolation placeholders."""
+
 EXEMPT_RETURN_NONE_NAMES = {"__init__"}
 """Function names allowed to omit a return annotation despite no returned value."""
 
@@ -51,6 +57,7 @@ EXCLUDED_DIR_NAMES = {
     "__pycache__",
     "build",
     "dist",
+    "local",
 }
 """Directory names excluded from recursive source scans."""
 
@@ -560,6 +567,14 @@ def _audit_string_interpolation(
             node.lineno,
             "uses `%` interpolation; prefer f-strings",
         )
+    if isinstance(node, ast.Call) and _is_percent_interpolation_call(node):
+        _add_note(
+            notes,
+            file_path,
+            "Strings",
+            node.lineno,
+            "uses `%` interpolation arguments; prefer f-strings",
+        )
 
 
 def _audit_print_call(
@@ -973,6 +988,24 @@ def _is_overload(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
     return "overload" in _decorator_names(node)
 
 
+def _is_percent_interpolation_call(node: ast.Call) -> bool:
+    """Check whether a call uses percent-style string interpolation arguments.
+
+    Arguments:
+        node: call node
+    Returns:
+        whether the call has a percent-format template followed by values
+    """
+    if len(node.args) < 2:
+        return False
+    template_node = node.args[0]
+    if not isinstance(template_node, ast.Constant):
+        return False
+    if not isinstance(template_node.value, str):
+        return False
+    return PERCENT_INTERPOLATION_RE.search(template_node.value) is not None
+
+
 def _is_cli_module(file_path: Path) -> bool:
     """Check whether a file belongs to the CLI package.
 
@@ -1212,7 +1245,7 @@ def audit_file(file_path: Path, notes: dict[str, list[StyleNote]]):
         file_path: source file path
         notes: notes keyed by POSIX path
     """
-    text = file_path.read_text()
+    text = file_path.read_text(encoding="utf-8")
     lines = text.splitlines()
     stripped = text.strip()
     package_name = _package_name_for(file_path)
