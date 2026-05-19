@@ -9,10 +9,12 @@ import unicodedata
 from enum import Enum
 from functools import cache
 from textwrap import dedent
+from typing import Literal
 
 from .exceptions import ScinoephileError
 
 __all__ = [
+    "ChineseScript",
     "half_punc",
     "full_punc",
     "whitespace",
@@ -32,6 +34,10 @@ __all__ = [
     "remove_non_punc_and_whitespace",
     "remove_punc_and_whitespace",
 ]
+
+
+type ChineseScript = Literal["simplified", "traditional"]
+"""Chinese script supported by text processing helpers."""
 
 
 class AnsiColor(Enum):

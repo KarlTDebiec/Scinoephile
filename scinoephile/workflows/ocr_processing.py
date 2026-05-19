@@ -7,17 +7,22 @@ from __future__ import annotations
 from dataclasses import dataclass
 from logging import getLogger, info
 from pathlib import Path
-from typing import Literal
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
-from scinoephile.image.ocr.lens import ocr_image_series_with_lens
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
+from scinoephile.core.text import ChineseScript
+from scinoephile.image.ocr.lens import get_lens_zho_code, ocr_image_series_with_lens
+from scinoephile.image.ocr.paddle import (
+    get_paddle_zho_code,
+    ocr_image_series_with_paddle,
+)
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
+from scinoephile.lang.zho.cleaning import get_zho_cleaned
 from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fused, get_zho_ocr_fuser
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
@@ -26,16 +31,12 @@ from scinoephile.media.subtitles.cache import (
 )
 
 __all__ = [
-    "ChineseScript",
     "OcrProcessingResult",
     "process_eng_ocr",
     "process_zho_ocr",
 ]
 
 logger = getLogger(__name__)
-
-type ChineseScript = Literal["simplified", "traditional"]
-"""Chinese script supported by standard Chinese OCR processing."""
 
 
 @dataclass(frozen=True)
@@ -50,13 +51,14 @@ class OcrProcessingResult:
     """Output paths keyed by output name."""
 
 
-def process_eng_ocr(  # noqa: PLR0912
+def process_eng_ocr(  # noqa: PLR0912, PLR0915
     infile_path: Path,
     output_dir_path: Path,
     *,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
     export_images: bool = False,
+    clean: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -69,6 +71,7 @@ def process_eng_ocr(  # noqa: PLR0912
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
         export_images: whether to export OCR outputs as image subtitle directories
+        clean: whether to clean OCR subtitle outputs before fusing
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
@@ -113,6 +116,28 @@ def process_eng_ocr(  # noqa: PLR0912
         tesseract.save(tesseract_path, format_="srt")
     output_paths["tesseract"] = tesseract_path
 
+    # Clean provider outputs
+    fusion_lens = lens
+    fusion_tesseract = tesseract
+    if clean:
+        lens_clean_path = output_dir_path / "lens_clean.srt"
+        if lens_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
+            fusion_lens = Series.load(lens_clean_path)
+        else:
+            fusion_lens = get_eng_cleaned(lens, remove_empty=False)
+            fusion_lens.save(lens_clean_path, format_="srt")
+        output_paths["lens_clean"] = lens_clean_path
+
+        tesseract_clean_path = output_dir_path / "tesseract_clean.srt"
+        if tesseract_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Tesseract OCR output exists: {tesseract_clean_path}")
+            fusion_tesseract = Series.load(tesseract_clean_path)
+        else:
+            fusion_tesseract = get_eng_cleaned(tesseract, remove_empty=False)
+            fusion_tesseract.save(tesseract_clean_path, format_="srt")
+        output_paths["tesseract_clean"] = tesseract_clean_path
+
     # Fusion
     fuse_path = output_dir_path / "fuse.srt"
     if fuse_path.exists() and not overwrite:
@@ -122,7 +147,7 @@ def process_eng_ocr(  # noqa: PLR0912
             provider=provider,
             additional_context=additional_context,
         )
-        fuse = get_eng_ocr_fused(lens, tesseract, processor=fuser)
+        fuse = get_eng_ocr_fused(fusion_lens, fusion_tesseract, processor=fuser)
         fuse.save(fuse_path, format_="srt")
     output_paths["fuse"] = fuse_path
 
@@ -133,7 +158,7 @@ def process_eng_ocr(  # noqa: PLR0912
     )
 
 
-def process_zho_ocr(  # noqa: PLR0912
+def process_zho_ocr(  # noqa: PLR0912, PLR0915
     infile_path: Path,
     output_dir_path: Path,
     *,
@@ -141,6 +166,7 @@ def process_zho_ocr(  # noqa: PLR0912
     cache_dir_path: Path | None = None,
     script: ChineseScript = "simplified",
     export_images: bool = False,
+    clean: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
@@ -154,23 +180,15 @@ def process_zho_ocr(  # noqa: PLR0912
         cache_dir_path: media subtitle cache directory path
         script: Chinese script to OCR, either simplified or traditional
         export_images: whether to export OCR outputs as image subtitle directories
+        clean: whether to clean OCR subtitle outputs before fusing
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
     Returns:
         OCR processing result
     """
-    if script == "simplified":
-        lens_language = "zh-CN"
-        paddle_language = "ch"
-    elif script == "traditional":
-        lens_language = "zh-TW"
-        paddle_language = "chinese_cht"
-    else:
-        raise ValueError(
-            f"{script!r} is not one of the supported Chinese scripts: "
-            "simplified, traditional"
-        )
+    lens_language = get_lens_zho_code(script)
+    paddle_language = get_paddle_zho_code(script)
 
     # Read inputs
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
@@ -210,6 +228,28 @@ def process_zho_ocr(  # noqa: PLR0912
         paddle.save(paddle_path, format_="srt")
     output_paths["paddle"] = paddle_path
 
+    # Clean provider outputs
+    fusion_lens = lens
+    fusion_paddle = paddle
+    if clean:
+        lens_clean_path = output_dir_path / "lens_clean.srt"
+        if lens_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
+            fusion_lens = Series.load(lens_clean_path)
+        else:
+            fusion_lens = get_zho_cleaned(lens, remove_empty=False)
+            fusion_lens.save(lens_clean_path, format_="srt")
+        output_paths["lens_clean"] = lens_clean_path
+
+        paddle_clean_path = output_dir_path / "paddle_clean.srt"
+        if paddle_clean_path.exists() and not overwrite:
+            logger.info(f"Cleaned PaddleOCR output exists: {paddle_clean_path}")
+            fusion_paddle = Series.load(paddle_clean_path)
+        else:
+            fusion_paddle = get_zho_cleaned(paddle, remove_empty=False)
+            fusion_paddle.save(paddle_clean_path, format_="srt")
+        output_paths["paddle_clean"] = paddle_clean_path
+
     # Fusion
     fuse_path = output_dir_path / "fuse.srt"
     if fuse_path.exists() and not overwrite:
@@ -219,7 +259,7 @@ def process_zho_ocr(  # noqa: PLR0912
             provider=provider,
             additional_context=additional_context,
         )
-        fuse = get_zho_ocr_fused(lens, paddle, processor=fuser)
+        fuse = get_zho_ocr_fused(fusion_lens, fusion_paddle, processor=fuser)
         fuse.save(fuse_path, format_="srt")
     output_paths["fuse"] = fuse_path
 
