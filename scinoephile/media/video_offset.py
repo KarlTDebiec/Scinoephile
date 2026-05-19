@@ -163,7 +163,6 @@ def get_video_offset(
     target_infile_path: Path,
     max_offset: float = 10.0,
     sample_rate: float = 2.0,
-    start_time: float | None = None,
     duration: float = 300.0,
     coarse_step: float = 0.25,
     sample_windows: int | None = None,
@@ -177,7 +176,6 @@ def get_video_offset(
         target_infile_path: target media input path
         max_offset: maximum absolute offset to search, in seconds
         sample_rate: frame sample rate in samples per second
-        start_time: media timestamp at which sampling starts, in seconds
         duration: sampled window duration in seconds
         coarse_step: coarse search step in seconds
         sample_windows: number of sampled windows
@@ -193,8 +191,6 @@ def get_video_offset(
     positive_float_min = nextafter(0.0, 1.0)
     max_offset = val_float(max_offset, min_value=positive_float_min)
     sample_rate = val_float(sample_rate, min_value=positive_float_min)
-    if start_time is not None:
-        start_time = val_float(start_time, min_value=0.0)
     duration = val_float(duration, min_value=positive_float_min)
     coarse_step = val_float(coarse_step, min_value=positive_float_min)
     if sample_windows is not None:
@@ -218,7 +214,6 @@ def get_video_offset(
         raise ScinoephileError("Could not probe reference video frame rate")
     frame_duration = float(Fraction(1, 1) / frame_rate)
     start_times = _get_sample_window_starts(
-        start_time=start_time,
         duration=duration,
         sample_windows=sample_windows,
         reference_duration=reference_metadata.duration,
@@ -387,7 +382,6 @@ def _get_frame_grid_offsets(
 
 def _get_sample_window_starts(
     *,
-    start_time: float | None,
     duration: float,
     sample_windows: int | None,
     reference_duration: float,
@@ -396,7 +390,6 @@ def _get_sample_window_starts(
     """Return sample window start times.
 
     Arguments:
-        start_time: explicit start time, if provided
         duration: per-window duration in seconds
         sample_windows: requested number of windows
         reference_duration: reference video duration in seconds
@@ -404,10 +397,6 @@ def _get_sample_window_starts(
     Returns:
         window start times in seconds
     """
-    if start_time is not None:
-        count = sample_windows or 1
-        return [round(start_time + duration * index, 6) for index in range(count)]
-
     shared_duration = min(reference_duration, target_duration)
     if duration > shared_duration:
         raise ScinoephileError(

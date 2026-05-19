@@ -49,12 +49,7 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "采样率，单位为每秒帧数（默认：%(default)s）"
         ),
-        "sample window count (default: 4 when start time is omitted)": (
-            "采样窗口数（未指定开始时间时默认：4）"
-        ),
-        "start time for sampling in seconds (default: %(default)s)": (
-            "采样开始时间，单位为秒（默认：%(default)s）"
-        ),
+        "sample window count (default: 4)": ("采样窗口数（默认：4）"),
         "target video infile": "目标视频输入文件",
     },
     "zh-hant": {
@@ -80,12 +75,7 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "取樣率，單位為每秒影格數（預設：%(default)s）"
         ),
-        "sample window count (default: 4 when start time is omitted)": (
-            "取樣視窗數（未指定開始時間時預設：4）"
-        ),
-        "start time for sampling in seconds (default: %(default)s)": (
-            "取樣開始時間，單位為秒（預設：%(default)s）"
-        ),
+        "sample window count (default: 4)": ("取樣視窗數（預設：4）"),
         "target video infile": "目標影片輸入檔",
     },
 }
@@ -147,12 +137,6 @@ class MediaOffsetCli(ScinoephileCliBase):
             help="sample rate in frames per second (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--start-time",
-            default=None,
-            type=float_arg(min_value=0.0),
-            help="start time for sampling in seconds (default: %(default)s)",
-        )
-        arg_groups["operation arguments"].add_argument(
             "--duration",
             default=300.0,
             type=float_arg(min_value=positive_float_min),
@@ -168,7 +152,7 @@ class MediaOffsetCli(ScinoephileCliBase):
             "--sample-windows",
             default=None,
             type=int_arg(min_value=1),
-            help="sample window count (default: 4 when start time is omitted)",
+            help="sample window count (default: 4)",
         )
         parser.set_defaults(_parser=parser)
 
@@ -190,7 +174,6 @@ class MediaOffsetCli(ScinoephileCliBase):
         target_infile_path: Path,
         max_offset: float,
         sample_rate: float,
-        start_time: float | None,
         duration: float,
         coarse_step: float,
         sample_windows: int | None,
@@ -203,7 +186,6 @@ class MediaOffsetCli(ScinoephileCliBase):
                 target_infile_path=target_infile_path,
                 max_offset=max_offset,
                 sample_rate=sample_rate,
-                start_time=start_time,
                 duration=duration,
                 coarse_step=coarse_step,
                 sample_windows=sample_windows,

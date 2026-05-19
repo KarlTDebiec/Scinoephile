@@ -56,8 +56,7 @@ def test_media_offset_cli_reports_offset(
             MediaOffsetCli,
             f"--reference-infile {reference_infile_path} "
             f"--target-infile {target_infile_path} "
-            "--max-offset 8 --sample-rate 1 --start-time 600 --duration 120 "
-            "--coarse-step 0.5",
+            "--max-offset 8 --sample-rate 1 --duration 120 --coarse-step 0.5",
         )
 
     get_offset.assert_called_once_with(
@@ -65,7 +64,6 @@ def test_media_offset_cli_reports_offset(
         target_infile_path=target_infile_path.resolve(),
         max_offset=8.0,
         sample_rate=1.0,
-        start_time=600.0,
         duration=120.0,
         coarse_step=0.5,
         sample_windows=None,
@@ -170,6 +168,38 @@ def test_media_offset_cli_reports_window_aggregate(
         "  Agreement: 2/2 windows",
         "  Confidence: medium",
     ]
+
+
+def test_media_offset_cli_rejects_start_time_argument(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+):
+    """Test media offset CLI no longer accepts a start time argument.
+
+    Arguments:
+        tmp_path: temporary directory provided by pytest
+        capsys: pytest output capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.mkv"
+    target_infile_path = tmp_path / "target.mkv"
+    reference_infile_path.touch()
+    target_infile_path.touch()
+
+    with (
+        pytest.raises(SystemExit),
+        patch(
+            "scinoephile.cli.media.media_offset_cli.get_video_offset",
+        ) as get_offset,
+    ):
+        run_cli_with_args(
+            MediaOffsetCli,
+            f"--reference-infile {reference_infile_path} "
+            f"--target-infile {target_infile_path} "
+            "--start-time 600",
+        )
+
+    get_offset.assert_not_called()
+    assert "unrecognized arguments: --start-time 600" in capsys.readouterr().err
 
 
 @pytest.mark.parametrize(

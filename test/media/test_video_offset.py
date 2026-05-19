@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from fractions import Fraction
+from inspect import signature
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -41,9 +42,9 @@ def test_get_video_offset_prefers_known_shift():
             reference_infile_path=Path("reference.mkv"),
             target_infile_path=Path("target.mkv"),
             sample_rate=1.0,
-            start_time=0.0,
             duration=30.0,
             coarse_step=1.0,
+            sample_windows=1,
         )
 
     assert result.offset == 1.0
@@ -81,9 +82,9 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
             target_infile_path=Path("target.mkv"),
             max_offset=2.0,
             sample_rate=24.0,
-            start_time=0.0,
             duration=3.0,
             coarse_step=0.25,
+            sample_windows=1,
         )
 
     assert result.offset == pytest.approx(-20 * frame_duration)
@@ -129,9 +130,9 @@ def test_get_video_offset_tolerates_brightness_shift():
             target_infile_path=Path("target.mkv"),
             max_offset=2.0,
             sample_rate=1.0,
-            start_time=0.0,
             duration=30.0,
             coarse_step=1.0,
+            sample_windows=1,
         )
 
     assert result.offset == 1.0
@@ -159,9 +160,9 @@ def test_get_video_offset_rejects_insufficient_matches():
                 target_infile_path=Path("target.mkv"),
                 max_offset=2.0,
                 sample_rate=1.0,
-                start_time=0.0,
                 duration=30.0,
                 coarse_step=1.0,
+                sample_windows=1,
             )
 
 
@@ -188,8 +189,8 @@ def test_get_video_offset_rejects_missing_reference_frame_rate():
                 reference_infile_path=Path("reference.mkv"),
                 target_infile_path=Path("target.mkv"),
                 sample_rate=1.0,
-                start_time=0.0,
                 duration=30.0,
+                sample_windows=1,
             )
 
 
@@ -260,9 +261,9 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
             target_infile_path=Path("target.mkv"),
             max_offset=2.0,
             sample_rate=1.0,
-            start_time=0.0,
             duration=30.0,
             coarse_step=1.0,
+            sample_windows=1,
         )
 
     assert result.offset == 1.0
@@ -276,6 +277,11 @@ def test_get_offsets_clamps_to_requested_end():
 
     assert offsets == [-1.0, -0.3, 0.4, 1.0]
     assert max(offsets) == 1.0
+
+
+def test_get_video_offset_has_no_start_time_parameter():
+    """Test public video offset detection does not expose start time."""
+    assert "start_time" not in signature(get_video_offset).parameters
 
 
 def test_sample_video_frames_normalizes_brightness():
@@ -328,14 +334,6 @@ def test_sample_video_frames_normalizes_brightness():
                 sample_rate=0.0,
             ),
             "0.0 is less than minimum value",
-        ),
-        (
-            lambda: get_video_offset(
-                reference_infile_path=Path("reference.mkv"),
-                target_infile_path=Path("target.mkv"),
-                start_time=-1.0,
-            ),
-            "-1.0 is less than minimum value of 0.0",
         ),
         (
             lambda: get_video_offset(
@@ -401,7 +399,8 @@ def test_get_video_offset_propagates_sampling_failures():
             get_video_offset(
                 reference_infile_path=Path("reference.mkv"),
                 target_infile_path=Path("target.mkv"),
-                start_time=0.0,
+                duration=30.0,
+                sample_windows=1,
             )
 
 
