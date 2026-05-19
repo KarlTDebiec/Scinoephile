@@ -17,7 +17,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.timing import format_time_ms
-from scinoephile.media.video_offset import (
+from scinoephile.media.offset.video import (
     VideoOffsetResult,
     VideoOffsetWindowResult,
     get_video_offset,

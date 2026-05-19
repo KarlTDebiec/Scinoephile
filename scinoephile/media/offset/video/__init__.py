@@ -2,17 +2,22 @@
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
 """Video offset detection from sampled frame comparisons.
 
-This module contains logic adapted from `vs_align` by pifroggi:
+This package contains logic adapted from `vs_align` by pifroggi:
 https://github.com/pifroggi/vs_align
 
 See `docs/THIRD_PARTY_NOTICES.md` for license details.
+
+Package hierarchy (modules may import from any above):
+* _video_frame_sample / _video_metadata / video_offset_aggregate
+  / video_offset_candidate
+* video_offset_window_result
+* video_offset_result
 """
 
 from __future__ import annotations
 
 from bisect import bisect_left
 from collections.abc import Mapping
-from dataclasses import dataclass
 from fractions import Fraction
 from logging import getLogger
 from math import ceil, floor, nextafter
@@ -26,6 +31,13 @@ import numpy as np
 from scinoephile.common.validation import val_float, val_int
 from scinoephile.core.exceptions import ScinoephileError
 
+from ._video_frame_sample import _VideoFrameSample
+from ._video_metadata import _VideoMetadata
+from .video_offset_aggregate import VideoOffsetAggregate
+from .video_offset_candidate import VideoOffsetCandidate
+from .video_offset_result import VideoOffsetResult
+from .video_offset_window_result import VideoOffsetWindowResult
+
 __all__ = [
     "VideoOffsetAggregate",
     "VideoOffsetCandidate",
@@ -35,126 +47,6 @@ __all__ = [
 ]
 
 logger = getLogger(__name__)
-
-
-@dataclass(frozen=True)
-class _VideoFrameSample:
-    """Sampled video frame at a timestamp."""
-
-    time: float
-    """Timestamp of the sampled frame in seconds."""
-
-    frame: np.ndarray
-    """Normalized grayscale frame data."""
-
-
-@dataclass(frozen=True)
-class _VideoMetadata:
-    """Video metadata needed for frame-grid offset detection."""
-
-    duration: float
-    """Video duration in seconds."""
-
-    frame_rate: Fraction | None
-    """Video frame rate, when needed and available."""
-
-
-@dataclass(frozen=True)
-class VideoOffsetCandidate:
-    """Score for one candidate video offset."""
-
-    offset: float
-    """Target timestamp minus reference timestamp in seconds."""
-
-    matched_count: int
-    """Number of reference samples matched against target samples."""
-
-    score: float
-    """Aggregate frame difference score; lower values are better."""
-
-    offset_frames: int | None = None
-    """Target timestamp minus reference timestamp in reference frames."""
-
-
-@dataclass(frozen=True)
-class VideoOffsetAggregate:
-    """Aggregate result across multiple sampled windows."""
-
-    offset: float
-    """Aggregate target timestamp minus reference timestamp in seconds."""
-
-    offset_frames: int
-    """Aggregate target timestamp minus reference timestamp in reference frames."""
-
-    mean_frames: float
-    """Mean window offset in reference frames."""
-
-    median_frames: int
-    """Median window offset in reference frames."""
-
-    stdev_frames: float
-    """Population standard deviation of window offsets in reference frames."""
-
-    min_frames: int
-    """Minimum window offset in reference frames."""
-
-    max_frames: int
-    """Maximum window offset in reference frames."""
-
-    agreeing_count: int
-    """Number of windows that agree with the aggregate frame offset."""
-
-    total_count: int
-    """Number of valid windows in the aggregate."""
-
-
-@dataclass(frozen=True)
-class VideoOffsetWindowResult:
-    """Visual offset estimate for one sampled window."""
-
-    start_time: float
-    """Window start time in seconds."""
-
-    offset: float
-    """Estimated target timestamp minus reference timestamp in seconds."""
-
-    confidence: str
-    """Confidence label for the estimate."""
-
-    best: VideoOffsetCandidate
-    """Best-scoring candidate offset."""
-
-    second_best: VideoOffsetCandidate | None
-    """Second-best candidate offset, if available."""
-
-    offset_frames: int
-    """Target timestamp minus reference timestamp in reference frames."""
-
-
-@dataclass(frozen=True)
-class VideoOffsetResult:
-    """Best visual offset estimate between two videos."""
-
-    offset: float
-    """Estimated target timestamp minus reference timestamp in seconds."""
-
-    confidence: str
-    """Confidence label for the estimate."""
-
-    best: VideoOffsetCandidate
-    """Best-scoring candidate offset."""
-
-    second_best: VideoOffsetCandidate | None
-    """Second-best candidate offset, if available."""
-
-    offset_frames: int
-    """Estimated target timestamp minus reference timestamp in reference frames."""
-
-    windows: tuple[VideoOffsetWindowResult, ...] = ()
-    """Per-window results when multiple windows were sampled."""
-
-    aggregate: VideoOffsetAggregate | None = None
-    """Aggregate result when multiple windows were sampled."""
 
 
 def get_video_offset(

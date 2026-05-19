@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 
 from scinoephile.core import ScinoephileError
-from scinoephile.media.video_offset import (
+from scinoephile.media.offset.video import (
     VideoOffsetResult,
     _get_offsets,
     _sample_video_frames,
@@ -30,11 +30,11 @@ def test_get_video_offset_prefers_known_shift():
 
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -66,14 +66,14 @@ def test_get_video_offset_uses_reference_frame_grid_for_fine_search():
 
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[
                 _get_probe(frame_rate="24000/1001"),
                 _get_probe(frame_rate="24000/1001"),
             ],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -117,11 +117,11 @@ def test_get_video_offset_tolerates_brightness_shift():
 
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -147,11 +147,11 @@ def test_get_video_offset_rejects_insufficient_matches():
     with pytest.raises(ScinoephileError, match="Could not find enough"):
         with (
             patch(
-                "scinoephile.media.video_offset.ffmpeg.probe",
+                "scinoephile.media.offset.video.ffmpeg.probe",
                 side_effect=[_get_probe(), _get_probe()],
             ),
             patch(
-                "scinoephile.media.video_offset._sample_video_frames",
+                "scinoephile.media.offset.video._sample_video_frames",
                 side_effect=[reference_samples, target_samples],
             ),
         ):
@@ -174,14 +174,14 @@ def test_get_video_offset_rejects_missing_reference_frame_rate():
     with pytest.raises(ScinoephileError, match="reference video frame rate"):
         with (
             patch(
-                "scinoephile.media.video_offset.ffmpeg.probe",
+                "scinoephile.media.offset.video.ffmpeg.probe",
                 side_effect=[
                     _get_probe(frame_rate="0/0"),
                     _get_probe(frame_rate="24/1"),
                 ],
             ),
             patch(
-                "scinoephile.media.video_offset._sample_video_frames",
+                "scinoephile.media.offset.video._sample_video_frames",
                 side_effect=[reference_samples, target_samples],
             ),
         ):
@@ -207,14 +207,14 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
 
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[
                 _get_probe(duration=100.0, frame_rate="24/1"),
                 _get_probe(duration=100.0, frame_rate="24/1"),
             ],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=side_effect,
         ) as sample_video_frames,
     ):
@@ -248,11 +248,11 @@ def test_get_video_offset_uses_separate_second_best_for_confidence():
 
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=[reference_samples, target_samples],
         ),
     ):
@@ -300,7 +300,7 @@ def test_sample_video_frames_normalizes_brightness():
     ).tobytes()
 
     with patch(
-        "scinoephile.media.video_offset.ffmpeg.input",
+        "scinoephile.media.offset.video.ffmpeg.input",
     ) as input_:
         input_.return_value.filter.return_value.filter.return_value.filter.return_value.output.return_value.run.return_value = (  # noqa: E501
             output,
@@ -392,11 +392,11 @@ def test_get_video_offset_propagates_sampling_failures():
     """Test sampling failures are propagated as Scinoephile errors."""
     with (
         patch(
-            "scinoephile.media.video_offset.ffmpeg.probe",
+            "scinoephile.media.offset.video.ffmpeg.probe",
             side_effect=[_get_probe(), _get_probe()],
         ),
         patch(
-            "scinoephile.media.video_offset._sample_video_frames",
+            "scinoephile.media.offset.video._sample_video_frames",
             side_effect=ScinoephileError("Could not sample frames"),
         ),
     ):
