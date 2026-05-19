@@ -9,8 +9,10 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from scinoephile.core.text import ChineseScript
 from scinoephile.image.ocr.paddle import (
     PaddleOcrRecognizer,
+    get_paddle_zho_code,
     ocr_image_series_with_paddle,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -125,3 +127,20 @@ def test_ocr_image_series_with_paddle_uses_runtime_cache(
 
     assert [event.text for event in text_series] == ["en"]
     assert observed_cache_dir_paths == [cache_dir_path]
+
+
+@pytest.mark.parametrize(
+    ("script", "expected"),
+    [
+        ("simplified", "ch"),
+        ("traditional", "chinese_cht"),
+    ],
+)
+def test_get_paddle_zho_code(script: ChineseScript, expected: str):
+    """Test PaddleOCR language code selection for Chinese scripts.
+
+    Arguments:
+        script: Chinese script
+        expected: expected PaddleOCR language code
+    """
+    assert get_paddle_zho_code(script) == expected
