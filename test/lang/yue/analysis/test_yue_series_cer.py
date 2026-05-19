@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.lang.yue.analysis import YueSeriesCER
+from scinoephile.lang.yue.analysis import YueLineCER, YueSeriesCER
 
 
 def _get_series(*texts: str) -> Series:
@@ -65,3 +65,42 @@ def test_yue_series_cer_keeps_content_changes():
     assert result.deletions == 0
     assert result.correct == 6
     assert result.reference_length == 7
+
+
+def test_yue_line_cer_uses_yue_normalized_reference_length():
+    """Test line CER divides by the Yue-normalized reference length."""
+    result = YueLineCER("爹阿爹灿", "爹　爹康")
+
+    assert result.cer == 1 / 3
+    assert result.substitutions == 1
+    assert result.insertions == 0
+    assert result.deletions == 0
+    assert result.correct == 2
+    assert result.reference_length == 3
+
+
+def test_yue_series_cer_uses_yue_normalized_reference_length():
+    """Test series CER divides by the Yue-normalized reference length."""
+    result = YueSeriesCER(
+        _get_series("爹阿爹灿"),
+        _get_series("爹　爹康"),
+    )
+
+    assert result.cer == 1 / 3
+    assert result.substitutions == 1
+    assert result.insertions == 0
+    assert result.deletions == 0
+    assert result.correct == 2
+    assert result.reference_length == 3
+
+
+def test_yue_series_cer_keeps_lexical_spacing_particles():
+    """Test series CER counts lexical spacing particle deletions."""
+    result = YueSeriesCER(_get_series("阿灿"), _get_series("灿"))
+
+    assert result.cer == 1 / 2
+    assert result.substitutions == 0
+    assert result.insertions == 0
+    assert result.deletions == 1
+    assert result.correct == 1
+    assert result.reference_length == 2

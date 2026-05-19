@@ -77,6 +77,23 @@ def test_yue_series_diff_keeps_content_changes():
     assert messages[0].kind == LineDiffKind.EDIT
 
 
+def test_yue_series_diff_keeps_lexical_spacing_particles():
+    """Test Cantonese diffing reports lexical spacing particle deletions."""
+    diff = YueSeriesDiff(_get_series("阿灿"), _get_series("灿"))
+
+    messages = list(diff)
+
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.EDIT
+
+
+def test_yue_series_diff_skips_empty_normalized_lines():
+    """Test Cantonese diffing ignores lines empty after Yue normalization."""
+    diff = YueSeriesDiff(_get_series("！"), _get_series(""))
+
+    assert list(diff) == []
+
+
 def test_yue_series_diff_colored_equal_highlights_ignored_diffs():
     """Test colored equal output highlights ignored Cantonese variants."""
     diff = YueSeriesDiff(_get_series("辛苦啦！少爷"), _get_series("辛苦喇！少爷"))

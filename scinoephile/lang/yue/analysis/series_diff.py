@@ -69,13 +69,14 @@ class YueSeriesDiff(SeriesDiff):
             records = []
             for line in subtitle.text_with_newline.splitlines():
                 stripped = line.strip()
-                if stripped:
+                norm = get_yue_diff_normalized(stripped)
+                if norm:
                     records.append(
                         _SeriesDiffLineRecord(
                             idx=line_idx,
                             event_idx=event_idx,
                             text=stripped,
-                            norm=get_yue_diff_normalized(stripped),
+                            norm=norm,
                         )
                     )
                     line_idx += 1

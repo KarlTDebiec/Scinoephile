@@ -43,3 +43,37 @@ def test_multi_cer_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
     assert "Insertions: 0" in output
     assert "Deletions: 0" in output
     assert "Reference length: 3" in output
+
+
+def test_multi_cer_cli_yue(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+    """Test multi cer CLI can use Yue-specific CER normalization.
+
+    Arguments:
+        tmp_path: temporary path fixture
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n爹阿爹灿\n",
+        encoding="utf-8",
+    )
+    candidate_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n爹　爹康\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        MultiCerCli,
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path} "
+        "--yue",
+    )
+    output = capsys.readouterr().out
+
+    assert "CER: 0.3333333333333333" in output
+    assert "Correct: 2" in output
+    assert "Substitutions: 1" in output
+    assert "Insertions: 0" in output
+    assert "Deletions: 0" in output
+    assert "Reference length: 3" in output

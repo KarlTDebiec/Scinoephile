@@ -8,6 +8,7 @@ from argparse import Action
 
 import pytest
 
+from scinoephile.cli.multi.multi_diff_cli import MultiDiffCli
 from scinoephile.cli.multi.multi_stack_cli import MultiStackCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
@@ -52,6 +53,14 @@ def test_custom_choice_validators_use_metavar_not_choices(
 
     assert action.choices is None
     assert action.metavar == metavar
+
+
+def test_simple_choice_arguments_use_argparse_choices():
+    """Test simple CLI-only choices use argparse choices directly."""
+    action = _get_action(MultiDiffCli, "--format")
+
+    assert action.choices == ["normal", "aligned"]
+    assert action.metavar is None
 
 
 def _get_action(cli: type[CommandLineInterface], option: str) -> Action:

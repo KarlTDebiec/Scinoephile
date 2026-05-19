@@ -10,6 +10,7 @@ from pathlib import Path
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.common.argument_parsing import get_arg_groups_by_name, input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.lang.yue.analysis import YueSeriesCER
 
 __all__ = ["MultiCerCli"]
 
@@ -31,6 +32,7 @@ MULTI_CER_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'subtitle infile for reference series or "-" for stdin': (
             '参考序列的字幕输入文件，或用 "-" 表示标准输入'
         ),
+        "use Cantonese-flexible Yue analysis": "使用粤语弹性分析",
     },
     "zh-hant": {
         (
@@ -49,6 +51,7 @@ MULTI_CER_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'subtitle infile for reference series or "-" for stdin': (
             '參考序列的字幕輸入檔，或用 "-" 表示標準輸入'
         ),
+        "use Cantonese-flexible Yue analysis": "使用粵語彈性分析",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -74,6 +77,7 @@ class MultiCerCli(ScinoephileCliBase):
         arg_groups = get_arg_groups_by_name(
             parser,
             "input arguments",
+            "operation arguments",
             optional_arguments_name="additional arguments",
         )
 
@@ -93,6 +97,13 @@ class MultiCerCli(ScinoephileCliBase):
             help='subtitle infile for candidate series or "-" for stdin',
         )
 
+        # Operation arguments
+        arg_groups["operation arguments"].add_argument(
+            "--yue",
+            action="store_true",
+            help="use Cantonese-flexible Yue analysis",
+        )
+
     @classmethod
     def name(cls) -> str:
         """Name of this tool used to define it when it is a subparser.
@@ -109,6 +120,7 @@ class MultiCerCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         reference_infile_path: Path | str,
         candidate_infile_path: Path | str,
+        yue: bool,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -123,7 +135,10 @@ class MultiCerCli(ScinoephileCliBase):
         candidate_series = read_series(parser, candidate_infile_path, allow_stdin=True)
 
         # Perform operations
-        result = SeriesCER(reference_series, candidate_series)
+        cer_cls = SeriesCER
+        if yue:
+            cer_cls = YueSeriesCER
+        result = cer_cls(reference_series, candidate_series)
 
         # Write outputs
         print(result)

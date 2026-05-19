@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Literal
 
 from scinoephile.analysis.diff import SeriesDiff
 from scinoephile.common.argument_parsing import (
@@ -14,6 +15,7 @@ from scinoephile.common.argument_parsing import (
     input_file_arg,
 )
 from scinoephile.core.cli import ScinoephileCliBase, read_series
+from scinoephile.lang.yue.analysis import YueSeriesDiff
 
 __all__ = ["MultiDiffCli"]
 
@@ -23,6 +25,9 @@ MULTI_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for multi-series subtitle diffs": (
             "多序列字幕差异命令行界面"
         ),
+        (
+            "diff output format (options: normal, aligned; default: normal)"
+        ): "差异输出格式（选项：normal、aligned；默认：normal）",
         "series label for candidate output in diff messages (default: candidate)": (
             "差异消息中候选输出的序列标签（默认：candidate）"
         ),
@@ -37,12 +42,16 @@ MULTI_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'reference subtitle infile or "-" for stdin': (
             '参考字幕输入文件，或用 "-" 表示标准输入'
         ),
+        "use Cantonese-flexible Yue analysis": "使用粤语弹性分析",
     },
     "zh-hant": {
         "calculate the diff between two series": "計算兩個序列之間的差異",
         "command-line interface for multi-series subtitle diffs": (
             "多序列字幕差異命令列介面"
         ),
+        (
+            "diff output format (options: normal, aligned; default: normal)"
+        ): "差異輸出格式（選項：normal、aligned；預設：normal）",
         "series label for candidate output in diff messages (default: candidate)": (
             "差異訊息中候選輸出的序列標籤（預設：candidate）"
         ),
@@ -57,6 +66,7 @@ MULTI_DIFF_LOCALIZATIONS: dict[str, dict[str, str]] = {
         'reference subtitle infile or "-" for stdin': (
             '參考字幕輸入檔，或用 "-" 表示標準輸入'
         ),
+        "use Cantonese-flexible Yue analysis": "使用粵語彈性分析",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -110,8 +120,20 @@ class MultiDiffCli(ScinoephileCliBase):
             type=float_arg(min_value=0.0, max_value=1.0),
             help="similarity threshold used to pair replacements (default: 0.6)",
         )
+        arg_groups["operation arguments"].add_argument(
+            "--yue",
+            action="store_true",
+            help="use Cantonese-flexible Yue analysis",
+        )
 
         # Output arguments
+        arg_groups["output arguments"].add_argument(
+            "--format",
+            choices=["normal", "aligned"],
+            default="normal",
+            dest="output_format",
+            help="diff output format (options: normal, aligned; default: normal)",
+        )
         arg_groups["output arguments"].add_argument(
             "--reference-label",
             default="reference",
@@ -147,6 +169,8 @@ class MultiDiffCli(ScinoephileCliBase):
         reference_infile_path: Path | str,
         candidate_infile_path: Path | str,
         similarity_cutoff: float,
+        yue: bool,
+        output_format: Literal["normal", "aligned"],
         reference_label: str,
         candidate_label: str,
     ):
@@ -167,7 +191,10 @@ class MultiDiffCli(ScinoephileCliBase):
         )
 
         # Perform operations
-        diff = SeriesDiff(
+        diff_cls = SeriesDiff
+        if yue:
+            diff_cls = YueSeriesDiff
+        diff = diff_cls(
             reference_subtitle_series,
             candidate_subtitle_series,
             one_lbl=reference_label,
@@ -179,6 +206,9 @@ class MultiDiffCli(ScinoephileCliBase):
         line_diffs = list(diff)
         if not line_diffs:
             print("No differences found.")
+            return
+        if output_format == "aligned":
+            print(diff.get_stacked_str(color=True), end="")
             return
         for line_diff in line_diffs:
             print(line_diff)

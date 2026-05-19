@@ -85,12 +85,16 @@ class YueLineDiff(LineDiff):
     def _get_yue_delete_chars(
         column: LineAlignmentPair,
         *,
+        one_text: str,
+        one_pos: int,
         color: bool,
     ) -> tuple[str, str]:
         """Get output characters for a deleted alignment column.
 
         Arguments:
             column: alignment column to render
+            one_text: first text containing the deleted character
+            one_pos: first-side character position
             color: whether to emit ANSI color escapes
         Returns:
             first- and second-side output characters
@@ -98,7 +102,11 @@ class YueLineDiff(LineDiff):
         assert column.one is not None
         one_char = column.one
         if color:
-            if is_yue_diff_display_ignorable_char(column.one):
+            if is_yue_diff_display_ignorable_char(
+                column.one,
+                text=one_text,
+                char_pos=one_pos,
+            ):
                 one_char = YueLineDiff._colorize_ignored_diff(one_char)
             else:
                 one_char = colorize(one_char, AnsiColor.RED)
@@ -153,11 +161,15 @@ class YueLineDiff(LineDiff):
             elif column.operation == LineAlignmentOperation.DELETE:
                 one_char, two_char = YueLineDiff._get_yue_delete_chars(
                     column,
+                    one_text=one_text,
+                    one_pos=one_pos,
                     color=color,
                 )
             else:
                 one_char, two_char = YueLineDiff._get_yue_insert_chars(
                     column,
+                    two_text=two_text,
+                    two_pos=two_pos,
                     color=color,
                 )
             one_out.append(one_char)
@@ -177,12 +189,16 @@ class YueLineDiff(LineDiff):
     def _get_yue_insert_chars(
         column: LineAlignmentPair,
         *,
+        two_text: str,
+        two_pos: int,
         color: bool,
     ) -> tuple[str, str]:
         """Get output characters for an inserted alignment column.
 
         Arguments:
             column: alignment column to render
+            two_text: second text containing the inserted character
+            two_pos: second-side character position
             color: whether to emit ANSI color escapes
         Returns:
             first- and second-side output characters
@@ -190,7 +206,11 @@ class YueLineDiff(LineDiff):
         assert column.two is not None
         two_char = column.two
         if color:
-            if is_yue_diff_display_ignorable_char(column.two):
+            if is_yue_diff_display_ignorable_char(
+                column.two,
+                text=two_text,
+                char_pos=two_pos,
+            ):
                 two_char = YueLineDiff._colorize_ignored_diff(two_char)
             else:
                 two_char = colorize(two_char, AnsiColor.BLUE)

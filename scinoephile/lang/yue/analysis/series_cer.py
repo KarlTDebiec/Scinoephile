@@ -7,8 +7,8 @@ from __future__ import annotations
 from scinoephile.analysis.character_error_rate import SeriesCER
 from scinoephile.analysis.diff import LineDiffKind
 from scinoephile.core.subtitles import Series
-from scinoephile.core.text import remove_punc_and_whitespace
 
+from .character_equivalence import get_yue_diff_normalized
 from .line_cer import YueLineCER
 from .series_diff import YueSeriesDiff
 
@@ -18,6 +18,23 @@ __all__ = ["YueSeriesCER"]
 class YueSeriesCER(SeriesCER):
     """Cantonese-flexible series-level character error rate."""
 
+    @staticmethod
+    def _get_normalized_reference_text(series: Series) -> str:
+        """Get Yue-normalized series text for CER reference length.
+
+        Arguments:
+            series: subtitle series to normalize
+        Returns:
+            Yue-normalized reference text
+        """
+        normalized_lines = []
+        for event in series:
+            for line in event.text_with_newline.splitlines():
+                norm = get_yue_diff_normalized(line.strip())
+                if norm:
+                    normalized_lines.append(norm)
+        return "".join(normalized_lines)
+
     def _init_metrics(self, reference: Series, candidate: Series):
         """Initialize metrics by comparing subtitle series.
 
@@ -25,9 +42,7 @@ class YueSeriesCER(SeriesCER):
             reference: reference subtitle series
             candidate: candidate subtitle series
         """
-        reference_text = remove_punc_and_whitespace(
-            "".join(event.text_with_newline for event in reference)
-        )
+        reference_text = self._get_normalized_reference_text(reference)
         series_diff = YueSeriesDiff(reference, candidate)
 
         self.substitutions = 0

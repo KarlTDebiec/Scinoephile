@@ -106,6 +106,73 @@ def test_multi_diff_cli_identical_series_prints_no_differences(
     assert output == "No differences found.\n"
 
 
+def test_multi_diff_cli_yue_suppresses_discretionary_diffs(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test multi diff CLI can use Yue-specific diff normalization.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n辛苦啦！少爷\n",
+        encoding="utf-8",
+    )
+    candidate_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\n辛苦喇！少爷\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        MultiDiffCli,
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path} "
+        "--yue",
+    )
+    output = capsys.readouterr().out
+
+    assert output == "No differences found.\n"
+
+
+def test_multi_diff_cli_aligned_format(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture,
+):
+    """Test multi diff CLI can output color-coded aligned diffs.
+
+    Arguments:
+        tmp_path: temporary path
+        capsys: pytest stdout/stderr capture fixture
+    """
+    reference_infile_path = tmp_path / "reference.srt"
+    candidate_infile_path = tmp_path / "candidate.srt"
+    reference_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\nabc\n",
+        encoding="utf-8",
+    )
+    candidate_infile_path.write_text(
+        "1\n00:00:00,000 --> 00:00:01,000\naxc\n",
+        encoding="utf-8",
+    )
+
+    run_cli_with_args(
+        MultiDiffCli,
+        f"--reference-infile {reference_infile_path} "
+        f"--candidate-infile {candidate_infile_path} "
+        "--format aligned",
+    )
+    output = capsys.readouterr().out
+
+    assert output.startswith("1 1\n")
+    assert "\x1b[35mb\x1b[0m" in output
+    assert "\x1b[35mx\x1b[0m" in output
+    assert "edit:" not in output
+
+
 def test_multi_diff_cli_rejects_old_one_two_flags(tmp_path: Path):
     """Test multi diff rejects the old one/two flags.
 

@@ -8,7 +8,6 @@ from math import inf
 
 from scinoephile.analysis.character_error_rate import LineCER
 from scinoephile.analysis.line_alignment import LineAlignment, LineAlignmentOperation
-from scinoephile.core.text import remove_punc_and_whitespace
 
 from .character_equivalence import get_yue_diff_normalized
 
@@ -28,11 +27,11 @@ class YueLineCER(LineCER):
         self.reference = reference
         self.candidate = candidate
 
-        self.normalized_reference = remove_punc_and_whitespace(reference)
-        self.normalized_candidate = remove_punc_and_whitespace(candidate)
+        self.normalized_reference = get_yue_diff_normalized(reference)
+        self.normalized_candidate = get_yue_diff_normalized(candidate)
         self.alignment = LineAlignment(
-            get_yue_diff_normalized(reference),
-            get_yue_diff_normalized(candidate),
+            self.normalized_reference,
+            self.normalized_candidate,
         )
 
         self.substitutions = 0
