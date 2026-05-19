@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import ClassVar
 
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
@@ -24,57 +23,59 @@ from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 
 __all__ = ["OcrValidateCli"]
 
+OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "command-line interface for OCR subtitle validation": (
+            "OCR 字幕校验命令行界面"
+        ),
+        "directory in which to save validation image outputs": (
+            "保存校验图像输出的目录"
+        ),
+        "language of the OCR text to validate (eng or zho)": (
+            "要校验的 OCR 文本语言（eng 或 zho）"
+        ),
+        "OCR image subtitle infile path (directory containing index.html and png "
+        "files, or a .sup file)": (
+            "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
+        ),
+        "overwrite outfile directory if it exists": "若输出目录已存在则覆盖",
+        "prompt for interactive validation decisions": "提示进行交互式校验决策",
+        "stop validation after this subtitle index": "校验到此字幕索引后停止",
+        "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
+        "maintainer option: write validation data updates to repo data": (
+            "维护者选项：将校验数据更新写入仓库数据"
+        ),
+    },
+    "zh-hant": {
+        "command-line interface for OCR subtitle validation": (
+            "OCR 字幕驗證命令列介面"
+        ),
+        "directory in which to save validation image outputs": (
+            "儲存驗證影像輸出的目錄"
+        ),
+        "language of the OCR text to validate (eng or zho)": (
+            "要驗證的 OCR 文字語言（eng 或 zho）"
+        ),
+        "OCR image subtitle infile path (directory containing index.html and png "
+        "files, or a .sup file)": (
+            "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
+        ),
+        "overwrite outfile directory if it exists": "若輸出目錄已存在則覆寫",
+        "prompt for interactive validation decisions": "提示進行互動式驗證決策",
+        "stop validation after this subtitle index": "驗證到此字幕索引後停止",
+        "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
+        "maintainer option: write validation data updates to repo data": (
+            "維護者選項：將驗證資料更新寫入儲存庫資料"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "command-line interface for OCR subtitle validation": (
-                "OCR 字幕校验命令行界面"
-            ),
-            "directory in which to save validation image outputs": (
-                "保存校验图像输出的目录"
-            ),
-            "language of the OCR text to validate (eng or zho)": (
-                "要校验的 OCR 文本语言（eng 或 zho）"
-            ),
-            "OCR image subtitle infile path (directory containing index.html and png "
-            "files, or a .sup file)": (
-                "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 "
-                ".sup 文件）"
-            ),
-            "overwrite outfile directory if it exists": "若输出目录已存在则覆盖",
-            "prompt for interactive validation decisions": "提示进行交互式校验决策",
-            "stop validation after this subtitle index": "校验到此字幕索引后停止",
-            "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
-            "maintainer option: write validation data updates to repo data": (
-                "维护者选项：将校验数据更新写入仓库数据"
-            ),
-        },
-        "zh-hant": {
-            "command-line interface for OCR subtitle validation": (
-                "OCR 字幕驗證命令列介面"
-            ),
-            "directory in which to save validation image outputs": (
-                "儲存驗證影像輸出的目錄"
-            ),
-            "language of the OCR text to validate (eng or zho)": (
-                "要驗證的 OCR 文字語言（eng 或 zho）"
-            ),
-            "OCR image subtitle infile path (directory containing index.html and png "
-            "files, or a .sup file)": (
-                "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
-            ),
-            "overwrite outfile directory if it exists": "若輸出目錄已存在則覆寫",
-            "prompt for interactive validation decisions": "提示進行互動式驗證決策",
-            "stop validation after this subtitle index": "驗證到此字幕索引後停止",
-            "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
-            "maintainer option: write validation data updates to repo data": (
-                "維護者選項：將驗證資料更新寫入儲存庫資料"
-            ),
-        },
-    }
+    localizations = OCR_VALIDATE_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
