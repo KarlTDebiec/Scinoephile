@@ -37,6 +37,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "cache directory for extracted media subtitle artifacts (default: "
         "%(default)s)": "提取媒体字幕产物的缓存目录（默认：%(default)s）",
+        "clean OCR subtitle outputs before fusing": "在融合前清理 OCR 字幕输出",
         "directory where OCR processing outputs will be written": (
             "写入 OCR 处理输出的目录"
         ),
@@ -62,6 +63,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hant": {
         "cache directory for extracted media subtitle artifacts (default: "
         "%(default)s)": "提取媒體字幕產物的快取目錄（預設：%(default)s）",
+        "clean OCR subtitle outputs before fusing": "在融合前清理 OCR 字幕輸出",
         "directory where OCR processing outputs will be written": (
             "寫入 OCR 處理輸出的目錄"
         ),
@@ -145,6 +147,11 @@ class OcrProcessCli(ScinoephileCliBase):
             help="script for standard Chinese OCR (default: simplified)",
         )
         arg_groups["operation arguments"].add_argument(
+            "--clean",
+            action="store_true",
+            help="clean OCR subtitle outputs before fusing",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
@@ -197,6 +204,7 @@ class OcrProcessCli(ScinoephileCliBase):
         stream_index: int | None,
         language: str,
         script: ChineseScript | None,
+        clean: bool,
         cache_dir_path: Path,
         llm_provider_name: str,
         llm_model_name: str | None,
@@ -223,6 +231,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     output_dir_path=output_dir_path,
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
+                    clean=clean,
                     export_images=export_images,
                     overwrite=overwrite,
                     provider=provider,
@@ -235,6 +244,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
                     script=script or "simplified",
+                    clean=clean,
                     export_images=export_images,
                     overwrite=overwrite,
                     provider=provider,
