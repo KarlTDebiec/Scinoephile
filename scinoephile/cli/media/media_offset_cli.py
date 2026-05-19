@@ -253,37 +253,26 @@ class MediaOffsetCli(ScinoephileCliBase):
         Returns:
             human-readable result
         """
-        lines = [
+        window_lines = [
             MediaOffsetCli._get_window_summary(index, window)
             for index, window in enumerate(result.windows, start=1)
         ]
-        aggregate = result.aggregate
-        if aggregate is None:
-            return "\n".join(lines)
+        agg = result.aggregate
+        if agg is None:
+            return "\n".join(window_lines)
 
-        lines.extend(
-            [
-                "",
-                "Aggregate:",
-                (
-                    f"  Offset: {aggregate.offset_frames:+d} frames "
-                    f"({aggregate.offset:+.6f} s)"
-                ),
-                f"  Mean: {aggregate.mean_frames:+.2f} frames",
-                f"  Median: {aggregate.median_frames:+d} frames",
-                f"  Stdev: {aggregate.stdev_frames:.2f} frames",
-                (
-                    f"  Range: {aggregate.min_frames:+d} to "
-                    f"{aggregate.max_frames:+d} frames"
-                ),
-                (
-                    f"  Agreement: {aggregate.agreeing_count}/"
-                    f"{aggregate.total_count} windows"
-                ),
-                f"  Confidence: {result.confidence}",
-            ]
-        )
-        return "\n".join(lines)
+        aggregate_lines = [
+            "",
+            "Aggregate:",
+            f"  Offset: {agg.offset_frames:+d} frames ({agg.offset:+.6f} s)",
+            f"  Mean: {agg.mean_frames:+.2f} frames",
+            f"  Median: {agg.median_frames:+d} frames",
+            f"  Stdev: {agg.stdev_frames:.2f} frames",
+            f"  Range: {agg.min_frames:+d} to {agg.max_frames:+d} frames",
+            f"  Agreement: {agg.agreeing_count}/{agg.total_count} windows",
+            f"  Confidence: {result.confidence}",
+        ]
+        return "\n".join([*window_lines, *aggregate_lines])
 
     @staticmethod
     def _get_window_summary(index: int, window: VideoOffsetWindowResult) -> str:
