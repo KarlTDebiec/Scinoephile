@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from typing import Any, ClassVar
+from typing import Any
 
 from scinoephile.core.cli import ScinoephileCliBase
 
@@ -17,20 +17,23 @@ from .dictionary_build_wiktionary_cli import DictionaryBuildWiktionaryCli
 
 __all__ = ["DictionaryBuildCli"]
 
+DICTIONARY_BUILD_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "build dictionary caches": "构建词典缓存",
+        "dictionary source": "词典来源",
+    },
+    "zh-hant": {
+        "build dictionary caches": "建立詞典快取",
+        "dictionary source": "詞典來源",
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryBuildCli(ScinoephileCliBase):
     """Build dictionary caches."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "build dictionary caches": "构建词典缓存",
-            "dictionary source": "词典来源",
-        },
-        "zh-hant": {
-            "build dictionary caches": "建立詞典快取",
-            "dictionary source": "詞典來源",
-        },
-    }
+    localizations = DICTIONARY_BUILD_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
