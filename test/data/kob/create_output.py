@@ -42,7 +42,7 @@ from scinoephile.multilang.yue_zho.transcription.punctuation import (
     YuePunctuationVsZhoPromptYueHant,
 )
 from test.data.ocr import process_eng_ocr, process_zho_hant_ocr
-from test.data.synchronization import process_yue_hans_eng, process_zho_hans_eng
+from test.data.stacking import process_yue_hans_eng, process_zho_hans_eng
 from test.data.transcription import process_yue_hans_transcription
 from test.helpers import test_data_root
 

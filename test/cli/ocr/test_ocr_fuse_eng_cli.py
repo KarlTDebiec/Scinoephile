@@ -117,3 +117,34 @@ def test_ocr_fuse_eng_cli_writes_stdout(tmp_path: Path):
 
     output = Series.from_string(stdout_stream.getvalue(), format_="srt")
     assert_series_equal(output, fused)
+
+
+def test_ocr_fuse_eng_cli_overwrites_existing_file(tmp_path: Path):
+    """Test English OCR fuse CLI overwrites existing output files."""
+    lens_path = tmp_path / "lens.srt"
+    tesseract_path = tmp_path / "tesseract.srt"
+    output_path = tmp_path / "fused.srt"
+    _write_series(lens_path, "lens")
+    _write_series(tesseract_path, "tesseract")
+    output_path.write_text("existing\n", encoding="utf-8")
+    fused = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\nfused\n",
+        format_="srt",
+    )
+
+    with (
+        patch("scinoephile.cli.ocr.ocr_fuse_cli.get_provider"),
+        patch("scinoephile.cli.ocr.ocr_fuse_cli.get_eng_ocr_fuser"),
+        patch(
+            "scinoephile.cli.ocr.ocr_fuse_cli.get_eng_ocr_fused",
+            return_value=fused,
+        ),
+    ):
+        run_cli_with_args(
+            OcrFuseCli,
+            f"--language eng --lens-infile {lens_path} "
+            f"--tesseract-infile {tesseract_path} --outfile {output_path} "
+            "--overwrite",
+        )
+
+    assert_series_equal(Series.load(output_path), fused)

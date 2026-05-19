@@ -7,8 +7,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from scinoephile.common.logs import set_logging_verbosity
+from scinoephile.core.stacking import get_stacked_series
 from scinoephile.core.subtitles import Series
-from scinoephile.core.synchronization import get_synced_series
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.flattening import get_eng_flattened
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
@@ -20,7 +20,7 @@ from scinoephile.multilang.eng_zho.guided_translation import (
 )
 from test.data.ocr import process_eng_ocr, process_zho_hans_ocr, process_zho_hant_ocr
 from test.data.prompts import EngGuidedTranslationVsZhoOfYuePrompt
-from test.data.synchronization import process_zho_hans_eng
+from test.data.stacking import process_zho_hans_eng
 from test.helpers import test_data_root
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -104,5 +104,5 @@ if "Bilingual 简体中文 and guided English from 粤语" in actions:
     yue_eng = get_eng_cleaned(yue_eng)
     yue_eng = get_eng_flattened(yue_eng)
 
-    yue_zho_hans_eng = get_synced_series(yue_zho_hans, yue_eng)
+    yue_zho_hans_eng = get_stacked_series(yue_zho_hans, yue_eng)
     yue_zho_hans_eng.save(output_path / "yue_eng/zho-Hans_eng.srt")

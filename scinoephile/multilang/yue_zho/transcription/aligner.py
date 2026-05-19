@@ -18,12 +18,7 @@ from scinoephile.audio.subtitles import (
 )
 from scinoephile.common.validation import val_input_dir_path
 from scinoephile.core import ScinoephileError
-from scinoephile.core.llms import (
-    Answer,
-    Query,
-    Queryer,
-    TestCase,
-)
+from scinoephile.core.llms import Answer, Query, Queryer, TestCase
 from scinoephile.core.llms.utils import save_test_cases_to_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
