@@ -13,6 +13,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from .media_extract_subs_cli import MediaExtractSubsCli
 from .media_offset_cli import MediaOffsetCli
 from .media_probe_cli import MediaProbeCli
+from .media_search_subs_cli import MediaSearchSubsCli
 
 __all__ = ["MediaCli"]
 
@@ -27,6 +28,9 @@ MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "inspect and extract media streams": "检查并提取媒体流",
         "list media streams in a media file": "列出媒体文件中的媒体流",
+        "search and download OpenSubtitles subtitle files": (
+            "搜索并下载 OpenSubtitles 字幕文件"
+        ),
     },
     "zh-hant": {
         "command-line interface for media operations": "媒體操作命令列介面",
@@ -38,6 +42,9 @@ MEDIA_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ),
         "inspect and extract media streams": "檢查並提取媒體流",
         "list media streams in a media file": "列出媒體檔中的媒體流",
+        "search and download OpenSubtitles subtitle files": (
+            "搜尋並下載 OpenSubtitles 字幕檔"
+        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -78,6 +85,7 @@ class MediaCli(ScinoephileCliBase):
             MediaExtractSubsCli.name(): MediaExtractSubsCli,
             MediaOffsetCli.name(): MediaOffsetCli,
             MediaProbeCli.name(): MediaProbeCli,
+            MediaSearchSubsCli.name(): MediaSearchSubsCli,
         }
 
     @classmethod
