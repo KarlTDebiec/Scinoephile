@@ -42,3 +42,8 @@ def test_media_usage(cli: tuple[type[CommandLineInterface], ...]):
         cli: CLI class tuple with optional subcommands
     """
     assert_cli_usage(cli)
+
+
+def test_media_cli_includes_search_subs_subcommand():
+    """Test media CLI registers the search-subs subcommand."""
+    assert "search-subs" in MediaCli.subcommands()
