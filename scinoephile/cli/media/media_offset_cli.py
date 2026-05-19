@@ -19,8 +19,10 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.timing import format_time_ms
 from scinoephile.media.offset.video import (
     VideoOffsetResult,
-    VideoOffsetWindowResult,
     get_video_offset,
+)
+from scinoephile.media.offset.video.video_offset_window_result import (
+    VideoOffsetWindowResult,
 )
 
 __all__ = ["MediaOffsetCli"]

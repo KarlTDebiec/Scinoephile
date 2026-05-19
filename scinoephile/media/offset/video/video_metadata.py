@@ -7,9 +7,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from fractions import Fraction
 
+__all__ = ["VideoMetadata"]
+
 
 @dataclass(frozen=True)
-class _VideoMetadata:
+class VideoMetadata:
     """Video metadata needed for frame-grid offset detection."""
 
     duration: float

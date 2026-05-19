@@ -8,8 +8,7 @@ https://github.com/pifroggi/vs_align
 See `docs/THIRD_PARTY_NOTICES.md` for license details.
 
 Package hierarchy (modules may import from any above):
-* _video_frame_sample / _video_metadata / video_offset_aggregate
-  / video_offset_candidate
+* video_frame_sample / video_metadata / video_offset_aggregate / video_offset_candidate
 * video_offset_window_result
 * video_offset_result
 """
@@ -31,18 +30,15 @@ import numpy as np
 from scinoephile.common.validation import val_float, val_int
 from scinoephile.core.exceptions import ScinoephileError
 
-from ._video_frame_sample import _VideoFrameSample
-from ._video_metadata import _VideoMetadata
+from .video_frame_sample import VideoFrameSample
+from .video_metadata import VideoMetadata
 from .video_offset_aggregate import VideoOffsetAggregate
 from .video_offset_candidate import VideoOffsetCandidate
 from .video_offset_result import VideoOffsetResult
 from .video_offset_window_result import VideoOffsetWindowResult
 
 __all__ = [
-    "VideoOffsetAggregate",
-    "VideoOffsetCandidate",
     "VideoOffsetResult",
-    "VideoOffsetWindowResult",
     "get_video_offset",
 ]
 
@@ -430,7 +426,7 @@ def _probe_video_metadata(
     *,
     label: str,
     require_frame_rate: bool,
-) -> _VideoMetadata:
+) -> VideoMetadata:
     """Probe video metadata needed for offset detection.
 
     Arguments:
@@ -457,7 +453,7 @@ def _probe_video_metadata(
         raise ScinoephileError(f"Could not probe {label} video frame rate")
     if duration is None:
         raise ScinoephileError(f"Could not probe {label} video duration")
-    return _VideoMetadata(duration=duration, frame_rate=frame_rate)
+    return VideoMetadata(duration=duration, frame_rate=frame_rate)
 
 
 def _get_duration(data: object) -> float | None:
@@ -537,7 +533,7 @@ def _sample_video_frames(
     duration: float,
     width: int,
     height: int,
-) -> list[_VideoFrameSample]:
+) -> list[VideoFrameSample]:
     """Sample grayscale frames from a video file.
 
     Arguments:
@@ -598,14 +594,14 @@ def _sample_video_frames(
             array[index] = (frame - float(np.mean(frame))) / frame_std
 
     return [
-        _VideoFrameSample(time=index / sample_rate, frame=array[index])
+        VideoFrameSample(time=index / sample_rate, frame=array[index])
         for index in range(frame_count)
     ]
 
 
 def _score_offsets(
-    reference_samples: list[_VideoFrameSample],
-    target_samples: list[_VideoFrameSample],
+    reference_samples: list[VideoFrameSample],
+    target_samples: list[VideoFrameSample],
     *,
     offsets: list[float],
     sample_rate: float,

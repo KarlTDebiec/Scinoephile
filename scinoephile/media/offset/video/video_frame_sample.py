@@ -8,9 +8,11 @@ from dataclasses import dataclass
 
 import numpy as np
 
+__all__ = ["VideoFrameSample"]
+
 
 @dataclass(frozen=True)
-class _VideoFrameSample:
+class VideoFrameSample:
     """Sampled video frame at a timestamp."""
 
     time: float
