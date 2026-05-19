@@ -241,6 +241,86 @@ def test_get_video_offset_samples_multiple_windows_and_aggregates_frames():
     assert result.aggregate.total_count == 3
 
 
+def test_get_video_offset_clamps_duration_to_shared_runtime():
+    """Test video offset samples short videos without manual duration override."""
+    reference_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])
+    target_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])
+
+    with (
+        patch(
+            "scinoephile.media.offset.video.ffmpeg.probe",
+            side_effect=[
+                _get_probe(duration=20.0),
+                _get_probe(duration=20.0),
+            ],
+        ),
+        patch(
+            "scinoephile.media.offset.video._sample_video_frames",
+            side_effect=[reference_samples, target_samples],
+        ) as sample_video_frames,
+    ):
+        result = get_video_offset(
+            reference_infile_path=Path("reference.mkv"),
+            target_infile_path=Path("target.mkv"),
+            sample_rate=1.0,
+            coarse_step=1.0,
+        )
+
+    assert result.offset_frames == 0
+    assert [
+        call.kwargs["start_time"] for call in sample_video_frames.call_args_list
+    ] == [
+        0.0,
+        0.0,
+    ]
+    assert [call.kwargs["duration"] for call in sample_video_frames.call_args_list] == [
+        20.0,
+        20.0,
+    ]
+
+
+def test_get_video_offset_handles_aggregate_without_exact_window_match():
+    """Test aggregate output handles median offsets no window reported."""
+    frame_duration = 1 / 24
+    side_effect = []
+    for offset_frames in [0, 1, 3, 4]:
+        reference_samples, target_samples = _get_shifted_sample_pair(
+            offset_frames=offset_frames,
+            frame_duration=frame_duration,
+        )
+        side_effect.extend([reference_samples, target_samples])
+
+    with (
+        patch(
+            "scinoephile.media.offset.video.ffmpeg.probe",
+            side_effect=[
+                _get_probe(duration=100.0, frame_rate="24/1"),
+                _get_probe(duration=100.0, frame_rate="24/1"),
+            ],
+        ),
+        patch(
+            "scinoephile.media.offset.video._sample_video_frames",
+            side_effect=side_effect,
+        ),
+    ):
+        result = get_video_offset(
+            reference_infile_path=Path("reference.mkv"),
+            target_infile_path=Path("target.mkv"),
+            max_offset=1.0,
+            sample_rate=24.0,
+            duration=10.0,
+            coarse_step=0.25,
+            sample_windows=4,
+        )
+
+    assert [window.offset_frames for window in result.windows] == [0, 1, 3, 4]
+    assert result.aggregate is not None
+    assert result.offset_frames == 2
+    assert result.aggregate.agreeing_count == 0
+    assert result.confidence == "low"
+    assert result.best.offset_frames in {1, 3}
+
+
 def test_get_video_offset_uses_separate_second_best_for_confidence():
     """Test confidence ignores immediately adjacent candidate offsets."""
     reference_samples = _get_samples([0.0, 1.0, 2.0, 3.0], [10, 20, 30, 40])

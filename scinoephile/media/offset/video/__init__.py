@@ -100,6 +100,11 @@ def get_video_offset(
     if frame_rate is None:
         raise ScinoephileError("Could not probe reference video frame rate")
     frame_duration = float(Fraction(1, 1) / frame_rate)
+    duration = min(
+        duration,
+        reference_metadata.duration,
+        target_metadata.duration,
+    )
     start_times = _get_sample_window_starts(
         duration=duration,
         sample_windows=sample_windows,
@@ -139,12 +144,11 @@ def get_video_offset(
         frame_duration=frame_duration,
     )
     best_window = min(
-        (
-            window
-            for window in window_results
-            if window.offset_frames == aggregate.offset_frames
+        window_results,
+        key=lambda window: (
+            abs(window.offset_frames - aggregate.offset_frames),
+            window.best.score,
         ),
-        key=lambda window: window.best.score,
     )
     return VideoOffsetResult(
         offset=aggregate.offset,
@@ -283,12 +287,7 @@ def _get_sample_window_starts(
         window start times in seconds
     """
     shared_duration = min(reference_duration, target_duration)
-    if duration > shared_duration:
-        raise ScinoephileError(
-            f"Sample duration {duration:.3f} s exceeds shared video runtime "
-            f"{shared_duration:.3f} s"
-        )
-
+    duration = min(duration, shared_duration)
     max_start = shared_duration - duration
     if max_start <= 0 or sample_windows == 1:
         return [round(max_start / 2, 6)]
