@@ -9,8 +9,10 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
+from scinoephile.core.text import ChineseScript
 from scinoephile.image.ocr.lens import (
     GoogleLensRecognizer,
+    get_lens_zho_code,
     ocr_image_series_with_lens,
 )
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
@@ -132,3 +134,20 @@ def test_ocr_image_series_with_lens_uses_runtime_cache(
     assert [event.text for event in text_series] == ["zh-CN"]
     assert observed_cache_dir_paths == [cache_dir_path]
     assert observed_retries == [5]
+
+
+@pytest.mark.parametrize(
+    ("script", "expected"),
+    [
+        ("simplified", "zh-CN"),
+        ("traditional", "zh-TW"),
+    ],
+)
+def test_get_lens_zho_code(script: ChineseScript, expected: str):
+    """Test Google Lens language code selection for Chinese scripts.
+
+    Arguments:
+        script: Chinese script
+        expected: expected Google Lens language code
+    """
+    assert get_lens_zho_code(script) == expected

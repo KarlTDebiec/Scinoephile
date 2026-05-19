@@ -8,14 +8,17 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from logging import getLogger, info
 from pathlib import Path
-from typing import Literal
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series
-from scinoephile.image.ocr.lens import ocr_image_series_with_lens
-from scinoephile.image.ocr.paddle import ocr_image_series_with_paddle
+from scinoephile.core.text import ChineseScript
+from scinoephile.image.ocr.lens import get_lens_zho_code, ocr_image_series_with_lens
+from scinoephile.image.ocr.paddle import (
+    get_paddle_zho_code,
+    ocr_image_series_with_paddle,
+)
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
@@ -29,16 +32,12 @@ from scinoephile.media.subtitles.cache import (
 )
 
 __all__ = [
-    "ChineseScript",
     "OcrProcessingResult",
     "process_eng_ocr",
     "process_zho_ocr",
 ]
 
 logger = getLogger(__name__)
-
-type ChineseScript = Literal["simplified", "traditional"]
-"""Chinese script supported by standard Chinese OCR processing."""
 
 
 @dataclass(frozen=True)
@@ -191,7 +190,8 @@ def process_zho_ocr(  # noqa: PLR0912
     Returns:
         OCR processing result
     """
-    lens_language, paddle_language = _get_zho_ocr_language_codes(script)
+    lens_language = get_lens_zho_code(script)
+    paddle_language = get_paddle_zho_code(script)
 
     # Read inputs
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
@@ -326,24 +326,6 @@ def _get_media_subtitle_stream(
                 )
             return stream
     raise ScinoephileError(f"No subtitle stream {stream_index} found in {infile_path}")
-
-
-def _get_zho_ocr_language_codes(script: ChineseScript) -> tuple[str, str]:
-    """Get Google Lens and PaddleOCR language codes for a Chinese script.
-
-    Arguments:
-        script: Chinese script to OCR
-    Returns:
-        Google Lens and PaddleOCR language codes
-    """
-    if script == "simplified":
-        return "zh-CN", "ch"
-    if script == "traditional":
-        return "zh-TW", "chinese_cht"
-    raise ValueError(
-        f"{script!r} is not one of the supported Chinese scripts: "
-        "simplified, traditional"
-    )
 
 
 def _load_image_series(

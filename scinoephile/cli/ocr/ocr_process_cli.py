@@ -23,9 +23,9 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
+from scinoephile.core.text import ChineseScript
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.ocr_processing import (
-    ChineseScript,
     OcrProcessingResult,
     process_eng_ocr,
     process_zho_ocr,
