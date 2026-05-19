@@ -250,6 +250,13 @@ def test_scinoephile_help_localized(
         ("en", "ocr fuse", "Fuse OCR output for a selected language"),
         ("zh-hans", "ocr fuse", "融合所选语言的 OCR 输出"),
         ("zh-hant", "ocr fuse", "融合所選語言的 OCR 輸出"),
+        (
+            "en",
+            "ocr process",
+            "Process image subtitle OCR and fuse output for a selected language",
+        ),
+        ("zh-hans", "ocr process", "处理图像字幕 OCR 并融合所选语言的输出"),
+        ("zh-hant", "ocr process", "處理影像字幕 OCR 並融合所選語言的輸出"),
         ("en", "ocr validate", "Validate OCR text against subtitle images"),
         ("zh-hans", "ocr validate", "对照字幕图像校验 OCR 文本"),
         ("zh-hant", "ocr validate", "對照字幕影像驗證 OCR 文字"),
