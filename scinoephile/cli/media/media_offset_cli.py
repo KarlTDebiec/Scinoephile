@@ -49,7 +49,9 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "采样率，单位为每秒帧数（默认：%(default)s）"
         ),
-        "sample window count (default: 4)": ("采样窗口数（默认：4）"),
+        "sample window count (default: %(default)s)": (
+            "采样窗口数（默认：%(default)s）"
+        ),
         "target video infile": "目标视频输入文件",
     },
     "zh-hant": {
@@ -75,7 +77,9 @@ MEDIA_OFFSET_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "sample rate in frames per second (default: %(default)s)": (
             "取樣率，單位為每秒影格數（預設：%(default)s）"
         ),
-        "sample window count (default: 4)": ("取樣視窗數（預設：4）"),
+        "sample window count (default: %(default)s)": (
+            "取樣視窗數（預設：%(default)s）"
+        ),
         "target video infile": "目標影片輸入檔",
     },
 }
@@ -150,9 +154,9 @@ class MediaOffsetCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--sample-windows",
-            default=None,
+            default=4,
             type=int_arg(min_value=1),
-            help="sample window count (default: 4)",
+            help="sample window count (default: %(default)s)",
         )
         parser.set_defaults(_parser=parser)
 
@@ -176,7 +180,7 @@ class MediaOffsetCli(ScinoephileCliBase):
         sample_rate: float,
         duration: float,
         coarse_step: float,
-        sample_windows: int | None,
+        sample_windows: int,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
@@ -208,9 +212,8 @@ class MediaOffsetCli(ScinoephileCliBase):
 
         lines = [
             f"Offset: {result.offset:+.6f} s",
+            f"Frames: {result.offset_frames:+d}",
         ]
-        if result.offset_frames is not None:
-            lines.append(f"Frames: {result.offset_frames:+d}")
         lines.extend(
             [
                 (

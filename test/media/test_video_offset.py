@@ -284,6 +284,11 @@ def test_get_video_offset_has_no_start_time_parameter():
     assert "start_time" not in signature(get_video_offset).parameters
 
 
+def test_get_video_offset_defaults_to_four_sample_windows():
+    """Test public video offset detection defaults to four sample windows."""
+    assert signature(get_video_offset).parameters["sample_windows"].default == 4
+
+
 def test_sample_video_frames_normalizes_brightness():
     """Test sampled video frames normalize brightness during sampling."""
     output = np.array(

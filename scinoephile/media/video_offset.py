@@ -18,7 +18,7 @@ from logging import getLogger
 from math import ceil, floor, nextafter
 from pathlib import Path
 from statistics import mean, median, pstdev
-from typing import Any, cast
+from typing import cast
 
 import ffmpeg
 import numpy as np
@@ -127,7 +127,7 @@ class VideoOffsetWindowResult:
     second_best: VideoOffsetCandidate | None
     """Second-best candidate offset, if available."""
 
-    offset_frames: int | None = None
+    offset_frames: int
     """Target timestamp minus reference timestamp in reference frames."""
 
 
@@ -147,7 +147,7 @@ class VideoOffsetResult:
     second_best: VideoOffsetCandidate | None
     """Second-best candidate offset, if available."""
 
-    offset_frames: int | None = None
+    offset_frames: int
     """Estimated target timestamp minus reference timestamp in reference frames."""
 
     windows: tuple[VideoOffsetWindowResult, ...] = ()
@@ -165,7 +165,7 @@ def get_video_offset(
     sample_rate: float = 2.0,
     duration: float = 300.0,
     coarse_step: float = 0.25,
-    sample_windows: int | None = None,
+    sample_windows: int = 4,
     width: int = 160,
     height: int = 90,
 ) -> VideoOffsetResult:
@@ -193,8 +193,7 @@ def get_video_offset(
     sample_rate = val_float(sample_rate, min_value=positive_float_min)
     duration = val_float(duration, min_value=positive_float_min)
     coarse_step = val_float(coarse_step, min_value=positive_float_min)
-    if sample_windows is not None:
-        sample_windows = val_int(sample_windows, min_value=1)
+    sample_windows = val_int(sample_windows, min_value=1)
     width = val_int(width, min_value=1)
     height = val_int(height, min_value=1)
 
@@ -283,9 +282,7 @@ def _aggregate_window_results(
     Returns:
         aggregate result
     """
-    offset_frames = [
-        window.offset_frames for window in windows if window.offset_frames is not None
-    ]
+    offset_frames = [window.offset_frames for window in windows]
     if not offset_frames:
         raise ScinoephileError("Could not aggregate video offsets without frames")
 
@@ -383,7 +380,7 @@ def _get_frame_grid_offsets(
 def _get_sample_window_starts(
     *,
     duration: float,
-    sample_windows: int | None,
+    sample_windows: int,
     reference_duration: float,
     target_duration: float,
 ) -> list[float]:
@@ -404,15 +401,14 @@ def _get_sample_window_starts(
             f"{shared_duration:.3f} s"
         )
 
-    count = sample_windows or 4
     max_start = shared_duration - duration
-    if max_start <= 0 or count == 1:
+    if max_start <= 0 or sample_windows == 1:
         return [round(max_start / 2, 6)]
 
     start = 0.1 * max_start
     end = 0.9 * max_start
-    step = (end - start) / (count - 1)
-    return [round(start + step * index, 6) for index in range(count)]
+    step = (end - start) / (sample_windows - 1)
+    return [round(start + step * index, 6) for index in range(sample_windows)]
 
 
 def _get_video_offset_window(
@@ -493,8 +489,11 @@ def _get_video_offset_window(
     if not candidates:
         raise ScinoephileError("Could not find enough matching video samples")
 
-    # Find the best distinct fallback candidate
+    # Find the best distinct comparison candidate
     best = candidates[0]
+    offset_frames = best.offset_frames
+    if offset_frames is None:
+        raise ScinoephileError("Could not convert video offset to frames")
     second_best = None
     for candidate in candidates:
         if abs(candidate.offset - best.offset) >= coarse_step:
@@ -507,7 +506,7 @@ def _get_video_offset_window(
         confidence=_get_candidate_confidence(best=best, second_best=second_best),
         best=best,
         second_best=second_best,
-        offset_frames=best.offset_frames,
+        offset_frames=offset_frames,
     )
 
 
@@ -592,7 +591,7 @@ def _get_duration(data: object) -> float | None:
     return duration
 
 
-def _get_frame_rate(stream: dict[str, Any]) -> Fraction | None:
+def _get_frame_rate(stream: Mapping[str, object]) -> Fraction | None:
     """Return parsed frame rate from ffprobe stream data.
 
     Arguments:
@@ -613,7 +612,7 @@ def _get_frame_rate(stream: dict[str, Any]) -> Fraction | None:
     return None
 
 
-def _get_video_stream(probe: dict[str, Any]) -> dict[str, Any]:
+def _get_video_stream(probe: object) -> Mapping[str, object]:
     """Return first video stream from ffprobe output.
 
     Arguments:
@@ -623,11 +622,17 @@ def _get_video_stream(probe: dict[str, Any]) -> dict[str, Any]:
     Raises:
         ScinoephileError: if no video stream is present
     """
+    if not isinstance(probe, Mapping):
+        raise ScinoephileError("Could not find video stream")
+    probe = cast("Mapping[str, object]", probe)
     streams = probe.get("streams")
     if not isinstance(streams, list):
         raise ScinoephileError("Could not find video stream")
     for stream in streams:
-        if isinstance(stream, dict) and stream.get("codec_type") == "video":
+        if not isinstance(stream, Mapping):
+            continue
+        stream = cast("Mapping[str, object]", stream)
+        if stream.get("codec_type") == "video":
             return stream
     raise ScinoephileError("Could not find video stream")
 

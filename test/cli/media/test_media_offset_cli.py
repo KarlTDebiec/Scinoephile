@@ -66,7 +66,7 @@ def test_media_offset_cli_reports_offset(
         sample_rate=1.0,
         duration=120.0,
         coarse_step=0.5,
-        sample_windows=None,
+        sample_windows=4,
     )
     assert capsys.readouterr().out.splitlines() == [
         "Offset: +1.250000 s",
