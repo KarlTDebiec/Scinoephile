@@ -11,10 +11,14 @@ See `docs/THIRD_PARTY_NOTICES.md` for license details.
 from __future__ import annotations
 
 from bisect import bisect_left
+from collections.abc import Mapping
 from dataclasses import dataclass
+from fractions import Fraction
 from logging import getLogger
-from math import nextafter
+from math import ceil, floor, nextafter
 from pathlib import Path
+from statistics import mean, median, pstdev
+from typing import Any, cast
 
 import ffmpeg
 import numpy as np
@@ -23,8 +27,10 @@ from scinoephile.common.validation import val_float, val_int
 from scinoephile.core.exceptions import ScinoephileError
 
 __all__ = [
+    "VideoOffsetAggregate",
     "VideoOffsetCandidate",
     "VideoOffsetResult",
+    "VideoOffsetWindowResult",
     "get_video_offset",
 ]
 
@@ -43,6 +49,17 @@ class _VideoFrameSample:
 
 
 @dataclass(frozen=True)
+class _VideoMetadata:
+    """Video metadata needed for frame-grid offset detection."""
+
+    duration: float
+    """Video duration in seconds."""
+
+    frame_rate: Fraction | None
+    """Video frame rate, when needed and available."""
+
+
+@dataclass(frozen=True)
 class VideoOffsetCandidate:
     """Score for one candidate video offset."""
 
@@ -54,6 +71,64 @@ class VideoOffsetCandidate:
 
     score: float
     """Aggregate frame difference score; lower values are better."""
+
+    offset_frames: int | None = None
+    """Target timestamp minus reference timestamp in reference frames."""
+
+
+@dataclass(frozen=True)
+class VideoOffsetAggregate:
+    """Aggregate result across multiple sampled windows."""
+
+    offset: float
+    """Aggregate target timestamp minus reference timestamp in seconds."""
+
+    offset_frames: int
+    """Aggregate target timestamp minus reference timestamp in reference frames."""
+
+    mean_frames: float
+    """Mean window offset in reference frames."""
+
+    median_frames: int
+    """Median window offset in reference frames."""
+
+    stdev_frames: float
+    """Population standard deviation of window offsets in reference frames."""
+
+    min_frames: int
+    """Minimum window offset in reference frames."""
+
+    max_frames: int
+    """Maximum window offset in reference frames."""
+
+    agreeing_count: int
+    """Number of windows that agree with the aggregate frame offset."""
+
+    total_count: int
+    """Number of valid windows in the aggregate."""
+
+
+@dataclass(frozen=True)
+class VideoOffsetWindowResult:
+    """Visual offset estimate for one sampled window."""
+
+    start_time: float
+    """Window start time in seconds."""
+
+    offset: float
+    """Estimated target timestamp minus reference timestamp in seconds."""
+
+    confidence: str
+    """Confidence label for the estimate."""
+
+    best: VideoOffsetCandidate
+    """Best-scoring candidate offset."""
+
+    second_best: VideoOffsetCandidate | None
+    """Second-best candidate offset, if available."""
+
+    offset_frames: int | None = None
+    """Target timestamp minus reference timestamp in reference frames."""
 
 
 @dataclass(frozen=True)
@@ -72,6 +147,15 @@ class VideoOffsetResult:
     second_best: VideoOffsetCandidate | None
     """Second-best candidate offset, if available."""
 
+    offset_frames: int | None = None
+    """Estimated target timestamp minus reference timestamp in reference frames."""
+
+    windows: tuple[VideoOffsetWindowResult, ...] = ()
+    """Per-window results when multiple windows were sampled."""
+
+    aggregate: VideoOffsetAggregate | None = None
+    """Aggregate result when multiple windows were sampled."""
+
 
 def get_video_offset(
     *,
@@ -79,10 +163,10 @@ def get_video_offset(
     target_infile_path: Path,
     max_offset: float = 10.0,
     sample_rate: float = 2.0,
-    start_time: float = 0.0,
+    start_time: float | None = None,
     duration: float = 300.0,
     coarse_step: float = 0.25,
-    fine_step: float = 0.04,
+    sample_windows: int | None = None,
     width: int = 160,
     height: int = 90,
 ) -> VideoOffsetResult:
@@ -96,7 +180,7 @@ def get_video_offset(
         start_time: media timestamp at which sampling starts, in seconds
         duration: sampled window duration in seconds
         coarse_step: coarse search step in seconds
-        fine_step: fine search step in seconds
+        sample_windows: number of sampled windows
         width: sampled frame width in pixels
         height: sampled frame height in pixels
     Returns:
@@ -109,14 +193,268 @@ def get_video_offset(
     positive_float_min = nextafter(0.0, 1.0)
     max_offset = val_float(max_offset, min_value=positive_float_min)
     sample_rate = val_float(sample_rate, min_value=positive_float_min)
-    start_time = val_float(start_time, min_value=0.0)
+    if start_time is not None:
+        start_time = val_float(start_time, min_value=0.0)
     duration = val_float(duration, min_value=positive_float_min)
     coarse_step = val_float(coarse_step, min_value=positive_float_min)
-    fine_step = val_float(fine_step, min_value=positive_float_min)
+    if sample_windows is not None:
+        sample_windows = val_int(sample_windows, min_value=1)
     width = val_int(width, min_value=1)
     height = val_int(height, min_value=1)
 
-    # Sample comparable grayscale frames from both videos
+    # Probe metadata needed for frame-grid search and automatic windows
+    reference_metadata = _probe_video_metadata(
+        reference_infile_path,
+        label="reference",
+        require_frame_rate=True,
+    )
+    target_metadata = _probe_video_metadata(
+        target_infile_path,
+        label="target",
+        require_frame_rate=False,
+    )
+    frame_rate = reference_metadata.frame_rate
+    if frame_rate is None:
+        raise ScinoephileError("Could not probe reference video frame rate")
+    frame_duration = float(Fraction(1, 1) / frame_rate)
+    start_times = _get_sample_window_starts(
+        start_time=start_time,
+        duration=duration,
+        sample_windows=sample_windows,
+        reference_duration=reference_metadata.duration,
+        target_duration=target_metadata.duration,
+    )
+
+    # Run one independent visual search per sampled window
+    window_results = tuple(
+        _get_video_offset_window(
+            reference_infile_path=reference_infile_path,
+            target_infile_path=target_infile_path,
+            max_offset=max_offset,
+            sample_rate=sample_rate,
+            start_time=window_start_time,
+            duration=duration,
+            coarse_step=coarse_step,
+            frame_duration=frame_duration,
+            width=width,
+            height=height,
+        )
+        for window_start_time in start_times
+    )
+
+    if len(window_results) == 1:
+        window = window_results[0]
+        return VideoOffsetResult(
+            offset=window.offset,
+            confidence=window.confidence,
+            best=window.best,
+            second_best=window.second_best,
+            offset_frames=window.offset_frames,
+        )
+
+    aggregate = _aggregate_window_results(
+        window_results,
+        frame_duration=frame_duration,
+    )
+    best_window = min(
+        (
+            window
+            for window in window_results
+            if window.offset_frames == aggregate.offset_frames
+        ),
+        key=lambda window: window.best.score,
+    )
+    return VideoOffsetResult(
+        offset=aggregate.offset,
+        confidence=_get_aggregate_confidence(window_results, aggregate),
+        best=best_window.best,
+        second_best=best_window.second_best,
+        offset_frames=aggregate.offset_frames,
+        windows=window_results,
+        aggregate=aggregate,
+    )
+
+
+def _aggregate_window_results(
+    windows: tuple[VideoOffsetWindowResult, ...],
+    *,
+    frame_duration: float,
+) -> VideoOffsetAggregate:
+    """Aggregate window results in reference frame units.
+
+    Arguments:
+        windows: per-window results
+        frame_duration: reference frame duration in seconds
+    Returns:
+        aggregate result
+    """
+    offset_frames = [
+        window.offset_frames for window in windows if window.offset_frames is not None
+    ]
+    if not offset_frames:
+        raise ScinoephileError("Could not aggregate video offsets without frames")
+
+    median_frames = int(round(median(offset_frames)))
+    return VideoOffsetAggregate(
+        offset=median_frames * frame_duration,
+        offset_frames=median_frames,
+        mean_frames=mean(offset_frames),
+        median_frames=median_frames,
+        stdev_frames=pstdev(offset_frames),
+        min_frames=min(offset_frames),
+        max_frames=max(offset_frames),
+        agreeing_count=sum(
+            offset_frame == median_frames for offset_frame in offset_frames
+        ),
+        total_count=len(offset_frames),
+    )
+
+
+def _get_aggregate_confidence(
+    windows: tuple[VideoOffsetWindowResult, ...],
+    aggregate: VideoOffsetAggregate,
+) -> str:
+    """Return aggregate confidence from window agreement.
+
+    Arguments:
+        windows: per-window results
+        aggregate: aggregate result
+    Returns:
+        aggregate confidence label
+    """
+    if aggregate.agreeing_count == aggregate.total_count:
+        if any(window.confidence == "high" for window in windows):
+            return "high"
+        return "medium"
+    if aggregate.agreeing_count > aggregate.total_count / 2:
+        return "medium"
+    return "low"
+
+
+def _get_candidate_confidence(
+    *,
+    best: VideoOffsetCandidate,
+    second_best: VideoOffsetCandidate | None,
+) -> str:
+    """Classify confidence from match support and score separation.
+
+    Arguments:
+        best: best candidate
+        second_best: second-best distinct candidate
+    Returns:
+        confidence label
+    """
+    if second_best is None:
+        return "low"
+    if best.score <= 0:
+        if second_best.score > 0:
+            return "high"
+        return "low"
+
+    ratio = second_best.score / best.score
+    if ratio >= 4.0:
+        return "high"
+    if ratio >= 2.0:
+        return "medium"
+    return "low"
+
+
+def _get_frame_grid_offsets(
+    *,
+    best_coarse_offset: float,
+    coarse_step: float,
+    max_offset: float,
+    frame_duration: float,
+) -> list[float]:
+    """Return frame-grid fine offsets around a coarse winner.
+
+    Arguments:
+        best_coarse_offset: best coarse candidate offset in seconds
+        coarse_step: coarse search step in seconds
+        max_offset: maximum absolute offset to search in seconds
+        frame_duration: reference frame duration in seconds
+    Returns:
+        frame-grid candidate offsets
+    """
+    fine_start = max(-max_offset, best_coarse_offset - coarse_step)
+    fine_end = min(max_offset, best_coarse_offset + coarse_step)
+    first_frame = ceil(fine_start / frame_duration)
+    last_frame = floor(fine_end / frame_duration)
+    return [
+        round(frame * frame_duration, 9) for frame in range(first_frame, last_frame + 1)
+    ]
+
+
+def _get_sample_window_starts(
+    *,
+    start_time: float | None,
+    duration: float,
+    sample_windows: int | None,
+    reference_duration: float,
+    target_duration: float,
+) -> list[float]:
+    """Return sample window start times.
+
+    Arguments:
+        start_time: explicit start time, if provided
+        duration: per-window duration in seconds
+        sample_windows: requested number of windows
+        reference_duration: reference video duration in seconds
+        target_duration: target video duration in seconds
+    Returns:
+        window start times in seconds
+    """
+    if start_time is not None:
+        count = sample_windows or 1
+        return [round(start_time + duration * index, 6) for index in range(count)]
+
+    shared_duration = min(reference_duration, target_duration)
+    if duration > shared_duration:
+        raise ScinoephileError(
+            f"Sample duration {duration:.3f} s exceeds shared video runtime "
+            f"{shared_duration:.3f} s"
+        )
+
+    count = sample_windows or 4
+    max_start = shared_duration - duration
+    if max_start <= 0 or count == 1:
+        return [round(max_start / 2, 6)]
+
+    start = 0.1 * max_start
+    end = 0.9 * max_start
+    step = (end - start) / (count - 1)
+    return [round(start + step * index, 6) for index in range(count)]
+
+
+def _get_video_offset_window(
+    *,
+    reference_infile_path: Path,
+    target_infile_path: Path,
+    max_offset: float,
+    sample_rate: float,
+    start_time: float,
+    duration: float,
+    coarse_step: float,
+    frame_duration: float,
+    width: int,
+    height: int,
+) -> VideoOffsetWindowResult:
+    """Estimate video offset for one sample window.
+
+    Arguments:
+        reference_infile_path: reference media input path
+        target_infile_path: target media input path
+        max_offset: maximum absolute offset to search, in seconds
+        sample_rate: frame sample rate in samples per second
+        start_time: media timestamp at which sampling starts, in seconds
+        duration: sampled window duration in seconds
+        coarse_step: coarse search step in seconds
+        frame_duration: reference frame duration in seconds
+        width: sampled frame width in pixels
+        height: sampled frame height in pixels
+    Returns:
+        window offset result
+    """
     reference_samples = _sample_video_frames(
         reference_infile_path,
         sample_rate=sample_rate,
@@ -147,20 +485,24 @@ def get_video_offset(
     if not coarse_candidates:
         raise ScinoephileError("Could not find enough matching video samples")
 
-    # Refine around the best coarse offset
+    # Refine around the best coarse offset on the reference frame grid
     best_coarse = coarse_candidates[0]
-    fine_start = max(-max_offset, best_coarse.offset - coarse_step)
-    fine_end = min(max_offset, best_coarse.offset + coarse_step)
-    fine_offsets = _get_offsets(fine_start, fine_end, fine_step)
+    fine_offsets = _get_frame_grid_offsets(
+        best_coarse_offset=best_coarse.offset,
+        coarse_step=coarse_step,
+        max_offset=max_offset,
+        frame_duration=frame_duration,
+    )
     candidates = _score_offsets(
         reference_samples,
         target_samples,
         offsets=fine_offsets,
         sample_rate=sample_rate,
         min_matches=min_matches,
+        frame_duration=frame_duration,
     )
     if not candidates:
-        candidates = coarse_candidates
+        raise ScinoephileError("Could not find enough matching video samples")
 
     # Find the best distinct fallback candidate
     best = candidates[0]
@@ -170,25 +512,13 @@ def get_video_offset(
             second_best = candidate
             break
 
-    # Classify confidence from match support and score separation
-    confidence = "low"
-    if second_best is None:
-        confidence = "low"
-    elif best.score <= 0:
-        if second_best.score > 0:
-            confidence = "high"
-    else:
-        ratio = second_best.score / best.score
-        if ratio >= 4.0:
-            confidence = "high"
-        elif ratio >= 2.0:
-            confidence = "medium"
-
-    return VideoOffsetResult(
+    return VideoOffsetWindowResult(
+        start_time=start_time,
         offset=best.offset,
-        confidence=confidence,
+        confidence=_get_candidate_confidence(best=best, second_best=second_best),
         best=best,
         second_best=second_best,
+        offset_frames=best.offset_frames,
     )
 
 
@@ -213,6 +543,104 @@ def _get_offsets(start: float, end: float, step: float) -> list[float]:
     elif offsets[-1] < end:
         offsets.append(round(end, 6))
     return offsets
+
+
+def _probe_video_metadata(
+    infile_path: Path,
+    *,
+    label: str,
+    require_frame_rate: bool,
+) -> _VideoMetadata:
+    """Probe video metadata needed for offset detection.
+
+    Arguments:
+        infile_path: media input path
+        label: user-facing label for error messages
+        require_frame_rate: whether frame rate is required
+    Returns:
+        probed video metadata
+    Raises:
+        ScinoephileError: if required metadata cannot be probed
+    """
+    try:
+        probe = ffmpeg.probe(str(infile_path))
+    except ffmpeg.Error as exc:
+        raise ScinoephileError(f"Could not probe {label} video {infile_path}") from exc
+
+    stream = _get_video_stream(probe)
+    frame_rate = _get_frame_rate(stream)
+    duration = _get_duration(stream)
+    if duration is None:
+        duration = _get_duration(probe.get("format"))
+
+    if require_frame_rate and frame_rate is None:
+        raise ScinoephileError(f"Could not probe {label} video frame rate")
+    if duration is None:
+        raise ScinoephileError(f"Could not probe {label} video duration")
+    return _VideoMetadata(duration=duration, frame_rate=frame_rate)
+
+
+def _get_duration(data: object) -> float | None:
+    """Return parsed duration from ffprobe data.
+
+    Arguments:
+        data: ffprobe stream or format data
+    Returns:
+        duration in seconds, if present and positive
+    """
+    if not isinstance(data, Mapping):
+        return None
+    data = cast("Mapping[str, object]", data)
+    value = data.get("duration")
+    if not isinstance(value, int | float | str):
+        return None
+    try:
+        duration = float(value)
+    except ValueError:
+        return None
+    if duration <= 0:
+        return None
+    return duration
+
+
+def _get_frame_rate(stream: dict[str, Any]) -> Fraction | None:
+    """Return parsed frame rate from ffprobe stream data.
+
+    Arguments:
+        stream: ffprobe stream data
+    Returns:
+        frame rate, if present and positive
+    """
+    for key in ["avg_frame_rate", "r_frame_rate"]:
+        value = stream.get(key)
+        if not isinstance(value, int | float | str):
+            continue
+        try:
+            frame_rate = Fraction(str(value))
+        except (ValueError, ZeroDivisionError):
+            continue
+        if frame_rate > 0:
+            return frame_rate
+    return None
+
+
+def _get_video_stream(probe: dict[str, Any]) -> dict[str, Any]:
+    """Return first video stream from ffprobe output.
+
+    Arguments:
+        probe: ffprobe output
+    Returns:
+        first video stream
+    Raises:
+        ScinoephileError: if no video stream is present
+    """
+    streams = probe.get("streams")
+    if not isinstance(streams, list):
+        raise ScinoephileError("Could not find video stream")
+    for stream in streams:
+        if isinstance(stream, dict) and stream.get("codec_type") == "video":
+            return stream
+    raise ScinoephileError("Could not find video stream")
 
 
 def _sample_video_frames(
@@ -296,6 +724,7 @@ def _score_offsets(
     offsets: list[float],
     sample_rate: float,
     min_matches: int,
+    frame_duration: float | None = None,
 ) -> list[VideoOffsetCandidate]:
     """Score candidate offsets.
 
@@ -305,6 +734,7 @@ def _score_offsets(
         offsets: candidate offsets
         sample_rate: samples per second
         min_matches: minimum required match count
+        frame_duration: reference frame duration in seconds
     Returns:
         sorted candidate scores
     """
@@ -339,11 +769,15 @@ def _score_offsets(
 
         # Keep candidate offsets with enough matched samples
         if len(scores) >= min_matches:
+            offset_frames = None
+            if frame_duration is not None:
+                offset_frames = int(round(offset / frame_duration))
             candidates.append(
                 VideoOffsetCandidate(
                     offset=offset,
                     matched_count=len(scores),
                     score=float(np.median(np.array(scores, dtype=np.float32))),
+                    offset_frames=offset_frames,
                 )
             )
     return sorted(candidates, key=lambda candidate: candidate.score)
