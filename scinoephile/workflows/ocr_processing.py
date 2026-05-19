@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from logging import getLogger, info
 from pathlib import Path
+from typing import Literal
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -25,12 +26,16 @@ from scinoephile.media.subtitles.cache import (
 )
 
 __all__ = [
+    "ChineseScript",
     "OcrProcessingResult",
     "process_eng_ocr",
     "process_zho_ocr",
 ]
 
 logger = getLogger(__name__)
+
+type ChineseScript = Literal["simplified", "traditional"]
+"""Chinese script supported by standard Chinese OCR processing."""
 
 
 @dataclass(frozen=True)
@@ -134,6 +139,7 @@ def process_zho_ocr(  # noqa: PLR0912
     *,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
+    script: ChineseScript = "simplified",
     export_images: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
@@ -146,6 +152,7 @@ def process_zho_ocr(  # noqa: PLR0912
         output_dir_path: directory where OCR outputs are written
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
+        script: Chinese script to OCR, either simplified or traditional
         export_images: whether to export OCR outputs as image subtitle directories
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
@@ -153,6 +160,18 @@ def process_zho_ocr(  # noqa: PLR0912
     Returns:
         OCR processing result
     """
+    if script == "simplified":
+        lens_language = "zh-CN"
+        paddle_language = "ch"
+    elif script == "traditional":
+        lens_language = "zh-TW"
+        paddle_language = "chinese_cht"
+    else:
+        raise ValueError(
+            f"{script!r} is not one of the supported Chinese scripts: "
+            "simplified, traditional"
+        )
+
     # Read inputs
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
 
@@ -177,7 +196,7 @@ def process_zho_ocr(  # noqa: PLR0912
         logger.info(f"Lens OCR output exists: {lens_path}")
         lens = Series.load(lens_path)
     else:
-        lens = ocr_image_series_with_lens(image_series, language="zh-CN")
+        lens = ocr_image_series_with_lens(image_series, language=lens_language)
         lens.save(lens_path, format_="srt")
     output_paths["lens"] = lens_path
 
@@ -187,7 +206,7 @@ def process_zho_ocr(  # noqa: PLR0912
         logger.info(f"PaddleOCR output exists: {paddle_path}")
         paddle = Series.load(paddle_path)
     else:
-        paddle = ocr_image_series_with_paddle(image_series, language="ch")
+        paddle = ocr_image_series_with_paddle(image_series, language=paddle_language)
         paddle.save(paddle_path, format_="srt")
     output_paths["paddle"] = paddle_path
 

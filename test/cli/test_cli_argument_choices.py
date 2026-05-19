@@ -25,6 +25,7 @@ from scinoephile.common import CommandLineInterface
     [
         (OcrFuseCli, "--language", "{eng,zho}"),
         (OcrProcessCli, "--language", "{eng,zho}"),
+        (OcrProcessCli, "--script", "{simplified,traditional}"),
         (OcrValidateCli, "--language", "{eng,zho}"),
         (MultiStackCli, "--sync", "{anchor-top,anchor-bottom,off}"),
         (YueProcessCli, "--proofread", "{simplified,traditional}"),

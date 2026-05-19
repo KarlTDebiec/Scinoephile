@@ -25,6 +25,7 @@ from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.workflows.ocr_processing import (
+    ChineseScript,
     OcrProcessingResult,
     process_eng_ocr,
     process_zho_ocr,
@@ -54,6 +55,9 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "处理图像字幕 OCR 并融合所选语言的输出"
         ),
         "Processed OCR outputs:": "已处理的 OCR 输出：",
+        "script for standard Chinese OCR (default: simplified)": (
+            "标准中文 OCR 使用的字形（默认：简体）"
+        ),
     },
     "zh-hant": {
         "cache directory for extracted media subtitle artifacts (default: "
@@ -76,6 +80,9 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "處理影像字幕 OCR 並融合所選語言的輸出"
         ),
         "Processed OCR outputs:": "已處理的 OCR 輸出：",
+        "script for standard Chinese OCR (default: simplified)": (
+            "標準中文 OCR 使用的字形（預設：簡體）"
+        ),
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -131,6 +138,13 @@ class OcrProcessCli(ScinoephileCliBase):
             help="language of the OCR text to process (eng or zho)",
         )
         arg_groups["operation arguments"].add_argument(
+            "--script",
+            default=None,
+            metavar="{simplified,traditional}",
+            type=str_arg(options=("simplified", "traditional")),
+            help="script for standard Chinese OCR (default: simplified)",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
@@ -182,6 +196,7 @@ class OcrProcessCli(ScinoephileCliBase):
         infile_path: Path,
         stream_index: int | None,
         language: str,
+        script: ChineseScript | None,
         cache_dir_path: Path,
         llm_provider_name: str,
         llm_model_name: str | None,
@@ -193,6 +208,8 @@ class OcrProcessCli(ScinoephileCliBase):
         """Execute with provided keyword arguments."""
         # Validate arguments
         parser = _parser or cls.argparser()
+        if language == "eng" and script is not None:
+            parser.error("--script may only be used when --language is zho")
         additional_context = read_llm_additional_context(
             parser, llm_additional_context_file_path
         )
@@ -217,6 +234,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     output_dir_path=output_dir_path,
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
+                    script=script or "simplified",
                     export_images=export_images,
                     overwrite=overwrite,
                     provider=provider,

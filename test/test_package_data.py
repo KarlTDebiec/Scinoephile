@@ -28,7 +28,7 @@ def test_installed_wheel_includes_runtime_data_files(tmp_path: Path):
     expected_data_file_paths = sorted(
         path.relative_to(source_data_dir_path).as_posix()
         for path in source_data_dir_path.rglob("*")
-        if path.is_file()
+        if path.is_file() and path != ignored_local_dump_path
     )
     ignored_local_dump_path.parent.mkdir(parents=True, exist_ok=True)
     ignored_local_dump_path.write_text("{}\n", encoding="utf-8")
