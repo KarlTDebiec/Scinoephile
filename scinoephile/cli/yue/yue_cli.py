@@ -13,8 +13,8 @@ from scinoephile.core.cli import ScinoephileCliBase
 from .yue_process_cli import YueProcessCli
 from .yue_review_vs_zho_cli import YueReviewVsZhoCli
 from .yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from .yue_translate_vs_eng_cli import YueTranslateVsEngCli
-from .yue_translate_vs_zho_cli import YueTranslateVsZhoCli
+from .yue_translate_from_eng_cli import YueTranslateFromEngCli
+from .yue_translate_from_zho_cli import YueTranslateFromZhoCli
 
 __all__ = ["YueCli"]
 
@@ -77,8 +77,8 @@ class YueCli(ScinoephileCliBase):
             YueProcessCli.name(): YueProcessCli,
             YueReviewVsZhoCli.name(): YueReviewVsZhoCli,
             YueTranscribeVsZhoCli.name(): YueTranscribeVsZhoCli,
-            YueTranslateVsEngCli.name(): YueTranslateVsEngCli,
-            YueTranslateVsZhoCli.name(): YueTranslateVsZhoCli,
+            YueTranslateFromEngCli.name(): YueTranslateFromEngCli,
+            YueTranslateFromZhoCli.name(): YueTranslateFromZhoCli,
         }
 
     @classmethod

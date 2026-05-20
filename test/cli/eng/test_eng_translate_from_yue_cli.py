@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.eng.eng_translate_vs_yue_cli."""
+"""Tests of scinoephile.cli.eng.eng_translate_from_yue_cli."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.eng.eng_translate_vs_yue_cli import EngTranslateVsYueCli
+from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
@@ -18,7 +18,7 @@ from test.helpers import (
 )
 
 
-def test_eng_translate_vs_yue_cli_gapped_translation():
+def test_eng_translate_from_yue_cli_gapped_translation():
     """Test English translate-from-yue CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
@@ -29,17 +29,17 @@ def test_eng_translate_vs_yue_cli_gapped_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.eng.eng_translate_vs_yue_cli."
+            "scinoephile.cli.eng.eng_translate_from_yue_cli."
             "get_eng_vs_yue_gapped_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.eng.eng_translate_vs_yue_cli."
+                "scinoephile.cli.eng.eng_translate_from_yue_cli."
                 "get_eng_gapped_translated_vs_yue",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    EngTranslateVsYueCli,
+                    EngTranslateFromYueCli,
                     f"--yue-infile {yue_input_path} "
                     f"--eng-gapped-infile {eng_input_path} "
                     f"--outfile {output_path}",
@@ -54,7 +54,7 @@ def test_eng_translate_vs_yue_cli_gapped_translation():
     assert_series_equal(output, expected)
 
 
-def test_eng_translate_vs_yue_cli_guided_translation():
+def test_eng_translate_from_yue_cli_guided_translation():
     """Test English translate-from-yue CLI routes to guided translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
@@ -65,17 +65,17 @@ def test_eng_translate_vs_yue_cli_guided_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.eng.eng_translate_vs_yue_cli."
+            "scinoephile.cli.eng.eng_translate_from_yue_cli."
             "get_eng_yue_guided_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.eng.eng_translate_vs_yue_cli."
+                "scinoephile.cli.eng.eng_translate_from_yue_cli."
                 "get_eng_translated_from_yue_with_eng_guidance",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    EngTranslateVsYueCli,
+                    EngTranslateFromYueCli,
                     f"--yue-infile {yue_input_path} "
                     f"--eng-guide-infile {eng_input_path} "
                     f"--outfile {output_path}",
@@ -90,7 +90,7 @@ def test_eng_translate_vs_yue_cli_guided_translation():
     assert_series_equal(output, expected)
 
 
-def test_eng_translate_vs_yue_cli_regular_translation():
+def test_eng_translate_from_yue_cli_regular_translation():
     """Test English translate-from-yue CLI routes to regular translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
@@ -100,16 +100,16 @@ def test_eng_translate_vs_yue_cli_regular_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.eng.eng_translate_vs_yue_cli.get_eng_yue_translator",
+            "scinoephile.cli.eng.eng_translate_from_yue_cli.get_eng_yue_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.eng.eng_translate_vs_yue_cli."
+                "scinoephile.cli.eng.eng_translate_from_yue_cli."
                 "get_eng_translated_from_yue",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    EngTranslateVsYueCli,
+                    EngTranslateFromYueCli,
                     f"--yue-infile {yue_input_path} --outfile {output_path}",
                 )
         output = Series.load(output_path)
@@ -121,7 +121,7 @@ def test_eng_translate_vs_yue_cli_regular_translation():
     assert_series_equal(output, expected)
 
 
-def test_eng_translate_vs_yue_cli_rejects_gapped_and_guide_together():
+def test_eng_translate_from_yue_cli_rejects_gapped_and_guide_together():
     """Test English translate-from-yue CLI rejects mutually exclusive inputs."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
@@ -130,7 +130,7 @@ def test_eng_translate_vs_yue_cli_rejects_gapped_and_guide_together():
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
-            EngTranslateVsYueCli,
+            EngTranslateFromYueCli,
             f"--yue-infile {yue_input_path} "
             f"--eng-gapped-infile {eng_input_path} "
             f"--eng-guide-infile {eng_input_path}",

@@ -1,6 +1,6 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Tests of scinoephile.cli.zho.zho_translate_vs_eng_cli."""
+"""Tests of scinoephile.cli.zho.zho_translate_from_eng_cli."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from scinoephile.cli.zho.zho_translate_vs_eng_cli import ZhoTranslateVsEngCli
+from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
 from scinoephile.common.file import get_temp_file_path
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core.subtitles import Series
@@ -27,7 +27,7 @@ from test.helpers import (
 )
 
 
-def test_zho_translate_vs_eng_cli_gapped_translation():
+def test_zho_translate_from_eng_cli_gapped_translation():
     """Test standard Chinese translate-from-eng CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
@@ -38,17 +38,17 @@ def test_zho_translate_vs_eng_cli_gapped_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.zho.zho_translate_vs_eng_cli."
+            "scinoephile.cli.zho.zho_translate_from_eng_cli."
             "get_zho_vs_eng_gapped_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.zho.zho_translate_vs_eng_cli."
+                "scinoephile.cli.zho.zho_translate_from_eng_cli."
                 "get_zho_gapped_translated_vs_eng",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    ZhoTranslateVsEngCli,
+                    ZhoTranslateFromEngCli,
                     f"--eng-infile {eng_input_path} "
                     f"--zho-gapped-infile {zho_input_path} "
                     f"--outfile {output_path}",
@@ -67,7 +67,7 @@ def test_zho_translate_vs_eng_cli_gapped_translation():
     assert_series_equal(output, expected)
 
 
-def test_zho_translate_vs_eng_cli_guided_translation():
+def test_zho_translate_from_eng_cli_guided_translation():
     """Test standard Chinese translate-from-eng CLI routes to guided translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
@@ -78,17 +78,17 @@ def test_zho_translate_vs_eng_cli_guided_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.zho.zho_translate_vs_eng_cli."
+            "scinoephile.cli.zho.zho_translate_from_eng_cli."
             "get_zho_eng_guided_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.zho.zho_translate_vs_eng_cli."
+                "scinoephile.cli.zho.zho_translate_from_eng_cli."
                 "get_zho_translated_from_eng_with_zho_guidance",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    ZhoTranslateVsEngCli,
+                    ZhoTranslateFromEngCli,
                     f"--eng-infile {eng_input_path} "
                     f"--zho-guide-infile {zho_input_path} "
                     f"--outfile {output_path}",
@@ -107,7 +107,7 @@ def test_zho_translate_vs_eng_cli_guided_translation():
     assert_series_equal(output, expected)
 
 
-def test_zho_translate_vs_eng_cli_regular_translation():
+def test_zho_translate_from_eng_cli_regular_translation():
     """Test standard Chinese translate-from-eng CLI routes to regular translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     expected_path = test_data_root / "mlamd/output/zho-Hans_ocr/fuse_clean_validate.srt"
@@ -115,16 +115,16 @@ def test_zho_translate_vs_eng_cli_regular_translation():
 
     with get_temp_file_path(".srt") as output_path:
         with patch(
-            "scinoephile.cli.zho.zho_translate_vs_eng_cli.get_zho_eng_translator",
+            "scinoephile.cli.zho.zho_translate_from_eng_cli.get_zho_eng_translator",
             return_value="translator",
         ) as patched_factory:
             with patch(
-                "scinoephile.cli.zho.zho_translate_vs_eng_cli."
+                "scinoephile.cli.zho.zho_translate_from_eng_cli."
                 "get_zho_translated_from_eng",
                 return_value=expected,
             ) as patched_translate:
                 run_cli_with_args(
-                    ZhoTranslateVsEngCli,
+                    ZhoTranslateFromEngCli,
                     f"--eng-infile {eng_input_path} --outfile {output_path}",
                 )
         output = Series.load(output_path)
@@ -140,7 +140,7 @@ def test_zho_translate_vs_eng_cli_regular_translation():
     assert_series_equal(output, expected)
 
 
-def test_zho_translate_vs_eng_cli_rejects_gapped_and_guide_together():
+def test_zho_translate_from_eng_cli_rejects_gapped_and_guide_together():
     """Test standard Chinese translate-from-eng CLI rejects conflicts."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
@@ -149,7 +149,7 @@ def test_zho_translate_vs_eng_cli_rejects_gapped_and_guide_together():
 
     with pytest.raises(SystemExit, match="2"):
         run_cli_with_args(
-            ZhoTranslateVsEngCli,
+            ZhoTranslateFromEngCli,
             f"--eng-infile {eng_input_path} "
             f"--zho-gapped-infile {zho_input_path} "
             f"--zho-guide-infile {zho_input_path}",

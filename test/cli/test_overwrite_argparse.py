@@ -9,18 +9,18 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
-from scinoephile.cli.eng.eng_translate_vs_yue_cli import EngTranslateVsYueCli
-from scinoephile.cli.eng.eng_translate_vs_zho_cli import EngTranslateVsZhoCli
+from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
+from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
-from scinoephile.cli.yue.yue_translate_vs_eng_cli import YueTranslateVsEngCli
-from scinoephile.cli.yue.yue_translate_vs_zho_cli import YueTranslateVsZhoCli
+from scinoephile.cli.yue.yue_translate_from_eng_cli import YueTranslateFromEngCli
+from scinoephile.cli.yue.yue_translate_from_zho_cli import YueTranslateFromZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
-from scinoephile.cli.zho.zho_translate_vs_eng_cli import ZhoTranslateVsEngCli
-from scinoephile.cli.zho.zho_translate_vs_yue_cli import ZhoTranslateVsYueCli
+from scinoephile.cli.zho.zho_translate_from_eng_cli import ZhoTranslateFromEngCli
+from scinoephile.cli.zho.zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 from scinoephile.common import CommandLineInterface
 
 
@@ -61,19 +61,19 @@ from scinoephile.common import CommandLineInterface
             ],
         ),
         (
-            EngTranslateVsYueCli,
+            EngTranslateFromYueCli,
             ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
-            EngTranslateVsZhoCli,
+            EngTranslateFromZhoCli,
             ["--zho-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
-            YueTranslateVsEngCli,
+            YueTranslateFromEngCli,
             ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
-            YueTranslateVsZhoCli,
+            YueTranslateFromZhoCli,
             ["--zho-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
@@ -101,11 +101,11 @@ from scinoephile.common import CommandLineInterface
             ],
         ),
         (
-            ZhoTranslateVsEngCli,
+            ZhoTranslateFromEngCli,
             ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
-            ZhoTranslateVsYueCli,
+            ZhoTranslateFromYueCli,
             ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (

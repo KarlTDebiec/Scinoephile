@@ -11,8 +11,8 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .zho_process_cli import ZhoProcessCli
-from .zho_translate_vs_eng_cli import ZhoTranslateVsEngCli
-from .zho_translate_vs_yue_cli import ZhoTranslateVsYueCli
+from .zho_translate_from_eng_cli import ZhoTranslateFromEngCli
+from .zho_translate_from_yue_cli import ZhoTranslateFromYueCli
 
 __all__ = ["ZhoCli"]
 
@@ -79,8 +79,8 @@ class ZhoCli(ScinoephileCliBase):
         """
         return {
             ZhoProcessCli.name(): ZhoProcessCli,
-            ZhoTranslateVsEngCli.name(): ZhoTranslateVsEngCli,
-            ZhoTranslateVsYueCli.name(): ZhoTranslateVsYueCli,
+            ZhoTranslateFromEngCli.name(): ZhoTranslateFromEngCli,
+            ZhoTranslateFromYueCli.name(): ZhoTranslateFromYueCli,
         }
 
     @classmethod
