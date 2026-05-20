@@ -262,10 +262,12 @@ def _adjust_block_timing(
         for cue_diagnostic in cue_diagnostics:
             cue_diagnostics_by_idx[cue_diagnostic.cue_idx] = cue_diagnostic
 
-    return [
+    cue_diagnostics = [
         cue_diagnostics_by_idx[cue_idx]
         for cue_idx in range(block_spec.start_idx, block_spec.end_idx)
     ]
+    logger.info(_get_block_timing_adjustment_description(block_spec, cue_diagnostics))
+    return cue_diagnostics
 
 
 def _adjust_event_timing(
@@ -366,12 +368,6 @@ def _adjust_event_timing(
             and adjusted_end_ms == original_event.end
         ),
     )
-    if not diagnostics.unchanged:
-        logger.info(
-            f"Adjusted subtitle timing for cue {cue_idx + 1}: "
-            f"{original_event.start}-{original_event.end} ms -> "
-            f"{adjusted_start_ms}-{adjusted_end_ms} ms text={original_event.text!r}"
-        )
     return diagnostics
 
 
@@ -422,6 +418,118 @@ def _adjust_sync_group_timing(
         )
         for cue_idx in cue_idxs
     ]
+
+
+def _get_block_timing_adjustment_description(
+    block_spec: _SubtitleTimingAdjustmentBlockSpec,
+    cue_diagnostics: Sequence[SubtitleTimingAdjustmentCueDiagnostics],
+) -> str:
+    """Get a readable block timing adjustment summary.
+
+    Arguments:
+        block_spec: block specification
+        cue_diagnostics: cue diagnostics for the block
+    Returns:
+        block timing adjustment summary
+    """
+    subtitle_descriptions = [
+        _get_cue_subtitle_description(cue_diagnostic)
+        for cue_diagnostic in cue_diagnostics
+    ]
+    subtitle_width = max(
+        len("subtitle"),
+        *(len(description) for description in subtitle_descriptions),
+    )
+    lines = [
+        (
+            "SUBTITLE TIMING ADJUSTMENT "
+            f"({block_spec.buffered_start_ms}-{block_spec.buffered_end_ms} ms):"
+        ),
+        f"     {'subtitle':<{subtitle_width}}  result",
+    ]
+    for block_cue_idx, (cue_diagnostic, subtitle_description) in enumerate(
+        zip(cue_diagnostics, subtitle_descriptions, strict=True),
+        1,
+    ):
+        lines.append(
+            f"{block_cue_idx:>2}  {subtitle_description:<{subtitle_width}}  "
+            f"{_get_cue_timing_adjustment_description(cue_diagnostic)}"
+        )
+    return "\n".join(lines)
+
+
+def _get_cue_subtitle_description(
+    cue_diagnostics: SubtitleTimingAdjustmentCueDiagnostics,
+) -> str:
+    """Get a readable original cue description.
+
+    Arguments:
+        cue_diagnostics: cue timing diagnostics
+    Returns:
+        original cue description
+    """
+    return (
+        f"{cue_diagnostics.original_start_ms}-{cue_diagnostics.original_end_ms} ms "
+        f"{cue_diagnostics.text!r}"
+    )
+
+
+def _get_cue_timing_adjustment_description(
+    cue_diagnostics: SubtitleTimingAdjustmentCueDiagnostics,
+) -> str:
+    """Get a readable cue timing adjustment result.
+
+    Arguments:
+        cue_diagnostics: cue timing diagnostics
+    Returns:
+        timing adjustment result description
+    """
+    if cue_diagnostics.unchanged:
+        return f"unchanged: {_get_unchanged_cue_reason(cue_diagnostics)}"
+
+    details = [
+        f"{cue_diagnostics.start_delta_ms:+d}/{cue_diagnostics.end_delta_ms:+d} ms"
+    ]
+    if cue_diagnostics.blocked_start_expansion_ms:
+        details.append(f"blocked start {cue_diagnostics.blocked_start_expansion_ms} ms")
+    if cue_diagnostics.blocked_end_expansion_ms:
+        details.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
+    return (
+        f"-> {cue_diagnostics.adjusted_start_ms}-{cue_diagnostics.adjusted_end_ms} ms "
+        f"({'; '.join(details)})"
+    )
+
+
+def _get_unchanged_cue_reason(
+    cue_diagnostics: SubtitleTimingAdjustmentCueDiagnostics,
+) -> str:
+    """Get the reason an unchanged cue was not adjusted.
+
+    Arguments:
+        cue_diagnostics: cue timing diagnostics
+    Returns:
+        unchanged timing reason
+    """
+    if cue_diagnostics.speech_duration_ms == 0:
+        reason = "no matched speech"
+    elif (
+        cue_diagnostics.blocked_start_expansion_ms
+        and cue_diagnostics.blocked_end_expansion_ms
+    ):
+        reason = "blocked by adjacent cues"
+    elif cue_diagnostics.blocked_start_expansion_ms:
+        reason = "blocked by previous cue"
+    elif cue_diagnostics.blocked_end_expansion_ms:
+        reason = "blocked by next cue"
+    elif (
+        cue_diagnostics.speech_coverage_before_ms >= cue_diagnostics.speech_duration_ms
+    ):
+        reason = "already covers matched speech"
+    elif cue_diagnostics.speech_coverage_before_ms > 0:
+        reason = "interior cue in matched speech group"
+    else:
+        reason = "no permitted timing change"
+    return reason
 
 
 def _get_block_specs(

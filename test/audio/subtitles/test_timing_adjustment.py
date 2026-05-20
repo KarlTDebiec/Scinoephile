@@ -82,19 +82,22 @@ def test_get_series_timing_adjustment_expands_cue_and_reports_diagnostics():
     assert cue_diagnostics.unchanged is False
 
 
-def test_get_series_timing_adjustment_logs_adjusted_cue(
+def test_get_series_timing_adjustment_logs_block_summary(
     caplog: pytest.LogCaptureFixture,
 ):
-    """Test adjusted cue timings are logged at info level.
+    """Test block-local subtitle timing results are logged at info level.
 
     Arguments:
         caplog: pytest log capture fixture
     """
     series = AudioSeries(
         audio=AudioSegment.silent(duration=5000),
-        events=[AudioSubtitle(start=1000, end=1500, text="hello")],
+        events=[
+            AudioSubtitle(start=1000, end=1500, text="one"),
+            AudioSubtitle(start=1800, end=2300, text="two"),
+        ],
     )
-    detector = StaticSpeechDetector([[SpeechInterval(start_ms=800, end_ms=2600)]])
+    detector = StaticSpeechDetector([[SpeechInterval(start_ms=1000, end_ms=1900)]])
 
     with caplog.at_level(
         logging.INFO,
@@ -115,7 +118,17 @@ def test_get_series_timing_adjustment_logs_adjusted_cue(
         if record.name == "scinoephile.audio.subtitles.timing_adjustment"
     ]
     assert messages == [
-        ("Adjusted subtitle timing for cue 1: 1000-1500 ms -> 800-2600 ms text='hello'")
+        "\n".join(
+            [
+                "SUBTITLE TIMING ADJUSTMENT (0-4300 ms):",
+                "     subtitle            result",
+                (
+                    " 1  1000-1500 ms 'one'  "
+                    "-> 1000-1800 ms (+0/+300 ms; blocked end 100 ms)"
+                ),
+                " 2  1800-2300 ms 'two'  unchanged: no matched speech",
+            ]
+        )
     ]
 
 
