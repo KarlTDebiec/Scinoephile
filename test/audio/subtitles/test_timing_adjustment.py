@@ -99,15 +99,19 @@ def test_get_series_timing_adjustment_logs_block_summary(
         caplog: pytest log capture fixture
     """
     series = AudioSeries(
-        audio=AudioSegment.silent(duration=170000),
+        audio=AudioSegment.silent(duration=173000),
         events=[
             AudioSubtitle(start=162850, end=163739, text="这儿的空气很清新"),
             AudioSubtitle(start=163820, end=164850, text="最适合妈咪养病"),
             AudioSubtitle(start=165500, end=166000, text="没有语音"),
+            AudioSubtitle(start=170500, end=171000, text="第二段"),
         ],
     )
     detector = StaticSpeechDetector(
-        [[SpeechInterval(start_ms=162100, end_ms=165150)]],
+        [
+            [SpeechInterval(start_ms=162100, end_ms=165150)],
+            [SpeechInterval(start_ms=170250, end_ms=171350)],
+        ],
         use_offset=False,
     )
 
@@ -132,12 +136,18 @@ def test_get_series_timing_adjustment_logs_block_summary(
     assert messages == [
         "\n".join(
             [
-                "SUBTITLE TIMING ADJUSTMENT:",
+                "SUBTITLE TIMING ADJUSTMENT BLOCK 1:",
                 " 1  这儿的空气很清新  (-750/   0 ms)",
                 " 2  最适合妈咪养病    (   0/+300 ms)",
                 f" 3  没有语音{' ' * 10}(   0/   0 ms) unchanged: no matched speech",
             ]
-        )
+        ),
+        "\n".join(
+            [
+                "SUBTITLE TIMING ADJUSTMENT BLOCK 2:",
+                " 1  第二段  (-250/+350 ms)",
+            ]
+        ),
     ]
 
 

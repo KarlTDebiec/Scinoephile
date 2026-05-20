@@ -195,7 +195,7 @@ def get_series_timing_adjustment(
 
     adjusted_series = _get_series_copy(series)
     block_diagnostics: list[SubtitleTimingAdjustmentBlockDiagnostics] = []
-    for block_spec in _get_block_specs(series, config=config):
+    for block_num, block_spec in enumerate(_get_block_specs(series, config=config), 1):
         block_audio = series.audio[
             block_spec.buffered_start_ms : block_spec.buffered_end_ms
         ]
@@ -210,6 +210,7 @@ def get_series_timing_adjustment(
         cue_diagnostics = _adjust_block_timing(
             series=series,
             adjusted_series=adjusted_series,
+            block_num=block_num,
             block_spec=block_spec,
             speech_intervals=speech_intervals,
             config=config,
@@ -235,6 +236,7 @@ def _adjust_block_timing(
     *,
     series: AudioSeries,
     adjusted_series: AudioSeries,
+    block_num: int,
     block_spec: _SubtitleTimingAdjustmentBlockSpec,
     speech_intervals: Sequence[SpeechInterval],
     config: SubtitleTimingAdjustmentConfig,
@@ -244,6 +246,7 @@ def _adjust_block_timing(
     Arguments:
         series: original full series
         adjusted_series: output full series
+        block_num: one-based block number
         block_spec: block specification
         speech_intervals: speech intervals in full-series time
         config: adjustment configuration
@@ -270,7 +273,13 @@ def _adjust_block_timing(
         cue_diagnostics_by_idx[cue_idx]
         for cue_idx in range(block_spec.start_idx, block_spec.end_idx)
     ]
-    logger.info(_get_block_timing_adjustment_description(block_spec, cue_diagnostics))
+    logger.info(
+        _get_block_timing_adjustment_description(
+            block_num,
+            block_spec,
+            cue_diagnostics,
+        )
+    )
     return cue_diagnostics
 
 
@@ -425,12 +434,14 @@ def _adjust_sync_group_timing(
 
 
 def _get_block_timing_adjustment_description(
+    block_num: int,
     block_spec: _SubtitleTimingAdjustmentBlockSpec,
     cue_diagnostics: Sequence[SubtitleTimingAdjustmentCueDiagnostics],
 ) -> str:
     """Get a readable block timing adjustment summary.
 
     Arguments:
+        block_num: one-based block number
         block_spec: block specification
         cue_diagnostics: cue diagnostics for the block
     Returns:
@@ -444,7 +455,7 @@ def _get_block_timing_adjustment_description(
         [_get_display_width(description) for description in subtitle_descriptions],
         default=0,
     )
-    lines = ["SUBTITLE TIMING ADJUSTMENT:"]
+    lines = [f"SUBTITLE TIMING ADJUSTMENT BLOCK {block_num}:"]
     for block_cue_idx, (cue_diagnostic, subtitle_description) in enumerate(
         zip(cue_diagnostics, subtitle_descriptions, strict=True),
         1,
