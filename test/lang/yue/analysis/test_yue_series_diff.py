@@ -49,6 +49,12 @@ def test_series_diff_remains_exact_for_yue_characters():
         ("爹　爹，我哋苏察哈尔家", "爹阿爹，我地苏察哈尔家"),
         ("而家唔系啦，我个仔，你个孙阿灿呢", "而家唔系喇，我个仔　你个孙阿灿呢"),
         ("睇下你咪知啦", "睇吓你咪知啰"),
+        ("做乜㖞", "做乜喎"),
+        ("掉转咗呀！老爷", "调转咗呀，老爷"),
+        (
+            "　　好叻呀！原来少爷识写自己个名㖞　系呀！",
+            "哗，好叻呀！原来少爷识写自己个名喎，系呀　",
+        ),
         ("因为我哋几个加埋都未必系佢对手", "因为我地几个加埋都未必系佢对手"),
     ],
 )
@@ -87,6 +93,36 @@ def test_yue_series_diff_keeps_lexical_spacing_particles():
     assert messages[0].kind == LineDiffKind.EDIT
 
 
+def test_yue_series_diff_keeps_lexical_wa():
+    """Test Cantonese diffing reports non-interjection 哗 deletions."""
+    diff = YueSeriesDiff(_get_series("哗声好大"), _get_series("声好大"))
+
+    messages = list(diff)
+
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.EDIT
+
+
+def test_yue_series_diff_keeps_non_turn_diu_changes():
+    """Test Cantonese diffing reports 掉/调 changes outside 掉转."""
+    diff = YueSeriesDiff(_get_series("掉低"), _get_series("调低"))
+
+    messages = list(diff)
+
+    assert len(messages) == 1
+    assert messages[0].kind == LineDiffKind.EDIT
+
+
+def test_yue_series_diff_suppresses_ignored_merge_messages():
+    """Test ignored Yue-only differences do not appear in normal diff output."""
+    diff = YueSeriesDiff(
+        _get_series("好叻呀！原来少爷识写自己个名㖞", "系呀！"),
+        _get_series("哗，好叻呀！原来少爷识写自己个名喎，系呀"),
+    )
+
+    assert list(diff) == []
+
+
 def test_yue_series_diff_skips_empty_normalized_lines():
     """Test Cantonese diffing ignores lines empty after Yue normalization."""
     diff = YueSeriesDiff(_get_series("！"), _get_series(""))
@@ -102,6 +138,34 @@ def test_yue_series_diff_colored_equal_highlights_ignored_diffs():
 
     assert f"{ANSI_YELLOW}啦{ANSI_RESET}" in rendered
     assert f"{ANSI_YELLOW}喇{ANSI_RESET}" in rendered
+    assert ANSI_PURPLE not in rendered
+
+
+def test_yue_series_diff_colored_equal_highlights_ignored_leading_wa():
+    """Test colored equal output highlights an ignored leading 哗."""
+    diff = YueSeriesDiff(
+        _get_series("　　好叻呀！原来少爷识写自己个名㖞　系呀！"),
+        _get_series("哗，好叻呀！原来少爷识写自己个名喎，系呀　"),
+    )
+
+    rendered = diff.get_stacked_str(color=True, include_equal=True)
+
+    assert f"{ANSI_YELLOW}哗{ANSI_RESET}" in rendered
+    assert ANSI_PURPLE not in rendered
+
+
+def test_yue_series_diff_colored_aligned_highlights_ignored_merge():
+    """Test aligned output includes ignored merge messages as yellow text."""
+    diff = YueSeriesDiff(
+        _get_series("好叻呀！原来少爷识写自己个名㖞", "系呀！"),
+        _get_series("哗，好叻呀！原来少爷识写自己个名喎，系呀"),
+    )
+
+    rendered = diff.get_stacked_str(color=True)
+
+    assert f"{ANSI_YELLOW}哗{ANSI_RESET}" in rendered
+    assert f"{ANSI_YELLOW}㖞{ANSI_RESET}" in rendered
+    assert f"{ANSI_YELLOW}喎{ANSI_RESET}" in rendered
     assert ANSI_PURPLE not in rendered
 
 

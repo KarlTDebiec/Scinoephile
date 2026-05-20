@@ -40,16 +40,26 @@ def test_series_cer_remains_exact_for_yue_characters():
 def test_yue_series_cer_suppresses_discretionary_diffs():
     """Test Cantonese CER suppresses known discretionary character diffs."""
     result = YueSeriesCER(
-        _get_series("睇下你咪知啦"),
-        _get_series("睇吓你咪知啰"),
+        _get_series(
+            "睇下你咪知啦",
+            "做乜㖞",
+            "掉转咗呀！老爷",
+            "　　好叻呀！原来少爷识写自己个名㖞　系呀！",
+        ),
+        _get_series(
+            "睇吓你咪知啰",
+            "做乜喎",
+            "调转咗呀，老爷",
+            "哗，好叻呀！原来少爷识写自己个名喎，系呀　",
+        ),
     )
 
     assert result.cer == 0.0
     assert result.substitutions == 0
     assert result.insertions == 0
     assert result.deletions == 0
-    assert result.correct == 6
-    assert result.reference_length == 6
+    assert result.correct == 28
+    assert result.reference_length == 28
 
 
 def test_yue_series_cer_keeps_content_changes():

@@ -21,6 +21,7 @@ YUE_DIFF_CHAR_EQUIVALENCES: frozenset[frozenset[str]] = frozenset(
         frozenset(("啦", "喇")),
         frozenset(("哋", "地")),
         frozenset(("吓", "下")),
+        frozenset(("㖞", "喎")),
     }
 )
 """Explicit Cantonese character equivalences used for flexible analysis."""
@@ -32,7 +33,9 @@ _YUE_DIFF_CHAR_NORMALIZATION: dict[str, str] = {
     "喇": "啦",
     "地": "哋",
     "下": "吓",
+    "㖞": "喎",
 }
+_YUE_DIFF_LEADING_INTERJECTIONS: frozenset[str] = frozenset(("哗",))
 _YUE_DIFF_SPACING_PARTICLES: frozenset[str] = frozenset(("阿", "呀"))
 
 
@@ -92,6 +95,14 @@ def are_yue_diff_display_chars_equal(
             two_text,
             two_pos,
         )
+    if frozenset((one, two)) == frozenset(("掉", "调")):
+        return _is_yue_diff_turn_variant_char(
+            one_text,
+            one_pos,
+        ) and _is_yue_diff_turn_variant_char(
+            two_text,
+            two_pos,
+        )
     return False
 
 
@@ -113,7 +124,14 @@ def get_yue_diff_normalized(text: str) -> str:
             and _is_yue_diff_spacing_particle_ignorable(text, idx)
         ):
             continue
-        if char == "啰" and _is_yue_diff_sentence_final_char(text, idx):
+        if (
+            char in _YUE_DIFF_LEADING_INTERJECTIONS
+            and _is_yue_diff_leading_interjection_ignorable(text, idx)
+        ):
+            continue
+        if _is_yue_diff_turn_variant_char(text, idx):
+            chars.append("调")
+        elif char == "啰" and _is_yue_diff_sentence_final_char(text, idx):
             chars.append("啦")
         else:
             chars.append(_YUE_DIFF_CHAR_NORMALIZATION.get(char, char))
@@ -143,6 +161,12 @@ def is_yue_diff_display_ignorable_char(
         and char_pos is not None
     ):
         return _is_yue_diff_spacing_particle_ignorable(text, char_pos)
+    if (
+        char in _YUE_DIFF_LEADING_INTERJECTIONS
+        and text is not None
+        and char_pos is not None
+    ):
+        return _is_yue_diff_leading_interjection_ignorable(text, char_pos)
     return False
 
 
@@ -191,6 +215,25 @@ def _are_yue_diff_spacing_particle_chars_equal(
             one
         ) and _is_yue_diff_spacing_particle_ignorable(two_text, two_pos)
     return False
+
+
+def _is_yue_diff_leading_interjection_ignorable(text: str, char_pos: int) -> bool:
+    """Check whether an initial interjection is ignorable in this context.
+
+    Arguments:
+        text: text containing the character
+        char_pos: character position to check
+    Returns:
+        whether the leading interjection may be ignored
+    """
+    if char_pos < 0 or char_pos >= len(text):
+        return False
+    if text[char_pos] not in _YUE_DIFF_LEADING_INTERJECTIONS:
+        return False
+    for char in text[:char_pos]:
+        if not is_yue_diff_ignorable_char(char):
+            return False
+    return _is_yue_diff_separator_context(text, char_pos)
 
 
 def _is_yue_diff_matching_char_separator(text: str, char_pos: int) -> bool:
@@ -269,3 +312,19 @@ def _is_yue_diff_spacing_particle_ignorable(text: str, char_pos: int) -> bool:
     if _is_yue_diff_separator_context(text, char_pos):
         return True
     return _is_yue_diff_matching_char_separator(text, char_pos)
+
+
+def _is_yue_diff_turn_variant_char(text: str, char_pos: int) -> bool:
+    """Check whether a character is part of a 掉转/调转 spelling variant.
+
+    Arguments:
+        text: text containing the character
+        char_pos: character position to check
+    Returns:
+        whether the character is a turn-verb spelling variant
+    """
+    if char_pos < 0 or char_pos + 1 >= len(text):
+        return False
+    if text[char_pos] not in {"掉", "调"}:
+        return False
+    return text[char_pos + 1] in {"转", "轉"}
