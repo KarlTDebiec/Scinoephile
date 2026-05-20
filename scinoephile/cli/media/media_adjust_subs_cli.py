@@ -199,13 +199,13 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         arg_groups["operation arguments"].add_argument(
             "--max-start-expansion",
             default=750,
-            type=int_arg(min_value=0),
+            type=int_arg(min_value=0, max_value=999),
             help="maximum start expansion in milliseconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
             "--max-end-expansion",
-            default=1500,
-            type=int_arg(min_value=0),
+            default=999,
+            type=int_arg(min_value=0, max_value=999),
             help="maximum end expansion in milliseconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(

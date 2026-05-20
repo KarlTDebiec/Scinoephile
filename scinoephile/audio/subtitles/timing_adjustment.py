@@ -45,7 +45,7 @@ class SubtitleTimingAdjustmentConfig:
     """Audio buffer to include before and after each block in milliseconds."""
     max_start_expansion_ms: int = 750
     """Maximum amount by which a cue may move earlier in milliseconds."""
-    max_end_expansion_ms: int = 1500
+    max_end_expansion_ms: int = 999
     """Maximum amount by which a cue may move later in milliseconds."""
     merge_gap_ms: int = 150
     """Merge speech intervals separated by at most this gap in milliseconds."""
@@ -65,6 +65,9 @@ class SubtitleTimingAdjustmentConfig:
         for name, value in values_by_name.items():
             if value < 0:
                 raise ValueError(f"{name} must be non-negative")
+        for name in ("max_start_expansion_ms", "max_end_expansion_ms"):
+            if getattr(self, name) >= 1000:
+                raise ValueError(f"{name} must be less than 1000")
 
 
 @dataclass(frozen=True)
@@ -477,19 +480,23 @@ def _get_cue_timing_adjustment_description(
     Returns:
         timing adjustment result description
     """
-    details = [
-        f"{cue_diagnostics.start_delta_ms:+d}/{cue_diagnostics.end_delta_ms:+d} ms"
-    ]
+    timing_description = (
+        f"({_get_timing_delta_description(cue_diagnostics.start_delta_ms)}/"
+        f"{_get_timing_delta_description(cue_diagnostics.end_delta_ms)} ms)"
+    )
+    notes: list[str] = []
     if cue_diagnostics.unchanged:
-        details.append(f"unchanged: {_get_unchanged_cue_reason(cue_diagnostics)}")
+        notes.append(f"unchanged: {_get_unchanged_cue_reason(cue_diagnostics)}")
     else:
         if cue_diagnostics.blocked_start_expansion_ms:
-            details.append(
+            notes.append(
                 f"blocked start {cue_diagnostics.blocked_start_expansion_ms} ms"
             )
         if cue_diagnostics.blocked_end_expansion_ms:
-            details.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
-    return f"({'; '.join(details)})"
+            notes.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
+    if notes:
+        return f"{timing_description} {'; '.join(notes)}"
+    return timing_description
 
 
 def _get_display_padded(value: str, width: int) -> str:
@@ -522,6 +529,22 @@ def _get_display_width(value: str) -> int:
         else:
             width += 1
     return width
+
+
+def _get_timing_delta_description(delta_ms: int) -> str:
+    """Get a fixed-width timing delta description.
+
+    Arguments:
+        delta_ms: timing delta in milliseconds
+    Returns:
+        fixed-width timing delta description
+    """
+    if delta_ms == 0:
+        return "   0"
+    sign = "+"
+    if delta_ms < 0:
+        sign = "-"
+    return f"{sign}{abs(delta_ms):>3d}"
 
 
 def _get_unchanged_cue_reason(

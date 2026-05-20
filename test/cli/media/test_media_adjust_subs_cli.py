@@ -64,7 +64,7 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
             "--block-pause-length 2500 "
             "--vad-backend whisper "
             "--max-start-expansion 600 "
-            "--max-end-expansion 1600 "
+            "--max-end-expansion 900 "
             "--gap-merge-threshold 120 "
             "--minimum-speech-duration 80",
         )
@@ -85,7 +85,7 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
     assert adjust.call_args.kwargs["speech_detector"] == detector_cls.return_value
     assert config.block_pause_length_ms == 2500
     assert config.max_start_expansion_ms == 600
-    assert config.max_end_expansion_ms == 1600
+    assert config.max_end_expansion_ms == 900
     assert config.merge_gap_ms == 120
     assert config.min_speech_duration_ms == 80
     save.assert_called_once_with(outfile_path.resolve(), format_="srt")

@@ -64,22 +64,30 @@ def test_get_series_timing_adjustment_expands_cue_and_reports_diagnostics():
         speech_detector=detector,
         config=SubtitleTimingAdjustmentConfig(
             max_start_expansion_ms=500,
-            max_end_expansion_ms=1500,
+            max_end_expansion_ms=999,
         ),
     )
 
     adjusted = result.series
     assert [(event.start, event.end, event.text) for event in adjusted.events] == [
-        (800, 2600, "hello")
+        (800, 2499, "hello")
     ]
     assert [(event.start, event.end) for event in series.events] == [(1000, 1500)]
     cue_diagnostics = result.cues[0]
     assert cue_diagnostics.speech_duration_ms == 1800
     assert cue_diagnostics.speech_coverage_before_ms == 500
-    assert cue_diagnostics.speech_coverage_after_ms == 1800
+    assert cue_diagnostics.speech_coverage_after_ms == 1699
     assert cue_diagnostics.start_delta_ms == -200
-    assert cue_diagnostics.end_delta_ms == 1100
+    assert cue_diagnostics.end_delta_ms == 999
     assert cue_diagnostics.unchanged is False
+
+
+def test_subtitle_timing_adjustment_config_rejects_large_shifts():
+    """Test timing adjustment shifts are kept below one second."""
+    with pytest.raises(ValueError, match="max_start_expansion_ms must be less than"):
+        SubtitleTimingAdjustmentConfig(max_start_expansion_ms=1000)
+    with pytest.raises(ValueError, match="max_end_expansion_ms must be less than"):
+        SubtitleTimingAdjustmentConfig(max_end_expansion_ms=1000)
 
 
 def test_get_series_timing_adjustment_logs_block_summary(
@@ -112,7 +120,7 @@ def test_get_series_timing_adjustment_logs_block_summary(
             speech_detector=detector,
             config=SubtitleTimingAdjustmentConfig(
                 max_start_expansion_ms=750,
-                max_end_expansion_ms=1500,
+                max_end_expansion_ms=999,
             ),
         )
 
@@ -125,9 +133,9 @@ def test_get_series_timing_adjustment_logs_block_summary(
         "\n".join(
             [
                 "SUBTITLE TIMING ADJUSTMENT:",
-                " 1  这儿的空气很清新  (-750/+0 ms)",
-                " 2  最适合妈咪养病    (+0/+300 ms)",
-                f" 3  没有语音{' ' * 10}(+0/+0 ms; unchanged: no matched speech)",
+                " 1  这儿的空气很清新  (-750/   0 ms)",
+                " 2  最适合妈咪养病    (   0/+300 ms)",
+                f" 3  没有语音{' ' * 10}(   0/   0 ms) unchanged: no matched speech",
             ]
         )
     ]
@@ -149,7 +157,7 @@ def test_get_series_timing_adjustment_prevents_overlaps_and_reports_blocking():
         speech_detector=detector,
         config=SubtitleTimingAdjustmentConfig(
             max_start_expansion_ms=500,
-            max_end_expansion_ms=1500,
+            max_end_expansion_ms=999,
         ),
     )
 
