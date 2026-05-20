@@ -33,6 +33,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
     DemucsMode,
     VADMode,
     get_yue_transcribed_vs_zho,
@@ -68,6 +69,9 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用于转写的 Whisper 模型标识符（默认：%(default)s）"
+        ),
         'standard Chinese subtitle infile, or "-" for stdin': (
             '标准中文字幕输入文件，或使用 "-" 表示标准输入'
         ),
@@ -99,6 +103,9 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用於轉寫的 Whisper 模型識別碼（預設：%(default)s）"
+        ),
         'standard Chinese subtitle infile, or "-" for stdin': (
             '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
@@ -186,6 +193,14 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
                 "(options: on, off, auto; default: auto)"
             ),
         )
+        arg_groups["operation arguments"].add_argument(
+            "--whisper-model",
+            default=DEFAULT_YUE_WHISPER_MODEL_NAME,
+            dest="whisper_model_name",
+            help=(
+                "Whisper model identifier used for transcription (default: %(default)s)"
+            ),
+        )
         add_opencc_convert_argument(
             arg_groups["operation arguments"], arg_groups["additional help"]
         )
@@ -257,6 +272,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         llm_additional_context_file_path: Path | None,
         demucs: DemucsMode,
         vad: VADMode,
+        whisper_model_name: str,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -313,6 +329,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         )
         provider = get_provider(llm_provider_name, model=llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
+            model_name=whisper_model_name,
             demucs_mode=demucs,
             vad_mode=vad,
             provider=provider,
