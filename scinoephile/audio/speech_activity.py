@@ -396,7 +396,7 @@ class SileroSpeechActivityDetector:
     def _get_silero_functions() -> tuple[Any, Any]:
         """Import Silero VAD functions on demand."""
         try:
-            from silero_vad import (  # noqa: PLC0415
+            from silero_vad import (  # ty: ignore[unresolved-import]  # noqa: PLC0415
                 get_speech_timestamps,
                 load_silero_vad,
             )
@@ -408,7 +408,7 @@ class SileroSpeechActivityDetector:
     def _get_torch_module() -> Any:
         """Import torch on demand."""
         try:
-            import torch  # noqa: PLC0415
+            import torch  # ty: ignore[unresolved-import]  # noqa: PLC0415
         except ImportError as exc:
             raise ImportError(_SILERO_EXTRA_MESSAGE) from exc
         return torch
