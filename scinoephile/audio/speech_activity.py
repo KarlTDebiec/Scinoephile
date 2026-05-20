@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING, Protocol
 
 from scinoephile.core.subtitles import Series, Subtitle
@@ -101,6 +102,7 @@ class WhisperSpeechActivityDetector:
     def __init__(
         self,
         transcriber: Callable[[AudioSegment], list[TranscribedSegment]] | None = None,
+        cache_dir_path: Path | None = None,
         merge_gap_ms: int = 150,
         min_duration_ms: int = 100,
     ):
@@ -108,10 +110,13 @@ class WhisperSpeechActivityDetector:
 
         Arguments:
             transcriber: callable that returns transcription segments
+            cache_dir_path: optional cache directory for raw transcription segments
             merge_gap_ms: merge speech intervals separated by at most this gap
             min_duration_ms: discard speech intervals shorter than this duration
         """
-        self.transcriber = transcriber or WhisperTranscriber()
+        if transcriber is None:
+            transcriber = WhisperTranscriber(cache_dir_path=cache_dir_path)
+        self.transcriber = transcriber
         self.merge_gap_ms = merge_gap_ms
         self.min_duration_ms = min_duration_ms
 

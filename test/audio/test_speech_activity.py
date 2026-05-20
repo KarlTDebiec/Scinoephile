@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+from unittest.mock import patch
+
 from pydub import AudioSegment
 
 from scinoephile.audio.speech_activity import (
@@ -117,3 +120,16 @@ def test_whisper_speech_activity_detector_cleans_transcription_segments():
     intervals = detector(AudioSegment.silent(duration=2000), offset_ms=3000)
 
     assert intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+
+
+def test_whisper_speech_activity_detector_uses_cached_transcriber(tmp_path: Path):
+    """Test Whisper-backed detection can cache raw transcription segments."""
+    cache_dir_path = tmp_path / "speech"
+
+    with patch(
+        "scinoephile.audio.speech_activity.WhisperTranscriber"
+    ) as transcriber_cls:
+        detector = WhisperSpeechActivityDetector(cache_dir_path=cache_dir_path)
+
+    transcriber_cls.assert_called_once_with(cache_dir_path=cache_dir_path)
+    assert detector.transcriber == transcriber_cls.return_value

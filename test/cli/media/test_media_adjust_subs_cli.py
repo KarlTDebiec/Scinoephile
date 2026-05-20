@@ -17,6 +17,7 @@ from scinoephile.audio.subtitles.timing_adjustment import (
     SubtitleTimingAdjustmentResult,
 )
 from scinoephile.cli.media.media_adjust_subs_cli import MediaAdjustSubsCli
+from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.testing import run_cli_with_args
 
 
@@ -25,6 +26,7 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
     media_infile_path = tmp_path / "movie.mkv"
     subtitle_infile_path = tmp_path / "movie.srt"
     outfile_path = tmp_path / "adjusted.srt"
+    cache_dir_path = tmp_path / "cache"
     media_infile_path.touch()
     subtitle_infile_path.touch()
     loaded_series = AudioSeries(
@@ -56,6 +58,7 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
             f"--media-infile {media_infile_path} "
             f"--subtitle-infile {subtitle_infile_path} "
             f"--outfile {outfile_path} "
+            f"--cache-dir {cache_dir_path} "
             "--stream-index 1 "
             "--buffer 1500 "
             "--block-pause-length 2500 "
@@ -71,8 +74,13 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
         subtitle_path=subtitle_infile_path.resolve(),
         stream_index=1,
         buffer=1500,
+        cache_dir_path=cache_dir_path.resolve(),
     )
-    detector_cls.assert_called_once_with(merge_gap_ms=120, min_duration_ms=80)
+    detector_cls.assert_called_once_with(
+        cache_dir_path=cache_dir_path.resolve() / "speech",
+        merge_gap_ms=120,
+        min_duration_ms=80,
+    )
     config = adjust.call_args.kwargs["config"]
     assert adjust.call_args.kwargs["speech_detector"] == detector_cls.return_value
     assert config.block_pause_length_ms == 2500
@@ -122,6 +130,7 @@ def test_media_adjust_subs_cli_saves_suffixless_output_as_subtitles(tmp_path: Pa
         subtitle_path=subtitle_infile_path.resolve(),
         stream_index=None,
         buffer=2000,
+        cache_dir_path=cache_dir_path_arg("media", "audio"),
     )
 
 

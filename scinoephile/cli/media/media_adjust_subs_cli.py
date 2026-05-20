@@ -14,6 +14,7 @@ from scinoephile.audio.subtitles.timing_adjustment import (
     SubtitleTimingAdjustmentResult,
     get_series_timing_adjustment,
 )
+from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -38,6 +39,10 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕块前后的音频缓冲，单位为毫秒（默认：%(default)s）"
         ),
+        (
+            "cache directory for extracted audio and speech activity artifacts "
+            "(default: %(default)s)"
+        ): ("提取音频和语音活动工件的缓存目录（默认：%(default)s）"),
         "dry-run without writing adjusted subtitles": "试运行，不写入调整后的字幕",
         "input media file containing audio": "包含音频的媒体输入文件",
         "input subtitle file whose timings should be adjusted": (
@@ -76,6 +81,10 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕區塊前後的音訊緩衝，單位為毫秒（預設：%(default)s）"
         ),
+        (
+            "cache directory for extracted audio and speech activity artifacts "
+            "(default: %(default)s)"
+        ): ("提取音訊和語音活動工件的快取目錄（預設：%(default)s）"),
         "dry-run without writing adjusted subtitles": "試執行，不寫入調整後的字幕",
         "input media file containing audio": "包含音訊的媒體輸入檔",
         "input subtitle file whose timings should be adjusted": (
@@ -171,6 +180,16 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             help="subtitle block pause length in milliseconds (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
+            "--cache-dir",
+            default=cache_dir_path_arg("media", "audio"),
+            dest="cache_dir_path",
+            type=cache_dir_path_arg,
+            help=(
+                "cache directory for extracted audio and speech activity artifacts "
+                "(default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
             "--vad-backend",
             default="whisper",
             metavar="{whisper}",
@@ -248,6 +267,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         stream_index: int | None,
         buffer: int,
         block_pause_length: int,
+        cache_dir_path: Path,
         vad_backend: str,
         max_start_expansion: int,
         max_end_expansion: int,
@@ -265,9 +285,11 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
                 subtitle_path=subtitle_infile_path,
                 stream_index=stream_index,
                 buffer=buffer,
+                cache_dir_path=cache_dir_path,
             )
             speech_detector = cls._get_speech_detector(
                 vad_backend=vad_backend,
+                cache_dir_path=cache_dir_path / "speech",
                 merge_gap_ms=gap_merge_threshold,
                 min_duration_ms=minimum_speech_duration,
             )
@@ -328,6 +350,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
     def _get_speech_detector(
         *,
         vad_backend: str,
+        cache_dir_path: Path,
         merge_gap_ms: int,
         min_duration_ms: int,
     ) -> WhisperSpeechActivityDetector:
@@ -335,6 +358,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
 
         Arguments:
             vad_backend: speech activity backend name
+            cache_dir_path: cache directory for raw speech activity artifacts
             merge_gap_ms: merge speech intervals separated by at most this gap
             min_duration_ms: discard speech intervals shorter than this duration
         Returns:
@@ -342,6 +366,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         """
         if vad_backend == "whisper":
             return WhisperSpeechActivityDetector(
+                cache_dir_path=cache_dir_path,
                 merge_gap_ms=merge_gap_ms,
                 min_duration_ms=min_duration_ms,
             )

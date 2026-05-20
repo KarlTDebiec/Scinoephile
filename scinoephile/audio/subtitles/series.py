@@ -23,6 +23,7 @@ from scinoephile.common.validation import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.media import AudioStream
 from scinoephile.core.subtitles import Series
+from scinoephile.media.audio import get_media_audio_cache_path
 from scinoephile.media.probe import get_streams
 
 from .subtitle import AudioSubtitle
@@ -228,6 +229,7 @@ class AudioSeries(Series):
         subtitle_path: Path | str,
         stream_index: int | None = None,
         buffer: int = 1000,
+        cache_dir_path: Path | None = None,
         **kwargs: Any,
     ) -> Self:
         """Load series from a subtitle file and associated media file.
@@ -238,6 +240,7 @@ class AudioSeries(Series):
             stream_index: media stream index of an audio stream, or None to use the
               first audio stream
             buffer: additional buffer to include before and after subtitles (ms)
+            cache_dir_path: optional cache directory for extracted audio
             **kwargs: additional keyword arguments passed to Series.load
         Returns:
             loaded series
@@ -254,22 +257,42 @@ class AudioSeries(Series):
             )
         channel_count = stream.channels
 
-        with get_temp_directory_path() as temp_dir_path:
-            full_audio_path = temp_dir_path / "full_audio.wav"
-            try:
-                cls.extract_audio_track(
+        try:
+            if cache_dir_path is None:
+                with get_temp_directory_path() as temp_dir_path:
+                    full_audio_path = temp_dir_path / "full_audio.wav"
+                    cls.extract_audio_track(
+                        validated_media_path,
+                        full_audio_path,
+                        stream.index,
+                        channel_count,
+                    )
+                    logger.info(f"Loading full audio from {full_audio_path}")
+                    full_audio = AudioSegment.from_wav(full_audio_path)
+            else:
+                full_audio_path = get_media_audio_cache_path(
                     validated_media_path,
-                    full_audio_path,
-                    stream.index,
-                    channel_count,
+                    stream,
+                    cache_dir_path=cache_dir_path,
                 )
+                if full_audio_path.exists():
+                    logger.info(f"Loaded extracted audio from cache: {full_audio_path}")
+                else:
+                    full_audio_path.parent.mkdir(parents=True, exist_ok=True)
+                    cls.extract_audio_track(
+                        validated_media_path,
+                        full_audio_path,
+                        stream.index,
+                        channel_count,
+                    )
+                    logger.info(f"Saved extracted audio to cache: {full_audio_path}")
                 logger.info(f"Loading full audio from {full_audio_path}")
                 full_audio = AudioSegment.from_wav(full_audio_path)
-            except ffmpeg.Error as exc:
-                raise ScinoephileError(
-                    f"Could not extract audio stream {stream.index} from "
-                    f"{validated_media_path}"
-                ) from exc
+        except ffmpeg.Error as exc:
+            raise ScinoephileError(
+                f"Could not extract audio stream {stream.index} from "
+                f"{validated_media_path}"
+            ) from exc
 
         return cls.build_series(text_series, full_audio, buffer)
 
