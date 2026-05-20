@@ -5,15 +5,23 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
+from collections.abc import Callable, Sequence
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from scinoephile.audio.speech_activity import WhisperSpeechActivityDetector
+from scinoephile.audio.speech_activity import (
+    SileroSpeechActivityDetector,
+    SpeechActivityDetector,
+    SpeechInterval,
+    WhisperSpeechActivityDetector,
+)
 from scinoephile.audio.subtitles import AudioSeries
 from scinoephile.audio.subtitles.timing_adjustment import (
     SubtitleTimingAdjustmentConfig,
     SubtitleTimingAdjustmentResult,
     get_series_timing_adjustment,
 )
+from scinoephile.audio.transcription import DemucsSeparator
 from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -24,6 +32,9 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+
+if TYPE_CHECKING:
+    from pydub import AudioSegment
 
 __all__ = ["MediaAdjustSubsCli"]
 
@@ -43,6 +54,9 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "cache directory for extracted audio and speech activity artifacts "
             "(default: %(default)s)"
         ): "提取音频和语音活动工件的缓存目录（默认：%(default)s）",
+        "Demucs vocal separation before speech detection (default: %(default)s)": (
+            "语音检测前的 Demucs 人声分离（默认：%(default)s）"
+        ),
         "dry-run without writing adjusted subtitles": "试运行，不写入调整后的字幕",
         "input media file containing audio": "包含音频的媒体输入文件",
         "input subtitle file whose timings should be adjusted": (
@@ -85,6 +99,9 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "cache directory for extracted audio and speech activity artifacts "
             "(default: %(default)s)"
         ): "提取音訊和語音活動工件的快取目錄（預設：%(default)s）",
+        "Demucs vocal separation before speech detection (default: %(default)s)": (
+            "語音偵測前的 Demucs 人聲分離（預設：%(default)s）"
+        ),
         "dry-run without writing adjusted subtitles": "試執行，不寫入調整後的字幕",
         "input media file containing audio": "包含音訊的媒體輸入檔",
         "input subtitle file whose timings should be adjusted": (
@@ -114,6 +131,44 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized help text keyed by locale and English source text."""
+
+
+class _PreprocessedSpeechActivityDetector:
+    """Speech activity detector with audio preprocessing."""
+
+    def __init__(
+        self,
+        *,
+        speech_detector: SpeechActivityDetector,
+        audio_preprocessor: Callable[[AudioSegment], AudioSegment],
+    ):
+        """Initialize.
+
+        Arguments:
+            speech_detector: speech activity detector to run after preprocessing
+            audio_preprocessor: audio preprocessing callable
+        """
+        self.speech_detector = speech_detector
+        self.audio_preprocessor = audio_preprocessor
+
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
+    ) -> Sequence[SpeechInterval]:
+        """Detect speech activity after preprocessing audio.
+
+        Arguments:
+            audio: audio segment to inspect
+            offset_ms: offset to add to returned intervals
+        Returns:
+            detected speech intervals
+        """
+        return self.speech_detector(
+            self.audio_preprocessor(audio),
+            offset_ms=offset_ms,
+        )
 
 
 class MediaAdjustSubsCli(ScinoephileCliBase):
@@ -191,10 +246,19 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--vad-backend",
-            default="whisper",
-            metavar="{whisper}",
-            type=str_arg(options=["whisper"]),
+            default="silero",
+            metavar="{silero,whisper}",
+            type=str_arg(options=["silero", "whisper"]),
             help="speech activity backend (default: %(default)s)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--demucs",
+            default="off",
+            metavar="{off,on}",
+            type=str_arg(options=["off", "on"]),
+            help=(
+                "Demucs vocal separation before speech detection (default: %(default)s)"
+            ),
         )
         arg_groups["operation arguments"].add_argument(
             "--max-start-expansion",
@@ -269,6 +333,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         block_pause_length: int,
         cache_dir_path: Path,
         vad_backend: str,
+        demucs: str,
         max_start_expansion: int,
         max_end_expansion: int,
         gap_merge_threshold: int,
@@ -293,6 +358,13 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
                 merge_gap_ms=gap_merge_threshold,
                 min_duration_ms=minimum_speech_duration,
             )
+            if demucs == "on":
+                speech_detector = _PreprocessedSpeechActivityDetector(
+                    speech_detector=speech_detector,
+                    audio_preprocessor=DemucsSeparator(
+                        cache_dir_path=cache_dir_path / "demucs"
+                    ),
+                )
             result = get_series_timing_adjustment(
                 series,
                 speech_detector=speech_detector,
@@ -353,7 +425,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         cache_dir_path: Path,
         merge_gap_ms: int,
         min_duration_ms: int,
-    ) -> WhisperSpeechActivityDetector:
+    ) -> SpeechActivityDetector:
         """Get the requested speech activity detector.
 
         Arguments:
@@ -364,6 +436,12 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         Returns:
             configured speech activity detector
         """
+        if vad_backend == "silero":
+            return SileroSpeechActivityDetector(
+                cache_dir_path=cache_dir_path,
+                merge_gap_ms=merge_gap_ms,
+                min_duration_ms=min_duration_ms,
+            )
         if vad_backend == "whisper":
             return WhisperSpeechActivityDetector(
                 cache_dir_path=cache_dir_path,

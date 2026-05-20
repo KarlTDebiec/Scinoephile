@@ -13,12 +13,14 @@ Hierarchy within module (lower may import from higher)::
 from __future__ import annotations
 
 from .speech_activity import (
+    SileroSpeechActivityDetector,
     SpeechActivityDetector,
     SpeechInterval,
     WhisperSpeechActivityDetector,
 )
 
 __all__ = [
+    "SileroSpeechActivityDetector",
     "SpeechActivityDetector",
     "SpeechInterval",
     "WhisperSpeechActivityDetector",

@@ -24,6 +24,7 @@ _OPTIONAL_TRANSCRIPTION_MODULES = (
     "demucs_infer",
     "huggingface_hub",
     "onnxruntime",
+    "silero_vad",
     "torch",
     "torchaudio",
     "transformers",

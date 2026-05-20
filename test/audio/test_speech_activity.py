@@ -10,6 +10,7 @@ from unittest.mock import patch
 from pydub import AudioSegment
 
 from scinoephile.audio.speech_activity import (
+    SileroSpeechActivityDetector,
     SpeechInterval,
     WhisperSpeechActivityDetector,
     get_speech_intervals_cleaned,
@@ -120,6 +121,49 @@ def test_whisper_speech_activity_detector_cleans_transcription_segments():
     intervals = detector(AudioSegment.silent(duration=2000), offset_ms=3000)
 
     assert intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+
+
+def test_silero_speech_activity_detector_caches_and_cleans_timestamps(tmp_path: Path):
+    """Test Silero-backed detection caches raw intervals before cleanup."""
+    cache_dir_path = tmp_path / "speech"
+    audio = AudioSegment.silent(duration=2000)
+
+    with patch.object(
+        SileroSpeechActivityDetector,
+        "_get_uncached_speech_intervals",
+        return_value=[
+            SpeechInterval(start_ms=100, end_ms=500),
+            SpeechInterval(start_ms=550, end_ms=1000),
+            SpeechInterval(start_ms=1500, end_ms=1550),
+        ],
+    ) as get_uncached_speech_intervals:
+        detector = SileroSpeechActivityDetector(
+            model=object(),
+            cache_dir_path=cache_dir_path,
+            merge_gap_ms=100,
+            min_duration_ms=100,
+        )
+
+        intervals = detector(audio, offset_ms=3000)
+
+    assert intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+    get_uncached_speech_intervals.assert_called_once_with(audio)
+
+    with patch.object(
+        SileroSpeechActivityDetector,
+        "_get_uncached_speech_intervals",
+        side_effect=AssertionError("cache miss"),
+    ):
+        cached_detector = SileroSpeechActivityDetector(
+            model=object(),
+            cache_dir_path=cache_dir_path,
+            merge_gap_ms=100,
+            min_duration_ms=100,
+        )
+
+        cached_intervals = cached_detector(audio, offset_ms=3000)
+
+    assert cached_intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
 
 
 def test_whisper_speech_activity_detector_uses_cached_transcriber(tmp_path: Path):

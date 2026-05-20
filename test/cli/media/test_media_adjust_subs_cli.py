@@ -109,7 +109,7 @@ def test_media_adjust_subs_cli_saves_suffixless_output_as_subtitles(tmp_path: Pa
             "scinoephile.cli.media.media_adjust_subs_cli.AudioSeries.load_from_media"
         ) as load_from_media,
         patch(
-            "scinoephile.cli.media.media_adjust_subs_cli.WhisperSpeechActivityDetector"
+            "scinoephile.cli.media.media_adjust_subs_cli.SileroSpeechActivityDetector"
         ),
         patch(
             "scinoephile.cli.media.media_adjust_subs_cli.get_series_timing_adjustment",
@@ -189,7 +189,7 @@ def test_media_adjust_subs_cli_dry_run_prints_diagnostics(
             "scinoephile.cli.media.media_adjust_subs_cli.AudioSeries.load_from_media"
         ),
         patch(
-            "scinoephile.cli.media.media_adjust_subs_cli.WhisperSpeechActivityDetector"
+            "scinoephile.cli.media.media_adjust_subs_cli.SileroSpeechActivityDetector"
         ),
         patch(
             "scinoephile.cli.media.media_adjust_subs_cli.get_series_timing_adjustment",
@@ -212,3 +212,103 @@ def test_media_adjust_subs_cli_dry_run_prints_diagnostics(
         "Total end delta: +0.900 s",
         "Blocked expansion: start +0.000 s, end +0.000 s",
     ]
+
+
+def test_media_adjust_subs_cli_defaults_to_silero(tmp_path: Path):
+    """Test CLI defaults to Silero speech activity detection."""
+    media_infile_path = tmp_path / "movie.mkv"
+    subtitle_infile_path = tmp_path / "movie.srt"
+    outfile_path = tmp_path / "adjusted.srt"
+    cache_dir_path = tmp_path / "cache"
+    media_infile_path.touch()
+    subtitle_infile_path.touch()
+    adjusted_series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[AudioSubtitle(start=900, end=2400, text="hello")],
+    )
+    result = SubtitleTimingAdjustmentResult(series=adjusted_series, blocks=[])
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.AudioSeries.load_from_media"
+        ),
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.SileroSpeechActivityDetector"
+        ) as detector_cls,
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.get_series_timing_adjustment",
+            return_value=result,
+        ) as adjust,
+        patch.object(adjusted_series, "save"),
+    ):
+        run_cli_with_args(
+            MediaAdjustSubsCli,
+            f"--media-infile {media_infile_path} "
+            f"--subtitle-infile {subtitle_infile_path} "
+            f"--outfile {outfile_path} "
+            f"--cache-dir {cache_dir_path}",
+        )
+
+    detector_cls.assert_called_once_with(
+        cache_dir_path=cache_dir_path.resolve() / "speech",
+        merge_gap_ms=150,
+        min_duration_ms=100,
+    )
+    assert adjust.call_args.kwargs["speech_detector"] == detector_cls.return_value
+
+
+def test_media_adjust_subs_cli_can_apply_demucs_before_vad(tmp_path: Path):
+    """Test CLI can wrap speech activity detection with Demucs preprocessing."""
+    media_infile_path = tmp_path / "movie.mkv"
+    subtitle_infile_path = tmp_path / "movie.srt"
+    outfile_path = tmp_path / "adjusted.srt"
+    cache_dir_path = tmp_path / "cache"
+    media_infile_path.touch()
+    subtitle_infile_path.touch()
+    loaded_series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[AudioSubtitle(start=1000, end=1500, text="hello")],
+    )
+    adjusted_series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[AudioSubtitle(start=900, end=2400, text="hello")],
+    )
+    result = SubtitleTimingAdjustmentResult(series=adjusted_series, blocks=[])
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.AudioSeries.load_from_media",
+            return_value=loaded_series,
+        ),
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.SileroSpeechActivityDetector"
+        ) as detector_cls,
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.DemucsSeparator"
+        ) as demucs_cls,
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.get_series_timing_adjustment",
+            return_value=result,
+        ) as adjust,
+        patch.object(adjusted_series, "save"),
+    ):
+        run_cli_with_args(
+            MediaAdjustSubsCli,
+            f"--media-infile {media_infile_path} "
+            f"--subtitle-infile {subtitle_infile_path} "
+            f"--outfile {outfile_path} "
+            f"--cache-dir {cache_dir_path} "
+            "--demucs on",
+        )
+
+    demucs_cls.assert_called_once_with(
+        cache_dir_path=cache_dir_path.resolve() / "demucs"
+    )
+    speech_detector = adjust.call_args.kwargs["speech_detector"]
+    audio = AudioSegment.silent(duration=1000)
+    speech_detector(audio, offset_ms=250)
+    demucs_cls.return_value.assert_called_once_with(audio)
+    detector_cls.return_value.assert_called_once_with(
+        demucs_cls.return_value.return_value,
+        offset_ms=250,
+    )
