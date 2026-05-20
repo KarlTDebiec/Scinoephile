@@ -15,8 +15,11 @@ from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
+from scinoephile.cli.yue.yue_translate_vs_eng_cli import YueTranslateVsEngCli
 from scinoephile.cli.yue.yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
+from scinoephile.cli.zho.zho_translate_vs_eng_cli import ZhoTranslateVsEngCli
+from scinoephile.cli.zho.zho_translate_vs_yue_cli import ZhoTranslateVsYueCli
 from scinoephile.common import CommandLineInterface
 
 
@@ -34,8 +37,11 @@ from scinoephile.common import CommandLineInterface
         (YueTranscribeVsZhoCli, "--demucs", "{on,off}"),
         (YueTranscribeVsZhoCli, "--vad", "{auto,on,off}"),
         (YueTranscribeVsZhoCli, "--script", "{simplified,traditional}"),
+        (YueTranslateVsEngCli, "--script", "{simplified,traditional}"),
         (YueTranslateVsZhoCli, "--script", "{simplified,traditional}"),
         (ZhoProcessCli, "--proofread", "{simplified,traditional}"),
+        (ZhoTranslateVsEngCli, "--script", "{simplified,traditional}"),
+        (ZhoTranslateVsYueCli, "--script", "{simplified,traditional}"),
     ],
 )
 def test_custom_choice_validators_use_metavar_not_choices(

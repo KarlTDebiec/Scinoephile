@@ -9,14 +9,18 @@ from pathlib import Path
 import pytest
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
+from scinoephile.cli.eng.eng_translate_vs_yue_cli import EngTranslateVsYueCli
 from scinoephile.cli.eng.eng_translate_vs_zho_cli import EngTranslateVsZhoCli
 from scinoephile.cli.multi.multi_timewarp_cli import MultiTimewarpCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
+from scinoephile.cli.yue.yue_translate_vs_eng_cli import YueTranslateVsEngCli
 from scinoephile.cli.yue.yue_translate_vs_zho_cli import YueTranslateVsZhoCli
 from scinoephile.cli.zho.zho_process_cli import ZhoProcessCli
+from scinoephile.cli.zho.zho_translate_vs_eng_cli import ZhoTranslateVsEngCli
+from scinoephile.cli.zho.zho_translate_vs_yue_cli import ZhoTranslateVsYueCli
 from scinoephile.common import CommandLineInterface
 
 
@@ -57,8 +61,16 @@ from scinoephile.common import CommandLineInterface
             ],
         ),
         (
+            EngTranslateVsYueCli,
+            ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
+        ),
+        (
             EngTranslateVsZhoCli,
             ["--zho-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
+        ),
+        (
+            YueTranslateVsEngCli,
+            ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
             YueTranslateVsZhoCli,
@@ -87,6 +99,14 @@ from scinoephile.common import CommandLineInterface
                 "{outfile}",
                 "--overwrite",
             ],
+        ),
+        (
+            ZhoTranslateVsEngCli,
+            ["--eng-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
+        ),
+        (
+            ZhoTranslateVsYueCli,
+            ["--yue-infile", "{infile}", "--outfile", "{outfile}", "--overwrite"],
         ),
         (
             MultiTimewarpCli,
@@ -119,10 +139,14 @@ from scinoephile.common import CommandLineInterface
         "eng-process",
         "zho-process",
         "yue-process",
+        "eng-translate-vs-yue",
         "eng-translate-vs-zho",
+        "yue-translate-vs-eng",
         "yue-translate-vs-zho",
         "yue-review-vs-zho",
         "yue-transcribe-vs-zho",
+        "zho-translate-vs-eng",
+        "zho-translate-vs-yue",
         "multi-timewarp",
         "ocr-fuse",
     ],

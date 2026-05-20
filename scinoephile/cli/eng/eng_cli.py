@@ -11,6 +11,7 @@ from scinoephile.common import CommandLineInterface
 from scinoephile.core.cli import ScinoephileCliBase
 
 from .eng_process_cli import EngProcessCli
+from .eng_translate_vs_yue_cli import EngTranslateVsYueCli
 from .eng_translate_vs_zho_cli import EngTranslateVsZhoCli
 
 __all__ = ["EngCli"]
@@ -21,6 +22,9 @@ ENG_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "英文字幕操作命令行界面"
         ),
         "modify English subtitles": "修改英文字幕",
+        "translate English subtitles from written Cantonese subtitles": (
+            "根据书面粤语字幕翻译英文字幕"
+        ),
         "translate English subtitles from Chinese subtitles": (
             "根据中文字幕翻译英文字幕"
         ),
@@ -30,6 +34,9 @@ ENG_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "英文字幕操作命令列介面"
         ),
         "modify English subtitles": "修改英文字幕",
+        "translate English subtitles from written Cantonese subtitles": (
+            "根據書面粵語字幕翻譯英文字幕"
+        ),
         "translate English subtitles from Chinese subtitles": (
             "根據中文字幕翻譯英文字幕"
         ),
@@ -71,6 +78,7 @@ class EngCli(ScinoephileCliBase):
         """
         return {
             EngProcessCli.name(): EngProcessCli,
+            EngTranslateVsYueCli.name(): EngTranslateVsYueCli,
             EngTranslateVsZhoCli.name(): EngTranslateVsZhoCli,
         }
 
