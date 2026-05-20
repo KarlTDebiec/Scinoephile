@@ -56,7 +56,7 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
             f"--media-infile {media_infile_path} "
             f"--subtitle-infile {subtitle_infile_path} "
             f"--outfile {outfile_path} "
-            "--audio-stream 1 "
+            "--stream-index 1 "
             "--buffer 1500 "
             "--block-pause-length 2500 "
             "--vad-backend whisper "
@@ -80,7 +80,49 @@ def test_media_adjust_subs_cli_loads_adjusts_and_saves(tmp_path: Path):
     assert config.max_end_expansion_ms == 1600
     assert config.merge_gap_ms == 120
     assert config.min_speech_duration_ms == 80
-    save.assert_called_once_with(outfile_path.resolve())
+    save.assert_called_once_with(outfile_path.resolve(), format_="srt")
+
+
+def test_media_adjust_subs_cli_saves_suffixless_output_as_subtitles(tmp_path: Path):
+    """Test suffixless output paths are saved with a subtitle format."""
+    media_infile_path = tmp_path / "movie.mkv"
+    subtitle_infile_path = tmp_path / "movie.srt"
+    outfile_path = tmp_path / "adjusted"
+    media_infile_path.touch()
+    subtitle_infile_path.touch()
+    adjusted_series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[AudioSubtitle(start=900, end=2400, text="hello")],
+    )
+    result = SubtitleTimingAdjustmentResult(series=adjusted_series, blocks=[])
+
+    with (
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.AudioSeries.load_from_media"
+        ) as load_from_media,
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.WhisperSpeechActivityDetector"
+        ),
+        patch(
+            "scinoephile.cli.media.media_adjust_subs_cli.get_series_timing_adjustment",
+            return_value=result,
+        ),
+        patch.object(adjusted_series, "save") as save,
+    ):
+        run_cli_with_args(
+            MediaAdjustSubsCli,
+            f"--media-infile {media_infile_path} "
+            f"--subtitle-infile {subtitle_infile_path} "
+            f"--outfile {outfile_path}",
+        )
+
+    save.assert_called_once_with(outfile_path.resolve(), format_="srt")
+    load_from_media.assert_called_once_with(
+        media_path=media_infile_path.resolve(),
+        subtitle_path=subtitle_infile_path.resolve(),
+        stream_index=None,
+        buffer=2000,
+    )
 
 
 def test_media_adjust_subs_cli_dry_run_prints_diagnostics(

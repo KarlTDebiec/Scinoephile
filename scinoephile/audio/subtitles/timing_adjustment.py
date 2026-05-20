@@ -4,12 +4,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 
 from scinoephile.audio.speech_activity import (
+    SpeechActivityDetector,
     SpeechInterval,
     get_speech_intervals_cleaned,
     get_speech_overlap_duration,
@@ -20,9 +20,6 @@ from scinoephile.core.synchronization import SyncGroup, get_sync_groups
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
 
 __all__ = [
     "SubtitleTimingAdjustmentBlockDiagnostics",
@@ -152,7 +149,7 @@ class _SubtitleTimingAdjustmentBlockSpec:
 def get_series_timing_adjusted(
     series: AudioSeries,
     *,
-    speech_detector: Callable[[AudioSegment], Sequence[SpeechInterval]],
+    speech_detector: SpeechActivityDetector,
     config: SubtitleTimingAdjustmentConfig | None = None,
 ) -> AudioSeries:
     """Get a subtitle series with timings adjusted against speech.
@@ -174,7 +171,7 @@ def get_series_timing_adjusted(
 def get_series_timing_adjustment(
     series: AudioSeries,
     *,
-    speech_detector: Callable[[AudioSegment], Sequence[SpeechInterval]],
+    speech_detector: SpeechActivityDetector,
     config: SubtitleTimingAdjustmentConfig | None = None,
 ) -> SubtitleTimingAdjustmentResult:
     """Get adjusted subtitle timings and diagnostics.
@@ -196,7 +193,10 @@ def get_series_timing_adjustment(
             block_spec.buffered_start_ms : block_spec.buffered_end_ms
         ]
         speech_intervals = _get_block_speech_intervals(
-            speech_detector(block_audio),
+            speech_detector(
+                block_audio,
+                offset_ms=block_spec.buffered_start_ms,
+            ),
             block_spec=block_spec,
             config=config,
         )
@@ -482,25 +482,14 @@ def _get_block_speech_intervals(
     """Get cleaned block speech intervals in full-series time.
 
     Arguments:
-        intervals: raw detector intervals, block-relative or absolute
+        intervals: raw detector intervals in full-series time
         block_spec: block specification
         config: adjustment configuration
     Returns:
         cleaned speech intervals in full-series time
     """
-    block_duration_ms = block_spec.buffered_end_ms - block_spec.buffered_start_ms
-    if all(
-        0 <= interval.start_ms and interval.end_ms <= block_duration_ms
-        for interval in intervals
-    ):
-        shifted_intervals = [
-            interval.shifted(block_spec.buffered_start_ms) for interval in intervals
-        ]
-    else:
-        shifted_intervals = list(intervals)
-
     return get_speech_intervals_cleaned(
-        shifted_intervals,
+        list(intervals),
         merge_gap_ms=config.merge_gap_ms,
         min_duration_ms=config.min_speech_duration_ms,
         clip_start_ms=block_spec.buffered_start_ms,

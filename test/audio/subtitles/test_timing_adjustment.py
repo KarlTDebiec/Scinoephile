@@ -18,23 +18,34 @@ from scinoephile.audio.subtitles.timing_adjustment import (
 class StaticSpeechDetector:
     """Speech detector returning configured intervals by block."""
 
-    def __init__(self, blocks: list[list[SpeechInterval]]):
+    def __init__(self, blocks: list[list[SpeechInterval]], *, use_offset: bool = True):
         """Initialize.
 
         Arguments:
             blocks: speech intervals to return for each detected block
+            use_offset: whether to add detector offsets to returned intervals
         """
         self.blocks = list(blocks)
+        self.use_offset = use_offset
 
-    def __call__(self, audio: AudioSegment) -> list[SpeechInterval]:
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
+    ) -> list[SpeechInterval]:
         """Return intervals for the next block.
 
         Arguments:
             audio: block audio
+            offset_ms: offset to add to returned intervals
         Returns:
             speech intervals for the next block
         """
-        return self.blocks.pop(0)
+        intervals = self.blocks.pop(0)
+        if not self.use_offset:
+            return intervals
+        return [interval.shifted(offset_ms) for interval in intervals]
 
 
 def test_get_series_timing_adjustment_expands_cue_and_reports_diagnostics():
@@ -115,6 +126,30 @@ def test_get_series_timing_adjustment_applies_block_relative_offsets():
     )
 
     assert [(event.start, event.end) for event in adjusted.events] == [(4900, 5900)]
+
+
+def test_get_series_timing_adjustment_preserves_absolute_detector_intervals():
+    """Test absolute detector output is not shifted again."""
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=2000),
+        events=[AudioSubtitle(start=1000, end=1100, text="absolute")],
+    )
+    detector = StaticSpeechDetector(
+        [[SpeechInterval(start_ms=700, end_ms=900)]],
+        use_offset=False,
+    )
+
+    adjusted = get_series_timing_adjusted(
+        series,
+        speech_detector=detector,
+        config=SubtitleTimingAdjustmentConfig(
+            block_audio_buffer_ms=500,
+            max_start_expansion_ms=500,
+            max_end_expansion_ms=500,
+        ),
+    )
+
+    assert [(event.start, event.end) for event in adjusted.events] == [(700, 1100)]
 
 
 def test_get_series_timing_adjustment_preserves_middle_of_complex_sync_group():

@@ -31,9 +31,10 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "adjust subtitle timings using detected speech activity": (
             "使用检测到的语音活动调整字幕时间"
         ),
-        "audio stream index to use, zero-based (default: %(default)s)": (
-            "要使用的音频流索引，从零开始（默认：%(default)s）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒体输入中的音频媒体流索引（默认：第一个音频流）"),
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕块前后的音频缓冲，单位为毫秒（默认：%(default)s）"
         ),
@@ -68,9 +69,10 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "adjust subtitle timings using detected speech activity": (
             "使用偵測到的語音活動調整字幕時間"
         ),
-        "audio stream index to use, zero-based (default: %(default)s)": (
-            "要使用的音訊流索引，從零開始（預設：%(default)s）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒體輸入中的音訊媒體流索引（預設：第一個音訊流）"),
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕區塊前後的音訊緩衝，單位為毫秒（預設：%(default)s）"
         ),
@@ -142,14 +144,17 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             type=input_file_arg(),
             help="input subtitle file whose timings should be adjusted",
         )
+        arg_groups["input arguments"].add_argument(
+            "--stream-index",
+            default=None,
+            type=int_arg(min_value=0),
+            help=(
+                "media stream index of audio stream in media input "
+                "(default: first audio stream)"
+            ),
+        )
 
         # Operation arguments
-        arg_groups["operation arguments"].add_argument(
-            "--audio-stream",
-            default=0,
-            type=int_arg(min_value=0),
-            help="audio stream index to use, zero-based (default: %(default)s)",
-        )
         arg_groups["operation arguments"].add_argument(
             "--buffer",
             default=2000,
@@ -240,7 +245,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         media_infile_path: Path,
         subtitle_infile_path: Path,
-        audio_stream: int,
+        stream_index: int | None,
         buffer: int,
         block_pause_length: int,
         vad_backend: str,
@@ -258,7 +263,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             series = AudioSeries.load_from_media(
                 media_path=media_infile_path,
                 subtitle_path=subtitle_infile_path,
-                stream_index=audio_stream,
+                stream_index=stream_index,
                 buffer=buffer,
             )
             speech_detector = cls._get_speech_detector(
@@ -281,7 +286,13 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             if dry_run or diagnostics:
                 print(cls._get_diagnostics_description(result))
             if not dry_run:
-                result.series.save(outfile_path)
+                result.series.save(
+                    outfile_path,
+                    format_=cls._get_subtitle_output_format(
+                        outfile_path=outfile_path,
+                        subtitle_infile_path=subtitle_infile_path,
+                    ),
+                )
         except (ImportError, ScinoephileError, ValueError) as exc:
             parser.error(str(exc))
 
@@ -335,6 +346,26 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
                 min_duration_ms=min_duration_ms,
             )
         raise ValueError(f"Unsupported speech activity backend: {vad_backend}")
+
+    @staticmethod
+    def _get_subtitle_output_format(
+        *,
+        outfile_path: Path,
+        subtitle_infile_path: Path,
+    ) -> str:
+        """Get the explicit subtitle format to pass when saving output.
+
+        Arguments:
+            outfile_path: output subtitle file path
+            subtitle_infile_path: input subtitle file path
+        Returns:
+            subtitle format name
+        """
+        if outfile_path.suffix:
+            return outfile_path.suffix.removeprefix(".").lower()
+        if subtitle_infile_path.suffix:
+            return subtitle_infile_path.suffix.removeprefix(".").lower()
+        return "srt"
 
 
 if __name__ == "__main__":
