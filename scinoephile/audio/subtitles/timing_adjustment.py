@@ -437,15 +437,12 @@ def _get_block_timing_adjustment_description(
         for cue_diagnostic in cue_diagnostics
     ]
     subtitle_width = max(
-        len("subtitle"),
+        len("text"),
         *(len(description) for description in subtitle_descriptions),
     )
     lines = [
-        (
-            "SUBTITLE TIMING ADJUSTMENT "
-            f"({block_spec.buffered_start_ms}-{block_spec.buffered_end_ms} ms):"
-        ),
-        f"     {'subtitle':<{subtitle_width}}  result",
+        "SUBTITLE TIMING ADJUSTMENT:",
+        f"     {'text':<{subtitle_width}}  result",
     ]
     for block_cue_idx, (cue_diagnostic, subtitle_description) in enumerate(
         zip(cue_diagnostics, subtitle_descriptions, strict=True),
@@ -468,10 +465,7 @@ def _get_cue_subtitle_description(
     Returns:
         original cue description
     """
-    return (
-        f"{cue_diagnostics.original_start_ms}-{cue_diagnostics.original_end_ms} ms "
-        f"{cue_diagnostics.text!r}"
-    )
+    return repr(cue_diagnostics.text)
 
 
 def _get_cue_timing_adjustment_description(
@@ -494,10 +488,7 @@ def _get_cue_timing_adjustment_description(
         details.append(f"blocked start {cue_diagnostics.blocked_start_expansion_ms} ms")
     if cue_diagnostics.blocked_end_expansion_ms:
         details.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
-    return (
-        f"-> {cue_diagnostics.adjusted_start_ms}-{cue_diagnostics.adjusted_end_ms} ms "
-        f"({'; '.join(details)})"
-    )
+    return f"({'; '.join(details)})"
 
 
 def _get_unchanged_cue_reason(

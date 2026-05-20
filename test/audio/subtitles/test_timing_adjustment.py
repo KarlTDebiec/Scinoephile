@@ -120,13 +120,10 @@ def test_get_series_timing_adjustment_logs_block_summary(
     assert messages == [
         "\n".join(
             [
-                "SUBTITLE TIMING ADJUSTMENT (0-4300 ms):",
-                "     subtitle            result",
-                (
-                    " 1  1000-1500 ms 'one'  "
-                    "-> 1000-1800 ms (+0/+300 ms; blocked end 100 ms)"
-                ),
-                " 2  1800-2300 ms 'two'  unchanged: no matched speech",
+                "SUBTITLE TIMING ADJUSTMENT:",
+                "     text   result",
+                " 1  'one'  (+0/+300 ms; blocked end 100 ms)",
+                " 2  'two'  unchanged: no matched speech",
             ]
         )
     ]
