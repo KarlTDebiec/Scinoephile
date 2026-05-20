@@ -29,9 +29,15 @@ from scinoephile.llms.providers.registry import get_provider
 
 from .deliniation import YueDeliniationVsZhoPromptYueHans
 from .punctuation import YuePunctuationVsZhoPromptYueHans, YueZhoPunctuationManager
-from .transcriber import DemucsMode, VADMode, YueTranscriber
+from .transcriber import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
+    DemucsMode,
+    VADMode,
+    YueTranscriber,
+)
 
 __all__ = [
+    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "YUE_ZHO_TRANSCRIPTION_DELINIATION_OPERATION_SPEC",
     "YUE_ZHO_TRANSCRIPTION_PUNCTUATION_OPERATION_SPEC",
     "get_yue_transcribed_vs_zho",
@@ -117,7 +123,7 @@ def get_yue_transcribed_vs_zho(
 
 
 def get_yue_vs_zho_transcriber(
-    model_name: str = "khleeloo/whisper-large-v3-cantonese",
+    model_name: str = DEFAULT_YUE_WHISPER_MODEL_NAME,
     demucs_mode: DemucsMode = DemucsMode.OFF,
     vad_mode: VADMode = VADMode.AUTO,
     provider: LLMProvider | None = None,

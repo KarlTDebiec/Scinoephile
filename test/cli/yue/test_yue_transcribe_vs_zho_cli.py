@@ -17,7 +17,11 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
+from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
+    DemucsMode,
+    VADMode,
+)
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueDeliniationVsZhoPromptYueHans,
     YueDeliniationVsZhoPromptYueHant,
@@ -32,8 +36,8 @@ from test.helpers import (
 )
 
 
-def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options():
-    """Test written Cantonese CLI help lists prompt and conversion options."""
+def test_yue_transcribe_vs_zho_help_lists_transcription_options():
+    """Test written Cantonese CLI help lists transcription options."""
     stdout = StringIO()
     stderr = StringIO()
 
@@ -59,7 +63,21 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     assert "--vad {auto,on,off}" in help_text
     assert "Whisper voice activity detection mode" in help_text
     assert "off, auto; default: auto" in help_text
+    assert "--whisper-model WHISPER_MODEL_NAME" in help_text
+    assert "Whisper model identifier used for transcription" in help_text
     assert "default: first audio stream" in help_text
+
+
+def test_yue_transcribe_vs_zho_cli_uses_default_whisper_model_constant():
+    """Test CLI default Whisper model matches the transcription default."""
+    parser = YueTranscribeVsZhoCli.argparser()
+    whisper_model_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--whisper-model" in action.option_strings
+    )
+
+    assert whisper_model_action.default == DEFAULT_YUE_WHISPER_MODEL_NAME
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
@@ -225,6 +243,38 @@ def test_yue_transcribe_vs_zho_cli_passes_requested_demucs_mode():
                 )
 
     assert patched_factory.call_args.kwargs["demucs_mode"] == DemucsMode.ON
+
+
+def test_yue_transcribe_vs_zho_cli_passes_requested_whisper_model():
+    """Test written Cantonese CLI passes through explicit Whisper model."""
+    zhongwen_infile_path = test_data_root / "mnt/output/zho-Hans_ocr/fuse.srt"
+    media_infile_path = "/tmp/test_media.mp4"
+    expected_series = Series.from_string(
+        "1\n00:00:00,000 --> 00:00:01,000\n你好\n",
+        format_="srt",
+    )
+    yuewen_audio_series = Mock(spec=AudioSeries)
+
+    with patch(
+        "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
+        return_value=yuewen_audio_series,
+    ):
+        with patch(
+            "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
+            return_value="transcriber",
+        ) as patched_factory:
+            with patch(
+                "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_transcribed_vs_zho",
+                return_value=expected_series,
+            ):
+                run_cli_with_args(
+                    YueTranscribeVsZhoCli,
+                    f"--media-infile {media_infile_path} "
+                    f"--zho-infile {zhongwen_infile_path} "
+                    "--whisper-model openai/whisper-large-v3",
+                )
+
+    assert patched_factory.call_args.kwargs["model_name"] == "openai/whisper-large-v3"
 
 
 def test_yue_transcribe_vs_zho_cli_passes_requested_convert():
