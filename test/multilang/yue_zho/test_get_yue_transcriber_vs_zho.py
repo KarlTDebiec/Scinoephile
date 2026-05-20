@@ -18,6 +18,7 @@ from scinoephile.llms.default_test_cases import (
     YUE_ZHO_TRANSCRIPTION_PUNCTUATION_JSON_PATHS,
 )
 from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
     DemucsMode,
     VADMode,
     get_yue_vs_zho_transcriber,
@@ -52,7 +53,7 @@ def test_get_yue_vs_zho_transcriber_uses_writable_runtime_test_case_root():
             test_case_directory_path=runtime_test_case_dir_path,
             deliniation_test_cases=deliniation_test_cases,
             punctuation_test_cases=punctuation_test_cases,
-            model_name="khleeloo/whisper-large-v3-cantonese",
+            model_name=DEFAULT_YUE_WHISPER_MODEL_NAME,
             demucs_mode=DemucsMode.OFF,
             vad_mode=VADMode.AUTO,
             convert=None,

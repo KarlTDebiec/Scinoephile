@@ -33,6 +33,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
     DemucsMode,
     VADMode,
     get_yue_transcribed_vs_zho,
@@ -51,9 +52,10 @@ __all__ = ["YueTranscribeVsZhoCli"]
 
 YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audio stream index in media input (default: 0)": (
-            "媒体输入中的音频流索引（默认：0）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒体输入中的音频媒体流索引（默认：第一个音频流）"),
         (
             "command-line interface for written Cantonese subtitle transcription"
         ): "书面粤语字幕转写命令行界面",
@@ -67,6 +69,9 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 语音活动检测模式（选项：on、off、auto；默认：auto）",
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用于转写的 Whisper 模型标识符（默认：%(default)s）"
+        ),
         'standard Chinese subtitle infile, or "-" for stdin': (
             '标准中文字幕输入文件，或使用 "-" 表示标准输入'
         ),
@@ -81,9 +86,10 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "从音频转录字幕，并使用标准中文文本修订",
     },
     "zh-hant": {
-        "audio stream index in media input (default: 0)": (
-            "媒體輸入中的音訊流索引（預設：0）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒體輸入中的音訊媒體流索引（預設：第一個音訊流）"),
         (
             "command-line interface for written Cantonese subtitle transcription"
         ): "書面粵語字幕轉寫命令列介面",
@@ -97,6 +103,9 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "Whisper voice activity detection mode "
             "(options: on, off, auto; default: auto)"
         ): "Whisper 語音活動偵測模式（選項：on、off、auto；預設：auto）",
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用於轉寫的 Whisper 模型識別碼（預設：%(default)s）"
+        ),
         'standard Chinese subtitle infile, or "-" for stdin': (
             '標準中文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
@@ -152,8 +161,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--stream-index",
             type=int_arg(min_value=0),
-            default=0,
-            help="audio stream index in media input (default: 0)",
+            default=None,
+            help=(
+                "media stream index of audio stream in media input "
+                "(default: first audio stream)"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
@@ -179,6 +191,14 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             help=(
                 "Whisper voice activity detection mode "
                 "(options: on, off, auto; default: auto)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--whisper-model",
+            default=DEFAULT_YUE_WHISPER_MODEL_NAME,
+            dest="whisper_model_name",
+            help=(
+                "Whisper model identifier used for transcription (default: %(default)s)"
             ),
         )
         add_opencc_convert_argument(
@@ -244,7 +264,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
         zho_infile_path: Path | str,
-        stream_index: int,
+        stream_index: int | None,
         script: str,
         convert: OpenCCConfig | None,
         llm_provider_name: str,
@@ -252,6 +272,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         llm_additional_context_file_path: Path | None,
         demucs: DemucsMode,
         vad: VADMode,
+        whisper_model_name: str,
         outfile_path: Path | None,
         overwrite: bool,
     ):
@@ -308,6 +329,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         )
         provider = get_provider(llm_provider_name, model=llm_model_name)
         transcriber = get_yue_vs_zho_transcriber(
+            model_name=whisper_model_name,
             demucs_mode=demucs,
             vad_mode=vad,
             provider=provider,

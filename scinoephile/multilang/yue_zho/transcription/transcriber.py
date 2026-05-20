@@ -33,10 +33,14 @@ from .deliniation import YueDeliniationVsZhoPromptYueHans
 from .punctuation import YuePunctuationVsZhoPromptYueHans
 
 __all__ = [
+    "DEFAULT_YUE_WHISPER_MODEL_NAME",
     "DemucsMode",
     "VADMode",
     "YueTranscriber",
 ]
+
+DEFAULT_YUE_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
+"""Default Whisper model name for written Cantonese transcription."""
 
 logger = getLogger(__name__)
 
@@ -67,7 +71,7 @@ class YueTranscriber:
     def __init__(
         self,
         *,
-        model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        model_name: str = DEFAULT_YUE_WHISPER_MODEL_NAME,
         demucs_mode: DemucsMode = DemucsMode.OFF,
         vad_mode: VADMode = VADMode.AUTO,
         provider: LLMProvider | None = None,
