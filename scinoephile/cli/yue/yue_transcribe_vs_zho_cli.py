@@ -33,6 +33,7 @@ from scinoephile.core.exceptions import ScinoephileError
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
 from scinoephile.llms.providers.registry import get_provider
 from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
     DemucsMode,
     VADMode,
     get_yue_transcribed_vs_zho,
@@ -194,7 +195,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--whisper-model",
-            default="khleeloo/whisper-large-v3-cantonese",
+            default=DEFAULT_YUE_WHISPER_MODEL_NAME,
             dest="whisper_model_name",
             help=(
                 "Whisper model identifier used for transcription (default: %(default)s)"

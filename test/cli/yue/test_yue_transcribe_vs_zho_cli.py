@@ -17,7 +17,11 @@ from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
 from scinoephile.lang.zho.script.conversion import OpenCCConfig
-from scinoephile.multilang.yue_zho.transcription import DemucsMode, VADMode
+from scinoephile.multilang.yue_zho.transcription import (
+    DEFAULT_YUE_WHISPER_MODEL_NAME,
+    DemucsMode,
+    VADMode,
+)
 from scinoephile.multilang.yue_zho.transcription.deliniation import (
     YueDeliniationVsZhoPromptYueHans,
     YueDeliniationVsZhoPromptYueHant,
@@ -33,7 +37,7 @@ from test.helpers import (
 
 
 def test_yue_transcribe_vs_zho_help_lists_transcription_options():
-    """Test written Cantonese CLI help lists prompt and conversion options."""
+    """Test written Cantonese CLI help lists transcription options."""
     stdout = StringIO()
     stderr = StringIO()
 
@@ -62,6 +66,18 @@ def test_yue_transcribe_vs_zho_help_lists_transcription_options():
     assert "--whisper-model WHISPER_MODEL_NAME" in help_text
     assert "Whisper model identifier used for transcription" in help_text
     assert "default: first audio stream" in help_text
+
+
+def test_yue_transcribe_vs_zho_cli_uses_default_whisper_model_constant():
+    """Test CLI default Whisper model matches the transcription default."""
+    parser = YueTranscribeVsZhoCli.argparser()
+    whisper_model_action = next(
+        action
+        for action in parser._actions  # noqa: SLF001
+        if "--whisper-model" in action.option_strings
+    )
+
+    assert whisper_model_action.default == DEFAULT_YUE_WHISPER_MODEL_NAME
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
