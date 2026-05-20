@@ -25,20 +25,11 @@ def get_overlap_string(overlap: np.ndarray) -> str:
     Returns:
         String representation of overlap matrix
     """
-    max_items = 1_000_000
-    matrix = np.array2string(
-        overlap,
-        precision=2,
-        suppress_small=True,
-        max_line_width=max_items,
-        threshold=max_items,
-        edgeitems=max_items,
-    )
-    matrix = matrix.replace("0.  ", "____").replace("[", " ").replace("]", " ")
     columns = [f"{j:>5}" for j in range(1, overlap.shape[1] + 1)]
     lines = ["  " + "".join(columns)]
-    for i, row in enumerate(matrix.split("\n")):
-        lines += [f"{i + 1:>2}" + row]
+    for i, row in enumerate(overlap):
+        cells = [_get_overlap_cell_string(value) for value in row]
+        lines += [f"{i + 1:>2}  {' '.join(cells)}"]
     return "\n".join(lines)
 
 
@@ -86,3 +77,16 @@ def get_sync_overlap_matrix(one: Series, two: Series) -> np.ndarray:
     overlap = np.exp(-mu_diff_sq / (2 * sigma_sq_sum))
 
     return overlap
+
+
+def _get_overlap_cell_string(value: float) -> str:
+    """Get string representation of one overlap matrix cell.
+
+    Arguments:
+        value: overlap value
+    Returns:
+        String representation of overlap value
+    """
+    if round(value, 2) == 0:
+        return "____"
+    return f"{value:.2f}"
