@@ -9,7 +9,27 @@ import pytest
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series, Subtitle
-from scinoephile.core.synchronization import get_sync_overlap_matrix
+from scinoephile.core.synchronization import get_overlap_string, get_sync_overlap_matrix
+
+
+def test_get_overlap_string_formats_exact_zeroes_and_ones():
+    """Test overlap string formatting handles exact zero and one values."""
+    overlap = np.array(
+        [
+            [1.0, 0.0],
+            [0.0, 0.0],
+        ]
+    )
+
+    overlap_string = get_overlap_string(overlap)
+
+    assert overlap_string == "\n".join(
+        [
+            "      1    2",
+            " 1  1.00 ____",
+            " 2  ____ ____",
+        ]
+    )
 
 
 def test_get_sync_overlap_matrix_zero_duration_series_one():

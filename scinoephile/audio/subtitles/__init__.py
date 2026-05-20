@@ -5,6 +5,7 @@
 Package hierarchy (modules may import from any above):
 * subtitle
 * series
+* timing_adjustment
 """
 
 from __future__ import annotations
@@ -19,11 +20,25 @@ from scinoephile.audio.transcription import (
 
 from .series import AudioSeries
 from .subtitle import AudioSubtitle
+from .timing_adjustment import (
+    SubtitleTimingAdjustmentBlockDiagnostics,
+    SubtitleTimingAdjustmentConfig,
+    SubtitleTimingAdjustmentCueDiagnostics,
+    SubtitleTimingAdjustmentResult,
+    get_series_timing_adjusted,
+    get_series_timing_adjustment,
+)
 
 __all__ = [
     "AudioSeries",
     "AudioSubtitle",
+    "SubtitleTimingAdjustmentBlockDiagnostics",
+    "SubtitleTimingAdjustmentConfig",
+    "SubtitleTimingAdjustmentCueDiagnostics",
+    "SubtitleTimingAdjustmentResult",
     "get_series_from_segments",
+    "get_series_timing_adjusted",
+    "get_series_timing_adjustment",
     "get_series_with_sub_split_at_idx",
     "get_sub_merged",
     "get_sub_split_at_idx",

@@ -17,8 +17,13 @@ from scinoephile.core.ml import get_torch_device
 
 from .transcribed_segment import TranscribedSegment
 
-__all__ = ["WhisperTranscriber"]
+__all__ = [
+    "DEFAULT_WHISPER_MODEL_NAME",
+    "WhisperTranscriber",
+]
 
+DEFAULT_WHISPER_MODEL_NAME = "khleeloo/whisper-large-v3-cantonese"
+"""Default Whisper model used for transcription."""
 _LOCAL_MODEL_PATH_PREFIXES = {"checkpoint", "checkpoints", "model", "models"}
 _TRANSCRIPTION_EXTRA_MESSAGE = (
     "Whisper transcription support requires optional transcription dependencies. "
@@ -36,7 +41,7 @@ class WhisperTranscriber:
 
     def __init__(
         self,
-        model_name: str = "khleeloo/whisper-large-v3-cantonese",
+        model_name: str = DEFAULT_WHISPER_MODEL_NAME,
         language: str = "yue",
         cache_dir_path: Path | None = None,
         use_demucs: bool = False,
