@@ -9,6 +9,7 @@ from typing import cast
 
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.text import ChineseScript
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .google_lens_recognizer import GoogleLensRecognizer
@@ -16,6 +17,7 @@ from .google_lens_recognizer import GoogleLensRecognizer
 __all__ = [
     "GoogleLensRecognizer",
     "get_google_lens_recognizer",
+    "get_lens_zho_code",
     "ocr_image_series_with_lens",
 ]
 
@@ -41,6 +43,24 @@ def get_google_lens_recognizer(
         cache_dir_path=cache_dir_path,
         language=language,
         retries=retries,
+    )
+
+
+def get_lens_zho_code(script: ChineseScript) -> str:
+    """Get the Google Lens language code for a Chinese script.
+
+    Arguments:
+        script: Chinese script
+    Returns:
+        Google Lens language code
+    """
+    if script == "simplified":
+        return "zh-CN"
+    if script == "traditional":
+        return "zh-TW"
+    raise ValueError(
+        f"{script!r} is not one of the supported Chinese scripts: "
+        "simplified, traditional"
     )
 
 

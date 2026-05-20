@@ -15,6 +15,7 @@ from typing import TypedDict, Unpack, cast
 
 from scinoephile.core.paths import get_runtime_cache_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
+from scinoephile.core.text import ChineseScript
 from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 from .paddle_ocr_recognizer import PaddleOcrRecognizer
@@ -24,6 +25,7 @@ __all__ = [
     "PaddleOcrRecognizer",
     "PaddleOcrRecognizerKwargs",
     "get_paddle_ocr_recognizer",
+    "get_paddle_zho_code",
     "ocr_image_series_with_paddle",
 ]
 
@@ -54,6 +56,24 @@ def get_paddle_ocr_recognizer(
     if cache_dir_path is None:
         cache_dir_path = get_runtime_cache_dir_path("paddleocr")
     return PaddleOcrRecognizer(cache_dir_path=cache_dir_path, **kwargs)
+
+
+def get_paddle_zho_code(script: ChineseScript) -> str:
+    """Get the PaddleOCR language code for a Chinese script.
+
+    Arguments:
+        script: Chinese script
+    Returns:
+        PaddleOCR language code
+    """
+    if script == "simplified":
+        return "ch"
+    if script == "traditional":
+        return "chinese_cht"
+    raise ValueError(
+        f"{script!r} is not one of the supported Chinese scripts: "
+        "simplified, traditional"
+    )
 
 
 def ocr_image_series_with_paddle(

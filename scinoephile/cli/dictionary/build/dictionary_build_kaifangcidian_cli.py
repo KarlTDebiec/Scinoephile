@@ -7,7 +7,6 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
-from typing import ClassVar
 
 import requests
 
@@ -21,6 +20,40 @@ __all__ = ["DictionaryBuildKaifangcidianCli"]
 
 logger = getLogger(__name__)
 
+DICTIONARY_BUILD_KAIFANGCIDIAN_LOCALIZATIONS: dict[str, dict[str, str]] = {
+    "zh-hans": {
+        "build Kaifangcidian dictionary cache": "构建 Kaifangcidian 词典缓存",
+        (
+            "Data derived from Kaifangcidian website dictionary JavaScript payloads."
+        ): "由 Kaifangcidian 网站词典 JavaScript 载荷整理而成的数据。",
+        "download fresh Kaifangcidian payloads before building": (
+            "在构建前下载最新 Kaifangcidian 数据"
+        ),
+        (
+            "maintainer option: update canonical CSV under "
+            "scinoephile/data/dictionaries/kaifangcidian"
+        ): (
+            "维护者选项：更新 scinoephile/data/dictionaries/kaifangcidian 下的标准 CSV"
+        ),
+    },
+    "zh-hant": {
+        "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
+        (
+            "Data derived from Kaifangcidian website dictionary JavaScript payloads."
+        ): "由 Kaifangcidian 網站詞典 JavaScript 載荷整理而成的資料。",
+        "download fresh Kaifangcidian payloads before building": (
+            "在建立前下載最新 Kaifangcidian 資料"
+        ),
+        (
+            "maintainer option: update canonical CSV under "
+            "scinoephile/data/dictionaries/kaifangcidian"
+        ): (
+            "維護者選項：更新 scinoephile/data/dictionaries/kaifangcidian 下的標準 CSV"
+        ),
+    },
+}
+"""Localized help text keyed by locale and English source text."""
+
 
 class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
     """Build Kaifangcidian dictionary cache."""
@@ -28,42 +61,7 @@ class DictionaryBuildKaifangcidianCli(DictionaryBuildCliBase):
     source = KAIFANGCIDIAN_SOURCE
     """Dictionary source built by this CLI."""
 
-    localizations: ClassVar[dict[str, dict[str, str]]] = {
-        "zh-hans": {
-            "build Kaifangcidian dictionary cache": "构建 Kaifangcidian 词典缓存",
-            (
-                "Data derived from Kaifangcidian website dictionary JavaScript "
-                "payloads."
-            ): "由 Kaifangcidian 网站词典 JavaScript 载荷整理而成的数据。",
-            "download fresh Kaifangcidian payloads before building": (
-                "在构建前下载最新 Kaifangcidian 数据"
-            ),
-            (
-                "maintainer option: update canonical CSV under "
-                "scinoephile/data/dictionaries/kaifangcidian"
-            ): (
-                "维护者选项：更新 scinoephile/data/dictionaries/kaifangcidian "
-                "下的标准 CSV"
-            ),
-        },
-        "zh-hant": {
-            "build Kaifangcidian dictionary cache": "建立 Kaifangcidian 詞典快取",
-            (
-                "Data derived from Kaifangcidian website dictionary JavaScript "
-                "payloads."
-            ): "由 Kaifangcidian 網站詞典 JavaScript 載荷整理而成的資料。",
-            "download fresh Kaifangcidian payloads before building": (
-                "在建立前下載最新 Kaifangcidian 資料"
-            ),
-            (
-                "maintainer option: update canonical CSV under "
-                "scinoephile/data/dictionaries/kaifangcidian"
-            ): (
-                "維護者選項：更新 scinoephile/data/dictionaries/kaifangcidian "
-                "下的標準 CSV"
-            ),
-        },
-    }
+    localizations = DICTIONARY_BUILD_KAIFANGCIDIAN_LOCALIZATIONS
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
