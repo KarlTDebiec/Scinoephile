@@ -14,9 +14,6 @@ from scinoephile.core.paths import get_runtime_cache_dir_path
 
 __all__ = ["get_media_audio_cache_path"]
 
-_AUDIO_CACHE_VERSION = 1
-"""Cache key version for normalized extracted audio."""
-
 
 def get_media_audio_cache_path(
     infile_path: Path,
@@ -40,7 +37,6 @@ def get_media_audio_cache_path(
 
     stat = infile_path.stat()
     payload = {
-        "version": _AUDIO_CACHE_VERSION,
         "path": str(infile_path),
         "size": stat.st_size,
         "mtime_ns": stat.st_mtime_ns,
