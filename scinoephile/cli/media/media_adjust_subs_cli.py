@@ -35,14 +35,14 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
-        ): ("媒体输入中的音频媒体流索引（默认：第一个音频流）"),
+        ): "媒体输入中的音频媒体流索引（默认：第一个音频流）",
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕块前后的音频缓冲，单位为毫秒（默认：%(default)s）"
         ),
         (
             "cache directory for extracted audio and speech activity artifacts "
             "(default: %(default)s)"
-        ): ("提取音频和语音活动工件的缓存目录（默认：%(default)s）"),
+        ): "提取音频和语音活动工件的缓存目录（默认：%(default)s）",
         "dry-run without writing adjusted subtitles": "试运行，不写入调整后的字幕",
         "input media file containing audio": "包含音频的媒体输入文件",
         "input subtitle file whose timings should be adjusted": (
@@ -77,14 +77,14 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         (
             "media stream index of audio stream in media input "
             "(default: first audio stream)"
-        ): ("媒體輸入中的音訊媒體流索引（預設：第一個音訊流）"),
+        ): "媒體輸入中的音訊媒體流索引（預設：第一個音訊流）",
         "audio buffer around subtitle blocks in milliseconds (default: %(default)s)": (
             "字幕區塊前後的音訊緩衝，單位為毫秒（預設：%(default)s）"
         ),
         (
             "cache directory for extracted audio and speech activity artifacts "
             "(default: %(default)s)"
-        ): ("提取音訊和語音活動工件的快取目錄（預設：%(default)s）"),
+        ): "提取音訊和語音活動工件的快取目錄（預設：%(default)s）",
         "dry-run without writing adjusted subtitles": "試執行，不寫入調整後的字幕",
         "input media file containing audio": "包含音訊的媒體輸入檔",
         "input subtitle file whose timings should be adjusted": (
