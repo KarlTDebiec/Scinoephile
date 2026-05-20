@@ -91,13 +91,17 @@ def test_get_series_timing_adjustment_logs_block_summary(
         caplog: pytest log capture fixture
     """
     series = AudioSeries(
-        audio=AudioSegment.silent(duration=5000),
+        audio=AudioSegment.silent(duration=170000),
         events=[
-            AudioSubtitle(start=1000, end=1500, text="one"),
-            AudioSubtitle(start=1800, end=2300, text="two"),
+            AudioSubtitle(start=162850, end=163739, text="这儿的空气很清新"),
+            AudioSubtitle(start=163820, end=164850, text="最适合妈咪养病"),
+            AudioSubtitle(start=165500, end=166000, text="没有语音"),
         ],
     )
-    detector = StaticSpeechDetector([[SpeechInterval(start_ms=1000, end_ms=1900)]])
+    detector = StaticSpeechDetector(
+        [[SpeechInterval(start_ms=162100, end_ms=165150)]],
+        use_offset=False,
+    )
 
     with caplog.at_level(
         logging.INFO,
@@ -107,7 +111,7 @@ def test_get_series_timing_adjustment_logs_block_summary(
             series,
             speech_detector=detector,
             config=SubtitleTimingAdjustmentConfig(
-                max_start_expansion_ms=500,
+                max_start_expansion_ms=750,
                 max_end_expansion_ms=1500,
             ),
         )
@@ -121,9 +125,9 @@ def test_get_series_timing_adjustment_logs_block_summary(
         "\n".join(
             [
                 "SUBTITLE TIMING ADJUSTMENT:",
-                "     text   result",
-                " 1  'one'  (+0/+300 ms; blocked end 100 ms)",
-                " 2  'two'  unchanged: no matched speech",
+                " 1  这儿的空气很清新  (-750/+0 ms)",
+                " 2  最适合妈咪养病    (+0/+300 ms)",
+                f" 3  没有语音{' ' * 10}(+0/+0 ms; unchanged: no matched speech)",
             ]
         )
     ]

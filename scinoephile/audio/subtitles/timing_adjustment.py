@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from copy import deepcopy
 from dataclasses import dataclass
 from logging import getLogger
+from unicodedata import combining, east_asian_width
 
 from scinoephile.audio.speech_activity import (
     SpeechActivityDetector,
@@ -437,19 +438,17 @@ def _get_block_timing_adjustment_description(
         for cue_diagnostic in cue_diagnostics
     ]
     subtitle_width = max(
-        len("text"),
-        *(len(description) for description in subtitle_descriptions),
+        [_get_display_width(description) for description in subtitle_descriptions],
+        default=0,
     )
-    lines = [
-        "SUBTITLE TIMING ADJUSTMENT:",
-        f"     {'text':<{subtitle_width}}  result",
-    ]
+    lines = ["SUBTITLE TIMING ADJUSTMENT:"]
     for block_cue_idx, (cue_diagnostic, subtitle_description) in enumerate(
         zip(cue_diagnostics, subtitle_descriptions, strict=True),
         1,
     ):
         lines.append(
-            f"{block_cue_idx:>2}  {subtitle_description:<{subtitle_width}}  "
+            f"{block_cue_idx:>2}  "
+            f"{_get_display_padded(subtitle_description, subtitle_width)}  "
             f"{_get_cue_timing_adjustment_description(cue_diagnostic)}"
         )
     return "\n".join(lines)
@@ -465,7 +464,7 @@ def _get_cue_subtitle_description(
     Returns:
         original cue description
     """
-    return repr(cue_diagnostics.text)
+    return " ".join(cue_diagnostics.text.split())
 
 
 def _get_cue_timing_adjustment_description(
@@ -478,17 +477,51 @@ def _get_cue_timing_adjustment_description(
     Returns:
         timing adjustment result description
     """
-    if cue_diagnostics.unchanged:
-        return f"unchanged: {_get_unchanged_cue_reason(cue_diagnostics)}"
-
     details = [
         f"{cue_diagnostics.start_delta_ms:+d}/{cue_diagnostics.end_delta_ms:+d} ms"
     ]
-    if cue_diagnostics.blocked_start_expansion_ms:
-        details.append(f"blocked start {cue_diagnostics.blocked_start_expansion_ms} ms")
-    if cue_diagnostics.blocked_end_expansion_ms:
-        details.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
+    if cue_diagnostics.unchanged:
+        details.append(f"unchanged: {_get_unchanged_cue_reason(cue_diagnostics)}")
+    else:
+        if cue_diagnostics.blocked_start_expansion_ms:
+            details.append(
+                f"blocked start {cue_diagnostics.blocked_start_expansion_ms} ms"
+            )
+        if cue_diagnostics.blocked_end_expansion_ms:
+            details.append(f"blocked end {cue_diagnostics.blocked_end_expansion_ms} ms")
     return f"({'; '.join(details)})"
+
+
+def _get_display_padded(value: str, width: int) -> str:
+    """Pad a string to a display width.
+
+    Arguments:
+        value: value to pad
+        width: desired display width
+    Returns:
+        padded value
+    """
+    padding_width = max(0, width - _get_display_width(value))
+    return f"{value}{' ' * padding_width}"
+
+
+def _get_display_width(value: str) -> int:
+    """Get monospace display width for strings containing East Asian text.
+
+    Arguments:
+        value: value to measure
+    Returns:
+        display width
+    """
+    width = 0
+    for character in value:
+        if combining(character):
+            continue
+        if east_asian_width(character) in {"F", "W"}:
+            width += 2
+        else:
+            width += 1
+    return width
 
 
 def _get_unchanged_cue_reason(
