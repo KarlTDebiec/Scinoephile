@@ -22,6 +22,9 @@ __all__ = [
 
 logger = getLogger(__name__)
 
+# Minimum score that rounds to a visible overlap value in logs
+_MIN_SIGNIFICANT_OVERLAP = 0.005
+
 SyncGroup = tuple[list[int], list[int]]
 """Group of subtitles; items are indexes in first and second series, respectively."""
 
@@ -35,9 +38,10 @@ def get_sync_groups(one: Series, two: Series, cutoff: float = 0.16) -> list[Sync
     subtitles in the two series are calculated and stored in a matrix whose rows are
     subtitles in the first series and whose columns are subtitles in the second series.
     The matrix is then iteratively pruned by zeroing cells below an increasing cutoff
-    value. Within each row, each value is divided by the max value in that row, and if
-    the result is less than the cutoff, the cell is zeroed. The same process is then
-    repeated for columns. The process repeats with an increasing cutoff until each
+    value. Near-zero cells are zeroed first. Within each row, each value is divided by
+    the max value in that row, and if the result is less than the cutoff, the cell is
+    zeroed. The same process is then repeated for columns. The process repeats with
+    an increasing cutoff until each
     non-zero value in the matrix is either the only value in its row, the only value in
     its column, or both, which provides a clean assignment of subtitles to sync groups.
 
@@ -163,9 +167,12 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
         list of sync groups derived from the overlap matrix
     """
     sync_groups = []
+    overlap[overlap < _MIN_SIGNIFICANT_OVERLAP] = 0
 
     for i in range(len(one)):
         scale = np.max(overlap[i])
+        if scale == 0:
+            continue
         for j in range(len(two)):
             if overlap[i, j] / scale < cutoff:
                 overlap[i, j] = 0

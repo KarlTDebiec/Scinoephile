@@ -45,7 +45,7 @@ class SubtitleTimingAdjustmentConfig:
     """Audio buffer to include before and after each block in milliseconds."""
     max_start_expansion_ms: int = 750
     """Maximum amount by which a cue may move earlier in milliseconds."""
-    max_end_expansion_ms: int = 999
+    max_end_expansion_ms: int = 750
     """Maximum amount by which a cue may move later in milliseconds."""
     merge_gap_ms: int = 150
     """Merge speech intervals separated by at most this gap in milliseconds."""

@@ -36,12 +36,14 @@ class StaticSpeechDetector:
         audio: AudioSegment,
         *,
         offset_ms: int = 0,
+        cache_audio: AudioSegment | None = None,
     ) -> list[SpeechInterval]:
         """Return intervals for the next block.
 
         Arguments:
             audio: block audio
             offset_ms: offset to add to returned intervals
+            cache_audio: ignored cache-key audio
         Returns:
             speech intervals for the next block
         """
@@ -204,7 +206,7 @@ def test_get_series_timing_adjustment_preserves_absolute_detector_intervals():
     """Test absolute detector output is not shifted again."""
     series = AudioSeries(
         audio=AudioSegment.silent(duration=2000),
-        events=[AudioSubtitle(start=1000, end=1100, text="absolute")],
+        events=[AudioSubtitle(start=850, end=950, text="absolute")],
     )
     detector = StaticSpeechDetector(
         [[SpeechInterval(start_ms=700, end_ms=900)]],
@@ -221,7 +223,7 @@ def test_get_series_timing_adjustment_preserves_absolute_detector_intervals():
         ),
     )
 
-    assert [(event.start, event.end) for event in adjusted.events] == [(700, 1100)]
+    assert [(event.start, event.end) for event in adjusted.events] == [(700, 950)]
 
 
 def test_get_series_timing_adjustment_preserves_middle_of_complex_sync_group():

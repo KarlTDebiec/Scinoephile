@@ -16,12 +16,17 @@ import numpy as np
 from scinoephile.common.validation import val_output_dir_path
 from scinoephile.core.subtitles import Series, Subtitle
 
-from .transcription import TranscribedSegment, WhisperTranscriber
+from .transcription import TranscribedSegment
+from .transcription.whisper_transcriber import (
+    DEFAULT_WHISPER_MODEL_NAME,
+    WhisperTranscriber,
+)
 
 if TYPE_CHECKING:
     from pydub import AudioSegment
 
 __all__ = [
+    "PreprocessedSpeechActivityDetector",
     "SileroSpeechActivityDetector",
     "SpeechActivityDetector",
     "SpeechInterval",
@@ -96,15 +101,109 @@ class SpeechActivityDetector(Protocol):
         audio: AudioSegment,
         *,
         offset_ms: int = 0,
+        cache_audio: AudioSegment | None = None,
     ) -> Sequence[SpeechInterval]:
         """Detect speech intervals.
 
         Arguments:
             audio: audio segment to inspect
             offset_ms: offset to add to returned intervals
+            cache_audio: optional original audio to use for cache keys
         Returns:
             detected speech intervals
         """
+
+
+class _SpeechTranscriber(Protocol):
+    """Callable interface for transcribing speech activity audio."""
+
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+    ) -> list[TranscribedSegment]:
+        """Transcribe audio.
+
+        Arguments:
+            audio: audio segment to transcribe
+            cache_audio: optional original audio to use for cache keys
+        Returns:
+            transcribed segments
+        """
+
+
+class PreprocessedSpeechActivityDetector:
+    """Speech activity detector with audio preprocessing."""
+
+    def __init__(
+        self,
+        *,
+        speech_detector: SpeechActivityDetector,
+        audio_preprocessor: Callable[[AudioSegment], AudioSegment],
+    ):
+        """Initialize.
+
+        Arguments:
+            speech_detector: speech activity detector to run after preprocessing
+            audio_preprocessor: audio preprocessing callable
+        """
+        self.speech_detector = speech_detector
+        self.audio_preprocessor = audio_preprocessor
+
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
+        cache_audio: AudioSegment | None = None,
+    ) -> Sequence[SpeechInterval]:
+        """Detect speech activity after preprocessing audio.
+
+        Arguments:
+            audio: audio segment to inspect
+            offset_ms: offset to add to returned intervals
+            cache_audio: optional original audio to use for cache keys
+        Returns:
+            detected speech intervals
+        """
+        if cache_audio is None:
+            cache_audio = audio
+        cached_intervals = self.get_cached_speech_intervals(
+            cache_audio,
+            offset_ms=offset_ms,
+        )
+        if cached_intervals is not None:
+            return cached_intervals
+
+        return self.speech_detector(
+            self.audio_preprocessor(audio),
+            offset_ms=offset_ms,
+            cache_audio=cache_audio,
+        )
+
+    def get_cached_speech_intervals(
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
+    ) -> Sequence[SpeechInterval] | None:
+        """Get cached speech activity from the wrapped detector if available.
+
+        Arguments:
+            audio: audio used for cache-key generation
+            offset_ms: offset to add to returned intervals
+        Returns:
+            cached speech intervals, if present
+        """
+        get_cached_speech_intervals = getattr(
+            self.speech_detector,
+            "get_cached_speech_intervals",
+            None,
+        )
+        if get_cached_speech_intervals is None:
+            return None
+        return get_cached_speech_intervals(audio, offset_ms=offset_ms)
 
 
 class SileroSpeechActivityDetector:
@@ -114,54 +213,55 @@ class SileroSpeechActivityDetector:
         self,
         model: Any | None = None,
         cache_dir_path: Path | None = None,
-        merge_gap_ms: int = 150,
-        min_duration_ms: int = 100,
         sample_rate: int = 16000,
+        threshold: float = 0.5,
     ):
         """Initialize.
 
         Arguments:
             model: optional loaded Silero model
             cache_dir_path: optional cache directory for raw speech intervals
-            merge_gap_ms: merge speech intervals separated by at most this gap
-            min_duration_ms: discard speech intervals shorter than this duration
             sample_rate: sample rate to use for Silero input audio
+            threshold: Silero speech probability threshold
         """
         self._model = model
         self.cache_dir_path = None
         if cache_dir_path is not None:
             self.cache_dir_path = val_output_dir_path(cache_dir_path)
-        self.merge_gap_ms = merge_gap_ms
-        self.min_duration_ms = min_duration_ms
         self.sample_rate = sample_rate
+        if threshold < 0.0 or threshold > 1.0:
+            raise ValueError("threshold must be between 0.0 and 1.0")
+        self.threshold = threshold
 
     def __call__(
         self,
         audio: AudioSegment,
         *,
         offset_ms: int = 0,
+        cache_audio: AudioSegment | None = None,
     ) -> list[SpeechInterval]:
         """Detect speech intervals.
 
         Arguments:
             audio: audio segment to inspect
             offset_ms: offset to add to returned intervals
+            cache_audio: optional original audio to use for cache keys
         Returns:
             detected speech intervals
         """
-        intervals = self.get_cached_speech_intervals(audio)
-        if intervals is None:
-            intervals = self._get_uncached_speech_intervals(audio)
-            self._cache_speech_intervals(audio, intervals)
+        if cache_audio is None:
+            cache_audio = audio
 
-        shifted_intervals = [interval.shifted(offset_ms) for interval in intervals]
-        return get_speech_intervals_cleaned(
-            shifted_intervals,
-            merge_gap_ms=self.merge_gap_ms,
-            min_duration_ms=self.min_duration_ms,
-            clip_start_ms=offset_ms,
-            clip_end_ms=offset_ms + len(audio),
+        cached_intervals = self.get_cached_speech_intervals(
+            cache_audio,
+            offset_ms=offset_ms,
         )
+        if cached_intervals is not None:
+            return cached_intervals
+
+        intervals = self._get_uncached_speech_intervals(audio)
+        self._cache_speech_intervals(cache_audio, intervals)
+        return [interval.shifted(offset_ms) for interval in intervals]
 
     @property
     def model(self) -> Any:
@@ -172,12 +272,16 @@ class SileroSpeechActivityDetector:
         return self._model
 
     def get_cached_speech_intervals(
-        self, audio: AudioSegment
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
     ) -> list[SpeechInterval] | None:
         """Get cached raw speech intervals for audio if available.
 
         Arguments:
             audio: audio used for cache-key generation
+            offset_ms: offset to add to returned intervals
         Returns:
             cached speech intervals, if present
         """
@@ -192,7 +296,7 @@ class SileroSpeechActivityDetector:
             SpeechInterval(
                 start_ms=interval["start_ms"],
                 end_ms=interval["end_ms"],
-            )
+            ).shifted(offset_ms)
             for interval in data
         ]
 
@@ -251,7 +355,10 @@ class SileroSpeechActivityDetector:
             audio.set_channels(1).set_frame_rate(self.sample_rate).set_sample_width(2)
         )
         audio_sha256 = hashlib.sha256(normalized_audio.raw_data).hexdigest()
-        cache_key = f"{audio_sha256}_silero_sample_rate-{self.sample_rate}"
+        cache_key = (
+            f"{audio_sha256}_silero_sample_rate-{self.sample_rate}"
+            f"_threshold-{self.threshold!r}"
+        )
         cache_sha256 = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()
         return self.cache_dir_path / f"{cache_sha256}.json"
 
@@ -269,7 +376,11 @@ class SileroSpeechActivityDetector:
         timestamps = get_speech_timestamps(
             self._get_audio_tensor(audio),
             self.model,
+            threshold=self.threshold,
             sampling_rate=self.sample_rate,
+            min_speech_duration_ms=0,
+            min_silence_duration_ms=0,
+            speech_pad_ms=0,
             return_seconds=True,
         )
         return [
@@ -308,50 +419,88 @@ class WhisperSpeechActivityDetector:
 
     def __init__(
         self,
-        transcriber: Callable[[AudioSegment], list[TranscribedSegment]] | None = None,
+        transcriber: _SpeechTranscriber | None = None,
         cache_dir_path: Path | None = None,
-        merge_gap_ms: int = 150,
-        min_duration_ms: int = 100,
+        model_name: str = DEFAULT_WHISPER_MODEL_NAME,
     ):
         """Initialize.
 
         Arguments:
             transcriber: callable that returns transcription segments
             cache_dir_path: optional cache directory for raw transcription segments
-            merge_gap_ms: merge speech intervals separated by at most this gap
-            min_duration_ms: discard speech intervals shorter than this duration
+            model_name: Whisper model name to use when creating a transcriber
         """
         if transcriber is None:
-            transcriber = WhisperTranscriber(cache_dir_path=cache_dir_path)
+            transcriber = WhisperTranscriber(
+                cache_dir_path=cache_dir_path,
+                model_name=model_name,
+            )
         self.transcriber = transcriber
-        self.merge_gap_ms = merge_gap_ms
-        self.min_duration_ms = min_duration_ms
 
     def __call__(
         self,
         audio: AudioSegment,
         *,
         offset_ms: int = 0,
+        cache_audio: AudioSegment | None = None,
     ) -> list[SpeechInterval]:
         """Detect speech intervals.
 
         Arguments:
             audio: audio segment to inspect
             offset_ms: offset to add to returned intervals
+            cache_audio: optional original audio to use for cache keys
         Returns:
             detected speech intervals
         """
-        intervals = get_speech_intervals_from_segments(
-            self.transcriber(audio),
+        return get_speech_intervals_from_segments(
+            self._get_transcription(audio, cache_audio=cache_audio),
             offset_ms=offset_ms,
         )
-        return get_speech_intervals_cleaned(
-            intervals,
-            merge_gap_ms=self.merge_gap_ms,
-            min_duration_ms=self.min_duration_ms,
-            clip_start_ms=offset_ms,
-            clip_end_ms=offset_ms + len(audio),
+
+    def get_cached_speech_intervals(
+        self,
+        audio: AudioSegment,
+        *,
+        offset_ms: int = 0,
+    ) -> list[SpeechInterval] | None:
+        """Get cached speech intervals from cached transcription if available.
+
+        Arguments:
+            audio: audio used for cache-key generation
+            offset_ms: offset to add to returned intervals
+        Returns:
+            cached speech intervals, if present
+        """
+        get_cached_transcription = getattr(
+            self.transcriber,
+            "get_cached_transcription",
+            None,
         )
+        if get_cached_transcription is None:
+            return None
+        cached_segments = get_cached_transcription(audio)
+        if cached_segments is None:
+            return None
+        return get_speech_intervals_from_segments(cached_segments, offset_ms=offset_ms)
+
+    def _get_transcription(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+    ) -> list[TranscribedSegment]:
+        """Get transcription segments for audio.
+
+        Arguments:
+            audio: audio segment to transcribe
+            cache_audio: optional original audio to use for cache keys
+        Returns:
+            transcribed segments
+        """
+        if cache_audio is None:
+            return self.transcriber(audio)
+        return self.transcriber(audio, cache_audio=cache_audio)
 
 
 def get_speech_intervals_cleaned(

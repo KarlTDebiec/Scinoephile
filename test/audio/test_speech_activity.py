@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from pydub import AudioSegment
 
@@ -18,6 +18,9 @@ from scinoephile.audio.speech_activity import (
     get_speech_series_from_intervals,
 )
 from scinoephile.audio.transcription import TranscribedSegment
+from scinoephile.audio.transcription.whisper_transcriber import (
+    DEFAULT_WHISPER_MODEL_NAME,
+)
 
 
 class StubTranscriber:
@@ -31,11 +34,17 @@ class StubTranscriber:
         """
         self.segments = segments
 
-    def __call__(self, audio: AudioSegment) -> list[TranscribedSegment]:
+    def __call__(
+        self,
+        audio: AudioSegment,
+        *,
+        cache_audio: AudioSegment | None = None,
+    ) -> list[TranscribedSegment]:
         """Return configured segments.
 
         Arguments:
             audio: ignored audio segment
+            cache_audio: ignored cache-key audio
         Returns:
             configured transcription segments
         """
@@ -105,8 +114,8 @@ def test_get_speech_series_from_intervals_uses_empty_text_events():
     ]
 
 
-def test_whisper_speech_activity_detector_cleans_transcription_segments():
-    """Test Whisper-backed detection delegates and cleans segment timings."""
+def test_whisper_speech_activity_detector_returns_raw_transcription_intervals():
+    """Test Whisper-backed detection delegates without cleaning segment timings."""
     segments = [
         TranscribedSegment(id=0, seek=0, start=0.1, end=0.5, text="hello"),
         TranscribedSegment(id=1, seek=0, start=0.55, end=1.0, text="again"),
@@ -114,17 +123,19 @@ def test_whisper_speech_activity_detector_cleans_transcription_segments():
     ]
     detector = WhisperSpeechActivityDetector(
         transcriber=StubTranscriber(segments),
-        merge_gap_ms=100,
-        min_duration_ms=100,
     )
 
     intervals = detector(AudioSegment.silent(duration=2000), offset_ms=3000)
 
-    assert intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+    assert intervals == [
+        SpeechInterval(start_ms=3100, end_ms=3500),
+        SpeechInterval(start_ms=3550, end_ms=4000),
+        SpeechInterval(start_ms=4500, end_ms=4550),
+    ]
 
 
-def test_silero_speech_activity_detector_caches_and_cleans_timestamps(tmp_path: Path):
-    """Test Silero-backed detection caches raw intervals before cleanup."""
+def test_silero_speech_activity_detector_caches_raw_timestamps(tmp_path: Path):
+    """Test Silero-backed detection caches raw intervals without cleanup."""
     cache_dir_path = tmp_path / "speech"
     audio = AudioSegment.silent(duration=2000)
 
@@ -140,13 +151,16 @@ def test_silero_speech_activity_detector_caches_and_cleans_timestamps(tmp_path: 
         detector = SileroSpeechActivityDetector(
             model=object(),
             cache_dir_path=cache_dir_path,
-            merge_gap_ms=100,
-            min_duration_ms=100,
+            threshold=0.4,
         )
 
         intervals = detector(audio, offset_ms=3000)
 
-    assert intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+    assert intervals == [
+        SpeechInterval(start_ms=3100, end_ms=3500),
+        SpeechInterval(start_ms=3550, end_ms=4000),
+        SpeechInterval(start_ms=4500, end_ms=4550),
+    ]
     get_uncached_speech_intervals.assert_called_once_with(audio)
 
     with patch.object(
@@ -157,13 +171,81 @@ def test_silero_speech_activity_detector_caches_and_cleans_timestamps(tmp_path: 
         cached_detector = SileroSpeechActivityDetector(
             model=object(),
             cache_dir_path=cache_dir_path,
-            merge_gap_ms=100,
-            min_duration_ms=100,
+            threshold=0.4,
         )
 
         cached_intervals = cached_detector(audio, offset_ms=3000)
 
-    assert cached_intervals == [SpeechInterval(start_ms=3100, end_ms=4000)]
+    assert cached_intervals == [
+        SpeechInterval(start_ms=3100, end_ms=3500),
+        SpeechInterval(start_ms=3550, end_ms=4000),
+        SpeechInterval(start_ms=4500, end_ms=4550),
+    ]
+
+
+def test_silero_speech_activity_detector_cache_key_includes_threshold(
+    tmp_path: Path,
+):
+    """Test Silero cache entries are separated by threshold."""
+    cache_dir_path = tmp_path / "speech"
+    audio = AudioSegment.silent(duration=2000)
+
+    with patch.object(
+        SileroSpeechActivityDetector,
+        "_get_uncached_speech_intervals",
+        return_value=[SpeechInterval(start_ms=100, end_ms=500)],
+    ):
+        detector = SileroSpeechActivityDetector(
+            model=object(),
+            cache_dir_path=cache_dir_path,
+            threshold=0.4,
+        )
+        detector(audio)
+
+    with patch.object(
+        SileroSpeechActivityDetector,
+        "_get_uncached_speech_intervals",
+        return_value=[SpeechInterval(start_ms=600, end_ms=900)],
+    ) as get_uncached_speech_intervals:
+        detector = SileroSpeechActivityDetector(
+            model=object(),
+            cache_dir_path=cache_dir_path,
+            threshold=0.6,
+        )
+        intervals = detector(audio)
+
+    get_uncached_speech_intervals.assert_called_once_with(audio)
+    assert intervals == [SpeechInterval(start_ms=600, end_ms=900)]
+
+
+def test_silero_speech_activity_detector_disables_backend_cleanup():
+    """Test Silero backend does not discard short intervals before shared cleanup."""
+    get_speech_timestamps = Mock(
+        return_value=[{"start": 0.01, "end": 0.09}],
+    )
+
+    with (
+        patch.object(
+            SileroSpeechActivityDetector,
+            "_get_silero_functions",
+            return_value=(Mock(), get_speech_timestamps),
+        ),
+        patch.object(
+            SileroSpeechActivityDetector,
+            "_get_audio_tensor",
+            return_value=object(),
+        ),
+    ):
+        detector = SileroSpeechActivityDetector(model=object(), threshold=0.4)
+        intervals = detector._get_uncached_speech_intervals(
+            AudioSegment.silent(duration=1000)
+        )
+
+    assert intervals == [SpeechInterval(start_ms=10, end_ms=90)]
+    assert get_speech_timestamps.call_args.kwargs["threshold"] == 0.4
+    assert get_speech_timestamps.call_args.kwargs["min_speech_duration_ms"] == 0
+    assert get_speech_timestamps.call_args.kwargs["min_silence_duration_ms"] == 0
+    assert get_speech_timestamps.call_args.kwargs["speech_pad_ms"] == 0
 
 
 def test_whisper_speech_activity_detector_uses_cached_transcriber(tmp_path: Path):
@@ -175,5 +257,27 @@ def test_whisper_speech_activity_detector_uses_cached_transcriber(tmp_path: Path
     ) as transcriber_cls:
         detector = WhisperSpeechActivityDetector(cache_dir_path=cache_dir_path)
 
-    transcriber_cls.assert_called_once_with(cache_dir_path=cache_dir_path)
+    transcriber_cls.assert_called_once_with(
+        cache_dir_path=cache_dir_path,
+        model_name=DEFAULT_WHISPER_MODEL_NAME,
+    )
+    assert detector.transcriber == transcriber_cls.return_value
+
+
+def test_whisper_speech_activity_detector_passes_model_name(tmp_path: Path):
+    """Test Whisper-backed detection passes the requested model name."""
+    cache_dir_path = tmp_path / "speech"
+
+    with patch(
+        "scinoephile.audio.speech_activity.WhisperTranscriber"
+    ) as transcriber_cls:
+        detector = WhisperSpeechActivityDetector(
+            cache_dir_path=cache_dir_path,
+            model_name="openai/whisper-large-v3",
+        )
+
+    transcriber_cls.assert_called_once_with(
+        cache_dir_path=cache_dir_path,
+        model_name="openai/whisper-large-v3",
+    )
     assert detector.transcriber == transcriber_cls.return_value

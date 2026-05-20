@@ -5,14 +5,12 @@
 from __future__ import annotations
 
 from argparse import ArgumentParser
-from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from scinoephile.audio.speech_activity import (
+    PreprocessedSpeechActivityDetector,
     SileroSpeechActivityDetector,
     SpeechActivityDetector,
-    SpeechInterval,
     WhisperSpeechActivityDetector,
 )
 from scinoephile.audio.subtitles import AudioSeries
@@ -22,8 +20,12 @@ from scinoephile.audio.subtitles.timing_adjustment import (
     get_series_timing_adjustment,
 )
 from scinoephile.audio.transcription import DemucsSeparator
+from scinoephile.audio.transcription.whisper_transcriber import (
+    DEFAULT_WHISPER_MODEL_NAME,
+)
 from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.argument_parsing import (
+    float_arg,
     get_arg_groups_by_name,
     input_file_arg,
     int_arg,
@@ -32,9 +34,6 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
-
-if TYPE_CHECKING:
-    from pydub import AudioSegment
 
 __all__ = ["MediaAdjustSubsCli"]
 
@@ -76,9 +75,16 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "最小语音区间时长，单位为毫秒（默认：%(default)s）"
         ),
         "output subtitle file for adjusted timings": "调整后字幕的输出文件",
+        "overwrite outfile if it exists": "若输出文件已存在则覆盖",
         "print timing adjustment diagnostics": "打印时间调整诊断信息",
+        "Silero VAD speech threshold (default: %(default)s)": (
+            "Silero VAD 语音阈值（默认：%(default)s）"
+        ),
         "speech activity backend (default: %(default)s)": (
             "语音活动后端（默认：%(default)s）"
+        ),
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用于转录的 Whisper 模型标识符（默认：%(default)s）"
         ),
         "subtitle block pause length in milliseconds (default: %(default)s)": (
             "字幕块分隔停顿时长，单位为毫秒（默认：%(default)s）"
@@ -121,9 +127,16 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "最小語音區間時長，單位為毫秒（預設：%(default)s）"
         ),
         "output subtitle file for adjusted timings": "調整後字幕的輸出檔",
+        "overwrite outfile if it exists": "若輸出檔已存在則覆寫",
         "print timing adjustment diagnostics": "列印時間調整診斷資訊",
+        "Silero VAD speech threshold (default: %(default)s)": (
+            "Silero VAD 語音閾值（預設：%(default)s）"
+        ),
         "speech activity backend (default: %(default)s)": (
             "語音活動後端（預設：%(default)s）"
+        ),
+        "Whisper model identifier used for transcription (default: %(default)s)": (
+            "用於轉錄的 Whisper 模型識別碼（預設：%(default)s）"
         ),
         "subtitle block pause length in milliseconds (default: %(default)s)": (
             "字幕區塊分隔停頓時長，單位為毫秒（預設：%(default)s）"
@@ -131,44 +144,6 @@ MEDIA_ADJUST_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
     },
 }
 """Localized help text keyed by locale and English source text."""
-
-
-class _PreprocessedSpeechActivityDetector:
-    """Speech activity detector with audio preprocessing."""
-
-    def __init__(
-        self,
-        *,
-        speech_detector: SpeechActivityDetector,
-        audio_preprocessor: Callable[[AudioSegment], AudioSegment],
-    ):
-        """Initialize.
-
-        Arguments:
-            speech_detector: speech activity detector to run after preprocessing
-            audio_preprocessor: audio preprocessing callable
-        """
-        self.speech_detector = speech_detector
-        self.audio_preprocessor = audio_preprocessor
-
-    def __call__(
-        self,
-        audio: AudioSegment,
-        *,
-        offset_ms: int = 0,
-    ) -> Sequence[SpeechInterval]:
-        """Detect speech activity after preprocessing audio.
-
-        Arguments:
-            audio: audio segment to inspect
-            offset_ms: offset to add to returned intervals
-        Returns:
-            detected speech intervals
-        """
-        return self.speech_detector(
-            self.audio_preprocessor(audio),
-            offset_ms=offset_ms,
-        )
 
 
 class MediaAdjustSubsCli(ScinoephileCliBase):
@@ -245,6 +220,15 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             ),
         )
         arg_groups["operation arguments"].add_argument(
+            "--demucs",
+            default="off",
+            metavar="{off,on}",
+            type=str_arg(options=["off", "on"]),
+            help=(
+                "Demucs vocal separation before speech detection (default: %(default)s)"
+            ),
+        )
+        arg_groups["operation arguments"].add_argument(
             "--vad-backend",
             default="silero",
             metavar="{silero,whisper}",
@@ -252,12 +236,17 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             help="speech activity backend (default: %(default)s)",
         )
         arg_groups["operation arguments"].add_argument(
-            "--demucs",
-            default="off",
-            metavar="{off,on}",
-            type=str_arg(options=["off", "on"]),
+            "--silero-threshold",
+            default=0.5,
+            type=float_arg(min_value=0.0, max_value=1.0),
+            help="Silero VAD speech threshold (default: %(default)s)",
+        )
+        arg_groups["operation arguments"].add_argument(
+            "--whisper-model",
+            default=DEFAULT_WHISPER_MODEL_NAME,
+            dest="whisper_model_name",
             help=(
-                "Demucs vocal separation before speech detection (default: %(default)s)"
+                "Whisper model identifier used for transcription (default: %(default)s)"
             ),
         )
         arg_groups["operation arguments"].add_argument(
@@ -268,7 +257,7 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         )
         arg_groups["operation arguments"].add_argument(
             "--max-end-expansion",
-            default=999,
+            default=750,
             type=int_arg(min_value=0, max_value=999),
             help="maximum end expansion in milliseconds (default: %(default)s)",
         )
@@ -310,6 +299,11 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             type=output_file_arg(exist_ok=True),
             help="output subtitle file for adjusted timings",
         )
+        arg_groups["output arguments"].add_argument(
+            "--overwrite",
+            action="store_true",
+            help="overwrite outfile if it exists",
+        )
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -334,6 +328,8 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         cache_dir_path: Path,
         vad_backend: str,
         demucs: str,
+        silero_threshold: float,
+        whisper_model_name: str,
         max_start_expansion: int,
         max_end_expansion: int,
         gap_merge_threshold: int,
@@ -341,9 +337,13 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         dry_run: bool,
         diagnostics: bool,
         outfile_path: Path,
+        overwrite: bool,
     ):
         """Execute with provided keyword arguments."""
         parser = _parser or cls.argparser()
+        if not dry_run and outfile_path.exists() and not overwrite:
+            parser.error(f"{outfile_path} already exists")
+
         try:
             series = AudioSeries.load_from_media(
                 media_path=media_infile_path,
@@ -354,12 +354,12 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
             )
             speech_detector = cls._get_speech_detector(
                 vad_backend=vad_backend,
-                cache_dir_path=cache_dir_path / "speech",
-                merge_gap_ms=gap_merge_threshold,
-                min_duration_ms=minimum_speech_duration,
+                cache_dir_path=cache_dir_path / "speech" / f"demucs-{demucs}",
+                silero_threshold=silero_threshold,
+                whisper_model_name=whisper_model_name,
             )
             if demucs == "on":
-                speech_detector = _PreprocessedSpeechActivityDetector(
+                speech_detector = PreprocessedSpeechActivityDetector(
                     speech_detector=speech_detector,
                     audio_preprocessor=DemucsSeparator(
                         cache_dir_path=cache_dir_path / "demucs"
@@ -423,30 +423,28 @@ class MediaAdjustSubsCli(ScinoephileCliBase):
         *,
         vad_backend: str,
         cache_dir_path: Path,
-        merge_gap_ms: int,
-        min_duration_ms: int,
+        silero_threshold: float,
+        whisper_model_name: str,
     ) -> SpeechActivityDetector:
         """Get the requested speech activity detector.
 
         Arguments:
             vad_backend: speech activity backend name
             cache_dir_path: cache directory for raw speech activity artifacts
-            merge_gap_ms: merge speech intervals separated by at most this gap
-            min_duration_ms: discard speech intervals shorter than this duration
+            silero_threshold: Silero speech probability threshold
+            whisper_model_name: Whisper model name
         Returns:
             configured speech activity detector
         """
         if vad_backend == "silero":
             return SileroSpeechActivityDetector(
                 cache_dir_path=cache_dir_path,
-                merge_gap_ms=merge_gap_ms,
-                min_duration_ms=min_duration_ms,
+                threshold=silero_threshold,
             )
         if vad_backend == "whisper":
             return WhisperSpeechActivityDetector(
                 cache_dir_path=cache_dir_path,
-                merge_gap_ms=merge_gap_ms,
-                min_duration_ms=min_duration_ms,
+                model_name=whisper_model_name,
             )
         raise ValueError(f"Unsupported speech activity backend: {vad_backend}")
 

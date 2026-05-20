@@ -62,3 +62,13 @@ def test_get_sync_groups_converges_below_max_cutoff():
     assert len(sync_groups) == 2
     assert sync_groups[0] == ([0], [0])
     assert sync_groups[1] == ([1], [1])
+
+
+def test_get_sync_groups_ignores_microscopic_overlap():
+    """Test subtitles with microscopic overlap remain unmatched."""
+    one = Series(events=[Subtitle(start=0, end=500, text="A")])
+    two = Series(events=[Subtitle(start=2000, end=2500, text="1")])
+
+    sync_groups = get_sync_groups(one, two)
+
+    assert sync_groups == [([0], []), ([], [0])]
