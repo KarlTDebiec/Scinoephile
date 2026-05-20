@@ -4,6 +4,9 @@
 
 from __future__ import annotations
 
+import logging
+
+import pytest
 from pydub import AudioSegment
 
 from scinoephile.audio.speech_activity import SpeechInterval
@@ -77,6 +80,43 @@ def test_get_series_timing_adjustment_expands_cue_and_reports_diagnostics():
     assert cue_diagnostics.start_delta_ms == -200
     assert cue_diagnostics.end_delta_ms == 1100
     assert cue_diagnostics.unchanged is False
+
+
+def test_get_series_timing_adjustment_logs_adjusted_cue(
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test adjusted cue timings are logged at info level.
+
+    Arguments:
+        caplog: pytest log capture fixture
+    """
+    series = AudioSeries(
+        audio=AudioSegment.silent(duration=5000),
+        events=[AudioSubtitle(start=1000, end=1500, text="hello")],
+    )
+    detector = StaticSpeechDetector([[SpeechInterval(start_ms=800, end_ms=2600)]])
+
+    with caplog.at_level(
+        logging.INFO,
+        logger="scinoephile.audio.subtitles.timing_adjustment",
+    ):
+        get_series_timing_adjustment(
+            series,
+            speech_detector=detector,
+            config=SubtitleTimingAdjustmentConfig(
+                max_start_expansion_ms=500,
+                max_end_expansion_ms=1500,
+            ),
+        )
+
+    messages = [
+        record.message
+        for record in caplog.records
+        if record.name == "scinoephile.audio.subtitles.timing_adjustment"
+    ]
+    assert messages == [
+        ("Adjusted subtitle timing for cue 1: 1000-1500 ms -> 800-2600 ms text='hello'")
+    ]
 
 
 def test_get_series_timing_adjustment_prevents_overlaps_and_reports_blocking():

@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from copy import deepcopy
 from dataclasses import dataclass
+from logging import getLogger
 
 from scinoephile.audio.speech_activity import (
     SpeechActivityDetector,
@@ -29,6 +30,8 @@ __all__ = [
     "get_series_timing_adjusted",
     "get_series_timing_adjustment",
 ]
+
+logger = getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -336,7 +339,7 @@ def _adjust_event_timing(
         adjusted_end_ms,
         speech_intervals,
     )
-    return SubtitleTimingAdjustmentCueDiagnostics(
+    diagnostics = SubtitleTimingAdjustmentCueDiagnostics(
         cue_idx=cue_idx,
         text=original_event.text,
         original_start_ms=original_event.start,
@@ -363,6 +366,13 @@ def _adjust_event_timing(
             and adjusted_end_ms == original_event.end
         ),
     )
+    if not diagnostics.unchanged:
+        logger.info(
+            f"Adjusted subtitle timing for cue {cue_idx + 1}: "
+            f"{original_event.start}-{original_event.end} ms -> "
+            f"{adjusted_start_ms}-{adjusted_end_ms} ms text={original_event.text!r}"
+        )
+    return diagnostics
 
 
 def _adjust_sync_group_timing(
