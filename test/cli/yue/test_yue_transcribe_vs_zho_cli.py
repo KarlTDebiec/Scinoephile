@@ -322,7 +322,7 @@ def test_yue_transcribe_vs_zho_cli_stream_errors_are_user_facing():
     media_infile_path = "/tmp/test_media.mp4"
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
-        side_effect=ScinoephileError("Invalid audio stream index 7"),
+        side_effect=ScinoephileError("No stream index 7 found"),
     ):
         with pytest.raises(SystemExit, match="2"):
             run_cli_with_args(

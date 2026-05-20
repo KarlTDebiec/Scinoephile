@@ -233,7 +233,7 @@ class AudioSeries(Series):
         Arguments:
             media_path: path to media file
             subtitle_path: path to subtitle file
-            stream_index: audio stream index (zero-based)
+            stream_index: media stream index of an audio stream
             buffer: additional buffer to include before and after subtitles (ms)
             **kwargs: additional keyword arguments passed to Series.load
         Returns:
@@ -249,22 +249,32 @@ class AudioSeries(Series):
             raise ScinoephileError(
                 f"Could not probe media file {validated_media_path}"
             ) from exc
-        audio_streams = [
-            stream
-            for stream in probe.get("streams", [])
-            if stream.get("codec_type") == "audio"
+        streams = [
+            stream for stream in probe.get("streams", []) if isinstance(stream, dict)
         ]
-        if not audio_streams:
+        streams_by_index: dict[int, dict[str, Any]] = {}
+        for stream in streams:
+            try:
+                probed_stream_index = int(stream.get("index", -1))
+            except (TypeError, ValueError):
+                continue
+            streams_by_index[probed_stream_index] = stream
+
+        if stream_index not in streams_by_index:
             raise ScinoephileError(
-                f"No audio streams found in media file {validated_media_path}"
+                f"No stream index {stream_index} found in {validated_media_path}"
             )
-        if stream_index < 0 or stream_index >= len(audio_streams):
+        stream = streams_by_index[stream_index]
+        if stream.get("codec_type") != "audio":
             raise ScinoephileError(
-                f"Invalid audio stream index {stream_index} for "
-                f"{validated_media_path}; found {len(audio_streams)} audio stream(s)."
+                f"Stream index {stream_index} is not an audio stream"
             )
-        stream = audio_streams[stream_index]
         channels = stream.get("channels")
+        if channels is None:
+            raise ScinoephileError(
+                f"Audio stream {stream_index} in {validated_media_path} "
+                "cannot be used for transcription."
+            )
         try:
             channel_count = int(channels)
         except (TypeError, ValueError) as exc:
@@ -362,7 +372,7 @@ class AudioSeries(Series):
         Arguments:
             video_input_path: Path to input video file
             audio_output_path: Path to output audio file
-            audio_track: Audio track (zero-indexed)
+            audio_track: media stream index of an audio stream
             channels: Number of channels in audio track
         """
         if channels >= 6:
@@ -375,7 +385,7 @@ class AudioSeries(Series):
                 format="wav",
                 ar=16000,
                 **{
-                    "filter_complex": f"[0:a:{audio_track}]pan=mono|c0=c2[out]",
+                    "filter_complex": f"[0:{audio_track}]pan=mono|c0=c2[out]",
                     "map": "[out]",
                 },
             ).run(quiet=False, overwrite_output=True)
@@ -388,7 +398,7 @@ class AudioSeries(Series):
                 str(audio_output_path),
                 format="wav",
                 ar=16000,
-                map=f"0:a:{audio_track}",
+                map=f"0:{audio_track}",
                 ac=1,
             ).run(quiet=False, overwrite_output=True)
 

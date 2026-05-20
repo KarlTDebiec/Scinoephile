@@ -51,8 +51,8 @@ __all__ = ["YueTranscribeVsZhoCli"]
 
 YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audio stream index in media input (default: 0)": (
-            "媒体输入中的音频流索引（默认：0）"
+        "media stream index of audio stream in media input (default: 0)": (
+            "媒体输入中的音频媒体流索引（默认：0）"
         ),
         (
             "command-line interface for written Cantonese subtitle transcription"
@@ -81,8 +81,8 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "从音频转录字幕，并使用标准中文文本修订",
     },
     "zh-hant": {
-        "audio stream index in media input (default: 0)": (
-            "媒體輸入中的音訊流索引（預設：0）"
+        "media stream index of audio stream in media input (default: 0)": (
+            "媒體輸入中的音訊媒體流索引（預設：0）"
         ),
         (
             "command-line interface for written Cantonese subtitle transcription"
@@ -153,7 +153,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             "--stream-index",
             type=int_arg(min_value=0),
             default=0,
-            help="audio stream index in media input (default: 0)",
+            help="media stream index of audio stream in media input (default: 0)",
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",

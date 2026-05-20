@@ -76,7 +76,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         audio_path: path to the staged audio wav file; defaults to
           `title_root_path/output/yue-Hans_transcribe/audio/audio.wav`
         media_path: optional media path used to generate `audio_path` if missing
-        stream_index: audio stream index in media used when generating audio
+        stream_index: media stream index of audio stream used when generating audio
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer
