@@ -68,8 +68,8 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
         command in eng_section
         for command in (
             "\n    process",
-            "\n    translate-vs-yue",
-            "\n    translate-vs-zho",
+            "\n    translate-from-yue",
+            "\n    translate-from-zho",
         )
     )
     assert "\nocr" in output
@@ -83,7 +83,7 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     yue_section = output.split("\nyue", maxsplit=1)[1].split("\nzho", maxsplit=1)[0]
     assert all(
         command in yue_section
-        for command in ("\n    translate-vs-eng", "\n    translate-vs-zho")
+        for command in ("\n    translate-from-eng", "\n    translate-from-zho")
     )
     assert "\nzho" in output
     zho_section = output.split("\nzho", maxsplit=1)[1]
@@ -91,8 +91,8 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
         command in zho_section
         for command in (
             "\n    process",
-            "\n    translate-vs-eng",
-            "\n    translate-vs-yue",
+            "\n    translate-from-eng",
+            "\n    translate-from-yue",
         )
     )
     assert all(len(line) <= 80 for line in output.splitlines())

@@ -28,7 +28,7 @@ from test.helpers import (
 
 
 def test_zho_translate_vs_eng_cli_gapped_translation():
-    """Test standard Chinese translate-vs-eng CLI routes to gapped translation."""
+    """Test standard Chinese translate-from-eng CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
@@ -68,7 +68,7 @@ def test_zho_translate_vs_eng_cli_gapped_translation():
 
 
 def test_zho_translate_vs_eng_cli_guided_translation():
-    """Test standard Chinese translate-vs-eng CLI routes to guided translation."""
+    """Test standard Chinese translate-from-eng CLI routes to guided translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
@@ -108,7 +108,7 @@ def test_zho_translate_vs_eng_cli_guided_translation():
 
 
 def test_zho_translate_vs_eng_cli_regular_translation():
-    """Test standard Chinese translate-vs-eng CLI routes to regular translation."""
+    """Test standard Chinese translate-from-eng CLI routes to regular translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     expected_path = test_data_root / "mlamd/output/zho-Hans_ocr/fuse_clean_validate.srt"
     expected = Series.load(expected_path)
@@ -141,7 +141,7 @@ def test_zho_translate_vs_eng_cli_regular_translation():
 
 
 def test_zho_translate_vs_eng_cli_rejects_gapped_and_guide_together():
-    """Test standard Chinese translate-vs-eng CLI rejects mutually exclusive inputs."""
+    """Test standard Chinese translate-from-eng CLI rejects conflicts."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"

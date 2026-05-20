@@ -180,7 +180,7 @@ class EngTranslateVsYueCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "translate-vs-yue"
+        return "translate-from-yue"
 
     @classmethod
     def _main(

@@ -19,7 +19,7 @@ from test.helpers import (
 
 
 def test_eng_translate_vs_zho_cli_regular_translation():
-    """Test English translate-vs-zho CLI routes to regular translation."""
+    """Test English translate-from-zho CLI routes to regular translation."""
     zho_input_path = test_data_root / (
         "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -49,7 +49,7 @@ def test_eng_translate_vs_zho_cli_regular_translation():
 
 
 def test_eng_translate_vs_zho_cli_passes_llm_additional_context_file(tmp_path):
-    """Test English translate-vs-zho CLI passes LLM additional context."""
+    """Test English translate-from-zho CLI passes LLM additional context."""
     zho_input_path = test_data_root / (
         "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -81,7 +81,7 @@ def test_eng_translate_vs_zho_cli_passes_llm_additional_context_file(tmp_path):
 
 
 def test_eng_translate_vs_zho_cli_gapped_translation():
-    """Test English translate-vs-zho CLI routes to gapped translation."""
+    """Test English translate-from-zho CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
@@ -117,7 +117,7 @@ def test_eng_translate_vs_zho_cli_gapped_translation():
 
 
 def test_eng_translate_vs_zho_cli_guided_translation():
-    """Test English translate-vs-zho CLI routes to guided translation."""
+    """Test English translate-from-zho CLI routes to guided translation."""
     eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
@@ -153,7 +153,7 @@ def test_eng_translate_vs_zho_cli_guided_translation():
 
 
 def test_eng_translate_vs_zho_cli_rejects_gapped_and_guide_together():
-    """Test English translate-vs-zho CLI rejects mutually exclusive inputs."""
+    """Test English translate-from-zho CLI rejects mutually exclusive inputs."""
     eng_input_path = test_data_root / "mnt/output/eng_ocr/fuse_clean_validate.srt"
     zho_input_path = test_data_root / (
         "mnt/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"

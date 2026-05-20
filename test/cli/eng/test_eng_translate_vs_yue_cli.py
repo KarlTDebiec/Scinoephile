@@ -19,7 +19,7 @@ from test.helpers import (
 
 
 def test_eng_translate_vs_yue_cli_gapped_translation():
-    """Test English translate-vs-yue CLI routes to gapped translation."""
+    """Test English translate-from-yue CLI routes to gapped translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
@@ -55,7 +55,7 @@ def test_eng_translate_vs_yue_cli_gapped_translation():
 
 
 def test_eng_translate_vs_yue_cli_guided_translation():
-    """Test English translate-vs-yue CLI routes to guided translation."""
+    """Test English translate-from-yue CLI routes to guided translation."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
@@ -91,7 +91,7 @@ def test_eng_translate_vs_yue_cli_guided_translation():
 
 
 def test_eng_translate_vs_yue_cli_regular_translation():
-    """Test English translate-vs-yue CLI routes to regular translation."""
+    """Test English translate-from-yue CLI routes to regular translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -122,7 +122,7 @@ def test_eng_translate_vs_yue_cli_regular_translation():
 
 
 def test_eng_translate_vs_yue_cli_rejects_gapped_and_guide_together():
-    """Test English translate-vs-yue CLI rejects mutually exclusive inputs."""
+    """Test English translate-from-yue CLI rejects mutually exclusive inputs."""
     eng_input_path = test_data_root / "mlamd/output/eng_ocr/fuse_clean_validate.srt"
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"

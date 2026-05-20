@@ -180,7 +180,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "translate-vs-zho"
+        return "translate-from-zho"
 
     @classmethod
     def _main(

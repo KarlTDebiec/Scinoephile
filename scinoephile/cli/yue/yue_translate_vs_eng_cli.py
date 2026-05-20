@@ -204,7 +204,7 @@ class YueTranslateVsEngCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "translate-vs-eng"
+        return "translate-from-eng"
 
     @classmethod
     def _get_gapped_translation_prompt_cls(

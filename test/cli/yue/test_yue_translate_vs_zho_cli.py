@@ -28,7 +28,7 @@ from test.helpers import (
 
 
 def test_yue_translate_vs_zho_cli_regular_translation():
-    """Test written Cantonese translate-vs-zho CLI routes to regular translation."""
+    """Test written Cantonese translate-from-zho CLI routes to regular translation."""
     zho_input_path = test_data_root / (
         "mlamd/output/zho-Hans_ocr/fuse_clean_validate_review_flatten.srt"
     )
@@ -65,7 +65,7 @@ def test_yue_translate_vs_zho_cli_regular_translation():
 
 
 def test_yue_translate_vs_zho_cli_gapped_translation():
-    """Test written Cantonese translate-vs-zho CLI routes to gapped translation."""
+    """Test written Cantonese translate-from-zho CLI routes to gapped translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -109,7 +109,7 @@ def test_yue_translate_vs_zho_cli_gapped_translation():
 
 
 def test_yue_translate_vs_zho_cli_guided_translation():
-    """Test written Cantonese translate-vs-zho CLI routes to guided translation."""
+    """Test written Cantonese translate-from-zho CLI routes to guided translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -153,7 +153,7 @@ def test_yue_translate_vs_zho_cli_guided_translation():
 
 
 def test_yue_translate_vs_zho_cli_rejects_gapped_and_guide_together():
-    """Test written Cantonese translate-vs-zho CLI rejects mutually exclusive inputs."""
+    """Test written Cantonese translate-from-zho CLI rejects conflicts."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )

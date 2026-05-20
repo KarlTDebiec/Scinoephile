@@ -28,7 +28,7 @@ from test.helpers import (
 
 
 def test_zho_translate_vs_yue_cli_gapped_translation():
-    """Test standard Chinese translate-vs-yue CLI routes to gapped translation."""
+    """Test standard Chinese translate-from-yue CLI routes to gapped translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -70,7 +70,7 @@ def test_zho_translate_vs_yue_cli_gapped_translation():
 
 
 def test_zho_translate_vs_yue_cli_guided_translation():
-    """Test standard Chinese translate-vs-yue CLI routes to guided translation."""
+    """Test standard Chinese translate-from-yue CLI routes to guided translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -112,7 +112,7 @@ def test_zho_translate_vs_yue_cli_guided_translation():
 
 
 def test_zho_translate_vs_yue_cli_regular_translation():
-    """Test standard Chinese translate-vs-yue CLI routes to regular translation."""
+    """Test standard Chinese translate-from-yue CLI routes to regular translation."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
@@ -147,7 +147,7 @@ def test_zho_translate_vs_yue_cli_regular_translation():
 
 
 def test_zho_translate_vs_yue_cli_rejects_gapped_and_guide_together():
-    """Test standard Chinese translate-vs-yue CLI rejects mutually exclusive inputs."""
+    """Test standard Chinese translate-from-yue CLI rejects conflicts."""
     yue_input_path = (
         test_data_root / "mlamd/output/yue-Hans_transcribe/transcribe_review.srt"
     )
