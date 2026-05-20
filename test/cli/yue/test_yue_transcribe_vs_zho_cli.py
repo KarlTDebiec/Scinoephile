@@ -59,6 +59,7 @@ def test_yue_transcribe_vs_zho_help_lists_script_convert_demucs_and_vad_options(
     assert "--vad {auto,on,off}" in help_text
     assert "Whisper voice activity detection mode" in help_text
     assert "off, auto; default: auto" in help_text
+    assert "default: first audio stream" in help_text
 
 
 def test_yue_transcribe_vs_zho_cli_writes_file():
@@ -132,7 +133,7 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
     with patch(
         "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.AudioSeries.load_from_media",
         return_value=yuewen_audio_series,
-    ):
+    ) as patched_loader:
         with patch(
             "scinoephile.cli.yue.yue_transcribe_vs_zho_cli.get_yue_vs_zho_transcriber",
             return_value="transcriber",
@@ -149,6 +150,11 @@ def test_yue_transcribe_vs_zho_cli_writes_stdout():
                     )
 
     output_series = Series.from_string(stdout_stream.getvalue(), format_="srt")
+    patched_loader.assert_called_once_with(
+        media_path=media_infile_path,
+        subtitle_path=zhongwen_infile_path,
+        stream_index=None,
+    )
     assert_series_equal(output_series, expected_series)
 
 

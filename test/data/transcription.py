@@ -49,7 +49,7 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
     output_dir_path: Path | None = None,
     audio_path: Path | None = None,
     media_path: Path | None = None,
-    stream_index: int = 0,
+    stream_index: int | None = None,
     overwrite_srt: bool = False,
     transcriber_kw: dict[str, Any] | None = None,
     line_reviewer_kw: dict[str, Any] | None = None,
@@ -76,7 +76,8 @@ def process_yue_hans_transcription(  # noqa: PLR0912, PLR0915
         audio_path: path to the staged audio wav file; defaults to
           `title_root_path/output/yue-Hans_transcribe/audio/audio.wav`
         media_path: optional media path used to generate `audio_path` if missing
-        stream_index: media stream index of audio stream used when generating audio
+        stream_index: media stream index of audio stream used when generating audio,
+          or None to use the first audio stream
         overwrite_srt: whether to overwrite subtitle outputs
         transcriber_kw: additional keyword arguments for get_yue_vs_zho_transcriber
         line_reviewer_kw: additional keyword arguments for get_yue_vs_zho_line_reviewer

@@ -95,6 +95,29 @@ def test_get_streams_returns_all_typed_streams(tmp_path: Path):
     assert streams[3].codec_type == "data"
 
 
+def test_get_streams_skips_streams_without_nonnegative_index(tmp_path: Path):
+    """Test media stream probing skips streams without usable indexes."""
+    infile_path = tmp_path / "video.mkv"
+    infile_path.touch()
+
+    with patch(
+        "scinoephile.media.probe.ffmpeg.probe",
+        return_value={
+            "streams": [
+                {"codec_type": "audio", "channels": 2},
+                {"index": None, "codec_type": "audio", "channels": 2},
+                {"index": -1, "codec_type": "audio", "channels": 2},
+                {"index": "bad", "codec_type": "audio", "channels": 2},
+                {"index": 1, "codec_type": "audio", "channels": 2},
+            ],
+        },
+    ):
+        streams = get_streams(infile_path)
+
+    assert len(streams) == 1
+    assert streams[0].index == 1
+
+
 def test_get_streams_normalizes_missing_codecs(tmp_path: Path):
     """Test media stream probing normalizes missing codec fields."""
     infile_path = tmp_path / "video.mkv"

@@ -97,7 +97,7 @@ def test_audio_series_load_from_media_supports_stream_index():
         with get_temp_file_path(".mp4") as media_path:
             media_path.touch()
             with patch(
-                "scinoephile.audio.subtitles.series.ffmpeg.probe",
+                "scinoephile.media.probe.ffmpeg.probe",
                 return_value={
                     "streams": [
                         {"index": 0, "codec_type": "video"},
@@ -126,6 +126,47 @@ def test_audio_series_load_from_media_supports_stream_index():
     assert extract_audio_track.call_args.args[3] == 6
 
 
+def test_audio_series_load_from_media_defaults_to_first_audio_stream():
+    """Test media loading defaults to the first probed audio stream."""
+    full_audio = AudioSegment.silent(duration=3000)
+
+    with get_temp_file_path(".srt") as subtitle_path:
+        subtitle_path.write_text(
+            "1\n00:00:01,000 --> 00:00:02,000\n你好\n", encoding="utf-8"
+        )
+        with get_temp_file_path(".mp4") as media_path:
+            media_path.touch()
+            with patch(
+                "scinoephile.media.probe.ffmpeg.probe",
+                return_value={
+                    "streams": [
+                        {"index": 0, "codec_type": "video"},
+                        {"codec_type": "audio", "channels": 2},
+                        {"index": -1, "codec_type": "audio", "channels": 2},
+                        {"index": 1, "codec_type": "audio", "channels": 2},
+                        {"index": 12, "codec_type": "audio", "channels": 6},
+                    ]
+                },
+            ):
+                with patch(
+                    "scinoephile.audio.subtitles.series.AudioSeries.extract_audio_track"
+                ) as extract_audio_track:
+                    with patch(
+                        "scinoephile.audio.subtitles.series.AudioSegment.from_wav",
+                        return_value=full_audio,
+                    ):
+                        yuewen_series = AudioSeries.load_from_media(
+                            media_path=media_path,
+                            subtitle_path=subtitle_path,
+                        )
+
+    assert isinstance(yuewen_series, AudioSeries)
+    assert [event.text for event in yuewen_series.events] == ["你好"]
+    extract_audio_track.assert_called_once()
+    assert extract_audio_track.call_args.args[2] == 1
+    assert extract_audio_track.call_args.args[3] == 2
+
+
 def test_audio_series_load_from_media_rejects_invalid_stream_index():
     """Test media loading rejects missing stream indexes."""
     with get_temp_file_path(".srt") as subtitle_path:
@@ -135,7 +176,7 @@ def test_audio_series_load_from_media_rejects_invalid_stream_index():
         with get_temp_file_path(".mp4") as media_path:
             media_path.touch()
             with patch(
-                "scinoephile.audio.subtitles.series.ffmpeg.probe",
+                "scinoephile.media.probe.ffmpeg.probe",
                 return_value={
                     "streams": [{"index": 1, "codec_type": "audio", "channels": 2}]
                 },
@@ -157,7 +198,7 @@ def test_audio_series_load_from_media_rejects_non_audio_stream_index():
         with get_temp_file_path(".mp4") as media_path:
             media_path.touch()
             with patch(
-                "scinoephile.audio.subtitles.series.ffmpeg.probe",
+                "scinoephile.media.probe.ffmpeg.probe",
                 return_value={
                     "streams": [
                         {"index": 0, "codec_type": "video"},
