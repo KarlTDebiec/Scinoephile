@@ -44,9 +44,9 @@ from scinoephile.multilang.yue_zho.translation import (
     get_yue_zho_translator,
 )
 
-__all__ = ["YueTranslateVsZhoCli"]
+__all__ = ["YueTranslateFromZhoCli"]
 
-YUE_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
+YUE_TRANSLATE_FROM_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
         "command-line interface for written Cantonese translation from Chinese": (
             "从中文翻译书面粤语字幕的命令行界面"
@@ -115,12 +115,12 @@ YUE_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized help text keyed by locale and English source text."""
 
 
-class YueTranslateVsZhoCli(ScinoephileCliBase):
+class YueTranslateFromZhoCli(ScinoephileCliBase):
     """Translate written Cantonese subtitles from standard Chinese subtitles."""
 
     localizations = merge_localizations(
         LLM_LOCALIZATIONS,
-        YUE_TRANSLATE_VS_ZHO_LOCALIZATIONS,
+        YUE_TRANSLATE_FROM_ZHO_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -206,7 +206,7 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "translate-vs-zho"
+        return "translate-from-zho"
 
     @classmethod
     def _get_gapped_translation_prompt_cls(
@@ -333,4 +333,4 @@ class YueTranslateVsZhoCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    YueTranslateVsZhoCli.main()
+    YueTranslateFromZhoCli.main()

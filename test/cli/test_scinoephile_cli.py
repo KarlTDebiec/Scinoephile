@@ -64,8 +64,14 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\n        wiktionary" in output
     assert "\neng" in output
     eng_section = output.split("\neng", maxsplit=1)[1].split("\nmedia", maxsplit=1)[0]
-    assert "\n    process" in eng_section
-    assert "\n    translate-vs-zho" in eng_section
+    assert all(
+        command in eng_section
+        for command in (
+            "\n    process",
+            "\n    translate-from-yue",
+            "\n    translate-from-zho",
+        )
+    )
     assert "\nocr" in output
     assert "\n    fuse" in output
     assert "\n    validate" in output
@@ -74,8 +80,21 @@ def test_scinoephile_all_commands_lists_complete_hierarchy():
     assert "\n        clear" in output
     assert "\n    optimization" in output
     assert "\n        sync-test-cases" in output
+    yue_section = output.split("\nyue", maxsplit=1)[1].split("\nzho", maxsplit=1)[0]
+    assert all(
+        command in yue_section
+        for command in ("\n    translate-from-eng", "\n    translate-from-zho")
+    )
     assert "\nzho" in output
-    assert "\n    process" in output
+    zho_section = output.split("\nzho", maxsplit=1)[1]
+    assert all(
+        command in zho_section
+        for command in (
+            "\n    process",
+            "\n    translate-from-eng",
+            "\n    translate-from-yue",
+        )
+    )
     assert all(len(line) <= 80 for line in output.splitlines())
     assert "    transcribe-vs-zho" in output
     assert "transcribe subtitles from audio and revise using" in output

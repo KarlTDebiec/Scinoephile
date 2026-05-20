@@ -1,9 +1,9 @@
 #  Copyright 2017-2026 Karl T Debiec. All rights reserved. This software may be modified
 #  and distributed under the terms of the BSD license. See the LICENSE file for details.
-"""Command-line interface for English translation from Chinese.
+"""Command-line interface for English translation from written Cantonese.
 
-This command translates Chinese subtitles into English, optionally filling gaps in
-English subtitles or using English guide subtitles.
+This command translates written Cantonese subtitles into English, optionally filling
+gaps in English subtitles or using English guide subtitles.
 """
 
 from __future__ import annotations
@@ -24,84 +24,84 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core.cli import ScinoephileCliBase, read_series, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.llms.providers.registry import get_provider
-from scinoephile.multilang.eng_zho.gapped_translation import (
-    get_eng_gapped_translated_vs_zho,
-    get_eng_vs_zho_gapped_translator,
+from scinoephile.multilang.eng_yue.gapped_translation import (
+    get_eng_gapped_translated_vs_yue,
+    get_eng_vs_yue_gapped_translator,
 )
-from scinoephile.multilang.eng_zho.guided_translation import (
-    get_eng_translated_from_zho_with_eng_guidance,
-    get_eng_zho_guided_translator,
+from scinoephile.multilang.eng_yue.guided_translation import (
+    get_eng_translated_from_yue_with_eng_guidance,
+    get_eng_yue_guided_translator,
 )
-from scinoephile.multilang.eng_zho.translation import (
-    get_eng_translated_from_zho,
-    get_eng_zho_translator,
+from scinoephile.multilang.eng_yue.translation import (
+    get_eng_translated_from_yue,
+    get_eng_yue_translator,
 )
 
-__all__ = ["EngTranslateVsZhoCli"]
+__all__ = ["EngTranslateFromYueCli"]
 
-ENG_TRANSLATE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
+ENG_TRANSLATE_FROM_YUE_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "command-line interface for English translation from Chinese": (
-            "从中文翻译英文字幕的命令行界面"
+        "command-line interface for English translation from written Cantonese": (
+            "从书面粤语翻译英文字幕的命令行界面"
         ),
-        "This command translates Chinese subtitles into English, optionally "
+        "This command translates written Cantonese subtitles into English, optionally "
         "filling gaps in English subtitles or using English guide subtitles.": (
-            "此命令将中文字幕翻译为英文，并可选择补全英文字幕缺口或使用英文参考字幕。"
+            "此命令将书面粤语字幕翻译为英文，并可选择补全英文字幕缺口或使用英文参考字幕。"
         ),
-        'Chinese subtitle infile or "-" for stdin': (
-            '中文字幕输入文件，或使用 "-" 表示标准输入'
+        'written Cantonese subtitle infile or "-" for stdin': (
+            '书面粤语字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        "English subtitle infile with gaps to fill with translation from Chinese, "
-        'or "-" for stdin': (
-            '含缺口、需根据中文翻译补全的英文字幕输入文件，或使用 "-" 表示标准输入'
+        "English subtitle infile with gaps to fill with translation from written "
+        'Cantonese, or "-" for stdin': (
+            '含缺口、需根据书面粤语翻译补全的英文字幕输入文件，或使用 "-" 表示标准输入'
         ),
-        "English subtitle infile with which to guide translation from Chinese, "
-        'or "-" for stdin': (
-            '用于指导从中文翻译的英文字幕输入文件，或使用 "-" 表示标准输入'
+        "English subtitle infile with which to guide translation from written "
+        'Cantonese, or "-" for stdin': (
+            '用于指导从书面粤语翻译的英文字幕输入文件，或使用 "-" 表示标准输入'
         ),
         "English subtitle outfile path (default: stdout)": (
             "英文字幕输出文件路径（默认：标准输出）"
         ),
-        "translate English subtitles from Chinese subtitles": (
-            "根据中文字幕翻译英文字幕"
+        "translate English subtitles from written Cantonese subtitles": (
+            "根据书面粤语字幕翻译英文字幕"
         ),
     },
     "zh-hant": {
-        "command-line interface for English translation from Chinese": (
-            "從中文翻譯英文字幕的命令列介面"
+        "command-line interface for English translation from written Cantonese": (
+            "從書面粵語翻譯英文字幕的命令列介面"
         ),
-        "This command translates Chinese subtitles into English, optionally "
+        "This command translates written Cantonese subtitles into English, optionally "
         "filling gaps in English subtitles or using English guide subtitles.": (
-            "此命令將中文字幕翻譯為英文，並可選擇補全英文字幕缺口或使用英文參考字幕。"
+            "此命令將書面粵語字幕翻譯為英文，並可選擇補全英文字幕缺口或使用英文參考字幕。"
         ),
-        'Chinese subtitle infile or "-" for stdin': (
-            '中文字幕輸入檔，或使用 "-" 代表標準輸入'
+        'written Cantonese subtitle infile or "-" for stdin': (
+            '書面粵語字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        "English subtitle infile with gaps to fill with translation from Chinese, "
-        'or "-" for stdin': (
-            '含缺口、需根據中文翻譯補全的英文字幕輸入檔，或使用 "-" 代表標準輸入'
+        "English subtitle infile with gaps to fill with translation from written "
+        'Cantonese, or "-" for stdin': (
+            '含缺口、需根據書面粵語翻譯補全的英文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
-        "English subtitle infile with which to guide translation from Chinese, "
-        'or "-" for stdin': (
-            '用於指導從中文翻譯的英文字幕輸入檔，或使用 "-" 代表標準輸入'
+        "English subtitle infile with which to guide translation from written "
+        'Cantonese, or "-" for stdin': (
+            '用於指導從書面粵語翻譯的英文字幕輸入檔，或使用 "-" 代表標準輸入'
         ),
         "English subtitle outfile path (default: stdout)": (
             "英文字幕輸出檔路徑（預設：標準輸出）"
         ),
-        "translate English subtitles from Chinese subtitles": (
-            "根據中文字幕翻譯英文字幕"
+        "translate English subtitles from written Cantonese subtitles": (
+            "根據書面粵語字幕翻譯英文字幕"
         ),
     },
 }
 """Localized help text keyed by locale and English source text."""
 
 
-class EngTranslateVsZhoCli(ScinoephileCliBase):
-    """Translate English subtitles from Chinese subtitles."""
+class EngTranslateFromYueCli(ScinoephileCliBase):
+    """Translate English subtitles from written Cantonese subtitles."""
 
     localizations = merge_localizations(
         LLM_LOCALIZATIONS,
-        ENG_TRANSLATE_VS_ZHO_LOCALIZATIONS,
+        ENG_TRANSLATE_FROM_YUE_LOCALIZATIONS,
     )
     """Localized help text keyed by locale and English source text."""
 
@@ -124,11 +124,11 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
 
         # Input arguments
         arg_groups["input arguments"].add_argument(
-            "--zho-infile",
-            dest="zho_infile_path",
+            "--yue-infile",
+            dest="yue_infile_path",
             required=True,
             type=input_file_arg(allow_stdin=True),
-            help='Chinese subtitle infile or "-" for stdin',
+            help='written Cantonese subtitle infile or "-" for stdin',
         )
         eng_input_group = arg_groups["input arguments"].add_mutually_exclusive_group()
         eng_input_group.add_argument(
@@ -138,7 +138,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             type=input_file_arg(allow_stdin=True),
             help=(
                 "English subtitle infile with gaps to fill with translation from "
-                'Chinese, or "-" for stdin'
+                'written Cantonese, or "-" for stdin'
             ),
         )
         eng_input_group.add_argument(
@@ -148,7 +148,7 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
             type=input_file_arg(allow_stdin=True),
             help=(
                 "English subtitle infile with which to guide translation from "
-                'Chinese, or "-" for stdin'
+                'written Cantonese, or "-" for stdin'
             ),
         )
 
@@ -180,14 +180,14 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         Returns:
             subcommand name
         """
-        return "translate-vs-zho"
+        return "translate-from-yue"
 
     @classmethod
     def _main(
         cls,
         *,
         _parser: ArgumentParser | None = None,
-        zho_infile_path: Path | str,
+        yue_infile_path: Path | str,
         eng_gapped_infile_path: Path | str | None,
         eng_guide_infile_path: Path | str | None,
         llm_provider_name: str,
@@ -201,13 +201,13 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         parser = _parser or cls.argparser()
         if overwrite and outfile_path is None:
             parser.error("--overwrite may only be used with --outfile")
-        if zho_infile_path == "-" and (
+        if yue_infile_path == "-" and (
             eng_gapped_infile_path == "-" or eng_guide_infile_path == "-"
         ):
-            parser.error("--zho-infile and an English infile may not both be '-'")
+            parser.error("--yue-infile and an English infile may not both be '-'")
 
         # Read inputs
-        zho = read_series(parser, zho_infile_path, allow_stdin=True)
+        yuewen = read_series(parser, yue_infile_path, allow_stdin=True)
         additional_context = read_llm_additional_context(
             parser, llm_additional_context_file_path
         )
@@ -216,32 +216,32 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
         # Perform operations
         if eng_gapped_infile_path is not None:
             eng = read_series(parser, eng_gapped_infile_path, allow_stdin=True)
-            translator = get_eng_vs_zho_gapped_translator(
+            translator = get_eng_vs_yue_gapped_translator(
                 provider=provider,
                 additional_context=additional_context,
             )
-            eng = get_eng_gapped_translated_vs_zho(
+            eng = get_eng_gapped_translated_vs_yue(
                 eng=eng,
-                zho=zho,
+                yuewen=yuewen,
                 translator=translator,
             )
         elif eng_guide_infile_path is not None:
             eng = read_series(parser, eng_guide_infile_path, allow_stdin=True)
-            translator = get_eng_zho_guided_translator(
+            translator = get_eng_yue_guided_translator(
                 provider=provider,
                 additional_context=additional_context,
             )
-            eng = get_eng_translated_from_zho_with_eng_guidance(
-                zho=zho,
+            eng = get_eng_translated_from_yue_with_eng_guidance(
+                yuewen=yuewen,
                 eng=eng,
                 translator=translator,
             )
         else:
-            translator = get_eng_zho_translator(
+            translator = get_eng_yue_translator(
                 provider=provider,
                 additional_context=additional_context,
             )
-            eng = get_eng_translated_from_zho(zho=zho, translator=translator)
+            eng = get_eng_translated_from_yue(yuewen=yuewen, translator=translator)
 
         # Write outputs
         write_series(
@@ -250,4 +250,4 @@ class EngTranslateVsZhoCli(ScinoephileCliBase):
 
 
 if __name__ == "__main__":
-    EngTranslateVsZhoCli.main()
+    EngTranslateFromYueCli.main()
