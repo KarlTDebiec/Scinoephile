@@ -51,9 +51,10 @@ __all__ = ["YueTranscribeVsZhoCli"]
 
 YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
     "zh-hans": {
-        "audio stream index in media input (default: 0)": (
-            "媒体输入中的音频流索引（默认：0）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒体输入中的音频媒体流索引（默认：第一个音频流）"),
         (
             "command-line interface for written Cantonese subtitle transcription"
         ): "书面粤语字幕转写命令行界面",
@@ -81,9 +82,10 @@ YUE_TRANSCRIBE_VS_ZHO_LOCALIZATIONS: dict[str, dict[str, str]] = {
         ): "从音频转录字幕，并使用标准中文文本修订",
     },
     "zh-hant": {
-        "audio stream index in media input (default: 0)": (
-            "媒體輸入中的音訊流索引（預設：0）"
-        ),
+        (
+            "media stream index of audio stream in media input "
+            "(default: first audio stream)"
+        ): ("媒體輸入中的音訊媒體流索引（預設：第一個音訊流）"),
         (
             "command-line interface for written Cantonese subtitle transcription"
         ): "書面粵語字幕轉寫命令列介面",
@@ -152,8 +154,11 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         arg_groups["input arguments"].add_argument(
             "--stream-index",
             type=int_arg(min_value=0),
-            default=0,
-            help="audio stream index in media input (default: 0)",
+            default=None,
+            help=(
+                "media stream index of audio stream in media input "
+                "(default: first audio stream)"
+            ),
         )
         arg_groups["input arguments"].add_argument(
             "--zho-infile",
@@ -244,7 +249,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         _parser: ArgumentParser | None = None,
         media_infile_path: str,
         zho_infile_path: Path | str,
-        stream_index: int,
+        stream_index: int | None,
         script: str,
         convert: OpenCCConfig | None,
         llm_provider_name: str,
