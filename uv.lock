@@ -1292,18 +1292,18 @@ wheels = [
 
 [[package]]
 name = "pycantonese"
-version = "4.2.0"
+version = "4.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rustling" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0a/0a/de68c2fe8c952e9f57ab0237e1dcc834f9bd95602121330900cdeb1d6f10/pycantonese-4.2.0.tar.gz", hash = "sha256:5a9ec7a8a10b08ef0ff12772b51c6f7a22727503bfbeb9edfea4eb90fc77d68c", size = 39567587, upload-time = "2026-03-27T15:37:23.221Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/23/ba/f861f12b3cfdfdd3ad4c2e0845eb9deb8122ea088ded71b156e4ea90de0a/pycantonese-4.3.0.tar.gz", hash = "sha256:f3d01128ef90fb1dcd31b336cbf56f815e46f8bde6f047b1251f1925e4728946", size = 39571124, upload-time = "2026-05-07T17:16:19.026Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/81/78b726265e29588008e70ac54235275e90d9ff7f77a3a809e38a4b03b5b4/pycantonese-4.2.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:1380081aedbf0a776be4ad5d6a74fcbf0427e0c5fad5b7676dc93979f623035e", size = 42485870, upload-time = "2026-03-27T15:37:07.822Z" },
-    { url = "https://files.pythonhosted.org/packages/b6/27/be172065ab4381d0e4afa400f8bb3221e74eee3c873aa3ccdfe887139a40/pycantonese-4.2.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:5170664f5159228eda3f8246e63fe02ea69fa2caae252e590c9fa955f67ee9b6", size = 42270286, upload-time = "2026-03-27T15:37:10.836Z" },
-    { url = "https://files.pythonhosted.org/packages/10/d8/8f7c9b1c0574c0bf5e3a0c9321920a51745e388b52563a6be2eb41cdc2f6/pycantonese-4.2.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bd556cfd75dc73d5a6f2258bbb5c51f043a155d2a52bffaacaf3702f6923831d", size = 42564950, upload-time = "2026-03-27T15:37:14.13Z" },
-    { url = "https://files.pythonhosted.org/packages/4d/d8/28cc1517cd2e76129ccae79b7b11c2af323d7a64ad3ee42d8837a76fd784/pycantonese-4.2.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c203c263dbf312626100a371f9acfb62ef937d31f3541e3798ca0f64bdd2a062", size = 42678144, upload-time = "2026-03-27T15:37:17.13Z" },
-    { url = "https://files.pythonhosted.org/packages/3f/73/e3c061d1ec2439cbc844b9718c6aa2a7866a91e6eeaeb13f3c9ae3af64db/pycantonese-4.2.0-cp310-abi3-win_amd64.whl", hash = "sha256:0a75f2f3ea7c2ec7ef1ab0929d4ee2a436cdb9e4e7de2acedaa012d2b024e725", size = 42109540, upload-time = "2026-03-27T15:37:20.354Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/d3/435cd113615846f022226e19ab65d0e1fb8420e5582a6265b8e559ce8902/pycantonese-4.3.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:61efabd3a9bdec9abd1625c08c2e8c2398c75fcf5c7b4afd7a1f8abe8538d825", size = 42465392, upload-time = "2026-05-07T17:16:02.927Z" },
+    { url = "https://files.pythonhosted.org/packages/73/6c/84cc48221a13d01f0d3902ed515ddd646f1aa5feafaedb8ef5c387895b20/pycantonese-4.3.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:4d2d78b2555809017b11d53d3a37cc5a25e5b687a84be17106a520e178ddd455", size = 42266031, upload-time = "2026-05-07T17:16:06.563Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/da/5bcb927bebfab06a14a506cdf0dbd3f4575b7adaf5d10f21b27856db63b7/pycantonese-4.3.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c8f97e14cde9e7bc50f4a52906692ba6c3ec3aef6d3bcea93b46b964078d0c9b", size = 42592124, upload-time = "2026-05-07T17:16:09.814Z" },
+    { url = "https://files.pythonhosted.org/packages/e4/2c/4693397e5854a64726857325509fb5cb3e0033cc257cde044c519c309045/pycantonese-4.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2858854ff4dfe2d22af1f607c31ab8da7260be3e55091d2fba270b5db46e91c0", size = 42665950, upload-time = "2026-05-07T17:16:12.807Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/cd/ca4d70ee2562581f88bea785128d42eba3c769fb035f5719a5679534b3b0/pycantonese-4.3.0-cp310-abi3-win_amd64.whl", hash = "sha256:4c43514c8787d63c936c85b041271116f53139c4f74f0489ec733cb7875da21e", size = 42112720, upload-time = "2026-05-07T17:16:15.832Z" },
 ]
 
 [[package]]
@@ -1783,7 +1783,7 @@ requires-dist = [
     { name = "paddleocr", marker = "extra == 'ocr'", specifier = ">=3.1.0" },
     { name = "paddlepaddle", marker = "(platform_machine == 'arm64' and sys_platform == 'darwin' and extra == 'ocr') or (platform_machine == 'x86_64' and sys_platform == 'linux' and extra == 'ocr') or (platform_machine == 'AMD64' and sys_platform == 'win32' and extra == 'ocr')", specifier = ">=3.3.1" },
     { name = "pillow", specifier = ">=12.1.1" },
-    { name = "pycantonese", specifier = ">=4.1.0" },
+    { name = "pycantonese", specifier = ">=4.3.0" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydub", specifier = ">=0.25.1" },
     { name = "pypinyin", specifier = ">=0.55.0" },
