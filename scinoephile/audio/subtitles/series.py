@@ -407,7 +407,7 @@ class AudioSeries(Series):
         block_indexes = Series.get_block_indexes_by_pause(self)
 
         # Calculate buffered times and create series for each block
-        blocks = []
+        blocks: list[AudioSeries] = []
         for i, (start_idx, end_idx) in enumerate(block_indexes):
             block_start_time = self.events[start_idx].start
             block_end_time = self.events[end_idx - 1].end
