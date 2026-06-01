@@ -21,7 +21,6 @@ __all__ = [
     "get_yue_romanized",
     "is_accented_yale",
     "is_numbered_jyutping",
-    "yale_to_jyutping",
 ]
 
 logger = getLogger(__name__)
@@ -53,7 +52,10 @@ def get_yue_jyutping_query_strings(text: str) -> list[str]:
 
     if "'" not in text and not is_accented_yale(text):
         return []
-    return yale_to_jyutping(text)
+    try:
+        return pycantonese.yale_to_jyutping(text)
+    except ValueError:
+        return []
 
 
 def get_yue_romanized(series: Series, append: bool = True) -> Series:
@@ -106,20 +108,6 @@ def is_numbered_jyutping(text: str) -> bool:
     if not normalized:
         return False
     return bool(_parse_normalized_jyutping(normalized))
-
-
-def yale_to_jyutping(text: str) -> list[str]:
-    """Get candidate Jyutping query strings from Yale text.
-
-    Arguments:
-        text: raw Yale query text
-    Returns:
-        candidate Jyutping query strings
-    """
-    try:
-        return pycantonese.yale_to_jyutping(text)
-    except ValueError:
-        return []
 
 
 def _get_yue_text_romanized(text: str) -> str:
