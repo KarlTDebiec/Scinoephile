@@ -183,7 +183,7 @@ wheels = [
 
 [[package]]
 name = "chrome-lens-py"
-version = "3.4.2"
+version = "3.4.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filetype" },
@@ -193,9 +193,9 @@ dependencies = [
     { name = "protobuf" },
     { name = "rich" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2f/64/c8af1afb7e92ca91d4252528c014394f334e85633bbc3771b3ef6af8550e/chrome_lens_py-3.4.2.tar.gz", hash = "sha256:7ff3a00adf2d1ca3179079701479e87b950d65c469757e996be9a9df6048ed8e", size = 55364, upload-time = "2026-05-08T13:19:02.493Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/25/cd/b9a89e898fa98ed2777789b0662b3859d33360311285e65f5ba54e1f2e4d/chrome_lens_py-3.4.5.tar.gz", hash = "sha256:69d02c17689fb19921f6171c38cfcb3d13e63a280a8b387183400fda30bd1f76", size = 55816, upload-time = "2026-05-24T03:33:39.044Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/36/0c9dcf85ba3f7a495ec8e4701dce876e13c04262ab8084d11094bbae5b74/chrome_lens_py-3.4.2-py3-none-any.whl", hash = "sha256:d1ddf912e412623e2c51e02becc34ad20005e3b8d12abf3debcd57e4d29fb08e", size = 86899, upload-time = "2026-05-08T13:19:00.793Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/ed/f26453720e8716306c6db5fbe35ec86f7469637c81d207a2231c748f797c/chrome_lens_py-3.4.5-py3-none-any.whl", hash = "sha256:2de3ed694aae260166fae42307b51fcaba91f518d4fded919308350844aceb6b", size = 86782, upload-time = "2026-05-24T03:33:37.358Z" },
 ]
 
 [[package]]
@@ -1769,7 +1769,7 @@ requires-dist = [
     { name = "aiofiles", specifier = ">=25.1.0" },
     { name = "audioop-lts", specifier = ">=0.2.2" },
     { name = "beautifulsoup4", specifier = ">=4.14.3" },
-    { name = "chrome-lens-py", marker = "extra == 'ocr'", specifier = ">=3.4.2" },
+    { name = "chrome-lens-py", marker = "extra == 'ocr'", specifier = ">=3.4.5" },
     { name = "demucs-infer", marker = "extra == 'transcription'", specifier = ">=4.1.2" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "hkscs-unicode-converter", specifier = ">=1.1.0" },
