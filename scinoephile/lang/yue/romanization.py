@@ -19,6 +19,7 @@ from scinoephile.lang.zho.script.conversion import get_zho_converter
 __all__ = [
     "get_yue_jyutping_query_strings",
     "get_yue_romanized",
+    "get_yue_text_romanized",
     "is_accented_yale",
     "is_numbered_jyutping",
 ]
@@ -69,7 +70,7 @@ def get_yue_romanized(series: Series, append: bool = True) -> Series:
     """
     series = deepcopy(series)
     for event in series:
-        romanized = _get_yue_text_romanized(event.text)
+        romanized = get_yue_text_romanized(event.text)
         if append:
             if romanized:
                 event.text = f"{event.text}\\N{romanized}"
@@ -110,7 +111,7 @@ def is_numbered_jyutping(text: str) -> bool:
     return bool(_parse_normalized_jyutping(normalized))
 
 
-def _get_yue_text_romanized(text: str) -> str:
+def get_yue_text_romanized(text: str) -> str:
     """Get the Yale Cantonese romanization of Chinese text.
 
     Arguments:
