@@ -148,6 +148,25 @@ def test_queryer_includes_additional_context_before_few_shot_prompt():
     )
 
 
+def test_queryer_preserves_existing_encountered_test_case_metadata():
+    """Test queryer preserves existing prompt and verified metadata."""
+    provider = Mock(spec=LLMProvider)
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider)
+    test_case = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="done"),
+        prompt=True,
+        verified=True,
+    )
+
+    queryer.log_encountered_test_case(test_case)
+
+    encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
+    assert encountered_test_case.prompt is True
+    assert encountered_test_case.verified is True
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)
