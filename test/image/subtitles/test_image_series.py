@@ -97,6 +97,16 @@ def test_save_html(tiny_image_series: ImageSeries):
         assert len(png_files) == len(tiny_image_series)
 
 
+def test_series_fill_and_outline_colors():
+    """Test fill and outline colors are detected at the image series level."""
+    img = Image.new("LA", (3, 3), (0, 255))
+    img.putpixel((1, 1), (255, 255))
+    series = ImageSeries(events=[ImageSubtitle(start=0, end=1000, img=img)])
+
+    assert series.fill_color == 255
+    assert series.outline_color == 0
+
+
 def test_text_font_size_defaults_when_no_useful_bboxes():
     """Test text font size falls back when no useful bboxes are present."""
     series = ImageSeries(
