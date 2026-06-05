@@ -56,8 +56,8 @@ class OcrFusionProcessor(Processor):
         ):
             if sub_idx >= stop_at_idx:
                 break
-            text_one = sub_one.text
-            text_two = sub_two.text
+            text_one = sub_one.text_with_newline
+            text_two = sub_two.text_with_newline
 
             # Handle missing data
             if not text_one and not text_two:
@@ -92,8 +92,8 @@ class OcrFusionProcessor(Processor):
             test_case_cls = OcrFusionManager.get_test_case_cls(prompt_cls)
             query_cls = test_case_cls.query_cls
             query_kwargs = {
-                prompt_cls.src_1: sub_one.text_with_newline,
-                prompt_cls.src_2: sub_two.text_with_newline,
+                prompt_cls.src_1: text_one,
+                prompt_cls.src_2: text_two,
             }
             query = query_cls(**query_kwargs)
             test_case = test_case_cls(query=query)

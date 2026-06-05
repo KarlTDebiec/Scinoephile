@@ -79,6 +79,7 @@ cd test && uv run pytest
 ## Notes
 
 - Keep changes minimal and consistent with existing naming patterns.
+- Do not add fixtures for files that are not tracked by git.
 - Ensure files/directories of interest (all extensions and formats, including `_image`)
   are actually under version control before adding fixtures for them.
 - Keep the grouping/order in `__all__` aligned with fixture grouping (input/action/output).
