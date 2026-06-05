@@ -223,7 +223,7 @@ def _process_ocr(
     overwrite_img: bool = False,
     force_validation: bool = False,
 ) -> Series:
-    """Process OCR subtitles into validated output.
+    """Process OCR subtitles through validation, review, and flattening.
 
     Arguments:
         title_root_path: title root directory
@@ -236,7 +236,7 @@ def _process_ocr(
         overwrite_img: legacy alias for overwriting image outputs
         force_validation: legacy alias for overwriting validation output
     Returns:
-        processed series
+        flattened reviewed series
     """
     # Validate and configure
     if lang not in ("eng", "yue-Hans", "yue-Hant", "zho-Hans", "zho-Hant"):

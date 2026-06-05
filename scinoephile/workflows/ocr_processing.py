@@ -21,7 +21,7 @@ from scinoephile.image.ocr.paddle import (
     ocr_image_series_with_paddle,
 )
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
@@ -310,19 +310,38 @@ def _export_image_series(
     output_paths["image"] = image_dir_path
 
 
-def _copy_text_to_image_series(text_series: Series, image_series: ImageSeries):
-    """Copy text subtitle text into matching image subtitles.
+def _get_image_series_with_text(
+    image_series: ImageSeries,
+    text_series: Series,
+) -> ImageSeries:
+    """Get a copy of image subtitles with matching text subtitle text.
 
     Arguments:
-        text_series: text subtitle series
         image_series: image subtitle series
+        text_series: text subtitle series
+    Returns:
+        copied image subtitle series with text
     """
     if len(text_series) != len(image_series):
         raise ScinoephileError(
             f"Length mismatch: {len(text_series)} vs {len(image_series)}"
         )
-    for text_subtitle, image_subtitle in zip(text_series, image_series):
-        image_subtitle.text = text_subtitle.text
+    image_subtitles: list[ImageSubtitle] = []
+    for text_subtitle, image_subtitle in zip(text_series, image_series.events):
+        if image_subtitle.bboxes is None:
+            bboxes = None
+        else:
+            bboxes = list(image_subtitle.bboxes)
+        image_subtitles.append(
+            ImageSubtitle(
+                img=image_subtitle.img.copy(),
+                bboxes=bboxes,
+                start=image_subtitle.start,
+                end=image_subtitle.end,
+                text=text_subtitle.text,
+            )
+        )
+    return ImageSeries(events=image_subtitles)
 
 
 def _get_media_subtitle_stream(
@@ -700,11 +719,13 @@ def _load_or_create_validation_image_series(
     image_dir_path = output_dir_path / "image"
     if image_dir_path.exists() and not overwrite:
         logger.info(f"Image OCR output exists: {image_dir_path}")
-        validation_image_series = ImageSeries.load(image_dir_path)
+        stored_image_series = ImageSeries.load(image_dir_path)
+        validation_image_series = _get_image_series_with_text(
+            stored_image_series, text_series
+        )
     else:
-        validation_image_series = image_series
-    _copy_text_to_image_series(text_series, validation_image_series)
-    validation_image_series.save(image_dir_path)
+        validation_image_series = _get_image_series_with_text(image_series, text_series)
+        validation_image_series.save(image_dir_path)
     output_paths["image"] = image_dir_path
     return validation_image_series
 
@@ -776,5 +797,5 @@ def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series
         validated text subtitle series
     """
     if language == "eng":
-        return validate_eng_ocr(image_series, dev=dev)
-    return validate_zho_ocr(image_series, dev=dev)
+        return validate_eng_ocr(image_series, interactive=dev, dev=dev)
+    return validate_zho_ocr(image_series, interactive=dev, dev=dev)
