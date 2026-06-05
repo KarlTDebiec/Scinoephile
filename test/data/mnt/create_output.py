@@ -56,28 +56,25 @@ Movie-specific names and terminology:
 """
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "简体中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 简体中文 and English",
-    "Guided English from 粤语",
-    "Bilingual 简体中文 and guided English from 粤语",
+    "eng_ocr",
+    "zho-Hans_ocr",
+    "zho-Hant_ocr",
+    "zho-Hans_eng",
+    # "yue_eng",
+    # "yue_zho-Hans_eng",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "简体中文 (OCR)" in actions:
-    process_zho_hans_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 简体中文 and English" in actions:
-    process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
-    )
-if "Guided English from 粤语" in actions:
+if "eng_ocr" in actions:
+    process_eng_ocr(title_root, overwrite=False)
+if "zho-Hans_ocr" in actions:
+    process_zho_hans_ocr(title_root, overwrite=False)
+if "zho-Hant_ocr" in actions:
+    process_zho_hant_ocr(title_root, overwrite=False)
+if "zho-Hans_eng" in actions:
+    zho_hans_path = zho_hans_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    eng_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_path, eng_path, overwrite=False)
+if "yue_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     jpn_eng = Series.load(input_path / "jpn_eng.srt")
     translator = get_eng_zho_guided_translator(
@@ -94,7 +91,7 @@ if "Guided English from 粤语" in actions:
         translator=translator,
     )
     yue_eng.save(output_path / "yue_eng/eng.srt")
-if "Bilingual 简体中文 and guided English from 粤语" in actions:
+if "yue_zho-Hans_eng" in actions:
     yue_zho_hant = Series.load(input_path / "yue_zho-Hant.srt")
     yue_zho_hant = get_zho_cleaned(yue_zho_hant)
     yue_zho_hant = get_zho_flattened(yue_zho_hant)

@@ -60,32 +60,28 @@ yue_hans_path = output_path / "yue-Hans"
 yue_hans_transcribe_path = output_path / "yue-Hans_transcribe"
 
 actions = {
-    # "繁體中文 (OCR)",
-    # "English (OCR)",
-    # "Bilingual 繁體中文 and English",
-    # "繁體粵文 (SRT)",
-    # "简体粤文 (SRT)",
-    # "English (SRT)",
-    # "Bilingual 简体粤文 and English",
-    # "简体粤文 (Transcription)",
-    "简体粤文 (Diff)",
+    "eng_ocr",
+    "zho-Hant_ocr",
+    "zho-Hans_eng",
+    # "yue-Hant",
+    # "yue-Hans",
+    # "eng",
+    # "yue-Hans_eng",
+    # "yue-Hans_transcribe",
+    # "yue-Hans_diff",
 }
 
-if "繁體中文 (OCR)" in actions:
-    process_zho_hant_ocr(title_root, overwrite_srt=False, force_validation=False)
-if "English (OCR)" in actions:
-    process_eng_ocr(title_root, overwrite_srt=True, force_validation=True)
-if "Bilingual 繁體中文 and English" in actions:
-    zho_hans_path = (
+if "eng_ocr" in actions:
+    process_eng_ocr(title_root, overwrite=False)
+if "zho-Hant_ocr" in actions:
+    process_zho_hant_ocr(title_root, overwrite=False)
+if "zho-Hans_eng" in actions:
+    zho_hans_srt_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
     )
-    process_zho_hans_eng(
-        title_root,
-        zho_hans_path=zho_hans_path,
-        eng_path=eng_ocr_path / "fuse_clean_validate_review_flatten.srt",
-        overwrite=True,
-    )
-if "繁體粵文 (SRT)" in actions:
+    eng_srt_path = eng_ocr_path / "fuse_clean_validate_review_flatten.srt"
+    process_zho_hans_eng(title_root, zho_hans_srt_path, eng_srt_path, overwrite=False)
+if "yue-Hant" in actions:
     zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
     yue_hant = Series.load(input_path / "yue-Hant.srt")
     yue_hant_timewarp = get_series_timewarped(
@@ -96,7 +92,7 @@ if "繁體粵文 (SRT)" in actions:
     clean.save(yue_hant_path / "timewarp_clean.srt")
     flatten = get_zho_flattened(clean)
     flatten.save(yue_hant_path / "timewarp_clean_flatten.srt")
-if "简体粤文 (SRT)" in actions:
+if "yue-Hans" in actions:
     zho_hant = Series.load(zho_hant_ocr_path / "fuse_clean_validate_review.srt")
     yue_hans = Series.load(input_path / "yue-Hans.srt")
     yue_hans_timewarp = get_series_timewarped(
@@ -109,7 +105,7 @@ if "简体粤文 (SRT)" in actions:
     yue_hans_reference.save(yue_hans_path / "timewarp_clean_flatten.srt")
     yue_hans_romanized = get_yue_romanized(yue_hans_reference, append=True)
     yue_hans_romanized.save(yue_hans_path / "timewarp_clean_flatten_romanize.srt")
-if "English (SRT)" in actions:
+if "eng" in actions:
     eng_ocr = Series.load(eng_ocr_path / "fuse_clean_validate_review.srt")
     eng_srt = Series.load(input_path / "eng.srt")
     eng_timewarp = get_series_timewarped(eng_ocr, eng_srt, one_end_idx=1421)
@@ -124,14 +120,11 @@ if "English (SRT)" in actions:
     eng_proofread.save(eng_path / "timewarp_clean_review.srt")
     eng_flatten = get_eng_flattened(eng_proofread)
     eng_flatten.save(eng_path / "timewarp_clean_review_flatten.srt")
-if "Bilingual 简体粤文 and English" in actions:
-    process_yue_hans_eng(
-        title_root,
-        yue_hans_path=yue_hans_path / "timewarp_clean_flatten.srt",
-        eng_path=eng_path / "timewarp_clean_review_flatten.srt",
-        overwrite=True,
-    )
-if "简体粤文 (Transcription)" in actions:
+if "yue-Hans_eng" in actions:
+    yue_hans_srt_path = yue_hans_path / "timewarp_clean_flatten.srt"
+    eng_srt_path = eng_path / "timewarp_clean_review_flatten.srt"
+    process_yue_hans_eng(title_root, yue_hans_srt_path, eng_srt_path, overwrite=False)
+if "yue-Hans_transcribe" in actions:
     zh_hant_path = zho_hant_ocr_path / "fuse_clean_validate_review_flatten.srt"
     zho_hans_path = (
         zho_hant_ocr_path / "fuse_clean_validate_review_flatten_simplify_review.srt"
@@ -158,7 +151,7 @@ if "简体粤文 (Transcription)" in actions:
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHans},
         translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHans},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHans},
-        overwrite_srt=True,
+        overwrite_srt=False,
     )
 
     process_yue_hans_transcription(
@@ -179,9 +172,9 @@ if "简体粤文 (Transcription)" in actions:
         line_reviewer_kw={"prompt_cls": YueLineReviewVsZhoPromptYueHant},
         translator_kw={"prompt_cls": YueGappedTranslationVsZhoPromptYueHant},
         block_reviewer_kw={"prompt_cls": YueBlockReviewVsZhoPromptYueHant},
-        overwrite_srt=True,
+        overwrite_srt=False,
     )
-if "简体粤文 (Diff)" in actions:
+if "yue-Hans_diff" in actions:
     # yue_hans_transcribe = Series.load(
     #     yue_hans_transcribe_path / "test_simplified/transcribe.srt"
     # )

@@ -17,7 +17,6 @@ from scinoephile.core.llms import TestCase
 from scinoephile.core.llms.utils import load_test_cases_from_json
 from scinoephile.core.ml import get_torch_device
 from scinoephile.core.subtitles import Series
-from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.block_review import BlockReviewPromptEng
 from scinoephile.lang.eng.ocr_fusion import OcrFusionPromptEng
 from scinoephile.lang.zho.block_review import (
@@ -45,18 +44,8 @@ from test.helpers import SeriesCERResult, test_data_root
 
 __all__ = [
     "kob_eng",
-    "kob_eng_ocr_lens",
-    "kob_eng_ocr_lens_new",
-    "kob_eng_ocr_paddle_new",
-    "kob_eng_ocr_tesseract",
-    "kob_eng_ocr_tesseract_new",
     "kob_yue_hans",
     "kob_yue_hant",
-    "kob_zho_hant_ocr_lens",
-    "kob_zho_hant_ocr_lens_new",
-    "kob_zho_hant_ocr_paddle",
-    "kob_zho_hant_ocr_paddle_new",
-    "kob_zho_hant_ocr_tesseract_new",
     "get_kob_eng_block_review_test_cases",
     "get_kob_eng_ocr_fusion_test_cases",
     "get_kob_yue_deliniation_test_cases",
@@ -71,7 +60,10 @@ __all__ = [
     "kob_eng_ocr_fuse_clean_validate",
     "kob_eng_ocr_fuse_clean_validate_review",
     "kob_eng_ocr_fuse_clean_validate_review_flatten",
-    "kob_eng_ocr_image",
+    "kob_eng_ocr_lens",
+    "kob_eng_ocr_lens_clean",
+    "kob_eng_ocr_tesseract",
+    "kob_eng_ocr_tesseract_clean",
     "kob_eng_timewarp",
     "kob_eng_timewarp_clean",
     "kob_eng_timewarp_clean_review",
@@ -99,7 +91,10 @@ __all__ = [
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review",
     "kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize",
-    "kob_zho_hant_ocr_image",
+    "kob_zho_hant_ocr_lens",
+    "kob_zho_hant_ocr_lens_clean",
+    "kob_zho_hant_ocr_paddle",
+    "kob_zho_hant_ocr_paddle_clean",
 ]
 
 title_root = test_data_root / Path(__file__).parent.name
@@ -118,36 +113,6 @@ def kob_eng() -> Series:
 
 
 @pytest.fixture
-def kob_eng_ocr_lens() -> Series:
-    """KOB English subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_lens_new() -> Series:
-    """KOB English subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "eng_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_paddle_new() -> Series:
-    """KOB English subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "eng_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_tesseract() -> Series:
-    """KOB English subtitles OCRed using Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract.srt")
-
-
-@pytest.fixture
-def kob_eng_ocr_tesseract_new() -> Series:
-    """KOB English subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "eng_ocr/tesseract_new.srt")
-
-
-@pytest.fixture
 def kob_yue_hans() -> Series:
     """KOB 简体粤文 subtitles (input)."""
     return Series.load(input_dir / "yue-Hans.srt")
@@ -157,36 +122,6 @@ def kob_yue_hans() -> Series:
 def kob_yue_hant() -> Series:
     """KOB 繁体粤文 subtitles."""
     return Series.load(input_dir / "yue-Hant.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_lens() -> Series:
-    """KOB 繁体中文 subtitles OCRed using Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_lens_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal Google Lens."""
-    return Series.load(input_dir / "zho-Hant_ocr/lens_new.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_paddle() -> Series:
-    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_paddle_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal PaddleOCR."""
-    return Series.load(input_dir / "zho-Hant_ocr/paddle_new.srt")
-
-
-@pytest.fixture
-def kob_zho_hant_ocr_tesseract_new() -> Series:
-    """KOB 繁体中文 subtitles OCRed using internal Tesseract."""
-    return Series.load(input_dir / "zho-Hant_ocr/tesseract_new.srt")
 
 
 @cache
@@ -553,9 +488,27 @@ def kob_eng_ocr_fuse_clean_validate_review_flatten() -> Series:
 
 
 @pytest.fixture
-def kob_eng_ocr_image() -> ImageSeries:
-    """KOB English image subtitles."""
-    return ImageSeries.load(output_dir / "eng_ocr/image", encoding="utf-8")
+def kob_eng_ocr_lens() -> Series:
+    """KOB English subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "eng_ocr/lens.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_lens_clean() -> Series:
+    """KOB English Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_tesseract() -> Series:
+    """KOB English subtitles OCRed using Tesseract."""
+    return Series.load(output_dir / "eng_ocr/tesseract.srt")
+
+
+@pytest.fixture
+def kob_eng_ocr_tesseract_clean() -> Series:
+    """KOB English Tesseract OCR subtitles, cleaned."""
+    return Series.load(output_dir / "eng_ocr/tesseract_clean.srt")
 
 
 @pytest.fixture
@@ -756,6 +709,24 @@ def kob_zho_hant_ocr_fuse_clean_validate_review_flatten_simplify_review_romanize
 
 
 @pytest.fixture
-def kob_zho_hant_ocr_image() -> ImageSeries:
-    """KOB 繁体中文 image subtitles."""
-    return ImageSeries.load(output_dir / "zho-Hant_ocr/image", encoding="utf-8")
+def kob_zho_hant_ocr_lens() -> Series:
+    """KOB 繁体中文 subtitles OCRed using Google Lens."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_lens_clean() -> Series:
+    """KOB 繁体中文 Google Lens OCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/lens_clean.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_paddle() -> Series:
+    """KOB 繁体中文 subtitles OCRed using PaddleOCR."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle.srt")
+
+
+@pytest.fixture
+def kob_zho_hant_ocr_paddle_clean() -> Series:
+    """KOB 繁体中文 PaddleOCR subtitles, cleaned."""
+    return Series.load(output_dir / "zho-Hant_ocr/paddle_clean.srt")
