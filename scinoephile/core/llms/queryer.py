@@ -168,7 +168,7 @@ class Queryer[
             # Validate test case
             try:
                 test_case = type(test_case).model_validate(
-                    {**test_case.model_dump(), "answer": answer}
+                    {**test_case.model_dump(), "answer": answer, "verified": False}
                 )
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True
@@ -241,8 +241,8 @@ class Queryer[
             test_case: test case to log
         """
         key = test_case.query.key
-        test_case.prompt = key in self.prompt_test_cases
-        test_case.verified = key in self.verified_test_cases
+        test_case.prompt = test_case.prompt or key in self.prompt_test_cases
+        test_case.verified = test_case.verified or key in self.verified_test_cases
         self.encountered_test_cases[key] = test_case
         logger.debug(f"Logged test case: {test_case.query.key_str}")
 
