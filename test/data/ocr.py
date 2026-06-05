@@ -41,64 +41,89 @@ __all__ = [
 ]
 
 
-def process_eng_ocr(title_root_path: Path, **kwargs: Any) -> Series:
+def process_eng_ocr(
+    title_root_path: Path,
+    sup_path: Path | None = None,
+    **kwargs: Any,
+) -> Series:
     """Process eng OCR subtitles into validated output.
 
     Arguments:
         title_root_path: title root directory
+        sup_path: subtitle image input path
         kwargs: keyword arguments for OCR processing
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, "eng", **kwargs)
+    return _process_ocr(title_root_path, "eng", sup_path=sup_path, **kwargs)
 
 
-def process_yue_hans_ocr(title_root_path: Path, **kwargs: Any) -> Series:
+def process_yue_hans_ocr(
+    title_root_path: Path,
+    sup_path: Path | None = None,
+    **kwargs: Any,
+) -> Series:
     """Process yue-Hans OCR subtitles into validated output.
 
     Arguments:
         title_root_path: title root directory
+        sup_path: subtitle image input path
         kwargs: keyword arguments for OCR processing
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, "yue-Hans", **kwargs)
+    return _process_ocr(title_root_path, "yue-Hans", sup_path=sup_path, **kwargs)
 
 
-def process_yue_hant_ocr(title_root_path: Path, **kwargs: Any) -> Series:
+def process_yue_hant_ocr(
+    title_root_path: Path,
+    sup_path: Path | None = None,
+    **kwargs: Any,
+) -> Series:
     """Process yue-Hant OCR subtitles into validated output.
 
     Arguments:
         title_root_path: title root directory
+        sup_path: subtitle image input path
         kwargs: keyword arguments for OCR processing
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, "yue-Hant", **kwargs)
+    return _process_ocr(title_root_path, "yue-Hant", sup_path=sup_path, **kwargs)
 
 
-def process_zho_hans_ocr(title_root_path: Path, **kwargs: Any) -> Series:
+def process_zho_hans_ocr(
+    title_root_path: Path,
+    sup_path: Path | None = None,
+    **kwargs: Any,
+) -> Series:
     """Process zho-Hans OCR subtitles into validated output.
 
     Arguments:
         title_root_path: title root directory
+        sup_path: subtitle image input path
         kwargs: keyword arguments for OCR processing
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, "zho-Hans", **kwargs)
+    return _process_ocr(title_root_path, "zho-Hans", sup_path=sup_path, **kwargs)
 
 
-def process_zho_hant_ocr(title_root_path: Path, **kwargs: Any) -> Series:
+def process_zho_hant_ocr(
+    title_root_path: Path,
+    sup_path: Path | None = None,
+    **kwargs: Any,
+) -> Series:
     """Process zho-Hant OCR subtitles into validated output.
 
     Arguments:
         title_root_path: title root directory
+        sup_path: subtitle image input path
         kwargs: keyword arguments for OCR processing
     Returns:
         processed series
     """
-    return _process_ocr(title_root_path, "zho-Hant", **kwargs)
+    return _process_ocr(title_root_path, "zho-Hant", sup_path=sup_path, **kwargs)
 
 
 def _flatten(path: Path, lang: str, series: Series, overwrite: bool) -> Series:
@@ -194,6 +219,9 @@ def _process_ocr(
     fuser_kw: Any | None = None,
     reviewer_kw: Any | None = None,
     overwrite: bool = False,
+    overwrite_srt: bool = False,
+    overwrite_img: bool = False,
+    force_validation: bool = False,
 ) -> Series:
     """Process OCR subtitles into validated output.
 
@@ -204,6 +232,9 @@ def _process_ocr(
         fuser_kw: keyword arguments for OCR fuser
         reviewer_kw: keyword arguments for OCR block reviewer
         overwrite: whether to overwrite existing outputs
+        overwrite_srt: legacy alias for overwriting subtitle outputs
+        overwrite_img: legacy alias for overwriting image outputs
+        force_validation: legacy alias for overwriting validation output
     Returns:
         processed series
     """
@@ -214,6 +245,7 @@ def _process_ocr(
         )
     input_dir_path = title_root_path / "input" / f"{lang}_ocr"
     output_dir_path = title_root_path / "output" / f"{lang}_ocr"
+    overwrite = overwrite or overwrite_srt or overwrite_img or force_validation
 
     # Load, OCR, and validate series
     validated = _ocr(
