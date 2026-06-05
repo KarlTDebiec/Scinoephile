@@ -8,8 +8,8 @@ Module hierarchy (modules may import from any above):
 * analysis / image / llms
 * media
 * lang
-* audio / dictionaries / workflows
-* multilang
+* audio / dictionaries / web
+* multilang / workflows
 * optimization
 * cli
 """

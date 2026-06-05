@@ -13,6 +13,7 @@ from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCl
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
+from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -54,6 +55,18 @@ def test_llm_options_are_in_llm_argument_group(cli: type[CommandLineInterface]):
         _get_action_group_title(cli, "--llm-additional-content-file") == "llm arguments"
     )
     assert _get_action_group_title(cli, "--list-llm-providers") == "additional help"
+
+
+@pytest.mark.parametrize("cli", (OcrProcessCli, OcrValidateCli))
+def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterface]):
+    """Test OCR web options are grouped separately from operation options.
+
+    Arguments:
+        cli: CLI class to inspect
+    """
+    assert _get_action_group_title(cli, "--interactive") == "web arguments"
+    assert _get_action_group_title(cli, "--host") == "web arguments"
+    assert _get_action_group_title(cli, "--port") == "web arguments"
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:

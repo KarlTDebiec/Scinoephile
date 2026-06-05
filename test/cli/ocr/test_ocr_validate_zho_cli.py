@@ -34,7 +34,6 @@ def test_ocr_validate_zho_cli(
         tmp_path: pytest temporary path fixture
         tiny_image_series: small image subtitle series
     """
-    original_load = ImageSeries.load
     infile_path = tmp_path / input_path
     infile_path.parent.mkdir(parents=True, exist_ok=True)
     if infile_path.suffix:
@@ -43,7 +42,7 @@ def test_ocr_validate_zho_cli(
         infile_path.mkdir()
 
     load_paths: list[Path] = []
-    validate_calls: list[tuple[ImageSeries, int | None, bool, bool]] = []
+    validate_calls: list[tuple[ImageSeries, bool]] = []
 
     def fake_load(path: Path) -> ImageSeries:
         """Fake image subtitle loading.
@@ -58,21 +57,17 @@ def test_ocr_validate_zho_cli(
 
     def fake_validate_zho_ocr(
         series: ImageSeries,
-        stop_at_idx: int | None = None,
-        interactive: bool = False,
         dev: bool = False,
     ) -> ImageSeries:
         """Fake standard Chinese OCR validation.
 
         Arguments:
             series: ImageSeries to validate
-            stop_at_idx: stop processing at this index
-            interactive: whether to prompt user for confirmations
             dev: whether to write validation data updates to the repo
         Returns:
             configured validated image series
         """
-        validate_calls.append((series, stop_at_idx, interactive, dev))
+        validate_calls.append((series, dev))
         return tiny_image_series
 
     monkeypatch.setattr(
@@ -84,16 +79,80 @@ def test_ocr_validate_zho_cli(
         fake_validate_zho_ocr,
     )
 
-    outfile_path = tmp_path / "validated"
+    outfile_path = tmp_path / "validated.srt"
     run_cli_with_args(
         OcrValidateCli,
-        f"--language zho --infile {infile_path} --stop-at-idx 1 "
-        f"--outfile {outfile_path}",
+        f"--language zho --infile {infile_path} --outfile {outfile_path}",
     )
 
     assert load_paths == [infile_path]
-    assert validate_calls == [(tiny_image_series, 1, False, False)]
-    output = original_load(outfile_path)
-    assert len(output) == len(tiny_image_series)
-    assert (outfile_path / "index.html").exists()
-    assert len(list(outfile_path.glob("*.png"))) == len(tiny_image_series)
+    assert validate_calls == [(tiny_image_series, False)]
+    output = outfile_path.read_text(encoding="utf-8")
+    assert "recognized" in output
+    assert "validated" in output
+
+
+def test_ocr_validate_zho_cli_web(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+):
+    """Test OCR validate CLI launches web validation for Chinese subtitles.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+    """
+    infile_path = tmp_path / "image"
+    infile_path.mkdir()
+    (infile_path / "index.html").write_text("<html></html>", encoding="utf-8")
+    run_calls = []
+    session = object()
+
+    def fake_session_from_dir_path(
+        dir_path: Path,
+        *,
+        outfile_path: Path | None = None,
+        dev: bool = False,
+    ) -> object:
+        """Capture web session construction arguments."""
+        run_calls.append(("from_dir_path", dir_path, outfile_path, dev))
+        return session
+
+    class FakeFlaskApp:
+        """Fake OCR validation Flask app."""
+
+        def run(
+            self,
+            *,
+            host: str = "127.0.0.1",
+            port: int = 5000,
+        ):
+            """Capture web app run arguments."""
+            run_calls.append(("run", host, port))
+
+    def fake_create_app(value: object) -> FakeFlaskApp:
+        """Capture Flask app construction arguments."""
+        run_calls.append(("create_app", value))
+        return FakeFlaskApp()
+
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.OcrValidationSession.from_dir_path",
+        fake_session_from_dir_path,
+    )
+    monkeypatch.setattr(
+        "scinoephile.cli.ocr.ocr_validate_cli.create_app",
+        fake_create_app,
+    )
+
+    outfile_path = tmp_path / "validated.srt"
+    run_cli_with_args(
+        OcrValidateCli,
+        f"--language zho --infile {infile_path} --dev "
+        f"--interactive --host 0.0.0.0 --port 5050 --outfile {outfile_path}",
+    )
+
+    assert run_calls == [
+        ("from_dir_path", infile_path, outfile_path, True),
+        ("create_app", session),
+        ("run", "0.0.0.0", 5050),
+    ]

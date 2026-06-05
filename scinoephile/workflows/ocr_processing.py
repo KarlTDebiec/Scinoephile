@@ -68,11 +68,14 @@ def process_eng_ocr(
     cache_dir_path: Path | None = None,
     clean: bool = False,
     validate: bool = True,
+    interactive: bool = False,
     dev: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     fuser_kw: dict[str, Any] | None = None,
+    host: str = "127.0.0.1",
+    port: int = 5000,
 ) -> OcrProcessingResult:
     """Process English image subtitle OCR and fuse the OCR outputs.
 
@@ -84,11 +87,14 @@ def process_eng_ocr(
         cache_dir_path: media subtitle cache directory path
         clean: whether to clean OCR subtitle outputs before fusing
         validate: whether to validate fused OCR subtitles against images
+        interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
         fuser_kw: keyword arguments for OCR fuser construction
+        host: OCR validation web UI host
+        port: OCR validation web UI port
     Returns:
         OCR processing result
     """
@@ -152,8 +158,11 @@ def process_eng_ocr(
             image_series,
             fuse_clean,
             "eng",
+            interactive=interactive,
             dev=dev,
             overwrite=overwrite,
+            host=host,
+            port=port,
             output_paths=output_paths,
         )
 
@@ -174,11 +183,14 @@ def process_zho_ocr(
     script: ChineseScript = "simplified",
     clean: bool = False,
     validate: bool = True,
+    interactive: bool = False,
     dev: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
     fuser_kw: dict[str, Any] | None = None,
+    host: str = "127.0.0.1",
+    port: int = 5000,
 ) -> OcrProcessingResult:
     """Process standard Chinese image subtitle OCR and fuse the OCR outputs.
 
@@ -191,11 +203,14 @@ def process_zho_ocr(
         script: Chinese script to OCR, either simplified or traditional
         clean: whether to clean OCR subtitle outputs before fusing
         validate: whether to validate fused OCR subtitles against images
+        interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
         fuser_kw: keyword arguments for OCR fuser construction
+        host: OCR validation web UI host
+        port: OCR validation web UI port
     Returns:
         OCR processing result
     """
@@ -264,8 +279,11 @@ def process_zho_ocr(
             image_series,
             fuse_clean,
             "zho",
+            interactive=interactive,
             dev=dev,
             overwrite=overwrite,
+            host=host,
+            port=port,
             output_paths=output_paths,
         )
 
@@ -736,8 +754,11 @@ def _load_or_create_validation_output(
     text_series: Series,
     language: str,
     *,
+    interactive: bool,
     dev: bool,
     overwrite: bool,
+    host: str,
+    port: int,
     output_paths: dict[str, Path],
 ) -> Series:
     """Load or create OCR validation output.
@@ -747,8 +768,11 @@ def _load_or_create_validation_output(
         image_series: source image subtitle series
         text_series: text subtitle series to validate
         language: OCR validation language
+        interactive: whether to launch the OCR validation web UI
         dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
+        host: OCR validation web UI host
+        port: OCR validation web UI port
         output_paths: output paths to update
     Returns:
         validated text subtitle series
@@ -766,10 +790,42 @@ def _load_or_create_validation_output(
         overwrite,
         output_paths,
     )
-    validated = _validate_ocr(validation_image_series, language, dev)
-    validated.save(validate_path, format_="srt", exist_ok=True)
+    if interactive:
+        _run_interactive_validation(output_dir_path, validate_path, dev, host, port)
+    else:
+        validated = _validate_ocr(validation_image_series, language, dev)
+        validated.save(validate_path, format_="srt", exist_ok=True)
     output_paths["fuse_clean_validate"] = validate_path
     return Series.load(validate_path)
+
+
+def _run_interactive_validation(
+    output_dir_path: Path,
+    outfile_path: Path,
+    dev: bool,
+    host: str,
+    port: int,
+):
+    """Run interactive OCR validation.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        outfile_path: validated subtitle output path
+        dev: whether validation should write data updates to repo data
+        host: OCR validation web UI host
+        port: OCR validation web UI port
+    """
+    from scinoephile.web.ocr_validation import (  # noqa: PLC0415
+        OcrValidationSession,
+        create_app,
+    )
+
+    session = OcrValidationSession.from_dir_path(
+        output_dir_path / "image",
+        outfile_path=outfile_path,
+        dev=dev,
+    )
+    create_app(session).run(host=host, port=port)
 
 
 def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
@@ -797,5 +853,5 @@ def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series
         validated text subtitle series
     """
     if language == "eng":
-        return validate_eng_ocr(image_series, interactive=dev, dev=dev)
-    return validate_zho_ocr(image_series, interactive=dev, dev=dev)
+        return validate_eng_ocr(image_series, dev=dev)
+    return validate_zho_ocr(image_series, dev=dev)

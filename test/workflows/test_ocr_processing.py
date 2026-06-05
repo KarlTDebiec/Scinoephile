@@ -293,17 +293,11 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    validate_calls: list[tuple[list[str], bool, bool]] = []
+    validate_calls: list[tuple[list[str], bool]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        interactive: bool = False,
-        dev: bool = False,
-    ) -> Series:
+    def fake_validate(series: ImageSeries, dev: bool = False) -> Series:
         """Fake English OCR validation."""
-        validate_calls.append(
-            ([subtitle.text for subtitle in series], interactive, dev)
-        )
+        validate_calls.append(([subtitle.text for subtitle in series], dev))
         return _series_with_texts(["validated 1", "validated 2"])
 
     monkeypatch.setattr(
@@ -345,19 +339,19 @@ def test_process_eng_ocr_validates_fuse_clean_output(
     assert result.output_paths["fuse_clean_validate"] == (
         output_dir_path / "fuse_clean_validate.srt"
     )
-    assert validate_calls == [(["fused 1…", "fused 2…"], True, True)]
+    assert validate_calls == [(["fused 1…", "fused 2…"], True)]
     assert [
         subtitle.text
         for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
     ] == ["validated 1", "validated 2"]
 
 
-def test_process_eng_ocr_uses_interactive_validation_when_dev(
+def test_process_eng_ocr_interactive_launches_web_validation_for_sup(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
     tiny_image_series: ImageSeries,
 ):
-    """Test dev OCR validation uses interactive validation prompts.
+    """Test interactive OCR processing launches web validation after SUP extraction.
 
     Arguments:
         monkeypatch: pytest monkeypatch fixture
@@ -367,18 +361,20 @@ def test_process_eng_ocr_uses_interactive_validation_when_dev(
     source_path = tmp_path / "source.sup"
     source_path.write_bytes(b"unused")
     output_dir_path = tmp_path / "output"
-    validate_calls: list[tuple[bool, bool]] = []
+    web_calls: list[tuple[Path, Path, bool, str, int]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        stop_at_idx: int | None = None,
-        interactive: bool = False,
-        output_dir_path: Path | str | None = None,
-        dev: bool = False,
-    ) -> Series:
-        """Fake English OCR validation."""
-        validate_calls.append((interactive, dev))
-        return _series_with_texts(["validated 1", "validated 2"])
+    def fake_run_interactive_validation(
+        image_output_dir_path: Path,
+        outfile_path: Path,
+        dev: bool,
+        host: str,
+        port: int,
+    ):
+        """Fake web validation by writing the expected validation output."""
+        web_calls.append((image_output_dir_path, outfile_path, dev, host, port))
+        _series_with_texts(["interactive validated 1", "interactive validated 2"]).save(
+            outfile_path
+        )
 
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.ImageSeries.load",
@@ -406,16 +402,31 @@ def test_process_eng_ocr_uses_interactive_validation_when_dev(
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.validate_eng_ocr",
-        fake_validate,
+        lambda series, dev=False: pytest.fail(
+            "Non-interactive validation should not run"
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing._run_interactive_validation",
+        fake_run_interactive_validation,
     )
 
-    process_eng_ocr(
+    result = process_eng_ocr(
         infile_path=source_path,
         output_dir_path=output_dir_path,
+        interactive=True,
         dev=True,
+        host="0.0.0.0",
+        port=5050,
     )
 
-    assert validate_calls == [(True, True)]
+    validate_path = output_dir_path / "fuse_clean_validate.srt"
+    assert web_calls == [(output_dir_path, validate_path, True, "0.0.0.0", 5050)]
+    assert result.output_paths["fuse_clean_validate"] == validate_path
+    assert [subtitle.text for subtitle in Series.load(validate_path)] == [
+        "interactive validated 1",
+        "interactive validated 2",
+    ]
 
 
 def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
@@ -449,11 +460,7 @@ def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
     original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
     validate_texts: list[list[str]] = []
 
-    def fake_validate(
-        series: ImageSeries,
-        interactive: bool = False,
-        dev: bool = False,
-    ) -> Series:
+    def fake_validate(series: ImageSeries, dev: bool = False) -> Series:
         """Fake English OCR validation."""
         validate_texts.append([subtitle.text for subtitle in series])
         return _series_with_texts(["validated 1", "validated 2"])

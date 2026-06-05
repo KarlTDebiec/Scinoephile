@@ -23,6 +23,6 @@ def test_validate_eng_ocr_mlamd(
         caplog: pytest log capture fixture
     """
     caplog.set_level(logging.WARNING)
-    validate_eng_ocr(mlamd_eng_image, interactive=False)
+    validate_eng_ocr(mlamd_eng_image)
     warnings = get_warning_messages(caplog.records)
     assert_expected_warnings(warnings, [], "English")

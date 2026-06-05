@@ -4,8 +4,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from scinoephile.image.ocr.validation import ValidationManager
 from scinoephile.image.subtitles import ImageSeries
 
@@ -14,23 +12,15 @@ __all__ = ["validate_eng_ocr"]
 
 def validate_eng_ocr(
     series: ImageSeries,
-    stop_at_idx: int | None = None,
-    interactive: bool = False,
-    output_dir_path: Path | str | None = None,
     dev: bool = False,
 ) -> ImageSeries:
     """Validate OCR text against image series images.
 
     Arguments:
         series: ImageSeries to validate
-        stop_at_idx: stop processing at this index
-        interactive: whether to prompt user for confirmations
-        output_dir_path: directory in which to save validation images
         dev: whether to write validation data updates to the repo
+    Returns:
+        validated image subtitle series
     """
     validation_mgr = ValidationManager(dev=dev)
-    output_series = validation_mgr.validate(series, stop_at_idx, interactive)
-
-    if output_dir_path is not None:
-        output_series.save(output_dir_path)
-    return output_series
+    return validation_mgr.validate(series)

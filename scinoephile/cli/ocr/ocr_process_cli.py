@@ -41,7 +41,9 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "directory where OCR processing outputs will be written": (
             "写入 OCR 处理输出的目录"
         ),
+        "host for the OCR validation web UI": "OCR 校验网页界面的主机",
         "image subtitle or media infile path": "图像字幕或媒体输入文件路径",
+        "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
         "language of the OCR text to process (eng or zho)": (
             "要处理的 OCR 文本语言（eng 或 zho）"
         ),
@@ -52,6 +54,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "输入文件为媒体时的字幕流索引"
         ),
         "overwrite existing OCR processing outputs": "覆盖现有 OCR 处理输出",
+        "port for the OCR validation web UI": "OCR 校验网页界面的端口",
         "process image subtitle OCR and fuse output for a selected language": (
             "处理图像字幕 OCR 并融合所选语言的输出"
         ),
@@ -59,6 +62,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "script for standard Chinese OCR (default: simplified)": (
             "标准中文 OCR 使用的字形（默认：简体）"
         ),
+        "web arguments": "网页参数",
     },
     "zh-hant": {
         "cache directory for extracted media subtitle artifacts (default: "
@@ -67,7 +71,9 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "directory where OCR processing outputs will be written": (
             "寫入 OCR 處理輸出的目錄"
         ),
+        "host for the OCR validation web UI": "OCR 驗證網頁介面的主機",
         "image subtitle or media infile path": "影像字幕或媒體輸入檔案路徑",
+        "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
         "language of the OCR text to process (eng or zho)": (
             "要處理的 OCR 文字語言（eng 或 zho）"
         ),
@@ -78,6 +84,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "輸入檔案為媒體時的字幕流索引"
         ),
         "overwrite existing OCR processing outputs": "覆寫現有 OCR 處理輸出",
+        "port for the OCR validation web UI": "OCR 驗證網頁介面的連接埠",
         "process image subtitle OCR and fuse output for a selected language": (
             "處理影像字幕 OCR 並融合所選語言的輸出"
         ),
@@ -85,6 +92,7 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "script for standard Chinese OCR (default: simplified)": (
             "標準中文 OCR 使用的字形（預設：簡體）"
         ),
+        "web arguments": "網頁參數",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -112,6 +120,7 @@ class OcrProcessCli(ScinoephileCliBase):
             "input arguments",
             "operation arguments",
             "llm arguments",
+            "web arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -171,6 +180,25 @@ class OcrProcessCli(ScinoephileCliBase):
             arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
+        # Web arguments
+        arg_groups["web arguments"].add_argument(
+            "--interactive",
+            action="store_true",
+            help="launch the local OCR validation web UI",
+        )
+        arg_groups["web arguments"].add_argument(
+            "--host",
+            default="127.0.0.1",
+            type=str,
+            help="host for the OCR validation web UI",
+        )
+        arg_groups["web arguments"].add_argument(
+            "--port",
+            default=5000,
+            type=int_arg(min_value=1),
+            help="port for the OCR validation web UI",
+        )
+
         # Output arguments
         arg_groups["output arguments"].add_argument(
             "-o",
@@ -206,6 +234,9 @@ class OcrProcessCli(ScinoephileCliBase):
         language: str,
         script: ChineseScript | None,
         clean: bool,
+        interactive: bool,
+        host: str,
+        port: int,
         dev: bool,
         cache_dir_path: Path,
         llm_provider_name: str,
@@ -233,6 +264,9 @@ class OcrProcessCli(ScinoephileCliBase):
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
                     clean=clean,
+                    interactive=interactive,
+                    host=host,
+                    port=port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,
@@ -246,6 +280,9 @@ class OcrProcessCli(ScinoephileCliBase):
                     cache_dir_path=cache_dir_path,
                     script=script or "simplified",
                     clean=clean,
+                    interactive=interactive,
+                    host=host,
+                    port=port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,

@@ -48,7 +48,8 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
             OcrProcessCli,
             f"--infile {infile_path} --stream-index 3 --language eng "
             f"-o {output_dir_path} --cache-dir {cache_dir_path} "
-            "--clean --dev --overwrite",
+            "--clean --interactive --host 0.0.0.0 --port 5051 --dev "
+            "--overwrite",
         )
 
     get_provider.assert_called_once_with("openai", model=None)
@@ -58,6 +59,9 @@ def test_ocr_process_cli_passes_eng_arguments_to_workflow(tmp_path: Path):
         stream_index=3,
         cache_dir_path=cache_dir_path.resolve(),
         clean=True,
+        interactive=True,
+        host="0.0.0.0",
+        port=5051,
         dev=True,
         overwrite=True,
         provider=provider,
@@ -104,6 +108,9 @@ def test_ocr_process_cli_passes_zho_arguments_to_workflow(tmp_path: Path):
         cache_dir_path=cache_dir_path_arg("media", "subtitles"),
         script="simplified",
         clean=True,
+        interactive=False,
+        host="127.0.0.1",
+        port=5000,
         dev=False,
         overwrite=False,
         provider=provider,
@@ -150,6 +157,9 @@ def test_ocr_process_cli_passes_traditional_script_to_zho_workflow(tmp_path: Pat
         cache_dir_path=cache_dir_path_arg("media", "subtitles"),
         script="traditional",
         clean=False,
+        interactive=False,
+        host="127.0.0.1",
+        port=5000,
         dev=False,
         overwrite=False,
         provider=provider,
