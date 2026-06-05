@@ -299,7 +299,7 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
     for j in available_js:
         sync_groups.extend([([], [j])])
 
-    # Sort sync groups by their indexes
+    # Sort sync groups by indexes, falling back to timing when needed
     sync_groups = _sort_sync_groups(one, two, sync_groups)
 
     logger.info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
