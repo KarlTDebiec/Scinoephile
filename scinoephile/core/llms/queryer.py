@@ -168,7 +168,7 @@ class Queryer[
             # Validate test case
             try:
                 test_case = type(test_case).model_validate(
-                    {**test_case.model_dump(), "answer": answer}
+                    {**test_case.model_dump(), "answer": answer, "verified": False}
                 )
                 if self.auto_verify and test_case.get_auto_verified():
                     test_case.verified = True

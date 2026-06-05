@@ -167,6 +167,27 @@ def test_queryer_preserves_existing_encountered_test_case_metadata():
     assert encountered_test_case.verified is True
 
 
+def test_queryer_clears_stale_verified_metadata_after_generating_answer():
+    """Test queryer clears stale verified metadata after generating an answer."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"new"}'
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider, max_attempts=1)
+    test_case = _TestCase(
+        query=_Query(text="input"),
+        answer=_Answer(output="old"),
+        prompt=True,
+        verified=True,
+    )
+
+    output_test_case = queryer(test_case)
+
+    assert output_test_case.answer is not None
+    assert output_test_case.answer.output == "new"
+    assert output_test_case.prompt is True
+    assert output_test_case.verified is False
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)
