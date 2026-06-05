@@ -134,6 +134,7 @@ class ZhoTranslateFromYueCli(ScinoephileCliBase):
             parser,
             "input arguments",
             "operation arguments",
+            "llm arguments",
             "output arguments",
             "additional help",
             optional_arguments_name="additional arguments",
@@ -178,7 +179,7 @@ class ZhoTranslateFromYueCli(ScinoephileCliBase):
             help="script for prompts and output conversion (default: simplified)",
         )
         add_llm_provider_arguments(
-            arg_groups["operation arguments"], arg_groups["additional help"]
+            arg_groups["llm arguments"], arg_groups["additional help"]
         )
 
         # Output arguments
