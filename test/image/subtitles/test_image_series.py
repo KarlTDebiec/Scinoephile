@@ -5,9 +5,11 @@
 from __future__ import annotations
 
 import pytest
+from PIL import Image
 
 from scinoephile.common.file import get_temp_directory_path
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.bbox import Bbox
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 
 
 @pytest.mark.parametrize(
@@ -93,3 +95,77 @@ def test_save_html(tiny_image_series: ImageSeries):
 
         png_files = sorted(output_path.glob("*.png"))
         assert len(png_files) == len(tiny_image_series)
+
+
+def test_text_font_size_defaults_when_no_useful_bboxes():
+    """Test text font size falls back when no useful bboxes are present."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=0,
+                end=1000,
+                img=Image.new("LA", (4, 4), (255, 255)),
+                bboxes=[
+                    Bbox(0, 4, 0, 16),
+                    Bbox(0, 6, 0, 60),
+                ],
+            )
+        ]
+    )
+
+    assert series.text_font_size == 50
+
+
+def test_text_font_size_invalidates_when_events_change():
+    """Test cached text font size is invalidated when events change."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=0,
+                end=1000,
+                img=Image.new("LA", (2, 2), (255, 255)),
+                bboxes=[Bbox(0, 10, 0, 52)],
+            )
+        ]
+    )
+
+    assert series.text_font_size == 52
+
+    series.events = [
+        ImageSubtitle(
+            start=1000,
+            end=2000,
+            img=Image.new("LA", (3, 3), (255, 255)),
+            bboxes=[Bbox(0, 10, 0, 60)],
+        )
+    ]
+
+    assert series.text_font_size == 60
+
+
+def test_text_font_size_uses_most_common_useful_bbox_height():
+    """Test text font size is detected across the image series."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=0,
+                end=1000,
+                img=Image.new("LA", (2, 2), (255, 255)),
+                bboxes=[
+                    Bbox(0, 10, 0, 52),
+                    Bbox(0, 4, 0, 10),
+                ],
+            ),
+            ImageSubtitle(
+                start=1000,
+                end=2000,
+                img=Image.new("LA", (3, 3), (255, 255)),
+                bboxes=[
+                    Bbox(0, 10, 0, 60),
+                    Bbox(12, 22, 0, 60),
+                ],
+            ),
+        ]
+    )
+
+    assert series.text_font_size == 60

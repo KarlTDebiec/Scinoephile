@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import re
+from collections import Counter
 from html import escape, unescape
 from logging import getLogger
 from os import PathLike
@@ -23,6 +24,7 @@ from scinoephile.common.validation import (
 )
 from scinoephile.core import ScinoephileError
 from scinoephile.core.subtitles import Series
+from scinoephile.image.bboxes import get_bboxes
 from scinoephile.image.colors import get_fill_and_outline_colors_from_hist
 from scinoephile.image.drawing import convert_rgba_img_to_la
 
@@ -33,6 +35,11 @@ __all__ = ["ImageSeries"]
 
 
 logger = getLogger(__name__)
+
+
+_DEFAULT_TEXT_FONT_SIZE = 50
+_MIN_TEXT_BBOX_HEIGHT = 20
+_MIN_TEXT_BBOX_WIDTH = 8
 
 
 class ImageSeries(Series):
@@ -55,7 +62,25 @@ class ImageSeries(Series):
             self.events = events
         self._fill_color = None
         self._outline_color = None
+        self._text_font_size = None
         self._blocks: list[ImageSeries] | None = None
+
+    @override
+    def __setattr__(self, name: str, value: object):
+        """Set attribute, invalidating cached image properties after event replacement.
+
+        Arguments:
+            name: attribute name
+            value: attribute value
+        """
+        super().__setattr__(name, value)
+        if name == "events":
+            if hasattr(self, "_fill_color"):
+                self._fill_color = None
+            if hasattr(self, "_outline_color"):
+                self._outline_color = None
+            if hasattr(self, "_text_font_size"):
+                self._text_font_size = None
 
     @property
     def fill_color(self) -> int:
@@ -74,6 +99,15 @@ class ImageSeries(Series):
         if self._outline_color is None:
             raise ScinoephileError("Outline color could not be determined.")
         return self._outline_color
+
+    @property
+    def text_font_size(self) -> int:
+        """Detected font size of subtitle text images."""
+        if self._text_font_size is None:
+            self._init_text_font_size()
+        if self._text_font_size is None:
+            raise ScinoephileError("Text font size could not be determined.")
+        return self._text_font_size
 
     @property
     @override
@@ -204,6 +238,30 @@ class ImageSeries(Series):
         fill, outline = get_fill_and_outline_colors_from_hist(hist)
         self._fill_color = fill
         self._outline_color = outline
+
+    def _init_text_font_size(self):
+        """Initialize the representative subtitle text font size."""
+        size_counts: Counter[int] = Counter()
+        for subtitle in self.events:
+            if subtitle.bboxes is None:
+                bboxes = get_bboxes(subtitle.img)
+            else:
+                bboxes = subtitle.bboxes
+            for bbox in bboxes:
+                if (
+                    bbox.height >= _MIN_TEXT_BBOX_HEIGHT
+                    and bbox.width >= _MIN_TEXT_BBOX_WIDTH
+                ):
+                    size_counts[bbox.height] += 1
+
+        if not size_counts:
+            self._text_font_size = _DEFAULT_TEXT_FONT_SIZE
+            return
+
+        self._text_font_size = max(
+            size_counts.items(),
+            key=lambda item: (item[1], item[0]),
+        )[0]
 
     def _save_html(
         self,
