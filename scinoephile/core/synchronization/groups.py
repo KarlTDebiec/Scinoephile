@@ -149,6 +149,57 @@ def _compare_sync_groups(  # noqa: PLR0912
             raise ScinoephileError("Unexpected comparison result between sync groups")
 
 
+def _compare_sync_groups_by_timing(
+    one: Series, two: Series, first: SyncGroup, second: SyncGroup
+) -> int:
+    """Compare two sync groups by subtitle timing.
+
+    Arguments:
+        one: First series
+        two: Second series
+        first: First sync group
+        second: Second sync group
+    Returns:
+        -1 if first is less than second, 0 if they are equal, and 1 if first is
+        greater
+    """
+    first_start, first_end = _get_sync_group_timing(one, two, first)
+    second_start, second_end = _get_sync_group_timing(one, two, second)
+
+    if first_start < second_start:
+        return -1
+    if first_start > second_start:
+        return 1
+    if first_end < second_end:
+        return -1
+    if first_end > second_end:
+        return 1
+    return 0
+
+
+def _get_sync_group_timing(
+    one: Series, two: Series, sync_group: SyncGroup
+) -> tuple[int, int]:
+    """Get the timing span of a sync group.
+
+    Arguments:
+        one: First series
+        two: Second series
+        sync_group: Sync group
+    Returns:
+        Start and end times of subtitles in the sync group
+    """
+    subtitles = [one.events[i] for i in sync_group[0]]
+    subtitles.extend(two.events[j] for j in sync_group[1])
+    if not subtitles:
+        raise ScinoephileError("Cannot sort empty sync group")
+
+    return (
+        min(subtitle.start for subtitle in subtitles),
+        max(subtitle.end for subtitle in subtitles),
+    )
+
+
 def _get_sync_groups(  # noqa: PLR0912, PLR0915
     one: Series, two: Series, overlap: np.ndarray, cutoff: float
 ) -> list[SyncGroup]:
@@ -166,6 +217,8 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
 
     for i in range(len(one)):
         scale = np.max(overlap[i])
+        if scale == 0:
+            continue
         for j in range(len(two)):
             if overlap[i, j] / scale < cutoff:
                 overlap[i, j] = 0
@@ -247,20 +300,24 @@ def _get_sync_groups(  # noqa: PLR0912, PLR0915
         sync_groups.extend([([], [j])])
 
     # Sort sync groups by their indexes
-    sync_groups = _sort_sync_groups(sync_groups)
+    sync_groups = _sort_sync_groups(one, two, sync_groups)
 
     logger.info(f"OVERLAP ({cutoff:.2f}):\n{get_overlap_string(overlap)}")
 
     return sync_groups
 
 
-def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
+def _sort_sync_groups(
+    one: Series, two: Series, sync_groups: list[SyncGroup]
+) -> list[SyncGroup]:
     """Sort sync groups.
 
     May not correctly handle all initial orders, but should work for the cases
     encountered.
 
     Arguments:
+        one: First series
+        two: Second series
         sync_groups: Sync groups to sort
     Returns:
         Sorted sync groups
@@ -278,7 +335,9 @@ def _sort_sync_groups(sync_groups: list[SyncGroup]) -> list[SyncGroup]:
 
             result = _compare_sync_groups(group, sorted_groups[i])
             if result is None:
-                continue  # Try comparing with the next one
+                result = _compare_sync_groups_by_timing(
+                    one, two, group, sorted_groups[i]
+                )
             if result < 0:
                 sorted_groups.insert(i, group)
                 inserted = True

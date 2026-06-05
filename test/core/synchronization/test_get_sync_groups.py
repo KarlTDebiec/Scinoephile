@@ -62,3 +62,25 @@ def test_get_sync_groups_converges_below_max_cutoff():
     assert len(sync_groups) == 2
     assert sync_groups[0] == ([0], [0])
     assert sync_groups[1] == ([1], [1])
+
+
+def test_get_sync_groups_sorts_unpaired_groups_by_timing():
+    """Test unpaired sync groups are sorted by timing when indexes cannot compare."""
+    one = Series()
+    one.events.append(Subtitle(start=0, end=100, text="A"))
+    one.events.append(Subtitle(start=2_000_000, end=2_000_100, text="B"))
+    one.events.append(Subtitle(start=4_000_000, end=4_000_100, text="C"))
+
+    two = Series()
+    two.events.append(Subtitle(start=0, end=100, text="1"))
+    two.events.append(Subtitle(start=1_000_000, end=1_000_100, text="2"))
+    two.events.append(Subtitle(start=4_000_000, end=4_000_100, text="3"))
+
+    sync_groups = get_sync_groups(one, two)
+
+    assert sync_groups == [
+        ([0], [0]),
+        ([], [1]),
+        ([1], []),
+        ([2], [2]),
+    ]
