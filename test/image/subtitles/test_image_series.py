@@ -116,6 +116,33 @@ def test_text_font_size_defaults_when_no_useful_bboxes():
     assert series.text_font_size == 50
 
 
+def test_text_font_size_invalidates_when_events_change():
+    """Test cached text font size is invalidated when events change."""
+    series = ImageSeries(
+        events=[
+            ImageSubtitle(
+                start=0,
+                end=1000,
+                img=Image.new("LA", (2, 2), (255, 255)),
+                bboxes=[Bbox(0, 10, 0, 52)],
+            )
+        ]
+    )
+
+    assert series.text_font_size == 52
+
+    series.events = [
+        ImageSubtitle(
+            start=1000,
+            end=2000,
+            img=Image.new("LA", (3, 3), (255, 255)),
+            bboxes=[Bbox(0, 10, 0, 60)],
+        )
+    ]
+
+    assert series.text_font_size == 60
+
+
 def test_text_font_size_uses_most_common_useful_bbox_height():
     """Test text font size is detected across the image series."""
     series = ImageSeries(

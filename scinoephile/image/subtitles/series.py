@@ -65,6 +65,23 @@ class ImageSeries(Series):
         self._text_font_size = None
         self._blocks: list[ImageSeries] | None = None
 
+    @override
+    def __setattr__(self, name: str, value: object):
+        """Set attribute, invalidating cached image properties after event replacement.
+
+        Arguments:
+            name: attribute name
+            value: attribute value
+        """
+        super().__setattr__(name, value)
+        if name == "events":
+            if hasattr(self, "_fill_color"):
+                self._fill_color = None
+            if hasattr(self, "_outline_color"):
+                self._outline_color = None
+            if hasattr(self, "_text_font_size"):
+                self._text_font_size = None
+
     @property
     def fill_color(self) -> int:
         """Fill color of text images."""
