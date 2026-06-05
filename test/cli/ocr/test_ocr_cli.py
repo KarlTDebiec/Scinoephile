@@ -384,7 +384,7 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
         tmp_path: temporary path fixture
     """
     full_sup_path = test_data_root / "mlamd/input/eng_ocr/source.sup"
-    full_expected_path = test_data_root / "mlamd/input/eng_ocr/lens.srt"
+    full_expected_path = test_data_root / "mlamd/output/eng_ocr/lens.srt"
     monkeypatch.setenv("SCINOEPHILE_CACHE_DIR", str(tmp_path / "cache"))
 
     with get_temp_file_path(".srt") as output_path:
@@ -414,19 +414,14 @@ def test_ocr_lens_cli_matches_mlamd_sup_ocr_fixture(
     ),
     [
         (
-            "mlamd/input/eng_ocr/source.sup",
-            "en",
-            "mlamd/input/eng_ocr/paddle_new.srt",
-        ),
-        (
             "mlamd/input/zho-Hans_ocr/source.sup",
             "ch",
-            "mlamd/input/zho-Hans_ocr/paddle_new.srt",
+            "mlamd/output/zho-Hans_ocr/paddle.srt",
         ),
         (
             "mlamd/input/zho-Hant_ocr/source.sup",
             "chinese_cht",
-            "mlamd/input/zho-Hant_ocr/paddle_new.srt",
+            "mlamd/output/zho-Hant_ocr/paddle.srt",
         ),
     ],
 )

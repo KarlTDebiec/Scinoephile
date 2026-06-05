@@ -41,12 +41,12 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "directory where OCR processing outputs will be written": (
             "写入 OCR 处理输出的目录"
         ),
-        "export OCR outputs as image subtitle directories": (
-            "将 OCR 输出导出为图像字幕目录"
-        ),
         "image subtitle or media infile path": "图像字幕或媒体输入文件路径",
         "language of the OCR text to process (eng or zho)": (
             "要处理的 OCR 文本语言（eng 或 zho）"
+        ),
+        "maintainer option: write validation data updates to repo data": (
+            "维护者选项：将校验数据更新写入仓库数据"
         ),
         "media subtitle stream index when infile is media": (
             "输入文件为媒体时的字幕流索引"
@@ -67,12 +67,12 @@ OCR_PROCESS_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "directory where OCR processing outputs will be written": (
             "寫入 OCR 處理輸出的目錄"
         ),
-        "export OCR outputs as image subtitle directories": (
-            "將 OCR 輸出匯出為影像字幕目錄"
-        ),
         "image subtitle or media infile path": "影像字幕或媒體輸入檔案路徑",
         "language of the OCR text to process (eng or zho)": (
             "要處理的 OCR 文字語言（eng 或 zho）"
+        ),
+        "maintainer option: write validation data updates to repo data": (
+            "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
         "media subtitle stream index when infile is media": (
             "輸入檔案為媒體時的字幕流索引"
@@ -152,6 +152,11 @@ class OcrProcessCli(ScinoephileCliBase):
             help="clean OCR subtitle outputs before fusing",
         )
         arg_groups["operation arguments"].add_argument(
+            "--dev",
+            action="store_true",
+            help="maintainer option: write validation data updates to repo data",
+        )
+        arg_groups["operation arguments"].add_argument(
             "--cache-dir",
             default=cache_dir_path_arg("media", "subtitles"),
             dest="cache_dir_path",
@@ -179,11 +184,6 @@ class OcrProcessCli(ScinoephileCliBase):
             action="store_true",
             help="overwrite existing OCR processing outputs",
         )
-        arg_groups["output arguments"].add_argument(
-            "--export-images",
-            action="store_true",
-            help="export OCR outputs as image subtitle directories",
-        )
         parser.set_defaults(_parser=parser)
 
     @classmethod
@@ -205,13 +205,13 @@ class OcrProcessCli(ScinoephileCliBase):
         language: str,
         script: ChineseScript | None,
         clean: bool,
+        dev: bool,
         cache_dir_path: Path,
         llm_provider_name: str,
         llm_model_name: str | None,
         llm_additional_context_file_path: Path | None,
         output_dir_path: Path,
         overwrite: bool,
-        export_images: bool,
     ):
         """Execute with provided keyword arguments."""
         # Validate arguments
@@ -232,7 +232,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     stream_index=stream_index,
                     cache_dir_path=cache_dir_path,
                     clean=clean,
-                    export_images=export_images,
+                    dev=dev,
                     overwrite=overwrite,
                     provider=provider,
                     additional_context=additional_context,
@@ -245,7 +245,7 @@ class OcrProcessCli(ScinoephileCliBase):
                     cache_dir_path=cache_dir_path,
                     script=script or "simplified",
                     clean=clean,
-                    export_images=export_images,
+                    dev=dev,
                     overwrite=overwrite,
                     provider=provider,
                     additional_context=additional_context,
