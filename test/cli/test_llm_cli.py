@@ -65,7 +65,7 @@ def test_list_llm_providers(cli: type[CommandLineInterface]):
     assert "default model: deepseek-v4-flash" in listing
     assert "API key env: DEEPSEEK_API_KEY" in listing
     assert "  openai    OpenAI LLM Provider." in listing
-    assert "default model: gpt-5.4" in listing
+    assert "default model: gpt-5.4-mini" in listing
     assert "API key env: OPENAI_API_KEY" in listing
 
 
@@ -87,7 +87,7 @@ def test_list_llm_providers_uses_simplified_chinese_descriptions():
     assert "default model: deepseek-v4-flash" in listing
     assert "API key env: DEEPSEEK_API_KEY" in listing
     assert "  openai    OpenAI LLM 提供商。" in listing
-    assert "default model: gpt-5.4" in listing
+    assert "default model: gpt-5.4-mini" in listing
     assert "API key env: OPENAI_API_KEY" in listing
 
 
