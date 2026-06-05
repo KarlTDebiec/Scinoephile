@@ -188,6 +188,20 @@ def test_queryer_clears_stale_verified_metadata_after_generating_answer():
     assert output_test_case.verified is False
 
 
+def test_queryer_preserves_auto_verified_encountered_test_case(monkeypatch):
+    """Test queryer preserves auto-verified encountered test cases."""
+    provider = Mock(spec=LLMProvider)
+    provider.chat_completion.return_value = '{"output":"done"}'
+    monkeypatch.setattr(_TestCase, "get_auto_verified", lambda self: True)
+    queryer_cls = Queryer.get_queryer_cls(_Prompt)
+    queryer = queryer_cls(provider=provider, max_attempts=1, auto_verify=True)
+
+    test_case = queryer(_TestCase(query=_Query(text="input")))
+
+    encountered_test_case = queryer.encountered_test_cases[test_case.query.key]
+    assert encountered_test_case.verified is True
+
+
 def test_processor_passes_injected_provider_to_queryer():
     """Test processor wires injected providers into its queryer."""
     provider = Mock(spec=LLMProvider)
