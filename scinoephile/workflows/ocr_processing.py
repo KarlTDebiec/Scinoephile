@@ -4,9 +4,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from logging import getLogger, info
+from logging import getLogger
 from pathlib import Path
+from typing import Any
 
 from scinoephile.core import ScinoephileError
 from scinoephile.core.llms import LLMProvider
@@ -19,11 +21,17 @@ from scinoephile.image.ocr.paddle import (
     ocr_image_series_with_paddle,
 )
 from scinoephile.image.ocr.tesseract import ocr_image_series_with_tesseract
-from scinoephile.image.subtitles import ImageSeries
+from scinoephile.image.subtitles import ImageSeries, ImageSubtitle
 from scinoephile.lang.eng.cleaning import get_eng_cleaned
 from scinoephile.lang.eng.ocr_fusion import get_eng_ocr_fused, get_eng_ocr_fuser
+from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.cleaning import get_zho_cleaned
-from scinoephile.lang.zho.ocr_fusion import get_zho_ocr_fused, get_zho_ocr_fuser
+from scinoephile.lang.zho.ocr_fusion import (
+    OcrFusionPromptZhoHant,
+    get_zho_ocr_fused,
+    get_zho_ocr_fuser,
+)
+from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
 from scinoephile.media.probe import get_subtitle_streams
 from scinoephile.media.subtitles.cache import (
     cache_subtitles,
@@ -51,30 +59,36 @@ class OcrProcessingResult:
     """Output paths keyed by output name."""
 
 
-def process_eng_ocr(  # noqa: PLR0912, PLR0915
+def process_eng_ocr(
     infile_path: Path,
     output_dir_path: Path,
     *,
+    source_dir_path: Path | None = None,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
-    export_images: bool = False,
     clean: bool = False,
+    validate: bool = True,
+    dev: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    fuser_kw: dict[str, Any] | None = None,
 ) -> OcrProcessingResult:
     """Process English image subtitle OCR and fuse the OCR outputs.
 
     Arguments:
         infile_path: SUP, image subtitle directory, or media input path
         output_dir_path: directory where OCR outputs are written
+        source_dir_path: optional directory containing existing provider OCR outputs
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
-        export_images: whether to export OCR outputs as image subtitle directories
         clean: whether to clean OCR subtitle outputs before fusing
+        validate: whether to validate fused OCR subtitles against images
+        dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
+        fuser_kw: keyword arguments for OCR fuser construction
     Returns:
         OCR processing result
     """
@@ -82,74 +96,66 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
 
     # Write outputs
-    if not output_dir_path.exists():
-        output_dir_path.mkdir(parents=True, exist_ok=True)
-        info(f"Created output directory: {output_dir_path}")
+    _ensure_output_dir(output_dir_path)
     output_paths = {}
 
     # Image
-    if export_images:
-        image_dir_path = output_dir_path / "image"
-        if image_dir_path.exists() and not overwrite:
-            logger.info(f"Image OCR output exists: {image_dir_path}")
-        else:
-            image_series.save(image_dir_path)
-        output_paths["image"] = image_dir_path
+    _export_image_series(image_series, output_dir_path, overwrite, output_paths)
 
     # Google Lens
-    lens_path = output_dir_path / "lens.srt"
-    if lens_path.exists() and not overwrite:
-        logger.info(f"Lens OCR output exists: {lens_path}")
-        lens = Series.load(lens_path)
-    else:
-        lens = ocr_image_series_with_lens(image_series, language="en")
-        lens.save(lens_path, format_="srt")
-    output_paths["lens"] = lens_path
+    lens = _load_or_create_lens_output(
+        image_series,
+        output_dir_path,
+        "en",
+        overwrite,
+        output_paths,
+        _source_output_path(source_dir_path, "lens"),
+    )
 
     # Tesseract
-    tesseract_path = output_dir_path / "tesseract.srt"
-    if tesseract_path.exists() and not overwrite:
-        logger.info(f"Tesseract OCR output exists: {tesseract_path}")
-        tesseract = Series.load(tesseract_path)
-    else:
-        tesseract = ocr_image_series_with_tesseract(image_series, language="eng")
-        tesseract.save(tesseract_path, format_="srt")
-    output_paths["tesseract"] = tesseract_path
+    tesseract = _load_or_create_tesseract_output(
+        image_series,
+        output_dir_path,
+        overwrite,
+        output_paths,
+        _source_output_path(source_dir_path, "tesseract"),
+    )
 
     # Clean provider outputs
-    fusion_lens = lens
-    fusion_tesseract = tesseract
     if clean:
-        lens_clean_path = output_dir_path / "lens_clean.srt"
-        if lens_clean_path.exists() and not overwrite:
-            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
-            fusion_lens = Series.load(lens_clean_path)
-        else:
-            fusion_lens = get_eng_cleaned(lens, remove_empty=False)
-            fusion_lens.save(lens_clean_path, format_="srt")
-        output_paths["lens_clean"] = lens_clean_path
-
-        tesseract_clean_path = output_dir_path / "tesseract_clean.srt"
-        if tesseract_clean_path.exists() and not overwrite:
-            logger.info(f"Cleaned Tesseract OCR output exists: {tesseract_clean_path}")
-            fusion_tesseract = Series.load(tesseract_clean_path)
-        else:
-            fusion_tesseract = get_eng_cleaned(tesseract, remove_empty=False)
-            fusion_tesseract.save(tesseract_clean_path, format_="srt")
-        output_paths["tesseract_clean"] = tesseract_clean_path
+        lens = _load_or_create_eng_clean_output(
+            output_dir_path, "lens", lens, overwrite, output_paths
+        )
+        tesseract = _load_or_create_eng_clean_output(
+            output_dir_path, "tesseract", tesseract, overwrite, output_paths
+        )
 
     # Fusion
-    fuse_path = output_dir_path / "fuse.srt"
-    if fuse_path.exists() and not overwrite:
-        logger.info(f"Fuse OCR output exists: {fuse_path}")
-    else:
-        fuser = get_eng_ocr_fuser(
-            provider=provider,
-            additional_context=additional_context,
+    fuse = _load_or_create_eng_fuse_output(
+        output_dir_path,
+        lens,
+        tesseract,
+        overwrite,
+        provider,
+        additional_context,
+        fuser_kw,
+        output_paths,
+    )
+    fuse_clean = _load_or_create_eng_clean_output(
+        output_dir_path, "fuse", fuse, overwrite, output_paths
+    )
+
+    # Validation
+    if validate:
+        _load_or_create_validation_output(
+            output_dir_path,
+            image_series,
+            fuse_clean,
+            "eng",
+            dev=dev,
+            overwrite=overwrite,
+            output_paths=output_paths,
         )
-        fuse = get_eng_ocr_fused(fusion_lens, fusion_tesseract, processor=fuser)
-        fuse.save(fuse_path, format_="srt")
-    output_paths["fuse"] = fuse_path
 
     return OcrProcessingResult(
         infile_path=infile_path,
@@ -158,32 +164,38 @@ def process_eng_ocr(  # noqa: PLR0912, PLR0915
     )
 
 
-def process_zho_ocr(  # noqa: PLR0912, PLR0915
+def process_zho_ocr(
     infile_path: Path,
     output_dir_path: Path,
     *,
+    source_dir_path: Path | None = None,
     stream_index: int | None = None,
     cache_dir_path: Path | None = None,
     script: ChineseScript = "simplified",
-    export_images: bool = False,
     clean: bool = False,
+    validate: bool = True,
+    dev: bool = False,
     overwrite: bool = False,
     provider: LLMProvider | None = None,
     additional_context: str | None = None,
+    fuser_kw: dict[str, Any] | None = None,
 ) -> OcrProcessingResult:
     """Process standard Chinese image subtitle OCR and fuse the OCR outputs.
 
     Arguments:
         infile_path: SUP, image subtitle directory, or media input path
         output_dir_path: directory where OCR outputs are written
+        source_dir_path: optional directory containing existing provider OCR outputs
         stream_index: media subtitle stream index when infile is media
         cache_dir_path: media subtitle cache directory path
         script: Chinese script to OCR, either simplified or traditional
-        export_images: whether to export OCR outputs as image subtitle directories
         clean: whether to clean OCR subtitle outputs before fusing
+        validate: whether to validate fused OCR subtitles against images
+        dev: whether validation should write data updates to repo data
         overwrite: whether to overwrite existing workflow outputs
         provider: provider to use for OCR fusion queries
         additional_context: additional context to include in OCR fusion prompts
+        fuser_kw: keyword arguments for OCR fuser construction
     Returns:
         OCR processing result
     """
@@ -194,80 +206,142 @@ def process_zho_ocr(  # noqa: PLR0912, PLR0915
     image_series = _load_image_series(infile_path, stream_index, cache_dir_path)
 
     # Write outputs
-    if not output_dir_path.exists():
-        output_dir_path.mkdir(parents=True, exist_ok=True)
-        info(f"Created output directory: {output_dir_path}")
+    _ensure_output_dir(output_dir_path)
     output_paths = {}
 
     # Image
-    if export_images:
-        image_dir_path = output_dir_path / "image"
-        if image_dir_path.exists() and not overwrite:
-            logger.info(f"Image OCR output exists: {image_dir_path}")
-        else:
-            image_series.save(image_dir_path)
-        output_paths["image"] = image_dir_path
+    _export_image_series(image_series, output_dir_path, overwrite, output_paths)
 
     # Google Lens
-    lens_path = output_dir_path / "lens.srt"
-    if lens_path.exists() and not overwrite:
-        logger.info(f"Lens OCR output exists: {lens_path}")
-        lens = Series.load(lens_path)
-    else:
-        lens = ocr_image_series_with_lens(image_series, language=lens_language)
-        lens.save(lens_path, format_="srt")
-    output_paths["lens"] = lens_path
+    lens = _load_or_create_lens_output(
+        image_series,
+        output_dir_path,
+        lens_language,
+        overwrite,
+        output_paths,
+        _source_output_path(source_dir_path, "lens"),
+    )
 
     # PaddleOCR
-    paddle_path = output_dir_path / "paddle.srt"
-    if paddle_path.exists() and not overwrite:
-        logger.info(f"PaddleOCR output exists: {paddle_path}")
-        paddle = Series.load(paddle_path)
-    else:
-        paddle = ocr_image_series_with_paddle(image_series, language=paddle_language)
-        paddle.save(paddle_path, format_="srt")
-    output_paths["paddle"] = paddle_path
+    paddle = _load_or_create_paddle_output(
+        image_series,
+        output_dir_path,
+        paddle_language,
+        overwrite,
+        output_paths,
+        _source_output_path(source_dir_path, "paddle"),
+    )
 
     # Clean provider outputs
-    fusion_lens = lens
-    fusion_paddle = paddle
     if clean:
-        lens_clean_path = output_dir_path / "lens_clean.srt"
-        if lens_clean_path.exists() and not overwrite:
-            logger.info(f"Cleaned Lens OCR output exists: {lens_clean_path}")
-            fusion_lens = Series.load(lens_clean_path)
-        else:
-            fusion_lens = get_zho_cleaned(lens, remove_empty=False)
-            fusion_lens.save(lens_clean_path, format_="srt")
-        output_paths["lens_clean"] = lens_clean_path
-
-        paddle_clean_path = output_dir_path / "paddle_clean.srt"
-        if paddle_clean_path.exists() and not overwrite:
-            logger.info(f"Cleaned PaddleOCR output exists: {paddle_clean_path}")
-            fusion_paddle = Series.load(paddle_clean_path)
-        else:
-            fusion_paddle = get_zho_cleaned(paddle, remove_empty=False)
-            fusion_paddle.save(paddle_clean_path, format_="srt")
-        output_paths["paddle_clean"] = paddle_clean_path
+        lens = _load_or_create_zho_clean_output(
+            output_dir_path, "lens", lens, overwrite, output_paths
+        )
+        paddle = _load_or_create_zho_clean_output(
+            output_dir_path, "paddle", paddle, overwrite, output_paths
+        )
 
     # Fusion
-    fuse_path = output_dir_path / "fuse.srt"
-    if fuse_path.exists() and not overwrite:
-        logger.info(f"Fuse OCR output exists: {fuse_path}")
-    else:
-        fuser = get_zho_ocr_fuser(
-            provider=provider,
-            additional_context=additional_context,
+    fuse = _load_or_create_zho_fuse_output(
+        output_dir_path,
+        lens,
+        paddle,
+        script,
+        overwrite,
+        provider,
+        additional_context,
+        fuser_kw,
+        output_paths,
+    )
+    fuse_clean = _load_or_create_zho_clean_output(
+        output_dir_path, "fuse", fuse, overwrite, output_paths
+    )
+
+    # Validation
+    if validate:
+        _load_or_create_validation_output(
+            output_dir_path,
+            image_series,
+            fuse_clean,
+            "zho",
+            dev=dev,
+            overwrite=overwrite,
+            output_paths=output_paths,
         )
-        fuse = get_zho_ocr_fused(fusion_lens, fusion_paddle, processor=fuser)
-        fuse.save(fuse_path, format_="srt")
-    output_paths["fuse"] = fuse_path
 
     return OcrProcessingResult(
         infile_path=infile_path,
         output_dir_path=output_dir_path,
         output_paths=output_paths,
     )
+
+
+def _ensure_output_dir(output_dir_path: Path):
+    """Ensure an OCR output directory exists.
+
+    Arguments:
+        output_dir_path: OCR output directory
+    """
+    if output_dir_path.exists():
+        return
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Created output directory: {output_dir_path}")
+
+
+def _export_image_series(
+    image_series: ImageSeries,
+    output_dir_path: Path,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+):
+    """Export source image subtitles.
+
+    Arguments:
+        image_series: image subtitle series
+        output_dir_path: OCR output directory
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    """
+    image_dir_path = output_dir_path / "image"
+    if image_dir_path.exists() and not overwrite:
+        logger.info(f"Image OCR output exists: {image_dir_path}")
+    else:
+        image_series.save(image_dir_path)
+    output_paths["image"] = image_dir_path
+
+
+def _get_image_series_with_text(
+    image_series: ImageSeries,
+    text_series: Series,
+) -> ImageSeries:
+    """Get a copy of image subtitles with matching text subtitle text.
+
+    Arguments:
+        image_series: image subtitle series
+        text_series: text subtitle series
+    Returns:
+        copied image subtitle series with text
+    """
+    if len(text_series) != len(image_series):
+        raise ScinoephileError(
+            f"Length mismatch: {len(text_series)} vs {len(image_series)}"
+        )
+    image_subtitles: list[ImageSubtitle] = []
+    for text_subtitle, image_subtitle in zip(text_series, image_series.events):
+        if image_subtitle.bboxes is None:
+            bboxes = None
+        else:
+            bboxes = list(image_subtitle.bboxes)
+        image_subtitles.append(
+            ImageSubtitle(
+                img=image_subtitle.img.copy(),
+                bboxes=bboxes,
+                start=image_subtitle.start,
+                end=image_subtitle.end,
+                text=text_subtitle.text,
+            )
+        )
+    return ImageSeries(events=image_subtitles)
 
 
 def _get_media_subtitle_stream(
@@ -318,3 +392,410 @@ def _load_image_series(
         infile_path, stream, cache_dir_path=cache_dir_path
     )
     return ImageSeries.load(stream_path)
+
+
+def _load_or_create_eng_clean_output(
+    output_dir_path: Path,
+    output_name: str,
+    series: Series,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+) -> Series:
+    """Load or create a cleaned English OCR provider output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        output_name: output name
+        series: source series to clean
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    Returns:
+        cleaned series
+    """
+    if output_name == "fuse":
+        display_name = "Cleaned fused OCR output"
+    elif output_name == "tesseract":
+        display_name = "Cleaned Tesseract OCR output"
+    else:
+        display_name = "Cleaned Lens OCR output"
+    return _load_or_create_series_output(
+        output_dir_path,
+        f"{output_name}_clean",
+        display_name,
+        overwrite,
+        output_paths,
+        lambda: get_eng_cleaned(series, remove_empty=False),
+    )
+
+
+def _load_or_create_eng_fuse_output(
+    output_dir_path: Path,
+    lens: Series,
+    tesseract: Series,
+    overwrite: bool,
+    provider: LLMProvider | None,
+    additional_context: str | None,
+    fuser_kw: dict[str, Any] | None,
+    output_paths: dict[str, Path],
+) -> Series:
+    """Load or create fused English OCR output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        lens: Google Lens OCR series
+        tesseract: Tesseract OCR series
+        overwrite: whether to overwrite existing workflow outputs
+        provider: provider to use for OCR fusion queries
+        additional_context: additional context to include in OCR fusion prompts
+        fuser_kw: keyword arguments for OCR fuser construction
+        output_paths: output paths to update
+    Returns:
+        fused English OCR series
+    """
+    kwargs = _get_fuser_kw(fuser_kw, additional_context)
+    return _load_or_create_series_output(
+        output_dir_path,
+        "fuse",
+        "Fuse OCR output",
+        overwrite,
+        output_paths,
+        lambda: get_eng_ocr_fused(
+            lens,
+            tesseract,
+            processor=get_eng_ocr_fuser(
+                provider=provider,
+                **kwargs,
+            ),
+        ),
+    )
+
+
+def _load_or_create_lens_output(
+    image_series: ImageSeries,
+    output_dir_path: Path,
+    language: str,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+    source_path: Path | None,
+) -> Series:
+    """Load or create Google Lens OCR output.
+
+    Arguments:
+        image_series: image subtitle series
+        output_dir_path: OCR output directory
+        language: Google Lens language code
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+        source_path: optional existing Google Lens OCR output path
+    Returns:
+        Google Lens OCR series
+    """
+    return _load_or_create_series_output(
+        output_dir_path,
+        "lens",
+        "Lens OCR output",
+        overwrite,
+        output_paths,
+        lambda: ocr_image_series_with_lens(image_series, language=language),
+        source_path,
+    )
+
+
+def _load_or_create_paddle_output(
+    image_series: ImageSeries,
+    output_dir_path: Path,
+    language: str,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+    source_path: Path | None,
+) -> Series:
+    """Load or create PaddleOCR output.
+
+    Arguments:
+        image_series: image subtitle series
+        output_dir_path: OCR output directory
+        language: PaddleOCR language code
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+        source_path: optional existing PaddleOCR output path
+    Returns:
+        PaddleOCR series
+    """
+    return _load_or_create_series_output(
+        output_dir_path,
+        "paddle",
+        "PaddleOCR output",
+        overwrite,
+        output_paths,
+        lambda: ocr_image_series_with_paddle(image_series, language=language),
+        source_path,
+    )
+
+
+def _load_or_create_series_output(
+    output_dir_path: Path,
+    output_name: str,
+    display_name: str,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+    create_series: Callable[[], Series],
+    source_path: Path | None = None,
+) -> Series:
+    """Load or create a text subtitle output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        output_name: output name
+        display_name: output display name for logs
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+        create_series: function that creates the series when needed
+        source_path: optional existing source output path to copy from
+    Returns:
+        text subtitle series
+    """
+    output_path = output_dir_path / f"{output_name}.srt"
+    if output_path.exists() and not overwrite:
+        logger.info(f"{display_name} exists: {output_path}")
+        series = Series.load(output_path)
+    elif source_path is not None and source_path.exists():
+        logger.info(f"Using existing {display_name}: {source_path}")
+        series = Series.load(source_path)
+        series.save(output_path, format_="srt")
+    else:
+        series = create_series()
+        series.save(output_path, format_="srt")
+    output_paths[output_name] = output_path
+    return series
+
+
+def _load_or_create_tesseract_output(
+    image_series: ImageSeries,
+    output_dir_path: Path,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+    source_path: Path | None,
+) -> Series:
+    """Load or create Tesseract OCR output.
+
+    Arguments:
+        image_series: image subtitle series
+        output_dir_path: OCR output directory
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+        source_path: optional existing Tesseract OCR output path
+    Returns:
+        Tesseract OCR series
+    """
+    return _load_or_create_series_output(
+        output_dir_path,
+        "tesseract",
+        "Tesseract OCR output",
+        overwrite,
+        output_paths,
+        lambda: ocr_image_series_with_tesseract(image_series, language="eng"),
+        source_path,
+    )
+
+
+def _load_or_create_zho_clean_output(
+    output_dir_path: Path,
+    output_name: str,
+    series: Series,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+) -> Series:
+    """Load or create a cleaned Chinese OCR provider output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        output_name: output name
+        series: source series to clean
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    Returns:
+        cleaned series
+    """
+    if output_name == "fuse":
+        display_name = "Cleaned fused OCR output"
+    elif output_name == "paddle":
+        display_name = "Cleaned PaddleOCR output"
+    else:
+        display_name = "Cleaned Lens OCR output"
+    return _load_or_create_series_output(
+        output_dir_path,
+        f"{output_name}_clean",
+        display_name,
+        overwrite,
+        output_paths,
+        lambda: get_zho_cleaned(series, remove_empty=False),
+    )
+
+
+def _load_or_create_zho_fuse_output(
+    output_dir_path: Path,
+    lens: Series,
+    paddle: Series,
+    script: ChineseScript,
+    overwrite: bool,
+    provider: LLMProvider | None,
+    additional_context: str | None,
+    fuser_kw: dict[str, Any] | None,
+    output_paths: dict[str, Path],
+) -> Series:
+    """Load or create fused Chinese OCR output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        lens: Google Lens OCR series
+        paddle: PaddleOCR series
+        script: Chinese script to OCR, either simplified or traditional
+        overwrite: whether to overwrite existing workflow outputs
+        provider: provider to use for OCR fusion queries
+        additional_context: additional context to include in OCR fusion prompts
+        fuser_kw: keyword arguments for OCR fuser construction
+        output_paths: output paths to update
+    Returns:
+        fused Chinese OCR series
+    """
+    kwargs = _get_fuser_kw(fuser_kw, additional_context)
+    if script == "traditional":
+        kwargs.setdefault("prompt_cls", OcrFusionPromptZhoHant)
+    return _load_or_create_series_output(
+        output_dir_path,
+        "fuse",
+        "Fuse OCR output",
+        overwrite,
+        output_paths,
+        lambda: get_zho_ocr_fused(
+            lens,
+            paddle,
+            processor=get_zho_ocr_fuser(
+                provider=provider,
+                **kwargs,
+            ),
+        ),
+    )
+
+
+def _get_fuser_kw(
+    fuser_kw: dict[str, Any] | None,
+    additional_context: str | None,
+) -> dict[str, Any]:
+    """Get keyword arguments for OCR fuser construction.
+
+    Arguments:
+        fuser_kw: caller-provided keyword arguments
+        additional_context: additional context to include in OCR fusion prompts
+    Returns:
+        keyword arguments for OCR fuser construction
+    """
+    if fuser_kw is None:
+        kwargs: dict[str, Any] = {}
+    else:
+        kwargs = dict(fuser_kw)
+    kwargs.setdefault("additional_context", additional_context)
+    return kwargs
+
+
+def _load_or_create_validation_image_series(
+    output_dir_path: Path,
+    image_series: ImageSeries,
+    text_series: Series,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+) -> ImageSeries:
+    """Load or create image subtitles with OCR text.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        image_series: source image subtitle series
+        text_series: text subtitle series to copy into image subtitles
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    Returns:
+        image subtitle series with OCR text
+    """
+    image_dir_path = output_dir_path / "image"
+    if image_dir_path.exists() and not overwrite:
+        logger.info(f"Image OCR output exists: {image_dir_path}")
+        stored_image_series = ImageSeries.load(image_dir_path)
+        validation_image_series = _get_image_series_with_text(
+            stored_image_series, text_series
+        )
+    else:
+        validation_image_series = _get_image_series_with_text(image_series, text_series)
+        validation_image_series.save(image_dir_path)
+    output_paths["image"] = image_dir_path
+    return validation_image_series
+
+
+def _load_or_create_validation_output(
+    output_dir_path: Path,
+    image_series: ImageSeries,
+    text_series: Series,
+    language: str,
+    *,
+    dev: bool,
+    overwrite: bool,
+    output_paths: dict[str, Path],
+) -> Series:
+    """Load or create OCR validation output.
+
+    Arguments:
+        output_dir_path: OCR output directory
+        image_series: source image subtitle series
+        text_series: text subtitle series to validate
+        language: OCR validation language
+        dev: whether validation should write data updates to repo data
+        overwrite: whether to overwrite existing workflow outputs
+        output_paths: output paths to update
+    Returns:
+        validated text subtitle series
+    """
+    validate_path = output_dir_path / "fuse_clean_validate.srt"
+    if validate_path.exists() and not overwrite:
+        logger.info(f"Validated OCR output exists: {validate_path}")
+        output_paths["fuse_clean_validate"] = validate_path
+        return Series.load(validate_path)
+
+    validation_image_series = _load_or_create_validation_image_series(
+        output_dir_path,
+        image_series,
+        text_series,
+        overwrite,
+        output_paths,
+    )
+    validated = _validate_ocr(validation_image_series, language, dev)
+    validated.save(validate_path, format_="srt", exist_ok=True)
+    output_paths["fuse_clean_validate"] = validate_path
+    return Series.load(validate_path)
+
+
+def _source_output_path(source_dir_path: Path | None, output_name: str) -> Path | None:
+    """Get source OCR output path if a source directory was provided.
+
+    Arguments:
+        source_dir_path: optional source OCR output directory
+        output_name: OCR output name
+    Returns:
+        source OCR output path, if available
+    """
+    if source_dir_path is None:
+        return None
+    return source_dir_path / f"{output_name}.srt"
+
+
+def _validate_ocr(image_series: ImageSeries, language: str, dev: bool) -> Series:
+    """Validate OCR subtitles against image subtitles.
+
+    Arguments:
+        image_series: image subtitle series with OCR text
+        language: OCR validation language
+        dev: whether validation should write data updates to repo data
+    Returns:
+        validated text subtitle series
+    """
+    if language == "eng":
+        return validate_eng_ocr(image_series, interactive=dev, dev=dev)
+    return validate_zho_ocr(image_series, interactive=dev, dev=dev)

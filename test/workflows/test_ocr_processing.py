@@ -12,6 +12,7 @@ from scinoephile.core import ScinoephileError
 from scinoephile.core.media import SubtitleStream
 from scinoephile.core.subtitles import Series, Subtitle
 from scinoephile.image.subtitles import ImageSeries
+from scinoephile.lang.zho.ocr_fusion import OcrFusionPromptZhoHant
 from scinoephile.workflows.ocr_processing import process_eng_ocr, process_zho_ocr
 
 
@@ -111,14 +112,17 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     result = process_eng_ocr(
         infile_path=source_path,
         output_dir_path=output_dir_path,
+        validate=False,
     )
 
     assert loaded_paths == [source_path]
     assert result.output_dir_path == output_dir_path
     assert result.output_paths == {
+        "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
         "tesseract": output_dir_path / "tesseract.srt",
         "fuse": output_dir_path / "fuse.srt",
+        "fuse_clean": output_dir_path / "fuse_clean.srt",
     }
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "lens.srt")
@@ -128,6 +132,9 @@ def test_process_eng_ocr_runs_lens_tesseract_and_fusion(
     ] == ["tesseract"]
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "fuse.srt")
+    ] == ["fused"]
+    assert [
+        subtitle.text for subtitle in Series.load(output_dir_path / "fuse_clean.srt")
     ] == ["fused"]
 
 
@@ -180,14 +187,17 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
         infile_path=source_path,
         output_dir_path=output_dir_path,
         clean=True,
+        validate=False,
     )
 
     assert result.output_paths == {
+        "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
         "tesseract": output_dir_path / "tesseract.srt",
         "lens_clean": output_dir_path / "lens_clean.srt",
         "tesseract_clean": output_dir_path / "tesseract_clean.srt",
         "fuse": output_dir_path / "fuse.srt",
+        "fuse_clean": output_dir_path / "fuse_clean.srt",
     }
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "lens.srt")
@@ -202,6 +212,289 @@ def test_process_eng_ocr_can_clean_provider_outputs_before_fusion(
         subtitle.text
         for subtitle in Series.load(output_dir_path / "tesseract_clean.srt")
     ] == ["tesseract"]
+
+
+def test_process_eng_ocr_can_reuse_source_ocr_outputs(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test English OCR processing can reuse existing source OCR outputs.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    source_dir_path = tmp_path / "source_ocr"
+    source_dir_path.mkdir()
+    _series("source lens").save(source_dir_path / "lens.srt")
+    _series("source tesseract").save(source_dir_path / "tesseract.srt")
+    output_dir_path = tmp_path / "output"
+
+    def fake_fuse(lens: Series, tesseract: Series, **kwargs: object) -> Series:
+        """Fake English OCR fusion."""
+        assert [subtitle.text for subtitle in lens] == ["source lens"]
+        assert [subtitle.text for subtitle in tesseract] == ["source tesseract"]
+        assert kwargs == {"processor": fuser}
+        return _series("fused")
+
+    fuser = object()
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: pytest.fail("Lens should not run"),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+        lambda image_series, *, language: pytest.fail("Tesseract should not run"),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+        lambda provider, additional_context: fuser,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+        fake_fuse,
+    )
+
+    process_eng_ocr(
+        infile_path=source_path,
+        output_dir_path=output_dir_path,
+        source_dir_path=source_dir_path,
+        validate=False,
+    )
+
+    assert [
+        subtitle.text for subtitle in Series.load(output_dir_path / "lens.srt")
+    ] == ["source lens"]
+    assert [
+        subtitle.text for subtitle in Series.load(output_dir_path / "tesseract.srt")
+    ] == ["source tesseract"]
+
+
+def test_process_eng_ocr_validates_fuse_clean_output(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test English OCR processing validates cleaned fused output by default.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    output_dir_path = tmp_path / "output"
+    validate_calls: list[tuple[list[str], bool, bool]] = []
+
+    def fake_validate(
+        series: ImageSeries,
+        interactive: bool = False,
+        dev: bool = False,
+    ) -> Series:
+        """Fake English OCR validation."""
+        validate_calls.append(
+            ([subtitle.text for subtitle in series], interactive, dev)
+        )
+        return _series_with_texts(["validated 1", "validated 2"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+        lambda image_series, *, language: _series_with_texts(
+            ["tesseract 1", "tesseract 2"]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+        lambda provider, additional_context: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+        lambda lens, tesseract, **kwargs: _series_with_texts(
+            ["fused 1...", "fused 2..."]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
+        fake_validate,
+    )
+
+    result = process_eng_ocr(
+        infile_path=source_path,
+        output_dir_path=output_dir_path,
+        dev=True,
+    )
+
+    assert result.output_paths["image"] == output_dir_path / "image"
+    assert result.output_paths["fuse_clean_validate"] == (
+        output_dir_path / "fuse_clean_validate.srt"
+    )
+    assert validate_calls == [(["fused 1…", "fused 2…"], True, True)]
+    assert [
+        subtitle.text
+        for subtitle in Series.load(output_dir_path / "fuse_clean_validate.srt")
+    ] == ["validated 1", "validated 2"]
+
+
+def test_process_eng_ocr_uses_interactive_validation_when_dev(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test dev OCR validation uses interactive validation prompts.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    output_dir_path = tmp_path / "output"
+    validate_calls: list[tuple[bool, bool]] = []
+
+    def fake_validate(
+        series: ImageSeries,
+        stop_at_idx: int | None = None,
+        interactive: bool = False,
+        output_dir_path: Path | str | None = None,
+        dev: bool = False,
+    ) -> Series:
+        """Fake English OCR validation."""
+        validate_calls.append((interactive, dev))
+        return _series_with_texts(["validated 1", "validated 2"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+        lambda image_series, *, language: _series_with_texts(
+            ["tesseract 1", "tesseract 2"]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+        lambda provider, additional_context: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+        lambda lens, tesseract, **kwargs: _series_with_texts(
+            ["fused 1...", "fused 2..."]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
+        fake_validate,
+    )
+
+    process_eng_ocr(
+        infile_path=source_path,
+        output_dir_path=output_dir_path,
+        dev=True,
+    )
+
+    assert validate_calls == [(True, True)]
+
+
+def test_process_eng_ocr_does_not_overwrite_existing_validation_images(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    tiny_image_series: ImageSeries,
+):
+    """Test validation does not overwrite existing image output by default.
+
+    Arguments:
+        monkeypatch: pytest monkeypatch fixture
+        tmp_path: pytest temporary path fixture
+        tiny_image_series: small image subtitle series
+    """
+    source_path = tmp_path / "source.sup"
+    source_path.write_bytes(b"unused")
+    output_dir_path = tmp_path / "output"
+    image_dir_path = output_dir_path / "image"
+    existing_image_series = ImageSeries(
+        events=[
+            type(tiny_image_series.events[0])(
+                start=subtitle.start,
+                end=subtitle.end,
+                img=subtitle.img,
+                text="existing text",
+            )
+            for subtitle in tiny_image_series.events
+        ]
+    )
+    existing_image_series.save(image_dir_path)
+    original_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    validate_texts: list[list[str]] = []
+
+    def fake_validate(
+        series: ImageSeries,
+        interactive: bool = False,
+        dev: bool = False,
+    ) -> Series:
+        """Fake English OCR validation."""
+        validate_texts.append([subtitle.text for subtitle in series])
+        return _series_with_texts(["validated 1", "validated 2"])
+
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ImageSeries.load",
+        lambda path: tiny_image_series,
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_lens",
+        lambda image_series, *, language: _series_with_texts(["lens 1", "lens 2"]),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.ocr_image_series_with_tesseract",
+        lambda image_series, *, language: _series_with_texts(
+            ["tesseract 1", "tesseract 2"]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fuser",
+        lambda provider, additional_context: object(),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.get_eng_ocr_fused",
+        lambda lens, tesseract, **kwargs: _series_with_texts(
+            ["fused 1...", "fused 2..."]
+        ),
+    )
+    monkeypatch.setattr(
+        "scinoephile.workflows.ocr_processing.validate_eng_ocr",
+        fake_validate,
+    )
+
+    process_eng_ocr(
+        infile_path=source_path,
+        output_dir_path=output_dir_path,
+    )
+
+    assert validate_texts == [["fused 1…", "fused 2…"]]
+    current_index = (image_dir_path / "index.html").read_text(encoding="utf-8")
+    assert current_index == original_index
 
 
 def test_process_zho_ocr_runs_lens_paddle_and_fusion(
@@ -252,9 +545,16 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
         fake_paddle,
     )
+    fuser_kwargs = []
+
+    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
+        """Fake Chinese OCR fuser construction."""
+        fuser_kwargs.append(kwargs)
+        return fuser
+
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        lambda provider, additional_context: fuser,
+        fake_get_zho_ocr_fuser,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
@@ -264,12 +564,15 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
     result = process_zho_ocr(
         infile_path=source_path,
         output_dir_path=output_dir_path,
+        validate=False,
     )
 
     assert result.output_paths == {
+        "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
         "paddle": output_dir_path / "paddle.srt",
         "fuse": output_dir_path / "fuse.srt",
+        "fuse_clean": output_dir_path / "fuse_clean.srt",
     }
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "lens.srt")
@@ -279,6 +582,9 @@ def test_process_zho_ocr_runs_lens_paddle_and_fusion(
     ] == ["paddle"]
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "fuse.srt")
+    ] == ["fused"]
+    assert [
+        subtitle.text for subtitle in Series.load(output_dir_path / "fuse_clean.srt")
     ] == ["fused"]
 
 
@@ -318,9 +624,16 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
         lambda image_series, *, language: _series("字幕, 好?"),
     )
+    fuser_kwargs = []
+
+    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
+        """Fake Chinese OCR fuser construction."""
+        fuser_kwargs.append(kwargs)
+        return fuser
+
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        lambda provider, additional_context: fuser,
+        fake_get_zho_ocr_fuser,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
@@ -331,14 +644,17 @@ def test_process_zho_ocr_can_clean_provider_outputs_before_fusion(
         infile_path=source_path,
         output_dir_path=output_dir_path,
         clean=True,
+        validate=False,
     )
 
     assert result.output_paths == {
+        "image": output_dir_path / "image",
         "lens": output_dir_path / "lens.srt",
         "paddle": output_dir_path / "paddle.srt",
         "lens_clean": output_dir_path / "lens_clean.srt",
         "paddle_clean": output_dir_path / "paddle_clean.srt",
         "fuse": output_dir_path / "fuse.srt",
+        "fuse_clean": output_dir_path / "fuse_clean.srt",
     }
     assert [
         subtitle.text for subtitle in Series.load(output_dir_path / "lens.srt")
@@ -400,9 +716,16 @@ def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
         "scinoephile.workflows.ocr_processing.ocr_image_series_with_paddle",
         fake_paddle,
     )
+    fuser_kwargs = []
+
+    def fake_get_zho_ocr_fuser(**kwargs: object) -> object:
+        """Fake Chinese OCR fuser construction."""
+        fuser_kwargs.append(kwargs)
+        return fuser
+
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fuser",
-        lambda provider, additional_context: fuser,
+        fake_get_zho_ocr_fuser,
     )
     monkeypatch.setattr(
         "scinoephile.workflows.ocr_processing.get_zho_ocr_fused",
@@ -413,7 +736,15 @@ def test_process_zho_ocr_passes_traditional_languages_to_ocr_engines(
         infile_path=source_path,
         output_dir_path=output_dir_path,
         script="traditional",
+        validate=False,
     )
+    assert fuser_kwargs == [
+        {
+            "provider": None,
+            "additional_context": None,
+            "prompt_cls": OcrFusionPromptZhoHant,
+        }
+    ]
 
 
 def test_process_eng_ocr_can_export_source_image_series(
@@ -462,7 +793,7 @@ def test_process_eng_ocr_can_export_source_image_series(
     result = process_eng_ocr(
         infile_path=source_path,
         output_dir_path=output_dir_path,
-        export_images=True,
+        validate=False,
     )
 
     assert result.output_paths["image"] == output_dir_path / "image"
@@ -542,6 +873,7 @@ def test_process_eng_ocr_media_input_loads_selected_subtitle_stream(
         infile_path=source_path,
         output_dir_path=output_dir_path,
         stream_index=5,
+        validate=False,
     )
 
     assert cache_calls == [(source_path, [stream], None)]
@@ -570,4 +902,5 @@ def test_process_eng_ocr_media_input_requires_matching_stream_index(
             infile_path=source_path,
             output_dir_path=tmp_path / "output",
             stream_index=7,
+            validate=False,
         )
