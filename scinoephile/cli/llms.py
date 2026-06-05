@@ -40,6 +40,7 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "file from which to read additional context for LLM prompts": (
             "用于读取 LLM 提示词附加上下文的文件"
         ),
+        "llm arguments": "LLM 参数",
         "LLM model identifier override": "LLM 模型标识符覆盖值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show providers, default models, and API-key environment variables.": (
@@ -54,6 +55,7 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "file from which to read additional context for LLM prompts": (
             "用於讀取 LLM 提示詞附加上下文的檔案"
         ),
+        "llm arguments": "LLM 參數",
         "LLM model identifier override": "LLM 模型識別碼覆寫值",
         "LLM provider to use (default: %(default)s). Use --list-llm-providers "
         "to show providers, default models, and API-key environment variables.": (
@@ -67,16 +69,16 @@ LLM_LOCALIZATIONS: dict[str, dict[str, str]] = {
 
 
 def add_llm_provider_arguments(
-    operation_arg_group: _ArgumentGroup,
+    llm_arg_group: _ArgumentGroup,
     additional_help_arg_group: _ArgumentGroup,
 ):
     """Add standard LLM provider arguments to argument groups.
 
     Arguments:
-        operation_arg_group: group to which provider arguments are added
+        llm_arg_group: group to which provider arguments are added
         additional_help_arg_group: group to which help-only arguments are added
     """
-    operation_arg_group.add_argument(
+    llm_arg_group.add_argument(
         "--llm-provider",
         default=DEFAULT_PROVIDER_NAME,
         dest="llm_provider_name",
@@ -86,13 +88,13 @@ def add_llm_provider_arguments(
             "to show providers, default models, and API-key environment variables."
         ),
     )
-    operation_arg_group.add_argument(
+    llm_arg_group.add_argument(
         "--llm-model",
         default=None,
         dest="llm_model_name",
         help="LLM model identifier override",
     )
-    operation_arg_group.add_argument(
+    llm_arg_group.add_argument(
         "--llm-additional-content-file",
         default=None,
         dest="llm_additional_context_file_path",
