@@ -124,16 +124,21 @@ def load_char_pair_gaps(
     char_pair_gaps: dict[tuple[str, str], tuple[int, int, int, int]] = {}
     with file_path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)
-        for row in reader:
+        for line_no, row in enumerate(reader, start=1):
             if not row:
                 continue
             char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4 = row
-            char_pair_gaps[(char_1, char_2)] = (
+            char_pair = (char_1, char_2)
+            cutoffs = (
                 int(cutoff_1),
                 int(cutoff_2),
                 int(cutoff_3),
                 int(cutoff_4),
             )
+            _validate_char_pair_gap_cutoffs(
+                char_pair, cutoffs, file_path=file_path, line_no=line_no
+            )
+            char_pair_gaps[char_pair] = cutoffs
     return char_pair_gaps
 
 
@@ -146,17 +151,44 @@ def save_char_pair_gaps(
         char_pair_gaps: char pair gaps to save
         file_path: path to file
     """
-    rows = [
-        (char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4)
-        for (char_1, char_2), (
-            cutoff_1,
-            cutoff_2,
-            cutoff_3,
-            cutoff_4,
-        ) in char_pair_gaps.items()
-    ]
+    rows: list[tuple[str, str, int, int, int, int]] = []
+    for (char_1, char_2), cutoffs in char_pair_gaps.items():
+        _validate_char_pair_gap_cutoffs((char_1, char_2), cutoffs, file_path=file_path)
+        cutoff_1, cutoff_2, cutoff_3, cutoff_4 = cutoffs
+        rows.append((char_1, char_2, cutoff_1, cutoff_2, cutoff_3, cutoff_4))
     rows = sorted({tuple(row) for row in rows})
     with file_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerows(rows)
     logger.info(f"Saved {file_path}.")
+
+
+def _validate_char_pair_gap_cutoffs(
+    char_pair: tuple[str, str],
+    cutoffs: tuple[int, int, int, int],
+    *,
+    file_path: Path | None = None,
+    line_no: int | None = None,
+):
+    """Validate that character pair gap cutoffs are ordered.
+
+    Arguments:
+        char_pair: character pair
+        cutoffs: gap cutoffs
+        file_path: optional source or destination file path
+        line_no: optional source line number
+    Raises:
+        ValueError: if cutoffs are not monotonic
+    """
+    if cutoffs[0] <= cutoffs[1] <= cutoffs[2] <= cutoffs[3]:
+        return
+
+    location = ""
+    if file_path is not None:
+        location = f" in {file_path}"
+        if line_no is not None:
+            location = f"{location}:{line_no}"
+    raise ValueError(
+        f"Character pair gap cutoffs must be monotonic for {char_pair!r}"
+        f"{location}: {cutoffs!r}"
+    )
