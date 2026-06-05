@@ -7,16 +7,17 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
+from scinoephile.cli.web import WEB_LOCALIZATIONS, add_web_server_arguments
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
-    int_arg,
     output_file_arg,
     str_arg,
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
 from scinoephile.lang.zho.ocr_validation import validate_zho_ocr
@@ -29,7 +30,6 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕校验命令行界面"
         ),
-        "host for the OCR validation web UI": "OCR 校验网页界面的主机",
         "launch the local OCR validation web UI": "启动本地 OCR 校验网页界面",
         "language of the OCR text to validate (eng or zho)": (
             "要校验的 OCR 文本语言（eng 或 zho）"
@@ -39,19 +39,16 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "OCR 图像字幕输入路径（包含 index.html 和 png 文件的目录，或 .sup 文件）"
         ),
         "overwrite outfile if it exists": "若输出文件已存在则覆盖",
-        "port for the OCR validation web UI": "OCR 校验网页界面的端口",
         "validate OCR text against subtitle images": "对照字幕图像校验 OCR 文本",
         "validated subtitle outfile path": "已校验字幕输出文件路径",
         "maintainer option: write validation data updates to repo data": (
             "维护者选项：将校验数据更新写入仓库数据"
         ),
-        "web arguments": "网页参数",
     },
     "zh-hant": {
         "command-line interface for OCR subtitle validation": (
             "OCR 字幕驗證命令列介面"
         ),
-        "host for the OCR validation web UI": "OCR 驗證網頁介面的主機",
         "launch the local OCR validation web UI": "啟動本機 OCR 驗證網頁介面",
         "language of the OCR text to validate (eng or zho)": (
             "要驗證的 OCR 文字語言（eng 或 zho）"
@@ -61,13 +58,11 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
             "OCR 影像字幕輸入路徑（包含 index.html 和 png 檔案的目錄，或 .sup 檔）"
         ),
         "overwrite outfile if it exists": "若輸出檔已存在則覆寫",
-        "port for the OCR validation web UI": "OCR 驗證網頁介面的連接埠",
         "validate OCR text against subtitle images": "對照字幕影像驗證 OCR 文字",
         "validated subtitle outfile path": "已驗證字幕輸出檔路徑",
         "maintainer option: write validation data updates to repo data": (
             "維護者選項：將驗證資料更新寫入儲存庫資料"
         ),
-        "web arguments": "網頁參數",
     },
 }
 """Localized help text keyed by locale and English source text."""
@@ -76,7 +71,10 @@ OCR_VALIDATE_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class OcrValidateCli(ScinoephileCliBase):
     """Validate OCR text against subtitle images."""
 
-    localizations = OCR_VALIDATE_LOCALIZATIONS
+    localizations = merge_localizations(
+        WEB_LOCALIZATIONS,
+        OCR_VALIDATE_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -129,18 +127,7 @@ class OcrValidateCli(ScinoephileCliBase):
             action="store_true",
             help="launch the local OCR validation web UI",
         )
-        arg_groups["web arguments"].add_argument(
-            "--host",
-            default="127.0.0.1",
-            type=str,
-            help="host for the OCR validation web UI",
-        )
-        arg_groups["web arguments"].add_argument(
-            "--port",
-            default=5000,
-            type=int_arg(min_value=1),
-            help="port for the OCR validation web UI",
-        )
+        add_web_server_arguments(arg_groups["web arguments"])
 
         # Output arguments
         arg_groups["output arguments"].add_argument(

@@ -14,6 +14,7 @@ from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCl
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
+from scinoephile.cli.web import add_web_server_arguments
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -67,6 +68,22 @@ def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterfac
     assert _get_action_group_title(cli, "--interactive") == "web arguments"
     assert _get_action_group_title(cli, "--host") == "web arguments"
     assert _get_action_group_title(cli, "--port") == "web arguments"
+
+
+def test_add_web_server_arguments_adds_standard_host_and_port():
+    """Test the shared web server helper adds standard host and port options."""
+    parser = ArgumentParser()
+    web_arg_group = parser.add_argument_group("web arguments")
+
+    add_web_server_arguments(web_arg_group)
+
+    namespace = parser.parse_args(["--host", "0.0.0.0", "--port", "5050"])
+    assert namespace.host == "0.0.0.0"
+    assert namespace.port == 5050
+
+    default_namespace = parser.parse_args([])
+    assert default_namespace.host == "127.0.0.1"
+    assert default_namespace.port == 5000
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:
