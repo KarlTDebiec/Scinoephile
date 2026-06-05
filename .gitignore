@@ -9,7 +9,6 @@ scinoephile.egg-info
 /test/data/*/input/*_ocr/source.sup
 /test/data/*/output/**/*.html
 /test/data/*/output/**/*.json
-!/test/data/*/output/*_ocr/lang/*/*.json
 /test/data/*/output/**/*.png
 /test/data/*/output/**/*.wav
 /test/data/cache/**
