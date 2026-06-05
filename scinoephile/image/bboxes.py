@@ -103,7 +103,17 @@ def get_bboxes(img: Image.Image) -> list[Bbox]:  # noqa: PLR0912, PLR0915
             for line in merged_line_candidates:
                 if line is None:
                     continue
-                if merged_lines and line[0] - merged_lines[-1][1] <= min_line_gap:
+                if not merged_lines:
+                    merged_lines.append(line)
+                    continue
+                gap = line[0] - merged_lines[-1][1]
+                previous_line_height = merged_lines[-1][1] - merged_lines[-1][0]
+                line_height = line[1] - line[0]
+                merge_at_minimum_gap = gap == min_line_gap and (
+                    previous_line_height < min_line_height
+                    or line_height < min_line_height
+                )
+                if gap < min_line_gap or merge_at_minimum_gap:
                     merged_lines[-1][1] = max(merged_lines[-1][1], line[1])
                 else:
                     merged_lines.append(line)

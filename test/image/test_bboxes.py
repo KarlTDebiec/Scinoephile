@@ -15,12 +15,28 @@ def test_get_bboxes_merges_line_components_at_minimum_gap():
     img = _make_mask_img(
         size=(10, 70),
         rects=[
+            (2, 0, 7, 4),
+            (2, 10, 7, 64),
+        ],
+    )
+
+    assert get_bboxes(img) == [Bbox(x1=2, x2=8, y1=0, y2=65)]
+
+
+def test_get_bboxes_preserves_full_height_lines_at_minimum_gap():
+    """Test full-height lines separated by the minimum gap remain separate."""
+    img = _make_mask_img(
+        size=(10, 70),
+        rects=[
             (2, 0, 7, 29),
             (2, 35, 7, 64),
         ],
     )
 
-    assert get_bboxes(img) == [Bbox(x1=2, x2=8, y1=0, y2=65)]
+    assert get_bboxes(img) == [
+        Bbox(x1=2, x2=8, y1=0, y2=30),
+        Bbox(x1=2, x2=8, y1=35, y2=65),
+    ]
 
 
 def test_get_bboxes_preserves_chained_small_line_merges():
