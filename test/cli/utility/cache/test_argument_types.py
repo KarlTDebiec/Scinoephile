@@ -4,21 +4,27 @@
 
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from pathlib import Path
 from unittest.mock import patch
 
-from scinoephile.cli.helpers.cache import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import add_cache_dir_argument
 
 
-def test_cache_dir_path_arg_resolves_runtime_cache_subpath():
+def test_add_cache_dir_argument_resolves_runtime_cache_subpath():
     """Test cache directory defaults may include runtime cache subpath parts."""
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+
     with patch(
         "scinoephile.cli.helpers.cache.get_runtime_cache_dir_path",
         return_value=Path("/cache/media/subtitles"),
     ) as get_runtime_cache_dir_path:
-        cache_dir_path = cache_dir_path_arg("media", "subtitles")
+        add_cache_dir_argument(cache_arg_group, "media", "subtitles")
 
-    assert cache_dir_path == Path("/cache/media/subtitles")
+    namespace = parser.parse_args([])
+
+    assert namespace.cache_dir_path == Path("/cache/media/subtitles")
     get_runtime_cache_dir_path.assert_called_once_with(
         "media",
         "subtitles",
@@ -26,15 +32,18 @@ def test_cache_dir_path_arg_resolves_runtime_cache_subpath():
     )
 
 
-def test_cache_dir_path_arg_resolves_user_path_without_creating(tmp_path: Path):
+def test_add_cache_dir_argument_resolves_user_path_without_creating(tmp_path: Path):
     """Test cache directory CLI paths are resolved without parser-time creation.
 
     Arguments:
         tmp_path: pytest temporary path fixture
     """
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
     cache_dir_path = tmp_path / "cache"
 
-    resolved_cache_dir_path = cache_dir_path_arg(str(cache_dir_path))
+    add_cache_dir_argument(cache_arg_group)
+    namespace = parser.parse_args(["--cache-dir", str(cache_dir_path)])
 
-    assert resolved_cache_dir_path == cache_dir_path.resolve()
+    assert namespace.cache_dir_path == cache_dir_path.resolve()
     assert not cache_dir_path.exists()

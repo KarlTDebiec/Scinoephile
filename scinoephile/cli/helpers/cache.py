@@ -13,7 +13,6 @@ __all__ = [
     "CACHE_DIR_HELP",
     "CACHE_LOCALIZATIONS",
     "add_cache_dir_argument",
-    "cache_dir_path_arg",
 ]
 
 CACHE_DIR_HELP = "cache directory path (default: %(default)s)"
@@ -46,14 +45,14 @@ def add_cache_dir_argument(
     """
     cache_arg_group.add_argument(
         "--cache-dir",
-        default=cache_dir_path_arg(*default_parts),
+        default=_cache_dir_path_arg(*default_parts),
         dest="cache_dir_path",
-        type=cache_dir_path_arg,
+        type=_cache_dir_path_arg,
         help=help_text,
     )
 
 
-def cache_dir_path_arg(*values: str | None) -> Path:
+def _cache_dir_path_arg(*values: str | None) -> Path:
     """Resolve a cache directory CLI argument.
 
     Arguments:
