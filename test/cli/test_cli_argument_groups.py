@@ -123,6 +123,9 @@ def test_add_web_server_args_bundles_standard_host_and_port():
     default_namespace = parser.parse_args([])
     assert default_namespace.web_args == WebServerArguments()
 
+    with pytest.raises(SystemExit):
+        parser.parse_args(["--port", "65536"])
+
 
 def test_add_cache_dir_arg_adds_standard_cache_option(tmp_path: Path):
     """Test the shared cache helper adds a standard cache directory option.

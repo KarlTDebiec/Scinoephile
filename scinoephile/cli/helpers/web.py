@@ -65,6 +65,6 @@ def add_web_server_args(web_arg_group: _ArgumentGroup):
         dest="web_args",
         field_name="port",
         metavar="PORT",
-        type=int_arg(min_value=1),
+        type=int_arg(min_value=1, max_value=65535),
         help="port for the local web server",
     )
