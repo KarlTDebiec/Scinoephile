@@ -118,7 +118,7 @@ def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
     assert namespace.llm_args == LlmArguments(
         provider_name="openai",
         model_name="gpt-test",
-        additional_context_file_path=context_file_path,
+        additional_context_file_path=context_file_path.resolve(),
     )
     assert not hasattr(namespace, "llm")
     assert not hasattr(namespace, "llm_provider_name")
