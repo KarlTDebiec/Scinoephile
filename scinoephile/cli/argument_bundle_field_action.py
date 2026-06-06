@@ -52,8 +52,15 @@ class ArgumentBundleFieldAction(Action):
             values: parsed argument value
             option_string: option string used
         """
-        _ = parser, option_string
         bundle = getattr(namespace, self.dest, None)
         if not isinstance(bundle, self.bundle_type):
             bundle = self.bundle_type()
-        setattr(namespace, self.dest, replace(bundle, **{self.field_name: values}))
+        try:
+            updated_bundle = replace(bundle, **{self.field_name: values})
+        except TypeError as err:
+            argument_name = option_string or self.dest
+            parser.error(
+                f"{argument_name} cannot update argument bundle field "
+                f"{self.field_name!r}: {err}"
+            )
+        setattr(namespace, self.dest, updated_bundle)
