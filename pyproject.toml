@@ -39,7 +39,7 @@ ocr = [
 ]
 transcription = [
     "demucs-infer>=4.1.2",
-    "huggingface-hub>=1.17.0",
+    "huggingface-hub>=1.18.0",
     "onnxruntime>=1.26.0",
     "torch>=2.10.0",
     "torchaudio>=2.10.0,<2.11.0",
