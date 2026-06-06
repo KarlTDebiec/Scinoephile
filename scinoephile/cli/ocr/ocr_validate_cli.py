@@ -20,7 +20,7 @@ from scinoephile.common.argument_parsing import (
 )
 from scinoephile.common.exceptions import NotAFileError
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.image.subtitles import ImageSeries
 from scinoephile.lang.eng.ocr_validation import validate_eng_ocr
@@ -206,17 +206,11 @@ class OcrValidateCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         if language == "eng":
-            validated = validate_eng_ocr(
-                series,
-                dev=dev,
-            )
+            validated = validate_eng_ocr(series, dev=dev)
         else:
-            validated = validate_zho_ocr(
-                series,
-                dev=dev,
-            )
+            validated = validate_zho_ocr(series, dev=dev)
 
-        validated.save(outfile_path, format_="srt", exist_ok=True)
+        write_series(parser, validated, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
