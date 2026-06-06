@@ -6,34 +6,10 @@ from __future__ import annotations
 
 from argparse import ArgumentTypeError
 from datetime import timedelta
-from pathlib import Path
 
 from scinoephile.core.cache.duration import parse_duration
-from scinoephile.core.paths import get_runtime_cache_dir_path
 
-__all__ = [
-    "cache_dir_path_arg",
-    "duration_arg",
-]
-
-
-def cache_dir_path_arg(*values: str | None) -> Path:
-    """Resolve a cache directory CLI argument.
-
-    Arguments:
-        *values: path value or runtime cache subpath parts
-    Returns:
-        resolved cache directory path
-    """
-    if len(values) == 0 or values == (None,):
-        return get_runtime_cache_dir_path(create=False)
-    if len(values) > 1:
-        parts = [value for value in values if value is not None]
-        return get_runtime_cache_dir_path(*parts, create=False)
-    value = values[0]
-    if value is None:
-        return get_runtime_cache_dir_path(create=False)
-    return Path(value).expanduser().resolve()
+__all__ = ["duration_arg"]
 
 
 def duration_arg(value: str) -> timedelta:

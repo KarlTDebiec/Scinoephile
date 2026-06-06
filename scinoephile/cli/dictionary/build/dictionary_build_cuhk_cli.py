@@ -8,13 +8,13 @@ from argparse import ArgumentParser
 from logging import getLogger
 from pathlib import Path
 
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
 from scinoephile.common.argument_parsing import (
     float_arg,
     get_arg_groups_by_name,
     int_arg,
-    output_dir_arg,
 )
-from scinoephile.core.paths import get_runtime_cache_dir_path
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.dictionaries.cuhk import CuhkDictionaryService
 from scinoephile.dictionaries.cuhk.constants import CUHK_SOURCE
 
@@ -69,7 +69,10 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
     source = CUHK_SOURCE
     """Dictionary source built by this CLI."""
 
-    localizations = DICTIONARY_BUILD_CUHK_LOCALIZATIONS
+    localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
+        DICTIONARY_BUILD_CUHK_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -89,12 +92,11 @@ class DictionaryBuildCuhkCli(DictionaryBuildCliBase):
         )
 
         # Input arguments
-        arg_groups["input arguments"].add_argument(
-            "--cache-dir",
-            dest="cache_dir_path",
-            default=get_runtime_cache_dir_path("dictionaries", "cuhk", create=False),
-            type=output_dir_arg(),
-            help=(
+        add_cache_dir_argument(
+            arg_groups["input arguments"],
+            "dictionaries",
+            "cuhk",
+            help_text=(
                 "cache directory for scraped HTML and link data (default: %(default)s)"
             ),
         )

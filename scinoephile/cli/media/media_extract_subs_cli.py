@@ -7,7 +7,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
+from scinoephile.cli.helpers.cache import CACHE_LOCALIZATIONS, add_cache_dir_argument
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_arg,
@@ -16,6 +16,7 @@ from scinoephile.common.argument_parsing import (
 from scinoephile.core import ScinoephileError
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.core.cli.argument_types import language_arg
+from scinoephile.core.cli.localization import merge_localizations
 from scinoephile.media.constants import DEFAULT_SUBTITLE_LANGUAGES
 from scinoephile.workflows.subtitle_extraction import (
     SubtitleExtractionOutputStatus,
@@ -77,7 +78,10 @@ MEDIA_EXTRACT_SUBS_LOCALIZATIONS: dict[str, dict[str, str]] = {
 class MediaExtractSubsCli(ScinoephileCliBase):
     """Extract matching subtitle streams from a video file."""
 
-    localizations = MEDIA_EXTRACT_SUBS_LOCALIZATIONS
+    localizations = merge_localizations(
+        CACHE_LOCALIZATIONS,
+        MEDIA_EXTRACT_SUBS_LOCALIZATIONS,
+    )
     """Localized help text keyed by locale and English source text."""
 
     @classmethod
@@ -121,12 +125,11 @@ class MediaExtractSubsCli(ScinoephileCliBase):
             action="store_true",
             help="include additional subtitle stream details",
         )
-        arg_groups["operation arguments"].add_argument(
-            "--cache-dir",
-            default=cache_dir_path_arg("media", "subtitles"),
-            dest="cache_dir_path",
-            type=cache_dir_path_arg,
-            help=(
+        add_cache_dir_argument(
+            arg_groups["operation arguments"],
+            "media",
+            "subtitles",
+            help_text=(
                 "cache directory for extracted or converted subtitle artifacts "
                 "(default: %(default)s)"
             ),

@@ -17,7 +17,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from scinoephile.cli.argument_bundle_field_action import ArgumentBundleFieldAction
 from scinoephile.common.argument_parsing import input_file_arg
 from scinoephile.core.cli import ScinoephileCliBase
 from scinoephile.llms.providers.registry import (
@@ -27,6 +26,8 @@ from scinoephile.llms.providers.registry import (
     get_provider_description,
     get_provider_names,
 )
+
+from .argument_bundle_field_action import ArgumentBundleFieldAction
 
 __all__ = [
     "LLM_LOCALIZATIONS",

@@ -9,9 +9,9 @@ from unittest.mock import patch
 
 import pytest
 
+from scinoephile.cli.helpers.cache import cache_dir_path_arg
 from scinoephile.cli.ocr.ocr_cli import OcrCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
-from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
 from scinoephile.common.testing import run_cli_with_args
 from scinoephile.core import ScinoephileError
 from scinoephile.workflows.ocr_processing import OcrProcessingResult

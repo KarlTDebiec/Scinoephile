@@ -5,13 +5,19 @@
 from __future__ import annotations
 
 from argparse import Action, ArgumentParser
+from pathlib import Path
 
 import pytest
 
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
-from scinoephile.cli.llms import LlmArguments, add_llm_provider_arguments
+from scinoephile.cli.helpers.cache import add_cache_dir_argument
+from scinoephile.cli.helpers.llms import LlmArguments, add_llm_provider_arguments
+from scinoephile.cli.helpers.web import (
+    WebServerArguments,
+    add_web_server_arguments,
+)
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
@@ -96,6 +102,58 @@ def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
 
     default_namespace = parser.parse_args([])
     assert default_namespace.llm_args == LlmArguments()
+
+
+def test_add_web_server_arguments_bundles_standard_host_and_port():
+    """Test the shared web server helper bundles standard host and port options."""
+    parser = ArgumentParser()
+    web_arg_group = parser.add_argument_group("web arguments")
+
+    add_web_server_arguments(web_arg_group)
+
+    namespace = parser.parse_args(["--host", "0.0.0.0", "--port", "5050"])
+    assert namespace.web_args == WebServerArguments(host="0.0.0.0", port=5050)
+    assert not hasattr(namespace, "web")
+    assert not hasattr(namespace, "host")
+    assert not hasattr(namespace, "port")
+
+    port_namespace = parser.parse_args(["--port", "5051"])
+    assert port_namespace.web_args == WebServerArguments(host="127.0.0.1", port=5051)
+
+    default_namespace = parser.parse_args([])
+    assert default_namespace.web_args == WebServerArguments()
+
+
+def test_add_cache_dir_argument_adds_standard_cache_option(tmp_path: Path):
+    """Test the shared cache helper adds a standard cache directory option.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+
+    add_cache_dir_argument(cache_arg_group, "media", "subtitles")
+
+    cache_dir_path = tmp_path / "cache"
+    namespace = parser.parse_args(["--cache-dir", str(cache_dir_path)])
+    assert namespace.cache_dir_path == cache_dir_path.resolve()
+    assert not cache_dir_path.exists()
+
+
+def test_add_cache_dir_argument_accepts_custom_help_text():
+    """Test CLI-specific cache help text can override generic helper text."""
+    parser = ArgumentParser()
+    cache_arg_group = parser.add_argument_group("operation arguments")
+
+    add_cache_dir_argument(
+        cache_arg_group,
+        "ocr_validation",
+        help_text="custom cache directory help (default: %(default)s)",
+    )
+
+    action = _get_action(parser, "--cache-dir")
+    assert action.help == "custom cache directory help (default: %(default)s)"
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:
