@@ -14,7 +14,7 @@ from scinoephile.common.argument_parsing import (
     output_file_arg,
 )
 from scinoephile.core import ScinoephileError
-from scinoephile.core.cli import ScinoephileCliBase
+from scinoephile.core.cli import ScinoephileCliBase, write_series
 from scinoephile.image.ocr.lens import ocr_image_series_with_lens
 from scinoephile.image.subtitles import ImageSeries
 
@@ -176,7 +176,7 @@ class OcrLensCli(ScinoephileCliBase):
             parser.error(str(exc))
 
         # Write outputs
-        text_series.save(outfile_path, format_="srt")
+        write_series(parser, text_series, outfile_path, overwrite)
 
 
 if __name__ == "__main__":
