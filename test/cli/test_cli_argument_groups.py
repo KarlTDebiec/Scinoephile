@@ -11,10 +11,11 @@ import pytest
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
+from scinoephile.cli.llms import LlmArguments, add_llm_provider_arguments
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.ocr.ocr_validate_cli import OcrValidateCli
-from scinoephile.cli.web import add_web_server_arguments
+from scinoephile.cli.web import WebServerArguments, add_web_server_arguments
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
 from scinoephile.cli.yue.yue_review_vs_zho_cli import YueReviewVsZhoCli
 from scinoephile.cli.yue.yue_transcribe_vs_zho_cli import YueTranscribeVsZhoCli
@@ -70,20 +71,63 @@ def test_ocr_web_options_are_in_web_argument_group(cli: type[CommandLineInterfac
     assert _get_action_group_title(cli, "--port") == "web arguments"
 
 
-def test_add_web_server_arguments_adds_standard_host_and_port():
-    """Test the shared web server helper adds standard host and port options."""
+def test_add_web_server_arguments_bundles_standard_host_and_port():
+    """Test the shared web server helper bundles standard host and port options."""
     parser = ArgumentParser()
     web_arg_group = parser.add_argument_group("web arguments")
 
     add_web_server_arguments(web_arg_group)
 
     namespace = parser.parse_args(["--host", "0.0.0.0", "--port", "5050"])
-    assert namespace.host == "0.0.0.0"
-    assert namespace.port == 5050
+    assert namespace.web == WebServerArguments(host="0.0.0.0", port=5050)
+    assert not hasattr(namespace, "host")
+    assert not hasattr(namespace, "port")
+
+    port_namespace = parser.parse_args(["--port", "5051"])
+    assert port_namespace.web == WebServerArguments(host="127.0.0.1", port=5051)
 
     default_namespace = parser.parse_args([])
-    assert default_namespace.host == "127.0.0.1"
-    assert default_namespace.port == 5000
+    assert default_namespace.web == WebServerArguments()
+
+
+def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
+    """Test the shared LLM helper bundles standard LLM provider options.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    context_file_path = tmp_path / "context.txt"
+    context_file_path.write_text("context", encoding="utf-8")
+    parser = ArgumentParser()
+    llm_arg_group = parser.add_argument_group("llm arguments")
+    additional_help_arg_group = parser.add_argument_group("additional help")
+
+    add_llm_provider_arguments(llm_arg_group, additional_help_arg_group)
+
+    namespace = parser.parse_args(
+        [
+            "--llm-provider",
+            "openai",
+            "--llm-model",
+            "gpt-test",
+            "--llm-additional-content-file",
+            str(context_file_path),
+        ]
+    )
+    assert namespace.llm == LlmArguments(
+        provider_name="openai",
+        model_name="gpt-test",
+        additional_context_file_path=context_file_path,
+    )
+    assert not hasattr(namespace, "llm_provider_name")
+    assert not hasattr(namespace, "llm_model_name")
+    assert not hasattr(namespace, "llm_additional_context_file_path")
+
+    model_namespace = parser.parse_args(["--llm-model", "gpt-test"])
+    assert model_namespace.llm == LlmArguments(model_name="gpt-test")
+
+    default_namespace = parser.parse_args([])
+    assert default_namespace.llm == LlmArguments()
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:

@@ -7,7 +7,11 @@ from __future__ import annotations
 from argparse import ArgumentParser
 from pathlib import Path
 
-from scinoephile.cli.web import WEB_LOCALIZATIONS, add_web_server_arguments
+from scinoephile.cli.web import (
+    WEB_LOCALIZATIONS,
+    WebServerArguments,
+    add_web_server_arguments,
+)
 from scinoephile.common import DirectoryNotFoundError
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
@@ -163,8 +167,7 @@ class OcrValidateCli(ScinoephileCliBase):
         language: str,
         interactive: bool,
         dev: bool,
-        host: str,
-        port: int,
+        web: WebServerArguments,
         outfile_path: Path,
         overwrite: bool,
     ):
@@ -187,7 +190,7 @@ class OcrValidateCli(ScinoephileCliBase):
                 outfile_path=outfile_path,
                 dev=dev,
             )
-            create_app(session).run(host=host, port=port)
+            create_app(session).run(host=web.host, port=web.port)
             return
 
         try:

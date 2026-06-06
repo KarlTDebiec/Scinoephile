@@ -5,11 +5,14 @@
 from __future__ import annotations
 
 from argparse import _ArgumentGroup  # noqa: PLC2701
+from dataclasses import dataclass
 
+from scinoephile.cli.argument_bundle_field_action import ArgumentBundleFieldAction
 from scinoephile.common.argument_parsing import int_arg
 
 __all__ = [
     "WEB_LOCALIZATIONS",
+    "WebServerArguments",
     "add_web_server_arguments",
 ]
 
@@ -28,6 +31,16 @@ WEB_LOCALIZATIONS: dict[str, dict[str, str]] = {
 """Localized text shared by CLIs that expose local web UI arguments."""
 
 
+@dataclass(frozen=True)
+class WebServerArguments:
+    """Parsed local web server CLI arguments."""
+
+    host: str = "127.0.0.1"
+    """Host for the local web server."""
+    port: int = 5000
+    """Port for the local web server."""
+
+
 def add_web_server_arguments(web_arg_group: _ArgumentGroup):
     """Add standard local web server arguments to an argument group.
 
@@ -36,13 +49,21 @@ def add_web_server_arguments(web_arg_group: _ArgumentGroup):
     """
     web_arg_group.add_argument(
         "--host",
-        default="127.0.0.1",
+        action=ArgumentBundleFieldAction,
+        bundle_type=WebServerArguments,
+        dest="web",
+        field_name="host",
+        metavar="HOST",
         type=str,
         help="host for the OCR validation web UI",
     )
     web_arg_group.add_argument(
         "--port",
-        default=5000,
+        action=ArgumentBundleFieldAction,
+        bundle_type=WebServerArguments,
+        dest="web",
+        field_name="port",
+        metavar="PORT",
         type=int_arg(min_value=1),
         help="port for the OCR validation web UI",
     )

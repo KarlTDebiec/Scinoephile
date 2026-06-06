@@ -14,6 +14,7 @@ from scinoephile.cli.conversion import (
 )
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
+    LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
@@ -268,9 +269,7 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
         stream_index: int | None,
         script: str,
         convert: OpenCCConfig | None,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm: LlmArguments,
         demucs: DemucsMode,
         vad: VADMode,
         whisper_model_name: str,
@@ -326,9 +325,9 @@ class YueTranscribeVsZhoCli(ScinoephileCliBase):
             cls._get_transcription_prompt_classes(script)
         )
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm.provider_name, model=llm.model_name)
         transcriber = get_yue_vs_zho_transcriber(
             model_name=whisper_model_name,
             demucs_mode=demucs,

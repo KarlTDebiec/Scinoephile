@@ -9,11 +9,16 @@ from pathlib import Path
 
 from scinoephile.cli.llms import (
     LLM_LOCALIZATIONS,
+    LlmArguments,
     add_llm_provider_arguments,
     read_llm_additional_context,
 )
 from scinoephile.cli.utility.cache.argument_types import cache_dir_path_arg
-from scinoephile.cli.web import WEB_LOCALIZATIONS, add_web_server_arguments
+from scinoephile.cli.web import (
+    WEB_LOCALIZATIONS,
+    WebServerArguments,
+    add_web_server_arguments,
+)
 from scinoephile.common.argument_parsing import (
     get_arg_groups_by_name,
     input_file_or_dir_arg,
@@ -220,13 +225,10 @@ class OcrProcessCli(ScinoephileCliBase):
         script: ChineseScript | None,
         clean: bool,
         interactive: bool,
-        host: str,
-        port: int,
+        web: WebServerArguments,
         dev: bool,
         cache_dir_path: Path,
-        llm_provider_name: str,
-        llm_model_name: str | None,
-        llm_additional_context_file_path: Path | None,
+        llm: LlmArguments,
         output_dir_path: Path,
         overwrite: bool,
     ):
@@ -236,9 +238,9 @@ class OcrProcessCli(ScinoephileCliBase):
         if language == "eng" and script is not None:
             parser.error("--script may only be used when --language is zho")
         additional_context = read_llm_additional_context(
-            parser, llm_additional_context_file_path
+            parser, llm.additional_context_file_path
         )
-        provider = get_provider(llm_provider_name, model=llm_model_name)
+        provider = get_provider(llm.provider_name, model=llm.model_name)
 
         # Perform operations
         try:
@@ -250,8 +252,8 @@ class OcrProcessCli(ScinoephileCliBase):
                     cache_dir_path=cache_dir_path,
                     clean=clean,
                     interactive=interactive,
-                    host=host,
-                    port=port,
+                    host=web.host,
+                    port=web.port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,
@@ -266,8 +268,8 @@ class OcrProcessCli(ScinoephileCliBase):
                     script=script or "simplified",
                     clean=clean,
                     interactive=interactive,
-                    host=host,
-                    port=port,
+                    host=web.host,
+                    port=web.port,
                     dev=dev,
                     overwrite=overwrite,
                     provider=provider,
