@@ -11,6 +11,7 @@ import pytest
 from scinoephile.cli.eng.eng_process_cli import EngProcessCli
 from scinoephile.cli.eng.eng_translate_from_yue_cli import EngTranslateFromYueCli
 from scinoephile.cli.eng.eng_translate_from_zho_cli import EngTranslateFromZhoCli
+from scinoephile.cli.llms import LlmArguments, add_llm_provider_arguments
 from scinoephile.cli.ocr.ocr_fuse_cli import OcrFuseCli
 from scinoephile.cli.ocr.ocr_process_cli import OcrProcessCli
 from scinoephile.cli.yue.yue_process_cli import YueProcessCli
@@ -54,6 +55,47 @@ def test_llm_options_are_in_llm_argument_group(cli: type[CommandLineInterface]):
         _get_action_group_title(cli, "--llm-additional-content-file") == "llm arguments"
     )
     assert _get_action_group_title(cli, "--list-llm-providers") == "additional help"
+
+
+def test_add_llm_provider_arguments_bundles_standard_llm_options(tmp_path):
+    """Test the shared LLM helper bundles standard LLM provider options.
+
+    Arguments:
+        tmp_path: pytest temporary path fixture
+    """
+    context_file_path = tmp_path / "context.txt"
+    context_file_path.write_text("context", encoding="utf-8")
+    parser = ArgumentParser()
+    llm_arg_group = parser.add_argument_group("llm arguments")
+    additional_help_arg_group = parser.add_argument_group("additional help")
+
+    add_llm_provider_arguments(llm_arg_group, additional_help_arg_group)
+
+    namespace = parser.parse_args(
+        [
+            "--llm-provider",
+            "openai",
+            "--llm-model",
+            "gpt-test",
+            "--llm-additional-content-file",
+            str(context_file_path),
+        ]
+    )
+    assert namespace.llm_args == LlmArguments(
+        provider_name="openai",
+        model_name="gpt-test",
+        additional_context_file_path=context_file_path.resolve(),
+    )
+    assert not hasattr(namespace, "llm")
+    assert not hasattr(namespace, "llm_provider_name")
+    assert not hasattr(namespace, "llm_model_name")
+    assert not hasattr(namespace, "llm_additional_context_file_path")
+
+    model_namespace = parser.parse_args(["--llm-model", "gpt-test"])
+    assert model_namespace.llm_args == LlmArguments(model_name="gpt-test")
+
+    default_namespace = parser.parse_args([])
+    assert default_namespace.llm_args == LlmArguments()
 
 
 def _get_action(parser: ArgumentParser, option: str) -> Action:
